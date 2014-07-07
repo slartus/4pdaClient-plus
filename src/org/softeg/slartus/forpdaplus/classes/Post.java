@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -40,7 +41,7 @@ public class Post {
     private String m_Number = "0";
     private Boolean m_CanPlusRep = false;
     private Boolean m_CanMinusRep = false;
-    private String avatarFileName;
+    private String avatarFileName="";
 
     public Post(String id, String date, String author, String body) {
         m_Id = id;
@@ -301,8 +302,10 @@ public class Post {
     }
 
     public void setAvatarFileName(String avatarFileName) {
+        if(TextUtils.isEmpty(avatarFileName))
+            return;
         String path = "http://s.4pda.to/forum/uploads/";
-        if (avatarFileName != null && avatarFileName.contains("/"))
+        if (avatarFileName.contains("/"))
             path = "http://s.4pda.to/forum/style_avatars/";
         this.avatarFileName = path + avatarFileName;
     }

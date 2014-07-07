@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.support.v4.app.FragmentActivity;
 import android.text.Html;
-import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,8 +12,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
@@ -61,13 +58,13 @@ public class ForumUser {
             int id = 0;
             Resources resourses = context.getResources();
 
-            if(!TextUtils.isEmpty(avatar)){
-                mQuickAction.getImageView().setMinimumHeight(200);
-                mQuickAction.getImageView().setMinimumWidth(200);
-                ImageLoader imageLoader = ImageLoader.getInstance();
-                imageLoader.displayImage(avatar, mQuickAction.getImageView());
-
-            }
+//            if(!TextUtils.isEmpty(avatar)){
+//                mQuickAction.getImageView().setMinimumHeight(200);
+//                mQuickAction.getImageView().setMinimumWidth(200);
+//                ImageLoader imageLoader = ImageLoader.getInstance();
+//                imageLoader.displayImage(avatar, mQuickAction.getImageView());
+//
+//            }
             int insertNickPosition = id++;
             int sendQmsPosition = id++;
             if (Client.getInstance().getLogined()) {

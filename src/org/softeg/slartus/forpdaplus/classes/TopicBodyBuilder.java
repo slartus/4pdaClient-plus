@@ -220,12 +220,15 @@ public class TopicBodyBuilder extends HtmlBuilder {
         sb.append("\t\t</tr>\n");
         String avatar = msg.getAvatarFileName();
 
-        if (!TextUtils.isEmpty(avatar))
-            avatar = "file:///android_asset/profile/logo.png";
-        sb.append("<tr><td colspan=\"2\"><div class=\"avatar_container\">");
-        if (Preferences.Topic.isShowAvatars())
-              sb.append("<img src=\"").append(avatar).append("\" height=\"40\" />");
-        sb.append("</div></tr>");
+        if (Preferences.Topic.isShowAvatars()) {
+            if (TextUtils.isEmpty(avatar))
+                avatar = "file:///android_asset/profile/logo.png";
+            sb.append("<tr><td colspan=\"2\"><div class=\"avatar_container\">");
+            sb.append("<img src=\"").append(avatar).append("\" height=\"40\" />");
+            sb.append("</div></tr>");
+        }else{
+            sb.append("<tr><td colspan=\"2\"><div class=\"avatar_container_empty\"></div></tr>");
+        }
         String userGroup = msg.getUserGroup() == null ? "" : msg.getUserGroup();
         sb.append("<tr>\n" + "\t\t\t<td colspan=\"2\"><span  class=\"user_group\">").append(userGroup).append("</span></td></tr>");
         sb.append("\t\t<tr>\n");
