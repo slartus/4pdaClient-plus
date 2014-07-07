@@ -5,8 +5,10 @@ package org.softeg.slartus.forpdaplus.mainnotifiers;/*
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Handler;
+import android.text.Html;
 import android.text.TextUtils;
 
+import org.json.JSONObject;
 import org.softeg.slartus.forpdacommon.Http;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.MyApp;
@@ -44,13 +46,16 @@ public class ForPdaVersionNotifier extends MainNotifier {
                     String url = "http://4pda.ru/forum/index.php?showtopic=271502";
                     String page = Http.getPage(url, "windows-1251");
                     Matcher m = Pattern
-                            .compile("<b>версия:\\s*(.*?)\\s*/s*([^<]*)\\s*</b>",
-                                    Pattern.CASE_INSENSITIVE).matcher(page);
+                            .compile("&#91;json_info&#93;([\\s\\S]*?)&#91;/json_info&#93;",
+                                    Pattern.CASE_INSENSITIVE | Pattern.MULTILINE).matcher(page);
                     if (!m.find())
                         return;
-
-                    String version = "org.softeg.slartus.forpdaplus".equals(MyApp.getContext().getPackageName()) ?
-                            m.group(2) : m.group(1);
+                    JSONObject jsonObject = new JSONObject(Html.fromHtml(m.group(1)).toString());
+                    jsonObject = jsonObject.getJSONObject(MyApp.getContext().getPackageName());
+                    jsonObject = jsonObject.getJSONObject("release");
+                    String version = jsonObject.getString("ver").trim().replace("beta", ".").trim();
+                    final String apk = jsonObject.getString("apk").trim();
+                    final String info = jsonObject.getString("info").trim();
 
                     releaseVer = version.replace("beta", ".").trim();
                     siteVersionsNewer = isSiteVersionsNewer(releaseVer, currentVersion);
@@ -61,14 +66,14 @@ public class ForPdaVersionNotifier extends MainNotifier {
                                 try {
                                     new AlertDialogBuilder(context)
                                             .setTitle("Новая версия!")
-                                            .setMessage("На сайте 4pda.ru обнаружена новая версия: "
-                                                    + finalReleaseVer)
-                                            .setPositiveButton("Открыть", new DialogInterface.OnClickListener() {
+                                            .setMessage("На сайте 4pda.ru обнаружена новая версия: " + finalReleaseVer + "\n\n" +
+                                                    "Изменения:\n" + info)
+                                            .setPositiveButton("Скачать", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {
                                                     dialogInterface.dismiss();
                                                     try {
-                                                        ExtUrl.showInBrowser(context, "http://4pda.ru/forum/index.php?showtopic=271502");
+                                                        ExtUrl.showInBrowser(context, apk);
                                                     } catch (Throwable ex) {
                                                         Log.e(context, ex);
                                                     }
