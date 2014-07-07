@@ -150,6 +150,16 @@ public class Preferences {
     }
 
     public static class Topic {
+        public static Boolean isShowAvatars(){
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+            return prefs.getBoolean("topic.showavatar", true);
+        }
+
+        public static void setShowAvatars(boolean value) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+            prefs.edit().putBoolean("topic.showavatar", value).commit();
+        }
+
         public static Boolean getSpoilFirstPost() {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
             return prefs.getBoolean("theme.SpoilFirstPost", true);
@@ -173,6 +183,8 @@ public class Preferences {
         public static void setFontSize(int value) {
             Preferences.setFontSize("theme", value);
         }
+
+
 
         public static class Post {
 

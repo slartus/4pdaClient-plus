@@ -1,16 +1,13 @@
 @charset "utf-8";
 HTML {
   font-size: 1em;
-  width: 100%;
 }
 body {
   font-size: 100%;
   display: block;
-  min-height: 1rem;
-  background: #000;
-  color: #f0f0f0;
-  margin: 0;
-  word-warp: break-word;
+  background: #000000;
+  color: #ffffff;
+  margin: 0 0.1em;
 }
 .post_body span[style*="font-size:36pt"] {
   font-size: 3.75em !important;
@@ -216,11 +213,8 @@ body {
     content: '';
   }
 }
-/*
- *	DARK-BLACK
-*/
-[style*="color:royalblue"] {
-  color: #ced8f7 !important;
+*[style*="color:royalblue"] {
+  color: #99afef !important;
 }
 *[style*="color:blue"] {
   color: #6666ff !important;
@@ -243,6 +237,7 @@ body {
 *[style*="color:deeppink"] {
   color: #ff61b6 !important;
 }
+*[style*="color:Black"],
 *[style*="color:black"],
 *[style*="color:#000000"],
 *[style*="color:#000"] {
@@ -256,41 +251,42 @@ body {
 }
 .hidetop {
   display: block;
-  padding: 0.4em 0.3em;
-  margin-top: -0.1em;
-  border-top: 1px solid #444;
-  border-bottom: 1px solid #444;
-  color: #fff;
+  padding: 0.3em;
+  background: #1d2d3e;
+  margin: -0.1em 0 0;
+  border-left: 3px #8895a5 solid;
+  border-top: 1px solid #666666;
+  border-bottom: 1px solid #666666;
+  color: #ffffff;
   text-align: center;
 }
 .post-block.spoil > .block-title {
   display: block;
-  padding: 0.3em 0.5em;
-  background: #161616;
-  margin: 0.5em -0.5em;
-  border-top: 1px #444 solid;
-  border-bottom: 1px #444 solid;
-  color: #ddd;
-}
-.post-block.quote .post-block.spoil > .block-title {
-  margin-left: -0.3em !important;
-  margin-right: -0.3em !important;
+  padding: 0.3em;
+  background: #1d2d3e;
+  margin: 0.5em -0.6em 0;
+  border-left: 0.2em #8895a5 solid;
+  border-top: 1px solid #666666;
+  border-bottom: 1px solid #666666;
+  color: #ffffff;
 }
 .post-block.spoil > .block-body {
   padding: 0.5em;
-  margin: 0 -0.2em;
-  border-bottom: 1px #333 solid;
+  margin: 0 -0.6em;
+  border-left: 0.2em #8394b2 solid;
+  border-right: 0;
+  border-bottom: 1px #dee4ec solid;
 }
 .post-block.quote {
   display: block;
   padding: 0.2em 0.4em 0.4em 0.4em;
   margin: 1em 0.2em 1em 0;
-  border-left: 3px solid #58c;
+  border-left: 0.2em solid #5588cc;
 }
 .post-block.quote > .block-title {
   display: block;
   margin-bottom: 0.5em;
-  color: #999;
+  color: #999999;
   font-weight: bold;
   line-height: 1.4;
   font-size: 1rem;
@@ -298,11 +294,12 @@ body {
 .post-block.quote > .block-body {
   padding: 0;
   margin: 0;
+  color: #ffffff;
 }
 .post-block.code > .block-title,
 .sqltop,
 .htmltop {
-  color: #a0a0a0;
+  color: #999999;
   font-weight: bold;
   margin: 0.5em auto 0;
   padding: 0.3em;
@@ -310,29 +307,22 @@ body {
 .post-block.code > .block-body,
 .sqlmain,
 .htmlmain {
-  border: 1px dotted #555;
-  color: #bfb;
+  border: 1px dotted #b2b2b2;
+  color: #99ff99;
   margin: 0 auto 0.4em;
-  padding: 0.5em 0.2em;
-}
-.post-block.code > .block-body .post-block.spoil > .block-title {
-  margin-left: -0.2em !important;
-  margin-right: -0.2em !important;
+  padding: 0.3em;
 }
 .post-block.hidden > .block-title {
-  color: #a0a0a0;
+  color: #999999;
   font-weight: bold;
   margin: 0.5em auto 0;
   padding: 0.3em;
 }
 .post-block.hidden > .block-body {
-  border: 1px dotted #555;
+  border: 1px dotted #858585;
+  color: #ffffff;
   margin: 0 auto 0.4em;
   padding: 0.5em 0.2em;
-}
-.post-block.hidden > .block-body .post-block.spoil > .block-title {
-  margin-left: -0.2em !important;
-  margin-right: -0.2em !important;
 }
 /***ADM***/
 .cur {
@@ -348,7 +338,7 @@ body {
 .mod,
 .ex {
   margin: 0.8em  0;
-  border: 1px solid #555;
+  border: 1px solid #333333;
   display: table;
   width: 100%;
 }
@@ -357,12 +347,13 @@ body {
 .ex > .block-title {
   display: table-cell;
   vertical-align: middle;
-  color: #161616;
-  /*font-weight: bold;*/
-  width: 4rem;
+  color: #000000;
+  font-weight: bold;
+  width: 4.5rem;
   text-align: center;
   height: 100%;
-  font-size: 4rem;
+  padding: 0.5em 0;
+  font-size: 3.5rem;
   font-family: Times New Roman, Serif;
 }
 .cur > .block-body,
@@ -372,7 +363,7 @@ body {
   vertical-align: middle;
   text-align: left;
   padding: 1em;
-  background: #020202;
+  background: #000000;
   height: 100%;
   margin: 0;
 }
@@ -381,7 +372,7 @@ body {
   margin-top: 3px;
   max-width: 100%;
   text-align: center;
-  background: #161616;
+  background: #000000;
   /*border-top: 2px ridge #222;
 border-bottom: 2px groove #222;*/
 }
@@ -404,12 +395,12 @@ border-bottom: 2px groove #222;*/
   width: 26%;
 }
 .prev {
-  border-left: 2px solid black;
-  border-right: 2px solid black;
+  border-left: 1px solid #333333;
+  border-right: 1px solid #333333;
 }
 .next {
-  border-left: 2px solid black;
-  border-right: 2px solid black;
+  border-left: 1px solid #333333;
+  border-right: 1px solid #333333;
 }
 /*** QMS ***/
 .check-item {
@@ -419,7 +410,7 @@ border-bottom: 2px groove #222;*/
   padding-top: 0.3em;
 }
 #thread-inside-top ~ .date {
-  border-bottom: dotted 1px #aaa;
+  border-bottom: dotted 1px #4d4d4d;
   margin: 3em auto;
   text-align: center;
 }
@@ -428,10 +419,10 @@ border-bottom: 2px groove #222;*/
   display: inline-block;
   padding: 0 0.6em;
   position: relative;
-  color: #777;
+  color: #b3b3b3;
   font-size: 1.1rem;
   font-weight: bold;
-  background: #000;
+  background: #000000;
   text-transform: lowercase;
 }
 .read-status.unread.big-dot {
@@ -441,7 +432,7 @@ border-bottom: 2px groove #222;*/
   height: 0.6em;
   width: 0.6em;
   border-radius: 0.6em;
-  background: #a33;
+  background: #c77;
 }
 .avatar-wrap {
   display: block;
@@ -454,7 +445,7 @@ border-bottom: 2px groove #222;*/
   display: inline-block;
   width: 4em;
   line-height: 4em;
-  background: #ccc;
+  background: #f0f0f0;
 }
 label ~ .time {
   position: relative;
@@ -462,27 +453,27 @@ label ~ .time {
   margin-right: 1.7em;
   margin-top: -1.4em;
   font-size: 0.9rem;
-  color: #555;
+  color: #b3b3b3;
 }
 strong,
 strong span {
   line-height: 1.5;
   font-size: 1.1rem;
   margin-left: 0.2em;
-  color: #ccc;
 }
 .list-group-item {
   display: block;
   margin: 1em 0.2em;
   padding: 0.2m;
-  border-top: 2px solid #5588cc;
-  background: #161616;
+  border-top: 0.2em solid #5588cc;
+  background: #222222;
 }
 .msg-content {
   margin: 0 0 -0.3em 0;
   padding: 0.5em;
-  border-top: 1px #555 solid;
-  background: #000;
+  border-top: 1px #4d4d4d solid;
+  color: #ffffff;
+  background: #000000;
 }
 #bottom_element {
   margin: 2em 0em;
@@ -498,40 +489,14 @@ strong span {
 table {
   font-size: inherit;
 }
-a {
-  color: #79c;
-  line-height: 1.7;
-}
-ul,
-ol {
-  margin-left: -1em;
-}
-.spoiler_button {
-  position: relative;
-  z-index: 99;
-  float: right;
-  width: 100%;
-  display: block;
-  margin-top: -2.7em;
-  margin-bottom: 0;
-  margin-right: 0;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  padding-right: 0.5em;
-  background: none;
-  border: 0;
-  color: #efefef;
-  text-transform: lowercase;
-  text-align: right;
-}
 img[src*="style_emoticons"] {
   min-height: 1.2rem !important;
   min-width: 1.2rem !important;
   vertical-align: bottom;
 }
-img {
-  max-width: 100%!important;
-  height: auto!important;
+a {
+  color: #7799dd;
+  line-height: 1.7;
 }
 .post_body a[href*="act=findpost&pid="][title="Перейти к сообщению"] {
   position:  relative;
@@ -557,104 +522,208 @@ img {
 .post-block .block-title a[href*="act=findpost&pid="][title="Перейти к сообщению"]:after {
   margin-right: -0.2em !important;
 }
+ul,
+ol {
+  margin-left: -1em;
+}
+.spoiler_button {
+  position: relative;
+  z-index: 99;
+  float: right;
+  width: 100%;
+  display: block;
+  margin-top: -2.7em;
+  margin-bottom: 0;
+  margin-right: 0;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  padding-right: 0.5em;
+  background: none;
+  border: 0;
+  color: #000000;
+  text-transform: lowercase;
+  text-align: right;
+}
+img {
+  max-width: 100%!important;
+  height: auto!important;
+}
 .sp_img {
   display: inline-block;
   margin: 0.2em;
   padding: 0.2em 0.3em;
-  border-left: 1px solid #252525;
-  border-right: 1px solid #252525;
-  border-top: 1px solid #121212;
-  border-bottom: 1px solid #555;
-  background: #181818;
-  color: #aaa;
+  border-left: 1px solid #4d4d4d;
+  border-right: 1px solid #4d4d4d;
+  background: #0d0d0d;
 }
 .post_body font {
   font-size: 0.95rem!important;
 }
-.post_body,
+.post_body {
+  font-size: 1rem;
+  position: relative;
+  padding: 1em 0.5em 2em;
+  clear: both;
+  word-wrap: break-word;
+  background: #000000;
+  border-bottom: 1px solid #4d4d4d;
+}
 .signature {
   font-size: 1rem;
   position: relative;
-  padding: 0.8em 0.5em 1.5em;
+  padding: 1em 0.5em 2em;
   clear: both;
   word-wrap: break-word;
-  background: #000;
-  border-top: 1px solid #444;
-  border-bottom: 1px solid #444;
-  color: #f0f0f0;
-}
-.signature {
-  background: #161616 !important;
-  color: #999 !important;
+  background: #222222;
+  border-bottom: 1px solid #595959;
 }
 .signature:before {
   content: 'подпись';
   display: block;
-  margin-top: -0.5em;
+  margin-top: -0.8em;
   padding-bottom: 0.5em;
   margin-bottom: 0.5em;
   text-align: center;
+  color: 1px solid #4d4d4d;
   font-size: 0.8em;
-  border-bottom: 1px #222 solid;
+  border-bottom: 1px solid #404040;
 }
 .post_header {
-  border-bottom: 1px solid #000;
-  border-top: 2px solid #58c;
+  border-bottom: 1px solid #4d4d4d;
+  border-top: 2px solid #5588cc;
   padding: 0 0.4em;
-  background: #161616;
+  background: #222222;
   margin-top: 0;
+  min-height: 3.1rem;
 }
-.post_header a img {
-  margin-bottom: 0;
+.post_header > TABLE > TBODY tr:nth-child(2) {
+  display: block;
+  position: absolute;
+  left: 0.3em;
+  margin-top: -1rem;
+  width: 4rem !important;
+  height: 4rem !important;
 }
-.post_header .post_date {
-  display: inline-block;
-  margin-top: auto;
-  margin-bottom: 0;
+.avatar_container {
+  margin: 0;
   position: relative;
-  font-size: 0.95rem;
-  float: right;
-  color: #ccc;
-  text-transform: lowercase;
+  display: block;
+  border-radius: 0.2rem;
+  border: 0.1em solid #595959;
+  width: 3.8rem !important;
+  height: 3.8rem !important;
 }
-.post_header .post_date_cli {
+.avatar_container IMG {
   display: inline-block;
-  margin-top: auto;
-  margin-bottom: 0;
-  position: relative;
-  font-size: 0.95rem;
-  color: #ccc;
+  overflow: hidden;
+  border: none;
+  max-width: 3.8rem !important;
+  max-height: 3.8rem !important;
+  background-size: cover;
+  border-radius: 0.2rem;
+  background: #999999;
 }
-.post_header .post_date_cli a {
-  margin-left: 0.2em;
-  font-size: 1rem;
-}
-.post_header td .system_link .post_date_cli {
-  color: #aaa;
-  margin-top: 0.2em;
+.post_nick_cli a,
+.post_nick_online_cli a,
+.user_group,
+.system_link .post_date_cli {
+  margin-left: 4rem;
 }
 .post_header A.system_link[onclick*="window.HTMLOUT.showPostMenu"] {
   line-height: 1.2;
   margin-top: 0.1em;
   padding: 0 0.4em 0.1em;
   border-radius: 0.3em;
-  border: 1px solid #555 !important;
+  border: 1px solid #595959;
   font-weight: normal;
   text-align: center;
-  color: #999 !important;
-  margin-top: -0.4em;
+  color: #cccccc !important;
+  display: block;
+  margin-top: -0.8rem !important;
+  position: absolute;
+  right: 0.4rem;
+}
+.post_header a img {
+  margin-bottom: 0;
+}
+.system_link .post_date_cli {
+  display: inline-block;
+  line-height: 1.2;
+  margin-top: 0;
+  position: relative;
+  font-size: 0.95rem;
+  color: #b3b3b3;
+  margin-bottom: 0.2rem;
+}
+.post_header DIV .post_date_cli {
+  position: absolute;
+  margin-top: -1.3rem;
+  padding: 0 0.4rem;
+  text-align: left;
+  left: 0.1rem;
+  right: 0.1rem;
+  display: block;
+  line-height: 1.5rem;
+  font-size: 0.9rem;
+  color: #b3b3b3;
+  background: #191919;
+  border-bottom: 1px solid #000000;
+}
+.post_header DIV .post_date_cli a {
+  color: #b3b3b3;
+}
+.post_header DIV .post_date_cli a[onclick*="window"] {
+  margin-left: 0.2em;
+  font-size: 0.9rem;
+  font-weight: bold;
+  float: right;
+}
+.post_nick_cli a,
+.post_nick_online_cli a {
+  position: relative;
+  top: 0.6rem;
+  margin-top: 1rem !important;
+  display: inline-block;
+}
+.post_nick_cli a {
+  position: relative;
+  font-size: 1.1rem !important;
+  line-height: 1.2;
+  color: #b55!Important;
+  font-weight: bold;
+}
+.post_nick_online_cli a {
+  font-size: 1.1rem !important;
+  line-height: 1.2;
+  color: #090!important;
+  font-weight: bold;
+  text-shadow: 0 0 0.6rem #777777;
+}
+.user_group {
+  display: inline-block;
+  margin-top: 0.3rem;
+  position: relative;
+  font-size: 0.9rem;
+  color: #b3b3b3;
+}
+.post_date {
+  position: relative;
+  float: right;
+  display: block;
+  line-height: 1;
+  color: #b3b3b3;
 }
 .post_user_info {
   display: block;
+  color: transparent;
   text-transform: lowercase;
+}
+.post_user_info a {
+  color: #b3b3b3;
+  text-decoration: none;
 }
 .post_user_info br {
   display: none;
-}
-.post_user_info:first-line {
-  position: absolute;
-  color: #161616;
-  font-size: 0;
 }
 .post_user_info strong {
   font-size: 1rem;
@@ -667,6 +736,7 @@ img {
   font-size: 0.95rem;
   text-transform: lowercase;
   line-height: 1.5;
+  color: #b3b3b3;
 }
 .post_user_info a {
   font-size: 0.95rem;
@@ -691,6 +761,8 @@ img {
   float: right;
   line-height: 0.8;
   padding-left: 0.5em;
+  color: #b3b3b3;
+  text-decoration: none;
 }
 .post_action a:before {
   content: '|';
@@ -705,28 +777,10 @@ img {
 }
 .post_action a:first-of-type {
   display: inline-block;
-  color: #888;
+  color: #808080;
   float: left;
   padding-left: 0;
   line-height: 1;
-}
-.post_nick_cli a {
-  margin-top: auto;
-  margin-bottom: auto;
-  position: relative;
-  font-size: 1.1rem !important;
-  line-height: 1.2;
-  font-weight: bold;
-  color: #ccc!Important;
-  text-shadow: 0 0 0.6rem #222;
-}
-.post_nick_online_cli a {
-  font-size: 1.1rem !important;
-  line-height: 1.2;
-  color: #79c!important;
-  display: inline-block;
-  font-weight: bold;
-  text-shadow: 0 0 1px black, 0 0 0.8rem #555;
 }
 .post_nick a {
   margin-top: -0.8em;
@@ -734,47 +788,24 @@ img {
   margin-bottom: 0;
   line-height: 1;
   font-size: 1.1rem !important;
-  color: #ccc!important;
+  color: #ffffff !important;
   font-weight: bold;
 }
 .s_post_footer {
   position: relative;
-  padding: 0.3em 0.6em;
   clear: both;
-  margin-left: auto;
-  margin-right: auto;
-  background: #161616;
-  border-bottom: 1px #333 solid;
-}
-.footer_button_good {
-  line-height: 1.4;
-  padding: 0 0.4em 0.1em;
-  border-radius: 0.4em;
+  padding: 0 0.3rem;
+  margin-top: -0.1rem;
+  background: #222222;
+  border-bottom: 1px solid #595959;
   text-align: center;
-  -webkit-box-shadow: inset 0px 1px 0px 0px #bec4b9;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #46503f), color-stop(1, #030700));
-  border: 1px solid #325c11;
-  color: #d6e5cb;
+  color: #ffffff;
 }
-.footer_button_bad {
-  line-height: 1.4;
-  padding: 0 0.4em 0.1em;
-  border-radius: 0.4em;
-  text-align: center;
-  -webkit-box-shadow: inset 0px 1px 0px 0px #b19794;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #611e18), color-stop(1, #350400));
-  border: 1px solid #8a1b11;
-  color: #f6d4d0;
-}
-.footer_button {
-  line-height: 1.2;
-  margin-top: 0.1em;
-  padding: 0 0.4em 0.1em;
-  border-radius: 0.3em;
-  border: 1px solid #555 !important;
-  font-weight: normal;
-  text-align: center;
-  color: #999 !important;
+.s_post_footer td {
+  position: relative;
+  top: -0.15rem;
+  padding: 0.2em 0.3em;
+  border-top: 1px solid #4d4d4d;
 }
 @media screen and (min-width: 960px) {
   .post_footer {
@@ -786,8 +817,8 @@ img {
     clear: both;
     margin-left: auto;
     margin-right: auto;
-    background: #161616;
-    border-bottom: 1px #333 solid;
+    background: #222222;
+    border-bottom: 1px solid #595959;
   }
   .post_footer a {
     display: table-block;
@@ -803,10 +834,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #555 !important;
+    border: 1px solid #595959;
     font-weight: normal;
     text-align: center;
-    color: #999 !important;
+    color: #cccccc !important;
   }
   .post_footer a .send_claim_button:before {
     content: 'жалоба';
@@ -816,7 +847,7 @@ img {
     position: absolute;
     padding: 0.7em 0;
     margin-left: 0.9em;
-    border-left: 1px solid #656565;
+    border-left: 1px solid #646464;
   }
   .post_footer a .insert_nick_button {
     display: block;
@@ -826,10 +857,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #555 !important;
+    border: 1px solid #595959;
     font-weight: normal;
     text-align: center;
-    color: #999 !important;
+    color: #cccccc !important;
   }
   .post_footer a .insert_nick_button:before {
     content: 'имя';
@@ -839,7 +870,7 @@ img {
     position: absolute;
     padding: 0.7em 0;
     margin-left: 0.9em;
-    border-right: 1px solid #656565;
+    border-right: 1px solid #646464;
   }
   .post_footer a .quote_button {
     display: block;
@@ -848,10 +879,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #555 !important;
+    border: 1px solid #595959;
     font-weight: normal;
     text-align: center;
-    color: #999 !important;
+    color: #cccccc !important;
     margin-left: 1em;
   }
   .post_footer a .quote_button:before {
@@ -866,10 +897,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #555 !important;
+    border: 1px solid #595959;
     font-weight: normal;
     text-align: center;
-    color: #999 !important;
+    color: #cccccc !important;
   }
   .post_footer a .post_vote_bad:after {
     content: 'плохо';
@@ -884,7 +915,7 @@ img {
     float: left;
     margin-right: 0.5em;
     font-size: 1em;
-    color: #d03b3b;
+    color: #d33d3d;
   }
   .post_footer a .post_vote_good {
     display: inline-block;
@@ -894,10 +925,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #555 !important;
+    border: 1px solid #595959;
     font-weight: normal;
     text-align: center;
-    color: #999 !important;
+    color: #cccccc !important;
     margin-left: 0.25em;
   }
   .post_footer a .post_vote_good:before {
@@ -913,7 +944,7 @@ img {
     margin-left: 0.15em;
     float: right;
     font-size: 1em;
-    color: #047f04;
+    color: #078107;
   }
   .post_footer a .delete_post_button {
     display: block;
@@ -922,10 +953,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #555 !important;
+    border: 1px solid #595959;
     font-weight: normal;
     text-align: center;
-    color: #999 !important;
+    color: #cccccc !important;
   }
   .post_footer a .delete_post_button:before {
     content: 'удалить';
@@ -935,7 +966,7 @@ img {
     position: absolute;
     padding: 0.7em 0;
     margin-left: 0.9em;
-    border-left: 1px solid #656565;
+    border-left: 1px solid #646464;
   }
   .post_footer a .edit_post_button {
     display: block;
@@ -945,10 +976,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #555 !important;
+    border: 1px solid #595959;
     font-weight: normal;
     text-align: center;
-    color: #999 !important;
+    color: #cccccc !important;
   }
   .post_footer a .edit_post_button:after {
     content: 'редактировать';
@@ -964,8 +995,8 @@ img {
     clear: both;
     margin-left: auto;
     margin-right: auto;
-    background: #161616;
-    border-bottom: 1px #333 solid;
+    background: #222222;
+    border-bottom: 1px solid #595959;
   }
   .post_footer a {
     display: table-block;
@@ -981,10 +1012,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #555 !important;
+    border: 1px solid #595959;
     font-weight: normal;
     text-align: center;
-    color: #999 !important;
+    color: #cccccc !important;
   }
   .post_footer a .insert_nick_button:before {
     content: 'имя';
@@ -996,10 +1027,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #555 !important;
+    border: 1px solid #595959;
     font-weight: normal;
     text-align: center;
-    color: #999 !important;
+    color: #cccccc !important;
   }
   .post_footer a .quote_button:before {
     content: 'цитата';
@@ -1013,10 +1044,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #555 !important;
+    border: 1px solid #595959;
     font-weight: normal;
     text-align: center;
-    color: #999 !important;
+    color: #cccccc !important;
   }
   .post_footer a .post_vote_bad:after {
     content: 'плохо';
@@ -1031,7 +1062,7 @@ img {
     float: left;
     margin-right: 0.5em;
     font-size: 1em;
-    color: #d03b3b;
+    color: #d33d3d;
   }
   .post_footer a .post_vote_good {
     display: inline-block;
@@ -1041,10 +1072,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #555 !important;
+    border: 1px solid #595959;
     font-weight: normal;
     text-align: center;
-    color: #999 !important;
+    color: #cccccc !important;
     margin-left: 0.25em;
   }
   .post_footer a .post_vote_good:before {
@@ -1060,7 +1091,7 @@ img {
     margin-left: 0.15em;
     float: right;
     font-size: 1em;
-    color: #047f04;
+    color: #078107;
   }
 }
 @media screen and (max-width: 480px) {
@@ -1073,8 +1104,8 @@ img {
     clear: both;
     margin-left: auto;
     margin-right: auto;
-    background: #161616;
-    border-bottom: 1px #333 solid;
+    background: #222222;
+    border-bottom: 1px solid #595959;
   }
   .post_footer a {
     display: table-block;
@@ -1090,10 +1121,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #555 !important;
+    border: 1px solid #595959;
     font-weight: normal;
     text-align: center;
-    color: #999 !important;
+    color: #cccccc !important;
   }
   .post_footer a .insert_nick_button:before {
     content: 'имя';
@@ -1110,10 +1141,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #555 !important;
+    border: 1px solid #595959;
     font-weight: normal;
     text-align: center;
-    color: #999 !important;
+    color: #cccccc !important;
   }
   .post_footer a .quote_button:before {
     content: 'цитата';
@@ -1126,10 +1157,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #555 !important;
+    border: 1px solid #595959;
     font-weight: normal;
     text-align: center;
-    color: #999 !important;
+    color: #cccccc !important;
   }
   .post_footer a .post_vote_bad:before {
     position: relative;
@@ -1139,7 +1170,7 @@ img {
     content: "–";
     font-size: 1.2em;
     font-weight: bold;
-    color: #d03b3b;
+    color: #d33d3d;
   }
   .post_footer a .post_vote_good {
     display: inline-block;
@@ -1149,10 +1180,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #555 !important;
+    border: 1px solid #595959;
     font-weight: normal;
     text-align: center;
-    color: #999 !important;
+    color: #cccccc !important;
   }
   .post_footer a .post_vote_good:after {
     position: relative;
@@ -1162,43 +1193,38 @@ img {
     content: "+";
     font-size: 1.2em;
     font-weight: bold;
-    color: #047f04;
+    color: #078107;
   }
 }
-.s_post_footer table {
-  text-align: center;
-  font-size: 0.95rem;
-  color: #aaa;
+/*.post_footer_style table{
+text-align:center;
+font-size: 0.95rem;
+color: #777;
 }
-.searchlite {
-  color: #ee6050;
+.signature{
+font-size: 0.95rem;
+color: #999;
 }
-.user_group {
-  display: block;
-  margin-top: 0;
-  margin-bottom: auto;
-  position: relative;
-  font-size: 0.85rem;
-  line-height: 0.6;
-  color: #aaa;
+.searchlite{
+color:#ee6050;
 }
-.post_header a {
-  text-decoration: none!important;
-  color: #aaa;
-}
+.post_header a, .post_footer_style a{
+text-decoration: none!important;
+color: #444;
+}*/
 .href_button {
   display: inline-block;
   margin: 0;
   width: 100%;
   font-weight: bold;
   text-transform: lowercase;
-  color: #58c;
+  color: #7799dd;
   text-decoration: none;
   text-align: center;
   padding: 0.4em 0;
 }
 .href_button_disable {
-  color: #000;
+  color: #4d4d4d;
   display: inline-block;
   margin: 0;
   width: 100%;
@@ -1207,41 +1233,43 @@ img {
   padding: 0.4em 0;
 }
 .topic_title_post {
-  margin: 0 1em;
-  padding: 0.5em;
+  margin: 0 0 -0.2rem;
+  padding: 2em;
   text-align: center;
 }
 .topic_title_post a {
-  color: #ccc;
+  color: #7799dd;
   text-decoration: none!important;
   line-height: 1.2;
 }
+.quotetop img {
+  margin-top: auto;
+  margin-bottom: auto;
+}
 .edit {
   font-size: 0.9rem;
-  color: #999;
+  color: #9c9c9c;
 }
 edit b {
   font-size: 0.95rem;
 }
 .edit * {
   font-size: 0.9rem;
-  color: #999;
+  color: #9c9c9c;
 }
 .post-edit-reason {
   font-size: 0.9rem;
-  color: #999;
+  color: #9c9c9c;
 }
-/*
-* NEWS
-*/
+/*news*/
 .container {
   margin: 0;
   display: block;
   margin: 0.3em;
-  background: #000;
-  border: 1px #333 solid;
+  background: #fff;
+  border: 1px #777 solid;
   padding: 0.3em;
-  color: white;
+  color: black;
 }
 .content {
   display: block;
@@ -1250,12 +1278,12 @@ edit b {
 h1 {
   text-align: center;
   font-size: 1.5em;
-  color: #999;
+  color: #555;
 }
 .product-detail {
   display: block;
-  border: 1px #555 solid;
-  background: #161616;
+  border: 1px #999 solid;
+  background: #eee;
   padding: 0 0.2em 0.5em;
 }
 .photo {
@@ -1277,8 +1305,8 @@ h3 {
 }
 h3 a {
   text-decoration: none;
-  color: #aaa;
-  font-size: 1.4rem;
+  font-size: 1.4em;
+  color: #555;
 }
 .info-holder {
   display: block;
@@ -1287,19 +1315,19 @@ h3 a {
 .materials-box {
   display: block;
   padding: 1em 0;
+  margin: 0;
 }
 .box-title {
   margin: 0.5em 0.2em;
   padding: 0.2em 0;
   text-align: center;
-  color: #999;
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #000000), color-stop(10%, #222222), color-stop(90%, #222222), color-stop(100%, #000000));
+  color: #555;
+  border-top: 1px #ddd solid;
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #ffffff), color-stop(10%, #eeeeee), color-stop(90%, #eeeeee), color-stop(100%, #ffffff));
 }
 .materials-list {
   padding: 0;
   margin: 0 0.2em 0 1em;
-  position: relative;
-  display: block;
   line-height: 1.4;
   /*background: #eee; 
 padding: 1em;
@@ -1318,14 +1346,14 @@ border-bottom: 1px #777 solid*/
 .materials-box .date {
   display: inline;
   font-weight: bold;
-  color: #aaa;
+  color: #555;
   text-decoration: none;
   padding: 0 1em;
   font-size: 1.1rem;
 }
 .materials-box .number {
-  color: #000;
-  background: #58c;
+  color: #fff;
+  background: #7af;
   line-height: 2;
   width: 2em;
   text-align: center;
@@ -1345,19 +1373,21 @@ border-bottom: 1px #777 solid*/
   text-decoration: none;
   text-transform: lowercase;
   width: 4em;
-  border: 1px solid #555;
+  border: 1px solid #aaa;
   padding: 0.8px 0.2em 0 0.2em;
-  color: #555;
-  background: #000;
+  color: #dcdcdc;
+  background: #fff;
 }
 .page-nav.box a {
   text-decoration: none;
 }
 .comment-box h2 {
+  margin: 0.5em 0.2em;
   text-align: center;
   padding: 0.2em 0;
-  color: #aaa;
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #000000), color-stop(10%, #222222), color-stop(90%, #222222), color-stop(100%, #000000));
+  color: #555;
+  border-top: 1px #ddd solid;
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #ffffff), color-stop(10%, #eeeeee), color-stop(90%, #eeeeee), color-stop(100%, #ffffff));
 }
 #comments {
   font-size: 1rem;
@@ -1366,7 +1396,7 @@ border-bottom: 1px #777 solid*/
   position: relative;
   margin: 0.2em 1px 0.2em 0;
   font-weight: normal;
-  color: #fff;
+  color: #000;
   text-align: left;
 }
 #comments li,
@@ -1376,23 +1406,24 @@ border-bottom: 1px #777 solid*/
   margin: 0.2em 0 0.2em 1px;
 }
 .comment-box li {
-  border-top: 1px #333 solid;
-  border-bottom: 2px #444 groove;
-  border-left: 1px #333 solid;
-  border-right: 1px #333 solid;
+  border-top: 1px #aaa solid;
+  border-bottom: 2px #ddd groove;
+  border-left: 1px #aaa solid;
+  border-right: 1px #aaa solid;
   text-align: left;
   margin: 1em 0 0 0;
   word-wrap: break-word;
-  background: #000;
+  background: #fff;
+  -webkit-box-shadow: 1px 2px 6px #ccc;
 }
 #comments li .heading {
   position: relative;
   display: block;
   margin: -1px 0 0 0;
   border-top: 3px #58c solid;
-  border-bottom: 1px solid #444;
-  background: #161616;
-  text-shadow: 0 0 0.2em #000;
+  border-bottom: 1px solid #aaa;
+  background: #eee;
+  text-shadow: 0 0 0.2em #fff;
   padding: 0.2em 0;
 }
 .nickname {
@@ -1401,14 +1432,14 @@ border-bottom: 1px #777 solid*/
   font-size: 1rem;
   font-weight: bold;
   margin: 0 0.5em;
-  color: #79c;
+  color: #58c;
   line-height: 1.4;
 }
 .h-meta {
   text-decoration: none;
   font-weight: normal;
   font-size: 1rem;
-  color: #aaa;
+  color: #555;
   float: right;
   margin-top: 0;
   margin-right: 0.2em;
@@ -1429,6 +1460,6 @@ border-bottom: 1px #777 solid*/
 #comments p ~ div {
   display: block;
   text-align: right;
-  border-top: 1px #333 solid;
+  border-top: 1px #ccc solid;
   margin: 0.5em 0.5em 0;
 }

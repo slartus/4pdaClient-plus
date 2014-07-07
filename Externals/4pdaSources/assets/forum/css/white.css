@@ -5,10 +5,9 @@ HTML {
 body {
   font-size: 100%;
   display: block;
-  min-height: 1rem;
-  background: #fff;
-  color: #111;
-  margin: 0;
+  background: #ffffff;
+  color: #000000;
+  margin: 0 0.1em;
 }
 .post_body span[style*="font-size:36pt"] {
   font-size: 3.75em !important;
@@ -217,28 +216,28 @@ body {
 .hidetop {
   display: block;
   padding: 0.3em;
-  background: #d0e1f5;
-  margin: -0.1em 0 0 0;
+  background: #d0e0f0;
+  margin: -0.1em 0 0;
   border-left: 3px #8895a5 solid;
-  border-top: 1px #efefef solid;
-  border-bottom: 2px #fff groove;
-  color: #222;
+  border-top: 1px solid #999999;
+  border-bottom: 1px solid #999999;
+  color: #000000;
   text-align: center;
 }
 .post-block.spoil > .block-title {
   display: block;
   padding: 0.3em;
-  background: #d0e1f5;
-  margin: 0.5em -0.5em 0;
-  border-left: #8895a5 solid;
-  border-top: 2px #fff ridge;
-  border-bottom: 2px #fff groove;
-  color: #222;
+  background: #d0e0f0;
+  margin: 0.5em -0.6em 0;
+  border-left: 0.2em #8895a5 solid;
+  border-top: 1px solid #999999;
+  border-bottom: 1px solid #999999;
+  color: #000000;
 }
 .post-block.spoil > .block-body {
   padding: 0.5em;
-  margin: 0 -0.5em;
-  border-left: 3px #8394b2 solid;
+  margin: 0 -0.6em;
+  border-left: 0.2em #8394b2 solid;
   border-right: 0;
   border-bottom: 1px #dee4ec solid;
 }
@@ -246,12 +245,12 @@ body {
   display: block;
   padding: 0.2em 0.4em 0.4em 0.4em;
   margin: 1em 0.2em 1em 0;
-  border-left: 3px solid #5588cc;
+  border-left: 0.2em solid #5588cc;
 }
 .post-block.quote > .block-title {
   display: block;
   margin-bottom: 0.5em;
-  color: #777;
+  color: #666666;
   font-weight: bold;
   line-height: 1.4;
   font-size: 1rem;
@@ -259,12 +258,12 @@ body {
 .post-block.quote > .block-body {
   padding: 0;
   margin: 0;
-  color: #000;
+  color: #000000;
 }
 .post-block.code > .block-title,
 .sqltop,
 .htmltop {
-  color: #a0a0a0;
+  color: #666666;
   font-weight: bold;
   margin: 0.5em auto 0;
   padding: 0.3em;
@@ -272,20 +271,20 @@ body {
 .post-block.code > .block-body,
 .sqlmain,
 .htmlmain {
-  border: 1px dotted #ccc;
-  color: #00aa00;
+  border: 1px dotted #545454;
+  color: #006600;
   margin: 0 auto 0.4em;
-  padding: 0.5em 0.2em;
+  padding: 0.3em;
 }
 .post-block.hidden > .block-title {
-  color: #a0a0a0;
+  color: #666666;
   font-weight: bold;
   margin: 0.5em auto 0;
   padding: 0.3em;
 }
 .post-block.hidden > .block-body {
-  border: 1px dotted #ccc;
-  color: #111;
+  border: 1px dotted #848484;
+  color: #000000;
   margin: 0 auto 0.4em;
   padding: 0.5em 0.2em;
 }
@@ -303,7 +302,7 @@ body {
 .mod,
 .ex {
   margin: 0.8em  0;
-  border: 1px solid #aaa;
+  border: 1px solid #cccccc;
   display: table;
   width: 100%;
 }
@@ -312,12 +311,13 @@ body {
 .ex > .block-title {
   display: table-cell;
   vertical-align: middle;
-  color: white;
-  /*font-weight: bold;*/
-  width: 4rem;
+  color: #ffffff;
+  font-weight: bold;
+  width: 4.5rem;
   text-align: center;
   height: 100%;
-  font-size: 4rem;
+  padding: 0.5em 0;
+  font-size: 3.5rem;
   font-family: Times New Roman, Serif;
 }
 .cur > .block-body,
@@ -327,7 +327,7 @@ body {
   vertical-align: middle;
   text-align: left;
   padding: 1em;
-  background: white;
+  background: #ffffff;
   height: 100%;
   margin: 0;
 }
@@ -336,7 +336,7 @@ body {
   margin-top: 3px;
   max-width: 100%;
   text-align: center;
-  background: #fff;
+  background: #ffffff;
   /*border-top: 2px ridge #222;
 border-bottom: 2px groove #222;*/
 }
@@ -359,12 +359,12 @@ border-bottom: 2px groove #222;*/
   width: 26%;
 }
 .prev {
-  border-left: 2px solid #eee;
-  border-right: 2px solid #eee;
+  border-left: 1px solid #cccccc;
+  border-right: 1px solid #cccccc;
 }
 .next {
-  border-left: 2px solid #eee;
-  border-right: 2px solid #eee;
+  border-left: 1px solid #cccccc;
+  border-right: 1px solid #cccccc;
 }
 /*** QMS ***/
 .check-item {
@@ -374,7 +374,7 @@ border-bottom: 2px groove #222;*/
   padding-top: 0.3em;
 }
 #thread-inside-top ~ .date {
-  border-bottom: dotted 1px #aaa;
+  border-bottom: dotted 1px #b3b3b3;
   margin: 3em auto;
   text-align: center;
 }
@@ -383,10 +383,10 @@ border-bottom: 2px groove #222;*/
   display: inline-block;
   padding: 0 0.6em;
   position: relative;
-  color: #777;
+  color: #4d4d4d;
   font-size: 1.1rem;
   font-weight: bold;
-  background: #fff;
+  background: #ffffff;
   text-transform: lowercase;
 }
 .read-status.unread.big-dot {
@@ -409,7 +409,7 @@ border-bottom: 2px groove #222;*/
   display: inline-block;
   width: 4em;
   line-height: 4em;
-  background: white;
+  background: #f0f0f0;
 }
 label ~ .time {
   position: relative;
@@ -417,7 +417,7 @@ label ~ .time {
   margin-right: 1.7em;
   margin-top: -1.4em;
   font-size: 0.9rem;
-  color: #555;
+  color: #4d4d4d;
 }
 strong,
 strong span {
@@ -429,15 +429,15 @@ strong span {
   display: block;
   margin: 1em 0.2em;
   padding: 0.2m;
-  border-top: 2px solid #5588cc;
+  border-top: 0.2em solid #5588cc;
   background: #f0f0f0;
 }
 .msg-content {
   margin: 0 0 -0.3em 0;
   padding: 0.5em;
-  border-top: 1px #aaa solid;
-  color: #404040;
-  background: #fff;
+  border-top: 1px #b3b3b3 solid;
+  color: #000000;
+  background: #ffffff;
 }
 #bottom_element {
   margin: 2em 0em;
@@ -504,7 +504,7 @@ ol {
   padding-right: 0.5em;
   background: none;
   border: 0;
-  color: #efefef;
+  color: #ffffff;
   text-transform: lowercase;
   text-align: right;
 }
@@ -516,90 +516,178 @@ img {
   display: inline-block;
   margin: 0.2em;
   padding: 0.2em 0.3em;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  background: #e4eaf2;
+  border-left: 1px solid #b3b3b3;
+  border-right: 1px solid #b3b3b3;
+  background: #f2f2f2;
 }
 .post_body font {
   font-size: 0.95rem!important;
 }
-.post_body,
+.post_body {
+  font-size: 1rem;
+  position: relative;
+  padding: 1em 0.5em 2em;
+  clear: both;
+  word-wrap: break-word;
+  background: #ffffff;
+  border-bottom: 1px solid #b3b3b3;
+}
 .signature {
   font-size: 1rem;
   position: relative;
   padding: 1em 0.5em 2em;
   clear: both;
   word-wrap: break-word;
-  background: #fefefe;
-  border-bottom: 1px solid #bbb;
-}
-.signature {
-  background: #f5f5f5 !important;
+  background: #f0f0f0;
+  border-bottom: 1px solid #a6a6a6;
 }
 .signature:before {
   content: 'подпись';
   display: block;
-  margin-top: -0.5em;
+  margin-top: -0.8em;
   padding-bottom: 0.5em;
   margin-bottom: 0.5em;
   text-align: center;
-  color: #888;
+  color: 1px solid #b3b3b3;
   font-size: 0.8em;
-  border-bottom: 1px #bbb solid;
+  border-bottom: 1px solid #bfbfbf;
 }
 .post_header {
-  border-bottom: 2px groove #fff;
+  border-bottom: 1px solid #b3b3b3;
   border-top: 2px solid #5588cc;
   padding: 0 0.4em;
   background: #f0f0f0;
   margin-top: 0;
+  min-height: 3.1rem;
+}
+.post_header > TABLE > TBODY tr:nth-child(2) {
+  display: block;
+  position: absolute;
+  left: 0.3em;
+  margin-top: -1rem;
+  width: 4rem !important;
+  height: 4rem !important;
+}
+.avatar_container {
+  margin: 0;
+  position: relative;
+  display: block;
+  border-radius: 0.2rem;
+  border: 0.1em solid #a6a6a6;
+  width: 3.8rem !important;
+  height: 3.8rem !important;
+}
+.avatar_container IMG {
+  display: inline-block;
+  overflow: hidden;
+  border: none;
+  max-width: 3.8rem !important;
+  max-height: 3.8rem !important;
+  background-size: cover;
+  border-radius: 0.2rem;
+  background: #ffffff;
+}
+.post_nick_cli a,
+.post_nick_online_cli a,
+.user_group,
+.system_link .post_date_cli {
+  margin-left: 4rem;
 }
 .post_header A.system_link[onclick*="window.HTMLOUT.showPostMenu"] {
   line-height: 1.2;
   margin-top: 0.1em;
   padding: 0 0.4em 0.1em;
   border-radius: 0.3em;
-  border: 1px solid #999;
+  border: 1px solid #a6a6a6;
   font-weight: normal;
   text-align: center;
-  color: #555 !important;
-  margin-top: -0.4em;
+  color: #333333 !important;
+  display: block;
+  margin-top: -0.8rem !important;
+  position: absolute;
+  right: 0.4rem;
 }
 .post_header a img {
   margin-bottom: 0;
 }
-.post_header .post_date {
+.system_link .post_date_cli {
   display: inline-block;
-  margin-top: auto;
-  margin-bottom: 0;
+  line-height: 1.2;
+  margin-top: 0;
   position: relative;
   font-size: 0.95rem;
-  float: right;
-  color: #444;
-  text-transform: lowercase;
+  color: #4d4d4d;
+  margin-bottom: 0.2rem;
 }
-.post_header .post_date_cli {
-  display: inline-block;
-  margin-top: auto;
-  margin-bottom: 0;
-  position: relative;
-  font-size: 0.95rem;
-  color: #444;
+.post_header DIV .post_date_cli {
+  position: absolute;
+  margin-top: -1.3rem;
+  padding: 0 0.4rem;
+  text-align: left;
+  left: 0.1rem;
+  right: 0.1rem;
+  display: block;
+  line-height: 1.5rem;
+  font-size: 0.9rem;
+  color: #4d4d4d;
+  background: #e6e6e6;
+  border-bottom: 1px solid #ffffff;
 }
-.post_header .post_date_cli a {
+.post_header DIV .post_date_cli a {
+  color: #4d4d4d;
+}
+.post_header DIV .post_date_cli a[onclick*="window"] {
   margin-left: 0.2em;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  float: right;
+}
+.post_nick_cli a,
+.post_nick_online_cli a {
+  position: relative;
+  top: 0.6rem;
+  margin-top: 1rem !important;
+  display: inline-block;
+}
+.post_nick_cli a {
+  position: relative;
+  font-size: 1.1rem !important;
+  line-height: 1.2;
+  color: #b55!Important;
+  font-weight: bold;
+}
+.post_nick_online_cli a {
+  font-size: 1.1rem !important;
+  line-height: 1.2;
+  color: #090!important;
+  font-weight: bold;
+  text-shadow: 0 0 0.6rem #ffffff;
+}
+.user_group {
+  display: inline-block;
+  margin-top: 0.3rem;
+  position: relative;
+  font-size: 0.9rem;
+  color: #4d4d4d;
+}
+.post_date {
+  position: relative;
+  float: right;
+  display: block;
+  line-height: 1;
+  color: #4d4d4d;
 }
 .post_user_info {
   display: block;
+  color: transparent;
   text-transform: lowercase;
+}
+.post_user_info a {
+  color: #4d4d4d;
+  text-decoration: none;
 }
 .post_user_info br {
   display: none;
-}
-.post_user_info:first-line {
-  color: #e9e9e9;
-  font-size: 0;
 }
 .post_user_info strong {
   font-size: 1rem;
@@ -612,6 +700,7 @@ img {
   font-size: 0.95rem;
   text-transform: lowercase;
   line-height: 1.5;
+  color: #4d4d4d;
 }
 .post_user_info a {
   font-size: 0.95rem;
@@ -636,6 +725,8 @@ img {
   float: right;
   line-height: 0.8;
   padding-left: 0.5em;
+  color: #4d4d4d;
+  text-decoration: none;
 }
 .post_action a:before {
   content: '|';
@@ -650,27 +741,10 @@ img {
 }
 .post_action a:first-of-type {
   display: inline-block;
-  color: #888;
+  color: #808080;
   float: left;
   padding-left: 0;
   line-height: 1;
-}
-.post_nick_cli a {
-  margin-top: auto;
-  margin-bottom: auto;
-  position: relative;
-  font-size: 1.1rem !important;
-  line-height: 1.2;
-  color: #b55!Important;
-  font-weight: bold;
-}
-.post_nick_online_cli a {
-  font-size: 1.1rem !important;
-  line-height: 1.2;
-  color: #090!important;
-  display: inline-block;
-  font-weight: bold;
-  text-shadow: 0 0 0.6rem white;
 }
 .post_nick a {
   margin-top: -0.8em;
@@ -678,45 +752,24 @@ img {
   margin-bottom: 0;
   line-height: 1;
   font-size: 1.1rem !important;
-  color: #404040!important;
+  color: #000000 !important;
   font-weight: bold;
 }
 .s_post_footer {
   position: relative;
-  padding: 0.3em 0.6em;
   clear: both;
-  margin-left: auto;
-  margin-right: auto;
-  background: #f5f5f5;
-  border-bottom: 1px #5588cc solid;
-}
-.footer_button_good {
-  line-height: 1.4;
-  padding: 0 0.4em 0.1em;
-  border-radius: 0.4em;
-  border: 1px solid #707070;
+  padding: 0 0.3rem;
+  margin-top: -0.1rem;
+  background: #f0f0f0;
+  border-bottom: 1px solid #a6a6a6;
   text-align: center;
-  border: 1px solid #547e33;
-  color: #f1f6ed;
+  color: #000000;
 }
-.footer_button_bad {
-  line-height: 1.4;
-  padding: 0 0.4em 0.1em;
-  border-radius: 0.4em;
-  border: 1px solid #707070;
-  text-align: center;
-  border: 1px solid #ac3d33;
-  color: #fefbfb;
-}
-.footer_button {
-  line-height: 1.2;
-  margin-top: 0.1em;
-  padding: 0 0.4em 0.1em;
-  border-radius: 0.3em;
-  border: 1px solid #999;
-  font-weight: normal;
-  text-align: center;
-  color: #555 !important;
+.s_post_footer td {
+  position: relative;
+  top: -0.15rem;
+  padding: 0.2em 0.3em;
+  border-top: 1px solid #b3b3b3;
 }
 @media screen and (min-width: 960px) {
   .post_footer {
@@ -728,8 +781,8 @@ img {
     clear: both;
     margin-left: auto;
     margin-right: auto;
-    background: #f5f5f5;
-    border-bottom: 1px #5588cc solid;
+    background: #f0f0f0;
+    border-bottom: 1px solid #a6a6a6;
   }
   .post_footer a {
     display: table-block;
@@ -745,10 +798,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #999;
+    border: 1px solid #a6a6a6;
     font-weight: normal;
     text-align: center;
-    color: #555 !important;
+    color: #333333 !important;
   }
   .post_footer a .send_claim_button:before {
     content: 'жалоба';
@@ -758,7 +811,7 @@ img {
     position: absolute;
     padding: 0.7em 0;
     margin-left: 0.9em;
-    border-left: 1px solid #bebebe;
+    border-left: 1px solid #a8a8a8;
   }
   .post_footer a .insert_nick_button {
     display: block;
@@ -768,10 +821,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #999;
+    border: 1px solid #a6a6a6;
     font-weight: normal;
     text-align: center;
-    color: #555 !important;
+    color: #333333 !important;
   }
   .post_footer a .insert_nick_button:before {
     content: 'имя';
@@ -781,7 +834,7 @@ img {
     position: absolute;
     padding: 0.7em 0;
     margin-left: 0.9em;
-    border-right: 1px solid #bebebe;
+    border-right: 1px solid #a8a8a8;
   }
   .post_footer a .quote_button {
     display: block;
@@ -790,10 +843,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #999;
+    border: 1px solid #a6a6a6;
     font-weight: normal;
     text-align: center;
-    color: #555 !important;
+    color: #333333 !important;
     margin-left: 1em;
   }
   .post_footer a .quote_button:before {
@@ -808,10 +861,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #999;
+    border: 1px solid #a6a6a6;
     font-weight: normal;
     text-align: center;
-    color: #555 !important;
+    color: #333333 !important;
   }
   .post_footer a .post_vote_bad:after {
     content: 'плохо';
@@ -826,7 +879,7 @@ img {
     float: left;
     margin-right: 0.5em;
     font-size: 1em;
-    color: #fd6767;
+    color: #fc6666;
   }
   .post_footer a .post_vote_good {
     display: inline-block;
@@ -836,10 +889,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #999;
+    border: 1px solid #a6a6a6;
     font-weight: normal;
     text-align: center;
-    color: #555 !important;
+    color: #333333 !important;
     margin-left: 0.25em;
   }
   .post_footer a .post_vote_good:before {
@@ -855,7 +908,7 @@ img {
     margin-left: 0.15em;
     float: right;
     font-size: 1em;
-    color: #31ab31;
+    color: #30aa30;
   }
   .post_footer a .delete_post_button {
     display: block;
@@ -864,10 +917,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #999;
+    border: 1px solid #a6a6a6;
     font-weight: normal;
     text-align: center;
-    color: #555 !important;
+    color: #333333 !important;
   }
   .post_footer a .delete_post_button:before {
     content: 'удалить';
@@ -877,7 +930,7 @@ img {
     position: absolute;
     padding: 0.7em 0;
     margin-left: 0.9em;
-    border-left: 1px solid #bebebe;
+    border-left: 1px solid #a8a8a8;
   }
   .post_footer a .edit_post_button {
     display: block;
@@ -887,10 +940,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #999;
+    border: 1px solid #a6a6a6;
     font-weight: normal;
     text-align: center;
-    color: #555 !important;
+    color: #333333 !important;
   }
   .post_footer a .edit_post_button:after {
     content: 'редактировать';
@@ -906,8 +959,8 @@ img {
     clear: both;
     margin-left: auto;
     margin-right: auto;
-    background: #f5f5f5;
-    border-bottom: 1px #5588cc solid;
+    background: #f0f0f0;
+    border-bottom: 1px solid #a6a6a6;
   }
   .post_footer a {
     display: table-block;
@@ -923,10 +976,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #999;
+    border: 1px solid #a6a6a6;
     font-weight: normal;
     text-align: center;
-    color: #555 !important;
+    color: #333333 !important;
   }
   .post_footer a .insert_nick_button:before {
     content: 'имя';
@@ -938,10 +991,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #999;
+    border: 1px solid #a6a6a6;
     font-weight: normal;
     text-align: center;
-    color: #555 !important;
+    color: #333333 !important;
   }
   .post_footer a .quote_button:before {
     content: 'цитата';
@@ -955,10 +1008,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #999;
+    border: 1px solid #a6a6a6;
     font-weight: normal;
     text-align: center;
-    color: #555 !important;
+    color: #333333 !important;
   }
   .post_footer a .post_vote_bad:after {
     content: 'плохо';
@@ -973,7 +1026,7 @@ img {
     float: left;
     margin-right: 0.5em;
     font-size: 1em;
-    color: #fd6767;
+    color: #fc6666;
   }
   .post_footer a .post_vote_good {
     display: inline-block;
@@ -983,10 +1036,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #999;
+    border: 1px solid #a6a6a6;
     font-weight: normal;
     text-align: center;
-    color: #555 !important;
+    color: #333333 !important;
     margin-left: 0.25em;
   }
   .post_footer a .post_vote_good:before {
@@ -1002,7 +1055,7 @@ img {
     margin-left: 0.15em;
     float: right;
     font-size: 1em;
-    color: #31ab31;
+    color: #30aa30;
   }
 }
 @media screen and (max-width: 480px) {
@@ -1015,8 +1068,8 @@ img {
     clear: both;
     margin-left: auto;
     margin-right: auto;
-    background: #f5f5f5;
-    border-bottom: 1px #5588cc solid;
+    background: #f0f0f0;
+    border-bottom: 1px solid #a6a6a6;
   }
   .post_footer a {
     display: table-block;
@@ -1032,10 +1085,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #999;
+    border: 1px solid #a6a6a6;
     font-weight: normal;
     text-align: center;
-    color: #555 !important;
+    color: #333333 !important;
   }
   .post_footer a .insert_nick_button:before {
     content: 'имя';
@@ -1052,10 +1105,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #999;
+    border: 1px solid #a6a6a6;
     font-weight: normal;
     text-align: center;
-    color: #555 !important;
+    color: #333333 !important;
   }
   .post_footer a .quote_button:before {
     content: 'цитата';
@@ -1068,10 +1121,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #999;
+    border: 1px solid #a6a6a6;
     font-weight: normal;
     text-align: center;
-    color: #555 !important;
+    color: #333333 !important;
   }
   .post_footer a .post_vote_bad:before {
     position: relative;
@@ -1081,7 +1134,7 @@ img {
     content: "–";
     font-size: 1.2em;
     font-weight: bold;
-    color: #fd6767;
+    color: #fc6666;
   }
   .post_footer a .post_vote_good {
     display: inline-block;
@@ -1091,10 +1144,10 @@ img {
     margin-top: 0.1em;
     padding: 0 0.4em 0.1em;
     border-radius: 0.3em;
-    border: 1px solid #999;
+    border: 1px solid #a6a6a6;
     font-weight: normal;
     text-align: center;
-    color: #555 !important;
+    color: #333333 !important;
   }
   .post_footer a .post_vote_good:after {
     position: relative;
@@ -1104,34 +1157,25 @@ img {
     content: "+";
     font-size: 1.2em;
     font-weight: bold;
-    color: #31ab31;
+    color: #30aa30;
   }
 }
-/*.s_post_footer table{
+/*.post_footer_style table{
 text-align:center;
 font-size: 0.95rem;
 color: #777;
+}
+.signature{
+font-size: 0.95rem;
+color: #999;
+}
+.searchlite{
+color:#ee6050;
+}
+.post_header a, .post_footer_style a{
+text-decoration: none!important;
+color: #444;
 }*/
-.signature {
-  font-size: 0.95rem;
-  color: #999;
-}
-.searchlite {
-  color: #ee6050;
-}
-.user_group {
-  display: block;
-  margin-top: 0;
-  margin-bottom: auto;
-  position: relative;
-  font-size: 0.85rem;
-  line-height: 0.6;
-}
-.post_header a,
-.s_post_footer a {
-  text-decoration: none!important;
-  color: #444;
-}
 .href_button {
   display: inline-block;
   margin: 0;
@@ -1144,7 +1188,7 @@ color: #777;
   padding: 0.4em 0;
 }
 .href_button_disable {
-  color: #eee;
+  color: #b3b3b3;
   display: inline-block;
   margin: 0;
   width: 100%;
@@ -1153,8 +1197,8 @@ color: #777;
   padding: 0.4em 0;
 }
 .topic_title_post {
-  margin: 1em;
-  padding: 0.5em;
+  margin: 0 0 -0.2rem;
+  padding: 2em;
   text-align: center;
 }
 .topic_title_post a {
@@ -1168,18 +1212,18 @@ color: #777;
 }
 .edit {
   font-size: 0.9rem;
-  color: #707070;
+  color: #6c6c6c;
 }
 edit b {
   font-size: 0.95rem;
 }
 .edit * {
   font-size: 0.9rem;
-  color: #707070;
+  color: #6c6c6c;
 }
 .post-edit-reason {
   font-size: 0.9rem;
-  color: #707070;
+  color: #6c6c6c;
 }
 /*news*/
 .container {

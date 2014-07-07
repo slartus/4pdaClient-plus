@@ -1,52 +1,57 @@
-package org.softeg.slartus.forpdaplus.classes;
+package org.softeg.slartus.forpdaplus.topicbrowser;
 
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import org.softeg.slartus.forpdaapi.TopicBodyParser;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
+import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
+import org.softeg.slartus.forpdaplus.classes.Post;
+import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
+import org.softeg.slartus.forpdaplus.classes.common.Functions;
 import org.softeg.slartus.forpdaplus.common.HtmlUtils;
 import org.softeg.slartus.forpdaplus.emotic.Smiles;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
-import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.util.Hashtable;
 
-/**
- * User: slinkin
- * Date: 26.03.12
- * Time: 16:50
+/*
+ * Created by slartus on 05.06.2014.
  */
-public class TopicBodyBuilder extends HtmlBuilder {
+public class TopicHtmlBuilder extends HtmlBuilder {
 
     private Boolean m_Logined, m_IsWebviewAllowJavascriptInterface;
-    private ExtTopic m_Topic;
-    private String m_UrlParams;
+    private TopicBodyParser m_TopicBodyParser;
+
     private HtmlPreferences m_HtmlPreferences;
     private Hashtable<String, String> m_EmoticsDict;
-    private boolean m_MMod = false;
 
-    public TopicBodyBuilder(Context context, Boolean logined, ExtTopic topic, String urlParams,
-                            Boolean isWebviewAllowJavascriptInterface) {
-
+    public TopicHtmlBuilder(TopicBodyParser topicBodyParser) {
         m_HtmlPreferences = new HtmlPreferences();
-        m_HtmlPreferences.load(context);
+        m_HtmlPreferences.load(MyApp.getContext());
         m_EmoticsDict = Smiles.getSmilesDict();
 
-        m_IsWebviewAllowJavascriptInterface = isWebviewAllowJavascriptInterface;
-        m_Logined = logined;
-        m_UrlParams = urlParams;
-        m_Topic = topic;
+        m_IsWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(MyApp.getContext());
+        m_Logined = Client.getInstance().getLogined();
+
+        m_TopicBodyParser = topicBodyParser;
+    }
+
+    @Override
+    public void addScripts() {
+        super.addScripts();
+        m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/forum/js/topic.js\"></script>\n");
     }
 
     public void beginTopic() {
-        String desc = TextUtils.isEmpty(m_Topic.getDescription()) ? "" : (", " + m_Topic.getDescription());
-        super.beginHtml(m_Topic.getTitle() + desc);
+        String desc = TextUtils.isEmpty(m_TopicBodyParser.getTopicDescription()) ? "" : (", " + m_TopicBodyParser.getTopicDescription());
+        super.beginHtml(m_TopicBodyParser.getTopicTitle() + desc);
         super.beginBody();
-        m_Body.append("<div style=\"margin-top:36pt\"/>\n");
-        if (m_Topic.getPagesCount() > 1) {
-            addButtons(m_Body, m_Topic.getCurrentPage(), m_Topic.getPagesCount(),
+        m_Body.append("<div style=\"margin-top:72pt\"/>\n");
+        if (m_TopicBodyParser.getPagesCount() > 1) {
+            addButtons(m_Body, m_TopicBodyParser.getCurrentPage(), m_TopicBodyParser.getPagesCount(),
                     m_IsWebviewAllowJavascriptInterface, false, true);
         }
 
@@ -56,8 +61,8 @@ public class TopicBodyBuilder extends HtmlBuilder {
     public void endTopic() {
         m_Body.append("<div name=\"entryEnd\" id=\"entryEnd\"></div>\n");
         m_Body.append("<br/><br/>");
-        if (m_Topic.getPagesCount() > 1) {
-            addButtons(m_Body, m_Topic.getCurrentPage(), m_Topic.getPagesCount(),
+        if (m_TopicBodyParser.getPagesCount() > 1) {
+            addButtons(m_Body, m_TopicBodyParser.getCurrentPage(), m_TopicBodyParser.getPagesCount(),
                     m_IsWebviewAllowJavascriptInterface, false, false);
         }
 
@@ -72,6 +77,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         m_Body.append("<br/><br/><br/><br/><br/><br/>\n");
         super.endBody();
         super.endHtml();
+
     }
 
     public void addPost(Post post, Boolean spoil) {
@@ -84,14 +90,14 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
         if (spoil) {
             if (m_HtmlPreferences.isSpoilerByButton())
-                m_Body.append("<div class='hidetop' style='cursor:pointer;' ><b>(&gt;&gt;&gt;ШАПКА ТЕМЫ&lt;&lt;&lt; )</b></div>" +
+                m_Body.append("<div class='hidetop' style='cursor:pointer;' ><b>( &gt;&gt;&gt;ШАПКА ТЕМЫ&lt;&lt;&lt;)</b></div>" +
                         "<input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility(this)\"/>" +
                         "<div class='hidemain' style=\"display:none\">");
             else
                 m_Body.append("<div class='hidetop' style='cursor:pointer;' " +
                         "onclick=\"var _n=this.parentNode.getElementsByTagName('div')[1];" +
                         "if(_n.style.display=='none'){_n.style.display='';}else{_n.style.display='none';}\">" +
-                        "<b>(&gt;&gt;&gt;ШАПКА ТЕМЫ&lt;&lt;&lt; )</b></div><div class='hidemain' style=\"display:none\">");
+                        "<b>( &gt;&gt;&gt;ШАПКА ТЕМЫ&lt;&lt;&lt;)</b></div><div class='hidemain' style=\"display:none\">");
         }
         String postBody = post.getBody().trim();
         if (m_HtmlPreferences.isSpoilerByButton()) {
@@ -127,13 +133,13 @@ public class TopicBodyBuilder extends HtmlBuilder {
     }
 
     public void clear() {
-        m_Topic = null;
+        m_TopicBodyParser = null;
         m_Body = null;
     }
 
     private String getTitleBlock() {
-        String desc = TextUtils.isEmpty(m_Topic.getDescription()) ? "" : (", " + m_Topic.getDescription());
-        return "<div class=\"topic_title_post\"><a href=\"http://4pda.ru/forum/index.php?showtopic=" + m_Topic.getId() + (TextUtils.isEmpty(m_UrlParams) ? "" : ("&" + m_UrlParams)) + "\">" + m_Topic.getTitle() + desc + "</a></div>\n";
+        String desc = TextUtils.isEmpty(m_TopicBodyParser.getTopicDescription()) ? "" : (", " + m_TopicBodyParser.getTopicDescription());
+        return "<div class=\"topic_title_post\"><a href=\"" + m_TopicBodyParser.getUrl() + "\">" + m_TopicBodyParser.getTopicTitle() + desc + "</a></div>\n";
     }
 
     public static void addButtons(StringBuilder sb, int currentPage, int pagesCount, Boolean isUseJs,
@@ -202,39 +208,26 @@ public class TopicBodyBuilder extends HtmlBuilder {
         if (!TextUtils.isEmpty(msg.getUserId())) {
             nickLink = "<a " +
                     getHtmlout(m_IsWebviewAllowJavascriptInterface,
-                            "showUserMenu", new String[]{
-                                    msg.getId(),
-                                    msg.getUserId(),
-                                    nick, msg.getAvatarFileName()}
-                    )
+                            "showUserMenu",
+                            msg.getUserId(),
+                            nick)
                     + " class=\"system_link\">" + nick + "</a>";
         }
 
 
         String userState = msg.getUserState() ? "post_nick_online_cli" : "post_nick_cli";
 
-        sb.append("<div></div><div class=\"post_header\">\n");
+        sb.append("<div class=\"post_header\">\n");
         sb.append("\t<table width=\"100%\">\n");
         sb.append("\t\t<tr><td><span class=\"").append(userState).append("\">").append(nickLink).append("</span></td>\n");
-        sb.append("\t\t\t<td><div align=\"right\"><span class=\"post_date_cli\">").append(msg.getDate()).append("<a ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostLinkMenu", msg.getId())).append(">#").append(msg.getNumber()).append("</a></span></div></td>\n");
+        sb.append("\t\t\t<td><div align=\"right\"><span class=\"post_date_cli\">").append(msg.getDate()).append("|<a ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostLinkMenu", msg.getId())).append(">#").append(msg.getNumber()).append("</a></span></div></td>\n");
         sb.append("\t\t</tr>\n");
-        String avatar = msg.getAvatarFileName();
-
-        if (!TextUtils.isEmpty(avatar))
-            avatar = "file:///android_asset/profile/logo.png";
-        sb.append("<tr><td colspan=\"2\"><div class=\"avatar_container\">");
-        if (Preferences.Topic.isShowAvatars())
-              sb.append("<img src=\"").append(avatar).append("\" height=\"40\" />");
-        sb.append("</div></tr>");
         String userGroup = msg.getUserGroup() == null ? "" : msg.getUserGroup();
         sb.append("<tr>\n" + "\t\t\t<td colspan=\"2\"><span  class=\"user_group\">").append(userGroup).append("</span></td></tr>");
         sb.append("\t\t<tr>\n");
         sb.append("\t\t\t<td>").append(TextUtils.isEmpty(msg.getUserId()) ? "" : getReputation(msg)).append("</td>\n");
-        if (Client.getInstance().getLogined()) {
-            String[] postMenuParams = {msg.getId(), msg.getDate(), msg.getUserId(), msg.getNick(), msg.getCanEdit() ? "1" : "0", msg.getCanDelete() ? "1" : "0"};
-            sb.append("\t\t\t<td><div align=\"right\"><a ")
-                    .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostMenu", postMenuParams)).append(" class=\"system_link\">меню</a></div></td>");
-        }
+        if (Client.getInstance().getLogined())
+            sb.append("\t\t\t<td><div align=\"right\"><a ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostMenu", new String[]{msgId, msg.getUserId(), msg.getCanEdit() ? "1" : "0", (msg.getCanDelete() ? "1" : "0")})).append(" class=\"system_link\">меню</a></div></td>");
         sb.append("\t\t</tr>");
         sb.append("\t</table>\n");
         sb.append("</div>\n");
@@ -242,61 +235,28 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
     private String getReputation(Post msg) {
         String[] params = new String[]{msg.getId(), msg.getUserId(), msg.getNick(), msg.getCanPlusRep() ? "1" : "0", msg.getCanMinusRep() ? "1" : "0"};
-        //        if (!msg.getCanMinusRep() || !msg.getCanPlusRep())
+
         return "<a " + getHtmlout(m_IsWebviewAllowJavascriptInterface, "showRepMenu", params) + "  class=\"system_link\" ><span class=\"post_date_cli\">Реп(" + msg.getUserReputation() + ")</span></a>";
     }
 
     private void addFooter(StringBuilder sb, Post post) {
-        sb.append("<div class=\"post_footer\">");
+        sb.append("<div class=\"post_footer\"><table width=\"100%\"><tr>");
         if (m_Logined) {
-            String postNumber = post.getNumber();
-            try {
-                postNumber = Integer.toString(Integer.parseInt(post.getNumber()) - 1);
-            } catch (Throwable ignored) {
-            }
-            sb.append(String.format("<a class=\"system_link\" href=\"/forum/index.php?act=report&t=%s&p=%s&st=%s\"><span class=\"send_claim_button\"></span></a>",
-                    m_Topic.getId(), post.getId(), postNumber));
-
-            String insertNickText = String.format("[SNAPBACK]%s[/SNAPBACK] [B]%s,[/B] ",
-                    post.getId(), HtmlUtils.modifyHtmlQuote(post.getNick()).replace("'", "\\'").replace("\"", "&quot;"));
-            sb.append("<a class=\"system_link\" ")
-                    .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "insertTextToPost", insertNickText))
-                    .append("><span class=\"insert_nick_button\"></span></a>");
-
-
-            String[] quoteParams = {m_Topic.getForumId(), m_Topic.getId(), post.getId(), post.getDate(), post.getUserId(), post.getNick()};
-            sb.append("<a class=\"system_link\" ")
-                    .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "quote", quoteParams))
-                    .append("><span class=\"quote_button\"></span></a>");
 
             if (!Client.getInstance().UserId.equals(post.getUserId())) {
-                sb.append("<a ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "postVoteBad", post.getId()))
-                        .append(" class=\"system_link\"><span class=\"post_vote_bad\"></span></a>");
+                sb.append("<td width=\"50\"><a ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "postVoteBad", post.getId()))
+                        .append(" class=\"system_link\"><span class=\"post_vote_bad\"></span></a></td>");
 
-                sb.append("<a ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "postVoteGood", post.getId()))
-                        .append(" class=\"system_link\"><span class=\"post_vote_good\"></span></a>");
+                sb.append("<td width=\"50\"><a ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "postVoteGood", post.getId()))
+                        .append(" class=\"system_link\"><span class=\"post_vote_good\"></span></a></td>");
             }
-            if (post.getCanEdit())
-                sb.append(String.format("<a class=\"system_link\" id=\"edit-but-%s\" href=\"/forum/index.php?act=post&do=edit_post&f=%s&t=%s&p=%s&st=%s\"><span class=\"edit_post_button\"></span></a>",
-                        post.getId(), m_Topic.getForumId(), m_Topic.getId(), post.getId(), postNumber));
-            if (post.getCanDelete())
-                sb.append(String.format("<a class=\"system_link\" href=\"/forum/index.php?act=Mod&CODE=04&f=%s&t=%s&p=%s&st=%s&auth_key=%s\"><span class=\"delete_post_button\"></span></a>",
-                        m_Topic.getForumId(), m_Topic.getId(), post.getId(), postNumber, m_Topic.getAuthKey()));
+            sb.append("<td></td>");
+            String[] quoteParams = {m_TopicBodyParser.getForumId(), m_TopicBodyParser.getTopicId(), post.getId(), post.getDate(), post.getUserId(), post.getNick()};
 
+            sb.append("<td><div style=\"text-align:right\"><a class=\"system_link\" ")
+                    .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "quote", quoteParams))
+                    .append(">цитата</a></div></td>");
         }
-        sb.append("</div>\n\n");
-    }
-
-    public ExtTopic getTopic() {
-        return m_Topic;
-    }
-
-    public void setMMod(boolean MMod) {
-        this.m_MMod = MMod;
-    }
-
-    @SuppressWarnings("UnusedDeclaration")
-    public boolean isMMod() {
-        return m_MMod;
+        sb.append("</tr></table></div>\n\n");
     }
 }

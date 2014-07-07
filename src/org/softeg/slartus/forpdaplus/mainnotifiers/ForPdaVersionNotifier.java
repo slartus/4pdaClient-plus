@@ -54,8 +54,8 @@ public class ForPdaVersionNotifier extends MainNotifier {
                     jsonObject = jsonObject.getJSONObject(MyApp.getContext().getPackageName());
                     jsonObject = jsonObject.getJSONObject("release");
                     String version = jsonObject.getString("ver").trim().replace("beta", ".").trim();
-                    final String apk = jsonObject.getString("apk").trim();
-                    final String info = jsonObject.getString("info").trim();
+                    final String apk = jsonObject.getString("apk");
+                    final String info = jsonObject.getString("info");
 
                     releaseVer = version.replace("beta", ".").trim();
                     siteVersionsNewer = isSiteVersionsNewer(releaseVer, currentVersion);

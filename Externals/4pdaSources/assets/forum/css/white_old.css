@@ -582,6 +582,9 @@ A.system_link SPAN.post_date_cli {
   padding: 0.2em;
   border-bottom: 1px solid #4373C3;
 }
+.post_header > TABLE > TBODY tr:nth-child(2){
+display: none;
+}
 .post_header img {
   min-width: 0.8em;
   vertical-align: middle;

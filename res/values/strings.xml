@@ -172,5 +172,6 @@
     <string name="Cancel">Отмена</string>
     <string name="client_player">Плеер клиента</string>
     <string name="system_player">Проигрыватель системы</string>
+    <string name="ask_player">Спрашивать</string>
     <string name="menu">Меню</string>
 </resources>
