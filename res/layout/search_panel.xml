@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentLeft="true"
+    android:id="@+id/pnlSearch"
+    android:background="@android:color/transparent"
+    android:padding="5dip"
+    android:visibility="gone">
+
+    <ImageButton
+        android:id="@+id/btnPrevSearch"
+        android:src="@drawable/ic_btn_find_prev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageButton
+        android:id="@+id/btnNextSearch"
+        android:src="@drawable/ic_btn_find_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/btnPrevSearch" />
+
+
+    <EditText
+        android:id="@+id/txtSearch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:singleLine="true"
+
+        android:hint="@string/Keyword"
+        android:scrollHorizontally="true"
+        android:capitalize="none"
+        android:autoText="false"
+        android:layout_toRightOf="@+id/btnNextSearch"
+        android:layout_toLeftOf="@+id/btnCloseSearch" />
+
+    <ImageButton
+        android:id="@+id/btnCloseSearch"
+        android:src="@drawable/btn_close_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true" />
+
+</RelativeLayout>

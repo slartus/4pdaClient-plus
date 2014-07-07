@@ -1,0 +1,14 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- As the main content view, the view below consumes the entire
+         space available using match_parent in both dimensions. -->
+    <FrameLayout
+        android:id="@+id/news_content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+
+</android.support.v4.widget.DrawerLayout>

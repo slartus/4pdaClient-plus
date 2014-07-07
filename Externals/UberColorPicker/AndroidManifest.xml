@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	package="com.keithwiley.android.ubercolorpickerdemo"
+	android:versionName="v1.2" android:versionCode="3">
+	
+	<uses-sdk android:minSdkVersion="2" />
+
+	<application
+		android:label="@string/appName"
+		android:icon="@drawable/app_icon" >
+		<!-- android:debuggable="true" > -->
+		
+		<activity android:name="UberColorPickerDemoActivity" >
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+	</application>
+
+</manifest>

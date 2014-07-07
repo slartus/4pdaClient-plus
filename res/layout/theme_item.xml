@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:padding="2dip">
+
+    <ImageView
+        android:id="@+id/txtIsNew"
+        android:layout_width="4dip"
+        android:text="|||"
+        android:layout_height="fill_parent"
+        android:textSize="12dip"
+
+        android:scaleType="centerCrop"
+        android:lines="3"
+        android:minLines="3" />
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:id="@+id/llayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:baselineAlignedChildIndex="1"
+        android:layout_centerVertical="true"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <RelativeLayout
+            android:gravity="left|center"
+            android:id="@+id/usericon"
+            android:visibility="gone"
+            android:focusable="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4.0dip"
+            android:layout_marginTop="5.0dip"
+            android:layout_marginBottom="5.0dip"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:gravity="right|center"
+            android:id="@+id/txtLastMessageDate"
+            android:paddingRight="5.0dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_below="@+id/ll"
+            android:layout_alignBottom="@+id/usericon"
+            android:layout_alignParentRight="true"
+
+            android:textColor="#606060"
+            android:textSize="10dip" />
+
+        <TextView
+            android:ellipsize="middle"
+            android:id="@+id/txtAuthor"
+            android:paddingLeft="5.0dip"
+            android:paddingRight="10.0dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:singleLine="true"
+            android:layout_toLeftOf="@+id/txtLastMessageDate"
+            android:layout_toRightOf="@+id/usericon"
+            android:layout_below="@+id/ll"
+            android:layout_alignBottom="@+id/usericon"
+            android:layout_alignWithParentIfMissing="true"
+            android:textColor="#606060"
+            android:textSize="10dip" />
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:paddingLeft="5.0dip"
+            android:paddingRight="5.0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Test"
+            android:layout_below="@+id/txtLastMessageDate"
+
+            android:textSize="13dip" />
+
+        <TextView
+            android:gravity="left|center"
+            android:id="@+id/txtDescription"
+            android:paddingLeft="5.0dip"
+            android:paddingRight="5.0dip"
+            android:paddingBottom="5.0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:layout_below="@+id/txtTitle"
+            android:textSize="11dip"
+            android:textColor="#969696" />
+
+        <TextView
+            android:textStyle="italic"
+            android:gravity="right"
+            android:id="@+id/txtForumTitle"
+            android:paddingBottom="5.0dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5.0dip"
+            android:text=""
+            android:layout_toLeftOf="@+id/notification_flag"
+            android:layout_below="@+id/txtDescription"
+            android:layout_alignParentBottom="true"
+            android:layout_alignWithParentIfMissing="true"
+            android:textSize="11dip"
+            android:textColor="#969696"
+
+            android:visibility="gone" />
+    </RelativeLayout>
+</LinearLayout>

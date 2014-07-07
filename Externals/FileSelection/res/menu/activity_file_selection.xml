@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/share_files"
+        android:title="Поделиться"
+        android:icon="@android:drawable/ic_menu_share"
+        android:showAsAction="always"
+        android:onClick="onUploadClick" />
+</menu>

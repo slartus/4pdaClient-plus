@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="Настройки избранного">
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="lists.favorites.load_all"
+        android:summary="Загружать сразу все страницы"
+        android:title="Загружать все" />
+</PreferenceScreen>

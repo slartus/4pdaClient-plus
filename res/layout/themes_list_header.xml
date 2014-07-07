@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dip"
+    >
+
+    <TextView
+        android:id="@+id/txtFroum"
+        android:text="4PDA"
+        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_centerVertical="true" />
+
+    <ImageButton
+        android:id="@+id/btnSettings"
+        android:src="@drawable/ic_menu_preferences"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_margin="0dip"
+        android:background="@null"
+        android:layout_alignParentRight="true"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/btnStar"
+        android:src="@drawable/btn_star_big_on"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="2dip"
+        android:layout_marginRight="2dip"
+        android:background="@null"
+        android:layout_alignParentRight="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

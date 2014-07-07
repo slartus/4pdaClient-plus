@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white_theme_webview_background">#F5F9FD</color>
+    <color name="blue">#7FFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="tabdefaultcolor">#F8F8F8</color>
+    <color name="newtheme">#ff33b5e5</color>
+    <color name="oldtheme">#FF0000</color>
+    <color name="devdb_group_color">#4373c3</color>
+
+
+    <color name="pda__background_dark">#ff000000</color>
+    <color name="pda__background_light">#fff3f3f3</color>
+
+    <color name="pda__primary_text_dark">#fff3f3f3</color>
+    <color name="pda__primary_text_light">#ff000000</color>
+
+    <color name="pda__secondary_text_dark">#fff3f3f3</color>
+    <color name="pda__secondary_text_light">#ff000000</color>
+
+    <color name="pda__bright_foreground_holo_dark">@color/pda__background_light</color>
+    <color name="pda__bright_foreground_holo_light">@color/pda__background_dark</color>
+    <color name="pda__bright_foreground_disabled_holo_dark">#ff4c4c4c</color>
+    <color name="pda__bright_foreground_disabled_holo_light">#ffb2b2b2</color>
+    <color name="pda__bright_foreground_inverse_holo_dark">
+        @color/pda__bright_foreground_holo_light
+    </color>
+    <color name="pda__bright_foreground_inverse_holo_light">
+        @color/pda__bright_foreground_holo_dark
+    </color>
+    <color name="pda__holo_blue_light">#ff33b5e5</color>
+
+    <color name="holo_blue_light">#ff33b5e5</color>
+    <color name="holo_blue_dark">#ff0099cc</color>
+</resources>

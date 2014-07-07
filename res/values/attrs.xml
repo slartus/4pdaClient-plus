@@ -1,0 +1,33 @@
+<resources>
+    <attr name="theme_background" format="reference" />
+    <declare-styleable name="ExpandoLayout">
+        <attr name="text" format="string" />
+        <attr name="titleRowPadding" format="integer" />
+        <attr name="expanded" format="boolean" />
+        <attr name="moreBar" format="boolean" />
+        <attr name="moreBarDefaultViewHeight" format="integer" />
+        <attr name="moreBarFadeColor" format="color" />
+        <attr name="moreBarOnRight" format="boolean" />
+        <attr name="compactText" format="string" />
+        <attr name="expandedText" format="string" />
+        <attr name="showAndHideChildren" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="ExpandablePanel">
+        <attr name="handle" format="reference" />
+        <attr name="content" format="reference" />
+        <attr name="collapsedHeight" format="dimension" />
+        <attr name="animationDuration" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="ExtEditTextPreference">
+        <attr name="myInputType" format="enum">
+            <enum name="number" value="0" />
+            <enum name="numberDecimal" value="1" />
+        </attr>
+        <attr name="defaultValue" format="string" />
+
+    </declare-styleable>
+
+
+</resources>

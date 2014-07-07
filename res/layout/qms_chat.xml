@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:id="@+id/message_panel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/btn_show_post_panel"
+                android:id="@+id/advanced_button"
+                android:layout_alignParentTop="false"
+                android:layout_alignParentBottom="false"
+                android:layout_alignParentEnd="false"
+                android:layout_centerVertical="true" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edMessage"
+                android:layout_toRightOf="@+id/advanced_button"
+                android:layout_toLeftOf="@+id/btnSend"
+                android:layout_centerVertical="true"
+                android:capitalize="sentences"
+                android:maxLines="5" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/btn_send"
+                android:layout_alignParentRight="true"
+                android:id="@+id/btnSend"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/footer_for_emoticons"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/keyboard_height"
+            android:visibility="gone" />
+    </LinearLayout>
+
+
+    <org.softeg.slartus.forpdaplus.classes.AdvWebView
+        android:layout_above="@+id/message_panel"
+        android:id="@+id/wvChat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

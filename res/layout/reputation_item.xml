@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+
+    android:textAppearance="?android:attr/textAppearanceLarge">
+
+    <ImageView
+        android:id="@+id/txtIsNew"
+        android:layout_width="4dip"
+        android:text="|||"
+        android:layout_height="fill_parent"
+        android:textSize="12dip"
+        android:scaleType="centerCrop"
+        android:lines="3"
+        android:minLines="3" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="5dip">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+           >
+
+            <TextView
+                android:id="@+id/txtAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#606060"
+                 />
+
+            <TextView
+                android:id="@+id/txtLastMessageDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#606060"
+
+                android:layout_gravity="center_vertical"
+                android:layout_alignParentRight="true" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
+
+        <TextView
+            android:id="@+id/txtForumTitle"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#969696"
+            android:gravity="right"
+            android:textStyle="italic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
+    </LinearLayout>
+</LinearLayout>

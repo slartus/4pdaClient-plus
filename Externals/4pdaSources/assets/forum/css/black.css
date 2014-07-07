@@ -1,0 +1,1434 @@
+@charset "utf-8";
+HTML {
+  font-size: 1em;
+  width: 100%;
+}
+body {
+  font-size: 100%;
+  display: block;
+  min-height: 1rem;
+  background: #000;
+  color: #f0f0f0;
+  margin: 0;
+  word-warp: break-word;
+}
+.post_body span[style*="font-size:36pt"] {
+  font-size: 3.75em !important;
+}
+.post_body span[style*="font-size:36pt"] * {
+  font-size: inherit !important;
+}
+.post_body span[style*="font-size:24pt"] {
+  font-size: 2.55em !important;
+}
+.post_body span[style*="font-size:24pt"] * {
+  font-size: inherit !important;
+}
+.post_body span[style*="font-size:18pt"] {
+  font-size: 1.95em !important;
+}
+.post_body span[style*="font-size:18pt"] * {
+  font-size: inherit !important;
+}
+.post_body span[style*="font-size:14pt"] {
+  font-size: 1.55em !important;
+}
+.post_body span[style*="font-size:14pt"] * {
+  font-size: inherit !important;
+}
+.post_body span[style*="font-size:12pt"] {
+  font-size: 1.35em !important;
+}
+.post_body span[style*="font-size:12pt"] * {
+  font-size: inherit !important;
+}
+.post_body span[style*="font-size:10pt"] {
+  font-size: 1.15em !important;
+}
+.post_body span[style*="font-size:10pt"] * {
+  font-size: inherit !important;
+}
+.post_body span[style*="font-size:8pt"] {
+  font-size: 0.95em !important;
+}
+.post_body span[style*="font-size:8pt"] * {
+  font-size: inherit !important;
+}
+.post-block.close > .block-body {
+  display: none;
+}
+.post-block.box > .block-body {
+  overflow: auto;
+}
+@media all and (orientation: landscape) {
+  .post-block.spoil.open > .block-title:before {
+    content: 'Спойлер (\2013) ( ';
+  }
+  .post-block.spoil.close > .block-title:before {
+    content: 'Спойлер (+) ( ';
+  }
+  .post-block.spoil > .block-title:after {
+    content: ' )';
+  }
+  .post-block.spoil.open > .block-title:empty:before {
+    content: 'Спойлер (\2013)';
+  }
+  .post-block.spoil.close > .block-title:empty:before {
+    content: 'Спойлер (+)';
+  }
+  .post-block.spoil > .block-title:empty:after {
+    content: '';
+  }
+  .post-block.code > .block-title:before {
+    content: 'Код (';
+  }
+  .post-block.code > .block-title:after {
+    content: ' )';
+  }
+  .post-block.code > .block-title:empty:before {
+    content: 'Код';
+  }
+  .post-block.code > .block-title:empty:after {
+    content: '';
+  }
+  .post-block.code > .block-title:empty:before {
+    content: 'Код';
+  }
+  .post-block.code > .block-title:empty:after {
+    content: '';
+  }
+  .post-block.code.box > .block-title:before {
+    content: 'Код (+) ( ';
+  }
+  .post-block.code.unbox > .block-title:before {
+    content: 'Код (\2013) ( ';
+  }
+  .post-block.code.box > .block-title:empty:before {
+    content: 'Код (+)';
+  }
+  .post-block.code.unbox > .block-title:empty:before {
+    content: 'Код (\2013)';
+  }
+  .post-block.hidden > .block-title:before {
+    content: 'Скрытый текст ( ';
+  }
+  .post-block.hidden > .block-title:after {
+    content: ' )';
+  }
+  .post-block.hidden > .block-title:empty:before {
+    content: 'Скрытый текст';
+  }
+  .post-block.hidden > .block-title:empty:after {
+    content: '';
+  }
+  .post-block.quote > .block-title:before {
+    content: 'Цитата ( ';
+  }
+  .post-block.quote > .block-title:after {
+    content: ' )';
+  }
+  .post-block.quote > .block-title:empty:before {
+    content: 'Цитата';
+  }
+  .post-block.quote > .block-title:empty:after {
+    content: '';
+  }
+}
+@media all and (orientation: portrait) {
+  .post-block.spoil.open > .block-title:before {
+    content: '(\2013) ';
+    font-weight: bold;
+  }
+  .post-block.spoil.close > .block-title:before {
+    content: '(+) ';
+    font-weight: bold;
+  }
+  .post-block.spoil > .block-title:after {
+    content: '';
+  }
+  .post-block.spoil.open > .block-title:empty:before {
+    content: '(\2013) Спойлер';
+    font-weight: bold;
+  }
+  .post-block.spoil.close > .block-title:empty:before {
+    content: '(+) Спойлер';
+    font-weight: bold;
+  }
+  .post-block.spoil > .block-title:empty:after {
+    content: '';
+  }
+  .post-block.code > .block-title:before {
+    content: 'Код: ';
+    font-weight: bold;
+  }
+  .post-block.code > .block-title:after {
+    content: '';
+  }
+  .post-block.code > .block-title:empty:before {
+    content: 'Код: ';
+    font-weight: bold;
+  }
+  .post-block.code > .block-title:empty:after {
+    content: '';
+  }
+  .post-block.code > .block-title:empty:before {
+    content: 'Код: ';
+    font-weight: bold;
+  }
+  .post-block.code > .block-title:empty:after {
+    content: '';
+  }
+  .post-block.code.box > .block-title:before {
+    content: 'Код (+) ';
+    font-weight: bold;
+  }
+  .post-block.code.unbox > .block-title:before {
+    content: 'Код (\2013)';
+    font-weight: bold;
+  }
+  .post-block.code.box > .block-title:empty:before {
+    content: 'Код (+) ';
+    font-weight: bold;
+  }
+  .post-block.code.unbox > .block-title:empty:before {
+    content: 'Код (\2013)';
+    font-weight: bold;
+  }
+  .post-block.hidden > .block-title:before {
+    content: 'Скрытый текст: ';
+    font-weight: bold;
+  }
+  .post-block.hidden > .block-title:after {
+    content: '';
+  }
+  .post-block.hidden > .block-title:empty:before {
+    content: 'Скрытый текст: ';
+    font-weight: bold;
+  }
+  .post-block.hidden > .block-title:empty:after {
+    content: '';
+  }
+  .post-block.quote > .block-title:empty:before {
+    content: '"Цитата"';
+    font-weight: bold;
+  }
+  .post-block.quote > .block-title:empty:after {
+    content: '';
+  }
+}
+/*
+ *	DARK-BLACK
+*/
+[style*="color:royalblue"] {
+  color: #ced8f7 !important;
+}
+*[style*="color:blue"] {
+  color: #6666ff !important;
+}
+*[style*="color:darkblue"] {
+  color: #3f3fff !important;
+}
+*[style*="color:indigo"] {
+  color: #aa35ff !important;
+}
+*[style*="color:crimson"] {
+  color: #ee4062 !important;
+}
+*[style*="color:red"] {
+  color: #ff4242 !important;
+}
+*[style*="color:darkred"] {
+  color: #ff2525 !important;
+}
+*[style*="color:deeppink"] {
+  color: #ff61b6 !important;
+}
+*[style*="color:black"],
+*[style*="color:#000000"],
+*[style*="color:#000"] {
+  color: #fff!important;
+}
+*[style*="background-color:white"] *[style*="color:black"],
+*[style*="color:black"] *[style*="background-color:white"],
+*[style*="background-color:white"] *[style*="color:#000000"],
+*[style*="color:#000000"] *[style*="background-color:white"] {
+  color: #000!important;
+}
+.hidetop {
+  display: block;
+  padding: 0.4em 0.3em;
+  margin-top: -0.1em;
+  border-top: 1px solid #444;
+  border-bottom: 1px solid #444;
+  color: #fff;
+  text-align: center;
+}
+.post-block.spoil > .block-title {
+  display: block;
+  padding: 0.3em 0.5em;
+  background: #161616;
+  margin: 0.5em -0.5em;
+  border-top: 1px #444 solid;
+  border-bottom: 1px #444 solid;
+  color: #ddd;
+}
+.post-block.quote .post-block.spoil > .block-title {
+  margin-left: -0.3em !important;
+  margin-right: -0.3em !important;
+}
+.post-block.spoil > .block-body {
+  padding: 0.5em;
+  margin: 0 -0.2em;
+  border-bottom: 1px #333 solid;
+}
+.post-block.quote {
+  display: block;
+  padding: 0.2em 0.4em 0.4em 0.4em;
+  margin: 1em 0.2em 1em 0;
+  border-left: 3px solid #58c;
+}
+.post-block.quote > .block-title {
+  display: block;
+  margin-bottom: 0.5em;
+  color: #999;
+  font-weight: bold;
+  line-height: 1.4;
+  font-size: 1rem;
+}
+.post-block.quote > .block-body {
+  padding: 0;
+  margin: 0;
+}
+.post-block.code > .block-title,
+.sqltop,
+.htmltop {
+  color: #a0a0a0;
+  font-weight: bold;
+  margin: 0.5em auto 0;
+  padding: 0.3em;
+}
+.post-block.code > .block-body,
+.sqlmain,
+.htmlmain {
+  border: 1px dotted #555;
+  color: #bfb;
+  margin: 0 auto 0.4em;
+  padding: 0.5em 0.2em;
+}
+.post-block.code > .block-body .post-block.spoil > .block-title {
+  margin-left: -0.2em !important;
+  margin-right: -0.2em !important;
+}
+.post-block.hidden > .block-title {
+  color: #a0a0a0;
+  font-weight: bold;
+  margin: 0.5em auto 0;
+  padding: 0.3em;
+}
+.post-block.hidden > .block-body {
+  border: 1px dotted #555;
+  margin: 0 auto 0.4em;
+  padding: 0.5em 0.2em;
+}
+.post-block.hidden > .block-body .post-block.spoil > .block-title {
+  margin-left: -0.2em !important;
+  margin-right: -0.2em !important;
+}
+/***ADM***/
+.cur {
+  background: #00943b;
+}
+.mod {
+  background: #6060ff;
+}
+.ex {
+  background: #ff6060;
+}
+.cur,
+.mod,
+.ex {
+  margin: 0.8em  0;
+  border: 1px solid #555;
+  display: table;
+  width: 100%;
+}
+.cur > .block-title,
+.mod > .block-title,
+.ex > .block-title {
+  display: table-cell;
+  vertical-align: middle;
+  color: #161616;
+  /*font-weight: bold;*/
+  width: 4rem;
+  text-align: center;
+  height: 100%;
+  font-size: 4rem;
+  font-family: Times New Roman, Serif;
+}
+.cur > .block-body,
+.mod > .block-body,
+.ex > .block-body {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: left;
+  padding: 1em;
+  background: #020202;
+  height: 100%;
+  margin: 0;
+}
+/*** navi ***/
+.navi {
+  margin-top: 3px;
+  max-width: 100%;
+  text-align: center;
+  background: #161616;
+  /*border-top: 2px ridge #222;
+border-bottom: 2px groove #222;*/
+}
+.first,
+.prev,
+.page,
+.next,
+.last {
+  display: inline-block;
+  float: center;
+  text-align: center;
+}
+.first,
+.prev,
+.next,
+.last {
+  width: 15%;
+}
+.page {
+  width: 26%;
+}
+.prev {
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+}
+.next {
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+}
+/*** QMS ***/
+.check-item {
+  display: block;
+  text-align: right;
+  line-height: 1.5;
+  padding-top: 0.3em;
+}
+#thread-inside-top ~ .date {
+  border-bottom: dotted 1px #aaa;
+  margin: 3em auto;
+  text-align: center;
+}
+.date .text {
+  top: 0.6em;
+  display: inline-block;
+  padding: 0 0.6em;
+  position: relative;
+  color: #777;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background: #000;
+  text-transform: lowercase;
+}
+.read-status.unread.big-dot {
+  position: relative;
+  top: -0.1em;
+  display: inline-block;
+  height: 0.6em;
+  width: 0.6em;
+  border-radius: 0.6em;
+  background: #a33;
+}
+.avatar-wrap {
+  display: block;
+  overflow: hidden;
+  width: 4em;
+  margin-left: 0.3em;
+  margin-top: -1.2em;
+}
+.avatar {
+  display: inline-block;
+  width: 4em;
+  line-height: 4em;
+  background: #ccc;
+}
+label ~ .time {
+  position: relative;
+  float: right;
+  margin-right: 1.7em;
+  margin-top: -1.4em;
+  font-size: 0.9rem;
+  color: #555;
+}
+strong,
+strong span {
+  line-height: 1.5;
+  font-size: 1.1rem;
+  margin-left: 0.2em;
+  color: #ccc;
+}
+.list-group-item {
+  display: block;
+  margin: 1em 0.2em;
+  padding: 0.2m;
+  border-top: 2px solid #5588cc;
+  background: #161616;
+}
+.msg-content {
+  margin: 0 0 -0.3em 0;
+  padding: 0.5em;
+  border-top: 1px #555 solid;
+  background: #000;
+}
+#bottom_element {
+  margin: 2em 0em;
+  text-align: center;
+}
+#bottom_element:before {
+  content: '~КОНЕЦ~';
+  color: #999;
+  font-weight: bold;
+  display: inline-block;
+}
+/*** END QMS ***/
+table {
+  font-size: inherit;
+}
+a {
+  color: #79c;
+  line-height: 1.7;
+}
+ul,
+ol {
+  margin-left: -1em;
+}
+.spoiler_button {
+  position: relative;
+  z-index: 99;
+  float: right;
+  width: 100%;
+  display: block;
+  margin-top: -2.7em;
+  margin-bottom: 0;
+  margin-right: 0;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  padding-right: 0.5em;
+  background: none;
+  border: 0;
+  color: #efefef;
+  text-transform: lowercase;
+  text-align: right;
+}
+img[src*="style_emoticons"] {
+  min-height: 1.2rem !important;
+  min-width: 1.2rem !important;
+  vertical-align: bottom;
+}
+img {
+  max-width: 100%!important;
+  height: auto!important;
+}
+.post_body a[href*="act=findpost&pid="][title="Перейти к сообщению"] {
+  position:  relative;
+  display: inline-block;
+}
+.post_body a[href*="act=findpost&pid="][title="Перейти к сообщению"] > img {
+  position: absolute;
+  opacity: 0;
+}
+.post_body a[href*="act=findpost&pid="][title="Перейти к сообщению"]:after {
+  content: '«';
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.45em;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  line-height: 1;
+  text-align: center;
+  margin: -0.2em -0.3em;
+  color: #58c;
+}
+.post-block .block-title a[href*="act=findpost&pid="][title="Перейти к сообщению"]:after {
+  margin-right: -0.2em !important;
+}
+.sp_img {
+  display: inline-block;
+  margin: 0.2em;
+  padding: 0.2em 0.3em;
+  border-left: 1px solid #252525;
+  border-right: 1px solid #252525;
+  border-top: 1px solid #121212;
+  border-bottom: 1px solid #555;
+  background: #181818;
+  color: #aaa;
+}
+.post_body font {
+  font-size: 0.95rem!important;
+}
+.post_body,
+.signature {
+  font-size: 1rem;
+  position: relative;
+  padding: 0.8em 0.5em 1.5em;
+  clear: both;
+  word-wrap: break-word;
+  background: #000;
+  border-top: 1px solid #444;
+  border-bottom: 1px solid #444;
+  color: #f0f0f0;
+}
+.signature {
+  background: #161616 !important;
+  color: #999 !important;
+}
+.signature:before {
+  content: 'подпись';
+  display: block;
+  margin-top: -0.5em;
+  padding-bottom: 0.5em;
+  margin-bottom: 0.5em;
+  text-align: center;
+  font-size: 0.8em;
+  border-bottom: 1px #222 solid;
+}
+.post_header {
+  border-bottom: 1px solid #000;
+  border-top: 2px solid #58c;
+  padding: 0 0.4em;
+  background: #161616;
+  margin-top: 0;
+}
+.post_header a img {
+  margin-bottom: 0;
+}
+.post_header .post_date {
+  display: inline-block;
+  margin-top: auto;
+  margin-bottom: 0;
+  position: relative;
+  font-size: 0.95rem;
+  float: right;
+  color: #ccc;
+  text-transform: lowercase;
+}
+.post_header .post_date_cli {
+  display: inline-block;
+  margin-top: auto;
+  margin-bottom: 0;
+  position: relative;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+.post_header .post_date_cli a {
+  margin-left: 0.2em;
+  font-size: 1rem;
+}
+.post_header td .system_link .post_date_cli {
+  color: #aaa;
+  margin-top: 0.2em;
+}
+.post_header A.system_link[onclick*="window.HTMLOUT.showPostMenu"] {
+  line-height: 1.2;
+  margin-top: 0.1em;
+  padding: 0 0.4em 0.1em;
+  border-radius: 0.3em;
+  border: 1px solid #555 !important;
+  font-weight: normal;
+  text-align: center;
+  color: #999 !important;
+  margin-top: -0.4em;
+}
+.post_user_info {
+  display: block;
+  text-transform: lowercase;
+}
+.post_user_info br {
+  display: none;
+}
+.post_user_info:first-line {
+  position: absolute;
+  color: #161616;
+  font-size: 0;
+}
+.post_user_info strong {
+  font-size: 1rem;
+  color: #0a0;
+  line-height: 1;
+  margin: 0;
+}
+.post_user_info span {
+  display: block;
+  font-size: 0.95rem;
+  text-transform: lowercase;
+  line-height: 1.5;
+}
+.post_user_info a {
+  font-size: 0.95rem;
+  margin: 0 0 0 0.4em;
+  display: inline-block;
+  line-height: 1.5;
+  float: right;
+}
+.post_user_info a:first-of-type:before {
+  content: '|';
+  padding-right: 0.5em;
+}
+.post_action {
+  display: table;
+  position: relative;
+  width: 100%;
+  text-transform: lowercase;
+}
+.post_action a {
+  font-size: 0.95rem;
+  display: inline-block;
+  float: right;
+  line-height: 0.8;
+  padding-left: 0.5em;
+}
+.post_action a:before {
+  content: '|';
+  padding-right: 0.5em;
+}
+.post_action a:first-of-type:before {
+  content: '';
+  padding-right: 0;
+}
+.post_action a:last-of-type:before {
+  content: '';
+}
+.post_action a:first-of-type {
+  display: inline-block;
+  color: #888;
+  float: left;
+  padding-left: 0;
+  line-height: 1;
+}
+.post_nick_cli a {
+  margin-top: auto;
+  margin-bottom: auto;
+  position: relative;
+  font-size: 1.1rem !important;
+  line-height: 1.2;
+  font-weight: bold;
+  color: #ccc!Important;
+  text-shadow: 0 0 0.6rem #222;
+}
+.post_nick_online_cli a {
+  font-size: 1.1rem !important;
+  line-height: 1.2;
+  color: #79c!important;
+  display: inline-block;
+  font-weight: bold;
+  text-shadow: 0 0 1px black, 0 0 0.8rem #555;
+}
+.post_nick a {
+  margin-top: -0.8em;
+  display: inline-block;
+  margin-bottom: 0;
+  line-height: 1;
+  font-size: 1.1rem !important;
+  color: #ccc!important;
+  font-weight: bold;
+}
+.s_post_footer {
+  position: relative;
+  padding: 0.3em 0.6em;
+  clear: both;
+  margin-left: auto;
+  margin-right: auto;
+  background: #161616;
+  border-bottom: 1px #333 solid;
+}
+.footer_button_good {
+  line-height: 1.4;
+  padding: 0 0.4em 0.1em;
+  border-radius: 0.4em;
+  text-align: center;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #bec4b9;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #46503f), color-stop(1, #030700));
+  border: 1px solid #325c11;
+  color: #d6e5cb;
+}
+.footer_button_bad {
+  line-height: 1.4;
+  padding: 0 0.4em 0.1em;
+  border-radius: 0.4em;
+  text-align: center;
+  -webkit-box-shadow: inset 0px 1px 0px 0px #b19794;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #611e18), color-stop(1, #350400));
+  border: 1px solid #8a1b11;
+  color: #f6d4d0;
+}
+.footer_button {
+  line-height: 1.2;
+  margin-top: 0.1em;
+  padding: 0 0.4em 0.1em;
+  border-radius: 0.3em;
+  border: 1px solid #555 !important;
+  font-weight: normal;
+  text-align: center;
+  color: #999 !important;
+}
+@media screen and (min-width: 960px) {
+  .post_footer {
+    display: table-block;
+    min-height: 1.6em;
+    text-align: center;
+    position: relative;
+    padding: 0.3em 0.6em;
+    clear: both;
+    margin-left: auto;
+    margin-right: auto;
+    background: #161616;
+    border-bottom: 1px #333 solid;
+  }
+  .post_footer a {
+    display: table-block;
+    text-decoration: none;
+  }
+  .post_footer a span {
+    display: table-block;
+  }
+  .post_footer a .send_claim_button {
+    display: block;
+    float: left;
+    line-height: 1.2;
+    margin-top: 0.1em;
+    padding: 0 0.4em 0.1em;
+    border-radius: 0.3em;
+    border: 1px solid #555 !important;
+    font-weight: normal;
+    text-align: center;
+    color: #999 !important;
+  }
+  .post_footer a .send_claim_button:before {
+    content: 'жалоба';
+  }
+  .post_footer a .send_claim_button:after {
+    content: '';
+    position: absolute;
+    padding: 0.7em 0;
+    margin-left: 0.9em;
+    border-left: 1px solid #656565;
+  }
+  .post_footer a .insert_nick_button {
+    display: block;
+    float: left;
+    margin-left: 1em;
+    line-height: 1.2;
+    margin-top: 0.1em;
+    padding: 0 0.4em 0.1em;
+    border-radius: 0.3em;
+    border: 1px solid #555 !important;
+    font-weight: normal;
+    text-align: center;
+    color: #999 !important;
+  }
+  .post_footer a .insert_nick_button:before {
+    content: 'имя';
+  }
+  .post_footer a .insert_nick_button:after {
+    content: '';
+    position: absolute;
+    padding: 0.7em 0;
+    margin-left: 0.9em;
+    border-right: 1px solid #656565;
+  }
+  .post_footer a .quote_button {
+    display: block;
+    float: left;
+    line-height: 1.2;
+    margin-top: 0.1em;
+    padding: 0 0.4em 0.1em;
+    border-radius: 0.3em;
+    border: 1px solid #555 !important;
+    font-weight: normal;
+    text-align: center;
+    color: #999 !important;
+    margin-left: 1em;
+  }
+  .post_footer a .quote_button:before {
+    content: 'цитата';
+  }
+  .post_footer a .post_vote_bad {
+    display: inline-block;
+    padding-left: 0.2em !important;
+    padding-right: 0.2em !important;
+    margin-right: 0.25em;
+    line-height: 1.2;
+    margin-top: 0.1em;
+    padding: 0 0.4em 0.1em;
+    border-radius: 0.3em;
+    border: 1px solid #555 !important;
+    font-weight: normal;
+    text-align: center;
+    color: #999 !important;
+  }
+  .post_footer a .post_vote_bad:after {
+    content: 'плохо';
+    margin-right: 0.5em;
+  }
+  .post_footer a .post_vote_bad:before {
+    position: relative;
+    top: 0.1em;
+    font-weight: bold;
+    content: "➜";
+    -webkit-transform: rotate(90deg);
+    float: left;
+    margin-right: 0.5em;
+    font-size: 1em;
+    color: #d03b3b;
+  }
+  .post_footer a .post_vote_good {
+    display: inline-block;
+    padding-left: 0.2em !important;
+    padding-right: 0.2em !important;
+    line-height: 1.2;
+    margin-top: 0.1em;
+    padding: 0 0.4em 0.1em;
+    border-radius: 0.3em;
+    border: 1px solid #555 !important;
+    font-weight: normal;
+    text-align: center;
+    color: #999 !important;
+    margin-left: 0.25em;
+  }
+  .post_footer a .post_vote_good:before {
+    content: 'хорошо';
+    margin-left: 0.15em;
+  }
+  .post_footer a .post_vote_good:after {
+    position: relative;
+    top: 0.1em;
+    content: "➜";
+    font-weight: bold;
+    -webkit-transform: rotate(-90deg);
+    margin-left: 0.15em;
+    float: right;
+    font-size: 1em;
+    color: #047f04;
+  }
+  .post_footer a .delete_post_button {
+    display: block;
+    float: right;
+    line-height: 1.2;
+    margin-top: 0.1em;
+    padding: 0 0.4em 0.1em;
+    border-radius: 0.3em;
+    border: 1px solid #555 !important;
+    font-weight: normal;
+    text-align: center;
+    color: #999 !important;
+  }
+  .post_footer a .delete_post_button:before {
+    content: 'удалить';
+  }
+  .post_footer a .delete_post_button:after {
+    content: '';
+    position: absolute;
+    padding: 0.7em 0;
+    margin-left: 0.9em;
+    border-left: 1px solid #656565;
+  }
+  .post_footer a .edit_post_button {
+    display: block;
+    float: right;
+    margin-left: 1em;
+    line-height: 1.2;
+    margin-top: 0.1em;
+    padding: 0 0.4em 0.1em;
+    border-radius: 0.3em;
+    border: 1px solid #555 !important;
+    font-weight: normal;
+    text-align: center;
+    color: #999 !important;
+  }
+  .post_footer a .edit_post_button:after {
+    content: 'редактировать';
+  }
+}
+@media screen and (min-width: 480px) and (max-width: 960px) {
+  .post_footer {
+    display: table-block;
+    min-height: 1.6em;
+    text-align: center;
+    position: relative;
+    padding: 0.3em 0.6em;
+    clear: both;
+    margin-left: auto;
+    margin-right: auto;
+    background: #161616;
+    border-bottom: 1px #333 solid;
+  }
+  .post_footer a {
+    display: table-block;
+    text-decoration: none;
+  }
+  .post_footer a span {
+    display: table-block;
+  }
+  .post_footer a .insert_nick_button {
+    display: block;
+    float: left;
+    line-height: 1.2;
+    margin-top: 0.1em;
+    padding: 0 0.4em 0.1em;
+    border-radius: 0.3em;
+    border: 1px solid #555 !important;
+    font-weight: normal;
+    text-align: center;
+    color: #999 !important;
+  }
+  .post_footer a .insert_nick_button:before {
+    content: 'имя';
+  }
+  .post_footer a .quote_button {
+    display: block;
+    float: right;
+    line-height: 1.2;
+    margin-top: 0.1em;
+    padding: 0 0.4em 0.1em;
+    border-radius: 0.3em;
+    border: 1px solid #555 !important;
+    font-weight: normal;
+    text-align: center;
+    color: #999 !important;
+  }
+  .post_footer a .quote_button:before {
+    content: 'цитата';
+  }
+  .post_footer a .post_vote_bad {
+    display: inline-block;
+    padding-left: 0.2em !important;
+    padding-right: 0.2em !important;
+    margin-right: 0.25em;
+    line-height: 1.2;
+    margin-top: 0.1em;
+    padding: 0 0.4em 0.1em;
+    border-radius: 0.3em;
+    border: 1px solid #555 !important;
+    font-weight: normal;
+    text-align: center;
+    color: #999 !important;
+  }
+  .post_footer a .post_vote_bad:after {
+    content: 'плохо';
+    margin-right: 0.5em;
+  }
+  .post_footer a .post_vote_bad:before {
+    position: relative;
+    top: 0.1em;
+    content: "➜";
+    font-weight: bold;
+    -webkit-transform: rotate(90deg);
+    float: left;
+    margin-right: 0.5em;
+    font-size: 1em;
+    color: #d03b3b;
+  }
+  .post_footer a .post_vote_good {
+    display: inline-block;
+    padding-left: 0.2em !important;
+    padding-right: 0.2em !important;
+    line-height: 1.2;
+    margin-top: 0.1em;
+    padding: 0 0.4em 0.1em;
+    border-radius: 0.3em;
+    border: 1px solid #555 !important;
+    font-weight: normal;
+    text-align: center;
+    color: #999 !important;
+    margin-left: 0.25em;
+  }
+  .post_footer a .post_vote_good:before {
+    content: 'хорошо';
+    margin-left: 0.15em;
+  }
+  .post_footer a .post_vote_good:after {
+    position: relative;
+    top: 0.1em;
+    content: "➜";
+    font-weight: bold;
+    -webkit-transform: rotate(-90deg);
+    margin-left: 0.15em;
+    float: right;
+    font-size: 1em;
+    color: #047f04;
+  }
+}
+@media screen and (max-width: 480px) {
+  .post_footer {
+    display: table-block;
+    min-height: 1.6em;
+    text-align: center;
+    position: relative;
+    padding: 0.3em 0.6em;
+    clear: both;
+    margin-left: auto;
+    margin-right: auto;
+    background: #161616;
+    border-bottom: 1px #333 solid;
+  }
+  .post_footer a {
+    display: table-block;
+    text-decoration: none;
+  }
+  .post_footer a span {
+    display: table-block;
+  }
+  .post_footer a .insert_nick_button {
+    display: block;
+    float: left;
+    line-height: 1.2;
+    margin-top: 0.1em;
+    padding: 0 0.4em 0.1em;
+    border-radius: 0.3em;
+    border: 1px solid #555 !important;
+    font-weight: normal;
+    text-align: center;
+    color: #999 !important;
+  }
+  .post_footer a .insert_nick_button:before {
+    content: 'имя';
+  }
+  .post_footer a .insert_nick_button:after {
+    content: '';
+    position: absolute;
+    padding: 0.7em 0;
+  }
+  .post_footer a .quote_button {
+    display: block;
+    float: right;
+    line-height: 1.2;
+    margin-top: 0.1em;
+    padding: 0 0.4em 0.1em;
+    border-radius: 0.3em;
+    border: 1px solid #555 !important;
+    font-weight: normal;
+    text-align: center;
+    color: #999 !important;
+  }
+  .post_footer a .quote_button:before {
+    content: 'цитата';
+  }
+  .post_footer a .post_vote_bad {
+    display: inline-block;
+    width: 1.6em;
+    margin-right: 0.15em;
+    line-height: 1.2;
+    margin-top: 0.1em;
+    padding: 0 0.4em 0.1em;
+    border-radius: 0.3em;
+    border: 1px solid #555 !important;
+    font-weight: normal;
+    text-align: center;
+    color: #999 !important;
+  }
+  .post_footer a .post_vote_bad:before {
+    position: relative;
+    display: inline-block;
+    line-height: 1;
+    top: 0.1em;
+    content: "–";
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #d03b3b;
+  }
+  .post_footer a .post_vote_good {
+    display: inline-block;
+    width: 1.6em;
+    margin-left: 0.15em;
+    line-height: 1.2;
+    margin-top: 0.1em;
+    padding: 0 0.4em 0.1em;
+    border-radius: 0.3em;
+    border: 1px solid #555 !important;
+    font-weight: normal;
+    text-align: center;
+    color: #999 !important;
+  }
+  .post_footer a .post_vote_good:after {
+    position: relative;
+    display: inline-block;
+    line-height: 1;
+    top: 0.1em;
+    content: "+";
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #047f04;
+  }
+}
+.s_post_footer table {
+  text-align: center;
+  font-size: 0.95rem;
+  color: #aaa;
+}
+.searchlite {
+  color: #ee6050;
+}
+.user_group {
+  display: block;
+  margin-top: 0;
+  margin-bottom: auto;
+  position: relative;
+  font-size: 0.85rem;
+  line-height: 0.6;
+  color: #aaa;
+}
+.post_header a {
+  text-decoration: none!important;
+  color: #aaa;
+}
+.href_button {
+  display: inline-block;
+  margin: 0;
+  width: 100%;
+  font-weight: bold;
+  text-transform: lowercase;
+  color: #58c;
+  text-decoration: none;
+  text-align: center;
+  padding: 0.4em 0;
+}
+.href_button_disable {
+  color: #000;
+  display: inline-block;
+  margin: 0;
+  width: 100%;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.4em 0;
+}
+.topic_title_post {
+  margin: 0 1em;
+  padding: 0.5em;
+  text-align: center;
+}
+.topic_title_post a {
+  color: #ccc;
+  text-decoration: none!important;
+  line-height: 1.2;
+}
+.edit {
+  font-size: 0.9rem;
+  color: #999;
+}
+edit b {
+  font-size: 0.95rem;
+}
+.edit * {
+  font-size: 0.9rem;
+  color: #999;
+}
+.post-edit-reason {
+  font-size: 0.9rem;
+  color: #999;
+}
+/*
+* NEWS
+*/
+.container {
+  margin: 0;
+  display: block;
+  margin: 0.3em;
+  background: #000;
+  border: 1px #333 solid;
+  padding: 0.3em;
+  color: white;
+}
+.content {
+  display: block;
+  padding: 0.5em;
+}
+h1 {
+  text-align: center;
+  font-size: 1.5em;
+  color: #999;
+}
+.product-detail {
+  display: block;
+  border: 1px #555 solid;
+  background: #161616;
+  padding: 0 0.2em 0.5em;
+}
+.photo {
+  display: block;
+  margin-top: 1em;
+  text-align: center;
+}
+.photo img {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+}
+.more-box {
+  position: relative;
+  text-align: center;
+}
+h3 {
+  text-align: center;
+}
+h3 a {
+  text-decoration: none;
+  color: #aaa;
+  font-size: 1.4rem;
+}
+.info-holder {
+  display: block;
+  text-align: center;
+}
+.materials-box {
+  display: block;
+  padding: 1em 0;
+}
+.box-title {
+  margin: 0.5em 0.2em;
+  padding: 0.2em 0;
+  text-align: center;
+  color: #999;
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #000000), color-stop(10%, #222222), color-stop(90%, #222222), color-stop(100%, #000000));
+}
+.materials-list {
+  padding: 0;
+  margin: 0 0.2em 0 1em;
+  position: relative;
+  display: block;
+  line-height: 1.4;
+  /*background: #eee; 
+padding: 1em;
+border-bottom: 1px #777 solid*/
+}
+.materials-list li {
+  padding: 0.5em 0;
+  margin: 0.5em 0;
+  font-size: 1rem;
+  list-style-type: none;
+}
+.materials-list a {
+  position: relative;
+  display: inline;
+}
+.materials-box .date {
+  display: inline;
+  font-weight: bold;
+  color: #aaa;
+  text-decoration: none;
+  padding: 0 1em;
+  font-size: 1.1rem;
+}
+.materials-box .number {
+  color: #000;
+  background: #58c;
+  line-height: 2;
+  width: 2em;
+  text-align: center;
+  float: left;
+  margin-top: -0.3em;
+  font-weight: bold;
+  border-radius: 2rem;
+}
+.page-nav.box {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+.page-nav.box li {
+  display: inline-block;
+  font-size: 1.4rem;
+  text-decoration: none;
+  text-transform: lowercase;
+  width: 4em;
+  border: 1px solid #555;
+  padding: 0.8px 0.2em 0 0.2em;
+  color: #555;
+  background: #000;
+}
+.page-nav.box a {
+  text-decoration: none;
+}
+.comment-box h2 {
+  text-align: center;
+  padding: 0.2em 0;
+  color: #aaa;
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #000000), color-stop(10%, #222222), color-stop(90%, #222222), color-stop(100%, #000000));
+}
+#comments {
+  font-size: 1rem;
+  display: block;
+  padding: 0.7em 0;
+  position: relative;
+  margin: 0.2em 1px 0.2em 0;
+  font-weight: normal;
+  color: #fff;
+  text-align: left;
+}
+#comments li,
+#comments ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0.2em 0 0.2em 1px;
+}
+.comment-box li {
+  border-top: 1px #333 solid;
+  border-bottom: 2px #444 groove;
+  border-left: 1px #333 solid;
+  border-right: 1px #333 solid;
+  text-align: left;
+  margin: 1em 0 0 0;
+  word-wrap: break-word;
+  background: #000;
+}
+#comments li .heading {
+  position: relative;
+  display: block;
+  margin: -1px 0 0 0;
+  border-top: 3px #58c solid;
+  border-bottom: 1px solid #444;
+  background: #161616;
+  text-shadow: 0 0 0.2em #000;
+  padding: 0.2em 0;
+}
+.nickname {
+  text-decoration: none;
+  font-style: normal !important;
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0 0.5em;
+  color: #79c;
+  line-height: 1.4;
+}
+.h-meta {
+  text-decoration: none;
+  font-weight: normal;
+  font-size: 1rem;
+  color: #aaa;
+  float: right;
+  margin-top: 0;
+  margin-right: 0.2em;
+  line-height: 1.4;
+}
+#comments li p {
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+  padding-bottom: 0;
+  margin: 0 0.2em;
+}
+#comments a:nth-child(2) {
+  position: relative;
+  display: block;
+  text-align: center;
+  top: -0.5em;
+}
+#comments p ~ div {
+  display: block;
+  text-align: right;
+  border-top: 1px #333 solid;
+  margin: 0.5em 0.5em 0;
+}

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+
+    android:orientation="vertical">
+
+    <org.softeg.slartus.forpdaplus.classes.AdvWebView
+        android:id="@+id/wvBody"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+
+
+        android:textSize="12dip" />
+
+    <ImageButton
+        android:id="@+id/btnFullScreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_media_fullscreen"
+        android:background="@null"
+        android:padding="10dip"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/bottom_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/pnlSearch"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/btnPrevSearch"
+                android:src="@drawable/ic_btn_find_prev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageButton
+                android:id="@+id/btnNextSearch"
+                android:src="@drawable/ic_btn_find_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/btnPrevSearch" />
+
+
+            <EditText
+                android:id="@+id/txtSearch"
+                android:layout_marginTop="2dip"
+                android:layout_marginLeft="2dip"
+                android:layout_marginRight="2dip"
+                android:padding="5dip"
+                android:singleLine="true"
+                android:capitalize="sentences"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/btnNextSearch"
+                android:layout_toLeftOf="@+id/btnCloseSearch" />
+
+            <ImageButton
+                android:id="@+id/btnCloseSearch"
+                android:src="@drawable/btn_close_normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

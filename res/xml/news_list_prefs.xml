@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+        android:defaultValue="1"
+        android:entries="@array/ConnectTypeArray"
+        android:entryValues="@array/ConnectTypeValues"
+        android:key="news.list.loadimages"
+        android:title="Загружать изображения" />
+
+    <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+        android:defaultValue="full"
+        android:entries="@array/NewsListViewTitles"
+        android:entryValues="@array/NewsListViewValues"
+        android:key="news.list.view"
+        android:title="Вид списка" />
+</PreferenceScreen>

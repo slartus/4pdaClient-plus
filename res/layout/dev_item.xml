@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:id="@+id/imageView"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="Изображение" />
+
+        <ProgressBar
+            android:id="@+id/progressView"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:paddingLeft="5dip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Модель" />
+
+        <TextView
+            android:id="@+id/descTextView"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Описание модели"/>
+    </LinearLayout>
+</LinearLayout>

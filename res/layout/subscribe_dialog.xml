@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/emailtype_radio"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/emailnone_radio"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/DontNotify" />
+
+        <RadioButton
+            android:id="@+id/emaildelayed_radio"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Первый раз"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/emailimmediate_radio"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Каждый раз" />
+
+        <RadioButton
+            android:id="@+id/emaildaily_radio"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Каждый день" />
+
+        <RadioButton
+            android:id="@+id/emailweekly_radio"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Каждую неделю" />
+
+    </RadioGroup>
+</LinearLayout>

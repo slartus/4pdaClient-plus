@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/imgIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/icon" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:gravity="bottom">
+
+        <TextView
+            android:id="@+id/txtFileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            style="@style/NotificationTitle"
+            android:singleLine="false"
+            android:layout_alignTop="@+id/imgIcon"
+            android:layout_toRightOf="@+id/imgIcon"
+            android:textSize="14dp" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="fill_parent"
+            android:layout_height="10dp"
+
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_above="@+id/txtContent"
+            android:layout_toRightOf="@+id/imgIcon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/txtContent"
+            android:layout_alignBottom="@+id/imgIcon"
+            android:layout_toRightOf="@+id/imgIcon"
+            android:textSize="12dp" />
+    </LinearLayout>
+</LinearLayout>

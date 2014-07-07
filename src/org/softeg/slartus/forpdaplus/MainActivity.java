@@ -1,0 +1,428 @@
+package org.softeg.slartus.forpdaplus;
+
+import android.app.ActionBar;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Pair;
+import android.view.ContextMenu;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
+
+import org.softeg.slartus.forpdacommon.NotReportException;
+import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
+import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
+import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
+import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
+import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
+import org.softeg.slartus.forpdaplus.mainnotifiers.DonateNotifier;
+import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier;
+import org.softeg.slartus.forpdaplus.mainnotifiers.TopicAttentionNotifier;
+import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
+import org.softeg.slartus.forpdaplus.tabs.Tabs;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: Admin
+ * Date: 17.09.11
+ * Time: 22:23
+ * To change this template use File | Settings | File Templates.
+ */
+public class MainActivity extends BaseFragmentActivity implements BricksListDialogFragment.IBricksListDialogCaller,
+        MainDrawerMenu.SelectItemListener {
+    private Handler mHandler = new Handler();
+
+    MenuFragment mFragment1;
+
+    private MainDrawerMenu mMainDrawerMenu;
+
+    @Override
+    protected void afterCreate() {
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.content_frame);
+        if (currentFragment != null) {
+            //fragmentManager.beginTransaction().remove(currentFragment).commit();
+            currentFragment.onDestroy();
+
+        }
+        super.onDestroy();
+    }
+
+    @Override
+    public void onCreate(Bundle saveInstance) {
+        super.onCreate(saveInstance);
+
+        try {
+
+
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+
+            if (checkIntent())
+                return;
+            setContentView(R.layout.main);
+
+            createMenu();
+
+            org.softeg.slartus.forpdaplus.Client client = org.softeg.slartus.forpdaplus.Client.getInstance();
+
+            client.addOnUserChangedListener(new Client.OnUserChangedListener() {
+                public void onUserChanged(String user, Boolean success) {
+                    userChanged();
+                }
+            });
+            client.addOnMailListener(new Client.OnMailListener() {
+                public void onMail(int count) {
+                    mailsChanged();
+                }
+            });
+
+
+            mMainDrawerMenu = new MainDrawerMenu(this, this);
+
+            new DonateNotifier().start(this);
+            //new MarketVersionNotifier(14).start(this);
+            new TopicAttentionNotifier().start(this);
+            new ForPdaVersionNotifier(1).start(this);
+        } catch (Throwable ex) {
+            Log.e(getApplicationContext(), ex);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            mMainDrawerMenu.toggleOpenState();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        if (mMainDrawerMenu != null)
+            mMainDrawerMenu.syncState();
+    }
+
+    private void createMenu() {
+        try {
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            mFragment1 = (MenuFragment) fm.findFragmentByTag("f1");
+            if (mFragment1 == null) {
+                mFragment1 = new MenuFragment();
+                ft.add(mFragment1, "f1");
+            }
+            ft.commit();
+        } catch (Exception ex) {
+            Log.e(this, ex);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        checkIntent(intent);
+    }
+
+    private boolean checkIntent() {
+        return checkIntent(getIntent());
+    }
+
+    private boolean checkIntent(final Intent intent) {
+        if (IntentActivity.checkSendAction(this, intent))
+            return false;
+        if (intent.getData() != null) {
+            final String url = intent.getData().toString();
+            if (IntentActivity.tryShowUrl(this, mHandler, url, false, true)) {
+                return true;
+            }
+            startNextMatchingActivity(intent);
+
+            Toast.makeText(this, "Не умею обрабатывать ссылки такого типа\n" + url, Toast.LENGTH_LONG).show();
+            finish();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onBricksListDialogResult(DialogInterface dialog, String dialogId,
+                                         BrickInfo brickInfo, Bundle args) {
+        dialog.dismiss();
+        ListFragmentActivity.showListFragment(this, brickInfo.getName(), args);
+    }
+
+    /**
+     * Swaps fragments in the main content view
+     */
+    public void selectItem(final BrickInfo listTemplate) {
+        //final BrickInfo listTemplate = ((MenuBrickAdapter) mAdapter).getItem(position);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.content_frame);
+        if (currentFragment != null) {
+            if (((IBrickFragment) currentFragment)
+                    .getListName().equals(listTemplate.getName())) {
+                if (mMainDrawerMenu != null)
+                    mMainDrawerMenu.close();
+                return;
+            }
+
+            currentFragment.onDestroy();
+        }
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);// новости выставляют выпадающий список
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setSubtitle(null);
+
+        Fragment fragment = listTemplate.createFragment();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, fragment)
+                .commit();
+
+        setTitle(listTemplate.getTitle());
+        if (mMainDrawerMenu != null)
+            mMainDrawerMenu.close();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Preferences.Lists.setLastSelectedList(listTemplate.getName());
+//                Preferences.Lists.addLastAction(listTemplate.getName());
+//            }
+//        }).start();
+
+    }
+
+    private Boolean m_ExitWarned = false;
+
+    private void appExit() {
+        MyApp.getInstance().exit();
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+            if (currentFragment != null && ((IBrickFragment) currentFragment).dispatchKeyEvent(event))
+                return true;
+        } catch (Throwable ex) {
+            Log.e(this, ex);
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        try {
+            if (mMainDrawerMenu.isOpen()) {
+                mMainDrawerMenu.close();
+                return;
+            }
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+            if (currentFragment == null || !((IBrickFragment) currentFragment).onBackPressed()) {
+                if (!m_ExitWarned) {
+                    Toast.makeText(this, "Нажмите кнопку НАЗАД снова, чтобы выйти из программы", Toast.LENGTH_SHORT).show();
+                    m_ExitWarned = true;
+                } else {
+                    appExit();
+                }
+
+            } else {
+                m_ExitWarned = false;
+            }
+        } catch (Throwable ignored) {
+            appExit();
+        }
+    }
+
+    private void userChanged() {
+        mHandler.post(new Runnable() {
+            public void run() {
+                //  setUserData();
+                mFragment1.setUserMenu();
+            }
+        });
+    }
+
+    private void mailsChanged() {
+        mHandler.post(new Runnable() {
+            public void run() {
+                mFragment1.setUserMenu();
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Client.INSTANCE.checkLoginByCookies();
+        m_ExitWarned = false;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, android.view.View v, android.view.ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        try {
+            if (v.getTag() != null) {
+                Object o = v.getTag();
+                if (TagPair.class.isInstance(o)) {
+                    TagPair tagPair = TagPair.class.cast(o);
+                    if (tagPair.first.equals("Tab")) {
+
+                        final String tabId = tagPair.second;
+                        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getContext());
+
+                        String defaulttabId = prefs.getString("tabs.defaulttab", "Tab1");
+                        try {
+                            menu.setHeaderTitle(Tabs.getTabName(prefs, tabId));
+                        } catch (NotReportException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                        menu.add("По умолчанию").setCheckable(true).setChecked(tabId.equals(defaulttabId))
+                                .setOnMenuItemClickListener(new android.view.MenuItem.OnMenuItemClickListener() {
+                                    @Override
+                                    public boolean onMenuItemClick(android.view.MenuItem menuItem) {
+                                        SharedPreferences.Editor editor = prefs.edit();
+                                        editor.putString("tabs.defaulttab", tabId);
+                                        editor.commit();
+                                        menuItem.setChecked(true);
+                                        return true;
+                                    }
+                                });
+                        android.view.Menu defaultActionMenu = menu.addSubMenu("Действие по умолчанию..");
+                        String[] actionsArray = getResources().getStringArray(R.array.ThemeActionsArray);
+                        final String[] actionsValues = getResources().getStringArray(R.array.ThemeActionsValues);
+                        final String actionPrefName = "tabs." + tabId + ".Action";
+                        String defaultAction = prefs.getString(actionPrefName, "getfirstpost");
+                        for (int i = 0; i < actionsValues.length; i++) {
+                            final int finalI = i;
+                            defaultActionMenu.add(actionsArray[i])
+                                    .setCheckable(true).setChecked(defaultAction.equals(actionsValues[i]))
+                                    .setOnMenuItemClickListener(new android.view.MenuItem.OnMenuItemClickListener() {
+                                        @Override
+                                        public boolean onMenuItemClick(android.view.MenuItem menuItem) {
+                                            SharedPreferences.Editor editor = prefs.edit();
+                                            editor.putString(actionPrefName, actionsValues[finalI]);
+                                            editor.commit();
+                                            menuItem.setChecked(true);
+                                            return true;
+                                        }
+                                    });
+                        }
+                    }
+                }
+            }
+        } catch (Throwable ex) {
+            Log.e(getContext(), ex);
+        }
+    }
+
+    public Handler getHandler() {
+        return mHandler;
+    }
+
+
+    /**
+     * A fragment that displays a menu.  This fragment happens to not
+     * have a UI (it does not implement onCreateView), but it could also
+     * have one if it wanted.
+     */
+    public static final class MenuFragment extends ProfileMenuFragment {
+
+        public MenuFragment() {
+            super();
+        }
+
+
+        @Override
+        public void onCreate(Bundle saveInstance) {
+            super.onCreate(saveInstance);
+            setHasOptionsMenu(true);
+        }
+
+        private Menu m_miOther;
+
+
+        public void setOtherMenu() {
+            MenuItem miQuickStart = m_miOther.add("Быстрый доступ..");
+            miQuickStart.setIcon(R.drawable.ic_menu_quickrun);
+            miQuickStart.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+
+                    BricksListDialogFragment.showDialog((BricksListDialogFragment.IBricksListDialogCaller) getActivity(),
+                            BricksListDialogFragment.QUICK_LIST_ID,
+                            ListCore.getBricksNames(ListCore.getQuickBricks()), null);
+
+                    return true;
+                }
+            });
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            super.onCreateOptionsMenu(menu, inflater);
+
+
+            MenuItem item;
+
+            m_miOther = menu;
+            item = menu.add(R.string.Search)
+                    .setIcon(R.drawable.ic_menu_search)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                        public boolean onMenuItemClick(MenuItem item) {
+                            SearchSettingsDialogFragment.showSearchSettingsDialog(getActivity(),
+                                    SearchSettingsDialogFragment.createForumSearchSettings());
+                            return true;
+                        }
+                    });
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+            setOtherMenu();
+
+
+            item = menu.add(0, 0, 999, R.string.CloseApp)
+                    .setIcon(R.drawable.ic_menu_close_clear_cancel)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                        public boolean onMenuItemClick(MenuItem item) {
+
+
+                            getActivity().finish();
+                            System.exit(0);
+                            return true;
+                        }
+                    });
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+        }
+    }
+
+    public class TagPair extends Pair<String, String> {
+
+        public TagPair(String first, String second) {
+            super(first, second);
+        }
+    }
+
+}

@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fileSelectionContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/goUpTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Вверх"
+        android:textSize="20dp"
+        android:layout_margin="5dp"
+        android:onClick="onGoUpClickListener" />
+
+    <TextView
+        android:id="@+id/directoriesTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Папки"
+        android:textSize="20dp"
+        android:layout_margin="2dp" />
+
+    <ListView
+        android:id="@+id/directorySelectionList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="3" />
+
+    <TextView
+        android:id="@+id/filesTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Файлы"
+        android:textSize="20dp"
+        android:layout_margin="2dp" />
+
+    <ListView
+        android:id="@+id/fileSelectionList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:choiceMode="multipleChoice" />
+
+</LinearLayout>

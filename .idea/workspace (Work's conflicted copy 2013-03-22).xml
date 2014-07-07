@@ -1,0 +1,1270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidDesignerProfile">
+    <option name="fullProfile">
+      <profile>
+        <option name="device" value="2.7in QVGA" />
+        <option name="deviceConfiguration" value="Portrait" />
+        <option name="localeLanguage" value="ru" />
+        <option name="targetHashString" value="android-16" />
+        <option name="theme" value="Theme.Sherlock" />
+      </profile>
+    </option>
+    <option name="selection" value="[Full]" />
+  </component>
+  <component name="AndroidLayoutPreviewToolWindow">
+    <option name="state">
+      <GlobalState>
+        <option name="device" value="3.7in WVGA (Nexus One)" />
+        <option name="dockMode" value="" />
+        <option name="nightMode" value="notnight" />
+        <option name="targetHashString" value="android-10" />
+        <option name="theme" value="Theme.Sherlock" />
+      </GlobalState>
+    </option>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2e4cc96f-3383-4738-a3c3-50081ed7580e" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/ant.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/android_support_v4.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/compiler.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/encodings.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/apache.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/HttpHelper.java" afterPath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/HttpHelper.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Externals/AndroidBillingLibrary/AndroidBillingLibrary.iml" afterPath="$PROJECT_DIR$/Externals/AndroidBillingLibrary/AndroidBillingLibrary.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Externals/android-sqlite-asset-helper-master/core/SqliteHelper.iml" afterPath="$PROJECT_DIR$/Externals/android-sqlite-asset-helper-master/core/SqliteHelper.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/classes/TopicBodyBuilder.java" afterPath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/classes/TopicBodyBuilder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/EditPost.java" afterPath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/EditPost.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/qms/QmsChatActivity.java" afterPath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/qms/QmsChatActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/Client.java" afterPath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/Client.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/classes/WebViewExternals.java" afterPath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/classes/WebViewExternals.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/NewsActivity.java" afterPath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/NewsActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/Tabs/DevicesTab.java" afterPath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/Tabs/DevicesTab.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/4pda.iml" afterPath="$PROJECT_DIR$/4pda.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Externals/4pdaApi/src/org/softeg/slartus/forpdaapi/QmsUser.java" afterPath="$PROJECT_DIR$/Externals/4pdaApi/src/org/softeg/slartus/forpdaapi/QmsUser.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/qms_chat.xml" afterPath="$PROJECT_DIR$/res/layout/qms_chat.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/history.txt" afterPath="$PROJECT_DIR$/assets/history.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/attachment_spinner_item.xml" afterPath="$PROJECT_DIR$/res/layout/attachment_spinner_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/topicview/ThemeActivity.java" afterPath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/topicview/ThemeActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/styles.xml" afterPath="$PROJECT_DIR$/res/values/styles.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Externals/android-sqlite-asset-helper-master/core/project.properties" afterPath="$PROJECT_DIR$/Externals/android-sqlite-asset-helper-master/core/project.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/forum/css/white.css" afterPath="$PROJECT_DIR$/assets/forum/css/white.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Externals/FileExplorer/FileExplorer.iml" afterPath="$PROJECT_DIR$/Externals/FileExplorer/FileExplorer.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/EditPostPlusActivity.java" afterPath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/EditPostPlusActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/classes/ProfileMenuFragment.java" afterPath="$PROJECT_DIR$/src/org/softeg/slartus/forpda/classes/ProfileMenuFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/search_activity_panel.xml" afterPath="$PROJECT_DIR$/res/layout/search_activity_panel.xml" />
+    </list>
+    <ignored path="4pda.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <file path="/SessionHistoryList.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362537960744" ignored="false" />
+    <file path="/SessionHistory.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362477595902" ignored="false" />
+    <file path="$PROJECT_DIR$/gen/org/softeg/slartus/forpda/BuildConfig.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362970379643" ignored="false" />
+    <file path="$PROJECT_DIR$/gen/org/softeg/slartus/forpda/Manifest.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362970379643" ignored="false" />
+    <file path="/BaseActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362385720154" ignored="false" />
+    <file path="/BaseFragmentActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362385744659" ignored="false" />
+    <file path="/ThemesTab.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362450516639" ignored="false" />
+    <file path="/IHttpClient.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362040825936" ignored="false" />
+    <file path="/IProgress.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362048392549" ignored="false" />
+    <file path="/ReputationActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361849759555" ignored="false" />
+    <file path="/SearchSettings.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361773052690" ignored="false" />
+    <file path="/SearchActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362453280094" ignored="false" />
+    <file path="/ExtSpinner.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361767496034" ignored="false" />
+    <file path="/spinner_txt.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361768572265" ignored="false" />
+    <file path="/search_activity.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363683573340" ignored="false" />
+    <file path="/MailBoxActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361761996303" ignored="false" />
+    <file path="/QuickStartActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361758978313" ignored="false" />
+    <file path="/DbHelper.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361504769479" ignored="false" />
+    <file path="/qms_prefs.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361436067894" ignored="false" />
+    <file path="/Note.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361505399427" ignored="false" />
+    <file path="/NoteActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362983031659" ignored="false" />
+    <file path="/note_view.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361502492005" ignored="false" />
+    <file path="/Tabs.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361445097196" ignored="false" />
+    <file path="/NotesTab.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361517842498" ignored="false" />
+    <file path="/DevicesTab.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362977666125" ignored="false" />
+    <file path="/ForumTreeTab.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361353481561" ignored="false" />
+    <file path="/NoteDialog.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361354751589" ignored="false" />
+    <file path="/NewsTab.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361353560421" ignored="false" />
+    <file path="/ThemeAdapter.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361516191948" ignored="false" />
+    <file path="/NewsActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361347845152" ignored="false" />
+    <file path="/CreateNoteDialog.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361347259102" ignored="false" />
+    <file path="/note.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361350939460" ignored="false" />
+    <file path="/NotesTable.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361515570375" ignored="false" />
+    <file path="/TopicBodyBuilder.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362109918700" ignored="false" />
+    <file path="/HtmlPreferences.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362459300441" ignored="false" />
+    <file path="/Post.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362999701976" ignored="false" />
+    <file path="/strings.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363765050766" ignored="false" />
+    <file path="/link_dialog.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361355802020" ignored="false" />
+    <file path="/ExtUrl.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361349457894" ignored="false" />
+    <file path="/theme.js" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362369591435" ignored="false" />
+    <file path="/textlines.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360657587205" ignored="false" />
+    <file path="/EditPostPlusActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362995964067" ignored="false" />
+    <file path="/TopicViewMenuFragment.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361847440315" ignored="false" />
+    <file path="/theme.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361763627526" ignored="false" />
+    <file path="/AllReceiver.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360566897111" ignored="false" />
+    <file path="/DownloadsService.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360577532352" ignored="false" />
+    <file path="/arrays.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361436133378" ignored="false" />
+    <file path="$PROJECT_DIR$/res/drawable/txt_view_bg.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360551193077" ignored="false" />
+    <file path="/preferences.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363747851464" ignored="false" />
+    <file path="/MainActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363764735637" ignored="false" />
+    <file path="/MyApp.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360663754587" ignored="false" />
+    <file path="/qms_chat.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361332291483" ignored="false" />
+    <file path="/qms_contacts_list.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360227694755" ignored="false" />
+    <file path="/qms_contact_item.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360226297846" ignored="false" />
+    <file path="/QmsUserThemes.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360232289559" ignored="false" />
+    <file path="/QmsUsers.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360121961210" ignored="false" />
+    <file path="/Client.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363576421098" ignored="false" />
+    <file path="/white.css" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360121745711" ignored="false" />
+    <file path="/IntentActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362970039360" ignored="false" />
+    <file path="/Log.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362557106796" ignored="false" />
+    <file path="/MailActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361761956231" ignored="false" />
+    <file path="/EditMailActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360811149579" ignored="false" />
+    <file path="/ThemeActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363603537397" ignored="false" />
+    <file path="/SearchResultView.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361353543823" ignored="false" />
+    <file path="/ForumUser.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360062064400" ignored="false" />
+    <file path="/QmsContactsActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360060643042" ignored="false" />
+    <file path="/Qms_2_0.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361436166214" ignored="false" />
+    <file path="/QmsContactThemesActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360894247521" ignored="false" />
+    <file path="/AndroidManifest.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363757411448" ignored="false" />
+    <file path="/qms_new_thread.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360058574228" ignored="false" />
+    <file path="/QmsNewThreadActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361436337244" ignored="false" />
+    <file path="/HttpHelper.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362049228183" ignored="false" />
+    <file path="/history.txt" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363671530655" ignored="false" />
+    <file path="/QmsChatActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361436318898" ignored="false" />
+    <file path="/fragment.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363760505518" ignored="false" />
+    <file path="$PROJECT_DIR$/Externals/AndroidBillingLibrary/gen/com/android/vending/billing/IMarketBillingService.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360048357132" ignored="false" />
+    <file path="$PROJECT_DIR$/Externals/chrisbanes-Android-PullToRefresh/library/project.properties" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362535931874" ignored="false" />
+    <file path="$PROJECT_DIR$/Externals/HoloEverywhere/library/project.properties" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1360048077400" ignored="false" />
+    <file path="/Dummy.txt" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1361766795383" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/AndroidManifest.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362559805816" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/res/layout/main.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362558767396" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/src/org/softeg/slartus/imageloader/MainActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362559713330" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/build.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362556278452" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/res/values/strings.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362556278452" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/src/org/softeg/slartus/imageloader/TouchImageView.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362556583013" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/src/org/softeg/slartus/imageloader/WrapMotionEvent.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362556611076" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/src/org/softeg/slartus/imageloader/EclairMotionEvent.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362556638873" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/project.properties" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362556655125" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/src/org/softeg/slartus/imageloader/ExtDisplay.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362556797073" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/src/org/softeg/slartus/imageloader/Log.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362557109803" ignored="false" />
+    <file path="/ImageViewActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362557405739" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/gen/org/softeg/slartus/imageloader/BuildConfig.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362559808140" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/gen/org/softeg/slartus/imageloader/Manifest.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362559808140" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/res/xml/preferences.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362559414119" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/src/org/softeg/slartus/imageloader/PreferencesActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362559576513" ignored="false" />
+    <file path="/PreferencesActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362559562333" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/ImageLoader/AndroidManifest.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362632430347" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/ImageLoader/res/xml/preferences.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362633228056" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/ImageLoader/src/org/softeg/slartus/imageloader/MainActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362635058640" ignored="false" />
+    <file path="$PROJECT_DIR$/../../ImageLoader/ImageLoader/res/layout/main.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362635064006" ignored="false" />
+    <file path="/DevDbDeviceActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1362982435685" ignored="false" />
+    <file path="/AdvWebView.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363602331279" ignored="false" />
+    <file path="/QuickAction.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363668499566" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/res/layout/main_otradny.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363754154359" ignored="false" />
+    <file path="/main_otradny.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363753915478" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/src/org/softeg/slartus/gpstaxi/pro/MainActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363766940907" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/src/org/softeg/slartus/gpstaxi/pro/common/Functions.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363755096170" ignored="false" />
+    <file path="/Functions.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363755093190" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/res/values/strings.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363768741689" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/AndroidManifest.xml" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363757412700" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/gen/org/softeg/slartus/gpstaxi/pro/Manifest.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363757415412" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/gen/org/softeg/slartus/gpstaxi/pro/R.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363757415412" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/gen/org/softeg/slartus/gpstaxi/pro/BuildConfig.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363757414800" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/src/org/softeg/slartus/gpstaxi/pro/TariffEditActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363757586698" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/src/org/softeg/slartus/gpstaxi/pro/tariffs/TariffKmMnPayment.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363757193833" ignored="false" />
+    <file path="/TariffKmMnPayment.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363757190238" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/src/org/softeg/slartus/gpstaxi/pro/MyApp.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363757388189" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/src/org/softeg/slartus/gpstaxi/pro/tariffs/TariffBase.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363760738379" ignored="false" />
+    <file path="/TariffBase.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363760713614" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/src/org/softeg/slartus/gpstaxi/pro/OrdersAdapter.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363769599226" ignored="false" />
+    <file path="/OrdersAdapter.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363769589321" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/src/org/softeg/slartus/gpstaxi/pro/MapViewActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363760206842" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/src/org/softeg/slartus/gpstaxi/pro/OrderMapViewActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363760233784" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/src/org/softeg/slartus/gpstaxi/pro/BackupManager.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363760653151" ignored="false" />
+    <file path="/BackupManager.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363760625211" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/src/org/softeg/slartus/gpstaxi/pro/common/Log.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363760877190" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/src/org/softeg/slartus/gpstaxi/pro/common/DiffKmCosts.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363761013386" ignored="false" />
+    <file path="/DiffKmCosts.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363761008963" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/src/org/softeg/slartus/gpstaxi/pro/common/AppPrefs.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363764724802" ignored="false" />
+    <file path="/AppPrefs.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363764724802" ignored="false" />
+    <file path="$PROJECT_DIR$/../../GPS-Taxi/Taxo/src/org/softeg/slartus/gpstaxi/pro/OrderInfoActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363776885754" ignored="false" />
+    <file path="/OrderInfoActivity.java" changelist="2e4cc96f-3383-4738-a3c3-50081ed7580e" time="1363776794187" ignored="false" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="DebuggerManager">
+    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </breakpoint_any>
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint url="file://$PROJECT_DIR$/src/org/softeg/slartus/forpda/ImageViewActivity.java" line="147" class="org.softeg.slartus.forpda.ImageViewActivity" package="org.softeg.slartus.forpda">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/src/org/softeg/slartus/forpda/topicview/SessionHistory.java" line="32" class="org.softeg.slartus.forpda.topicview.SessionHistory" package="org.softeg.slartus.forpda.topicview">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </line_breakpoints>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <breakpoint_rules />
+    <ui_properties />
+  </component>
+  <component name="ErrorTreeViewConfiguration">
+    <option name="hideWarnings" value="true" />
+    <option name="HIDE_WARNINGS" value="true" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="4pda" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="history.txt" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/assets/history.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="6" selection-start="591" selection-end="591" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="preferences.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/xml/preferences.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="203" column="0" selection-start="11906" selection-end="11906" vertical-scroll-proportion="-24.88">
+              <folding>
+                <element signature="tag#PreferenceScreen#2;tag#PreferenceScreen#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="login.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/login.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="31" column="24" selection-start="1435" selection-end="1435" vertical-scroll-proportion="-6.86">
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="topic.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/topic.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.0">
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="theme.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/layout/theme.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="81" column="52" selection-start="3315" selection-end="3315" vertical-scroll-proportion="-8.16">
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="29" column="61" selection-start="1498" selection-end="1498" vertical-scroll-proportion="0.5647194">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MyApp.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/softeg/slartus/forpda/MyApp.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="186" column="53" selection-start="6056" selection-end="6056" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/softeg/slartus/forpda/MainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="39" column="13" selection-start="1272" selection-end="1272" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ImageViewActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/softeg/slartus/forpda/ImageViewActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="37" column="13" selection-start="1133" selection-end="1133" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IntentActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/softeg/slartus/forpda/IntentActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="44" column="53" selection-start="1540" selection-end="1540" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="GenerateSignedApkSettings">
+    <option name="KEY_STORE_PATH" value="d:\projects\Dropbox\!Projects\!android\4pda\4pda files\keystore.key" />
+    <option name="KEY_ALIAS" value="4pdakey" />
+    <option name="REMEMBER_PASSWORDS" value="true" />
+  </component>
+  <component name="GradleLocalSettings">
+    <option name="expandStates">
+      <map>
+        <entry key="4pda" value="true" />
+      </map>
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpda/DevDbDeviceActivity.java" />
+        <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpda/notes/NoteActivity.java" />
+        <option value="$PROJECT_DIR$/Externals/4pdaApi/src/org/softeg/slartus/forpdaapi/Post.java" />
+        <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpda/EditPostPlusActivity.java" />
+        <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpda/download/DownloadsService.java" />
+        <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpda/Client.java" />
+        <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpda/Mail/MailActivity.java" />
+        <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpda/search/SearchResultView.java" />
+        <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpda/TopicBrowser/TopicWebView.java" />
+        <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpda/classes/AdvWebView.java" />
+        <option value="$PROJECT_DIR$/Externals/QuickActions/src/net/londatiga/android/QuickAction.java" />
+        <option value="$PROJECT_DIR$/res/layout/search_activity.xml" />
+        <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpda/topicview/ThemeActivity.java" />
+        <option value="$PROJECT_DIR$/assets/history.txt" />
+        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/res/xml/preferences.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <OptionsSetting value="true" id="Undo Check Out" />
+    <OptionsSetting value="true" id="Get Latest Version" />
+    <ConfirmationsSetting value="1" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="QuickActions" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="QuickActions" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="library" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="forpda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="forpda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="topicview" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="xml" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="false" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="OverrideImplement.combined" value="false" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="GenerateAntBuildDialog.generateSingleFile" value="false" />
+    <property name="ExportedApkPath" value="d:\projects\Dropbox\!Projects\!android\4pda\4pda files\4pda_v1.7.6.apk" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="recentsLimit" value="5" />
+    <property name="ExportedModule" value="4pda" />
+    <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../GPS-Taxi/Taxo/GPS-Taxi Pro.ipr" />
+    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="4pda" />
+    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="2_3_3_LowMemory" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="AndroidLayoutSelectedEditor" value="text-editor" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
+    <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="emulator-5554" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="AndroidRunProguardForReleaseBuild" value="false" />
+    <property name="restartRequiresConfirmation" value="true" />
+    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.softeg.slartus.forpda.qms_2_0" />
+      <recent name="org.softeg.slartus.forpda.qms_new" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Projects\Dropbox\!Projects\!android\4pda\4pda\assets\databases" />
+      <recent name="D:\Projects\Dropbox\!Projects\!android\4pda\4pda\res\values-large" />
+      <recent name="D:\Projects\Dropbox\!Projects\!android\4pda\4pda\res\layout-large" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Android Application.4pda">
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m" />
+      <option name="PROGRAM_PARAMETERS" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Example-v2" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="Example-v2" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Fragments" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="Fragments" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Known-bugs" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="Known-bugs" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Sample" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="4pda" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="4pda" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="PREFERRED_AVD" value="android_4.0.3" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <RunnerSettings RunnerId="AndroidDebugRunner" />
+      <ConfigurationWrapper RunnerId="AndroidDebugRunner" />
+      <method />
+    </configuration>
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="Android Application.Example-v2" />
+      <item index="1" class="java.lang.String" itemvalue="Android Application.Fragments" />
+      <item index="2" class="java.lang.String" itemvalue="Android Application.Known-bugs" />
+      <item index="3" class="java.lang.String" itemvalue="Android Application.Sample" />
+      <item index="4" class="java.lang.String" itemvalue="Android Application.4pda" />
+    </list>
+    <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
+      <Host>localhost</Host>
+      <Port>5050</Port>
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="DETECT_NESTED_COPIES" value="true" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <option name="IGNORE_EXTERNALS" value="false" />
+    <configuration useDefault="false">C:\Users\slinkin\AppData\Roaming\Subversion</configuration>
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+    <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2e4cc96f-3383-4738-a3c3-50081ed7580e" name="Default" comment="" />
+      <created>1355799548708</created>
+      <updated>1355799548708</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977587" sideWeight="0.6840934" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22596154" sideWeight="0.64849836" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35150167" sideWeight="0.49573106" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23136818" sideWeight="0.50053364" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31590655" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16115262" sideWeight="0.64849836" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977587" sideWeight="0.84538376" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24813233" sideWeight="0.84538376" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26807564" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3259177" sideWeight="0.49573106" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4131403" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_NEW_TODO" value="true" />
+    <option name="myTodoPanelSettings">
+      <value>
+        <are-packages-shown value="false" />
+        <are-modules-shown value="false" />
+        <flatten-packages value="false" />
+        <is-autoscroll-to-source value="false" />
+      </value>
+    </option>
+    <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
+    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
+    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
+    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
+    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
+    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
+    <option name="SHORT_DIFF_HORISONTALLY" value="true" />
+    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
+    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
+    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
+    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
+    <option name="SHOW_FILE_HISTORY_DETAILS" value="true" />
+    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
+    <option name="SHOW_DIRTY_RECURSIVELY" value="false" />
+    <option name="LIMIT_HISTORY" value="true" />
+    <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
+    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
+    <option name="LAST_COMMIT_MESSAGE" />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
+    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
+    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
+    <option name="ACTIVE_VCS_NAME" />
+    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
+    <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
+    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
+    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+  </component>
+  <component name="VssConfiguration">
+    <option name="CLIENT_PATH" value="" />
+    <option name="SRCSAFEINI_PATH" value="" />
+    <option name="USER_NAME" value="" />
+    <option name="PWD" value="" />
+    <CheckoutOptions>
+      <option name="COMMENT" value="" />
+      <option name="DO_NOT_GET_LATEST_VERSION" value="false" />
+      <option name="REPLACE_WRITABLE" value="false" />
+      <option name="RECURSIVE" value="false" />
+    </CheckoutOptions>
+    <CheckinOptions>
+      <option name="COMMENT" value="" />
+      <option name="KEEP_CHECKED_OUT" value="false" />
+      <option name="RECURSIVE" value="false" />
+    </CheckinOptions>
+    <AddOptions>
+      <option name="STORE_ONLY_LATEST_VERSION" value="false" />
+      <option name="CHECK_OUT_IMMEDIATELY" value="false" />
+    </AddOptions>
+    <UndocheckoutOptions>
+      <option name="MAKE_WRITABLE" value="false" />
+      <option name="REPLACE_LOCAL_COPY" value="2" />
+      <option name="RECURSIVE" value="false" />
+    </UndocheckoutOptions>
+    <GetOptions>
+      <option name="REPLACE_WRITABLE" value="0" />
+      <option name="MAKE_WRITABLE" value="false" />
+      <option name="ANSWER_NEGATIVELY" value="false" />
+      <option name="ANSWER_POSITIVELY" value="false" />
+      <option name="RECURSIVE" value="false" />
+      <option name="VERSION" />
+    </GetOptions>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="jar://C:/android-sdk-windows/platforms/android-16/android.jar!/android/widget/PopupWindow.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="85" column="16" selection-start="3235" selection-end="3235" vertical-scroll-proportion="0.33213645" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Externals/QuickActions/src/net/londatiga/android/QuickAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="180" column="56" selection-start="5116" selection-end="5116" vertical-scroll-proportion="0.019473081">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Externals/QuickActions/src/net/londatiga/android/PopupWindows.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="102" column="0" selection-start="2164" selection-end="2164" vertical-scroll-proportion="0.27949598">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/arrays.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="145" column="72" selection-start="3782" selection-end="3782" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/search_activity.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="83" selection-start="890" selection-end="890" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/softeg/slartus/forpda/topicview/ThemeActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1386" column="11" selection-start="50641" selection-end="50641" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/softeg/slartus/forpda/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="13" selection-start="1272" selection-end="1272" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/softeg/slartus/forpda/ImageViewActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="13" selection-start="1133" selection-end="1133" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/softeg/slartus/forpda/IntentActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="53" selection-start="1540" selection-end="1540" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/assets/history.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="6" selection-start="591" selection-end="591" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/xml/preferences.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="203" column="0" selection-start="11906" selection-end="11906" vertical-scroll-proportion="-24.88">
+          <folding>
+            <element signature="tag#PreferenceScreen#2;tag#PreferenceScreen#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/login.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="24" selection-start="1435" selection-end="1435" vertical-scroll-proportion="-6.86">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/topic.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/theme.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="81" column="52" selection-start="3315" selection-end="3315" vertical-scroll-proportion="-8.16">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/softeg/slartus/forpda/MyApp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="186" column="53" selection-start="6056" selection-end="6056" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="61" selection-start="1498" selection-end="1498" vertical-scroll-proportion="0.5647194">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Android</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.6</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>4pda</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.6</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>apache</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
+

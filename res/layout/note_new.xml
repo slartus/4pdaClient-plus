@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:capitalize="sentences"
+            android:singleLine="true"
+
+            android:hint="@string/EnterSubject_"
+
+            android:padding="5dip"
+
+            android:layout_toLeftOf="@+id/clear_title">
+
+            <requestFocus />
+        </EditText>
+
+        <ImageButton
+            android:id="@+id/clear_title"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_delete" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <EditText
+
+            android:padding="5dip"
+
+            android:hint="@string/EnterMessage_"
+            android:id="@+id/message"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottomPanel"
+            android:layout_below="@+id/topPanel"
+            android:capitalize="sentences"
+            android:gravity="top"
+            android:minLines="10"
+            android:scrollHorizontally="false"
+            android:textCursorDrawable="@null"
+            android:singleLine="false">
+
+            <requestFocus />
+        </EditText>
+
+        <ImageButton
+            android:id="@+id/clear_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="right|bottom"
+            android:background="@drawable/ic_delete" />
+    </FrameLayout>
+</LinearLayout>

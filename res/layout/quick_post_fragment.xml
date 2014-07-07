@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/list_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+
+        <ImageButton
+            android:padding="5dip"
+            android:background="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_show_post_panel"
+            android:id="@+id/advanced_button"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentEnd="false"
+            android:layout_centerVertical="true"
+            android:contentDescription="Дополнительно"
+            android:layout_alignTop="@+id/post_text"
+            android:layout_alignBottom="@+id/post_text" />
+
+        <EditText
+            android:background="?android:attr/colorBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/post_text"
+            android:layout_toRightOf="@+id/advanced_button"
+            android:layout_toLeftOf="@+id/send_button"
+            android:layout_centerVertical="true"
+            android:capitalize="sentences"
+            android:inputType="textMultiLine|textCapSentences"
+            android:singleLine="false"
+            android:maxLines="6"
+            android:minLines="2"/>
+
+        <ImageButton
+            android:padding="5dip"
+            android:background="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_send"
+            android:layout_alignParentRight="true"
+            android:id="@+id/send_button"
+            android:layout_centerVertical="true"
+            android:contentDescription="Отправить"
+            android:layout_alignTop="@+id/post_text"
+            android:layout_alignBottom="@+id/post_text" />
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:background="?android:attr/colorBackground"
+        android:orientation="vertical"
+        android:id="@+id/footer_for_emoticons"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/keyboard_height"
+
+        android:visibility="gone" />
+</LinearLayout>

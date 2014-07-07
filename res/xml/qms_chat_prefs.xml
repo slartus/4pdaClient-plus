@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<EditTextPreference android:key="qms.chat.messages_count"-->
+    <!--android:defaultValue="10"-->
+    <!--android:title="Количество сообщений"-->
+    <!--android:summary="Количество сообщений из истории"-->
+    <!--android:inputType="number"/>-->
+    <EditTextPreference
+        android:key="qms.chat.update_timer"
+        android:defaultValue="15"
+        android:title="Таймаут обновления"
+        android:summary="Частота обновления"
+        android:inputType="number" />
+
+    <ListPreference
+        android:key="qms.chat.encoding"
+        android:defaultValue="UTF-8"
+        android:title="Кодировка"
+        android:summary="Смените кодировку при проблемах с отображением символов"
+        android:entries="@array/EncodingArray"
+        android:entryValues="@array/EncodingValues" />
+
+</PreferenceScreen>

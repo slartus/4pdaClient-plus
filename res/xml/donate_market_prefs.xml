@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:title="@string/SupportTheDeveloper"
+        android:summary="0.99$"
+        android:key="Billing.OneLevel" />
+    <Preference
+        android:title="@string/GiveBeer"
+        android:summary="2.99$"
+        android:key="Billing.ThreeLevel" />
+    <Preference
+        android:title="@string/ImproveMood"
+        android:summary="4.99$"
+        android:key="Billing.FiveLevel" />
+    <Preference
+        android:title="СПАСИБО!"
+        android:summary="9.99$"
+        android:key="Billing.TenLevel" />
+</PreferenceScreen>

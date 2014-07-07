@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="android" name="Android">
+      <configuration>
+        <includeAssetsFromLibraries>true</includeAssetsFromLibraries>
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/Externals" />
+      <excludeFolder url="file://$MODULE_DIR$/libs" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="QuickActions" />
+    <orderEntry type="module" module-name="SqliteHelper" />
+    <orderEntry type="module" module-name="4pdaApi" />
+    <orderEntry type="module" module-name="4pdaCommon" />
+    <orderEntry type="module" module-name="4pdaNotifyService" />
+    <orderEntry type="module" module-name="NewQuickAction3D-master" />
+    <orderEntry type="module" module-name="chrisbanes-Android-PullToRefresh" />
+    <orderEntry type="module" module-name="ActionBar-PullToRefresh" />
+    <orderEntry type="module" module-name="SqliteAnnotations" />
+    <orderEntry type="module" module-name="AndroidBillingLibrary" />
+    <orderEntry type="library" name="apache" level="project" />
+    <orderEntry type="module" module-name="4pdaSources" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/annotations.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+  </component>
+</module>
+

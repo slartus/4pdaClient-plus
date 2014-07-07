@@ -1,0 +1,75 @@
+package org.softeg.slartus.forpdaplus.db;
+
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
+import org.softeg.slartus.forpdaplus.common.Log;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: slinkin
+ * Date: 22.11.12
+ * Time: 7:25
+ * To change this template use File | Settings | File Templates.
+ */
+public class TopicsTable {
+    public static final String TABLE_NAME = "Topics";
+    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_FORUM_ID = "ForumId";
+    public static final String COLUMN_TITLE = "Title";
+    public static final String COLUMN_DESCRIPTION = "Description";
+    public static final String COLUMN_LAST_MESSAGE_DATE = "LastMessageDate";
+    public static final String COLUMN_LAST_MESSAGE_Author = "LastMessageAuthor";
+    public static final String COLUMN_HASNEW = "HasNew";
+    public static final String COLUMN_NUMBER = "Number";
+
+    public static void addTopic(ExtTopic topic, Boolean ifNotExists) {
+        SQLiteDatabase db = null;
+        Cursor c = null;
+        try {
+            DbHelper dbHelper = new DbHelper(MyApp.getInstance());
+            db = dbHelper.getWritableDatabase();
+
+            addTopic(db, topic, ifNotExists);
+        } catch (Exception ex) {
+            Log.e(MyApp.getInstance(), ex);
+        } finally {
+            if (db != null) {
+                if (c != null)
+                    c.close();
+                db.close();
+            }
+        }
+    }
+
+    public static void addTopic(SQLiteDatabase db, ExtTopic topic, Boolean ifNotExists) {
+        String count = "SELECT count(*) FROM " + TABLE_NAME + " where _id=?";
+        String[] args = new String[]{topic.getId()};
+        Cursor mcursor = db.rawQuery(count, args);
+        mcursor.moveToFirst();
+        int icount = mcursor.getInt(0);
+        mcursor.close();
+        if (icount > 0 && ifNotExists) {
+            return;
+        }
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ID, topic.getId());
+        values.put(COLUMN_FORUM_ID, topic.getForumId());
+        values.put(COLUMN_TITLE, topic.getTitle().toString());
+        values.put(COLUMN_DESCRIPTION, topic.getDescription() == null ? null : topic.getDescription().toString());
+        if (topic.getLastMessageDate() != null)
+            values.put(COLUMN_LAST_MESSAGE_DATE, DbHelper.DateTimeFormat.format(topic.getLastMessageDate()));
+        if (topic.getLastMessageAuthor() != null)
+            values.put(COLUMN_LAST_MESSAGE_Author, topic.getLastMessageAuthor().toString());
+        values.put(COLUMN_HASNEW, topic.getIsNew());
+        if (icount > 0) {
+            db.update(TABLE_NAME, values, "_id=?", new String[]{topic.getId()});
+        } else {
+            db.insertOrThrow(TABLE_NAME, null, values);
+        }
+
+    }
+}

@@ -1,0 +1,241 @@
+<resources>
+    <string-array name="ThemeActionsArray">
+        <item>К первому</item>
+        <item>К последнему</item>
+        <item>К первому непрочитанному</item>
+    </string-array>
+
+    <string-array name="ThemeActionsValues">
+        <item>getfirstpost</item>
+        <item>getlastpost</item>
+        <item>getnewpost</item>
+    </string-array>
+
+    <string-array name="SearchSourceArray">
+        <item>Везде</item>
+        <item>Только в заголовках тем</item>
+        <item>Только в сообщениях</item>
+    </string-array>
+
+    <string-array name="SearchSourceValues">
+        <item>all</item>
+        <item>top</item>
+        <item>pst</item>
+    </string-array>
+
+    <string-array name="ConnectTypeArray">
+        <item>Всегда</item>
+        <item>Только Wi-Fi</item>
+        <item>Никогда</item>
+    </string-array>
+
+    <string-array name="ConnectTypeValues">
+        <item>1</item>
+        <item>2</item>
+        <item>0</item>
+    </string-array>
+
+    <string-array name="NewsListViewTitles">
+        <item>Полный</item>
+        <item>Сокращенный</item>
+    </string-array>
+
+    <string-array name="NewsListViewValues">
+        <item>full</item>
+        <item>medium</item>
+    </string-array>
+
+    <string-array name="SearchSortArray">
+        <item>Релевантности (соответствию запросу)</item>
+        <item>Дате (от новых к старым)</item>
+        <item>Дате (от старых к новым)</item>
+    </string-array>
+
+    <string-array name="SearchSortValues">
+        <item>rel</item>
+        <item>dd</item>
+        <item>da</item>
+    </string-array>
+
+    <string-array name="SearchResultTitles">
+        <item>Сообщений</item>
+        <item>Тем</item>
+    </string-array>
+
+    <string-array name="SearchResultValues">
+        <item>posts</item>
+        <item>topics</item>
+
+    </string-array>
+
+    <string-array name="EncodingArray">
+        <item>Windows-1251</item>
+        <item>UTF-8</item>
+
+    </string-array>
+
+    <string-array name="EncodingValues">
+        <item>Windows-1251</item>
+        <item>UTF-8</item>
+    </string-array>
+
+    <string-array name="appthemesArray">
+        <item>Светлый</item>
+        <item>Тёмный</item>
+        <item>Цвета как в браузере</item>
+        <item>Светлый для планшетов</item>
+        <item>Тёмный для планшетов</item>
+    </string-array>
+
+    <string-array name="appthemesValues">
+        <item>0</item>
+        <item>1</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+    </string-array>
+
+    <string-array name="screenOrienationArray">
+        <item>Авто</item>
+        <item>Горизонтально</item>
+        <item>Вертикально</item>
+    </string-array>
+
+    <string-array name="screenOrienationValues">
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+
+    <string-array name="downloaderManagersArray">
+        <item>Системного менеджера</item>
+        <item>Клиента</item>
+        <item>Внешнего менеджера</item>
+    </string-array>
+
+    <string-array name="downloaderManagersValues">
+        <item>1</item>
+        <item>0</item>
+        <item>2</item>
+    </string-array>
+
+    <string-array name="listOffsetsArray">
+        <item>Выше</item>
+        <item>Нормально</item>
+        <item>Ниже</item>
+    </string-array>
+    <string-array name="listOffsetsValues">
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <string-array name="CacheModeArray">
+        <item>По умолчанию</item>
+        <item>Нормальный</item>
+        <item>Ниже</item>
+    </string-array>
+    <string-array name="CacheModeValues">
+        <item>-1</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="video_player_types_titles">
+        <item>@string/client_player</item>
+        <item>@string/system_player</item>
+    </string-array>
+    <string-array name="video_player_types_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+    <string-array name="drawermenupositions_titles">
+        <item>Слева</item>
+        <item>Справа</item>
+    </string-array>
+    <string-array name="drawermenupositions_values">
+        <item>left</item>
+        <item>right</item>
+    </string-array>
+
+    <string-array name="forum_topics_sort_key_titles">
+        <item>последнему сообщению</item>
+        <item>последнему автору</item>
+        <item>названиям темы</item>
+        <item>автору темы</item>
+        <item>дате открытия</item>
+        <item>присоединениям</item>
+        <item>ответам</item>
+        <item>просмотрам</item>
+    </string-array>
+    <string-array name="forum_topics_sort_key_values">
+        <item>last_post</item>
+        <item>last_poster_name</item>
+        <item>title</item>
+        <item>starter_name</item>
+        <item>start_date</item>
+        <item>topic_hasattach</item>
+        <item>posts</item>
+        <item>views</item>
+    </string-array>
+
+    <string-array name="forum_topics_sort_by_titles">
+        <item>А-Я</item>
+        <item>Я-А</item>
+    </string-array>
+    <string-array name="forum_topics_sort_by_values">
+        <item>A-Z</item>
+        <item>Z-A</item>
+    </string-array>
+
+    <string-array name="forum_topics_prune_day_titles">
+        <item>сегодня</item>
+        <item>5 дней</item>
+        <item>7 дней</item>
+        <item>10 дней</item>
+        <item>15 дней</item>
+        <item>20 дней</item>
+        <item>25 дней</item>
+        <item>30 дней</item>
+        <item>60 дней</item>
+        <item>90 дней</item>
+        <item>все время</item>
+    </string-array>
+    <string-array name="forum_topics_prune_day_values">
+        <item>1</item>
+        <item>5</item>
+        <item>7</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>60</item>
+        <item>90</item>
+        <item>100</item>
+    </string-array>
+
+    <string-array name="forum_topics_topicfilter_titles">
+        <item>Все</item>
+        <item>Открытые</item>
+        <item>Горячие</item>
+        <item>Опросы</item>
+        <item>Закрытые</item>
+        <item>Перемещенные</item>
+        <item>Созданные мною</item>
+        <item>С моими ответами</item>
+    </string-array>
+    <string-array name="forum_topics_topicfilter_values">
+        <item>all</item>
+        <item>open</item>
+        <item>hot</item>
+        <item>poll</item>
+        <item>locked</item>
+        <item>moved</item>
+        <item>istarted</item>
+        <item>ireplied</item>
+    </string-array>
+</resources>
