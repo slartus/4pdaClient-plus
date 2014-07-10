@@ -2,18 +2,15 @@ package org.softeg.slartus.forpdaplus.mainnotifiers;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.webkit.WebView;
-import android.widget.TextView;
 
 import org.softeg.slartus.forpdacommon.DateExtensions;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdacommon.Http;
-import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MyApp;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -27,8 +24,8 @@ import java.util.regex.Pattern;
  * Created by slartus on 03.06.2014.
  */
 public class TopicAttentionNotifier extends MainNotifier {
-    public TopicAttentionNotifier() {
-        super("TopicAttentionNotifier", 2);
+    public TopicAttentionNotifier(NotifiersManager notifiersManager) {
+        super(notifiersManager,"TopicAttentionNotifier", 2);
     }
 
     public void start(Context context) {
@@ -57,7 +54,7 @@ public class TopicAttentionNotifier extends MainNotifier {
     }
 
 
-    public static void showNotify(final Context context) {
+    public void showNotify(final Context context) {
         final Handler handler = new Handler();
         new Thread(new Runnable() {
             public void run() {
@@ -81,25 +78,33 @@ public class TopicAttentionNotifier extends MainNotifier {
                     final String topicAttention = m.group(2);
                     handler.post(new Runnable() {
                         public void run() {
-                            StringBuilder body=new StringBuilder();
-                            body.append("<http>\n");
-                            body.append("<head>\n");
-                            body.append("<meta http-equiv=\"content-type\" content=\"text/html; charset=windows-1251\" />\n");
-                            body.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">\n");
-                            body.append("</head>");
-                            body.append("<body>");
-                            body.append(topicAttention);
-                            body.append("</body>");
-                            body.append("</html>");
-                            WebView webView=new WebView(context);
-                            webView.getSettings().supportZoom();
-                            AlertDialog dialog = new AlertDialogBuilder(context)
-                                    .setTitle("Обьявление")
-                                    .setView(webView)
-                                    .setPositiveButton("Я прочитал", null)
-                                    .create();
-                            dialog.show();
-                            webView.loadDataWithBaseURL("http://4pda.ru/forum/", body.toString(), "text/html", "UTF-8", null);
+                            final WebView webView=new WebView(context);
+                            AlertDialog alertDialog=
+                                    new AlertDialogBuilder(context)
+                                            .setTitle("Обьявление")
+                                            .setView(webView)
+                                            .setPositiveButton("Я прочитал", null).create();
+                            addToStack(alertDialog);
+                            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                                @Override
+                                public void onShow(DialogInterface dialogInterface) {
+                                    StringBuilder body=new StringBuilder();
+                                    body.append("<http>\n");
+                                    body.append("<head>\n");
+                                    body.append("<meta http-equiv=\"content-type\" content=\"text/html; charset=windows-1251\" />\n");
+                                    body.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">\n");
+                                    body.append("</head>");
+                                    body.append("<body>");
+                                    body.append(topicAttention);
+                                    body.append("</body>");
+                                    body.append("</html>");
+
+                                    webView.getSettings().supportZoom();
+                                    webView.loadDataWithBaseURL("http://4pda.ru/forum/", body.toString(), "text/html", "UTF-8", null);
+                                }
+                            });
+
+
 
                         }
                     });

@@ -60,7 +60,7 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
     @Override
     protected boolean inBackground(boolean isRefresh) throws Throwable {
         ArrayList<QmsUser> users = QmsApi.getQmsSubscribers(Client.getInstance());
-        Client.getInstance().setQms_2_0_Count(QmsUsers.unreadMessageUsersCount(users));
+        Client.getInstance().setQmsCount(QmsUsers.unreadMessageUsersCount(users));
         Client.getInstance().doOnMailListener();
         mLoadResultList = users;
         return true;

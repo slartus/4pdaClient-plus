@@ -369,15 +369,17 @@ border-bottom: 2px groove #222;*/
 }
 /*** QMS ***/
 .check-item {
+  margin-top: -0.4em;
   display: block;
   text-align: right;
   line-height: 1.5;
-  padding-top: 0.3em;
+  float: right;
 }
 #thread-inside-top ~ .date {
-  border-bottom: dotted 1px #b3b3b3;
-  margin: 3em auto;
+  /*font-size: 1rem;*/
+  margin-right: 0.4em;
   text-align: center;
+  margin-bottom: 1em;
 }
 .date .text {
   top: 0.6em;
@@ -400,55 +402,87 @@ border-bottom: 2px groove #222;*/
   background: #c77;
 }
 .avatar-wrap {
-  display: block;
-  overflow: hidden;
-  width: 4em;
-  margin-left: 0.3em;
-  margin-top: -1.2em;
+  margin-top: 1.2em;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.15em;
+  float: left;
+  border-radius: 0.2em;
+  border: 1px solid #999999;
+  background: #efefef;
+  -webkit-box-shadow: 0.1em 0.3em 0.4em #cccccc;
 }
-.avatar {
-  display: inline-block;
-  width: 4em;
-  line-height: 4em;
-  background: #f0f0f0;
+.avatar-wrap > .avatar {
+  max-height: 5em;
+  width: 5em;
 }
 label ~ .time {
   position: relative;
   float: right;
-  margin-right: 1.7em;
-  margin-top: -1.4em;
-  font-size: 0.9rem;
-  color: #4d4d4d;
+  font-size: 0.85em;
+  color: #666666;
+  margin-tight: 0;
+  margin-top: -0.1em;
 }
-strong,
-strong span {
-  line-height: 1.5;
-  font-size: 1.1rem;
-  margin-left: 0.2em;
+strong {
+  line-height: 0.8em;
+  width: 1em;
+  position: absolute;
+  font-size: 1.1em;
+  margin-bottom: 0.4em;
+  margin-left: -5.4em;
 }
 .list-group-item {
   display: block;
-  margin: 1em 0.2em;
-  padding: 0.2m;
-  border-top: 0.2em solid #5588cc;
-  background: #f0f0f0;
+  margin: 1.5em 0.3em;
+  padding: 0.2em;
+  padding-bottom: 1em !important;
+  /*border-top:  1px solid #555;
+background: #202020;
+-webkit-box-shadow: 1px 0.4em 0.8em #000;*/
 }
+.avatar-wrap:before,
+.avatar-wrap:after {
+  position: absolute;
+  content: '';
+  left: 6rem;
+  border: 12px solid transparent;
+  border-right: 12px solid #999999 !important;
+}
+.avatar-wrap:after {
+  left: 6.1rem;
+  border-right: 12px solid #ffffff !important;
+}
+/*.list-group-item.our-message > 
+.avatar-wrap:after{
+border-right: 12px solid mix(@color, @bg-color, 5%) !important;
+}*/
 .msg-content {
-  margin: 0 0 -0.3em 0;
-  padding: 0.5em;
-  border-top: 1px #b3b3b3 solid;
+  border-radius: 0.3em;
+  min-height: 5em;
+  margin: 0 0.2em 0 6.9em;
+  padding: 0.4em 0.6em;
+  border: 1px solid #999999;
   color: #000000;
   background: #ffffff;
+  -webkit-box-shadow: 0.2em 0.2em 0.3em #cccccc;
+}
+.list-group-item.our-message > .msg-content {
+  /*background: mix(@color, @bg-color, 5%);*/
+  color: #666666;
 }
 #bottom_element {
   margin: 2em 0em;
   text-align: center;
+  background: #ffffff;
 }
 #bottom_element:before {
   content: '~КОНЕЦ~';
-  color: #999;
+  color: #999999;
   font-weight: bold;
   display: inline-block;
+  background: #ffffff;
 }
 /*** END QMS ***/
 table {
@@ -567,8 +601,10 @@ img {
 .post_nick_online_cli {
   position: relative;
   display: block;
-  padding: 0.5rem 0;
-  margin: -0.25rem -0.15rem 0 -0.2em;
+  height: 2rem;
+  line-height: 2rem;
+  padding-top: 0.1rem;
+  margin: -0.35rem -0.15rem 0 -0.2em;
   text-align: center;
   line-height: 1.4;
   width: 13.95rem;
@@ -581,7 +617,6 @@ img {
 .post_nick_cli a,
 .post_nick_online_cli a {
   font-size: 1.1em;
-  line-height: 1;
   font-weight: bold;
   color: #191919 !important;
 }
@@ -589,31 +624,31 @@ img {
 .post_nick_online_cli a:hover {
   opacity: 0.5;
 }
-.post_nick_cli:after {
-  content: 'offline';
+.post_nick_cli:after,
+.post_nick_online_cli:after {
   position: absolute;
-  width: 13.9em;
+  width: 13.9rem;
   display: block;
+  text-align: center;
   text-decoration: none !important;
-  margin: 0.8em 0 0;
-  color: #9b0000 !important;
+  margin: 0.6em 0 0;
 }
 .post_nick_online_cli:after {
   content: 'online';
-  position: absolute;
-  width: 13.9em;
-  display: block;
-  text-decoration: none !important;
-  margin: 0.8em 0 0;
-  color: #00a300 !important;
+  color: #00b300 !important;
+}
+.post_nick_cli:after {
+  content: 'offline';
+  color: #9b0000 !important;
 }
 .post_nick {
   position: relative;
   display: block;
-  padding: 0.5rem 0;
+  line-height: 2rem;
+  height: 2rem;
+  padding: 0.1rem 0.8rem 0;
   margin: -1.45rem -0.15rem -1.2rem 0;
   text-align: center;
-  line-height: 1;
   border-top: 1px solid #a6a6a6;
   border-bottom: 0.1em solid #a6a6a6;
   border-right: 0.1rem solid #a6a6a6;
@@ -623,7 +658,6 @@ img {
 .post_nick a {
   font-size: 1.1rem !important;
   font-weight: bold;
-  line-height: 1;
   color: #191919;
 }
 .post_nick a:hover {
@@ -638,7 +672,7 @@ img {
   color: #4d4d4d;
   width: 13.9rem;
   font-size: 85%;
-  margin: 0 0;
+  margin: 1.8rem 0 0;
   line-heiht: 0.6;
   text-align: center;
 }
@@ -655,23 +689,14 @@ img {
   right: 0.2rem;
   display: inline-block;
   color: #545454;
-  line-height: 1.7;
-  min-height: 1.7rem !important;
-  padding: 0.15rem 0.8rem 0.35em;
+  line-height: 2rem;
+  height: 2rem;
+  padding: 0.1rem 0.8rem 0;
   margin-top: -1.3rem !important;
   border-top: 1px solid #a6a6a6;
   border-bottom: 1px solid #a6a6a6;
   background: #f0f0f0;
   left: 14rem;
-  /*		&:before{
-		position: absolute;
-		content:'';
-		left: 0.15rem;
-		border-left: 1px solid mix(@color, @bg-color, 35%);
-		margin: -0.15rem 0 0;
-		padding: 1.1em 0;
-		}
-*/
 }
 .post_header > TABLE > TBODY > TR > TD > DIV > SPAN.post_date_cli a,
 .post_header_container > DIV.post_header > SPAN.post_date a {
@@ -682,19 +707,19 @@ img {
   margin-top: -0.3rem !important;
   text-align: right;
   line-height: 1;
-  padding: 0.2rem 0.8rem 0.25em;
 }
 .avatar_container {
-  margin-top: 1.4em;
+  margin: 1.8em 0 -1.4rem;
   display: block;
   width: 13.9rem;
   border: none;
 }
 .avatar_container IMG {
-  display: inline-block;
+  display: table-cell;
+  margin: 0 auto;
   overflow: hidden;
   border: none;
-  width: 6rem;
+  height: 6rem;
   border-radius: 0.2rem;
   background: #ffffff;
 }
@@ -721,10 +746,11 @@ img {
 .hidetop {
   position: relative;
   display: block;
+  top: 0;
   margin-left: 13.9em !important;
   text-align: center;
-  line-height: 14em;
-  margin: 2.4em 0 0;
+  line-height: 14rem;
+  margin: 0 0 0.2rem;
 }
 .hidetop b {
   font-size: 1.4em;
@@ -757,6 +783,7 @@ DIV > DIV.post_body {
   margin-bottom: -0.1rem;
 }
 .between_messages {
+  position: relative;
   background: #5588cc;
   padding: 0.3rem 0 0 0;
   margin: 0.1em 0 -0.2rem;
@@ -1099,6 +1126,14 @@ color: #777;
 .quotetop img {
   margin-top: auto;
   margin-bottom: auto;
+}
+.post_body > DIV > STRONG > SPAN.edit{
+position: relative;
+display: block;
+line-height: 1.4;
+margin-top: -0.4rem;
+margin-left: 6rem;
+width: 11rem;
 }
 .edit {
   font-size: 0.9rem;

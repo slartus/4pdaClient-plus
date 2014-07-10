@@ -24,10 +24,10 @@ public class SessionHistory implements Parcelable {
         super();
     }
 
-    public SessionHistory(String themeId, String params, int x, int y) {
+    public SessionHistory(String themeId, String url, int x, int y) {
         super();
         m_ThemeId = themeId;
-        m_St = getSt(params);
+        m_St = getSt(url);
         m_X = x;
         m_Y = y;
     }

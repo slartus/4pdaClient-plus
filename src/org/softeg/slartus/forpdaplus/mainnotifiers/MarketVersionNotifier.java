@@ -2,8 +2,6 @@ package org.softeg.slartus.forpdaplus.mainnotifiers;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
 
@@ -14,15 +12,14 @@ import org.softeg.slartus.forpdaplus.MyApp;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.Log;
-import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
 
 /*
  * Created by slartus on 03.06.2014.
  */
 public class MarketVersionNotifier extends MainNotifier {
 
-    public MarketVersionNotifier(int period) {
-        super("MarketVersionNotifier", period);
+    public MarketVersionNotifier(NotifiersManager notifiersManager,int period) {
+        super(notifiersManager,"MarketVersionNotifier", period);
     }
 
     public void start(Context context) {

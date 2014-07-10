@@ -137,7 +137,7 @@ public abstract class BillingRequest {
     	RESULT_BILLING_UNAVAILABLE, // 3
     	RESULT_ITEM_UNAVAILABLE, // 4
     	RESULT_DEVELOPER_ERROR, // 5
-    	RESULT_ERROR; // 6
+    	RESULT_ERROR, Activity; // 6
 
     	public static boolean isResponseOk(int response) {
     		return ResponseCode.RESULT_OK.ordinal() == response;

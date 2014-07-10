@@ -276,15 +276,32 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
             optionsMenu.getItem().setIcon(R.drawable.ic_menu_preferences);
             optionsMenu.getItem().setTitle("Настройки отображения");
 
-            optionsMenu.add("Показывать аватары")
-                    .setIcon(R.drawable.ic_menu_images).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    Preferences.Topic.setShowAvatars(!Preferences.Topic.isShowAvatars());
-                    getInterface().setHideActionBar();
-                    menuItem.setChecked(Preferences.Topic.isShowAvatars());
+
+            optionsMenu.add(String.format("Аватары (%s",
+                    MyApp.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]))
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(final MenuItem menuItem) {
+
+                   new AlertDialogBuilder(getActivity())
+                           .setTitle("Показывать аватары")
+                           .setCancelable(true)
+                           .setSingleChoiceItems(MyApp.getContext().getResources().getStringArray(R.array.AvatarsShowTitles),
+                                   Preferences.Topic.getShowAvatarsOpt(), new DialogInterface.OnClickListener() {
+                                       @Override
+                                       public void onClick(DialogInterface dialogInterface, int i) {
+                                           dialogInterface.dismiss();
+                                           if(i==-1)
+                                               return;
+
+                                           Preferences.Topic.setShowAvatarsOpt(i);
+                                           menuItem.setTitle(String.format("Показывать аватары (%s",
+                                                   MyApp.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]));
+                                       }
+                                   })
+                           .create().show();
                     return true;
                 }
-            }).setCheckable(true).setChecked(Preferences.Topic.isShowAvatars());
+            }).setTitleCondensed("asd");
 
             optionsMenu.add("Скрывать верхнюю панель")
                     .setIcon(R.drawable.ic_menu_images).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -430,9 +447,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                             editor.putString("appstyle", newstyleValues.get(selected).toString());
                             editor.putBoolean("theme.BrowserStyle", checkBox.isChecked());
                             editor.commit();
-                            getInterface().rememberScrollX();
-//                            m_ScrollY = webView.getScrollY();
-//                            m_ScrollX = webView.getScrollX();
+
                             getInterface().showTheme(getInterface().getLastUrl());
                         }
                     })

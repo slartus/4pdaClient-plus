@@ -532,7 +532,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
         return true;
     }
 
-    private static boolean tryShowFile(final Activity activity, final Uri uri, final Boolean finish) {
+    public static boolean tryShowFile(final Activity activity, final Uri uri, final Boolean finish) {
         if (uri.getHost() != null && !(uri.getHost().contains("4pda.ru")||uri.getHost().contains("4pda.to")))
             return false;
         boolean isFile = PatternExtensions.compile("http://4pda.ru/forum/dl/post/\\d+/[^\"]*")

@@ -8,7 +8,7 @@
 	tabs.append ( '<button class="btn" data-tab="less">L</button><button class="btn" data-tab="edit">E</button>' );
 	content.append ( '<div data-tab-name="less">\
 	<h1>CSS/LESS</h1>\
-'+( window["HTMLOUT"] && window["HTMLOUT"]["showChooseCssDialog"] ? '<button class="btn" id="dev-less-file-compile">Выбрать стиль</button>' : '<input type="file" class="btn" id="dev-less-file-select"/> <button class="btn" id="dev-less-file-compile">Применить</button>' )+'\
+'+( window["DEVOUT"] && window["DEVOUT"]["showChooseCssDialog"] ? '<button class="btn" id="dev-less-file-compile">Выбрать стиль</button>' : '<input type="file" class="btn" id="dev-less-file-select"/> <button class="btn" id="dev-less-file-compile">Применить</button>' )+'\
 <br /><button id="dev-less-show" class="btn" data-toggle="hide-element" data-target="#dev-less-out"  disabled="disabled">Показать/скрыть итоговый код</button> \
 <textarea id="dev-less-out" style="width:100%;" class="hide-element" rows="10" readonly="readonly"></textarea> \
 <pre id="dev-less-error" style="color:red!important;"></pre><br /><br /> \
@@ -65,8 +65,8 @@
 	} )
 	.on ( 'click', '#dev-less-file-compile', function ( ev ) {
 		ev.preventDefault();
-		if ( window["HTMLOUT"] && window["HTMLOUT"]["showChooseCssDialog"] ) {
-			HTMLOUT.showChooseCssDialog();
+		if ( window["DEVOUT"] && window["DEVOUT"]["showChooseCssDialog"] ) {
+			DEVOUT.showChooseCssDialog();
 		}
 		else {
 			if ( $('#dev-less-file-select')[0].files.length != 1 ) {

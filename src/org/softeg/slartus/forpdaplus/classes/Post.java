@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.common.HtmlUtils;
 import org.softeg.slartus.forpdaplus.common.Log;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
 
@@ -41,7 +42,7 @@ public class Post {
     private String m_Number = "0";
     private Boolean m_CanPlusRep = false;
     private Boolean m_CanMinusRep = false;
-    private String avatarFileName="";
+    private String avatarFileName = "";
 
     public Post(String id, String date, String author, String body) {
         m_Id = id;
@@ -127,6 +128,16 @@ public class Post {
 
     public String getNick() {
         return m_UserNick;
+    }
+
+    private String m_NickParam = null;
+
+    public String getNickParam() {
+        if (m_NickParam == null && m_UserNick != null) {
+            m_NickParam = HtmlUtils.modifyHtmlQuote(m_UserNick)
+                    .replace("'", "\\'").replace("\"", "&quot;");
+        }
+        return m_NickParam;
     }
 
     public String getUserReputation() {
@@ -302,7 +313,7 @@ public class Post {
     }
 
     public void setAvatarFileName(String avatarFileName) {
-        if(TextUtils.isEmpty(avatarFileName))
+        if (TextUtils.isEmpty(avatarFileName))
             return;
         String path = "http://s.4pda.to/forum/uploads/";
         if (avatarFileName.contains("/"))

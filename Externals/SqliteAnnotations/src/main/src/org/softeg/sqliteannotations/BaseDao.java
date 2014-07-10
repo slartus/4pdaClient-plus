@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 
-/**
+/*
  * Created by slartus on 25.02.14.
  */
 public class BaseDao<T> {
@@ -30,7 +30,7 @@ public class BaseDao<T> {
     /**
      * Keep the static connection to database.
      */
-    protected SQLiteDatabase mDB;
+    protected final SQLiteDatabase mDB;
 
     /**
      * The default constructor.
@@ -46,12 +46,12 @@ public class BaseDao<T> {
 
     public void createTable(SQLiteDatabase db) throws Exception {
         StringBuffer sql = new StringBuffer("drop table if exists '");
-        sql.append(getTableName(tClass));
+        sql.append(getTableName());
         sql.append("'; ");
         db.execSQL(sql.toString());
 
         sql = new StringBuffer("CREATE TABLE '");
-        sql.append(getTableName(tClass));
+        sql.append(getTableName());
 
         sql.append("' (");
         sql.append(getPrimaryKeyAnnotation());
@@ -71,7 +71,7 @@ public class BaseDao<T> {
     }
 
     public boolean isTableExists() {
-        Cursor cursor = mDB.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '" + getTableName(tClass) + "'", null);
+        Cursor cursor = mDB.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '" + getTableName() + "'", null);
         if (cursor != null) {
             if (cursor.getCount() > 0) {
                 cursor.close();
@@ -89,12 +89,8 @@ public class BaseDao<T> {
      * @return the cursor
      */
     public Cursor get(String id) {
-        Cursor cursor = null;
-        StringBuffer sql = new StringBuffer();
-        sql.append(" select * ");
-        sql.append(" from " + getTableName(tClass));
-        sql.append(" where _id = ?");
-        cursor = mDB.rawQuery(sql.toString(), null);
+        Cursor cursor;
+        cursor = mDB.rawQuery(" select * " + " from " + getTableName() + " where _id = ?", null);
         return cursor;
     }
 
@@ -109,7 +105,7 @@ public class BaseDao<T> {
             return null;
         }
 
-        ArrayList<T> items = new ArrayList<T>();
+        ArrayList<T> items = new ArrayList<>();
         Cursor cursor = null;
 
         try {
@@ -118,12 +114,14 @@ public class BaseDao<T> {
             }
             // convert cursor to list items.
             if (cursor != null && cursor.getCount() > 0) {
+                HashMap<Field, Integer> fields = getFieldColumIndexMap(cursor);
+
                 for (int i = 0; i < cursor.getCount(); i++) {
                     cursor.moveToPosition(i);
                     T newTObject;
 
                     newTObject = tClass.newInstance();
-                    bindObject(newTObject, cursor);
+                    bindObject(newTObject, cursor,fields);
                     items.add(newTObject);
 
                 }
@@ -135,13 +133,26 @@ public class BaseDao<T> {
         return items;
     }
 
+    private HashMap<Field, Integer> getFieldColumIndexMap(Cursor cursor) {
+        HashMap<Field,Integer> fields=new HashMap<>();
+        for (Field field :getDeclaredFields(tClass)) {
+            if (!field.isAccessible())
+                field.setAccessible(true); // for private variables
+            Column fieldEntityAnnotation = field.getAnnotation(Column.class);
+            if (fieldEntityAnnotation != null)
+                fields.put(field, cursor.getColumnIndex(getColumnName(field)));
+        }
+        return fields;
+    }
+
+
     /**
      * Get all data of specified table and return in a cursor.
      *
      * @return the cursor keeps all data of table
      */
     public Cursor getAllByCursor() {
-        return mDB.query(getTableName(tClass), null, null, null, null, null,
+        return mDB.query(getTableName(), null, null, null, null, null,
                 null);
     }
 
@@ -166,14 +177,9 @@ public class BaseDao<T> {
      * Delete specified record by id.
      *
      * @param id specified id of record wants to delete.
-     * @return true if delete successfully
      */
     public void delete(final String id) {
-        StringBuffer whereClause = new StringBuffer(getPrimaryKeyColumnName());
-        whereClause.append("='");
-        whereClause.append(id);
-        whereClause.append("'");
-        mDB.delete(getTableName(tClass), whereClause.toString(), null);
+        mDB.delete(getTableName(), getPrimaryKeyColumnName() + "='" + id + "'", null);
     }
 
     private String getPrimaryKeyColumnName() {
@@ -193,7 +199,7 @@ public class BaseDao<T> {
     }
 
     public static Collection<Field> getDeclaredFields(Class<?> clazz) {
-        Map<String, Field> fields = new HashMap<String, Field>();
+        Map<String, Field> fields = new HashMap<>();
         while (clazz != null) {
             for (Field field : clazz.getDeclaredFields()) {
                 if (!fields.containsKey(field.getName())) {
@@ -217,7 +223,7 @@ public class BaseDao<T> {
             if (columnName == null) continue;
             Column annotationColumn = field.getAnnotation(Column.class);
             if (!annotationColumn.isPrimaryKey()) continue;
-            StringBuffer sql = new StringBuffer();
+            StringBuilder sql = new StringBuilder();
             sql.append(columnName);
             sql.append(" ");
             sql.append(annotationColumn.type());
@@ -235,8 +241,7 @@ public class BaseDao<T> {
         if (item != null) {
             try {
                 ContentValues value = getFilledContentValues(item);
-                long id = mDB.insertOrThrow(getTableName(tClass), null, value);
-                return id;
+                return mDB.insertOrThrow(getTableName(), null, value);
             } catch (IllegalAccessException e){
                 Log.e("insert",e.getMessage());
             }
@@ -248,10 +253,7 @@ public class BaseDao<T> {
      * Delete all data of table.
      */
     public final void deleteAll() {
-        mDB.delete(getTableName(tClass), null, null);
-    }
-
-    public final void update(String id) {
+        mDB.delete(getTableName(), null, null);
     }
 
     /**
@@ -262,7 +264,7 @@ public class BaseDao<T> {
     public void update(T object, String id) throws IllegalAccessException {
         if (!isTableExists()) return;
         ContentValues values = getFilledContentValues(object);
-        mDB.update(getTableName(tClass), values, getPrimaryKeyColumnName() + "=?", new String[]{id});
+        mDB.update(getTableName(), values, getPrimaryKeyColumnName() + "=?", new String[]{id});
     }
 
     /**
@@ -278,36 +280,29 @@ public class BaseDao<T> {
             T newTObject = null;
             try {
                 newTObject = tClass.newInstance();
-                bindObject(newTObject, cursor);
-            } catch (InstantiationException e) {
-            } catch (IllegalAccessException e) {
-            } catch (NoSuchFieldException e) {
+                bindObject(newTObject, cursor,getFieldColumIndexMap(cursor));
+            } catch (InstantiationException | IllegalAccessException | NoSuchFieldException ignored) {
             }
             cursor.close();
-            cursor = null;
             return newTObject;
         }
         return null;
     }
 
-    private void bindObject(T newTObject, Cursor cursor)
+    private void bindObject(T newTObject, Cursor cursor, HashMap <Field,Integer> fieldColumnInds)
             throws NoSuchFieldException, IllegalAccessException {
-        for (Field field :getDeclaredFields(tClass)) {
-            if (!field.isAccessible())
-                field.setAccessible(true); // for private variables
-            Column fieldEntityAnnotation = field.getAnnotation(Column.class);
-            if (fieldEntityAnnotation != null) {
-                field.set(newTObject, getValueFromCursor(cursor, field));
-            }
+        for (Map.Entry<Field,Integer> entry :fieldColumnInds.entrySet()) {
+            Field field=entry.getKey();
+            field.set(newTObject, getValueFromCursor(cursor, field, entry.getValue()));
         }
     }
 
     // Get content from specific types
-    private Object getValueFromCursor(Cursor cursor, Field field)
+    private Object getValueFromCursor(Cursor cursor, Field field, int columnIndex)
             throws IllegalAccessException {
         Class<?> fieldType = field.getType();
         Object value = null;
-        int columnIndex = cursor.getColumnIndex(getColumnName(field));
+
 
         if (fieldType.isAssignableFrom(Long.class)
                 || fieldType.isAssignableFrom(long.class)) {
@@ -374,7 +369,7 @@ public class BaseDao<T> {
                 objectOutputStream.close();
                 outputStream.flush();
                 outputStream.close();
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
     }
@@ -432,7 +427,7 @@ public class BaseDao<T> {
                                          String[] selectionArgs, String groupBy, String having,
                                          String orderBy) {
         try {
-            String table = getTableName(tClass);
+            String table = getTableName();
             String[] columns = getColumns();
             Cursor cursor = db.query(table, columns, selection, selectionArgs,
                     groupBy, having, orderBy);
@@ -443,7 +438,7 @@ public class BaseDao<T> {
         }
     }
 
-    public String getTableName(Class<?> tClass) {
+    public String getTableName() {
         return mTableName;
 //        Table annotationTable = tClass.getAnnotation(Table.class);
 //        String table = tClass.getSimpleName();

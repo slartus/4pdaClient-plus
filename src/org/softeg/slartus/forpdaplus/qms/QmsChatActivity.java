@@ -34,6 +34,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
@@ -60,8 +62,8 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -142,6 +144,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         wvChat.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
 
         wvChat.addJavascriptInterface(this, "HTMLOUT");
+        wvChat.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
 
         m_WebViewExternals = new WebViewExternals(this);
         m_WebViewExternals.loadPreferences(PreferenceManager.getDefaultSharedPreferences(MyApp.getContext()));
@@ -156,17 +159,29 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         m_Nick = extras.getString(NICK_KEY);
         m_TId = extras.getString(TID_KEY);
         m_ThemeTitle = extras.getString(THEME_TITLE_KEY);
-        String m_PageBody = extras.getString(PAGE_BODY_KEY);
+        final String[] m_PageBody = {extras.getString(PAGE_BODY_KEY)};
         if (TextUtils.isEmpty(m_Nick))
             setTitle("QMS");
         else
             setTitle(m_Nick + ":QMS:" + m_ThemeTitle);
 
-        if (!TextUtils.isEmpty(m_PageBody)) {
-            m_LastBodyLength = m_PageBody.length();
-            m_PageBody = transformChatBody(m_PageBody);
-            wvChat.loadDataWithBaseURL("\"file:///android_asset/\"", m_PageBody, "text/html", "UTF-8", null);
-            m_PageBody = null;
+        if (!TextUtils.isEmpty(m_PageBody[0])) {
+            m_LastBodyLength = m_PageBody[0].length();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    final String body = transformChatBody(m_PageBody[0]);
+
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            wvChat.loadDataWithBaseURL("\"file:///android_asset/\"", body, "text/html", "UTF-8", null);
+                        }
+                    });
+                }
+            }).start();
+
+
         }
         hideKeyboard();
         //  hidePanels();
@@ -243,7 +258,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                     return;
                 }
 
-                final ArrayList<String> ids = new ArrayList<String>();
+                final ArrayList<String> ids = new ArrayList<>();
                 Pattern p = Pattern.compile("message-id\\[(\\d+)\\]", Pattern.CASE_INSENSITIVE);
                 for (String checkBoxName : checkBoxNames) {
                     Matcher m = p.matcher(checkBoxName);
@@ -292,7 +307,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
 
-                        ArrayList<String> ids = new ArrayList<String>();
+                        ArrayList<String> ids = new ArrayList<>();
                         ids.add(m_TId);
                         m_SendTask = new DeleteDialogTask(QmsChatActivity.this, ids);
                         m_SendTask.execute();
@@ -407,11 +422,24 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         m_UpdateTimeout = ExtPreferences.parseInt(preferences, "qms.chat.update_timer", 15) * 1000;
     }
 
+    private void checkNewQms()  {
+        try {
+            Client.getInstance().setQmsCount(QmsApi.getNewQmsCount(Client.getInstance()));
+            Client.getInstance().doOnMailListener();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private String transformChatBody(String chatBody) {
+        checkNewQms();
         HtmlBuilder htmlBuilder = new HtmlBuilder();
         htmlBuilder.beginHtml("QMS");
         htmlBuilder.beginBody("onload=\"scrollToElement('bottom_element')\"");
 
+        if (m_HtmlPreferences.isSpoilerByButton())
         if (m_HtmlPreferences.isSpoilerByButton())
             chatBody = HtmlPreferences.modifySpoiler(chatBody);
         chatBody = HtmlPreferences.modifyBody(chatBody, Smiles.getSmilesDict(), m_HtmlPreferences.isUseLocalEmoticons());
@@ -435,7 +463,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         Throwable ex = null;
         Boolean updateTitle = false;
         try {
-            String body = null;
+            String body;
 
             if (TextUtils.isEmpty(m_Nick)) {
                 updateTitle = true;
@@ -449,6 +477,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                 body = QmsApi.getChat(Client.getInstance(), m_Id, m_TId);
             }
             if (body.length() == m_LastBodyLength) {
+                checkNewQms();
                 uiHandler.post(new Runnable() {
                     public void run() {
                         setSupportProgressBarIndeterminateVisibility(false);
@@ -472,29 +501,25 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                         setTitle(m_Nick + "-QMS-" + m_ThemeTitle);
                     wvChat.loadDataWithBaseURL("\"file:///android_asset/\"", finalChatBody, "text/html", "UTF-8", null);
                 } else {
-                    if (finalEx != null) {
-                        if ("Такого диалога не существует.".equals(finalEx.getMessage())) {
-                            new AlertDialogBuilder(QmsChatActivity.this)
-                                    .setTitle("Ошибка")
-                                    .setMessage(finalEx.getMessage())
-                                    .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                            showThread();
-                                        }
-                                    })
-                                    .create().show();
-                            m_UpdateTimer.cancel();
-                            m_UpdateTimer.purge();
+                    if ("Такого диалога не существует.".equals(finalEx.getMessage())) {
+                        new AlertDialogBuilder(QmsChatActivity.this)
+                                .setTitle("Ошибка")
+                                .setMessage(finalEx.getMessage())
+                                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                        showThread();
+                                    }
+                                })
+                                .create().show();
+                        m_UpdateTimer.cancel();
+                        m_UpdateTimer.purge();
 
-                        } else {
-                            Toast.makeText(QmsChatActivity.this, Log.getLocalizedMessage(finalEx, finalEx.getLocalizedMessage()),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    } else
-                        Toast.makeText(QmsChatActivity.this, "Неизвестная ошибка",
+                    } else {
+                        Toast.makeText(QmsChatActivity.this, Log.getLocalizedMessage(finalEx, finalEx.getLocalizedMessage()),
                                 Toast.LENGTH_SHORT).show();
+                    }
 
                 }
                 setSupportProgressBarIndeterminateVisibility(false);
@@ -542,11 +567,11 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         }, 0L, m_UpdateTimeout);
 
     }
-
+    MenuFragment mFragment1;
     private void createActionMenu() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        MenuFragment mFragment1 = (MenuFragment) fm.findFragmentByTag("f1");
+        mFragment1= (MenuFragment) fm.findFragmentByTag("f1");
         if (mFragment1 == null) {
             mFragment1 = new MenuFragment();
             ft.add(mFragment1, "f1");
@@ -587,13 +612,6 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         m_SendTask.execute();
     }
 
-    private void zoomOut() {
-        wvChat.zoomOut();
-    }
-
-    private void zoomIn() {
-        wvChat.zoomIn();
-    }
 
     @Override
     public String Prefix() {
@@ -803,6 +821,53 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         finish();
     }
 
+    public void showFontSizeDialog() {
+        View v = getLayoutInflater().inflate(R.layout.font_size_dialog, null);
+
+        assert v != null;
+        final SeekBar seekBar = (SeekBar) v.findViewById(R.id.value_seekbar);
+        seekBar.setProgress(Preferences.getFontSize(Prefix()) - 1);
+        final TextView textView = (TextView) v.findViewById(R.id.value_textview);
+        textView.setText((seekBar.getProgress() + 1) + "");
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                getWebView().getSettings().setDefaultFontSize(i + 1);
+                textView.setText((i + 1) + "");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        new AlertDialogBuilder(this)
+                .setTitle("Размер шрифта")
+                .setView(v)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        Preferences.setFontSize(Prefix(), seekBar.getProgress() + 1);
+                    }
+                })
+                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        getWebView().getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
+                    }
+                })
+                .create().show();
+
+    }
+
     public static final class MenuFragment extends ProfileMenuFragment {
         public MenuFragment() {
 
@@ -865,23 +930,14 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
-            item = menu.add("Увеличить масштаб").setIcon(R.drawable.ic_menu_zoom);
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    getInterface().zoomIn();
-                    return true;
-                }
-            });
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-
-            item = menu.add("Уменьшить масштаб").setIcon(R.drawable.ic_menu_zoom_out);
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    getInterface().zoomOut();
-                    return true;
-                }
-            });
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+            menu.add("Размер шрифта")
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            getInterface().showFontSizeDialog();
+                            return true;
+                        }
+                    });
 
             item = menu.add("Профиль собеседника").setIcon(R.drawable.ic_action_user_online);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -919,10 +975,6 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
-
-                FileOutputStream outputStream;
-
                 try {
                     String state = Environment.getExternalStorageState();
                     if (!Environment.MEDIA_MOUNTED.equals(state)) {

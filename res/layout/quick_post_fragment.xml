@@ -28,7 +28,7 @@
             android:layout_alignBottom="@+id/post_text" />
 
         <EditText
-            android:background="?android:attr/colorBackground"
+            android:background="?attr/theme_light_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/post_text"

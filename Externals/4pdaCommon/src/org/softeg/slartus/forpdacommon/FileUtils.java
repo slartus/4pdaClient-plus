@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdacommon;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
@@ -13,11 +12,11 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.regex.Matcher;
@@ -29,6 +28,24 @@ import java.util.regex.Pattern;
  * Time: 7:31
  */
 public class FileUtils {
+    public static String readTrimRawTextFile(Context ctx, int resId) {
+        InputStream inputStream = ctx.getResources().openRawResource(resId);
+
+        InputStreamReader inputreader = new InputStreamReader(inputStream);
+        BufferedReader buffreader = new BufferedReader(inputreader);
+        String line;
+        StringBuilder text = new StringBuilder();
+        try {
+            while ((line = buffreader.readLine()) != null) {
+
+                text.append(line.trim());
+            }
+        } catch (IOException e) {
+            return null;
+        }
+        return text.toString();
+    }
+
     public static Uri saveFile(Context context, String dirPath,String fileName,String content) throws IOException {
         String state = Environment.getExternalStorageState();
         if (!Environment.MEDIA_MOUNTED.equals(state)) {

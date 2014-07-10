@@ -1,5 +1,6 @@
 <resources>
     <attr name="theme_background" format="reference" />
+    <attr name="theme_light_background" format="reference" />
     <declare-styleable name="ExpandoLayout">
         <attr name="text" format="string" />
         <attr name="titleRowPadding" format="integer" />

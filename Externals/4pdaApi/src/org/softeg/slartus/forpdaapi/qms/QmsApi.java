@@ -156,7 +156,7 @@ public class QmsApi {
         return parseQmsUsers(pageBody);
     }
 
-    private static ArrayList<QmsUser> parseQmsUsers(String pageBody) {
+    public static ArrayList<QmsUser> parseQmsUsers(String pageBody) {
         ArrayList<QmsUser> res = new ArrayList<>();
         Matcher m = Pattern.compile("<a class=\"list-group-item[^\"]*\"[^>]*?data-member-id=\"(\\d+)\"[^>]*?>([\\s\\S]*?)</a>", Pattern.CASE_INSENSITIVE).matcher(pageBody);
         Pattern newMessagesCountPattern = Pattern.compile("<div class=\"bage[^\"]*\">\\((\\d+)\\)</div>", Pattern.CASE_INSENSITIVE);

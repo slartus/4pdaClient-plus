@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.controls.quickpost.items;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,7 @@ public class SettingsQuickView extends BaseQuickView {
         extendedFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditPostActivity.newPost(getContext(), getForumId().toString(), getTopicId().toString(), getAuthKey().toString(),
+                EditPostActivity.newPost((Activity)getContext(), getForumId().toString(), getTopicId().toString(), getAuthKey().toString(),
                         getPostBody().toString());
             }
         });

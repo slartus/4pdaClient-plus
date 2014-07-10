@@ -261,7 +261,7 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
                 QmsUsers qmsUsers = new QmsUsers();
                 QmsUserThemes mails = QmsApi.getQmsUserThemes(Client.getInstance(), m_Id, qmsUsers,
                         m_ParseNick);
-                Client.getInstance().setQms_2_0_Count(qmsUsers.unreadMessageUsersCount());
+                Client.getInstance().setQmsCount(qmsUsers.unreadMessageUsersCount());
                 Client.getInstance().doOnMailListener();
                 return mails;
             } catch (Throwable e) {

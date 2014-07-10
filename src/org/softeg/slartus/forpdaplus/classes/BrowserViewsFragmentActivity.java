@@ -55,7 +55,9 @@ public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity 
 
             advWebView.setOnScrollChangedCallback(new AdvWebView.OnScrollChangedCallback() {
                 @Override
-                public void onScrollDown() {
+                public void onScrollDown(Boolean inTouch) {
+                    if (!inTouch)
+                        return;
                     if (actionBar.isShowing()) {
                         mHideHandler.removeCallbacks(mHideRunnable);
                         actionBar.hide();
@@ -63,7 +65,9 @@ public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity 
                 }
 
                 @Override
-                public void onScrollUp() {
+                public void onScrollUp(Boolean inTouch) {
+                    if (!inTouch)
+                        return;
                     if (!actionBar.isShowing()) {
                         mHideHandler.removeCallbacks(mHideRunnable);
                         actionBar.show();

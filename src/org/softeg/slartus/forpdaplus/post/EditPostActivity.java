@@ -76,6 +76,10 @@ import java.util.regex.Pattern;
  * Time: 12:42
  */
 public class EditPostActivity extends BaseFragmentActivity {
+    public static final int NEW_EDIT_POST_REQUEST_CODE = MyApp.getInstance().getUniqueIntValue();
+    public static final String TOPIC_BODY_KEY = "EditPostActivity.TOPIC_BODY_KEY";
+
+    public static final String POST_URL_KEY = "EditPostActivity.POST_URL_KEY";
     private EditText txtPost, txtpost_edit_reason;
 
     private Button btnAttachments;
@@ -96,17 +100,17 @@ public class EditPostActivity extends BaseFragmentActivity {
     private View m_BottomPanel;
     private PopupPanelView mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
 
-    public static void editPost(Context context, String forumId, String topicId, String postId, String authKey) {
+    public static void editPost(Activity context, String forumId, String topicId, String postId, String authKey) {
         Intent intent = new Intent(context, EditPostActivity.class);
 
         intent.putExtra("forumId", forumId);
         intent.putExtra("themeId", topicId);
         intent.putExtra("postId", postId);
         intent.putExtra("authKey", authKey);
-        context.startActivity(intent);
+        context.startActivityForResult(intent, NEW_EDIT_POST_REQUEST_CODE);
     }
 
-    public static void newPost(Context context, String forumId, String topicId, String authKey,
+    public static void newPost(Activity context, String forumId, String topicId, String authKey,
                                final String body) {
         Intent intent = new Intent(context, EditPostActivity.class);
 
@@ -115,7 +119,7 @@ public class EditPostActivity extends BaseFragmentActivity {
         intent.putExtra("postId", "-1");
         intent.putExtra("body", body);
         intent.putExtra("authKey", authKey);
-        context.startActivity(intent);
+        context.startActivityForResult(intent, NEW_EDIT_POST_REQUEST_CODE);
     }
 
     public static void newPostWithAttach(Context context, String forumId, String topicId, String authKey,
@@ -216,7 +220,7 @@ public class EditPostActivity extends BaseFragmentActivity {
         outState.putString("attachPostKey", attachPostKey);
         outState.putString("postText", getPostText());
         outState.putString("txtpost_edit_reason", getEditReasonText());
-        outState.putParcelableArrayList("attaches",attaches);
+        outState.putParcelableArrayList("attaches", attaches);
 
         super.onSaveInstanceState(outState);
     }
@@ -236,7 +240,7 @@ public class EditPostActivity extends BaseFragmentActivity {
         txtPost.setText(savedInstanceState.getString("postText"));
         txtpost_edit_reason.setText(savedInstanceState.getString("txtpost_edit_reason"));
         mPopupPanelView.setTopic(forumId, themeId, authKey);
-        attaches=savedInstanceState.getParcelableArrayList("attaches");
+        attaches = savedInstanceState.getParcelableArrayList("attaches");
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -493,13 +497,14 @@ public class EditPostActivity extends BaseFragmentActivity {
 
     private final String TEMP_EMPTY_TEXT = "<temptext>";
 
-    private String getAttachIdsString(){
+    private String getAttachIdsString() {
         String res = "0";
         for (Attach attach : attaches) {
             res += "," + attach.getId();
         }
         return res;
     }
+
     private class UpdateTask extends AsyncTask<String, Pair<String, Integer>, Boolean> {
         private final ProgressDialog dialog;
         private ProgressState m_ProgressState;
@@ -639,7 +644,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                 body = Client.getInstance().deleteAttachFilePost(forumId, themeId, authKey, postId,
                         Preferences.Topic.Post.getEnableSign(), Preferences.Topic.Post.getEnableEmotics(),
                         postBody,
-                        attachId,getAttachIdsString(), post_edit_reason);
+                        attachId, getAttachIdsString(), post_edit_reason);
                 return true;
             } catch (Exception e) {
                 ex = e;
@@ -708,12 +713,17 @@ public class EditPostActivity extends BaseFragmentActivity {
             }
 
             if (success) {
-                ThemeActivity.s_ThemeId = themeId;
-                ThemeActivity.s_Params = "view=findpost&p=" + postId;
-                if (getIntent() != null && getIntent().getExtras() != null)
-                    if (!ThemeActivity.class.toString().equals(getIntent().getExtras().get(BaseFragmentActivity.SENDER_ACTIVITY))) {
-                        ExtTopic.showActivity(EditPostActivity.this, themeId, ThemeActivity.s_Params);
-                    }
+                if (getIntent() != null && getIntent().getExtras() != null &&
+                        !ThemeActivity.class.toString().equals(getIntent().getExtras().get(BaseFragmentActivity.SENDER_ACTIVITY)))
+
+                    ExtTopic.showActivity(EditPostActivity.this, themeId, "view=findpost&p=" + postId);
+
+                else {
+                    Intent intent = new Intent();
+                    String url = String.format("http://4pda.ru/forum/index.php?showtopic=%s&view=findpost&p=%s", themeId, postId);
+                    intent.putExtra(POST_URL_KEY, url);
+                    EditPostActivity.this.setResult(Activity.RESULT_OK, intent);
+                }
                 finish();
 
             } else {
@@ -836,16 +846,12 @@ public class EditPostActivity extends BaseFragmentActivity {
                     Toast.makeText(EditPostActivity.this, "Ошибка: " + mError, Toast.LENGTH_LONG).show();
                     return;
                 }
-                ThemeActivity.s_ThemeBody = mPostResult;
-                if (isNewPost())
-                    ThemeActivity.s_Params = "view=getlastpost";
-                else
-                    ThemeActivity.s_Params = "view=findpost&p=" + postId;
+                Intent intent = new Intent();
+                intent.putExtra(TOPIC_BODY_KEY, mPostResult);
+                String url = String.format("http://4pda.ru/forum/index.php?showtopic=%s&%s", themeId, isNewPost() ? "view=getlastpost" : "view=findpost&p=" + postId);
+                intent.putExtra(POST_URL_KEY, url);
+                EditPostActivity.this.setResult(Activity.RESULT_OK, intent);
 
-                if (getIntent() != null && getIntent().getExtras() != null)
-                    if (!ThemeActivity.class.toString().equals(getIntent().getExtras().get(BaseFragmentActivity.SENDER_ACTIVITY))) {
-                        ExtTopic.showActivity(EditPostActivity.this, themeId, ThemeActivity.s_Params);
-                    }
                 finish();
             } else {
                 if (ex != null)

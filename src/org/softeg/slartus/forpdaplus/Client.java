@@ -112,9 +112,9 @@ public class Client implements IHttpClient {
 
     }
 
-    public void editPost(String forumId, String themeId, String authKey, String postId, Boolean enablesig,
+    public String editPost(String forumId, String themeId, String authKey, String postId, Boolean enablesig,
                          Boolean enableEmo, String post, String addedFileList, String post_edit_reason) throws IOException {
-        PostApi.applyEdit(this, forumId, themeId, authKey, postId, enablesig,
+        return PostApi.applyEdit(this, forumId, themeId, authKey, postId, enablesig,
                 enableEmo, post, addedFileList, post_edit_reason);
     }
 
@@ -648,20 +648,20 @@ public class Client implements IHttpClient {
 
     }
 
-    private int m_Qms_2_0Count = 0;
+    private int m_QmsCount = 0;
 
-    public int getQms_2_0_Count() {
-        return m_Qms_2_0Count;
+    public int getQmsCount() {
+        return m_QmsCount;
     }
 
-    public void setQms_2_0_Count(int count) {
-        m_Qms_2_0Count = count;
+    public void setQmsCount(int count) {
+        m_QmsCount = count;
     }
 
 
 
     public void checkMails(String pageBody) {
-        m_Qms_2_0Count = QmsApi.getNewQmsCount(pageBody);
+        m_QmsCount = QmsApi.getNewQmsCount(pageBody);
 
         doOnMailListener();
     }

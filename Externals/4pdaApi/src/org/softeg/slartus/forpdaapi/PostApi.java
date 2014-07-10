@@ -109,12 +109,12 @@ public class PostApi {
      * @param addedFileList список айдишек уже загруженных файлов. Например, 0,1892529,1892530,1892533
      * @throws IOException
      */
-    public static void applyEdit(IHttpClient httpClient, String forumId, String themeId, String authKey, String postId,
+    public static String applyEdit(IHttpClient httpClient, String forumId, String themeId, String authKey, String postId,
                                  Boolean enablesig,
                                  Boolean enableEmo, String postText, String addedFileList, String post_edit_reason) throws IOException {
 
         Map<String, String> additionalHeaders = new HashMap<String, String>();
-        additionalHeaders.put("act", "Post");
+        additionalHeaders.put("act", "post");
         additionalHeaders.put("s", "");
         additionalHeaders.put("f", forumId);
         additionalHeaders.put("auth_key", authKey);
@@ -123,6 +123,7 @@ public class PostApi {
         additionalHeaders.put("CODE", "09");
         additionalHeaders.put("t", themeId);
         additionalHeaders.put("p", postId);
+        additionalHeaders.put("view", "findpost");
         //if(!TextUtils.isEmpty(post_edit_reason))
         additionalHeaders.put("post_edit_reason", post_edit_reason);
         additionalHeaders.put("file-list", addedFileList);
@@ -134,8 +135,7 @@ public class PostApi {
             additionalHeaders.put("enableemo", "yes");
 
 
-        httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders);
-
+        return httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders);
     }
 
     /**

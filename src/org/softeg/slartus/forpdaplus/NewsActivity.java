@@ -31,7 +31,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -110,6 +109,9 @@ public class NewsActivity extends BrowserViewsFragmentActivity
 
 
         setContentView(R.layout.news_activity);
+
+        if (Preferences.System.isDeveloper())
+            Toast.makeText(this, "Режим разработчика", Toast.LENGTH_SHORT).show();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -217,17 +219,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
             String cssData = FileUtils.readFileText(attachFilePath)
                     .replace("\\", "\\\\")
                     .replace("'", "\\'").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
-            if (Build.VERSION.SDK_INT < 19)
-                webView.loadUrl("javascript:window['HtmlInParseLessContent']('" + cssData + "');");
-            else
-                webView.evaluateJavascript("window['HtmlInParseLessContent']('" + cssData + "')",
-                        new ValueCallback<String>() {
-                            @Override
-                            public void onReceiveValue(String s) {
-
-                            }
-                        }
-                );
+            webView.evalJs("window['HtmlInParseLessContent']('" + cssData + "');");
         }
     }
 
@@ -536,6 +528,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
             m_History.add(history);
         }
     }
+
 
 
     private String m_Title = "Новости";

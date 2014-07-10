@@ -28,6 +28,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.mainnotifiers.DonateNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier;
+import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
 import org.softeg.slartus.forpdaplus.mainnotifiers.TopicAttentionNotifier;
 import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.tabs.Tabs;
@@ -82,30 +83,16 @@ public class MainActivity extends BaseFragmentActivity implements BricksListDial
 
             createMenu();
 
-            org.softeg.slartus.forpdaplus.Client client = org.softeg.slartus.forpdaplus.Client.getInstance();
-
-            client.addOnUserChangedListener(new Client.OnUserChangedListener() {
-                public void onUserChanged(String user, Boolean success) {
-                    userChanged();
-                }
-            });
-            client.addOnMailListener(new Client.OnMailListener() {
-                public void onMail(int count) {
-                    mailsChanged();
-                }
-            });
-
-
             mMainDrawerMenu = new MainDrawerMenu(this, this);
-
-            new DonateNotifier().start(this);
-            //new MarketVersionNotifier(14).start(this);
-            new TopicAttentionNotifier().start(this);
-            new ForPdaVersionNotifier(1).start(this);
+            NotifiersManager notifiersManager = new NotifiersManager(this);
+            new DonateNotifier(notifiersManager).start(this);
+            new TopicAttentionNotifier(notifiersManager).start(this);
+            new ForPdaVersionNotifier(notifiersManager, 1).start(this);
         } catch (Throwable ex) {
             Log.e(getApplicationContext(), ex);
         }
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -214,6 +201,7 @@ public class MainActivity extends BaseFragmentActivity implements BricksListDial
     private Boolean m_ExitWarned = false;
 
     private void appExit() {
+
         MyApp.getInstance().exit();
     }
 
@@ -251,23 +239,6 @@ public class MainActivity extends BaseFragmentActivity implements BricksListDial
         } catch (Throwable ignored) {
             appExit();
         }
-    }
-
-    private void userChanged() {
-        mHandler.post(new Runnable() {
-            public void run() {
-                //  setUserData();
-                mFragment1.setUserMenu();
-            }
-        });
-    }
-
-    private void mailsChanged() {
-        mHandler.post(new Runnable() {
-            public void run() {
-                mFragment1.setUserMenu();
-            }
-        });
     }
 
     @Override

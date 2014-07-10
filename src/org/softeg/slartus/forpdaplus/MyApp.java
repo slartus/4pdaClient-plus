@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
@@ -33,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * User: slinkin
@@ -79,6 +81,11 @@ public class MyApp extends android.app.Application {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
         activity.finish();
+    }
+
+    private AtomicInteger m_AtomicInteger=new AtomicInteger();
+    public int getUniqueIntValue(){
+        return m_AtomicInteger.incrementAndGet();
     }
 
     public int getThemeStyleResID() {
@@ -304,6 +311,9 @@ public class MyApp extends android.app.Application {
         return getInstance();
     }
 
+    public boolean isDebuggable() {
+        return (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
+    }
 
     public String getAppExternalFolderPath() throws IOException {
         String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/data/4pdaClient/";

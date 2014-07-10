@@ -2,8 +2,10 @@ package org.softeg.slartus.forpdaplus.mainnotifiers;/*
  * Created by slinkin on 03.07.2014.
  */
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Handler;
 import android.text.Html;
 import android.text.TextUtils;
@@ -11,27 +13,27 @@ import android.text.TextUtils;
 import org.json.JSONObject;
 import org.softeg.slartus.forpdacommon.Http;
 import org.softeg.slartus.forpdacommon.NotReportException;
+import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MyApp;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
-import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.Log;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ForPdaVersionNotifier extends MainNotifier {
-    public ForPdaVersionNotifier(int period) {
-        super("ForPdaVersionNotifier", period);
+    public ForPdaVersionNotifier(NotifiersManager notifiersManager,int period) {
+        super(notifiersManager,"ForPdaVersionNotifier", period);
     }
 
     public void start(Context context) {
-        if (!isTime())
-            return;
+//        if (!isTime())
+//            return;
         saveTime();
         showNotify(context);
     }
 
-    public static void showNotify(final Context context) {
+    public void showNotify(final Context context) {
         final Handler handler = new Handler();
         new Thread(new Runnable() {
             public void run() {
@@ -64,7 +66,7 @@ public class ForPdaVersionNotifier extends MainNotifier {
                         handler.post(new Runnable() {
                             public void run() {
                                 try {
-                                    new AlertDialogBuilder(context)
+                                    addToStack(new AlertDialogBuilder(context)
                                             .setTitle("Новая версия!")
                                             .setMessage("На сайте 4pda.ru обнаружена новая версия: " + finalReleaseVer + "\n\n" +
                                                     "Изменения:\n" + info)
@@ -73,14 +75,13 @@ public class ForPdaVersionNotifier extends MainNotifier {
                                                 public void onClick(DialogInterface dialogInterface, int i) {
                                                     dialogInterface.dismiss();
                                                     try {
-                                                        ExtUrl.showInBrowser(context, apk);
+                                                        IntentActivity.tryShowFile((Activity) context, Uri.parse(apk), false);
                                                     } catch (Throwable ex) {
                                                         Log.e(context, ex);
                                                     }
                                                 }
                                             })
-                                            .setNegativeButton("Отмена", null)
-                                            .create().show();
+                                            .setNegativeButton("Закрыть", null).create());
 
                                 } catch (Exception ex) {
                                     Log.e(context, new NotReportException("Ошибка проверки новой версии", ex));

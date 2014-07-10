@@ -4,7 +4,9 @@ import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.HtmlUtils;
 import org.softeg.slartus.forpdaplus.emotic.Smiles;
@@ -26,6 +28,8 @@ public class TopicBodyBuilder extends HtmlBuilder {
     private HtmlPreferences m_HtmlPreferences;
     private Hashtable<String, String> m_EmoticsDict;
     private boolean m_MMod = false;
+    private Boolean m_IsLoadImages = true;
+    private Boolean m_IsShowAvatars = true;
 
     public TopicBodyBuilder(Context context, Boolean logined, ExtTopic topic, String urlParams,
                             Boolean isWebviewAllowJavascriptInterface) {
@@ -33,18 +37,20 @@ public class TopicBodyBuilder extends HtmlBuilder {
         m_HtmlPreferences = new HtmlPreferences();
         m_HtmlPreferences.load(context);
         m_EmoticsDict = Smiles.getSmilesDict();
-
+        m_PostTemplate = FileUtils.readTrimRawTextFile(context, R.raw.post_header);
         m_IsWebviewAllowJavascriptInterface = isWebviewAllowJavascriptInterface;
         m_Logined = logined;
         m_UrlParams = urlParams;
         m_Topic = topic;
+        m_IsLoadImages = WebViewExternals.isLoadImages("theme");
+        m_IsShowAvatars = Preferences.Topic.isShowAvatars();
     }
 
     public void beginTopic() {
         String desc = TextUtils.isEmpty(m_Topic.getDescription()) ? "" : (", " + m_Topic.getDescription());
         super.beginHtml(m_Topic.getTitle() + desc);
         super.beginBody();
-        m_Body.append("<div style=\"margin-top:36pt\"/>\n");
+        m_Body.append("<div style=\"margin-top:54pt\"/>\n");
         if (m_Topic.getPagesCount() > 1) {
             addButtons(m_Body, m_Topic.getCurrentPage(), m_Topic.getPagesCount(),
                     m_IsWebviewAllowJavascriptInterface, false, true);
@@ -69,7 +75,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         m_Body.append(getTitleBlock());
 
 
-        m_Body.append("<br/><br/><br/><br/><br/><br/>\n");
+        m_Body.append("<div style=\"margin-top:54pt\"/>\n");
         super.endBody();
         super.endHtml();
     }
@@ -78,7 +84,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
         m_Body.append("<div name=\"entry").append(post.getId()).append("\" id=\"entry").append(post.getId()).append("\"></div>\n");
 
-        addPostHeader(m_Body, post, post.getId());
+        addPostHeader(m_Body, post);
 
         m_Body.append("<div id=\"msg").append(post.getId()).append("\" name=\"msg").append(post.getId()).append("\">");
 
@@ -117,7 +123,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         } else {
             res = HtmlPreferences.modifyEmoticons(m_Body.toString(), m_EmoticsDict, false);
         }
-        if (!WebViewExternals.isLoadImages("theme"))
+        if (!m_IsLoadImages)
             res = HtmlPreferences.modifyAttachedImagesBody(m_IsWebviewAllowJavascriptInterface, res);
         return res;
     }
@@ -149,6 +155,10 @@ public class TopicBodyBuilder extends HtmlBuilder {
         sb.append("<div class=\"last\"><a ").append(nextDisabled ? "#" : getHtmlout(isUseJs, "lastPage")).append(" class=\"href_button").append(nextDisabled ? "_disable" : "").append("\">&gt;&gt;</a></div>\n");
         sb.append("</div>\n");
 
+    }
+
+    private String normParam(String paramName) {
+        return HtmlUtils.modifyHtmlQuote(paramName).replace("'", "\\'").replace("\"", "&quot;");
     }
 
     public static String getHtmlout(Boolean webViewAllowJs, String methodName, String val1, String val2) {
@@ -186,7 +196,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
             sb.append(" onclick=\"window.HTMLOUT.").append(methodName).append("(");
             for (String paramName : paramValues) {
-                sb.append("'").append(HtmlUtils.modifyHtmlQuote(paramName).replace("'", "\\'").replace("\"", "&quot;")).append("',");
+                sb.append("'").append(paramName).append("',");
             }
             if (paramValues.length > 0)
                 sb.delete(sb.length() - 1, sb.length());
@@ -195,9 +205,14 @@ public class TopicBodyBuilder extends HtmlBuilder {
         return sb.toString();
     }
 
-    private void addPostHeader(StringBuilder sb, Post msg, String msgId) {
+    private String m_PostTemplate = null;
+
+    private void addPostHeader(StringBuilder sb, Post msg) {
         String nick = msg.getNick();
-//nick="\"~!@#$%^&*()<>'/{}[]\\\\`&#377;micier2\"";
+        String nickParam = msg.getNickParam();
+        String[] repParams = new String[]{msg.getId(), msg.getUserId(), nickParam, msg.getCanPlusRep() ? "1" : "0", msg.getCanMinusRep() ? "1" : "0"};
+
+
         String nickLink = nick;
         if (!TextUtils.isEmpty(msg.getUserId())) {
             nickLink = "<a " +
@@ -205,7 +220,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
                             "showUserMenu", new String[]{
                                     msg.getId(),
                                     msg.getUserId(),
-                                    nick, msg.getAvatarFileName()}
+                                    nickParam, msg.getAvatarFileName()}
                     )
                     + " class=\"system_link\">" + nick + "</a>";
         }
@@ -213,29 +228,42 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
         String userState = msg.getUserState() ? "post_nick_online_cli" : "post_nick_cli";
 
+        String advDiv = m_IsShowAvatars ? "<div class=\"margin_left\"></div>" : "";
         sb.append("<div></div><div class=\"post_header\">\n");
         sb.append("\t<table width=\"100%\">\n");
-        sb.append("\t\t<tr><td><span class=\"").append(userState).append("\">").append(nickLink).append("</span></td>\n");
-        sb.append("\t\t\t<td><div align=\"right\"><span class=\"post_date_cli\">").append(msg.getDate()).append("<a ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostLinkMenu", msg.getId())).append(">#").append(msg.getNumber()).append("</a></span></div></td>\n");
+        sb.append("\t\t<tr><td>").append(advDiv).append("<span class=\"").append(userState).append("\">").append(nickLink).append("</span></td>\n");
+        sb.append("\t\t\t<td><div align=\"right\"><span class=\"post_date_cli\">").append(msg.getDate()).append("<a ")
+                .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostLinkMenu", msg.getId())).append(">#").append(msg.getNumber()).append("</a></span></div></td>\n");
         sb.append("\t\t</tr>\n");
-        String avatar = msg.getAvatarFileName();
 
-        if (Preferences.Topic.isShowAvatars()) {
-            if (TextUtils.isEmpty(avatar))
-                avatar = "file:///android_asset/profile/logo.png";
-            sb.append("<tr><td colspan=\"2\"><div class=\"avatar_container\">");
-            sb.append("<img src=\"").append(avatar).append("\" height=\"40\" />");
-            sb.append("</div></tr>");
-        }else{
-            sb.append("<tr><td colspan=\"2\"><div class=\"avatar_container_empty\"></div></tr>");
+
+        sb.append("<tr><td colspan=\"2\">");
+        if (m_IsShowAvatars) {
+            sb.append("<div class=\"avatar_container\">");
+            String avatar = msg.getAvatarFileName();
+
+            if (!m_IsLoadImages) {
+                sb.append("<a class=\"sp_img\" ")
+                        .append(TextUtils.isEmpty(avatar) ?
+                                "" : TopicBodyBuilder.getHtmlout(m_IsWebviewAllowJavascriptInterface, "showImgPreview", new String[]{"аватар", avatar, avatar}))
+                        .append(">аватар</a>");
+            } else {
+                if (TextUtils.isEmpty(avatar))
+                    avatar = "file:///android_asset/profile/logo.png";
+                sb.append("<img src=\"").append(avatar).append("\" />");
+            }
+            sb.append("</div>");
+
         }
+        sb.append("</td></tr>");
+
         String userGroup = msg.getUserGroup() == null ? "" : msg.getUserGroup();
-        sb.append("<tr>\n" + "\t\t\t<td colspan=\"2\"><span  class=\"user_group\">").append(userGroup).append("</span></td></tr>");
+        sb.append("<tr>\n" + "\t\t\t<td colspan=\"2\">").append(advDiv).append("<span  class=\"user_group\">").append(userGroup).append("</span></td></tr>");
         sb.append("\t\t<tr>\n");
-        sb.append("\t\t\t<td>").append(TextUtils.isEmpty(msg.getUserId()) ? "" : getReputation(msg)).append("</td>\n");
+        sb.append("\t\t\t<td>").append(advDiv).append(TextUtils.isEmpty(msg.getUserId()) ? "" : getReputation(msg)).append("</td>\n");
         if (Client.getInstance().getLogined()) {
-            String[] postMenuParams = {msg.getId(), msg.getDate(), msg.getUserId(), msg.getNick(), msg.getCanEdit() ? "1" : "0", msg.getCanDelete() ? "1" : "0"};
-            sb.append("\t\t\t<td><div align=\"right\"><a ")
+            String[] postMenuParams = {msg.getId(), msg.getDate(), msg.getUserId(), nickParam, msg.getCanEdit() ? "1" : "0", msg.getCanDelete() ? "1" : "0"};
+            sb.append("\t\t\t<td><div align=\"right\">").append("<a ")
                     .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostMenu", postMenuParams)).append(" class=\"system_link\">меню</a></div></td>");
         }
         sb.append("\t\t</tr>");
@@ -244,7 +272,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
     }
 
     private String getReputation(Post msg) {
-        String[] params = new String[]{msg.getId(), msg.getUserId(), msg.getNick(), msg.getCanPlusRep() ? "1" : "0", msg.getCanMinusRep() ? "1" : "0"};
+        String[] params = new String[]{msg.getId(), msg.getUserId(), msg.getNickParam(), msg.getCanPlusRep() ? "1" : "0", msg.getCanMinusRep() ? "1" : "0"};
         //        if (!msg.getCanMinusRep() || !msg.getCanPlusRep())
         return "<a " + getHtmlout(m_IsWebviewAllowJavascriptInterface, "showRepMenu", params) + "  class=\"system_link\" ><span class=\"post_date_cli\">Реп(" + msg.getUserReputation() + ")</span></a>";
     }
@@ -252,6 +280,8 @@ public class TopicBodyBuilder extends HtmlBuilder {
     private void addFooter(StringBuilder sb, Post post) {
         sb.append("<div class=\"post_footer\">");
         if (m_Logined) {
+
+            String nickParam = post.getNickParam();
             String postNumber = post.getNumber();
             try {
                 postNumber = Integer.toString(Integer.parseInt(post.getNumber()) - 1);
@@ -261,13 +291,13 @@ public class TopicBodyBuilder extends HtmlBuilder {
                     m_Topic.getId(), post.getId(), postNumber));
 
             String insertNickText = String.format("[SNAPBACK]%s[/SNAPBACK] [B]%s,[/B] ",
-                    post.getId(), HtmlUtils.modifyHtmlQuote(post.getNick()).replace("'", "\\'").replace("\"", "&quot;"));
+                    post.getId(), nickParam);
             sb.append("<a class=\"system_link\" ")
                     .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "insertTextToPost", insertNickText))
                     .append("><span class=\"insert_nick_button\"></span></a>");
 
 
-            String[] quoteParams = {m_Topic.getForumId(), m_Topic.getId(), post.getId(), post.getDate(), post.getUserId(), post.getNick()};
+            String[] quoteParams = {m_Topic.getForumId(), m_Topic.getId(), post.getId(), post.getDate(), post.getUserId(), nickParam};
             sb.append("<a class=\"system_link\" ")
                     .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "quote", quoteParams))
                     .append("><span class=\"quote_button\"></span></a>");

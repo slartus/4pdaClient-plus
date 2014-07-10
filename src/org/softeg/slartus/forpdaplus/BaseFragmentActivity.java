@@ -49,6 +49,12 @@ public class BaseFragmentActivity extends FragmentActivity
     }
 
     @Override
+    public void startActivityForResult(android.content.Intent intent, int requestCode) {
+        intent.putExtra(BaseFragmentActivity.SENDER_ACTIVITY, getClass().toString());
+        super.startActivityForResult(intent, requestCode);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         checkIfForceKill();

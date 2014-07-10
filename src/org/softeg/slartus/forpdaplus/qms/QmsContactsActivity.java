@@ -194,7 +194,7 @@ public class QmsContactsActivity extends BaseFragmentActivity implements Adapter
         public ArrayList<QmsUser> loadInBackground() {
             try {
                 ArrayList<QmsUser> users = QmsApi.getQmsSubscribers(Client.getInstance());
-                Client.getInstance().setQms_2_0_Count(QmsUsers.unreadMessageUsersCount(users));
+                Client.getInstance().setQmsCount(QmsUsers.unreadMessageUsersCount(users));
                 Client.getInstance().doOnMailListener();
                 return users;
             } catch (Throwable e) {

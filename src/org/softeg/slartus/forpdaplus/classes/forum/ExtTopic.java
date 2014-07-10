@@ -1,16 +1,15 @@
 package org.softeg.slartus.forpdaplus.classes.forum;
 
 import android.content.Context;
-import android.content.Intent;
 import android.text.TextUtils;
 
 import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.classes.ForumItem;
 import org.softeg.slartus.forpdaplus.classes.IListItem;
-import org.softeg.slartus.forpdaplus.classes.Messages;
 import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,8 +21,8 @@ import java.util.regex.Pattern;
  * Time: 20:46
  * To change this template use File | Settings | File Templates.
  */
-public class ExtTopic extends Topic implements ForumItem, IListItem {
-    private Messages m_Messages = new Messages();
+public class ExtTopic extends Topic implements ForumItem, IListItem, Serializable {
+
 
 
     private String authKey;
@@ -83,14 +82,8 @@ public class ExtTopic extends Topic implements ForumItem, IListItem {
         return m_CurrentPage;
     }
 
-
-
-
     public void showActivity(Context context) {
-        Intent intent = new Intent(context, ThemeActivity.class);
-        intent.putExtra("ThemeUrl", m_Id);
-
-        context.startActivity(intent);
+        ThemeActivity.showTopicById(context,m_Id);
     }
 
     public void showActivity(Context context, String params) {
@@ -98,12 +91,8 @@ public class ExtTopic extends Topic implements ForumItem, IListItem {
     }
 
     public static void showActivity(Context context, CharSequence themeId, CharSequence params) {
-        Intent intent = new Intent(context, ThemeActivity.class);
-        intent.putExtra("ThemeUrl", themeId);
-        intent.putExtra("Params", params);
-        context.startActivity(intent);
+        ThemeActivity.showTopicById(context,themeId,params);
     }
-
 
     public String getShowBrowserUrl(String params) {
         return getShowBrowserUrl(m_Id, params);
@@ -113,7 +102,6 @@ public class ExtTopic extends Topic implements ForumItem, IListItem {
         return "http://4pda.ru/forum/index.php?showtopic=" + id + (TextUtils.isEmpty(params) ? "" : ("&" + params));
     }
 
-
     public String getAuthKey() {
         return authKey;
     }
@@ -122,20 +110,11 @@ public class ExtTopic extends Topic implements ForumItem, IListItem {
         this.authKey = authKey;
     }
 
-
-
     public boolean getIsOld() {
-        boolean mIsOld = false;
-        return mIsOld;
+        return false;
     }
-
-
-
 
     public void dispose() {
-        if (m_Messages != null)
-            m_Messages.clear();
+
     }
-
-
 }

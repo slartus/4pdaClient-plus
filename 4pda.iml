@@ -26,7 +26,6 @@
     <orderEntry type="module" module-name="chrisbanes-Android-PullToRefresh" />
     <orderEntry type="module" module-name="ActionBar-PullToRefresh" />
     <orderEntry type="module" module-name="SqliteAnnotations" />
-    <orderEntry type="module" module-name="AndroidBillingLibrary" />
     <orderEntry type="library" name="apache" level="project" />
     <orderEntry type="module" module-name="4pdaSources" />
     <orderEntry type="module-library">

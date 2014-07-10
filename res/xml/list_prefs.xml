@@ -7,4 +7,9 @@
         android:key="lists.scroll_by_buttons"
         android:summary="Использовать кнопки для скролла списка"
         android:title="Скролл кнопками" />
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="lists.refresh"
+        android:summary="Обновлять списки при открытии"
+        android:title="Обновлять списки" />
 </PreferenceScreen>

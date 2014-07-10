@@ -12,6 +12,7 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MyApp;
 import org.softeg.slartus.forpdaplus.common.Log;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
+import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.sqliteannotations.BaseDao;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
     private static final String TAG = "BaseTaskListFragment";
 
     public BaseTaskListFragment() {
-super();
+        super();
     }
 
     public void filter(CharSequence text) {
@@ -134,6 +135,7 @@ super();
     }
 
     public void loadData(final boolean isRefresh) {
+
         saveListViewScrollPosition();
         Runnable runnable = new Runnable() {
             @Override
@@ -161,7 +163,7 @@ super();
         }
     }
 
-    private void startCheckTask(){
+    private void startCheckTask() {
 
         if (mCheckTask == null || mCheckTask.getStatus() == AsyncTask.Status.FINISHED) {
             mCheckTask = new CheckTask();
@@ -254,6 +256,7 @@ super();
             else if (!result) {
                 onFailureResult();
             }
+
             startCheckTask();
 
         }
@@ -334,7 +337,12 @@ super();
             if (!isCancelled()) {
                 deliveryCache();
                 restoreListViewScrollPosition();
-                startLoad();
+                if (mData.size() == 0 || Preferences.Lists.isRefresh())
+                    startLoad();
+                else {
+                    setLoading(false);
+                    startCheckTask();
+                }
             }
         }
 

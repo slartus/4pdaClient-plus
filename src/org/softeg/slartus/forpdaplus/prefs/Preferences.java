@@ -99,6 +99,10 @@ public class Preferences {
         }
 
 
+        public static boolean isRefresh() {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+            return prefs.getBoolean("lists.refresh", true);
+        }
     }
 
     public static class List {
@@ -150,11 +154,6 @@ public class Preferences {
     }
 
     public static class Topic {
-        public static Boolean isShowAvatars(){
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
-            return prefs.getBoolean("topic.showavatar", true);
-        }
-
         public static void setShowAvatars(boolean value) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
             prefs.edit().putBoolean("topic.showavatar", value).commit();
@@ -175,6 +174,24 @@ public class Preferences {
             prefs.edit().putBoolean("theme.ConfirmSend", value).commit();
         }
 
+        public static Boolean isShowAvatars() {
+            int loadImagesType = getShowAvatarsOpt();
+            if (loadImagesType == 1) {
+                return Connectivity.isConnectedWifi(MyApp.getContext());
+            }
+
+            return loadImagesType == 0;
+        }
+
+        public static int getShowAvatarsOpt() {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+            return ExtPreferences.parseInt(prefs, "topic.show_avatar_opt", 0);
+        }
+
+        public static void setShowAvatarsOpt(int value) {
+            PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance())
+            .edit().putInt("topic.show_avatar_opt", value).commit();
+        }
 
         public static int getFontSize() {
             return Preferences.getFontSize("theme");
@@ -281,6 +298,16 @@ public class Preferences {
             if (!res.endsWith(File.separator))
                 res += File.separator;
             return res;
+        }
+
+        public static void setEvaluateJavascriptEnabled(boolean value) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+            prefs.edit().putBoolean("system.EvaluateJavascriptEnabled", value).commit();
+        }
+
+        public static boolean isEvaluateJavascriptEnabled() {
+            return PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance())
+                    .getBoolean("system.EvaluateJavascriptEnabled", true);
         }
     }
 

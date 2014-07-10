@@ -158,7 +158,7 @@ public class TopicsHistoryTable {
         return res;
     }
 
-    public static void addHistory(ExtTopic topic, String url) {
+    public static void addHistory(ExtTopic topic) {
         if (topic.getId() == null) return;
         TopicsTable.addTopic(topic, true);
         SQLiteDatabase db = null;
@@ -174,7 +174,6 @@ public class TopicsHistoryTable {
             ContentValues values = new ContentValues();
             values.put(COLUMN_TOPIC_ID, topic.getId());
             values.put(COLUMN_DATETIME, DbHelper.DateTimeFormat.format(new Date()));
-            values.put(COLUMN_URL, url);
 
             db.insertOrThrow(TABLE_NAME, null, values);
         } catch (Exception ex) {

@@ -35,6 +35,19 @@
         <item>0</item>
     </string-array>
 
+
+    <string-array name="AvatarsShowTitles">
+        <item>Всегда</item>
+        <item>Только Wi-Fi</item>
+        <item>Никогда</item>
+    </string-array>
+
+    <string-array name="AvatarsShowValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
     <string-array name="NewsListViewTitles">
         <item>Полный</item>
         <item>Сокращенный</item>

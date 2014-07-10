@@ -25,7 +25,6 @@ import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.Exceptions.AdditionalInfoException;
 import org.softeg.slartus.forpdaplus.classes.Exceptions.MessageInfoException;
 import org.softeg.slartus.forpdaplus.classes.ShowInBrowserDialog;
-import org.softeg.slartus.forpdaplus.mainnotifiers.MarketVersionNotifier;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -232,9 +231,6 @@ public final class Log {
 
 
     public static void sendReport(final Context context, final String fullExceptionText, final Throwable ex) {
-        new MarketVersionNotifier(1).start(context);
-
-
         StringBuffer body = purchaseOrder(context, fullExceptionText);
 
         String addFileBody = null;

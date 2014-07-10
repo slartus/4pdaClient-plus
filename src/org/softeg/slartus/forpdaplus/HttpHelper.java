@@ -6,7 +6,6 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
-import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.FormBodyPart;
@@ -16,16 +15,15 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
+import org.softeg.slartus.forpdaapi.ProgressState;
+import org.softeg.slartus.forpdacommon.FileUtils;
+import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.classes.CountingMultipartEntity;
 import org.softeg.slartus.forpdaplus.classes.common.Translit;
 import org.softeg.slartus.forpdaplus.common.Log;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
-import org.softeg.slartus.forpdaapi.ProgressState;
-import org.softeg.slartus.forpdacommon.FileUtils;
-import org.softeg.slartus.forpdacommon.NotReportException;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -53,16 +51,7 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
         writeExternalCookies(cookiesFile);
     }
 
-    public static void readExternalCookies(CookieStore cookieStore) throws IOException {
-        try {
-            readExternalCookies(cookieStore, PreferencesActivity.getCookieFilePath(MyApp.getContext()));
 
-        } catch (FileNotFoundException ex) {
-            Log.e("Файл с печеньками не найден");
-        } catch (IOException ex) {
-            throw ex;
-        }
-    }
 
     @Override
     protected void finalize() throws Throwable {

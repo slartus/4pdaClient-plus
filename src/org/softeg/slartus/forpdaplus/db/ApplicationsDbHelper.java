@@ -13,11 +13,11 @@ import java.io.IOException;
  */
 public class ApplicationsDbHelper extends SQLiteAssetHelper {
 
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 8;
     private static final String DATABASE_NAME = "applications";
 
     public ApplicationsDbHelper(Context context) throws IOException {
         super(context, DATABASE_NAME, MyApp.getInstance().getAppExternalFolderPath(), null, DATABASE_VERSION);
-        setForcedUpgrade(6);
+        setForcedUpgrade(8);
     }
 }

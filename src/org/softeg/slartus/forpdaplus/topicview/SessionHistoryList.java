@@ -53,17 +53,17 @@ public class SessionHistoryList extends ArrayList<SessionHistory> implements Par
 
     private Boolean m_First = true;
 
-    public void addSessionHistory(String themeId, String params, int x, int y) {
+    public void addSessionHistory(String themeId, String url, int x, int y) {
         if (m_First) {
             m_First = false;
             return;
         }
         if (size() != 0) {
             SessionHistory prevHistory = get(size() - 1);
-            if (prevHistory.getUrl().equals(SessionHistory.createUrl(themeId, SessionHistory.getSt(params))))
+            if (prevHistory.getUrl().equals(SessionHistory.createUrl(themeId, SessionHistory.getSt(url))))
                 return;
         }
-        add(new SessionHistory(themeId, params, x, y));
+        add(new SessionHistory(themeId, url, x, y));
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.classes;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,7 +26,7 @@ import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
  */
 public class ProfileMenuFragment extends Fragment {
     public static final String TAG="org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment";
-
+private Handler mHandler=new Handler();
     private SubMenu mUserMenuItem;
 
     public ProfileMenuFragment() {
@@ -36,6 +37,28 @@ public class ProfileMenuFragment extends Fragment {
     public void onCreate(Bundle saveInstance) {
         super.onCreate(saveInstance);
         setHasOptionsMenu(true);
+        Client.getInstance().addOnUserChangedListener(new Client.OnUserChangedListener() {
+            @Override
+            public void onUserChanged(String user, Boolean success) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        setUserMenu();
+                    }
+                });
+            }
+        });
+        Client.getInstance().addOnMailListener(new Client.OnMailListener() {
+            @Override
+            public void onMail(int count) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        setUserMenu();
+                    }
+                });
+            }
+        });
     }
 
 
@@ -43,7 +66,7 @@ public class ProfileMenuFragment extends Fragment {
         Boolean logged = Client.getInstance().getLogined();
         if (logged) {
 
-            if (Client.getInstance().getQms_2_0_Count() > 0) {
+            if (Client.getInstance().getQmsCount() > 0) {
                 return R.drawable.ic_menu_user_qms;
             }
             return R.drawable.ic_menu_user_online;
@@ -60,7 +83,7 @@ public class ProfileMenuFragment extends Fragment {
         mUserMenuItem.getItem().setTitle(Client.getInstance().getUser());
         mUserMenuItem.clear();
         if (logged) {
-            String text = Client.getInstance().getQms_2_0_Count() > 0 ? ("QMS (" + Client.getInstance().getQms_2_0_Count() + ")") : "QMS";
+            String text = Client.getInstance().getQmsCount() > 0 ? ("QMS (" + Client.getInstance().getQmsCount() + ")") : "QMS";
             mUserMenuItem.add(text)
                     .setIcon(R.drawable.ic_action_qms)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

@@ -189,10 +189,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
         }
 
         private void showTheme() {
-            Intent intent = new Intent(PreferencesActivity.this, ThemeActivity.class);
-            intent.putExtra("ThemeUrl", "271502");
-
-            PreferencesActivity.this.startActivity(intent);
+            ThemeActivity.showTopicById(PreferencesActivity.this,"271502");
         }
 
         private boolean showAddRep() {

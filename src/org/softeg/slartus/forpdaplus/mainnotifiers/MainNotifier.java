@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.mainnotifiers;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -11,7 +12,6 @@ import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.MyApp;
 import org.softeg.slartus.forpdaplus.common.Log;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -19,6 +19,7 @@ import java.util.GregorianCalendar;
  * Created by slartus on 03.06.2014.
  */
 public abstract class MainNotifier {
+    private NotifiersManager notifiersManager;
     protected String name;
     protected int period;
 
@@ -36,10 +37,19 @@ public abstract class MainNotifier {
         return "";
     }
 
-    public MainNotifier(String name, int period) {
+    public void addToStack(AlertDialog alertDialog){
+        notifiersManager.addNotifyDialog(alertDialog);
+    }
+
+    public MainNotifier(NotifiersManager notifiersManager, String name, int period) {
+        this.notifiersManager = notifiersManager;
         this.name = name;
         this.period = period;
 
+    }
+
+    public String getName(){
+        return name;
     }
 
     protected boolean isTime() {
