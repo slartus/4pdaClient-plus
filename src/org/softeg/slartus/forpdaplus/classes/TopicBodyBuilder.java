@@ -242,16 +242,17 @@ public class TopicBodyBuilder extends HtmlBuilder {
             sb.append("<div class=\"avatar_container\">");
             String avatar = msg.getAvatarFileName();
 
-            if (!m_IsLoadImages) {
-                sb.append("<a class=\"sp_img\" ")
-                        .append(TextUtils.isEmpty(avatar) ?
-                                "" : TopicBodyBuilder.getHtmlout(m_IsWebviewAllowJavascriptInterface, "showImgPreview", new String[]{"аватар", avatar, avatar}))
-                        .append(">аватар</a>");
-            } else {
+//            if (!m_IsLoadImages)
+//            {
+//                sb.append("<a class=\"sp_img\" ")
+//                        .append(TextUtils.isEmpty(avatar) ?
+//                                "" : TopicBodyBuilder.getHtmlout(m_IsWebviewAllowJavascriptInterface, "showImgPreview", new String[]{"аватар", avatar, avatar}))
+//                        .append(">аватар</a>");
+//            } else {
                 if (TextUtils.isEmpty(avatar))
                     avatar = "file:///android_asset/profile/logo.png";
                 sb.append("<img src=\"").append(avatar).append("\" />");
-            }
+            //}
             sb.append("</div>");
 
         }

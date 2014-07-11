@@ -55,20 +55,20 @@ public class ForPdaVersionNotifier extends MainNotifier {
                     JSONObject jsonObject = new JSONObject(Html.fromHtml(m.group(1)).toString());
                     jsonObject = jsonObject.getJSONObject(MyApp.getContext().getPackageName());
                     jsonObject = jsonObject.getJSONObject("release");
-                    String version = jsonObject.getString("ver").trim().replace("beta", ".").trim();
+                    final String version = jsonObject.getString("ver").trim().replace("beta", ".").trim();
                     final String apk = jsonObject.getString("apk");
                     final String info = jsonObject.getString("info");
 
                     releaseVer = version.replace("beta", ".").trim();
                     siteVersionsNewer = isSiteVersionsNewer(releaseVer, currentVersion);
                     if (siteVersionsNewer) {
-                        final String finalReleaseVer = releaseVer;
+
                         handler.post(new Runnable() {
                             public void run() {
                                 try {
                                     addToStack(new AlertDialogBuilder(context)
                                             .setTitle("Новая версия!")
-                                            .setMessage("На сайте 4pda.ru обнаружена новая версия: " + finalReleaseVer + "\n\n" +
+                                            .setMessage("На сайте 4pda.ru обнаружена новая версия: " + version + "\n\n" +
                                                     "Изменения:\n" + info)
                                             .setPositiveButton("Скачать", new DialogInterface.OnClickListener() {
                                                 @Override

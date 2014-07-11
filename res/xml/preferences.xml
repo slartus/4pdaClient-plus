@@ -215,7 +215,7 @@
                 android:defaultValue="false"
                 android:key="qms.service.use"
                 android:summary="Сервис проверки новых сообщений"
-                android:text="textСервис проверки новых сообщений"
+                android:text="Сервис проверки новых сообщений"
                 android:title="Использовать сервис" />
             <org.softeg.slartus.forpdaplus.classes.common.ExtEditTextPreference
                 android:inputType="numberDecimal"
@@ -234,6 +234,11 @@
                 android:summary="Сервис проверки новых сообщений"
                 android:text="textСервис проверки новых сообщений"
                 android:title="Использовать сервис" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="FavoritesNotifier.service.pinned_only"
+                android:summary="Уведомлять о новых сообщениях только в важных темах"
+                android:title="Только важные" />
             <org.softeg.slartus.forpdaplus.classes.common.ExtEditTextPreference
                 android:inputType="numberDecimal"
                 android:key="FavoritesNotifier.service.timeout"

@@ -383,6 +383,10 @@ public class HttpHelper {
         return m_RedirectUri;
     }
 
+    public static String getLastUri(){
+        return m_LastUrl;
+    }
+
     //
     // private methods
     //

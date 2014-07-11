@@ -90,11 +90,11 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     private EditText txtSearch;
     private RelativeLayout pnlSearch;
     private String m_LastUrl;
+    private ArrayList<SessionHistory> m_History = new ArrayList<>();
     private ExtTopic m_Topic;
 
     private Boolean m_SpoilFirstPost = true;
 
-    private SessionHistoryList m_History = new SessionHistoryList();
 
     // текст редактирования сообщения при переходе по страницам
     private String m_PostBody = "";
@@ -173,11 +173,12 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                     hideMessagePanel();
                     if (Client.getInstance().getRedirectUri() == null)
                         android.util.Log.e("ThemeActivity", "redirect is null");
+                    m_LastUrl = Client.getInstance().getRedirectUri() == null ? Client.getInstance().getLastUrl() : Client.getInstance().getRedirectUri().toString();
                     m_Topic = postResult.ExtTopic;
-                    setThemeParams(Client.getInstance().getRedirectUri() == null ? m_LastUrl : Client.getInstance().getRedirectUri().toString());
 
                     if (postResult.TopicBody == null)
                         android.util.Log.e("ThemeActivity", "TopicBody is null");
+                    addToHistory(postResult.TopicBody);
                     showThemeBody(postResult.TopicBody);
 
                 } else {
@@ -285,10 +286,10 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             assert intent != null;
 
             String url = null;
-            if(intent.getExtras()!=null&&intent.getExtras().containsKey(TOPIC_URL_KEY))
-                url=IntentActivity.normalizeThemeUrl(intent.getStringExtra(TOPIC_URL_KEY));
-            else if(intent.getData()!=null)
-                url=intent.getData().toString();
+            if (intent.getExtras() != null && intent.getExtras().containsKey(TOPIC_URL_KEY))
+                url = IntentActivity.normalizeThemeUrl(intent.getStringExtra(TOPIC_URL_KEY));
+            else if (intent.getData() != null)
+                url = intent.getData().toString();
             assert url != null;
             showTheme(url);
         }
@@ -298,12 +299,13 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         try {
+            outState.putSerializable("History", m_History);
             outState.putSerializable("Topic", m_Topic);
             webView.saveState(outState);
             outState.putString("LastUrl", getLastUrl());
             outState.putString("ScrollElement", m_ScrollElement);
             outState.putBoolean("FromHistory", m_FromHistory);
-            outState.putParcelable("SessionHistory", m_History);
+
             outState.putString("LoadsImagesAutomatically", LoadsImagesAutomatically == null ? "null" : (LoadsImagesAutomatically ? "1" : "0"));
         } catch (Throwable ex) {
             Log.e(this, ex);
@@ -315,7 +317,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         super.onRestoreInstanceState(outState);
         try {
             m_Topic = (ExtTopic) outState.getSerializable("Topic");
-            webView.restoreState(outState);
+
             m_LastUrl = outState.getString("LastUrl");
             m_ScrollElement = outState.getString("ScrollElement");
 
@@ -327,10 +329,20 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             String sLoadsImagesAutomatically = outState.getString("LoadsImagesAutomatically");
             LoadsImagesAutomatically = "null".equals(sLoadsImagesAutomatically) ? null : Boolean.parseBoolean(sLoadsImagesAutomatically);
 
-            m_History = outState.getParcelable("SessionHistory");
-            loadPreferences(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
 
-            checkBodyAndReload();
+            loadPreferences(PreferenceManager.getDefaultSharedPreferences(MyApp.getContext()));
+            m_History = (ArrayList<SessionHistory>) outState.getSerializable("History");
+            assert m_History != null;
+            SessionHistory sessionHistory = m_History.get(m_History.size() - 1);
+            m_ScrollY = sessionHistory.getY();
+            if (sessionHistory.getBody() == null) {
+                showTheme(sessionHistory.getUrl());
+            } else {
+                m_LastUrl = sessionHistory.getUrl();
+                m_Topic = sessionHistory.getTopic();
+                showThemeBody(sessionHistory.getBody());
+            }
+
         } catch (Throwable ex) {
             Log.e(this, ex);
         }
@@ -445,7 +457,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     }
 
     public void checkBodyAndReload(String body) {
-        if(TextUtils.isEmpty(body)){
+        if (TextUtils.isEmpty(body)) {
             reloadTopic();
         }
     }
@@ -562,38 +574,47 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             return;
         }
 
-
-        if (!m_History.isEmpty()) {
-            m_FromHistory = true;
-            SessionHistory history = m_History.get(m_History.size() - 1);
+        if (m_History.size() > 1) {
             m_History.remove(m_History.size() - 1);
-            m_ScrollY = history.getY();
-            showTheme(history.getUrl());
-        } else {
-            getPostBody();
-            if (!TextUtils.isEmpty(m_PostBody)) {
-                new AlertDialogBuilder(ThemeActivity.this)
-                        .setTitle("Подтвердите действие")
-                        .setMessage("Имеется введенный текст сообщения! Закрыть тему?")
-                        .setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                                clear();
-                                ThemeActivity.super.onBackPressed();
-                            }
-                        })
-                        .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .create()
-                        .show();
+            SessionHistory sessionHistory = m_History.get(m_History.size() - 1);
+            m_ScrollY = sessionHistory.getY();
+            if (sessionHistory.getBody() == null) {
+                m_History.remove(m_History.size() - 1);
+                showTheme(sessionHistory.getUrl());
             } else {
-                clear();
-                super.onBackPressed();
+                m_LastUrl = sessionHistory.getUrl();
+                m_Topic = sessionHistory.getTopic();
+                showThemeBody(sessionHistory.getBody());
             }
+
+
+            return;
         }
+
+        getPostBody();
+        if (!TextUtils.isEmpty(m_PostBody)) {
+            new AlertDialogBuilder(ThemeActivity.this)
+                    .setTitle("Подтвердите действие")
+                    .setMessage("Имеется введенный текст сообщения! Закрыть тему?")
+                    .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            clear();
+                            ThemeActivity.super.onBackPressed();
+                        }
+                    })
+                    .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .create()
+                    .show();
+        } else {
+            clear();
+            super.onBackPressed();
+        }
+
     }
 
     public void clear() {
@@ -777,6 +798,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             setScrollElement();
             ThemeActivity.this.setTitle(m_Topic.getTitle());
             getSupportActionBar().setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
+
             webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
 
             TopicsHistoryTable.addHistory(m_Topic);
@@ -846,7 +868,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         Thread m_ScrollThread;
 
         public void onNewPicture(WebView view, Picture arg1) {
-            if (TextUtils.isEmpty(m_ScrollElement)) {
+            if (TextUtils.isEmpty(m_ScrollElement) && m_ScrollY == 0) {
                 //webView.setPictureListener(null);
                 return;
             }
@@ -922,9 +944,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-
+            view.clearHistory();
             setSupportProgressBarIndeterminateVisibility(false);
-            //ThemeActivity.this.setProgressBarIndeterminateVisibility(false);
         }
 
         @Override
@@ -1017,21 +1038,6 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         return false;
     }
 
-
-    private void setThemeParams(String url) {
-//        Pattern pattern = Pattern.compile("showtopic=(\\d+)(&(.*))?");
-//        Matcher m = pattern.matcher(url);
-//        if (m.find()) {
-//            m_ThemeUrl = m.group(1);
-//
-//            m_Params = m.group(3);
-//        } else {
-//            m_ThemeUrl = null;
-//
-//            m_Params = null;
-//        }
-    }
-
     public void reloadTopic() {
         showTheme(getLastUrl());
     }
@@ -1040,15 +1046,12 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         try {
             closeSearch();
             webView.clearCache(true);
-
+            if (m_History.size() > 0) {
+                m_History.get(m_History.size() - 1).setY(webView.getScrollY());
+            }
             webView.setWebViewClient(new MyWebViewClient());
             if (m_ScrollY != 0)
                 webView.setPictureListener(new MyPictureListener());
-
-            webView.loadData("<html><head></head><body bgcolor=" + MyApp.getInstance().getCurrentThemeName() + "></body></html>", "text/html", "UTF-8");
-
-
-            saveSessionHistory();
 
             GetThemeTask getThemeTask = new GetThemeTask(this);
             getThemeTask.execute(url.replace("|", ""));
@@ -1176,25 +1179,10 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         ForumUser.startChangeRep(ThemeActivity.this, mHandler, userId, userNick, postId, type, title);
     }
 
-    private void saveSessionHistory() {
-        try {
-            if (m_LastUrl == null)
-                return;
-            if (m_FromHistory) {
-                m_FromHistory = false;
-                return;
-            }
-
-            m_History.addSessionHistory(m_Topic.getId(), m_LastUrl, webView.getScrollX(), webView.getScrollY());
-        } catch (Throwable ex) {
-            Log.e(this, ex);
-        }
-    }
-
     private void setScrollElement() {
         m_ScrollElement = null;
-        URI redirectUri = Client.getInstance().getRedirectUri();
-        String url = redirectUri != null ? redirectUri.toString() : getLastUrl();
+
+        String url = getLastUrl();
         if (url != null) {
             Pattern p = Pattern.compile("#entry(\\d+)");
             Matcher m = p.matcher(url);
@@ -1253,12 +1241,10 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 } else
                     pageBody = forums[1];
 
-                String lastUrl = client.getRedirectUri() == null ? m_LastUrl : client.getRedirectUri().toString();
+                m_LastUrl = client.getRedirectUri() == null ? m_LastUrl : client.getRedirectUri().toString();
 
-                TopicBodyBuilder topicBodyBuilder = client.parseTopic(pageBody, MyApp.getInstance(), lastUrl,
+                TopicBodyBuilder topicBodyBuilder = client.parseTopic(pageBody, MyApp.getInstance(), m_LastUrl,
                         m_SpoilFirstPost);
-
-                setThemeParams(Client.getInstance().getRedirectUri() != null ? Client.getInstance().getRedirectUri().toString() : m_LastUrl);
 
                 m_Topic = topicBodyBuilder.getTopic();
 
@@ -1310,7 +1296,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             if (isCancelled()) return;
 
             if (success) {
-
+                addToHistory(m_ThemeBody);
                 showThemeBody(m_ThemeBody);
             } else {
                 if (ex.getClass() != NotReportException.class) {
@@ -1328,6 +1314,12 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         }
     }
 
+    private void addToHistory(String topicBody) {
+        int historyLimit = Preferences.Topic.getHistoryLimit();
+        if (m_History.size() >= historyLimit && m_History.size() > 0)
+            m_History.get(m_History.size() - historyLimit).setBody(null);
+        m_History.add(new SessionHistory(m_Topic, m_LastUrl, topicBody, 0));
+    }
 
     @Override
     public void onPause() {

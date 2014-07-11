@@ -29,4 +29,6 @@ public interface IHttpClient {
     String uploadFile(String url, String filePath, Map<String, String> additionalHeaders, ProgressState progress) throws Exception;
 
     org.apache.http.client.CookieStore getCookieStore() throws IOException;
+
+
 }

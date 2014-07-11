@@ -21,7 +21,6 @@ import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.TopicApi;
-import org.softeg.slartus.forpdaapi.TopicsApi;
 import org.softeg.slartus.forpdacommon.ActionSelectDialogFragment;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MyApp;
@@ -31,7 +30,6 @@ import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.TopicListItemTask;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
-import org.softeg.slartus.forpdaplus.common.HelpTask;
 import org.softeg.slartus.forpdaplus.common.Log;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
@@ -242,7 +240,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                 });
 
                 FavTopic favTopic = (FavTopic) topic;
-                if (!favTopic.getIsPinned())
+                if (!favTopic.isPinned())
                     optionsMenu.add("\"Закрепить\" в избранном").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             Toast.makeText(context, "Запрос на \"закрепить\" отправлен", Toast.LENGTH_SHORT).show();

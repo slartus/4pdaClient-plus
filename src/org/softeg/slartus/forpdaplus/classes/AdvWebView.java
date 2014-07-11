@@ -196,4 +196,45 @@ public class AdvWebView extends WebView {
             android.util.Log.e("AdvWebView", ex.toString());
         }
     }
+
+//    private String getHTMLDataBuffer(String url) {
+//        InputStream htmlStream;
+//        try {
+//            if (Utils.isReferExternalMemory() && url.contains("sdcard")) {
+//                String tempPath = url.substring(7, url.length());//remove file:// from the url
+//                File file = new File(tempPath);
+//                htmlStream = new FileInputStream(file);
+//            }else{
+//                String tempPath = url.replace("file:///android_asset/", "");
+//                htmlStream = getApplicationContext().getAssets().open(tempPath);
+//            }
+//            Reader is = null;
+//            try {
+//                is = new BufferedReader(new InputStreamReader(htmlStream, "UTF8"));
+//            } catch (UnsupportedEncodingException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            }
+//
+//            // read string from reader
+//            final char[] buffer = new char[1024];
+//            StringBuilder out = new StringBuilder();
+//            int read;
+//            do {
+//                read = is.read(buffer, 0, buffer.length);
+//                if (read>0) {
+//                    out.append(buffer, 0, read);
+//                }
+//            } while (read>=0);
+//
+//            return out.toString();
+//        } catch (FileNotFoundException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 }

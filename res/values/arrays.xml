@@ -38,7 +38,7 @@
 
     <string-array name="AvatarsShowTitles">
         <item>Всегда</item>
-        <item>Только Wi-Fi</item>
+        <item>Wi-Fi</item>
         <item>Никогда</item>
     </string-array>
 

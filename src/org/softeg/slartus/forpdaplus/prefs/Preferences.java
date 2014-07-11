@@ -201,6 +201,15 @@ public class Preferences {
             Preferences.setFontSize("theme", value);
         }
 
+        public static int getHistoryLimit() {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+            return ExtPreferences.parseInt(prefs, "topic.history_limit", 5);
+        }
+
+        public static void setHistoryLimit(int value) {
+            PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance())
+                    .edit().putInt("topic.history_limit", value).commit();
+        }
 
 
         public static class Post {

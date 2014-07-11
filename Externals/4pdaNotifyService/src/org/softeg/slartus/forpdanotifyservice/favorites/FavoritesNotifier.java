@@ -6,14 +6,15 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.softeg.slartus.forpdaapi.FavTopic;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.Topic;
-import org.softeg.slartus.forpdaapi.Topics;
 import org.softeg.slartus.forpdaapi.TopicsApi;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdacommon.NotificationBridge;
@@ -36,19 +37,26 @@ public class FavoritesNotifier extends NotifierBase {
     public static final String LAST_DATETIME_KEY = "FavoritesNotifier.service.lastdatetime";
     public static final String NEW_TOPICS_COUNT_KEY = "NewTopicsCount";
     public static final String HAS_UNREAD_NOTIFY_KEY = "HasUnreadNotify";
+    private Boolean m_PinnedOnly = false;
 
     public FavoritesNotifier(Context context) {
         super(context);
+        readConfig();
+    }
+
+    private void readConfig() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        m_PinnedOnly = preferences.getBoolean("FavoritesNotifier.service.pinned_only", false);
     }
 
     public static Boolean isUse(Context context) {
         return ExtPreferences.getBoolean(context, "FavoritesNotifier.service.use", false);
     }
 
-    private static int getNewTopicsCount(ArrayList<FavTopic> topics) {
+    private int getNewTopicsCount(ArrayList<FavTopic> topics) {
         int res = 0;
-        for (Topic topic : topics) {
-            if (topic.getIsNew())
+        for (FavTopic topic : topics) {
+            if (topic.getIsNew()&&(!m_PinnedOnly||topic.isPinned()))
                 res++;
         }
         return res;
@@ -96,8 +104,15 @@ public class FavoritesNotifier extends NotifierBase {
         if (topics.size() == 0 || getNewTopicsCount(topics) == 0)
             return false;
 
-        Topic lastPostedTopic = topics.get(0);
-        if (!lastPostedTopic.getIsNew())
+        Topic lastPostedTopic = null;
+        for (FavTopic topic : topics) {
+            if (topic.getIsNew()&&(!m_PinnedOnly||topic.isPinned())) {
+                lastPostedTopic = topic;
+                break;
+            }
+        }
+
+        if (lastPostedTopic==null||!lastPostedTopic.getIsNew())
             return false;
 
         GregorianCalendar lastPostedTopicCalendar = new GregorianCalendar();
@@ -169,7 +184,7 @@ public class FavoritesNotifier extends NotifierBase {
 
     private static final int MY_NOTIFICATION_ID = 2;
 
-    private static void sendNotify(Context context, ArrayList<FavTopic> topics, Boolean hasUnread) {
+    private void sendNotify(Context context, ArrayList<FavTopic> topics, Boolean hasUnread) {
         Log.i(LOG_TAG, "favotires sendNotify");
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         String url = "http://4pda.ru/forum/index.php?autocom=favtopics";

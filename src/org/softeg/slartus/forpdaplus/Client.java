@@ -84,6 +84,10 @@ public class Client implements IHttpClient {
         return HttpHelper.getRedirectUri();
     }
 
+    public String getLastUrl() {
+        return HttpHelper.getLastUri();
+    }
+
     public void deletePost(String forumId, String themeId, String postId, CharSequence authKey) throws IOException {
         PostApi.delete(this, forumId, themeId, postId, authKey);
     }
@@ -321,6 +325,8 @@ public class Client implements IHttpClient {
     public Boolean likeNews(String postId) throws IOException {
         return org.softeg.slartus.forpdaapi.NewsApi.like(this, postId);
     }
+
+
 
     public interface OnUserChangedListener {
         void onUserChanged(String user, Boolean success);

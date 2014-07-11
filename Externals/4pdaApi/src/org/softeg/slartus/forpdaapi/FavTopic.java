@@ -38,7 +38,7 @@ public class FavTopic  extends Topic {
         this.trackType = trackType;
     }
 
-    public Boolean getIsPinned() {
+    public Boolean isPinned() {
         return pinned;
     }
 

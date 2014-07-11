@@ -1,11 +1,8 @@
 package org.softeg.slartus.forpdaplus.topicview;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.text.TextUtils;
+import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.Serializable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,83 +11,49 @@ import java.util.regex.Pattern;
  * Time: 13:38
  * To change this template use File | Settings | File Templates.
  */
-public class SessionHistory implements Parcelable {
-    public String m_ThemeId;
-    public String m_St;
-    private int m_X;
+public class SessionHistory implements Serializable {
+    public ExtTopic m_Topic;
+public String m_Base64Body;
+    public String m_Url;
     private int m_Y;
 
     public SessionHistory() {
         super();
     }
 
-    public SessionHistory(String themeId, String url, int x, int y) {
+    public SessionHistory(ExtTopic topic,
+                          String url,
+                          String base64Body,
+                          int y) {
         super();
-        m_ThemeId = themeId;
-        m_St = getSt(url);
-        m_X = x;
+        m_Topic = topic;
+        m_Url = url;
+        m_Base64Body = base64Body;
         m_Y = y;
     }
 
-    public final Parcelable.Creator<SessionHistory> CREATOR = new Parcelable.Creator<SessionHistory>() {
-        public SessionHistory createFromParcel(Parcel in) {
-            return new SessionHistory(in);
-        }
-
-        public SessionHistory[] newArray(int size) {
-            return new SessionHistory[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-
-    public SessionHistory(Parcel in) {
-        this();
-        readFromParcel(in);
-    }
-
-    public void readFromParcel(Parcel in) {
-        this.m_ThemeId = in.readString();
-        this.m_St = in.readString();
-        this.m_X = in.readInt();
-        this.m_Y = in.readInt();
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(m_ThemeId);
-        parcel.writeString(m_St);
-
-        parcel.writeInt(m_X);
-        parcel.writeInt(m_Y);
-    }
-
-    public int getX() {
-        return m_X;
-    }
 
     public int getY() {
         return m_Y;
     }
 
-    public static String getSt(String params) {
-        if (TextUtils.isEmpty(params)) return null;
-
-        Matcher m = Pattern.compile("st=(\\d+)").matcher(params);
-        if (m.find())
-            return "st=" + m.group(1);
-        return null;
-    }
-
-    public static String createUrl(String themeId, String st) {
-        return "showtopic=" + themeId + (TextUtils.isEmpty(st) ? "" : ("&" + st));
-    }
-
     public String getUrl() {
-        return createUrl(m_ThemeId, m_St);
+        return m_Url;
+    }
+
+    public void setY(int y) {
+        this.m_Y = y;
+    }
+
+    public ExtTopic getTopic() {
+        return m_Topic;
+    }
+
+    public String getBody() {
+        return m_Base64Body;
+    }
+
+    public void setBody(String body) {
+        m_Base64Body=body;
     }
 }
