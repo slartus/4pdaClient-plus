@@ -758,7 +758,7 @@ public class EditPostActivity extends BaseFragmentActivity {
         protected Boolean doInBackground(String... params) {
             try {
                 Map<String, String> outParams = new HashMap<>();
-               PostApi.editPost(Client.getInstance(), forumId, themeId, postId, authKey);
+              // PostApi.editPost(Client.getInstance(), forumId, themeId, postId, authKey);
                 body = Client.getInstance().getEditPostPlus(forumId, themeId, postId, authKey, outParams);
                 if (outParams.size() > 0) {
                     forumId = outParams.get("forumId");

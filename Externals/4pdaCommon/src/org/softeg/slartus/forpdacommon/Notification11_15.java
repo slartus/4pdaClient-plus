@@ -7,9 +7,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
 
-/**
+
+/*
  * Created by slinkin on 13.06.13.
  */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

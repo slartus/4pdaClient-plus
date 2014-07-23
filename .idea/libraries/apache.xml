@@ -1,9 +1,6 @@
 <component name="libraryTable">
   <library name="apache">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/android-support-v4.jar!/" />
-      <root url="jar://$PROJECT_DIR$/libs/universal-image-loader-1.9.1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/libs/YouTubeAndroidPlayerApi.jar!/" />
       <root url="file://$PROJECT_DIR$/libs/apache" />
     </CLASSES>
     <JAVADOC />

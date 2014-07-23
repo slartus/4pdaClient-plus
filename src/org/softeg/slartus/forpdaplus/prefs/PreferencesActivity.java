@@ -511,7 +511,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=2523\">e202</a></b> (иконки сообщения для черной темы)<br/>\n" +
                 "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=2040700\">Remie-l</a></b> (новые стили для топиков)<br/>\n" +
                 "* <b><a href=\"http://www.4pda.ru\">пользователям 4pda</a></b> (тестирование, идеи, поддержка)\n" +
-                "<br/>";
+                "<br/>"+
+                "Copyright 2014 Artem Slinkin <slartus@gmail.com>";
 
         AlertDialog dialog = new AlertDialogBuilder(this)
                 .setIcon(R.drawable.icon)

@@ -36,6 +36,9 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="android-support-v4" level="project" />
+    <orderEntry type="library" name="universal-image-loader-1.9.1" level="project" />
+    <orderEntry type="library" name="YouTubeAndroidPlayerApi" level="project" />
   </component>
 </module>
 

@@ -18,7 +18,8 @@ http://4pda.ru/forum/index.php?showtopic=271502
     Android SQLiteAssetHelper	https://github.com/jgilfelt/android-sqlite-asset-helper
     NewQuickAction3D	https://github.com/lorensiuswlt/NewQuickAction3D
     jsoup	http://jsoup.org/
-
+    Universal Image Loader for Android  https://github.com/nostra13/Android-Universal-Image-Loader
+    YouTubeIntents  https://developers.google.com/youtube/android/player/reference/com/google/android/youtube/player/YouTubeIntents
 License
 -------
 
