@@ -36,7 +36,8 @@ License
     See the License for the specific language governing permissions and
     limitations under the License.
 
-
-e-mail: slartus@gmail.com
-web: http://www.softeg.org
-icq: 233-174-302
+Contacts
+-------
+    e-mail: slartus@gmail.com
+    web: http://www.softeg.org
+    icq: 233-174-302
