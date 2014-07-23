@@ -14,7 +14,6 @@ http://4pda.ru/forum/index.php?showtopic=271502
     apache
     Android-PullToRefresh   https://github.com/chrisbanes/Android-PullToRefresh
     ActionBar-PullToRefresh	https://github.com/chrisbanes/ActionBar-PullToRefresh
-    FileExploere            http://android-file-dialog.googlecode.com/svn/trunk/FileExplorer
     Android SQLiteAssetHelper	https://github.com/jgilfelt/android-sqlite-asset-helper
     NewQuickAction3D	https://github.com/lorensiuswlt/NewQuickAction3D
     jsoup	http://jsoup.org/
