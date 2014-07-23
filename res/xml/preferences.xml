@@ -20,6 +20,12 @@
             android:key="theme.ScreenOrientation"
             android:title="Ориентация экрана" />
 
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="notify.beta_version"
+            android:summary="Сообщать о версиях для тестирования"
+            android:title="Сообщать о бета-версиях" />
+
     </PreferenceScreen>
 
     <PreferenceScreen
@@ -207,9 +213,10 @@
 
     <PreferenceScreen
         android:key="notifiers.service"
-        android:title="Оповещения">
+        android:title="Уведомления">
+
         <PreferenceScreen
-            android:summary="Оповещения о новых личных сообщениях"
+            android:summary="Уведомления о новых личных сообщениях"
             android:title="QMS">
             <CheckBoxPreference
                 android:defaultValue="false"
@@ -225,8 +232,9 @@
                 project:defaultValue="5"
                 project:myInputType="numberDecimal" />
         </PreferenceScreen>
+
         <PreferenceScreen
-            android:summary="Оповещения о новых постах в избранных темах"
+            android:summary="Уведомления о новых постах в избранных темах"
             android:title="Избранное">
             <CheckBoxPreference
                 android:defaultValue="false"
@@ -247,6 +255,34 @@
                 project:defaultValue="5"
                 project:myInputType="numberDecimal" />
         </PreferenceScreen>
+
+        <PreferenceScreen android:title="Настроить уведомления">
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="notifiers.service.use_sound"
+                android:title="Мелодия" />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="notifiers.service.is_default_sound"
+                android:title="Мелодия по умолчанию" />
+            <Preference
+                android:key="notifiers.service.sound"
+                android:title="Выбор мелодии" />
+        </PreferenceScreen>
+
+        <PreferenceScreen android:title="Настроить тихий режим">
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="notifiers.silent_mode.enabled"
+                android:title="Тихий режим" />
+
+            <Preference
+                android:key="notifiers.silent_mode.start_time"
+                android:title="Начало" />
+            <Preference
+                android:key="notifiers.silent_mode.end_time"
+                android:title="Конец" />
+        </PreferenceScreen>
     </PreferenceScreen>
 
     <PreferenceScreen android:title="О программе">
@@ -259,10 +295,6 @@
         <Preference
             android:key="About.ShareIt"
             android:title="Рассказать друзьям" />
-        <Preference
-            android:key="About.SendFeedback"
-            android:summary="Оставить отзыв на маркете"
-            android:title="Оставить отзыв" />
         <Preference
             android:key="About.AddRep"
             android:summary="Повысить репутацию разработчика на форуме"
@@ -307,14 +339,14 @@
             android:title="Paypal" />
 
         <!--<Preference-->
-            <!--android:key="GooglePlay"-->
-            <!--android:summary="Донейт через google play"-->
-            <!--android:title="Google play" />-->
+        <!--android:key="GooglePlay"-->
+        <!--android:summary="Донейт через google play"-->
+        <!--android:title="Google play" />-->
 
         <!--<Preference-->
-            <!--android:key="donate.other"-->
-            <!--android:summary="Другие способы"-->
-            <!--android:title="Перейти на страницу помощи проекту" />-->
+        <!--android:key="donate.other"-->
+        <!--android:summary="Другие способы"-->
+        <!--android:title="Перейти на страницу помощи проекту" />-->
         <PreferenceScreen
             android:summary="Спасибо за стили"
             android:title="Благодарности создателю стилей Морфию">

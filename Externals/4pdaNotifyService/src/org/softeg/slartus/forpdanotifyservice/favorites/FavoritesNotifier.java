@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -56,7 +57,7 @@ public class FavoritesNotifier extends NotifierBase {
     private int getNewTopicsCount(ArrayList<FavTopic> topics) {
         int res = 0;
         for (FavTopic topic : topics) {
-            if (topic.getIsNew()&&(!m_PinnedOnly||topic.isPinned()))
+            if (topic.getIsNew() && (!m_PinnedOnly || topic.isPinned()))
                 res++;
         }
         return res;
@@ -106,13 +107,13 @@ public class FavoritesNotifier extends NotifierBase {
 
         Topic lastPostedTopic = null;
         for (FavTopic topic : topics) {
-            if (topic.getIsNew()&&(!m_PinnedOnly||topic.isPinned())) {
+            if (topic.getIsNew() && (!m_PinnedOnly || topic.isPinned())) {
                 lastPostedTopic = topic;
                 break;
             }
         }
 
-        if (lastPostedTopic==null||!lastPostedTopic.getIsNew())
+        if (lastPostedTopic == null || !lastPostedTopic.getIsNew())
             return false;
 
         GregorianCalendar lastPostedTopicCalendar = new GregorianCalendar();
@@ -203,7 +204,7 @@ public class FavoritesNotifier extends NotifierBase {
             }
 
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, marketIntent, 0);
-            Notification noti = NotificationBridge.createBridge(
+            NotificationBridge bridge = NotificationBridge.createBridge(
                     context,
                     R.drawable.icon,
                     "Непрочитанные сообщения в темах",
@@ -212,8 +213,11 @@ public class FavoritesNotifier extends NotifierBase {
                     .setContentText("Непрочитанные сообщения в темах")
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
-                    .setDefaults(Notification.DEFAULT_ALL)
-                    .createNotification();
+                    .setDefaults(Notification.DEFAULT_ALL);
+            Uri sound = getSound(context);
+            if (sound != null)
+                bridge.setSound(getSound(context));
+            Notification noti = bridge.createNotification();
 
             notificationManager.notify(MY_NOTIFICATION_ID, noti);
         } else if (getNewTopicsCount(topics) == 0) {

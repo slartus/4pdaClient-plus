@@ -253,4 +253,13 @@
         <item>istarted</item>
         <item>ireplied</item>
     </string-array>
+
+    <string-array name="ImageViwersTitles">
+        <item>Системного менеджера</item>
+        <item>Клиента</item>
+    </string-array>
+    <string-array name="ImageViwersValues">
+        <item>system</item>
+        <item>client</item>
+    </string-array>
 </resources>

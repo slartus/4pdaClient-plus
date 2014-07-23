@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.text.Html;
 import android.text.TextUtils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.softeg.slartus.forpdacommon.Http;
 import org.softeg.slartus.forpdacommon.NotReportException;
@@ -17,18 +18,19 @@ import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MyApp;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ForPdaVersionNotifier extends MainNotifier {
-    public ForPdaVersionNotifier(NotifiersManager notifiersManager,int period) {
-        super(notifiersManager,"ForPdaVersionNotifier", period);
+    public ForPdaVersionNotifier(NotifiersManager notifiersManager, int period) {
+        super(notifiersManager, "ForPdaVersionNotifier", period);
     }
 
     public void start(Context context) {
-//        if (!isTime())
-//            return;
+        if (!isTime())
+            return;
         saveTime();
         showNotify(context);
     }
@@ -39,8 +41,7 @@ public class ForPdaVersionNotifier extends MainNotifier {
             public void run() {
 
                 try {
-                    Boolean siteVersionsNewer;
-                    String releaseVer;
+
                     String currentVersion = getAppVersion(MyApp.getContext());
                     currentVersion = currentVersion.replace("beta", ".").trim();
 
@@ -54,42 +55,20 @@ public class ForPdaVersionNotifier extends MainNotifier {
                         return;
                     JSONObject jsonObject = new JSONObject(Html.fromHtml(m.group(1)).toString());
                     jsonObject = jsonObject.getJSONObject(MyApp.getContext().getPackageName());
-                    jsonObject = jsonObject.getJSONObject("release");
-                    final String version = jsonObject.getString("ver").trim().replace("beta", ".").trim();
-                    final String apk = jsonObject.getString("apk");
-                    final String info = jsonObject.getString("info");
 
-                    releaseVer = version.replace("beta", ".").trim();
-                    siteVersionsNewer = isSiteVersionsNewer(releaseVer, currentVersion);
-                    if (siteVersionsNewer) {
+                    JSONObject versionObject = jsonObject.getJSONObject("release");
 
-                        handler.post(new Runnable() {
-                            public void run() {
-                                try {
-                                    addToStack(new AlertDialogBuilder(context)
-                                            .setTitle("Новая версия!")
-                                            .setMessage("На сайте 4pda.ru обнаружена новая версия: " + version + "\n\n" +
-                                                    "Изменения:\n" + info)
-                                            .setPositiveButton("Скачать", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialogInterface, int i) {
-                                                    dialogInterface.dismiss();
-                                                    try {
-                                                        IntentActivity.tryShowFile((Activity) context, Uri.parse(apk), false);
-                                                    } catch (Throwable ex) {
-                                                        Log.e(context, ex);
-                                                    }
-                                                }
-                                            })
-                                            .setNegativeButton("Закрыть", null).create());
-
-                                } catch (Exception ex) {
-                                    Log.e(context, new NotReportException("Ошибка проверки новой версии", ex));
-                                }
-
-                            }
-                        });
+                    if (Preferences.notifyBetaVersions() && jsonObject.has("beta")) {
+                        JSONObject betaObject = jsonObject.getJSONObject("beta");
+                        if (betaObject != null) {
+                            String releaseVersion = versionObject.getString("ver").trim().replace("beta", ".").trim();
+                            String betaVersion = betaObject.getString("ver").trim().replace("beta", ".").trim();
+                            if (isFirstArgVersionsNewer(betaVersion, releaseVersion))
+                                versionObject = betaObject;
+                        }
                     }
+
+                    checkVersion(currentVersion, versionObject, handler, context);
                 } catch (Throwable ignored) {
 
                 }
@@ -98,7 +77,51 @@ public class ForPdaVersionNotifier extends MainNotifier {
 
     }
 
-    private static boolean isSiteVersionsNewer(String siteVersion, String programVersion) {
+    private boolean checkVersion(String currentVersion, JSONObject versionObject, Handler handler,
+                                 final Context context) throws JSONException {
+        String releaseVer;
+        Boolean siteVersionsNewer;
+
+        final String version = versionObject.getString("ver").trim().replace("beta", ".").trim();
+        final String apk = versionObject.getString("apk");
+        final String info = versionObject.getString("info");
+
+        releaseVer = version.replace("beta", ".").trim();
+        siteVersionsNewer = isFirstArgVersionsNewer(releaseVer, currentVersion);
+        if (siteVersionsNewer) {
+
+            handler.post(new Runnable() {
+                public void run() {
+                    try {
+                        addToStack(new AlertDialogBuilder(context)
+                                .setTitle("Новая версия!")
+                                .setMessage("На сайте 4pda.ru обнаружена новая версия: " + version + "\n\n" +
+                                        "Изменения:\n" + info)
+                                .setPositiveButton("Скачать", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                        try {
+                                            IntentActivity.tryShowFile((Activity) context, Uri.parse(apk), false);
+                                        } catch (Throwable ex) {
+                                            Log.e(context, ex);
+                                        }
+                                    }
+                                })
+                                .setNegativeButton("Закрыть", null).create());
+
+                    } catch (Exception ex) {
+                        Log.e(context, new NotReportException("Ошибка проверки новой версии", ex));
+                    }
+
+                }
+            });
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean isFirstArgVersionsNewer(String siteVersion, String programVersion) {
         String[] siteVersionVals = TextUtils.split(siteVersion, "\\.");
         String[] programVersionVals = TextUtils.split(programVersion, "\\.");
 

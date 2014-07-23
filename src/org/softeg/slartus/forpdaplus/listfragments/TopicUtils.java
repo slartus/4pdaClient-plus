@@ -3,28 +3,24 @@ package org.softeg.slartus.forpdaplus.listfragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MyApp;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
+import org.softeg.slartus.forpdaplus.classes.ThemeOpenParams;
 import org.softeg.slartus.forpdaplus.classes.TopicListItemTask;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
-import org.softeg.slartus.forpdaplus.classes.ThemeOpenParams;
 import org.softeg.slartus.forpdaplus.common.Log;
-import org.softeg.slartus.forpdaapi.Topic;
+import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.text.ParseException;
 
 /**
  * Created by slinkin on 20.02.14.
@@ -33,9 +29,9 @@ public class TopicUtils {
     /**
      * С какими параметрами навигации юзер решил открывать топик:  view=getlastpost и тд
      */
-    public static String getOpenTopicArgs(CharSequence template) {
+    public static String getOpenTopicArgs(CharSequence topicId,CharSequence template) {
         String themeActionPref = getTopicNavigateAction(template);
-        return getUrlArgs(themeActionPref, null);
+        return getUrlArgs(topicId,themeActionPref, null);
     }
 
     /**
@@ -54,7 +50,7 @@ public class TopicUtils {
 
     public static final String BROWSER = "browser";
 
-    public static String getUrlArgs(String openParam, String defaultUrlParam) {
+    public static String getUrlArgs(CharSequence topicId, String openParam, String defaultUrlParam) {
         if (openParam == null) return defaultUrlParam;
         if (openParam.equals(ThemeOpenParams.BROWSER))
             return "";
@@ -64,6 +60,19 @@ public class TopicUtils {
             return "view=getlastpost";
         if (openParam.equals(Topic.NAVIGATE_VIEW_NEW_POST))
             return "view=getnewpost";
+        if (openParam.equals(Topic.NAVIGATE_VIEW_LAST_URL)){
+            try {
+                String historyTopicUrl= TopicsHistoryTable.getTopicHistoryUrl(topicId);
+                return TextUtils.isEmpty(historyTopicUrl)?
+                        "view=getlastpost"
+                        :
+                        Uri.parse(historyTopicUrl).getQuery().replaceAll("showtopic=\\d+&?","");
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "view=getlastpost";
+            }
+        }
+
 
         return defaultUrlParam;
 

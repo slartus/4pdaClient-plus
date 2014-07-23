@@ -141,6 +141,7 @@
     <string name="navigate_getfirstpost">К первому</string>
     <string name="navigate_getlastpost">К последнему</string>
     <string name="navigate_getnewpost">К первому непрочитанному</string>
+    <string name="navigate_last_url">К последней ссылке в клиенте</string>
     <string name="AddToFavorites">Добавить в избранное</string>
     <string name="AddingToFavorites">Добавление в избранное</string>
     <string name="DeletingFromFavorites">Удаление из избранного</string>

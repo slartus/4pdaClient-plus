@@ -151,7 +151,7 @@ public class QmsApi {
     }
 
     public static ArrayList<QmsUser> getQmsSubscribers(IHttpClient httpClient) throws Throwable {
-        String pageBody = httpClient.performGet("http://4pda.ru/forum/index.php?&act=qms-xhr&action=userlist");
+        String pageBody = httpClient.performGet("http://4pda.ru/forum/index.php?&act=qms");
 
         return parseQmsUsers(pageBody);
     }

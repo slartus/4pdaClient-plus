@@ -3,12 +3,16 @@ package org.softeg.slartus.forpdanotifyservice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 
+import org.softeg.slartus.forpdaapi.ClientPreferences;
 import org.softeg.slartus.forpdacommon.ExtDateFormat;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -24,13 +28,16 @@ public abstract class NotifierBase {
         mContext = context;
     }
 
-    public Context getContext(){
+    public Context getContext() {
         return mContext;
     }
 
     public abstract void readSettings(Context context, Intent intent);
+
     public abstract void restartTask(Context context);
+
     public abstract void cancel(Context context);
+
     public abstract void checkUpdates();
 
     protected String loadCookiesPath() {
@@ -39,6 +46,7 @@ public abstract class NotifierBase {
     }
 
     private SimpleDateFormat m_DateTimeFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+
     protected GregorianCalendar loadLastDate(String lastDateTimeKey) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         String lastDateTimeStr = preferences.getString(lastDateTimeKey, null);
@@ -76,4 +84,22 @@ public abstract class NotifierBase {
         return ExtPreferences.parseFloat(preferences, timeOutKey, 5);
     }
 
+    public static Uri getSound(Context context) {
+        if (!ClientPreferences.Notifications.useSound(context))
+            return null;
+        if (ClientPreferences.Notifications.SilentMode.isEnabled(context)) {
+            Calendar nowTime = Calendar.getInstance();
+            Calendar startTime = ClientPreferences.Notifications.SilentMode.getStartTime(context);
+            Calendar endTime = ClientPreferences.Notifications.SilentMode.getEndTime(context);
+            if (endTime.before(startTime))
+                endTime.add(Calendar.DAY_OF_YEAR, 1);
+            if (nowTime.after(startTime) && nowTime.before(endTime))
+                return null;
+        }
+        Uri defaultUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        if (ClientPreferences.Notifications.isDefaultSound(context))
+            return defaultUri;// Settings.System.DEFAULT_NOTIFICATION_URI
+
+        return ClientPreferences.Notifications.getSound(context);
+    }
 }

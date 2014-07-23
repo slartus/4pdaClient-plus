@@ -3,6 +3,7 @@
           package="org.softeg.slartus.forpdacommon"
           android:versionCode="1"
           android:versionName="1.0">
+    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="14"/>
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
         <activity android:name="ACTIVITY_ENTRY_NAME"
                   android:label="@string/app_name">

@@ -264,15 +264,15 @@ body {
   display: block;
   padding: 0.3em;
   background: #1d2d3e;
-  margin: 0.5em -0.6em 0;
+  margin: 0.5em -0.5em 0.4rem;
   border-left: 0.2em #8895a5 solid;
   border-top: 1px solid #666666;
   border-bottom: 1px solid #666666;
   color: #ffffff;
 }
 .post-block.spoil > .block-body {
-  padding: 0.5em;
-  margin: 0 -0.6em;
+  padding: 0 0.5em 0.5em;
+  margin: -0.4rem -0.5em 0.4rem;
   border-left: 0.2em #8394b2 solid;
   border-right: 0;
   border-bottom: 1px #dee4ec solid;
@@ -671,20 +671,24 @@ img {
   font-weight: bold;
   text-shadow: 0 0 0.6rem #777777;
 }
-.avatar_container {
-  margin: -0.9rem 0 0;
+.avatar_parent_container {
   position: absolute;
-  display: block;
+  display: table;
+  width: 4rem;
+  height: 4rem;
+  margin: -0.9rem 0 0 -0.1rem;
+}
+.avatar_container {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  width: 3.8rem;
+  height: 3.8rem;
   overflow: hidden;
-  border-radius: 0.2rem;
-  border: 0.1em solid #595959;
-  width: 3.8rem !important;
-  height: 3.8rem !important;
-  background: #999999;
+  border-radius: 0.3em;
 }
 .avatar_container IMG {
-  display: table-cell;
-  border: none;
+  display: block;
   margin: 0 auto;
   max-width: 3.8rem !important;
   max-height: 3.8rem !important;
@@ -1224,8 +1228,10 @@ img {
   margin-bottom: auto;
 }
 .edit {
+  display: block;
   font-size: 0.9rem;
   color: #9c9c9c;
+  text-align: right;
 }
 edit b {
   font-size: 0.95rem;
@@ -1235,6 +1241,8 @@ edit b {
   color: #9c9c9c;
 }
 .post-edit-reason {
+  display: block;
+  text-align: right;
   font-size: 0.9rem;
   color: #9c9c9c;
 }
@@ -1299,6 +1307,109 @@ h3 a {
 .info-holder {
   display: block;
   text-align: center;
+}
+.mlinks.desc {
+  border: 1px solid #646464;
+  margin: 1rem 0;
+}
+.mlinks.desc .mlhead {
+  display: table;
+  width: 100%;
+  border-bottom: 1px solid #646464;
+  padding: 0.2rem;
+  background: #242424;
+}
+.mlinks.desc .mlhead .mlicon {
+  display: block;
+  float: left;
+  width: 4rem;
+  margin: 0.2rem 0.4rem 0.2rem 0.2rem;
+}
+.mlinks.desc .mlhead .mltitle,
+.mlinks.desc .mlhead .mlauthor {
+  display: block;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  text-align: left;
+  margin: 0;
+}
+.mlinks.desc .mlright {
+  display: table-block;
+}
+.mlinks.desc .mlright .mlrow {
+  display: table;
+  width: 100%;
+}
+.mlinks.desc .mlright .mlrow .mlcell.th {
+  border: none;
+  border-bottom: 1px solid #646464;
+  font-weight: bold;
+}
+.mlinks.desc .mlright .mlrow .mlcell {
+  display: table-cell;
+  width: 25%;
+  border-bottom: 1px solid #646464;
+  border-right: 1px solid #646464;
+  text-align: center;
+}
+.mlinks.desc .mlright .mlrow .mlcell:last-of-type {
+  border-right: none;
+}
+.mlinks.desc .mlright .mlrow .mlcell .icon-android:before {
+  content: 'android';
+  color: #7799dd;
+  font-weight: bold;
+}
+.mlinks.desc .mlright .mlrow .mlcell .icon-apple:before {
+  content: 'apple';
+  color: #7799dd;
+  font-weight: bold;
+}
+.mlinks.desc .mlscreenshots.mlbody {
+  display: block;
+  padding: 0.5rem;
+}
+.table4site {
+  display: table-block;
+  border: 1px solid #646464;
+  box-sizing: border-box;
+}
+.table4site TD {
+  box-sizing: border-box;
+}
+.table4site .icon {
+  display: table-cell;
+  border-right: 1px solid #646464;
+  width: 3.2rem;
+}
+.table4site .icon IMG {
+  width: 3rem;
+}
+.table4site TD:nth-child(2) {
+  border-bottom: 1px solid #646464;
+  display: block;
+}
+.table4site TD:nth-child(2) P {
+  display: table-cell;
+  padding: 0.4rem;
+}
+.table4site .links {
+  margin: 2px 0 0;
+  display: table;
+  width: 100%;
+}
+.table4site .links P {
+  font-size: 1rem;
+  line-height: 1rem;
+  width: 50%;
+  padding: 0.3rem;
+  display: table-cell;
+  height: 50%;
+  text-align: center;
+  background: #292929;
+}
+.table4site .links P a {
+  font-size: 0.9rem;
 }
 .materials-box {
   display: block;

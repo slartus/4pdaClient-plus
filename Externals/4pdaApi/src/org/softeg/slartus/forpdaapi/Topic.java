@@ -18,6 +18,10 @@ public class Topic implements IListItem {
     /**
      * Параметр для перехода в топике к первому непрочитанному сообщению
      */
+    public static final CharSequence NAVIGATE_VIEW_LAST_URL = "getlasturl";
+    /**
+     * Параметр для перехода в топике к первому непрочитанному сообщению
+     */
     public static final CharSequence NAVIGATE_VIEW_NEW_POST = "getnewpost";
 
     /**

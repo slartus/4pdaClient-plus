@@ -215,7 +215,7 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
                                         case 0: // Повторить загрузку
                                             dialogInterface.dismiss();
                                             Client.getInstance().getDownloadTasks().remove(downloadTask);
-                                            DownloadsService.download(getContext(), downloadTask.getUrl());
+                                            DownloadsService.download(getActivity(), downloadTask.getUrl(),false);
 
                                             mHandler.post(new Runnable() {
                                                 public void run() {
@@ -226,8 +226,8 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
                                         case 1: // Докачать файл
                                             dialogInterface.dismiss();
                                             Client.getInstance().getDownloadTasks().remove(downloadTask);
-                                            DownloadsService.download(getContext(), downloadTask.getUrl(),
-                                                    downloadTask.getDownloadingFilePath(), downloadTask.getId());
+                                            DownloadsService.download(getActivity(), downloadTask.getUrl(),
+                                                    downloadTask.getDownloadingFilePath(), downloadTask.getId(),false);
 
                                             mHandler.post(new Runnable() {
                                                 public void run() {
@@ -256,7 +256,7 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
                                         case 1: // Повторить загрузку
                                             dialogInterface.dismiss();
                                             //Client.getInstance().getDownloadTasks().remove(downloadTask);
-                                            DownloadsService.download(getContext(), downloadTask.getUrl());
+                                            DownloadsService.download(getActivity(), downloadTask.getUrl(),false);
 
                                             mHandler.post(new Runnable() {
                                                 public void run() {

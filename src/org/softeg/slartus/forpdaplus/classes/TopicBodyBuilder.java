@@ -22,6 +22,7 @@ import java.util.Hashtable;
  */
 public class TopicBodyBuilder extends HtmlBuilder {
 
+    public static final String NICK_SNAPBACK_TEMPLATE = "[SNAPBACK]%s[/SNAPBACK] [B]%s,[/B] \n";
     private Boolean m_Logined, m_IsWebviewAllowJavascriptInterface;
     private ExtTopic m_Topic;
     private String m_UrlParams;
@@ -90,7 +91,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
         if (spoil) {
             if (m_HtmlPreferences.isSpoilerByButton())
-                m_Body.append("<div class='hidetop' style='cursor:pointer;' ><b>(&gt;&gt;&gt;ШАПКА ТЕМЫ&lt;&lt;&lt; )</b></div>" +
+                m_Body.append("<div class='hidetop' style='cursor:pointer;' ><b>(&gt;&gt;&gt;ШАПКА ТЕМЫ&lt;&lt;&lt;)</b></div>" +
                         "<input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility(this)\"/>" +
                         "<div class='hidemain' style=\"display:none\">");
             else
@@ -239,6 +240,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
         sb.append("<tr><td colspan=\"2\">");
         if (m_IsShowAvatars) {
+            sb.append("<div class=\"avatar_parent_container\">");
             sb.append("<div class=\"avatar_container\">");
             String avatar = msg.getAvatarFileName();
 
@@ -253,7 +255,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
                     avatar = "file:///android_asset/profile/logo.png";
                 sb.append("<img src=\"").append(avatar).append("\" />");
             //}
-            sb.append("</div>");
+            sb.append("</div></div>");
 
         }
         sb.append("</td></tr>");
@@ -291,7 +293,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
             sb.append(String.format("<a class=\"system_link\" href=\"/forum/index.php?act=report&t=%s&p=%s&st=%s\"><span class=\"send_claim_button\"></span></a>",
                     m_Topic.getId(), post.getId(), postNumber));
 
-            String insertNickText = String.format("[SNAPBACK]%s[/SNAPBACK] [B]%s,[/B] ",
+            String insertNickText = String.format("[SNAPBACK]%s[/SNAPBACK] [B]%s,[/B] \\n",
                     post.getId(), nickParam);
             sb.append("<a class=\"system_link\" ")
                     .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "insertTextToPost", insertNickText))

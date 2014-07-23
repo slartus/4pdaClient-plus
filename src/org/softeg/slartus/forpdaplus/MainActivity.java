@@ -166,6 +166,7 @@ public class MainActivity extends BaseFragmentActivity implements BricksListDial
         //final BrickInfo listTemplate = ((MenuBrickAdapter) mAdapter).getItem(position);
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.content_frame);
+
         if (currentFragment != null) {
             if (((IBrickFragment) currentFragment)
                     .getListName().equals(listTemplate.getName())) {
@@ -245,7 +246,7 @@ public class MainActivity extends BaseFragmentActivity implements BricksListDial
     public void onResume() {
         super.onResume();
 
-        Client.INSTANCE.checkLoginByCookies();
+
         m_ExitWarned = false;
     }
 

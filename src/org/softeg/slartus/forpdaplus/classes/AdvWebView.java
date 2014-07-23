@@ -23,7 +23,7 @@ import java.util.Calendar;
  * Time: 10:00
  */
 public class AdvWebView extends WebView {
-    private static final String TOPIC_BODY_KEY="AdvWebView.TOPIC_BODY_KEY";
+    private static final String TOPIC_BODY_KEY = "AdvWebView.TOPIC_BODY_KEY";
     private int actionBarHeight = 72;
 
     public AdvWebView(Context context) {
@@ -110,17 +110,19 @@ public class AdvWebView extends WebView {
     }
 
     private static final int MAX_CLICK_DURATION = 200;
+    private static final int MAX_TOUCH__Y_DISTANCE = 30;
     private long startClickTime;
     private Boolean m_InTouch = false;
-
+    private Point m_MotionDown = null;
     @Override
     public boolean onTouchEvent(android.view.MotionEvent event) {
         Boolean b = super.onTouchEvent(event);
         try {
-            m_LastMotionEvent = new Point((int) event.getX(), (int) event.getY());
+
             if (mOnScrollChangedCallback == null) return b;
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN: {
+                    m_MotionDown = new Point((int) event.getX(), (int) event.getY());
                     m_InTouch = true;
                     final WebView.HitTestResult hitTestResult = getHitTestResult();
                     if (hitTestResult == null) {
@@ -137,13 +139,15 @@ public class AdvWebView extends WebView {
                 case MotionEvent.ACTION_UP: {
                     m_InTouch = false;
                     long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
-                    if (clickDuration < MAX_CLICK_DURATION) {
+                    if (clickDuration < MAX_CLICK_DURATION &&m_MotionDown!=null&& Math.abs(m_MotionDown.y - event.getY()) < MAX_TOUCH__Y_DISTANCE) {
                         mOnScrollChangedCallback.onTouch();
                     }
                 }
             }
         } catch (Throwable ex) {
             Log.e(getContext(), ex);
+        }finally {
+            m_LastMotionEvent = new Point((int) event.getX(), (int) event.getY());
         }
 
         return b;
@@ -197,44 +201,4 @@ public class AdvWebView extends WebView {
         }
     }
 
-//    private String getHTMLDataBuffer(String url) {
-//        InputStream htmlStream;
-//        try {
-//            if (Utils.isReferExternalMemory() && url.contains("sdcard")) {
-//                String tempPath = url.substring(7, url.length());//remove file:// from the url
-//                File file = new File(tempPath);
-//                htmlStream = new FileInputStream(file);
-//            }else{
-//                String tempPath = url.replace("file:///android_asset/", "");
-//                htmlStream = getApplicationContext().getAssets().open(tempPath);
-//            }
-//            Reader is = null;
-//            try {
-//                is = new BufferedReader(new InputStreamReader(htmlStream, "UTF8"));
-//            } catch (UnsupportedEncodingException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//
-//            // read string from reader
-//            final char[] buffer = new char[1024];
-//            StringBuilder out = new StringBuilder();
-//            int read;
-//            do {
-//                read = is.read(buffer, 0, buffer.length);
-//                if (read>0) {
-//                    out.append(buffer, 0, read);
-//                }
-//            } while (read>=0);
-//
-//            return out.toString();
-//        } catch (FileNotFoundException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
 }

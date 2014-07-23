@@ -37,6 +37,7 @@ private Handler mHandler=new Handler();
     public void onCreate(Bundle saveInstance) {
         super.onCreate(saveInstance);
         setHasOptionsMenu(true);
+        Client.INSTANCE.checkLoginByCookies();
         Client.getInstance().addOnUserChangedListener(new Client.OnUserChangedListener() {
             @Override
             public void onUserChanged(String user, Boolean success) {

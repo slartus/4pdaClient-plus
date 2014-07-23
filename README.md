@@ -9,12 +9,14 @@ http://4pda.ru/forum/index.php?showtopic=271502
 
 ==========
 Используемые библиотеки:
-ActionBarSherlock       http://actionbarsherlock.com/
 android-pinch           http://code.google.com/p/android-pinch/
 apache
 Android-PullToRefresh   https://github.com/chrisbanes/Android-PullToRefresh
+ActionBar-PullToRefresh	https://github.com/chrisbanes/ActionBar-PullToRefresh
 FileExploere            http://android-file-dialog.googlecode.com/svn/trunk/FileExplorer
-QuickActions            https://github.com/lorensiuswlt/NewQuickAction
+Android SQLiteAssetHelper	https://github.com/jgilfelt/android-sqlite-asset-helper
+NewQuickAction3D	https://github.com/lorensiuswlt/NewQuickAction3D
+jsoup	http://jsoup.org/
 
 и всякое другое из разных сообществ и интернета. Если вы в коде узнали что-то, то свяжитесь со мной, и я добавлю в список.
 

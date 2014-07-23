@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
-import org.softeg.slartus.forpdaapi.PostApi;
+import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MyApp;
 import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;

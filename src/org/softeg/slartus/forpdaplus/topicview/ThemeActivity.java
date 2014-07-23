@@ -317,7 +317,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         super.onRestoreInstanceState(outState);
         try {
             m_Topic = (ExtTopic) outState.getSerializable("Topic");
-
+            if (m_Topic != null)
+                mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
             m_LastUrl = outState.getString("LastUrl");
             m_ScrollElement = outState.getString("ScrollElement");
 
@@ -333,15 +334,20 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             loadPreferences(PreferenceManager.getDefaultSharedPreferences(MyApp.getContext()));
             m_History = (ArrayList<SessionHistory>) outState.getSerializable("History");
             assert m_History != null;
-            SessionHistory sessionHistory = m_History.get(m_History.size() - 1);
-            m_ScrollY = sessionHistory.getY();
-            if (sessionHistory.getBody() == null) {
-                showTheme(sessionHistory.getUrl());
-            } else {
+            if (m_History.size() > 0) {
+                SessionHistory sessionHistory = m_History.get(m_History.size() - 1);
+                m_ScrollY = sessionHistory.getY();
                 m_LastUrl = sessionHistory.getUrl();
                 m_Topic = sessionHistory.getTopic();
-                showThemeBody(sessionHistory.getBody());
+                if (m_Topic != null)
+                    mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
+                if (sessionHistory.getBody() == null) {
+                    showTheme(sessionHistory.getUrl());
+                } else {
+                    showThemeBody(sessionHistory.getBody());
+                }
             }
+
 
         } catch (Throwable ex) {
             Log.e(this, ex);
@@ -385,6 +391,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        //Toast.makeText(this,Integer.toString(item.getItemId()),Toast.LENGTH_LONG).show();
         if (item.getItemId() == android.R.id.home) {
 //            if (getIntent().getData() == null)
 //                onBackPressed();
@@ -450,7 +457,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
     public void saveHtml() {
         try {
-            webView.evalJs("window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+            webView.evalJs("window." + DeveloperWebInterface.NAME + ".saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
         } catch (Throwable ex) {
             Log.e(this, ex);
         }
@@ -584,6 +591,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             } else {
                 m_LastUrl = sessionHistory.getUrl();
                 m_Topic = sessionHistory.getTopic();
+                if (m_Topic != null)
+                    mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
                 showThemeBody(sessionHistory.getBody());
             }
 
@@ -801,7 +810,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
             webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
 
-            TopicsHistoryTable.addHistory(m_Topic);
+            TopicsHistoryTable.addHistory(m_Topic, m_LastUrl);
         } catch (Exception ex) {
             Log.e(ThemeActivity.this, ex);
         }
@@ -906,6 +915,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 webView.onActionBarOnScrollEvents();
                 webView.evalJs("scrollToElement('entry" + m_ScrollElement + "');");
             }
+            if (Preferences.isHideActionBar() && getActionBar() != null)
+                getActionBar().hide();
             m_ScrollElement = null;
             webView.setPictureListener(null);
         }
@@ -1235,7 +1246,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 if (isCancelled()) return false;
                 Client client = Client.getInstance();
                 m_LastUrl = forums[0];
-
+                m_LastUrl = "http://4pda.ru/forum/index.php?" + prepareTopicUrl(m_LastUrl);
                 if (forums.length == 1) {
                     pageBody = client.loadPageAndCheckLogin("http://4pda.ru/forum/index.php?" + prepareTopicUrl(m_LastUrl), null);
                 } else

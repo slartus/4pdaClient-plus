@@ -174,9 +174,17 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                     return true;
                 }
             });
+            menu.add(getContext().getString(R.string.navigate_last_url)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+
+                    showSaveNavigateActionDialog(topic, Topic.NAVIGATE_VIEW_LAST_URL,
+                            TopicUtils.getUrlArgs(topic.getId(), Topic.NAVIGATE_VIEW_LAST_URL.toString(), ""));
+                    return true;
+                }
+            });
 
             ExtUrl.addUrlSubMenu(mHandler, getContext(), menu,
-                    TopicUtils.getTopicUrl(topic.getId().toString(), TopicUtils.getOpenTopicArgs(getListName())), topic.getId().toString(),
+                    TopicUtils.getTopicUrl(topic.getId().toString(), TopicUtils.getOpenTopicArgs(topic.getId(), getListName())), topic.getId().toString(),
                     topic.getMain().toString());
             addOptionsMenu(getContext(), mHandler, menu, topic, null);
         } catch (Exception ex) {
@@ -407,12 +415,12 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             ActionSelectDialogFragment.execute(getActivity(),
                     "Действие по умолчанию",
                     String.format("%s.navigate_action", getListName()),
-                    new CharSequence[]{getString(R.string.navigate_getfirstpost), getString(R.string.navigate_getlastpost), getString(R.string.navigate_getnewpost)},
-                    new CharSequence[]{Topic.NAVIGATE_VIEW_FIRST_POST, Topic.NAVIGATE_VIEW_LAST_POST, Topic.NAVIGATE_VIEW_NEW_POST},
+                    new CharSequence[]{getString(R.string.navigate_getfirstpost), getString(R.string.navigate_getlastpost), getString(R.string.navigate_getnewpost),getString(R.string.navigate_last_url)},
+                    new CharSequence[]{Topic.NAVIGATE_VIEW_FIRST_POST, Topic.NAVIGATE_VIEW_LAST_POST, Topic.NAVIGATE_VIEW_NEW_POST, Topic.NAVIGATE_VIEW_LAST_URL},
                     new ActionSelectDialogFragment.OkListener() {
                         @Override
                         public void execute(CharSequence value) {
-                            showTopicActivity(topic, TopicUtils.getUrlArgs(value.toString(), Topic.NAVIGATE_VIEW_FIRST_POST.toString()));
+                            showTopicActivity(topic, TopicUtils.getUrlArgs(topic.getId(), value.toString(), Topic.NAVIGATE_VIEW_FIRST_POST.toString()));
                         }
                     }, "Вы можете изменить действие по умолчанию долгим тапом по теме"
             );

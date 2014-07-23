@@ -5,10 +5,10 @@ import android.text.Html;
 import android.text.TextUtils;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
+import org.softeg.slartus.forpdaapi.post.PostAttach;
 import org.softeg.slartus.forpdaapi.users.Users;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.Functions;

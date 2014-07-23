@@ -1,15 +1,19 @@
 package org.softeg.slartus.forpdaplus.prefs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -18,8 +22,10 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import org.softeg.slartus.forpdaapi.ClientPreferences;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.Client;
@@ -38,6 +44,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * User: slinkin
@@ -54,8 +61,19 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 new PrefsFragment()).commit();
     }
 
-    public class PrefsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent intent) {
+        if (resultCode == Activity.RESULT_OK)
+            if (requestCode == NOTIFIERS_SERVICE_SOUND_REQUEST_CODE) {
+                Uri uri = intent.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+                Preferences.Notifications.setSound(uri);
+            }
+    }
 
+    public static final int NOTIFIERS_SERVICE_SOUND_REQUEST_CODE = MyApp.getInstance().getUniqueIntValue();
+
+
+    public class PrefsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
 
 
         @Override
@@ -70,7 +88,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             super.onCreate(savedInstanceState);
             // Load the preferences from an XML resource
             addPreferencesFromResource(R.xml.preferences);
-          //  ((PreferenceScreen)findPreference("common")).addPreference(new CheckBoxPreference(getContext()));
+            //  ((PreferenceScreen)findPreference("common")).addPreference(new CheckBoxPreference(getContext()));
 
             findPreference("appstyle").setOnPreferenceClickListener(this);
             findPreference("About.AppVersion").setOnPreferenceClickListener(this);
@@ -79,9 +97,47 @@ public class PreferencesActivity extends BasePreferencesActivity {
             findPreference("cookies.delete").setOnPreferenceClickListener(this);
             findPreference("About.History").setOnPreferenceClickListener(this);
             findPreference("About.ShareIt").setOnPreferenceClickListener(this);
-            findPreference("About.SendFeedback").setOnPreferenceClickListener(this);
             findPreference("About.AddRep").setOnPreferenceClickListener(this);
             findPreference("About.ShowTheme").setOnPreferenceClickListener(this);
+
+            Preference preference = findPreference("notifiers.silent_mode.start_time");
+            if (preference != null) {
+                preference.setOnPreferenceClickListener(this);
+                Calendar clndr = Preferences.Notifications.SilentMode.getStartTime();
+                preference.setSummary(String.format("%02d:%02d", clndr.get(Calendar.HOUR_OF_DAY), clndr.get(Calendar.MINUTE)));
+            }
+            preference = findPreference("notifiers.silent_mode.end_time");
+            if (preference != null) {
+                preference.setOnPreferenceClickListener(this);
+                Calendar clndr = Preferences.Notifications.SilentMode.getEndTime();
+                preference.setSummary(String.format("%02d:%02d", clndr.get(Calendar.HOUR_OF_DAY), clndr.get(Calendar.MINUTE)));
+            }
+
+            preference = findPreference("notifiers.service.use_sound");
+            if (preference != null) {
+                preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object o) {
+                        Boolean useSound = (Boolean)o;
+                        findPreference("notifiers.service.is_default_sound").setEnabled(useSound);
+                        findPreference("notifiers.service.sound").setEnabled(useSound);
+                        return true;
+                    }
+                });
+            }
+            preference = findPreference("notifiers.service.is_default_sound");
+            if (preference != null) {
+                preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object o) {
+                        Boolean isDefault = (Boolean)o;
+                        findPreference("notifiers.service.sound").setEnabled(!isDefault);
+                        return true;
+                    }
+                });
+            }
+            findPreference("notifiers.service.sound").setOnPreferenceClickListener(this);
+
 
             final Preference downloadsPathPreference = findPreference("downloads.path");
             downloadsPathPreference.setSummary(DownloadsService.getDownloadDir(getApplicationContext()));
@@ -93,7 +149,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     if (showDownloadsPath(o)) {
                         downloadsPathPreference
                                 .setSummary(o.toString());
-                        Toast.makeText(getContext(),"Путь успешно изменён",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Путь успешно изменён", Toast.LENGTH_SHORT).show();
                         return true;
                     }
                     return false;
@@ -126,7 +182,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
         @Override
         public boolean onPreferenceClick(Preference preference) {
-            String key = preference.getKey();
+            final String key = preference.getKey();
             switch (key) {
                 case "About.AppVersion":
                     showAbout();
@@ -150,9 +206,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 case "About.ShareIt":
                     showShareIt();
                     return true;
-                case "About.SendFeedback":
-                    showSendFeedback();
-                    return true;
                 case "About.AddRep":
                     if (showAddRep()) return true;
                     return true;
@@ -162,9 +215,42 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 case "appstyle":
                     showStylesDialog();
                     return true;
+                case "notifiers.service.sound":
+                    pickRingtone(NOTIFIERS_SERVICE_SOUND_REQUEST_CODE, Preferences.Notifications.getSound());
+                    return true;
+                case "notifiers.silent_mode.start_time":
+                    Calendar calendar = Preferences.Notifications.SilentMode.getStartTime();
+                    new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
+                            Preferences.Notifications.SilentMode.setStartTime(hourOfDay, minute);
+                            findPreference(key).setSummary(String.format("%02d:%02d", hourOfDay, minute));
+                        }
+                    }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
+                    return true;
+                case "notifiers.silent_mode.end_time":
+                    Calendar endcalendar = Preferences.Notifications.SilentMode.getEndTime();
+                    new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
+                            Preferences.Notifications.SilentMode.setEndTime(hourOfDay, minute);
+                            findPreference(key).setSummary(String.format("%02d:%02d", hourOfDay, minute));
+                        }
+                    }, endcalendar.get(Calendar.HOUR_OF_DAY), endcalendar.get(Calendar.MINUTE), true).show();
+                    return true;
             }
 
             return false;
+        }
+
+
+        private void pickRingtone(int requestCode, Uri defaultSound) {
+            Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Выберите звук");
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, defaultSound);
+            if (getActivity() != null)
+                getActivity().startActivityForResult(intent, requestCode);
         }
 
         private boolean showDownloadsPath(Object o) {
@@ -189,7 +275,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
         }
 
         private void showTheme() {
-            ThemeActivity.showTopicById(PreferencesActivity.this,"271502");
+            ThemeActivity.showTopicById(PreferencesActivity.this, "271502");
         }
 
         private boolean showAddRep() {
@@ -199,13 +285,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
             }
             ForumUser.startChangeRep(PreferencesActivity.this, mHandler, "236113", "slartus", "0", "add", getString(R.string.RaiseReputation));
             return false;
-        }
-
-        private void showSendFeedback() {
-            Intent marketIntent = new Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("http://market.android.com/details?id=" + getPackageName()));
-            PreferencesActivity.this.startActivity(marketIntent);
         }
 
         private void showShareIt() {

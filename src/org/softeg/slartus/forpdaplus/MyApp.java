@@ -120,6 +120,10 @@ public class MyApp extends android.app.Application {
         return isWhiteTheme() ? "white" : "black";
     }
 
+    public String getCurrentBackgroundColorHtml() {
+        return isWhiteTheme() ? "#fff" : "#000";
+    }
+
     private String checkThemeFile(String themePath) {
         try {
             if (!new File(themePath).exists()) {

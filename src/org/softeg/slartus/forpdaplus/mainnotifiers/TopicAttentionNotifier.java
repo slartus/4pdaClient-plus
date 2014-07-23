@@ -13,6 +13,7 @@ import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdacommon.Http;
 import org.softeg.slartus.forpdaplus.MyApp;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
+import org.softeg.slartus.forpdaplus.common.Log;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.util.Date;
@@ -81,10 +82,9 @@ public class TopicAttentionNotifier extends MainNotifier {
                             final WebView webView=new WebView(context);
                             AlertDialog alertDialog=
                                     new AlertDialogBuilder(context)
-                                            .setTitle("Обьявление")
+                                            .setTitle("Объявление")
                                             .setView(webView)
                                             .setPositiveButton("Я прочитал", null).create();
-                            addToStack(alertDialog);
                             alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
                                 @Override
                                 public void onShow(DialogInterface dialogInterface) {
@@ -103,6 +103,8 @@ public class TopicAttentionNotifier extends MainNotifier {
                                     webView.loadDataWithBaseURL("http://4pda.ru/forum/", body.toString(), "text/html", "UTF-8", null);
                                 }
                             });
+                            addToStack(alertDialog);
+
 
 
 
@@ -110,7 +112,7 @@ public class TopicAttentionNotifier extends MainNotifier {
                     });
 
                 } catch (Throwable ignored) {
-
+                    Log.e(null,ignored);
                 }
             }
         }).start();

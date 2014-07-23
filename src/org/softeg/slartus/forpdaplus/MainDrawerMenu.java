@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.ViewDragHelper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,6 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.softeg.slartus.forpdaplus.tabs.Tabs;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.common.Log;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
@@ -28,8 +26,8 @@ import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsPagerBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
+import org.softeg.slartus.forpdaplus.tabs.Tabs;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class MainDrawerMenu {
@@ -107,24 +105,27 @@ public class MainDrawerMenu {
         selectItem(brickInfo);
     }
 
+    /*
+    Область вытягивания
+     */
     private void setDrawerLayoutArea(Activity activity, Boolean left) {
-        try {
-            String draggerName = left ? "mLeftDragger" : "mRightDragger";
-            Field draggerField = mDrawerLayout.getClass().getDeclaredField(
-                    draggerName);//mRightDragger for right obviously
-            draggerField.setAccessible(true);
-            ViewDragHelper draggerObj = (ViewDragHelper) draggerField
-                    .get(mDrawerLayout);
-
-            Field edgeSizeField = draggerObj.getClass().getDeclaredField(
-                    "mEdgeSize");
-            edgeSizeField.setAccessible(true);
-            int edge = edgeSizeField.getInt(draggerObj);
-
-            edgeSizeField.setInt(draggerObj, edge * 5);
-        } catch (Throwable ex) {
-            Log.e(activity, ex);
-        }
+//        try {
+//            String draggerName = left ? "mLeftDragger" : "mRightDragger";
+//            Field draggerField = mDrawerLayout.getClass().getDeclaredField(
+//                    draggerName);//mRightDragger for right obviously
+//            draggerField.setAccessible(true);
+//            ViewDragHelper draggerObj = (ViewDragHelper) draggerField
+//                    .get(mDrawerLayout);
+//
+//            Field edgeSizeField = draggerObj.getClass().getDeclaredField(
+//                    "mEdgeSize");
+//            edgeSizeField.setAccessible(true);
+//            int edge = edgeSizeField.getInt(draggerObj);
+//
+//            edgeSizeField.setInt(draggerObj, edge * 5);
+//        } catch (Throwable ex) {
+//            Log.e(activity, ex);
+//        }
     }
 
     public void toggleOpenState() {

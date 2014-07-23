@@ -100,7 +100,7 @@ public class ForumUser {
                     try {
                         if (actionId == finalInsertNickPosition) {
                             assert insertNickInterface != null;
-                            insertNickInterface.insert(String.format("[SNAPBACK]%s[/SNAPBACK] [B]%s,[/B] ",postId, finalUserNick ));
+                            insertNickInterface.insert(String.format(TopicBodyBuilder.NICK_SNAPBACK_TEMPLATE,postId, finalUserNick ));
                         } else if (actionId == finalSendQmsPosition) {
                             new AlertDialogBuilder(context)
                                     .setTitle(context.getString(R.string.SelectAnAction))

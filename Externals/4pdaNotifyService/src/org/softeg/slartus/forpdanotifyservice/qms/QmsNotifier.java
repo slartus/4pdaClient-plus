@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -15,7 +16,6 @@ import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.qms.QmsUser;
 import org.softeg.slartus.forpdaapi.qms.QmsUserThemes;
 import org.softeg.slartus.forpdaapi.qms.QmsUsers;
-
 import org.softeg.slartus.forpdacommon.ExtDateFormat;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdacommon.NotificationBridge;
@@ -26,6 +26,7 @@ import org.softeg.slartus.forpdanotifyservice.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -165,14 +166,14 @@ public class QmsNotifier extends NotifierBase {
                 //return checkByTime(client, m_Mails.get(0), qmsUserThemes.get(0), calendar);// тут проверяем по времени
             }
 
-        } else if (ExtDateFormat.tryParse(m_TodayTimeFormat, strDate, additionalHeaders)||ExtDateFormat.tryParse(m_TimeFormat, strDate, additionalHeaders)) {
+        } else if (ExtDateFormat.tryParse(m_TodayTimeFormat, strDate, additionalHeaders) || ExtDateFormat.tryParse(m_TimeFormat, strDate, additionalHeaders)) {
             Date lastDate = additionalHeaders.get("date");
             // Log.d(LOG_TAG, "qms_last_time" + m_DateTimeFormat.format(lastDate.getTime()));
             GregorianCalendar c = new GregorianCalendar();
             c.setTime(lastDate);
             calendar.set(GregorianCalendar.HOUR, c.get(GregorianCalendar.HOUR));
             calendar.set(GregorianCalendar.MINUTE, c.get(GregorianCalendar.MINUTE));
-            calendar.set(GregorianCalendar.SECOND, c.get(0));
+            calendar.set(GregorianCalendar.SECOND, 0);
 
             if (lastDateTime == null) {
                 setLastDateTime(calendar);
@@ -274,7 +275,7 @@ public class QmsNotifier extends NotifierBase {
         Log.i(LOG_TAG, "qms sendNotify");
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         String url = "http://4pda.ru/forum/index.php?act=qms";
-        int unreadMessagesCount=QmsUsers.unreadMessageUsersCount(mails);
+        int unreadMessagesCount = QmsUsers.unreadMessageUsersCount(mails);
         if (unreadMessagesCount == 1)// если новые сообщения только с одним пользователем
             url += "&mid=" + mails.get(0).getId();
         if (mails.get(0).getLastThemeId() != null)// если новые сообщения только по одной теме
@@ -283,7 +284,6 @@ public class QmsNotifier extends NotifierBase {
                 Intent.ACTION_VIEW,
                 Uri.parse(url));
 
-
         if (hasUnreadMessage) {
             Log.i(LOG_TAG, "notify!");
             String message = "Новые сообщения (" + unreadMessagesCount + ")";
@@ -291,7 +291,7 @@ public class QmsNotifier extends NotifierBase {
                 message = "Новые сообщения от " + mails.get(0).getNick() + "(" + unreadMessagesCount + ")";
 
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, marketIntent, 0);
-            Notification noti = NotificationBridge.createBridge(
+            NotificationBridge bridge = NotificationBridge.createBridge(
                     context,
                     R.drawable.icon,
                     "Имеются непрочитанные сообщения",
@@ -300,8 +300,12 @@ public class QmsNotifier extends NotifierBase {
                     .setContentText("Новые сообщения")
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
-                    .setDefaults(Notification.DEFAULT_ALL)
-                    .createNotification();
+                    .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
+            Uri sound = getSound(context);
+            if (sound != null)
+                bridge.setSound(getSound(context));
+            Notification noti = bridge.createNotification();
+
 
             notificationManager.notify(MY_NOTIFICATION_ID, noti);
         } else if (unreadMessagesCount == 0) {

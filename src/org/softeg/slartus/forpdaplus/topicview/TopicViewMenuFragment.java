@@ -77,10 +77,10 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
         m_FirstTime = false;
         if (mTopicOptionsMenu != null)
             configureOptionsMenu(getActivity(), getInterface().getHandler(), mTopicOptionsMenu, getInterface(),
-                    true, "http://4pda.ru/forum/index.php?" + getInterface().getLastUrl());
+                    true, getInterface().getLastUrl());
         else if (getInterface() != null && getInterface().getTopic() != null)
             mTopicOptionsMenu = addOptionsMenu(getActivity(), getInterface().getHandler(), menu, getInterface(),
-                    true, "http://4pda.ru/forum/index.php?" + getInterface().getLastUrl());
+                    true, getInterface().getLastUrl());
     }
 
     private SubMenu mTopicOptionsMenu;
@@ -253,7 +253,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                             try {
                                 Intent marketIntent = new Intent(
                                         Intent.ACTION_VIEW,
-                                        Uri.parse("http://" + Client.SITE + "/forum/index.php?" + getInterface().getLastUrl()));
+                                        Uri.parse(getInterface().getLastUrl()));
                                 startActivity(Intent.createChooser(marketIntent, "Выберите"));
 
 
@@ -269,15 +269,15 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
             if (getInterface() != null)
                 mTopicOptionsMenu = addOptionsMenu(getActivity(), getInterface().getHandler(), menu, getInterface(),
-                        true, "http://4pda.ru/forum/index.php?" + getInterface().getLastUrl());
+                        true, getInterface().getLastUrl());
 
 
-            SubMenu optionsMenu = menu.addSubMenu("Настройки отображения");
+            SubMenu optionsMenu = menu.addSubMenu("Вид");
             optionsMenu.getItem().setIcon(R.drawable.ic_menu_preferences);
-            optionsMenu.getItem().setTitle("Настройки отображения");
+            optionsMenu.getItem().setTitle("Вид");
 
 
-            optionsMenu.add(String.format("Аватары (%s",
+            optionsMenu.add(String.format("Аватары (%s)",
                     MyApp.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]))
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(final MenuItem menuItem) {
@@ -294,14 +294,14 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                                                return;
 
                                            Preferences.Topic.setShowAvatarsOpt(i);
-                                           menuItem.setTitle(String.format("Показывать аватары (%s",
+                                           menuItem.setTitle(String.format("Показывать аватары (%s)",
                                                    MyApp.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]));
                                        }
                                    })
                            .create().show();
                     return true;
                 }
-            }).setTitleCondensed("asd");
+            });
 
             optionsMenu.add("Скрывать верхнюю панель")
                     .setIcon(R.drawable.ic_menu_images).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -313,7 +313,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                 }
             }).setCheckable(true).setChecked(Preferences.isHideActionBar());
 
-            optionsMenu.add("Загружать изображения (для сессии)")
+            optionsMenu.add("Загр-ть изобр-я (для сессии)")
                     .setIcon(R.drawable.ic_menu_images).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     Boolean loadImagesAutomatically1 = getInterface().getLoadsImagesAutomatically();
@@ -337,7 +337,6 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                     return true;
                 }
             });
-
 
             menu.add("Быстрый доступ..").setIcon(R.drawable.ic_menu_quickrun).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {

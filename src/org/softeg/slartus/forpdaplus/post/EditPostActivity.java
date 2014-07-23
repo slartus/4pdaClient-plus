@@ -44,7 +44,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.softeg.slartus.forpdaapi.PostApi;
+import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
@@ -758,6 +758,7 @@ public class EditPostActivity extends BaseFragmentActivity {
         protected Boolean doInBackground(String... params) {
             try {
                 Map<String, String> outParams = new HashMap<>();
+               PostApi.editPost(Client.getInstance(), forumId, themeId, postId, authKey);
                 body = Client.getInstance().getEditPostPlus(forumId, themeId, postId, authKey, outParams);
                 if (outParams.size() > 0) {
                     forumId = outParams.get("forumId");

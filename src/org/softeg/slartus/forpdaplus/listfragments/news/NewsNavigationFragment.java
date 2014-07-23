@@ -58,6 +58,7 @@ public class NewsNavigationFragment extends BaseFragment implements ActionBar.On
         this.newsBrickInfo = newsBrickInfo;
     }
 
+
     @Override
     public boolean onNavigationItemSelected(int i, long l) {
         selectItem(i);
@@ -91,6 +92,14 @@ public class NewsNavigationFragment extends BaseFragment implements ActionBar.On
     public void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(false);
+        if (savedInstanceState != null) {
+            newsBrickInfo = new NewsPagerBrickInfo();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(android.os.Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -119,12 +128,12 @@ public class NewsNavigationFragment extends BaseFragment implements ActionBar.On
 
     @Override
     public String getListName() {
-        return newsBrickInfo.getName();
+        return newsBrickInfo == null ? null : newsBrickInfo.getName();
     }
 
     @Override
     public String getListTitle() {
-        return newsBrickInfo.getTitle();
+        return newsBrickInfo == null ? null : newsBrickInfo.getTitle();
     }
 
     @Override

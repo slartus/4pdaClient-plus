@@ -3,7 +3,7 @@ package org.softeg.slartus.forpdacommon;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 
 /**
@@ -25,8 +25,7 @@ public abstract class NotificationBridge {
     public static NotificationBridge createBridge(Context context,int icon, CharSequence tickerText,
                                      long when){
         int sdk = Build.VERSION.SDK_INT;
-        if(sdk<11)
-            return new Notification05_10(context,icon,tickerText,when);
+
         if(sdk<16)
             return new Notification11_15(context,icon,tickerText,when);
 
@@ -66,6 +65,14 @@ public abstract class NotificationBridge {
     }
 
     public NotificationBridge setProgress(int max, int progress, boolean indeterminate){
+        return this;
+    }
+
+    public NotificationBridge setSound(Uri sound){
+        return this;
+    }
+
+    public NotificationBridge setSound(Uri sound, int streamType){
         return this;
     }
 

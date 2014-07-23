@@ -110,7 +110,7 @@ public class HtmloutWebInterface {
                                 }
                                 for (int j = 0; j < selection.length; j++) {
                                     if (!selection[j]) continue;
-                                    DownloadsService.download(getContext(), topicAttaches.get(j).getUri());
+                                    DownloadsService.download(getContext(), topicAttaches.get(j).getUri(), false);
                                 }
                             }
                         })

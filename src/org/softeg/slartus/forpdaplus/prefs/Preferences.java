@@ -1,9 +1,11 @@
 package org.softeg.slartus.forpdaplus.prefs;
 
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import org.softeg.slartus.forpdaapi.ClientPreferences;
 import org.softeg.slartus.forpdaapi.Forum;
 import org.softeg.slartus.forpdacommon.Connectivity;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
@@ -14,6 +16,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsPagerBrickInfo;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,13 +42,19 @@ public class Preferences {
     public static Boolean isHideActionBar() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
 
-        return prefs.getBoolean("actionbar.hide",true);
+        return prefs.getBoolean("actionbar.hide", true);
+    }
+
+    public static Boolean notifyBetaVersions() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+
+        return prefs.getBoolean("notify.beta_version", false);
     }
 
     public static void setHideActionBar(Boolean hide) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
 
-        prefs.edit().putBoolean("actionbar.hide",hide).commit();
+        prefs.edit().putBoolean("actionbar.hide", hide).commit();
     }
 
     public static int getFontSize(String prefix) {
@@ -154,10 +163,6 @@ public class Preferences {
     }
 
     public static class Topic {
-        public static void setShowAvatars(boolean value) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
-            prefs.edit().putBoolean("topic.showavatar", value).commit();
-        }
 
         public static Boolean getSpoilFirstPost() {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
@@ -190,7 +195,7 @@ public class Preferences {
 
         public static void setShowAvatarsOpt(int value) {
             PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance())
-            .edit().putInt("topic.show_avatar_opt", value).commit();
+                    .edit().putInt("topic.show_avatar_opt", value).commit();
         }
 
         public static int getFontSize() {
@@ -236,7 +241,7 @@ public class Preferences {
             }
 
             public static void addEmoticToFavorites(String name) {
-                name = name.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("]","&#93;").replace("[","&#91;");
+                name = name.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("]", "&#93;").replace("[", "&#91;");
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
                 Set<String> favoritesEmotics = getEmoticFavorites();
                 HashSet<String> newlist = new HashSet<>();
@@ -377,6 +382,58 @@ public class Preferences {
         public static String getAttentionId() {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
             return prefs.getString("attention.id", null);
+        }
+    }
+
+    public static class Files {
+        public static Boolean isConfirmDownload() {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+            return prefs.getBoolean("files.ConfirmDownload", true);
+        }
+
+        public static void setConfirmDownload(boolean b) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+            prefs.edit().putBoolean("files.ConfirmDownload", b).commit();
+        }
+    }
+
+    public static class Notifications {
+        public static void setSound(Uri soundUri) {
+            ClientPreferences.Notifications.setSound(MyApp.getContext(),soundUri);
+        }
+
+        public static Uri getSound() {
+            return ClientPreferences.Notifications.getSound(MyApp.getContext());
+        }
+
+        public static boolean isDefaultSound() {
+            return ClientPreferences.Notifications.isDefaultSound(MyApp.getContext());
+        }
+
+        public static class SilentMode {
+            public static Calendar getStartTime() {
+                return ClientPreferences.Notifications.SilentMode.getStartTime(MyApp.getContext());
+            }
+
+            public static void setStartTime(int hourOfDay, int minute) {
+                ClientPreferences.Notifications.SilentMode.setTime(MyApp.getContext(),"notifiers.silent_mode.start_time", hourOfDay, minute);
+            }
+
+            public static Calendar getEndTime() {
+                return ClientPreferences.Notifications.SilentMode.getTime(MyApp.getContext(),"notifiers.silent_mode.end_time");
+            }
+
+            public static void setEndTime(int hourOfDay, int minute) {
+                ClientPreferences.Notifications.SilentMode.setTime(MyApp.getContext(),"notifiers.silent_mode.end_time", hourOfDay, minute);
+            }
+        }
+
+        public static class Qms {
+
+        }
+
+        public static class Favorites {
+
         }
     }
 }

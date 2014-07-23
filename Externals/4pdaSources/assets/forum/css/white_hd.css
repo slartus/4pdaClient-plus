@@ -425,7 +425,7 @@ label ~ .time {
   margin-tight: 0;
   margin-top: -0.1em;
 }
-strong {
+.post_body > strong {
   line-height: 0.8em;
   width: 1em;
   position: absolute;
@@ -565,9 +565,9 @@ img {
   min-height: 9.5rem;
   text-decoration: none;
   text-align: center;
-  margin-top: 0.3rem;
+  margin-top: 0.3rem !important;
   padding: 0;
-  margin-bottom: 0;
+  margin: 0;
   background: #ffffff;
 }
 .post_header table {
@@ -604,13 +604,12 @@ img {
   height: 2rem;
   line-height: 2rem;
   padding-top: 0.1rem;
-  margin: -0.35rem -0.15rem 0 -0.2em;
+  margin: -0.35rem 0.1rem 0 -0.2rem;
   text-align: center;
-  line-height: 1.4;
   width: 13.95rem;
   border-top: 1px solid #a6a6a6;
   border-bottom: 1px solid #a6a6a6;
-  border-right: 0.1rem solid #a6a6a6;
+  border-right: 1px solid #a6a6a6;
   background: #f0f0f0;
   z-index: 98;
 }
@@ -631,7 +630,7 @@ img {
   display: block;
   text-align: center;
   text-decoration: none !important;
-  margin: 0.6em 0 0;
+  margin: 0.6rem 0 0;
 }
 .post_nick_online_cli:after {
   content: 'online';
@@ -650,8 +649,8 @@ img {
   margin: -1.45rem -0.15rem -1.2rem 0;
   text-align: center;
   border-top: 1px solid #a6a6a6;
-  border-bottom: 0.1em solid #a6a6a6;
-  border-right: 0.1rem solid #a6a6a6;
+  border-bottom: 1px solid #a6a6a6;
+  border-right: 1px solid #a6a6a6;
   background: #f0f0f0;
   z-index: 98;
 }
@@ -692,7 +691,7 @@ img {
   line-height: 2rem;
   height: 2rem;
   padding: 0.1rem 0.8rem 0;
-  margin-top: -1.3rem !important;
+  margin-top: -1.25rem !important;
   border-top: 1px solid #a6a6a6;
   border-bottom: 1px solid #a6a6a6;
   background: #f0f0f0;
@@ -703,25 +702,30 @@ img {
   font-size: 1em;
   color: #000000 !important;
 }
+.post_header > TABLE > TBODY > TR > TD > DIV > SPAN.post_date_cli a {
+  margin-left: 0.4rem;
+}
 .post_header_container > DIV.post_header > SPAN.post_date {
-  margin-top: -0.3rem !important;
+  margin-top: -0.25rem !important;
   text-align: right;
   line-height: 1;
 }
 .avatar_container {
-  margin: 1.8em 0 -1.4rem;
+  position: relative;
+  margin: 1rem 0 -0.6rem;
   display: block;
+  vertical-align: middle;
+  text-align: center;
+  top: 1rem;
   width: 13.9rem;
-  border: none;
+  overflow: hidden;
+  border-radius: 0.3em;
 }
 .avatar_container IMG {
-  display: table-cell;
+  display: inline-block;
   margin: 0 auto;
-  overflow: hidden;
-  border: none;
-  height: 6rem;
-  border-radius: 0.2rem;
-  background: #ffffff;
+  max-width: 6rem !important;
+  max-height: 6rem !important;
 }
 .post_header > TABLE > TBODY > TR > TD > DIV > .system_link[onclick*="showPostMenu"] {
   position: absolute;
@@ -763,7 +767,7 @@ img {
 .post_body {
   display: block;
   padding: 2em 0.6em 1em;
-  border-left: 13.95em solid #ffffff;
+  border-left: 13.95rem solid #ffffff;
   word-wrap: break-word;
   background: #ffffff;
   text-align: left;
@@ -1127,13 +1131,13 @@ color: #777;
   margin-top: auto;
   margin-bottom: auto;
 }
-.post_body > DIV > STRONG > SPAN.edit{
-position: relative;
-display: block;
-line-height: 1.4;
-margin-top: -0.4rem;
-margin-left: 6rem;
-width: 11rem;
+.post_body > DIV > STRONG > SPAN.edit {
+  position: relative;
+  display: block;
+  line-height: 1.4;
+  margin-top: -0.4rem;
+  margin-left: 6rem;
+  width: 11rem;
 }
 .edit {
   font-size: 0.9rem;
@@ -1207,6 +1211,67 @@ h3 a {
   display: block;
   text-align: center;
 }
+.mlinks.desc {
+  border: 1px solid #a8a8a8;
+  margin: 1rem 0;
+}
+.mlinks.desc .mlhead {
+  display: table;
+  width: 100%;
+  border-bottom: 1px solid #a8a8a8;
+  padding: 0.2rem;
+  background: #eeeeee;
+}
+.mlinks.desc .mlhead .mlicon {
+  display: block;
+  float: left;
+  width: 4rem;
+  margin: 0.2rem 0.4rem 0.2rem 0.2rem;
+}
+.mlinks.desc .mlhead .mltitle,
+.mlinks.desc .mlhead .mlauthor {
+  display: block;
+  height: 2.2rem;
+  line-height: 2.2rem;
+  text-align: left;
+  margin: 0;
+}
+.mlinks.desc .mlright {
+  display: table-block;
+}
+.mlinks.desc .mlright .mlrow {
+  display: table;
+  width: 100%;
+}
+.mlinks.desc .mlright .mlrow .mlcell.th {
+  border: none;
+  border-bottom: 1px solid #a8a8a8;
+  font-weight: bold;
+}
+.mlinks.desc .mlright .mlrow .mlcell {
+  display: table-cell;
+  width: 25%;
+  border-bottom: 1px solid #a8a8a8;
+  border-right: 1px solid #a8a8a8;
+  text-align: center;
+}
+.mlinks.desc .mlright .mlrow .mlcell:last-of-type {
+  border-right: none;
+}
+.mlinks.desc .mlright .mlrow .mlcell .icon-android:before {
+  content: 'android';
+  color: #2266cc;
+  font-weight: bold;
+}
+.mlinks.desc .mlright .mlrow .mlcell .icon-apple:before {
+  content: 'apple';
+  color: #2266cc;
+  font-weight: bold;
+}
+.mlinks.desc .mlscreenshots.mlbody {
+  display: block;
+  padding: 0.5rem;
+}
 .materials-box {
   display: block;
   padding: 1em 0;
@@ -1219,6 +1284,52 @@ h3 a {
   color: #484848;
   border-top: 1px solid #d8d8d8;
   background: -webkit-gradient(linear, left top, right top, color-stop(0%, #ffffff), color-stop(10%, #e6e6e6), color-stop(90%, #e6e6e6), color-stop(100%, #ffffff));
+}
+.table4site {
+  display: table-block;
+  border: 1px solid #c0c0c0;
+  box-sizing: border-box;
+}
+.table4site TD {
+  box-sizing: border-box;
+}
+.table4site .icon {
+  display: table-cell;
+  border-right: 1px solid #c0c0c0;
+  width: 3.2rem;
+}
+.table4site .icon IMG {
+  width: 3rem;
+}
+.table4site TD:nth-child(2) {
+  border-bottom: 1px solid #c0c0c0;
+  display: block;
+}
+.table4site TD:nth-child(2) P {
+  display: table-cell;
+  padding: 0.4rem;
+}
+.table4site TD:nth-child(2) P STRONG {
+  display: inline-block;
+  margin: 0 0 0.5rem;
+}
+.table4site .links {
+  margin: 2px 0 0;
+  width: 100%;
+  display: table;
+}
+.table4site .links P {
+  font-size: 1rem;
+  line-height: 1rem;
+  width: 50%;
+  padding: 0.3rem;
+  display: table-cell;
+  height: 50%;
+  text-align: center;
+  background: #e4e4e4;
+}
+.table4site .links P a {
+  font-size: 0.9rem;
 }
 .materials-list {
   padding: 0;

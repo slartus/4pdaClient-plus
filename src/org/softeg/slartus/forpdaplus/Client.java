@@ -19,7 +19,7 @@ import org.apache.http.cookie.Cookie;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.LoginResult;
 import org.softeg.slartus.forpdaapi.OnProgressChangedListener;
-import org.softeg.slartus.forpdaapi.PostApi;
+import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdaapi.ProfileApi;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdaapi.ReputationsApi;
@@ -951,65 +951,6 @@ public class Client implements IHttpClient {
     public TopicReadingUsers getTopicReadingUsers(String topicId) throws IOException {
         return TopicApi.getReadingUsers(this, topicId);
     }
-//    private void parseTopicByJsoup(String body, TopicBodyBuilder topicBodyBuilder, Boolean spoilFirstPost) {
-//        Document doc = Jsoup.parse(body);
-//        Elements elements = doc.getElementsByAttributeValue("class", "post_header_container");
-//
-//        String today = Functions.getToday();
-//        String yesterday = Functions.getYesterToday();
-//        final Pattern dataPattern = PatternExtensions.compile("(.*?)&nbsp;.*?p=(\\d+).*?#(\\d+).*");
-//        final Pattern userInfoPattern = PatternExtensions.compile("Группа:(.*?)<font color=\"(.*?)\">[\\s\\S]*?mid=(\\d+)[\\s\\S]*?act=rep.*?>(.*?)</a>");
-//        Boolean spoil = spoilFirstPost;
-//        Boolean first = true;
-//        org.softeg.slartus.forpdaplus.classes.Post post=null;
-//        for (Element element : elements) {
-//            if (post != null) {
-//                spoil = false;
-//                first = false;
-//            }
-//            Elements els = element.getElementsByAttributeValue("class", "post_header");
-//            String value = els.get(0).html();
-//            Matcher m = dataPattern.matcher(value);
-//
-//            if (!m.find())
-//                continue;
-//
-//
-//            post = new org.softeg.slartus.forpdaplus.classes.Post(m.group(2), Functions.getForumDateTime(Functions.parseForumDateTime(m.group(1), today, yesterday)), m.group(3));
-//
-//            els = element.getElementsByAttributeValue("class", "post_nick");
-//            post.setAuthor(els.get(0).child(0).html());
-//
-//            els = element.getElementsByAttributeValue("class", "post_user_info");
-//
-//            String str = els.get(0).html();
-//            m = userInfoPattern.matcher(str);
-//            if (m.find()) {
-//                post.setUserGroup(Html.fromHtml(m.group(1)).toString().trim());
-//                post.setUserState(m.group(2));
-//                post.setUserId(m.group(3));
-//                post.setUserReputation(m.group(4));
-//            }
-//
-//            post.setCanPlusRep(str.contains("Поднять репутацию"));
-//            post.setCanMinusRep(str.contains("Опустить репутацию"));
-//
-//            els = element.getElementsByAttributeValue("class", "post_action");
-//            str = els.get(0).html();
-//            post.setCanEdit(str.contains("Ред."));
-//            post.setCanDelete(str.contains("Удал."));
-//
-//            while (true) {
-//                Element bodyElement = element.nextElementSibling();
-//                if ("post_body".equals(bodyElement.className())) {
-//                    post.setBody("<div class=\"post_body\">" + bodyElement.html() + "</div>");
-//                    break;
-//                }
-//            }
-//            topicBodyBuilder.addPost(post, spoil, first);
-//        }
-//        topicBodyBuilder.endTopic();
-//    }
 
 
     public void markAllForumAsRead() throws Throwable {

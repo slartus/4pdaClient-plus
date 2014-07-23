@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.download;
 
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.IntentService;
 import android.app.Notification;
@@ -131,11 +132,12 @@ public class DownloadsService extends IntentService {
 
     }
 
-    public static void download(final Context context1, final String url) {
-        download(context1, url, null, -1);
+    public static void download(final Activity context1, final String url, Boolean finish) {
+        download(context1, url, null, -1, finish);
     }
 
-    public static void download(final Context context1, final String url, final String tempFilePath, final int notificationId) {
+    public static void download(final Activity context1, final String url, final String tempFilePath,
+                                final int notificationId, final Boolean finish) {
         ActionSelectDialogFragment.execute(context1,
                 "Способ скачивания",
                 "file.downloaderManagers",
@@ -148,12 +150,40 @@ public class DownloadsService extends IntentService {
                             switch (value.toString()) {
                                 case "0":// клиент
                                     clientDownload(context1, url, tempFilePath, notificationId);
+                                    if (finish)
+                                        context1.finish();
                                     break;
                                 case "1": // системный
-                                    systemDownload(context1, url);
+                                    new GetTempUrlTask(context1, new GetTempUrlTask.onOpenUrlInterface() {
+                                        @Override
+                                        public void open(Uri uri) {
+                                            try {
+                                                systemDownload(context1, FileUtils.getFileNameFromUrl(url), uri.toString());
+                                                if (finish)
+                                                    context1.finish();
+                                            } catch (Throwable e) {
+                                                Log.e(context1, e);
+                                            }
+                                        }
+                                    })
+                                            .execute(url);
+
                                     break;
                                 case "2":
-                                    new GetTempUrlTask(context1).execute(url);
+                                    new GetTempUrlTask(context1, new GetTempUrlTask.onOpenUrlInterface() {
+                                        @Override
+                                        public void open(Uri uri) {
+                                            try {
+                                                Intent marketIntent = new Intent(Intent.ACTION_VIEW, uri);
+                                                context1.startActivity(marketIntent);
+                                                if (finish)
+                                                    context1.finish();
+                                            } catch (Throwable e) {
+                                                Log.e(context1, e);
+                                            }
+                                        }
+                                    })
+                                            .execute(url);
                                     break;
                             }
                         } catch (Throwable ex) {
@@ -165,7 +195,7 @@ public class DownloadsService extends IntentService {
     }
 
 
-    private static void systemDownload(Context context1, String url) throws IOException {
+    private static void systemDownload(Context context1, String fileName, String url) throws IOException {
         DownloadManager dm = (DownloadManager) context1.getSystemService(DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 
@@ -176,16 +206,18 @@ public class DownloadsService extends IntentService {
 
         }
         request.addRequestHeader("Cookie", sb.toString());
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, FileUtils.getFileNameFromUrl(url));
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
 
         dm.enqueue(request);
     }
 
-    private static void clientDownload(final Context context1, final String url, String tempFilePath, final int notificationId) throws UnsupportedEncodingException {
+    private static void clientDownload(final Context context1, final String url, String tempFilePath,
+                                       final int notificationId) throws UnsupportedEncodingException {
         final String fileName = FileUtils.getFileNameFromUrl(url);
 
         if (TextUtils.isEmpty(tempFilePath)) {
-            final String filePath = FileUtils.combine(DownloadsService.getDownloadDir(context1), FileUtils.getFileNameFromUrl(url) + "_download");
+            final String filePath = FileUtils.combine(DownloadsService.getDownloadDir(context1),
+                    FileUtils.getFileNameFromUrl(url) + "_download");
             final File file = new File(filePath);
             if (file.exists()) {
                 new AlertDialogBuilder(context1)
@@ -347,12 +379,18 @@ public class DownloadsService extends IntentService {
 
 
         private final ProgressDialog dialog;
-        public String m_ChatBody;
 
         private Context m_Context;
+        private onOpenUrlInterface openUrlAction;
 
-        public GetTempUrlTask(Context context) {
+        public interface onOpenUrlInterface {
+            void open(Uri uri);
+        }
+
+        public GetTempUrlTask(Context context, onOpenUrlInterface openUrlAction) {
             m_Context = context;
+            this.openUrlAction = openUrlAction;
+
             dialog = new AppProgressDialog(context);
         }
 
@@ -396,8 +434,8 @@ public class DownloadsService extends IntentService {
             }
 
             if (uri != null) {
-                Intent marketIntent = new Intent(Intent.ACTION_VIEW, uri);
-                m_Context.startActivity(marketIntent);
+                openUrlAction.open(uri);
+
             } else {
                 if (ex != null)
                     Log.e(m_Context, ex);

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.softeg.slartus.forpdaplus"
-    android:versionCode="443"
-    android:versionName="2.0beta92"
+    android:versionCode="450"
+    android:versionName="2.0beta100"
     android:installLocation="auto">
 
     <uses-sdk
@@ -57,7 +57,7 @@
 
                 <data
                     android:scheme="http"
-                    android:host="4pda.ru" />
+                    android:host="4pda.to" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

@@ -15,16 +15,6 @@
 
     </style>
 
-    <style name="action_bar_theme" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:background">#000000</item>
-
-    </style>
-
-    <style name="action_bar_theme.Light" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:background">#DBDBDB</item>
-
-    </style>
-
     <style name="TextAppearance.Theme.PlainText" parent="android:TextAppearance.Theme">
         <item name="android:textStyle">normal</item>
     </style>

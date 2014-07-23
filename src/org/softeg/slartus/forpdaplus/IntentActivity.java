@@ -7,8 +7,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.TopicApi;
@@ -17,12 +20,9 @@ import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdacommon.UrlExtensions;
-import org.softeg.slartus.forpdaplus.common.Email;
-import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
-
-import org.softeg.slartus.forpdaplus.tabs.TopicWritersTab;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
+import org.softeg.slartus.forpdaplus.common.Email;
 import org.softeg.slartus.forpdaplus.common.Log;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
@@ -33,16 +33,20 @@ import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listfragments.news.NewsListFragment;
+import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.DevDbCatalogBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.DevDbModelsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.FavoritesBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.post.EditPostActivity;
+import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsChatActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
+import org.softeg.slartus.forpdaplus.tabs.TopicWritersTab;
 import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
 import org.softeg.slartus.forpdaplus.video.PlayerActivity;
 
@@ -324,7 +328,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
                                      final Boolean finishActivity, String authKey) {
         url = getRedirect(url).toString();
         Uri uri = Uri.parse(url.toLowerCase());
-        if ("4pda.ru".equals(uri.getHost())||"s.4pda.to".equals(uri.getHost())) {
+        if (uri.getHost() != null && (uri.getHost().contains("4pda.ru") || uri.getHost().contains("4pda.to"))) {
             if (isTheme(uri)) {
                 showTopic(context, url);
                 if (finishActivity)
@@ -340,7 +344,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
                 return true;
             }
 
-            if (tryShowFile(context, uri, finishActivity)) {
+            if (tryShowFile(context, Uri.parse(url), finishActivity)) {
                 return true;
             }
 
@@ -508,7 +512,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
             }
 
         } else {
-            org.softeg.slartus.forpdaplus.qms.QmsContactsActivity.show(context);
+            ListFragmentActivity.showListFragment(context, QmsContactsBrickInfo.NAME, null);
         }
 
         return true;
@@ -533,7 +537,8 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
     }
 
     public static boolean tryShowFile(final Activity activity, final Uri uri, final Boolean finish) {
-        if (uri.getHost() != null && !(uri.getHost().contains("4pda.ru")||uri.getHost().contains("4pda.to")))
+        if (uri.getHost() != null && !(uri.getHost().toLowerCase().contains("4pda.ru")
+                || uri.getHost().toLowerCase().contains("4pda.to")))
             return false;
         boolean isFile = PatternExtensions.compile("http://4pda.ru/forum/dl/post/\\d+/[^\"]*")
                 .matcher(uri.toString()).find() ||
@@ -585,18 +590,25 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
 
     public static void downloadFileStart(final Activity activity, final String url, final Boolean finish) {
 
-        if (PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext()).getBoolean("files.ConfirmDownload", true)) {
+        if (Preferences.Files.isConfirmDownload()) {
+            LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = inflater.inflate(R.layout.send_post_confirm_dialog, null);
+            assert view != null;
+            final CheckBox checkBox = (CheckBox) view.findViewById(R.id.chkConfirmationSend);
+            final TextView message = (TextView) view.findViewById(R.id.textView);
+            message.setText("Начать закачку файла?");
+            checkBox.setText("Подтверждать скачивание");
             new AlertDialogBuilder(activity)
-                    .setTitle("Уверены?")
-                    .setMessage("Начать закачку файла?")
+                    .setTitle("Подтвердите действие")
+                    .setView(view)
                     .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
+                            if (!checkBox.isChecked())
+                                Preferences.Files.setConfirmDownload(false);
+                            DownloadsService.download(activity, url,finish);
 
-                            DownloadsService.download(activity, url);
 
-                            if (finish)
-                                activity.finish();
                         }
                     })
                     .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
@@ -606,8 +618,9 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
                         }
                     })
                     .create().show();
+
         } else {
-            DownloadsService.download(activity, url);
+            DownloadsService.download(activity, url,finish);
             if (finish)
                 activity.finish();
         }

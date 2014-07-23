@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import org.softeg.slartus.forpdaapi.IListItem;
-import org.softeg.slartus.forpdaapi.PostAttach;
+import org.softeg.slartus.forpdaapi.post.PostAttach;
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
@@ -77,7 +77,7 @@ public class TopicAttachmentListFragment extends BaseTaskListFragment {
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        DownloadsService.download(getActivity(),attach.getUrl().toString());
+                        DownloadsService.download(getActivity(),attach.getUrl().toString(),false);
                         return true;
                     }
                 });

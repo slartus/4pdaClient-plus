@@ -56,7 +56,6 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
     }
 
 
-
     @Override
     protected boolean inBackground(boolean isRefresh) throws Throwable {
         ArrayList<QmsUser> users = QmsApi.getQmsSubscribers(Client.getInstance());
@@ -142,13 +141,14 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
         }
     }
 
+
     public class QmsContactsAdapter extends BaseAdapter {
 
         private ArrayList<QmsUser> dataList;
 
         final LayoutInflater inflater;
         private ImageLoader imageLoader;
-        private Boolean mLoadImages;
+        private Boolean mShowAvatars;
 
 
         public QmsContactsAdapter(Context context, ArrayList<QmsUser> dataList, ImageLoader imageLoader) {
@@ -157,13 +157,13 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
 
             this.imageLoader = imageLoader;
             this.dataList = dataList;
-            mLoadImages = Preferences.News.List.isLoadImages();
+            mShowAvatars = Preferences.Topic.isShowAvatars();
         }
 
         @Override
         public void notifyDataSetChanged() {
 
-            mLoadImages = Preferences.News.List.isLoadImages();
+            mShowAvatars = Preferences.Topic.isShowAvatars();
 
             super.notifyDataSetChanged();
         }
@@ -199,7 +199,7 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
                 assert convertView != null;
                 holder.txtIsNew = (ImageView) convertView.findViewById(R.id.txtIsNew);
                 holder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
-                if(!mLoadImages)
+                if (!mShowAvatars)
                     holder.imgAvatar.setVisibility(View.GONE);
                 holder.txtCount = (TextView) convertView.findViewById(R.id.txtMessagesCount);
                 holder.txtNick = (TextView) convertView.findViewById(R.id.txtNick);
@@ -209,9 +209,9 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            QmsUser user = (QmsUser)this.getItem(position);
+            QmsUser user = (QmsUser) this.getItem(position);
 
-            if(TextUtils.isEmpty(user.getNewMessagesCount()))
+            if (TextUtils.isEmpty(user.getNewMessagesCount()))
                 holder.txtCount.setText("");
             else
                 holder.txtCount.setText("(" + user.getNewMessagesCount() + ")");
@@ -223,7 +223,7 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
                 holder.txtIsNew.setImageBitmap(null);
             }
 
-            if (user.getAvatarUrl() != null && mLoadImages) {
+            if (user.getAvatarUrl() != null && mShowAvatars) {
                 imageLoader.displayImage(user.getAvatarUrl(), holder.imgAvatar, new ImageLoadingListener() {
 
                     @Override
