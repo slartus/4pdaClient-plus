@@ -4,6 +4,7 @@ package org.softeg.slartus.forpdaplus.listfragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -72,7 +73,14 @@ public class ListFragmentActivity extends BaseFragmentActivity {
         if (currentFragment == null || !((IBrickFragment) currentFragment).onBackPressed()) {
             if (!m_ExitWarned) {
                 Toast.makeText(this, "Нажмите кнопку НАЗАД снова, чтобы закрыть", Toast.LENGTH_SHORT).show();
+
                 m_ExitWarned = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        m_ExitWarned = false;
+                    }
+                }, 3 * 1000);
             } else {
                 super.onBackPressed();
             }

@@ -111,6 +111,12 @@
             android:key="system.developer"
             android:summary="Режим для разработчиков стиля"
             android:title="Режим разработчика" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="system.curator"
+            android:summary="Функции курирования"
+            android:title="Я куратор" />
     </PreferenceScreen>
 
     <PreferenceScreen android:title="Просмотр темы">

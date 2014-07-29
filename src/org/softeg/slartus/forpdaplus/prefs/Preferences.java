@@ -299,6 +299,11 @@ public class Preferences {
             return prefs.getBoolean("system.developer", false);
         }
 
+        public static boolean isCurator() {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+            return prefs.getBoolean("system.curator", false);
+        }
+
         public static String getDrawerMenuPosition() {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
             return prefs.getString("system.drawermenuposition", "left");

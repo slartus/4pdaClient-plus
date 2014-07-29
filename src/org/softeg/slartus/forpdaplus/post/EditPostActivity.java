@@ -44,6 +44,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.softeg.slartus.forpdaapi.post.EditAttach;
+import org.softeg.slartus.forpdaapi.post.EditPost;
 import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdacommon.FileUtils;
@@ -54,7 +56,6 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
-import org.softeg.slartus.forpdaplus.common.HtmlUtils;
 import org.softeg.slartus.forpdaplus.common.Log;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -62,13 +63,9 @@ import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * User: slinkin
@@ -84,14 +81,11 @@ public class EditPostActivity extends BaseFragmentActivity {
 
     private Button btnAttachments;
     private ProgressBar progress_search;
-    private String forumId;
+    private EditPost m_EditPost;
+
     private ArrayList<String> m_AttachFilePaths = new ArrayList<>();
     private String lastSelectDirPath = Environment.getExternalStorageDirectory().getPath();
-    private String themeId;
-    private String postId;
 
-    private String authKey;
-    private String attachPostKey;
     final Handler uiHandler = new Handler();
 
     private final int REQUEST_SAVE = 0;
@@ -116,7 +110,7 @@ public class EditPostActivity extends BaseFragmentActivity {
 
         intent.putExtra("forumId", forumId);
         intent.putExtra("themeId", topicId);
-        intent.putExtra("postId", "-1");
+        intent.putExtra("postId", PostApi.NEW_POST_ID);
         intent.putExtra("body", body);
         intent.putExtra("authKey", authKey);
         context.startActivityForResult(intent, NEW_EDIT_POST_REQUEST_CODE);
@@ -128,8 +122,7 @@ public class EditPostActivity extends BaseFragmentActivity {
 
         intent.putExtra("forumId", forumId);
         intent.putExtra("themeId", topicId);
-        intent.putExtra("postId", "-1");
-        intent.putExtra("postId", "-1");
+        intent.putExtra("postId", PostApi.NEW_POST_ID);
         intent.putExtras(extras);
         intent.putExtra("authKey", authKey);
         context.startActivity(intent);
@@ -170,17 +163,30 @@ public class EditPostActivity extends BaseFragmentActivity {
         mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), txtPost);
         mPopupPanelView.activityCreated(this);
 
+
         try {
             Intent intent = getIntent();
+
+
+            String forumId = intent.getExtras().getString("forumId");
+            String topicId = intent.getExtras().getString("themeId");
+            String postId = intent.getExtras().getString("postId");
+            String authKey = intent.getExtras().getString("authKey");
+            m_EditPost = new EditPost();
+            m_EditPost.setId(postId);
+            m_EditPost.setForumId(forumId);
+            m_EditPost.setTopicId(topicId);
+            m_EditPost.setAuthKey(authKey);
+            mPopupPanelView.setTopic(forumId, topicId, authKey);
+
             setDataFromExtras(intent.getExtras());
+
+            startLoadPost(forumId, topicId, postId, authKey);
         } catch (Throwable ex) {
             Log.e(this, ex);
+            finish();
         }
-
         createActionMenu();
-
-
-        startLoadPost();
     }
 
 
@@ -210,17 +216,14 @@ public class EditPostActivity extends BaseFragmentActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putString("forumId", forumId);
+        if (m_EditPost != null)
+            outState.putSerializable("EditPost", m_EditPost);
         if (m_AttachFilePaths != null)
             outState.putStringArray("AttachFilePaths", m_AttachFilePaths.toArray(new String[m_AttachFilePaths.size()]));
         outState.putString("lastSelectDirPath", lastSelectDirPath);
-        outState.putString("themeId", themeId);
-        outState.putString("postId", postId);
-        outState.putString("authKey", authKey);
-        outState.putString("attachPostKey", attachPostKey);
         outState.putString("postText", getPostText());
         outState.putString("txtpost_edit_reason", getEditReasonText());
-        outState.putParcelableArrayList("attaches", attaches);
+
 
         super.onSaveInstanceState(outState);
     }
@@ -229,28 +232,21 @@ public class EditPostActivity extends BaseFragmentActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState == null) return;
-        forumId = savedInstanceState.getString("forumId");
+        if (savedInstanceState.containsKey("EditPost"))
+            m_EditPost = (EditPost) savedInstanceState.getSerializable("EditPost");
         if (savedInstanceState.containsKey("AttachFilePaths") && savedInstanceState.getStringArray("AttachFilePaths") != null)
             m_AttachFilePaths = new ArrayList<>(Arrays.asList(savedInstanceState.getStringArray("AttachFilePaths")));
         lastSelectDirPath = savedInstanceState.getString("lastSelectDirPath");
-        themeId = savedInstanceState.getString("themeId");
-        postId = savedInstanceState.getString("postId");
-        authKey = savedInstanceState.getString("authKey");
-        attachPostKey = savedInstanceState.getString("attachPostKey");
+
         txtPost.setText(savedInstanceState.getString("postText"));
         txtpost_edit_reason.setText(savedInstanceState.getString("txtpost_edit_reason"));
-        mPopupPanelView.setTopic(forumId, themeId, authKey);
-        attaches = savedInstanceState.getParcelableArrayList("attaches");
+        mPopupPanelView.setTopic(m_EditPost.getForumId(), m_EditPost.getTopicId(), m_EditPost.getAuthKey());
+
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void setDataFromExtras(Bundle extras) {
-        forumId = extras.getString("forumId");
-        themeId = extras.getString("themeId");
-        postId = extras.getString("postId");
-        authKey = extras.getString("authKey");
 
-        mPopupPanelView.setTopic(forumId, themeId, authKey);
         if (extras.containsKey(Intent.EXTRA_STREAM)) {
             Object attachesObject = extras.get(Intent.EXTRA_STREAM);
             if (attachesObject instanceof Uri) {
@@ -291,17 +287,17 @@ public class EditPostActivity extends BaseFragmentActivity {
     }
 
     private Boolean isNewPost() {
-        return postId.equals("-1");
+        return PostApi.NEW_POST_ID.equals(m_EditPost.getId());
     }
 
     private Dialog mAttachesListDialog;
 
     private void showAttachesListDialog() {
-        if (attaches.size() == 0) {
+        if (m_EditPost.getAttaches().size() == 0) {
             startAddAttachment();
             return;
         }
-        AttachesAdapter adapter = new AttachesAdapter(attaches, this);
+        AttachesAdapter adapter = new AttachesAdapter(m_EditPost.getAttaches(), this);
         mAttachesListDialog = new AlertDialogBuilder(this)
                 .setCancelable(true)
                 .setTitle("Вложения")
@@ -375,7 +371,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                 if (requestCode == REQUEST_SAVE || requestCode == REQUEST_SAVE_IMAGE) {
                     String attachFilePath = getRealPathFromURI(data.getData());
                     saveAttachDirPath(attachFilePath);
-                    new UpdateTask(EditPostActivity.this, getPostText(), getEditReasonText(), attachFilePath)
+                    new UpdateTask(EditPostActivity.this, attachFilePath)
                             .execute();
                 }
             }
@@ -411,75 +407,21 @@ public class EditPostActivity extends BaseFragmentActivity {
         editor.commit();
     }
 
-    private void startLoadPost() {
-        new LoadTask(this).execute();
+    private void startLoadPost(String forumId, String topicId, String postId, String authKey) {
+        new LoadTask(this, forumId, topicId, postId, authKey).execute();
     }
 
     private void sendPost(final String text, String editPostReason) {
 
         if (isNewPost()) {
-            new PostTask(EditPostActivity.this).execute(text, editPostReason);
+            new PostTask(EditPostActivity.this, text, editPostReason,
+                    Preferences.Topic.Post.getEnableEmotics(), Preferences.Topic.Post.getEnableSign())
+                    .execute();
         } else {
-            new AcceptEditTask(EditPostActivity.this).execute(text, editPostReason);
+            new AcceptEditTask(EditPostActivity.this, text, editPostReason,
+                    Preferences.Topic.Post.getEnableEmotics(), Preferences.Topic.Post.getEnableSign())
+                    .execute();
         }
-    }
-
-    private void parsePody(String body) {
-        String startFlag = "<textarea name=\"Post\" rows=\"8\" cols=\"150\" style=\"width:98%; height:160px\" tabindex=\"0\">";
-        int startIndex = body.indexOf(startFlag);
-        startIndex += startFlag.length();
-        int endIndex = body.indexOf("</textarea>", startIndex);
-
-        if (TextUtils.isEmpty(getPostText()))
-            txtPost.setText(HtmlUtils.modifyHtmlQuote(body.substring(startIndex, endIndex)));
-
-        EditPostActivity.this.attachPostKey = null;
-        Matcher m = Pattern.compile("name='attach_post_key' value='([^']*)'", Pattern.CASE_INSENSITIVE).matcher(body);
-        if (m.find()) {
-            EditPostActivity.this.attachPostKey = m.group(1);
-        }
-
-        txtpost_edit_reason.setText(null);
-        m = Pattern.compile("name=(?:'|\")post_edit_reason(?:'|\") value=(?:'|\")([^\"']*)(?:'|\")", Pattern.CASE_INSENSITIVE).matcher(body);
-        if (m.find()) {
-            txtpost_edit_reason.setText(m.group(1));
-            if (!TextUtils.isEmpty(m.group(1)))
-                txtpost_edit_reason.setVisibility(View.VISIBLE);
-        }
-        parseAttachesUI(body);
-    }
-
-    private ArrayList<Attach> attaches = new ArrayList<>();
-
-    private void parseAttaches(String body) {
-
-        if (body == null)
-            return;
-        attaches = new Attaches();
-        Pattern pattern = Pattern.compile("onclick=\"insText\\('\\[attachment=(\\d+):([^]]*)", Pattern.CASE_INSENSITIVE);
-        Pattern attachBodyPattern = Pattern.compile("<!-- ATTACH -->([\\s\\S]*?)</i>", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
-        Matcher m = attachBodyPattern.matcher(body);
-
-        if (m.find()) {
-            Matcher m1 = pattern.matcher(m.group(1));
-            while (m1.find()) {
-                attaches.add(new Attach(m1.group(1), m1.group(2)));
-            }
-        } else {
-            Pattern checkPattern = Pattern.compile("\t\t<h4>Причина:</h4>\n" +
-                    "\n" +
-                    "\t\t<p>(.*?)</p>", Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-            m = checkPattern.matcher(body);
-            if (m.find()) {
-                Toast.makeText(this, m.group(1), Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    private void parseAttachesUI(String body) {
-        parseAttaches(body);
-        btnAttachments.setText(attaches.size() + "");
-
     }
 
     public void toggleEditReasonDialog() {
@@ -497,35 +439,24 @@ public class EditPostActivity extends BaseFragmentActivity {
 
     private final String TEMP_EMPTY_TEXT = "<temptext>";
 
-    private String getAttachIdsString() {
-        String res = "0";
-        for (Attach attach : attaches) {
-            res += "," + attach.getId();
-        }
-        return res;
-    }
 
     private class UpdateTask extends AsyncTask<String, Pair<String, Integer>, Boolean> {
         private final ProgressDialog dialog;
         private ProgressState m_ProgressState;
-        private String postBody;
-        private String editReason;
+
         private List<String> attachFilePaths;
 
-        public UpdateTask(Context context, String postBody, String editReason, List<String> attachFilePaths) {
-            this.postBody = postBody;
-            this.editReason = editReason;
+        public UpdateTask(Context context, List<String> attachFilePaths) {
+
             this.attachFilePaths = attachFilePaths;
             dialog = new AppProgressDialog(context);
-
         }
 
-        public UpdateTask(Context context, String postBody, String editReason, String newAttachFilePath) {
-            this(context, postBody, editReason, new ArrayList<>(Arrays.asList(new String[]{newAttachFilePath})));
-
+        public UpdateTask(Context context, String newAttachFilePath) {
+            this(context, new ArrayList<>(Arrays.asList(new String[]{newAttachFilePath})));
         }
 
-        String body = null;
+        private EditAttach editAttach;
 
         @Override
         protected Boolean doInBackground(String... params) {
@@ -537,16 +468,11 @@ public class EditPostActivity extends BaseFragmentActivity {
                     }
                 };
 
-                if (TextUtils.isEmpty(postBody))
-                    postBody = TEMP_EMPTY_TEXT;
-
                 int i = 1;
                 for (String newAttachFilePath : attachFilePaths) {
                     publishProgress(new Pair<>(String.format("Отправка файла %d из %d", i++, attachFilePaths.size()), 0));
-                    body = Client.getInstance().attachFilePost(forumId, themeId, authKey, attachPostKey,
-                            postId, Preferences.Topic.Post.getEnableSign(), Preferences.Topic.Post.getEnableEmotics(), postBody, newAttachFilePath, getAttachIdsString(),
-                            m_ProgressState, editReason);
-                    parseAttaches(body);
+                    editAttach = PostApi.attachFile(Client.getInstance(),
+                            m_EditPost.getId(), newAttachFilePath, m_ProgressState);
                 }
 
                 return true;
@@ -556,6 +482,7 @@ public class EditPostActivity extends BaseFragmentActivity {
             }
         }
 
+        @Override
         protected void onProgressUpdate(Pair<String, Integer>... values) {
             super.onProgressUpdate(values);
             if (!TextUtils.isEmpty(values[0].first))
@@ -591,9 +518,9 @@ public class EditPostActivity extends BaseFragmentActivity {
                 this.dialog.dismiss();
             }
 
-            if (success || (isCancelled() && body != null)) {
-                //if (attachFilePaths.size() > 0)
-                parseAttachesUI(body);
+            if (success || (isCancelled() && editAttach != null)) {
+                m_EditPost.addAttach(editAttach);
+                refreshAttachmentsInfo();
             } else {
                 if (ex != null)
                     Log.e(EditPostActivity.this, ex);
@@ -607,8 +534,9 @@ public class EditPostActivity extends BaseFragmentActivity {
         @Override
         protected void onCancelled(Boolean success) {
             super.onCancelled(success);
-            if (success || (isCancelled() && body != null)) {
-                parseAttachesUI(body);
+            if (success || (isCancelled() && editAttach != null)) {
+                m_EditPost.addAttach(editAttach);
+                refreshAttachmentsInfo();
             } else {
                 if (ex != null)
                     Log.e(EditPostActivity.this, ex);
@@ -622,29 +550,21 @@ public class EditPostActivity extends BaseFragmentActivity {
 
     private class DeleteAttachTask extends AsyncTask<String, Void, Boolean> {
         private final ProgressDialog dialog;
-        private String postBody;
-        private String reasonText;
+
         private String attachId;
 
-        public DeleteAttachTask(Context context, String postBody,
-                                String reasonText, String attachId) {
-            this.postBody = postBody;
-            this.reasonText = reasonText;
+        public DeleteAttachTask(Context context, String attachId) {
+
             this.attachId = attachId;
 
             dialog = new AppProgressDialog(context);
         }
 
-        String body;
 
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-                String post_edit_reason = reasonText;
-                body = Client.getInstance().deleteAttachFilePost(forumId, themeId, authKey, postId,
-                        Preferences.Topic.Post.getEnableSign(), Preferences.Topic.Post.getEnableEmotics(),
-                        postBody,
-                        attachId, getAttachIdsString(), post_edit_reason);
+                PostApi.deleteAttachedFile(Client.getInstance(), m_EditPost.getId(), attachId);
                 return true;
             } catch (Exception e) {
                 ex = e;
@@ -667,7 +587,8 @@ public class EditPostActivity extends BaseFragmentActivity {
             }
 
             if (success) {
-                parseAttachesUI(body);
+                m_EditPost.deleteAttach(attachId);
+                refreshAttachmentsInfo();
             } else {
                 if (ex != null)
                     Log.e(EditPostActivity.this, ex);
@@ -679,18 +600,25 @@ public class EditPostActivity extends BaseFragmentActivity {
 
     private class AcceptEditTask extends AsyncTask<String, Void, Boolean> {
         private final ProgressDialog dialog;
+        private String postBody;
+        private String postEditReason;
+        private Boolean enableEmo;
+        private Boolean enableSign;
 
-        public AcceptEditTask(Context context) {
+        public AcceptEditTask(Context context,
+                              String postBody, String postEditReason, Boolean enableEmo, Boolean enableSign) {
+            this.postBody = postBody;
+            this.postEditReason = postEditReason;
+            this.enableEmo = enableEmo;
+            this.enableSign = enableSign;
             dialog = new AppProgressDialog(context);
         }
 
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-                String post_edit_reason = params.length > 1 ? params[1] : "";
-                Client.getInstance().editPost(forumId, themeId, authKey, postId,
-                        Preferences.Topic.Post.getEnableSign(), Preferences.Topic.Post.getEnableEmotics(),
-                        params[0], getAttachIdsString(), post_edit_reason);
+                PostApi.sendPost(Client.getInstance(), m_EditPost.getParams(), postBody,
+                        postEditReason, enableSign, enableEmo);
                 return true;
             } catch (Exception e) {
                 ex = e;
@@ -716,11 +644,11 @@ public class EditPostActivity extends BaseFragmentActivity {
                 if (getIntent() != null && getIntent().getExtras() != null &&
                         !ThemeActivity.class.toString().equals(getIntent().getExtras().get(BaseFragmentActivity.SENDER_ACTIVITY)))
 
-                    ExtTopic.showActivity(EditPostActivity.this, themeId, "view=findpost&p=" + postId);
+                    ExtTopic.showActivity(EditPostActivity.this, m_EditPost.getTopicId(), "view=findpost&p=" + m_EditPost.getId());
 
                 else {
                     Intent intent = new Intent();
-                    String url = String.format("http://4pda.ru/forum/index.php?showtopic=%s&view=findpost&p=%s", themeId, postId);
+                    String url = String.format("http://4pda.ru/forum/index.php?showtopic=%s&view=findpost&p=%s", m_EditPost.getTopicId(), m_EditPost.getId());
                     intent.putExtra(POST_URL_KEY, url);
                     EditPostActivity.this.setResult(Activity.RESULT_OK, intent);
                 }
@@ -737,10 +665,30 @@ public class EditPostActivity extends BaseFragmentActivity {
         }
     }
 
+    private void setEditPost(EditPost editPost) {
+        m_EditPost = editPost;
+        if (!PostApi.NEW_POST_ID.equals(m_EditPost.getId()))
+            txtPost.setText(m_EditPost.getBody());
+        txtpost_edit_reason.setText(m_EditPost.getPostEditReason());
+        refreshAttachmentsInfo();
+    }
+
+    private void refreshAttachmentsInfo() {
+        btnAttachments.setText(m_EditPost.getAttaches().size() + "");
+    }
+
     private class LoadTask extends AsyncTask<String, Void, Boolean> {
         private final ProgressDialog dialog;
+        private String forumId;
+        private String topicId;
+        private String postId;
+        private String authKey;
 
-        public LoadTask(Context context) {
+        public LoadTask(Context context, String forumId, String topicId, String postId, String authKey) {
+            this.forumId = forumId;
+            this.topicId = topicId;
+            this.postId = postId;
+            this.authKey = authKey;
             dialog = new AppProgressDialog(context);
             dialog.setCancelable(true);
             dialog.setCanceledOnTouchOutside(false);
@@ -752,21 +700,15 @@ public class EditPostActivity extends BaseFragmentActivity {
             });
         }
 
-        String body = null;
+        private EditPost editPost;
 
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-                Map<String, String> outParams = new HashMap<>();
-              // PostApi.editPost(Client.getInstance(), forumId, themeId, postId, authKey);
-                body = Client.getInstance().getEditPostPlus(forumId, themeId, postId, authKey, outParams);
-                if (outParams.size() > 0) {
-                    forumId = outParams.get("forumId");
-                    authKey = outParams.get("authKey");
-                }
+                editPost = PostApi.editPost(Client.getInstance(), forumId, topicId, postId, authKey);
+
                 return true;
             } catch (Throwable e) {
-
                 ex = e;
                 return false;
             }
@@ -791,10 +733,10 @@ public class EditPostActivity extends BaseFragmentActivity {
             }
 
             if (success) {
-                parsePody(body);
+                setEditPost(editPost);
 
                 if (m_AttachFilePaths.size() > 0)
-                    new UpdateTask(EditPostActivity.this, getPostText(), getEditReasonText(), m_AttachFilePaths)
+                    new UpdateTask(EditPostActivity.this, m_AttachFilePaths)
                             .execute();
                 m_AttachFilePaths = new ArrayList<>();
             } else {
@@ -808,19 +750,27 @@ public class EditPostActivity extends BaseFragmentActivity {
 
     private class PostTask extends AsyncTask<String, Void, Boolean> {
         private final ProgressDialog dialog;
-        private String mPostResult = null;
+        private String mPostResult = null;// при удачной отправке страница топика
         private String mError = null;
+        private String postBody;
+        private String postEditReason;
+        private Boolean enableEmo;
+        private Boolean enableSign;
 
-        public PostTask(Context context) {
+        public PostTask(Context context,
+                        String postBody, String postEditReason, Boolean enableEmo, Boolean enableSign) {
+            this.postBody = postBody;
+            this.postEditReason = postEditReason;
+            this.enableEmo = enableEmo;
+            this.enableSign = enableSign;
             dialog = new AppProgressDialog(context);
         }
 
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-                mPostResult = Client.getInstance().reply(forumId, themeId, authKey, attachPostKey,
-                        params[0], Preferences.Topic.Post.getEnableSign(), Preferences.Topic.Post.getEnableEmotics(),
-                        false, getAttachIdsString());
+                mPostResult = PostApi.sendPost(Client.getInstance(), m_EditPost.getParams(), postBody,
+                        postEditReason, enableSign, enableEmo);
 
                 mError = PostApi.checkPostErrors(mPostResult);
                 return true;
@@ -849,7 +799,8 @@ public class EditPostActivity extends BaseFragmentActivity {
                 }
                 Intent intent = new Intent();
                 intent.putExtra(TOPIC_BODY_KEY, mPostResult);
-                String url = String.format("http://4pda.ru/forum/index.php?showtopic=%s&%s", themeId, isNewPost() ? "view=getlastpost" : "view=findpost&p=" + postId);
+                String url = String.format("http://4pda.ru/forum/index.php?showtopic=%s&%s", m_EditPost.getTopicId(),
+                        isNewPost() ? "view=getlastpost" : "view=findpost&p=" + m_EditPost.getId());
                 intent.putExtra(POST_URL_KEY, url);
                 EditPostActivity.this.setResult(Activity.RESULT_OK, intent);
 
@@ -868,9 +819,9 @@ public class EditPostActivity extends BaseFragmentActivity {
 
     public class AttachesAdapter extends BaseAdapter {
         private Activity activity;
-        private final ArrayList<Attach> content;
+        private final List<EditAttach> content;
 
-        public AttachesAdapter(ArrayList<Attach> content, Activity activity) {
+        public AttachesAdapter(List<EditAttach> content, Activity activity) {
             super();
             this.content = content;
             this.activity = activity;
@@ -880,7 +831,7 @@ public class EditPostActivity extends BaseFragmentActivity {
             return content.size();
         }
 
-        public Attach getItem(int i) {
+        public EditAttach getItem(int i) {
             return content.get(i);
         }
 
@@ -907,10 +858,9 @@ public class EditPostActivity extends BaseFragmentActivity {
                     public void onClick(View view) {
                         mAttachesListDialog.dismiss();
 
-                        Attach attach = (Attach) view.getTag();
+                        EditAttach attach = (EditAttach) view.getTag();
 
                         new DeleteAttachTask(EditPostActivity.this,
-                                getPostText(), getEditReasonText(),
                                 attach.getId())
                                 .execute();
                     }
@@ -925,7 +875,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                         int selectionStart = txtPost.getSelectionStart();
                         if (selectionStart == -1)
                             selectionStart = 0;
-                        Attach attach = (Attach) view.getTag();
+                        EditAttach attach = (EditAttach) view.getTag();
                         if (txtPost.getText() != null)
                             txtPost.getText().insert(selectionStart, "[spoiler][attachment=" + attach.getId() + ":" + attach.getName() + "][/spoiler]");
                     }
@@ -939,7 +889,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                         int selectionStart = txtPost.getSelectionStart();
                         if (selectionStart == -1)
                             selectionStart = 0;
-                        Attach attach = (Attach) view.getTag();
+                        EditAttach attach = (EditAttach) view.getTag();
                         if (txtPost.getText() != null)
                             txtPost.getText().insert(selectionStart, "[attachment=" + attach.getId() + ":" + attach.getName() + "]");
                     }
@@ -950,7 +900,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            Attach attach = this.getItem(position);
+            EditAttach attach = this.getItem(position);
             holder.btnDelete.setTag(attach);
             holder.btnSpoiler.setTag(attach);
             holder.txtFile.setText(attach.getName());
@@ -1051,8 +1001,6 @@ public class EditPostActivity extends BaseFragmentActivity {
 
             if (findedStartSelection == -1)
                 return SEARCH_RESULT_NOTFOUND;
-            //   txtPost.setSelection(findedStartSelection, findedStartSelection + searchText.length());
-
 
             raw.setSpan(new BackgroundColorSpan(0xFF8B008B), findedStartSelection, findedStartSelection
                     + searchText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

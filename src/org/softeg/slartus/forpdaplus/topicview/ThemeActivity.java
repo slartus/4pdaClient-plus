@@ -110,6 +110,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     public static Boolean LoadsImagesAutomatically = null;
     private QuickPostFragment mQuickPostFragment;
     private LinearLayout mQuickPostPanel;
+    private Curator mCurator;
 
     public static void showTopicById(Context context, CharSequence topicId, CharSequence urlParams) {
         String url = String.format("http://4pda.ru/forum/index.php?showtopic=%s%s", topicId, TextUtils.isEmpty(urlParams) ? "" : ("&" + urlParams));
@@ -161,8 +162,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
         createActionMenu();
 
-        Client client = Client.getInstance();
-
+        mCurator=new Curator(this);
 
         //setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL); чтобы поиск начинался при вводе текста
         mQuickPostFragment = (QuickPostFragment) getSupportFragmentManager().findFragmentById(R.id.quick_post_fragment);
@@ -871,6 +871,10 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     public void onBricksListDialogResult(DialogInterface dialog, String dialogId, BrickInfo brickInfo, Bundle args) {
         dialog.dismiss();
         ListFragmentActivity.showListFragment(this, brickInfo.getName(), args);
+    }
+
+    public Curator getCurator() {
+        return mCurator;
     }
 
     private class MyPictureListener implements WebView.PictureListener {

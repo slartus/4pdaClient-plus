@@ -8,11 +8,12 @@
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/progressBar"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"
+        android:padding="0dp">
 
         <Button
             android:id="@+id/btnAuthor"
@@ -48,14 +49,16 @@
             android:minWidth="80dp"
             android:text="Всё" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btnClear"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/btnText"
-            android:text="Очистить" />
+            android:text="Очистить"
+            android:src="@drawable/ic_menu_close_clear_cancel"
+            android:contentDescription="Очистить" />
     </RelativeLayout>
 
     <EditText

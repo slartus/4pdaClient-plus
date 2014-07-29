@@ -361,6 +361,19 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                     }
                 });
             }
+
+            if (Preferences.System.isCurator()) {
+                menu.add("Мультимодерация").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        try {
+                            getInterface().getCurator().showMmodDialog();
+                        } catch (Exception ex) {
+                            return false;
+                        }
+                        return true;
+                    }
+                });
+            }
             addCloseMenuItem(menu);
 
         } catch (Exception ex) {

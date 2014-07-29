@@ -2,7 +2,9 @@ package org.softeg.slartus.forpdaapi.post;/*
  * Created by slinkin on 15.07.2014.
  */
 
-public class EditAttach {
+import java.io.Serializable;
+
+public class EditAttach implements Serializable{
     private String mId;
     private String mName;
     private String mSize;

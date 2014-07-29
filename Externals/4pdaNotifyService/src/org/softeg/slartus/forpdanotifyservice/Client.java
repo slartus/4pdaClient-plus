@@ -27,6 +27,7 @@ public class Client implements IHttpClient {
         this.cookiesPath = cookiesPath;
     }
 
+
     @Override
     public String performGetWithCheckLogin(String s, OnProgressChangedListener beforeGetPage, OnProgressChangedListener afterGetPage) throws IOException {
         return performGet(s);

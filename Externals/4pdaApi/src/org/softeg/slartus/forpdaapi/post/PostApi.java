@@ -8,9 +8,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.ProgressState;
+import org.softeg.slartus.forpdacommon.NotReportException;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -22,6 +22,8 @@ import java.util.regex.Pattern;
  * Time: 11:04
  */
 public class PostApi {
+
+    public static final String NEW_POST_ID = "0";
 
     /**
      * Удаляет пост
@@ -37,24 +39,17 @@ public class PostApi {
     }
 
     /**
-     * Возвращает страницу с новым постом
-     */
-    public static String getNewPostPage(IHttpClient httpClient, String forumId, String topicId, String authKey) throws IOException {
-        return getEditPage(httpClient, forumId, topicId, "-1", authKey);
-    }
-
-    /**
      * Возвращает страницу с редактируемым постом
      *
-     * @param postId -1, для создания нового поста
+     * @param postId NEW_POST_ID, для создания нового поста
      */
     public static String getEditPage(IHttpClient httpClient, String forumId, String topicId, String postId, String authKey) throws IOException {
         String res;
-        if (postId.equals("-1"))
-            res = httpClient.performGet("http://4pda.ru/forum/index.php?act=zpost&do=reply_post&f=" + forumId
+        if (postId.equals(NEW_POST_ID))
+            res = httpClient.performGet("http://4pda.ru/forum/index.php?act=post&do=reply_post&f=" + forumId
                     + "&t=" + topicId);
         else
-            res = httpClient.performGet("http://4pda.ru/forum/index.php?act=zpost&do=edit_post&f=" + forumId
+            res = httpClient.performGet("http://4pda.ru/forum/index.php?act=post&do=edit_post&f=" + forumId
                     + "&t=" + topicId
                     + "&p=" + postId
                     + "&auth_key=" + authKey);
@@ -65,7 +60,7 @@ public class PostApi {
     }
 
     public static String getAttachPage(IHttpClient httpClient, String postId) throws IOException {
-        if (postId.equals("-1"))
+        if (postId.equals(NEW_POST_ID))
             return null;
         return httpClient.performGet("http://4pda.ru/forum/index.php?&act=attach&code=attach_upload_show&attach_rel_id=" + postId);
     }
@@ -74,7 +69,7 @@ public class PostApi {
      * Проверка страницы редактирования поста на ошибки (пост удалён ранее или нет прав на редактирование и т.д. )
      */
     public static String checkEditPage(String editPage) {
-        String startFlag = "<textarea name=\"Post\" rows=\"8\" cols=\"150\" style=\"width:98%; height:160px\" tabindex=\"0\">";
+        String startFlag = "<textarea name=\"post\" rows=\"8\" cols=\"150\" style=\"width:98%; height:160px\" tabindex=\"0\">";
         int startIndex = editPage.indexOf(startFlag);
         if (startIndex == -1) {
             Pattern pattern = Pattern.compile("<h4>Причина:</h4>\n" +
@@ -239,7 +234,7 @@ public class PostApi {
         additionalHeaders.put("post_edit_reason", post_edit_reason);
 
 
-        if (!postId.equals("-1")) {
+        if (!postId.equals(NEW_POST_ID)) {
             additionalHeaders.put("p", postId);
             additionalHeaders.put("act", "attach");
             additionalHeaders.put("attach_rel_id", postId);
@@ -256,7 +251,7 @@ public class PostApi {
             additionalHeaders.put("enableEmo", "yes");
         additionalHeaders.put("iconid", "0");
 
-        if (postId.equals("-1"))
+        if (postId.equals(NEW_POST_ID))
             return httpClient.uploadFile("http://4pda.ru/forum/index.php", filePath, additionalHeaders,
                     progress);
 
@@ -294,7 +289,7 @@ public class PostApi {
         additionalHeaders.put("file-list", fileList);
         additionalHeaders.put("removeattach[" + attachToDeleteId + "]", "Удалить!");
 
-        if (!postId.equals("-1")) {
+        if (!postId.equals(NEW_POST_ID)) {
             additionalHeaders.put("act", "attach");
             additionalHeaders.put("code", "attach_upload_remove");
             additionalHeaders.put("attach_rel_id", postId);
@@ -309,7 +304,7 @@ public class PostApi {
         if (enableemo)
             additionalHeaders.put("enableemo", "yes");
 
-        if (postId.equals("-1"))
+        if (postId.equals(NEW_POST_ID))
             return httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders);
         httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders);
         return getEditPage(httpClient, forumId, themeId, postId, authKey);
@@ -343,6 +338,100 @@ public class PostApi {
         return null;
     }
 
+    private static String getStatusMessage(String status) {
+        switch (status) {
+            case "no_items":
+                return "Ни одного файла не загружено";
+            case "uploading_file":
+                return "Загрузка файла...";
+            case "init_progress":
+                return "Инициализация системы...";
+            case "upload_ok":
+                return "Файл успешно загружен и доступен в меню «Управление текущими файлами»";
+            case "upload_failed":
+                return "Неудачная загрузка. Необходимо проверить настройки и права доступа. Пожалуйста, сообщите об этом администрации.";
+            case "upload_too_big":
+                return "Неудачная загрузка. Файл имеет размер больше допустимого";
+            case "invalid_mime_type":
+                return "Неудачная загрузка. Вам запрещено загружать такой тип файлов";
+            case "no_upload_dir":
+                return "Неудачная загрузка. Директория загрузок файлов не доступна. Пожалуйста, сообщите об этом администрации.";
+            case "no_upload_dir_perms":
+                return "Неудачная загрузка. Невозможно произвести запись файла в директорию загрузок. Пожалуйста, сообщите об этом администрации.";
+            case "upload_no_file":
+                return "Вы не выбрали файл для загрузки";
+            case "upload_banned_file":
+                return "Неудачная загрузка. Вам запрещено загружать этот файл";
+            case "ready":
+                return "Система готова для загрузки файлов";
+            case "attach_remove":
+                return "Удалить файл";
+            case "attach_insert":
+                return "Вставить файл в текстовый редактор";
+            case "remove_warn":
+                return "Продолжить удаление файла?";
+            case "attach_removed":
+                return "Файл успешно удален";
+            case "attach_removal":
+                return "Удаление файла...";
+            default:
+                return status;
+        }
+    }
+
+    private static void checkAttachError(String page) throws NotReportException {
+        Matcher m = Pattern
+                .compile("pipsatt.status_msg = '([^']*)';\\s*pipsatt.status_is_error = parseInt\\('(\\d+)'\\);", Pattern.CASE_INSENSITIVE)
+                .matcher(page);
+        if (m.find()) {
+            if ("1".equals(m.group(2)))
+                throw new NotReportException(getStatusMessage(m.group(1)));
+        }
+    }
+
+    public static void deleteAttachedFile(IHttpClient httpClient,
+                                          String postId,
+                                          String attachId) throws Exception {
+        String res = httpClient
+                .performGet(String.format("http://4pda.ru/forum/index.php?&act=attach&code=attach_upload_remove&attach_rel_id=%s&attach_id=%s", postId,
+                        attachId));
+        checkAttachError(res);
+    }
+
+    public static EditAttach attachFile(IHttpClient httpClient,
+                                        String postId,
+                                        String newFilePath,
+                                        ProgressState progress) throws Exception {
+
+
+        String res = httpClient.uploadFile("http://4pda.ru/forum/index.php?&act=attach&code=attach_upload_process&attach_rel_id=" + postId,
+                newFilePath, new HashMap<String, String>(),
+                progress);
+        Matcher m = Pattern
+                .compile("add_current_item\\(\\s*'(\\d+)',\\s*'([^']*)',\\s*'([^']*)',\\s*'([^']*)'\\s*\\);", Pattern.CASE_INSENSITIVE)
+                .matcher(res);
+        if (m.find()) {
+            return new EditAttach(m.group(1), m.group(2), m.group(3), m.group(4));
+        }
+        checkAttachError(res);
+        return null;
+
+    }
+
+    public static String sendPost(IHttpClient httpClient, Map<String, String> params,
+                                  String postBody, String postEditReason,
+                                  Boolean enablesig, Boolean enableemo) throws IOException {
+        params.put("Post", postBody);
+        if (postEditReason != null)
+            params.put("post_edit_reason", postEditReason);
+        if (enableemo)
+            params.put("enableemo", "yes");
+        if (enablesig)
+            params.put("enablesig", "yes");
+
+        return httpClient.performPost("http://4pda.ru/forum/index.php", params);
+    }
+
     public static EditPost editPost(IHttpClient httpClient, String forumId, String topicId, String postId, String authKey) throws IOException {
         String editPage = getEditPage(httpClient, forumId, topicId, postId, authKey);
         Document doc = Jsoup.parse(editPage);
@@ -362,28 +451,42 @@ public class PostApi {
             // текст поста
             element = postFormElement.select("textarea[name=Post]").first();
             if (element != null)
-                editPost.setBody(element.html());
+                editPost.setBody(element.text());
 
+            // Причина редактирования
+            element = postFormElement.select("input[name=post_edit_reason]").first();
+            if (element != null)
+                editPost.setPostEditReason(element.attr("value"));
+
+            // Включить смайлы?
+            element = postFormElement.select("input[name=enableemo]").first();
+            if (element != null)
+                editPost.setEnableEmo("checked".equals(element.attr("checked")));
+
+            // Включить подпись?
+            element = postFormElement.select("input[name=enablesig]").first();
+            if (element != null)
+                editPost.setEnableSign("checked".equals(element.attr("checked")));
 
             // управление текущими файлами
             editPage = getAttachPage(httpClient, postId);
             if (editPage != null) {
-                editPost.setAttaches(new ArrayList<EditAttach>());
+
                 Matcher m = Pattern
                         .compile("add_current_item\\( '(\\d+)', '([^']*)', '([^']*)', '([^']*)' \\)", Pattern.CASE_INSENSITIVE)
                         .matcher(editPage);
                 while (m.find()) {
-                    editPost.getAttaches().add(new EditAttach(m.group(1), m.group(2), m.group(3), m.group(4)));
+                    editPost.addAttach(new EditAttach(m.group(1), m.group(2), m.group(3), m.group(4)));
                 }
             }
         }
-
 
 
         if (editPost.getBody() == null) {
             Pattern pattern = Pattern.compile("<h4>Причина:</h4>\n" +
                     "\\s*\n" +
                     "\\s*<p>(.*)</p>", Pattern.MULTILINE);
+            assert editPage != null;
             Matcher m = pattern.matcher(editPage);
             if (m.find()) {
                 editPost.setError(m.group(1));
@@ -402,31 +505,31 @@ public class PostApi {
     private static void parseInterviewParams(String editPage, EditPost editPost) {
         Matcher m = Pattern.compile("poll_questions\\s*=\\s*\\{(.*)?'\\}", Pattern.CASE_INSENSITIVE)
                 .matcher(editPage);
-        if(m.find()){
-            String s=m.group(1).toString()+"'";
-            m=Pattern.compile("\\s*(\\d+)\\s*:\\s*'([^']*)'", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE)
+        if (m.find()) {
+            String s = m.group(1) + "'";
+            m = Pattern.compile("\\s*(\\d+)\\s*:\\s*'([^']*)'", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE)
                     .matcher(s);
             while (m.find()) {
-                editPost.getParams().put("question[" + m.group(1) + "]", m.group(2));
+                editPost.getParams().put("question[" + m.group(1) + "]", Html.fromHtml(m.group(2)).toString());
             }
         }
 
         m = Pattern.compile("poll_choices\\s*=\\s*\\{(.*)?'\\}", Pattern.CASE_INSENSITIVE)
                 .matcher(editPage);
-        if(m.find()){
-            String s=m.group(1).toString()+"'";
-            m=Pattern.compile("\\s*'(\\d+_\\d+)'\\s*:\\s*'([^']*)'", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE)
+        if (m.find()) {
+            String s = m.group(1) + "'";
+            m = Pattern.compile("\\s*'(\\d+_\\d+)'\\s*:\\s*'([^']*)'", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE)
                     .matcher(s);
             while (m.find()) {
-                editPost.getParams().put("choice[" + m.group(1) + "]", m.group(2));
+                editPost.getParams().put("choice[" + m.group(1) + "]", Html.fromHtml(m.group(2)).toString());
             }
         }
 
         m = Pattern.compile("poll_multi\\s*=\\s*\\{(.*)?'\\}", Pattern.CASE_INSENSITIVE)
                 .matcher(editPage);
-        if(m.find()){
-            String s=m.group(1).toString()+"'";
-            m=Pattern.compile("\\s*(\\d+)\\s*:\\s*'([^']*)'", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE)
+        if (m.find()) {
+            String s = m.group(1) + "'";
+            m = Pattern.compile("\\s*(\\d+)\\s*:\\s*'([^']*)'", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE)
                     .matcher(s);
             while (m.find()) {
                 if ("1".equals(m.group(2))) {
@@ -435,4 +538,6 @@ public class PostApi {
             }
         }
     }
+
+
 }

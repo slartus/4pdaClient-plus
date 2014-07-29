@@ -160,9 +160,17 @@ public class DownloadTask {
     }
 
     public String getFileName() throws UnsupportedEncodingException {
-        if (TextUtils.isEmpty(outputFile))
-            return FileUtils.getFileNameFromUrl(m_Url);
-        return FileUtils.getFileNameFromUrl(outputFile);
+        try{
+            if (TextUtils.isEmpty(outputFile))
+                return FileUtils.getFileNameFromUrl(m_Url);
+
+            int index = outputFile.lastIndexOf("/");
+
+            return outputFile.substring(index + 1, outputFile.length());
+        }catch (Throwable ignored){
+            return m_Url;
+        }
+
     }
 
     public int getPercents() {

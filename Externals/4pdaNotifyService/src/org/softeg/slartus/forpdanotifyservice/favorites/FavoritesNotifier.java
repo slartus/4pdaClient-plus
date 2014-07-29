@@ -57,6 +57,7 @@ public class FavoritesNotifier extends NotifierBase {
     private int getNewTopicsCount(ArrayList<FavTopic> topics) {
         int res = 0;
         for (FavTopic topic : topics) {
+
             if (topic.getIsNew() && (!m_PinnedOnly || topic.isPinned()))
                 res++;
         }
@@ -213,7 +214,7 @@ public class FavoritesNotifier extends NotifierBase {
                     .setContentText("Непрочитанные сообщения в темах")
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
-                    .setDefaults(Notification.DEFAULT_ALL);
+                    .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
             Uri sound = getSound(context);
             if (sound != null)
                 bridge.setSound(getSound(context));

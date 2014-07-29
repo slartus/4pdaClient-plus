@@ -86,7 +86,6 @@ public class QuoteEditorDialogFragment extends DialogFragment implements View.On
 
 
         Dialog dialog = new AlertDialog.Builder(getActivity())
-                .setTitle("Редактирование цитаты")
                 .setView(v)
                 .setPositiveButton("Вставить",
                         new DialogInterface.OnClickListener() {
@@ -198,7 +197,8 @@ public class QuoteEditorDialogFragment extends DialogFragment implements View.On
 
 
                 String page = Client.getInstance().performGet(m_QuoteUrl);
-                Matcher m = Pattern.compile("<textarea name=\"Post\".*?>([\\s\\S]*?)</textarea>").matcher(page);
+                Matcher m = Pattern.compile("<textarea name=\"post\"[^>]*>([\\s\\S]*?)</textarea>",Pattern.CASE_INSENSITIVE)
+                        .matcher(page);
                 if (m.find()) {
                     String quote = m.group(1);
                     if (quote != null)

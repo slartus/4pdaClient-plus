@@ -65,6 +65,18 @@ public class SettingsQuickView extends BaseQuickView {
         });
         linearLayout.addView(extendedFormButton);
 
+//        attachesButton = new Button(getContext());
+//        attachesButton.setText("Прикреплённые файлы");
+//        attachesButton.setLayoutParams(params);
+//        attachesButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                EditPostActivity.newPost((Activity)getContext(), getForumId().toString(), getTopicId().toString(), getAuthKey().toString(),
+//                        getPostBody().toString());
+//            }
+//        });
+//        linearLayout.addView(attachesButton);
+
         return linearLayout;
     }
 
@@ -73,6 +85,7 @@ public class SettingsQuickView extends BaseQuickView {
     CheckBox enableEmotics;
     CheckBox enableSign;
     Button extendedFormButton;
+    Button attachesButton;
 
 
 

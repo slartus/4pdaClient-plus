@@ -230,6 +230,12 @@ public class MainActivity extends BaseFragmentActivity implements BricksListDial
                 if (!m_ExitWarned) {
                     Toast.makeText(this, "Нажмите кнопку НАЗАД снова, чтобы выйти из программы", Toast.LENGTH_SHORT).show();
                     m_ExitWarned = true;
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            m_ExitWarned = false;
+                        }
+                    }, 3 * 1000);
                 } else {
                     appExit();
                 }
