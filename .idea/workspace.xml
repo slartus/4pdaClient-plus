@@ -74,9 +74,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="24a94c67-d30c-40e1-b2b4-ac90db2b8781" name="Default" comment="2.0beta3">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/history.txt" afterPath="$PROJECT_DIR$/assets/history.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="4pda.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -261,11 +259,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ForPdaVersionNotifier.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ForPdaVersionNotifier.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/mainnotifiers/ForPdaVersionNotifier.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.21071428" vertical-offset="749" max-vertical-offset="2057">
+            <state vertical-scroll-proportion="0.0" vertical-offset="749" max-vertical-offset="2057">
               <caret line="71" column="45" selection-start-line="71" selection-start-column="45" selection-end-line="71" selection-end-column="45" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6037383" vertical-offset="0" max-vertical-offset="816">
+              <caret line="19" column="32" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -398,7 +406,6 @@
         <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/mainnotifiers/ForPdaVersionNotifier.java" />
         <option value="$PROJECT_DIR$/Externals/4pdaCommon/src/org/softeg/slartus/forpdacommon/Notification11_15.java" />
         <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/prefs/PreferencesActivity.java" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/Externals/4pdaApi/src/org/softeg/slartus/forpdaapi/post/EditAttach.java" />
         <option value="$PROJECT_DIR$/Externals/4pdaApi/src/org/softeg/slartus/forpdaapi/post/EditPost.java" />
         <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/controls/quickpost/items/SettingsQuickView.java" />
@@ -424,6 +431,7 @@
         <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/video/PlayerActivity.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/assets/history.txt" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -625,7 +633,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="false" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="OverrideImplement.combined" value="false" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.32083333" />
@@ -1179,14 +1187,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Externals/chrisbanes-Android-PullToRefresh/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="590">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Externals/4pdaApi/src/org/softeg/slartus/forpdaapi/post/EditAttach.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
@@ -1576,8 +1576,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/mainnotifiers/ForPdaVersionNotifier.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21071428" vertical-offset="749" max-vertical-offset="2057">
+        <state vertical-scroll-proportion="0.0" vertical-offset="749" max-vertical-offset="2057">
           <caret line="71" column="45" selection-start-line="71" selection-start-column="45" selection-end-line="71" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6037383" vertical-offset="0" max-vertical-offset="816">
+          <caret line="19" column="32" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
           <folding />
         </state>
       </provider>
