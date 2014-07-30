@@ -74,20 +74,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="24a94c67-d30c-40e1-b2b4-ac90db2b8781" name="Default" comment="2.0beta3">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/video/api/Quality.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/video/api/VideoItem.java" />
-      <change type="DELETED" beforePath="D:\Projects\Dropbox\!Projects\!android\4pda\plus\4pdaClient\.idea\libraries\YouTubeAndroidPlayerApi.xml" afterPath="" />
-      <change type="DELETED" beforePath="D:\Projects\Dropbox\!Projects\!android\4pda\plus\4pdaClient\src\org\softeg\slartus\forpdaplus\video\api\ParseResult.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\Projects\Dropbox\!Projects\!android\4pda\plus\4pdaClient\src\org\softeg\slartus\forpdaplus\video\api\VideoListItem.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\Projects\Dropbox\!Projects\!android\4pda\plus\4pdaClient\src\org\softeg\slartus\forpdaplus\video\api\VideoStream.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\Projects\Dropbox\!Projects\!android\4pda\plus\4pdaClient\src\org\softeg\slartus\forpdaplus\video\api\YouTubeFMTQuality.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\Projects\Dropbox\!Projects\!android\4pda\plus\4pdaClient\src\org\softeg\slartus\forpdaplus\video\api\YouTubeInfo.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\Projects\Dropbox\!Projects\!android\4pda\plus\4pdaClient\src\org\softeg\slartus\forpdaplus\video\api\exceptions\ApiDetectException.java" afterPath="" />
-      <change type="DELETED" beforePath="D:\Projects\Dropbox\!Projects\!android\4pda\plus\4pdaClient\src\org\softeg\slartus\forpdaplus\video\api\exceptions\RequestUrlException.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/4pda.iml" afterPath="$PROJECT_DIR$/4pda.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/video/PlayerActivity.java" afterPath="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/video/PlayerActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/video/api/YouTubeAPI.java" afterPath="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/video/api/YouTubeAPI.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/history.txt" afterPath="$PROJECT_DIR$/assets/history.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -264,11 +251,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="history.txt" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="history.txt" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/assets/history.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.24285714" vertical-offset="0" max-vertical-offset="2822">
-              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2771">
+              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ForPdaVersionNotifier.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/mainnotifiers/ForPdaVersionNotifier.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.21071428" vertical-offset="749" max-vertical-offset="2057">
+              <caret line="71" column="45" selection-start-line="71" selection-start-column="45" selection-end-line="71" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -346,7 +343,7 @@
       <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="5899">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5899">
               <caret line="3" column="28" selection-start-line="3" selection-start-column="28" selection-end-line="3" selection-end-column="28" />
               <folding />
             </state>
@@ -421,11 +418,11 @@
         <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/topicview/QuoteEditorDialogFragment.java" />
         <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/post/EditPostActivity.java" />
         <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/video/api/YouTubeAPI.java" />
-        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/video/api/Quality.java" />
         <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/video/api/VideoItem.java" />
         <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/video/api/VideoListItem.java" />
         <option value="$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/video/PlayerActivity.java" />
+        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/assets/history.txt" />
       </list>
     </option>
@@ -596,6 +593,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="exceptions" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pda" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="4pdaClient" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="forpdaplus" />
+              <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mainnotifiers" />
               <option name="myItemType" value="com.android.tools.idea.gradle.projectView.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1160,13 +1179,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Externals/chrisbanes-Android-PullToRefresh/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="680">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Externals/chrisbanes-Android-PullToRefresh/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="590">
@@ -1433,6 +1445,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="3446" max-vertical-offset="6545">
           <caret line="213" column="28" selection-start-line="213" selection-start-column="28" selection-end-line="213" selection-end-column="28" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1485,14 +1498,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="197" max-vertical-offset="1071">
           <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5899">
-          <caret line="3" column="28" selection-start-line="3" selection-start-column="28" selection-end-line="3" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1553,10 +1558,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5899">
+          <caret line="3" column="28" selection-start-line="3" selection-start-column="28" selection-end-line="3" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/assets/history.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.24285714" vertical-offset="0" max-vertical-offset="2822">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2771">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/softeg/slartus/forpdaplus/mainnotifiers/ForPdaVersionNotifier.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21071428" vertical-offset="749" max-vertical-offset="2057">
+          <caret line="71" column="45" selection-start-line="71" selection-start-column="45" selection-end-line="71" selection-end-column="45" />
           <folding />
         </state>
       </provider>
