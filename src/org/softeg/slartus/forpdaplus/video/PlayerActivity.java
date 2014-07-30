@@ -17,7 +17,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,10 +25,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 import android.widget.VideoView;
-
-import com.google.android.youtube.player.YouTubeIntents;
 
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
@@ -40,8 +36,8 @@ import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
 import org.softeg.slartus.forpdaplus.common.Log;
-import org.softeg.slartus.forpdaplus.video.api.ParseResult;
-import org.softeg.slartus.forpdaplus.video.api.VideoFormat;
+import org.softeg.slartus.forpdaplus.video.api.Quality;
+import org.softeg.slartus.forpdaplus.video.api.VideoItem;
 import org.softeg.slartus.forpdaplus.video.api.YouTubeAPI;
 import org.softeg.slartus.forpdaplus.video.api.exceptions.ApiException;
 import org.softeg.slartus.forpdaplus.video.api.exceptions.IdException;
@@ -50,7 +46,7 @@ import org.softeg.slartus.forpdaplus.video.api.exceptions.ListIdException;
 public class PlayerActivity extends BaseFragmentActivity {
 
     VideoView mVideoView;
-    String mVideoId;
+    String mVideoUrl;
     ProgressBar pb;
     int quality_ = 1;
     int qualiti_connect;
@@ -68,8 +64,8 @@ public class PlayerActivity extends BaseFragmentActivity {
 
         initView();
         ScreenOrientation();
-        mVideoId = getIntent().getStringExtra("_videoUrl");
-        getSupportActionBar().setTitle(mVideoId);
+        mVideoUrl = getIntent().getStringExtra("_videoUrl");
+        getSupportActionBar().setTitle(mVideoUrl);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // set the flag to keep the screen ON so that the video can play without the screen being turned off
@@ -107,12 +103,12 @@ public class PlayerActivity extends BaseFragmentActivity {
         getVideoFormats();
     }
 
-    protected void createActionMenu(ParseResult parseResult) {
+    protected void createActionMenu(VideoItem parseResult) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         mFragment1 = (MenuFragment) fm.findFragmentByTag(MenuFragment.ID);
         if (mFragment1 == null) {
-            mFragment1 = new MenuFragment(parseResult);
+            mFragment1 = MenuFragment.getInstance(parseResult);
             ft.add(mFragment1, MenuFragment.ID);
         }
         ft.commit();
@@ -266,10 +262,10 @@ public class PlayerActivity extends BaseFragmentActivity {
         return false;
     }
 
-    public void showFormatsDialog(final ParseResult parseResult) {
-        CharSequence[] titles = new CharSequence[parseResult.getFormats().size()];
+    public void showFormatsDialog(final VideoItem videoItem) {
+        CharSequence[] titles = new CharSequence[videoItem.getQualities().size()];
         int i = 0;
-        for (VideoFormat format : parseResult.getFormats()) {
+        for (Quality format : videoItem.getQualities()) {
             titles[i++] = format.getTitle();
         }
         new AlertDialogBuilder(getContext())
@@ -278,9 +274,9 @@ public class PlayerActivity extends BaseFragmentActivity {
                     @Override
                     public void onClick(android.content.DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
-
+                        String path = videoItem.getFilePath(videoItem.getQualities().get(i).getFileName());
                         //createActionMenu(apiId, parseResult);
-                        playVideo(parseResult, parseResult.getFormats().get(i).getUrl());
+                        playVideo(videoItem, path);
                     }
                 })
                 .setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -295,22 +291,22 @@ public class PlayerActivity extends BaseFragmentActivity {
     }
 
     private boolean tryPlayInYoutubePlayer() {
-        String version = YouTubeIntents.getInstalledYouTubeVersionName(this);
-        if (version != null) {
-            Toast.makeText(getContext(), "Проигрывание плеером youtube", Toast.LENGTH_SHORT).show();
-            Intent intent = YouTubeIntents.createPlayVideoIntentWithOptions(this, YouTubeAPI.getYoutubeId(mVideoId).toString(), true, false);
-            startActivity(intent);
-            finish();
-            return true;
-        }
+//        String version = YouTubeIntents.getInstalledYouTubeVersionName(this);
+//        if (version != null) {
+//            Toast.makeText(getContext(), "Проигрывание плеером youtube", Toast.LENGTH_SHORT).show();
+//            Intent intent = YouTubeIntents.createPlayVideoIntentWithOptions(this, YouTubeAPI.getYoutubeId(mVideoId).toString(), true, false);
+//            startActivity(intent);
+//            finish();
+//            return true;
+//        }
         return false;
     }
 
-    private void playVideo(ParseResult parseResult, CharSequence url) {
+    private void playVideo(VideoItem parseResult, CharSequence url) {
         playVideo(parseResult, Uri.parse(url.toString()));
     }
 
-    private void playVideo(ParseResult parseResult, Uri pResult) {
+    private void playVideo(VideoItem parseResult, Uri pResult) {
         try {
             createActionMenu(parseResult);
             mSeekTo = mVideoView.getCurrentPosition();
@@ -335,7 +331,7 @@ public class PlayerActivity extends BaseFragmentActivity {
     /**
      * Task to figure out details by calling out to YouTube GData API.
      */
-    private class QueryFormatsYouTubeTask extends AsyncTask<Void, Void, ParseResult> {
+    private class QueryFormatsYouTubeTask extends AsyncTask<Void, Void, VideoItem> {
 
         public QueryFormatsYouTubeTask() {
 
@@ -344,20 +340,24 @@ public class PlayerActivity extends BaseFragmentActivity {
         private Throwable mEx;
 
         @Override
-        protected ParseResult doInBackground(Void... pParams) {
+        protected VideoItem doInBackground(Void... pParams) {
 
 
             if (isCancelled())
                 return null;
 
             try {
-                playedRequestUrl = mVideoId;
-                ParseResult info = YouTubeAPI.getInfo(mVideoId,
-                        !TextUtils.isEmpty(YouTubeIntents.getInstalledYouTubeVersionName(getContext())));
+                playedRequestUrl = mVideoUrl;
+
+                VideoItem videoItem = new VideoItem();
+                videoItem.setTitle(mVideoUrl);
+                videoItem.setUrl(mVideoUrl);
+
+                YouTubeAPI.parse(videoItem, YouTubeAPI.getYoutubeId(playedRequestUrl).toString());
 
                 if (isCancelled())
                     return null;
-                return info;
+                return videoItem;
             } catch (Throwable e) {
                 mEx = e;
                 return null;
@@ -365,7 +365,7 @@ public class PlayerActivity extends BaseFragmentActivity {
         }
 
         @Override
-        protected void onPostExecute(ParseResult pResult) {
+        protected void onPostExecute(VideoItem pResult) {
             super.onPostExecute(pResult);
 
             if (isCancelled())
@@ -391,19 +391,20 @@ public class PlayerActivity extends BaseFragmentActivity {
 
                 getSupportActionBar().setTitle(pResult.getTitle());
 
-                if (pResult.getFormats().size() > 1) {
+                if (pResult.getQualities().size() > 1) {
                     showFormatsDialog(pResult);
                     return;
                 }
-                if (pResult.getFormats().size() == 1) {
-                    playVideo(pResult, pResult.getFormats().get(0).getUrl());
+                if (pResult.getQualities().size() == 1) {
+                    String path = pResult.getDefaultVideoUrl().toString();
+                    playVideo(pResult, path);
                     return;
                 }
-                playVideo(pResult, pResult.getVideoUrl());
+                playVideo(pResult, pResult.getUrl());
 
 
             } catch (Throwable ex) {
-                Log.e(getContext(), String.format("Ошибка воспроизведения видео(%s)!", mVideoId), ex);
+                Log.e(getContext(), String.format("Ошибка воспроизведения видео(%s)!", mVideoUrl), ex);
             }
         }
     }
@@ -412,12 +413,19 @@ public class PlayerActivity extends BaseFragmentActivity {
     public static final class MenuFragment extends Fragment {
         public static final String ID = "VideoViewPlayerFragment.MenuFragment";
 
-        private ParseResult parseResult;
+        private VideoItem parseResult;
 
-        public MenuFragment(ParseResult parseResult) {
+        public static MenuFragment getInstance(VideoItem videoItem) {
+            MenuFragment menuFragment = new MenuFragment();
+            Bundle args = new Bundle();
+            args.putParcelable("VideoItem", videoItem);
+            menuFragment.setArguments(args);
+            return menuFragment;
+        }
+
+        public MenuFragment() {
             super();
 
-            this.parseResult = parseResult;
         }
 
         public PlayerActivity getMainActivity() {
@@ -429,13 +437,19 @@ public class PlayerActivity extends BaseFragmentActivity {
             super.onCreate(savedInstanceState);
 
             setHasOptionsMenu(true);
+            Bundle args = getArguments();
+            if (args != null && args.containsKey("VideoItem"))
+                parseResult = args.getParcelable("VideoItem");
+            args = savedInstanceState;
+            if (args != null && args.containsKey("VideoItem"))
+                parseResult = args.getParcelable("VideoItem");
         }
 
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             super.onCreateOptionsMenu(menu, inflater);
             SubMenu subMenu;
-            if (parseResult.getFormats().size() > 1) {
+            if (parseResult.getQualities().size() > 1) {
 
                 subMenu = menu.addSubMenu("Качество");
 
@@ -443,11 +457,13 @@ public class PlayerActivity extends BaseFragmentActivity {
                 subMenu.getItem().setTitle("Качество");
 
 
-                for (final VideoFormat format : parseResult.getFormats()) {
+                for (final Quality format : parseResult.getQualities()) {
                     subMenu.add(format.getTitle()).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
-                            getMainActivity().playVideo(parseResult, format.getUrl());
+                            String path = parseResult.getFilePath(format.getFileName());
+
+                            getMainActivity().playVideo(parseResult, path);
                             return true;
                         }
                     });

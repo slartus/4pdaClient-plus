@@ -5,20 +5,14 @@ import android.text.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
-import org.softeg.slartus.forpdaplus.video.api.exceptions.ApiException;
-import org.softeg.slartus.forpdaplus.video.api.exceptions.IdException;
 import org.softeg.slartus.forpdacommon.Http;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class YouTubeAPI {
-    public static final CharSequence ID = "youtube.com";
     public static final String URL_GET_VIDEO_INFO = "http://www.youtube.com/get_video_info?&video_id=";
 
     public static CharSequence getYoutubeId(CharSequence youtubeUrl) {
@@ -37,13 +31,70 @@ public class YouTubeAPI {
         return null;
     }
 
-    public static boolean isListUrl(CharSequence url) {
-        return Pattern.compile("youtube.com/channel/", Pattern.CASE_INSENSITIVE).matcher(url).find();
+    public static void parse(VideoItem videoItem, String id) throws Exception {
+        String url = URL_GET_VIDEO_INFO + id;
+
+
+        String infoStr = Http.getPage(url, "UTF-8");
+        Matcher m = Pattern.compile("([^&=]*)=([^$&]*)", Pattern.CASE_INSENSITIVE).matcher(infoStr);
+
+        String fmtList = null;
+        String url_encoded_fmt_stream_map = null;
+
+        CharSequence title = videoItem.getTitle();
+
+        String error = null;
+        while (m.find()) {
+            String name = m.group(1);
+
+            if (fmtList == null && "fmt_list".equalsIgnoreCase(name))
+                fmtList = URLDecoder.decode(m.group(2), "UTF-8");
+            else if (url_encoded_fmt_stream_map == null && "url_encoded_fmt_stream_map".equalsIgnoreCase(name))
+                url_encoded_fmt_stream_map = URLDecoder.decode(m.group(2), "UTF-8");
+            else if (title == null && "title".equalsIgnoreCase(name))
+                title = URLDecoder.decode(m.group(2), "UTF-8");
+            else if (error == null && "reason".equalsIgnoreCase(name))
+                error = Html.fromHtml(URLDecoder.decode(m.group(2), "UTF-8")).toString();
+
+            if (fmtList != null && url_encoded_fmt_stream_map != null
+                    && title != null && error != null)
+                break;
+        }
+        if (!TextUtils.isEmpty(error)) {
+            videoItem.setDefaultBitrate("http://www.youtube.com/watch?v=" + id);
+            return;
+        }
+        videoItem.setTitle(title);
+
+        if (fmtList != null && url_encoded_fmt_stream_map != null) {
+            Matcher fmtMatcher = Pattern.compile("(\\d+)/(\\d+x\\d+)/\\d+/\\d+/\\d+").matcher(fmtList);
+            String streamStrs[] = url_encoded_fmt_stream_map.split(",");
+            int fmtInd = 0;
+            while (fmtMatcher.find()) {
+                fmtInd++;
+                int ind = indexOf(Integer.parseInt(fmtMatcher.group(1)), YouTubeFMTQuality.supported);
+                if (ind == -1) continue;
+                Quality videoFormat = new Quality();
+                videoFormat.setHeight(YouTubeFMTQuality.supported_titles[ind]);
+                videoFormat.setFileName(URLDecoder.decode(getUrlFromParams(streamStrs[fmtInd - 1]), "UTF-8"));
+
+                videoItem.getQualities().add(videoFormat);
+            }
+        }
+
     }
 
-    private static boolean parse2(ParseResult info) throws Exception {
+    public static int indexOf(int needle, int[] haystack) {
+        for (int i = 0; i < haystack.length; i++) {
+            if (haystack[i] == needle) return i;
+        }
 
-        String page = Http.getPage(String.format("https://gdata.youtube.com/feeds/api/videos/%s?v=2&alt=json", info.getId()), "UTF-8");
+        return -1;
+    }
+
+    private static boolean parse2(VideoItem info) throws Exception {
+
+        String page = Http.getPage(String.format("https://gdata.youtube.com/feeds/api/videos/%s?v=2&alt=json", info.getvId()), "UTF-8");
 
         try {
             JSONObject jsonObject = new JSONObject(page);
@@ -65,7 +116,6 @@ public class YouTubeAPI {
             }
             if (url == null)
                 return false;
-            info.setVideoUrl(url);
 
 
             return true;
@@ -75,101 +125,8 @@ public class YouTubeAPI {
 
     }
 
-    public static ParseResult getInfo(String url, Boolean youtubeInstalled) throws Exception {
-        url = URLDecoder.decode(url.toString(), "UTF-8");
 
-        ParseResult info = new ParseResult();
-        info.setId(url);
-        info.setTitle(url);
-        info.setRequestUrl(url);
-
-        if (isListUrl(url)) {
-            new ApiException(ID, "Не умею открывать ссылки на канал");
-            return info;
-        }
-
-        CharSequence id = getYoutubeId(url);
-        if (TextUtils.isEmpty(id))
-            throw new IdException("youtube");
-        info.setId(id);
-        info.setTitle(id);
-
-        url = URL_GET_VIDEO_INFO + id;
-        info.setVideoUrl(url);
-
-        String infoStr = Http.getPage(url.toString(), "UTF-8");
-
-
-        Matcher m = Pattern.compile("([^&=]*)=([^$&]*)", Pattern.CASE_INSENSITIVE).matcher(infoStr);
-
-        String fmtList = null;
-        String url_encoded_fmt_stream_map = null;
-        String title = null;
-        String error = null;
-        while (m.find()) {
-            String name = m.group(1);
-
-            if (fmtList == null && "fmt_list".equalsIgnoreCase(name))
-                fmtList = URLDecoder.decode(m.group(2), "UTF-8");
-            else if (url_encoded_fmt_stream_map == null && "url_encoded_fmt_stream_map".equalsIgnoreCase(name))
-                url_encoded_fmt_stream_map = URLDecoder.decode(m.group(2), "UTF-8");
-            else if (title == null && "title".equalsIgnoreCase(name))
-                title = URLDecoder.decode(m.group(2), "UTF-8");
-            else if (error == null && "reason".equalsIgnoreCase(name))
-                error = Html.fromHtml(URLDecoder.decode(m.group(2), "UTF-8")).toString();
-
-            if (fmtList != null && url_encoded_fmt_stream_map != null
-                    && title != null && error != null)
-                break;
-        }
-        if (!TextUtils.isEmpty(error)) {
-            if (!youtubeInstalled && parse2(info))
-                return info;
-            throw new ApiException(ID, error);
-        }
-        info.setTitle(title);
-
-        if (fmtList != null && url_encoded_fmt_stream_map != null) {
-            Matcher fmtMatcher = Pattern.compile("(\\d+)/(\\d+x\\d+)/\\d+/\\d+/\\d+").matcher(fmtList);
-            String streamStrs[] = url_encoded_fmt_stream_map.split(",");
-            int fmtInd = 0;
-            while (fmtMatcher.find()) {
-                fmtInd++;
-                int ind = ArrayUtils.indexOf(Integer.parseInt(fmtMatcher.group(1)), YouTubeFMTQuality.supported);
-                if (ind == -1) continue;
-                VideoFormat videoFormat = new VideoFormat();
-                videoFormat.setTitle(YouTubeFMTQuality.supported_titles[ind]);
-                videoFormat.setUrl(getUrlFromParams(info.getId(), streamStrs[fmtInd - 1]));
-
-                info.getFormats().add(videoFormat);
-            }
-        }
-
-        return info;
-
-    }
-
-
-    public static String getYouTubeUrl(int youTubeFmt, boolean fallback, ArrayList<VideoFormat> formats)
-            throws IOException {
-//        VideoFormat searchFormat = new VideoFormat(youTubeFmt);
-//
-//        while (!formats.contains(searchFormat) && fallback) {
-//            int oldId = searchFormat.getId();
-//            Log.e("format", "format: " + oldId);
-//            int newId = YouTubeFMTQuality.getPreviousSupportedFormat(oldId);
-//
-//            if (oldId == newId)
-//                break;
-//
-//            searchFormat = new VideoFormat(newId);
-//        }
-//        if (formats.contains(searchFormat))
-//            return formats.get(formats.indexOf(searchFormat)).getUrl();
-        return null;
-    }
-
-    private static CharSequence getUrlFromParams(CharSequence id, CharSequence params) throws UnsupportedEncodingException {
+    private static String getUrlFromParams(CharSequence params) throws UnsupportedEncodingException {
 
         Matcher m = Pattern.compile("(\\w+)=([^&]*)").matcher(params);
         String sig = null;
@@ -188,6 +145,38 @@ public class YouTubeAPI {
         }
 
         return url + "&signature=" + sig;
+
+    }
+
+    public static class YouTubeFMTQuality {
+
+        public static final int GPP3_LOW = 13;        //3GPP (MPEG-4 encoded) Low quality
+        public static final int GPP3_MEDIUM = 17;        //3GPP (MPEG-4 encoded) Medium quality
+        public static final int MP4_NORMAL = 18;        //MP4  (H.264 encoded) Normal quality
+        public static final int MP4_HIGH = 22;        //MP4  (H.264 encoded) High quality
+        public static final int MP4_HIGH1 = 37;        //MP4  (H.264 encoded) High quality
+
+        public static final CharSequence GPP3_LOW_TITLE = "240p";        //3GPP (MPEG-4 encoded) Low quality
+        public static final CharSequence GPP3_MEDIUM_TITLE = "360p";        //3GPP (MPEG-4 encoded) Medium quality
+        public static final CharSequence MP4_NORMAL_TITLE = "480p";        //MP4  (H.264 encoded) Normal quality
+        public static final CharSequence MP4_HIGH_TITLE = "720p HD";        //MP4  (H.264 encoded) High quality
+        public static final CharSequence MP4_HIGH1_TITLE = "1080p HD";        //MP4  (H.264 encoded) High quality
+
+        public static final int[] supported = {
+                GPP3_LOW,
+                GPP3_MEDIUM,
+                MP4_NORMAL,
+                MP4_HIGH,
+                MP4_HIGH1
+        };
+
+        public static final CharSequence[] supported_titles = {
+                GPP3_LOW_TITLE,
+                GPP3_MEDIUM_TITLE,
+                MP4_NORMAL_TITLE,
+                MP4_HIGH_TITLE,
+                MP4_HIGH1_TITLE
+        };
 
     }
 }
