@@ -3,8 +3,10 @@ package org.softeg.slartus.forpdaplus.search.ui;/*
  */
 
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
@@ -16,20 +18,30 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
+import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
+import org.softeg.slartus.forpdaplus.MyApp;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.search.ISearchResultView;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 
 public class SearchActivity extends BaseFragmentActivity
         implements SearchSettingsDialogFragment.ISearchDialogListener {
     private static final String SEARCH_SETTINGS_KEY = "SEARCH_SETTINGS_KEY";
+
+    @Override
+    protected boolean isTransluent() {
+        return true;
+    }
 
     public static void startForumSearch(Context context, SearchSettings searchSettings) {
         Intent settingsActivity = new Intent(
@@ -44,14 +56,43 @@ public class SearchActivity extends BaseFragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_fragment_activity);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         createMenu();
         doSearch();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+
+        return true;
+    }
+
+    private boolean m_ExitWarned;
+
+    @Override
+    public void onBackPressed() {
+        if (!m_ExitWarned) {
+            Toast.makeText(getApplicationContext(), "Нажмите кнопку НАЗАД снова, чтобы закрыть", Toast.LENGTH_SHORT).show();
+            m_ExitWarned = true;
+        } else {
+            finish();
+        }
     }
 
     private void doSearch() {
         try {
             SearchSettings searchSettings = args.getParcelable(SEARCH_SETTINGS_KEY);
             assert searchSettings != null;
+
+
+            getActionBar().setSubtitle(searchSettings.getQuery());
 
 
             Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container);

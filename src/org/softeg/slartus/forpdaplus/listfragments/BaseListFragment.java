@@ -58,6 +58,10 @@ super();
         }
     }
 
+    protected View getListViewHeader(){
+        return null;
+    }
+
     private ListView mListView;
     private TextView mEmptyTextView;
 
@@ -70,6 +74,9 @@ super();
         assert v != null;
         mListView = (ListView) v.findViewById(android.R.id.list);
         mListView.setOnItemClickListener(this);
+        View header=getListViewHeader();
+        if(header!=null)
+            mListView.addHeaderView(header);
         mEmptyTextView = (TextView) v.findViewById(android.R.id.empty);
         mListView.setEmptyView(mEmptyTextView);
         return v;
@@ -202,10 +209,6 @@ super();
 
     public BaseAdapter getAdapter() {
         return mAdapter;
-    }
-
-    public ListViewLoadMoreFooter getListViewLoadMoreFooter() {
-        return mListViewLoadMoreFooter;
     }
 
     protected BaseAdapter createAdapter() {

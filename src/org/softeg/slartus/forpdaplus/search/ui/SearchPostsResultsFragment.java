@@ -40,7 +40,9 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MyApp;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
+import org.softeg.slartus.forpdaplus.classes.BrowserViewsFragmentActivity;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
@@ -66,7 +68,7 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public class SearchPostsResultsFragment extends BaseFragment implements IWebViewContainer, ISearchResultView {
     private Handler mHandler = new Handler();
-    private WebView mWvBody;
+    private AdvWebView mWvBody;
     private static final String SEARCH_URL_KEY = "SEARCH_URL_KEY";
     private WebViewExternals m_WebViewExternals;
     protected uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout mPullToRefreshLayout;
@@ -76,6 +78,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
+
     public static Fragment newFragment(String searchUrl) {
         SearchPostsResultsFragment fragment = new SearchPostsResultsFragment();
         Bundle args = new Bundle();
@@ -111,7 +114,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
     @Override
     public void onActivityResult(int requestCode, int resultCode,
                                  Intent data) {
-        if (resultCode == Activity.RESULT_OK &&requestCode == FILECHOOSER_RESULTCODE) {
+        if (resultCode == Activity.RESULT_OK && requestCode == FILECHOOSER_RESULTCODE) {
             String attachFilePath = FileUtils.getRealPathFromURI(getActivity(), data.getData());
             String cssData = FileUtils.readFileText(attachFilePath)
                     .replace("\\", "\\\\")
@@ -130,10 +133,18 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
         }
     }
 
+    public void setHideActionBar() {
+        if (getWebView() == null || !(getWebView() instanceof AdvWebView))
+            return;
+        ActionBar actionBar = getActivity().getActionBar();
+        if (actionBar == null) return;
+        BrowserViewsFragmentActivity.setHideActionBar(mWvBody, actionBar);
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        setHideActionBar();
 
         search(0);
 
@@ -153,10 +164,21 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
     }
 
     public android.view.View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.search_posts_result, container, false);
+        final View v = inflater.inflate(R.layout.search_posts_result, container, false);
         assert v != null;
-        mWvBody = (WebView) v.findViewById(R.id.body_webview);
-
+        mWvBody = (AdvWebView) v.findViewById(R.id.body_webview);
+        v.findViewById(R.id.btnUp).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBtnUpClick(view);
+            }
+        });
+        v.findViewById(R.id.btnDown).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBtnDownClick(view);
+            }
+        });
         m_WebViewExternals = new WebViewExternals(this);
         m_WebViewExternals.loadPreferences(PreferenceManager.getDefaultSharedPreferences(MyApp.getContext()));
         configWebView();
@@ -383,10 +405,6 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
         return mWvBody;
     }
 
-    public ImageButton getFullScreenButton() {
-        return null;
-    }
-
     public Window getWindow() {
         assert getContext() != null;
         return ((Activity) getContext()).getWindow();
@@ -419,6 +437,13 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
         }
     }
 
+    public void onBtnUpClick(View view) {
+        mWvBody.pageUp(true);
+    }
+
+    public void onBtnDownClick(View view) {
+        mWvBody.pageDown(true);
+    }
 
     private class MyWebViewClient extends WebViewClient {
 

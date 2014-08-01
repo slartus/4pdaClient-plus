@@ -393,6 +393,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         //Toast.makeText(this,Integer.toString(item.getItemId()),Toast.LENGTH_LONG).show();
         if (item.getItemId() == android.R.id.home) {
+
 //            if (getIntent().getData() == null)
 //                onBackPressed();
 //            else

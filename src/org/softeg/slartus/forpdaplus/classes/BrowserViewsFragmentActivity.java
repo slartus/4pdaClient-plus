@@ -43,14 +43,17 @@ public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity 
 
     }
 
-
     public void setHideActionBar() {
         if (getWebView() == null || !(getWebView() instanceof AdvWebView))
             return;
-        final ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getActionBar();
         if (actionBar == null) return;
+        setHideActionBar((AdvWebView)getWebView(),actionBar);
+    }
+
+    public static void setHideActionBar(AdvWebView advWebView, final ActionBar actionBar) {
         Boolean hide = Preferences.isHideActionBar();
-        AdvWebView advWebView = (AdvWebView) getWebView();
+
         if (hide) {
 
             advWebView.setOnScrollChangedCallback(new AdvWebView.OnScrollChangedCallback() {
@@ -59,7 +62,7 @@ public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity 
                     if (!inTouch)
                         return;
                     if (actionBar.isShowing()) {
-                        mHideHandler.removeCallbacks(mHideRunnable);
+
                         actionBar.hide();
                     }
                 }
@@ -69,7 +72,7 @@ public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity 
                     if (!inTouch)
                         return;
                     if (!actionBar.isShowing()) {
-                        mHideHandler.removeCallbacks(mHideRunnable);
+
                         actionBar.show();
                     }
                 }
@@ -85,13 +88,6 @@ public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity 
         }
     }
 
-    Handler mHideHandler = new Handler();
-    Runnable mHideRunnable = new Runnable() {
-        @Override
-        public void run() {
-            getActionBar().hide();
-        }
-    };
 
     protected void setWebViewSettings(Boolean loadImagesAutomaticallyAlways) {
         getWebViewExternals().setWebViewSettings(loadImagesAutomaticallyAlways);

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.softeg.slartus.forpdaplus"
     android:versionCode="456"
-    android:versionName="2.2"
+    android:versionName="2.3beta1"
     android:installLocation="auto">
 
     <uses-sdk
@@ -187,8 +187,7 @@
         <activity
             android:name="org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity"
             android:label="Профиль"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop"/>
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity
             android:name="org.softeg.slartus.forpdaplus.prefs.DonateActivity"
             android:label="Помощь проекту"

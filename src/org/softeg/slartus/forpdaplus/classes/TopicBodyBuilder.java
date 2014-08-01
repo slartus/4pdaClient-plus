@@ -51,7 +51,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         String desc = TextUtils.isEmpty(m_Topic.getDescription()) ? "" : (", " + m_Topic.getDescription());
         super.beginHtml(m_Topic.getTitle() + desc);
         super.beginBody();
-        m_Body.append("<div style=\"margin-top:54pt\"/>\n");
+        m_Body.append("<div style=\"margin-top:").append(ACTIONBAR_TOP_MARGIN).append("\"/>\n");
         if (m_Topic.getPagesCount() > 1) {
             addButtons(m_Body, m_Topic.getCurrentPage(), m_Topic.getPagesCount(),
                     m_IsWebviewAllowJavascriptInterface, false, true);

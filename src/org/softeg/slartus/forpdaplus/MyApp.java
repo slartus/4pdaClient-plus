@@ -76,6 +76,14 @@ public class MyApp extends android.app.Application {
     }
 
     public static void showMainActivityWithoutBack(Activity activity) {
+//        if(activity.getIntent()!=null
+//                &&activity.getIntent().getExtras()!=null
+//                &&activity.getIntent().getExtras().containsKey(BaseFragmentActivity.SENDER_ACTIVITY)){
+//            if(MainActivity.class.toString().equals(activity.getIntent().getExtras().getString(BaseFragmentActivity.SENDER_ACTIVITY))){
+//                activity.onBackPressed();
+//                return;
+//            }
+//        }
         Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

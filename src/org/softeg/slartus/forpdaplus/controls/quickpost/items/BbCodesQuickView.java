@@ -432,7 +432,7 @@ public class BbCodesQuickView extends BaseQuickView {
                     .substring(selectionStart, selectionEnd);
         }
 
-        createUrlDialog(null, urlText, "Пожалуйста, введите полный URL адрес", "http://");
+        createUrlDialog(null, urlText, "Пожалуйста, введите полный URL адрес", "");
 
     }
 

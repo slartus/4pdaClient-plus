@@ -87,7 +87,7 @@ public class SearchPostsParser extends HtmlBuilder  {
 
     public void beginTopic(SearchResult searchResult) {
         beginBody();
-
+        m_Body.append("<div style=\"margin-top:").append(ACTIONBAR_TOP_MARGIN).append("\"/>\n");
         if (searchResult.getPagesCount() > 1) {
             TopicBodyBuilder.addButtons(m_Body, searchResult.getCurrentPage(), searchResult.getPagesCount(),
                     Functions.isWebviewAllowJavascriptInterface(MyApp.getInstance()), true, true);

@@ -5,8 +5,10 @@ package org.softeg.slartus.forpdaplus.mainnotifiers;/*
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
 
@@ -39,12 +41,9 @@ public class ForPdaVersionNotifier extends MainNotifier {
         final Handler handler = new Handler();
         new Thread(new Runnable() {
             public void run() {
-
                 try {
-
                     String currentVersion = getAppVersion(MyApp.getContext());
-                    currentVersion = currentVersion.replace("beta", ".").trim();
-
+                    currentVersion = currentVersion.trim();
 
                     String url = "http://4pda.ru/forum/index.php?showtopic=271502";
                     String page = Http.getPage(url, "windows-1251");
@@ -61,12 +60,13 @@ public class ForPdaVersionNotifier extends MainNotifier {
                     if (Preferences.notifyBetaVersions() && jsonObject.has("beta")) {
                         JSONObject betaObject = jsonObject.getJSONObject("beta");
                         if (betaObject != null) {
-                            String releaseVersion = versionObject.getString("ver").trim().replace("beta", ".").trim();
-                            String betaVersion = betaObject.getString("ver").trim().replace("beta", ".").trim();
+                            String releaseVersion = versionObject.getString("ver").trim();
+                            String betaVersion = betaObject.getString("ver").trim();
                             if (isFirstArgVersionsNewer(betaVersion, releaseVersion))
                                 versionObject = betaObject;
                         }
                     }
+
 
                     checkVersion(currentVersion, versionObject, handler, context);
                 } catch (Throwable ignored) {
@@ -77,16 +77,21 @@ public class ForPdaVersionNotifier extends MainNotifier {
 
     }
 
-    private boolean checkVersion(String currentVersion, JSONObject versionObject, Handler handler,
-                                 final Context context) throws JSONException {
+    private void checkVersion(String currentVersion, JSONObject versionObject, Handler handler,
+                              final Context context) throws JSONException {
         String releaseVer;
         Boolean siteVersionsNewer;
 
-        final String version = versionObject.getString("ver").trim().replace("beta", ".").trim();
+        final String version = versionObject.getString("ver").trim();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        if (version.equals(prefs.getString("client.version.4pda", "")))
+            return;
+        prefs.edit().putString("client.version.4pda", version).apply();
+
         final String apk = versionObject.getString("apk");
         final String info = versionObject.getString("info");
 
-        releaseVer = version.replace("beta", ".").trim();
+        releaseVer = version.trim();
         siteVersionsNewer = isFirstArgVersionsNewer(releaseVer, currentVersion);
         if (siteVersionsNewer) {
 
@@ -116,12 +121,18 @@ public class ForPdaVersionNotifier extends MainNotifier {
 
                 }
             });
-            return true;
+
         }
-        return false;
     }
 
     private static boolean isFirstArgVersionsNewer(String siteVersion, String programVersion) {
+        if (siteVersion.contains("beta") && programVersion.contains("beta")) {
+            siteVersion = siteVersion.replace("beta", ".");
+            programVersion = programVersion.replace("beta", ".");
+        } else {
+            siteVersion = siteVersion.replaceAll("beta.*", "");
+            programVersion = programVersion.replaceAll("beta.*", "");
+        }
         String[] siteVersionVals = TextUtils.split(siteVersion, "\\.");
         String[] programVersionVals = TextUtils.split(programVersion, "\\.");
 
