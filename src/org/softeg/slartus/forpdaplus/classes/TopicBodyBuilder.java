@@ -81,6 +81,19 @@ public class TopicBodyBuilder extends HtmlBuilder {
         super.endHtml();
     }
 
+    private String getSpoiler(String title, String body, Boolean opened) {
+        return
+                (
+                        m_HtmlPreferences.isSpoilerByButton() ?
+                                "<div class='hidetop' style='cursor:pointer;' >".concat(title).concat("</div>" +
+                                        "<input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility(this)\"/>")
+                                :
+                                "<div class='hidetop' style='cursor:pointer;' onclick=\"var _n=this.parentNode.getElementsByTagName('div')[1];" +
+                                        "if(_n.style.display=='none'){_n.style.display='';}else{_n.style.display='none';}\">"
+                                                .concat(title)
+                ).concat("</div><div class='hidemain'").concat(opened?" ":" style=\"display:none\"").concat(">").concat(body).concat("</div>");
+    }
+
     public void addPost(Post post, Boolean spoil) {
 
         m_Body.append("<div name=\"entry").append(post.getId()).append("\" id=\"entry").append(post.getId()).append("\"></div>\n");
@@ -89,26 +102,14 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
         m_Body.append("<div id=\"msg").append(post.getId()).append("\" name=\"msg").append(post.getId()).append("\">");
 
-        if (spoil) {
-            if (m_HtmlPreferences.isSpoilerByButton())
-                m_Body.append("<div class='hidetop' style='cursor:pointer;' ><b>(&gt;&gt;&gt;ШАПКА ТЕМЫ&lt;&lt;&lt;)</b></div>" +
-                        "<input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility(this)\"/>" +
-                        "<div class='hidemain' style=\"display:none\">");
-            else
-                m_Body.append("<div class='hidetop' style='cursor:pointer;' " +
-                        "onclick=\"var _n=this.parentNode.getElementsByTagName('div')[1];" +
-                        "if(_n.style.display=='none'){_n.style.display='';}else{_n.style.display='none';}\">" +
-                        "<b>(&gt;&gt;&gt;ШАПКА ТЕМЫ&lt;&lt;&lt; )</b></div><div class='hidemain' style=\"display:none\">");
-        }
         String postBody = post.getBody().trim();
-        if (m_HtmlPreferences.isSpoilerByButton()) {
-
+        if (m_HtmlPreferences.isSpoilerByButton())
             postBody = HtmlPreferences.modifySpoiler(postBody);
-        }
-        //m_TopicAttaches.parseAttaches(post.getId(),post.getNumber(),postBody);
-        m_Body.append(postBody);
+
         if (spoil)
-            m_Body.append("</div>");
+            m_Body.append(getSpoiler("<b>(&gt;&gt;&gt;ШАПКА ТЕМЫ&lt;&lt;&lt;)</b>", postBody,false));
+        else
+            m_Body.append(postBody);
         m_Body.append("</div>\n\n");
         //m_Body.append("<div class=\"s_post_footer\"><table width=\"100%%\"><tr><td id=\""+post.getId()+"\"></td></tr></table></div>\n\n");
 
@@ -131,6 +132,10 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
     public void addBody(String value) {
         m_Body.append(value);
+    }
+
+    public void addPoll(String value, boolean openSpoil) {
+        m_Body.append("<div class=\"poll\">").append(getSpoiler("<b>Опрос</b>", value,openSpoil)).append("</div>");
     }
 
     public void clear() {
@@ -251,9 +256,9 @@ public class TopicBodyBuilder extends HtmlBuilder {
 //                                "" : TopicBodyBuilder.getHtmlout(m_IsWebviewAllowJavascriptInterface, "showImgPreview", new String[]{"аватар", avatar, avatar}))
 //                        .append(">аватар</a>");
 //            } else {
-                if (TextUtils.isEmpty(avatar))
-                    avatar = "file:///android_asset/profile/logo.png";
-                sb.append("<img src=\"").append(avatar).append("\" />");
+            if (TextUtils.isEmpty(avatar))
+                avatar = "file:///android_asset/profile/logo.png";
+            sb.append("<img src=\"").append(avatar).append("\" />");
             //}
             sb.append("</div></div>");
 

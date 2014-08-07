@@ -31,38 +31,6 @@ import java.util.regex.Pattern;
  * Created by slinkin on 20.02.14.
  */
 public class TopicsApi {
-    public static Topics getFavoritesThemes(IHttpClient httpClient,
-                                            OnProgressChangedListener progressChangedListener,
-                                            int start, Boolean needThemesCount) throws IOException {
-        String pageBody = httpClient.performGetWithCheckLogin("http://4pda.ru/forum/index.php?autocom=favtopics&st=" + start, progressChangedListener, progressChangedListener);
-        Topics themes = new Topics();
-
-        if (needThemesCount) {
-            Matcher m = PatternExtensions.compile("<a href=\"http://4pda.ru/forum/index.php\\?autocom=.*?st=(\\d+)\">&raquo;</a>").matcher(pageBody);
-            if (m.find()) {
-                themes.setThemesCountInt(Integer.parseInt(m.group(1)) + 1);
-            }
-        }
-
-        //Matcher rowMatcher = Pattern.compile("<!-- Begin Topic Entry \\d+ -->(.*?)<!-- End Topic Entry \\d+ -->").matcher(pageBody);
-        Matcher m = PatternExtensions.compile("<!-- Begin Topic Entry \\d+ -->([\\s\\S]*?)<a id=\"tid-link-\\d+\" href=\"http://4pda.ru/forum/index.php\\?showtopic=(\\d+)\" title=\"[^\"'<>]*\">([^<>]*)</a></span>[\\s\\S]*?id='tid-desc-\\d+'>([^<>]*)</span>[\\s\\S]*?<span class=\"lastaction\">([^<>]*)<br /><a href=\"http://4pda.ru/forum/index.php\\?showtopic=\\d+&amp;view=getlastpost\">Послед.:</a> <b><a href='http://4pda.ru/forum/index.php\\?showuser=\\d+'>([^<>]*)</a>")
-                .matcher(pageBody);
-
-        String today = Functions.getToday();
-        String yesterday = Functions.getYesterToday();
-        int sortOrder = 1000 + start + 1;
-        while (m.find()) {
-            Topic topic = new Topic(m.group(2), m.group(3));
-            if (m.group(1) != null)
-                topic.setIsNew(m.group(1).contains("view=getnewpost"));
-            topic.setDescription(m.group(4));
-            topic.setLastMessageDate(Functions.parseForumDateTime(m.group(5), today, yesterday));
-            topic.setLastMessageAuthor(m.group(6));
-            topic.setSortOrder(Integer.toString(sortOrder++));
-            themes.add(topic);
-        }
-        return themes;
-    }
 
     public static ArrayList<FavTopic> getFavTopics(IHttpClient client,
                                                    ListInfo listInfo) throws ParseException, IOException, URISyntaxException {

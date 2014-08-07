@@ -82,7 +82,7 @@ public class TopicAttentionNotifier extends MainNotifier {
                             final WebView webView=new WebView(context);
                             AlertDialog alertDialog=
                                     new AlertDialogBuilder(context)
-                                            .setTitle("Объявление")
+                                            .setTitle("Объявление клиента")
                                             .setView(webView)
                                             .setPositiveButton("Я прочитал", null).create();
                             alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {

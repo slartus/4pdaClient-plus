@@ -256,4 +256,9 @@ public class TopicApi {
         return false;
 
     }
+
+
+    public static void addPoll(String url){
+
+    }
 }

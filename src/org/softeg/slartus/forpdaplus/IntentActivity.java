@@ -362,7 +362,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
             if (tryShowClaim(context, handler, uri, finishActivity))
                 return true;
 
-            if (tryShowQms(context, uri))
+            if (tryShowQms(context, uri,finishActivity))
                 return true;
 
             if (tryFav(context, url, finishActivity))
@@ -492,7 +492,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
         return true;
     }
 
-    public static boolean tryShowQms(Activity context, Uri uri) {
+    public static boolean tryShowQms(Activity context, Uri uri, Boolean finish) {
         if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
             return false;
         String mid;
@@ -514,7 +514,8 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
         } else {
             ListFragmentActivity.showListFragment(context, QmsContactsBrickInfo.NAME, null);
         }
-
+        if (finish)
+            context.finish();
         return true;
     }
 

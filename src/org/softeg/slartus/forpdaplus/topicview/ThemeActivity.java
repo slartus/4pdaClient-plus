@@ -162,7 +162,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
         createActionMenu();
 
-        mCurator=new Curator(this);
+        mCurator = new Curator(this);
 
         //setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL); чтобы поиск начинался при вводе текста
         mQuickPostFragment = (QuickPostFragment) getSupportFragmentManager().findFragmentById(R.id.quick_post_fragment);
@@ -1003,6 +1003,9 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             if (checkIsTheme(url))
                 return true;
 
+            if (checkIsPoll(url))
+                return true;
+
             if (tryDeletePost(url))
                 return true;
 
@@ -1011,6 +1014,21 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             IntentActivity.tryShowUrl(ThemeActivity.this, mHandler, url, true, false, m_Topic.getAuthKey());
 
             return true;
+        }
+
+        private boolean checkIsPoll(String url) {
+            Matcher m = Pattern.compile("4pda.ru.*?addpoll=1").matcher(url);
+            if (m.find()) {
+
+                Uri uri = Uri.parse(url);
+                uri = uri.buildUpon()
+                        .appendQueryParameter("showtopic", getTopic().getId())
+                        .appendQueryParameter("st", "" + getTopic().getCurrentPage() * getTopic().getPostsPerPageCount(m_LastUrl))
+                        .build();
+                showTheme(uri.toString());
+                return true;
+            }
+            return false;
         }
 
         private boolean tryDeletePost(String url) {
@@ -1235,12 +1253,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         private String m_ThemeBody;
 
         private CharSequence prepareTopicUrl(CharSequence url) {
-            Matcher paramsMatcher = Pattern.compile("(\\w+=\\w+(?:&)?|#\\w+)").matcher(url);
-            StringBuilder res = new StringBuilder();
-            while (paramsMatcher.find()) {
-                res.append(paramsMatcher.group(1));
-            }
-            return res;
+            Uri uri= Uri.parse(url.toString());
+            return uri.getHost()==null?uri.toString():uri.getQuery();
         }
 
         @Override

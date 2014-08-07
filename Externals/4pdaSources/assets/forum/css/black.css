@@ -249,6 +249,50 @@ body {
 *[style*="color:#000000"] *[style*="background-color:white"] {
   color: #000!important;
 }
+.poll {
+  display: table;
+  width: 100%;
+  margin: 0 0 1rem;
+}
+.poll form table {
+  width: 100%;
+}
+.poll form table tr .row1[align="center"] {
+  display: block;
+  margin: 0.5rem 0;
+}
+.poll form table .formbuttonrow {
+  text-align: center;
+  margin: 0.5rem 0;
+}
+.poll form > .ipbtable th[align="center"] {
+  display: none;
+  padding: 0.5rem 0;
+}
+.poll form > .ipbtable .borderwrap {
+  margin: 1rem 0 0;
+  border: 1px solid #4d4d4d;
+}
+.poll form > .ipbtable .borderwrap .row1 {
+  font-size: 1rem;
+  background: #222222;
+}
+.poll form > .ipbtable .borderwrap tr {
+  display: table;
+  width: 100%;
+  line-height: 1.4rem;
+  padding: 0 0.3rem;
+  border-bottom: 1px solid #666666;
+}
+.poll form > .ipbtable .borderwrap tr:last-of-type {
+  border: none;
+}
+.poll form > .ipbtable .borderwrap tr img {
+  display: inline-block;
+  margin: -0.15rem -0.2rem 0;
+  height: 0.8rem !important;
+  vertical-align: middle !important;
+}
 .hidetop {
   display: block;
   padding: 0.3em;
@@ -661,15 +705,15 @@ img {
   position: relative;
   font-size: 1.1rem !important;
   line-height: 1.2;
-  color: #b55!Important;
+  color: #b55;
   font-weight: bold;
 }
 .post_nick_online_cli a {
   font-size: 1.1rem !important;
   line-height: 1.2;
-  color: #090!important;
+  color: #88db88;
   font-weight: bold;
-  text-shadow: 0 0 0.6rem #777777;
+  text-shadow: 0 0 0.8rem #557755;
 }
 .avatar_parent_container {
   position: absolute;
@@ -1308,66 +1352,355 @@ h3 a {
   display: block;
   text-align: center;
 }
-.mlinks.desc {
+.mlinks {
   border: 1px solid #646464;
   margin: 1rem 0;
 }
-.mlinks.desc .mlhead {
+.mlinks .mlhead {
   display: table;
   width: 100%;
-  border-bottom: 1px solid #646464;
   padding: 0.2rem;
   background: #242424;
 }
-.mlinks.desc .mlhead .mlicon {
+.mlinks .mlhead .mlicon {
   display: block;
   float: left;
   width: 4rem;
   margin: 0.2rem 0.4rem 0.2rem 0.2rem;
 }
-.mlinks.desc .mlhead .mltitle,
-.mlinks.desc .mlhead .mlauthor {
+.mlinks .mlhead .mltitle,
+.mlinks .mlhead .mlauthor {
   display: block;
   height: 2.2rem;
   line-height: 2.2rem;
   text-align: left;
   margin: 0;
+  font-size: 1.1rem;
 }
-.mlinks.desc .mlright {
+.mlinks .mlhead .mlauthor {
+  font-size: 1rem !important;
+  font-weight: normal;
+}
+.mlinks .mltbl.platforms {
+  background: #000000;
+  margin: 0.2rem 0 -0.3rem 0;
+}
+.mlinks .mlright,
+.mlinks .mltbl.platforms {
   display: table-block;
 }
-.mlinks.desc .mlright .mlrow {
+.mlinks .mlright .mlrow,
+.mlinks .mltbl.platforms .mlrow {
   display: table;
   width: 100%;
 }
-.mlinks.desc .mlright .mlrow .mlcell.th {
+.mlinks .mlright .mlrow .mlcell.th,
+.mlinks .mltbl.platforms .mlrow .mlcell.th {
   border: none;
   border-bottom: 1px solid #646464;
   font-weight: bold;
+  height: 2rem;
+  line-height: 2rem;
 }
-.mlinks.desc .mlright .mlrow .mlcell {
+.mlinks .mlright .mlrow .mlcell,
+.mlinks .mltbl.platforms .mlrow .mlcell {
   display: table-cell;
-  width: 25%;
+  width: 30%;
   border-bottom: 1px solid #646464;
   border-right: 1px solid #646464;
   text-align: center;
 }
-.mlinks.desc .mlright .mlrow .mlcell:last-of-type {
+.mlinks .mlright .mlrow .mlcell:last-of-type,
+.mlinks .mltbl.platforms .mlrow .mlcell:last-of-type {
   border-right: none;
 }
-.mlinks.desc .mlright .mlrow .mlcell .icon-android:before {
-  content: 'android';
-  color: #7799dd;
-  font-weight: bold;
+.mlinks .mlright .mlrow .mlcell:first-of-type,
+.mlinks .mltbl.platforms .mlrow .mlcell:first-of-type {
+  width: 10% !important;
 }
-.mlinks.desc .mlright .mlrow .mlcell .icon-apple:before {
-  content: 'apple';
-  color: #7799dd;
-  font-weight: bold;
-}
-.mlinks.desc .mlscreenshots.mlbody {
+.mlinks .mlscreenshots.mlbody {
+  border-top: 1px solid #646464;
   display: block;
   padding: 0.5rem;
+}
+.mlinks .screenshots {
+  overflow-x: auto;
+}
+.mlinks .screenshots .sc-btn.left,
+.mlinks .screenshots .sc-btn.right {
+  display: block ;
+  height: 0.3rem;
+  color: transparent;
+}
+.mlinks .screenshots .sc-content {
+  list-style: none;
+  white-space: nowrap;
+  padding: 0 2.6rem;
+}
+.mlinks .screenshots .sc-content:before {
+  content: '►';
+  font-size: 2rem;
+  position: absolute;
+  margin-left: -2.3rem;
+  display: block;
+  display: inline-block;
+  background: #5588cc;
+  opacity: 0.7;
+  height: 10rem;
+  line-height: 10rem;
+  text-align: center;
+  width: 2rem;
+  color: #000000;
+}
+.mlinks .screenshots .sc-content:before:hover {
+  content: 'сделайте свайп влево по изображениям';
+  position: absolute;
+  display: inline-block;
+  padding: 0.5rem;
+  background: #000000;
+  border: 2px solid #646464;
+  color: #ffffff;
+}
+.mlinks .screenshots .sc-content a {
+  display: inline;
+  padding: 0.1rem;
+  padding-right: 0.3rem;
+  white-space: nowrap;
+  zoom: 1;
+}
+.mlinks .screenshots .sc-content a img {
+  display: inline-block;
+  height: 10rem !important;
+}
+@font-face {
+  font-family: 'fontello';
+  src: url('forum/fonts/fontello/fontello.eot?66808348');
+  src: url('forum/fonts/fontello/fontello.eot?66808348#iefix') format('embedded-opentype'), url('forum/fonts/fontello/fontello.woff?66808348') format('woff'), url('forum/fonts/fontello/fontello.ttf?66808348') format('truetype'), url('forum/fonts/fontello/fontello.svg?66808348#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: fontello;
+  src: url("file:///android_asset/forum/fonts/fontello/fontello.eot");
+  src: url("file:///android_asset/forum/fonts/fontello/fontello.eot") format('embedded-opentype'), url("file:///android_asset/forum/fonts/fontello/fontello.woff") format('woff'), url("file:///android_asset/forum/fonts/fontello/fontello.ttf") format('truetype'), url("file:///android_asset/forum/fonts/fontello/fontello.svg") format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  line-height: 1em;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  text-align: center;
+  /* opacity: .8; */
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+}
+.icon-hash:before {
+  content: '\23';
+}
+/* '#' */
+.icon-karma-up:before {
+  content: '\2b';
+}
+/* '+' */
+.icon-hide-comment:before {
+  content: '\2d';
+}
+/* '-' */
+.icon-4PDA-plain:before {
+  content: '\34';
+}
+/* '4' */
+.icon-android:before {
+  content: '\41';
+}
+/* 'A' */
+.icon-comment-baloons:before {
+  content: '\43';
+}
+/* 'C' */
+.icon-engines:before {
+  content: '\44';
+}
+/* 'D' */
+.icon-pencil:before {
+  content: '\45';
+}
+/* 'E' */
+.icon-FB:before {
+  content: '\46';
+}
+/* 'F' */
+.icon-home:before {
+  content: '\48';
+}
+/* 'H' */
+.icon-apple:before {
+  content: '\49';
+}
+/* 'I' */
+.icon-rss:before {
+  content: '\52';
+}
+/* 'R' */
+.icon-search:before {
+  content: '\53';
+}
+/* 'S' */
+.icon-TWITTER:before {
+  content: '\54';
+}
+/* 'T' */
+.icon-VK:before {
+  content: '\56';
+}
+/* 'V' */
+.icon-windows:before {
+  content: '\57';
+}
+/* 'W' */
+.icon-close:hover:before {
+  content: '\58';
+}
+/* 'X' */
+.icon-YOUTUBE:before {
+  content: '\59';
+}
+/* 'Y' */
+.icon-up-open:before {
+  content: '\5e';
+}
+/* '^' */
+.icon-users:before {
+  content: '\75';
+}
+/* 'u' */
+.icon-link:before {
+  content: '\bb';
+}
+/* '»' */
+.icon-down-dir-1:before {
+  content: '\1d65';
+}
+/* 'ᵥ' */
+.icon-up-dir-1:before {
+  content: '\1dba';
+}
+/* 'ᶺ' */
+.icon-karma-down:before {
+  content: '\2013';
+}
+/* '–' */
+.icon-left-small:before {
+  content: '\2039';
+}
+/* '‹' */
+.icon-right-small:before {
+  content: '\203a';
+}
+/* '›' */
+.icon-4pda-logo:before {
+  content: '\2163';
+}
+/* 'Ⅳ' */
+.icon-up:before {
+  content: '\2191';
+}
+/* '↑' */
+.icon-down:before {
+  content: '\2193';
+}
+/* '↓' */
+.icon-back-up:before {
+  content: '\21b5';
+}
+/* '↵' */
+.icon-up-small:before {
+  content: '\21d1';
+}
+/* '⇑' */
+.icon-login:before {
+  content: '\23ce';
+}
+/* '⏎' */
+.icon-profile:before {
+  content: '\263a';
+}
+/* '✓' */
+/* '✔' */
+.icon-glyph:before {
+  content: '\272a';
+}
+/* '✪' */
+.icon-cog:before {
+  content: '\2731';
+}
+/* '✱' */
+.icon-del:before {
+  content: '\274e';
+}
+/* '❎' */
+.icon-warning-empty:before {
+  content: '\2755';
+}
+/* '❕' */
+.icon-attention:before {
+  content: '\2757';
+}
+/* '❗' */
+.icon-chart-bar:before {
+  content: '\2758';
+}
+/* '❘' */
+.icon-chart-bar-1:before {
+  content: '\2759';
+}
+/* '❙' */
+.icon-glyph-1:before {
+  content: '\275a';
+}
+/* '❚' */
+.icon-quote-left:before {
+  content: '\275d';
+}
+/* '❝' */
+.icon-heart-1:before {
+  content: '\2764';
+}
+/* '❤' */
+.icon-heart:before {
+  content: '\2765';
+}
+/* '❥' */
+.icon-close:before {
+  content: '\2a09';
+}
+/* '⨉' */
+.icon-mlinks-home:before {
+  content: '\e081';
+}
+/* '' */
+.icon-edit:before {
+  content: '\e80b';
+}
+/* '' */
+.icon-users-1:before {
+  content: '👥';
+}
+/* '\1f465' */
+.icon-emo-happy:before {
+  content: '😌';
+}
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  color: #7799dd;
 }
 .table4site {
   display: table-block;

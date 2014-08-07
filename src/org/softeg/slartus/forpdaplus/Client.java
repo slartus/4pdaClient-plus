@@ -43,6 +43,7 @@ import org.softeg.slartus.forpdaplus.db.ForumsTableOld;
 import org.softeg.slartus.forpdaplus.download.DownloadReceiver;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
+import org.softeg.slartus.forpdaplus.topicview.HtmloutWebInterface;
 
 import java.io.IOException;
 import java.net.URI;
@@ -117,7 +118,7 @@ public class Client implements IHttpClient {
     }
 
     public String editPost(String forumId, String themeId, String authKey, String postId, Boolean enablesig,
-                         Boolean enableEmo, String post, String addedFileList, String post_edit_reason) throws IOException {
+                           Boolean enableEmo, String post, String addedFileList, String post_edit_reason) throws IOException {
         return PostApi.applyEdit(this, forumId, themeId, authKey, postId, enablesig,
                 enableEmo, post, addedFileList, post_edit_reason);
     }
@@ -150,7 +151,6 @@ public class Client implements IHttpClient {
             return error;
         return "Жалоба отправлена";
     }
-
 
 
     public Boolean hasLoginCookies() {
@@ -325,7 +325,6 @@ public class Client implements IHttpClient {
     public Boolean likeNews(String postId) throws IOException {
         return org.softeg.slartus.forpdaapi.NewsApi.like(this, postId);
     }
-
 
 
     public interface OnUserChangedListener {
@@ -665,7 +664,6 @@ public class Client implements IHttpClient {
     }
 
 
-
     public void checkMails(String pageBody) {
         m_QmsCount = QmsApi.getNewQmsCount(pageBody);
 
@@ -806,8 +804,15 @@ public class Client implements IHttpClient {
         Matcher mainMatcher = PatternExtensions.compile("^([\\s\\S]*?)<!--Begin Msg Number \\d+-->([\\s\\S]*?)<!-- TABLE([\\s\\S]*)").matcher(topicBody);
 
         if (!mainMatcher.find()) {
-            final Pattern errorPattern = PatternExtensions.compile("<div class=\"errorwrap\">([\\s\\S]*?)</div>");
-            Matcher errorMatcher = errorPattern.matcher(topicBody);
+            Matcher errorMatcher = Pattern.compile("<div class=\"wr va-m text\">([\\s\\S]*?)</div>", Pattern.CASE_INSENSITIVE)
+                    .matcher(topicBody);
+            if (errorMatcher.find()) {
+
+                throw new NotReportException(errorMatcher.group(1));
+
+            }
+            Pattern errorPattern = PatternExtensions.compile("<div class=\"errorwrap\">([\\s\\S]*?)</div>");
+            errorMatcher = errorPattern.matcher(topicBody);
             if (errorMatcher.find()) {
                 final Pattern errorReasonPattern = PatternExtensions.compile("<p>(.*?)</p>");
                 Matcher errorReasonMatcher = errorReasonPattern.matcher(errorMatcher.group(1));
@@ -825,16 +830,7 @@ public class Client implements IHttpClient {
         }
 
 
-
         Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(context);
-
-//        Boolean isFullVersion = mainMatcher.group(3).contains("<a href=\"/wp-content/plugins/ngx.php?mb=1\"><b>Мобильная версия</b></a>");
-//        if (isFullVersion) {
-//
-//            return loadFullVersionTopic(context, id, mainMatcher, spoilFirstPost, logined, urlParams, enableSig,
-//                    enableEmo, postBody, hidePostForm, isWebviewAllowJavascriptInterface);
-//        }
-
 
         ExtTopic topic = createTopic(id, mainMatcher.group(1));
 
@@ -848,10 +844,26 @@ public class Client implements IHttpClient {
         Boolean browserStyle = prefs.getBoolean("theme.BrowserStyle", false);
         topicBodyBuilder.beginTopic();
 
+        //>>ОПРОС
+        Matcher pollMatcher = Pattern.compile("<form[^>]*action=\"[^\"]*addpoll=1[^\"]*\"[^>]*>([\\s\\S]*?)</form>", Pattern.CASE_INSENSITIVE)
+                .matcher(mainMatcher.group(1));
+        if (pollMatcher.find()) {
+            String poll =
+                    "<form action=\"http://4pda.ru/forum/index.php\" method=\"get\">" +
+                            pollMatcher.group(1).toString()
+                                    .replace("go_gadget_show()", HtmloutWebInterface.NAME + ".go_gadget_show()")
+                                    .replace("go_gadget_vote()", HtmloutWebInterface.NAME + ".go_gadget_vote()")
+                                    .concat("<input type=\"hidden\" name=\"addpoll\" value=\"1\" /></form>");
+
+            topicBodyBuilder.addPoll(poll, urlParams != null && urlParams.contains("poll_open=true"));
+        }
+        //<<опрос
+
         if (browserStyle) {
             body = body
                     .replace("onclick=\"return confirm('Подтвердите удаление');\"", "")
-                    .replace("href=\"#\"", "");
+                    .replace("href=\"#\"", "")
+            ;
             if (!WebViewExternals.isLoadImages("theme"))
                 body = HtmlPreferences.modifyAttachedImagesBody(Functions.isWebviewAllowJavascriptInterface(context), body);
             topicBodyBuilder.addBody(body);
@@ -917,7 +929,7 @@ public class Client implements IHttpClient {
                     post.setCanEdit(str.contains("Ред."));
                     post.setCanDelete(str.contains("Удал."));
                     // если автор поста не совпадает с текущим пользователем и есть возможность удалить-значит, модератор
-                    if(post.getUserId()!=null&& !post.getUserId().equals(Client.getInstance().UserId)){
+                    if (post.getUserId() != null && !post.getUserId().equals(Client.getInstance().UserId)) {
                         topicBodyBuilder.setMMod(true);
                     }
                 }

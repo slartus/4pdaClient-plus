@@ -91,10 +91,6 @@ public class TopicBodyParser implements Parcelable {
         return uri.getQueryParameter("showtopic");
     }
 
-    public String getStartPostNum() {
-        return uri.getQueryParameter("st");
-    }
-
     public String getFragment() {
         return uri.getFragment();
     }

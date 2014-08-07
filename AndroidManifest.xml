@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.softeg.slartus.forpdaplus"
-    android:versionCode="456"
-    android:versionName="2.3beta1"
+    android:versionCode="457"
+    android:versionName="2.3beta2"
     android:installLocation="auto">
 
     <uses-sdk
