@@ -41,6 +41,7 @@ import android.widget.Toast;
 import net.londatiga.android3d.ActionItem;
 import net.londatiga.android3d.QuickAction;
 
+import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.ImageViewActivity;
@@ -1054,17 +1055,19 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     }
 
     private boolean checkIsTheme(String url) {
+
         url = IntentActivity.normalizeThemeUrl(url);
 
         String[] patterns = {
-                Client.SITE + "/*forum/*index.php\\?((.*)?showtopic=[^\"]*)",
-                Client.SITE + "/*forum/*index.php\\?((.*)?act=findpost&pid=\\d+([^\"]*)?)",
-                Client.SITE + "/*index.php\\?((.*)?act=findpost&pid=\\d+([^\"]*)?)"
+                "(https?:/+4pda.ru/+forum/+index.php\\?.*?showtopic=[^\"]*)",
+                "(https?:/+4pda.ru/+forum/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)",
+                "(https?:/+4pda.ru/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)"
         };
+
         for (String pattern : patterns) {
             Matcher m = Pattern.compile(pattern).matcher(url);
             if (m.find()) {
-                showTheme(m.group(1));
+                goToAnchorOrLoadTopic(m.group(1));
                 return true;
             }
         }
@@ -1073,8 +1076,41 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     }
 
     public void reloadTopic() {
+        m_ScrollY = webView.getScrollY();
         showTheme(getLastUrl());
     }
+
+    public void goToAnchorOrLoadTopic(final String topicUrl) {
+        try {
+            if (getTopic() == null || m_History.size() == 0) {
+                showTheme(topicUrl);
+                return;
+            }
+
+
+            Uri uri = Uri.parse(topicUrl.toLowerCase());
+            String postId = null;
+            if (getTopic().getId().equals(uri.getQueryParameter("showtopic")))
+                postId = uri.getQueryParameter("p");
+            if (TextUtils.isEmpty(postId) && "findpost".equals(uri.getQueryParameter("act")))
+                postId = uri.getQueryParameter("pid");
+            if (TextUtils.isEmpty(postId)) {
+                showTheme(topicUrl);
+                return;
+            }
+            String fragment = "entry" + postId;
+            String currentBody = m_History.get(m_History.size() - 1).getBody();
+            if (currentBody.contains("name=\"" + fragment + "\"")) {
+                webView.scrollTo(fragment);
+                return;
+            }
+            showTheme(topicUrl);
+        } catch (Throwable ex) {
+            Log.e(this, ex);
+        }
+
+    }
+
 
     public void showTheme(String url) {
         try {
@@ -1084,8 +1120,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 m_History.get(m_History.size() - 1).setY(webView.getScrollY());
             }
             webView.setWebViewClient(new MyWebViewClient());
-            if (m_ScrollY != 0)
-                webView.setPictureListener(new MyPictureListener());
+
 
             GetThemeTask getThemeTask = new GetThemeTask(this);
             getThemeTask.execute(url.replace("|", ""));
@@ -1232,6 +1267,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     private class GetThemeTask extends AsyncTask<String, String, Boolean> {
 
         private final ProgressDialog dialog;
+        private int scrollY = 0;
 
         public GetThemeTask(Context context) {
             dialog = new AppProgressDialog(context);
@@ -1253,8 +1289,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         private String m_ThemeBody;
 
         private CharSequence prepareTopicUrl(CharSequence url) {
-            Uri uri= Uri.parse(url.toString());
-            return uri.getHost()==null?uri.toString():uri.getQuery();
+            Uri uri = Uri.parse(url.toString());
+            return uri.getHost() == null ? uri.toString() : uri.getQuery();
         }
 
         @Override
@@ -1301,6 +1337,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
         protected void onPreExecute() {
             try {
+                scrollY = m_ScrollY;
                 hideMessagePanel();
 
                 this.dialog.setMessage("Загрузка темы...");
@@ -1320,7 +1357,10 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             } catch (Exception ex) {
                 Log.e(null, ex);
             }
+            if (scrollY != 0)
+                webView.setPictureListener(new MyPictureListener());
 
+            m_ScrollY = scrollY;
             if (m_Topic != null)
                 mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
             if (isCancelled()) return;

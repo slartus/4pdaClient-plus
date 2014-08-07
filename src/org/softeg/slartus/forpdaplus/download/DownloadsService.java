@@ -205,6 +205,7 @@ public class DownloadsService extends IntentService {
             sb.append(cookie.getName() + "=" + cookie.getValue() + ";");
 
         }
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.addRequestHeader("Cookie", sb.toString());
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
 

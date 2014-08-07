@@ -16,8 +16,7 @@
             android:id="@+id/webView"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:textSize="12dip"
-            ptr:ptrViewDelegateClass="uk.co.senab.actionbarpulltorefresh.library.viewdelegates.WebViewDelegate" />
+            android:textSize="12dip"             />
     </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
 
     <LinearLayout

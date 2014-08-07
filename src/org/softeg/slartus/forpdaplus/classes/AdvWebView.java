@@ -174,6 +174,10 @@ public class AdvWebView extends WebView {
         m_ActionBarOnScrollEventsState = true;
     }
 
+    public void scrollTo(String fragment) {
+        evalJs("scrollToElement('" + fragment + "');");
+    }
+
     /**
      * Impliment in the activity/fragment/view that you want to listen to the webview
      */
