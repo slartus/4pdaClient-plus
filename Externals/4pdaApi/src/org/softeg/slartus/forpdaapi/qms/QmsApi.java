@@ -183,7 +183,7 @@ public class QmsApi {
         String pageBody = httpClient.performGet("http://4pda.ru/forum/index.php?act=qms&mid=" + mid);
         Matcher m = Pattern.compile("<a class=\"list-group-item[^\"]*\"[^>]*?data-thread-id=\"(\\d+)\"[^>]*?>([\\s\\S]*?)</a>", Pattern.CASE_INSENSITIVE).matcher(pageBody);
         Pattern themePattern = Pattern.compile("<div class=\"bage[^\"]*\">([^<]*?)</div>\n" +
-                "\\s*(?:<strong>)?(.*?)\\s+\\((\\d+)(?: / (\\d+))?\\)(?:</strong>)?", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+                "\\s*(?:<strong>)?(.*)\\s+\\((\\d+)(?: / (\\d+))?\\)(?:</strong>)?", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
         QmsUserThemes res = new QmsUserThemes();
         while (m.find()) {
             QmsUserTheme item = new QmsUserTheme();

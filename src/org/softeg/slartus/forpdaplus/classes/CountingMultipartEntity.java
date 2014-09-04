@@ -39,9 +39,10 @@ public class CountingMultipartEntity extends MultipartEntity {
         super.writeTo(new CountingOutputStream(outstream, this.listener, getContentLength()));
     }
 
-    private int m_RepeatsCount = 1;
+    private int m_RepeatsCount = 2;
 
     public boolean isRepeatable() {
+
         if (m_RepeatsCount-- > 0)
             return true;
         return false;

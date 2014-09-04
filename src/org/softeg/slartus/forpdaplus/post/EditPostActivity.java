@@ -522,6 +522,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                 m_EditPost.addAttach(editAttach);
                 refreshAttachmentsInfo();
             } else {
+
                 if (ex != null)
                     Log.e(EditPostActivity.this, ex);
                 else

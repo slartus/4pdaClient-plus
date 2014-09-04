@@ -157,7 +157,7 @@ public class PopupPanelView {
     }
 
     public void hidePopupWindow() {
-        if (popupWindow!=null&&popupWindow.isShowing()) {
+        if (popupWindow != null && popupWindow.isShowing()) {
             popupWindow.dismiss();
         }
         advanced_button.setImageResource(R.drawable.btn_show_post_panel);
@@ -183,7 +183,8 @@ public class PopupPanelView {
      * Checking keyboard height and keyboard visibility
      */
     int previousHeightDiffrence = 0;
-int k=-1;
+    int k = -1;
+
     @SuppressWarnings("ConstantConditions")
     private void checkKeyboardHeight(final View parentLayout) {
 
@@ -197,9 +198,9 @@ int k=-1;
 
                         int screenHeight = parentLayout.getRootView()
                                 .getHeight();
-                        if(k==-1)
-                            k=screenHeight - r.bottom;
-                        int heightDifference = screenHeight - (r.bottom)-k;
+                        if (k == -1)
+                            k = screenHeight - r.bottom;
+                        int heightDifference = screenHeight - (r.bottom) - k;
 
                         if (previousHeightDiffrence - heightDifference > 50) {
                             hidePopupWindow();

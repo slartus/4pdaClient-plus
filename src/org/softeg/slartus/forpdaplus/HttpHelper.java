@@ -10,6 +10,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.FormBodyPart;
 import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
@@ -111,6 +112,17 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
         }
         String res = EntityUtils.toString(response.getEntity());
         return res;
+    }
+
+    private class TestMultipartEntity extends MultipartEntity{
+        public TestMultipartEntity(org.apache.http.entity.mime.HttpMultipartMode mode){
+            super(mode);
+        }
+        public int i=0;
+        public boolean isRepeatable() {
+            i++;
+            return true;
+        }
     }
 
 

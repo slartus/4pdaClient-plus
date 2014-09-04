@@ -54,7 +54,8 @@ public class ExtTopic extends Topic implements ForumItem, IListItem, Serializabl
     }
 
     public int getPostsPerPageCount(String lastUrl) {
-
+if(m_PagesCount==1)
+    return 0;
         URI redirectUri = Client.getInstance().getRedirectUri();
         if (redirectUri != null)
             lastUrl = redirectUri.toString();

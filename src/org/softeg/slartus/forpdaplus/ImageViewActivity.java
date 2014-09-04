@@ -62,41 +62,13 @@ public class ImageViewActivity extends BaseFragmentActivity {
         try {
             Intent intent = null;
 
-                    intent = new Intent(activity, ImageViewActivity.class);
-                    intent.putExtra(ImageViewActivity.URL_KEY, imgUrl);
+            intent = new Intent(activity, ImageViewActivity.class);
+            intent.putExtra(ImageViewActivity.URL_KEY, imgUrl);
 
             activity.startActivity(intent);
         } catch (Exception ex) {
             Log.e(activity, ex);
         }
-//        ActionSelectDialogFragment.execute(activity,
-//                "Действие по умолчанию",
-//                "image.viewer",
-//                activity.getResources().getStringArray(R.array.ImageViwersTitles),
-//                activity.getResources().getStringArray(R.array.ImageViwersValues),
-//                new ActionSelectDialogFragment.OkListener() {
-//                    @Override
-//                    public void execute(CharSequence value) {
-//                        try {
-//                            Intent intent = null;
-//                            switch (value.toString()) {
-//                                case "system":
-//                                    intent = new Intent(Intent.ACTION_VIEW);
-//                                    intent.setDataAndType(Uri.parse(imgUrl), "image/*");
-//                                    break;
-//                                case "player":
-//                                    intent = new Intent(activity, ImageViewActivity.class);
-//                                    intent.putExtra(ImageViewActivity.URL_KEY, imgUrl);
-//                                    break;
-//                            }
-//                            activity.startActivity(intent);
-//                        } catch (Exception ex) {
-//                            Log.e(activity, ex);
-//                        }
-//                    }
-//                }, null
-//        );
-
     }
 
     public static final class MenuFragment extends Fragment {
@@ -119,7 +91,7 @@ public class ImageViewActivity extends BaseFragmentActivity {
 
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
-                    DownloadsService.download(getInterface(), getInterface().getUrl(),false);
+                    DownloadsService.download(getInterface(), getInterface().getUrl(), false);
                     return true;
                 }
             });

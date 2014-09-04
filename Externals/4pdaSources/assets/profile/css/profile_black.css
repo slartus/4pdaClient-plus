@@ -12,6 +12,37 @@ body{
 a{
 color: #79d;
 }
+*[style*="color:royalblue"]{
+color: lighten(#4169e1, 20%) !important;
+}
+*[style*="color:blue"]{
+color: lighten(#0000ff, 20%) !important;
+}
+*[style*="color:darkblue"]{
+color: lighten(#00008b, 35%) !important;
+}
+*[style*="color:indigo"]{
+color: lighten(#4b0082, 35%) !important;
+}
+*[style*="color:crimson"]{
+color: lighten(#dc143c, 12%) !important;
+}
+*[style*="color:red"]{
+color: lighten(#ff0000, 13%) !important;
+}
+*[style*="color:darkred"]{
+color: lighten(#8b0000, 30%) !important;
+}
+*[style*="color:deeppink"]{
+color: lighten(#ff1493, 15%) !important;
+}
+*[style*="color:Black"], *[style*="color:black"], *[style*="color:#000000"], *[style*="color:#000"]{
+color:#fff!important;
+}
+*[style*="background-color:white"] *[style*="color:black"], *[style*="color:black"] *[style*="background-color:white"], 
+*[style*="background-color:white"] *[style*="color:#000000"], *[style*="color:#000000"] *[style*="background-color:white"]{
+color:#000!important;
+}
 .user-profile-list{ /* главный-блок */
 	display: block;
 	font-size: 1rem;
@@ -32,12 +63,13 @@ color: #79d;
 	visibility: hidden;
 }
 .user-profile-list > li{ /* все блоки */
-border: 1px #777 solid;
+	border: 1px #777 solid;
 	background: #000;
 	display: block;
 	margin: 0 0 0.5em;
 	padding: 1rem;
 	z-index: 7;
+	border-radius: 0.2em;
 }
 .user-profile-list > li.no-min-size
 {

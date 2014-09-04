@@ -60,7 +60,7 @@ body {
 .post-block.box > .block-body {
   overflow: auto;
 }
-@media all and (orientation: landscape) {
+@media screen and (orientation: landscape) {
   .post-block.spoil.open > .block-title:before {
     content: 'Спойлер (\2013) ( ';
   }
@@ -134,7 +134,7 @@ body {
     content: '';
   }
 }
-@media all and (orientation: portrait) {
+@media screen and (orientation: portrait) {
   .post-block.spoil.open > .block-title:before {
     content: '(\2013) ';
     font-weight: bold;
@@ -1214,40 +1214,76 @@ edit b {
   padding: 0.3em;
   color: #000000;
 }
-.content {
+.container .content {
   display: block;
   padding: 0.5em;
 }
-h1 {
-  text-align: center;
-  font-size: 1.5em;
-  color: #484848;
-}
 .product-detail {
-  display: block;
   border: 1px solid #909090;
   background: #f0f0f0;
-  padding: 0 0.2em 0.5em;
 }
-.container > DIV.product-detail > DIV.photo > A.label.orange {
+.product-detail .photo {
+  display: table-cell;
+  text-align: center;
+  width: 40%;
+}
+.product-detail .photo img {
+  display: block;
+  width: 100%;
+}
+.product-detail .photo label {
   display: block;
   text-align: center;
   padding: 0.5em;
   color: #2266cc;
 }
-.photo {
+.product-detail .description {
+  display: table-cell;
+  width: 60%;
+  vertical-align: middle;
+}
+.product-detail .description h1 {
+  text-align: center;
+  font-size: 1.5em;
+  color: #484848;
+}
+.product-detail .description .info-holder {
   display: block;
-  margin-top: 1em;
   text-align: center;
 }
-.photo img {
-  display: inline-block;
-  max-width: 100%;
-  height: auto;
-}
-.more-box {
+.product-detail .description .more-box {
   position: relative;
   text-align: center;
+}
+BLOCKQUOTE {
+  border-left: 0.3em solid #6f9ad4;
+  padding: 0 0 0 0.8rem;
+  margin-left: 0.4rem;
+}
+BLOCKQUOTE H3 {
+  text-align: left;
+  color: #333333;
+}
+.review-bottom-informer {
+  padding: 0 0.3em;
+  background: #ffffff;
+}
+.review-bottom-informer .item {
+  text-align: center;
+  display: block;
+  border: 1px solid #b3b3b3;
+  margin: 0.3em 0;
+  box-sizing: border-box;
+  padding: 0.35em;
+  background: #e6e6e6;
+}
+.review-bottom-informer .item .title {
+  display: block;
+  text-align: center;
+  font-size: 2em;
+}
+.review-bottom-informer .item .desc br {
+  display: none;
 }
 h3 {
   text-align: center;
@@ -1256,10 +1292,6 @@ h3 a {
   text-decoration: none;
   font-size: 1.4em;
   color: #484848;
-}
-.info-holder {
-  display: block;
-  text-align: center;
 }
 .mlinks {
   border: 1px solid #a8a8a8;
@@ -1612,53 +1644,53 @@ h3 a {
   color: #2266cc;
 }
 .table4site {
-  display: table-block;
-  border: 1px solid #a8a8a8;
-  box-sizing: border-box;
-}
-.table4site TD {
-  box-sizing: border-box;
-}
-.table4site .icon {
-  display: table-cell;
-  border-right: 1px solid #a8a8a8;
-  width: 3.2rem;
-}
-.table4site .icon IMG {
-  width: 3rem;
-}
-.table4site TD:nth-child(2) {
-  border-bottom: 1px solid #a8a8a8;
   display: block;
+  overflow-x: scroll;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-spacing: 0;
+  border: 1px solid #b3b3b3;
 }
-.table4site TD:nth-child(2) P {
-  display: table-cell;
-  padding: 0.4rem;
-}
-.table4site .links {
-  margin: 2px 0 0;
-  display: table;
-  width: 100%;
-}
-.table4site .links P {
-  font-size: 1rem;
-  line-height: 1rem;
-  width: 50%;
-  padding: 0.3rem;
-  display: table-cell;
-  height: 50%;
-  text-align: center;
-  background: #e9e9e9;
-}
-.table4site .links P a {
-  font-size: 0.9rem;
-}
-.materials-box {
-  display: block;
-  padding: 1em 0;
+.table4site tbody TR {
   margin: 0;
 }
-.box-title {
+.table4site tbody TR:nth-child(2n) {
+  background: #f3f3f3;
+}
+.table4site tbody TR:last-child td {
+  border-bottom: none;
+}
+.table4site tbody TR .links p {
+  text-align: center;
+  border-bottom: 1px solid #dedede;
+  height: 50%;
+}
+.table4site tbody TR .links p:last-child {
+  border: none;
+}
+.table4site tbody TR .links p strong {
+  diasplay: block;
+}
+.table4site tbody TR TD {
+  margin: -0.2rem !important;
+  box-sizing: border-box;
+  border-bottom: 1px solid #d9d9d9;
+  border-right: 1px solid #d9d9d9;
+}
+.table4site tbody TR TD IMG {
+  display: block;
+  width: 4rem;
+  margin: 0 auto;
+}
+.table4site tbody TR TD P {
+  display: block;
+  padding: 0.4rem;
+}
+.materials-box {
+  margin: 0;
+}
+.materials-box .box-title {
+  display: block;
   margin: 0.5em 0.2em;
   padding: 0.2em 0;
   text-align: center;
@@ -1666,60 +1698,64 @@ h3 a {
   border-top: 1px solid #d8d8d8;
   background: -webkit-gradient(linear, left top, right top, color-stop(0%, #ffffff), color-stop(10%, #e6e6e6), color-stop(90%, #e6e6e6), color-stop(100%, #ffffff));
 }
-.materials-list {
+.materials-box .materials-list {
   padding: 0;
-  margin: 0 0.2em 0 1em;
-  line-height: 1.4;
-  /*background: #eee; 
-padding: 1em;
-border-bottom: 1px #777 solid*/
+  margin: 0 0.3rem;
+  border: 1px solid #a8a8a8;
 }
-.materials-list li {
-  padding: 0.5em 0;
-  margin: 0.5em 0;
+.materials-box .materials-list li {
+  display: table;
+  padding: 0;
   font-size: 1rem;
   list-style-type: none;
+  border-bottom: 1px solid #cccccc;
+  width: 100%;
 }
-.materials-list a {
-  position: relative;
-  display: inline;
+.materials-box .materials-list li:last-child {
+  border: none;
 }
-.materials-box .date {
-  display: inline;
+.materials-box .materials-list li .date {
+  display: table-cell;
+  vertical-align: middle;
   font-weight: bold;
+  width: 5rem;
   color: #303030;
   text-decoration: none;
-  padding: 0 1em;
+  text-align: right !important;
+  padding: 0 0.5rem;
   font-size: 1.1rem;
 }
-.materials-box .number {
+.materials-box .materials-list li .number {
+  display: table-cell;
   color: #ffffff;
+  vertical-align: middle;
   background: #85a3f0;
-  line-height: 2;
-  width: 2em;
+  width: 1.4em;
   text-align: center;
-  float: left;
-  margin-top: -0.3em;
+  margin: 0 0.5rem;
   font-weight: bold;
-  border-radius: 2rem;
+}
+.materials-box .materials-list li a {
+  position: relative;
+  display: table-cell;
+  margin: 0;
+  padding: 0.5rem;
 }
 .page-nav.box {
-  margin: 0;
+  margin: 1rem 0.2rem 0;
   padding: 0;
   text-align: center;
 }
 .page-nav.box li {
   display: inline-block;
+  width: 48%;
+  margin: 0;
   font-size: 1.4rem;
   text-decoration: none;
   text-transform: lowercase;
-  width: 4em;
-  border: 1px solid #a8a8a8;
-  padding: 0.8px 0.2em 0 0.2em;
   color: #606060;
-  background: #ffffff;
 }
-.page-nav.box a {
+.page-nav.box li a {
   text-decoration: none;
 }
 .comment-box h2 {
@@ -1779,9 +1815,14 @@ border-bottom: 1px #777 solid*/
   font-size: 1rem;
   color: #484848;
   float: right;
-  margin-top: 0;
+  margin-top: -0.2rem;
   margin-right: 0.2em;
   line-height: 1.4;
+}
+.h-meta a {
+  width: 100%;
+  height: 100%;
+  margin-right: 0.2em;
 }
 #comments li p {
   padding-left: 0.3em;
