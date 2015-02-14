@@ -3,9 +3,20 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="distributionType" value="LOCAL" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/chrisbanesandroidpulltorefresh" />
+            <option value="$PROJECT_DIR$/forpdaapi" />
+            <option value="$PROJECT_DIR$/forpdacommon" />
+            <option value="$PROJECT_DIR$/forpdanotifyservice" />
+            <option value="$PROJECT_DIR$/newquickaction" />
+            <option value="$PROJECT_DIR$/sqliteannotations" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>

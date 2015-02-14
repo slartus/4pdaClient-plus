@@ -1,1 +1,1 @@
-include ':SqliteAnnotations', ':QuickPost'
+include ':app', ':forpdaapi', ':forpdacommon', ':forpdanotifyservice', ':sqliteannotations', ':newquickaction', ':chrisbanesandroidpulltorefresh'

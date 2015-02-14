@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:paddingLeft="2dip"
+    android:paddingStart="2dip"
+    android:paddingTop="2dp"
+    android:paddingRight="4dp"
+    android:paddingEnd="4dp">
+
+    <ImageView
+        android:id="@+id/imgFlag"
+        android:layout_width="4dip"
+        android:layout_height="fill_parent"
+        android:scaleType="centerCrop"
+        android:lines="3"
+        android:layout_marginEnd="2dip"
+        android:layout_marginRight="2dip"
+        android:minLines="3"
+        android:contentDescription="flag"
+        android:layout_alignTop="@+id/linearLayout2"
+        android:layout_alignBottom="@+id/linearLayout2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout2"
+        android:layout_toRightOf="@+id/imgFlag"
+        android:layout_toEndOf="@+id/imgFlag">
+
+        <RelativeLayout
+            android:id="@+id/lnrTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:ellipsize="middle"
+                android:id="@+id/txtTopLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Top Left Text"
+                android:singleLine="true"
+                android:textColor="#606060"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:lines="1"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true" />
+
+            <TextView
+                android:id="@+id/txtTopRight"
+                android:gravity="end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Top Right Text"
+                android:textColor="#606060"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:lines="1"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txtMain"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Main Text"
+            android:maxLines="2" />
+
+        <TextView
+            android:id="@+id/txtSubMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textColor="#969696"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Sub main text" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="0.01dp"
+        android:id="@+id/progressBar"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_centerHorizontal="true"
+        android:layout_alignStart="@+id/imgFlag"
+        android:layout_alignLeft="@+id/imgFlag"
+        android:layout_alignRight="@+id/linearLayout2"
+        android:layout_alignEnd="@+id/linearLayout2"
+        android:indeterminateOnly="true"
+        android:visibility="invisible"
+        android:layout_marginBottom="0.01dp" />
+
+</RelativeLayout>
