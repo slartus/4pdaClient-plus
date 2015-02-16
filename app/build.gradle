@@ -7,8 +7,8 @@ android {
         applicationId 'org.softeg.slartus.forpdaplus'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode 500
+        versionName "2.4b5"
     }
     buildTypes {
         release {
