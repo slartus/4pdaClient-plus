@@ -1,1 +1,1 @@
-include ':app', ':forpdaapi', ':forpdacommon', ':forpdanotifyservice', ':sqliteannotations', ':newquickaction', ':chrisbanesandroidpulltorefresh'
+include ':app', ':forpdaapi', ':forpdacommon', ':forpdanotifyservice', ':sqliteannotations', ':newquickaction', ':chrisbanesandroidpulltorefresh', ':4pdasources'
