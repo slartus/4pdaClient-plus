@@ -12,8 +12,7 @@ import android.content.pm.PackageManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.preference.CheckBoxPreference;
+import android.os.Handler;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -30,7 +29,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import org.softeg.slartus.forpdaapi.ClientPreferences;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.Client;
@@ -78,7 +76,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
     public static final int NOTIFIERS_SERVICE_SOUND_REQUEST_CODE = MyApp.getInstance().getUniqueIntValue();
 
 
-    public class PrefsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
+    public static class PrefsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
 
 
         @Override
@@ -146,16 +144,16 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
 
             final Preference downloadsPathPreference = findPreference("downloads.path");
-            downloadsPathPreference.setSummary(DownloadsService.getDownloadDir(getApplicationContext()));
+            downloadsPathPreference.setSummary(DownloadsService.getDownloadDir(MyApp.getInstance()));
             ((EditTextPreference) downloadsPathPreference)
-                    .setText(DownloadsService.getDownloadDir(getApplicationContext()));
+                    .setText(DownloadsService.getDownloadDir(MyApp.getInstance()));
             downloadsPathPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object o) {
 
                     if (showDownloadsPath(o)) {
                         downloadsPathPreference
                                 .setSummary(o.toString());
-                        Toast.makeText(getContext(), "Путь успешно изменён", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Путь успешно изменён", Toast.LENGTH_SHORT).show();
                         return true;
                     }
                     return false;
@@ -202,7 +200,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     return true;
                 case "notifiers.silent_mode.start_time":
                     Calendar calendar = Preferences.Notifications.SilentMode.getStartTime();
-                    new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
                             Preferences.Notifications.SilentMode.setStartTime(hourOfDay, minute);
@@ -212,7 +210,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     return true;
                 case "notifiers.silent_mode.end_time":
                     Calendar endcalendar = Preferences.Notifications.SilentMode.getEndTime();
-                    new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                         @Override
                         public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
                             Preferences.Notifications.SilentMode.setEndTime(hourOfDay, minute);
@@ -225,6 +223,96 @@ public class PreferencesActivity extends BasePreferencesActivity {
             return false;
         }
 
+        private void showStylesDialog() {
+
+            try {
+                final String currentValue = MyApp.getInstance().getCurrentTheme();
+
+                ArrayList<CharSequence> newStyleNames = new ArrayList<>();
+                final ArrayList<CharSequence> newstyleValues = new ArrayList<>();
+
+                getStylesList(getActivity(), newStyleNames, newstyleValues);
+
+
+                final int[] selected = {newstyleValues.indexOf(currentValue)};
+                new AlertDialogBuilder(getActivity())
+                        .setTitle("Стиль")
+                        .setCancelable(true)
+                        .setSingleChoiceItems(newStyleNames.toArray(new CharSequence[newStyleNames.size()]), newstyleValues.indexOf(currentValue), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                selected[0] = i;
+                            }
+                        })
+                        .setPositiveButton(getString(R.string.AcceptStyle), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if (selected[0] == -1) {
+                                    Toast.makeText(getActivity(), getString(R.string.ChooseStyle), Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+                                dialogInterface.dismiss();
+                                PreferenceManager.getDefaultSharedPreferences(getActivity())
+                                        .edit()
+                                        .putString("appstyle", newstyleValues.get(selected[0]).toString())
+                                        .commit();
+
+                            }
+                        })
+                        .setNeutralButton(getString(R.string.Information), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if (selected[0] == -1) {
+                                    Toast.makeText(getActivity(), getString(R.string.ChooseStyle), Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+                                String stylePath = newstyleValues.get(selected[0]).toString();
+                                stylePath = MyApp.getInstance().getThemeCssFileName(stylePath);
+                                String xmlPath = stylePath.replace(".css", ".xml");
+                                CssStyle cssStyle = CssStyle.parseStyle(getActivity(), xmlPath);
+                                if (!cssStyle.ExistsInfo) {
+                                    Toast.makeText(getActivity(), getString(R.string.StyleDoesNotContainDesc), Toast.LENGTH_SHORT).show();
+
+                                    return;
+                                }
+
+                                //dialogInterface.dismiss();
+                                StyleInfoActivity.showStyleInfo(getActivity(), newstyleValues.get(selected[0]).toString());
+                            }
+                        })
+                        .create().show();
+            } catch (Exception ex) {
+                Log.e(getActivity(), ex);
+            }
+
+        }
+
+        private void showAbout() {
+
+            String text = "Неофициальный клиент для сайта <a href=\"http://www.4pda.ru\">4pda.ru</a><br/><br/>\n" +
+                    "<b>Автор: </b> Артём Слинкин aka slartus<br/>\n" +
+                    "<b>E-mail:</b> <a href=\"mailto:slartus+4pda@gmail.com\">slartus+4pda@gmail.com</a><br/><br/>\n" +
+                    "<b>Дизайнер стилей: </b> <a href=\"http://4pda.ru/forum/index.php?showuser=96664\">Морфий</a><br/>\n" +
+                    "<b>Благодарности: </b> <br/>\n" +
+                    "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=474658\">zlodey.82</a></b> иконка программы<br/>\n" +
+                    "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=1429916\">sbarrofff</a></b> иконка программы<br/>\n" +
+                    "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=680839\">SPIDER3220</a></b> (иконки, баннеры)<br/>\n" +
+                    "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=1392892\">ssmax2015</a></b> (иконки, баннеры)<br/>\n" +
+                    "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=2523\">e202</a></b> (иконки сообщения для черной темы)<br/>\n" +
+                    "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=2040700\">Remie-l</a></b> (новые стили для топиков)<br/>\n" +
+                    "* <b><a href=\"http://www.4pda.ru\">пользователям 4pda</a></b> (тестирование, идеи, поддержка)\n" +
+                    "<br/>" +
+                    "Copyright 2014 Artem Slinkin <slartus@gmail.com>";
+
+            AlertDialog dialog = new AlertDialogBuilder(getActivity())
+                    .setIcon(R.drawable.icon)
+                    .setTitle(getProgramFullName(getActivity()))
+                    .setMessage(Html.fromHtml(text))
+                    .setPositiveButton(android.R.string.ok, null)
+                    .create();
+            dialog.show();
+            TextView textView = (TextView) dialog.findViewById(android.R.id.message);
+            textView.setTextSize(12);
+
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
+        }
 
         private void pickRingtone(int requestCode, Uri defaultSound) {
             Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
@@ -251,21 +339,22 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 file.delete();
                 return true;
             } catch (Throwable ex) {
-                Log.e(PreferencesActivity.this, new NotReportException(ex.toString()));
+                Log.e(getActivity(), new NotReportException(ex.toString()));
             }
             return false;
         }
 
         private void showTheme() {
-            ThemeActivity.showTopicById(PreferencesActivity.this, "271502");
+            ThemeActivity.showTopicById(getActivity(), "271502");
         }
 
         private boolean showAddRep() {
             if (!Client.getInstance().getLogined()) {
-                Toast.makeText(PreferencesActivity.this, getString(R.string.NeedToLogin), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.NeedToLogin), Toast.LENGTH_SHORT).show();
                 return true;
             }
-            ForumUser.startChangeRep(PreferencesActivity.this, mHandler, "236113", "slartus", "0", "add", getString(R.string.RaiseReputation));
+            Handler mHandler = new Handler();
+            ForumUser.startChangeRep(getActivity(), mHandler, "236113", "slartus", "0", "add", getString(R.string.RaiseReputation));
             return false;
         }
 
@@ -282,16 +371,16 @@ public class PreferencesActivity extends BasePreferencesActivity {
             StringBuilder sb = new StringBuilder();
             try {
 
-                BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open("history.txt"), "UTF-8"));
+                BufferedReader br = new BufferedReader(new InputStreamReader(MyApp.getInstance().getAssets().open("history.txt"), "UTF-8"));
                 String line;
                 while ((line = br.readLine()) != null) {
                     sb.append(line).append("\n");
                 }
 
             } catch (IOException e) {
-                Log.e(PreferencesActivity.this, e);
+                Log.e(getActivity(), e);
             }
-            AlertDialog dialog = new AlertDialogBuilder(PreferencesActivity.this)
+            AlertDialog dialog = new AlertDialogBuilder(getActivity())
                     .setIcon(R.drawable.icon)
                     .setTitle(getString(R.string.ChangesHistory))
                     .setMessage(sb)
@@ -303,7 +392,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
         }
 
         private void showCookiesDeleteDialog() {
-            new AlertDialogBuilder(getContext())
+            new AlertDialogBuilder(getActivity())
                     .setTitle(getString(R.string.ConfirmTheAction))
                     .setMessage(getString(R.string.SureDeleteFile))
                     .setCancelable(true)
@@ -311,16 +400,19 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             try {
                                 dialogInterface.dismiss();
-                                File f = new File(getCookieFilePath(getContext()));
+                                File f = new File(getCookieFilePath(getActivity()));
                                 if (!f.exists()) {
-                                    Toast.makeText(getContext(), getString(R.string.CookiesFileNotFound) + ": " + getCookieFilePath(getContext()), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), getString(R.string.CookiesFileNotFound) +
+                                            ": " + getCookieFilePath(MyApp.getInstance()), Toast.LENGTH_LONG).show();
                                 }
                                 if (f.delete())
-                                    Toast.makeText(getContext(), getString(R.string.CookiesFileDeleted) + ": " + getCookieFilePath(getContext()), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), getString(R.string.CookiesFileDeleted) +
+                                            ": " + getCookieFilePath(MyApp.getInstance()), Toast.LENGTH_LONG).show();
                                 else
-                                    Toast.makeText(getContext(), getString(R.string.FailedDeleteCookies) + ": " + getCookieFilePath(getContext()), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), getString(R.string.FailedDeleteCookies) +
+                                            ": " + getCookieFilePath(MyApp.getInstance()), Toast.LENGTH_LONG).show();
                             } catch (Exception ex) {
-                                Log.e(getContext(), ex);
+                                Log.e(getActivity(), ex);
                             }
                         }
                     })
@@ -332,7 +424,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
         }
 
         private void showSelectDirDialog() {
-            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.dir_select_dialog, null);
             final RadioButton rbInternal = (RadioButton) view.findViewById(R.id.rbInternal);
             final RadioButton rbExternal = (RadioButton) view.findViewById(R.id.rbExternal);
@@ -344,14 +436,14 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if (b) {
                         if (compoundButton.getId() == rbInternal.getId()) {
-                            txtPath.setText(getFilesDir().getPath());
+                            txtPath.setText(MyApp.getInstance().getFilesDir().getPath());
                             txtPath.setEnabled(false);
                         } else if (compoundButton.getId() == rbExternal.getId()) {
                             try {
-                                txtPath.setText(getExternalFilesDir(null).getPath());
+                                txtPath.setText(MyApp.getInstance().getExternalFilesDir(null).getPath());
                                 txtPath.setEnabled(false);
                             } catch (Throwable ex) {
-                                Log.e(getContext(), ex);
+                                Log.e(getActivity(), ex);
                             }
                         } else if (compoundButton.getId() == rbCustom.getId()) {
                             txtPath.setEnabled(true);
@@ -363,7 +455,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             rbInternal.setOnCheckedChangeListener(checkedChangeListener);
             rbExternal.setOnCheckedChangeListener(checkedChangeListener);
             rbCustom.setOnCheckedChangeListener(checkedChangeListener);
-            new AlertDialogBuilder(getContext())
+            new AlertDialogBuilder(getActivity())
                     .setTitle("Путь к папке с данными")
                     .setView(view)
                     .setCancelable(true)
@@ -376,7 +468,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                 Preferences.System.setSystemDir(dir);
                                 dialogInterface.dismiss();
                             }catch (Throwable ex){
-                                Log.e(getContext(),ex);
+                                Log.e(getActivity(),ex);
                             }
                         }
                     })
@@ -412,66 +504,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
     }
 
 
-    private void showStylesDialog() {
 
-        try {
-            final String currentValue = MyApp.getInstance().getCurrentTheme();
-
-            ArrayList<CharSequence> newStyleNames = new ArrayList<>();
-            final ArrayList<CharSequence> newstyleValues = new ArrayList<>();
-
-            getStylesList(getContext(), newStyleNames, newstyleValues);
-
-
-            final int[] selected = {newstyleValues.indexOf(currentValue)};
-            new AlertDialogBuilder(getContext())
-                    .setTitle("Стиль")
-                    .setCancelable(true)
-                    .setSingleChoiceItems(newStyleNames.toArray(new CharSequence[newStyleNames.size()]), newstyleValues.indexOf(currentValue), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            selected[0] = i;
-                        }
-                    })
-                    .setPositiveButton(getString(R.string.AcceptStyle), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            if (selected[0] == -1) {
-                                Toast.makeText(getContext(), getString(R.string.ChooseStyle), Toast.LENGTH_LONG).show();
-                                return;
-                            }
-                            dialogInterface.dismiss();
-                            PreferenceManager.getDefaultSharedPreferences(getContext())
-                                    .edit()
-                                    .putString("appstyle", newstyleValues.get(selected[0]).toString())
-                                    .commit();
-
-                        }
-                    })
-                    .setNeutralButton(getString(R.string.Information), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            if (selected[0] == -1) {
-                                Toast.makeText(getContext(), getString(R.string.ChooseStyle), Toast.LENGTH_LONG).show();
-                                return;
-                            }
-                            String stylePath = newstyleValues.get(selected[0]).toString();
-                            stylePath = MyApp.getInstance().getThemeCssFileName(stylePath);
-                            String xmlPath = stylePath.replace(".css", ".xml");
-                            CssStyle cssStyle = CssStyle.parseStyle(PreferencesActivity.this, xmlPath);
-                            if (!cssStyle.ExistsInfo) {
-                                Toast.makeText(PreferencesActivity.this, getString(R.string.StyleDoesNotContainDesc), Toast.LENGTH_SHORT).show();
-
-                                return;
-                            }
-
-                            //dialogInterface.dismiss();
-                            StyleInfoActivity.showStyleInfo(getContext(), newstyleValues.get(selected[0]).toString());
-                        }
-                    })
-                    .create().show();
-        } catch (Exception ex) {
-            Log.e(this, ex);
-        }
-
-    }
 
     public static void getStylesList(Context context, ArrayList<CharSequence> newStyleNames, ArrayList<CharSequence> newstyleValues) throws IOException {
         String xmlPath;
@@ -532,35 +565,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
         MyApp.resStartNotifierServices();
     }
 
-    private void showAbout() {
 
-        String text = "Неофициальный клиент для сайта <a href=\"http://www.4pda.ru\">4pda.ru</a><br/><br/>\n" +
-                "<b>Автор: </b> Артём Слинкин aka slartus<br/>\n" +
-                "<b>E-mail:</b> <a href=\"mailto:slartus+4pda@gmail.com\">slartus+4pda@gmail.com</a><br/><br/>\n" +
-                "<b>Дизайнер стилей: </b> <a href=\"http://4pda.ru/forum/index.php?showuser=96664\">Морфий</a><br/>\n" +
-                "<b>Благодарности: </b> <br/>\n" +
-                "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=474658\">zlodey.82</a></b> иконка программы<br/>\n" +
-                "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=1429916\">sbarrofff</a></b> иконка программы<br/>\n" +
-                "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=680839\">SPIDER3220</a></b> (иконки, баннеры)<br/>\n" +
-                "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=1392892\">ssmax2015</a></b> (иконки, баннеры)<br/>\n" +
-                "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=2523\">e202</a></b> (иконки сообщения для черной темы)<br/>\n" +
-                "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=2040700\">Remie-l</a></b> (новые стили для топиков)<br/>\n" +
-                "* <b><a href=\"http://www.4pda.ru\">пользователям 4pda</a></b> (тестирование, идеи, поддержка)\n" +
-                "<br/>" +
-                "Copyright 2014 Artem Slinkin <slartus@gmail.com>";
-
-        AlertDialog dialog = new AlertDialogBuilder(this)
-                .setIcon(R.drawable.icon)
-                .setTitle(getProgramFullName(this))
-                .setMessage(Html.fromHtml(text))
-                .setPositiveButton(android.R.string.ok, null)
-                .create();
-        dialog.show();
-        TextView textView = (TextView) dialog.findViewById(android.R.id.message);
-        textView.setTextSize(12);
-
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
-    }
 
     public static String getProgramFullName(Context context) {
         String programName = context.getString(R.string.app_name);

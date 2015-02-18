@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:layout_below="@+id/ll"
+
             android:layout_alignBottom="@+id/usericon"
             android:layout_alignParentRight="true"
             android:textColor="#606060"
@@ -64,7 +64,7 @@
             android:singleLine="true"
             android:layout_toLeftOf="@+id/txtDateTime"
             android:layout_toRightOf="@+id/usericon"
-            android:layout_below="@+id/ll"
+
             android:layout_alignBottom="@+id/usericon"
             android:layout_alignWithParentIfMissing="true"
             android:textAppearance="?android:attr/textAppearanceSmall"

@@ -54,9 +54,15 @@ public class NewsNavigationFragment extends BaseFragment implements ActionBar.On
         super();
     }
 
-    public NewsNavigationFragment(NewsPagerBrickInfo newsBrickInfo) {
-        this.newsBrickInfo = newsBrickInfo;
+    public static NewsNavigationFragment createInstance(NewsPagerBrickInfo newsBrickInfo){
+        NewsNavigationFragment fragment=new NewsNavigationFragment();
+        Bundle args=new Bundle();
+        args.putSerializable("NewsPagerBrickInfo",newsBrickInfo);
+        fragment.setArguments(args);
+        return fragment;
     }
+
+
 
 
     @Override
@@ -92,6 +98,8 @@ public class NewsNavigationFragment extends BaseFragment implements ActionBar.On
     public void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(false);
+        if(getArguments()!=null&&getArguments().containsKey("NewsPagerBrickInfo"))
+            newsBrickInfo=(NewsPagerBrickInfo)getArguments().getSerializable("NewsPagerBrickInfo");
         if (savedInstanceState != null) {
             newsBrickInfo = new NewsPagerBrickInfo();
         }

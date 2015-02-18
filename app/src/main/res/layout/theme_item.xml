@@ -48,7 +48,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:layout_below="@+id/ll"
             android:layout_alignBottom="@+id/usericon"
             android:layout_alignParentRight="true"
 
@@ -66,7 +65,6 @@
             android:singleLine="true"
             android:layout_toLeftOf="@+id/txtLastMessageDate"
             android:layout_toRightOf="@+id/usericon"
-            android:layout_below="@+id/ll"
             android:layout_alignBottom="@+id/usericon"
             android:layout_alignWithParentIfMissing="true"
             android:textColor="#606060"
@@ -105,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="5.0dip"
             android:text=""
-            android:layout_toLeftOf="@+id/notification_flag"
+
             android:layout_below="@+id/txtDescription"
             android:layout_alignParentBottom="true"
             android:layout_alignWithParentIfMissing="true"

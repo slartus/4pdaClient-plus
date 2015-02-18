@@ -4,10 +4,12 @@ import android.support.v4.app.Fragment;
 
 import org.softeg.slartus.forpdaplus.listfragments.news.NewsNavigationFragment;
 
-/**
+import java.io.Serializable;
+
+/*
  * Created by slinkin on 20.02.14.
  */
-public class NewsPagerBrickInfo extends BrickInfo {
+public class NewsPagerBrickInfo extends BrickInfo implements Serializable{
     @Override
     public String getTitle() {
         return "Новости";
@@ -20,6 +22,6 @@ public class NewsPagerBrickInfo extends BrickInfo {
 
     @Override
     public Fragment createFragment() {
-        return new NewsNavigationFragment(this);
+        return NewsNavigationFragment.createInstance(this);
     }
 }
