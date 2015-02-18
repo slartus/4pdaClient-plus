@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -163,8 +162,6 @@ super();
     }
 
     protected PullToRefreshLayout createPullToRefreshLayout(View view) {
-        // This is the View which is created by ListFragment
-        ViewGroup viewGroup = (ViewGroup) view;
         // We need to create a PullToRefreshLayout manually
         PullToRefreshLayout pullToRefreshLayout = (PullToRefreshLayout) view.findViewById(R.id.ptr_layout);
 

@@ -93,6 +93,7 @@ public abstract class BaseCatalogFragment extends BaseTaskListFragment {
 
     protected void rebuildCrumbs(ICatalogItem catalogItem) {
         assert catalogItem != null;
+
         m_Crumbs.rebuildCrumbs(catalogItem.clone());
         if (m_CatalogCrumbsAdapter != null)
             m_CatalogCrumbsAdapter.notifyDataSetChanged();

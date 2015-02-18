@@ -1,7 +1,9 @@
 package org.softeg.slartus.forpdaplus.db;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.text.TextUtils;
 
 import org.softeg.slartus.forpdaapi.Forum;
@@ -69,11 +71,11 @@ public class ForumsTable {
             assert db != null;
 
 
-            String forumIdsString = TextUtils.join("','", forumIds).replace("all","-1");
+            String forumIdsString = TextUtils.join("','", forumIds).replace("all", "-1");
             if (!TextUtils.isEmpty(forumIdsString))
                 forumIdsString = "'" + forumIdsString + "'";
 
-            String selection = COLUMN_ID + " in ("+forumIdsString+")";
+            String selection = COLUMN_ID + " in (" + forumIdsString + ")";
             String[] selectionArgs = new String[]{forumIdsString};
             c = db.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_TITLE},
                     selection, null, null, null, COLUMN_GLOBALSORTORDER);
@@ -134,6 +136,44 @@ public class ForumsTable {
                 c.close();
         }
         return null;
+    }
+
+    public static void updateForums(ArrayList<Forum> forumItems) throws IOException {
+        SQLiteDatabase db = null;
+        Cursor c = null;
+        try {
+            ForumStructDbHelper dbHelper = new ForumStructDbHelper(MyApp.getInstance());
+            db = dbHelper.getWritableDatabase();
+
+            db.beginTransaction();
+            db.execSQL("delete from " + TABLE_NAME);
+
+
+            String sql = "Insert into Forums (_id, ParentId,Description, GlobalSortOrder,HasTopics) values(?,?,?,?,?)";
+            SQLiteStatement insert = db.compileStatement(sql);
+
+            for (int i = 0; i < forumItems.size(); i++) {
+                Forum item = forumItems.get(i);
+                ContentValues values = new ContentValues();
+                values.put(COLUMN_ID, item.getId().toString());
+                values.put(COLUMN_PARENT_ID, item.getParent() != null ? item.getParent().getId().toString() : null);
+                values.put(COLUMN_TITLE, item.getTitle());
+                values.put(COLUMN_DESCRIPTION, item.getDescription() != null ? item.getDescription().toString() : null);
+                values.put(COLUMN_GLOBALSORTORDER, Integer.toString(i));
+                values.put(COLUMN_HAS_TOPICS, item.isHasTopics()?1:0);
+                db.insertOrThrow(TABLE_NAME, null, values);
+            }
+
+            db.setTransactionSuccessful();
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+                if (c != null)
+                    c.close();
+                db.close();
+            }
+        }
+
     }
 
     public static ArrayList<Forum> loadForums(Forum parentForum, Boolean addTopicsItem) throws IOException {

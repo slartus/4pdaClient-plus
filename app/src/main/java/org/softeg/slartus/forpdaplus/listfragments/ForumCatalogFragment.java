@@ -1,7 +1,9 @@
 package org.softeg.slartus.forpdaplus.listfragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -13,8 +15,11 @@ import android.widget.Toast;
 import org.softeg.slartus.forpdaapi.Forum;
 import org.softeg.slartus.forpdaapi.Forums;
 import org.softeg.slartus.forpdaapi.ICatalogItem;
+import org.softeg.slartus.forpdaapi.ProgressState;
+import org.softeg.slartus.forpdaapi.classes.ForumsData;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
+import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.common.Log;
 import org.softeg.slartus.forpdaplus.db.ForumsTable;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.CatalogAdapter;
@@ -35,7 +40,6 @@ public class ForumCatalogFragment extends BaseCatalogFragment {
     protected Forum m_StartForum = null;
     protected ArrayList<Forum> mData = new ArrayList<>();
     protected ArrayList<Forum> mLoadResultList;
-
 
 
     public static void showActivity(Context context, String forumId, String topicId) {
@@ -164,7 +168,7 @@ public class ForumCatalogFragment extends BaseCatalogFragment {
 
             getListView().setSelectionFromTop(getCatalogIndexById(mData, m_LoadingCatalogItem), 0);
         }
-        rebuildCrumbs(m_LoadingCatalogItem.getParent());
+        rebuildCrumbs(m_LoadingCatalogItem.getParent()==null?m_LoadingCatalogItem:m_LoadingCatalogItem.getParent());
     }
 
     protected BaseAdapter createAdapter() {
@@ -223,6 +227,7 @@ public class ForumCatalogFragment extends BaseCatalogFragment {
                     }
                 });
 
+
         menu.add("Отметить этот форум прочитанным")
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
@@ -279,8 +284,95 @@ public class ForumCatalogFragment extends BaseCatalogFragment {
                         return true;
                     }
                 });
-
+        menu.add("Обновить структуру форума")
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        new UpdateForumStructTask(getActivity()).execute();
+                        return true;
+                    }
+                });
         m_SetFavorite.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
+    }
+
+    private class UpdateForumStructTask extends AsyncTask<String, String, ForumsData> {
+
+        private final ProgressDialog dialog;
+
+        public UpdateForumStructTask(Context context) {
+            dialog = new AppProgressDialog(context);
+            dialog.setCancelable(true);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    cancel(true);
+                }
+            });
+        }
+
+        protected void onCancelled() {
+            Toast.makeText(getActivity(), "Обновление структуры форума отменено", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected ForumsData doInBackground(String... forums) {
+
+            try {
+
+                if (isCancelled()) return null;
+
+                ForumsData res = Forums.loadForums(Client.getInstance(), new ProgressState() {
+                    @Override
+                    public void update(String message, int percents) {
+                        publishProgress(String.format("%s %d", message, percents));
+                    }
+                });
+                publishProgress("Обновление базы");
+                ForumsTable.updateForums(res.getItems());
+                return res;
+            } catch (Throwable e) {
+                ForumsData res = new ForumsData();
+                res.setError(e);
+
+                return res;
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(final String... progress) {
+            mHandler.post(new Runnable() {
+                public void run() {
+                    dialog.setMessage(progress[0]);
+                }
+            });
+        }
+
+        protected void onPreExecute() {
+            try {
+                this.dialog.setMessage("Обновление структуры форума...");
+                this.dialog.show();
+            } catch (Exception ex) {
+                Log.e(null, ex);
+            }
+        }
+
+
+        protected void onPostExecute(final ForumsData data) {
+            try {
+                if (this.dialog.isShowing()) {
+                    this.dialog.dismiss();
+                }
+            } catch (Exception ex) {
+                Log.e(null, ex);
+            }
+            loadData(true);
+            if (data != null) {
+                if (data.getError() != null) {
+                    Log.e(getActivity(), data.getError());
+                }
+            }
+        }
     }
 }

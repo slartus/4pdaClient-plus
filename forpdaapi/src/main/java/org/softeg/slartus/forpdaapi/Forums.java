@@ -1,15 +1,20 @@
 package org.softeg.slartus.forpdaapi;
 
+import android.net.Uri;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
-import org.softeg.slartus.forpdacommon.NotReportException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.softeg.slartus.forpdaapi.classes.ForumsData;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * User: slinkin
@@ -17,54 +22,118 @@ import java.util.regex.Pattern;
  * Time: 13:41
  */
 public class Forums extends ArrayList<Forum> {
+    private static final int FORUMS_COUNT = 520;
+
     /**
      * Загрузка дерева разделов форума
      *
-     * @param httpClient
-     * @return
-     * @throws Exception
+
      */
-    public static Forum loadForums(IHttpClient httpClient) throws Exception, NotReportException {
-
-
+    public static ForumsData loadForums(IHttpClient httpClient, ProgressState progressState)
+            throws Exception {
+        ForumsData res = new ForumsData();
         Forum mainForum = new Forum("-1", "4PDA");
-        byte tryCount = 3;// Не всегда загружается в текстовом режиме. будем пробовать 3 раза.
-        Boolean regimeChecked = false;
-        while (tryCount > 0) {
-            String pageBody = httpClient.performGet("http://4pda.ru/forum/lofiversion/index.php");
+
+        String pageBody = httpClient.performGetFullVersion("http://4pda.ru/forum/index.php?act=idx");
+        Document doc = Jsoup.parse(pageBody, "http://4pda.ru");
+        Elements categoryElements = doc.select("div.borderwrap[id~=fo_\\d+]");
+
+        for (Element catElement : categoryElements) {
+            progressState.update("Обновление структуры форума...",
+                    res.getItems().size());
+            Element el = catElement.select("div.maintitle a[href~=showforum=\\d+]").first();
+
+            if (el == null) continue;
+            Uri uri = Uri.parse(el.attr("href"));
+            Forum forum = new Forum(uri.getQueryParameter("showforum"), el.text());
 
 
-            String[] strings = pageBody.split("\n");
-            pageBody = null;
-            Pattern checkRegimePattern = Pattern.compile("<div id='largetext'>Полная версия этой страницы");
-            Pattern forumPattern = Pattern.compile("<a href='http://4pda.ru/forum/lofiversion/index.php\\?f(\\d+).html'>(.*?)</a>");
+            forum.setHasTopics(false);
 
-            Forum forum = mainForum;
+            forum.setDescription(null);
+            res.getItems().add(forum);
 
-            for (String str : strings) {
-//                regimeChecked = regimeChecked || checkRegimePattern.matcher(str).find();
-//                Matcher m = forumPattern.matcher(str);
-//                if (m.find()) {
-//                    if (forum.getParent() != null && forum.getParent() != mainForum && forum.getForums().size() == 0)
-//                        forum.addForum(new Forum(forum.getId(), forum.getTitle() + " @ темы"));
-//                    forum.addForum(new Forum(m.group(1), Html.fromHtml(m.group(2)).toString()));
-//                } else if (str.endsWith("<ul>")) {
-//                    forum = forum.getLastChild();
-//                } else if (str.trim().startsWith("</ul></li>")) {
-//                    forum = forum.getParent();
-//                    if (forum == null)
-//                        forum = mainForum;
-//                }
-            }
-            if (!regimeChecked)
-                tryCount--;
-            else
-                break;
+            loadCategoryForums(httpClient, catElement.select("table.ipbtable>tbody").first(), forum,
+                    res, progressState);
         }
-        if (!regimeChecked)
-            throw new NotReportException("Страница загрузилась не в текстовом режиме! Попробуйте залогиниться");
 
-        return mainForum;
+
+        return res;
+    }
+
+    public static void loadCategoryForums(IHttpClient httpClient, Element boardForumRowElement, Forum parentForum,
+                                          ForumsData data, ProgressState progressState) throws Exception {
+        if (boardForumRowElement == null)
+            return;
+
+        Elements categoryElements = boardForumRowElement.select("tr:has(td)");
+        for (Element trElement : categoryElements) {
+            progressState.update("Обновление структуры форума...",
+                    data.getItems().size());
+
+            Elements tdElements = trElement.children();
+
+            if (tdElements.size() < 5) continue;
+
+            Element tdElement = tdElements.get(1);
+
+            Element el = tdElement.select("b>a").first();
+            if (el == null)
+                continue;
+            Uri uri = Uri.parse(el.absUrl("href"));
+            Forum forum = new Forum(uri.getQueryParameter("showforum"), el.text());
+
+            forum.setHasTopics(true);
+            forum.setParent(parentForum);
+            data.getItems().add(forum);
+
+            el = tdElement.select("span.forumdesc").first();
+            if (el != null) {
+                forum.setDescription(el.ownText());
+                if (el.select("a[href~=showforum=\\d+]").size() > 0) {
+                    loadSubForums(httpClient, uri.toString(), forum, data, progressState);
+                }
+            }
+        }
+    }
+
+    public static void loadSubForums(IHttpClient httpClient, String url, Forum parentForum,
+                                     ForumsData data, ProgressState progressState) throws Exception {
+        String pageBody = httpClient.performGetFullVersion(url);
+        Document doc = Jsoup.parse(pageBody, "http://4pda.ru");
+        Element catElement = doc.select("div.borderwrap[id~=fo_\\d+]").first();
+        if (catElement == null) return;
+        Element boardForumRowElement = catElement.select("table.ipbtable>tbody").first();
+        if (boardForumRowElement == null) return;
+
+
+        Elements categoryElements = boardForumRowElement.select("tr:has(td)");
+        for (Element trElement : categoryElements) {
+            progressState.update("Обновление структуры форума...",
+                    data.getItems().size());
+            Elements tdElements = trElement.children();
+            if (tdElements.size() < 5) continue;
+
+            Element tdElement = tdElements.get(1);
+
+            Element el = tdElement.select("b>a").first();
+            if (el == null)
+                continue;
+            Uri uri = Uri.parse(el.absUrl("href"));
+            Forum forum = new Forum(uri.getQueryParameter("showforum"), el.text());
+            forum.setHasTopics(true);
+            forum.setParent(parentForum);
+            data.getItems().add(forum);
+
+            el = tdElement.select("span.forumdesc").first();
+            if (el != null) {
+                forum.setDescription(el.ownText());
+                if (el.select("a[href~=showforum=\\d+]").size() > 0) {
+                    loadSubForums(httpClient, uri.toString(), forum, data, progressState);
+                }
+            }
+
+        }
     }
 
     public static void markAllAsRead(IHttpClient httpClient) throws Throwable {
