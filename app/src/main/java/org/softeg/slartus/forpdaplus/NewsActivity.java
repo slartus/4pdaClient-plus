@@ -51,7 +51,7 @@ import org.softeg.slartus.forpdaplus.classes.BrowserViewsFragmentActivity;
 import org.softeg.slartus.forpdaplus.classes.History;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.video.PlayerActivity;
 
@@ -205,7 +205,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                 } catch (ActivityNotFoundException ex) {
                     Toast.makeText(NewsActivity.this, "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {
-                    Log.e(NewsActivity.this, ex);
+                    AppLog.e(NewsActivity.this, ex);
                 }
             }
         });
@@ -507,7 +507,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
 
 
         } catch (Exception ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
     }
 
@@ -659,7 +659,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
         try {
             webView.loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
     }
 
@@ -680,7 +680,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                     }
 
 
-                    File file = new File(MyApp.getInstance().getExternalFilesDir(null), "news.txt");
+                    File file = new File(App.getInstance().getExternalFilesDir(null), "news.txt");
                     FileWriter out = new FileWriter(file);
                     out.write(html);
                     out.close();
@@ -690,7 +690,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                     intent.setDataAndType(uri, "text/plain");
                     startActivity(intent);
                 } catch (Exception e) {
-                    Log.e(NewsActivity.this, e);
+                    AppLog.e(NewsActivity.this, e);
                 }
             }
         });
@@ -716,12 +716,12 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                         try {
                             if (finalEx != null) {
                                 Toast.makeText(NewsActivity.this, "Ошибка запроса", Toast.LENGTH_SHORT).show();
-                                Log.e(NewsActivity.this, finalEx);
+                                AppLog.e(NewsActivity.this, finalEx);
                             } else {
                                 Toast.makeText(NewsActivity.this, "Запрос выполнен", Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception ex) {
-                            Log.e(NewsActivity.this, ex);
+                            AppLog.e(NewsActivity.this, ex);
                         }
                     }
                 });
@@ -859,7 +859,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                 this.dialog.setMessage("Загрузка новости...");
                 this.dialog.show();
             } catch (Exception ex) {
-                Log.e(null, ex);
+                AppLog.e(null, ex);
                 this.cancel(true);
             }
         }
@@ -873,7 +873,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                     this.dialog.dismiss();
                 }
             } catch (Exception ex) {
-                Log.e(NewsActivity.this, ex);
+                AppLog.e(NewsActivity.this, ex);
             }
 
             if (isCancelled()) return;
@@ -883,7 +883,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
             } else {
                 NewsActivity.this.setTitle(ex.getMessage());
                 webView.loadDataWithBaseURL("\"file:///android_asset/\"", m_ThemeBody, "text/html", "UTF-8", null);
-                Log.e(NewsActivity.this, ex);
+                AppLog.e(NewsActivity.this, ex);
             }
         }
 

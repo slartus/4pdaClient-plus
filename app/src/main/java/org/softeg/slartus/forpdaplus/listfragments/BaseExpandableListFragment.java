@@ -20,9 +20,9 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ExpandableMyListAdapter;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -36,7 +36,7 @@ import uk.co.senab.actionbarpulltorefresh.library.Options;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
-public abstract class BaseExpandableListFragment extends BaseFragment implements
+public abstract class BaseExpandableListFragment extends BaseBrickFragment implements
         ExpandableListView.OnChildClickListener {
     protected ArrayList<ExpandableGroup> mData = new ArrayList<>();
     protected ArrayList<ExpandableGroup> mLoadResultList;
@@ -272,11 +272,11 @@ super();
 
     private <T> void updateItemCache(T item, Class<T> tClass) {
         try {
-            CacheDbHelper cacheDbHelper = new CacheDbHelper(MyApp.getContext());
+            CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
             SQLiteDatabase db = null;
             try {
                 db = cacheDbHelper.getWritableDatabase();
-                BaseDao<T> baseDao = new BaseDao<>(MyApp.getContext(), db, getListName(), tClass);
+                BaseDao<T> baseDao = new BaseDao<>(App.getContext(), db, getListName(), tClass);
 
                 baseDao.update(item, ((IListItem) item).getId().toString());
 
@@ -293,7 +293,7 @@ super();
         try {
             saveCache();
         } catch (Throwable e) {
-            Log.eToast(getContext(), e);
+            AppLog.eToast(getContext(), e);
         }
     }
 
@@ -424,7 +424,7 @@ super();
             if (!isCancelled())
                 setLoading(false);
             if (mEx != null)
-                Log.e(getActivity(), mEx, new Runnable() {
+                AppLog.e(getActivity(), mEx, new Runnable() {
                     @Override
                     public void run() {
                         loadData(mRefresh);
@@ -474,7 +474,7 @@ super();
             super.onPostExecute(result);
 
             if (mEx != null)
-                Toast.makeText(getContext(), Log.getLocalizedMessage(mEx, "Ошибка проверки qms"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), AppLog.getLocalizedMessage(mEx, "Ошибка проверки qms"), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -508,7 +508,7 @@ super();
             super.onPostExecute(result);
 
             if (mEx != null)
-                Toast.makeText(getContext(), Log.getLocalizedMessage(mEx, "Ошибка загрузки кешированного списка"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), AppLog.getLocalizedMessage(mEx, "Ошибка загрузки кешированного списка"), Toast.LENGTH_SHORT).show();
             if (!isCancelled()) {
                 deliveryCache();
                 restoreListViewScrollPosition();

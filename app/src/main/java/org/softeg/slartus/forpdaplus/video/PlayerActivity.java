@@ -30,12 +30,12 @@ import android.widget.VideoView;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.IntentActivity;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.video.api.Quality;
 import org.softeg.slartus.forpdaplus.video.api.VideoItem;
 import org.softeg.slartus.forpdaplus.video.api.YouTubeAPI;
@@ -120,7 +120,7 @@ public class PlayerActivity extends BaseFragmentActivity {
     }
 
     public static void showYoutubeChoiceDialog(final Activity activity, final CharSequence youtubeUrl) {
-        int savedSelectedPlayer = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(MyApp.getContext())
+        int savedSelectedPlayer = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(App.getContext())
                 .getString("news.videoplayer", "-1"));
         if (savedSelectedPlayer != -1) {
             startVideo(savedSelectedPlayer, activity, youtubeUrl);
@@ -142,7 +142,7 @@ public class PlayerActivity extends BaseFragmentActivity {
                             public void onClick(DialogInterface dialogInterface, int whichButton) {
                                 dialogInterface.dismiss();
 
-                                PreferenceManager.getDefaultSharedPreferences(MyApp.getContext())
+                                PreferenceManager.getDefaultSharedPreferences(App.getContext())
                                         .edit()
                                         .putString("news.videoplayer", Integer.toString(selected_player[0]))
                                         .commit();
@@ -320,7 +320,7 @@ public class PlayerActivity extends BaseFragmentActivity {
 
             mVideoView.start();
         } catch (Throwable ex) {
-            Log.e(getContext(), String.format("Ошибка воспроизведения видео(%s)!", pResult), ex);
+            AppLog.toastE(getContext(), ex);
         }
     }
 
@@ -376,10 +376,10 @@ public class PlayerActivity extends BaseFragmentActivity {
                         mEx.getClass() == IdException.class ||
                         mEx.getClass() == ListIdException.class) {
                     if (!tryPlayInYoutubePlayer())
-                        org.softeg.slartus.forpdaplus.common.Log.e(getContext(), mEx);
+                        AppLog.e(getContext(), mEx);
 
                 } else {
-                    org.softeg.slartus.forpdaplus.common.Log.e(getContext(), mEx);
+                    AppLog.e(getContext(), mEx);
                 }
 
                 return;
@@ -404,7 +404,7 @@ public class PlayerActivity extends BaseFragmentActivity {
 
 
             } catch (Throwable ex) {
-                Log.e(getContext(), String.format("Ошибка воспроизведения видео(%s)!", mVideoUrl), ex);
+                AppLog.toastE(getContext(), ex);
             }
         }
     }

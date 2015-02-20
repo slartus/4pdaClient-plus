@@ -44,7 +44,7 @@ import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
@@ -54,7 +54,7 @@ import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView;
 import org.softeg.slartus.forpdaplus.emotic.Smiles;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
@@ -147,7 +147,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         wvChat.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
 
         m_WebViewExternals = new WebViewExternals(this);
-        m_WebViewExternals.loadPreferences(PreferenceManager.getDefaultSharedPreferences(MyApp.getContext()));
+        m_WebViewExternals.loadPreferences(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
 
         m_WebViewExternals.setWebViewSettings();
 
@@ -207,7 +207,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                 } catch (ActivityNotFoundException ex) {
                     Toast.makeText(QmsChatActivity.this, "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {
-                    Log.e(QmsChatActivity.this, ex);
+                    AppLog.e(QmsChatActivity.this, ex);
                 }
             }
         });
@@ -525,7 +525,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                         m_UpdateTimer.purge();
 
                     } else {
-                        Toast.makeText(QmsChatActivity.this, Log.getLocalizedMessage(finalEx, finalEx.getLocalizedMessage()),
+                        Toast.makeText(QmsChatActivity.this, AppLog.getLocalizedMessage(finalEx, finalEx.getLocalizedMessage()),
                                 Toast.LENGTH_SHORT).show();
                     }
 
@@ -543,7 +543,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
             wvChat.loadDataWithBaseURL("\"file:///android_asset/\"", chatBody, "text/html", "UTF-8", null);
         } else {
             if (ex != null)
-                Log.e(QmsChatActivity.this, ex, new Runnable() {
+                AppLog.e(QmsChatActivity.this, ex, new Runnable() {
                     @Override
                     public void run() {
                         m_SendTask = new SendTask(QmsChatActivity.this);
@@ -568,7 +568,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                         return;
                     reLoadChatSafe();
                 } catch (Throwable ex) {
-                    Log.e(QmsChatActivity.this, ex);
+                    AppLog.e(QmsChatActivity.this, ex);
                 }
 
             }
@@ -604,7 +604,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
     }
 
     public static String getEncoding() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getContext());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
 
         return prefs.getString("qms.chat.encoding", "UTF-8");
 
@@ -806,7 +806,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
 
             if (!success) {
                 if (ex != null)
-                    Log.e(QmsChatActivity.this, ex);
+                    AppLog.e(QmsChatActivity.this, ex);
                 else
                     Toast.makeText(QmsChatActivity.this, "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();
@@ -974,7 +974,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         try {
             wvChat.loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
     }
 
@@ -991,7 +991,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                     }
 
 
-                    File file = new File(MyApp.getInstance().getExternalFilesDir(null), "qmschat.txt");
+                    File file = new File(App.getInstance().getExternalFilesDir(null), "qmschat.txt");
                     FileWriter out = new FileWriter(file);
                     out.write(html);
                     out.close();
@@ -1001,7 +1001,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                     intent.setDataAndType(uri, "text/plain");
                     startActivity(intent);
                 } catch (Exception e) {
-                    Log.e(QmsChatActivity.this, e);
+                    AppLog.e(QmsChatActivity.this, e);
                 }
             }
         });
@@ -1051,7 +1051,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                 wvChat.setInitialScale((int) (m_Scale * 100));
 
             } catch (Throwable ex) {
-                Log.e(QmsChatActivity.this, ex);
+                AppLog.e(QmsChatActivity.this, ex);
             }
 
 

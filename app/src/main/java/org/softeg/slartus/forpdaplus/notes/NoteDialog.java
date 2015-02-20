@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.NotesTable;
 
 /**
@@ -78,12 +78,12 @@ public class NoteDialog {
                                         try {
                                             if (finalEx != null) {
                                                 Toast.makeText(context, finalEx.getMessage(), Toast.LENGTH_SHORT).show();
-                                                Log.e(context, finalEx);
+                                                AppLog.e(context, finalEx);
                                             } else {
                                                 Toast.makeText(context, context.getString(R.string.NoteSaved), Toast.LENGTH_LONG).show();
                                             }
                                         } catch (Exception ex) {
-                                            Log.e(context, ex);
+                                            AppLog.e(context, ex);
                                         }
 
                                     }

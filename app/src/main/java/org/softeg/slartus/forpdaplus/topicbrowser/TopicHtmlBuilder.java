@@ -1,12 +1,11 @@
 package org.softeg.slartus.forpdaplus.topicbrowser;
 
-import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
 import org.softeg.slartus.forpdaapi.TopicBodyParser;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.Post;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
@@ -30,10 +29,10 @@ public class TopicHtmlBuilder extends HtmlBuilder {
 
     public TopicHtmlBuilder(TopicBodyParser topicBodyParser) {
         m_HtmlPreferences = new HtmlPreferences();
-        m_HtmlPreferences.load(MyApp.getContext());
+        m_HtmlPreferences.load(App.getContext());
         m_EmoticsDict = Smiles.getSmilesDict();
 
-        m_IsWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(MyApp.getContext());
+        m_IsWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(App.getContext());
         m_Logined = Client.getInstance().getLogined();
 
         m_TopicBodyParser = topicBodyParser;

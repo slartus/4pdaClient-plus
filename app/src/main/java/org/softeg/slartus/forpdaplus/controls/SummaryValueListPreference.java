@@ -11,7 +11,7 @@ import android.util.AttributeSet;
 
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.lang.reflect.Field;
 
@@ -79,7 +79,7 @@ public class SummaryValueListPreference extends ListPreference {
             if (ind != -1)
                 setValueIndex(ind);
         } catch (Throwable ex) {
-            Log.eToast(getContext(), ex);
+            AppLog.toastE(getContext(), ex);
         }
 
     }

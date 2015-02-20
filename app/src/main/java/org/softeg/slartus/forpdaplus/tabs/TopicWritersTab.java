@@ -8,7 +8,7 @@ import android.support.v4.content.Loader;
 
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.QuickStartActivity;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaapi.users.Users;
 
 import java.io.IOException;
@@ -61,7 +61,7 @@ public class TopicWritersTab extends UsersTab {
 
             context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Log.e(context, e);
+            AppLog.e(context, e);
         }
     }
 }

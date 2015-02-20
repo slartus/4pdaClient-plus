@@ -15,7 +15,7 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.NotesTable;
 import org.softeg.slartus.forpdaplus.notes.Note;
 import org.softeg.slartus.forpdaplus.notes.NoteActivity;
@@ -92,7 +92,7 @@ public class NotesListFragment extends TopicsListFragment {
                                     mData.remove(topic);
                                     getAdapter().notifyDataSetChanged();
                                 } catch (Throwable ex) {
-                                    Log.e(getContext(), ex);
+                                    AppLog.e(getContext(), ex);
                                 }
                             }
                         })
@@ -123,7 +123,7 @@ public class NotesListFragment extends TopicsListFragment {
                 }
             }
         } catch (Throwable e) {
-            Log.e(getContext(), e);
+            AppLog.e(getContext(), e);
         }
     }
 }

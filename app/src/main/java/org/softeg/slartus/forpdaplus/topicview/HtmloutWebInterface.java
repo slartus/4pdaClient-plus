@@ -26,9 +26,9 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.TopicAttaches;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
-import org.softeg.slartus.forpdaplus.listfragments.UserReputationFragment;
+import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.tabs.TopicReadingUsersTab;
 import org.softeg.slartus.forpdaplus.tabs.TopicWritersTab;
 
@@ -196,7 +196,7 @@ public class HtmloutWebInterface {
                 try {
                     TopicReadingUsersTab.show(getContext(), getContext().getTopic().getId());
                 } catch (ActivityNotFoundException e) {
-                    Log.e(getContext(), e);
+                    AppLog.e(getContext(), e);
                 }
             }
         });
@@ -353,7 +353,7 @@ public class HtmloutWebInterface {
                                 listView.setItemChecked(value, true);
                                 listView.setSelection(value);
                             } catch (Throwable ex) {
-                                Log.e(getContext(), ex);
+                                AppLog.e(getContext(), ex);
                             } finally {
                                 listView.setTag(true);
                             }
@@ -375,7 +375,7 @@ public class HtmloutWebInterface {
                             try {
                                 txtNumberPage.setText(Integer.toString((int) l + 1));
                             } catch (Throwable ex) {
-                                Log.e(getContext(), ex);
+                                AppLog.e(getContext(), ex);
                             } finally {
                                 txtNumberPage.setTag(true);
                             }
@@ -400,7 +400,7 @@ public class HtmloutWebInterface {
                             .create()
                             .show();
                 } catch (Throwable ex) {
-                    Log.e(getContext(), ex);
+                    AppLog.e(getContext(), ex);
                 }
             }
         });

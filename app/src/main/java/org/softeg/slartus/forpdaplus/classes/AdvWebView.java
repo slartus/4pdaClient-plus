@@ -11,8 +11,8 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import org.softeg.slartus.forpdaplus.MyApp;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.util.Calendar;
@@ -60,8 +60,8 @@ public class AdvWebView extends WebView {
             setScrollbarFadingEnabled(false);
         }
 
-        setBackgroundColor(MyApp.getInstance().getThemeStyleWebViewBackground());
-        loadData("<html><head></head><body bgcolor=" + MyApp.getInstance().getCurrentThemeName() + "></body></html>", "text/html", "UTF-8");
+        setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());
+        loadData("<html><head></head><body bgcolor=" + App.getInstance().getCurrentThemeName() + "></body></html>", "text/html", "UTF-8");
     }
 
     private Point m_LastMotionEvent = null;
@@ -101,7 +101,7 @@ public class AdvWebView extends WebView {
             else if (mRawY == -actionBarHeight || t <= actionBarHeight)
                 mOnScrollChangedCallback.onScrollUp(m_InTouch);
         } catch (Throwable ex) {
-            Log.e(getContext(), ex);
+            AppLog.e(getContext(), ex);
         }
     }
 
@@ -145,7 +145,7 @@ public class AdvWebView extends WebView {
                 }
             }
         } catch (Throwable ex) {
-            Log.e(getContext(), ex);
+            AppLog.e(getContext(), ex);
         }finally {
             m_LastMotionEvent = new Point((int) event.getX(), (int) event.getY());
         }

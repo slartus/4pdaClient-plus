@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.Spinner;
 
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.CatalogAdapter;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.CatalogCrumbsAdapter;
 import org.softeg.slartus.forpdaapi.ICatalogItem;
@@ -114,7 +114,7 @@ public abstract class BaseCatalogFragment extends BaseTaskListFragment {
             if (TextUtils.isEmpty(item.getId())) return;
             onCatalogItemClick(item);
         } catch (Throwable ex) {
-            Log.e(getActivity(), ex);
+            AppLog.e(getActivity(), ex);
         }
     }
 

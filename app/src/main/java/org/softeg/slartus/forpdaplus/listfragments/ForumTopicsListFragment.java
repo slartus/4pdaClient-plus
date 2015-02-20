@@ -13,7 +13,7 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.TopicsApi;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumTopicsBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
@@ -67,7 +67,7 @@ public class ForumTopicsListFragment extends TopicsListFragment {
 
     @Override
     protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException, ParseException, URISyntaxException {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         return TopicsApi.getForumTopics(client, getForumId(),
                 prefs.getString(getListName() + ".sort_key", "last_post"),
                 prefs.getString(getListName() + ".sort_by", "Z-A"),

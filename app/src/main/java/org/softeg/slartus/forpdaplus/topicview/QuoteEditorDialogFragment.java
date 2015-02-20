@@ -18,7 +18,7 @@ import android.widget.Toast;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.HtmlUtils;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -221,7 +221,7 @@ public class QuoteEditorDialogFragment extends DialogFragment implements View.On
             try {
                 progressBar.setVisibility(View.GONE);
             } catch (Exception ex) {
-                Log.e(null, ex);
+                AppLog.e(null, ex);
             }
 
             if (isCancelled()) return;
@@ -232,7 +232,7 @@ public class QuoteEditorDialogFragment extends DialogFragment implements View.On
                 parseQuote();
 
             } else {
-                Log.e(getActivity(), ex, new Runnable() {
+                AppLog.e(getActivity(), ex, new Runnable() {
                     @Override
                     public void run() {
                         new QuoteLoader(m_QuoteUrl).execute();

@@ -17,9 +17,9 @@ import org.json.JSONObject;
 import org.softeg.slartus.forpdacommon.Http;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.IntentActivity;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.util.regex.Matcher;
@@ -42,7 +42,7 @@ public class ForPdaVersionNotifier extends MainNotifier {
         new Thread(new Runnable() {
             public void run() {
                 try {
-                    String currentVersion = getAppVersion(MyApp.getContext());
+                    String currentVersion = getAppVersion(App.getContext());
                     currentVersion = currentVersion.trim();
 
                     String url = "http://4pda.ru/forum/index.php?showtopic=271502";
@@ -53,7 +53,7 @@ public class ForPdaVersionNotifier extends MainNotifier {
                     if (!m.find())
                         return;
                     JSONObject jsonObject = new JSONObject(Html.fromHtml(m.group(1)).toString());
-                    jsonObject = jsonObject.getJSONObject(MyApp.getContext().getPackageName());
+                    jsonObject = jsonObject.getJSONObject(App.getContext().getPackageName());
 
                     JSONObject versionObject = jsonObject.getJSONObject("release");
 
@@ -109,14 +109,14 @@ public class ForPdaVersionNotifier extends MainNotifier {
                                         try {
                                             IntentActivity.tryShowFile((Activity) context, Uri.parse(apk), false);
                                         } catch (Throwable ex) {
-                                            Log.e(context, ex);
+                                            AppLog.e(context, ex);
                                         }
                                     }
                                 })
                                 .setNegativeButton("Закрыть", null).create());
 
                     } catch (Exception ex) {
-                        Log.e(context, new NotReportException("Ошибка проверки новой версии", ex));
+                        AppLog.e(context, new NotReportException("Ошибка проверки новой версии", ex));
                     }
 
                 }

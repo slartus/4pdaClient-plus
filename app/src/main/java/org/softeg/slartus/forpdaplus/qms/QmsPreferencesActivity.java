@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 
 
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.prefs.BasePreferencesActivity;
 
@@ -33,7 +33,7 @@ public class QmsPreferencesActivity extends BasePreferencesActivity {
 
         super.onBackPressed();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        MyApp.reStartQmsService();
+        App.reStartQmsService();
 
     }
 }

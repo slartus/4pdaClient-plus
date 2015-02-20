@@ -22,8 +22,9 @@ import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdacommon.UrlExtensions;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.Email;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.DevDbCatalogFragment;
@@ -31,8 +32,8 @@ import org.softeg.slartus.forpdaplus.listfragments.DevDbModelsFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ForumCatalogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
-import org.softeg.slartus.forpdaplus.listfragments.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listfragments.news.NewsListFragment;
+import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.DevDbCatalogBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.DevDbModelsBrickInfo;
@@ -586,7 +587,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
     }
 
     private static void showImage(Context context, String url) {
-        ImageViewActivity.showImageUrl(context, url);
+        ImageViewActivity.startActivity(context, url);
     }
 
     public static void downloadFileStart(final Activity activity, final String url, final Boolean finish) {
@@ -643,7 +644,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
             else
                 context.startActivity(marketIntent);
         } catch (Exception ex) {
-            Log.e(context, new NotReportException("Не найдено ни одно приложение для ссылки: " + url));
+            AppLog.e(context, new NotReportException("Не найдено ни одно приложение для ссылки: " + url));
         }
     }
 }

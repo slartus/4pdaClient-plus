@@ -9,8 +9,8 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.sqliteannotations.BaseDao;
@@ -61,11 +61,11 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
 
     private <T> void updateItemCache(T item, Class<T> tClass) {
         try {
-            CacheDbHelper cacheDbHelper = new CacheDbHelper(MyApp.getContext());
+            CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
             SQLiteDatabase db = null;
             try {
                 db = cacheDbHelper.getWritableDatabase();
-                BaseDao<T> baseDao = new BaseDao<>(MyApp.getContext(), db, getListName(), tClass);
+                BaseDao<T> baseDao = new BaseDao<>(App.getContext(), db, getListName(), tClass);
 
                 baseDao.update(item, ((IListItem) item).getId().toString());
 
@@ -82,7 +82,7 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
         try {
             saveCache();
         } catch (Throwable e) {
-            Log.eToast(getContext(), e);
+            AppLog.toastE(getContext(), e);
         }
     }
 
@@ -247,7 +247,7 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
             if (!isCancelled())
                 setLoading(false);
             if (mEx != null)
-                Log.e(getActivity(), mEx, new Runnable() {
+                AppLog.e(getActivity(), mEx, new Runnable() {
                     @Override
                     public void run() {
                         loadData(mRefresh);
@@ -299,7 +299,7 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
             super.onPostExecute(result);
 
             if (mEx != null)
-                Toast.makeText(getContext(), Log.getLocalizedMessage(mEx, "Ошибка проверки qms"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), AppLog.getLocalizedMessage(mEx, "Ошибка проверки qms"), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -333,7 +333,7 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
             super.onPostExecute(result);
 
             if (mEx != null)
-                Toast.makeText(getContext(), Log.getLocalizedMessage(mEx, "Ошибка загрузки кешированного списка"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), AppLog.getLocalizedMessage(mEx, "Ошибка загрузки кешированного списка"), Toast.LENGTH_SHORT).show();
             if (!isCancelled()) {
                 deliveryCache();
                 restoreListViewScrollPosition();

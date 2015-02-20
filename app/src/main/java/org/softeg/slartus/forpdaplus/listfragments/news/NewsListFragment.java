@@ -23,12 +23,12 @@ import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.News;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.NewsActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.listfragments.BaseTaskListFragment;
@@ -57,7 +57,7 @@ public class NewsListFragment extends BaseTaskListFragment {
 
     public NewsListFragment() {
         super();
-        initImageLoader(MyApp.getContext());
+        initImageLoader(App.getContext());
         imageLoader = ImageLoader.getInstance();
     }
 
@@ -99,11 +99,11 @@ public class NewsListFragment extends BaseTaskListFragment {
     @Override
     public void saveCache() throws Exception {
         if (!useCache) return;
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(MyApp.getContext());
+        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
         SQLiteDatabase db = null;
         try {
             db = cacheDbHelper.getWritableDatabase();
-            BaseDao<News> baseDao = new BaseDao<>(MyApp.getContext(), db, getListName(), News.class);
+            BaseDao<News> baseDao = new BaseDao<>(App.getContext(), db, getListName(), News.class);
             baseDao.createTable(db);
             for (IListItem item : mData) {
                 News news = (News) item;
@@ -120,11 +120,11 @@ public class NewsListFragment extends BaseTaskListFragment {
     public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
         mCacheList = new ArrayList<>();
         if (!useCache) return;
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(MyApp.getContext());
+        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
         SQLiteDatabase db = null;
         try {
             db = cacheDbHelper.getReadableDatabase();
-            BaseDao<News> baseDao = new BaseDao<>(MyApp.getContext(), db, getListName(), News.class);
+            BaseDao<News> baseDao = new BaseDao<>(App.getContext(), db, getListName(), News.class);
             if (baseDao.isTableExists())
                 mCacheList.addAll(baseDao.getAll());
         } finally {
@@ -221,7 +221,7 @@ public class NewsListFragment extends BaseTaskListFragment {
             mAdapter.notifyDataSetChanged();
 
         } catch (Throwable ex) {
-            Log.e(getActivity(), ex);
+            AppLog.e(getActivity(), ex);
         }
     }
 

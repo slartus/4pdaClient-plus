@@ -351,7 +351,7 @@ public class HttpHelper {
     }
 
 
-    private final ResponseHandler<String> responseHandler;
+    protected final ResponseHandler<String> responseHandler;
 
     public String performGet(final String url) throws IOException {
         return performRequest(null, url, null, null, null, null, HttpHelper.GET_TYPE, HTTP_CONTENT_CHARSET);

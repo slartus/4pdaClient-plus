@@ -23,14 +23,14 @@ import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdacommon.ActionSelectDialogFragment;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.TopicListItemTask;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.SortedListAdapter;
@@ -66,11 +66,11 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
     @Override
     public void saveCache() throws Exception {
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(MyApp.getContext());
+        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
         SQLiteDatabase db = null;
         try {
             db = cacheDbHelper.getWritableDatabase();
-            BaseDao<Topic> baseDao = new BaseDao<>(MyApp.getContext(), db, getListName(), Topic.class);
+            BaseDao<Topic> baseDao = new BaseDao<>(App.getContext(), db, getListName(), Topic.class);
             baseDao.createTable(db);
             for (IListItem item : mData) {
                 Topic topic = (Topic) item;
@@ -86,11 +86,11 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     @Override
     public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
         mCacheList.clear();
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(MyApp.getContext());
+        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
         SQLiteDatabase db = null;
         try {
             db = cacheDbHelper.getReadableDatabase();
-            BaseDao<Topic> baseDao = new BaseDao<>(MyApp.getContext(), db, getListName(), Topic.class);
+            BaseDao<Topic> baseDao = new BaseDao<>(App.getContext(), db, getListName(), Topic.class);
             if (baseDao.isTableExists())
                 mCacheList.addAll(baseDao.getAll());
         } finally {
@@ -188,7 +188,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                     topic.getMain().toString());
             addOptionsMenu(getContext(), mHandler, menu, topic, null);
         } catch (Exception ex) {
-            Log.e(this.getContext(), ex);
+            AppLog.e(this.getContext(), ex);
         }
     }
 
@@ -427,7 +427,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
 
         } catch (Throwable ex) {
-            Log.e(getActivity(), ex);
+            AppLog.e(getActivity(), ex);
         }
     }
 

@@ -6,9 +6,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.DonateActivity;
 
 /*
@@ -56,17 +56,17 @@ public class DonateNotifier extends MainNotifier {
                                     }
                             ).create());
         } catch (Throwable ex) {
-            Log.e(fragmentActivity, ex);
+            AppLog.e(fragmentActivity, ex);
         }
 
     }
 
     protected boolean needShow() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getContext());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
         if (prefs.getBoolean("donate.DontShow", false)) return false;
 
 
-        String appVersion = getAppVersion(MyApp.getContext());
+        String appVersion = getAppVersion(App.getContext());
         if (prefs.getString("DonateShowVer", "").equals(appVersion)) {
             if (!isTime()) return false;
         }
@@ -76,9 +76,9 @@ public class DonateNotifier extends MainNotifier {
 
     protected void saveSettings() {
         saveTime();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getContext());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("DonateShowVer", getAppVersion(MyApp.getContext()));
+        editor.putString("DonateShowVer", getAppVersion(App.getContext()));
         editor.commit();
     }
 }

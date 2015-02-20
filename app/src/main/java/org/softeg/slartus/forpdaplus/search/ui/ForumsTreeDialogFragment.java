@@ -23,7 +23,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.Forum;
 import org.softeg.slartus.forpdaplus.classes.ForumsAdapter;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.search.CheckableForumItem;
 
 import java.util.ArrayList;
@@ -221,7 +221,7 @@ public class ForumsTreeDialogFragment extends DialogFragment {
             setLoading(false);
 
             if (mEx != null)
-                Log.e(getActivity(), mEx, new Runnable() {
+                AppLog.e(getActivity(), mEx, new Runnable() {
                     @Override
                     public void run() {
                         startLoadData();

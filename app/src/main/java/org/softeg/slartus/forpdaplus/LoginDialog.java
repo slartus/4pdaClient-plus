@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 /**
  * User: slinkin
@@ -162,7 +162,7 @@ public class LoginDialog {
                         Toast.LENGTH_SHORT).show();
             } else {
                 if (ex != null)
-                    Log.e(mContext, ex);
+                    AppLog.e(mContext, ex);
                 else
                     new AlertDialogBuilder(mContext)
                             .setIcon(R.drawable.icon)
@@ -199,7 +199,7 @@ public class LoginDialog {
 
                 return Client.getInstance().logout();
             } catch (Throwable e) {
-                Log.e(mContext, e);
+                AppLog.e(mContext, e);
                 ex = e;
                 return false;
             }
@@ -236,7 +236,7 @@ public class LoginDialog {
                         Toast.LENGTH_SHORT).show();
             } else {
                 if (ex != null)
-                    Log.i(mContext, ex);
+                    AppLog.i(mContext, ex);
 
             }
         }

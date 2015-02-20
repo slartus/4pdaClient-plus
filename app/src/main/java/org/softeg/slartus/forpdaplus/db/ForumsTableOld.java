@@ -3,7 +3,7 @@ package org.softeg.slartus.forpdaplus.db;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.Forum;
 
 
@@ -41,7 +41,7 @@ public class ForumsTableOld {
         Cursor c = null;
         HashMap<String, Forum> hashMap = new HashMap<>();
         try {
-            ForumStructDbHelper dbHelper = new ForumStructDbHelper(MyApp.getInstance());
+            ForumStructDbHelper dbHelper = new ForumStructDbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
 
             assert db != null;

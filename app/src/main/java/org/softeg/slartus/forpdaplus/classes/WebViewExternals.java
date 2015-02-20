@@ -11,7 +11,7 @@ import android.webkit.WebView;
 
 import org.softeg.slartus.forpdacommon.Connectivity;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
 
 /**
@@ -74,10 +74,10 @@ public class WebViewExternals {
     public void setWebViewSettings(Boolean loadImagesAutomaticallyAlways) {
         WebView webView = getWebView();
         disableWebViewCache();
-        webView.setBackgroundColor(MyApp.getInstance().getThemeStyleWebViewBackground());
-        if (!MyApp.getInstance().isWhiteTheme()) {
-            webView.setBackgroundColor(MyApp.getInstance().getThemeStyleWebViewBackground());
-            webView.loadData("<html><head></head><body bgcolor=" + MyApp.getInstance().getCurrentThemeName() + "></body></html>", "text/html", "UTF-8");
+        webView.setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());
+        if (!App.getInstance().isWhiteTheme()) {
+            webView.setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());
+            webView.loadData("<html><head></head><body bgcolor=" + App.getInstance().getCurrentThemeName() + "></body></html>", "text/html", "UTF-8");
         }
 
 
@@ -107,14 +107,14 @@ public class WebViewExternals {
     public static Boolean isLoadImages(String prefix) {
         if (ThemeActivity.LoadsImagesAutomatically != null)
             return ThemeActivity.LoadsImagesAutomatically;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         return isLoadImages(prefs, prefix);
     }
 
     public static Boolean isLoadImages(SharedPreferences prefs, String prefix) {
         int loadImagesType = ExtPreferences.parseInt(prefs, prefix + ".LoadsImages", 1);
         if (loadImagesType == 2) {
-            return Connectivity.isConnectedWifi(MyApp.getContext());
+            return Connectivity.isConnectedWifi(App.getContext());
         }
 
         return loadImagesType == 1;
@@ -133,9 +133,9 @@ public class WebViewExternals {
         if (m_UseVolumesScroll) {
             int action = event.getAction();
 
-            String scrollUpKeys = "," + PreferenceManager.getDefaultSharedPreferences(MyApp.getContext())
+            String scrollUpKeys = "," + PreferenceManager.getDefaultSharedPreferences(App.getContext())
                     .getString("keys.scrollUp", "24").replace(" ", "") + ",";
-            String scrollDownKeys = "," + PreferenceManager.getDefaultSharedPreferences(MyApp.getContext())
+            String scrollDownKeys = "," + PreferenceManager.getDefaultSharedPreferences(App.getContext())
                     .getString("keys.scrollDown", "25").replace(" ", "") + ",";
 
             int keyCode = event.getKeyCode();
@@ -162,9 +162,9 @@ public class WebViewExternals {
     private boolean pageNavigationsByKeys(KeyEvent event) {
         int action = event.getAction();
         if (action == KeyEvent.ACTION_DOWN) {
-            String prevPageKeys = "," + PreferenceManager.getDefaultSharedPreferences(MyApp.getContext())
+            String prevPageKeys = "," + PreferenceManager.getDefaultSharedPreferences(App.getContext())
                     .getString("keys.prevPage", "158").replace(" ", "") + ",";
-            String nextPageKeys = "," + PreferenceManager.getDefaultSharedPreferences(MyApp.getContext())
+            String nextPageKeys = "," + PreferenceManager.getDefaultSharedPreferences(App.getContext())
                     .getString("keys.nextPage", "407").replace(" ", "") + ",";
 
             int keyCode = event.getKeyCode();

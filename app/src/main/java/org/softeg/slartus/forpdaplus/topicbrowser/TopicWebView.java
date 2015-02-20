@@ -12,7 +12,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 
 import java.util.Calendar;
 
@@ -59,15 +59,15 @@ public class TopicWebView extends WebView {
         webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         if (prefs.getBoolean("system.WebViewScroll", true)) {
             setScrollbarFadingEnabled(false);
             setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         }
 
-        setBackgroundColor(MyApp.getInstance().getThemeStyleWebViewBackground());
+        setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());
         loadData("<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\"></head><body bgcolor="
-                + MyApp.getInstance().getCurrentThemeName() + "></body></html>", "text/html", "UTF-8");
+                + App.getInstance().getCurrentThemeName() + "></body></html>", "text/html", "UTF-8");
     }
 
 

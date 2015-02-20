@@ -11,13 +11,13 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.IntentActivity;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.BrowserViewsFragmentActivity;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.Functions;
 import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
 import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
 
@@ -81,7 +81,7 @@ public class StyleInfoActivity extends BrowserViewsFragmentActivity {
     }
 
     private void showStyle(String stylePath) {
-        stylePath = MyApp.getInstance().getThemeCssFileName(stylePath);
+        stylePath = App.getInstance().getThemeCssFileName(stylePath);
         String xmlPath = stylePath.replace(".css", ".xml");
         CssStyle cssStyle = CssStyle.parseStyle(this, xmlPath);
         if (!cssStyle.ExistsInfo) {
@@ -157,7 +157,7 @@ public class StyleInfoActivity extends BrowserViewsFragmentActivity {
                     StringUtils.copyToClipboard(StyleInfoActivity.this, value);
                     Toast.makeText(StyleInfoActivity.this, String.format("Текст '%s' скопирован в буфер обмена", value), Toast.LENGTH_SHORT).show();
                 } catch (Throwable ex) {
-                    Log.e(StyleInfoActivity.this, ex);
+                    AppLog.e(StyleInfoActivity.this, ex);
                 }
             }
         });

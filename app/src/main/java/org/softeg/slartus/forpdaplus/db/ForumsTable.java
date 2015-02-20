@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteStatement;
 import android.text.TextUtils;
 
 import org.softeg.slartus.forpdaapi.Forum;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class ForumsTable {
         SQLiteDatabase db = null;
 
         try {
-            ForumStructDbHelper dbHelper = new ForumStructDbHelper(MyApp.getInstance());
+            ForumStructDbHelper dbHelper = new ForumStructDbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
 
             assert db != null;
@@ -65,7 +65,7 @@ public class ForumsTable {
         SQLiteDatabase db = null;
         ArrayList<String> res = new ArrayList<>();
         try {
-            ForumStructDbHelper dbHelper = new ForumStructDbHelper(MyApp.getInstance());
+            ForumStructDbHelper dbHelper = new ForumStructDbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
 
             assert db != null;
@@ -142,7 +142,7 @@ public class ForumsTable {
         SQLiteDatabase db = null;
         Cursor c = null;
         try {
-            ForumStructDbHelper dbHelper = new ForumStructDbHelper(MyApp.getInstance());
+            ForumStructDbHelper dbHelper = new ForumStructDbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
 
             db.beginTransaction();
@@ -182,7 +182,7 @@ public class ForumsTable {
         SQLiteDatabase db = null;
         Cursor c = null;
         try {
-            ForumStructDbHelper dbHelper = new ForumStructDbHelper(MyApp.getInstance());
+            ForumStructDbHelper dbHelper = new ForumStructDbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
 
             assert db != null;

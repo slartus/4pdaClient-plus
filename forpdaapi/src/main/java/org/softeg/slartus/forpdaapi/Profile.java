@@ -6,6 +6,7 @@ public class Profile {
     private CharSequence id;
     private CharSequence nick;
     private String htmlBody;
+private Throwable error;
 
     public CharSequence getId() {
         return id;
@@ -30,5 +31,13 @@ public class Profile {
 
     public void setHtmlBody(String htmlBody) {
         this.htmlBody = htmlBody;
+    }
+
+    public Throwable getError() {
+        return error;
+    }
+
+    public void setError(Throwable error) {
+        this.error = error;
     }
 }

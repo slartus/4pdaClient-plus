@@ -31,12 +31,12 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.styles.CssStyle;
 import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity;
@@ -73,7 +73,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             }
     }
 
-    public static final int NOTIFIERS_SERVICE_SOUND_REQUEST_CODE = MyApp.getInstance().getUniqueIntValue();
+    public static final int NOTIFIERS_SERVICE_SOUND_REQUEST_CODE = App.getInstance().getUniqueIntValue();
 
 
     public static class PrefsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
@@ -144,9 +144,9 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
 
             final Preference downloadsPathPreference = findPreference("downloads.path");
-            downloadsPathPreference.setSummary(DownloadsService.getDownloadDir(MyApp.getInstance()));
+            downloadsPathPreference.setSummary(DownloadsService.getDownloadDir(App.getInstance()));
             ((EditTextPreference) downloadsPathPreference)
-                    .setText(DownloadsService.getDownloadDir(MyApp.getInstance()));
+                    .setText(DownloadsService.getDownloadDir(App.getInstance()));
             downloadsPathPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 public boolean onPreferenceChange(Preference preference, Object o) {
 
@@ -226,7 +226,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
         private void showStylesDialog() {
 
             try {
-                final String currentValue = MyApp.getInstance().getCurrentTheme();
+                final String currentValue = App.getInstance().getCurrentTheme();
 
                 ArrayList<CharSequence> newStyleNames = new ArrayList<>();
                 final ArrayList<CharSequence> newstyleValues = new ArrayList<>();
@@ -264,7 +264,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                     return;
                                 }
                                 String stylePath = newstyleValues.get(selected[0]).toString();
-                                stylePath = MyApp.getInstance().getThemeCssFileName(stylePath);
+                                stylePath = App.getInstance().getThemeCssFileName(stylePath);
                                 String xmlPath = stylePath.replace(".css", ".xml");
                                 CssStyle cssStyle = CssStyle.parseStyle(getActivity(), xmlPath);
                                 if (!cssStyle.ExistsInfo) {
@@ -279,7 +279,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         })
                         .create().show();
             } catch (Exception ex) {
-                Log.e(getActivity(), ex);
+                AppLog.e(getActivity(), ex);
             }
 
         }
@@ -339,7 +339,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 file.delete();
                 return true;
             } catch (Throwable ex) {
-                Log.e(getActivity(), new NotReportException(ex.toString()));
+                AppLog.e(getActivity(), new NotReportException(ex.toString()));
             }
             return false;
         }
@@ -371,14 +371,14 @@ public class PreferencesActivity extends BasePreferencesActivity {
             StringBuilder sb = new StringBuilder();
             try {
 
-                BufferedReader br = new BufferedReader(new InputStreamReader(MyApp.getInstance().getAssets().open("history.txt"), "UTF-8"));
+                BufferedReader br = new BufferedReader(new InputStreamReader(App.getInstance().getAssets().open("history.txt"), "UTF-8"));
                 String line;
                 while ((line = br.readLine()) != null) {
                     sb.append(line).append("\n");
                 }
 
             } catch (IOException e) {
-                Log.e(getActivity(), e);
+                AppLog.e(getActivity(), e);
             }
             AlertDialog dialog = new AlertDialogBuilder(getActivity())
                     .setIcon(R.drawable.icon)
@@ -403,16 +403,16 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                 File f = new File(getCookieFilePath(getActivity()));
                                 if (!f.exists()) {
                                     Toast.makeText(getActivity(), getString(R.string.CookiesFileNotFound) +
-                                            ": " + getCookieFilePath(MyApp.getInstance()), Toast.LENGTH_LONG).show();
+                                            ": " + getCookieFilePath(App.getInstance()), Toast.LENGTH_LONG).show();
                                 }
                                 if (f.delete())
                                     Toast.makeText(getActivity(), getString(R.string.CookiesFileDeleted) +
-                                            ": " + getCookieFilePath(MyApp.getInstance()), Toast.LENGTH_LONG).show();
+                                            ": " + getCookieFilePath(App.getInstance()), Toast.LENGTH_LONG).show();
                                 else
                                     Toast.makeText(getActivity(), getString(R.string.FailedDeleteCookies) +
-                                            ": " + getCookieFilePath(MyApp.getInstance()), Toast.LENGTH_LONG).show();
+                                            ": " + getCookieFilePath(App.getInstance()), Toast.LENGTH_LONG).show();
                             } catch (Exception ex) {
-                                Log.e(getActivity(), ex);
+                                AppLog.e(getActivity(), ex);
                             }
                         }
                     })
@@ -436,14 +436,14 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if (b) {
                         if (compoundButton.getId() == rbInternal.getId()) {
-                            txtPath.setText(MyApp.getInstance().getFilesDir().getPath());
+                            txtPath.setText(App.getInstance().getFilesDir().getPath());
                             txtPath.setEnabled(false);
                         } else if (compoundButton.getId() == rbExternal.getId()) {
                             try {
-                                txtPath.setText(MyApp.getInstance().getExternalFilesDir(null).getPath());
+                                txtPath.setText(App.getInstance().getExternalFilesDir(null).getPath());
                                 txtPath.setEnabled(false);
                             } catch (Throwable ex) {
-                                Log.e(getActivity(), ex);
+                                AppLog.e(getActivity(), ex);
                             }
                         } else if (compoundButton.getId() == rbCustom.getId()) {
                             txtPath.setEnabled(true);
@@ -468,7 +468,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                 Preferences.System.setSystemDir(dir);
                                 dialogInterface.dismiss();
                             }catch (Throwable ex){
-                                Log.e(getActivity(),ex);
+                                AppLog.e(getActivity(), ex);
                             }
                         }
                     })
@@ -517,7 +517,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             CharSequence styleName = styleNames[i];
             CharSequence styleValue = styleValues[i];
 
-            xmlPath = MyApp.getInstance().getThemeCssFileName(styleValue.toString()).replace(".css", ".xml").replace("/android_asset/", "");
+            xmlPath = App.getInstance().getThemeCssFileName(styleValue.toString()).replace(".css", ".xml").replace("/android_asset/", "");
             cssStyle = CssStyle.parseStyleFromAssets(context, xmlPath);
             if (cssStyle.ExistsInfo)
                 styleName = cssStyle.Title;
@@ -562,7 +562,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
     @Override
     public void onStop() {
         super.onStop();
-        MyApp.resStartNotifierServices();
+        App.resStartNotifierServices();
     }
 
 
@@ -577,7 +577,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             programName += " v" + pInfo.versionName + " c" + pInfo.versionCode;
 
         } catch (PackageManager.NameNotFoundException e1) {
-            Log.e(context, e1);
+            AppLog.e(context, e1);
         }
         return programName;
     }

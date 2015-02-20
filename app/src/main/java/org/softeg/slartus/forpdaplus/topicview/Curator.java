@@ -10,7 +10,7 @@ import android.widget.Spinner;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 /*
  * Created by slinkin on 24.07.2014.
@@ -116,7 +116,7 @@ public class Curator {
                                             mTopicActivity.getTopic().getId(), mNums, mRating);
                             ExtUrl.showInBrowser(mTopicActivity, url);
                         } catch (Throwable ex) {
-                            Log.e(mTopicActivity, ex);
+                            AppLog.e(mTopicActivity, ex);
                         }
 
                     }

@@ -30,7 +30,7 @@ import uk.co.senab.actionbarpulltorefresh.library.Options;
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
 import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
-public abstract class BaseListFragment extends BaseFragment implements
+public abstract class BaseListFragment extends BaseBrickFragment implements
         AdapterView.OnItemClickListener {
     protected ArrayList<IListItem> mData=new ArrayList<>();
     private static final String TAG = "BaseListFragment";

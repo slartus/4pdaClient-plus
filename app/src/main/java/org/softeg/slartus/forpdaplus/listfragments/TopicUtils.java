@@ -11,13 +11,13 @@ import android.widget.Toast;
 import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.ThemeOpenParams;
 import org.softeg.slartus.forpdaplus.classes.TopicListItemTask;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
 
 import java.io.IOException;
@@ -38,11 +38,11 @@ public class TopicUtils {
      * Какой тип навигации юзер выбрал:  getlastpost, getfirstpost и тд
      */
     public static String getTopicNavigateAction(CharSequence template) {
-        return PreferenceManager.getDefaultSharedPreferences(MyApp.getContext()).getString(String.format("%s.navigate_action", template), null);
+        return PreferenceManager.getDefaultSharedPreferences(App.getContext()).getString(String.format("%s.navigate_action", template), null);
     }
 
     public static void saveTopicNavigateAction(CharSequence template, CharSequence navigateAction) {
-        PreferenceManager.getDefaultSharedPreferences(MyApp.getContext())
+        PreferenceManager.getDefaultSharedPreferences(App.getContext())
                 .edit()
                 .putString(String.format("%s.navigate_action", template), navigateAction.toString())
                 .commit();
@@ -194,12 +194,12 @@ public class TopicUtils {
                                             try {
                                                 if (finalEx != null) {
                                                     Toast.makeText(context, "Ошибка добавления в избранное/подписки", Toast.LENGTH_SHORT).show();
-                                                    Log.e(context, finalEx);
+                                                    AppLog.e(context, finalEx);
                                                 } else {
                                                     Toast.makeText(context, finalRes, Toast.LENGTH_SHORT).show();
                                                 }
                                             } catch (Exception ex) {
-                                                Log.e(context, ex);
+                                                AppLog.e(context, ex);
                                             }
 
                                         }

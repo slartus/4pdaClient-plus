@@ -23,9 +23,9 @@ import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.qms.QmsUser;
 import org.softeg.slartus.forpdaapi.qms.QmsUsers;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.listfragments.BaseTaskListFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -79,11 +79,11 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
 
     @Override
     public void saveCache() throws Exception {
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(MyApp.getContext());
+        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
         SQLiteDatabase db = null;
         try {
             db = cacheDbHelper.getWritableDatabase();
-            BaseDao<QmsUser> baseDao = new BaseDao<>(MyApp.getContext(), db, getListName(), QmsUser.class);
+            BaseDao<QmsUser> baseDao = new BaseDao<>(App.getContext(), db, getListName(), QmsUser.class);
             baseDao.createTable(db);
             for (IListItem item : mData) {
                 QmsUser user = (QmsUser) item;
@@ -100,11 +100,11 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
     public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
         mCacheList = new ArrayList<>();
 
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(MyApp.getContext());
+        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
         SQLiteDatabase db = null;
         try {
             db = cacheDbHelper.getReadableDatabase();
-            BaseDao<QmsUser> baseDao = new BaseDao<>(MyApp.getContext(), db, getListName(), QmsUser.class);
+            BaseDao<QmsUser> baseDao = new BaseDao<>(App.getContext(), db, getListName(), QmsUser.class);
             if (baseDao.isTableExists())
                 mCacheList.addAll(baseDao.getAll());
         } finally {
@@ -137,7 +137,7 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
             QmsContactThemesActivity.showThemes(getActivity(), qmsUser.getId(), qmsUser.getNick().toString());
 
         } catch (Throwable ex) {
-            Log.e(getActivity(), ex);
+            AppLog.e(getActivity(), ex);
         }
     }
 

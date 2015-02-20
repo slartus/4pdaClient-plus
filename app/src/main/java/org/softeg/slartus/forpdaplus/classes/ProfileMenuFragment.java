@@ -14,7 +14,7 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.LoginDialog;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
-import org.softeg.slartus.forpdaplus.listfragments.UserReputationFragment;
+import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 
@@ -111,7 +111,7 @@ private Handler mHandler=new Handler();
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
-                            UserReputationFragment.showActivity(getActivity(), Client.getInstance().UserId);
+                            UserReputationFragment.showActivity(getActivity(), Client.getInstance().UserId,false);
                             return true;
                         }
                     });

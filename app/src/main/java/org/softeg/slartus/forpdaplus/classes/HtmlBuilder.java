@@ -3,7 +3,7 @@ package org.softeg.slartus.forpdaplus.classes;
 import android.text.TextUtils;
 
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
@@ -44,7 +44,7 @@ public class HtmlBuilder {
     }
 
     protected String getStyle() {
-        String cssFile = MyApp.getInstance().getThemeCssFileName();
+        String cssFile = App.getInstance().getThemeCssFileName();
         return cssFile;
 
     }
@@ -67,7 +67,7 @@ public class HtmlBuilder {
     }
 
     public HtmlBuilder endBody() {
-        String emoPath = HtmlPreferences.isUseLocalEmoticons(MyApp.getContext()) ?
+        String emoPath = HtmlPreferences.isUseLocalEmoticons(App.getContext()) ?
                 "file:///android_asset/forum/style_emoticons/default/" : "http://s.4pda.to/img/emot/";
         m_Body.append("<script>jsEmoticons.parseAll('" + emoPath + "');initPostBlock();</script>");
         m_Body.append("</body>\n");

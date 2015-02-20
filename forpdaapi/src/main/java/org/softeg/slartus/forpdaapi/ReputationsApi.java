@@ -2,12 +2,19 @@ package org.softeg.slartus.forpdaapi;/*
  * Created by slinkin on 23.04.2014.
  */
 
+
+import android.net.Uri;
 import android.text.Html;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.softeg.slartus.forpdaapi.classes.ReputationsListData;
 
 import java.io.IOException;
 import java.net.URI;
@@ -27,7 +34,9 @@ public class ReputationsApi {
      * @param self       - действия пользователя с репутацией других пользователей
      * @throws java.io.IOException
      */
-    public static ArrayList<ReputationEvent> loadReputation(IHttpClient httpClient, String userId, Boolean self, ListInfo listInfo) throws IOException, URISyntaxException {
+    public static ReputationsListData loadReputation(IHttpClient httpClient, String userId, Boolean self,
+                                                     ListInfo listInfo)
+            throws IOException, URISyntaxException {
 
 
         List<NameValuePair> qparams = new ArrayList<>();
@@ -44,52 +53,72 @@ public class ReputationsApi {
 
         String body = httpClient.performGet(uri.toString());
 
-        Pattern pattern;
-        Matcher m = Pattern.compile("<div class=(?:'|\")maintitle(?:'|\")>(.*)</div>", Pattern.CASE_INSENSITIVE).matcher(body);
+        Document doc = Jsoup.parse(body);
+        Element el = doc.select("div.maintitle").first();
 
-        if (m.find()) {
-            Matcher userMatcher=Pattern.compile("История репутации участника (.*?) \\[(\\+\\d+/-\\d+)\\]",
-                    Pattern.CASE_INSENSITIVE).matcher(m.group(1));
-            if(userMatcher.find()){
-                listInfo.setTitle(Html.fromHtml(userMatcher.group(1)).toString());
-                listInfo.getParams().put("USER_NICK",Html.fromHtml(userMatcher.group(1)).toString());
-                listInfo.getParams().put("USER_REP",userMatcher.group(2));
+        ReputationsListData res = new ReputationsListData();
+
+        if (el != null) {
+            Matcher userMatcher = Pattern.compile("\\(.*?\\)\\s*(.*?)\\s*([^ ])*\\s*\\[(\\+\\d+\\/-\\d+)\\]",
+                    Pattern.CASE_INSENSITIVE).matcher(el.text());
+            if (userMatcher.find()) {
+                res.setTitle(userMatcher.group(1));
+                res.setUser(userMatcher.group(2));
+                res.setRep(userMatcher.group(3));
             }
-            else
-                listInfo.setTitle(Html.fromHtml(m.group(1)).toString().trim().replace("История репутации участника ",""));
         }
 
-        if (listInfo.getOutCount() == 0) {
-            pattern = Pattern.compile("parseInt\\((\\d+)/\\d+\\)");
-            m = pattern.matcher(body);
-            if (m.find())
-                listInfo.setOutCount(Integer.parseInt(m.group(1)));
+        el = doc.select("div.pagination").first();
+        if (el != null) {
+            Element pel = el.select("a[href=#]").first();
+            if (pel != null) {
+                Matcher m = Pattern.compile("(\\d+)").matcher(pel.text());
+                if (m.find())
+                    res.setPagesCount(Integer.parseInt(m.group(1)));
+            }
+            pel = el.select("span.pagecurrent").first();
+            if (pel != null) {
+                res.setCurrentPage(Integer.parseInt(pel.text()));
+            }
         }
 
-        pattern = Pattern.compile(new StringBuilder()
-                        .append("<td class='row2' align='left'><b><a href='http://4pda.ru/forum/index.php\\?showuser=(\\d+)'>(.*?)</a></b></td>")
-                        .append("\\s*<td class='row2' align='left'>(?:<b>)?(?:<a href='([^']*)'>)?(.*?)(?:</a>)?(?:</b>)?</td>")
-                        .append("\\s*<td class='row2' align='left'>(.*?)</td>")
-                        .append("\\s*<td class='row1' align='center'><img border='0' src='style_images/1/([^']*?).gif' /></td>")
-                        .append("\\s*<td class='row1' align='center'>(.*?)</td>").toString(),
-                Pattern.MULTILINE | Pattern.CASE_INSENSITIVE
-        );
-        m = pattern.matcher(body);
 
-        ArrayList<ReputationEvent> res = new ArrayList<>();
-        while (m.find()) {
+        for (Element trElement : doc.select("table.ipbtable").first().select("tr")) {
+            Elements tdElements = trElement.select("td");
+            if (tdElements.size() != 5) continue;
             ReputationEvent rep = new ReputationEvent();
-            rep.setUserId(m.group(1));
-            rep.setUser(Html.fromHtml(m.group(2)).toString());
-            rep.setSourceUrl(m.group(3));
-            rep.setSource(Html.fromHtml(m.group(4)).toString());
-            rep.setDescription(Html.fromHtml(m.group(5)).toString());
-            rep.setState("up".equals(m.group(6)) ? IListItem.STATE_GREEN : IListItem.STATE_RED);
-            rep.setDate(m.group(7));
-            res.add(rep);
-        }
-        return res;
 
+            Element tdElement = tdElements.get(0);
+            Element l = tdElement.select("a").first();
+            if (l != null) {
+                Uri ur = Uri.parse(l.attr("href"));
+                rep.setUserId(ur.getQueryParameter("showuser"));
+                rep.setUser(l.text());
+            }
+
+            tdElement = tdElements.get(1);
+            l = tdElement.select("a").first();
+            if (l != null) {
+                rep.setSourceUrl(l.attr("href"));
+                rep.setSource(l.text());
+            } else {
+                rep.setSourceUrl(null);
+                rep.setSource(tdElement.text());
+            }
+
+            tdElement = tdElements.get(2);
+            rep.setDescription(tdElement.text());
+
+            tdElement = tdElements.get(3);
+            rep.setState(tdElement.html().contains("up.gif") ? IListItem.STATE_GREEN : IListItem.STATE_RED);
+
+            tdElement = tdElements.get(4);
+            rep.setDate(tdElement.text());
+            res.getItems().add(rep);
+
+        }
+
+        return res;
     }
 
     /**

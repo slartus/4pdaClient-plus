@@ -6,7 +6,6 @@ package org.softeg.slartus.forpdaplus.search.ui;/*
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
@@ -22,17 +21,13 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
-import org.softeg.slartus.forpdaplus.MyApp;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
-import org.softeg.slartus.forpdaplus.common.Log;
-import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.search.ISearchResultView;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
 
 public class SearchActivity extends BaseFragmentActivity
         implements SearchSettingsDialogFragment.ISearchDialogListener {
@@ -115,7 +110,7 @@ public class SearchActivity extends BaseFragmentActivity
             transaction.replace(R.id.fragment_container, newFragment);
             transaction.commit();
         } catch (URISyntaxException e) {
-            Log.e(this, e);
+            AppLog.e(this, e);
         }
     }
 
@@ -130,7 +125,7 @@ public class SearchActivity extends BaseFragmentActivity
 
             ft.commit();
         } catch (Exception ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
     }
 
@@ -141,7 +136,7 @@ public class SearchActivity extends BaseFragmentActivity
         try {
             mFragment1.rebuildUrlMenu();
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
 
 
@@ -160,7 +155,7 @@ public class SearchActivity extends BaseFragmentActivity
             if (currentFragment != null && ((ISearchResultView) currentFragment).dispatchKeyEvent(event))
                 return true;
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
         return super.dispatchKeyEvent(event);
     }

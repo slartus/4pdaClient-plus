@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
-import org.softeg.slartus.forpdaplus.MyApp;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.io.IOException;

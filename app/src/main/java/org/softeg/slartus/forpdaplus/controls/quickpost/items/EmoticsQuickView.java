@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.emotic.Smiles;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
@@ -37,7 +37,7 @@ public class EmoticsQuickView extends BaseQuickView {
 
     private void loadWebView() {
         StringBuilder sb = new StringBuilder();
-        sb.append("<html><body bgcolor=\"").append(MyApp.getInstance().getCurrentThemeName()).append("\">");
+        sb.append("<html><body bgcolor=\"").append(App.getInstance().getCurrentThemeName()).append("\">");
 
         Hashtable<String, String> smiles = Smiles.getSmilesDict();
         Set<String> favorites = Preferences.Topic.Post.getEmoticFavorites();

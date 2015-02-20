@@ -11,9 +11,9 @@ import android.webkit.WebView;
 import org.softeg.slartus.forpdacommon.DateExtensions;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdacommon.Http;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.util.Date;
@@ -39,7 +39,7 @@ public class TopicAttentionNotifier extends MainNotifier {
     @Override
     protected boolean isTime() {
         GregorianCalendar lastShowpromoCalendar = new GregorianCalendar();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getContext());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
         Date lastCheckDate = ExtPreferences.getDateTime(prefs, "notifier." + name, null);
         if (lastCheckDate == null) {
             saveTime();
@@ -112,7 +112,7 @@ public class TopicAttentionNotifier extends MainNotifier {
                     });
 
                 } catch (Throwable ignored) {
-                    Log.e(null,ignored);
+                    AppLog.e(null, ignored);
                 }
             }
         }).start();

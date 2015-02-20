@@ -7,8 +7,8 @@ HTML BODY {
   width: 100%;
   font-size: 100%;
   display: block;
-  background: #ffffff;
-  color: #000000;
+  background: white;
+  color: black;
   margin: 0;
 }
 .post_body span[style*="font-size:36pt"] {
@@ -223,14 +223,14 @@ HTML BODY {
   border-left: 3px #8895a5 solid;
   border-top: 1px solid #999999;
   border-bottom: 1px solid #999999;
-  color: #000000;
+  color: black;
   text-align: center;
   margin: 0.5rem 0 !important;
 }
 .poll .hidemain {
   padding: 0;
   margin: 0;
-  overflow-x: scroll;
+  overflow: auto;
 }
 .poll .hidemain form > .ipbtable {
   display: table-block;
@@ -274,31 +274,20 @@ HTML BODY {
   margin: 0;
   padding: 0;
   border: 1px solid #999999;
-  color: #000000 !important;
-  background: #ffffff;
+  color: black !important;
+  background: white;
 }
 .poll .hidemain form > .ipbtable > tbody tr > .row1 .borderwrap .row1 {
   margin: 0 0 0.1rem;
-  padding: 0 !important;
+  padding: 0.2rem !important;
   font-size: 1rem !important;
   color: #4d4d4d;
-  border-bottom: 1px solid #b3b3b3;
   background: #f0f0f0;
 }
 .poll .hidemain form > .ipbtable > tbody tr > .row1 .borderwrap .ipbtable {
   width: 100%;
 }
-.poll .hidemain form > .ipbtable > tbody tr > .row1 .borderwrap .ipbtable tbody tr {
-  width: 100%;
-}
-.poll .hidemain form > .ipbtable > tbody tr > .row1 .borderwrap .ipbtable tbody tr:last-child td {
-  border-bottom: none;
-  margin-bottom: -1px;
-}
-.poll .hidemain form > .ipbtable > tbody tr > .row1 .borderwrap .ipbtable tbody tr .post2 {
-  border-bottom: 1px solid #f0f0f0;
-}
-.poll .hidemain form > .ipbtable > tbody tr > .row1 .borderwrap .ipbtable tbody tr .post2 img {
+.poll .hidemain form > .ipbtable > tbody tr > .row1 .borderwrap .ipbtable tbody tr td img {
   border: 0.1rem solid #57a;
   height: 0 !important;
   padding: 0.35rem 0;
@@ -306,11 +295,11 @@ HTML BODY {
   vertical-align: middle;
   background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #9bbdf0), color-stop(100%, #5577aa));
 }
-.poll .hidemain form > .ipbtable > tbody tr > .row1 .borderwrap .ipbtable tbody tr .post2 img:first-child,
-.poll .hidemain form > .ipbtable > tbody tr > .row1 .borderwrap .ipbtable tbody tr .post2 img:last-child {
+.poll .hidemain form > .ipbtable > tbody tr > .row1 .borderwrap .ipbtable tbody tr td img:first-child,
+.poll .hidemain form > .ipbtable > tbody tr > .row1 .borderwrap .ipbtable tbody tr td img:last-child {
   display: none;
 }
-.poll .hidemain form > .ipbtable > tbody tr > .row1 .borderwrap .ipbtable tbody tr .post2 .radiobutton ~ b {
+.poll .hidemain form > .ipbtable > tbody tr > .row1 .borderwrap .ipbtable tbody tr td .radiobutton ~ b {
   position: relative;
   top: 0.15rem;
 }
@@ -322,7 +311,7 @@ HTML BODY {
   border-left: 3px #8895a5 solid;
   border-top: 1px solid #999999;
   border-bottom: 1px solid #999999;
-  color: #000000;
+  color: black;
   text-align: center;
 }
 DIV[id*="msg"][name*="msg"] > .hidetop b {
@@ -335,7 +324,7 @@ DIV[id*="msg"][name*="msg"] > .hidetop b:after {
   width: 100%;
   content: '(>>> ШАПКА ТЕМЫ <<<)';
   font-size: 1rem;
-  color: #000000;
+  color: black;
 }
 .post-block.spoil > .block-title {
   display: block;
@@ -345,7 +334,7 @@ DIV[id*="msg"][name*="msg"] > .hidetop b:after {
   border-left: 0.2em #8895a5 solid;
   border-top: 1px solid #999999;
   border-bottom: 1px solid #999999;
-  color: #000000;
+  color: black;
 }
 .post-block.spoil > .block-body {
   padding: 0 0.5em 0.5em;
@@ -371,7 +360,7 @@ DIV[id*="msg"][name*="msg"] > .hidetop b:after {
 .post-block.quote > .block-body {
   padding: 0;
   margin: 0;
-  color: #000000;
+  color: black;
 }
 .post-block.code > .block-title {
   color: #666666;
@@ -393,7 +382,7 @@ DIV[id*="msg"][name*="msg"] > .hidetop b:after {
 }
 .post-block.hidden > .block-body {
   border: 1px dotted #848484;
-  color: #000000;
+  color: black;
   margin: 0 auto 0.4em;
   padding: 0.5em 0.2em;
 }
@@ -420,7 +409,7 @@ DIV[id*="msg"][name*="msg"] > .hidetop b:after {
 .ex > .block-title {
   display: table-cell;
   vertical-align: middle;
-  color: #ffffff;
+  color: white;
   font-weight: bold;
   width: 4.5rem;
   text-align: center;
@@ -436,7 +425,7 @@ DIV[id*="msg"][name*="msg"] > .hidetop b:after {
   vertical-align: middle;
   text-align: left;
   padding: 1em;
-  background: #ffffff;
+  background: white;
   height: 100%;
   margin: 0;
 }
@@ -445,7 +434,7 @@ DIV[id*="msg"][name*="msg"] > .hidetop b:after {
   margin-top: 3px;
   max-width: 100%;
   text-align: center;
-  background: #ffffff;
+  background: white;
 }
 .first,
 .prev,
@@ -493,7 +482,7 @@ DIV[id*="msg"][name*="msg"] > .hidetop b:after {
   color: #4d4d4d;
   font-size: 1.1rem;
   font-weight: bold;
-  background: #ffffff;
+  background: white;
   text-transform: lowercase;
 }
 .read-status.unread.big-dot {
@@ -516,7 +505,6 @@ DIV[id*="msg"][name*="msg"] > .hidetop b:after {
   display: inline-block;
   width: 4em;
   line-height: 4em;
-  background: #f0f0f0;
 }
 label ~ .time {
   position: relative;
@@ -543,8 +531,8 @@ strong span {
   margin: 0 0 -0.3em 0;
   padding: 0.5em;
   border-top: 1px #b3b3b3 solid;
-  color: #000000;
-  background: #ffffff;
+  color: black;
+  background: white;
 }
 #bottom_element {
   margin: 2em 0em;
@@ -611,7 +599,7 @@ ol {
   padding-right: 0.5em;
   background: none;
   border: 0;
-  color: #ffffff;
+  color: white;
   text-transform: lowercase;
   text-align: right;
 }
@@ -636,7 +624,7 @@ img {
   padding: 0.8em 0.5em 1em;
   clear: both;
   word-wrap: break-word;
-  background: #ffffff;
+  background: white;
   border-bottom: 1px solid #b3b3b3;
 }
 .signature {
@@ -710,7 +698,7 @@ img {
   font-size: 0.9rem;
   color: #4d4d4d;
   background: #f0f0f0;
-  border-bottom: 1px solid #ffffff;
+  border-bottom: 1px solid white;
 }
 .post_header DIV .post_date_cli a {
   color: #4d4d4d;
@@ -852,7 +840,7 @@ img {
   margin-bottom: 0;
   line-height: 1;
   font-size: 1.1rem !important;
-  color: #000000 !important;
+  color: black !important;
   font-weight: bold;
 }
 .s_post_footer {
@@ -863,7 +851,7 @@ img {
   background: #f0f0f0;
   border-bottom: 1px solid #a6a6a6;
   text-align: center;
-  color: #000000;
+  color: black;
 }
 .s_post_footer td {
   position: relative;
@@ -1324,10 +1312,10 @@ edit b {
   margin: 0;
   display: block;
   margin: 0.3em;
-  background: #ffffff;
+  background: white;
   border: 1px solid #a8a8a8;
   padding: 0.3em;
-  color: #000000;
+  color: black;
 }
 .container .content {
   display: block;
@@ -1394,7 +1382,7 @@ edit b {
   margin: 0.7rem;
   font-size: 1.5em;
   text-decoration: none;
-  color: #ffffff;
+  color: white;
   font-weight: bold;
   background: #85a3f0;
 }
@@ -1412,7 +1400,7 @@ BLOCKQUOTE H3 {
 }
 .review-bottom-informer {
   padding: 0 0.3em;
-  background: #ffffff;
+  background: white;
 }
 .review-bottom-informer .item {
   text-align: center;
@@ -1485,7 +1473,7 @@ h3 a {
   display: table;
   width: 100%;
   border-top: 1px solid #cccccc;
-  background: #ffffff;
+  background: white;
 }
 .mlinks.desc .mlright .do-vam div .mltbl.platforms .mlrow {
   display: table;
@@ -1553,7 +1541,7 @@ h3 a {
   display: table;
   width: 100%;
   border-top: 1px solid #cccccc;
-  background: #ffffff;
+  background: white;
 }
 .mlinks .mlhead .do-vam div .mltbl.platforms .mlrow {
   display: table;
@@ -1617,16 +1605,16 @@ h3 a {
   line-height: 10rem;
   text-align: center;
   width: 2rem;
-  color: #ffffff;
+  color: white;
 }
 .mlinks .screenshots .sc-content:before:hover {
   content: 'сделайте свайп влево по изображениям';
   position: absolute;
   display: inline-block;
   padding: 0.5rem;
-  background: #ffffff;
+  background: white;
   border: 2px solid #a8a8a8;
-  color: #000000;
+  color: black;
 }
 .mlinks .screenshots .sc-content a {
   display: inline;
@@ -1638,6 +1626,13 @@ h3 a {
 .mlinks .screenshots .sc-content a img {
   display: inline-block;
   height: 10rem !important;
+}
+@font-face {
+  font-family: 'fontello';
+  src: url('material_src/fontello.eot?19600742');
+  src: url('material_src/fontello.eot?19600742#iefix') format('embedded-opentype'), url('material_src/fontello.woff?19600742') format('woff'), url('material_src/fontello.ttf?19600742') format('truetype'), url('material_src/fontello.svg?19600742#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 @font-face {
   font-family: 'fontello';
@@ -1871,10 +1866,10 @@ h3 a {
 }
 .table4site {
   display: block;
-  overflow-x: scroll;
+  overflow: auto;
   border: 1px solid #b3b3b3;
   box-sizing: border-box;
-  background: #ffffff;
+  background: white;
   border-spacing: 0;
 }
 .table4site tbody {
@@ -1928,48 +1923,53 @@ h3 a {
   padding: 2em;
   text-align: center;
 }
-.materials-box .materials-list {
+.materials-box .materials-slider {
+  display: table-block;
   padding: 0;
-  margin: 0 0.3rem;
-  border: 1px solid #a8a8a8;
+  margin: 0;
+  border-spacing: 0.7rem;
+  overflow: auto;
 }
-.materials-box .materials-list li {
-  display: table;
-  padding: 0;
-  font-size: 1rem;
-  list-style-type: none;
-  border-bottom: 1px solid #e4e4e4;
-  width: 100%;
-}
-.materials-box .materials-list li:last-child {
-  border: none;
-}
-.materials-box .materials-list li .date {
-  display: table-cell;
-  vertical-align: middle;
-  font-weight: bold;
-  width: 5rem;
-  color: #303030;
-  text-decoration: none;
-  text-align: right !important;
-  padding-right: 0.3rem;
-  font-size: 1.1rem;
-}
-.materials-box .materials-list li .number {
-  display: table-cell;
-  color: #ffffff;
-  vertical-align: middle;
-  background: #85a3f0;
-  width: 1.4em;
-  text-align: center;
-  margin: 0 0.5rem;
-  font-weight: bold;
-}
-.materials-box .materials-list li a {
+.materials-box .materials-slider .slider-item {
   position: relative;
   display: table-cell;
+  width: 25%;
+  padding: 0;
+  margin: 0;
+  font-size: 1rem;
+  list-style-type: none;
+  text-decoration: none;
+  overflow: hidden;
+}
+@media screen and (max-width: 720px) {
+  .materials-box .materials-slider .slider-item {
+    width: 1px;
+  }
+  .materials-box .materials-slider .slider-item > a {
+    width: 10rem;
+  }
+}
+.materials-box .materials-slider .slider-item > a {
+  display: block;
+}
+.materials-box .materials-slider .slider-item > a img {
+  width: 100%;
+  height: 75%;
+}
+.materials-box .materials-slider .slider-item h3 {
+  display: block;
   margin: 0;
   padding: 0.3rem;
+  vertical-align: middle;
+}
+.materials-box .materials-slider .slider-item h3 a {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: normal;
+  color: black;
 }
 .page-nav.box {
   margin: 1rem 0.2rem 0;
@@ -2000,7 +2000,7 @@ h3 a {
   position: relative;
   margin: 0.2em 1px 0.2em 0;
   font-weight: normal;
-  color: #000000;
+  color: black;
   text-align: left;
 }
 #comments li,
@@ -2014,7 +2014,7 @@ h3 a {
   text-align: left;
   margin: 1em 0 0 0;
   word-wrap: break-word;
-  background: #ffffff;
+  background: white;
   -webkit-box-shadow: 1px 2px 6px #cccccc;
 }
 #comments li .heading {
@@ -2024,7 +2024,7 @@ h3 a {
   border-top: 0.2em solid #58c;
   border-bottom: 1px solid #a8a8a8;
   background: #f0f0f0;
-  text-shadow: 0 0 0.2em #ffffff;
+  text-shadow: 0 0 0.2em white;
   padding: 0.2em 0;
 }
 .nickname {
@@ -2063,6 +2063,36 @@ h3 a {
 #comments p ~ div {
   display: block;
   text-align: right;
-  border-top: 1px #ccc solid;
+  border-top: 1px solid #999999;
   margin: 0.5em 0.5em 0;
+}
+.video-thumb-wrapper {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: auto;
+  max-width: 480px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 3.5rem;
+  background-image: url(file:///android_asset/forum/style_images/play_video.png);
+}
+.video-thumb-wrapper .video-thumb {
+  width: auto;
+  height: auto;
+  opacity: .5;
+  margin: 0.5rem 0;
+}
+::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+::-webkit-scrollbar-track {
+  border-radius: 0.15rem;
+  background: rgba(0, 0, 0, 0.3);
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 0.15rem;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.5);
 }

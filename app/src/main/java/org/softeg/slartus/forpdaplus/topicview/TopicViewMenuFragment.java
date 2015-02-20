@@ -24,14 +24,14 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.HelpTask;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ForumCatalogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
@@ -111,7 +111,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                     try {
                         TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, themeActivity.getTopic().getId());
                     } catch (Exception ex) {
-                        Log.e(context, ex);
+                        AppLog.e(context, ex);
                     }
 
                     return true;
@@ -127,7 +127,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                                 if (helpTask.Success)
                                     Toast.makeText(context, (String) param, Toast.LENGTH_SHORT).show();
                                 else
-                                    Log.e(context, helpTask.ex);
+                                    AppLog.e(context, helpTask.ex);
                                 return null;
                             }
                         });
@@ -138,7 +138,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                                          }
                         );
                     } catch (Exception ex) {
-                        Log.e(context, ex);
+                        AppLog.e(context, ex);
                     }
                     return true;
                 }
@@ -151,7 +151,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                         ForumCatalogFragment.showActivity(context, themeActivity.getTopic().getForumId(),
                                 themeActivity.getTopic().getId());
                     } catch (Exception ex) {
-                        Log.e(context, ex);
+                        AppLog.e(context, ex);
                     }
                     return true;
                 }
@@ -258,7 +258,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
 
 
                             } catch (ActivityNotFoundException e) {
-                                Log.e(getActivity(), e);
+                                AppLog.e(getActivity(), e);
                             }
 
 
@@ -278,14 +278,14 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
 
 
             optionsMenu.add(String.format("Аватары (%s)",
-                    MyApp.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]))
+                    App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]))
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(final MenuItem menuItem) {
 
                    new AlertDialogBuilder(getActivity())
                            .setTitle("Показывать аватары")
                            .setCancelable(true)
-                           .setSingleChoiceItems(MyApp.getContext().getResources().getStringArray(R.array.AvatarsShowTitles),
+                           .setSingleChoiceItems(App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles),
                                    Preferences.Topic.getShowAvatarsOpt(), new DialogInterface.OnClickListener() {
                                        @Override
                                        public void onClick(DialogInterface dialogInterface, int i) {
@@ -295,7 +295,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
 
                                            Preferences.Topic.setShowAvatarsOpt(i);
                                            menuItem.setTitle(String.format("Показывать аватары (%s)",
-                                                   MyApp.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]));
+                                                   App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]));
                                        }
                                    })
                            .create().show();
@@ -377,7 +377,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
             addCloseMenuItem(menu);
 
         } catch (Exception ex) {
-            Log.e(getActivity(), ex);
+            AppLog.e(getActivity(), ex);
         }
 
 
@@ -421,7 +421,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
 
     private void showStylesDialog(final SharedPreferences prefs) {
         try {
-            final String currentValue = MyApp.getInstance().getCurrentTheme();
+            final String currentValue = App.getInstance().getCurrentTheme();
 
             ArrayList<CharSequence> newStyleNames = new ArrayList<CharSequence>();
             final ArrayList<CharSequence> newstyleValues = new ArrayList<CharSequence>();
@@ -472,7 +472,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
 
             alertDialog.show();
         } catch (Exception ex) {
-            Log.e(getInterface(), ex);
+            AppLog.e(getInterface(), ex);
         }
     }
 }

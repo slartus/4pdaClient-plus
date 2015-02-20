@@ -7,10 +7,10 @@ import android.text.TextUtils;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.Themes;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.notes.Note;
 import org.softeg.slartus.forpdaapi.Topic;
 
@@ -45,7 +45,7 @@ public class NotesTable {
         SQLiteDatabase db = null;
 
         try {
-            NotesDbHelper dbHelper = new NotesDbHelper(MyApp.getInstance());
+            NotesDbHelper dbHelper = new NotesDbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
             // db.beginTransaction();
 
@@ -65,7 +65,7 @@ public class NotesTable {
             db.insertOrThrow(TABLE_NAME, null, values);
 
         } catch (Exception ex) {
-            Log.e(MyApp.getInstance(), ex);
+            AppLog.e(App.getInstance(), ex);
         } finally {
             if (db != null) {
                 // db.endTransaction();
@@ -98,7 +98,7 @@ public class NotesTable {
             db.insertOrThrow(TABLE_NAME, null, values);
 
         } catch (Exception ex) {
-            Log.e(MyApp.getInstance(), ex);
+            AppLog.e(App.getInstance(), ex);
         } finally {
             if (db != null) {
                 // db.endTransaction();
@@ -113,7 +113,7 @@ public class NotesTable {
         SQLiteDatabase db = null;
         Cursor c = null;
         try {
-            NotesDbHelper dbHelper = new NotesDbHelper(MyApp.getInstance());
+            NotesDbHelper dbHelper = new NotesDbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
             String selection = null;
             String[] selectionArgs = null;
@@ -162,7 +162,7 @@ public class NotesTable {
         SQLiteDatabase db = null;
         Cursor c = null;
         try {
-            NotesDbHelper dbHelper = new NotesDbHelper(MyApp.getInstance());
+            NotesDbHelper dbHelper = new NotesDbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
             String selection = null;
             String[] selectionArgs = null;
@@ -267,7 +267,7 @@ public class NotesTable {
         SQLiteDatabase db = null;
         Cursor c = null;
         try {
-            NotesDbHelper dbHelper = new NotesDbHelper(MyApp.getInstance());
+            NotesDbHelper dbHelper = new NotesDbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
             String selection = "_id=?";
 
@@ -320,7 +320,7 @@ public class NotesTable {
         Cursor c = null;
         try {
 
-            NotesDbHelper dbHelper = new NotesDbHelper(MyApp.getInstance());
+            NotesDbHelper dbHelper = new NotesDbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
 
             db.execSQL("delete from " + TABLE_NAME + " where " + COLUMN_ID + "=" + id);

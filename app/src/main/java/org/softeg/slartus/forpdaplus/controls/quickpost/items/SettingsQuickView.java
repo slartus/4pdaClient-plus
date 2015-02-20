@@ -9,7 +9,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
@@ -24,7 +24,7 @@ public class SettingsQuickView extends BaseQuickView {
     View createView() {
 
         LinearLayout linearLayout = new LinearLayout(getContext());
-        linearLayout.setBackgroundResource(MyApp.getInstance().getThemeBackgroundColorRes());
+        linearLayout.setBackgroundResource(App.getInstance().getThemeBackgroundColorRes());
         linearLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         linearLayout.setOrientation(LinearLayout.VERTICAL);
 

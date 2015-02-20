@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsPagerBrickInfo;
@@ -261,7 +261,7 @@ public class MainDrawerMenu {
                     try {
                         QuickStartActivity.showTab(mActivity, Tabs.TAB_DOWNLOADS);
                     } catch (Exception ex) {
-                        Log.e(mActivity, ex);
+                        AppLog.e(mActivity, ex);
                     }
                     break;
                 case MarkAllReadBrickInfo.NAME:
@@ -292,12 +292,12 @@ public class MainDrawerMenu {
                                                     try {
                                                         if (finalEx != null) {
                                                             Toast.makeText(mActivity, "Ошибка", Toast.LENGTH_SHORT).show();
-                                                            Log.e(mActivity, finalEx);
+                                                            AppLog.e(mActivity, finalEx);
                                                         } else {
                                                             Toast.makeText(mActivity, "Форум отмечен прочитанным", Toast.LENGTH_SHORT).show();
                                                         }
                                                     } catch (Exception ex) {
-                                                        Log.e(mActivity, ex);
+                                                        AppLog.e(mActivity, ex);
                                                     }
 
                                                 }

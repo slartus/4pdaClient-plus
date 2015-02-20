@@ -20,7 +20,7 @@ import org.softeg.slartus.forpdaapi.classes.ForumsData;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ForumsTable;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.CatalogAdapter;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo;
@@ -260,12 +260,12 @@ public class ForumCatalogFragment extends BaseCatalogFragment {
                                                         try {
                                                             if (finalEx != null) {
                                                                 Toast.makeText(getActivity(), "Ошибка", Toast.LENGTH_SHORT).show();
-                                                                Log.e(getActivity(), finalEx);
+                                                                AppLog.e(getActivity(), finalEx);
                                                             } else {
                                                                 Toast.makeText(getActivity(), "Форум отмечен прочитанным", Toast.LENGTH_SHORT).show();
                                                             }
                                                         } catch (Exception ex) {
-                                                            Log.e(getActivity(), ex);
+                                                            AppLog.e(getActivity(), ex);
                                                         }
 
                                                     }
@@ -354,7 +354,7 @@ public class ForumCatalogFragment extends BaseCatalogFragment {
                 this.dialog.setMessage("Обновление структуры форума...");
                 this.dialog.show();
             } catch (Exception ex) {
-                Log.e(null, ex);
+                AppLog.e(null, ex);
             }
         }
 
@@ -365,12 +365,12 @@ public class ForumCatalogFragment extends BaseCatalogFragment {
                     this.dialog.dismiss();
                 }
             } catch (Exception ex) {
-                Log.e(null, ex);
+                AppLog.e(null, ex);
             }
             loadData(true);
             if (data != null) {
                 if (data.getError() != null) {
-                    Log.e(getActivity(), data.getError());
+                    AppLog.e(getActivity(), data.getError());
                 }
             }
         }

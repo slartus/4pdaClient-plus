@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdacommon.NotReportException;
 
@@ -63,7 +63,7 @@ public final class Tabs {
             return DownloadsTab.TITLE;
 
 
-        throw new NotReportException(MyApp.getInstance().getString(R.string.UnknownTemplate));
+        throw new NotReportException(App.getInstance().getString(R.string.UnknownTemplate));
     }
 
     /**

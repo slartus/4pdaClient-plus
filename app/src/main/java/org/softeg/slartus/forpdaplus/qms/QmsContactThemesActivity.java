@@ -37,7 +37,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.qms.QmsUserTheme;
 import org.softeg.slartus.forpdaapi.qms.QmsUserThemes;
@@ -274,7 +274,7 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
         @Override
         public void deliverResult(QmsUserThemes apps) {
             if (ex != null)
-                Log.e(getContext(), ex);
+                AppLog.e(getContext(), ex);
             if (isReset()) {
                 if (apps != null) {
                     onReleaseResources();
@@ -472,7 +472,7 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
             stopDeleteMode(true);
             if (!success) {
                 if (ex != null)
-                    Log.e(QmsContactThemesActivity.this, ex);
+                    AppLog.e(QmsContactThemesActivity.this, ex);
                 else
                     Toast.makeText(QmsContactThemesActivity.this, "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();

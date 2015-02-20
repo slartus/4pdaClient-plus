@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
@@ -22,7 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class BbCodesPanel extends BbCodesBasePanel {
 
                     }
                 } catch (Exception ex) {
-                    org.softeg.slartus.forpdaplus.common.Log.e(mContext, ex);
+                    AppLog.e(mContext, ex);
                 }
             }
         });
@@ -343,7 +343,7 @@ public class BbCodesPanel extends BbCodesBasePanel {
 
     @Override
     protected BbImage[] getImages() {
-        String style = MyApp.getInstance().getCurrentThemeName();
+        String style = App.getInstance().getCurrentThemeName();
 
         BbImage[] res = new BbImage[m_BbCodes.length];
         String path = "forum/style_images/1/folder_editor_buttons_" + style + "/";

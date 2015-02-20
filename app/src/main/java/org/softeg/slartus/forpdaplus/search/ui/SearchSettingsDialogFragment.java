@@ -28,7 +28,7 @@ import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.search.SearchApi;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
@@ -94,7 +94,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
     }
 
     public static SearchSettings createForumSearchSettings() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         SearchSettings searchSettings = new SearchSettings(SearchSettings.SEARCH_TYPE_FORUM);
         searchSettings.load(prefs);
         searchSettings.setQuery("");
@@ -117,7 +117,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
     }
 
     public static SearchSettings createUserTopicsSearchSettings(String userNick) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         SearchSettings searchSettings = new SearchSettings(SearchSettings.SEARCH_TYPE_USER_TOPICS);
         searchSettings.load(prefs);
         searchSettings.setQuery("");
@@ -131,7 +131,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
     }
 
     public static SearchSettings createUserPostsSearchSettings(String userNick) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         SearchSettings searchSettings = new SearchSettings(SearchSettings.SEARCH_TYPE_USER_POSTS);
         searchSettings.load(prefs);
         searchSettings.setQuery("");
@@ -234,7 +234,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
                             SearchSettings searchSettings = createSearchSettings();
                             searchSettings.setQuery("");
                             searchSettings.setUserName("");
-                            searchSettings.save(PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance()).edit())
+                            searchSettings.save(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).edit())
                                     .commit();
                         }
                     });

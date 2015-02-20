@@ -97,7 +97,7 @@ public class BaseFragmentActivity extends FragmentActivity
 
     @Override
     protected void onCreate(Bundle saveInstance) {
-        setTheme(isTransluent() ? MyApp.getInstance().getTransluentThemeStyleResID() : MyApp.getInstance().getThemeStyleResID());
+        setTheme(isTransluent() ? App.getInstance().getTransluentThemeStyleResID() : App.getInstance().getThemeStyleResID());
         super.onCreate(saveInstance);
 
         args.clear();

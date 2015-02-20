@@ -26,7 +26,8 @@ import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.classes.DevDbDevice;
 import org.softeg.slartus.forpdaplus.classes.LazyGallery.LazyAdapter;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -57,7 +58,7 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
         gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String imgUrl = adapterView.getItemAtPosition(i).toString();
-                ImageViewActivity.showImageUrl(DevDbDeviceActivity.this, imgUrl.replace("p.jpg", "n.jpg"));
+                ImageViewActivity.startActivity(DevDbDeviceActivity.this, imgUrl.replace("p.jpg", "n.jpg"));
             }
         });
         txtModel = (TextView) findViewById(R.id.txtModel);
@@ -287,7 +288,7 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
                 this.dialog.setMessage("Загрузка...");
                 this.dialog.show();
             } catch (Exception ex) {
-                Log.e(null, ex);
+                AppLog.e(null, ex);
                 this.cancel(true);
             }
         }
@@ -308,11 +309,11 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
                 try {
                     fill();
                 } catch (IOException e) {
-                    Log.e(DevDbDeviceActivity.this, ex);
+                    AppLog.e(DevDbDeviceActivity.this, ex);
                 }
             } else {
                 if (ex != null)
-                    Log.e(DevDbDeviceActivity.this, ex);
+                    AppLog.e(DevDbDeviceActivity.this, ex);
             }
         }
 

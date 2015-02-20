@@ -39,7 +39,7 @@ import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.Functions;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ForumsTableOld;
 import org.softeg.slartus.forpdaplus.download.DownloadReceiver;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
@@ -48,7 +48,6 @@ import org.softeg.slartus.forpdaplus.topicview.HtmloutWebInterface;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -66,7 +65,7 @@ public class Client implements IHttpClient {
     public static final String SITE = "4pda.ru";
 
     public String UserId = "0";
-    private String m_User = MyApp.getContext().getString(R.string.guest);
+    private String m_User = App.getContext().getString(R.string.guest);
 
     private String m_K = "";
 
@@ -164,7 +163,7 @@ public class Client implements IHttpClient {
                 httpHelper = new HttpHelper();
 
             } catch (IOException e) {
-                Log.e(null, e);
+                AppLog.e(null, e);
                 return false;
             }
             List<Cookie> cookies = httpHelper.getCookies();
@@ -422,7 +421,7 @@ public class Client implements IHttpClient {
 
             m_LoginDialog.show();
         } catch (Exception ex) {
-            Log.e(mContext, ex);
+            AppLog.e(mContext, ex);
         }
     }
 

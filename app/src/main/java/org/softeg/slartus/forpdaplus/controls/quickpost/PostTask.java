@@ -7,7 +7,7 @@ import android.text.TextUtils;
 
 import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
@@ -63,7 +63,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
 
 
             String lastUrl = Client.getInstance().getRedirectUri().toString();
-            TopicBodyBuilder topicBodyBuilder = Client.getInstance().parseTopic(mPostResult.PostResultBody, MyApp.getInstance(), lastUrl,
+            TopicBodyBuilder topicBodyBuilder = Client.getInstance().parseTopic(mPostResult.PostResultBody, App.getInstance(), lastUrl,
                     Preferences.Topic.getSpoilFirstPost());
             mPostResult.PostResultBody = null;
 

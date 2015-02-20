@@ -6,11 +6,7 @@ import android.widget.BaseAdapter;
 import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.Topic;
-import org.softeg.slartus.forpdaplus.common.Log;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.text.ParseException;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 /*
  * Created by slartus on 04.06.2014.
@@ -61,9 +57,9 @@ public abstract class TopicListItemTask extends AsyncTask<String, String, String
                 Toast.makeText(context, "\"" + topic.getTitle().substring(0, Math.min(10, topic.getTitle().length() - 1)) + "..\": " + result, Toast.LENGTH_SHORT).show();
                 onPostExecute(topic);
             } else
-                Log.e(context, ex);
+                AppLog.e(context, ex);
         } catch (Throwable ex1) {
-            Log.e(context, ex1);
+            AppLog.e(context, ex1);
         }
         listAdapter.notifyDataSetChanged();
     }

@@ -34,7 +34,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.classes.DownloadTask;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.DownloadsTable;
 
 import java.io.File;
@@ -162,7 +162,7 @@ public class DownloadsService extends IntentService {
                                                 if (finish)
                                                     context1.finish();
                                             } catch (Throwable e) {
-                                                Log.e(context1, e);
+                                                AppLog.e(context1, e);
                                             }
                                         }
                                     })
@@ -179,7 +179,7 @@ public class DownloadsService extends IntentService {
                                                 if (finish)
                                                     context1.finish();
                                             } catch (Throwable e) {
-                                                Log.e(context1, e);
+                                                AppLog.e(context1, e);
                                             }
                                         }
                                     })
@@ -187,7 +187,7 @@ public class DownloadsService extends IntentService {
                                     break;
                             }
                         } catch (Throwable ex) {
-                            Log.e(context1, ex);
+                            AppLog.e(context1, ex);
                         }
                     }
                 }, "Вы можете изменить способ скачивания в настройках программы: Просмотр темы>>Скачивание файлов>>Скачивать файл при помощи.."
@@ -254,7 +254,7 @@ public class DownloadsService extends IntentService {
 
             Client.getInstance().downloadFile(context1, url, notificationId, tempFilePath);
         } catch (Exception ex) {
-            Log.e(context1, ex);
+            AppLog.e(context1, ex);
         }
 
 
@@ -364,7 +364,7 @@ public class DownloadsService extends IntentService {
                 sendDownloadProgressState(receiver, notificationId);
             }
 
-            Log.e(null, ex);
+            AppLog.e(null, ex);
         }
 
 
@@ -439,7 +439,7 @@ public class DownloadsService extends IntentService {
 
             } else {
                 if (ex != null)
-                    Log.e(m_Context, ex);
+                    AppLog.e(m_Context, ex);
                 else
                     Toast.makeText(m_Context, "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.db.DownloadsTable;
 import org.softeg.slartus.forpdacommon.FileUtils;
@@ -89,18 +89,18 @@ public class DownloadTask {
         switch (state) {
             case STATE_PENDING:
             case STATE_CONNECTING:
-                return MyApp.getContext().getString(R.string.Connecting);
+                return App.getContext().getString(R.string.Connecting);
             case STATE_DOWNLOADING:
-                return MyApp.getContext().getString(R.string.Downloading);
+                return App.getContext().getString(R.string.Downloading);
             case STATE_SUCCESSFULL:
-                return MyApp.getContext().getString(R.string.DownloadingComplete);
+                return App.getContext().getString(R.string.DownloadingComplete);
             case STATE_CANCELED:
-                return MyApp.getContext().getString(R.string.DownloadingCanceled);
+                return App.getContext().getString(R.string.DownloadingCanceled);
             case STATE_ERROR:
-                return MyApp.getContext().getString(R.string.DownloadError) + ": " + (downloadTaskException == null ?
-                        MyApp.getContext().getString(R.string.UnknownError) : downloadTaskException.getMessage());
+                return App.getContext().getString(R.string.DownloadError) + ": " + (downloadTaskException == null ?
+                        App.getContext().getString(R.string.UnknownError) : downloadTaskException.getMessage());
         }
-        return MyApp.getContext().getString(R.string.Unknown);
+        return App.getContext().getString(R.string.Unknown);
     }
 
     public void setJustState(int state) {

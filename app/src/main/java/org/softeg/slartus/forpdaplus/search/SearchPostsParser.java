@@ -3,7 +3,7 @@ package org.softeg.slartus.forpdaplus.search;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.Exceptions.MessageInfoException;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.Post;
@@ -27,7 +27,7 @@ public class SearchPostsParser extends HtmlBuilder  {
     private boolean m_SpoilerByButton = false;
     private Hashtable<String,String> m_EmoticsDict;
     public SearchPostsParser() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getContext());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
         m_SpoilerByButton = prefs.getBoolean("theme.SpoilerByButton", false);
         m_EmoticsDict=Smiles.getSmilesDict();
     }
@@ -90,7 +90,7 @@ public class SearchPostsParser extends HtmlBuilder  {
         m_Body.append("<div style=\"margin-top:").append(ACTIONBAR_TOP_MARGIN).append("\"/>\n");
         if (searchResult.getPagesCount() > 1) {
             TopicBodyBuilder.addButtons(m_Body, searchResult.getCurrentPage(), searchResult.getPagesCount(),
-                    Functions.isWebviewAllowJavascriptInterface(MyApp.getInstance()), true, true);
+                    Functions.isWebviewAllowJavascriptInterface(App.getInstance()), true, true);
         }
         m_Body.append("<br/><br/>");
 
@@ -102,7 +102,7 @@ public class SearchPostsParser extends HtmlBuilder  {
         if (searchResult.getPagesCount() > 1) {
             TopicBodyBuilder.addButtons(m_Body, searchResult.getCurrentPage(),
                     searchResult.getPagesCount(),
-                    Functions.isWebviewAllowJavascriptInterface(MyApp.getInstance()), true, false);
+                    Functions.isWebviewAllowJavascriptInterface(App.getInstance()), true, false);
         }
 
         m_Body.append("<br/><br/>");
@@ -130,7 +130,7 @@ public class SearchPostsParser extends HtmlBuilder  {
     private final Pattern dateTimePattern = Pattern.compile("style=\"padding-bottom:2px\" />(.*?)</span>");
 
     private String parsePost(String page) {
-        Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(MyApp.getInstance());
+        Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(App.getInstance());
         String s1 = null;
         Matcher m = topicPattern.matcher(page);
         if (m.find())

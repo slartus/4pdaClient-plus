@@ -20,6 +20,10 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
+import org.acra.ACRA;
+import org.acra.ReportField;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdanotifyservice.MainService;
 import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
@@ -44,7 +48,20 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
  * Date: 05.08.11
  * Time: 8:03
  */
-public class MyApp extends android.app.Application {
+@ReportsCrashes(
+        mailTo = "slartus+4pda@gmail.com",
+        mode = ReportingInteractionMode.DIALOG,
+        customReportContent = {ReportField.APP_VERSION_CODE, ReportField.APP_VERSION_NAME,
+                ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL,
+                ReportField.CUSTOM_DATA, ReportField.STACK_TRACE, ReportField.LOGCAT},
+        resToastText = R.string.crash_toast_text, // optional, displayed as soon as the crash occurs, before collecting data which can take a few seconds
+        resDialogText = R.string.crash_dialog_text,
+        resDialogIcon = android.R.drawable.ic_dialog_info, //optional. default is a warning sign
+        resDialogTitle = R.string.crash_dialog_title, // optional. default is your application name
+        resDialogCommentPrompt = R.string.crash_dialog_comment_prompt, // optional. when defined, adds a user text field input with this text resource as a label
+        resDialogOkToast = R.string.crash_dialog_ok_toast // optional. displays a Toast message when the user accepts to send a report.)
+)
+public class App extends android.app.Application {
     public static final int THEME_WHITE = 0;
     public static final int THEME_BLACK = 1;
 
@@ -152,7 +169,7 @@ public class MyApp extends android.app.Application {
     }
 
     public String getThemeCssFileName() {
-        String themeStr = MyApp.getInstance().getCurrentTheme();
+        String themeStr = App.getInstance().getCurrentTheme();
         return getThemeCssFileName(themeStr);
     }
 
@@ -188,9 +205,9 @@ public class MyApp extends android.app.Application {
         return path + cssFile;
     }
 
-    private static MyApp INSTANCE = null;
+    private static App INSTANCE = null;
 
-    public MyApp() {
+    public App() {
         INSTANCE = this;
 
 
@@ -201,6 +218,7 @@ public class MyApp extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        ACRA.init(this);
         initImageLoader(this);
         m_MyActivityLifecycleCallbacks = new MyActivityLifecycleCallbacks();
         registerActivityLifecycleCallbacks(m_MyActivityLifecycleCallbacks);
@@ -221,9 +239,9 @@ public class MyApp extends android.app.Application {
     private static Boolean m_QmsStarted = false;
     private static Boolean m_FavoritesNotifierStarted = false;
 
-    public static MyApp getInstance() {
+    public static App getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new MyApp();
+            INSTANCE = new App();
 
         }
         if (!m_QmsStarted) {
@@ -330,7 +348,8 @@ public class MyApp extends android.app.Application {
         return (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
     }
 
-    public static PullToRefreshLayout createPullToRefreshLayout(Activity activity, View view, final Runnable refreshAction) {
+    public static PullToRefreshLayout createPullToRefreshLayout(Activity activity, View view,
+                                                                final Runnable refreshAction) {
         PullToRefreshLayout pullToRefreshLayout = (PullToRefreshLayout) view.findViewById(R.id.ptr_layout);
         ActionBarPullToRefresh.from(activity)
                 .options(Options.create().scrollDistance(0.3f).refreshOnUp(true).build())

@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 
-public abstract class BaseFragment extends Fragment implements
+public abstract class BaseBrickFragment extends Fragment implements
         IBrickFragment {
 
     public static final String NAME_KEY = "NAME_KEY";
@@ -23,7 +23,7 @@ public abstract class BaseFragment extends Fragment implements
     private String m_Name;
     private Boolean m_NeedLogin = false;
 
-    public BaseFragment() {
+    public BaseBrickFragment() {
         super();
     }
 

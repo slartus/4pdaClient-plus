@@ -11,16 +11,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import org.softeg.slartus.forpdacommon.UrlExtensions;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
-import org.softeg.slartus.forpdaplus.common.Log;
-import org.softeg.slartus.forpdaplus.listfragments.UserReputationFragment;
+import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.qms.QmsNewThreadActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
@@ -64,7 +62,7 @@ public class ProfileWebViewActivity extends BaseFragmentActivity {
                     .add(R.id.fragment, details).add(menuFragment, "menufragment").commit();
 
         } catch (Throwable e) {
-            Log.e(this, e);
+            AppLog.e(this, e);
         }
     }
 
@@ -132,7 +130,7 @@ public class ProfileWebViewActivity extends BaseFragmentActivity {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     new AlertDialogBuilder(getActivity())
                             .setTitle("Репутация")
-                            .setSingleChoiceItems(new CharSequence[]{"+1", "Посмотреть", "-1", "Кому изменял репутацию"}, -1, new DialogInterface.OnClickListener() {
+                            .setItems(new CharSequence[]{"+1", "Посмотреть", "-1", "Кому изменял репутацию"}, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     switch (i) {
@@ -140,7 +138,7 @@ public class ProfileWebViewActivity extends BaseFragmentActivity {
                                             UserReputationFragment.plusRep(getActivity(), new Handler(), userId, userNick);
                                             break;
                                         case 1:
-                                            UserReputationFragment.showActivity(getActivity(),userId);
+                                            UserReputationFragment.showActivity(getActivity(),userId,false);
                                             break;
                                         case 2:
                                             UserReputationFragment.minusRep(getActivity(), new Handler(), userId, userNick);
@@ -194,5 +192,6 @@ public class ProfileWebViewActivity extends BaseFragmentActivity {
 
         }
     }
+
 
 }

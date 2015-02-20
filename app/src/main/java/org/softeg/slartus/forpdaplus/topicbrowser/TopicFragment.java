@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -12,15 +11,9 @@ import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdaapi.TopicBodyParser;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
-import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.topicbrowser.Notifiers.NotifyActivityRegistrator;
 import org.softeg.slartus.forpdaplus.topicbrowser.Notifiers.TopicNotifier;
-
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.Options;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 /*
  * Created by slartus on 01.06.2014.
@@ -107,7 +100,7 @@ public class TopicFragment extends TopicBaseFragment {
             }
             loadTopic(topicUrl);
         } catch (Throwable ex) {
-            Log.e(getActivity(), ex);
+            AppLog.e(getActivity(), ex);
         }
 
     }
@@ -253,7 +246,7 @@ public class TopicFragment extends TopicBaseFragment {
             } else {
                 m_ScrollToY = Integer.MIN_VALUE;
                 if (ex != null)
-                    Log.e(getActivity(), ex);
+                    AppLog.e(getActivity(), ex);
                 else
                     setTopicBodyParser(topicBodyParser);
             }

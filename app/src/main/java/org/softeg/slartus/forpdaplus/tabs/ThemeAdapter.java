@@ -28,7 +28,7 @@ import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.HelpTask;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.ForumCatalogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.NotesListFragment;
@@ -196,7 +196,7 @@ public class ThemeAdapter extends ArrayAdapter<ExtTopic> {
                     topic.getTitle());
             addOptionsMenu(getContext(), handler, menu, topic, addFavorites, null);
         } catch (Exception ex) {
-            Log.e(this.getContext(), ex);
+            AppLog.e(this.getContext(), ex);
         }
     }
 
@@ -281,7 +281,7 @@ public class ThemeAdapter extends ArrayAdapter<ExtTopic> {
                                 if (helpTask.Success)
                                     Toast.makeText(context, (String) param, Toast.LENGTH_SHORT).show();
                                 else
-                                    Log.e(context, helpTask.ex);
+                                    AppLog.e(context, helpTask.ex);
                                 return null;
                             }
                         });

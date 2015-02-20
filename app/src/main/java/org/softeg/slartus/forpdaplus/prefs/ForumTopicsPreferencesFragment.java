@@ -7,10 +7,9 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.text.TextUtils;
 
 import org.softeg.slartus.forpdacommon.ExtPreferences;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 
 /**
@@ -26,7 +25,7 @@ public class ForumTopicsPreferencesFragment extends PreferenceFragment {
         Bundle args=getArguments();
         if(args==null)
             args=getActivity().getIntent().getExtras();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MyApp.getContext());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(App.getContext());
         assert args != null;
         String listName = args.getString("listname");
         assert listName!=null;

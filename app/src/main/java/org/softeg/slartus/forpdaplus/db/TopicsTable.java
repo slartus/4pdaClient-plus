@@ -4,9 +4,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,12 +30,12 @@ public class TopicsTable {
         SQLiteDatabase db = null;
         Cursor c = null;
         try {
-            DbHelper dbHelper = new DbHelper(MyApp.getInstance());
+            DbHelper dbHelper = new DbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
 
             addTopic(db, topic, ifNotExists);
         } catch (Exception ex) {
-            Log.e(MyApp.getInstance(), ex);
+            AppLog.e(App.getInstance(), ex);
         } finally {
             if (db != null) {
                 if (c != null)

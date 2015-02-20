@@ -13,7 +13,7 @@ import android.widget.Toast;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.HtmlUtils;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
 
 import java.io.IOException;
@@ -221,12 +221,12 @@ public class Post {
                                         try {
                                             if (finalEx != null) {
                                                 Toast.makeText(context, "Ошибка отправки жалобы", Toast.LENGTH_LONG).show();
-                                                Log.e(context, finalEx);
+                                                AppLog.e(context, finalEx);
                                             } else {
                                                 Toast.makeText(context, finalRes, Toast.LENGTH_LONG).show();
                                             }
                                         } catch (Exception ex) {
-                                            Log.e(context, ex);
+                                            AppLog.e(context, ex);
                                         }
 
                                     }
@@ -294,12 +294,12 @@ public class Post {
                         try {
                             if (finalEx != null) {
                                 Toast.makeText(themeActivity, "Ошибка изменения репутации поста", Toast.LENGTH_LONG).show();
-                                Log.e(themeActivity, finalEx);
+                                AppLog.e(themeActivity, finalEx);
                             } else {
                                 Toast.makeText(themeActivity, finalMessage, Toast.LENGTH_LONG).show();
                             }
                         } catch (Exception ex) {
-                            Log.e(themeActivity, ex);
+                            AppLog.e(themeActivity, ex);
                         }
 
                     }

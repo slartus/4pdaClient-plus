@@ -15,7 +15,7 @@ import org.softeg.slartus.forpdaapi.users.LeadUser;
 import org.softeg.slartus.forpdaapi.users.User;
 import org.softeg.slartus.forpdaapi.users.UsersApi;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
@@ -121,11 +121,11 @@ public class LeadersListFragment extends BaseExpandableListFragment {
 
     @Override
     public void saveCache() throws Exception {
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(MyApp.getContext());
+        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
         SQLiteDatabase db = null;
         try {
             db = cacheDbHelper.getWritableDatabase();
-            BaseDao<LeadUser> baseDao = new BaseDao<>(MyApp.getContext(), db, getListName(), LeadUser.class);
+            BaseDao<LeadUser> baseDao = new BaseDao<>(App.getContext(), db, getListName(), LeadUser.class);
             baseDao.createTable(db);
             for (ExpandableGroup group : mData) {
                 for (IListItem item : group.getChildren()) {
@@ -142,11 +142,11 @@ public class LeadersListFragment extends BaseExpandableListFragment {
     @Override
     public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
         mCacheList.clear();
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(MyApp.getContext());
+        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
         SQLiteDatabase db = null;
         try {
             db = cacheDbHelper.getReadableDatabase();
-            BaseDao<LeadUser> baseDao = new BaseDao<>(MyApp.getContext(), db, getListName(), LeadUser.class);
+            BaseDao<LeadUser> baseDao = new BaseDao<>(App.getContext(), db, getListName(), LeadUser.class);
             if (baseDao.isTableExists()) {
                 HashMap<String, ExpandableGroup> groups = new HashMap<>();
                 for (LeadUser leadUser : baseDao.getAll()) {

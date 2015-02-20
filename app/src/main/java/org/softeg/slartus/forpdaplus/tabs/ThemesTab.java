@@ -28,7 +28,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 import org.softeg.slartus.forpdaplus.IntentActivity;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
@@ -36,7 +36,7 @@ import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.classes.ForumItem;
 import org.softeg.slartus.forpdaplus.classes.ThemeOpenParams;
 import org.softeg.slartus.forpdaplus.classes.Themes;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaapi.OnProgressChangedListener;
 import org.softeg.slartus.forpdaapi.Topic;
 
@@ -155,9 +155,9 @@ public abstract class ThemesTab extends BaseTab {
         ListView scrollView = getListView();
         int visibleItemsCount = scrollView.getLastVisiblePosition() - scrollView.getFirstVisiblePosition();
 
-        String scrollUpKeys = "," + PreferenceManager.getDefaultSharedPreferences(MyApp.getContext())
+        String scrollUpKeys = "," + PreferenceManager.getDefaultSharedPreferences(App.getContext())
                 .getString("keys.scrollUp", "24").replace(" ", "") + ",";
-        String scrollDownKeys = "," + PreferenceManager.getDefaultSharedPreferences(MyApp.getContext())
+        String scrollDownKeys = "," + PreferenceManager.getDefaultSharedPreferences(App.getContext())
                 .getString("keys.scrollDown", "25").replace(" ", "") + ",";
 
         int keyCode = event.getKeyCode();
@@ -262,7 +262,7 @@ public abstract class ThemesTab extends BaseTab {
             topic.showActivity(getContext(), getOpenThemeParams());
             topicAfterClick(topic);
         } catch (Throwable ex) {
-            Log.e(getContext(), ex);
+            AppLog.e(getContext(), ex);
         }
 
     }
@@ -425,7 +425,7 @@ public abstract class ThemesTab extends BaseTab {
                 this.dialog.setMessage(getContext().getResources().getString(R.string.loading));
                 this.dialog.show();
             } catch (Exception ex) {
-                Log.e(null, ex);
+                AppLog.e(null, ex);
                 this.cancel(true);
             }
         }
@@ -439,7 +439,7 @@ public abstract class ThemesTab extends BaseTab {
                     this.dialog.dismiss();
                 }
             } catch (Exception ex) {
-                Log.e(null, ex);
+                AppLog.e(null, ex);
             }
 
             if (success) {
@@ -448,7 +448,7 @@ public abstract class ThemesTab extends BaseTab {
 
             } else {
                 if (ex != null)
-                    Log.e(ThemesTab.this.getContext(), ex, new Runnable() {
+                    AppLog.e(ThemesTab.this.getContext(), ex, new Runnable() {
                         @Override
                         public void run() {
                             loadLatest();
@@ -532,7 +532,7 @@ public abstract class ThemesTab extends BaseTab {
     }
 
     public static String getTopicNavigateAction(CharSequence tabId, CharSequence template) {
-        return PreferenceManager.getDefaultSharedPreferences(MyApp.getContext()).getString(String.format("%s.%s.navigate_action", tabId, template), null);
+        return PreferenceManager.getDefaultSharedPreferences(App.getContext()).getString(String.format("%s.%s.navigate_action", tabId, template), null);
     }
 
     public void saveOpenThemeParams(CharSequence navigateAction) {
@@ -540,7 +540,7 @@ public abstract class ThemesTab extends BaseTab {
     }
 
     public static void saveOpenThemeParams(CharSequence tabId, CharSequence template, CharSequence navigateAction) {
-        PreferenceManager.getDefaultSharedPreferences(MyApp.getContext())
+        PreferenceManager.getDefaultSharedPreferences(App.getContext())
                 .edit()
                 .putString(String.format("%s.%s.navigate_action", tabId, template), navigateAction.toString())
                 .commit();

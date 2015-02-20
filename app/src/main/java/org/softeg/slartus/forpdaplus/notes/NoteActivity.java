@@ -29,7 +29,7 @@ import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.db.NotesTable;
 import org.softeg.slartus.forpdaplus.emotic.Smiles;
@@ -155,7 +155,7 @@ public class NoteActivity extends BaseFragmentActivity {
 
             webView.loadDataWithBaseURL("http://4pda.ru/forum/", transformChatBody(note.Body), "text/html", "UTF-8", null);
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
 
 
@@ -253,7 +253,7 @@ public class NoteActivity extends BaseFragmentActivity {
                 this.dialog.setMessage(getString(R.string.Loading_));
                 this.dialog.show();
             } catch (Exception ex) {
-                Log.e(null, ex);
+                AppLog.e(null, ex);
                 this.cancel(true);
             }
         }
@@ -276,7 +276,7 @@ public class NoteActivity extends BaseFragmentActivity {
 
             } else {
                 if (ex != null)
-                    Log.e(NoteActivity.this, ex, new Runnable() {
+                    AppLog.e(NoteActivity.this, ex, new Runnable() {
                         @Override
                         public void run() {
                             loadData();

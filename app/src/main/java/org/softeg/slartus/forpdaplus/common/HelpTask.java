@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 
@@ -26,7 +26,7 @@ public class HelpTask extends AsyncTask<HelpTask.OnMethodListener, String, Boole
 
 
     private final ProgressDialog dialog;
-    private String m_ProcessMessage = MyApp.getInstance().getString(R.string.Loading_);
+    private String m_ProcessMessage = App.getInstance().getString(R.string.Loading_);
     private Context mContext;
 
     public HelpTask(Context context, String processMessage) {
@@ -61,7 +61,7 @@ public class HelpTask extends AsyncTask<HelpTask.OnMethodListener, String, Boole
             Result = params[0].onMethod(null);
             return true;
         } catch (Exception e) {
-            Log.e(MyApp.getInstance(), e);
+            AppLog.e(App.getInstance(), e);
             ex = e;
             return false;
         }
@@ -91,7 +91,7 @@ public class HelpTask extends AsyncTask<HelpTask.OnMethodListener, String, Boole
         try {
             m_OnPostMethod.onMethod(Result);
         } catch (Exception ex) {
-            Log.e(mContext, ex);
+            AppLog.e(mContext, ex);
         }
         mContext = null;
     }

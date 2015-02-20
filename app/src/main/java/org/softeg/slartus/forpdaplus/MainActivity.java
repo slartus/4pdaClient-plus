@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -21,7 +20,7 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
@@ -90,7 +89,7 @@ public class MainActivity extends BaseFragmentActivity implements BricksListDial
             new TopicAttentionNotifier(notifiersManager).start(this);
             new ForPdaVersionNotifier(notifiersManager, 1).start(this);
         } catch (Throwable ex) {
-            Log.e(getApplicationContext(), ex);
+            AppLog.e(getApplicationContext(), ex);
         }
     }
 
@@ -123,7 +122,7 @@ public class MainActivity extends BaseFragmentActivity implements BricksListDial
             }
             ft.commit();
         } catch (Exception ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
     }
 
@@ -205,7 +204,7 @@ public class MainActivity extends BaseFragmentActivity implements BricksListDial
 
     private void appExit() {
 
-        MyApp.getInstance().exit();
+        App.getInstance().exit();
     }
 
     @Override
@@ -215,7 +214,7 @@ public class MainActivity extends BaseFragmentActivity implements BricksListDial
             if (currentFragment != null && ((IBrickFragment) currentFragment).dispatchKeyEvent(event))
                 return true;
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
         return super.dispatchKeyEvent(event);
     }
@@ -269,7 +268,7 @@ public class MainActivity extends BaseFragmentActivity implements BricksListDial
                     if (tagPair.first.equals("Tab")) {
 
                         final String tabId = tagPair.second;
-                        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getContext());
+                        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
 
                         String defaulttabId = prefs.getString("tabs.defaulttab", "Tab1");
                         try {
@@ -313,7 +312,7 @@ public class MainActivity extends BaseFragmentActivity implements BricksListDial
                 }
             }
         } catch (Throwable ex) {
-            Log.e(getContext(), ex);
+            AppLog.e(getContext(), ex);
         }
     }
 

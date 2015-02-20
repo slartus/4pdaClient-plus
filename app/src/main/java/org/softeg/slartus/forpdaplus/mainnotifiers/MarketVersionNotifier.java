@@ -8,10 +8,10 @@ import android.text.TextUtils;
 import org.json.JSONObject;
 import org.softeg.slartus.forpdacommon.Http;
 import org.softeg.slartus.forpdacommon.NotReportException;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 /*
  * Created by slartus on 03.06.2014.
@@ -37,7 +37,7 @@ public class MarketVersionNotifier extends MainNotifier {
                 try {
                     Boolean siteVersionsNewer;
                     String releaseVer;
-                    String currentVersion = getAppVersion(MyApp.getContext());
+                    String currentVersion = getAppVersion(App.getContext());
                     currentVersion = currentVersion.replace("beta", ".");
                     String url = "https://androidquery.appspot.com//api/market?locale=ru&app=" + context.getPackageName();
                     String page = Http.getPage(url, "utf-8");
@@ -60,7 +60,7 @@ public class MarketVersionNotifier extends MainNotifier {
                                                     try {
                                                         ExtUrl.showInBrowser(context, "https://play.google.com/store/apps/details?id=" + context.getPackageName());
                                                     } catch (Throwable ex) {
-                                                        Log.e(context, ex);
+                                                        AppLog.e(context, ex);
                                                     }
                                                 }
                                             })
@@ -68,7 +68,7 @@ public class MarketVersionNotifier extends MainNotifier {
                                             .create().show();
 
                                 } catch (Exception ex) {
-                                    Log.e(context, new NotReportException("Ошибка проверки новой версии", ex));
+                                    AppLog.e(context, new NotReportException("Ошибка проверки новой версии", ex));
                                 }
 
                             }

@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsNewThreadActivity;
@@ -133,7 +133,7 @@ public class ForumUser {
 
                         }
                     } catch (Exception ex) {
-                        Log.e(context, ex);
+                        AppLog.e(context, ex);
                     }
                 }
             });
@@ -143,7 +143,7 @@ public class ForumUser {
             else
                 mQuickAction.show(webView);
         } catch (Throwable ex) {
-            Log.e(context, ex);
+            AppLog.e(context, ex);
         }
     }
 
@@ -211,7 +211,7 @@ public class ForumUser {
 
 
         } catch (Throwable ex) {
-            Log.e(context, ex);
+            AppLog.e(context, ex);
         }
     }
 
@@ -255,7 +255,7 @@ public class ForumUser {
                                         try {
                                             if (finalEx != null) {
                                                 Toast.makeText(context, context.getString(R.string.ChangeReputationError), Toast.LENGTH_SHORT).show();
-                                                Log.e(context, finalEx);
+                                                AppLog.e(context, finalEx);
                                             } else if (!finalRes) {
                                                 new AlertDialogBuilder(context)
                                                         .setTitle(context.getString(R.string.ChangeReputationError))
@@ -272,7 +272,7 @@ public class ForumUser {
                                                 Toast.makeText(context, outParams.get("Result"), Toast.LENGTH_SHORT).show();
                                             }
                                         } catch (Exception ex) {
-                                            Log.e(context, ex);
+                                            AppLog.e(context, ex);
                                         }
 
                                     }

@@ -6,7 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ public class NotifiersManager implements DialogInterface.OnDismissListener {
             if (dialogs.size() == 1)
                 alertDialog.show();
         } catch (Throwable ex) {
-            Log.e(activity, ex);
+            AppLog.e(activity, ex);
         }
     }
 
@@ -38,7 +38,7 @@ public class NotifiersManager implements DialogInterface.OnDismissListener {
             if (dialogs.size() > 0)
                 ((AlertDialog) dialogs.get(0)).show();
         } catch (Throwable ex) {
-            Log.e(activity, ex);
+            AppLog.e(activity, ex);
         }
     }
 }

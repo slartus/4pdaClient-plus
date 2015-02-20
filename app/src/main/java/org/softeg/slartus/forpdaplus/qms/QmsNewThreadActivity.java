@@ -21,7 +21,7 @@ import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView;
 
 import java.util.HashMap;
@@ -187,7 +187,7 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
             } else {
                 username.setVisibility(View.VISIBLE);
                 if (ex != null)
-                    Log.e(QmsNewThreadActivity.this, ex, new Runnable() {
+                    AppLog.e(QmsNewThreadActivity.this, ex, new Runnable() {
                         @Override
                         public void run() {
                             new GetUserTask(userId).execute();
@@ -255,7 +255,7 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
                         outParams.get("t"), outParams.get("title"), m_ChatBody);
             } else {
                 if (ex != null)
-                    Log.e(QmsNewThreadActivity.this, ex);
+                    AppLog.e(QmsNewThreadActivity.this, ex);
                 else
                     Toast.makeText(QmsNewThreadActivity.this, "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();

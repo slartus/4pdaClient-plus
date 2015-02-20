@@ -1,19 +1,15 @@
 package org.softeg.slartus.forpdaplus.db;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
-import org.softeg.slartus.forpdaplus.MyApp;
-import org.softeg.slartus.forpdaplus.notes.Note;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**

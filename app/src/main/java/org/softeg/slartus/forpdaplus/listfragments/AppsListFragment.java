@@ -20,10 +20,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.PdaApplication;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ApplicationRelationsTable;
 import org.softeg.slartus.forpdaplus.db.ApplicationsDbHelper;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
@@ -65,11 +65,11 @@ public class AppsListFragment extends TopicsListFragment {
 
     @Override
     public void saveCache() throws Exception {
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(MyApp.getContext());
+        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
         SQLiteDatabase db = null;
         try {
             db = cacheDbHelper.getWritableDatabase();
-            BaseDao<AppItem> baseDao = new BaseDao<>(MyApp.getContext(), db, getListName(), AppItem.class);
+            BaseDao<AppItem> baseDao = new BaseDao<>(App.getContext(), db, getListName(), AppItem.class);
             baseDao.createTable(db);
             for (IListItem item : mData) {
                 AppItem news = (AppItem) item;
@@ -85,11 +85,11 @@ public class AppsListFragment extends TopicsListFragment {
     @Override
     public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
         mCacheList=new ArrayList<>();
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(MyApp.getContext());
+        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
         SQLiteDatabase db = null;
         try {
             db = cacheDbHelper.getReadableDatabase();
-            BaseDao<AppItem> baseDao = new BaseDao<>(MyApp.getContext(), db, getListName(), AppItem.class);
+            BaseDao<AppItem> baseDao = new BaseDao<>(App.getContext(), db, getListName(), AppItem.class);
             if (baseDao.isTableExists())
                 mCacheList.addAll(baseDao.getAll());
         } finally {
@@ -167,9 +167,9 @@ public class AppsListFragment extends TopicsListFragment {
         SQLiteDatabase appsDb = null;
         try {
 
-            DbHelper dbHelper = new DbHelper(MyApp.getInstance());
+            DbHelper dbHelper = new DbHelper(App.getInstance());
             db = dbHelper.getReadableDatabase();
-            ApplicationsDbHelper applicationsDbHelper = new ApplicationsDbHelper(MyApp.getInstance());
+            ApplicationsDbHelper applicationsDbHelper = new ApplicationsDbHelper(App.getInstance());
             appsDb = applicationsDbHelper.getReadableDatabase();
             for (AppItem app : apps) {
                 if (isCancelled())
@@ -190,7 +190,7 @@ public class AppsListFragment extends TopicsListFragment {
                         continue;
                     }
                 } catch (Throwable ex) {
-                    Log.e(null, ex);
+                    AppLog.e(null, ex);
                 }
                 try {
                     pdaApps = ApplicationRelationsTable.getApplications(appsDb, normalizePackName(app.getDescription().toString()));
@@ -206,7 +206,7 @@ public class AppsListFragment extends TopicsListFragment {
                     //if (app.Ids.size() != 1)
                     appsName.add(app.Ids.size() != 1 ? normalizeTitle(app.getTitle()) : null);
                 } catch (Throwable ex) {
-                    Log.e(null, ex);
+                    AppLog.e(null, ex);
                 }
             }
         } catch (IOException e) {
@@ -350,7 +350,7 @@ public class AppsListFragment extends TopicsListFragment {
                 }
             });
         } catch (Throwable ex) {
-            Log.e(getContext(), ex);
+            AppLog.e(getContext(), ex);
         }
 
 

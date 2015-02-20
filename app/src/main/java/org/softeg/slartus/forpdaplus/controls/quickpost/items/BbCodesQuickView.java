@@ -23,10 +23,11 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.BbImage;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -60,8 +61,8 @@ public class BbCodesQuickView extends BaseQuickView {
 
     private void loadWebView() {
         StringBuilder sb = new StringBuilder();
-        sb.append("<html><body bgcolor=\"").append(MyApp.getInstance().getCurrentThemeName()).append("\">");
-        String style = MyApp.getInstance().getCurrentThemeName();
+        sb.append("<html><body bgcolor=\"").append(App.getInstance().getCurrentThemeName()).append("\">");
+        String style = App.getInstance().getCurrentThemeName();
         String path = "file:///android_asset/forum/style_images/1/folder_editor_buttons_" + style + "/";
         initVars();
         for (String key : m_BbCodes) {
@@ -121,7 +122,7 @@ public class BbCodesQuickView extends BaseQuickView {
                         break;
                 }
             } catch (Exception ex) {
-                org.softeg.slartus.forpdaplus.common.Log.e(getContext(), ex);
+                AppLog.e(getContext(), ex);
             }
 
             return true;
@@ -402,7 +403,7 @@ public class BbCodesQuickView extends BaseQuickView {
     }
 
     protected BbImage[] getImages() {
-        String style = MyApp.getInstance().getCurrentThemeName();
+        String style = App.getInstance().getCurrentThemeName();
 
         BbImage[] res = new BbImage[m_BbCodes.length];
         String path = "file:///android_asset/forum/style_images/1/folder_editor_buttons_" + style + "/";

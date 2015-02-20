@@ -30,7 +30,6 @@ import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
@@ -38,7 +37,7 @@ import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdaplus.BaseFragment;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
@@ -47,7 +46,7 @@ import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.search.ISearchResultView;
 import org.softeg.slartus.forpdaplus.search.SearchPostsParser;
@@ -105,7 +104,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
                 } catch (ActivityNotFoundException ex) {
                     Toast.makeText(getActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {
-                    Log.e(getActivity(), ex);
+                    AppLog.e(getActivity(), ex);
                 }
             }
         });
@@ -180,7 +179,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
             }
         });
         m_WebViewExternals = new WebViewExternals(this);
-        m_WebViewExternals.loadPreferences(PreferenceManager.getDefaultSharedPreferences(MyApp.getContext()));
+        m_WebViewExternals.loadPreferences(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
         configWebView();
         m_WebViewExternals.setWebViewSettings();
 
@@ -196,7 +195,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
         }
         mWvBody.addJavascriptInterface(this, "HTMLOUT");
         mWvBody.loadData("<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
-                "</head><body bgcolor=" + MyApp.getInstance().getCurrentThemeName() + "></body></html>", "text/html", "UTF-8");
+                "</head><body bgcolor=" + App.getInstance().getCurrentThemeName() + "></body></html>", "text/html", "UTF-8");
         registerForContextMenu(mWvBody);
         return v;
     }
@@ -283,7 +282,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
         mWvBody.getSettings().setDomStorageEnabled(true);
         mWvBody.getSettings().setAllowFileAccess(true);
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         if (prefs.getBoolean("system.WebViewScroll", true)) {
             mWvBody.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
             mWvBody.setScrollbarFadingEnabled(false);
@@ -309,7 +308,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
 
 
         } catch (Exception ex) {
-            Log.e(getContext(), ex);
+            AppLog.e(getContext(), ex);
         }
     }
 
@@ -521,7 +520,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
                     }
 
 
-                    File file = new File(MyApp.getInstance().getExternalFilesDir(null), "search.txt");
+                    File file = new File(App.getInstance().getExternalFilesDir(null), "search.txt");
                     FileWriter out = new FileWriter(file);
                     out.write(html);
                     out.close();
@@ -531,7 +530,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
                     intent.setDataAndType(uri, "text/plain");
                     startActivity(intent);
                 } catch (Exception e) {
-                    Log.e(getActivity(), e);
+                    AppLog.e(getActivity(), e);
                 }
             }
         });
@@ -541,7 +540,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
         try {
             mWvBody.loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
         } catch (Throwable ex) {
-            Log.e(getActivity(), ex);
+            AppLog.e(getActivity(), ex);
         }
     }
 
@@ -596,7 +595,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
 
             } else {
                 if (ex != null)
-                    Log.e(getContext(), ex);
+                    AppLog.e(getContext(), ex);
             }
 
             super.onPostExecute(success);

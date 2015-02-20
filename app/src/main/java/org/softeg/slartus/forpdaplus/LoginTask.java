@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 /**
  * User: slinkin
@@ -103,7 +103,7 @@ public class LoginTask extends AsyncTask<String, Void, Boolean> {
                     Toast.LENGTH_SHORT).show();
         } else {
             if (ex != null)
-                Log.e(mContext, ex);
+                AppLog.e(mContext, ex);
             else
                 new AlertDialogBuilder(mContext)
                         .setIcon(R.drawable.icon)

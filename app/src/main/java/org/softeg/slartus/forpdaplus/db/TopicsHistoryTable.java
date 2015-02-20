@@ -5,11 +5,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.softeg.slartus.forpdaapi.ListInfo;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.Forum;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.classes.forum.HistoryTopic;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -35,7 +35,7 @@ public class TopicsHistoryTable {
         SQLiteDatabase db = null;
         Cursor c = null;
         try {
-            DbHelper dbHelper = new DbHelper(MyApp.getInstance());
+            DbHelper dbHelper = new DbHelper(App.getInstance());
             db = dbHelper.getReadableDatabase();
             assert db != null;
 
@@ -62,7 +62,7 @@ public class TopicsHistoryTable {
         SQLiteDatabase db = null;
         Cursor c = null;
         try {
-            DbHelper dbHelper = new DbHelper(MyApp.getInstance());
+            DbHelper dbHelper = new DbHelper(App.getInstance());
             db = dbHelper.getReadableDatabase();
             assert db != null;
 
@@ -92,7 +92,7 @@ public class TopicsHistoryTable {
                 try {
                     dateTime = DbHelper.parseDate(c.getString(columnDateTimeIndex));
                 } catch (ParseException e) {
-                    Log.e(MyApp.getContext(), e);
+                    AppLog.e(App.getContext(), e);
                 }
 
                 HistoryTopic topic = new HistoryTopic(id, title, url);
@@ -121,7 +121,7 @@ public class TopicsHistoryTable {
         SQLiteDatabase db = null;
         Cursor c = null;
         try {
-            DbHelper dbHelper = new DbHelper(MyApp.getInstance());
+            DbHelper dbHelper = new DbHelper(App.getInstance());
             db = dbHelper.getReadableDatabase();
 
 
@@ -152,7 +152,7 @@ public class TopicsHistoryTable {
                     try {
                         dateTime = DbHelper.parseDate(c.getString(columnDateTimeIndex));
                     } catch (ParseException e) {
-                        Log.e(MyApp.getContext(), e);
+                        AppLog.e(App.getContext(), e);
                     }
 
                     HistoryTopic topic = new HistoryTopic(id, title, url);
@@ -182,7 +182,7 @@ public class TopicsHistoryTable {
 
         try {
 
-            DbHelper dbHelper = new DbHelper(MyApp.getInstance());
+            DbHelper dbHelper = new DbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
 
             assert db != null;
@@ -194,7 +194,7 @@ public class TopicsHistoryTable {
             values.put(COLUMN_URL, lastUrl);
             db.insertOrThrow(TABLE_NAME, null, values);
         } catch (Exception ex) {
-            Log.e(MyApp.getInstance(), ex);
+            AppLog.e(App.getInstance(), ex);
         } finally {
             if (db != null) {
 

@@ -3,10 +3,9 @@ package org.softeg.slartus.forpdaplus.emotic;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.os.DropBoxManager;
 import android.preference.PreferenceManager;
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.BbImage;
 import org.softeg.slartus.forpdaplus.classes.common.ExtBitmap;
 
@@ -14,7 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.TreeMap;
@@ -44,7 +42,7 @@ public class Smiles extends ArrayList<Smile> {
     }
 
     public void setWeights() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MyApp.getContext());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(App.getContext());
         String weights = preferences.getString("smiles.weights", "");
         Matcher m = Pattern.compile("(.*?):(\\d+);").matcher(weights);
         while (m.find()) {
@@ -56,7 +54,7 @@ public class Smiles extends ArrayList<Smile> {
 
     private void saveWeights() {
         normalizeWights();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MyApp.getContext());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(App.getContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("smiles.weights", getWeightString());
         editor.commit();

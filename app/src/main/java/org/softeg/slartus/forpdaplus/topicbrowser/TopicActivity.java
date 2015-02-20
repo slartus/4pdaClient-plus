@@ -5,13 +5,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.MenuItem;
-import android.view.Window;
 
-import org.softeg.slartus.forpdaapi.TopicBodyParser;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 /*
  * User: slinkin
@@ -62,7 +60,7 @@ public class TopicActivity extends BaseFragmentActivity {
             }
             ft.commit();
         } catch (Exception ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
     }
 

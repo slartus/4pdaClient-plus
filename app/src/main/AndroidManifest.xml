@@ -18,7 +18,7 @@
         android:description="@string/app_description"
         android:icon="@drawable/icon"
         android:hardwareAccelerated="true"
-        android:name="org.softeg.slartus.forpdaplus.MyApp"
+        android:name=".App"
         android:theme="@style/Theme.Black">
 
         <activity
@@ -103,6 +103,17 @@
                 <data android:mimeType="video/*" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".controls.imageview.ImageViewActivity"
+            android:label="Изображение" />
+
+        <activity
+            android:name="org.acra.CrashReportDialog"
+            android:excludeFromRecents="true"
+            android:finishOnTaskLaunch="true"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Dialog" />
 
         <receiver
             android:name=".BootReceiver"

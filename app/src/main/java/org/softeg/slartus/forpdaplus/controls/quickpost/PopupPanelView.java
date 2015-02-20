@@ -17,7 +17,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.controls.quickpost.items.BBCodesAndSmilesItem;
 import org.softeg.slartus.forpdaplus.controls.quickpost.items.BaseQuickView;
@@ -90,7 +90,7 @@ public class PopupPanelView {
         parentLayout = activity.getWindow().getDecorView().findViewById(android.R.id.content);
         this.emoticonsCover = parentLayout.findViewById(R.id.footer_for_emoticons);
 
-        final float popUpheight = MyApp.getContext().getResources().getDimension(
+        final float popUpheight = App.getContext().getResources().getDimension(
                 R.dimen.keyboard_height);
         changeKeyboardHeight((int) popUpheight);
         enablePopUpView();

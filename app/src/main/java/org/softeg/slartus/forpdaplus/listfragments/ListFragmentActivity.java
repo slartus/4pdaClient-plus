@@ -17,7 +17,7 @@ import android.widget.Toast;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
@@ -61,7 +61,7 @@ public class ListFragmentActivity extends BaseFragmentActivity {
             if (currentFragment != null && ((IBrickFragment) currentFragment).dispatchKeyEvent(event))
                 return true;
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
         return super.dispatchKeyEvent(event);
     }

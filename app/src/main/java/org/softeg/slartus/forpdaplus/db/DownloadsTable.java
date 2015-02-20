@@ -4,10 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.DownloadTask;
 import org.softeg.slartus.forpdaplus.classes.common.Functions;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.io.IOException;
 import java.util.Date;
@@ -53,7 +53,7 @@ public class DownloadsTable {
         SQLiteDatabase db = null;
 
         try {
-            DbHelper dbHelper = new DbHelper(MyApp.getInstance());
+            DbHelper dbHelper = new DbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
             // db.beginTransaction();
 
@@ -66,7 +66,7 @@ public class DownloadsTable {
             db.insertOrThrow(TABLE_NAME, null, values);
 
         } catch (Exception ex) {
-            Log.e(MyApp.getInstance(), ex);
+            AppLog.e(App.getInstance(), ex);
         } finally {
             if (db != null) {
                 // db.endTransaction();
@@ -79,7 +79,7 @@ public class DownloadsTable {
         SQLiteDatabase db = null;
 
         try {
-            DbHelper dbHelper = new DbHelper(MyApp.getInstance());
+            DbHelper dbHelper = new DbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
             // db.beginTransaction();
             ContentValues cv = new ContentValues();
@@ -89,7 +89,7 @@ public class DownloadsTable {
             cv.put(COLUMN_CONTENTLEGTH, contentLength + "");
             db.update(TABLE_NAME, cv, COLUMN_ID + "=" + notificationId, null);
         } catch (Exception ex) {
-            Log.e(MyApp.getInstance(), ex);
+            AppLog.e(App.getInstance(), ex);
         } finally {
             if (db != null) {
                 //  db.endTransaction();
@@ -102,7 +102,7 @@ public class DownloadsTable {
         SQLiteDatabase db = null;
 
         try {
-            DbHelper dbHelper = new DbHelper(MyApp.getInstance());
+            DbHelper dbHelper = new DbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
             //  db.beginTransaction();
             ContentValues cv = new ContentValues();
@@ -111,7 +111,7 @@ public class DownloadsTable {
 
             db.update(TABLE_NAME, cv, COLUMN_ID + "=" + id, null);
         } catch (Exception ex) {
-            Log.e(MyApp.getInstance(), ex);
+            AppLog.e(App.getInstance(), ex);
         } finally {
             if (db != null) {
                 //   db.endTransaction();
@@ -124,14 +124,14 @@ public class DownloadsTable {
         SQLiteDatabase db = null;
         Cursor mcursor = null;
         try {
-            DbHelper dbHelper = new DbHelper(MyApp.getInstance());
+            DbHelper dbHelper = new DbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
             String count = "SELECT max(" + COLUMN_ID + ") FROM " + DownloadsTable.TABLE_NAME;
             mcursor = db.rawQuery(count, null);
             mcursor.moveToFirst();
             return mcursor.getInt(0) + 1;
         } catch (Exception ex) {
-            Log.e(MyApp.getInstance(), ex);
+            AppLog.e(App.getInstance(), ex);
             return Functions.getUniqueDateInt();
         } finally {
             if (mcursor != null)
@@ -149,7 +149,7 @@ public class DownloadsTable {
         SQLiteDatabase db = null;
 
         try {
-            DbHelper dbHelper = new DbHelper(MyApp.getInstance());
+            DbHelper dbHelper = new DbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
             //  db.beginTransaction();
             ContentValues cv = new ContentValues();
@@ -160,7 +160,7 @@ public class DownloadsTable {
 
             db.update(TABLE_NAME, cv, COLUMN_ID + "=" + downloadTask.getId(), null);
         } catch (Exception ex) {
-            Log.e(MyApp.getInstance(), ex);
+            AppLog.e(App.getInstance(), ex);
         } finally {
             if (db != null) {
                 //   db.endTransaction();
@@ -173,12 +173,12 @@ public class DownloadsTable {
         SQLiteDatabase db = null;
 
         try {
-            DbHelper dbHelper = new DbHelper(MyApp.getInstance());
+            DbHelper dbHelper = new DbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
 
             db.delete(TABLE_NAME, null, null);
         } catch (IOException e) {
-            Log.e(MyApp.getContext(), e);
+            AppLog.e(App.getContext(), e);
         } finally {
             if (db != null) {
                 //   db.endTransaction();

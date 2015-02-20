@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
@@ -44,13 +45,10 @@ import android.widget.Toast;
 import net.londatiga.android3d.ActionItem;
 import net.londatiga.android3d.QuickAction;
 
-import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdacommon.NotReportException;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.ImageViewActivity;
 import org.softeg.slartus.forpdaplus.IntentActivity;
-import org.softeg.slartus.forpdaplus.MyApp;
-import org.softeg.slartus.forpdaplus.MyImageView;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
@@ -61,13 +59,15 @@ import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
+import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewDialogFragment;
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
-import org.softeg.slartus.forpdaplus.listfragments.UserReputationFragment;
+import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 import org.softeg.slartus.forpdaplus.post.EditPostActivity;
@@ -87,7 +87,7 @@ import java.util.regex.Pattern;
  */
 public class ThemeActivity extends BrowserViewsFragmentActivity
         implements BricksListDialogFragment.IBricksListDialogCaller {
-    private static final String TAG = "org.softeg.slartus.forpdaplus.topicview.ThemeActivity";
+    private static final String TAG = "ThemeActivity";
     private static final String TOPIC_URL_KEY = "ThemeActivity.TOPIC_URL_KEY";
     private AdvWebView webView;
     private Handler mHandler = new Handler();
@@ -187,7 +187,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
                 } else {
                     if (postResult.Exception != null)
-                        Log.e(ThemeActivity.this, postResult.Exception, new Runnable() {
+                        AppLog.e(ThemeActivity.this, postResult.Exception, new Runnable() {
                             @Override
                             public void run() {
                                 mQuickPostFragment.post();
@@ -256,7 +256,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         if (Build.VERSION.SDK_INT < 18)
             //noinspection deprecation
             webView.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
-        String appCachePath = MyApp.getInstance().getCacheDir().getAbsolutePath();
+        String appCachePath = App.getInstance().getCacheDir().getAbsolutePath();
         webView.getSettings().setAppCachePath(appCachePath);
         webView.getSettings().setAppCacheEnabled(true);
 
@@ -312,7 +312,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
             outState.putString("LoadsImagesAutomatically", LoadsImagesAutomatically == null ? "null" : (LoadsImagesAutomatically ? "1" : "0"));
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
     }
 
@@ -335,7 +335,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             LoadsImagesAutomatically = "null".equals(sLoadsImagesAutomatically) ? null : Boolean.parseBoolean(sLoadsImagesAutomatically);
 
 
-            loadPreferences(PreferenceManager.getDefaultSharedPreferences(MyApp.getContext()));
+            loadPreferences(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
             m_History = (ArrayList<SessionHistory>) outState.getSerializable("History");
             assert m_History != null;
             if (m_History.size() > 0) {
@@ -354,43 +354,24 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
 
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
 
     }
 
-    public static void showImgPreview(final Context context, String title, String previewUrl, final String fullUrl) {
+    public static void showImgPreview(final FragmentActivity context, String title, String previewUrl,
+                                      final String fullUrl) {
 
-        AlertDialog alertDialog = new AlertDialogBuilder(context)
-                .setTitle(title)
 
-                .setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .setPositiveButton("Полная версия", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        String url = fullUrl;
-                        try {
-                            URI uri = new URI(fullUrl);
-                            if (!uri.isAbsolute())
-                                url = "http://4pda.ru" + url;
-                        } catch (URISyntaxException e) {
-                            e.printStackTrace();
-                        }
-                        ImageViewActivity.showImageUrl(context, url);
-                    }
-                })
-                .create();
 
-        MyImageView view = new MyImageView(context, alertDialog.getWindow().getWindowManager());
-        alertDialog.setView(view);
-        alertDialog.show();
-        view.setImageDrawable(previewUrl);
+        ImageViewDialogFragment fragment = new ImageViewDialogFragment();
+        Bundle args = new Bundle();
+        args.putString(ImageViewDialogFragment.PREVIEW_URL_KEY, previewUrl);
+        args.putString(ImageViewDialogFragment.URL_KEY, fullUrl);
+        args.putString(ImageViewDialogFragment.TITLE_KEY, title);
+        fragment.setArguments(args);
+        fragment.show(context.getSupportFragmentManager(), "dlg1");
+
     }
 
     @Override
@@ -402,7 +383,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 //                onBackPressed();
 //            else
             {
-                MyApp.showMainActivityWithoutBack(this);
+                App.showMainActivityWithoutBack(this);
             }
 
             return true;
@@ -464,7 +445,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         try {
             webView.evalJs("window." + DeveloperWebInterface.NAME + ".saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
     }
 
@@ -478,7 +459,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         try {
             webView.evalJs("window.HTMLOUT.checkBodyAndReload(document.getElementsByTagName('body')[0].innerHTML);");
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
     }
 
@@ -486,7 +467,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         try {
             webView.evalJs("window.HTMLOUT.showTopicAttaches('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
     }
 
@@ -638,7 +619,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     public void clear(Boolean clearChache) {
         webView.setPictureListener(null);
         webView.setWebViewClient(null);
-        webView.loadData("<html><head></head><body bgcolor=" + MyApp.getInstance().getCurrentThemeName() + "></body></html>", "text/html", "UTF-8");
+        webView.loadData("<html><head></head><body bgcolor=" + App.getInstance().getCurrentThemeName() + "></body></html>", "text/html", "UTF-8");
         if (clearChache)
             webView.clearCache(true);
         if (m_Topic != null)
@@ -655,7 +636,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
         CharSequence clipboardText = null;
         try {
-            ClipboardManager clipboardManager = (android.content.ClipboardManager) MyApp.getInstance().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipboardManager clipboardManager = (android.content.ClipboardManager) App.getInstance().getSystemService(Context.CLIPBOARD_SERVICE);
 
             ClipData primaryClip = clipboardManager.getPrimaryClip();
             clipboardText = null;
@@ -670,7 +651,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                         break;
                 }
         } catch (Throwable ex) {
-            Log.eToast(getContext(), ex);
+            AppLog.eToast(getContext(), ex);
         }
 
         CharSequence[] titles = new CharSequence[]{"Цитата сообщения", "Пустая цитата", "Цитата буфера"};
@@ -803,7 +784,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
             mQuickAction.show(webView, webView.getLastMotionEvent());
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
     }
 
@@ -817,7 +798,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
             TopicsHistoryTable.addHistory(m_Topic, m_LastUrl);
         } catch (Exception ex) {
-            Log.e(ThemeActivity.this, ex);
+            AppLog.e(ThemeActivity.this, ex);
         }
     }
 
@@ -1013,7 +994,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
                         method.invoke(ThemeActivity.this, parameterValues);
                     } catch (Exception e) {
-                        Log.eToast(ThemeActivity.this, e);
+                        AppLog.eToast(ThemeActivity.this, e);
                     }
                     return true;
                 }
@@ -1125,7 +1106,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             }
             showTheme(topicUrl);
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
 
     }
@@ -1152,7 +1133,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             GetThemeTask getThemeTask = new GetThemeTask(this);
             getThemeTask.execute(url.replace("|", ""));
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
     }
 
@@ -1205,7 +1186,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
                         }
                         if (finalEx != null)
-                            Log.e(ThemeActivity.this, finalEx);
+                            AppLog.e(ThemeActivity.this, finalEx);
 
                         m_ScrollY = 0;
                         showTheme(getLastUrl());
@@ -1232,7 +1213,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
 
     public void showRep(final String userId) {
-        UserReputationFragment.showActivity(this, userId);
+        UserReputationFragment.showActivity(this, userId,false);
     }
 
     public void insertTextToPost(final String text) {
@@ -1337,7 +1318,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
                 m_LastUrl = client.getRedirectUri() == null ? m_LastUrl : client.getRedirectUri().toString();
 
-                TopicBodyBuilder topicBodyBuilder = client.parseTopic(pageBody, MyApp.getInstance(), m_LastUrl,
+                TopicBodyBuilder topicBodyBuilder = client.parseTopic(pageBody, App.getInstance(), m_LastUrl,
                         m_SpoilFirstPost);
 
                 m_Topic = topicBodyBuilder.getTopic();
@@ -1371,7 +1352,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 this.dialog.setMessage("Загрузка темы...");
                 this.dialog.show();
             } catch (Exception ex) {
-                Log.e(null, ex);
+                AppLog.e(null, ex);
             }
         }
 
@@ -1383,7 +1364,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                     this.dialog.dismiss();
                 }
             } catch (Exception ex) {
-                Log.e(null, ex);
+                AppLog.e(null, ex);
             }
             if (scrollY != 0)
                 webView.setPictureListener(new MyPictureListener());
@@ -1402,7 +1383,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                     webView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
 
                 }
-                Log.e(ThemeActivity.this, ex, new Runnable() {
+                AppLog.e(ThemeActivity.this, ex, new Runnable() {
                     @Override
                     public void run() {
                         showTheme(getLastUrl());

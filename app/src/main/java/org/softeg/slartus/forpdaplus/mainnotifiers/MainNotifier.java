@@ -9,8 +9,8 @@ import android.preference.PreferenceManager;
 
 import org.softeg.slartus.forpdacommon.DateExtensions;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
-import org.softeg.slartus.forpdaplus.MyApp;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -32,7 +32,7 @@ public abstract class MainNotifier {
             return pInfo.versionName;
 
         } catch (PackageManager.NameNotFoundException e1) {
-            Log.e(context, e1);
+            AppLog.e(context, e1);
         }
         return "";
     }
@@ -54,7 +54,7 @@ public abstract class MainNotifier {
 
     protected boolean isTime() {
         GregorianCalendar lastShowpromoCalendar = new GregorianCalendar();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getContext());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
         Date lastCheckDate=ExtPreferences.getDateTime(prefs, "notifier." + name, null);
         if(lastCheckDate==null){
             saveTime();
@@ -70,7 +70,7 @@ public abstract class MainNotifier {
     }
 
     protected void saveTime() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getContext());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
         SharedPreferences.Editor editor = prefs.edit();
         ExtPreferences.putDateTime(editor,  "notifier." + name, new Date());
         editor.commit();

@@ -25,13 +25,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.DownloadTask;
 import org.softeg.slartus.forpdaplus.classes.DownloadTasks;
 import org.softeg.slartus.forpdaplus.classes.common.Functions;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.BaseTable;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.db.DownloadsTable;
@@ -64,7 +64,7 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
         SQLiteDatabase db = null;
         Cursor c = null;
         try {
-            DbHelper dbHelper = new DbHelper(MyApp.getInstance());
+            DbHelper dbHelper = new DbHelper(App.getInstance());
             db = dbHelper.getReadableDatabase();
 
             String selection = null;
@@ -111,7 +111,7 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
 
             }
         } catch (Exception ex) {
-            Log.e(MyApp.getInstance(), ex);
+            AppLog.e(App.getInstance(), ex);
         } finally {
             if (db != null) {
                 if (c != null)
@@ -275,7 +275,7 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
                     break;
             }
         } catch (Exception ex) {
-            Log.e(getContext(), ex);
+            AppLog.e(getContext(), ex);
         }
     }
 
@@ -284,7 +284,7 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
 
             getContext().startActivity(getRunFileIntent(filePath));
         } catch (ActivityNotFoundException e) {
-            Log.e(getContext(), new NotReportException("Не найдено сопоставление для типа файла!"));
+            AppLog.e(getContext(), new NotReportException("Не найдено сопоставление для типа файла!"));
         }
     }
 
@@ -355,7 +355,7 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
         SQLiteDatabase db = null;
         Cursor c = null;
         try {
-            DbHelper dbHelper = new DbHelper(MyApp.getInstance());
+            DbHelper dbHelper = new DbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
 
             assert db != null;
@@ -375,7 +375,7 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
 
             }
         } catch (Exception ex) {
-            Log.e(MyApp.getInstance(), ex);
+            AppLog.e(App.getInstance(), ex);
         } finally {
             if (db != null) {
                 if (c != null)

@@ -11,9 +11,8 @@ import android.view.MenuItem;
 import org.softeg.slartus.forpdaapi.FavTopic;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
-import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.prefs.FavoritesPreferencesActivity;
@@ -38,7 +37,7 @@ public class FavoritesListFragment extends TopicsListFragment {
 
     @Override
     protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException, ParseException, URISyntaxException {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         return org.softeg.slartus.forpdaapi.TopicsApi.getFavTopics(Client.getInstance(),
                 prefs.getString(getListName() + ".sort_key", "last_post"),
                 prefs.getString(getListName() + ".sort_by", "Z-A"),
@@ -51,11 +50,11 @@ public class FavoritesListFragment extends TopicsListFragment {
 
     @Override
     public void saveCache() throws Exception {
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(MyApp.getContext());
+        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
         SQLiteDatabase db = null;
         try {
             db = cacheDbHelper.getWritableDatabase();
-            BaseDao<FavTopic> baseDao = new BaseDao<>(MyApp.getContext(), db, getListName(), FavTopic.class);
+            BaseDao<FavTopic> baseDao = new BaseDao<>(App.getContext(), db, getListName(), FavTopic.class);
             baseDao.createTable(db);
             for (IListItem item : mData) {
                 FavTopic topic = (FavTopic) item;
@@ -71,11 +70,11 @@ public class FavoritesListFragment extends TopicsListFragment {
     @Override
     public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
         mCacheList.clear();
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(MyApp.getContext());
+        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
         SQLiteDatabase db = null;
         try {
             db = cacheDbHelper.getReadableDatabase();
-            BaseDao<FavTopic> baseDao = new BaseDao<>(MyApp.getContext(), db, getListName(), FavTopic.class);
+            BaseDao<FavTopic> baseDao = new BaseDao<>(App.getContext(), db, getListName(), FavTopic.class);
             if (baseDao.isTableExists())
                 mCacheList.addAll(baseDao.getAll());
         } finally {

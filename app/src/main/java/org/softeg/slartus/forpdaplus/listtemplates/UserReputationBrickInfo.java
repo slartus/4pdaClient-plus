@@ -4,7 +4,7 @@ package org.softeg.slartus.forpdaplus.listtemplates;/*
 
 import android.support.v4.app.Fragment;
 
-import org.softeg.slartus.forpdaplus.listfragments.UserReputationFragment;
+import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 
 public class UserReputationBrickInfo extends BrickInfo {
     public static final String NAME="UserReputation";

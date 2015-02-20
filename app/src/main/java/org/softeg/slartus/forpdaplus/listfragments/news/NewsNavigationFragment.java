@@ -15,7 +15,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.listfragments.BaseFragment;
+import org.softeg.slartus.forpdaplus.listfragments.BaseBrickFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsPagerBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 /*
  * Created by slinkin on 21.02.14.
  */
-public class NewsNavigationFragment extends BaseFragment implements ActionBar.OnNavigationListener {
+public class NewsNavigationFragment extends BaseBrickFragment implements ActionBar.OnNavigationListener {
 
     private ArrayList<NewsCategoryItem> mItems = null;
 

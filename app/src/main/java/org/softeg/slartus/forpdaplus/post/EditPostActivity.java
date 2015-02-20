@@ -51,12 +51,12 @@ import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MyApp;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
@@ -73,7 +73,7 @@ import java.util.TimerTask;
  * Time: 12:42
  */
 public class EditPostActivity extends BaseFragmentActivity {
-    public static final int NEW_EDIT_POST_REQUEST_CODE = MyApp.getInstance().getUniqueIntValue();
+    public static final int NEW_EDIT_POST_REQUEST_CODE = App.getInstance().getUniqueIntValue();
     public static final String TOPIC_BODY_KEY = "EditPostActivity.TOPIC_BODY_KEY";
 
     public static final String POST_URL_KEY = "EditPostActivity.POST_URL_KEY";
@@ -133,7 +133,7 @@ public class EditPostActivity extends BaseFragmentActivity {
         super.onCreate(saveInstance);
 
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getContext());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
 
         setContentView(R.layout.edit_post_plus);
 
@@ -183,7 +183,7 @@ public class EditPostActivity extends BaseFragmentActivity {
 
             startLoadPost(forumId, topicId, postId, authKey);
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
             finish();
         }
         createActionMenu();
@@ -339,7 +339,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                                 } catch (ActivityNotFoundException ex) {
                                     Toast.makeText(EditPostActivity.this, "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
                                 } catch (Exception ex) {
-                                    Log.e(EditPostActivity.this, ex);
+                                    AppLog.e(EditPostActivity.this, ex);
                                 }
 
                                 break;
@@ -354,7 +354,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                                 } catch (ActivityNotFoundException ex) {
                                     Toast.makeText(EditPostActivity.this, "Ни одно приложение не установлено для выбора изображения!", Toast.LENGTH_LONG).show();
                                 } catch (Exception ex) {
-                                    Log.e(EditPostActivity.this, ex);
+                                    AppLog.e(EditPostActivity.this, ex);
                                 }
                                 break;
                         }
@@ -376,7 +376,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                 }
             }
         } catch (Exception ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         }
 
     }
@@ -401,7 +401,7 @@ public class EditPostActivity extends BaseFragmentActivity {
 
     private void saveAttachDirPath(String attachFilePath) {
         lastSelectDirPath = FileUtils.getDirPath(attachFilePath);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApp.getContext());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("EditPost.AttachDirPath", lastSelectDirPath);
         editor.commit();
@@ -524,7 +524,7 @@ public class EditPostActivity extends BaseFragmentActivity {
             } else {
 
                 if (ex != null)
-                    Log.e(EditPostActivity.this, ex);
+                    AppLog.e(EditPostActivity.this, ex);
                 else
                     Toast.makeText(EditPostActivity.this, "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
 
@@ -540,7 +540,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                 refreshAttachmentsInfo();
             } else {
                 if (ex != null)
-                    Log.e(EditPostActivity.this, ex);
+                    AppLog.e(EditPostActivity.this, ex);
                 else
                     Toast.makeText(EditPostActivity.this, "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
 
@@ -601,7 +601,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                 refreshAttachmentsInfo();
             } else {
                 if (ex != null)
-                    Log.e(EditPostActivity.this, ex);
+                    AppLog.e(EditPostActivity.this, ex);
                 else
                     Toast.makeText(EditPostActivity.this, "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
             }
@@ -666,7 +666,7 @@ public class EditPostActivity extends BaseFragmentActivity {
 
             } else {
                 if (ex != null)
-                    Log.e(EditPostActivity.this, ex);
+                    AppLog.e(EditPostActivity.this, ex);
                 else
                     Toast.makeText(EditPostActivity.this, "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();
@@ -751,7 +751,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                 m_AttachFilePaths = new ArrayList<>();
             } else {
                 if (ex != null)
-                    Log.e(EditPostActivity.this, ex);
+                    AppLog.e(EditPostActivity.this, ex);
                 else
                     Toast.makeText(EditPostActivity.this, "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
             }
@@ -817,7 +817,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                 finish();
             } else {
                 if (ex != null)
-                    Log.e(EditPostActivity.this, ex);
+                    AppLog.e(EditPostActivity.this, ex);
                 else
                     Toast.makeText(EditPostActivity.this, "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();
@@ -1021,7 +1021,7 @@ public class EditPostActivity extends BaseFragmentActivity {
             txtPost.setCursorVisible(true);
             return SEARCH_RESULT_FOUND;
         } catch (Throwable ex) {
-            Log.e(this, ex);
+            AppLog.e(this, ex);
         } finally {
             if (!fromSelection)
                 searchEditText.requestFocus();

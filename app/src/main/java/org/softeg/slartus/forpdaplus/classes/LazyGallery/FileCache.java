@@ -8,8 +8,6 @@ package org.softeg.slartus.forpdaplus.classes.LazyGallery;
 
 import android.content.Context;
 
-import org.softeg.slartus.forpdaplus.MyApp;
-
 import java.io.File;
 import java.io.IOException;
 

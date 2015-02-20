@@ -11,6 +11,7 @@ import android.widget.Gallery;
 import org.softeg.slartus.forpdaplus.classes.BbCodesBasePanel;
 import org.softeg.slartus.forpdaplus.classes.BbImage;
 import org.softeg.slartus.forpdaplus.classes.common.ExtBitmap;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.io.IOException;
 
@@ -49,7 +50,7 @@ public class SmilesBbCodePanel extends BbCodesBasePanel {
                     });
                     thread.run();
                 } catch (Exception ex) {
-                    org.softeg.slartus.forpdaplus.common.Log.e(mContext, ex);
+                    AppLog.e(mContext, ex);
                 }
             }
         });

@@ -21,7 +21,7 @@ import org.softeg.slartus.forpdaapi.OldUser;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.common.ExtColor;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaapi.users.Users;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 
@@ -211,7 +211,7 @@ public class UsersTab extends BaseTab implements AdapterView.OnItemClickListener
         @Override
         public void deliverResult(Users apps) {
             if (ex != null)
-                Log.e(getContext(), ex);
+                AppLog.e(getContext(), ex);
             if (isReset()) {
                 if (apps != null) {
                     onReleaseResources();
@@ -333,7 +333,7 @@ public class UsersTab extends BaseTab implements AdapterView.OnItemClickListener
             try {
                 holder.txtNick.setTextColor(ExtColor.parseColor(user.getHtmlColor()));
             } catch (Exception ex) {
-                Log.e(getContext(), new Exception("Не умею цвет: " + user.getHtmlColor()));
+                AppLog.e(getContext(), new Exception("Не умею цвет: " + user.getHtmlColor()));
             }
             return convertView;
         }

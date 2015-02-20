@@ -11,8 +11,8 @@ import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
 import org.softeg.slartus.forpdacommon.FileUtils;
-import org.softeg.slartus.forpdaplus.MyApp;
-import org.softeg.slartus.forpdaplus.common.Log;
+import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -29,7 +29,7 @@ public class DeveloperWebInterface {
         return context;
     }
 
-    public final static int FILECHOOSER_RESULTCODE = MyApp.getInstance().getUniqueIntValue();
+    public final static int FILECHOOSER_RESULTCODE = App.getInstance().getUniqueIntValue();
 
     @JavascriptInterface
     public void showChooseCssDialog() {
@@ -47,7 +47,7 @@ public class DeveloperWebInterface {
                 } catch (ActivityNotFoundException ex) {
                     Toast.makeText(getContext(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {
-                    Log.e(getContext(), ex);
+                    AppLog.e(getContext(), ex);
                 }
             }
         });
@@ -66,7 +66,7 @@ public class DeveloperWebInterface {
                     }
 
 
-                    File file = new File(MyApp.getInstance().getExternalFilesDir(null), "Topic.txt");
+                    File file = new File(App.getInstance().getExternalFilesDir(null), "Topic.txt");
                     FileWriter out = new FileWriter(file);
                     out.write(html);
                     out.close();
@@ -76,7 +76,7 @@ public class DeveloperWebInterface {
                     intent.setDataAndType(uri, "text/plain");
                     getContext().startActivity(intent);
                 } catch (Exception e) {
-                    Log.e(getContext(), e);
+                    AppLog.e(getContext(), e);
                 }
             }
         });

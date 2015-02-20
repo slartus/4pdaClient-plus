@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/forpdaapi/forpdaapi.iml" filepath="$PROJECT_DIR$/forpdaapi/forpdaapi.iml" />
       <module fileurl="file://$PROJECT_DIR$/forpdacommon/forpdacommon.iml" filepath="$PROJECT_DIR$/forpdacommon/forpdacommon.iml" />
       <module fileurl="file://$PROJECT_DIR$/forpdanotifyservice/forpdanotifyservice.iml" filepath="$PROJECT_DIR$/forpdanotifyservice/forpdanotifyservice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/http/http.iml" filepath="$PROJECT_DIR$/http/http.iml" />
       <module fileurl="file://$PROJECT_DIR$/newquickaction/newquickaction.iml" filepath="$PROJECT_DIR$/newquickaction/newquickaction.iml" />
       <module fileurl="file://$PROJECT_DIR$/sqliteannotations/sqliteannotations.iml" filepath="$PROJECT_DIR$/sqliteannotations/sqliteannotations.iml" />
     </modules>
