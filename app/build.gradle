@@ -18,13 +18,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("keystore.key")
-            keyAlias "4pdakey"
-
-
-            keyPassword "xjFX06dR7HGj6RvgHUtPQTEJVeuuMOgY"
-
-            storePassword "xjFX06dR7HGj6RvgHUtPQTEJVeuuMOgY"
+          
         }
     }
     buildTypes {
