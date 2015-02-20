@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaplus.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.text.TextUtils;
 
 import org.softeg.slartus.forpdaapi.Forum;
@@ -23,15 +22,12 @@ import java.util.List;
  */
 public class ForumsTable {
     public static final String TABLE_NAME = "Forums";
-
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_PARENT_ID = "ParentId";
     public static final String COLUMN_TITLE = "Title";
     public static final String COLUMN_DESCRIPTION = "Description";
-    //    public static final String COLUMN_SORTORDER = "SortOrder";
     public static final String COLUMN_GLOBALSORTORDER = "GlobalSortOrder";
     public static final String COLUMN_HAS_TOPICS = "HasTopics";
-    public static final String COLUMN_CAN_CREATE_NEW = "CanCreateNew";
 
     /**
      * для указанного форума восстанавливает путь до корня
@@ -76,7 +72,7 @@ public class ForumsTable {
                 forumIdsString = "'" + forumIdsString + "'";
 
             String selection = COLUMN_ID + " in (" + forumIdsString + ")";
-            String[] selectionArgs = new String[]{forumIdsString};
+
             c = db.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_TITLE},
                     selection, null, null, null, COLUMN_GLOBALSORTORDER);
 
@@ -122,7 +118,7 @@ public class ForumsTable {
                 f.setHasTopics(hasTopics);
                 f.setDescription(description);
 
-                Forum parentForum = null;
+                Forum parentForum;
                 if (TextUtils.isEmpty(parentId)) {
                     parentForum = new Forum("-1", "4pda");
                 } else {
@@ -140,7 +136,6 @@ public class ForumsTable {
 
     public static void updateForums(ArrayList<Forum> forumItems) throws IOException {
         SQLiteDatabase db = null;
-        Cursor c = null;
         try {
             ForumStructDbHelper dbHelper = new ForumStructDbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
@@ -148,14 +143,10 @@ public class ForumsTable {
             db.beginTransaction();
             db.execSQL("delete from " + TABLE_NAME);
 
-
-            String sql = "Insert into Forums (_id, ParentId,Description, GlobalSortOrder,HasTopics) values(?,?,?,?,?)";
-            SQLiteStatement insert = db.compileStatement(sql);
-
             for (int i = 0; i < forumItems.size(); i++) {
                 Forum item = forumItems.get(i);
                 ContentValues values = new ContentValues();
-                values.put(COLUMN_ID, item.getId().toString());
+                values.put(COLUMN_ID, item.getId());
                 values.put(COLUMN_PARENT_ID, item.getParent() != null ? item.getParent().getId().toString() : null);
                 values.put(COLUMN_TITLE, item.getTitle());
                 values.put(COLUMN_DESCRIPTION, item.getDescription() != null ? item.getDescription().toString() : null);
@@ -168,8 +159,6 @@ public class ForumsTable {
         } finally {
             if (db != null) {
                 db.endTransaction();
-                if (c != null)
-                    c.close();
                 db.close();
             }
         }

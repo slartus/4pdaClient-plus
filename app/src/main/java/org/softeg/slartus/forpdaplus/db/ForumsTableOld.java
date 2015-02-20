@@ -23,11 +23,8 @@ public class ForumsTableOld {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_PARENT_ID = "ParentId";
     public static final String COLUMN_TITLE = "Title";
-//    public static final String COLUMN_DESCRIPTION = "Description";
-//    public static final String COLUMN_SORTORDER = "SortOrder";
     public static final String COLUMN_GLOBALSORTORDER = "GlobalSortOrder";
     public static final String COLUMN_HAS_TOPICS = "HasTopics";
-    public static final String COLUMN_CAN_CREATE_NEW = "CanCreateNew";
 
     public static Forum loadForumsTree() throws IOException {
         return loadForumsTree(false);
@@ -45,7 +42,7 @@ public class ForumsTableOld {
             db = dbHelper.getWritableDatabase();
 
             assert db != null;
-            c = db.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_PARENT_ID, COLUMN_TITLE, COLUMN_HAS_TOPICS, COLUMN_CAN_CREATE_NEW},
+            c = db.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_PARENT_ID, COLUMN_TITLE, COLUMN_HAS_TOPICS},
                     null, null, null, null, COLUMN_GLOBALSORTORDER);
 
             if (c.moveToFirst()) {
