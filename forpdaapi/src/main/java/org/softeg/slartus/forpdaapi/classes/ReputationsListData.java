@@ -1,9 +1,11 @@
 package org.softeg.slartus.forpdaapi.classes;
 
-/**
+import java.io.Serializable;
+
+/*
  * Created by slinkin on 19.02.2015.
  */
-public class ReputationsListData extends ListData {
+public class ReputationsListData extends ListData implements Serializable {
     private String user;
     private String rep;
     private String title;

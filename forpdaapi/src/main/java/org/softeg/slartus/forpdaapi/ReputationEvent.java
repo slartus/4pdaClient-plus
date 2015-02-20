@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaapi;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -7,7 +8,7 @@ import java.util.UUID;
  * Date: 25.10.11
  * Time: 9:57
  */
-public class ReputationEvent implements IListItem {
+public class ReputationEvent implements IListItem,Serializable {
 
     private String userId;
     private String user;

@@ -212,7 +212,7 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
 
     private void refreshLoadMoreFooter() {
         if (getData() != null && mListViewLoadMoreFooter != null) {
-            mListViewLoadMoreFooter.setCount(mData.getItems().size(),mData.getItems().size());
+            mListViewLoadMoreFooter.setCount(mData.getItems().size(), mData.getItems().size());
             mListViewLoadMoreFooter.setState(
                     getData().getPagesCount() <= getData().getCurrentPage() ? ListViewLoadMoreFooter.STATE_FULL_DOWNLOADED :
                             ListViewLoadMoreFooter.STATE_LOAD_MORE
@@ -248,14 +248,18 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        try {
+            if (mListView != null) {
+                outState.putInt(FIRST_VISIBLE_POSITION_KEY, mListView.getFirstVisiblePosition());
+                View v = mListView.getChildAt(0);
+                outState.putInt(FIRST_VISIBLE_VIEW_KEY, (v == null) ? 0 : v.getTop());
+            }
 
-        if (mListView != null) {
-            outState.putInt(FIRST_VISIBLE_POSITION_KEY, mListView.getFirstVisiblePosition());
-            View v = mListView.getChildAt(0);
-            outState.putInt(FIRST_VISIBLE_VIEW_KEY, (v == null) ? 0 : v.getTop());
+            outState.putSerializable(DATA_KEY, mData);
+        } catch (Throwable ex) {
+            AppLog.e(ex);
         }
 
-        outState.putSerializable(DATA_KEY, mData);
     }
 
     private void saveCache() {

@@ -45,7 +45,8 @@ public final class AppLog {
     }
 
     public static void e(Context context, Throwable ex, Runnable netExceptionAction) {
-
+        String exLocation = getLocation();
+        android.util.Log.e(TAG, exLocation + ex);
         if (tryShowNetException(context != null ? context : App.getInstance(), ex, netExceptionAction))
             return;
 
@@ -157,5 +158,48 @@ public final class AppLog {
 
     public static void eToast(Context context, Throwable e) {
         toastE(context, e);
+    }
+
+    private static String getLocation() {
+        final String className = Log.class.getName();
+        final StackTraceElement[] traces = Thread.currentThread()
+                .getStackTrace();
+        boolean found = false;
+
+        for (int i = 0; i < traces.length; i++) {
+            StackTraceElement trace = traces[i];
+
+            try {
+                if (found) {
+                    if (!trace.getClassName().startsWith(className)) {
+                        Class<?> clazz = Class.forName(trace.getClassName());
+                        return "[" + getClassName(clazz) + ":"
+                                + trace.getMethodName() + ":"
+                                + trace.getLineNumber() + "]: ";
+                    }
+                } else if (trace.getClassName().startsWith(className)) {
+                    found = true;
+                    continue;
+                }
+            } catch (ClassNotFoundException e) {
+            }
+        }
+
+        return "[]: ";
+    }
+
+    private static String getClassName(Class<?> clazz) {
+        if (clazz != null) {
+            if (!TextUtils.isEmpty(clazz.getName())) {
+                return clazz.getName();
+            }
+            if (!TextUtils.isEmpty(clazz.getSimpleName())) {
+                return clazz.getSimpleName();
+            }
+
+            return getClassName(clazz.getEnclosingClass());
+        }
+
+        return "";
     }
 }
