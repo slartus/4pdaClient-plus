@@ -4,6 +4,7 @@ package org.softeg.slartus.forpdaplus.common;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,7 +14,11 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.HttpHostConnectException;
 import org.softeg.slartus.forpdacommon.NotReportException;
+import org.softeg.slartus.forpdacommon.ShowInBrowserException;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
+import org.softeg.slartus.forpdaplus.classes.Exceptions.MessageInfoException;
+import org.softeg.slartus.forpdaplus.classes.ShowInBrowserDialog;
 
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
@@ -40,17 +45,28 @@ public final class AppLog {
     }
 
     public static void e(Context context, Throwable ex, Runnable netExceptionAction) {
+
         if (tryShowNetException(context != null ? context : App.getInstance(), ex, netExceptionAction))
             return;
-        if (isException(ex, NotReportException.class)) {
-            try {
-                new AlertDialog.Builder(context)
-                        .setTitle("Ошибка")
-                        .setMessage(ex.getMessage())
-                        .setPositiveButton("ОК", null).create().show();
-            } catch (Throwable ignored) {
-                org.acra.ACRA.getErrorReporter().handleException(ex);
-            }
+
+        String message = ex.getMessage();
+        if (TextUtils.isEmpty(message))
+            message = ex.toString();
+        if (ex instanceof ShowInBrowserException) {
+            ShowInBrowserDialog.showDialog(context, (ShowInBrowserException) ex);
+        } else if (ex instanceof NotReportException) {
+            new AlertDialogBuilder(context)
+                    .setTitle("Ошибка")
+                    .setMessage(message)
+                    .setPositiveButton("ОК", null)
+                    .create().show();
+        } else if (ex.getClass() == MessageInfoException.class) {
+            MessageInfoException messageInfoException = (MessageInfoException) ex;
+            new AlertDialogBuilder(context)
+                    .setTitle(messageInfoException.Title)
+                    .setMessage(messageInfoException.Text)
+                    .setPositiveButton("ОК", null)
+                    .create().show();
         } else {
             org.acra.ACRA.getErrorReporter().handleException(ex);
 
@@ -129,17 +145,17 @@ public final class AppLog {
 
     private static Boolean isTimeOutException(Throwable ex, Boolean isCause) {
         if (ex == null) return false;
-        return( ex.getClass() == ConnectTimeoutException.class) || ex.getClass() == SocketTimeoutException.class ||
+        return (ex.getClass() == ConnectTimeoutException.class) || ex.getClass() == SocketTimeoutException.class ||
                 (ex.getClass() == SocketException.class
                         && "recvfrom failed: ETIMEDOUT (Connection timed out)".equals(ex.getMessage())) ||
                 (!isCause && isTimeOutException(ex.getCause(), true));
     }
 
     public static void i(Context mContext, Throwable ex) {
-        Log.i(TAG,ex.toString());
+        Log.i(TAG, ex.toString());
     }
 
     public static void eToast(Context context, Throwable e) {
-        toastE(context,e);
+        toastE(context, e);
     }
 }
