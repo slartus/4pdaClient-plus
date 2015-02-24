@@ -19,55 +19,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="60a91d03-5209-47ee-b725-69dfe71ff245" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\.gitignore" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\build.gradle" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\chrisbanesandroidpulltorefresh.iml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\proguard-rules.pro" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\androidTest\java\org\softeg\slartus\chrisbanes_android_pulltorefresh\ApplicationTest.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\AndroidManifest.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\java\com\handmark\pulltorefresh\library\PullToRefreshAdapterViewBase.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\java\com\handmark\pulltorefresh\library\PullToRefreshBase.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\java\com\handmark\pulltorefresh\library\PullToRefreshExpandableListView.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\java\com\handmark\pulltorefresh\library\PullToRefreshGridView.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\java\com\handmark\pulltorefresh\library\PullToRefreshListView.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\java\com\handmark\pulltorefresh\library\PullToRefreshWebView.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\java\com\handmark\pulltorefresh\library\internal\EmptyViewMethodAccessor.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\java\com\handmark\pulltorefresh\library\internal\LoadingLayout.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\drawable-hdpi\pulltorefresh_down_arrow.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\drawable-hdpi\pulltorefresh_up_arrow.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\drawable-ldpi\pulltorefresh_down_arrow.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\drawable-ldpi\pulltorefresh_up_arrow.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\drawable-mdpi\pulltorefresh_down_arrow.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\drawable-mdpi\pulltorefresh_up_arrow.png" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\layout\pull_to_refresh_header.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\values-cs\pull_refresh_strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\values-de\pull_refresh_strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\values-es\pull_refresh_strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\values-fr\pull_refresh_strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\values-it\pull_refresh_strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\values-ko\pull_refresh_strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\values-nl\pull_refresh_strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\values-pl\pull_refresh_strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\values-pt-rBR\pull_refresh_strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\values-pt\pull_refresh_strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\values-ru\pull_refresh_strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\values-zh\pull_refresh_strings.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\values\attrs.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\values\ids.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\slinkin\Documents\Projects\4pdaClient-plus\chrisbanesandroidpulltorefresh\src\main\res\values\pull_refresh_strings.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_drawer.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_drawer.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_drawer.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_drawer.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_drawer.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_drawer.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_drawer.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_drawer.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_close_clear_cancel.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_close_clear_cancel.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_close_clear_cancel.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_close_clear_cancel.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_close_clear_cancel.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_close_clear_cancel.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_close_clear_cancel.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_close_clear_cancel.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_comment.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_comment.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_comment.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_comment.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_comment.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_comment.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_comment.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_comment.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_delete.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_delete.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_delete.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_delete.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_delete.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_delete.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_delete.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_delete.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_download.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_download.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_download.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_download.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_download.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_download.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_download.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_download.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_more.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_more.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_more.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_more.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_more.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_more.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_more.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_more.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_preferences.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_preferences.png" />
@@ -79,6 +52,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_refresh.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_refresh.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_refresh.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_refresh.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_search.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_search.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_search.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_search.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_search.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_search.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_search.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_search.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_send.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_send.png" />
@@ -89,32 +63,22 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_share.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_share.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_share.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_share.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_share.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_share.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_thumb_up.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_thumb_up.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_thumb_up.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_thumb_up.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_thumb_up.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_thumb_up.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_thumb_up.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_thumb_up.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_user_offline.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_user_offline.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_user_offline.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_user_offline.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_user_offline.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_user_offline.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_user_offline.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_user_offline.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_user_online.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_user_online.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_user_online.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_user_online.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_user_online.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_user_online.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_user_online.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_user_online.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_user_qms.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_menu_user_qms.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_user_qms.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_menu_user_qms.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_user_qms.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_menu_user_qms.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_user_qms.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/ic_menu_user_qms.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/NewsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/NewsActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/classes/ProfileMenuFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/classes/ProfileMenuFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/qms/QmsContactThemesActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/qms/QmsContactThemesActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/tabs/ThemesTab.java" afterPath="$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/tabs/ThemesTab.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/listfragments/TopicAttachmentListFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/listfragments/TopicAttachmentListFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/topicview/TopicViewMenuFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/topicview/TopicViewMenuFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/tabs/UsersTab.java" afterPath="$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/tabs/UsersTab.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/forum_tree.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/forum_tree.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/news_navigation_item.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/news_navigation_item.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/qms_contacts_list.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/qms_contacts_list.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/settings.gradle" afterPath="$PROJECT_DIR$/settings.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Forpda.iws" />
@@ -141,12 +105,9 @@
       <file leaf-file-name="App.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/App.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="5083" max-vertical-offset="6426">
+            <state vertical-scroll-proportion="0.0" vertical-offset="6188" max-vertical-offset="7327">
               <caret line="364" column="35" selection-start-line="364" selection-start-column="35" selection-end-line="364" selection-end-column="35" />
-              <folding>
-                <element signature="e#13009#13212#0" expanded="true" />
-                <element signature="e#13193#13194#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -154,8 +115,38 @@
       <file leaf-file-name="build.gradle" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.17221418" vertical-offset="0" max-vertical-offset="1003">
-              <caret line="7" column="24" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.14977974" vertical-offset="34" max-vertical-offset="1003">
+              <caret line="8" column="27" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="values.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values-v21/values.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-16.32" vertical-offset="0" max-vertical-offset="6018">
+              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="values.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values-v11/values.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-7.44" vertical-offset="647" max-vertical-offset="6511">
+              <caret line="49" column="20" selection-start-line="49" selection-start-column="20" selection-end-line="49" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="history.txt" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/assets/history.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-20.4" vertical-offset="272" max-vertical-offset="3791">
+              <caret line="46" column="36" selection-start-line="46" selection-start-column="36" selection-end-line="46" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -356,11 +347,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
                 <option name="name" value="compileReleaseJava" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Prepare 4pdaClient-plus:chrisbanesandroidpulltorefresh:unspecified" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="prepare4pdaClientPlusChrisbanesandroidpulltorefreshUnspecifiedLibrary" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
                 <option name="description" value="Assembles a bundle containing the library in Debug." />
@@ -1453,11 +1439,6 @@
                 <option name="name" value="installDebugTest" />
               </ExternalTaskPojo>
               <ExternalTaskPojo>
-                <option name="description" value="Installs the Release build" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="installRelease" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
                 <option name="description" value="Runs lint on all variants." />
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="lint" />
@@ -1680,10 +1661,6 @@
               <ExternalTaskPojo>
                 <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
                 <option name="name" value="zipalignDebug" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/app" />
-                <option name="name" value="zipalignRelease" />
               </ExternalTaskPojo>
             </list>
           </value>
@@ -4309,7 +4286,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="14242871619604" />
+        <entry key="$PROJECT_DIR$" value="14242875028133" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -5315,69 +5292,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="AndroidView">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Forpda" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Gradle Scripts" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidBuildScriptsGroupNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Forpda" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Forpda" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Forpda" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Forpda" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="forpdaplus" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="PackagesPane">
         <subPane>
           <PATH>
@@ -5436,6 +5350,37 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="AndroidView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Forpda" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Gradle Scripts" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidBuildScriptsGroupNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Forpda" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Forpda" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -5695,16 +5640,16 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34777778" sideWeight="0.7425373" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21222222" sideWeight="0.7425373" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17333333" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21222222" sideWeight="0.25746268" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17333333" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -5790,21 +5735,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/classes/WebViewExternals.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2822">
-          <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values-v19/themes.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="459">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/classes/AdvWebView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.1526946" vertical-offset="2222" max-vertical-offset="3247">
@@ -5819,9 +5749,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3978159" vertical-offset="0" max-vertical-offset="641">
           <caret line="15" column="37" selection-start-line="15" selection-start-column="37" selection-end-line="15" selection-end-column="37" />
-          <folding>
-            <element signature="tag#LinearLayout#0;tag#RelativeLayout#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -5943,13 +5870,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/assets/history.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3791">
-          <caret line="18" column="29" selection-start-line="18" selection-start-column="29" selection-end-line="18" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/prefs/PreferencesActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="511" max-vertical-offset="8653">
@@ -6010,7 +5930,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="765">
           <caret line="3" column="33" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="33" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -6018,7 +5937,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="604" max-vertical-offset="1241">
           <caret line="43" column="62" selection-start-line="43" selection-start-column="62" selection-end-line="43" selection-end-column="62" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -6029,7 +5947,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-10.074074" vertical-offset="0" max-vertical-offset="561">
           <caret line="16" column="27" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -6040,7 +5957,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="801">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -6051,7 +5967,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="801">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -6062,7 +5977,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-10.703704" vertical-offset="0" max-vertical-offset="544">
           <caret line="17" column="69" selection-start-line="6" selection-start-column="4" selection-end-line="17" selection-end-column="69" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -6102,7 +6016,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-9.444445" vertical-offset="0" max-vertical-offset="476">
           <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -6113,7 +6026,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.17814371" vertical-offset="0" max-vertical-offset="668">
           <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -6156,7 +6068,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="680">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -6171,17 +6082,38 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="5083" max-vertical-offset="6426">
           <caret line="364" column="35" selection-start-line="364" selection-start-column="35" selection-end-line="364" selection-end-column="35" />
-          <folding>
-            <element signature="e#13009#13212#0" expanded="true" />
-            <element signature="e#13193#13194#0" expanded="true" />
-          </folding>
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/history.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-20.4" vertical-offset="272" max-vertical-offset="3791">
+          <caret line="46" column="36" selection-start-line="46" selection-start-column="36" selection-end-line="46" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values-v11/values.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.44" vertical-offset="647" max-vertical-offset="6511">
+          <caret line="49" column="20" selection-start-line="49" selection-start-column="20" selection-end-line="49" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/res/values-v21/values.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-16.32" vertical-offset="0" max-vertical-offset="6018">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.17221418" vertical-offset="0" max-vertical-offset="1003">
-          <caret line="7" column="24" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.14977974" vertical-offset="34" max-vertical-offset="1003">
+          <caret line="8" column="27" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
           <folding />
         </state>
       </provider>
