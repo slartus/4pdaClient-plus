@@ -3,12 +3,12 @@
 
     <style name="Theme.White" parent="@android:style/Theme.Holo.Light">
 
-        <item name="theme_background">@android:color/white</item>
+        <item name="theme_background">@color/white</item>
         <item name="theme_light_background">@color/theme_light_background_light</item>
     </style>
 
     <style name="Theme.Black" parent="@android:style/Theme.Holo">
-        <item name="theme_background">@android:color/black</item>
+        <item name="theme_background">@color/black</item>
         <item name="theme_light_background">@color/theme_light_background_dark</item>
     </style>
 

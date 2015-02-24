@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
@@ -159,7 +158,8 @@ public class FileUtils {
         }
     }
 
-    private static final char[] ILLEGAL_CHARACTERS = {'/', '\n', '\r', '\t', '\0', '\f', '`', '?', '*', '\\', '<', '>', '|', '\"', ':'};
+    private static final char[] ILLEGAL_CHARACTERS = {'/', '\n', '\r', '\t', '\0', '\f', '`', '?',
+            '*', '\\', '<', '>', '|', '\"', ':','%'};
 
     /*
     * Нормализует(уберает иллегальные символы)

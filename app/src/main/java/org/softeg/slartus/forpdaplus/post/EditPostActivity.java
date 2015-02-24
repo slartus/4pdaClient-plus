@@ -49,6 +49,7 @@ import org.softeg.slartus.forpdaapi.post.EditPost;
 import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdacommon.FileUtils;
+import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.App;
@@ -245,7 +246,7 @@ public class EditPostActivity extends BaseFragmentActivity {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private void setDataFromExtras(Bundle extras) {
+    private void setDataFromExtras(Bundle extras) throws NotReportException {
 
         if (extras.containsKey(Intent.EXTRA_STREAM)) {
             Object attachesObject = extras.get(Intent.EXTRA_STREAM);
@@ -381,7 +382,9 @@ public class EditPostActivity extends BaseFragmentActivity {
 
     }
 
-    public String getRealPathFromURI(Uri contentUri) {
+    public String getRealPathFromURI(Uri contentUri) throws NotReportException {
+        if(contentUri==null)
+            throw new NotReportException("Выбран пустой путь!");
         if (!contentUri.toString().startsWith("content://"))
             return contentUri.getPath();
 

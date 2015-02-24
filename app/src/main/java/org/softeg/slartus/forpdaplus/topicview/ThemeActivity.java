@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.topicview;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ClipData;
@@ -60,7 +59,6 @@ import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewDialogFragment;
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
@@ -74,8 +72,6 @@ import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.lang.reflect.Method;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -238,7 +234,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 closeSearch();
             }
         });
-        btnShowHideEditPost= (ImageButton) findViewById(R.id.btnShowHideEditPost);
+        btnShowHideEditPost = (ImageButton) findViewById(R.id.btnShowHideEditPost);
 
         btnShowHideEditPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -361,7 +357,6 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
     public static void showImgPreview(final FragmentActivity context, String title, String previewUrl,
                                       final String fullUrl) {
-
 
 
         ImageViewDialogFragment fragment = new ImageViewDialogFragment();
@@ -1090,7 +1085,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
             Uri uri = Uri.parse(topicUrl.toLowerCase());
             String postId = null;
-            if (getTopic().getId().equals(uri.getQueryParameter("showtopic")))
+            if (!TextUtils.isEmpty(getTopic().getId()) && getTopic().getId().equals(uri.getQueryParameter("showtopic")))
                 postId = uri.getQueryParameter("p");
             if (TextUtils.isEmpty(postId) && "findpost".equals(uri.getQueryParameter("act")))
                 postId = uri.getQueryParameter("pid");
@@ -1213,7 +1208,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
 
     public void showRep(final String userId) {
-        UserReputationFragment.showActivity(this, userId,false);
+        UserReputationFragment.showActivity(this, userId, false);
     }
 
     public void insertTextToPost(final String text) {

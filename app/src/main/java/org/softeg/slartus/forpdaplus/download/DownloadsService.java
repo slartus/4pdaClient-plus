@@ -422,16 +422,24 @@ public class DownloadsService extends IntentService {
 
         // can use UI thread here
         protected void onPreExecute() {
-            this.dialog.setMessage("Запрос ссылки...");
-            this.dialog.show();
+            try {
+                this.dialog.setMessage("Запрос ссылки...");
+                this.dialog.show();
+            } catch (Throwable ignored) {
+
+            }
         }
 
         private Throwable ex;
 
         // can use UI thread here
         protected void onPostExecute(final Uri uri) {
-            if (this.dialog.isShowing()) {
-                this.dialog.dismiss();
+            try {
+                if (this.dialog.isShowing()) {
+                    this.dialog.dismiss();
+                }
+            } catch (Throwable ignored) {
+
             }
 
             if (uri != null) {

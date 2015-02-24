@@ -16,11 +16,11 @@
     </style>
 
     <style name="Theme.Transluent.ActionBar.White" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">#FFFFFF</item>
+        <item name="android:background">#FFFFFFFF</item>
     </style>
 
     <style name="Theme.Transluent.ActionBar.Black" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:background">#000000</item>
+        <item name="android:background">#FF000000</item>
     </style>
 
     <style name="TextAppearance.Theme.PlainText" parent="android:TextAppearance.Theme">

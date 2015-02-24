@@ -2,6 +2,10 @@ package org.softeg.slartus.forpdaapi.qms;
 
 import android.text.Html;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
@@ -181,39 +185,56 @@ public class QmsApi {
     public static QmsUserThemes getQmsUserThemes(IHttpClient httpClient, String mid,
                                                  ArrayList<QmsUser> outUsers, Boolean parseNick) throws Throwable {
         String pageBody = httpClient.performGet("http://4pda.ru/forum/index.php?act=qms&mid=" + mid);
-        Matcher m = Pattern.compile("<a class=\"list-group-item[^\"]*\"[^>]*?data-thread-id=\"(\\d+)\"[^>]*?>([\\s\\S]*?)</a>", Pattern.CASE_INSENSITIVE).matcher(pageBody);
-        Pattern themePattern = Pattern.compile("<div class=\"bage[^\"]*\">([^<]*?)</div>\n" +
-                "\\s*(?:<strong>)?(.*)\\s+\\((\\d+)(?: / (\\d+))?\\)(?:</strong>)?", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+
+        Document doc = Jsoup.parse(pageBody);
+
+        Elements threadElements = doc.select("div.threads-list a.list-group-item");
         QmsUserThemes res = new QmsUserThemes();
-        while (m.find()) {
+        Pattern idPattern = Pattern.compile("(\\d+)");
+        Pattern newCountPattern = Pattern.compile("(.*?)\\((\\d+)\\s*/\\s*(\\d+)\\)\\s*$");
+        Pattern countPattern = Pattern.compile("(.*?)\\((\\d+)\\)\\s*$");
+        for (Element threadElement : threadElements) {
             QmsUserTheme item = new QmsUserTheme();
+            String idAttr = threadElement.attr("id");
+            Matcher m = idPattern.matcher(idAttr);
+            if (!m.find())
+                continue;
+
             item.Id = m.group(1);
-            Matcher themeMatcher = themePattern.matcher(m.group(2));
-            if (themeMatcher.find()) {
-                item.Date = themeMatcher.group(1);
-                item.Title = themeMatcher.group(2);
-                item.Count = themeMatcher.group(3);
-                if (themeMatcher.group(4) != null)
-                    item.NewCount = themeMatcher.group(4);
+            Element el = threadElement.select("bage").first();
+            if (el != null)
+                item.Id = el.text();
+            el = threadElement.select("strong").first();
+
+            if (el != null) {
+                String txt = el.text();
+                m = newCountPattern.matcher(txt);
+                if (m.find()) {
+                    item.Title = m.group(1);
+                    item.Count = m.group(2);
+                    item.NewCount = m.group(3);
+                } else
+                    item.Title = txt;
+            }else{
+                String txt = threadElement.ownText();
+                m = countPattern.matcher(txt);
+                if (m.find()) {
+                    item.Title = m.group(1);
+                    item.Count = m.group(2);
+                } else
+                    item.Title = txt;
             }
 
             res.add(item);
         }
+
         outUsers.addAll(parseQmsUsers(pageBody));
         if (parseNick) {
-            String[] nickPatterns = {
-                    "<span class=\"navbar-title\">\\s*?<a href=\"/forum/index.php\\?showuser=\\d+\" target=\"_blank\"><strong>(.*?)</strong>",
-                    "src=\"http://s.4pda.ru/forum/style_images/qms/back.png\"[\\s\\S]*?<strong>(.*?)</strong></a>",
-                    "<span class=\"title\">Диалоги с: (.*?)</span>",
-                    "<span class=\"navbar-title\">\\s*<strong>(.*?)</strong>"
-            };
-            for (String pattern : nickPatterns) {
-                m = Pattern.compile(pattern).matcher(pageBody);
-                if (m.find()) {
-                    res.Nick = Html.fromHtml(m.group(1)).toString();
-                    break;
-                }
+            Element el=doc.select("div.navbar>div.nav a[href~=showuser=\\d+]").first();
+            if(el!=null){
+                res.Nick=el.text();
             }
+
         }
         return res;
     }

@@ -447,7 +447,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         htmlBuilder.beginBody("onload=\"scrollToElement('bottom_element')\"");
 
         if(!Preferences.Topic.isShowAvatars())
-            chatBody = chatBody.replaceAll("<div[^>]*class=\"avatar[^\"]*\"[^>]*>.*?</div>","");
+            chatBody = chatBody.replaceAll("<img[^>]*?class=\"avatar\"[^>]*>","");
         if (m_HtmlPreferences.isSpoilerByButton())
             chatBody = HtmlPreferences.modifySpoiler(chatBody);
         chatBody = HtmlPreferences.modifyBody(chatBody, Smiles.getSmilesDict(), m_HtmlPreferences.isUseLocalEmoticons());

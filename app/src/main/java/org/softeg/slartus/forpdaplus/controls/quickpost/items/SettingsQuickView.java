@@ -59,7 +59,8 @@ public class SettingsQuickView extends BaseQuickView {
         extendedFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditPostActivity.newPost((Activity)getContext(), getForumId().toString(), getTopicId().toString(), getAuthKey().toString(),
+                EditPostActivity.newPost((Activity) getContext(), getForumId() == null ? null : getForumId().toString(),
+                        getTopicId().toString(), getAuthKey().toString(),
                         getPostBody().toString());
             }
         });
@@ -81,19 +82,15 @@ public class SettingsQuickView extends BaseQuickView {
     }
 
 
-
     CheckBox enableEmotics;
     CheckBox enableSign;
     Button extendedFormButton;
     Button attachesButton;
 
 
-
     private CharSequence getPostBody() {
-        return getEditor().getText()==null?"":getEditor().getText().toString();
+        return getEditor().getText() == null ? "" : getEditor().getText().toString();
     }
-
-
 
 
 }

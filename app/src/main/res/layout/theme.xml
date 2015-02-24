@@ -17,8 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:clipToPadding="false"
-            android:textSize="12dip" />
+            android:textSize="12sp" />
     </RelativeLayout>
 
     <LinearLayout
@@ -42,7 +43,7 @@
                 android:id="@+id/btnShowHideEditPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
+                android:layout_gravity="end"
                 android:background="@null"
                 android:padding="10dip"
                 android:src="@drawable/ic_menu_edit"
@@ -64,6 +65,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_marginStart="2dp"
                 android:layout_marginLeft="2dp"
                 android:contentDescription="Вверх" />
 
@@ -77,8 +79,10 @@
                 android:src="@drawable/ic_btn_down"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/btnUp"
+                android:layout_toEndOf="@+id/btnUp"
                 android:onClick="onBtnDownClick"
                 android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
                 android:layout_centerVertical="true"
                 android:contentDescription="Вниз" />
         </RelativeLayout>
@@ -125,6 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/btnPrevSearch"
+                android:layout_toEndOf="@+id/btnPrevSearch"
                 android:src="@drawable/ic_btn_find_next"
                 android:contentDescription="Следующее совпадение" />
 
@@ -141,6 +146,8 @@
                 android:layout_marginTop="2dip"
                 android:layout_toLeftOf="@+id/btnCloseSearch"
                 android:layout_toRightOf="@+id/btnNextSearch"
+                android:layout_toStartOf="@+id/btnCloseSearch"
+                android:layout_toEndOf="@+id/btnNextSearch"
                 android:capitalize="sentences"
                 android:padding="5dip"
                 android:singleLine="true"

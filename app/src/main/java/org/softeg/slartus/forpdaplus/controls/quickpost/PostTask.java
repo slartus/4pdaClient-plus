@@ -62,7 +62,9 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
                 return false;
 
 
-            String lastUrl = Client.getInstance().getRedirectUri().toString();
+            String lastUrl = Client.getInstance().getRedirectUri() == null ?
+                    ("http://4pda.ru/forum/index.php?showtopic=" + mTopicId + "&view=getnewpost")
+                    : Client.getInstance().getRedirectUri().toString();
             TopicBodyBuilder topicBodyBuilder = Client.getInstance().parseTopic(mPostResult.PostResultBody, App.getInstance(), lastUrl,
                     Preferences.Topic.getSpoilFirstPost());
             mPostResult.PostResultBody = null;

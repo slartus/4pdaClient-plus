@@ -228,7 +228,11 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
         @Override
         protected Boolean doInBackground(Boolean[] p1) {
             try {
+                try {
+                    Client.getInstance().loadTestPage();
+                } catch (Throwable ignored) {
 
+                }
                 return inBackground(mRefresh);
             } catch (Throwable e) {
                 mEx = e;

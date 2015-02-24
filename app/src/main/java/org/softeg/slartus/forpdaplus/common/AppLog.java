@@ -53,7 +53,7 @@ public final class AppLog {
         String message = ex.getMessage();
         if (TextUtils.isEmpty(message))
             message = ex.toString();
-        if (ex instanceof ShowInBrowserException) {
+        if (ex.getClass() == ShowInBrowserException.class) {
             ShowInBrowserDialog.showDialog(context, (ShowInBrowserException) ex);
         } else if (ex instanceof NotReportException) {
             new AlertDialogBuilder(context)

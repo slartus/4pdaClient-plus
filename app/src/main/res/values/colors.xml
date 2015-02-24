@@ -4,7 +4,8 @@
     <color name="theme_light_background_dark" >#0C0C0C</color>
     <color name="white_theme_webview_background">#F5F9FD</color>
     <color name="blue">#7FFFFF</color>
-    <color name="white">#FFFFFF</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
     <color name="tabdefaultcolor">#F8F8F8</color>
     <color name="newtheme">#ff33b5e5</color>
     <color name="oldtheme">#FF0000</color>
