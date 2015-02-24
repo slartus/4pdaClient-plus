@@ -5,26 +5,25 @@
         <item name="android:actionBarStyle">@style/Theme.ActionBar.White</item>
         <item name="theme_background">@color/white</item>
         <item name="theme_light_background">@color/theme_light_background_light</item>
-
         <item name="android:actionOverflowButtonStyle">@style/Theme.ActionButton.Overflow</item>
+        <item name="main_color">@color/main_color</item>
     </style>
 
     <style name="Theme.Black" parent="@android:style/Theme.Holo">
-        <item name="android:actionBarStyle">@style/Theme.ActionBar.White</item>
+        <item name="android:actionBarStyle">@style/Theme.ActionBar.Black</item>
         <item name="theme_background">@color/black</item>
         <item name="theme_light_background">@color/theme_light_background_dark</item>
         <item name="android:actionOverflowButtonStyle">@style/Theme.ActionButton.Overflow</item>
+        <item name="main_color">@color/main_color_black</item>
     </style>
 
     <style name="Theme.Transluent.White" parent="Theme.White">
         <item name="android:actionBarStyle">@style/Theme.ActionBar.White</item>
         <item name="android:windowActionBarOverlay">true</item>
-
-
     </style>
 
     <style name="Theme.Transluent.Black" parent="Theme.Black">
-        <item name="android:actionBarStyle">@style/Theme.ActionBar.White</item>
+        <item name="android:actionBarStyle">@style/Theme.ActionBar.Black</item>
         <item name="android:windowActionBarOverlay">true</item>
     </style>
 
@@ -35,7 +34,7 @@
     </style>
 
     <style name="Theme.ActionBar.Black" parent="@android:style/Widget.Holo.ActionBar">
-        <item name="android:background">@color/main_color</item>
+        <item name="android:background">@color/main_color_black</item>
         <item name="android:titleTextStyle">@style/Theme.ActionBar.Black.TitleTextStyle</item>
         <item name="android:subtitleTextStyle">@style/Theme.ActionBar.White.SubTitleTextStyle</item>
     </style>

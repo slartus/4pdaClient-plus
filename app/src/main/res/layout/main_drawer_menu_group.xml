@@ -4,14 +4,14 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_color"
+    android:background="?attr/main_color"
     android:padding="8dp">
     <TextView
         android:id="@+id/group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:textColor="#F0F0F0"
+        android:textColor="@color/main_title_color"
         android:textAppearance="@android:style/TextAppearance.Medium"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"/>
 </LinearLayout>
