@@ -150,7 +150,7 @@ public class ReputationsApi {
                 p = Pattern.compile("<div class='maintitle'>(.*?)</div>");
                 m = p.matcher(res);
                 if (m.find()) {
-                    outParams.put("Result", "Ошибка изменения репутации: " + m.group(1));
+                    outParams.put("Result", "Ошибка изменения репутации: " + Html.fromHtml(m.group(1)));
                 } else {
                     outParams.put("Result", "Ошибка изменения репутации: " + Html.fromHtml(res));
                 }

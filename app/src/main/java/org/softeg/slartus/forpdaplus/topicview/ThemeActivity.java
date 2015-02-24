@@ -916,6 +916,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 webView.scrollTo(0, 0);
                 webView.onActionBarOnScrollEvents();
                 webView.evalJs("scrollToElement('entry" + m_ScrollElement + "');");
+                if(getSupportActionBar()!=null&&Preferences.isHideActionBar())
+                    getSupportActionBar().hide();
             }
 
             m_ScrollElement = null;

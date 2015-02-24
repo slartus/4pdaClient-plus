@@ -11,7 +11,7 @@
         android:layout_height="fill_parent"
 
 
-        android:textSize="12dip" />
+        android:textSize="12sp" />
 
     <ImageButton
         android:id="@+id/btnFullScreen"

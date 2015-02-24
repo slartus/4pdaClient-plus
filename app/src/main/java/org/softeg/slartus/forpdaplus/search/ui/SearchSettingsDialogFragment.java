@@ -134,6 +134,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         SearchSettings searchSettings = new SearchSettings(SearchSettings.SEARCH_TYPE_USER_POSTS);
         searchSettings.load(prefs);
+        searchSettings.setSort(SearchSettings.RESULT_SORT_DATE_DESC);
         searchSettings.setQuery("");
         searchSettings.setResultView(SearchSettings.RESULT_VIEW_POSTS);
         searchSettings.setSource(SearchSettings.SOURCE_POSTS);
@@ -141,6 +142,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         searchSettings.getTopicIds().clear();
         searchSettings.getForumsIds().clear();
         searchSettings.getForumsIds().add("all");
+
         return searchSettings;
     }
 

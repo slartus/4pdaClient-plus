@@ -146,8 +146,6 @@
                 android:layout_marginTop="2dip"
                 android:layout_toLeftOf="@+id/btnCloseSearch"
                 android:layout_toRightOf="@+id/btnNextSearch"
-                android:layout_toStartOf="@+id/btnCloseSearch"
-                android:layout_toEndOf="@+id/btnNextSearch"
                 android:capitalize="sentences"
                 android:padding="5dip"
                 android:singleLine="true"

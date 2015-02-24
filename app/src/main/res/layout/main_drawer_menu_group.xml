@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#7B7B7B"
+    android:background="@color/main_color"
     android:padding="8dp">
     <TextView
         android:id="@+id/group"

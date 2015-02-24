@@ -104,6 +104,8 @@ public class SearchSettings implements Parcelable {
         return m_Sort;
     }
 
+
+
     public void setSearchInSubForums(Boolean value) {
         m_SearchInSubForums = value;
     }
