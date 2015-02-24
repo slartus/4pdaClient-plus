@@ -101,7 +101,6 @@
     <orderEntry type="module" module-name="forpdanotifyservice" exported="" />
     <orderEntry type="module" module-name="newquickaction" exported="" />
     <orderEntry type="module" module-name="4pdasources" exported="" />
-    <orderEntry type="module" module-name="chrisbanesandroidpulltorefresh" exported="" />
     <orderEntry type="module" module-name="forpdacommon" exported="" />
   </component>
 </module>

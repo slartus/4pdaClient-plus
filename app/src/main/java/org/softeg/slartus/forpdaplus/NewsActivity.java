@@ -561,7 +561,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
             super.onCreateOptionsMenu(menu, inflater);
             MenuItem item;
 
-            item = menu.add(R.string.DoComment).setIcon(R.drawable.ic_menu_edit);
+            item = menu.add(R.string.DoComment).setIcon(R.drawable.ic_menu_comment);
             item.setVisible(Client.getInstance().getLogined());
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
@@ -580,7 +580,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-            item = menu.add(R.string.Like).setIcon(R.drawable.ic_menu_rating_good
+            item = menu.add(R.string.Like).setIcon(R.drawable.ic_menu_thumb_up
                     //        MyApp.getInstance().isWhiteTheme() ?R.drawable.rating_good_white : R.drawable.rating_good_dark
             );
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

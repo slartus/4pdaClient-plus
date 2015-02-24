@@ -116,7 +116,9 @@ private Handler mHandler=new Handler();
                         }
                     });
 
-            mUserMenuItem.add(R.string.Logout).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            mUserMenuItem.add(R.string.Logout)
+
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                 public boolean onMenuItemClick(MenuItem item) {
                     LoginDialog.logout(getActivity());

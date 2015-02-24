@@ -195,7 +195,6 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                     .setIcon(R.drawable.ic_menu_download);
             subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
             subMenu.add("Вложения текущей страницы")
-                    .setIcon(R.drawable.ic_menu_download)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem item) {
                             getInterface().showPageAttaches();
@@ -203,7 +202,6 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                         }
                     });
             subMenu.add("Все вложения топика")
-                    .setIcon(R.drawable.ic_menu_download)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem item) {
                             getInterface().showTopicAttaches();

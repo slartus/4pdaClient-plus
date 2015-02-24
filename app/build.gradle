@@ -7,8 +7,8 @@ android {
         applicationId 'org.softeg.slartus.forpdaplus'
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 507
-        versionName "2.5b4"
+        versionCode 508
+        versionName "2.5b5"
     }
     buildTypes {
         release {
@@ -18,7 +18,7 @@ android {
     }
     signingConfigs {
         release {
-       
+
         }
     }
     buildTypes {
@@ -48,7 +48,6 @@ dependencies {
     compile project(':newquickaction')
     compile project(':forpdacommon')
     compile project(':forpdanotifyservice')
-    compile project(':chrisbanesandroidpulltorefresh')
     compile project(':4pdasources')
 
 }

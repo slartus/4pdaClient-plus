@@ -5,17 +5,22 @@
         <item name="android:actionBarStyle">@style/Theme.ActionBar.White</item>
         <item name="theme_background">@color/white</item>
         <item name="theme_light_background">@color/theme_light_background_light</item>
+
+        <item name="android:actionOverflowButtonStyle">@style/Theme.ActionButton.Overflow</item>
     </style>
 
     <style name="Theme.Black" parent="@android:style/Theme.Holo">
         <item name="android:actionBarStyle">@style/Theme.ActionBar.White</item>
         <item name="theme_background">@color/black</item>
         <item name="theme_light_background">@color/theme_light_background_dark</item>
+        <item name="android:actionOverflowButtonStyle">@style/Theme.ActionButton.Overflow</item>
     </style>
 
     <style name="Theme.Transluent.White" parent="Theme.White">
         <item name="android:actionBarStyle">@style/Theme.ActionBar.White</item>
         <item name="android:windowActionBarOverlay">true</item>
+
+
     </style>
 
     <style name="Theme.Transluent.Black" parent="Theme.Black">
@@ -36,11 +41,11 @@
     </style>
 
     <style name="Theme.ActionBar.Black.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textColor">#F2F2F2</item>
+        <item name="android:textColor">@color/main_title_color</item>
     </style>
 
     <style name="Theme.ActionBar.White.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textColor">#F2F2F2</item>
+        <item name="android:textColor">@color/main_title_color</item>
     </style>
 
     <style name="Theme.ActionBar.Black.SubTitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle">
@@ -55,5 +60,9 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+
+    <style name="Theme.ActionButton.Overflow" parent="android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_menu_more</item>
+    </style>
 
 </resources>

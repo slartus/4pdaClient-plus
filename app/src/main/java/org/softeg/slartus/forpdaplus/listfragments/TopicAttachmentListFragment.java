@@ -11,11 +11,10 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import org.softeg.slartus.forpdaapi.IListItem;
-import org.softeg.slartus.forpdaapi.post.PostAttach;
 import org.softeg.slartus.forpdaapi.TopicApi;
+import org.softeg.slartus.forpdaapi.post.PostAttach;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
-import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicAttachmentBrickInfo;
 
@@ -73,7 +72,7 @@ public class TopicAttachmentListFragment extends BaseTaskListFragment {
         final IListItem item = (IListItem) o;
         if (TextUtils.isEmpty(item.getId())) return;
         final PostAttach attach=(PostAttach)item;
-        menu.add("Скачать вложение").setIcon(R.drawable.ic_menu_download)
+        menu.add("Скачать вложение")
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -81,7 +80,7 @@ public class TopicAttachmentListFragment extends BaseTaskListFragment {
                         return true;
                     }
                 });
-        menu.add("Перейти к сообщению").setIcon(R.drawable.ic_menu_download)
+        menu.add("Перейти к сообщению")
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {

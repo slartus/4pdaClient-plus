@@ -14,15 +14,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
-
 import org.softeg.slartus.forpdaapi.OldUser;
+import org.softeg.slartus.forpdaapi.users.Users;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.common.ExtColor;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaapi.users.Users;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 
 import java.io.IOException;
@@ -39,11 +37,11 @@ public class UsersTab extends BaseTab implements AdapterView.OnItemClickListener
         Loader.OnLoadCompleteListener<Users> {
     public static final String TEMPLATE = "UsersTab";
     public static final String TITLE = "Пользователи";
-    PullToRefreshListView m_ListView;
+    ListView m_ListView;
 
     protected Users m_Users = new Users();
     private UsersAdapter mAdapter;
-
+    protected uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout mPullToRefreshLayout;
     public UsersTab(Context context, ITabParent tabParent) {
         super(context, tabParent);
 
@@ -52,17 +50,18 @@ public class UsersTab extends BaseTab implements AdapterView.OnItemClickListener
                 new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
 
-        m_ListView = (PullToRefreshListView) findViewById(R.id.pulltorefresh);
-        setState(true);
-        m_ListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
+        m_ListView = (ListView) findViewById(android.R.id.list);
+        mPullToRefreshLayout = App.createPullToRefreshLayout(getActivity(), findViewById(R.id.main_layout), new Runnable() {
             @Override
-            public void onRefresh() {
+            public void run() {
                 refreshData();
             }
         });
+        setState(true);
+
 
         mAdapter =createAdapter();
-        m_ListView.getRefreshableView().setAdapter(mAdapter);
+        m_ListView.setAdapter(mAdapter);
     }
 
     protected UsersAdapter createAdapter(){
@@ -128,10 +127,7 @@ public class UsersTab extends BaseTab implements AdapterView.OnItemClickListener
     }
 
     private void setState(boolean loading) {
-        if (loading)
-            m_ListView.setRefreshing(false);
-        else
-            m_ListView.onRefreshComplete();
+        mPullToRefreshLayout.setRefreshing(loading);
 
     }
 
@@ -142,7 +138,7 @@ public class UsersTab extends BaseTab implements AdapterView.OnItemClickListener
 
     @Override
     public ListView getListView() {
-        return m_ListView.getRefreshableView();
+        return m_ListView;
     }
 
     @Override

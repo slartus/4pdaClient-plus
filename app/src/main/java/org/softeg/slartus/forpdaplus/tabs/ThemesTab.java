@@ -22,23 +22,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
-
-import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.post.EditPostActivity;
-import org.softeg.slartus.forpdaplus.IntentActivity;
+import org.softeg.slartus.forpdaapi.OnProgressChangedListener;
+import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
-import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.classes.ForumItem;
 import org.softeg.slartus.forpdaplus.classes.ThemeOpenParams;
 import org.softeg.slartus.forpdaplus.classes.Themes;
+import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaapi.OnProgressChangedListener;
-import org.softeg.slartus.forpdaapi.Topic;
+import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 
 import java.util.Comparator;
 
@@ -54,7 +51,7 @@ public abstract class ThemesTab extends BaseTab {
 
     private View m_Header;
     protected View m_Footer;
-    protected PullToRefreshListView lstTree;
+    protected ListView lstTree;
     private TextView txtFroum, txtLoadMoreThemes;
     private ImageButton btnStar;
     private ImageButton btnSettings;
@@ -62,7 +59,7 @@ public abstract class ThemesTab extends BaseTab {
     private ImageView imgPullToLoadMore;
     protected Boolean m_UseVolumesScroll = false;
 
-
+    protected uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout mPullToRefreshLayout;
     public ThemesTab(Context context, String tabTag, ITabParent tabParent) {
         super(context, tabParent);
 
@@ -73,20 +70,21 @@ public abstract class ThemesTab extends BaseTab {
 
         loadPreferences();
 
-        lstTree = (PullToRefreshListView) findViewById(R.id.lstTree);
-        lstTree.getRefreshableView().setCacheColorHint(0);
+        lstTree = (ListView) findViewById(android.R.id.list);
+        mPullToRefreshLayout = App.createPullToRefreshLayout(getActivity(), findViewById(R.id.main_layout), new Runnable() {
+            @Override
+            public void run() {
+                refresh();
+            }
+        });
 
-        lstTree.getRefreshableView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        lstTree.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 listItemClick(adapterView, view, i, l);
             }
         });
-        lstTree.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refresh();
-            }
-        });
+
 
         m_Header = inflate(getContext(), R.layout.themes_list_header, null);
         txtFroum = (TextView) m_Header.findViewById(R.id.txtFroum);
@@ -100,7 +98,7 @@ public abstract class ThemesTab extends BaseTab {
                 starButtonClick();
             }
         });
-        lstTree.getRefreshableView().addHeaderView(m_Header);
+        lstTree.addHeaderView(m_Header);
 
         m_Footer = inflate(getContext(), R.layout.themes_list_footer, null);
         m_Footer.setOnClickListener(new OnClickListener() {
@@ -114,14 +112,14 @@ public abstract class ThemesTab extends BaseTab {
         txtLoadMoreThemes = (TextView) m_Footer.findViewById(R.id.txtLoadMoreThemes);
         txtPullToLoadMore = (TextView) m_Footer.findViewById(R.id.txtPullToLoadMore);
         imgPullToLoadMore = (ImageView) m_Footer.findViewById(R.id.imgPullToLoadMore);
-        lstTree.getRefreshableView().addFooterView(m_Footer);
+        lstTree.addFooterView(m_Footer);
 
 
         m_ThemeAdapter = new ThemeAdapter(getContext(), getTabId(), getTemplate(), R.layout.theme_item, m_Themes);
         m_ThemeAdapter.showForumTitle(isShowForumTitle());
         setHeaderText(getTitle());
         beforeSetAdapterOnInit();
-        lstTree.getRefreshableView().setAdapter(m_ThemeAdapter);
+        lstTree.setAdapter(m_ThemeAdapter);
     }
 
     private boolean isUseChache() {
@@ -342,7 +340,7 @@ public abstract class ThemesTab extends BaseTab {
     }
 
     public ListView getListView() {
-        return lstTree.getRefreshableView();
+        return lstTree;
     }
 
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo, Handler handler) {
@@ -384,7 +382,7 @@ public abstract class ThemesTab extends BaseTab {
         protected Boolean doInBackground(ForumItem... forums) {
             try {
                 if (this.isCancelled()) return false;
-                m_SelectedIndex = Math.max(Math.min(m_Themes.size(), lstTree.getRefreshableView().getFirstVisiblePosition()), 0);
+                m_SelectedIndex = Math.max(Math.min(m_Themes.size(), lstTree.getFirstVisiblePosition()), 0);
 
                 if (m_FirstLoading && isUseChache()) {
                     loadCache();
@@ -456,7 +454,7 @@ public abstract class ThemesTab extends BaseTab {
                     });
             }
 
-            lstTree.onRefreshComplete();
+            mPullToRefreshLayout.setRefreshing(false);
             super.onPostExecute(success);
         }
 
@@ -485,7 +483,7 @@ public abstract class ThemesTab extends BaseTab {
 
         setHeaderText(allThemesCount + " тем @ " + getTitle());
         if (selectedIndex == 0) {
-            lstTree.getRefreshableView().setSelection(0);
+            lstTree.setSelection(0);
         }
 
         afterOnPostSuccessExecute();
@@ -500,9 +498,9 @@ public abstract class ThemesTab extends BaseTab {
 //                m_ThemeAdapter.sort(topicComparator);
 
         m_ThemeAdapter.showForumTitle(isShowForumTitle());
-        lstTree.getRefreshableView().addFooterView(m_Footer);
+        lstTree.addFooterView(m_Footer);
 
-        lstTree.getRefreshableView().setAdapter(m_ThemeAdapter);
+        lstTree.setAdapter(m_ThemeAdapter);
 
     }
 

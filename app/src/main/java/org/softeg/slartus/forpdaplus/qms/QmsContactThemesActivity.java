@@ -1,4 +1,5 @@
 package org.softeg.slartus.forpdaplus.qms;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,25 +26,23 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
-
-import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
-import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
-import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
-import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.qms.QmsUserTheme;
 import org.softeg.slartus.forpdaapi.qms.QmsUserThemes;
 import org.softeg.slartus.forpdaapi.qms.QmsUsers;
+import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
+import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
+import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
-
+import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 
 import java.util.ArrayList;
 
@@ -59,10 +58,10 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
         Loader.OnLoadCompleteListener<QmsUserThemes> {
     private QmsContactsAdapter mAdapter;
     private QmsUserThemes m_QmsUsers = new QmsUserThemes();
-    private PullToRefreshListView m_ListView;
+    private ListView m_ListView;
     private static final String MID_KEY = "mid";
     private static final String NICK_KEY = "nick";
-
+    protected uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout mPullToRefreshLayout;
     private String m_Id;
     private String m_Nick;
 
@@ -79,19 +78,20 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
 
         createActionMenu();
 
-        m_ListView = (PullToRefreshListView) findViewById(R.id.pulltorefresh);
-
-        setState(true);
-        m_ListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener() {
+        m_ListView = (ListView) findViewById(android.R.id.list);
+        mPullToRefreshLayout = App.createPullToRefreshLayout(this,findViewById(R.id.main_layout),new Runnable() {
             @Override
-            public void onRefresh() {
+            public void run() {
                 refreshData();
             }
         });
 
+        setState(true);
+
+
         mAdapter = new QmsContactsAdapter(this, R.layout.qms_contact_item, new ArrayList<QmsUserTheme>());
-        m_ListView.getRefreshableView().setAdapter(mAdapter);
-        m_ListView.getRefreshableView().setOnItemClickListener(this);
+        m_ListView.setAdapter(mAdapter);
+        m_ListView.setOnItemClickListener(this);
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -147,10 +147,7 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
 
 
     private void setState(boolean loading) {
-        if (loading)
-            m_ListView.setRefreshing(false);
-        else
-            m_ListView.onRefreshComplete();
+        mPullToRefreshLayout.setRefreshing(loading);
 
     }
 
@@ -218,7 +215,7 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
 //        }
         mMode = startActionMode(new AnActionModeOfEpicProportions());
         DeleteMode = true;
-        m_ListView.getRefreshableView().setSelection(AbsListView.CHOICE_MODE_MULTIPLE);
+        m_ListView.setSelection(AbsListView.CHOICE_MODE_MULTIPLE);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -227,7 +224,7 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
             mMode.finish();
         }
         DeleteMode = false;
-        m_ListView.getRefreshableView().setSelection(AbsListView.CHOICE_MODE_NONE);
+        m_ListView.setSelection(AbsListView.CHOICE_MODE_NONE);
         mAdapter.notifyDataSetChanged();
     }
 

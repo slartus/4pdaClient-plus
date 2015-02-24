@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/4pdaClient-plus.iml" filepath="$PROJECT_DIR$/4pdaClient-plus.iml" />
       <module fileurl="file://$PROJECT_DIR$/4pdasources/4pdasources.iml" filepath="$PROJECT_DIR$/4pdasources/4pdasources.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/chrisbanesandroidpulltorefresh/chrisbanesandroidpulltorefresh.iml" filepath="$PROJECT_DIR$/chrisbanesandroidpulltorefresh/chrisbanesandroidpulltorefresh.iml" />
       <module fileurl="file://$PROJECT_DIR$/forpdaapi/forpdaapi.iml" filepath="$PROJECT_DIR$/forpdaapi/forpdaapi.iml" />
       <module fileurl="file://$PROJECT_DIR$/forpdacommon/forpdacommon.iml" filepath="$PROJECT_DIR$/forpdacommon/forpdacommon.iml" />
       <module fileurl="file://$PROJECT_DIR$/forpdanotifyservice/forpdanotifyservice.iml" filepath="$PROJECT_DIR$/forpdanotifyservice/forpdanotifyservice.iml" />
