@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.listfragments.next;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,12 +30,16 @@ import org.softeg.slartus.forpdaapi.classes.ForumsData;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ForumsTable;
+import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
+import org.softeg.slartus.forpdaplus.prefs.ListPreferencesActivity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +63,9 @@ public class ForumFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
+        if (getArguments() != null)
+            m_ForumId = getArguments().getString(FORUM_ID_KEY, null);
         if (savedInstanceState != null) {
             m_Name = savedInstanceState.getString(NAME_KEY, m_Name);
             m_Title = savedInstanceState.getString(TITLE_KEY, m_Title);
@@ -74,20 +81,87 @@ setHasOptionsMenu(true);
 
     @Override
     public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-
-        menu.add("Обновить структуру форума")
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        new UpdateForumStructTask(getActivity()).execute();
-                        return true;
-                    }
-                });
-
-
+        inflater.inflate(R.menu.forum_fragment_menu, menu);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refresh:
+                loadData(true);
+                return true;
+            case R.id.list_settings:
+                showListSettings();
+                return true;
+            case R.id.mark_as_read:
+                markAsRead();
+                return true;
+            case R.id.update_forum_struct:
+                new UpdateForumStructTask(getActivity()).execute();
+                return true;
+        }
+        return false;
+    }
+
+    private void markAsRead() {
+        if (!Client.getInstance().getLogined()) {
+            Toast.makeText(getActivity(), "Необходимо залогиниться!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        new AlertDialogBuilder(getActivity())
+                .setTitle("Подтвердите действие")
+                .setMessage("Отметить этот форум прочитанным?")
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                        Toast.makeText(getActivity(), "Запрос отправлен", Toast.LENGTH_SHORT).show();
+                        new Thread(new Runnable() {
+                            public void run() {
+                                Throwable ex = null;
+                                try {
+                                    Forum f = mData.getCrumbs().get(mData.getCrumbs().size() - 1);
+                                    Forums.markForumAsRead(Client.getInstance(), f.getId() == null ? "-1" : f.getId());
+
+                                } catch (Throwable e) {
+                                    ex = e;
+                                }
+
+                                final Throwable finalEx = ex;
+
+                                mHandler.post(new Runnable() {
+                                    public void run() {
+                                        try {
+                                            if (finalEx != null) {
+                                                Toast.makeText(getActivity(), "Ошибка", Toast.LENGTH_SHORT).show();
+                                                AppLog.e(getActivity(), finalEx);
+                                            } else {
+                                                Toast.makeText(getActivity(), "Форум отмечен прочитанным", Toast.LENGTH_SHORT).show();
+                                            }
+                                        } catch (Exception ex) {
+                                            AppLog.e(getActivity(), ex);
+                                        }
+
+                                    }
+                                });
+                            }
+                        }).start();
+                    }
+                })
+                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    private void showListSettings() {
+        Intent settingsActivity = new Intent(
+                getActivity(), ListPreferencesActivity.class);
+        getActivity().startActivity(settingsActivity);
+    }
+
 
     protected ForumFragment.ForumBranch createListData() {
         return new ForumFragment.ForumBranch();
@@ -107,8 +181,12 @@ setHasOptionsMenu(true);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mListView.setLayoutManager(mLayoutManager);
+        if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_POSITION_KEY)) {
+            mListView.scrollToPosition(savedInstanceState.getInt(SCROLL_POSITION_KEY));
+        }
         setListViewAdapter();
-        reloadData();
+        if (mData.getItems().size() == 0)
+            reloadData();
     }
 
     @Override
@@ -120,10 +198,6 @@ setHasOptionsMenu(true);
 
 
         mEmptyTextView = (TextView) v.findViewById(android.R.id.empty);
-
-        if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_POSITION_KEY)) {
-            mListView.scrollToPosition(savedInstanceState.getInt(SCROLL_POSITION_KEY));
-        }
 
 
         return v;
@@ -140,19 +214,13 @@ setHasOptionsMenu(true);
 
     @Override
     public void loadData(final boolean isRefresh) {
-        Bundle args = new Bundle();
-        args.putString(FORUM_ID_KEY, m_ForumId);
-        setLoading(true);
-        if (getLoaderManager().getLoader(getLoaderId()) != null)
-            getLoaderManager().restartLoader(getLoaderId(), args, this);
-        else
-            getLoaderManager().initLoader(getLoaderId(), args, this);
+        loadForum(m_ForumId);
     }
 
     public void loadForum(String forumId) {
         Bundle args = new Bundle();
         args.putString(FORUM_ID_KEY, forumId);
-        m_ForumId = forumId;
+
         setLoading(true);
         if (getLoaderManager().getLoader(getLoaderId()) != null)
             getLoaderManager().restartLoader(getLoaderId(), args, this);
@@ -191,8 +259,11 @@ setHasOptionsMenu(true);
         if (data != null && data.getError() != null) {
             AppLog.e(getActivity(), data.getError());
         } else if (data != null) {
-//            if (data.getItems().size() == 0)
-//                ForumTopicsListFragment.showForumTopicsList(getActivity(), loader.);
+            if (data.getItems().size() == 0 && data.getItems().size() > 1) {
+                Forum forum = data.getItems().get(data.getItems().size() - 1);
+                ForumTopicsListFragment.showForumTopicsList(getActivity(), forum.getId(), forum.getTitle());
+                return;
+            }
             mData.getItems().clear();
             mData.getItems().addAll(data.getItems());
             mData.getCrumbs().clear();
@@ -219,11 +290,11 @@ setHasOptionsMenu(true);
             if (getActivity() == null) return;
 
 
-            if (loading) {
-                setEmptyText("Загрузка..");
-            } else {
-                setEmptyText("Нет данных");
-            }
+//            if (loading) {
+//                setEmptyText("Загрузка..");
+//            } else {
+//                setEmptyText("Нет данных");
+//            }
         } catch (Throwable ignore) {
 
             android.util.Log.e("TAG", ignore.toString());
@@ -237,6 +308,7 @@ setHasOptionsMenu(true);
         outState.putString(TITLE_KEY, m_Title);
         outState.putBoolean(NEED_LOGIN_KEY, m_NeedLogin);
         outState.putString(FORUM_ID_KEY, m_ForumId);
+        outState.putSerializable(DATA_KEY, mData);
         try {
             if (mListView != null) {
                 outState.putInt(SCROLL_POSITION_KEY,
@@ -262,7 +334,10 @@ setHasOptionsMenu(true);
             public void onItemClick(View v) {
                 int itemPosition = mListView.getChildPosition(v);
                 Forum forum = mData.getItems().get(itemPosition - mData.getCrumbs().size());
-                loadForum(forum.getId());
+                if (forum.isHasForums())
+                    loadForum(forum.getId());
+                else
+                    ForumTopicsListFragment.showForumTopicsList(getActivity(), forum.getId(), forum.getTitle());
             }
 
             @Override
@@ -270,6 +345,13 @@ setHasOptionsMenu(true);
                 int itemPosition = mListView.getChildPosition(v);
                 Forum forum = mData.getCrumbs().get(itemPosition);
                 loadForum(forum.getId());
+            }
+
+            @Override
+            public void onHeaderTopicsClick(View v) {
+                int itemPosition = mListView.getChildPosition(v);
+                Forum forum = mData.getCrumbs().get(itemPosition);
+                ForumTopicsListFragment.showForumTopicsList(getActivity(), forum.getId(), forum.getTitle());
             }
         });
     }
@@ -314,16 +396,8 @@ setHasOptionsMenu(true);
         return false;
     }
 
-    public static class ForumBranch extends Forum {
+    public static class ForumBranch implements Serializable {
         private Throwable error;
-
-        public ForumBranch() {
-            super(null, null);
-        }
-
-        public ForumBranch(String id, String title) {
-            super(id, title);
-        }
 
         private List<Forum> mCrumbs = null;
 
@@ -356,6 +430,8 @@ setHasOptionsMenu(true);
             void onItemClick(View v);
 
             void onHeaderClick(View v);
+
+            void onHeaderTopicsClick(View v);
         }
 
         private List<Forum> mDataset;
@@ -468,7 +544,7 @@ setHasOptionsMenu(true);
                     headerCV.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mOnClickListener.onHeaderClick(v);
+                            mOnClickListener.onHeaderTopicsClick(v);
                         }
                     });
                     return headerCViewHolder;
@@ -604,7 +680,8 @@ setHasOptionsMenu(true);
 
     }
 
-    private Handler mHandler=new Handler();
+    private Handler mHandler = new Handler();
+
     private class UpdateForumStructTask extends AsyncTask<String, String, ForumsData> {
 
         private final ProgressDialog dialog;

@@ -191,8 +191,8 @@ public class ForumsTable {
                 selection = COLUMN_PARENT_ID + " ISNULL";
                 selectionArgs = null;
             }
-            c = db.query(TABLE_NAME, new String[]{COLUMN_ID,  COLUMN_TITLE,
-                            COLUMN_DESCRIPTION, COLUMN_HAS_TOPICS},
+            c = db.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_TITLE,
+                            COLUMN_DESCRIPTION, COLUMN_HAS_TOPICS, COLUMN_HAS_FORUMS},
                     selection, selectionArgs, null, null, COLUMN_GLOBALSORTORDER);
             if (c.moveToFirst()) {
 
@@ -201,17 +201,19 @@ public class ForumsTable {
                 int columnTitleIndex = c.getColumnIndex(COLUMN_TITLE);
                 int columnDescriptionIndex = c.getColumnIndex(COLUMN_DESCRIPTION);
                 int columnHasTopicsIndex = c.getColumnIndex(COLUMN_HAS_TOPICS);
+                int columnHasForumsIndex = c.getColumnIndex(COLUMN_HAS_FORUMS);
 
                 do {
                     String id = c.getString(columnIdIndex);
                     String title = c.getString(columnTitleIndex);
                     String description = c.getString(columnDescriptionIndex);
                     Boolean hasTopics = c.getShort(columnHasTopicsIndex) == 1;
+                    Boolean hasForums = c.getShort(columnHasForumsIndex) == 1;
 
                     Forum forum = new Forum(id, title);
                     forum.setHasTopics(hasTopics);
                     forum.setDescription(description);
-
+                    forum.setHasForums(hasForums);
                     res.getItems().add(forum);
                 } while (c.moveToNext());
             }
@@ -232,24 +234,26 @@ public class ForumsTable {
             String selection = COLUMN_ID + "=?";
             String[] selectionArgs = new String[]{id};
             c = db.query(TABLE_NAME, new String[]{COLUMN_PARENT_ID, COLUMN_TITLE,
-                            COLUMN_DESCRIPTION, COLUMN_HAS_TOPICS},
+                            COLUMN_DESCRIPTION, COLUMN_HAS_TOPICS, COLUMN_HAS_FORUMS},
                     selection, selectionArgs, null, null, COLUMN_GLOBALSORTORDER);
             if (c.moveToFirst()) {
                 int columnParentIdIndex = c.getColumnIndex(COLUMN_PARENT_ID);
                 int columnTitleIndex = c.getColumnIndex(COLUMN_TITLE);
                 int columnDescriptionIndex = c.getColumnIndex(COLUMN_DESCRIPTION);
                 int columnHasTopicsIndex = c.getColumnIndex(COLUMN_HAS_TOPICS);
+                int columnHasForumsIndex = c.getColumnIndex(COLUMN_HAS_FORUMS);
 
                 String parentId = c.getString(columnParentIdIndex);
                 String title = c.getString(columnTitleIndex);
                 String description = c.getString(columnDescriptionIndex);
                 Boolean hasTopics = c.getShort(columnHasTopicsIndex) == 1;
+                Boolean hasForums = c.getShort(columnHasForumsIndex) == 1;
 
                 Forum forum = new Forum(id, title);
                 forum.setHasTopics(hasTopics);
                 forum.setDescription(description);
-
-                    forums.add(1, forum);
+                forum.setHasForums(hasForums);
+                forums.add(1, forum);
 
                 if (parentId != null)
                     loadForumsUp(db, parentId, forums);

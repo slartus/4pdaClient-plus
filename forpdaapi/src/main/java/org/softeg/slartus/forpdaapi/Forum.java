@@ -3,12 +3,14 @@ package org.softeg.slartus.forpdaapi;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * User: slinkin
  * Date: 08.06.12
  * Time: 13:37
  */
-public class Forum implements ICatalogItem, Parcelable {
+public class Forum implements ICatalogItem, Parcelable,Serializable {
     protected String m_Id;
     private CharSequence description;
     private ICatalogItem parent;

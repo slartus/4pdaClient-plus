@@ -28,7 +28,7 @@ public class TopicsTable {
 
     public static void addTopic(ExtTopic topic, Boolean ifNotExists) {
         SQLiteDatabase db = null;
-        Cursor c = null;
+
         try {
             DbHelper dbHelper = new DbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
@@ -38,8 +38,6 @@ public class TopicsTable {
             AppLog.e(App.getInstance(), ex);
         } finally {
             if (db != null) {
-                if (c != null)
-                    c.close();
                 db.close();
             }
         }
