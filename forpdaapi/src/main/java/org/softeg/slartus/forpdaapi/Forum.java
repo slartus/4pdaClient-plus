@@ -15,6 +15,7 @@ public class Forum implements ICatalogItem, Parcelable {
     protected String m_Title;
     private boolean hasTopics;
     public int level = 0;
+    private String parentId;
 
     public Forum(String id, String title) {
         m_Id = id;
@@ -120,5 +121,13 @@ public class Forum implements ICatalogItem, Parcelable {
             parcel.writeByte((byte) 1);
             ((Forum)parent).writeToParcel(parcel,i);
         }
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getParentId() {
+        return parentId;
     }
 }

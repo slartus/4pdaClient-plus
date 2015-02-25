@@ -2,7 +2,7 @@ package org.softeg.slartus.forpdaplus.listtemplates;
 
 import android.support.v4.app.Fragment;
 
-import org.softeg.slartus.forpdaplus.listfragments.ForumCatalogFragment;
+import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 
 /**
  * Created by slinkin on 21.02.14.
@@ -22,6 +22,6 @@ public class ForumBrickInfo extends BrickInfo {
 
     @Override
     public Fragment createFragment() {
-        return new ForumCatalogFragment().setBrickInfo(this);
+        return new ForumFragment().setBrickInfo(this);
     }
 }

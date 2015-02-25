@@ -12,15 +12,19 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.softeg.slartus.forpdaapi.Forum;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.db.ForumsTable;
+import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -30,12 +34,15 @@ public class ForumFragment extends Fragment implements
         IBrickFragment, LoaderManager.LoaderCallbacks<ForumFragment.ForumBranch> {
     private static final String DATA_KEY = "BrickFragmentListBase.DATA_KEY";
     private static final String SCROLL_POSITION_KEY = "SCROLL_POSITION_KEY";
+    private static final String FORUM_ID_KEY = "FORUM_ID_KEY";
     private RecyclerView mListView;
+    private LinearLayoutManager mLayoutManager;
     private TextView mEmptyTextView;
     private ForumFragment.ForumBranch mData = createListData();
 
 
     private RecyclerView.Adapter mAdapter;
+    private String m_ForumId = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,7 +78,8 @@ public class ForumFragment extends Fragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mListView.setLayoutManager(mLayoutManager);
         setListViewAdapter();
         reloadData();
     }
@@ -82,13 +90,15 @@ public class ForumFragment extends Fragment implements
         View v = inflater.inflate(R.layout.forum_fragment, container, false);
         assert v != null;
         mListView = (RecyclerView) v.findViewById(android.R.id.list);
+
+
         mEmptyTextView = (TextView) v.findViewById(android.R.id.empty);
 
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_POSITION_KEY)) {
             mListView.scrollToPosition(savedInstanceState.getInt(SCROLL_POSITION_KEY));
         }
 
-        registerForContextMenu(mListView);
+
         return v;
     }
 
@@ -104,7 +114,18 @@ public class ForumFragment extends Fragment implements
     @Override
     public void loadData(final boolean isRefresh) {
         Bundle args = new Bundle();
+        args.putString(FORUM_ID_KEY, m_ForumId);
+        setLoading(true);
+        if (getLoaderManager().getLoader(getLoaderId()) != null)
+            getLoaderManager().restartLoader(getLoaderId(), args, this);
+        else
+            getLoaderManager().initLoader(getLoaderId(), args, this);
+    }
 
+    public void loadForum(String forumId) {
+        Bundle args = new Bundle();
+        args.putString(FORUM_ID_KEY, forumId);
+        m_ForumId = forumId;
         setLoading(true);
         if (getLoaderManager().getLoader(getLoaderId()) != null)
             getLoaderManager().restartLoader(getLoaderId(), args, this);
@@ -143,7 +164,12 @@ public class ForumFragment extends Fragment implements
         if (data != null && data.getError() != null) {
             AppLog.e(getActivity(), data.getError());
         } else if (data != null) {
+            if (data.getItems().size() == 0)
+                ForumTopicsListFragment.showForumTopicsList(getActivity(), loader.);
+            mData.getItems().clear();
             mData.getItems().addAll(data.getItems());
+            mData.getCrumbs().clear();
+            mData.getCrumbs().addAll(data.getCrumbs());
 
             notifyDataSetChanged();
             mListView.refreshDrawableState();
@@ -183,6 +209,7 @@ public class ForumFragment extends Fragment implements
         outState.putString(NAME_KEY, m_Name);
         outState.putString(TITLE_KEY, m_Title);
         outState.putBoolean(NEED_LOGIN_KEY, m_NeedLogin);
+        outState.putString(FORUM_ID_KEY, m_ForumId);
         try {
             if (mListView != null) {
                 outState.putInt(SCROLL_POSITION_KEY,
@@ -203,7 +230,21 @@ public class ForumFragment extends Fragment implements
     }
 
     protected void initAdapter() {
-        mAdapter = new ForumsAdapter(mData.getItems());
+        mAdapter = new ForumsAdapter(mData.getCrumbs(), mData.getItems(), new ForumsAdapter.OnClickListener() {
+            @Override
+            public void onItemClick(View v) {
+                int itemPosition = mListView.getChildPosition(v);
+                Forum forum = mData.getItems().get(itemPosition - mData.getCrumbs().size());
+                loadForum(forum.getId());
+            }
+
+            @Override
+            public void onHeaderClick(View v) {
+                int itemPosition = mListView.getChildPosition(v);
+                Forum forum = mData.getCrumbs().get(itemPosition);
+                loadForum(forum.getId());
+            }
+        });
     }
 
 
@@ -241,18 +282,36 @@ public class ForumFragment extends Fragment implements
         return this;
     }
 
-
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         return false;
     }
 
-    public static class ForumBranch {
-
+    public static class ForumBranch extends Forum {
         private Throwable error;
 
+        public ForumBranch() {
+            super(null, null);
+        }
+
+        public ForumBranch(String id, String title) {
+            super(id, title);
+        }
+
+        private List<Forum> mCrumbs = null;
+
+        public List<Forum> getCrumbs() {
+            if (mCrumbs == null)
+                mCrumbs = new ArrayList<Forum>();
+            return mCrumbs;
+        }
+
+        private List<Forum> mItems = null;
+
         public List<Forum> getItems() {
-            return null;
+            if (mItems == null)
+                mItems = new ArrayList<Forum>();
+            return mItems;
         }
 
         public Throwable getError() {
@@ -264,8 +323,17 @@ public class ForumFragment extends Fragment implements
         }
     }
 
-    private static class ForumsAdapter extends RecyclerView.Adapter<ForumsAdapter.ViewHolder> {
+    private static class ForumsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        public interface OnClickListener {
+            void onItemClick(View v);
+
+            void onHeaderClick(View v);
+        }
+
         private List<Forum> mDataset;
+        private OnClickListener mOnClickListener;
+        private List<Forum> mHeaderset;
 
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
@@ -277,34 +345,81 @@ public class ForumFragment extends Fragment implements
 
             public ViewHolder(View v) {
                 super(v);
-                mText1 = (TextView)v.findViewById(android.R.id.text1);
-                mText2 = (TextView)v.findViewById(android.R.id.text2);
+                mText1 = (TextView) v.findViewById(android.R.id.text1);
+                mText2 = (TextView) v.findViewById(android.R.id.text2);
             }
         }
+
+        public static class HeaderViewHolder extends RecyclerView.ViewHolder {
+            // each data item is just a string in this case
+            public Button mButton;
+
+
+            public HeaderViewHolder(View v) {
+                super(v);
+                mButton = (Button) v.findViewById(R.id.header_button);
+            }
+        }
+
+
+        private Forum getItem(int position) {
+            switch (getItemViewType(position)) {
+                case HEADER_VIEW_TYPE:
+                    return mHeaderset.get(position);
+                case DATA_VIEW_TYPE:
+                    return mDataset.get(position - mHeaderset.size());
+            }
+            return null;
+        }
+
+        private final int HEADER_VIEW_TYPE = 0;
+        private final int DATA_VIEW_TYPE = 1;
 
         @Override
         public int getItemViewType(int position) {
             // Just as an example, return 0 or 2 depending on position
             // Note that unlike in ListView adapters, types don't have to be contiguous
-            return 0;
+            return position < mHeaderset.size() ? HEADER_VIEW_TYPE : DATA_VIEW_TYPE;
         }
 
         // Provide a suitable constructor (depends on the kind of dataset)
-        public ForumsAdapter(List<Forum> myDataset) {
+        public ForumsAdapter(List<Forum> headerDataset, List<Forum> myDataset,
+                             OnClickListener onClickListener) {
+            mHeaderset = headerDataset;
             mDataset = myDataset;
+            mOnClickListener = onClickListener;
         }
 
         // Create new views (invoked by the layout manager)
         @Override
-        public ForumsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                           int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                          int viewType) {
             switch (viewType) {
-                case 0:
+                case DATA_VIEW_TYPE:
                     View v = LayoutInflater.from(parent.getContext())
                             .inflate(android.R.layout.simple_list_item_2, parent, false);
 
                     ViewHolder viewHolder = new ViewHolder(v);
+                    v.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mOnClickListener.onItemClick(v);
+                        }
+                    });
                     return viewHolder;
+                case HEADER_VIEW_TYPE:
+                    final View headerV = LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.forum_header_item, parent, false);
+
+
+                    HeaderViewHolder headerViewHolder = new HeaderViewHolder(headerV);
+                    headerViewHolder.mButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mOnClickListener.onHeaderClick(headerV);
+                        }
+                    });
+                    return headerViewHolder;
             }
             // create a new view
 
@@ -313,18 +428,27 @@ public class ForumFragment extends Fragment implements
 
         // Replace the contents of a view (invoked by the layout manager)
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
-            // - get element from your dataset at this position
-            // - replace the contents of the view with that element
-            holder.mText1.setText(mDataset.get(position).getTitle());
-            holder.mText2.setText(mDataset.get(position).getDescription());
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            int viewType = getItemViewType(position);
+            Forum forum = getItem(position);
+            switch (viewType) {
+                case DATA_VIEW_TYPE:
+                    ViewHolder viewHolder = (ViewHolder) holder;
+                    viewHolder.mText1.setText(forum.getTitle());
+                    viewHolder.mText2.setText(forum.getDescription());
+                    break;
+                case HEADER_VIEW_TYPE:
+                    HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
+                    headerViewHolder.mButton.setText(forum.getTitle());
 
+                    break;
+            }
         }
 
         // Return the size of your dataset (invoked by the layout manager)
         @Override
         public int getItemCount() {
-            return mDataset.size();
+            return mHeaderset.size() + mDataset.size();
         }
     }
 
@@ -347,7 +471,7 @@ public class ForumFragment extends Fragment implements
         @Override
         public ForumFragment.ForumBranch loadInBackground() {
             try {
-              return null;
+                return ForumsTable.getForums(args.getString(FORUM_ID_KEY));
             } catch (Throwable e) {
                 ForumFragment.ForumBranch forumPage = new ForumFragment.ForumBranch();
                 forumPage.setError(e);

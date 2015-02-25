@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import org.softeg.slartus.forpdaapi.Forum;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -151,7 +152,7 @@ public class ForumsTable {
                 values.put(COLUMN_TITLE, item.getTitle());
                 values.put(COLUMN_DESCRIPTION, item.getDescription() != null ? item.getDescription().toString() : null);
                 values.put(COLUMN_GLOBALSORTORDER, Integer.toString(i));
-                values.put(COLUMN_HAS_TOPICS, item.isHasTopics()?1:0);
+                values.put(COLUMN_HAS_TOPICS, item.isHasTopics() ? 1 : 0);
                 db.insertOrThrow(TABLE_NAME, null, values);
             }
 
@@ -165,28 +166,42 @@ public class ForumsTable {
 
     }
 
-    public static ArrayList<Forum> getForums() throws IOException {
-        ArrayList<Forum> res = new ArrayList<>();
+    public static ForumFragment.ForumBranch getForums(String forumId) throws IOException {
+        ForumFragment.ForumBranch res = new ForumFragment.ForumBranch();
 
         SQLiteDatabase db = null;
         Cursor c = null;
         try {
             ForumStructDbHelper dbHelper = new ForumStructDbHelper(App.getInstance());
-            db = dbHelper.getWritableDatabase();
-
+            db = dbHelper.getReadableDatabase();
             assert db != null;
 
-            c = db.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_TITLE, COLUMN_DESCRIPTION, COLUMN_HAS_TOPICS},
-                    null, null, null, null, COLUMN_GLOBALSORTORDER);
+            res.getCrumbs().add(new Forum(null, "4PDA"));
+            if (forumId != null)
+                loadForumsUp(db, forumId, res.getCrumbs());
+
+
+            // получаем чайлдов
+            String selection = COLUMN_PARENT_ID + "=?";
+            String[] selectionArgs = new String[]{forumId};
+            if (forumId == null) {
+                selection = COLUMN_PARENT_ID + " ISNULL";
+                selectionArgs = null;
+            }
+            c = db.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_PARENT_ID, COLUMN_TITLE,
+                            COLUMN_DESCRIPTION, COLUMN_HAS_TOPICS},
+                    selection, selectionArgs, null, null, COLUMN_GLOBALSORTORDER);
             if (c.moveToFirst()) {
 
                 int columnIdIndex = c.getColumnIndex(COLUMN_ID);
+                int columnParentIdIndex = c.getColumnIndex(COLUMN_PARENT_ID);
                 int columnTitleIndex = c.getColumnIndex(COLUMN_TITLE);
                 int columnDescriptionIndex = c.getColumnIndex(COLUMN_DESCRIPTION);
                 int columnHasTopicsIndex = c.getColumnIndex(COLUMN_HAS_TOPICS);
 
                 do {
                     String id = c.getString(columnIdIndex);
+                    String parentId = c.getString(columnParentIdIndex);
                     String title = c.getString(columnTitleIndex);
                     String description = c.getString(columnDescriptionIndex);
                     Boolean hasTopics = c.getShort(columnHasTopicsIndex) == 1;
@@ -194,11 +209,11 @@ public class ForumsTable {
                     Forum forum = new Forum(id, title);
                     forum.setHasTopics(hasTopics);
                     forum.setDescription(description);
-                 //   forum.setParent(parentForum);
-                    res.add(forum);
+                    forum.setParentId(parentId);
+                    //   forum.setParent(parentForum);
+                    res.getItems().add(forum);
                 } while (c.moveToNext());
             }
-
         } finally {
             if (db != null) {
                 if (c != null)
@@ -208,6 +223,43 @@ public class ForumsTable {
         }
 
         return res;
+    }
+
+    private static void loadForumsUp(SQLiteDatabase db, String id, List<Forum> forums) {
+        Cursor c = null;
+        try {
+            String selection = COLUMN_ID + "=?";
+            String[] selectionArgs = new String[]{id};
+            c = db.query(TABLE_NAME, new String[]{COLUMN_PARENT_ID, COLUMN_TITLE,
+                            COLUMN_DESCRIPTION, COLUMN_HAS_TOPICS},
+                    selection, selectionArgs, null, null, COLUMN_GLOBALSORTORDER);
+            if (c.moveToFirst()) {
+                int columnParentIdIndex = c.getColumnIndex(COLUMN_PARENT_ID);
+                int columnTitleIndex = c.getColumnIndex(COLUMN_TITLE);
+                int columnDescriptionIndex = c.getColumnIndex(COLUMN_DESCRIPTION);
+                int columnHasTopicsIndex = c.getColumnIndex(COLUMN_HAS_TOPICS);
+
+                String parentId = c.getString(columnParentIdIndex);
+                String title = c.getString(columnTitleIndex);
+                String description = c.getString(columnDescriptionIndex);
+                Boolean hasTopics = c.getShort(columnHasTopicsIndex) == 1;
+
+                Forum forum = new Forum(id, title);
+                forum.setHasTopics(hasTopics);
+                forum.setDescription(description);
+                forum.setParentId(parentId);
+
+                    forums.add(1, forum);
+
+                if (parentId != null)
+                    loadForumsUp(db, parentId, forums);
+            }
+        } finally {
+            if (db != null) {
+                if (c != null)
+                    c.close();
+            }
+        }
     }
 
     public static ArrayList<Forum> loadForums(Forum parentForum, Boolean addTopicsItem) throws IOException {
