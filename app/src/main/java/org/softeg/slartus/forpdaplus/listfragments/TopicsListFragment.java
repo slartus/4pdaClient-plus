@@ -200,18 +200,25 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
         return optionsMenu;
     }
 
-    public void configureOptionsMenu(final Context context, final Handler mHandler, SubMenu optionsMenu, final IListItem topic,
+    public void configureOptionsMenu(final Context context, final Handler mHandler, SubMenu optionsMenu, final IListItem listItem,
                                      final String shareItUrl) {
         optionsMenu.clear();
-
+        Topic topic = null;
+        if (listItem instanceof Topic) {
+            topic = (Topic) listItem;
+        } else {
+            topic = new Topic(listItem.getId().toString(), listItem.getMain().toString());
+        }
         if (Client.getInstance().getLogined() && !topic.isInProgress()) {
 
             Boolean isFavotitesList = FavoritesBrickInfo.NAME.equals(getListName());
             String title = isFavotitesList ? "Изменить подписку" : "Добавить в избранное";
+            final Topic finalTopic = topic;
             optionsMenu.add(title).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
-                    TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, topic.getId(),
-                            new TopicListItemTask(context, (Topic) topic, mAdapter) {
+
+                    TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, finalTopic.getId(),
+                            new TopicListItemTask(context, (Topic) finalTopic, mAdapter) {
                                 @Override
                                 public String doInBackground(Topic topic, String... pars) throws Throwable {
                                     return TopicApi.changeFavorite(Client.getInstance(), topic.getId(), pars[0]);
@@ -228,10 +235,11 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             });
 
             if (isFavotitesList) {
+                final Topic finalTopic1 = topic;
                 optionsMenu.add(context.getString(R.string.DeleteFromFavorites)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         Toast.makeText(context, "Запрос на удаление отправлен", Toast.LENGTH_SHORT).show();
-                        new TopicListItemTask(context, (Topic) topic, mAdapter) {
+                        new TopicListItemTask(context, (Topic) finalTopic1, mAdapter) {
                             @Override
                             public String doInBackground(Topic topic, String... pars) throws ParseException, IOException, URISyntaxException {
                                 return TopicApi.deleteFromFavorites(Client.getInstance(), topic.getId());
@@ -248,49 +256,57 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                 });
 
                 FavTopic favTopic = (FavTopic) topic;
-                if (!favTopic.isPinned())
-                    optionsMenu.add("\"Закрепить\" в избранном").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            Toast.makeText(context, "Запрос на \"закрепить\" отправлен", Toast.LENGTH_SHORT).show();
-                            new TopicListItemTask(context, (Topic) topic, mAdapter) {
-                                @Override
-                                public String doInBackground(Topic topic, String... pars) throws ParseException, IOException, URISyntaxException {
-                                    return TopicApi.pinFavorite(Client.getInstance(), topic.getId(), TopicApi.TRACK_TYPE_PIN);
+                if (!favTopic.isPinned()) {
+                    final Topic finalTopic2 = topic;
+                    optionsMenu.add("\"Закрепить\" в избранном")
+                            .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                                public boolean onMenuItemClick(MenuItem menuItem) {
+                                    Toast.makeText(context, "Запрос на \"закрепить\" отправлен", Toast.LENGTH_SHORT).show();
+                                    new TopicListItemTask(context, (Topic) finalTopic2, mAdapter) {
+                                        @Override
+                                        public String doInBackground(Topic topic, String... pars)
+                                                throws ParseException, IOException, URISyntaxException {
+                                            return TopicApi.pinFavorite(Client.getInstance(), topic.getId(), TopicApi.TRACK_TYPE_PIN);
+                                        }
+
+                                        @Override
+                                        public void onPostExecute(Topic topic) {
+                                            ((FavTopic) topic).setPinned(true);
+                                        }
+                                    }.execute();
+
+                                    return true;
                                 }
+                            });
+                } else {
+                    final Topic finalTopic3 = topic;
+                    optionsMenu.add("\"Открепить\" в избранном")
+                            .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                                public boolean onMenuItemClick(MenuItem menuItem) {
 
-                                @Override
-                                public void onPostExecute(Topic topic) {
-                                    ((FavTopic) topic).setPinned(true);
+                                    Toast.makeText(context, "Запрос на \"закрепить\" отправлен", Toast.LENGTH_SHORT)
+                                            .show();
+                                    new TopicListItemTask(context, (Topic) finalTopic3, mAdapter) {
+                                        @Override
+                                        public String doInBackground(Topic topic, String... pars)
+                                                throws ParseException, IOException, URISyntaxException {
+                                            return TopicApi.pinFavorite(Client.getInstance(), topic.getId(), TopicApi.TRACK_TYPE_UNPIN);
+                                        }
+
+                                        @Override
+                                        public void onPostExecute(Topic topic) {
+                                            ((FavTopic) topic).setPinned(false);
+                                        }
+                                    }.execute();
+
+                                    return true;
                                 }
-                            }.execute();
-
-                            return true;
-                        }
-                    });
-                else
-                    optionsMenu.add("\"Открепить\" в избранном").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-
-                            Toast.makeText(context, "Запрос на \"закрепить\" отправлен", Toast.LENGTH_SHORT).show();
-                            new TopicListItemTask(context, (Topic) topic, mAdapter) {
-                                @Override
-                                public String doInBackground(Topic topic, String... pars) throws ParseException, IOException, URISyntaxException {
-                                    return TopicApi.pinFavorite(Client.getInstance(), topic.getId(), TopicApi.TRACK_TYPE_UNPIN);
-                                }
-
-                                @Override
-                                public void onPostExecute(Topic topic) {
-                                    ((FavTopic) topic).setPinned(false);
-                                }
-                            }.execute();
-
-                            return true;
-                        }
-                    });
+                            });
+                }
             }
             optionsMenu.add(context.getString(R.string.OpenTopicForum)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
-                    ForumCatalogFragment.showActivity(context, null, topic.getId().toString());
+                    ForumCatalogFragment.showActivity(context, null, listItem.getId().toString());
                     return true;
                 }
             });
@@ -300,7 +316,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
         optionsMenu.add(context.getString(R.string.NotesByTopic)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 Bundle args = new Bundle();
-                args.putString(NotesListFragment.TOPIC_ID_KEY, topic.getId().toString());
+                args.putString(NotesListFragment.TOPIC_ID_KEY, listItem.getId().toString());
                 ListFragmentActivity.showListFragment(context, new NotesBrickInfo().getName(), args);
                 return true;
             }
@@ -308,7 +324,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
         optionsMenu.add("Вложения").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
-                TopicAttachmentListFragment.showActivity(context, topic.getId());
+                TopicAttachmentListFragment.showActivity(context, listItem.getId());
                 return true;
             }
         });
@@ -318,8 +334,9 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
                 try {
                     Intent sendMailIntent = new Intent(Intent.ACTION_SEND);
-                    sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, topic.getMain());
-                    sendMailIntent.putExtra(Intent.EXTRA_TEXT, TextUtils.isEmpty(shareItUrl) ? ("http://4pda.ru/forum/index.php?showtopic=" + topic.getId()) : shareItUrl);
+                    sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, listItem.getMain());
+                    sendMailIntent.putExtra(Intent.EXTRA_TEXT, TextUtils.isEmpty(shareItUrl) ?
+                            ("http://4pda.ru/forum/index.php?showtopic=" + listItem.getId()) : shareItUrl);
                     sendMailIntent.setType("text/plain");
 
                     context.startActivity(Intent.createChooser(sendMailIntent, context.getString(R.string.Share)));
@@ -415,7 +432,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             ActionSelectDialogFragment.execute(getActivity(),
                     "Действие по умолчанию",
                     String.format("%s.navigate_action", getListName()),
-                    new CharSequence[]{getString(R.string.navigate_getfirstpost), getString(R.string.navigate_getlastpost), getString(R.string.navigate_getnewpost),getString(R.string.navigate_last_url)},
+                    new CharSequence[]{getString(R.string.navigate_getfirstpost), getString(R.string.navigate_getlastpost), getString(R.string.navigate_getnewpost), getString(R.string.navigate_last_url)},
                     new CharSequence[]{Topic.NAVIGATE_VIEW_FIRST_POST, Topic.NAVIGATE_VIEW_LAST_POST, Topic.NAVIGATE_VIEW_NEW_POST, Topic.NAVIGATE_VIEW_LAST_URL},
                     new ActionSelectDialogFragment.OkListener() {
                         @Override

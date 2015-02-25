@@ -27,7 +27,7 @@ public class ExtPreferences {
             if (defaultValue != null)
                 return defaultValue.toString();
 
-        } catch (NoSuchFieldException | IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

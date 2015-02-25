@@ -165,6 +165,51 @@ public class ForumsTable {
 
     }
 
+    public static ArrayList<Forum> getForums() throws IOException {
+        ArrayList<Forum> res = new ArrayList<>();
+
+        SQLiteDatabase db = null;
+        Cursor c = null;
+        try {
+            ForumStructDbHelper dbHelper = new ForumStructDbHelper(App.getInstance());
+            db = dbHelper.getWritableDatabase();
+
+            assert db != null;
+
+            c = db.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_TITLE, COLUMN_DESCRIPTION, COLUMN_HAS_TOPICS},
+                    null, null, null, null, COLUMN_GLOBALSORTORDER);
+            if (c.moveToFirst()) {
+
+                int columnIdIndex = c.getColumnIndex(COLUMN_ID);
+                int columnTitleIndex = c.getColumnIndex(COLUMN_TITLE);
+                int columnDescriptionIndex = c.getColumnIndex(COLUMN_DESCRIPTION);
+                int columnHasTopicsIndex = c.getColumnIndex(COLUMN_HAS_TOPICS);
+
+                do {
+                    String id = c.getString(columnIdIndex);
+                    String title = c.getString(columnTitleIndex);
+                    String description = c.getString(columnDescriptionIndex);
+                    Boolean hasTopics = c.getShort(columnHasTopicsIndex) == 1;
+
+                    Forum forum = new Forum(id, title);
+                    forum.setHasTopics(hasTopics);
+                    forum.setDescription(description);
+                 //   forum.setParent(parentForum);
+                    res.add(forum);
+                } while (c.moveToNext());
+            }
+
+        } finally {
+            if (db != null) {
+                if (c != null)
+                    c.close();
+                db.close();
+            }
+        }
+
+        return res;
+    }
+
     public static ArrayList<Forum> loadForums(Forum parentForum, Boolean addTopicsItem) throws IOException {
         ArrayList<Forum> res = new ArrayList<>();
 

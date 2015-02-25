@@ -133,7 +133,8 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                         });
                         helpTask.execute(new HelpTask.OnMethodListener() {
                                              public Object onMethod(Object param) throws IOException, ParseException, URISyntaxException {
-                                                 return TopicApi.deleteFromFavorites(Client.getInstance(), themeActivity.getTopic().getId().toString());
+                                                 return TopicApi.deleteFromFavorites(Client.getInstance(),
+                                                         themeActivity.getTopic().getId());
                                              }
                                          }
                         );
@@ -162,7 +163,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
         optionsMenu.add(R.string.NotesByTopic).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 Bundle args = new Bundle();
-                args.putString(NotesListFragment.TOPIC_ID_KEY, themeActivity.getTopic().getId().toString());
+                args.putString(NotesListFragment.TOPIC_ID_KEY, themeActivity.getTopic().getId());
                 ListFragmentActivity.showListFragment(context, new NotesBrickInfo().getName(), args);
 
                 return true;

@@ -56,7 +56,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
     private CheckBox subforums_check, topics_check;
     private Spinner source_spinner, sort_spinner, result_spinner, forumsSpinner;
     private View forumsProgress, topicsProgress;
-    private View topics_group, forums_group, result_group,sort_group,source_group;
+    private View topics_group, forums_group, result_group, sort_group, source_group;
     public static final int FORUMS_DIALOG_REQUEST = 1;
 
     protected Bundle args = new Bundle();
@@ -343,6 +343,8 @@ public class SearchSettingsDialogFragment extends DialogFragment {
                         @Override
                         public void run() {
 
+                            if (getActivity() == null)
+                                return;
                             ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, forums);
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             forumsSpinner.setAdapter(adapter);

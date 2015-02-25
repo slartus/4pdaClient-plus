@@ -9,7 +9,6 @@ import org.softeg.slartus.forpdaplus.classes.DownloadTask;
 import org.softeg.slartus.forpdaplus.classes.common.Functions;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 
-import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -33,21 +32,6 @@ public class DownloadsTable {
     public static final String COLUMN_STATE = "State";
     public static final String COLUMN_DOWNLOADEDCONTENTLENGTH = "DownloadedContentLength";
 
-    protected static String getCreateQuery() {
-        return "create table "
-                + TABLE_NAME
-                + "("
-                + COLUMN_ID + " integer primary key autoincrement, "
-                + COLUMN_URL + " text not null, "
-                + COLUMN_CREATEDATETIME + " date not null, "
-                + COLUMN_ENDDATETIME + " date, "
-                + COLUMN_FILEPATH + " text, "
-                + COLUMN_DOWNLOADFILEPATH + " text, "
-                + COLUMN_STATE + " int, "
-                + COLUMN_DOWNLOADEDCONTENTLENGTH + " long, "
-                + COLUMN_CONTENTLEGTH + " long "
-                + ");";
-    }
 
     public static void insertRow(int id, String url, Date createDateTime) {
         SQLiteDatabase db = null;
@@ -98,27 +82,7 @@ public class DownloadsTable {
         }
     }
 
-    public static void endRow(int id, Date stateChangedDate) {
-        SQLiteDatabase db = null;
-
-        try {
-            DbHelper dbHelper = new DbHelper(App.getInstance());
-            db = dbHelper.getWritableDatabase();
-            //  db.beginTransaction();
-            ContentValues cv = new ContentValues();
-
-            cv.put(COLUMN_ENDDATETIME, DbHelper.DateTimeFormat.format(stateChangedDate));
-
-            db.update(TABLE_NAME, cv, COLUMN_ID + "=" + id, null);
-        } catch (Exception ex) {
-            AppLog.e(App.getInstance(), ex);
-        } finally {
-            if (db != null) {
-                //   db.endTransaction();
-                db.close();
-            }
-        }
-    }
+    private static int NEXT_ID = -1;
 
     public static int getNextId() {
         SQLiteDatabase db = null;
@@ -129,7 +93,9 @@ public class DownloadsTable {
             String count = "SELECT max(" + COLUMN_ID + ") FROM " + DownloadsTable.TABLE_NAME;
             mcursor = db.rawQuery(count, null);
             mcursor.moveToFirst();
-            return mcursor.getInt(0) + 1;
+            int nextId = mcursor.getInt(0) + 1;
+            NEXT_ID= Math.max(NEXT_ID + 1, nextId);
+            return NEXT_ID;
         } catch (Exception ex) {
             AppLog.e(App.getInstance(), ex);
             return Functions.getUniqueDateInt();
@@ -161,24 +127,6 @@ public class DownloadsTable {
             db.update(TABLE_NAME, cv, COLUMN_ID + "=" + downloadTask.getId(), null);
         } catch (Exception ex) {
             AppLog.e(App.getInstance(), ex);
-        } finally {
-            if (db != null) {
-                //   db.endTransaction();
-                db.close();
-            }
-        }
-    }
-
-    public static void clearAll() {
-        SQLiteDatabase db = null;
-
-        try {
-            DbHelper dbHelper = new DbHelper(App.getInstance());
-            db = dbHelper.getWritableDatabase();
-
-            db.delete(TABLE_NAME, null, null);
-        } catch (IOException e) {
-            AppLog.e(App.getContext(), e);
         } finally {
             if (db != null) {
                 //   db.endTransaction();

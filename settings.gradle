@@ -1,1 +1,1 @@
-include ':app', ':forpdaapi', ':forpdacommon', ':forpdanotifyservice', ':sqliteannotations', ':newquickaction', ':4pdasources', ':http'
+include ':app', ':forpdaapi', ':forpdacommon', ':forpdanotifyservice', ':sqliteannotations', ':newquickaction', ':4pdasources'

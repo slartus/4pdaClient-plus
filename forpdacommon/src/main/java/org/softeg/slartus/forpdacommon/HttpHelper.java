@@ -217,7 +217,7 @@ public class HttpHelper {
 
             public List<Cookie> getCookies() {
                 if (m_Cookies == null) {
-                    m_Cookies = new ArrayList<>();
+                    m_Cookies = new ArrayList<Cookie>();
                     try {
                         readExternalCookies(this, cookiesPath);
                     } catch (IOException ignoreEx) {
@@ -402,7 +402,7 @@ public class HttpHelper {
         }
 
         // process headers using request interceptor
-        final Map<String, String> sendHeaders = new HashMap<>();
+        final Map<String, String> sendHeaders = new HashMap<String, String>();
         // add encoding cat_name for gzip if not present
 
         sendHeaders.put(HttpHelper.ACCEPT_ENCODING, HttpHelper.GZIP);
@@ -435,7 +435,7 @@ public class HttpHelper {
             // data - name/value params
             List<NameValuePair> nvps = null;
             if ((params != null) && (params.size() > 0)) {
-                nvps = new ArrayList<>();
+                nvps = new ArrayList<NameValuePair>();
                 for (Map.Entry<String, String> entry : params.entrySet()) {
                     nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
                 }

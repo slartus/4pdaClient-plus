@@ -8,7 +8,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 21
         versionCode 508
-        versionName "2.5b5"
+        versionName "2.5b6"
     }
     buildTypes {
         release {
@@ -40,6 +40,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:cardview-v7:21.0.3'
+    compile 'com.android.support:recyclerview-v7:21.0.3'
     compile 'com.github.chrisbanes.actionbarpulltorefresh:extra-abc:+'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'

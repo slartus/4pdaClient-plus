@@ -32,7 +32,7 @@ import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public abstract class BaseListFragment extends BaseBrickFragment implements
         AdapterView.OnItemClickListener {
-    protected ArrayList<IListItem> mData=new ArrayList<>();
+    protected ArrayList<IListItem> mData = new ArrayList<>();
     private static final String TAG = "BaseListFragment";
 
     public static final String FIRST_VISIBLE_ROW_KEY = "FIRST_VISIBLE_ROW_KEY";
@@ -43,7 +43,7 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
     private int m_Top = 0;
 
     public BaseListFragment() {
-super();
+        super();
     }
 
     @Override
@@ -57,24 +57,25 @@ super();
         }
     }
 
-    protected View getListViewHeader(){
+    protected View getListViewHeader() {
         return null;
     }
 
     private ListView mListView;
     private TextView mEmptyTextView;
 
-    protected int getViewId(){
+    protected int getViewId() {
         return R.layout.list_fragment;
     }
+
     @Override
     public android.view.View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {
         View v = inflater.inflate(getViewId(), container, false);
         assert v != null;
         mListView = (ListView) v.findViewById(android.R.id.list);
         mListView.setOnItemClickListener(this);
-        View header=getListViewHeader();
-        if(header!=null)
+        View header = getListViewHeader();
+        if (header != null)
             mListView.addHeaderView(header);
         mEmptyTextView = (TextView) v.findViewById(android.R.id.empty);
         mListView.setEmptyView(mEmptyTextView);
@@ -91,7 +92,7 @@ super();
         super.onSaveInstanceState(outState);
     }
 
-    protected void showSettings(){
+    protected void showSettings() {
         Intent settingsActivity = new Intent(
                 getContext(), ListPreferencesActivity.class);
         getContext().startActivity(settingsActivity);
@@ -99,9 +100,9 @@ super();
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-       super.onCreateOptionsMenu(menu, inflater);
+        super.onCreateOptionsMenu(menu, inflater);
 
-       MenuItem item = menu.add("Настройки списка")
+        MenuItem item = menu.add("Настройки списка")
                 .setIcon(R.drawable.ic_menu_preferences)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
@@ -131,6 +132,8 @@ super();
     protected uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout mPullToRefreshLayout;
 
     protected void saveListViewScrollPosition() {
+        if (getListView() == null)
+            return;
         m_FirstVisibleRow = getListView().getFirstVisiblePosition();
         View v = getListView().getChildAt(0);
         m_Top = (v == null) ? 0 : v.getTop();
@@ -233,7 +236,6 @@ super();
     }
 
 
-
     @Override
     public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
 
@@ -250,12 +252,12 @@ super();
         int visibleItemsCount = scrollView.getLastVisiblePosition() - scrollView.getFirstVisiblePosition();
 
         int keyCode = event.getKeyCode();
-        if(Preferences.System.isScrollUpButton(keyCode)){
+        if (Preferences.System.isScrollUpButton(keyCode)) {
             if (action == KeyEvent.ACTION_DOWN)
                 scrollView.setSelection(Math.max(scrollView.getFirstVisiblePosition() - visibleItemsCount, 0));
             return true;// true надо обязательно возвращать даже если не ACTION_DOWN иначе звук нажатия
         }
-        if(Preferences.System.isScrollDownButton(keyCode)){
+        if (Preferences.System.isScrollDownButton(keyCode)) {
             if (action == KeyEvent.ACTION_DOWN)
                 scrollView.setSelection(Math.min(scrollView.getLastVisiblePosition(), scrollView.getCount() - 1));
             return true;// true надо обязательно возвращать даже если не ACTION_DOWN иначе звук нажатия
