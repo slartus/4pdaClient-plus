@@ -2,14 +2,12 @@
 
 
     <style name="Theme.Transluent.White" parent="Theme.White">
-        <item name="android:actionBarStyle">@style/Theme.ActionBar.White</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
 
     </style>
 
     <style name="Theme.Transluent.Black" parent="Theme.Black">
-        <item name="android:actionBarStyle">@style/Theme.ActionBar.White</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
 
