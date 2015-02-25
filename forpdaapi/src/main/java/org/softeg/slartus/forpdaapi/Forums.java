@@ -26,8 +26,6 @@ public class Forums extends ArrayList<Forum> {
 
     /**
      * Загрузка дерева разделов форума
-     *
-
      */
     public static ForumsData loadForums(IHttpClient httpClient, ProgressState progressState)
             throws Exception {
@@ -67,6 +65,8 @@ public class Forums extends ArrayList<Forum> {
             return;
 
         Elements categoryElements = boardForumRowElement.select("tr:has(td)");
+        if (categoryElements.size() > 0)
+            parentForum.setHasForums(true);
         for (Element trElement : categoryElements) {
             progressState.update("Обновление структуры форума...",
                     data.getItems().size());
@@ -108,6 +108,8 @@ public class Forums extends ArrayList<Forum> {
 
 
         Elements categoryElements = boardForumRowElement.select("tr:has(td)");
+        if (categoryElements.size() > 0)
+            parentForum.setHasForums(true);
         for (Element trElement : categoryElements) {
             progressState.update("Обновление структуры форума...",
                     data.getItems().size());
@@ -142,7 +144,7 @@ public class Forums extends ArrayList<Forum> {
 
     public static void markForumAsRead(IHttpClient httpClient, CharSequence forumId) throws Throwable {
 
-        List<NameValuePair> qparams = new ArrayList<>();
+        List<NameValuePair> qparams = new ArrayList<NameValuePair>();
         qparams.add(new BasicNameValuePair("act", "login"));
         qparams.add(new BasicNameValuePair("CODE", "04"));
         qparams.add(new BasicNameValuePair("f", forumId.toString()));

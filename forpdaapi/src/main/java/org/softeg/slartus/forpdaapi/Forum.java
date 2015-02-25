@@ -13,7 +13,8 @@ public class Forum implements ICatalogItem, Parcelable {
     private CharSequence description;
     private ICatalogItem parent;
     protected String m_Title;
-    private boolean hasTopics;
+    private boolean hasTopics = false;
+    private boolean hasForums = false;
     public int level = 0;
     private String parentId;
 
@@ -115,19 +116,19 @@ public class Forum implements ICatalogItem, Parcelable {
         parcel.writeString(description == null ? null : description.toString());
         parcel.writeByte((byte) (hasTopics ? 1 : 0));
         parcel.writeInt(level);
-        if(parent==null){
+        if (parent == null) {
             parcel.writeByte((byte) 0);
-        }else{
+        } else {
             parcel.writeByte((byte) 1);
-            ((Forum)parent).writeToParcel(parcel,i);
+            ((Forum) parent).writeToParcel(parcel, i);
         }
     }
 
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
+    public boolean isHasForums() {
+        return hasForums;
     }
 
-    public String getParentId() {
-        return parentId;
+    public void setHasForums(boolean hasForums) {
+        this.hasForums = hasForums;
     }
 }

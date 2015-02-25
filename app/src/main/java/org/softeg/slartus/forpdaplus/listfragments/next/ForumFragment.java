@@ -1,7 +1,11 @@
 package org.softeg.slartus.forpdaplus.listfragments.next;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -10,17 +14,24 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.Forum;
+import org.softeg.slartus.forpdaapi.Forums;
+import org.softeg.slartus.forpdaapi.ProgressState;
+import org.softeg.slartus.forpdaapi.classes.ForumsData;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ForumsTable;
-import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 
@@ -47,7 +58,7 @@ public class ForumFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+setHasOptionsMenu(true);
         if (savedInstanceState != null) {
             m_Name = savedInstanceState.getString(NAME_KEY, m_Name);
             m_Title = savedInstanceState.getString(TITLE_KEY, m_Title);
@@ -61,6 +72,22 @@ public class ForumFragment extends Fragment implements
         initAdapter();
     }
 
+    @Override
+    public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+
+        menu.add("Обновить структуру форума")
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        new UpdateForumStructTask(getActivity()).execute();
+                        return true;
+                    }
+                });
+
+
+    }
 
     protected ForumFragment.ForumBranch createListData() {
         return new ForumFragment.ForumBranch();
@@ -164,8 +191,8 @@ public class ForumFragment extends Fragment implements
         if (data != null && data.getError() != null) {
             AppLog.e(getActivity(), data.getError());
         } else if (data != null) {
-            if (data.getItems().size() == 0)
-                ForumTopicsListFragment.showForumTopicsList(getActivity(), loader.);
+//            if (data.getItems().size() == 0)
+//                ForumTopicsListFragment.showForumTopicsList(getActivity(), loader.);
             mData.getItems().clear();
             mData.getItems().addAll(data.getItems());
             mData.getCrumbs().clear();
@@ -352,18 +379,20 @@ public class ForumFragment extends Fragment implements
 
         public static class HeaderViewHolder extends RecyclerView.ViewHolder {
             // each data item is just a string in this case
-            public Button mButton;
+            public TextView mText;
 
 
             public HeaderViewHolder(View v) {
                 super(v);
-                mButton = (Button) v.findViewById(R.id.header_button);
+                mText = (TextView) v.findViewById(R.id.textView3);
             }
         }
 
 
         private Forum getItem(int position) {
             switch (getItemViewType(position)) {
+                case HEADER_CURRENT_NOTOPICS_VIEW_TYPE:
+                case HEADER_CURRENT_VIEW_TYPE:
                 case HEADER_VIEW_TYPE:
                     return mHeaderset.get(position);
                 case DATA_VIEW_TYPE:
@@ -373,13 +402,23 @@ public class ForumFragment extends Fragment implements
         }
 
         private final int HEADER_VIEW_TYPE = 0;
-        private final int DATA_VIEW_TYPE = 1;
+        private final int HEADER_CURRENT_VIEW_TYPE = 1;
+        private final int HEADER_CURRENT_NOTOPICS_VIEW_TYPE = 2;
+        private final int DATA_VIEW_TYPE = 3;
 
         @Override
         public int getItemViewType(int position) {
             // Just as an example, return 0 or 2 depending on position
             // Note that unlike in ListView adapters, types don't have to be contiguous
-            return position < mHeaderset.size() ? HEADER_VIEW_TYPE : DATA_VIEW_TYPE;
+            if (position < mHeaderset.size()) {
+                if (position == mHeaderset.size() - 1) {
+                    if (!mHeaderset.get(position).isHasTopics())
+                        return HEADER_CURRENT_NOTOPICS_VIEW_TYPE;
+                    return HEADER_CURRENT_VIEW_TYPE;
+                }
+                return HEADER_VIEW_TYPE;
+            }
+            return DATA_VIEW_TYPE;
         }
 
         // Provide a suitable constructor (depends on the kind of dataset)
@@ -413,13 +452,39 @@ public class ForumFragment extends Fragment implements
 
 
                     HeaderViewHolder headerViewHolder = new HeaderViewHolder(headerV);
-                    headerViewHolder.mButton.setOnClickListener(new View.OnClickListener() {
+                    headerV.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            mOnClickListener.onHeaderClick(headerV);
+                            mOnClickListener.onHeaderClick(v);
                         }
                     });
                     return headerViewHolder;
+                case HEADER_CURRENT_VIEW_TYPE:
+                    final View headerCV = LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.forum_header_current_item, parent, false);
+
+
+                    HeaderViewHolder headerCViewHolder = new HeaderViewHolder(headerCV);
+                    headerCV.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mOnClickListener.onHeaderClick(v);
+                        }
+                    });
+                    return headerCViewHolder;
+                case HEADER_CURRENT_NOTOPICS_VIEW_TYPE:
+                    final View headerCNV = LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.forum_header_notopics_item, parent, false);
+
+
+                    HeaderViewHolder headerCNViewHolder = new HeaderViewHolder(headerCNV);
+                    headerCNV.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mOnClickListener.onHeaderClick(v);
+                        }
+                    });
+                    return headerCNViewHolder;
             }
             // create a new view
 
@@ -439,7 +504,17 @@ public class ForumFragment extends Fragment implements
                     break;
                 case HEADER_VIEW_TYPE:
                     HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
-                    headerViewHolder.mButton.setText(forum.getTitle());
+                    headerViewHolder.mText.setText(forum.getTitle());
+
+                    break;
+                case HEADER_CURRENT_VIEW_TYPE:
+                    HeaderViewHolder headerCViewHolder = (HeaderViewHolder) holder;
+                    headerCViewHolder.mText.setText(forum.getTitle());
+
+                    break;
+                case HEADER_CURRENT_NOTOPICS_VIEW_TYPE:
+                    HeaderViewHolder headerCNViewHolder = (HeaderViewHolder) holder;
+                    headerCNViewHolder.mText.setText(forum.getTitle());
 
                     break;
             }
@@ -527,5 +602,86 @@ public class ForumFragment extends Fragment implements
             }
         }
 
+    }
+
+    private Handler mHandler=new Handler();
+    private class UpdateForumStructTask extends AsyncTask<String, String, ForumsData> {
+
+        private final ProgressDialog dialog;
+
+        public UpdateForumStructTask(Context context) {
+            dialog = new AppProgressDialog(context);
+            dialog.setCancelable(true);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    cancel(true);
+                }
+            });
+        }
+
+        protected void onCancelled() {
+            Toast.makeText(getActivity(), "Обновление структуры форума отменено", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected ForumsData doInBackground(String... forums) {
+
+            try {
+
+                if (isCancelled()) return null;
+
+                ForumsData res = Forums.loadForums(Client.getInstance(), new ProgressState() {
+                    @Override
+                    public void update(String message, int percents) {
+                        publishProgress(String.format("%s %d", message, percents));
+                    }
+                });
+                publishProgress("Обновление базы");
+                ForumsTable.updateForums(res.getItems());
+                return res;
+            } catch (Throwable e) {
+                ForumsData res = new ForumsData();
+                res.setError(e);
+
+                return res;
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(final String... progress) {
+            mHandler.post(new Runnable() {
+                public void run() {
+                    dialog.setMessage(progress[0]);
+                }
+            });
+        }
+
+        protected void onPreExecute() {
+            try {
+                this.dialog.setMessage("Обновление структуры форума...");
+                this.dialog.show();
+            } catch (Exception ex) {
+                AppLog.e(null, ex);
+            }
+        }
+
+
+        protected void onPostExecute(final ForumsData data) {
+            try {
+                if (this.dialog.isShowing()) {
+                    this.dialog.dismiss();
+                }
+            } catch (Exception ex) {
+                AppLog.e(null, ex);
+            }
+            loadData(true);
+            if (data != null) {
+                if (data.getError() != null) {
+                    AppLog.e(getActivity(), data.getError());
+                }
+            }
+        }
     }
 }

@@ -17,12 +17,12 @@ import java.io.IOException;
  */
 public class ForumStructDbHelper extends SQLiteAssetHelper {
 
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 16;
     private static final String DATABASE_NAME = "forum_struct";
 
     public ForumStructDbHelper(Context context) throws IOException {
         super(context, DATABASE_NAME, Preferences.System.getSystemDir(), null, DATABASE_VERSION);
-        setForcedUpgrade(15);
+        setForcedUpgrade(16);
     }
 
 

@@ -2,6 +2,8 @@
     <attr name="theme_background" format="reference" />
     <attr name="theme_light_background" format="reference" />
     <attr name="main_color" format="color" />
+
+    <attr name="forum_header_text_color" format="color" />
     <declare-styleable name="ExpandoLayout">
         <attr name="text" format="string" />
         <attr name="titleRowPadding" format="integer" />

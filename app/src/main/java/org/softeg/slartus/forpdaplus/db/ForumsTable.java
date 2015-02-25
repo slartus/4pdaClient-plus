@@ -29,6 +29,7 @@ public class ForumsTable {
     public static final String COLUMN_DESCRIPTION = "Description";
     public static final String COLUMN_GLOBALSORTORDER = "GlobalSortOrder";
     public static final String COLUMN_HAS_TOPICS = "HasTopics";
+    public static final String COLUMN_HAS_FORUMS = "HasForums";
 
     /**
      * для указанного форума восстанавливает путь до корня
@@ -60,7 +61,7 @@ public class ForumsTable {
 
         Cursor c = null;
         SQLiteDatabase db = null;
-        ArrayList<String> res = new ArrayList<>();
+        ArrayList<String> res = new ArrayList<String>();
         try {
             ForumStructDbHelper dbHelper = new ForumStructDbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
@@ -148,11 +149,13 @@ public class ForumsTable {
                 Forum item = forumItems.get(i);
                 ContentValues values = new ContentValues();
                 values.put(COLUMN_ID, item.getId());
+
                 values.put(COLUMN_PARENT_ID, item.getParent() != null ? item.getParent().getId().toString() : null);
                 values.put(COLUMN_TITLE, item.getTitle());
                 values.put(COLUMN_DESCRIPTION, item.getDescription() != null ? item.getDescription().toString() : null);
                 values.put(COLUMN_GLOBALSORTORDER, Integer.toString(i));
                 values.put(COLUMN_HAS_TOPICS, item.isHasTopics() ? 1 : 0);
+                values.put(COLUMN_HAS_FORUMS, item.isHasForums() ? 1 : 0);
                 db.insertOrThrow(TABLE_NAME, null, values);
             }
 
@@ -188,20 +191,19 @@ public class ForumsTable {
                 selection = COLUMN_PARENT_ID + " ISNULL";
                 selectionArgs = null;
             }
-            c = db.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_PARENT_ID, COLUMN_TITLE,
+            c = db.query(TABLE_NAME, new String[]{COLUMN_ID,  COLUMN_TITLE,
                             COLUMN_DESCRIPTION, COLUMN_HAS_TOPICS},
                     selection, selectionArgs, null, null, COLUMN_GLOBALSORTORDER);
             if (c.moveToFirst()) {
 
                 int columnIdIndex = c.getColumnIndex(COLUMN_ID);
-                int columnParentIdIndex = c.getColumnIndex(COLUMN_PARENT_ID);
+
                 int columnTitleIndex = c.getColumnIndex(COLUMN_TITLE);
                 int columnDescriptionIndex = c.getColumnIndex(COLUMN_DESCRIPTION);
                 int columnHasTopicsIndex = c.getColumnIndex(COLUMN_HAS_TOPICS);
 
                 do {
                     String id = c.getString(columnIdIndex);
-                    String parentId = c.getString(columnParentIdIndex);
                     String title = c.getString(columnTitleIndex);
                     String description = c.getString(columnDescriptionIndex);
                     Boolean hasTopics = c.getShort(columnHasTopicsIndex) == 1;
@@ -209,8 +211,7 @@ public class ForumsTable {
                     Forum forum = new Forum(id, title);
                     forum.setHasTopics(hasTopics);
                     forum.setDescription(description);
-                    forum.setParentId(parentId);
-                    //   forum.setParent(parentForum);
+
                     res.getItems().add(forum);
                 } while (c.moveToNext());
             }
@@ -247,7 +248,6 @@ public class ForumsTable {
                 Forum forum = new Forum(id, title);
                 forum.setHasTopics(hasTopics);
                 forum.setDescription(description);
-                forum.setParentId(parentId);
 
                     forums.add(1, forum);
 
@@ -263,7 +263,7 @@ public class ForumsTable {
     }
 
     public static ArrayList<Forum> loadForums(Forum parentForum, Boolean addTopicsItem) throws IOException {
-        ArrayList<Forum> res = new ArrayList<>();
+        ArrayList<Forum> res = new ArrayList<Forum>();
 
         SQLiteDatabase db = null;
         Cursor c = null;

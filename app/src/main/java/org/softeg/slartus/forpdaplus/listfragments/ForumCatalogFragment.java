@@ -38,7 +38,7 @@ public class ForumCatalogFragment extends BaseCatalogFragment {
     public static final String FORUM_TITLE_KEY = "FORUM_TITLE_KEY";
 
     protected Forum m_StartForum = null;
-    protected ArrayList<Forum> mData = new ArrayList<>();
+    protected ArrayList<Forum> mData = new ArrayList<Forum>();
     protected ArrayList<Forum> mLoadResultList;
 
 

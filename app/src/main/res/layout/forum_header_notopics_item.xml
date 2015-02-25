@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,13 +10,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:padding="2dp"
+        android:padding="5dp"
         android:text="Small Text"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="?attr/forum_header_text_color" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+/>
 
     <View
         android:background="#999999"
         android:layout_width="match_parent"
-        android:layout_height="1dp" />
-</LinearLayout>
+        android:layout_height="1dp"
+        android:layout_alignBottom="@+id/textView3" />
+
+
+</RelativeLayout>
