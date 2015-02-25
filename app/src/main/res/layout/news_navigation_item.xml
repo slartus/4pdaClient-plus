@@ -19,7 +19,7 @@
     android:layout_height="wrap_content"
     android:textAppearance="?android:attr/textAppearanceMedium"
     android:textColor="@color/main_title_color"
-    android:background="@color/main_color"
+    android:background="?attr/main_color"
     android:gravity="center_vertical"
     android:paddingLeft="10dip"
     android:paddingTop="5dip"
