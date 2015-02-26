@@ -16,9 +16,11 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import org.softeg.slartus.forpdacommon.NotReportException;
+import org.softeg.slartus.forpdaplus.classes.BrowserViewsFragmentActivity;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
@@ -40,7 +42,7 @@ import org.softeg.slartus.forpdaplus.tabs.Tabs;
  * Time: 22:23
  * To change this template use File | Settings | File Templates.
  */
-public class MainActivity extends BaseFragmentActivity implements BricksListDialogFragment.IBricksListDialogCaller,
+public class MainActivity extends BrowserViewsFragmentActivity implements BricksListDialogFragment.IBricksListDialogCaller,
         MainDrawerMenu.SelectItemListener {
     private Handler mHandler = new Handler();
 
@@ -55,7 +57,7 @@ public class MainActivity extends BaseFragmentActivity implements BricksListDial
 
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.content_frame);
@@ -65,6 +67,26 @@ public class MainActivity extends BaseFragmentActivity implements BricksListDial
 
         }
         super.onDestroy();
+    }
+
+    @Override
+    public String Prefix() {
+        return null;
+    }
+
+    @Override
+    public WebView getWebView() {
+        return null;
+    }
+
+    @Override
+    public void nextPage() {
+
+    }
+
+    @Override
+    public void prevPage() {
+
     }
 
     @Override
