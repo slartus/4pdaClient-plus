@@ -215,6 +215,7 @@ public class ImageViewFragment extends BaseFragment {
             assert imageLayout != null;
             final View progressView = imageLayout.findViewById(R.id.progressBar);
             m_PhotoView = (PhotoView) imageLayout.findViewById(R.id.iv_photo);
+            m_PhotoView.setMaximumScale(10f);
 
             new DownloadImageTask(progressView, m_PhotoView, urls.get(mSelectedIndex)).execute();
         }

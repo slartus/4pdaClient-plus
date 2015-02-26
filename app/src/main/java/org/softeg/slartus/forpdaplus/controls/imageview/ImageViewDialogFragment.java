@@ -6,13 +6,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
-import android.widget.ImageView;
 
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import uk.co.senab.photoview.PhotoView;
 
 /*
  * Created by slinkin on 19.02.2015.
@@ -22,7 +23,7 @@ public class ImageViewDialogFragment extends DialogFragment {
     public static final String URL_KEY = "URL_KEY";
     public static final String TITLE_KEY = "TITLE_KEY";
 
-    private ImageView m_PhotoView;
+    private PhotoView m_PhotoView;
     private View m_ProgressView;
     private String mPreviewUrl;
     private String mUrl;
@@ -73,7 +74,8 @@ public class ImageViewDialogFragment extends DialogFragment {
                     }
                 });
         View v = getActivity().getLayoutInflater().inflate(R.layout.image_view_dialog, null);
-        m_PhotoView=(ImageView)v.findViewById(R.id.iv_photo);
+        m_PhotoView=(PhotoView)v.findViewById(R.id.iv_photo);
+        m_PhotoView.setMaximumScale(10f);
         m_ProgressView=v.findViewById(R.id.progressBar);
         builder.setView(v);
 
