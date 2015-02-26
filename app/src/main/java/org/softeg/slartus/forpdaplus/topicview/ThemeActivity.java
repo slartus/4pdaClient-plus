@@ -90,7 +90,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     private EditText txtSearch;
     private RelativeLayout pnlSearch;
     private String m_LastUrl;
-    private ArrayList<SessionHistory> m_History = new ArrayList<>();
+    private ArrayList<SessionHistory> m_History = new ArrayList<SessionHistory>();
     private ExtTopic m_Topic;
 
     private Boolean m_SpoilFirstPost = true;
@@ -915,8 +915,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 webView.scrollTo(0, 100);
                 webView.scrollTo(0, 0);
                 webView.onActionBarOnScrollEvents();
-                webView.evalJs("scrollToElement('entry" + m_ScrollElement + "');");
-                if(getSupportActionBar()!=null&&Preferences.isHideActionBar())
+                webView.evalJs("scrollToElement('" + m_ScrollElement + "');");
+                if (getSupportActionBar() != null && Preferences.isHideActionBar())
                     getSupportActionBar().hide();
             }
 
@@ -975,7 +975,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                         String[] parameterValues = new String[0];
                         if (!TextUtils.isEmpty(query)) {
                             Matcher m = Pattern.compile("(.*?)=(.*?)(&|$)").matcher(url);
-                            ArrayList<String> objs = new ArrayList<>();
+                            ArrayList<String> objs = new ArrayList<String>();
 
                             while (m.find()) {
                                 objs.add(Uri.decode(m.group(2)));
@@ -1091,11 +1091,21 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 postId = uri.getQueryParameter("p");
             if (TextUtils.isEmpty(postId) && "findpost".equals(uri.getQueryParameter("act")))
                 postId = uri.getQueryParameter("pid");
-            if (TextUtils.isEmpty(postId)) {
+            String anchor = "entry" + postId;
+            if (!TextUtils.isEmpty(postId)) {
+                anchor = "entry" + postId;
+            } else {
+                Pattern p = Pattern.compile("#(\\w+\\d+)");
+                Matcher m = p.matcher(topicUrl);
+                if (m.find()) {
+                    anchor = m.group(1);
+                }
+            }
+            if (anchor == null) {
                 showTheme(topicUrl);
                 return;
             }
-            String fragment = "entry" + postId;
+            String fragment = anchor;
             String currentBody = m_History.get(m_History.size() - 1).getBody();
             if (currentBody.contains("name=\"" + fragment + "\"")) {
                 webView.scrollTo(fragment);
@@ -1258,7 +1268,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
         String url = getLastUrl();
         if (url != null) {
-            Pattern p = Pattern.compile("#entry(\\d+)");
+            Pattern p = Pattern.compile("#(\\w+\\d+)");
             Matcher m = p.matcher(url);
             if (m.find()) {
                 m_ScrollElement = m.group(1);

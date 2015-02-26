@@ -12,8 +12,8 @@
         android:gravity="center"
         android:padding="5dp"
         android:text="Small Text"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-/>
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold" />
 
     <View
         android:background="#999999"

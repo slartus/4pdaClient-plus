@@ -271,6 +271,7 @@ public class ForumFragment extends Fragment implements
 
             notifyDataSetChanged();
             mListView.refreshDrawableState();
+            mListView.scrollToPosition(0);
         }
 
         setLoading(false);
@@ -512,7 +513,7 @@ public class ForumFragment extends Fragment implements
             switch (viewType) {
                 case DATA_VIEW_TYPE:
                     View v = LayoutInflater.from(parent.getContext())
-                            .inflate(android.R.layout.simple_list_item_2, parent, false);
+                            .inflate(R.layout.forum_item, parent, false);
 
                     ViewHolder viewHolder = new ViewHolder(v);
                     v.setOnClickListener(new View.OnClickListener() {

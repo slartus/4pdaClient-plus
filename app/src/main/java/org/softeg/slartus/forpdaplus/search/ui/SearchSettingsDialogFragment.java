@@ -110,7 +110,8 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         searchSettings.getForumsIds().clear();
         searchSettings.getForumsIds().add("all");
         searchSettings.getTopicIds().clear();
-        searchSettings.getTopicIds().add(topicId.toString());
+        if (topicId != null)
+            searchSettings.getTopicIds().add(topicId.toString());
         searchSettings.setSource(SearchSettings.SOURCE_POSTS);
 
         return searchSettings;

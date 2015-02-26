@@ -10,6 +10,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -147,12 +148,13 @@ public class ReputationsApi {
         Matcher m = p.matcher(res);
         if (m.find()) {
             if (m.group(1) != null && m.group(1).contains("Ошибка")) {
-                p = Pattern.compile("<div class='maintitle'>(.*?)</div>");
-                m = p.matcher(res);
-                if (m.find()) {
-                    outParams.put("Result", "Ошибка изменения репутации: " + Html.fromHtml(m.group(1)));
+                Document doc = Jsoup.parse(res);
+                Element element = doc.select("div.content").first();
+
+                if (element != null) {
+                    outParams.put("Result", element.text());
                 } else {
-                    outParams.put("Result", "Ошибка изменения репутации: " + Html.fromHtml(res));
+                    outParams.put("Result", doc.text());
                 }
 
                 return false;

@@ -32,6 +32,7 @@ import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.tabs.TopicReadingUsersTab;
 import org.softeg.slartus.forpdaplus.tabs.TopicWritersTab;
 
+
 public class HtmloutWebInterface {
     public static final String NAME = "HTMLOUT";
     private ThemeActivity context;
@@ -328,7 +329,7 @@ public class HtmloutWebInterface {
                     assert view != null;
                     final ListView listView = (ListView) view.findViewById(R.id.lstview);
                     listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-                    ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(getContext(),
+                    ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(getContext(),
                             android.R.layout.simple_list_item_single_choice, pages);
                     // присваиваем адаптер списку
                     listView.setAdapter(adapter);

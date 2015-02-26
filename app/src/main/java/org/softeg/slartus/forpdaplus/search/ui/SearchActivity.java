@@ -35,7 +35,7 @@ public class SearchActivity extends BaseFragmentActivity
 
     @Override
     protected boolean isTransluent() {
-        return true;
+        return false;
     }
 
     public static void startForumSearch(Context context, SearchSettings searchSettings) {

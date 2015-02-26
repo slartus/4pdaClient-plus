@@ -341,7 +341,7 @@ public class Client implements IHttpClient {
     private Observer<OnUserChangedListener> m_OnUserChangeListeners = new Observer<OnUserChangedListener>();
 
     public void addOnUserChangedListener(OnUserChangedListener p) {
-        m_OnUserChangeListeners.addWeakListener(p);
+        m_OnUserChangeListeners.addStrongListener(p);
     }
 
     public interface OnMailListener {
@@ -358,7 +358,7 @@ public class Client implements IHttpClient {
     private Observer<OnMailListener> m_OnMailListeners = new Observer<OnMailListener>();
 
     public void addOnMailListener(OnMailListener p) {
-        m_OnMailListeners.addWeakListener(p);
+        m_OnMailListeners.addStrongListener(p);
     }
 
 

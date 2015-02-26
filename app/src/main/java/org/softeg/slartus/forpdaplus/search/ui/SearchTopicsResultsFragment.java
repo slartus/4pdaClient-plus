@@ -3,11 +3,9 @@ package org.softeg.slartus.forpdaplus.search.ui;/*
  */
 
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 
@@ -21,9 +19,7 @@ import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment;
 import org.softeg.slartus.forpdaplus.search.ISearchResultView;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -103,11 +99,11 @@ public class SearchTopicsResultsFragment extends TopicsListFragment
 
     @Override
     public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        if (firstVisibleItem < m_PrevVisible || firstVisibleItem == 0)
-            getActivity().getActionBar().show();
-        else if (firstVisibleItem > m_PrevVisible) {
-            getActivity().getActionBar().hide();
-        }
+//        if (firstVisibleItem < m_PrevVisible || firstVisibleItem == 0)
+//            getActivity().getActionBar().show();
+//        else if (firstVisibleItem > m_PrevVisible) {
+//            getActivity().getActionBar().hide();
+//        }
         m_PrevVisible = firstVisibleItem;
     }
 

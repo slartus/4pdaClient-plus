@@ -321,7 +321,7 @@ public class EditPostActivity extends BaseFragmentActivity {
     private void startAddAttachment() {
         CharSequence[] items = new CharSequence[]{"Файл", "Изображение"};
         new AlertDialogBuilder(getContext())
-                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+                .setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
 
