@@ -22,6 +22,7 @@
     android:background="?attr/main_color"
     android:gravity="center_vertical"
     android:paddingLeft="10dip"
-    android:paddingTop="5dip"
-    android:paddingBottom="5dip"
+    android:paddingTop="8dip"
+    android:paddingBottom="8dip"
+    android:text="text"
     />
