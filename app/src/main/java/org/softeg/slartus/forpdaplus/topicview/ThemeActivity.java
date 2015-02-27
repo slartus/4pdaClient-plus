@@ -138,7 +138,6 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         return Preferences.isHideActionBar();
     }
 
-
     protected void afterCreate() {
         getWindow().requestFeature(android.view.Window.FEATURE_INDETERMINATE_PROGRESS);
     }
@@ -148,7 +147,6 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         setContentView(R.layout.theme);
 

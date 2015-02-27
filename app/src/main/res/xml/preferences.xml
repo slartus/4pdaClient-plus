@@ -187,6 +187,12 @@
                 android:summary="Использовать для скачивания файлов выбранный менеджер"
                 android:title="Скачивать файл при помощи.." />
         </PreferenceScreen>
+
+        <!--<CheckBoxPreference-->
+            <!--android:defaultValue="false"-->
+            <!--android:key="theme.Fullscreen"-->
+            <!--android:summary="Если не работают спойлеры"-->
+            <!--android:title="Fullscreen" />-->
     </PreferenceScreen>
 
     <PreferenceScreen android:title="Новости">

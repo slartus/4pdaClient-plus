@@ -30,13 +30,19 @@ public class SearchApi {
 
         String body = client.performGet(searchUrl.replaceAll("st=\\d+", "") + "&st=" + st);
 
-        m = Pattern.compile("<table class=\"ipbtable\" cellspacing=\"1\">([\\s\\S]*?)</table>",
+
+
+        return parse(body,listInfo);
+    }
+
+    public static  ArrayList<Topic> parse(String body, ListInfo listInfo){
+        Matcher m = Pattern.compile("<table class=\"ipbtable\" cellspacing=\"1\">([\\s\\S]*?)</table>",
                 Pattern.CASE_INSENSITIVE | Pattern.MULTILINE).matcher(body);
         if (!m.find()) {
-            return new ArrayList<>();
+            return new ArrayList<Topic>();
         }
 
-        ArrayList<Topic> res = new ArrayList<>();
+        ArrayList<Topic> res = new ArrayList<Topic>();
         Matcher trMatcher = Pattern.compile("<tr>([\\s\\S]*?)</tr>", Pattern.CASE_INSENSITIVE)
                 .matcher(m.group(1));
         String today = Functions.getToday();
@@ -97,7 +103,6 @@ public class SearchApi {
         while (m.find()) {
             listInfo.setOutCount(Math.max(Integer.parseInt(m.group(1)) + 1, listInfo.getOutCount()));
         }
-
 
         return res;
     }

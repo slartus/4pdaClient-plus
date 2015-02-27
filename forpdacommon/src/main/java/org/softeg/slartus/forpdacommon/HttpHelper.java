@@ -201,7 +201,6 @@ public class HttpHelper {
         client = new DefaultHttpClient(cm, params);
 
 
-
         client.setCookieStore(new CookieStore() {
             private List<Cookie> m_Cookies = null;
 
@@ -383,16 +382,17 @@ public class HttpHelper {
         return m_RedirectUri;
     }
 
-    public static String getLastUri(){
+    public static String getLastUri() {
         return m_LastUrl;
     }
 
     //
     // private methods
     //
-    private String performRequest(final String contentType, final String url, final String user, final String pass,
+    private String performRequest(final String contentType, String url, final String user, final String pass,
                                   final Map<String, String> headers, final Map<String, String> params, final int requestType,
                                   String encoding) throws IOException {
+        url = url.replace("\"", "").replace("'", "");
         m_LastUrl = url;
         android.util.Log.i("HttpHelper", url);
         // add user and pass to client credentials if present
