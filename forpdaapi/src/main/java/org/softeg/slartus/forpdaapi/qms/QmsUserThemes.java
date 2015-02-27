@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class QmsUserThemes extends ArrayList<QmsUserTheme> {
+    private Throwable error;
     public String Nick;
 
     public int getSelectedCount() {
@@ -39,5 +40,13 @@ public class QmsUserThemes extends ArrayList<QmsUserTheme> {
                 return theme;
         }
         return null;
+    }
+
+    public Throwable getError() {
+        return error;
+    }
+
+    public void setError(Throwable error) {
+        this.error = error;
     }
 }

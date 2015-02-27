@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,11 +22,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+
 import org.softeg.slartus.forpdaapi.Forum;
-import org.softeg.slartus.forpdaapi.Forums;
+import org.softeg.slartus.forpdaapi.ForumsApi;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdaapi.classes.ForumsData;
 import org.softeg.slartus.forpdaplus.App;
@@ -36,7 +43,10 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ForumsTable;
 import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
+import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
+import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.ListPreferencesActivity;
 
 import java.io.Serializable;
@@ -50,7 +60,8 @@ public class ForumFragment extends Fragment implements
         IBrickFragment, LoaderManager.LoaderCallbacks<ForumFragment.ForumBranch> {
     private static final String DATA_KEY = "BrickFragmentListBase.DATA_KEY";
     private static final String SCROLL_POSITION_KEY = "SCROLL_POSITION_KEY";
-    private static final String FORUM_ID_KEY = "FORUM_ID_KEY";
+    public static final String FORUM_ID_KEY = "FORUM_ID_KEY";
+    public static final String FORUM_TITLE_KEY = "FORUM_TITLE_KEY";
     private RecyclerView mListView;
     private LinearLayoutManager mLayoutManager;
     private TextView mEmptyTextView;
@@ -97,7 +108,19 @@ public class ForumFragment extends Fragment implements
                 markAsRead();
                 return true;
             case R.id.update_forum_struct:
-                new UpdateForumStructTask(getActivity()).execute();
+                new AlertDialogBuilder(getActivity())
+                        .setTitle("Внимание!")
+                        .setMessage("Обновление структуры форума может занять продолжительное время " +
+                                "и использует большой объем интернет-траффика")
+                        .setPositiveButton("Обновить", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                new UpdateForumStructTask(getActivity()).execute();
+                            }
+                        })
+                        .setNegativeButton("Отмена", null).create().show();
+
                 return true;
         }
         return false;
@@ -120,7 +143,7 @@ public class ForumFragment extends Fragment implements
                                 Throwable ex = null;
                                 try {
                                     Forum f = mData.getCrumbs().get(mData.getCrumbs().size() - 1);
-                                    Forums.markForumAsRead(Client.getInstance(), f.getId() == null ? "-1" : f.getId());
+                                    ForumsApi.markForumAsRead(Client.getInstance(), f.getId() == null ? "-1" : f.getId());
 
                                 } catch (Throwable e) {
                                     ex = e;
@@ -397,6 +420,16 @@ public class ForumFragment extends Fragment implements
         return false;
     }
 
+    public static void showActivity(Context context, String forumId, String topicId) {
+        Bundle args = new Bundle();
+        if (!TextUtils.isEmpty(forumId))
+            args.putString(ForumFragment.FORUM_ID_KEY, forumId);
+        if (!TextUtils.isEmpty(topicId))
+            args.putString(TopicsListFragment.KEY_TOPIC_ID, topicId);
+        ListFragmentActivity.showListFragment(context, new ForumBrickInfo().getName(), args);
+    }
+
+
     public static class ForumBranch implements Serializable {
         private Throwable error;
 
@@ -446,11 +479,13 @@ public class ForumFragment extends Fragment implements
             // each data item is just a string in this case
             public TextView mText1;
             public TextView mText2;
+            public ImageView mImageView;
 
             public ViewHolder(View v) {
                 super(v);
                 mText1 = (TextView) v.findViewById(android.R.id.text1);
                 mText2 = (TextView) v.findViewById(android.R.id.text2);
+                mImageView = (ImageView) v.findViewById(R.id.imageView3);
             }
         }
 
@@ -578,6 +613,34 @@ public class ForumFragment extends Fragment implements
                     ViewHolder viewHolder = (ViewHolder) holder;
                     viewHolder.mText1.setText(forum.getTitle());
                     viewHolder.mText2.setText(forum.getDescription());
+                    if (forum.getIconUrl() != null) {
+                        ImageLoader.getInstance().displayImage(forum.getIconUrl(),
+                                ((ViewHolder) holder).mImageView,
+                                new ImageLoadingListener() {
+
+                                    @Override
+                                    public void onLoadingStarted(String p1, View p2) {
+                                        p2.setVisibility(View.INVISIBLE);
+                                        //holder.mProgressBar.setVisibility(View.VISIBLE);
+                                    }
+
+                                    @Override
+                                    public void onLoadingFailed(String p1, View p2, FailReason p3) {
+                                        // holder.mProgressBar.setVisibility(View.INVISIBLE);
+                                    }
+
+                                    @Override
+                                    public void onLoadingComplete(String p1, View p2, Bitmap p3) {
+                                        p2.setVisibility(View.VISIBLE);
+                                        // holder.mProgressBar.setVisibility(View.INVISIBLE);
+                                    }
+
+                                    @Override
+                                    public void onLoadingCancelled(String p1, View p2) {
+
+                                    }
+                                });
+                    }
                     break;
                 case HEADER_VIEW_TYPE:
                     HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
@@ -710,7 +773,7 @@ public class ForumFragment extends Fragment implements
 
                 if (isCancelled()) return null;
 
-                ForumsData res = Forums.loadForums(Client.getInstance(), new ProgressState() {
+                ForumsData res = ForumsApi.loadForums(Client.getInstance(), new ProgressState() {
                     @Override
                     public void update(String message, int percents) {
                         publishProgress(String.format("%s %d", message, percents));

@@ -3,9 +3,8 @@ package org.softeg.slartus.forpdaplus.listtemplates;
 import android.support.v4.app.Fragment;
 
 import org.softeg.slartus.forpdaplus.listfragments.DevDbCatalogFragment;
-import org.softeg.slartus.forpdaplus.listfragments.ForumCatalogFragment;
 
-/**
+/*
  * Created by slartus on 06.03.14.
  */
 public class DevDbCatalogBrickInfo extends BrickInfo {

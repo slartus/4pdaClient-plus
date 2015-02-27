@@ -48,12 +48,70 @@ public class ListAdapter extends BaseAdapter implements Filterable {
         return i;
     }
 
+    private final int ITEM_TYPE = 0;
+    private final int ITEM_NEW_TYPE = 1;
+    private final int ITEM_OLD_TYPE = 2;
+
+    private final int ITEM_PROGRESS_TYPE = 3;
+    private final int ITEM_PROGRESS_NEW_TYPE = 4;
+    private final int ITEM_PROGRESS_OLD_TYPE = 5;
+
+    @Override
+    public int getItemViewType(int position) {
+        IListItem topic =mData.get(position);
+        if(topic.isInProgress()){
+            switch (topic.getState()) {
+                case IListItem.STATE_GREEN:
+                    return ITEM_PROGRESS_NEW_TYPE;
+                case IListItem.STATE_RED:
+                    return ITEM_PROGRESS_OLD_TYPE;
+                default:
+                    return ITEM_PROGRESS_TYPE;
+            }
+        }else{
+            switch (topic.getState()) {
+                case IListItem.STATE_GREEN:
+                    return ITEM_NEW_TYPE;
+                case IListItem.STATE_RED:
+                    return ITEM_OLD_TYPE;
+                default:
+                    return ITEM_TYPE;
+            }
+        }
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return 6;
+    }
+
     @Override
     public android.view.View getView(int position, android.view.View view, android.view.ViewGroup parent) {
         final ViewHolder holder;
         if (view == null) {
-            view = mInflater.inflate(R.layout.list_item, parent, false);
+            switch (getItemViewType(position)){
+                case ITEM_TYPE:
+                    view = mInflater.inflate(R.layout.list_item, parent, false);
+                    break;
+                case ITEM_NEW_TYPE:
+                    view = mInflater.inflate(R.layout.list_item_green, parent, false);
+                    break;
+                case ITEM_OLD_TYPE:
+                    view = mInflater.inflate(R.layout.list_item_red, parent, false);
+                    break;
+                case ITEM_PROGRESS_TYPE:
+                    view = mInflater.inflate(R.layout.list_item_progress, parent, false);
+                    break;
+                case ITEM_PROGRESS_NEW_TYPE:
+                    view = mInflater.inflate(R.layout.list_item_progress_green, parent, false);
+                    break;
+                case ITEM_PROGRESS_OLD_TYPE:
+                    view = mInflater.inflate(R.layout.list_item_progress_red, parent, false);
+                    break;
+            }
+
             holder = new ViewHolder();
+            assert view != null;
             holder.Flag = (ImageView) view.findViewById(R.id.imgFlag);
             holder.TopLeft = (TextView) view.findViewById(R.id.txtTopLeft);
             holder.TopRight = (TextView) view.findViewById(R.id.txtTopRight);
@@ -73,15 +131,15 @@ public class ListAdapter extends BaseAdapter implements Filterable {
         setVisibility(holder.progress, topic.isInProgress() ? View.VISIBLE : View.INVISIBLE);
         switch (topic.getState()) {
             case IListItem.STATE_GREEN:
-                setVisibility(holder.Flag,View.VISIBLE);
+                setVisibility(holder.Flag, View.VISIBLE);
                 holder.Flag.setImageResource(R.drawable.new_flag);
                 break;
             case IListItem.STATE_RED:
-                setVisibility(holder.Flag,View.VISIBLE);
+                setVisibility(holder.Flag, View.VISIBLE);
                 holder.Flag.setImageResource(R.drawable.old_flag);
                 break;
             default:
-                setVisibility(holder.Flag,View.INVISIBLE);
+                setVisibility(holder.Flag, View.INVISIBLE);
                 holder.Flag.setImageBitmap(null);
         }
         return view;

@@ -23,20 +23,20 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.TopicApi;
-import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
-import org.softeg.slartus.forpdaplus.common.HelpTask;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.common.HelpTask;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
-import org.softeg.slartus.forpdaplus.listfragments.ForumCatalogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.NotesListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicUtils;
+import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -149,7 +149,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
             optionsMenu.add(R.string.OpenTopicForum).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     try {
-                        ForumCatalogFragment.showActivity(context, themeActivity.getTopic().getForumId(),
+                        ForumFragment.showActivity(context, themeActivity.getTopic().getForumId(),
                                 themeActivity.getTopic().getId());
                     } catch (Exception ex) {
                         AppLog.e(context, ex);

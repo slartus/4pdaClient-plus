@@ -21,8 +21,7 @@ import java.util.List;
  * Date: 08.06.12
  * Time: 13:41
  */
-public class Forums extends ArrayList<Forum> {
-    private static final int FORUMS_COUNT = 520;
+public class ForumsApi extends ArrayList<Forum> {
 
     /**
      * Загрузка дерева разделов форума
@@ -30,7 +29,6 @@ public class Forums extends ArrayList<Forum> {
     public static ForumsData loadForums(IHttpClient httpClient, ProgressState progressState)
             throws Exception {
         ForumsData res = new ForumsData();
-        Forum mainForum = new Forum("-1", "4PDA");
 
         String pageBody = httpClient.performGetFullVersion("http://4pda.ru/forum/index.php?act=idx");
         Document doc = Jsoup.parse(pageBody, "http://4pda.ru");
@@ -50,9 +48,12 @@ public class Forums extends ArrayList<Forum> {
 
             forum.setDescription(null);
             res.getItems().add(forum);
+            int c=res.getItems().size();
 
             loadCategoryForums(httpClient, catElement.select("table.ipbtable>tbody").first(), forum,
                     res, progressState);
+            if(res.getItems().size()>c)
+                forum.setIconUrl(res.getItems().get(c).getIconUrl());
         }
 
 
@@ -75,16 +76,23 @@ public class Forums extends ArrayList<Forum> {
 
             if (tdElements.size() < 5) continue;
 
-            Element tdElement = tdElements.get(1);
 
-            Element el = tdElement.select("b>a").first();
+            Element tdElement = tdElements.get(0);
+            Element el = tdElement.select("img").first();
+            String iconUrl=null;
+            if(el!=null)
+                iconUrl=el.attr("src");
+
+            tdElement = tdElements.get(1);
+
+            el = tdElement.select("b>a").first();
             if (el == null)
                 continue;
             Uri uri = Uri.parse(el.absUrl("href"));
             Forum forum = new Forum(uri.getQueryParameter("showforum"), el.text());
-
+            forum.setIconUrl(iconUrl);
             forum.setHasTopics(true);
-            forum.setParent(parentForum);
+            forum.setParentId(parentForum.getId());
             data.getItems().add(forum);
 
             el = tdElement.select("span.forumdesc").first();
@@ -116,15 +124,22 @@ public class Forums extends ArrayList<Forum> {
             Elements tdElements = trElement.children();
             if (tdElements.size() < 5) continue;
 
-            Element tdElement = tdElements.get(1);
+            Element tdElement = tdElements.get(0);
+            Element el = tdElement.select("img").first();
+            String iconUrl=null;
+            if(el!=null)
+                iconUrl=el.attr("src");
 
-            Element el = tdElement.select("b>a").first();
+            tdElement = tdElements.get(1);
+
+            el = tdElement.select("b>a").first();
             if (el == null)
                 continue;
             Uri uri = Uri.parse(el.absUrl("href"));
             Forum forum = new Forum(uri.getQueryParameter("showforum"), el.text());
+            forum.setIconUrl(iconUrl);
             forum.setHasTopics(true);
-            forum.setParent(parentForum);
+            forum.setParentId(parentForum.getId());
             data.getItems().add(forum);
 
             el = tdElement.select("span.forumdesc").first();

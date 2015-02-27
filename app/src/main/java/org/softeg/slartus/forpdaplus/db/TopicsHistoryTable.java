@@ -57,6 +57,7 @@ public class TopicsHistoryTable {
         }
         return null;
     }
+
     public static HistoryTopic getTopicHistory(CharSequence topicId) throws IOException {
 
         SQLiteDatabase db = null;
@@ -193,6 +194,27 @@ public class TopicsHistoryTable {
             values.put(COLUMN_DATETIME, DbHelper.DateTimeFormat.format(new Date()));
             values.put(COLUMN_URL, lastUrl);
             db.insertOrThrow(TABLE_NAME, null, values);
+        } catch (Exception ex) {
+            AppLog.e(App.getInstance(), ex);
+        } finally {
+            if (db != null) {
+
+                db.close();
+            }
+        }
+    }
+
+    public static void delete(CharSequence id) {
+        SQLiteDatabase db = null;
+
+        try {
+
+            DbHelper dbHelper = new DbHelper(App.getInstance());
+            db = dbHelper.getWritableDatabase();
+
+            assert db != null;
+            db.execSQL("delete from " + TABLE_NAME + " where " + COLUMN_TOPIC_ID + "=" + id);
+
         } catch (Exception ex) {
             AppLog.e(App.getInstance(), ex);
         } finally {

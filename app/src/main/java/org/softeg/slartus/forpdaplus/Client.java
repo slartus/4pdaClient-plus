@@ -16,6 +16,7 @@ import android.widget.EditText;
 
 import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
+import org.softeg.slartus.forpdaapi.ForumsApi;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.LoginResult;
 import org.softeg.slartus.forpdaapi.OnProgressChangedListener;
@@ -966,7 +967,7 @@ public class Client implements IHttpClient {
 
 
     public void markAllForumAsRead() throws Throwable {
-        org.softeg.slartus.forpdaapi.Forums.markAllAsRead(this);
+        ForumsApi.markAllAsRead(this);
     }
 
     public String getThemeForumId(CharSequence themeId) throws IOException {

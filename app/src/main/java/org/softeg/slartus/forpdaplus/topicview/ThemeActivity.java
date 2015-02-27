@@ -1119,7 +1119,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     }
 
     private String lofiversionToNormal(String url) {
-        Matcher m = Pattern.compile("lofiversion/index.php\\?t(\\d+)(?:-(\\d+))?.html", Pattern.CASE_INSENSITIVE).matcher(url);
+        Matcher m = Pattern.compile("lofiversion/index.php\\?t(\\d+)(?:-(\\d+))?.html", Pattern.CASE_INSENSITIVE)
+                .matcher(url);
         if (m.find())
             return "http://4pda.ru/forum/index.php?showtopic=" + m.group(1) +
                     (m.group(2) != null ? ("&st=" + m.group(2)) : "");
@@ -1129,6 +1130,10 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     public void showTheme(String url) {
         try {
             closeSearch();
+            if(url==null){
+                Toast.makeText(this,"Пустой url",Toast.LENGTH_SHORT).show();
+                return;
+            }
             url = lofiversionToNormal(url);
             webView.clearCache(true);
             if (m_History.size() > 0) {

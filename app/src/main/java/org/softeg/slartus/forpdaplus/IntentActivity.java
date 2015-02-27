@@ -29,10 +29,10 @@ import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.DevDbCatalogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.DevDbModelsFragment;
-import org.softeg.slartus.forpdaplus.listfragments.ForumCatalogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.news.NewsListFragment;
+import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.DevDbCatalogBrickInfo;
@@ -296,7 +296,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
             Matcher m = PatternExtensions.compile(pattern).matcher(url);
             if (m.find()) {
                 String id = m.groupCount() > 0 ? m.group(1) : null;
-                ForumCatalogFragment.showActivity(context, id, null);
+                ForumFragment.showActivity(context, id, null);
                 if (finish)
                     context.finish();
                 return true;

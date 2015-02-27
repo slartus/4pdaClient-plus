@@ -79,7 +79,7 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
         createActionMenu();
 
         m_ListView = (ListView) findViewById(android.R.id.list);
-        mPullToRefreshLayout = App.createPullToRefreshLayout(this,findViewById(R.id.main_layout),new Runnable() {
+        mPullToRefreshLayout = App.createPullToRefreshLayout(this, findViewById(R.id.main_layout), new Runnable() {
             @Override
             public void run() {
                 refreshData();
@@ -153,6 +153,11 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
 
     public void onLoadComplete(Loader<QmsUserThemes> qmsUsersLoader, QmsUserThemes data) {
         if (data != null) {
+            if (data.getError() != null) {
+                AppLog.e(this, data.getError());
+                setState(false);
+                return;
+            }
             if (!TextUtils.isEmpty(data.Nick)) {
                 m_Nick = data.Nick;
                 setTitle(m_Nick + " - QMS-Темы");
@@ -262,16 +267,14 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
                 Client.getInstance().doOnMailListener();
                 return mails;
             } catch (Throwable e) {
-                ex = e;
-
+                QmsUserThemes mails = new QmsUserThemes();
+                mails.setError(e);
             }
             return null;
         }
 
         @Override
         public void deliverResult(QmsUserThemes apps) {
-            if (ex != null)
-                AppLog.e(getContext(), ex);
             if (isReset()) {
                 if (apps != null) {
                     onReleaseResources();

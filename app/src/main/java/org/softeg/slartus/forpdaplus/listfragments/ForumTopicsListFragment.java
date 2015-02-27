@@ -15,6 +15,7 @@ import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.TopicsApi;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumTopicsBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
 import org.softeg.slartus.forpdaplus.prefs.ListPreferencesActivity;
@@ -48,11 +49,11 @@ public class ForumTopicsListFragment extends TopicsListFragment {
     }
 
     private String getForumId() {
-        return getArguments().getString(ForumCatalogFragment.FORUM_ID_KEY);
+        return getArguments().getString(ForumFragment.FORUM_ID_KEY);
     }
 
     private String getForumTitle() {
-        return getArguments().getString(ForumCatalogFragment.FORUM_TITLE_KEY);
+        return getArguments().getString(ForumFragment.FORUM_TITLE_KEY);
     }
 
     @Override
@@ -79,8 +80,8 @@ public class ForumTopicsListFragment extends TopicsListFragment {
 
     public static void showForumTopicsList(Context context, CharSequence forumId, CharSequence forumTitle){
         Bundle args = new Bundle();
-        args.putString(ForumCatalogFragment.FORUM_ID_KEY, forumId.toString());
-        args.putString(ForumCatalogFragment.FORUM_TITLE_KEY, forumTitle.toString());
+        args.putString(ForumFragment.FORUM_ID_KEY, forumId.toString());
+        args.putString(ForumFragment.FORUM_TITLE_KEY, forumTitle.toString());
         ListFragmentActivity.showListFragment(context, new ForumTopicsBrickInfo().getName(), args);
     }
 

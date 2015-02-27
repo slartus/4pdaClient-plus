@@ -1,8 +1,5 @@
 package org.softeg.slartus.forpdaapi;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
 
 /**
@@ -10,14 +7,13 @@ import java.io.Serializable;
  * Date: 08.06.12
  * Time: 13:37
  */
-public class Forum implements ICatalogItem, Parcelable,Serializable {
-    protected String m_Id;
-    private CharSequence description;
-    private ICatalogItem parent;
-    protected String m_Title;
+public class Forum implements Serializable {
+    private String m_Id;
+    private String description;
+    private String m_Title;
     private boolean hasTopics = false;
     private boolean hasForums = false;
-    public int level = 0;
+    private String iconUrl;
     private String parentId;
 
     public Forum(String id, String title) {
@@ -34,40 +30,15 @@ public class Forum implements ICatalogItem, Parcelable,Serializable {
     }
 
     @Override
-    public CharSequence getSubTitle() {
-        return description;
-    }
-
-
-    @Override
     public String toString() {
-        return m_Title.toString();
+        return m_Title;
     }
 
-    @Override
-    public ICatalogItem getParent() {
-        return parent;
-    }
-
-    @Override
-    public void setParent(ICatalogItem catalogItem) {
-        this.parent = catalogItem;
-    }
-
-    @Override
-    public ICatalogItem clone() {
-        Forum clone = new Forum(m_Id, m_Title);
-        clone.setDescription(description);
-        clone.setHasTopics(hasTopics);
-        clone.setParent(parent == null ? null : parent.clone());
-        return clone;
-    }
-
-    public CharSequence getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(CharSequence description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -83,54 +54,27 @@ public class Forum implements ICatalogItem, Parcelable,Serializable {
         this.m_Id = id;
     }
 
-    public static final Parcelable.Creator<Forum> CREATOR = new Parcelable.Creator<Forum>() {
-        // распаковываем объект из Parcel
-        public Forum createFromParcel(Parcel in) {
-
-            return new Forum(in);
-        }
-
-        public Forum[] newArray(int size) {
-            return new Forum[size];
-        }
-    };
-
-    private Forum(Parcel parcel) {
-        m_Id = parcel.readString();
-        m_Title = parcel.readString();
-        description = parcel.readString();
-        hasTopics = parcel.readByte() == 1;
-        level = parcel.readInt();
-        Boolean hasParent = parcel.readByte() == 1;
-        if (hasParent)
-            parent = new Forum(parcel);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(m_Id);
-        parcel.writeString(m_Title);
-        parcel.writeString(description == null ? null : description.toString());
-        parcel.writeByte((byte) (hasTopics ? 1 : 0));
-        parcel.writeInt(level);
-        if (parent == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            ((Forum) parent).writeToParcel(parcel, i);
-        }
-    }
-
     public boolean isHasForums() {
         return hasForums;
     }
 
     public void setHasForums(boolean hasForums) {
         this.hasForums = hasForums;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getIconUrl() {
+        return iconUrl;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
     }
 }

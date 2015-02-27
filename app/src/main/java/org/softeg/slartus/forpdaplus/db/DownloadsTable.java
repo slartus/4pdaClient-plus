@@ -47,7 +47,7 @@ public class DownloadsTable {
             values.put(COLUMN_CREATEDATETIME, DbHelper.DateTimeFormat.format(createDateTime));
             values.put(COLUMN_ENDDATETIME, DbHelper.DateTimeFormat.format(createDateTime));
 
-            db.insertOrThrow(TABLE_NAME, null, values);
+            db.insert(TABLE_NAME, null, values);
 
         } catch (Exception ex) {
             AppLog.e(App.getInstance(), ex);

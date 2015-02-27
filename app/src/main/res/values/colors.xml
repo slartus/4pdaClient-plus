@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="main_color">#0072bc</color>
+    <color name="main_color">#1565C0</color>
     <color name="main_title_color">#F2F2F2</color>
 
-    <color name="main_color_black">#232323</color>
+    <color name="main_color_black">#424242</color>
 
     <color name="theme_light_background_light" >#FAFAFA</color>
     <color name="theme_light_background_dark" >#0C0C0C</color>

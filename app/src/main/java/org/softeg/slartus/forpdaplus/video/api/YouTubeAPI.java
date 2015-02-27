@@ -72,6 +72,8 @@ public class YouTubeAPI {
             int fmtInd = 0;
             while (fmtMatcher.find()) {
                 fmtInd++;
+                if (streamStrs.length == fmtInd)
+                    break;
                 int ind = indexOf(Integer.parseInt(fmtMatcher.group(1)), YouTubeFMTQuality.supported);
                 if (ind == -1) continue;
                 Quality videoFormat = new Quality();

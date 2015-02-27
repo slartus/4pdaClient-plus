@@ -30,28 +30,8 @@ public class ForumsTable {
     public static final String COLUMN_GLOBALSORTORDER = "GlobalSortOrder";
     public static final String COLUMN_HAS_TOPICS = "HasTopics";
     public static final String COLUMN_HAS_FORUMS = "HasForums";
+    public static final String COLUMN_ICON_URL = "IconUrl";
 
-    /**
-     * для указанного форума восстанавливает путь до корня
-     */
-    public static Forum loadCrumbs(String forumId, Boolean addTopicsItem) throws IOException {
-
-        SQLiteDatabase db = null;
-
-        try {
-            ForumStructDbHelper dbHelper = new ForumStructDbHelper(App.getInstance());
-            db = dbHelper.getWritableDatabase();
-
-            assert db != null;
-
-            return loadCrumbs(db, forumId, addTopicsItem);
-        } finally {
-            if (db != null) {
-
-                db.close();
-            }
-        }
-    }
 
 
     /**
@@ -94,47 +74,7 @@ public class ForumsTable {
         return res;
     }
 
-    /**
-     * для указанного форума восстанавливает путь до корня
-     */
-    public static Forum loadCrumbs(SQLiteDatabase db, String forumId, Boolean addTopicsItem) throws IOException {
-        Cursor c = null;
-        try {
-            String selection = COLUMN_ID + "=?";
-            String[] selectionArgs = new String[]{forumId};
-            c = db.query(TABLE_NAME, new String[]{COLUMN_PARENT_ID, COLUMN_TITLE, COLUMN_DESCRIPTION, COLUMN_HAS_TOPICS},
-                    selection, selectionArgs, null, null, COLUMN_GLOBALSORTORDER);
 
-            if (c.moveToFirst()) {
-                int columnParentIdIndex = c.getColumnIndex(COLUMN_PARENT_ID);
-                int columnTitleIndex = c.getColumnIndex(COLUMN_TITLE);
-                int columnDescriptionIndex = c.getColumnIndex(COLUMN_DESCRIPTION);
-                int columnHasTopicsIndex = c.getColumnIndex(COLUMN_HAS_TOPICS);
-                String parentId = c.getString(columnParentIdIndex);
-
-                String title = c.getString(columnTitleIndex);
-                String description = c.getString(columnDescriptionIndex);
-                Boolean hasTopics = addTopicsItem && c.getShort(columnHasTopicsIndex) == 1;
-
-                Forum f = new Forum(forumId, title);
-                f.setHasTopics(hasTopics);
-                f.setDescription(description);
-
-                Forum parentForum;
-                if (TextUtils.isEmpty(parentId)) {
-                    parentForum = new Forum("-1", "4pda");
-                } else {
-                    parentForum = loadCrumbs(db, parentId, addTopicsItem);
-                }
-                f.setParent(parentForum);
-                return f;
-            }
-        } finally {
-            if (c != null)
-                c.close();
-        }
-        return null;
-    }
 
     public static void updateForums(ArrayList<Forum> forumItems) throws IOException {
         SQLiteDatabase db = null;
@@ -150,12 +90,13 @@ public class ForumsTable {
                 ContentValues values = new ContentValues();
                 values.put(COLUMN_ID, item.getId());
 
-                values.put(COLUMN_PARENT_ID, item.getParent() != null ? item.getParent().getId().toString() : null);
+                values.put(COLUMN_PARENT_ID, item.getParentId());
                 values.put(COLUMN_TITLE, item.getTitle());
-                values.put(COLUMN_DESCRIPTION, item.getDescription() != null ? item.getDescription().toString() : null);
+                values.put(COLUMN_DESCRIPTION, item.getDescription() != null ? item.getDescription() : null);
                 values.put(COLUMN_GLOBALSORTORDER, Integer.toString(i));
                 values.put(COLUMN_HAS_TOPICS, item.isHasTopics() ? 1 : 0);
                 values.put(COLUMN_HAS_FORUMS, item.isHasForums() ? 1 : 0);
+                values.put(COLUMN_ICON_URL, item.getIconUrl());
                 db.insertOrThrow(TABLE_NAME, null, values);
             }
 
@@ -192,16 +133,16 @@ public class ForumsTable {
                 selectionArgs = null;
             }
             c = db.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_TITLE,
-                            COLUMN_DESCRIPTION, COLUMN_HAS_TOPICS, COLUMN_HAS_FORUMS},
+                            COLUMN_DESCRIPTION, COLUMN_HAS_TOPICS, COLUMN_HAS_FORUMS,COLUMN_ICON_URL},
                     selection, selectionArgs, null, null, COLUMN_GLOBALSORTORDER);
             if (c.moveToFirst()) {
 
                 int columnIdIndex = c.getColumnIndex(COLUMN_ID);
-
                 int columnTitleIndex = c.getColumnIndex(COLUMN_TITLE);
                 int columnDescriptionIndex = c.getColumnIndex(COLUMN_DESCRIPTION);
                 int columnHasTopicsIndex = c.getColumnIndex(COLUMN_HAS_TOPICS);
                 int columnHasForumsIndex = c.getColumnIndex(COLUMN_HAS_FORUMS);
+                int columnIconUrlIndex = c.getColumnIndex(COLUMN_ICON_URL);
 
                 do {
                     String id = c.getString(columnIdIndex);
@@ -209,11 +150,13 @@ public class ForumsTable {
                     String description = c.getString(columnDescriptionIndex);
                     Boolean hasTopics = c.getShort(columnHasTopicsIndex) == 1;
                     Boolean hasForums = c.getShort(columnHasForumsIndex) == 1;
+                    String iconUrl = c.getString(columnIconUrlIndex);
 
                     Forum forum = new Forum(id, title);
                     forum.setHasTopics(hasTopics);
                     forum.setDescription(description);
                     forum.setHasForums(hasForums);
+                    forum.setIconUrl(iconUrl);
                     res.getItems().add(forum);
                 } while (c.moveToNext());
             }
@@ -228,35 +171,44 @@ public class ForumsTable {
         return res;
     }
 
+    private static Forum getForum(String id, Cursor c) {
+        int columnParentIdIndex = c.getColumnIndex(COLUMN_PARENT_ID);
+        int columnTitleIndex = c.getColumnIndex(COLUMN_TITLE);
+        int columnDescriptionIndex = c.getColumnIndex(COLUMN_DESCRIPTION);
+        int columnHasTopicsIndex = c.getColumnIndex(COLUMN_HAS_TOPICS);
+        int columnHasForumsIndex = c.getColumnIndex(COLUMN_HAS_FORUMS);
+        int columnIconUrlIndex = c.getColumnIndex(COLUMN_ICON_URL);
+
+        String parentId = c.getString(columnParentIdIndex);
+        String title = c.getString(columnTitleIndex);
+        String description = c.getString(columnDescriptionIndex);
+        Boolean hasTopics = c.getShort(columnHasTopicsIndex) == 1;
+        Boolean hasForums = c.getShort(columnHasForumsIndex) == 1;
+        String iconUrl = c.getString(columnIconUrlIndex);
+
+        Forum forum = new Forum(id, title);
+        forum.setHasTopics(hasTopics);
+        forum.setIconUrl(iconUrl);
+        forum.setDescription(description);
+        forum.setParentId(parentId);
+        forum.setHasForums(hasForums);
+        return forum;
+    }
+
     private static void loadForumsUp(SQLiteDatabase db, String id, List<Forum> forums) {
         Cursor c = null;
         try {
             String selection = COLUMN_ID + "=?";
             String[] selectionArgs = new String[]{id};
             c = db.query(TABLE_NAME, new String[]{COLUMN_PARENT_ID, COLUMN_TITLE,
-                            COLUMN_DESCRIPTION, COLUMN_HAS_TOPICS, COLUMN_HAS_FORUMS},
+                            COLUMN_DESCRIPTION, COLUMN_HAS_TOPICS, COLUMN_HAS_FORUMS,COLUMN_ICON_URL},
                     selection, selectionArgs, null, null, COLUMN_GLOBALSORTORDER);
             if (c.moveToFirst()) {
-                int columnParentIdIndex = c.getColumnIndex(COLUMN_PARENT_ID);
-                int columnTitleIndex = c.getColumnIndex(COLUMN_TITLE);
-                int columnDescriptionIndex = c.getColumnIndex(COLUMN_DESCRIPTION);
-                int columnHasTopicsIndex = c.getColumnIndex(COLUMN_HAS_TOPICS);
-                int columnHasForumsIndex = c.getColumnIndex(COLUMN_HAS_FORUMS);
-
-                String parentId = c.getString(columnParentIdIndex);
-                String title = c.getString(columnTitleIndex);
-                String description = c.getString(columnDescriptionIndex);
-                Boolean hasTopics = c.getShort(columnHasTopicsIndex) == 1;
-                Boolean hasForums = c.getShort(columnHasForumsIndex) == 1;
-
-                Forum forum = new Forum(id, title);
-                forum.setHasTopics(hasTopics);
-                forum.setDescription(description);
-                forum.setHasForums(hasForums);
+                Forum forum = getForum(id, c);
                 forums.add(1, forum);
 
-                if (parentId != null)
-                    loadForumsUp(db, parentId, forums);
+                if (forum.getParentId() != null)
+                    loadForumsUp(db, forum.getParentId(), forums);
             }
         } finally {
             if (db != null) {
@@ -266,58 +218,7 @@ public class ForumsTable {
         }
     }
 
-    public static ArrayList<Forum> loadForums(Forum parentForum, Boolean addTopicsItem) throws IOException {
-        ArrayList<Forum> res = new ArrayList<Forum>();
 
-        SQLiteDatabase db = null;
-        Cursor c = null;
-        try {
-            ForumStructDbHelper dbHelper = new ForumStructDbHelper(App.getInstance());
-            db = dbHelper.getWritableDatabase();
 
-            assert db != null;
-            Boolean isRoot = parentForum == null || "-1".equals(parentForum.getId());
-            String selection = COLUMN_PARENT_ID + (isRoot ? " is null" : "=?");
-            String[] selectionArgs = isRoot ? null : new String[]{parentForum.getId()};
-            c = db.query(TABLE_NAME, new String[]{COLUMN_ID, COLUMN_TITLE, COLUMN_DESCRIPTION, COLUMN_HAS_TOPICS},
-                    selection, selectionArgs, null, null, COLUMN_GLOBALSORTORDER);
 
-            if (parentForum != null && parentForum.isHasTopics()) {
-                Forum topicsItem = new Forum(parentForum.getId(), parentForum.getTitle() + "@темы");
-                topicsItem.setParent(parentForum);
-                topicsItem.setDescription("Темы, нераспределённые по разделам");
-                res.add(topicsItem);
-            }
-
-            if (c.moveToFirst()) {
-
-                int columnIdIndex = c.getColumnIndex(COLUMN_ID);
-                int columnTitleIndex = c.getColumnIndex(COLUMN_TITLE);
-                int columnDescriptionIndex = c.getColumnIndex(COLUMN_DESCRIPTION);
-                int columnHasTopicsIndex = c.getColumnIndex(COLUMN_HAS_TOPICS);
-
-                do {
-                    String id = c.getString(columnIdIndex);
-                    String title = c.getString(columnTitleIndex);
-                    String description = c.getString(columnDescriptionIndex);
-                    Boolean hasTopics = addTopicsItem && c.getShort(columnHasTopicsIndex) == 1;
-
-                    Forum forum = new Forum(id, title);
-                    forum.setHasTopics(hasTopics);
-                    forum.setDescription(description);
-                    forum.setParent(parentForum);
-                    res.add(forum);
-                } while (c.moveToNext());
-            }
-
-        } finally {
-            if (db != null) {
-                if (c != null)
-                    c.close();
-                db.close();
-            }
-        }
-
-        return res;
-    }
 }
