@@ -693,7 +693,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             int editPosition = -1;
             if (canEdit) {
                 actionItem = new ActionItem();
-                actionItem.setIcon(getResources().getDrawable(R.drawable.ic_menu_edit));
+                actionItem.setIcon(getResources().getDrawable(R.drawable.ic_menu_editing));
                 actionItem.setTitle("Редактировать");
 
                 editPosition = mQuickAction.addActionItem(actionItem);
@@ -739,7 +739,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             if (Client.getInstance().getLogined()) {
                 actionItem = new ActionItem();
                 actionItem.setTitle("Цитата");
-                actionItem.setIcon(getResources().getDrawable(R.drawable.ic_menu_edit));
+                actionItem.setIcon(getResources().getDrawable(R.drawable.ic_menu_quote));
                 quotePosition = mQuickAction.addActionItem(actionItem);
             }
 

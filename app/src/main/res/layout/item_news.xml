@@ -1,141 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="8.0dip">
 
     <FrameLayout
-        android:layout_height="wrap_content"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
-
-            android:layout_height="match_parent"
             android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:orientation="vertical">
-
-            <TextView
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:id="@+id/textTitle"
-                android:layout_height="wrap_content"
-                android:layout_width="fill_parent" />
 
             <FrameLayout
                 android:id="@+id/image_panel"
-                android:layout_gravity="center_horizontal"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content">
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/save_ratio" />
 
                 <ImageView
                     android:id="@+id/imageImage"
-                    android:scaleType="fitCenter"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
                     android:layout_gravity="center_horizontal"
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"
-                     />
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter" />
+
+                <TextView
+                    android:id="@+id/textTag"
+                    style="?news_text_general_color"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/gradient_tag"
+                    android:gravity="center"
+                    android:padding="6.0dip"
+                    android:textSize="16.0sp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    style="?news_image_corner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" />
+
+                <TextView
+                    android:id="@+id/textTitle"
+                    style="?news_text_general_color"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/gradient"
+                    android:lineSpacingExtra="-5.0dip"
+                    android:paddingBottom="10.0dip"
+                    android:paddingLeft="8.0dip"
+                    android:paddingRight="8.0dip"
+                    android:paddingTop="4.0dip"
+                    android:textSize="24.0sp" />
 
                 <LinearLayout
                     android:id="@+id/mProgressBar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
                     android:layout_gravity="center_horizontal"
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"
                     android:gravity="center"
-                    android:visibility="gone"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <ProgressBar
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content" />
-
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
-
             </FrameLayout>
 
             <LinearLayout
-                android:padding="5dp"
+                style="?news"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="12.0dip">
 
                 <LinearLayout
-                    android:paddingTop="10dp"
-                    android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="4.0dip">
 
-                    <TextView
-                        android:textColor="#b2b2b2"
-                        android:id="@+id/textDate"
-                        android:textSize="14sp"
+                    <LinearLayout
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_width="wrap_content" />
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:textColor="#b2b2b2"
-                        android:id="@+id/textAvtor"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:textSize="14sp"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content" />
+                        <TextView
+                            android:id="@+id/textDate"
+                            style="?news_text_second_color"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="8.0dip"
+                            android:textSize="14.0sp" />
 
-                    <TextView
-                        android:textColor="#b2b2b2"
-                        android:id="@+id/textComments"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:textSize="14sp"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content" />
+                        <TextView
+                            android:id="@+id/textAvtor"
+                            style="?news_text_second_color"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="8.0dip"
+                            android:textSize="14.0sp" />
 
+                        <TextView
+                            android:id="@+id/textComments"
+                            style="?news_text_second_color"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:gravity="right"
+                            android:textSize="14.0sp" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <TextView
-                    android:visibility="gone"
-                    android:textColor="#b2b2b2"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:id="@+id/textTag"
-                    android:textSize="14sp"
-                    android:layout_height="wrap_content"
-                    android:layout_width="fill_parent" />
-
-                <TextView
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
                     android:id="@+id/textDescription"
-                    android:textSize="14sp"
+                    style="?news_text_minor_color"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_width="fill_parent" />
+                    android:paddingBottom="5.0dip"
+                    android:textSize="16.0sp" />
 
                 <TextView
-                    android:visibility="gone"
-                    android:textColor="#b2b2b2"
                     android:id="@+id/textSource"
-                    android:textSize="14sp"
+                    style="?news_text_minor_color"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content" />
-
+                    android:paddingBottom="5.0dip"
+                    android:textSize="16.0sp"
+                    android:visibility="gone" />
             </LinearLayout>
-
         </LinearLayout>
 
         <LinearLayout
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-
             android:id="@+id/linearStartPost"
-            android:layout_marginBottom="4dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="4.0dip"
             android:orientation="vertical" />
-
     </FrameLayout>
-
 </LinearLayout>
-

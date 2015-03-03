@@ -1,82 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_parent"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:id="@+id/layout_parent">
+    android:layout_height="fill_parent">
 
     <ProgressBar
         android:id="@+id/progress_search"
-        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/txtpost_edit_reason"
+        android:layout_centerInParent="true"
         android:visibility="gone" />
 
     <EditText
         android:id="@+id/txtPost"
+        style="?edit_text"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:layout_above="@+id/txtpost_edit_reason"
         android:gravity="top"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:hint="Введите текст сообщения"
+        android:inputType="textCapSentences|textMultiLine"
+        android:padding="8.0dip"
         android:scrollHorizontally="false"
-        android:singleLine="false"
-        android:inputType="textMultiLine|textCapSentences"
-        android:hint="Введите текст сообщения" />
+        android:singleLine="false" />
 
     <EditText
         android:id="@+id/txtpost_edit_reason"
+        style="?panel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottomPanel"
-        android:visibility="gone"
-        android:hint="@string/EditReason"
         android:capitalize="sentences"
+        android:hint="@string/EditReason"
+        android:padding="8.0dip"
         android:scrollHorizontally="false"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/bottomPanel"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
+        style="?panel"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:padding="4dp">
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/advanced_button"
+                style="?right_separator"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/btn_show_post_panel"/>
+                android:layout_height="32dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:paddingLeft="4.0dip"
+                android:paddingRight="8.0dip"
+                android:src="@drawable/btn_show_post_panel" />
 
             <Button
                 android:id="@+id/btnAttachments"
+                style="?right_separator"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="4dp"
                 android:drawableLeft="@drawable/ic_menu_attachment"
-                android:text="0" />
+                android:paddingLeft="8.0dip"
+                android:paddingRight="8.0dip"
+                android:text="0"
+                android:textColor="#ff9D9D9D" />
 
             <Button
                 android:id="@+id/btnSendPost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:text="Отправить" />
+                style="?btnsend"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:text="Отправить"
+                android:textColor="#ffffffff" />
         </LinearLayout>
+
         <LinearLayout
-            android:orientation="vertical"
             android:id="@+id/footer_for_emoticons"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="@dimen/keyboard_height"
-            android:visibility="gone"/>
+            android:orientation="vertical"
+            android:visibility="gone" />
     </LinearLayout>
-
-
 </RelativeLayout>

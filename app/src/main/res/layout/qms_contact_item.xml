@@ -1,73 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?bottom_separator"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:padding="2dip"
+    android:textAppearance="?android:textAppearanceLarge">
 
-    android:gravity="center_vertical">
-
-    <CheckBox
-        android:id="@android:id/text1"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:focusable="false"
-        android:visibility="gone" />
-
-    <ImageView
-        android:id="@+id/txtIsNew"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="4dip"
-        android:text="|||"
-        android:layout_height="fill_parent"
-        android:scaleType="centerCrop"
-        android:lines="4"
-        android:minLines="4" />
-
-    <ImageView
-        android:id="@+id/imgAvatar"
-        android:layout_width="30dip"
-        android:layout_height="30dip"
-        android:scaleType="fitCenter"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-
-         />
-
-    <RelativeLayout
-        android:orientation="horizontal"
-        android:id="@+id/llayout1"
+    <FrameLayout
+        android:id="@+id/image_panel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dip"
-        android:paddingBottom="10dip">
+        android:layout_gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/txtNick"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/txtIsNew"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:lines="4"
+            android:minLines="4"
+            android:scaleType="centerCrop"
+            android:text="|||"
+            android:textAppearance="?android:textAppearanceLarge" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="slartus"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_toLeftOf="@+id/txtMessagesCount"
-             />
+            android:orientation="horizontal"
+            android:paddingBottom="12.0dip"
+            android:paddingLeft="8.0dip"
+            android:paddingRight="8.0dip"
+            android:paddingTop="12.0dip">
 
-        <TextView
-            android:ellipsize="middle"
-            android:id="@+id/txtMessagesCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="12"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#606060"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentRight="true"
-            android:textStyle="bold" />
+            <CheckBox
+                android:id="@+android:id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkMark="?android:listChoiceIndicatorMultiple"
+                android:focusable="false"
+                android:visibility="gone" />
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/imgAvatar"
+                android:layout_width="30.0dip"
+                android:layout_height="30.0dip"
+                android:layout_marginLeft="4.0dip"
+                android:layout_marginRight="12.0dip"
+                android:scaleType="fitCenter" />
+
+            <RelativeLayout
+                android:id="@+id/llayout1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtNick"
+                    style="?list_text_general_color"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/txtMessagesCount"
+                    android:singleLine="true"
+                    android:text="slartus"
+                    android:textAppearance="?android:textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/txtMessagesCount"
+                    style="?list_text_minor_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentRight="true"
+                    android:ellipsize="middle"
+                    android:singleLine="true"
+                    android:text="12"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

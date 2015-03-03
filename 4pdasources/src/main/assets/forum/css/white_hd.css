@@ -3,13 +3,13 @@ HTML {
   font-size: 1em;
   margin: 0 0.2rem;
 }
-HTML body {
+body {
   width: 100%;
   font-size: 100%;
   display: block;
   min-height: 1rem;
-  background: white;
-  color: black;
+  background: #ffffff;
+  color: #000000;
   margin: 0;
 }
 .post_body span[style*="font-size:36pt"] {
@@ -230,14 +230,14 @@ HTML body {
   border-left: 0.2em #8895a5 solid;
   border-top: 1px solid #999999;
   border-bottom: 1px solid #999999;
-  color: black;
+  color: #000000;
   line-height: 1.4rem;
   margin: 0 !important;
 }
 .poll .hidemain {
   padding: 0;
   margin: 0 !important;
-  overflow-x: auto;
+  overflow-x: scroll;
 }
 .poll .hidemain form > .ipbtable {
   display: table-block;
@@ -284,8 +284,8 @@ HTML body {
   margin: 0;
   padding: 0;
   border: 1px solid #999999;
-  color: black !important;
-  background: white;
+  color: #000000 !important;
+  background: #ffffff;
 }
 .poll .hidemain form > .ipbtable > tbody tr > .row1 .borderwrap .row1 {
   margin: 0 0 0.1rem;
@@ -319,7 +319,7 @@ HTML body {
   background: #d0e0f0;
   margin-top: 2.3rem !important;
   border-left: 3px #8895a5 solid;
-  color: black;
+  color: #000000;
   text-align: center;
 }
 .post-block.spoil > .block-title {
@@ -330,7 +330,7 @@ HTML body {
   border-left: 0.2em #8895a5 solid;
   border-top: 1px solid #999999;
   border-bottom: 1px solid #999999;
-  color: black;
+  color: #000000;
 }
 .post-block.spoil > .block-body {
   padding: 0.5em;
@@ -356,7 +356,7 @@ HTML body {
 .post-block.quote > .block-body {
   padding: 0;
   margin: 0;
-  color: black;
+  color: #000000;
 }
 .post-block.code > .block-title,
 .sqltop,
@@ -382,7 +382,7 @@ HTML body {
 }
 .post-block.hidden > .block-body {
   border: 1px dotted #848484;
-  color: black;
+  color: #000000;
   margin: 0 auto 0.4em;
   padding: 0.3em;
 }
@@ -409,7 +409,7 @@ HTML body {
 .ex > .block-title {
   display: table-cell;
   vertical-align: middle;
-  color: white;
+  color: #ffffff;
   font-weight: bold;
   width: 4.5rem;
   text-align: center;
@@ -425,7 +425,7 @@ HTML body {
   vertical-align: middle;
   text-align: left;
   padding: 1em;
-  background: white;
+  background: #ffffff;
   height: 100%;
   margin: 0;
 }
@@ -434,7 +434,7 @@ HTML body {
   margin-top: 3px;
   max-width: 100%;
   text-align: center;
-  background: white;
+  background: #ffffff;
   /*border-top: 2px ridge #222;
 border-bottom: 2px groove #222;*/
 }
@@ -464,166 +464,122 @@ border-bottom: 2px groove #222;*/
   border-left: 1px solid #cccccc;
   border-right: 1px solid #cccccc;
 }
-/*
-*	*~ QMS ~*
-*/
-#thread_form {
-  margin: -1.4rem -0.2rem 0;
-  padding: 1.5rem 0 3rem;
-  background: #ebebeb;
-}
-#thread_form .date {
-  /*font-size: 1rem;*/
-  text-align: center;
-  margin: 0 0.5rem 1.5rem;
-  border-bottom: 1px dashed #cccccc;
-}
-#thread_form .date .text {
-  position: relative;
-  top: 1.4rem;
-  display: inline-block;
-  padding: 0.5rem 0.8rem;
-  line-height: 1.4rem;
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #b3b3b3;
-  text-align: center;
-  background: #ebebeb;
-}
-#thread_form .list-group-item {
-  display: block;
-  margin: 0 0.3rem;
-  padding: 0.2rem;
-  padding-bottom: 1rem !important;
-}
-#thread_form .list-group-item.our-message {
-  color: #808080 !important;
-}
-#thread_form .list-group-item .check-item {
-  margin-top: -0.4rem;
+/*** QMS ***/
+.check-item {
+  margin-top: -0.4em;
   display: block;
   text-align: right;
   line-height: 1.5;
   float: right;
 }
-#thread_form .list-group-item .time {
-  position: relative;
-  float: right;
-  font-size: 0.85rem;
-  color: #666666;
-  margin-right: 0.4rem;
+#thread-inside-top ~ .date {
+  /*font-size: 1rem;*/
+  margin-right: 0.4em;
+  text-align: center;
+  margin-bottom: 1em;
 }
-#thread_form .list-group-item .time .read-status.unread.big-dot {
+.date .text {
+  top: 0.6em;
+  display: inline-block;
+  padding: 0 0.6em;
   position: relative;
-  top: -0.1rem;
-  display: inline-block;
-  height: 0.6rem;
-  width: 0.6rem;
-  border-radius: 0.6rem;
-  background: #c26666;
+  color: #4d4d4d;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background: #ffffff;
+  text-transform: lowercase;
 }
-#thread_form .list-group-item .avatar-wrap {
-  margin-top: 1.2rem;
+.read-status.unread.big-dot {
+  position: relative;
+  top: -0.1em;
   display: inline-block;
+  height: 0.6em;
+  width: 0.6em;
+  border-radius: 0.6em;
+  background: #c77;
+}
+.avatar-wrap {
+  margin-top: 1.2em;
+  display: table-cell;
   text-align: center;
   vertical-align: middle;
-  padding: 0.15rem;
+  padding: 0.15em;
   float: left;
-  border-radius: 0.2rem;
+  border-radius: 0.2em;
   border: 1px solid #999999;
-  background: white;
+  background: #efefef;
+  -webkit-box-shadow: 0.1em 0.3em 0.4em #cccccc;
 }
-#thread_form .list-group-item .avatar-wrap .avatar {
-  width: 5rem;
+.avatar-wrap > .avatar {
+  max-height: 5em;
+  width: 5em;
 }
-#thread_form .list-group-item .avatar-wrap:before {
-  content: '◀';
-  position: absolute;
-  font-size: 1.4rem;
-  left: 5.7rem;
-  color: white;
-  text-shadow: -1px 0 1px #666666;
-}
-#thread_form .list-group-item strong {
-  position: absolute;
-  display: block;
-  line-height: 0.8rem;
-  font-size: 1.1rem;
-  margin: 0 0 0.5rem 0.3rem;
-}
-#thread_form .msg-content {
-  border-radius: 0.3rem;
-  min-height: 4.8rem;
-  margin: 0 0.2rem 0 6.5rem;
-  padding: 0.4rem 0.6rem;
-  border: 1px solid #999999;
-  background: white;
-}
-#thread_form .list-group-item.our-message .check-item {
-  text-align: left;
-  float: left;
-}
-#thread_form .list-group-item.our-message .time {
-  float: left;
-  margin-left: 0.4rem;
-}
-#thread_form .list-group-item.our-message .avatar-wrap {
-  float: right;
-}
-#thread_form .list-group-item.our-message .avatar-wrap:after {
-  content: '▶';
-  position: absolute;
-  font-size: 1.4rem;
-  right: 5.6rem;
-  color: white;
-  text-shadow: 1px 0 1px #666666;
-}
-#thread_form .list-group-item.our-message .avatar-wrap:before {
-  display: none;
-}
-#thread_form .list-group-item.our-message strong {
-  right: 0.5rem;
-  margin: 0 0 0.5rem 0.3rem;
-}
-#thread_form .list-group-item.our-message .msg-content {
-  margin: 0 6.5rem 0 0.2rem !important;
-}
-#thread_form .list-group-item.our-message .msg-content:before {
-  display: none;
-}
-#thread_form .list-group-item + .list-group-item,
-#thread_form .list-group-item.our-message + .list-group-item.our-message {
-  margin-top: -0.8rem !important;
-  margin-bottom: 0 !important;
-}
-#thread_form .list-group-item + .list-group-item strong,
-#thread_form .list-group-item.our-message + .list-group-item.our-message strong,
-#thread_form .list-group-item + .list-group-item .avatar-wrap,
-#thread_form .list-group-item.our-message + .list-group-item.our-message .avatar-wrap {
-  display: none;
-}
-#thread_form .list-group-item + .list-group-item.our-message,
-#thread_form .list-group-item.our-message + .list-group-item {
+label ~ .time {
   position: relative;
-  margin-top: 1.5rem !important;
+  float: right;
+  font-size: 0.85em;
+  color: #666666;
+  margin-tight: 0;
+  margin-top: -0.1em;
 }
-#thread_form .list-group-item + .list-group-item.our-message strong,
-#thread_form .list-group-item.our-message + .list-group-item strong,
-#thread_form .list-group-item + .list-group-item.our-message .avatar-wrap,
-#thread_form .list-group-item.our-message + .list-group-item .avatar-wrap {
+.post_body > strong {
+  line-height: 0.8em;
+  width: 1em;
+  position: absolute;
+  font-size: 1.1em;
+  margin-bottom: 0.4em;
+  margin-left: -5.4em;
+}
+.list-group-item {
   display: block;
+  margin: 1.5em 0.3em;
+  padding: 0.2em;
+  padding-bottom: 1em !important;
+  /*border-top:  1px solid #555;
+background: #202020;
+-webkit-box-shadow: 1px 0.4em 0.8em #000;*/
 }
-#thread_form .list-group-item + .list-group-item.our-message strong:before,
-#thread_form .list-group-item.our-message + .list-group-item strong:before,
-#thread_form .list-group-item + .list-group-item.our-message .avatar-wrap:before,
-#thread_form .list-group-item.our-message + .list-group-item .avatar-wrap:before {
-  left: 5.5rem;
+.avatar-wrap:before,
+.avatar-wrap:after {
+  position: absolute;
+  content: '';
+  left: 6rem;
+  border: 12px solid transparent;
+  border-right: 12px solid #999999 !important;
 }
-#thread_form .list-group-item + .list-group-item.our-message strong:after,
-#thread_form .list-group-item.our-message + .list-group-item strong:after,
-#thread_form .list-group-item + .list-group-item.our-message .avatar-wrap:after,
-#thread_form .list-group-item.our-message + .list-group-item .avatar-wrap:after {
-  right: 5.4rem;
+.avatar-wrap:after {
+  left: 6.1rem;
+  border-right: 12px solid #ffffff !important;
+}
+/*.list-group-item.our-message > 
+.avatar-wrap:after{
+border-right: 12px solid mix(@color, @bg-color, 5%) !important;
+}*/
+.msg-content {
+  border-radius: 0.3em;
+  min-height: 5em;
+  margin: 0 0.2em 0 6.9em;
+  padding: 0.4em 0.6em;
+  border: 1px solid #999999;
+  color: #000000;
+  background: #ffffff;
+  -webkit-box-shadow: 0.2em 0.2em 0.3em #cccccc;
+}
+.list-group-item.our-message > .msg-content {
+  /*background: mix(@color, @bg-color, 5%);*/
+  color: #666666;
+}
+#bottom_element {
+  margin: 2em 0em;
+  text-align: center;
+  background: #ffffff;
+}
+#bottom_element:before {
+  content: '~КОНЕЦ~';
+  color: #999999;
+  font-weight: bold;
+  display: inline-block;
+  background: #ffffff;
 }
 /*** END QMS ***/
 table {
@@ -680,7 +636,7 @@ ol {
   padding-right: 0.5em;
   background: none;
   border: 0;
-  color: black;
+  color: #000000;
   text-transform: lowercase;
   text-align: right;
 }
@@ -708,7 +664,7 @@ img {
   text-align: center;
   padding: 0;
   margin: 0.1rem 0 0;
-  background: white;
+  background: #ffffff;
 }
 .post_header table {
   margin: 0;
@@ -852,7 +808,7 @@ img {
   display: inline-block;
   margin-top: 0.15rem;
   font-size: 1em;
-  color: black !important;
+  color: #000000 !important;
   float: right;
 }
 .post_header > TABLE > TBODY > TR > TD > DIV > SPAN.post_date_cli a {
@@ -927,9 +883,9 @@ img {
 .post_body {
   display: block;
   padding: 3rem 0.6rem 1rem !important;
-  border-left: 13.95rem solid white;
+  border-left: 13.95rem solid #ffffff;
   word-wrap: break-word;
-  background: white;
+  background: #ffffff;
   text-align: left;
   min-height: 14rem;
   margin: 0;
@@ -992,7 +948,7 @@ DIV > DIV.post_body {
   margin-top: -0.1rem;
   background: #f0f0f0;
   text-align: center;
-  color: black;
+  color: #000000;
 }
 .s_post_footer td {
   position: relative;
@@ -1278,10 +1234,10 @@ edit b {
   margin: 0;
   display: block;
   margin: 0.3em;
-  background: white;
+  background: #ffffff;
   border: 1px solid #a8a8a8;
   padding: 0.3em;
-  color: black;
+  color: #000000;
 }
 .container .content {
   display: block;
@@ -1292,11 +1248,10 @@ edit b {
 }
 .container .content .content-box meta + p {
   display: block;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  color: #484848;
-  padding: 0.8rem 0.6rem;
   background: #f2f2f2;
+  padding: 0.4rem;
+  margin: 1rem -0.2rem 0.5rem;
+  border: 1px solid #cccccc;
 }
 .product-detail {
   border: 1px solid #909090;
@@ -1346,7 +1301,7 @@ BLOCKQUOTE H3 {
 }
 .review-bottom-informer {
   padding: 0 0.3em;
-  background: white;
+  background: #ffffff;
 }
 .review-bottom-informer .item {
   text-align: center;
@@ -1419,7 +1374,7 @@ h3 a {
   display: table;
   width: 100%;
   border-top: 1px solid #cccccc;
-  background: white;
+  background: #ffffff;
 }
 .mlinks.desc .mlright .do-vam div .mltbl.platforms .mlrow {
   display: table;
@@ -1487,7 +1442,7 @@ h3 a {
   display: table;
   width: 100%;
   border-top: 1px solid #cccccc;
-  background: white;
+  background: #ffffff;
 }
 .mlinks .mlhead .do-vam div .mltbl.platforms .mlrow {
   display: table;
@@ -1551,7 +1506,7 @@ h3 a {
   line-height: 15rem;
   text-align: center;
   width: 2rem;
-  color: white;
+  color: #ffffff;
 }
 .mlinks .screenshots .sc-content a {
   display: inline;
@@ -1563,13 +1518,6 @@ h3 a {
 .mlinks .screenshots .sc-content a img {
   display: inline-block;
   height: 15rem !important;
-}
-@font-face {
-  font-family: 'fontello';
-  src: url('material_src/fontello.eot?19600742');
-  src: url('material_src/fontello.eot?19600742#iefix') format('embedded-opentype'), url('material_src/fontello.woff?19600742') format('woff'), url('material_src/fontello.ttf?19600742') format('truetype'), url('material_src/fontello.svg?19600742#fontello') format('svg');
-  font-weight: normal;
-  font-style: normal;
 }
 @font-face {
   font-family: 'fontello';
@@ -1803,10 +1751,10 @@ h3 a {
 }
 .table4site {
   display: block;
-  overflow-x: auto;
+  overflow-x: scroll;
   border: 1px solid #b3b3b3;
   box-sizing: border-box;
-  background: white;
+  background: #ffffff;
   border-spacing: 0;
 }
 .table4site tbody {
@@ -1862,55 +1810,50 @@ h3 a {
   text-align: center;
   color: #484848;
   border-top: 1px solid #d8d8d8;
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%, white), color-stop(10%, #e6e6e6), color-stop(90%, #e6e6e6), color-stop(100%, white));
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #ffffff), color-stop(10%, #e6e6e6), color-stop(90%, #e6e6e6), color-stop(100%, #ffffff));
 }
-.materials-box .materials-slider {
-  display: table-block;
+.materials-box .materials-list {
   padding: 0;
-  margin: 0;
-  border-spacing: 0.7rem;
-  overflow-x: auto;
+  margin: 0 0.3rem;
+  border: 1px solid #a8a8a8;
 }
-.materials-box .materials-slider .slider-item {
-  position: relative;
-  display: table-cell;
-  width: 25%;
+.materials-box .materials-list li {
+  display: table;
   padding: 0;
-  margin: 0;
   font-size: 1rem;
   list-style-type: none;
-  text-decoration: none;
-  overflow: hidden;
-}
-@media screen and (max-width: 720px) {
-  .materials-box .materials-slider .slider-item {
-    width: 1px;
-  }
-  .materials-box .materials-slider .slider-item > a {
-    width: 10rem;
-  }
-}
-.materials-box .materials-slider .slider-item > a {
-  display: block;
-}
-.materials-box .materials-slider .slider-item > a img {
+  border-bottom: 1px solid #cccccc;
   width: 100%;
-  height: 75%;
 }
-.materials-box .materials-slider .slider-item h3 {
-  display: block;
-  margin: 0;
-  padding: 0.3rem;
+.materials-box .materials-list li:last-child {
+  border: none;
+}
+.materials-box .materials-list li .date {
+  display: table-cell;
   vertical-align: middle;
+  font-weight: bold;
+  width: 5rem;
+  color: #303030;
+  text-decoration: none;
+  text-align: right !important;
+  padding: 0 0.5rem;
+  font-size: 1.1rem;
 }
-.materials-box .materials-slider .slider-item h3 a {
-  display: inline-block;
+.materials-box .materials-list li .number {
+  display: table-cell;
+  color: #ffffff;
+  vertical-align: middle;
+  background: #85a3f0;
+  width: 1.4em;
+  text-align: center;
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+.materials-box .materials-list li a {
+  position: relative;
+  display: table-cell;
   margin: 0;
-  padding: 0;
-  text-align: left;
-  font-size: 0.8rem;
-  font-weight: normal;
-  color: black;
+  padding: 0.5rem;
 }
 .page-nav.box {
   margin: 1rem 0.2rem 0;
@@ -1935,7 +1878,7 @@ h3 a {
   padding: 0.2em 0;
   color: #484848;
   border-top: 1px solid #d8d8d8;
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%, white), color-stop(10%, #e6e6e6), color-stop(90%, #e6e6e6), color-stop(100%, white));
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #ffffff), color-stop(10%, #e6e6e6), color-stop(90%, #e6e6e6), color-stop(100%, #ffffff));
 }
 #comments {
   font-size: 1rem;
@@ -1944,7 +1887,7 @@ h3 a {
   position: relative;
   margin: 0.2em 1px 0.2em 0;
   font-weight: normal;
-  color: black;
+  color: #000000;
   text-align: left;
 }
 #comments li,
@@ -1958,7 +1901,7 @@ h3 a {
   text-align: left;
   margin: 1em 0 0 0;
   word-wrap: break-word;
-  background: white;
+  background: #ffffff;
   -webkit-box-shadow: 1px 2px 6px #cccccc;
 }
 #comments li .heading {
@@ -1968,7 +1911,7 @@ h3 a {
   border-top: 0.2em solid #58c;
   border-bottom: 1px solid #a8a8a8;
   background: #f0f0f0;
-  text-shadow: 0 0 0.2em white;
+  text-shadow: 0 0 0.2em #ffffff;
   padding: 0.2em 0;
 }
 .nickname {
@@ -1996,7 +1939,9 @@ h3 a {
   margin-right: 0.2em;
 }
 #comments li p {
-  padding: 0.6rem 0.4rem;
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+  padding-bottom: 0;
   margin: 0 0.2em;
 }
 #comments a:nth-child(2) {
@@ -2008,19 +1953,6 @@ h3 a {
 #comments p ~ div {
   display: block;
   text-align: right;
-  border-top: 1px solid #d8d8d8;
+  border-top: 1px #ccc solid;
   margin: 0.5em 0.5em 0;
-}
-::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 0.5rem;
-}
-::-webkit-scrollbar-track {
-  border-radius: 0.15rem;
-  background: rgba(0, 0, 0, 0.3);
-}
-::-webkit-scrollbar-thumb {
-  border-radius: 0.15rem;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  background: rgba(255, 255, 255, 0.5);
 }

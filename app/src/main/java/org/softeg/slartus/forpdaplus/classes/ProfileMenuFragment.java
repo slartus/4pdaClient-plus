@@ -117,7 +117,7 @@ private Handler mHandler=new Handler();
                     });
 
             mUserMenuItem.add(R.string.Logout)
-                    .setIcon(R.drawable.ic_menu_user_offline)
+                    .setIcon(R.drawable.ic_menu_user_exit)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                 public boolean onMenuItemClick(MenuItem item) {

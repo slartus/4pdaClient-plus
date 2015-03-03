@@ -2,16 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-
     android:orientation="vertical">
-
-    <org.softeg.slartus.forpdaplus.classes.AdvWebView
-        android:id="@+id/wvBody"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-
-
-        android:textSize="12sp" />
 
     <ImageButton
         android:id="@+id/btnFullScreen"
@@ -19,68 +10,69 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_media_fullscreen"
         android:background="@null"
-        android:padding="10dip"
+        android:padding="10.0dip"
+        android:src="@drawable/ic_media_fullscreen"
         android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/bottom_panel"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        >
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/pnlSearch"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:id="@+id/pnlSearch"
             android:gravity="center_vertical"
             android:visibility="gone">
 
             <ImageButton
                 android:id="@+id/btnPrevSearch"
-                android:src="@drawable/ic_btn_find_prev"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_btn_find_prev" />
 
             <ImageButton
                 android:id="@+id/btnNextSearch"
-                android:src="@drawable/ic_btn_find_next"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/btnPrevSearch" />
-
+                android:layout_toRightOf="@+id/btnPrevSearch"
+                android:src="@drawable/ic_btn_find_next" />
 
             <EditText
                 android:id="@+id/txtSearch"
-                android:layout_marginTop="2dip"
-                android:layout_marginLeft="2dip"
-                android:layout_marginRight="2dip"
-                android:padding="5dip"
-                android:singleLine="true"
-                android:capitalize="sentences"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
+                android:layout_marginLeft="2.0dip"
+                android:layout_marginRight="2.0dip"
+                android:layout_marginTop="2.0dip"
+                android:layout_toLeftOf="@+id/btnCloseSearch"
                 android:layout_toRightOf="@+id/btnNextSearch"
-                android:layout_toLeftOf="@+id/btnCloseSearch" />
+                android:capitalize="sentences"
+                android:padding="5.0dip"
+                android:singleLine="true" />
 
             <ImageButton
                 android:id="@+id/btnCloseSearch"
-                android:src="@drawable/btn_close_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true" />
-
+                android:src="@drawable/btn_close_normal" />
         </RelativeLayout>
-
-
     </LinearLayout>
+
+    <org.softeg.slartus.forpdaplus.classes.AdvWebView
+        android:id="@id/wvBody"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:textSize="12.0dip" />
 </LinearLayout>

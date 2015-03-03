@@ -38,6 +38,8 @@
     <color name="holo_blue_dark">#ff0099cc</color>
 
     <!-- Mod -->
+    <color name="default_progress_bar_color">#ffffffff</color>
+
     <color name="app_background_wh">#fffafafa</color>
     <color name="app_background_bl">#ff222222</color>
 

@@ -1,50 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pnlSearch"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:layout_alignParentLeft="true"
-    android:id="@+id/pnlSearch"
     android:background="@android:color/transparent"
-    android:padding="5dip"
+    android:padding="5.0dip"
+    android:paddingTop="1.0px"
     android:visibility="gone">
 
     <ImageButton
         android:id="@+id/btnPrevSearch"
-        android:src="@drawable/ic_btn_find_prev"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="#fff2f2f2"
+        android:src="@drawable/ic_btn_find_prev" />
 
     <ImageButton
         android:id="@+id/btnNextSearch"
-        android:src="@drawable/ic_btn_find_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/btnPrevSearch" />
-
+        android:layout_toRightOf="@+id/btnPrevSearch"
+        android:background="@null"
+        android:src="@drawable/ic_btn_find_next" />
 
     <EditText
         android:id="@+id/txtSearch"
+        style="?right_separator"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:singleLine="true"
-
+        android:layout_toLeftOf="@+id/btnCloseSearch"
+        android:layout_toRightOf="@+id/btnNextSearch"
+        android:autoText="false"
+        android:capitalize="none"
         android:hint="@string/Keyword"
         android:scrollHorizontally="true"
-        android:capitalize="none"
-        android:autoText="false"
-        android:layout_toRightOf="@+id/btnNextSearch"
-        android:layout_toLeftOf="@+id/btnCloseSearch" />
+        android:singleLine="true" />
 
     <ImageButton
         android:id="@+id/btnCloseSearch"
-        android:src="@drawable/btn_close_normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true" />
-
+        android:background="#fff2f2f2"
+        android:src="@drawable/btn_close_normal" />
 </RelativeLayout>

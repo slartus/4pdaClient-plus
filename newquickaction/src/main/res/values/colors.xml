@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="popup_topic_background_wh">#ff28627F</color>
+    <color name="popup_topic_background_bl">#ff163644</color>
+    <color name="popup_topic_border_wh">#ff1B4456</color>
+    <color name="popup_topic_border_bl">#ff0C1E26</color>
+
+    <color name="popup_item_pressed_background_wh">#ff1B4456</color>
+    <color name="popup_item_pressed_background_bl">#ff0C1E26</color>
+    <color name="popup_item_pressed_border_wh">#ff2D708E</color>
+    <color name="popup_item_pressed_border_bl">#ff28627f</color>
+</resources>

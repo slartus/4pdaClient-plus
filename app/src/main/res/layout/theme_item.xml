@@ -1,115 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:padding="2dip">
+    android:padding="2.0dip"
+    android:textAppearance="?android:textAppearanceLarge">
 
     <ImageView
         android:id="@+id/txtIsNew"
-        android:layout_width="4dip"
-        android:text="|||"
+        android:layout_width="4.0dip"
         android:layout_height="fill_parent"
-        android:textSize="12dip"
-
-        android:scaleType="centerCrop"
         android:lines="3"
-        android:minLines="3" />
+        android:minLines="3"
+        android:scaleType="centerCrop"
+        android:text="|||"
+        android:textSize="12.0dip" />
 
-    <RelativeLayout
-        android:orientation="horizontal"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/llayout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:baselineAlignedChildIndex="1"
         android:layout_centerVertical="true"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:baselineAlignedChildIndex="1"
+        android:orientation="horizontal">
 
         <RelativeLayout
-            android:gravity="left|center"
             android:id="@+id/usericon"
-            android:visibility="gone"
-            android:focusable="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="5.0dip"
             android:layout_marginLeft="4.0dip"
             android:layout_marginTop="5.0dip"
-            android:layout_marginBottom="5.0dip"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true" />
+            android:focusable="false"
+            android:gravity="center|left"
+            android:visibility="gone" />
 
         <TextView
-            android:gravity="right|center"
             android:id="@+id/txtLastMessageDate"
-            android:paddingRight="5.0dip"
+            style="?list_text_second_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
             android:layout_alignBottom="@+id/usericon"
             android:layout_alignParentRight="true"
-
-            android:textColor="#606060"
-            android:textSize="10dip" />
+            android:layout_below="@+id/ll"
+            android:gravity="center|right"
+            android:paddingRight="5.0dip"
+            android:text=""
+            android:textSize="10.0dip" />
 
         <TextView
-            android:ellipsize="middle"
             android:id="@+id/txtAuthor"
-            android:paddingLeft="5.0dip"
-            android:paddingRight="10.0dip"
+            style="?list_text_second_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            android:singleLine="true"
-            android:layout_toLeftOf="@+id/txtLastMessageDate"
-            android:layout_toRightOf="@+id/usericon"
             android:layout_alignBottom="@+id/usericon"
             android:layout_alignWithParentIfMissing="true"
-            android:textColor="#606060"
-            android:textSize="10dip" />
+            android:layout_below="@+id/ll"
+            android:layout_toLeftOf="@+id/txtLastMessageDate"
+            android:layout_toRightOf="@+id/usericon"
+            android:ellipsize="middle"
+            android:paddingLeft="5.0dip"
+            android:paddingRight="10.0dip"
+            android:singleLine="true"
+            android:text=""
+            android:textSize="10.0dip" />
 
         <TextView
             android:id="@+id/txtTitle"
-            android:paddingLeft="5.0dip"
-            android:paddingRight="5.0dip"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Test"
             android:layout_below="@+id/txtLastMessageDate"
-
-            android:textSize="13dip" />
-
-        <TextView
-            android:gravity="left|center"
-            android:id="@+id/txtDescription"
             android:paddingLeft="5.0dip"
             android:paddingRight="5.0dip"
-            android:paddingBottom="5.0dip"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="2"
-            android:layout_below="@+id/txtTitle"
-            android:textSize="11dip"
-            android:textColor="#969696" />
+            android:text="Test"
+            android:textSize="13.0dip" />
 
         <TextView
-            android:textStyle="italic"
-            android:gravity="right"
-            android:id="@+id/txtForumTitle"
+            android:id="@+id/txtDescription"
+            style="?list_text_minor_color"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtTitle"
+            android:gravity="center|left"
+            android:maxLines="2"
             android:paddingBottom="5.0dip"
+            android:paddingLeft="5.0dip"
+            android:paddingRight="5.0dip"
+            android:textSize="11.0dip" />
+
+        <TextView
+            android:id="@+id/txtForumTitle"
+            style="?list_text_minor_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5.0dip"
-            android:text=""
-
-            android:layout_below="@+id/txtDescription"
             android:layout_alignParentBottom="true"
             android:layout_alignWithParentIfMissing="true"
-            android:textSize="11dip"
-            android:textColor="#969696"
-
+            android:layout_below="@+id/txtDescription"
+            android:layout_marginRight="5.0dip"
+            android:layout_toLeftOf="@+id/notification_flag"
+            android:gravity="right"
+            android:paddingBottom="5.0dip"
+            android:text=""
+            android:textSize="11.0dip"
+            android:textStyle="italic"
             android:visibility="gone" />
     </RelativeLayout>
 </LinearLayout>

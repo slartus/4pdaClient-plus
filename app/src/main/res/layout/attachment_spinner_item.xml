@@ -4,34 +4,37 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="2dp">
+    android:padding="4dp">
 
     <ImageButton
         android:id="@+id/btnSpoiler"
+        style="?btnsend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/spoiler"
-        android:padding="2dp"/>
+        android:padding="4.0dip"
+        android:src="@drawable/spoiler" />
 
     <TextView
         android:id="@+id/txtFile"
-        android:textAppearance="@android:style/TextAppearance.Medium"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-
-        android:layout_marginLeft="5dip"
-        android:layout_toRightOf="@+id/btnSpoiler"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_toLeftOf="@+id/btnDelete"
+        android:gravity="center_vertical"
+        android:lineSpacingExtra="-4.0dip"
+        android:maxLines="2"
         android:singleLine="false"
-        android:maxLines="2" />
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:layout_toRightOf="@+id/btnSpoiler"
+        android:layout_toEndOf="@+id/btnSpoiler"
+        android:layout_alignParentBottom="true" />
 
     <ImageButton
         android:id="@+id/btnDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_delete"
-        android:padding="2dp"
+        android:layout_alignParentRight="true"
         android:layout_gravity="center"
-        android:layout_alignParentRight="true" />
+        android:background="#00000000"
+        android:padding="4.0dip"
+        android:src="@drawable/ic_delete_attach" />
 </RelativeLayout>

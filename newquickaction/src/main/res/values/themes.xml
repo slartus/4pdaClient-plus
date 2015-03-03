@@ -1,0 +1,13 @@
+<resources>
+
+    <style name="Theme.White" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="popup_topic">@style/popup_topic_wh</item>
+        <item name="popup_item">@style/popup_item_wh</item>
+    </style>
+
+    <style name="Theme.Black" parent="@android:style/Theme.Holo">
+        <item name="popup_topic">@style/popup_topic_bl</item>
+        <item name="popup_item">@style/popup_item_bl</item>
+    </style>
+
+</resources>

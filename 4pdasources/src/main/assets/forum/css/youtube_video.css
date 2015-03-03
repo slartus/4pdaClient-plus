@@ -1,3 +1,36 @@
-.video-thumb-wrapper { display: block; width: 480; height: 320;
-                       background: url('file:///android_asset/forum/style_images/play_video.png') center center no-repeat; }
-.video-thumb { filter: alpha(opacity = 40); opacity: .4; }
+.video-thumb-wrapper {
+    display: inline-block!important;
+    position: relative;
+    background: red;
+}
+.video-thumb {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    display: block!important;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0!important;
+}
+.video-thumb-wrapper:after {
+    content: "";
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.6);
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+.video-thumb-wrapper:before {
+    content: "";
+    border-left: 20px solid white;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -15px;
+    margin-left: -10px;
+    z-index: 3;
+}

@@ -1,83 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?bottom_separator"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
+    android:textAppearance="?android:textAppearanceLarge">
 
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:padding="2dip"
-
-    >
-
-    <CheckBox
-        android:id="@android:id/text1"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:focusable="false"
-        android:visibility="gone" />
-
-    <ImageView
-        android:id="@+id/txtIsNew"
-        android:layout_width="4dip"
-        android:text="|||"
-        android:layout_height="fill_parent"
-
-        android:textSize="12dip"
-
-        android:scaleType="centerCrop"
-        android:lines="3"
-        android:minLines="3" />
-
-    <RelativeLayout
-        android:orientation="horizontal"
-        android:id="@+id/llayout1"
+    <FrameLayout
+        android:id="@+id/image_panel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:baselineAlignedChildIndex="1"
-        android:layout_centerVertical="true"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:layout_gravity="center_horizontal">
 
+        <ImageView
+            android:id="@+id/txtIsNew"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:lines="4"
+            android:minLines="4"
+            android:scaleType="centerCrop"
+            android:text="|||"
+            android:textAppearance="?android:textAppearanceLarge" />
 
-        <TextView
-            android:gravity="right|center"
-            android:id="@+id/txtDateTime"
-            android:paddingRight="5.0dip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-
-            android:layout_alignBottom="@+id/usericon"
-            android:layout_alignParentRight="true"
-            android:textColor="#606060"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <TextView
-            android:ellipsize="middle"
-            android:id="@+id/txtMessagesCount"
-            android:paddingLeft="5.0dip"
-            android:paddingRight="10.0dip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="12"
-            android:singleLine="true"
-            android:layout_toLeftOf="@+id/txtDateTime"
-            android:layout_toRightOf="@+id/usericon"
-
-            android:layout_alignBottom="@+id/usericon"
-            android:layout_alignWithParentIfMissing="true"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="#606060" />
-
-        <TextView
-            android:id="@+id/txtNick"
-            android:paddingLeft="5.0dip"
-            android:paddingRight="5.0dip"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="slartus"
-            android:layout_below="@+id/txtDateTime"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </RelativeLayout>
+            android:orientation="horizontal"
+            android:paddingBottom="8.0dip"
+            android:paddingLeft="8.0dip"
+            android:paddingRight="8.0dip"
+            android:paddingTop="8.0dip">
+
+            <CheckBox
+                android:id="@+android:id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checkMark="?android:listChoiceIndicatorMultiple"
+                android:focusable="false"
+                android:visibility="gone" />
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/llayout1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtNick"
+                    style="?list_text_general_color"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="slartus"
+                    android:textAppearance="?android:textAppearanceMedium" />
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        android:id="@+id/txtDateTime"
+                        style="?list_text_minor_color"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|right"
+                        android:text=""
+                        android:textAppearance="?android:textAppearanceSmall" />
+
+                    <TextView
+                        android:id="@+id/txtMessagesCount"
+                        style="?list_text_minor_color"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:ellipsize="middle"
+                        android:gravity="right"
+                        android:singleLine="true"
+                        android:text="12"
+                        android:textAppearance="?android:textAppearanceSmall" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

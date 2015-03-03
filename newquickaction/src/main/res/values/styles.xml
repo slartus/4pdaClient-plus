@@ -47,4 +47,19 @@
 		<item name="@android:windowEnterAnimation">@anim/pump_bottom</item>
 		<item name="@android:windowExitAnimation">@anim/disappear</item>
 	</style>
+
+
+    <style name="popup_topic_wh">
+        <item name="android:background">@drawable/popup_topic_wh</item>
+    </style>
+    <style name="popup_topic_bl">
+        <item name="android:background">@drawable/popup_topic_bl</item>
+    </style>
+
+    <style name="popup_item_wh">
+        <item name="android:background">@drawable/action_popup_item_wh</item>
+    </style>
+    <style name="popup_item_bl">
+        <item name="android:background">@drawable/action_popup_item_bl</item>
+    </style>
 </resources>
