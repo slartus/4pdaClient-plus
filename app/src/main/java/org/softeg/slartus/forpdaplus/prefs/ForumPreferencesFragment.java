@@ -7,13 +7,13 @@ import android.preference.PreferenceManager;
 import org.softeg.slartus.forpdaplus.R;
 
 /*
- * Created by Артём on 01.05.14.
+ * Created by slinkin on 04.03.2015.
  */
-public class FavoritesPreferencesFragment extends PreferenceFragment {
+public class ForumPreferencesFragment extends PreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.favorites_list_prefs);
+        addPreferencesFromResource(R.xml.forum_prefs);
     }
 
     @Override
@@ -21,5 +21,7 @@ public class FavoritesPreferencesFragment extends PreferenceFragment {
         super.onActivityCreated(savedInstanceState);
         PreferenceManager.setDefaultValues(getActivity(), R.xml.forum_prefs, false);
     }
+
+
 }
 

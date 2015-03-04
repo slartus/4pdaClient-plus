@@ -23,10 +23,7 @@ public class ForumTopicsPreferencesFragment extends PreferenceFragment {
         assert getActivity() != null;
         assert getArguments() != null;
         Bundle args=getArguments();
-        if(args==null)
-            args=getActivity().getIntent().getExtras();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(App.getContext());
-        assert args != null;
         String listName = args.getString("listname");
         assert listName!=null;
         assert !"".equals(listName);
@@ -57,7 +54,7 @@ public class ForumTopicsPreferencesFragment extends PreferenceFragment {
         if (pref instanceof ListPreference) {
             if (preferences.getString(newKey, null) == null) {
                 String defSValue = defValue == null ? null : defValue.toString();
-                preferences.edit().putString(newKey, defSValue).commit();
+                preferences.edit().putString(newKey, defSValue).apply();
             }
         } else if (pref instanceof CheckBoxPreference) {
             Boolean defSValue = Boolean.parseBoolean(defValue.toString());

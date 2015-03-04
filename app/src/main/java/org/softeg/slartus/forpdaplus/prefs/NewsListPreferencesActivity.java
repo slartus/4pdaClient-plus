@@ -13,11 +13,4 @@ public class NewsListPreferencesActivity extends BasePreferencesActivity {
     }
 
 
-    @Override
-    protected boolean isValidFragment (String fragmentName) {
-        if(ListPreferenceFragment.class.getName().equals(fragmentName)) return true;
-        if(NewsListPreferenceFragment.class.getName().equals(fragmentName)) return true;
-        return false;
-    }
-
 }

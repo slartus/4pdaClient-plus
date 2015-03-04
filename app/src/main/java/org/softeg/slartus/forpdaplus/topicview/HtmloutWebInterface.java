@@ -209,7 +209,11 @@ public class HtmloutWebInterface {
         getContext().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                TopicWritersTab.show(getContext(), getContext().getTopic().getId());
+                if (getContext().getTopic() == null) {
+                    Toast.makeText(getContext(), "что-то пошло не так", Toast.LENGTH_SHORT).show();
+                } else {
+                    TopicWritersTab.show(getContext(), getContext().getTopic().getId());
+                }
             }
         });
     }
@@ -510,9 +514,9 @@ public class HtmloutWebInterface {
             @Override
             public void run() {
 
-               String url="http://4pda.ru/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&mode=show&poll_open=true&st="+
-                       getContext().getTopic().getCurrentPage()* getContext().getTopic().getPostsPerPageCount(getContext().getLastUrl());
-               getContext().showTheme(url);
+                String url = "http://4pda.ru/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&mode=show&poll_open=true&st=" +
+                        getContext().getTopic().getCurrentPage() * getContext().getTopic().getPostsPerPageCount(getContext().getLastUrl());
+                getContext().showTheme(url);
             }
         });
 
@@ -523,8 +527,8 @@ public class HtmloutWebInterface {
         getContext().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                String url="http://4pda.ru/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&poll_open=true&st="+
-                        getContext().getTopic().getCurrentPage()* getContext().getTopic().getPostsPerPageCount(getContext().getLastUrl());
+                String url = "http://4pda.ru/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&poll_open=true&st=" +
+                        getContext().getTopic().getCurrentPage() * getContext().getTopic().getPostsPerPageCount(getContext().getLastUrl());
                 getContext().showTheme(url);
             }
         });

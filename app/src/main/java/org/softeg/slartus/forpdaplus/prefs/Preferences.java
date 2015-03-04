@@ -162,6 +162,14 @@ public class Preferences {
         }
     }
 
+    public static class Forums {
+
+        public static Boolean isShowImages() {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+            return prefs.getBoolean("forum.list.show_images", true);
+        }
+    }
+
     public static class Topic {
 
         public static Boolean getSpoilFirstPost() {
@@ -272,16 +280,16 @@ public class Preferences {
 
     public static class System {
 
-        public static void setSystemDir(String value){
+        public static void setSystemDir(String value) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
             prefs.edit().putString("path.system_path", value).commit();
         }
 
-        public static String getSystemDir(){
+        public static String getSystemDir() {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            String res= prefs.getString("path.system_path", App.getInstance().getExternalFilesDir(null).getPath());
-            if(!res.endsWith(File.separator))
-                res=res.concat(File.separator);
+            String res = prefs.getString("path.system_path", App.getInstance().getExternalFilesDir(null).getPath());
+            if (!res.endsWith(File.separator))
+                res = res.concat(File.separator);
             return res;
         }
 
@@ -392,7 +400,6 @@ public class Preferences {
     public static class Search {
     }
 
-
     public static class Attention {
         public static void setAttentionId(String value) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
@@ -419,7 +426,7 @@ public class Preferences {
 
     public static class Notifications {
         public static void setSound(Uri soundUri) {
-            ClientPreferences.Notifications.setSound(App.getContext(),soundUri);
+            ClientPreferences.Notifications.setSound(App.getContext(), soundUri);
         }
 
         public static Uri getSound() {
@@ -436,15 +443,15 @@ public class Preferences {
             }
 
             public static void setStartTime(int hourOfDay, int minute) {
-                ClientPreferences.Notifications.SilentMode.setTime(App.getContext(),"notifiers.silent_mode.start_time", hourOfDay, minute);
+                ClientPreferences.Notifications.SilentMode.setTime(App.getContext(), "notifiers.silent_mode.start_time", hourOfDay, minute);
             }
 
             public static Calendar getEndTime() {
-                return ClientPreferences.Notifications.SilentMode.getTime(App.getContext(),"notifiers.silent_mode.end_time");
+                return ClientPreferences.Notifications.SilentMode.getTime(App.getContext(), "notifiers.silent_mode.end_time");
             }
 
             public static void setEndTime(int hourOfDay, int minute) {
-                ClientPreferences.Notifications.SilentMode.setTime(App.getContext(),"notifiers.silent_mode.end_time", hourOfDay, minute);
+                ClientPreferences.Notifications.SilentMode.setTime(App.getContext(), "notifiers.silent_mode.end_time", hourOfDay, minute);
             }
         }
 

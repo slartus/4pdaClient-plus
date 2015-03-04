@@ -162,7 +162,10 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-
+        <activity
+            android:name="org.softeg.slartus.forpdaplus.prefs.ForumPreferencesActivity"
+            android:label="Настройки форума"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
         <activity
             android:name="org.softeg.slartus.forpdaplus.prefs.PreferencesActivity"
             android:label="Настройки"

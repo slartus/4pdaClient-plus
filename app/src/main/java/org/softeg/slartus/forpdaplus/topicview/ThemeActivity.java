@@ -1117,6 +1117,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     }
 
     private String lofiversionToNormal(String url) {
+        if (url == null)
+            return null;
         Matcher m = Pattern.compile("lofiversion/index.php\\?t(\\d+)(?:-(\\d+))?.html", Pattern.CASE_INSENSITIVE)
                 .matcher(url);
         if (m.find())
@@ -1128,8 +1130,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     public void showTheme(String url) {
         try {
             closeSearch();
-            if(url==null){
-                Toast.makeText(this,"Пустой url",Toast.LENGTH_SHORT).show();
+            if (url == null) {
+                Toast.makeText(this, "Пустой url", Toast.LENGTH_SHORT).show();
                 return;
             }
             url = lofiversionToNormal(url);
@@ -1373,8 +1375,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 if (this.dialog.isShowing()) {
                     this.dialog.dismiss();
                 }
-            } catch (Exception ex) {
-                AppLog.e(null, ex);
+            } catch (Exception ignored) {
+
             }
             if (scrollY != 0)
                 webView.setPictureListener(new MyPictureListener());

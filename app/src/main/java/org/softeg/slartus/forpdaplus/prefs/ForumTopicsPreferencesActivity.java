@@ -18,7 +18,5 @@ public class ForumTopicsPreferencesActivity extends BasePreferencesActivity {
         getFragmentManager().beginTransaction().replace(android.R.id.content,
                 fragment).commit();
     }
-
-
 }
 

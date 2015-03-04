@@ -87,7 +87,9 @@ public class DeveloperWebInterface {
                                     Intent data) {
 
         if (resultCode == Activity.RESULT_OK && requestCode == FILECHOOSER_RESULTCODE) {
-            String attachFilePath = FileUtils.getRealPathFromURI(getContext(), data.getData());
+            if(data.getData()==null)
+                return;
+            String attachFilePath = FileUtils.getRealPathFromURI(App.getInstance(), data.getData());
             String cssData = FileUtils.readFileText(attachFilePath)
                     .replace("\\", "\\\\")
                     .replace("'", "\\'").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");

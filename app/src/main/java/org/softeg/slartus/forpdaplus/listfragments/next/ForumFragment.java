@@ -47,7 +47,8 @@ import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo;
-import org.softeg.slartus.forpdaplus.prefs.ListPreferencesActivity;
+import org.softeg.slartus.forpdaplus.prefs.ForumPreferencesActivity;
+import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -63,12 +64,11 @@ public class ForumFragment extends Fragment implements
     public static final String FORUM_ID_KEY = "FORUM_ID_KEY";
     public static final String FORUM_TITLE_KEY = "FORUM_TITLE_KEY";
     private RecyclerView mListView;
-    private LinearLayoutManager mLayoutManager;
     private TextView mEmptyTextView;
     private ForumFragment.ForumBranch mData = createListData();
 
 
-    private RecyclerView.Adapter mAdapter;
+    private ForumsAdapter mAdapter;
     private String m_ForumId = null;
 
     @Override
@@ -86,6 +86,9 @@ public class ForumFragment extends Fragment implements
                 mData = (ForumFragment.ForumBranch) savedInstanceState.getSerializable(DATA_KEY);
             }
 
+        }
+        if(m_ForumId==null){
+            m_ForumId=Preferences.List.getStartForumId();
         }
         initAdapter();
     }
@@ -106,6 +109,13 @@ public class ForumFragment extends Fragment implements
                 return true;
             case R.id.mark_as_read:
                 markAsRead();
+                return true;
+
+            case R.id.set_started:
+                Forum f = mData.getCrumbs().get(mData.getCrumbs().size() - 1);
+                Preferences.List.setStartForum(f.getId(),
+                        f.getTitle());
+                Toast.makeText(getActivity(), "Форум задан стартовым", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.update_forum_struct:
                 new AlertDialogBuilder(getActivity())
@@ -181,10 +191,19 @@ public class ForumFragment extends Fragment implements
 
     private void showListSettings() {
         Intent settingsActivity = new Intent(
-                getActivity(), ListPreferencesActivity.class);
-        getActivity().startActivity(settingsActivity);
+                getActivity(), ForumPreferencesActivity.class);
+        this.startActivityForResult(settingsActivity, ForumPreferencesActivity.REQUEST_CODE);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == ForumPreferencesActivity.REQUEST_CODE) {
+            mAdapter.notifyDataSetChangedWithLayout();
+            mListView.refreshDrawableState();
+        }
+    }
 
     protected ForumFragment.ForumBranch createListData() {
         return new ForumFragment.ForumBranch();
@@ -202,7 +221,7 @@ public class ForumFragment extends Fragment implements
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mListView.setLayoutManager(mLayoutManager);
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_POSITION_KEY)) {
             mListView.scrollToPosition(savedInstanceState.getInt(SCROLL_POSITION_KEY));
@@ -219,7 +238,7 @@ public class ForumFragment extends Fragment implements
         assert v != null;
         mListView = (RecyclerView) v.findViewById(android.R.id.list);
 
-
+        registerForContextMenu(mListView);
         mEmptyTextView = (TextView) v.findViewById(android.R.id.empty);
 
 
@@ -254,6 +273,7 @@ public class ForumFragment extends Fragment implements
     private int getLoaderId() {
         return ForumLoader.ID;
     }
+
 
 
     @Override
@@ -377,6 +397,8 @@ public class ForumFragment extends Fragment implements
                 Forum forum = mData.getCrumbs().get(itemPosition);
                 ForumTopicsListFragment.showForumTopicsList(getActivity(), forum.getId(), forum.getTitle());
             }
+
+
         });
     }
 
@@ -466,6 +488,7 @@ public class ForumFragment extends Fragment implements
             void onHeaderClick(View v);
 
             void onHeaderTopicsClick(View v);
+
         }
 
         private List<Forum> mDataset;
@@ -486,6 +509,7 @@ public class ForumFragment extends Fragment implements
                 mText1 = (TextView) v.findViewById(android.R.id.text1);
                 mText2 = (TextView) v.findViewById(android.R.id.text2);
                 mImageView = (ImageView) v.findViewById(R.id.imageView3);
+
             }
         }
 
@@ -533,12 +557,21 @@ public class ForumFragment extends Fragment implements
             return DATA_VIEW_TYPE;
         }
 
+        private Boolean mIsShowImages = true;
+
         // Provide a suitable constructor (depends on the kind of dataset)
         public ForumsAdapter(List<Forum> headerDataset, List<Forum> myDataset,
                              OnClickListener onClickListener) {
             mHeaderset = headerDataset;
             mDataset = myDataset;
             mOnClickListener = onClickListener;
+            mIsShowImages = Preferences.Forums.isShowImages();
+        }
+
+
+        public void notifyDataSetChangedWithLayout() {
+            // mIsShowImages = Preferences.Forums.isShowImages();
+            notifyDataSetChanged();
         }
 
         // Create new views (invoked by the layout manager)
@@ -551,12 +584,15 @@ public class ForumFragment extends Fragment implements
                             .inflate(R.layout.forum_item, parent, false);
 
                     ViewHolder viewHolder = new ViewHolder(v);
+                    if (!mIsShowImages)
+                        viewHolder.mImageView.setVisibility(View.GONE);
                     v.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             mOnClickListener.onItemClick(v);
                         }
                     });
+
                     return viewHolder;
                 case HEADER_VIEW_TYPE:
                     final View headerV = LayoutInflater.from(parent.getContext())
@@ -583,6 +619,7 @@ public class ForumFragment extends Fragment implements
                             mOnClickListener.onHeaderTopicsClick(v);
                         }
                     });
+
                     return headerCViewHolder;
                 case HEADER_CURRENT_NOTOPICS_VIEW_TYPE:
                     final View headerCNV = LayoutInflater.from(parent.getContext())
@@ -596,6 +633,7 @@ public class ForumFragment extends Fragment implements
                             mOnClickListener.onHeaderClick(v);
                         }
                     });
+
                     return headerCNViewHolder;
             }
             // create a new view
@@ -613,7 +651,8 @@ public class ForumFragment extends Fragment implements
                     ViewHolder viewHolder = (ViewHolder) holder;
                     viewHolder.mText1.setText(forum.getTitle());
                     viewHolder.mText2.setText(forum.getDescription());
-                    if (forum.getIconUrl() != null) {
+
+                    if (forum.getIconUrl() != null && mIsShowImages) {
                         ImageLoader.getInstance().displayImage(forum.getIconUrl(),
                                 ((ViewHolder) holder).mImageView,
                                 new ImageLoadingListener() {

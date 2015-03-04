@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/refresh"
         android:icon="@drawable/ic_menu_refresh"
@@ -19,6 +18,10 @@
         android:title="Отметить этот форум прочитанным"
         android:showAsAction="never" />
 
+    <item
+        android:id="@+id/set_started"
+        android:title="Задать этот форум стартовым"
+        android:showAsAction="never" />
     <item
         android:id="@+id/update_forum_struct"
         android:title="Обновить структуру форума"

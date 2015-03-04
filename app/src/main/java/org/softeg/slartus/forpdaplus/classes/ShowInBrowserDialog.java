@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
-import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdacommon.ShowInBrowserException;
-import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.R;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,6 +17,8 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
  * To change this template use File | Settings | File Templates.
  */
 public class ShowInBrowserDialog {
+    private static final String TAG = "ShowInBrowserDialog";
+
     public static void showDialog(final Context context, ShowInBrowserException ex) {
         showDialog(context, context.getString(R.string.Error), ex.getMessage(), ex.Url);
     }
@@ -43,7 +45,7 @@ public class ShowInBrowserDialog {
                     })
                     .create().show();
         } catch (Throwable ex) {
-            AppLog.e(ex);
+            Log.e(TAG,ex.toString());
         }
 
     }

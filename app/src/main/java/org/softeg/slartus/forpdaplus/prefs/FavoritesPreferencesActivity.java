@@ -6,7 +6,7 @@ import org.softeg.slartus.forpdaplus.R;
 
 import java.util.List;
 
-/**
+/*
  * Created by Артём on 01.05.14.
  */
 public class FavoritesPreferencesActivity extends BasePreferencesActivity  {
@@ -29,11 +29,5 @@ public class FavoritesPreferencesActivity extends BasePreferencesActivity  {
         return super.onBuildStartFragmentIntent(fragmentName, args, titleRes, shortTitleRes);
     }
 
-    @Override
-    protected boolean isValidFragment (String fragmentName) {
-        if(ForumTopicsPreferencesFragment.class.getName().equals(fragmentName)) return true;
-        if(FavoritesPreferencesFragment.class.getName().equals(fragmentName)) return true;
-        return false;
-    }
 
 }

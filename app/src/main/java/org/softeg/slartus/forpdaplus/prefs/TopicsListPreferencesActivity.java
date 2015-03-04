@@ -12,11 +12,4 @@ public class TopicsListPreferencesActivity extends BasePreferencesActivity {
         loadHeadersFromResource(R.xml.topics_list_headers, target);
     }
 
-
-    @Override
-    protected boolean isValidFragment (String fragmentName) {
-        if(ListPreferenceFragment.class.getName().equals(fragmentName)) return true;
-        if(TopicsPreferenceFragment.class.getName().equals(fragmentName)) return true;
-        return false;
-    }
 }
