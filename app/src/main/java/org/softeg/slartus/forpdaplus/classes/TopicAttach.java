@@ -7,19 +7,17 @@ package org.softeg.slartus.forpdaplus.classes;
  */
 public class TopicAttach {
     private String Uri;
-    private String PostId;
-    private String PostNum;
+
     private String FileName;
     private String FileSize;
-    private String DownloadsCount;
 
-    public TopicAttach(String postId, String postNum, String url, String fileName, String fileSize, String downloadsCount) {
-        PostId = postId;
-        PostNum = postNum;
+
+    public TopicAttach(String url, String fileName, String fileSize) {
+
         Uri = url;
         FileName = fileName;
         FileSize = fileSize;
-        DownloadsCount = downloadsCount;
+
     }
 
     public String getUri() {

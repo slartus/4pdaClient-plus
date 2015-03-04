@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * Time: 9:39
  */
 public class TopicAttaches extends ArrayList<TopicAttach> {
-    private final Pattern FULL_ATTACH_PATTERN = Pattern.compile("href=\"(/forum/dl/post/\\d+/.*?)\".*?>(.*?)</a>\\s*\\(\\s*(.*?)\\s*\\)");
+    private final Pattern FULL_ATTACH_PATTERN = Pattern.compile("href=\"[^\"]*(/forum/dl/post/\\d+/[^\"]*)\"[^>]*>(.*?)</a>\\s*\\(\\s*(.*?)\\s*\\)");
 
 
     public void parseAttaches(String postBody) {
@@ -19,15 +19,15 @@ public class TopicAttaches extends ArrayList<TopicAttach> {
         while (m.find()) {
             Matcher m1 = p.matcher(m.group(2));
             if (m1.find())
-                add("", "", "http://4pda.ru" + m.group(1), m1.group(1), m.group(3), "");
+                add("http://4pda.ru" + m.group(1), m1.group(1), m.group(3));
 
         }
 
     }
 
 
-    private void add(String postId, String postNum, String url, String fileName, String fileSize, String downloadsCount) {
-        add(new TopicAttach(postId, postNum, url, fileName, fileSize, downloadsCount));
+    private void add(String url, String fileName, String fileSize) {
+        add(new TopicAttach(url, fileName, fileSize));
     }
 
     public CharSequence[] getList() {
