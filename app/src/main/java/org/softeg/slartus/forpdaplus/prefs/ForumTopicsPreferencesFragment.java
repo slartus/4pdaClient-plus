@@ -12,7 +12,7 @@ import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 
-/**
+/*
  * Created by Артём on 01.05.14.
  */
 public class ForumTopicsPreferencesFragment extends PreferenceFragment {
@@ -21,18 +21,19 @@ public class ForumTopicsPreferencesFragment extends PreferenceFragment {
         super.onActivityCreated(savedInstanceState);
 
         assert getActivity() != null;
-        assert getArguments() != null;
-        Bundle args=getArguments();
+        Bundle args = getArguments();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(App.getContext());
-        String listName = args.getString("listname");
-        assert listName!=null;
-        assert !"".equals(listName);
+        if (args != null) {
+            String listName = args.getString("listname");
+            assert listName != null;
+            assert !"".equals(listName);
 
-        setKey(preferences, "sort_key", listName);
-        setKey(preferences, "sort_by", listName);
-        setKey(preferences, "prune_day", listName);
-        setKey(preferences, "topicfilter", listName);
-        setKey(preferences, "unread_in_top", listName);
+            setKey(preferences, "sort_key", listName);
+            setKey(preferences, "sort_by", listName);
+            setKey(preferences, "prune_day", listName);
+            setKey(preferences, "topicfilter", listName);
+            setKey(preferences, "unread_in_top", listName);
+        }
         PreferenceManager.setDefaultValues(getActivity(), R.xml.forum_topics_list_prefs, false);
     }
 

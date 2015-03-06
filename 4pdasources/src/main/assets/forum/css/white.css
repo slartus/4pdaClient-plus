@@ -57,6 +57,7 @@ HTML BODY {
   display: none;
 }
 .post-block.box > .block-body {
+  max-height: 10rem;
   overflow: auto;
 }
 @media screen and (orientation: landscape) {
@@ -463,86 +464,128 @@ DIV[id*="msg"][name*="msg"] > .hidetop b:after {
   border-right: 1px solid #cccccc;
 }
 /*** QMS ***/
-.check-item {
+#thread_form A[title="Ссылка"] {
+  color: #2266cc;
+}
+#thread_form .date {
+  font-size: 1rem;
   display: block;
-  text-align: right;
-  line-height: 1.5;
-  padding-top: 0.3em;
-}
-#thread-inside-top ~ .date {
-  border-bottom: dotted 1px #b3b3b3;
-  margin: 3em auto;
+  margin: 2.3rem 0.5rem 3rem;
+  padding: 0;
   text-align: center;
+  border-bottom: 1px dashed #808080;
 }
-.date .text {
-  top: 0.6em;
-  display: inline-block;
-  padding: 0 0.6em;
+#thread_form .date .text {
   position: relative;
-  color: #4d4d4d;
+  top: 0.7rem;
+  display: inline-block;
+  padding: 0 0.5rem;
+  color: #808080;
   font-size: 1.1rem;
   font-weight: bold;
-  background: white;
   text-transform: lowercase;
+  background: white;
 }
-.read-status.unread.big-dot {
+#thread_form .list-group-item {
+  font-size: 1rem;
   position: relative;
-  top: -0.1em;
-  display: inline-block;
-  height: 0.6em;
-  width: 0.6em;
-  border-radius: 0.6em;
-  background: #c77;
-}
-.avatar-wrap {
   display: block;
-  overflow: hidden;
-  width: 4em;
-  margin-left: 0.3em;
-  margin-top: -1.2em;
-}
-.avatar {
-  display: inline-block;
-  width: 4em;
-  line-height: 4em;
-}
-label ~ .time {
-  position: relative;
-  float: right;
-  margin-right: 1.7em;
-  margin-top: -1.4em;
-  font-size: 0.9rem;
-  color: #4d4d4d;
-}
-strong,
-strong span {
-  line-height: 1.5;
-  font-size: 1.1rem;
-  margin-left: 0.2em;
-}
-.list-group-item {
-  display: block;
-  margin: 1em 0.2em;
-  padding: 0.2m;
-  border-top: 0.2em solid #5588cc;
+  margin: 1.2rem 0.2rem;
+  padding: 0;
+  border-top: 3px solid #5588cc;
   background: #f0f0f0;
 }
-.msg-content {
-  margin: 0 0 -0.3em 0;
-  padding: 0.5em;
-  border-top: 1px #b3b3b3 solid;
-  color: black;
-  background: white;
+#thread_form .list-group-item .check-item {
+  position: relative;
+  float: right;
+  height: 1.3rem;
+  text-align: center;
+  margin: 0;
 }
-#bottom_element {
-  margin: 2em 0em;
+#thread_form .list-group-item .check-item input {
+  display: none;
+}
+#thread_form .list-group-item .check-item input:checked + .checkbox > .icon-check {
+  opacity: 1;
+}
+#thread_form .list-group-item .check-item .checkbox {
+  display: block;
+  margin: 0.3rem 0.4rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  background: white;
+  border: 1px solid #b3b3b3;
+}
+#thread_form .list-group-item .check-item .checkbox .icon-check {
+  position: relative;
+  display: block;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+}
+#thread_form .list-group-item .check-item .checkbox .icon-check:before {
+  position: absolute;
+  display: inline-block;
+  top: -0.2rem;
+  left: -0.15rem;
+  line-height: 1rem;
+  text-align: center;
+  content: '✓';
+  color: #00a900;
+  font-weight: 500;
+  font-size: 1.4rem;
+  z-index: 99;
+}
+#thread_form .list-group-item .time {
+  position: relative;
+  float: right;
+  height: 1.6rem;
+  margin: 0 0.3rem;
+  line-height: 1.6rem;
+  font-size: 1rem;
+  color: #666666;
+}
+#thread_form .list-group-item .time .read-status.unread.big-dot {
+  position: relative;
+  display: inline-block;
+  top: -0.05rem;
+  height: 0.6rem;
+  width: 0.6rem;
+  border-radius: 0.6rem;
+  background: #fb8484;
+}
+#thread_form .list-group-item .avatar-wrap {
+  display: block;
+  float: left;
+  overflow: hidden;
+  width: 3rem;
+  height: 3rem;
+  line-height: 3rem;
+  border-radius: 0.2rem;
+  margin: 0.3rem;
   text-align: center;
 }
-#bottom_element:before {
-  content: '~КОНЕЦ~';
-  color: #999;
-  font-weight: bold;
+#thread_form .list-group-item .avatar-wrap .avatar {
   display: inline-block;
+  max-width: 3rem;
+}
+#thread_form .list-group-item strong {
+  display: inline-block;
+  line-height: 1.6rem;
+  font-size: 1.1rem;
+  margin: 0;
+  color: #191919;
+}
+#thread_form .list-group-item .msg-content {
+  display: block;
+  margin: 0;
+  padding: 0.5rem;
+  clear: both;
+  color: black;
+  word-wrap: break-word;
+  border-top: 1px solid #b3b3b3;
+  background: white;
+  border-radius: 0 0 0.2rem 0.2rem;
 }
 /*** END QMS ***/
 table {
@@ -2084,15 +2127,9 @@ h3 a {
   margin: 0.5rem 0;
 }
 ::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 0.5rem;
-}
-::-webkit-scrollbar-track {
-  border-radius: 0.15rem;
-  background: rgba(0, 0, 0, 0.3);
+  width: 0.2rem;
+  height: 0.2rem;
 }
 ::-webkit-scrollbar-thumb {
-  border-radius: 0.15rem;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.25);
 }
