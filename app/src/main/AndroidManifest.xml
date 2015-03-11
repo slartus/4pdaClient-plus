@@ -149,18 +149,7 @@
                 android:resource="@xml/searchable" />
         </activity>
 
-        <activity
-            android:name="org.softeg.slartus.forpdaplus.topicbrowser.TopicActivity"
-            android:launchMode="singleTop">
-            <intent-filter>
 
-                <action android:name="android.intent.action.SEARCH" />
-
-            </intent-filter>
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
 
         <activity
             android:name="org.softeg.slartus.forpdaplus.prefs.ForumPreferencesActivity"
@@ -272,11 +261,7 @@
             android:label="Информация о стиле"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop" />
-        <activity
-            android:name="org.softeg.slartus.forpdaplus.ImageViewActivity"
-            android:label="Просмотр изображения"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop" />
+
 
         <activity
             android:name="org.softeg.slartus.forpdaplus.notes.NoteActivity"

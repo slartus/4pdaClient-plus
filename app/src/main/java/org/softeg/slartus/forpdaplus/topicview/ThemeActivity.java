@@ -155,7 +155,6 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
         LoadsImagesAutomatically = null;
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         createActionMenu();

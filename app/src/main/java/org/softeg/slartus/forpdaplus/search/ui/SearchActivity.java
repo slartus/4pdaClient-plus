@@ -52,7 +52,7 @@ public class SearchActivity extends BaseFragmentActivity
         setContentView(R.layout.search_fragment_activity);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowHomeEnabled(false);
+        
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         createMenu();

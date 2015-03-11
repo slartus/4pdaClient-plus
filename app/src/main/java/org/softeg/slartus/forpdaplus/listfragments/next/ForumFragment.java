@@ -71,6 +71,7 @@ public class ForumFragment extends Fragment implements
     private ForumsAdapter mAdapter;
     private String m_ForumId = null;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,8 +88,8 @@ public class ForumFragment extends Fragment implements
             }
 
         }
-        if(m_ForumId==null){
-            m_ForumId=Preferences.List.getStartForumId();
+        if (m_ForumId == null) {
+            m_ForumId = Preferences.List.getStartForumId();
         }
         initAdapter();
     }
@@ -275,7 +276,6 @@ public class ForumFragment extends Fragment implements
     }
 
 
-
     @Override
     public Loader<ForumFragment.ForumBranch> onCreateLoader(int id, Bundle args) {
         Loader<ForumBranch> loader = null;
@@ -427,6 +427,10 @@ public class ForumFragment extends Fragment implements
 
     @Override
     public boolean onBackPressed() {
+        if (mData.getCrumbs().size() > 1) {
+            loadForum(mData.getCrumbs().get(mData.getCrumbs().size() - 1).getId());
+            return true;
+        }
         return false;
     }
 

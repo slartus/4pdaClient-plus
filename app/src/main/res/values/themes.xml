@@ -2,7 +2,14 @@
 
 
     <style name="Theme.White" parent="@android:style/Theme.Holo.Light">
+        <item name="android:actionBarSize">@dimen/action_bar_height</item>
         <item name="android:actionBarStyle">@style/Theme.ActionBar.White</item>
+        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_ab_up_compat</item>
+        <item name="spbStyle">@style/GNowProgressBar</item>
+        <item name="actionButtonStyle">@style/MyActionButtonStyle</item>
+        <item name="android:actionButtonStyle">@style/MyActionButtonStyle</item>
+
         <item name="theme_background">@color/white</item>
         <item name="theme_light_background">@color/theme_light_background_light</item>
         <item name="android:actionOverflowButtonStyle">@style/Theme.ActionButton.Overflow</item>
@@ -11,7 +18,14 @@
     </style>
 
     <style name="Theme.Black" parent="@android:style/Theme.Holo">
+        <item name="android:actionBarSize">@dimen/action_bar_height</item>
         <item name="android:actionBarStyle">@style/Theme.ActionBar.Black</item>
+        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_ab_up_compat</item>
+        <item name="spbStyle">@style/GNowProgressBar</item>
+        <item name="actionButtonStyle">@style/MyActionButtonStyle</item>
+        <item name="android:actionButtonStyle">@style/MyActionButtonStyle</item>
+
         <item name="theme_background">@color/black</item>
         <item name="theme_light_background">@color/theme_light_background_dark</item>
         <item name="android:actionOverflowButtonStyle">@style/Theme.ActionButton.Overflow</item>
@@ -29,24 +43,28 @@
         <item name="android:windowActionBarOverlay">true</item>
     </style>
 
-    <style name="Theme.ActionBar.White" parent="@android:style/Widget.Holo.Light.ActionBar">
+    <style name="Theme.ActionBar.White" parent="android:Widget.Holo.Light.ActionBar.Solid">
         <item name="android:background">@color/main_color</item>
         <item name="android:titleTextStyle">@style/Theme.ActionBar.White.TitleTextStyle</item>
         <item name="android:subtitleTextStyle">@style/Theme.ActionBar.White.SubTitleTextStyle</item>
+        <item name="android:icon">@drawable/actionbar_icon_placeholder_compat</item>
     </style>
 
-    <style name="Theme.ActionBar.Black" parent="@android:style/Widget.Holo.ActionBar">
+    <style name="Theme.ActionBar.Black" parent="android:Widget.Holo.ActionBar.Solid">
         <item name="android:background">@color/main_color_black</item>
         <item name="android:titleTextStyle">@style/Theme.ActionBar.Black.TitleTextStyle</item>
         <item name="android:subtitleTextStyle">@style/Theme.ActionBar.White.SubTitleTextStyle</item>
+        <item name="android:icon">@drawable/actionbar_icon_placeholder_compat</item>
     </style>
 
     <style name="Theme.ActionBar.Black.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@color/main_title_color</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="Theme.ActionBar.White.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@color/main_title_color</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="Theme.ActionBar.Black.SubTitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle">
@@ -66,4 +84,19 @@
         <item name="android:src">@drawable/ic_menu_more</item>
     </style>
 
+    <style name="AppTheme_ActionBar_Overflow" parent="android:Widget.ActionButton.Overflow">
+        <item name="android:src">@drawable/icon</item>
+    </style>
+
+    <style name="GNowProgressBar" parent="SmoothProgressBar">
+        <item name="spb_stroke_separator_length">12dp</item>
+        <item name="spb_sections_count">4</item>
+        <item name="spb_speed">0.7</item>
+        <item name="spb_interpolator">spb_interpolator_linear</item>
+        <item name="spb_colors">@array/gplus_colors</item>
+    </style>
+
+    <style name="MyActionButtonStyle">
+        <item name="android:padding">10dip</item>
+    </style>
 </resources>

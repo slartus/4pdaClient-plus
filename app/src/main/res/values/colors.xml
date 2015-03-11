@@ -2,6 +2,8 @@
 <resources>
     <color name="main_color">#0277bd</color>
     <color name="main_title_color">#F2F2F2</color>
+    <color name="gradient_start">#50000000</color>
+    <color name="gradient_light_start">#30000000</color>
 
     <color name="main_color_black">#424242</color>
 
@@ -39,4 +41,19 @@
 
     <color name="holo_blue_light">#ff33b5e5</color>
     <color name="holo_blue_dark">#ff0099cc</color>
+
+    <color name="gplus_color_1">#3e802f</color>
+    <color name="gplus_color_2">#f4b400</color>
+    <color name="gplus_color_3">#427fed</color>
+    <color name="gplus_color_4">#b23424</color>
+    <color name="floatingactionbutton_primary">#ffb2b2b2</color>
+    <color name="floatingactionbutton_primary_pressed" >#FAFAFA</color>
+    <color name="floatingactionbutton_ripple" >#ff33b5e5</color>
+
+    <integer-array name="gplus_colors">
+        <item>@color/gplus_color_1</item>
+        <item>@color/gplus_color_2</item>
+        <item>@color/gplus_color_3</item>
+        <item>@color/gplus_color_4</item>
+    </integer-array>
 </resources>

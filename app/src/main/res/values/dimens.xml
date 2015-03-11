@@ -3,7 +3,7 @@
     <dimen name="alert_dialog_title_height">64dip</dimen>
     <dimen name="alert_dialog_button_bar_height">48dip</dimen>
     <dimen name="keyboard_height" >230dip</dimen>
-
+    <dimen name="action_bar_height">56dp</dimen>
     <dimen name="paddingTop">0dp</dimen>
     <dimen name="paddingBottom">0dp</dimen>
     <dimen name="paddingRight">0dp</dimen>

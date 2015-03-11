@@ -687,9 +687,6 @@ br + .topic_title_post {
 .post_header_container + .post_body {
   background: white;
 }
-.post_header_container + .post_body + a {
-  display: none;
-}
 .post_header_container > .post_header {
   text-align: center;
   background: #C3DDFF;
@@ -884,6 +881,7 @@ img {
   display: none;
 }
 .between_messages {
+  position: relative;
   background: #2982CB;
   padding: 0.9em 0 0 0;
   margin: 0.1em 0;
