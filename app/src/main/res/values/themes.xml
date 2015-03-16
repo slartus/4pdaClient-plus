@@ -2,7 +2,7 @@
 
 
     <style name="Theme.White" parent="@android:style/Theme.Holo.Light">
-        <item name="android:actionBarSize">@dimen/action_bar_height</item>
+        <!--<item name="android:actionBarSize">@dimen/action_bar_height</item>-->
         <item name="android:actionBarStyle">@style/Theme.ActionBar.White</item>
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_ab_up_compat</item>
@@ -18,7 +18,7 @@
     </style>
 
     <style name="Theme.Black" parent="@android:style/Theme.Holo">
-        <item name="android:actionBarSize">@dimen/action_bar_height</item>
+        <!--<item name="android:actionBarSize">@dimen/action_bar_height</item>-->
         <item name="android:actionBarStyle">@style/Theme.ActionBar.Black</item>
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_ab_up_compat</item>
@@ -59,12 +59,12 @@
 
     <style name="Theme.ActionBar.Black.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@color/main_title_color</item>
-        <item name="android:textSize">20sp</item>
+        <!--<item name="android:textSize">20sp</item>-->
     </style>
 
     <style name="Theme.ActionBar.White.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@color/main_title_color</item>
-        <item name="android:textSize">20sp</item>
+        <!--<item name="android:textSize">20sp</item>-->
     </style>
 
     <style name="Theme.ActionBar.Black.SubTitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle">
