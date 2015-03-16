@@ -464,6 +464,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     }
 
     public void showTopicAttaches() {
+        if(m_Topic==null)
+            return;
         TopicAttachmentListFragment.showActivity(this, m_Topic.getId());
     }
 

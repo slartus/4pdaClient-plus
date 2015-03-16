@@ -195,16 +195,10 @@ public class QmsApi {
         Pattern countPattern = Pattern.compile("(.*?)\\((\\d+)\\)\\s*$");
         for (Element threadElement : threadElements) {
             QmsUserTheme item = new QmsUserTheme();
-            String idAttr = threadElement.attr("id");
-            Matcher m = idPattern.matcher(idAttr);
-            if (!m.find())
-                continue;
+            item.Id = threadElement.attr("data-thread-id");
 
-            item.Id = m.group(1);
-            Element el = threadElement.select("bage").first();
-            if (el != null)
-                item.Id = el.text();
-            el = threadElement.select("strong").first();
+            Matcher m;
+            Element el = threadElement.select("strong").first();
 
             if (el != null) {
                 String txt = el.text();
@@ -224,7 +218,9 @@ public class QmsApi {
                 } else
                     item.Title = txt;
             }
-
+            el = threadElement.select("div.bage").first();
+            if(el!=null)
+                item.Date=el.text();
             res.add(item);
         }
 

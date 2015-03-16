@@ -50,12 +50,13 @@ public class SearchPostsParser extends HtmlBuilder {
 
         beginTopic(searchResult);
 
+        m_Body.append("<div class=\"search-results\">");
         Document doc = Jsoup.parse(body, "http://4pda.ru");
         Elements postsElements = doc.select("div[data-post]");
         for (Element element : postsElements) {
             m_Body.append(parsePost(element));
         }
-
+        m_Body.append("</div>");
         endTopic(searchResult);
         return m_Body.toString();
     }
@@ -116,10 +117,7 @@ public class SearchPostsParser extends HtmlBuilder {
         endHtml();
     }
 
-    private final Pattern postPattern = Pattern.compile("<div class=\"postcolor(?:\\s|\\w)*?\" id=\"post-\\d+\" style=\"height:300px;overflow-x:auto;\">([\\s\\S]*?)</div></td>\\s+</tr>\\s+<tr>\\s+<td class=\"row2\"></td>\\s+<td class=\"row2\">([\\s\\S]*?)</td>");
-    private final Pattern topicPattern = Pattern.compile("<a href=\"/forum/index.php\\?showtopic=(\\d+)\">(.*?)</a></div>");
-    private final Pattern userPattern = Pattern.compile("<span class=\"normalname\"><a href=\"/forum/index.php\\?showuser=(\\d+)\">(.*?)</a></span>[\\s\\S]*?<font color=\".*?\">\\[((offline)|(online))\\]");
-    private final Pattern dateTimePattern = Pattern.compile("style=\"padding-bottom:2px\" />(.*?)</span>");
+
 
     private String parsePost(Element element) {
         Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(App.getInstance());
@@ -127,11 +125,11 @@ public class SearchPostsParser extends HtmlBuilder {
         String topic = null;
         String userId = null;
         String userName = null;
-        String user = null;
-        String dateTime = null;
+        String user;
+        String dateTime;
         String userState = null;
-        String post = null;
-        String postFooter = null;
+        String post;
+        String postFooter;
         Element el = element.select("div.maintitle").first();
         if (el != null)
             topic = el.html();

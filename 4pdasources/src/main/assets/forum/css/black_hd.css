@@ -12,8 +12,11 @@ HTML body {
   color: white;
   margin: 0;
 }
+/*
+ *	DARK-COLOR
+*/
 *[style*="color:royalblue"] {
-  color: #99afef !important;
+  color: #ced8f7 !important;
 }
 *[style*="color:blue"] {
   color: #6666ff !important;
@@ -45,7 +48,9 @@ HTML body {
 *[style*="background-color:white"] *[style*="color:black"],
 *[style*="color:black"] *[style*="background-color:white"],
 *[style*="background-color:white"] *[style*="color:#000000"],
-*[style*="color:#000000"] *[style*="background-color:white"] {
+*[style*="color:#000000"] *[style*="background-color:white"],
+*[style*="background-color:white"] *[style*="color:#000"],
+*[style*="color:#000"] *[style*="background-color:white"] {
   color: #000!important;
 }
 .post_body span[style*="font-size:36pt"] {
@@ -94,6 +99,7 @@ HTML body {
   display: none;
 }
 .post-block.box > .block-body {
+  max-height: 10rem;
   overflow: auto;
 }
 @media screen and (orientation: landscape) {
@@ -702,24 +708,6 @@ ul,
 ol {
   margin-left: -1em;
 }
-.spoiler_button {
-  position: relative;
-  z-index: 99;
-  float: right;
-  width: 100%;
-  display: block;
-  margin-top: -2.7em;
-  margin-bottom: 0;
-  margin-right: 0;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  padding-right: 0.5em;
-  background: none;
-  border: 0;
-  color: white;
-  text-transform: lowercase;
-  text-align: right;
-}
 img {
   max-width: 100%!important;
   height: auto!important;
@@ -971,6 +959,10 @@ img {
   margin: 0;
   -webkit-box-shadow: inset 1px 0 1px #666666;
 }
+.post_body .postcolor {
+  margin: 0 -0.6rem;
+  padding: 0 0.6rem;
+}
 DIV > DIV.post_body {
   padding-top: 1rem;
 }
@@ -995,28 +987,12 @@ DIV > DIV.post_body {
   font-size: 0.95rem!important;
   color: #a7a7a7;
 }
-.signature {
-  font-size: 1rem;
-  position: relative;
-  padding: 1em 0.5em 2em;
-  clear: both;
-  word-wrap: break-word;
-  border-top: 1px solid #4d4d4d;
-  border-bottom: 1px solid #4d4d4d;
+postcolor {
+  overflow-x: visible !important;
+  overflow-y: auto;
 }
 .signature {
-  background: #222222 !important;
-}
-.signature:before {
-  content: 'подпись';
-  display: block;
-  margin-top: -0.9em;
-  padding-bottom: 0.5em;
-  margin-bottom: 0.5em;
-  text-align: center;
-  color: #808080;
-  font-size: 0.8em;
-  border-bottom: 1px solid #4d4d4d;
+  font-size: 0.8rem !important;
 }
 .post_header a img {
   margin-bottom: 0;
@@ -2048,15 +2024,10 @@ h3 a {
   margin: 0.5em 0.5em 0;
 }
 ::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 0.5rem;
-}
-::-webkit-scrollbar-track {
-  border-radius: 0.15rem;
-  background: rgba(0, 0, 0, 0.3);
+  width: 0.3rem;
+  height: 0.3rem;
 }
 ::-webkit-scrollbar-thumb {
-  border-radius: 0.15rem;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  background: rgba(255, 255, 255, 0.5);
+  border-radius: 0.1rem;
+  background: rgba(175, 175, 175, 0.5);
 }

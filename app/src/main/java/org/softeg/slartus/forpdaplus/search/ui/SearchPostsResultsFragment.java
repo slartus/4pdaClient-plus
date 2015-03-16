@@ -194,8 +194,8 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
             }
         }
         mWvBody.addJavascriptInterface(this, "HTMLOUT");
-        mWvBody.loadData("<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
-                "</head><body bgcolor=" + App.getInstance().getCurrentThemeName() + "></body></html>", "text/html", "UTF-8");
+        mWvBody.loadDataWithBaseURL("http://4pda.ru/forum/","<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
+                "</head><body bgcolor=" + App.getInstance().getCurrentThemeName() + "></body></html>", "text/html", "UTF-8",null);
         registerForContextMenu(mWvBody);
         return v;
     }
@@ -304,7 +304,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
     private void showHtmlBody(String body) {
         try {
 
-            mWvBody.loadDataWithBaseURL("\"file:///android_asset/\"", body, "text/html", "UTF-8", null);
+            mWvBody.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
 
 
         } catch (Exception ex) {
@@ -589,11 +589,11 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
 
         protected void onPostExecute(final Boolean success) {
             setLoading(false);
-            if (success) {
+
                 showHtmlBody(pageBody);
 
 
-            } else {
+            {
                 if (ex != null)
                     AppLog.e(getContext(), ex);
             }
