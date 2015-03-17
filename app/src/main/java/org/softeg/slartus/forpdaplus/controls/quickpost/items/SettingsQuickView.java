@@ -59,6 +59,8 @@ public class SettingsQuickView extends BaseQuickView {
         extendedFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (getTopicId() == null || getAuthKey() == null || getPostBody() == null)
+                    return;
                 EditPostActivity.newPost((Activity) getContext(), getForumId() == null ? null : getForumId().toString(),
                         getTopicId().toString(), getAuthKey().toString(),
                         getPostBody().toString());

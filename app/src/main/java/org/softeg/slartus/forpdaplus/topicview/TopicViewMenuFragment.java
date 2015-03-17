@@ -109,7 +109,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
             optionsMenu.add(R.string.AddToFavorites).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     try {
-                        TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, themeActivity.getTopic().getId());
+                        TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, themeActivity.getTopic());
                     } catch (Exception ex) {
                         AppLog.e(context, ex);
                     }

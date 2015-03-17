@@ -42,18 +42,30 @@
     <color name="holo_blue_light">#ff33b5e5</color>
     <color name="holo_blue_dark">#ff0099cc</color>
 
-    <color name="gplus_color_1">#0277bd</color>
-    <color name="gplus_color_2">#0277bd</color>
-    <color name="gplus_color_3">#0277bd</color>
-    <color name="gplus_color_4">#0277bd</color>
+
     <color name="floatingactionbutton_primary">#ffb2b2b2</color>
     <color name="floatingactionbutton_primary_pressed" >#FAFAFA</color>
     <color name="floatingactionbutton_ripple" >#ff33b5e5</color>
 
+    <color name="gplus_color_1">#0277bd</color>
+    <color name="gplus_color_2">#0277bd</color>
+    <color name="gplus_color_3">#0277bd</color>
+    <color name="gplus_color_4">#0277bd</color>
     <integer-array name="gplus_colors">
         <item>@color/gplus_color_1</item>
         <item>@color/gplus_color_2</item>
         <item>@color/gplus_color_3</item>
         <item>@color/gplus_color_4</item>
+    </integer-array>
+
+    <color name="gplus_color_1_dark">#424242</color>
+    <color name="gplus_color_2_dark">#424242</color>
+    <color name="gplus_color_3_dark">#424242</color>
+    <color name="gplus_color_4_dark">#424242</color>
+    <integer-array name="gplus_colors_dark">
+        <item>@color/gplus_color_1_dark</item>
+        <item>@color/gplus_color_2_dark</item>
+        <item>@color/gplus_color_3_dark</item>
+        <item>@color/gplus_color_4_dark</item>
     </integer-array>
 </resources>

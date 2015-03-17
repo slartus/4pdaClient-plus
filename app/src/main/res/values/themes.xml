@@ -22,7 +22,7 @@
         <item name="android:actionBarStyle">@style/Theme.ActionBar.Black</item>
         <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_ab_up_compat</item>
-        <item name="spbStyle">@style/GNowProgressBar</item>
+        <item name="spbStyle">@style/GNowProgressBarDark</item>
         <item name="actionButtonStyle">@style/MyActionButtonStyle</item>
         <item name="android:actionButtonStyle">@style/MyActionButtonStyle</item>
 
@@ -94,6 +94,14 @@
         <item name="spb_speed">0.7</item>
         <item name="spb_interpolator">spb_interpolator_linear</item>
         <item name="spb_colors">@array/gplus_colors</item>
+    </style>
+
+    <style name="GNowProgressBarDark" parent="SmoothProgressBar">
+        <item name="spb_stroke_separator_length">12dp</item>
+        <item name="spb_sections_count">4</item>
+        <item name="spb_speed">0.7</item>
+        <item name="spb_interpolator">spb_interpolator_linear</item>
+        <item name="spb_colors">@array/gplus_colors_dark</item>
     </style>
 
     <style name="MyActionButtonStyle">

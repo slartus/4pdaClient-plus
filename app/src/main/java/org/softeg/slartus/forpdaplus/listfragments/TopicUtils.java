@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import org.softeg.slartus.forpdaapi.FavTopic;
 import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdaplus.Client;
@@ -16,6 +17,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.ThemeOpenParams;
 import org.softeg.slartus.forpdaplus.classes.TopicListItemTask;
+import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
@@ -29,9 +31,9 @@ public class TopicUtils {
     /**
      * С какими параметрами навигации юзер решил открывать топик:  view=getlastpost и тд
      */
-    public static String getOpenTopicArgs(CharSequence topicId,CharSequence template) {
+    public static String getOpenTopicArgs(CharSequence topicId, CharSequence template) {
         String themeActionPref = getTopicNavigateAction(template);
-        return getUrlArgs(topicId,themeActionPref, null);
+        return getUrlArgs(topicId, themeActionPref, null);
     }
 
     /**
@@ -60,13 +62,13 @@ public class TopicUtils {
             return "view=getlastpost";
         if (openParam.equals(Topic.NAVIGATE_VIEW_NEW_POST))
             return "view=getnewpost";
-        if (openParam.equals(Topic.NAVIGATE_VIEW_LAST_URL)){
+        if (openParam.equals(Topic.NAVIGATE_VIEW_LAST_URL)) {
             try {
-                String historyTopicUrl= TopicsHistoryTable.getTopicHistoryUrl(topicId);
-                return TextUtils.isEmpty(historyTopicUrl)?
+                String historyTopicUrl = TopicsHistoryTable.getTopicHistoryUrl(topicId);
+                return TextUtils.isEmpty(historyTopicUrl) ?
                         "view=getlastpost"
                         :
-                        Uri.parse(historyTopicUrl).getQuery().replaceAll("showtopic=\\d+&?","");
+                        Uri.parse(historyTopicUrl).getQuery().replaceAll("showtopic=\\d+&?", "");
             } catch (IOException e) {
                 e.printStackTrace();
                 return "view=getlastpost";
@@ -146,26 +148,32 @@ public class TopicUtils {
     }
 
     public static void showSubscribeSelectTypeDialog(final Context context, final android.os.Handler handler,
-                                                     final CharSequence topicId) {
-        showSubscribeSelectTypeDialog(context, handler, topicId,null);
+                                                     final Topic topic) {
+        showSubscribeSelectTypeDialog(context, handler, topic, null);
     }
+
     public static void showSubscribeSelectTypeDialog(final Context context, final android.os.Handler handler,
-                                                     final CharSequence topicId, final TopicListItemTask topicListItemTask) {
+                                                     final Topic topic, final TopicListItemTask topicListItemTask) {
         CharSequence[] titles = {"Не уведомлять", "Первый раз", "Каждый раз", "Каждый день", "Каждую неделю"};
         final String[] values = {TopicApi.TRACK_TYPE_NONE, TopicApi.TRACK_TYPE_DELAYED,
                 TopicApi.TRACK_TYPE_IMMEDIATE, TopicApi.TRACK_TYPE_DAILY, TopicApi.TRACK_TYPE_WEEKLY};
-        final int[] selectedId = {1};
+        String selectedSubscribe = null;
+        if (topic instanceof FavTopic) {
+            selectedSubscribe = ((FavTopic) topic).getTrackType();
+        }
+        final int[] selectedId = {ArrayUtils.indexOf(selectedSubscribe, values)};
         new AlertDialogBuilder(context)
                 .setTitle("Добавление в избранное/подписки")
-                .setSingleChoiceItems(titles, 1, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(titles, selectedId[0], new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         selectedId[0] = i;
                     }
                 })
-
                 .setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        if (selectedId[0] == -1)
+                            return;
                         dialogInterface.dismiss();
                         String emailtype = values[selectedId[0]];
 
@@ -182,7 +190,7 @@ public class TopicUtils {
 
                                     String res = null;
                                     try {
-                                        res = TopicApi.changeFavorite(Client.getInstance(), topicId, finalEmailtype);
+                                        res = TopicApi.changeFavorite(Client.getInstance(), topic.getId(), finalEmailtype);
                                     } catch (Exception e) {
                                         ex = e;
                                     }

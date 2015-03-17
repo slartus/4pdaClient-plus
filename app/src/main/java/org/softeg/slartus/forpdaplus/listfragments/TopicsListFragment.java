@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.listfragments;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -25,7 +24,6 @@ import org.softeg.slartus.forpdacommon.ActionSelectDialogFragment;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.TopicListItemTask;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
@@ -217,7 +215,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             optionsMenu.add(title).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
 
-                    TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, finalTopic.getId(),
+                    TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, finalTopic,
                             new TopicListItemTask(context, (Topic) finalTopic, mAdapter) {
                                 @Override
                                 public String doInBackground(Topic topic, String... pars) throws Throwable {
@@ -365,37 +363,6 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                     }
                 }
         );
-    }
-
-    public static void showSaveNavigateActionDialog(Context context, final CharSequence template,
-                                                    final CharSequence selectedAction,
-                                                    final Runnable showTopicAction) {
-        final String navigateAction = TopicUtils.getTopicNavigateAction(template);
-        if (navigateAction == null || !selectedAction.equals(navigateAction)) {
-            new AlertDialogBuilder(context)
-                    .setTitle("Действие по умолчанию")
-                    .setMessage("Назначить по умолчанию?")
-                    .setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                            TopicUtils.saveTopicNavigateAction(template, selectedAction);
-                            showTopicAction.run();
-
-                        }
-                    })
-                    .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                            showTopicAction.run();
-                        }
-                    })
-                    .create().show();
-        } else {
-            showTopicAction.run();
-        }
-
     }
 
     /**

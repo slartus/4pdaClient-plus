@@ -21,6 +21,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -74,6 +75,7 @@ import java.util.regex.Pattern;
 public class NewsActivity extends BrowserViewsFragmentActivity
         implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
     private static final String URL_KEY = "Url";
+    private static final String TAG = "NewsActivity";
     private Handler mHandler = new Handler();
     private AdvWebView webView;
     private RelativeLayout pnlSearch;
@@ -859,7 +861,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                 this.dialog.setMessage("Загрузка новости...");
                 this.dialog.show();
             } catch (Exception ex) {
-                AppLog.e(null, ex);
+
                 this.cancel(true);
             }
         }
@@ -873,7 +875,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                     this.dialog.dismiss();
                 }
             } catch (Exception ex) {
-                AppLog.e(NewsActivity.this, ex);
+                Log.e(TAG, ex.toString());
             }
 
             if (isCancelled()) return;

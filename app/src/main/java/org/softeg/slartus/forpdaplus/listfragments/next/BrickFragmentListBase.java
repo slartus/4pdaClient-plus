@@ -313,28 +313,5 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
         return false;
     }
 
-//
-//
-//
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        inflater.inflate(R.menu.brick_fragment_menu, menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(android.view.MenuItem item) {
-//        int id = item.getItemId();
-//        try {
-//            switch (id) {
-//                case R.id.refresh:
-//                    reloadData();
-//                    return true;
-//
-//            }
-//        } catch (Throwable ex) {
-//            AppLog.e(ex);
-//        }
-//        return false;
-//    }
 
 }

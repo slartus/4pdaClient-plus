@@ -76,6 +76,7 @@ public class TopicsApi {
                 Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
         Pattern trackTypePattern = Pattern.compile("wr_fav_subscribe\\(\\d+,\"(\\w+)\"\\);",
                 Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+
         ArrayList<FavTopic> res = new ArrayList<FavTopic>();
         String today = Functions.getToday();
         String yesterday = Functions.getYesterToday();
@@ -132,6 +133,7 @@ public class TopicsApi {
                     topic.setLastMessageAuthor(m.group(1));
                 }
                 topic.setSortOrder(Integer.toString(sortOrder++));
+
                 res.add(topic);
             }
         }

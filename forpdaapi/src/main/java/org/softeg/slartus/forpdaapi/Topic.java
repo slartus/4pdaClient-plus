@@ -5,6 +5,7 @@ import android.text.Html;
 import org.softeg.slartus.forpdacommon.Functions;
 import org.softeg.sqliteannotations.Column;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,7 +15,7 @@ import java.util.Date;
  * Time: 12:06
  */
 
-public class Topic implements IListItem {
+public class Topic implements IListItem,Serializable {
     /**
      * Параметр для перехода в топике к первому непрочитанному сообщению
      */

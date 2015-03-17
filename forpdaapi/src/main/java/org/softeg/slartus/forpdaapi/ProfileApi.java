@@ -14,7 +14,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
+/*
  * Created by slinkin on 07.02.14.
  */
 public class ProfileApi {
@@ -133,26 +133,28 @@ public class ProfileApi {
     }
 
     public static Profile getProfile(IHttpClient httpClient, CharSequence userID) throws IOException {
-        Profile profile=new Profile();
+        Profile profile = new Profile();
         profile.setId(userID);
-        String page=httpClient.performGet("http://4pda.ru/forum/index.php?showuser="+userID);
+        String page = httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID);
 
         Document doc = Jsoup.parse(page);
         org.jsoup.nodes.Element element = doc.select("div#main").first();
-        profile.setHtmlBody(element.html());
+        if (element != null) {
+            profile.setHtmlBody(element.html());
 
-        org.jsoup.nodes.Element userNickElement=element.select("div.user-box > h1").first();
-        if(userNickElement!=null)
-            profile.setNick(userNickElement.text());
+            org.jsoup.nodes.Element userNickElement = element.select("div.user-box > h1").first();
+            if (userNickElement != null)
+                profile.setNick(userNickElement.text());
+        }
         return profile;
     }
 
     public static String getUserNick(IHttpClient httpClient, CharSequence userID) throws IOException {
-        String page=httpClient.performGet("http://4pda.ru/forum/index.php?showuser="+userID);
+        String page = httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID);
 
         Document doc = Jsoup.parse(page);
         org.jsoup.nodes.Element element = doc.select("div#main").first();
-        org.jsoup.nodes.Element userNickElement=element.select("div.user-box > h1").first();
+        org.jsoup.nodes.Element userNickElement = element.select("div.user-box > h1").first();
         return userNickElement.text();
     }
 }

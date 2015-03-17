@@ -266,7 +266,7 @@ public class ThemeAdapter extends ArrayAdapter<ExtTopic> {
                 optionsMenu.add(context.getString(R.string.AddToFavorites)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
 
-                        TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, topic.getId());
+                        TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, topic);
 
                         return true;
                     }

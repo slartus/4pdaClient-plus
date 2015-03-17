@@ -4,6 +4,13 @@
 */
 @font-face {
   font-family: 'fontello';
+  src: url('material_src/fontello.eot?19600742');
+  src: url('material_src/fontello.eot?19600742#iefix') format('embedded-opentype'), url('material_src/fontello.woff?19600742') format('woff'), url('material_src/fontello.ttf?19600742') format('truetype'), url('material_src/fontello.svg?19600742#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'fontello';
   src: url('forum/fonts/fontello/fontello.eot?66808348');
   src: url('forum/fonts/fontello/fontello.eot?66808348#iefix') format('embedded-opentype'), url('forum/fonts/fontello/fontello.woff?66808348') format('woff'), url('forum/fonts/fontello/fontello.ttf?66808348') format('truetype'), url('forum/fonts/fontello/fontello.svg?66808348#fontello') format('svg');
   font-weight: normal;
@@ -332,7 +339,10 @@ html body a {
   line-height: 3.8rem;
 }
 .holder.no-hidden .user-profile-list > li .user-box .photo img {
-  display: inline-block;
+  display: block;
+  margin: auto;
+  width: auto !important;
+  height: auto !important;
   max-width: 3.8rem;
   max-height: 3.8rem;
 }

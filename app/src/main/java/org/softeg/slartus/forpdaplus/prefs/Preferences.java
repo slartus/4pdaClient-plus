@@ -282,12 +282,12 @@ public class Preferences {
 
         public static void setSystemDir(String value) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putString("path.system_path", value).commit();
+            prefs.edit().putString("path.system_path", value).apply();
         }
 
         public static String getSystemDir() {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            String res = prefs.getString("path.system_path", App.getInstance().getExternalFilesDir(null).getPath());
+            String res = prefs.getString("path.system_path", App.getInstance().getFilesDir().getPath());
             if (!res.endsWith(File.separator))
                 res = res.concat(File.separator);
             return res;

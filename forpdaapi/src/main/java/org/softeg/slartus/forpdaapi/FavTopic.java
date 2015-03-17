@@ -2,10 +2,12 @@ package org.softeg.slartus.forpdaapi;
 
 import org.softeg.sqliteannotations.Column;
 
+import java.io.Serializable;
+
 /**
  * Created by slartus on 03.06.2014.
  */
-public class FavTopic  extends Topic {
+public class FavTopic  extends Topic implements Serializable {
     @Column(name = "tid")
     private String tid;// идентификатор избранного
     @Column(name = "trackType")
@@ -45,5 +47,6 @@ public class FavTopic  extends Topic {
     public void setPinned(Boolean isPinned) {
         this.pinned = isPinned;
     }
+
 }
 
