@@ -223,6 +223,7 @@ public class ForumFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mListView.setLayoutManager(mLayoutManager);
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_POSITION_KEY)) {
             mListView.scrollToPosition(savedInstanceState.getInt(SCROLL_POSITION_KEY));

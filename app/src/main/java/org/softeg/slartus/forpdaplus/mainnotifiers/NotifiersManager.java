@@ -26,7 +26,7 @@ public class NotifiersManager implements DialogInterface.OnDismissListener {
             if (dialogs.size() == 1)
                 alertDialog.show();
         } catch (Throwable ex) {
-            AppLog.e(activity, ex);
+            ex.printStackTrace();
         }
     }
 
