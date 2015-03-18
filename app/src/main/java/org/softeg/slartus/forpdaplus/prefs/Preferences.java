@@ -54,7 +54,7 @@ public class Preferences {
     public static void setHideActionBar(Boolean hide) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
 
-        prefs.edit().putBoolean("actionbar.hide", hide).commit();
+        prefs.edit().putBoolean("actionbar.hide", hide).apply();
     }
 
     public static int getFontSize(String prefix) {
@@ -65,7 +65,7 @@ public class Preferences {
 
     public static void setFontSize(String prefix, int value) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-        prefs.edit().putString(prefix + ".FontSize", Integer.toString(value)).commit();
+        prefs.edit().putString(prefix + ".FontSize", Integer.toString(value)).apply();
     }
 
     public static class Lists {
@@ -77,7 +77,7 @@ public class Preferences {
 
         public static void setLastSelectedList(String listName) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putString("list.last_selected_list", listName).commit();
+            prefs.edit().putString("list.last_selected_list", listName).apply();
         }
 
         public static String getLastSelectedList() {
@@ -99,7 +99,7 @@ public class Preferences {
                 max--;
                 if (max == 0) break;
             }
-            prefs.edit().putString("lists.last_actions", newValue).commit();
+            prefs.edit().putString("lists.last_actions", newValue).apply();
         }
 
         public static String[] getLastActions() {
@@ -124,7 +124,7 @@ public class Preferences {
 
         public static void setListSort(String listName, String value) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putString(listName + ".list.sort", value).commit();
+            prefs.edit().putString(listName + ".list.sort", value).apply();
         }
 
         public static String defaultListSort() {
@@ -158,7 +158,7 @@ public class Preferences {
             editor.putString(ForumBrickInfo.NAME + ".start_forum_id", id);
             editor.putString(ForumBrickInfo.NAME + ".start_forum_title", title);
 
-            editor.commit();
+            editor.apply();
         }
     }
 
@@ -184,7 +184,7 @@ public class Preferences {
 
         public static void setConfirmSend(Boolean value) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putBoolean("theme.ConfirmSend", value).commit();
+            prefs.edit().putBoolean("theme.ConfirmSend", value).apply();
         }
 
         public static Boolean isShowAvatars() {
@@ -230,7 +230,7 @@ public class Preferences {
 
             public static void setEnableEmotics(Boolean value) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-                prefs.edit().putBoolean("topic.post.enableemotics", value).commit();
+                prefs.edit().putBoolean("topic.post.enableemotics", value).apply();
             }
 
             public static boolean getEnableEmotics() {
@@ -240,7 +240,7 @@ public class Preferences {
 
             public static void setEnableSign(Boolean value) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-                prefs.edit().putBoolean("topic.post.enablesign", value).commit();
+                prefs.edit().putBoolean("topic.post.enablesign", value).apply();
             }
 
             public static boolean getEnableSign() {
@@ -264,7 +264,7 @@ public class Preferences {
                     max--;
                     if (max == 0) break;
                 }
-                prefs.edit().putStringSet("topic.post.emotics_favorites", newlist).commit();
+                prefs.edit().putStringSet("topic.post.emotics_favorites", newlist).apply();
             }
 
             public static Set<String> getEmoticFavorites() {
@@ -344,7 +344,7 @@ public class Preferences {
 
         public static void setEvaluateJavascriptEnabled(boolean value) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putBoolean("system.EvaluateJavascriptEnabled", value).commit();
+            prefs.edit().putBoolean("system.EvaluateJavascriptEnabled", value).apply();
         }
 
         public static boolean isEvaluateJavascriptEnabled() {
@@ -361,7 +361,7 @@ public class Preferences {
 
         public static void setLastSelectedSection(int section) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putInt("news.lastselectedsection", section).commit();
+            prefs.edit().putInt("news.lastselectedsection", section).apply();
         }
 
         public static int getFontSize() {
@@ -393,7 +393,7 @@ public class Preferences {
 
         public static void setGroupExpanded(int groupIndex, Boolean expanded) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putBoolean("menu.GroupExpanded." + groupIndex, expanded).commit();
+            prefs.edit().putBoolean("menu.GroupExpanded." + groupIndex, expanded).apply();
         }
     }
 
@@ -403,7 +403,7 @@ public class Preferences {
     public static class Attention {
         public static void setAttentionId(String value) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putString("attention.id", value).commit();
+            prefs.edit().putString("attention.id", value).apply();
         }
 
         public static String getAttentionId() {
@@ -420,7 +420,7 @@ public class Preferences {
 
         public static void setConfirmDownload(boolean b) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putBoolean("files.ConfirmDownload", b).commit();
+            prefs.edit().putBoolean("files.ConfirmDownload", b).apply();
         }
     }
 
@@ -459,8 +459,6 @@ public class Preferences {
 
         }
 
-        public static class Favorites {
 
-        }
     }
 }
