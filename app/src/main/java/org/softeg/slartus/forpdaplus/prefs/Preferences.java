@@ -286,8 +286,11 @@ public class Preferences {
         }
 
         public static String getSystemDir() {
+            File dir = App.getInstance().getFilesDir();
+            if (dir == null)
+                dir = App.getInstance().getExternalFilesDir(null);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            String res = prefs.getString("path.system_path", App.getInstance().getFilesDir().getPath());
+            String res = prefs.getString("path.system_path", dir.getPath());
             if (!res.endsWith(File.separator))
                 res = res.concat(File.separator);
             return res;

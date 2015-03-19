@@ -46,7 +46,8 @@ public class QuickPostFragment extends Fragment {
         mForumId = forumId;
         mTopicId = topicId;
         mAuthKey = authKey;
-        mPopupPanelView.setTopic(mForumId, mTopicId, mAuthKey);
+        if (mPopupPanelView != null)
+            mPopupPanelView.setTopic(mForumId, mTopicId, mAuthKey);
     }
 
     public void clearPostBody() {
@@ -69,7 +70,7 @@ public class QuickPostFragment extends Fragment {
 
 
     public void hideKeyboard() {
-        if(getActivity()==null)return;
+        if (getActivity() == null) return;
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mPostEditText.getWindowToken(), 0);
     }
@@ -105,7 +106,6 @@ public class QuickPostFragment extends Fragment {
     public View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.quick_post_fragment, null);
         assert v != null;
-
 
 
         final ImageButton send_button = (ImageButton) v.findViewById(R.id.send_button);
@@ -157,7 +157,7 @@ public class QuickPostFragment extends Fragment {
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.send_post_confirm_dialog, null);
             assert view != null;
-            final CheckBox checkBox=(CheckBox)view.findViewById(R.id.chkConfirmationSend);
+            final CheckBox checkBox = (CheckBox) view.findViewById(R.id.chkConfirmationSend);
             new AlertDialogBuilder(getActivity())
                     .setTitle("Подтвердите действие")
                     .setView(view)
@@ -179,7 +179,7 @@ public class QuickPostFragment extends Fragment {
 
     public void post() {
 
-        try{
+        try {
             hideKeyboard();
 
             PostTask postTask = new InnerPostTask(getActivity(),
@@ -188,7 +188,7 @@ public class QuickPostFragment extends Fragment {
                     Preferences.Topic.Post.getEnableEmotics(), Preferences.Topic.Post.getEnableSign());
 
             postTask.execute();
-        }catch (Throwable ex){
+        } catch (Throwable ex) {
             AppLog.e(getActivity(), ex);
         }
     }
