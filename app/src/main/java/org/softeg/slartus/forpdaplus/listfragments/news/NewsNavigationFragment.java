@@ -106,11 +106,6 @@ public class NewsNavigationFragment extends BaseBrickFragment implements ActionB
     }
 
     @Override
-    public void onSaveInstanceState(android.os.Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.news_navigation_fragment, container, false);
         assert v != null;

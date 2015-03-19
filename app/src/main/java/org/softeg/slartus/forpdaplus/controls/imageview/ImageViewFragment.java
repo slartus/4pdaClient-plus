@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.controls.imageview;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,7 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.dmitriy.tarasov.android.intents.IntentUtils;
+
 import org.apache.http.HttpEntity;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.BaseFragment;
 import org.softeg.slartus.forpdaplus.HttpHelper;
 import org.softeg.slartus.forpdaplus.R;
@@ -27,6 +31,7 @@ import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import uk.co.senab.photoview.PhotoView;
@@ -215,9 +220,10 @@ public class ImageViewFragment extends BaseFragment {
             assert imageLayout != null;
             final View progressView = imageLayout.findViewById(R.id.progressBar);
             m_PhotoView = (PhotoView) imageLayout.findViewById(R.id.iv_photo);
+
             m_PhotoView.setMaximumScale(10f);
 
-            new DownloadImageTask(progressView, m_PhotoView, urls.get(mSelectedIndex)).execute();
+            new DownloadImageTask(getActivity(),progressView, m_PhotoView, urls.get(mSelectedIndex)).execute();
         }
     }
 
@@ -257,7 +263,6 @@ public class ImageViewFragment extends BaseFragment {
             case R.id.close:
 
 
-
                 getActivity().finish();
 
                 return true;
@@ -271,9 +276,12 @@ public class ImageViewFragment extends BaseFragment {
         private View mProgressView;
         private ImageView mImageView;
         private String mImageUrl;
+        private String mTempFilePath = null;
+        private WeakReference<Activity> mActivityWeakReference;
 
-        public DownloadImageTask(View progressView, ImageView imageView, String imageUrl) {
-
+        public DownloadImageTask(Activity activity,
+                                 View progressView, ImageView imageView, String imageUrl) {
+            mActivityWeakReference = new WeakReference<Activity>(activity);
             mProgressView = progressView;
             mImageView = imageView;
             mImageUrl = imageUrl;
@@ -284,7 +292,6 @@ public class ImageViewFragment extends BaseFragment {
             try {
                 return downloadImage(mImageUrl);
             } catch (Throwable e) {
-
                 ex = e;
                 return null;
             }
@@ -313,16 +320,24 @@ public class ImageViewFragment extends BaseFragment {
             }
             if (isCancelled())
                 return;
-            if (!TextUtils.isEmpty(success))
-                mImageView.setImageURI(Uri.parse(success));
+            if (!TextUtils.isEmpty(success)) {
+                try {
+                    mImageView.setImageURI(Uri.parse(success));
+                } catch (Throwable ex) {
+                    AppLog.eToast(mActivityWeakReference.get(), ex);
+                    if (!TextUtils.isEmpty(mTempFilePath))
+                        IntentUtils.openImage(new File(mTempFilePath));
+                }
+            }
 
         }
 
         private String downloadImage(String imageUrl) throws Exception {
             HttpHelper httpHelper = new HttpHelper();
             try {
-                File file = File.createTempFile("temp_image", ".tmp");
 
+                File file = File.createTempFile("temp_image_" + App.getInstance().getUniqueIntValue(), ".tmp");
+                mTempFilePath = file.getAbsolutePath();
 
                 long total = 0;
 

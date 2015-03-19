@@ -36,9 +36,14 @@ public final class AppLog {
     }
 
     public static void toastE(Context context, Throwable ex) {
+        String message=ex.getLocalizedMessage();
+        if(TextUtils.isEmpty(message))
+            message=ex.getMessage();
+        if(TextUtils.isEmpty(message))
+            message=ex.toString();
         android.util.Log.e(TAG, ex.toString());
         try {
-            Toast.makeText(context, ex.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
         } catch (Throwable ignoredEx) {
 
         }

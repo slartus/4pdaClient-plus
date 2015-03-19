@@ -166,7 +166,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
         }
 
 
-
         @Override
         public boolean onPreferenceClick(Preference preference) {
             final String key = preference.getKey();
@@ -461,13 +460,13 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     .setCancelable(true)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            try{
-                                String dir=txtPath.getText().toString();
-                                dir=dir.replace("/", File.separator);
+                            try {
+                                String dir = txtPath.getText().toString();
+                                dir = dir.replace("/", File.separator);
                                 FileUtils.checkDirPath(dir);
                                 Preferences.System.setSystemDir(dir);
                                 dialogInterface.dismiss();
-                            }catch (Throwable ex){
+                            } catch (Throwable ex) {
                                 AppLog.e(getActivity(), ex);
                             }
                         }
@@ -487,7 +486,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
     }
 
 
-
     private static String getAppCookiesPath() throws IOException {
 
         return Preferences.System.getSystemDir() + "4pda_cookies";
@@ -502,8 +500,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
         return res.replace("/", File.separator);
     }
-
-
 
 
     public static void getStylesList(Context context, ArrayList<CharSequence> newStyleNames, ArrayList<CharSequence> newstyleValues) throws IOException {
@@ -531,13 +527,15 @@ public class PreferencesActivity extends BasePreferencesActivity {
     }
 
 
-    private static void getStylesList(ArrayList<CharSequence> newStyleNames, ArrayList<CharSequence> newstyleValues, File file) {
+    private static void getStylesList(ArrayList<CharSequence> newStyleNames,
+                                      ArrayList<CharSequence> newstyleValues, File file) {
         String cssPath;
         String xmlPath;
         CssStyle cssStyle;
         if (file.exists()) {
             File[] cssFiles = file.listFiles();
-            assert cssFiles != null;
+            if (cssFiles == null)
+                return;
             for (File cssFile : cssFiles) {
                 if (cssFile.isDirectory()) {
                     getStylesList(newStyleNames, newstyleValues, cssFile);
@@ -564,7 +562,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
         super.onStop();
         App.resStartNotifierServices();
     }
-
 
 
     public static String getProgramFullName(Context context) {

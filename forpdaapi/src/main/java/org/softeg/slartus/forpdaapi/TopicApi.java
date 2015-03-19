@@ -116,6 +116,8 @@ public class TopicApi {
     }
 
     private static FavTopic findTopicInFav(IHttpClient httpClient, CharSequence topicId) throws ParseException, IOException, URISyntaxException {
+        if (topicId == null)
+            return null;
         ListInfo listInfo = new ListInfo();
         listInfo.setFrom(0);
         int topicsCount = 0;
@@ -247,9 +249,9 @@ public class TopicApi {
         Uri uri = Uri.parse(url.toLowerCase());
         if (!"4pda.ru".equals(uri.getHost()))
             return false;
-        if(!TextUtils.isEmpty(uri.getQueryParameter("showtopic")))
+        if (!TextUtils.isEmpty(uri.getQueryParameter("showtopic")))
             return true;
-        if(!TextUtils.isEmpty(uri.getQueryParameter("pid"))&&
+        if (!TextUtils.isEmpty(uri.getQueryParameter("pid")) &&
                 "findpost".equals(uri.getQueryParameter("act")))
             return true;
 
@@ -258,7 +260,7 @@ public class TopicApi {
     }
 
 
-    public static void addPoll(String url){
+    public static void addPoll(String url) {
 
     }
 }
