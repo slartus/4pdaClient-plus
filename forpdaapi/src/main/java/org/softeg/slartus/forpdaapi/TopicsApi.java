@@ -199,6 +199,8 @@ public class TopicsApi {
             Document doc = Jsoup.parse(pageBody);
             Elements trElements = doc.select("table:has(th:contains(Название темы)) tr");
             for (Element trElement : trElements) {
+                if (trElement.children().size() < 3)
+                    continue;
                 Element tdElement = trElement.child(2);
                 Element el = tdElement.select("a[href~=showtopic]").last();
                 if (el == null)

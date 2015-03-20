@@ -100,20 +100,17 @@ public class HtmlPreferences {
     }
 
     public static String modifyAttachedImagesBody(Boolean webViewAllowJs, String value) {
-        value = value
+        return value
                 .replaceAll("<a attach_id=\"\\d+\" s=0 id=\".*?\" href=\"(.*?)\" rel=\"lytebox\\[\\d+\\]\" title=\"(.*?)\" target=\"_blank\"><img src=\"(.*?)\".*?</a>",
                         "<img src=\"file:///android_asset/forum/style_images/1/folder_mime_types/gif.gif\"><a class=\"sp_img\" " + TopicBodyBuilder.getHtmlout(webViewAllowJs, "showImgPreview", new String[]{"Прикрепленное изображение", "$3", "$1"}, false) + ">$2</a>")
                 .replaceAll("<img attach_id=\"\\d+\" s=0 src=\"(.*?)\" class=\"linked-image\" alt=\"Прикрепленное изображение\" />",
                         "<img src=\"file:///android_asset/forum/style_images/1/folder_mime_types/gif.gif\"><a class=\"sp_img\" " + TopicBodyBuilder.getHtmlout(webViewAllowJs, "showImgPreview", new String[]{"Прикрепленное изображение", "$1", "$1"}, false) + ">Прикрепленное изображение</a>");
 
-        return value;
     }
 
     public static String modifyLinksBody(String value) {
-        value = value
+        return value
                 .replaceAll("(src|href)=('|\")index.php", "$1=$2http://4pda.ru/forum/index.php")
                 .replaceAll("(src|href)=('|\")/forum", "$1=$2http://4pda.ru/forum");
-
-        return value;
     }
 }
