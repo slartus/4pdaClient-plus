@@ -364,7 +364,7 @@ public class DownloadsService extends IntentService {
                 sendDownloadProgressState(receiver, notificationId);
             }
 
-            AppLog.e(null, ex);
+            ex.printStackTrace();
         }
 
 
