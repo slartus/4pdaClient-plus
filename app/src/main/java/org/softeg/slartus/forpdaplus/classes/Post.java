@@ -29,6 +29,7 @@ import java.util.regex.Pattern;
  * To change this template use File | Settings | File Templates.
  */
 public class Post {
+    private Boolean m_IsCurator = false;
     private String m_Id = "0";
     private String m_Date = "09.03.1983";
     private String m_UserNick = "unknown";
@@ -319,6 +320,14 @@ public class Post {
         if (avatarFileName.contains("/"))
             path = "http://s.4pda.to/forum/style_avatars/";
         this.avatarFileName = path + avatarFileName;
+    }
+
+    public void setCurator() {
+        m_IsCurator=true;
+    }
+
+    public Boolean isCurator(){
+        return m_IsCurator;
     }
 }
 

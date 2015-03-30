@@ -3,13 +3,26 @@ package org.softeg.slartus.forpdaplus.controls.imageview;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
+import android.widget.Toast;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Downloader;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.PicassoTools;
+
+import org.apache.http.HttpResponse;
+import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.HttpHelper;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -86,8 +99,53 @@ public class ImageViewDialogFragment extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new ImageViewFragment.DownloadImageTask(getActivity(), m_ProgressView, m_PhotoView, mPreviewUrl)
-                .execute();
+
+        try{
+            PicassoTools.clearCache(Picasso.with(App.getInstance()));
+            m_ProgressView.setVisibility(View.VISIBLE);
+
+            Picasso.Builder builder = new Picasso.Builder(App.getInstance());
+            builder.listener(new Picasso.Listener() {
+                @Override
+                public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                    m_ProgressView.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), exception.getMessage(), Toast.LENGTH_SHORT).show();
+
+                }
+            });
+            builder.downloader(new Downloader() {
+                @Override
+                public Response load(Uri uri, int networkPolicy) throws IOException {
+                    HttpResponse httpResponse = new HttpHelper().getDownloadResponse(uri.toString(), 0);
+
+
+                    return new Response(httpResponse.getEntity().getContent(), false, httpResponse.getEntity().getContentLength());
+                }
+
+                @Override
+                public void shutdown() {
+
+                }
+            });
+            builder.build()
+                    .load(mPreviewUrl)
+                    .error(R.drawable.no_image)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .into(m_PhotoView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            m_ProgressView.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError() {
+                            m_ProgressView.setVisibility(View.GONE);
+                        }
+                    });
+
+        }catch (Throwable ex){
+            AppLog.e(getActivity(),ex);
+        }
     }
 
     @Override

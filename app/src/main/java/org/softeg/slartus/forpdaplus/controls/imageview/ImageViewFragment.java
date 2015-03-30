@@ -1,14 +1,11 @@
 package org.softeg.slartus.forpdaplus.controls.imageview;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,11 +13,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.ShareActionProvider;
+import android.widget.Toast;
 
 import com.dmitriy.tarasov.android.intents.IntentUtils;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Downloader;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.PicassoTools;
 
-import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.BaseFragment;
 import org.softeg.slartus.forpdaplus.HttpHelper;
@@ -28,10 +31,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import uk.co.senab.photoview.PhotoView;
@@ -215,6 +215,7 @@ public class ImageViewFragment extends BaseFragment {
 
         private void loadImage(View imageLayout) {
             if (m_PhotoView != null) {
+                PicassoTools.clearCache(Picasso.with(inflater.getContext()));
                 m_PhotoView.setImageDrawable(null);
             }
             assert imageLayout != null;
@@ -223,7 +224,46 @@ public class ImageViewFragment extends BaseFragment {
 
             m_PhotoView.setMaximumScale(10f);
 
-            new DownloadImageTask(getActivity(),progressView, m_PhotoView, urls.get(mSelectedIndex)).execute();
+            progressView.setVisibility(View.VISIBLE);
+
+            Picasso.Builder builder = new Picasso.Builder(App.getInstance());
+            builder.listener(new Picasso.Listener() {
+                @Override
+                public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                    progressView.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), exception.getMessage(), Toast.LENGTH_SHORT).show();
+
+                }
+            });
+            builder.downloader(new Downloader() {
+                @Override
+                public Response load(Uri uri, int networkPolicy) throws IOException {
+                    HttpResponse httpResponse = new HttpHelper().getDownloadResponse(uri.toString(), 0);
+
+
+                    return new Response(httpResponse.getEntity().getContent(), false, httpResponse.getEntity().getContentLength());
+                }
+
+                @Override
+                public void shutdown() {
+
+                }
+            });
+            builder.build()
+                    .load(urls.get(mSelectedIndex))
+                    .error(R.drawable.no_image)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                    .into(m_PhotoView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            progressView.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError() {
+                            progressView.setVisibility(View.GONE);
+                        }
+                    });
         }
     }
 
@@ -239,11 +279,18 @@ public class ImageViewFragment extends BaseFragment {
     }
 
 
+    private ShareActionProvider mShareActionProvider;
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.image_view, menu);
+
+        MenuItem item = menu.findItem(R.id.share_it);
+
+        // Fetch and store ShareActionProvider
+        mShareActionProvider = (ShareActionProvider) item.getActionProvider();
     }
 
     @Override
@@ -257,117 +304,22 @@ public class ImageViewFragment extends BaseFragment {
                 } catch (Throwable ex) {
                     AppLog.e(getActivity(), ex);
                 }
-
                 return true;
 
             case R.id.close:
-
-
                 getActivity().finish();
-
+                return true;
+            case R.id.share_it:
+                Intent intent = IntentUtils.shareText("Ссылка", urls.get(mSelectedIndex));
+                if (mShareActionProvider != null) {
+                    mShareActionProvider.setShareIntent(intent);
+                }
                 return true;
         }
         return false;
     }
 
 
-    public static class DownloadImageTask extends AsyncTask<String, String, String> {
 
-        private View mProgressView;
-        private ImageView mImageView;
-        private String mImageUrl;
-        private String mTempFilePath = null;
-        private WeakReference<Activity> mActivityWeakReference;
-
-        public DownloadImageTask(Activity activity,
-                                 View progressView, ImageView imageView, String imageUrl) {
-            mActivityWeakReference = new WeakReference<Activity>(activity);
-            mProgressView = progressView;
-            mImageView = imageView;
-            mImageUrl = imageUrl;
-        }
-
-        @Override
-        protected String doInBackground(String... forums) {
-            try {
-                return downloadImage(mImageUrl);
-            } catch (Throwable e) {
-                ex = e;
-                return null;
-            }
-        }
-
-
-        protected void onPreExecute() {
-            try {
-                mProgressView.setVisibility(View.VISIBLE);
-            } catch (Exception ex) {
-                AppLog.e(null, ex);
-            }
-        }
-
-        private Throwable ex;
-
-        protected void onPostExecute(final String success) {
-            try {
-                mProgressView.setVisibility(View.GONE);
-            } catch (Exception ex) {
-                AppLog.e(null, ex);
-            }
-            if (ex != null) {
-                AppLog.e(null, ex);
-                return;
-            }
-            if (isCancelled())
-                return;
-            if (!TextUtils.isEmpty(success)) {
-                try {
-                    mImageView.setImageURI(Uri.parse(success));
-                } catch (Throwable ex) {
-                    AppLog.eToast(mActivityWeakReference.get(), ex);
-                    if (!TextUtils.isEmpty(mTempFilePath))
-                        IntentUtils.openImage(new File(mTempFilePath));
-                }
-            }
-
-        }
-
-        private String downloadImage(String imageUrl) throws Exception {
-            HttpHelper httpHelper = new HttpHelper();
-            try {
-
-                File file = File.createTempFile("temp_image_" + App.getInstance().getUniqueIntValue(), ".tmp");
-                mTempFilePath = file.getAbsolutePath();
-
-                long total = 0;
-
-
-                HttpEntity entity = httpHelper.getDownloadResponse(imageUrl, total);
-
-
-                int count;
-
-
-                InputStream in = entity.getContent();
-                FileOutputStream output = new FileOutputStream(file, true);
-
-                byte data[] = new byte[1024];
-                try {
-                    while ((count = in.read(data)) != -1) {
-                        output.write(data, 0, count);
-                    }
-
-                } finally {
-                    output.flush();
-                    output.close();
-                    in.close();
-                }
-                return file.getPath();
-            } finally {
-                httpHelper.close();
-            }
-
-        }
-    }
 }
 

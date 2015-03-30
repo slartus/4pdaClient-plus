@@ -877,7 +877,7 @@ public class Client implements IHttpClient {
 
             final Pattern postHeaderPattern = PatternExtensions.compile("<span class=\"post_date\">(.*?)&nbsp;.*?#(\\d+).*");
             final Pattern nickPattern = PatternExtensions.compile("insertText\\('[^']*\\[B\\](.*?),\\[/B\\]\\s*'\\)\"\\s*data-av=\"([^\"]*)\">");
-            Pattern userInfoPattern = PatternExtensions.compile("<span class=\"post_user_info\">(?:<strong>.*?</strong><br />)?Группа:(.*?)<font color=\"(.*?)\">[\\s\\S]*?mid=(\\d+)");
+            Pattern userInfoPattern = PatternExtensions.compile("<span class=\"post_user_info\">(<strong[^>]*>.*?</strong><br />)?Группа:(.*?)<font color=\"(.*?)\">[\\s\\S]*?mid=(\\d+)");
 
             final Pattern reputationPattern = PatternExtensions.compile("title=\"Просмотреть репутацию\">(.*?)</a>");
             final Pattern actionsPattern = PatternExtensions.compile(".*Жалоба.*");
@@ -913,9 +913,11 @@ public class Client implements IHttpClient {
 
                 m = userInfoPattern.matcher(str);
                 if (m.find()) {
-                    post.setUserGroup(Html.fromHtml(m.group(1)).toString().trim());
-                    post.setUserState(m.group(2));
-                    post.setUserId(m.group(3));
+                    if(m.group(1)!=null)
+                        post.setCurator();
+                    post.setUserGroup(m.group(2));
+                    post.setUserState(m.group(3));
+                    post.setUserId(m.group(4));
                 }
 
                 m = reputationPattern.matcher(str);

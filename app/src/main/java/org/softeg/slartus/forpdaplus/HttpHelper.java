@@ -25,6 +25,7 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,13 +86,13 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
                 });
             }
 
-            final File file = new File(filePath);
-
             MultipartEntityBuilder multipartEntity = MultipartEntityBuilder.create();
             multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+            multipartEntity.setCharset(Charset.forName("windows-1251"));
             File uploadFile = new File(filePath);
             multipartEntity.addBinaryBody("FILE_UPLOAD", uploadFile, ContentType.create("image/png"),
                     FileUtils.getFileNameFromUrl(filePath));
+
 
 
             m_RedirectUri = null;
@@ -208,12 +209,7 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
             return res;
         }
 
-
-    public HttpEntity getDownloadResponse(String url, long range) throws Exception {
-
-        // String url = downloadTask.getUrl();
-        //url = "http://4pda.ru/forum/dl/post/944795/PolarisOffice_3.0.3047Q_SGS.apk"; //9.5Mb
-
+    public HttpResponse getDownloadResponse(String url, long range) throws IOException {
         // process headers using request interceptor
         final Map<String, String> sendHeaders = new HashMap<String, String>();
         sendHeaders.put(HttpHelper.ACCEPT_ENCODING, HttpHelper.GZIP);
@@ -234,22 +230,14 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
 
         HttpGet request = new HttpGet(url);
         HttpResponse response = client.execute(request);
-        // Check if server response is valid
         StatusLine status = response.getStatusLine();
         checkStatus(status, url);
-//        int statusCode= status.getStatusCode();
-//
-//        if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_PARTIAL_CONTENT) {
-//            if (statusCode >= 500 && statusCode < 600)
-//                throw new ShowInBrowserException("Сайт не отвечает: " + statusCode + " " + AppHttpStatus.getReasonPhrase(statusCode, status.getReasonPhrase()),url);
-//            else if (statusCode ==404)
-//                throw new ShowInBrowserException("Сайт не отвечает: " + statusCode + " " + AppHttpStatus.getReasonPhrase(statusCode, status.getReasonPhrase()),url);
-//            else
-//                throw new ShowInBrowserException(statusCode + " " + AppHttpStatus.getReasonPhrase(statusCode, status.getReasonPhrase()),url);
-//        }
 
+        return response;
+    }
 
-        return response.getEntity();
+    public HttpEntity getDownloadEntity(String url, long range) throws Exception {
+        return getDownloadResponse(url,range).getEntity();
     }
 
 

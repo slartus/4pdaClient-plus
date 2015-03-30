@@ -8,8 +8,8 @@ android {
         minSdkVersion 15
 
         targetSdkVersion 21
-        versionCode 520
-        versionName "2.5.1"
+        versionCode 521
+        versionName "2.5.2"
     }
     buildTypes {
         release {
@@ -48,6 +48,7 @@ dependencies {
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
     compile 'com.github.chrisbanes.photoview:library:1.2.2'
     compile 'com.dmitriy-tarasov:android-intents:+'
+    compile 'com.squareup.picasso:picasso:2.5.0'
     compile 'ch.acra:acra:4.6.1'
 
     compile project(':newquickaction')

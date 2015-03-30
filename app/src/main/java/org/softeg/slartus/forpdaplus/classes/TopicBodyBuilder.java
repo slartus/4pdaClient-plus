@@ -268,7 +268,12 @@ public class TopicBodyBuilder extends HtmlBuilder {
         sb.append("</td></tr>");
 
         String userGroup = msg.getUserGroup() == null ? "" : msg.getUserGroup();
-        sb.append("<tr>\n" + "\t\t\t<td colspan=\"2\">").append(advDiv).append("<span  class=\"user_group\">").append(userGroup).append("</span></td></tr>");
+        sb.append("<tr>\n" + "\t\t\t<td colspan=\"2\">").append(advDiv)
+                .append("<span  class=\"user_group\">").append(userGroup)
+                .append("</span>");
+        if(msg.isCurator())
+            sb.append("<cur></cur>");
+        sb.append("</td></tr>");
         sb.append("\t\t<tr>\n");
         sb.append("\t\t\t<td>").append(advDiv).append(TextUtils.isEmpty(msg.getUserId()) ? "" : getReputation(msg)).append("</td>\n");
         if (Client.getInstance().getLogined()) {
