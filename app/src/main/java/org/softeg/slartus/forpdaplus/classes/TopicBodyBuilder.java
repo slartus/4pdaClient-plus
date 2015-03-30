@@ -239,7 +239,11 @@ public class TopicBodyBuilder extends HtmlBuilder {
         String advDiv = m_IsShowAvatars ? "<div class=\"margin_left\"></div>" : "";
         sb.append("<div></div><div class=\"post_header\">\n");
         sb.append("\t<table width=\"100%\">\n");
-        sb.append("\t\t<tr><td>").append(advDiv).append("<span class=\"").append(userState).append("\">").append(nickLink).append("</span></td>\n");
+        sb.append("\t\t<tr><td>").append(advDiv);
+
+        if(msg.isCurator())
+            sb.append("<span class=\"curator\"></span>");
+        sb.append("<span class=\"").append(userState).append("\">").append(nickLink).append("</span></td>\n");
         sb.append("\t\t\t<td><div align=\"right\"><span class=\"post_date_cli\">").append(msg.getDate()).append("<a ")
                 .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostLinkMenu", msg.getId())).append(">#").append(msg.getNumber()).append("</a></span></div></td>\n");
         sb.append("\t\t</tr>\n");
@@ -271,8 +275,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         sb.append("<tr>\n" + "\t\t\t<td colspan=\"2\">").append(advDiv)
                 .append("<span  class=\"user_group\">").append(userGroup)
                 .append("</span>");
-        if(msg.isCurator())
-            sb.append("<cur></cur>");
+
         sb.append("</td></tr>");
         sb.append("\t\t<tr>\n");
         sb.append("\t\t\t<td>").append(advDiv).append(TextUtils.isEmpty(msg.getUserId()) ? "" : getReputation(msg)).append("</td>\n");
