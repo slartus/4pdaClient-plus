@@ -16,6 +16,10 @@ import android.widget.EditText;
 
 import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.softeg.slartus.forpdaapi.ForumsApi;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.LoginResult;
@@ -802,40 +806,18 @@ public class Client implements IHttpClient {
                                        Boolean logined, String urlParams) throws IOException {
 
 
-        Matcher mainMatcher = PatternExtensions.compile("^([\\s\\S]*?)<!--Begin Msg Number \\d+-->([\\s\\S]*?)<!-- TABLE([\\s\\S]*)").matcher(topicBody);
+        if (TextUtils.isEmpty(topicBody))
+            throw new NotReportException("Сервер вернул пустую страницу");
 
-        if (!mainMatcher.find()) {
-            Matcher errorMatcher = Pattern.compile("<div class=\"wr va-m text\">([\\s\\S]*?)</div>", Pattern.CASE_INSENSITIVE)
-                    .matcher(topicBody);
-            if (errorMatcher.find()) {
-
-                throw new NotReportException(errorMatcher.group(1));
-
-            }
-            Pattern errorPattern = PatternExtensions.compile("<div class=\"errorwrap\">([\\s\\S]*?)</div>");
-            errorMatcher = errorPattern.matcher(topicBody);
-            if (errorMatcher.find()) {
-                final Pattern errorReasonPattern = PatternExtensions.compile("<p>(.*?)</p>");
-                Matcher errorReasonMatcher = errorReasonPattern.matcher(errorMatcher.group(1));
-                if (errorReasonMatcher.find()) {
-                    throw new NotReportException(errorReasonMatcher.group(1));
-                }
-            }
-
-
-            if (TextUtils.isEmpty(topicBody))
-                throw new NotReportException("Сервер вернул пустую страницу");
-            if (topicBody.startsWith("<h1>"))
-                throw new NotReportException("Ответ сайта 4pda: " + Html.fromHtml(topicBody).toString());
-            throw new IOException("Ошибка разбора страницы id=" + id);
-        }
+        Document doc = Jsoup.parse(topicBody, "http://4pda.ru");
 
 
         Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(context);
 
-        ExtTopic topic = createTopic(id, mainMatcher.group(1));
+        ExtTopic topic = createTopic(id, topicBody);
 
-        String body = mainMatcher.group(2);
+        Elements postElements = doc.select("div[data-post]");
+        String body = postElements.outerHtml();
 
 
         TopicBodyBuilder topicBodyBuilder = new TopicBodyBuilder(context, logined, topic, urlParams,
@@ -847,7 +829,7 @@ public class Client implements IHttpClient {
 
         //>>ОПРОС
         Matcher pollMatcher = Pattern.compile("<form[^>]*action=\"[^\"]*addpoll=1[^\"]*\"[^>]*>([\\s\\S]*?)</form>", Pattern.CASE_INSENSITIVE)
-                .matcher(mainMatcher.group(1));
+                .matcher(topicBody);
         if (pollMatcher.find()) {
             String poll =
                     "<form action=\"modules.php\" method=\"get\">" +
@@ -871,89 +853,76 @@ public class Client implements IHttpClient {
             topicBodyBuilder.endTopic();
         } else {
 
-            Matcher matcher = Pattern.compile("<a name=\"entry(\\d+)\"></a><div class=\"post_header_container\">([\\s\\S]*?)(?:<!--Begin Msg Number|<!-- TABLE)",
-                    Pattern.MULTILINE | Pattern.CASE_INSENSITIVE).matcher(body + "<!-- TABLE");
+            final Pattern postHeaderPattern = PatternExtensions.compile("(.*?)&nbsp;.*?#(\\d+).*");
+            final Pattern nickPattern = PatternExtensions.compile("insertText\\('[^']*\\[B\\](.*?),\\[/B\\]\\s*'\\)");
 
+            Pattern userInfoPattern = PatternExtensions.compile("(<strong[^>]*>.*?</strong><br />)?Группа:(.*?)<font color=\"(.*?)\">[\\s\\S]*?mid=(\\d+)");
 
-            final Pattern postHeaderPattern = PatternExtensions.compile("<span class=\"post_date\">(.*?)&nbsp;.*?#(\\d+).*");
-            final Pattern nickPattern = PatternExtensions.compile("insertText\\('[^']*\\[B\\](.*?),\\[/B\\]\\s*'\\)\"\\s*data-av=\"([^\"]*)\">");
-            Pattern userInfoPattern = PatternExtensions.compile("<span class=\"post_user_info\">(<strong[^>]*>.*?</strong><br />)?Группа:(.*?)<font color=\"(.*?)\">[\\s\\S]*?mid=(\\d+)");
+            org.softeg.slartus.forpdaplus.classes.Post post;
+            for (Element postElement : postElements) {
+                String postId = postElement.attr("data-post");
 
-            final Pattern reputationPattern = PatternExtensions.compile("title=\"Просмотреть репутацию\">(.*?)</a>");
-            final Pattern actionsPattern = PatternExtensions.compile(".*Жалоба.*");
-            final Pattern bodyPattern = PatternExtensions.compile("<div class=\"post_body([^\"]*)?\">([\\s\\S]*)</div>$");
-
-
-            String today = Functions.getToday();
-            String yesterday = Functions.getYesterToday();
-            org.softeg.slartus.forpdaplus.classes.Post post = null;
-            Boolean spoil = spoilFirstPost;
-            Boolean first = true;
-            while (matcher.find()) {
-                if (post != null) {
-                    topicBodyBuilder.addPost(post, spoil);
-                    spoil = false;
-                    first = false;
-                }
-                String postId = matcher.group(1);
-
-                String str = matcher.group(2);
-                Matcher m = postHeaderPattern.matcher(str);
-                if (m.find()) {
-                    post = new org.softeg.slartus.forpdaplus.classes.Post(postId, Functions.getForumDateTime(Functions.parseForumDateTime(m.group(1), today, yesterday)), m.group(2));
-
-                } else
+                Element postHeaderElement = postElement.select("div.post_header").first();
+                if (postHeaderElement == null)
                     continue;
 
-                m = nickPattern.matcher(str);
+                Element el = postHeaderElement.select("span.post_date").first();
+                if (el == null)
+                    continue;
+                Matcher m = postHeaderPattern.matcher(el.html());
+                if (!m.find())
+                    continue;
+                post = new org.softeg.slartus.forpdaplus.classes.Post(postId, m.group(1), m.group(2));
+
+                el = postHeaderElement.select("span.post_nick>a[data-av]").first();
+                if (el == null)
+                    continue;
+                m = nickPattern.matcher(el.attr("onclick"));
                 if (m.find()) {
                     post.setAuthor(m.group(1));
-                    post.setAvatarFileName(m.group(2));
                 }
+                post.setAvatarFileName(el.attr("data-av"));
 
-                m = userInfoPattern.matcher(str);
+                el = postHeaderElement.select("span.post_user_info").first();
+                if (el == null)
+                    continue;
+
+                m = userInfoPattern.matcher(el.html());
                 if (m.find()) {
-                    if(m.group(1)!=null)
+                    if (m.group(1) != null)
                         post.setCurator();
                     post.setUserGroup(m.group(2));
                     post.setUserState(m.group(3));
                     post.setUserId(m.group(4));
                 }
 
-                m = reputationPattern.matcher(str);
-                if (m.find()) {
-                    post.setUserReputation(m.group(1));
-                    post.setCanPlusRep(str.contains("Поднять репутацию"));
-                    post.setCanMinusRep(str.contains("Опустить репутацию"));
+                el = postHeaderElement.select("span[id~=ajaxrep-\\d+]").first();
+                if (el != null) {
+                    post.setUserReputation(el.text());
                 }
+                post.setCanMinusRep(postHeaderElement.select("a[href*=view=win_minus]").first() != null);
+                post.setCanPlusRep(postHeaderElement.select("a[href*=view=win_add]").first() != null);
 
-                m = actionsPattern.matcher(str);
-                if (m.find()) {
-                    post.setCanEdit(str.contains("Ред."));
-                    post.setCanDelete(str.contains("Удал."));
+                el = postHeaderElement.select("span.post_action").first();
+                if (el != null) {
+                    post.setCanEdit(el.select("a[href*=do=edit_post]").first() != null);
+                    post.setCanDelete(el.select("a[onclick*=seMODdel]").first() != null);
                     // если автор поста не совпадает с текущим пользователем и есть возможность удалить-значит, модератор
                     if (post.getUserId() != null && !post.getUserId().equals(Client.getInstance().UserId)) {
                         topicBodyBuilder.setMMod(true);
                     }
                 }
 
-                m = bodyPattern.matcher(str);
-                if (m.find()) {
-                    String postBody = m.group(2);
-                    if (postBody != null)
-                        postBody = postBody.trim();
-                    String postClass = "";
-                    if (m.group(1) != null)
-                        postClass = m.group(1);
-                    post.setBody("<div class=\"post_body" + postClass + "\">" + postBody + "</div>");
-                }
+                String postBody = "";
 
-                //topic.addMessage(post);
-            }
+                el = postElement.select("div.post_body").first();
 
-            if (post != null) {
-                topicBodyBuilder.addPost(post, spoil);
+                postBody = el.html();
 
+                post.setBody("<div class=\"" + el.className() + "\">" + postBody + "</div>");
+
+                topicBodyBuilder.addPost(post, spoilFirstPost);
+                spoilFirstPost = false;
             }
 
             topicBodyBuilder.endTopic();
