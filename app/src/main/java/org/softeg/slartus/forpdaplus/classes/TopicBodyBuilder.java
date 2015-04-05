@@ -38,7 +38,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         m_HtmlPreferences = new HtmlPreferences();
         m_HtmlPreferences.load(context);
         m_EmoticsDict = Smiles.getSmilesDict();
-        m_PostTemplate = FileUtils.readTrimRawTextFile(context, R.raw.post_header);
+
         m_IsWebviewAllowJavascriptInterface = isWebviewAllowJavascriptInterface;
         m_Logined = logined;
         m_UrlParams = urlParams;
@@ -213,12 +213,10 @@ public class TopicBodyBuilder extends HtmlBuilder {
         return sb.toString();
     }
 
-    private String m_PostTemplate = null;
-
     private void addPostHeader(StringBuilder sb, Post msg) {
         String nick = msg.getNick();
         String nickParam = msg.getNickParam();
-        String[] repParams = new String[]{msg.getId(), msg.getUserId(), nickParam, msg.getCanPlusRep() ? "1" : "0", msg.getCanMinusRep() ? "1" : "0"};
+
 
 
         String nickLink = nick;
@@ -255,13 +253,6 @@ public class TopicBodyBuilder extends HtmlBuilder {
             sb.append("<div class=\"avatar_container\">");
             String avatar = msg.getAvatarFileName();
 
-//            if (!m_IsLoadImages)
-//            {
-//                sb.append("<a class=\"sp_img\" ")
-//                        .append(TextUtils.isEmpty(avatar) ?
-//                                "" : TopicBodyBuilder.getHtmlout(m_IsWebviewAllowJavascriptInterface, "showImgPreview", new String[]{"аватар", avatar, avatar}))
-//                        .append(">аватар</a>");
-//            } else {
             if (TextUtils.isEmpty(avatar))
                 avatar = "file:///android_asset/profile/logo.png";
             sb.append("<img src=\"").append(avatar).append("\" />");

@@ -854,9 +854,9 @@ public class Client implements IHttpClient {
         } else {
 
             final Pattern postHeaderPattern = PatternExtensions.compile("(.*?)&nbsp;.*?#(\\d+).*");
-            final Pattern nickPattern = PatternExtensions.compile("insertText\\('[^']*\\[B\\](.*?),\\[/B\\]\\s*'\\)");
+            final Pattern nickPattern = PatternExtensions.compile("insertText\\('[^']*\\[B\\]([^,]*),\\[/B\\]\\s*'\\)");
 
-            Pattern userInfoPattern = PatternExtensions.compile("(<strong[^>]*>.*?</strong><br />)?Группа:(.*?)<font color=\"(.*?)\">[\\s\\S]*?mid=(\\d+)");
+            Pattern userInfoPattern = PatternExtensions.compile("(<strong[^>]*>.*?</strong><br />)?Группа:(.*?)<font color=\"([^\"]*)\">[\\s\\S]*?mid=(\\d+)");
 
             org.softeg.slartus.forpdaplus.classes.Post post;
             for (Element postElement : postElements) {

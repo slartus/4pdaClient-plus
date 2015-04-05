@@ -101,10 +101,14 @@ public class HtmlPreferences {
 
     public static String modifyAttachedImagesBody(Boolean webViewAllowJs, String value) {
         return value
-                .replaceAll("<a attach_id=\"\\d+\" s=0 id=\".*?\" href=\"(.*?)\" rel=\"lytebox\\[\\d+\\]\" title=\"(.*?)\" target=\"_blank\"><img src=\"(.*?)\".*?</a>",
-                        "<img src=\"file:///android_asset/forum/style_images/1/folder_mime_types/gif.gif\"><a class=\"sp_img\" " + TopicBodyBuilder.getHtmlout(webViewAllowJs, "showImgPreview", new String[]{"Прикрепленное изображение", "$3", "$1"}, false) + ">$2</a>")
-                .replaceAll("<img attach_id=\"\\d+\" s=0 src=\"(.*?)\" class=\"linked-image\" alt=\"Прикрепленное изображение\" />",
-                        "<img src=\"file:///android_asset/forum/style_images/1/folder_mime_types/gif.gif\"><a class=\"sp_img\" " + TopicBodyBuilder.getHtmlout(webViewAllowJs, "showImgPreview", new String[]{"Прикрепленное изображение", "$1", "$1"}, false) + ">Прикрепленное изображение</a>");
+                .replaceAll("<a attach_id=\"\\d+\"[^>]*?href=\"([^\"]*)\"[^>]*?title=\"([^\"]*)\"[^>]*?><img src=\"([^\"]*)\".*?</a>",
+                        "<img src=\"file:///android_asset/forum/style_images/1/folder_mime_types/gif.gif\"><a class=\"sp_img\" "
+                                + TopicBodyBuilder.getHtmlout(webViewAllowJs, "showImgPreview",
+                                new String[]{"Прикрепленное изображение", "$3", "$1"}, false) + ">$2</a>")
+                .replaceAll("<img attach_id=\"\\d+\"[^>]*?src=\"([^\"]*)\"[^>]*?>",
+                        "<img src=\"file:///android_asset/forum/style_images/1/folder_mime_types/gif.gif\"><a class=\"sp_img\" "
+                                + TopicBodyBuilder.getHtmlout(webViewAllowJs, "showImgPreview",
+                                new String[]{"Прикрепленное изображение", "$1", "$1"}, false) + ">Прикрепленное изображение</a>");
 
     }
 
