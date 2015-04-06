@@ -934,13 +934,10 @@ public class Client implements IHttpClient {
                 }
 
                 m = repEditPattern.matcher(str);
-                if (m.find()) {
-
-                    if (m.groupCount() >0 && "win_minus".equals(m.group(1))
-                            || m.groupCount() > 1 && "win_minus".equals(m.group(2)))
+                while (m.find()) {
+                    if ("win_minus".equals(m.group(1)))
                         post.setCanMinusRep(true);
-                    if (m.groupCount() > 0 && "win_add".equals(m.group(1))
-                            || m.groupCount() > 1 && "win_add".equals(m.group(2)))
+                    if ("win_add".equals(m.group(1)))
                         post.setCanPlusRep(true);
                 }
 
