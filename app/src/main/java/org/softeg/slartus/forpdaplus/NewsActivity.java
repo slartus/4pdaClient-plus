@@ -802,7 +802,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
         }
 
         private String parseBody(String body) {
-            Matcher m = PatternExtensions.compile("<article id=\"content\" class=\"\">([\\s\\S]*?)<aside id=\"sidebar\">").matcher(body);
+            Matcher m = PatternExtensions.compile("<article id=\"content\" class=\"\" data-ztm=".*">([\\s\\S]*?)<aside id=\"sidebar\">").matcher(body);
             if (m.find()) {
                 return normalizeCommentUrls(m.group(1)).replaceAll("<form[\\s\\S]*?/form>", "");
             }
