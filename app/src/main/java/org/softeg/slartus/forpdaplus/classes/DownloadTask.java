@@ -3,11 +3,11 @@ package org.softeg.slartus.forpdaplus.classes;
 import android.content.Context;
 import android.text.TextUtils;
 
-import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.db.DownloadsTable;
-import org.softeg.slartus.forpdacommon.FileUtils;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;

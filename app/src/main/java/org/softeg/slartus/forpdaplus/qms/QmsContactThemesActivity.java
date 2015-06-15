@@ -1,15 +1,14 @@
 package org.softeg.slartus.forpdaplus.qms;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
@@ -26,10 +25,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.qms.QmsUserTheme;
@@ -39,8 +39,6 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
-import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
@@ -54,19 +52,18 @@ import java.util.ArrayList;
  * Time: 15:11
  * To change this template use File | Settings | File Templates.
  */
-public class QmsContactThemesActivity extends BaseFragmentActivity
-        implements LoaderManager.LoaderCallbacks<QmsUserThemes>,
-        AdapterView.OnItemClickListener {
+public class QmsContactThemesActivity extends BaseFragmentActivity implements AdapterView.OnItemClickListener,
+
+        Loader.OnLoadCompleteListener<QmsUserThemes> {
     private QmsContactsAdapter mAdapter;
     private QmsUserThemes m_QmsUsers = new QmsUserThemes();
     private ListView m_ListView;
     private static final String MID_KEY = "mid";
-    private static final String PARSE_NICK_KEY = "PARSE_NICK_KEY";
     private static final String NICK_KEY = "nick";
-
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
     private String m_Id;
     private String m_Nick;
-    SwipeRefreshLayout mSwipeRefreshLayout;
+
     //  private MenuFragment mFragment1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,13 +78,13 @@ public class QmsContactThemesActivity extends BaseFragmentActivity
         createActionMenu();
 
         m_ListView = (ListView) findViewById(android.R.id.list);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mSwipeRefreshLayout = App.createSwipeRefreshLayout(this, findViewById(R.id.main_layout), new Runnable() {
             @Override
-            public void onRefresh() {
+            public void run() {
                 refreshData();
             }
         });
+
         setState(true);
 
 
@@ -100,9 +97,8 @@ public class QmsContactThemesActivity extends BaseFragmentActivity
 
         m_Id = extras.getString(MID_KEY);
         m_Nick = extras.getString(NICK_KEY);
-        setTitle(m_Nick + "-QMS-Темы");
-
-        refreshData();
+        setTitle("QMS-Темы");
+        getSupportActionBar().setSubtitle(m_Nick);
     }
 
     private void createActionMenu() {
@@ -137,30 +133,53 @@ public class QmsContactThemesActivity extends BaseFragmentActivity
     @Override
     public void onResume() {
         super.onResume();
-
+        refreshData();
     }
 
     public void refreshData() {
-
+        m_QmsUsers.clear();
 
         setState(true);
-
-        Bundle args=new Bundle();
-        args.putString(MID_KEY,m_Id);
-        args.putBoolean(PARSE_NICK_KEY, TextUtils.isEmpty(m_Nick));
-        if (getLoaderManager().getLoader(QmsUsersLoader.ID) != null)
-            getSupportLoaderManager().restartLoader(QmsUsersLoader.ID, args, this);
-        else
-            getSupportLoaderManager().initLoader(QmsUsersLoader.ID, args, this);
+        QmsUsersLoader qmsUsersLoader = new QmsUsersLoader(this, m_Id, TextUtils.isEmpty(m_Nick));
+        qmsUsersLoader.registerListener(0, this);
+        qmsUsersLoader.startLoading();
     }
 
+
     private void setState(final boolean loading) {
+        //mSwipeRefreshLayout.setRefreshing(loading);
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
                 mSwipeRefreshLayout.setRefreshing(loading);
             }
         });
+    }
+
+    public void onLoadComplete(Loader<QmsUserThemes> qmsUsersLoader, QmsUserThemes data) {
+        if (data != null) {
+            if (data.getError() != null) {
+                AppLog.e(this, data.getError());
+                setState(false);
+                return;
+            }
+            if (!TextUtils.isEmpty(data.Nick)) {
+                m_Nick = data.Nick;
+                setTitle("QMS-Темы");
+                getSupportActionBar().setSubtitle(m_Nick);
+            }
+            for (QmsUserTheme item : data) {
+                m_QmsUsers.add(item);
+            }
+            mAdapter.setData(m_QmsUsers);
+        } else {
+            m_QmsUsers = new QmsUserThemes();
+            mAdapter.setData(m_QmsUsers);
+        }
+
+
+        setState(false);
+        mAdapter.notifyDataSetChanged();
 
     }
 
@@ -177,6 +196,8 @@ public class QmsContactThemesActivity extends BaseFragmentActivity
         } else {
             org.softeg.slartus.forpdaplus.qms.QmsChatActivity.openChat(this, m_Id, m_Nick, item.Id, item.Title);
         }
+
+
     }
 
     ActionMode mMode;
@@ -218,43 +239,8 @@ public class QmsContactThemesActivity extends BaseFragmentActivity
         new DeleteTask(this, ids).execute();
     }
 
-    @Override
-    public Loader<QmsUserThemes> onCreateLoader(int id, Bundle args) {
-        return new QmsUsersLoader(this, args.getString(MID_KEY), args.getBoolean(PARSE_NICK_KEY));
-    }
+    private static class QmsUsersLoader extends AsyncTaskLoader<QmsUserThemes> {
 
-    @Override
-    public void onLoadFinished(Loader<QmsUserThemes> loader, QmsUserThemes data) {
-        if (data != null) {
-            if (data.getError() != null) {
-                AppLog.e(this, data.getError());
-                setState(false);
-                return;
-            }
-
-            if (!TextUtils.isEmpty(data.Nick)) {
-                m_Nick = data.Nick;
-                setTitle(m_Nick + " - QMS-Темы");
-            }
-
-            m_QmsUsers.clear();
-            for (QmsUserTheme item : data) {
-                m_QmsUsers.add(item);
-            }
-            mAdapter.setData(m_QmsUsers);
-        }
-
-        setState(false);
-        mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onLoaderReset(Loader<QmsUserThemes> loader) {
-        setState(false);
-    }
-
-    private static class QmsUsersLoader extends android.support.v4.content.AsyncTaskLoader<QmsUserThemes> {
-        public static final int ID = App.getInstance().getUniqueIntValue();
         QmsUserThemes mApps;
 
         Throwable ex;
@@ -388,8 +374,9 @@ public class QmsContactThemesActivity extends BaseFragmentActivity
                 convertView = m_Inflater.inflate(R.layout.qms_contact_theme_item, parent, false);
 
                 holder = new ViewHolder();
-                holder.txtIsNew = (ImageView) convertView.findViewById(R.id.txtIsNew);
+                //holder.txtIsNew = (ImageView) convertView.findViewById(R.id.txtIsNew);
                 holder.txtCount = (TextView) convertView.findViewById(R.id.txtMessagesCount);
+                holder.txtAllCount = (TextView) convertView.findViewById(R.id.txtAllMessagesCount);
 
                 holder.txtNick = (TextView) convertView.findViewById(R.id.txtNick);
 
@@ -423,21 +410,39 @@ public class QmsContactThemesActivity extends BaseFragmentActivity
             holder.txtDateTime.setText(user.Date);
 
             if (!TextUtils.isEmpty(user.NewCount)) {
-                holder.txtCount.setText(user.NewCount + "/" + user.Count);
-                holder.txtIsNew.setImageResource(R.drawable.new_flag);
+                holder.txtCount.setText(user.NewCount);
+                holder.txtAllCount.setText(user.Count);
+                switch (PreferenceManager.getDefaultSharedPreferences(getContext()).getString("mainAccentColor", "pink")) {
+                    case "pink":
+                        holder.txtCount.setBackgroundResource(R.drawable.qmsnew);
+                        break;
+                    case "blue":
+                        holder.txtCount.setBackgroundResource(R.drawable.qmsnewblue);
+                        break;
+                    case "gray":
+                        holder.txtCount.setBackgroundResource(R.drawable.qmsnewgray);
+                        break;
+                }
+                //holder.txtIsNew.setImageResource(R.drawable.new_flag);
+                holder.txtNick.setTextAppearance(getContext(), R.style.QmsNew);
+                holder.txtCount.setTextAppearance(getContext(), R.style.QmsNew);
             } else {
-                holder.txtCount.setText(user.Count);
-                holder.txtIsNew.setImageBitmap(null);
+                holder.txtAllCount.setText(user.Count);
+                holder.txtCount.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                //holder.txtIsNew.setImageBitmap(null);
+                holder.txtNick.setTextAppearance(getContext(), R.style.QmsOld);
+                holder.txtCount.setTextAppearance(getContext(), R.style.QmsOld);
             }
             holder.checkbox.setChecked(user.isSelected());
             return convertView;
         }
 
         public class ViewHolder {
-            ImageView txtIsNew;
+            //ImageView txtIsNew;
             TextView txtNick;
             TextView txtDateTime;
             TextView txtCount;
+            TextView txtAllCount;
             CheckBox checkbox;
         }
     }
@@ -445,12 +450,15 @@ public class QmsContactThemesActivity extends BaseFragmentActivity
     private class DeleteTask extends AsyncTask<String, Void, Boolean> {
 
 
-        private final ProgressDialog dialog;
+        private final MaterialDialog dialog;
         ArrayList<String> m_Ids;
 
         public DeleteTask(Context context, ArrayList<String> ids) {
             m_Ids = ids;
-            dialog = new AppProgressDialog(context);
+            dialog = new MaterialDialog.Builder(context)
+                    .progress(true,0)
+                    .content("Удаление диалогов")
+                    .build();
         }
 
         @Override
@@ -468,7 +476,6 @@ public class QmsContactThemesActivity extends BaseFragmentActivity
 
         // can use UI thread here
         protected void onPreExecute() {
-            this.dialog.setMessage("Удаление диалогов...");
             this.dialog.show();
         }
 
@@ -515,19 +522,18 @@ public class QmsContactThemesActivity extends BaseFragmentActivity
         @Override
         public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
             if (m_QmsUsers.getSelectedCount() != 0)
-                new AlertDialogBuilder(QmsContactThemesActivity.this)
-                        .setTitle("Подтвердите действие")
-                        .setMessage("Вы действительно хотите удалить выбранные диалоги с пользователем " + m_Nick + "?")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                new MaterialDialog.Builder(QmsContactThemesActivity.this)
+                        .title("Подтвердите действие")
+                        .content("Вы действительно хотите удалить выбранные диалоги с пользователем " + m_Nick + "?")
+                        .positiveText("OK")
+                        .callback(new MaterialDialog.ButtonCallback() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
+                            public void onPositive(MaterialDialog dialog) {
                                 mode.finish();
                                 deleteSelectedDialogs();
                             }
                         })
-                        .setNegativeButton("Отмена", null)
-                        .create()
+                        .negativeText("Отмена")
                         .show();
 
             return true;

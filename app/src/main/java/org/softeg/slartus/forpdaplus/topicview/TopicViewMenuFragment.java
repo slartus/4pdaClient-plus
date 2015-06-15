@@ -1,9 +1,7 @@
 package org.softeg.slartus.forpdaplus.topicview;
 
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -22,11 +20,12 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
@@ -191,10 +190,20 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
     public void onCreateOptionsMenu(Menu menu, final MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         try {
+            MenuItem item;
+            item = menu.add(R.string.Refresh)
+                    .setIcon(R.drawable.ic_menu_refresh)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
+                        public boolean onMenuItemClick(MenuItem item) {
+                            getInterface().reloadTopic();
+                            return true;
+                        }
+                    });
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             SubMenu subMenu = menu.addSubMenu(R.string.Attaches)
                     .setIcon(R.drawable.ic_menu_download);
-            subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            //subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
             subMenu.add("Вложения текущей страницы")
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem item) {
@@ -210,12 +219,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                         }
                     });
 
-
-            subMenu = menu.addSubMenu(R.string.FindOnPage).setIcon(R.drawable.ic_menu_search);
-            subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-            subMenu.add(R.string.FindOnPage)
-                    .setIcon(R.drawable.ic_action_forum_search)
+            item = menu.add(R.string.FindOnPage)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -224,8 +228,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                             return true;
                         }
                     });
-            subMenu.add(R.string.FindInTopic)
-                    .setIcon(R.drawable.ic_action_post_search)
+            item = menu.add(R.string.FindInTopic)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -235,17 +238,8 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                         }
                     });
 
-            menu.add(R.string.Refresh)
-                    .setIcon(R.drawable.ic_menu_refresh)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                        public boolean onMenuItemClick(MenuItem item) {
-                            getInterface().reloadTopic();
-                            return true;
-                        }
-                    });
             menu.add(R.string.Browser)
-                    .setIcon(R.drawable.ic_menu_goto)
+                    .setIcon(R.drawable.ic_menu_browser)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -272,7 +266,6 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
 
 
             SubMenu optionsMenu = menu.addSubMenu("Вид");
-            optionsMenu.getItem().setIcon(R.drawable.ic_menu_preferences);
             optionsMenu.getItem().setTitle("Вид");
 
 
@@ -280,30 +273,29 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                     App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]))
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(final MenuItem menuItem) {
+                   String[] avatars = App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles);
+                   new MaterialDialog.Builder(getActivity())
+                           .title("Показывать аватары")
+                           .cancelable(true)
+                           .items(avatars)
+                           .itemsCallbackSingleChoice(Preferences.Topic.getShowAvatarsOpt(), new MaterialDialog.ListCallbackSingleChoice() {
+                               @Override
+                               public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence avatars) {
+                                   //if(i==-1) return false;
 
-                   new AlertDialogBuilder(getActivity())
-                           .setTitle("Показывать аватары")
-                           .setCancelable(true)
-                           .setSingleChoiceItems(App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles),
-                                   Preferences.Topic.getShowAvatarsOpt(), new DialogInterface.OnClickListener() {
-                                       @Override
-                                       public void onClick(DialogInterface dialogInterface, int i) {
-                                           dialogInterface.dismiss();
-                                           if(i==-1)
-                                               return;
-
-                                           Preferences.Topic.setShowAvatarsOpt(i);
-                                           menuItem.setTitle(String.format("Показывать аватары (%s)",
-                                                   App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]));
-                                       }
-                                   })
-                           .create().show();
+                                   Preferences.Topic.setShowAvatarsOpt(i);
+                                   menuItem.setTitle(String.format("Показывать аватары (%s)",
+                                           App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]));
+                                   return true; // allow selection
+                               }
+                           })
+                           .show();
                     return true;
                 }
             });
 
             optionsMenu.add("Скрывать верхнюю панель")
-                    .setIcon(R.drawable.ic_menu_images).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     Preferences.setHideActionBar(!Preferences.isHideActionBar());
                     getInterface().setHideActionBar();
@@ -312,8 +304,18 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                 }
             }).setCheckable(true).setChecked(Preferences.isHideActionBar());
 
+            optionsMenu.add("Скрывать стрелки")
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            Preferences.setHideArrows(!Preferences.isHideArrows());
+                            getInterface().setHideArrows(Preferences.isHideArrows());
+                            menuItem.setChecked(Preferences.isHideArrows());
+                            return true;
+                        }
+                    }).setCheckable(true).setChecked(Preferences.isHideArrows());
+
             optionsMenu.add("Загр-ть изобр-я (для сессии)")
-                    .setIcon(R.drawable.ic_menu_images).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     Boolean loadImagesAutomatically1 = getInterface().getLoadsImagesAutomatically();
                     getInterface().setLoadsImagesAutomatically(!loadImagesAutomatically1);
@@ -330,14 +332,14 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                         }
                     });
 
-            optionsMenu.add("Стиль").setIcon(R.drawable.ic_menu_styles).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            optionsMenu.add("Стиль").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     showStylesDialog(prefs);
                     return true;
                 }
             });
 
-            menu.add("Быстрый доступ..").setIcon(R.drawable.ic_menu_quickrun).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            menu.add("Быстрый доступ").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {
                     BricksListDialogFragment.showDialog((BricksListDialogFragment.IBricksListDialogCaller) getActivity(),
                             BricksListDialogFragment.QUICK_LIST_ID,
@@ -381,7 +383,6 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
 
 
     }
-
     private void addCloseMenuItem(Menu menu) {
         MenuItem item;
         item = menu.add("Закрыть")
@@ -390,22 +391,18 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                     public boolean onMenuItemClick(MenuItem item) {
                         getInterface().getPostBody();
                         if (!TextUtils.isEmpty(getInterface().getPostBody())) {
-                            new AlertDialogBuilder(getActivity())
-                                    .setTitle("Подтвердите действие")
-                                    .setMessage("Имеется введенный текст сообщения! Закрыть тему?")
-                                    .setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
+                            new MaterialDialog.Builder(getActivity())
+                                    .title("Подтвердите действие")
+                                    .content("Имеется введенный текст сообщения! Закрыть тему?")
+                                    .positiveText("Да")
+                                    .callback(new MaterialDialog.ButtonCallback() {
+                                        @Override
+                                        public void onPositive(MaterialDialog dialog) {
                                             getInterface().clear();
                                             getInterface().finish();
                                         }
                                     })
-                                    .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                        }
-                                    })
-                                    .create()
+                                    .negativeText("Отмена")
                                     .show();
                         } else {
                             getInterface().clear(true);
@@ -423,10 +420,10 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
             final String currentValue = App.getInstance().getCurrentTheme();
 
             ArrayList<CharSequence> newStyleNames = new ArrayList<CharSequence>();
-            final ArrayList<CharSequence> newstyleValues = new ArrayList<CharSequence>();
+            final ArrayList<CharSequence> newStyleValues = new ArrayList<CharSequence>();
 
-            PreferencesActivity.getStylesList(getInterface(), newStyleNames, newstyleValues);
-            final int selected = newstyleValues.indexOf(currentValue);
+            PreferencesActivity.getStylesList(getInterface(), newStyleNames, newStyleValues);
+            final int selected = newStyleValues.indexOf(currentValue);
 
 
             LayoutInflater inflater = (LayoutInflater) getInterface()
@@ -435,41 +432,36 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
             final ListView listView = (ListView) view.findViewById(R.id.listView);
 
             listView.setAdapter(new ArrayAdapter<CharSequence>(getInterface(),
-                    android.R.layout.simple_list_item_single_choice, newStyleNames));
+                    R.layout.simple_list_item_single_choice, newStyleNames));
             listView.setItemChecked(selected, true);
-
 
             final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
             checkBox.setChecked(prefs.getBoolean("theme.BrowserStyle", false));
 
-            AlertDialog alertDialog = new AlertDialogBuilder(getActivity())
-                    .setTitle("Стиль")
-                    .setCancelable(true)
-                    .setView(view)
-                    .setPositiveButton("Применить и перезагрузить страницу", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
+            new MaterialDialog.Builder(getActivity())
+                    .title("Стиль")
+                    .cancelable(true)
+                    .customView(view,true)
+                    .positiveText("Применить")
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
                             int selected = listView.getCheckedItemPosition();
                             if (selected == -1) {
                                 Toast.makeText(getActivity(), "Выберите стиль", Toast.LENGTH_LONG).show();
                                 return;
                             }
-                            dialogInterface.dismiss();
                             SharedPreferences.Editor editor = prefs.edit();
-                            editor.putString("appstyle", newstyleValues.get(selected).toString());
+                            editor.putString("appstyle", newStyleValues.get(selected).toString());
                             editor.putBoolean("theme.BrowserStyle", checkBox.isChecked());
                             editor.commit();
 
                             getInterface().showTheme(getInterface().getLastUrl());
                         }
                     })
-                    .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    })
-                    .create();
+                    .negativeText("Отмена")
+                    .show();
 
-            alertDialog.show();
         } catch (Exception ex) {
             AppLog.e(getInterface(), ex);
         }

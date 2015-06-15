@@ -1,8 +1,6 @@
 package org.softeg.slartus.forpdaplus.topicview;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -10,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Picture;
 import android.net.Uri;
@@ -29,8 +26,6 @@ import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -41,6 +36,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.melnykov.fab.FloatingActionButton;
+
 import net.londatiga.android3d.ActionItem;
 import net.londatiga.android3d.QuickAction;
 
@@ -50,8 +48,6 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
-import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.classes.BrowserViewsFragmentActivity;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
@@ -106,7 +102,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
 
     TopicViewMenuFragment mFragment1;
-    ImageButton btnShowHideEditPost;
+    FloatingActionButton btnShowHideEditPost;
     public static Boolean LoadsImagesAutomatically = null;
     private QuickPostFragment mQuickPostFragment;
     private LinearLayout mQuickPostPanel;
@@ -139,7 +135,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     }
 
     protected void afterCreate() {
-        getWindow().requestFeature(android.view.Window.FEATURE_INDETERMINATE_PROGRESS);
+        //getWindow().requestFeature(android.view.Window.FEATURE_INDETERMINATE_PROGRESS);
     }
 
     private DeveloperWebInterface m_DeveloperWebInterface;
@@ -154,8 +150,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             Toast.makeText(this, "Режим разработчика", Toast.LENGTH_SHORT).show();
 
         LoadsImagesAutomatically = null;
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         createActionMenu();
 
@@ -187,10 +183,10 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                             }
                         });
                     else if (!TextUtils.isEmpty(postResult.ForumErrorMessage))
-                        new AlertDialogBuilder(getContext())
-                                .setTitle("Сообщение форума")
-                                .setMessage(postResult.ForumErrorMessage)
-                                .create().show();
+                        new MaterialDialog.Builder(getContext())
+                                .title("Сообщение форума")
+                                .content(postResult.ForumErrorMessage)
+                                .show();
                 }
             }
         });
@@ -231,7 +227,10 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 closeSearch();
             }
         });
-        btnShowHideEditPost = (ImageButton) findViewById(R.id.btnShowHideEditPost);
+        btnShowHideEditPost = (FloatingActionButton) findViewById(R.id.fab);
+        btnShowHideEditPost.setColorNormal(App.getInstance().getColorAccent("Accent"));
+        btnShowHideEditPost.setColorPressed(App.getInstance().getColorAccent("Pressed"));
+        btnShowHideEditPost.setColorRipple(App.getInstance().getColorAccent("Pressed"));
 
         btnShowHideEditPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -267,9 +266,10 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 android.util.Log.e(TAG, e.getMessage());
             }
         }
-        if (getActionBar() != null)
-            webView.setActionBarheight(getActionBar().getHeight());
+        if (getSupportActionBar() != null)
+            webView.setActionBarheight(getSupportActionBar().getHeight());
         setHideActionBar();
+        setHideArrows(Preferences.isHideArrows());
         webView.addJavascriptInterface(new HtmloutWebInterface(this), HtmloutWebInterface.NAME);
         m_DeveloperWebInterface = new DeveloperWebInterface(this);
         webView.addJavascriptInterface(m_DeveloperWebInterface, DeveloperWebInterface.NAME);
@@ -582,22 +582,18 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
         getPostBody();
         if (!TextUtils.isEmpty(m_PostBody)) {
-            new AlertDialogBuilder(ThemeActivity.this)
-                    .setTitle("Подтвердите действие")
-                    .setMessage("Имеется введенный текст сообщения! Закрыть тему?")
-                    .setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
+            new MaterialDialog.Builder(ThemeActivity.this)
+                    .title("Подтвердите действие")
+                    .content("Имеется введенный текст сообщения! Закрыть тему?")
+                    .positiveText("Да")
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
                             clear();
                             ThemeActivity.super.onBackPressed();
                         }
                     })
-                    .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    })
-                    .create()
+                    .negativeText("Отмена")
                     .show();
         } else {
             clear();
@@ -613,7 +609,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     public void clear(Boolean clearChache) {
         webView.setPictureListener(null);
         webView.setWebViewClient(null);
-        webView.loadData("<html><head></head><body bgcolor=" + App.getInstance().getCurrentThemeName() + "></body></html>", "text/html", "UTF-8");
+        webView.loadData("<html><head></head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8");
         if (clearChache)
             webView.clearCache(true);
         if (m_Topic != null)
@@ -652,13 +648,13 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         if (TextUtils.isEmpty(clipboardText))
             titles = new CharSequence[]{"Редактор цитаты", "Пустая цитата"};
         final CharSequence finalClipboardText = clipboardText;
-        new AlertDialogBuilder(getContext())
-                .setTitle("Цитата")
-                .setCancelable(true)
-                .setSingleChoiceItems(titles, -1, new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getContext())
+                .title("Цитата")
+                .cancelable(true)
+                .items(titles)
+                .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+                    public void onSelection(MaterialDialog dialog, View view, int i, CharSequence titles) {
                         switch (i) {
                             case 0:
                                 showQuoteEditor("http://4pda.ru/forum/index.php?act=Post&CODE=02&f=" + forumId + "&t=" + topicId + "&qpid=" + postId);
@@ -671,7 +667,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                                 break;
                         }
                     }
-                }).create().show();
+                })
+                .show();
     }
 
     public void openActionMenu(final String postId, final String postDate,
@@ -686,7 +683,6 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             int claimPosition = -1;
             if (Client.getInstance().getLogined()) {
                 actionItem = new ActionItem();
-                actionItem.setIcon(getResources().getDrawable(R.drawable.ic_action_claim));
                 actionItem.setTitle("Жалоба");
                 claimPosition = mQuickAction.addActionItem(actionItem);
             }
@@ -694,9 +690,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             int editPosition = -1;
             if (canEdit) {
                 actionItem = new ActionItem();
-                actionItem.setIcon(getResources().getDrawable(R.drawable.ic_menu_edit));
                 actionItem.setTitle("Редактировать");
-
                 editPosition = mQuickAction.addActionItem(actionItem);
             }
 
@@ -705,7 +699,6 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             if (canDelete) {
                 actionItem = new ActionItem();
                 actionItem.setTitle("Удалить");
-                actionItem.setIcon(getResources().getDrawable(R.drawable.ic_menu_delete));
                 deletePosition = mQuickAction.addActionItem(actionItem);
             }
 
@@ -714,17 +707,11 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             if (Client.getInstance().getLogined() && !Client.getInstance().UserId.equals(userId)) {
 
                 actionItem = new ActionItem();
-                actionItem.setTitle("Хорошо");
-                actionItem.setIcon(getResources().getDrawable(R.drawable.ic_menu_rating_good
-                        //MyApp.getInstance().isWhiteTheme() ?R.drawable.rating_good_white : R.drawable.rating_good_dark)
-                ));
+                actionItem.setTitle("Хорошо (+)");
                 plusOdinPosition = mQuickAction.addActionItem(actionItem);
 
                 actionItem = new ActionItem();
-                actionItem.setTitle("Плохо");
-                actionItem.setIcon(getResources().getDrawable(R.drawable.ic_menu_rating_bad
-                        //MyApp.getInstance().isWhiteTheme() ?R.drawable.rating_good_white : R.drawable.rating_good_dark)
-                ));
+                actionItem.setTitle("Плохо (-)");
                 minusOdinPosition = mQuickAction.addActionItem(actionItem);
             }
 
@@ -732,7 +719,6 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
             actionItem = new ActionItem();
             actionItem.setTitle("Заметка");
-            actionItem.setIcon(getResources().getDrawable(R.drawable.ic_action_attach));
             notePosition = mQuickAction.addActionItem(actionItem);
 
 
@@ -740,7 +726,6 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             if (Client.getInstance().getLogined()) {
                 actionItem = new ActionItem();
                 actionItem.setTitle("Цитата");
-                actionItem.setIcon(getResources().getDrawable(R.drawable.ic_menu_edit));
                 quotePosition = mQuickAction.addActionItem(actionItem);
             }
 
@@ -798,12 +783,12 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
     public void showMessagePanel() {
         btnShowHideEditPost.setImageResource(R.drawable.ic_menu_edit_close);
-        Boolean translucentNavigation = true;
+        /*Boolean translucentNavigation = true;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             translucentNavigation = false;
         Window w = getWindow();
         if (translucentNavigation)
-            w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            w.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);*/
 
         pnlSearch.setVisibility(View.GONE);
         mQuickPostPanel.setVisibility(View.VISIBLE);
@@ -812,12 +797,12 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
     public void hideMessagePanel() {
         btnShowHideEditPost.setImageResource(R.drawable.ic_menu_edit);
-        Boolean translucentNavigation = true;
+        /*Boolean translucentNavigation = true;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             translucentNavigation = false;
         Window w = getWindow();
         if (translucentNavigation)
-            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);*/
 
 
         mQuickPostPanel.setVisibility(View.GONE);
@@ -844,23 +829,17 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
     public void setLoadsImagesAutomatically(boolean loadsImagesAutomatically) {
         LoadsImagesAutomatically = loadsImagesAutomatically;
-        new AlertDialogBuilder(this)
-                .setTitle("Выберите действие")
-                .setMessage("Обновить страницу?")
-                .setPositiveButton("Обновить", new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(this)
+                .title("Выберите действие")
+                .content("Обновить страницу?")
+                .positiveText("Обновить")
+                .callback(new MaterialDialog.ButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+                    public void onPositive(MaterialDialog dialog) {
                         reloadTopic();
                     }
                 })
-                .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .create()
+                .negativeText("Нет")
                 .show();
     }
 
@@ -915,8 +894,9 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 webView.scrollTo(0, 0);
                 webView.onActionBarOnScrollEvents();
                 webView.evalJs("scrollToElement('" + m_ScrollElement + "');");
-                if (getSupportActionBar() != null && Preferences.isHideActionBar())
+                if (getSupportActionBar() != null && Preferences.isHideActionBar()) {
                     getSupportActionBar().hide();
+                }
             }
 
             m_ScrollElement = null;
@@ -952,6 +932,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
             setSupportProgressBarIndeterminateVisibility(true);
             //ThemeActivity.this.setProgressBarIndeterminateVisibility(true);
+
         }
 
         @Override
@@ -1157,29 +1138,26 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     }
 
     private void prepareDeleteMessage(final String postId) {
-        new AlertDialogBuilder(ThemeActivity.this)
-                .setTitle("Подтвердите действие")
-                .setMessage("Вы действительно хотите удалить это сообщение?")
-                .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
+        new MaterialDialog.Builder(ThemeActivity.this)
+                .title("Подтвердите действие")
+                .content("Вы действительно хотите удалить это сообщение?")
+                .positiveText("Удалить")
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
                         deleteMessage(postId);
                     }
                 })
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-
-                    }
-                })
-                .create()
+                .negativeText("Отмена")
                 .show();
     }
 
     private void deleteMessage(final String postId) {
-        final ProgressDialog dialog = new AppProgressDialog(this);
-        dialog.setCancelable(false);
-        dialog.setMessage("Удаление сообщения...");
-        dialog.show();
+        final MaterialDialog dialog = new MaterialDialog.Builder(this)
+                .progress(true,0)
+                .cancelable(false)
+                .content("Удаление сообщения...")
+                .show();
         new Thread(new Runnable() {
             public void run() {
                 Throwable ex = null;
@@ -1289,19 +1267,20 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
     private class GetThemeTask extends AsyncTask<String, String, Boolean> {
 
-        private final ProgressDialog dialog;
+        private final MaterialDialog dialog;
         private int scrollY = 0;
 
         public GetThemeTask(Context context) {
-            dialog = new AppProgressDialog(context);
-            dialog.setCancelable(true);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialogInterface) {
-                    cancel(true);
-                }
-            });
+            dialog = new MaterialDialog.Builder(context)
+                    .progress(true,0)
+                    .cancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            cancel(true);
+                        }
+                    })
+                    .content("Загрузка темы")
+                    .build();
         }
 
 
@@ -1354,7 +1333,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         protected void onProgressUpdate(final String... progress) {
             mHandler.post(new Runnable() {
                 public void run() {
-                    dialog.setMessage(progress[0]);
+                    dialog.setContent(progress[0]);
                 }
             });
         }
@@ -1364,7 +1343,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 scrollY = m_ScrollY;
                 hideMessagePanel();
 
-                this.dialog.setMessage("Загрузка темы...");
+                this.dialog.setCanceledOnTouchOutside(false);
                 this.dialog.show();
             } catch (Exception ex) {
                 AppLog.e(null, ex);

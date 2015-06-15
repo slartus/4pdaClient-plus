@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus.classes;
 
 import android.content.Context;
+
 import org.softeg.slartus.forpdaplus.Client;
 
 import java.util.ArrayList;

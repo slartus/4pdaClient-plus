@@ -24,6 +24,12 @@ import java.util.Set;
  * Created by slartus on 23.02.14.
  */
 public class Preferences {
+    public static Boolean isLoadShortUserInfo() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+        boolean isLoadShortUserInfo = (boolean) prefs.getBoolean("isLoadShortUserInfo", false);
+        return isLoadShortUserInfo;
+    }
+
     public static Boolean isLoadImagesFromWeb(String listName) {
         return isLoadImages(listName + ".LoadsImages");
     }
@@ -55,6 +61,17 @@ public class Preferences {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
 
         prefs.edit().putBoolean("actionbar.hide", hide).apply();
+    }
+
+    public static void setHideArrows(Boolean hide) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+
+        prefs.edit().putBoolean("hideArrows", hide).apply();
+    }
+    public static Boolean isHideArrows() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+
+        return prefs.getBoolean("hideArrows", false);
     }
 
     public static int getFontSize(String prefix) {

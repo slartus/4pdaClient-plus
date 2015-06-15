@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
  */
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.ContextMenu;
@@ -11,16 +10,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import org.softeg.slartus.forpdaapi.IListItem;
+import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
-import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.NotesTable;
 import org.softeg.slartus.forpdaplus.notes.Note;
 import org.softeg.slartus.forpdaplus.notes.NoteActivity;
-import org.softeg.slartus.forpdaapi.IListItem;
-import org.softeg.slartus.forpdaapi.ListInfo;
+import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -79,14 +79,15 @@ public class NotesListFragment extends TopicsListFragment {
 
         menu.add("Удалить..").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
-                new AlertDialogBuilder(getContext())
-                        .setTitle("Подтвердите действие")
-                        .setMessage("Удалить заметку?")
-                        .setCancelable(true)
-                        .setNegativeButton("Отмена", null)
-                        .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+                new MaterialDialog.Builder(getContext())
+                        .title("Подтвердите действие")
+                        .content("Удалить заметку?")
+                        .cancelable(true)
+                        .negativeText("Отмена")
+                        .positiveText("Удалить")
+                        .callback(new MaterialDialog.ButtonCallback() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                            public void onPositive(MaterialDialog dialog) {
                                 try {
                                     NotesTable.delete(topic.getId().toString());
                                     mData.remove(topic);
@@ -96,7 +97,7 @@ public class NotesListFragment extends TopicsListFragment {
                                 }
                             }
                         })
-                        .create().show();
+                        .show();
                 return true;
             }
         });

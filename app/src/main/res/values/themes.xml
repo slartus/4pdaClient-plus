@@ -1,110 +1,105 @@
 <resources>
-
-
-    <style name="Theme.White" parent="@android:style/Theme.Holo.Light">
-        <!--<item name="android:actionBarSize">@dimen/action_bar_height</item>-->
-        <item name="android:actionBarStyle">@style/Theme.ActionBar.White</item>
-        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_ab_up_compat</item>
-        <item name="spbStyle">@style/GNowProgressBar</item>
-        <item name="actionButtonStyle">@style/MyActionButtonStyle</item>
-        <!--<item name="android:actionButtonStyle">@style/MyActionButtonStyle</item>-->
-
-        <item name="theme_background">@color/white</item>
-        <item name="theme_light_background">@color/theme_light_background_light</item>
-        <item name="android:actionOverflowButtonStyle">@style/Theme.ActionButton.Overflow</item>
-        <item name="main_color">@color/main_color</item>
-        <item name="forum_header_text_color">@color/holo_blue_dark</item>
+    <style name="Theme.White" parent="MainThemeWH">
+        <item name="actionModeBackground">@color/actionbar_background_wh</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:actionModeBackground">@color/actionbar_background_wh</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="md_content_color">#FF757575</item>
+        <item name="md_title_color">#FF212121</item>
+        <item name="md_item_color">#FF212121</item>
     </style>
 
-    <style name="Theme.Black" parent="@android:style/Theme.Holo">
-        <!--<item name="android:actionBarSize">@dimen/action_bar_height</item>-->
-        <item name="android:actionBarStyle">@style/Theme.ActionBar.Black</item>
-        <item name="android:windowContentOverlay">@drawable/actionbar_shadow</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_ab_up_compat</item>
-        <item name="spbStyle">@style/GNowProgressBarDark</item>
-        <item name="actionButtonStyle">@style/MyActionButtonStyle</item>
-        <!--<item name="android:actionButtonStyle">@style/MyActionButtonStyle</item>-->
-
-        <item name="theme_background">@color/black</item>
-        <item name="theme_light_background">@color/theme_light_background_dark</item>
-        <item name="android:actionOverflowButtonStyle">@style/Theme.ActionButton.Overflow</item>
-        <item name="main_color">@color/main_color_black</item>
-        <item name="forum_header_text_color">@color/holo_blue_light</item>
+    <style name="Theme.Black" parent="MainThemeBL">
+        <item name="actionModeBackground">@color/actionbar_background_bl</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:actionModeBackground">@color/actionbar_background_bl</item>
+        <item name="android:windowActionModeOverlay">true</item>
     </style>
 
-    <style name="Theme.Transluent.White" parent="Theme.White">
-        <item name="android:actionBarStyle">@style/Theme.ActionBar.White</item>
-        <item name="android:windowActionBarOverlay">true</item>
+    <style name="MainPinkWH" parent="Theme.White">
+        <item name="colorAccent">@color/accentPink</item>
+        <item name="arrow_up">@drawable/arrowup</item>
+        <item name="arrow_down">@drawable/arrowdown</item>
+    </style>
+    <style name="MainBlueWH" parent="Theme.White">
+        <item name="colorAccent">@color/accentBlue</item>
+        <item name="arrow_up">@drawable/arrowup_blue</item>
+        <item name="arrow_down">@drawable/arrowdown_blue</item>
+    </style>
+    <style name="MainGrayWH" parent="Theme.White">
+        <item name="colorAccent">@color/accentGray</item>
+        <item name="arrow_up">@drawable/arrowup_gray</item>
+        <item name="arrow_down">@drawable/arrowdown_gray</item>
     </style>
 
-    <style name="Theme.Transluent.Black" parent="Theme.Black">
-        <item name="android:actionBarStyle">@style/Theme.ActionBar.Black</item>
-        <item name="android:windowActionBarOverlay">true</item>
+    <style name="MainPinkBL" parent="Theme.Black">
+        <item name="colorAccent">@color/accentPink</item>
+        <item name="arrow_up">@drawable/arrowup</item>
+        <item name="arrow_down">@drawable/arrowdown</item>
+    </style>
+    <style name="MainBlueBL" parent="Theme.Black">
+        <item name="colorAccent">@color/accentBlue</item>
+        <item name="arrow_up">@drawable/arrowup_blue</item>
+        <item name="arrow_down">@drawable/arrowdown_blue</item>
+    </style>
+    <style name="MainGrayBL" parent="Theme.Black">
+        <item name="colorAccent">@color/accentGray</item>
+        <item name="arrow_up">@drawable/arrowup_gray</item>
+        <item name="arrow_down">@drawable/arrowdown_gray</item>
     </style>
 
-    <style name="Theme.ActionBar.White" parent="android:Widget.Holo.Light.ActionBar.Solid">
-        <item name="android:background">@color/main_color</item>
-        <item name="android:titleTextStyle">@style/Theme.ActionBar.White.TitleTextStyle</item>
-        <item name="android:subtitleTextStyle">@style/Theme.ActionBar.White.SubTitleTextStyle</item>
-        <item name="android:icon">@drawable/actionbar_icon_placeholder_compat</item>
+    <style name="Theme.Transluent.WhitePink" parent="MainPinkWH"/>
+    <style name="Theme.Transluent.WhiteBlue" parent="MainBlueWH"/>
+    <style name="Theme.Transluent.WhiteGray" parent="MainGrayWH"/>
+    <style name="Theme.Transluent.BlackPink" parent="MainPinkBL"/>
+    <style name="Theme.Transluent.BlackBlue" parent="MainBlueBL"/>
+    <style name="Theme.Transluent.BlackGray" parent="MainGrayBL"/>
+
+    <style name="Theme.Prefs.WhitePink" parent="MainPinkWH">
+        <item name="android:textColor">@color/list_text_general_color_wh</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowTitleSize">80dp</item>
+        <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
+        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_wh</item>
     </style>
 
-    <style name="Theme.ActionBar.Black" parent="android:Widget.Holo.ActionBar.Solid">
-        <item name="android:background">@color/main_color_black</item>
-        <item name="android:titleTextStyle">@style/Theme.ActionBar.Black.TitleTextStyle</item>
-        <item name="android:subtitleTextStyle">@style/Theme.ActionBar.White.SubTitleTextStyle</item>
-        <item name="android:icon">@drawable/actionbar_icon_placeholder_compat</item>
+    <style name="Theme.Prefs.BlackPink" parent="MainPinkBL">
+        <item name="android:textColor">@color/list_text_general_color_bl</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowTitleSize">80dp</item>
+        <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
+        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_bl</item>
     </style>
 
-    <style name="Theme.ActionBar.Black.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/main_title_color</item>
-        <!--<item name="android:textSize">20sp</item>-->
+    <style name="Theme.Prefs.WhiteGray" parent="MainGrayWH">
+        <item name="android:textColor">@color/list_text_general_color_wh</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowTitleSize">80dp</item>
+        <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
+        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_wh</item>
     </style>
 
-    <style name="Theme.ActionBar.White.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textColor">@color/main_title_color</item>
-        <!--<item name="android:textSize">20sp</item>-->
+    <style name="Theme.Prefs.BlackGray" parent="MainGrayBL">
+        <item name="android:textColor">@color/list_text_general_color_bl</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowTitleSize">80dp</item>
+        <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
+        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_bl</item>
     </style>
 
-    <style name="Theme.ActionBar.Black.SubTitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle">
-        <item name="android:textColor">#E5E5E5</item>
+    <style name="Theme.Prefs.WhiteBlue" parent="MainBlueWH">
+        <item name="android:textColor">@color/list_text_general_color_wh</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowTitleSize">80dp</item>
+        <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
+        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_wh</item>
     </style>
 
-    <style name="Theme.ActionBar.White.SubTitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Subtitle">
-        <item name="android:textColor">#E5E5E5</item>
-    </style>
-
-    <style name="TextAppearance.Theme.PlainText" parent="android:TextAppearance.Theme">
-        <item name="android:textStyle">normal</item>
-    </style>
-
-
-    <style name="Theme.ActionButton.Overflow" parent="android:style/Widget.Holo.ActionButton.Overflow">
-        <item name="android:src">@drawable/ic_menu_more</item>
-    </style>
-
-    <style name="AppTheme_ActionBar_Overflow" parent="android:Widget.ActionButton.Overflow">
-        <item name="android:src">@drawable/icon</item>
-    </style>
-
-    <style name="GNowProgressBar" parent="SmoothProgressBar">
-        <item name="spb_stroke_separator_length">12dp</item>
-        <item name="spb_sections_count">4</item>
-        <item name="spb_speed">0.7</item>
-        <item name="spb_interpolator">spb_interpolator_linear</item>
-        <item name="spb_colors">@array/gplus_colors</item>
-    </style>
-
-    <style name="GNowProgressBarDark" parent="SmoothProgressBar">
-        <item name="spb_stroke_separator_length">12dp</item>
-        <item name="spb_sections_count">4</item>
-        <item name="spb_speed">0.7</item>
-        <item name="spb_interpolator">spb_interpolator_linear</item>
-        <item name="spb_colors">@array/gplus_colors_dark</item>
-    </style>
-
-    <style name="MyActionButtonStyle">
-        <item name="android:padding">10dip</item>
+    <style name="Theme.Prefs.BlackBlue" parent="MainBlueBL">
+        <item name="android:textColor">@color/list_text_general_color_bl</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowTitleSize">80dp</item>
+        <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
+        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_bl</item>
     </style>
 </resources>

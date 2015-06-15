@@ -8,32 +8,27 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="-16dp" />
+        android:layout_marginBottom="-16.0dip" />
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-
         <ScrollView
             android:id="@+id/scroller"
+            style="?popup_topic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dip"
-            android:background="@drawable/popup"
-            android:fadingEdgeLength="5dip"
+            android:layout_marginTop="16.0dip"
             android:scrollbars="none">
 
             <LinearLayout
                 android:id="@+id/tracks"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:padding="10dip" />
-
+                android:layout_weight="1.0"
+                android:orientation="vertical"/>
         </ScrollView>
 
         <ImageView
@@ -46,9 +41,8 @@
             android:id="@+id/arrow_down"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/scroller"
-            android:layout_marginTop="-4dip"
+            android:layout_below="@+id/scroller"
+            android:layout_marginTop="-4.0dip"
             android:src="@drawable/arrow_down" />
-
     </RelativeLayout>
 </LinearLayout>

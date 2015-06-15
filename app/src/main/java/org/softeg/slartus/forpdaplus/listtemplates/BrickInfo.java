@@ -10,6 +10,8 @@ public abstract class BrickInfo {
 
     public abstract String getName();
 
+    public abstract int getIcon();
+
     public Boolean getNeedLogin() {
         return false;
     }

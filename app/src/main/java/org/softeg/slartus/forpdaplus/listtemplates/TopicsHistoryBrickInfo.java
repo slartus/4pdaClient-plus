@@ -4,12 +4,18 @@ package org.softeg.slartus.forpdaplus.listtemplates;/*
 
 import android.support.v4.app.Fragment;
 
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.TopicsHistoryListFragment;
 
 public class TopicsHistoryBrickInfo extends BrickInfo {
     @Override
     public String getTitle() {
         return "Посещенные темы";
+    }
+
+    @Override
+    public int getIcon() {
+        return R.drawable.ic_forum_checked_grey600_24dp;
     }
 
     @Override

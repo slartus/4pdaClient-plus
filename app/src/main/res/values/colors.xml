@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="main_color">#0277bd</color>
-    <color name="main_title_color">#F2F2F2</color>
-    <color name="gradient_start">#50000000</color>
-    <color name="gradient_light_start">#30000000</color>
+    <color name="main_title_color">#ffF2F2F2</color>
 
-    <color name="main_color_black">#424242</color>
-
-    <color name="theme_light_background_light" >#FAFAFA</color>
-    <color name="theme_light_background_dark" >#0C0C0C</color>
+    <color name="theme_light_background_light">#FAFAFA</color>
+    <color name="theme_light_background_dark">#0C0C0C</color>
     <color name="white_theme_webview_background">#F5F9FD</color>
     <color name="blue">#7FFFFF</color>
     <color name="white">#FFFFFFFF</color>
@@ -42,30 +37,90 @@
     <color name="holo_blue_light">#ff33b5e5</color>
     <color name="holo_blue_dark">#ff0099cc</color>
 
+    <!-- Mod -->
+    <color name="app_background_wh">#ffeeeeee</color>
+    <color name="app_background_bl">#ff212121</color>
 
-    <color name="floatingactionbutton_primary">#ffb2b2b2</color>
-    <color name="floatingactionbutton_primary_pressed" >#FAFAFA</color>
-    <color name="floatingactionbutton_ripple" >#ff33b5e5</color>
+    <color name="dialog_background_wh">#fffafafa</color>
+    <color name="dialog_background_bl">#ff303030</color>
 
-    <color name="gplus_color_1">#0277bd</color>
-    <color name="gplus_color_2">#0277bd</color>
-    <color name="gplus_color_3">#0277bd</color>
-    <color name="gplus_color_4">#0277bd</color>
-    <integer-array name="gplus_colors">
-        <item>@color/gplus_color_1</item>
-        <item>@color/gplus_color_2</item>
-        <item>@color/gplus_color_3</item>
-        <item>@color/gplus_color_4</item>
-    </integer-array>
+    <color name="left_separator_color_wh">#ffd9d9d9</color>
+    <color name="left_separator_color_bl">#ff494949</color>
+    <color name="bottom_separator_color_wh">#ffc9c9c9</color>
+    <color name="bottom_separator_color_bl">#ff494949</color>
+    <color name="right_separator_color_wh">#ffd9d9d9</color>
+    <color name="right_separator_color_bl">#ff494949</color>
 
-    <color name="gplus_color_1_dark">#424242</color>
-    <color name="gplus_color_2_dark">#424242</color>
-    <color name="gplus_color_3_dark">#424242</color>
-    <color name="gplus_color_4_dark">#424242</color>
-    <integer-array name="gplus_colors_dark">
-        <item>@color/gplus_color_1_dark</item>
-        <item>@color/gplus_color_2_dark</item>
-        <item>@color/gplus_color_3_dark</item>
-        <item>@color/gplus_color_4_dark</item>
-    </integer-array>
+    <color name="btnsend_color_wh">#ff03a9f4</color>
+    <color name="btnsend_color_bl">#ff28627f</color>
+    <color name="btnsend_color_pressed_wh">#ff0288d1</color>
+    <color name="btnsend_color_pressed_bl">#ff205066</color>
+
+    <color name="panel_background_wh">#ffffffff</color>
+    <color name="panel_background_bl">#ff333333</color>
+    <color name="panel_bordertop_wh">#ffd9d9d9</color>
+    <color name="panel_bordertop_bl">#ff494949</color>
+
+    <color name="news_background_wh">#ffffffff</color>
+    <color name="news_background_pressed_wh">#ffdddddd</color>
+    <color name="news_background_bl">#ff333333</color>
+    <color name="news_background_pressed_bl">#ff444444</color>
+    <color name="news_border_wh">#ffcccccc</color>
+    <color name="news_border_bl">#ff333333</color>
+    <color name="news_image_corner_wh">@color/app_background_wh</color>
+    <color name="news_image_corner_bl">@color/app_background_bl</color>
+
+    <color name="actionbar_background_wh">#ff03a9f4</color>
+    <color name="actionbar_background_bl">#ff1C4556</color>
+
+    <color name="statusBar_wh">#ff03a9f4</color>
+    <color name="statusBar_bl">#ff1C4556</color>
+
+    <color name="statusBarPrefs_wh">#ff0288d1</color>
+    <color name="statusBarPrefs_bl">#ff163542</color>
+
+    <color name="drawer_menu_background_wh">#ffffffff</color>
+    <color name="drawer_menu_background_bl">@color/app_background_bl</color>
+    <color name="drawer_menu_text_wh">@color/list_text_general_color_wh</color>
+    <color name="drawer_menu_text_bl">@color/list_text_general_color_bl</color>
+    <color name="drawer_menu_group_wh">@color/list_text_minor_color_wh</color>
+    <color name="drawer_menu_group_bl">@color/list_text_minor_color_bl</color>
+
+    <color name="divider_wh">#ffe0e0e0</color>
+    <color name="divider_bl">#ff333333</color>
+
+    <color name="list_text_general_color_wh">#ff212121</color>
+    <color name="list_text_minor_color_wh">#ff757575</color>
+    <color name="list_text_second_color_wh">#ffbdbdbd</color>
+    <color name="list_text_special_color_wh">#ffababab</color>
+
+    <color name="list_text_general_color_bl">#ffdedede</color>
+    <color name="list_text_minor_color_bl">#ff8a8a8a</color>
+    <color name="list_text_second_color_bl">#ff424242</color>
+    <color name="list_text_special_color_bl">#ff6a6a6a</color>
+
+    <color name="news_text_general_color_wh">#ffffffff</color>
+    <color name="news_text_general_color_bl">#ffffffff</color>
+    <color name="news_text_minor_color_wh">@color/list_text_general_color_wh</color>
+    <color name="news_text_minor_color_bl">@color/list_text_general_color_bl</color>
+    <color name="news_text_second_color_wh">@color/list_text_minor_color_wh</color>
+    <color name="news_text_second_color_bl">@color/list_text_minor_color_bl</color>
+
+    <color name="edit_text_wh">@color/panel_background_wh</color>
+    <color name="edit_text_bl">@color/panel_background_bl</color>
+
+
+    <!-- <color name="accent">#ff607D8B</color> -->
+    <color name="accent">#ffE91E63</color>
+    <color name="accentPink">@color/accent</color>
+    <color name="accentBlue">@color/actionbar_background_wh</color>
+    <color name="accentGray">#ff757575</color>
+
+    <color name="plusrep">#ff4caf50</color>
+    <color name="minusrep">#ffE91E63</color>
+
+    <color name="refresh">@color/accent</color>
+
+    <color name="reed">#ffff0000</color>
+
 </resources>

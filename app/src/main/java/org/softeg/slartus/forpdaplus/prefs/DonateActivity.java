@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
 
 

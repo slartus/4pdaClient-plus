@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ public class NotifiersManager implements DialogInterface.OnDismissListener {
         this.activity = activity;
     }
 
-    public void addNotifyDialog(AlertDialog alertDialog) {
+    public void addNotifyDialog(MaterialDialog alertDialog) {
         try {
             alertDialog.setOnDismissListener(this);
             dialogs.add(alertDialog);

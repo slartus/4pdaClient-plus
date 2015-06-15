@@ -1,14 +1,14 @@
 package org.softeg.slartus.forpdaplus.topicview;
 
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 
@@ -101,16 +101,16 @@ public class Curator {
             }
         });
 
-        new AlertDialogBuilder(mTopicActivity)
-                .setTitle("Мультимодерация")
-                .setView(view)
-                .setCancelable(true)
+        new MaterialDialog.Builder(mTopicActivity)
+                .title("Мультимодерация")
+                .customView(view,true)
+                .cancelable(true)
 
-                .setPositiveButton("Открыть", new DialogInterface.OnClickListener() {
+                .positiveText("Открыть")
+                .callback(new MaterialDialog.ButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onPositive(MaterialDialog dialog) {
                         try {
-                            dialogInterface.dismiss();
                             String url = String
                                     .format("http://4pda.ru/forum/index.php?act=idx&autocom=mmod&t=%s&num=%s&rating=%s",
                                             mTopicActivity.getTopic().getId(), mNums, mRating);
@@ -118,14 +118,9 @@ public class Curator {
                         } catch (Throwable ex) {
                             AppLog.e(mTopicActivity, ex);
                         }
-
                     }
-                }).setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        }).create().show();
+                })
+                .negativeText("Отмена").show();
 
     }
 }

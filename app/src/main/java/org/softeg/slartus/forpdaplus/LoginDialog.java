@@ -1,8 +1,6 @@
 package org.softeg.slartus.forpdaplus;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -13,12 +11,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
 
 import org.softeg.slartus.forpdaapi.ProfileApi;
 import org.softeg.slartus.forpdaapi.classes.LoginForm;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
-import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 
 /**
@@ -83,24 +80,18 @@ public class LoginDialog {
 
     public static void showDialog(final Context context, final Client.OnUserChangedListener onConnectResult) {
         final LoginDialog loginDialog = new LoginDialog(context);
-
-        new AlertDialogBuilder(context)
-                .setTitle("Вход")
-                .setView(loginDialog.getView())
-                .setPositiveButton("Вход", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-
+        new MaterialDialog.Builder(context)
+                .title("Вход")
+                .customView(loginDialog.getView(),true)
+                .positiveText("Вход")
+                .negativeText("Отмена")
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
                         loginDialog.connect(onConnectResult);
                     }
                 })
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        if (monUserChangedListener != null)
-//                            monUserChangedListener.onUserChanged(m_User, false);
-                    }
-                })
-                .create().show();
+                .show();
     }
 
     public static void logout(Context context) {
@@ -160,7 +151,7 @@ public class LoginDialog {
     public static class LoginTask extends AsyncTask<String, Void, Boolean> {
 
         Context mContext;
-        private final ProgressDialog dialog;
+        private final MaterialDialog dialog;
         private String login;
         private String password;
         private Boolean privacy;
@@ -183,8 +174,11 @@ public class LoginDialog {
             this.capS = capS;
             this.session = session;
             m_OnConnectResult = onConnectResult;
-            dialog = new AppProgressDialog(mContext);
-            dialog.setCancelable(false);
+            dialog = new MaterialDialog.Builder(mContext)
+                    .progress(true,0)
+                    .cancelable(false)
+                    .content("Вход...")
+                    .build();
         }
 
 
@@ -202,8 +196,6 @@ public class LoginDialog {
 
         // can use UI thread here
         protected void onPreExecute() {
-
-            this.dialog.setMessage("Вход...");
             this.dialog.show();
         }
 
@@ -234,12 +226,11 @@ public class LoginDialog {
                 if (ex != null)
                     AppLog.e(mContext, ex);
                 else
-                    new AlertDialogBuilder(mContext)
-                            .setIcon(R.drawable.icon)
-                            .setTitle("Ошибка")
-                            .setMessage(Client.getInstance().getLoginFailedReason())
-                            .setPositiveButton(android.R.string.ok, null)
-                            .create().show();
+                    new MaterialDialog.Builder(mContext)
+                        .title("Ошибка")
+                        .content(Client.getInstance().getLoginFailedReason())
+                        .positiveText("Ок")
+                        .show();
             }
         }
 
@@ -248,11 +239,15 @@ public class LoginDialog {
     public static class LogoutTask extends AsyncTask<String, Void, Boolean> {
 
         Context mContext;
-        private final ProgressDialog dialog;
+        private final MaterialDialog dialog;
 
         public LogoutTask(Context context) {
             mContext = context;
-            dialog = new AppProgressDialog(mContext);
+            dialog = new MaterialDialog.Builder(mContext)
+                    .progress(true,0)
+                    .cancelable(true)
+                    .content("Выход...")
+                    .build();
         }
 
         private String m_Login;
@@ -277,8 +272,6 @@ public class LoginDialog {
 
         // can use UI thread here
         protected void onPreExecute() {
-            this.dialog.setCancelable(true);
-            this.dialog.setMessage("Выход...");
             this.dialog.show();
         }
 

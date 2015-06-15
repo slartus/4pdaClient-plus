@@ -5,9 +5,9 @@ import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaapi.ICatalogItem;
 import org.softeg.slartus.forpdaapi.devdb.DevCatalog;
+import org.softeg.slartus.forpdaplus.R;
 
 import java.util.ArrayList;
 

@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.search.ui;/*
  * Created by slinkin on 24.04.2014.
  */
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,19 +17,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.search.SearchApi;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
-import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
 import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
 import org.softeg.slartus.forpdaplus.db.ForumsTable;
@@ -57,6 +59,8 @@ public class SearchSettingsDialogFragment extends DialogFragment {
     private Spinner source_spinner, sort_spinner, result_spinner, forumsSpinner;
     private View forumsProgress, topicsProgress;
     private View topics_group, forums_group, result_group, sort_group, source_group;
+    private ImageButton forHideButton;
+    private LinearLayout forHide;
     public static final int FORUMS_DIALOG_REQUEST = 1;
 
     protected Bundle args = new Bundle();
@@ -187,6 +191,21 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         source_group = view.findViewById(R.id.source_group);
         sort_group = view.findViewById(R.id.sort_group);
         result_group = view.findViewById(R.id.result_group);
+        forHideButton = (ImageButton) view.findViewById(R.id.forHideButton);
+        forHide = (LinearLayout) view.findViewById(R.id.forHide);
+
+        forHideButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(forHide.getVisibility() == View.VISIBLE){
+                    forHide.setVisibility(View.GONE);
+                    forHideButton.setImageDrawable(getResources().getDrawable(R.drawable.btn_show_post_panel));
+                }else {
+                    forHide.setVisibility(View.VISIBLE);
+                    forHideButton.setImageDrawable(getResources().getDrawable(R.drawable.btn_hide_post_panel));
+                }
+            }
+        });
         if (view.findViewById(R.id.forums_button) != null) {
             view.findViewById(R.id.forums_button).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -200,49 +219,42 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         if (view.findViewById(R.id.forums_spinner) != null) {
             initSpinner(view);
         }
-        AlertDialog.Builder adb = new AlertDialogBuilder(getActivity())
-                .setView(view)
-                .setCancelable(true)
-                .setTitle("Поиск")
-                .setPositiveButton("Найти", null);
-        // в поиске по теме не показываем "запомнить настройки"
-        if (SearchSettings.SEARCH_TYPE_FORUM.equals(getSearchSettings().getSearchType()))
-            adb.setNeutralButton("Запомнить настройки", null);
-
-        final AlertDialog d = adb.create();
-
-        d.setOnShowListener(new DialogInterface.OnShowListener() {
-
-            @Override
-            public void onShow(DialogInterface dialog) {
-
-                Button b = d.getButton(AlertDialog.BUTTON_POSITIVE);
-                assert b != null;
-                b.setOnClickListener(new View.OnClickListener() {
-
+        MaterialDialog adb = new MaterialDialog.Builder(getActivity())
+                .customView(view,true)
+                .cancelable(true)
+                .title("Поиск")
+                .positiveText("Найти")
+                .negativeText("Отмена")
+                .showListener(new DialogInterface.OnShowListener() {
                     @Override
-                    public void onClick(View view) {
-                        d.dismiss();
+                    public void onShow(DialogInterface dialog) {
 
+                    }
+                })
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
                         ((ISearchDialogListener) getActivity())
                                 .doSearchDialogPositiveClick(createSearchSettings());
                     }
-                });
-                b = d.getButton(AlertDialog.BUTTON_NEUTRAL);
-                if (b != null)
-                    b.setOnClickListener(new View.OnClickListener() {
 
-                        @Override
-                        public void onClick(View view) {
-                            SearchSettings searchSettings = createSearchSettings();
-                            searchSettings.setQuery("");
-                            searchSettings.setUserName("");
-                            searchSettings.save(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).edit())
-                                    .commit();
-                        }
-                    });
-            }
-        });
+                }).build();
+
+        // в поиске по теме не показываем "запомнить настройки"
+        if (SearchSettings.SEARCH_TYPE_FORUM.equals(getSearchSettings().getSearchType())) {
+            adb.setActionButton(DialogAction.NEUTRAL, "Запомнить");
+            View neutral = adb.getActionButton(DialogAction.NEUTRAL);
+            neutral.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SearchSettings searchSettings = createSearchSettings();
+                    searchSettings.setQuery("");
+                    searchSettings.setUserName("");
+                    searchSettings.save(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).edit()).commit();
+                }
+            });
+        }
+        final MaterialDialog d = adb;
         return d;
     }
 

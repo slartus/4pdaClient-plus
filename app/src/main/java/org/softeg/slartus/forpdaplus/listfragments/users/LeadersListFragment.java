@@ -2,21 +2,21 @@ package org.softeg.slartus.forpdaplus.listfragments.users;/*
  * Created by slinkin on 10.04.2014.
  */
 
-import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaapi.Forum;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.users.LeadUser;
 import org.softeg.slartus.forpdaapi.users.User;
 import org.softeg.slartus.forpdaapi.users.UsersApi;
-import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
+import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.listfragments.BaseExpandableListFragment;
@@ -99,17 +99,18 @@ public class LeadersListFragment extends BaseExpandableListFragment {
                                 for (Forum f : leadUser.getForums()) {
                                     forumTitles[i++] = f.getTitle();
                                 }
-                                new AlertDialogBuilder(getContext())
-                                        .setTitle("Форумы")
-                                        .setSingleChoiceItems(forumTitles, -1, new DialogInterface.OnClickListener() {
+                                new MaterialDialog.Builder(getContext())
+                                        .title("Форумы")
+                                        .items(forumTitles)
+                                        .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                                             @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                dialogInterface.dismiss();
+                                            public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence forumTitles) {
                                                 ForumTopicsListFragment.showForumTopicsList(getActivity(),
                                                         leadUser.getForums().get(i).getId(), leadUser.getForums().get(i).getTitle());
+                                                return true; // allow selection
                                             }
                                         })
-                                        .create().show();
+                                        .show();
                             }
                             return true;
                         }

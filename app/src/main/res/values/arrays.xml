@@ -93,19 +93,21 @@
     </string-array>
 
     <string-array name="appthemesArray">
-        <item>Светлый</item>
-        <item>Тёмный</item>
-        <item>Цвета как в браузере</item>
-        <item>Светлый для планшетов</item>
-        <item>Тёмный для планшетов</item>
+        <item>Coba Light Blue</item>
+        <item>Coba Dark Blue</item>
+        <item>Material Light Cyan</item>
+        <item>Material Light Blue</item>
+        <item>Material Light Gray</item>
+        <item>Material Dark</item>
     </string-array>
 
     <string-array name="appthemesValues">
         <item>0</item>
         <item>1</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
     </string-array>
 
     <string-array name="screenOrienationArray">

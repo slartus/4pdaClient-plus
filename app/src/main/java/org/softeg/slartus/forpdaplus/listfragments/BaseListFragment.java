@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.softeg.slartus.forpdaapi.IListItem;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ListAdapter;
@@ -24,11 +26,6 @@ import org.softeg.slartus.forpdaplus.prefs.ListPreferencesActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.util.ArrayList;
-
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.Options;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public abstract class BaseListFragment extends BaseBrickFragment implements
         AdapterView.OnItemClickListener {
@@ -129,7 +126,7 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
         return getActivity();
     }
 
-    protected uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout mPullToRefreshLayout;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     protected void saveListViewScrollPosition() {
         if (getListView() == null)
@@ -161,29 +158,19 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
         });
 
 
-        mPullToRefreshLayout = createPullToRefreshLayout(view);
+        mSwipeRefreshLayout = createSwipeRefreshLayout(view);
     }
 
-    protected PullToRefreshLayout createPullToRefreshLayout(View view) {
-        // We need to create a PullToRefreshLayout manually
-        PullToRefreshLayout pullToRefreshLayout = (PullToRefreshLayout) view.findViewById(R.id.ptr_layout);
-
-        // We can now setup the PullToRefreshLayout
-        // We can now setup the PullToRefreshLayout
-        ActionBarPullToRefresh.from(getActivity())
-                .options(Options.create().scrollDistance(0.3f).refreshOnUp(true).build())
-                        // We need to insert the PullToRefreshLayout into the Fragment's ViewGroup
-                .allChildrenArePullable()
-
-                        // We can now complete the setup as desired
-                .listener(new OnRefreshListener() {
-                    @Override
-                    public void onRefreshStarted(View view) {
-                        loadData(true);
-                    }
-                })
-                .setup(pullToRefreshLayout);
-        return pullToRefreshLayout;
+    protected SwipeRefreshLayout createSwipeRefreshLayout(View view) {
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.ptr_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+            @Override
+            public void onRefresh() {
+                loadData(true);
+            }
+        });
+        swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
+        return swipeRefreshLayout;
     }
 
 
@@ -216,11 +203,16 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
         return new ListAdapter(getActivity(), mData);
     }
 
-    protected void setLoading(Boolean loading) {
+    protected void setLoading(final Boolean loading) {
         try {
             if (getActivity() == null) return;
-
-            mPullToRefreshLayout.setRefreshing(loading);
+            //mSwipeRefreshLayout.setRefreshing(loading);
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshLayout.setRefreshing(loading);
+                }
+            });
             if (loading) {
                 setEmptyText("Загрузка..");
             } else {

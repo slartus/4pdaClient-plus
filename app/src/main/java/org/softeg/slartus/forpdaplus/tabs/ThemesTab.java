@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.tabs;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -22,14 +22,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaapi.OnProgressChangedListener;
 import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
-import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.classes.ForumItem;
 import org.softeg.slartus.forpdaplus.classes.ThemeOpenParams;
 import org.softeg.slartus.forpdaplus.classes.Themes;
@@ -59,7 +59,7 @@ public abstract class ThemesTab extends BaseTab {
     private ImageView imgPullToLoadMore;
     protected Boolean m_UseVolumesScroll = false;
 
-    protected uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout mPullToRefreshLayout;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
     public ThemesTab(Context context, String tabTag, ITabParent tabParent) {
         super(context, tabParent);
 
@@ -71,7 +71,7 @@ public abstract class ThemesTab extends BaseTab {
         loadPreferences();
 
         lstTree = (ListView) findViewById(android.R.id.list);
-        mPullToRefreshLayout = App.createPullToRefreshLayout(getActivity(), findViewById(R.id.main_layout), new Runnable() {
+        mSwipeRefreshLayout = App.createSwipeRefreshLayout(getActivity(), findViewById(R.id.main_layout), new Runnable() {
             @Override
             public void run() {
                 refresh();
@@ -361,19 +361,21 @@ public abstract class ThemesTab extends BaseTab {
 
     private class ShowLatestTask extends AsyncTask<ForumItem, String, Boolean> {
 
-        private final ProgressDialog dialog;
+        private final MaterialDialog dialog;
 
         public ShowLatestTask(Context context) {
 
-            dialog = new AppProgressDialog(context);
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialogInterface) {
-                    cancel(true);
-                }
-            });
+            dialog = new MaterialDialog.Builder(context)
+                    .progress(true,0)
+                    .cancelable(false)
+                    .cancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            cancel(true);
+                        }
+                    })
+                    .content("Загрузка")
+                    .build();
         }
 
         int m_SelectedIndex = 0;
@@ -410,7 +412,7 @@ public abstract class ThemesTab extends BaseTab {
 
         @Override
         protected void onProgressUpdate(String... progress) {
-            this.dialog.setMessage(progress[0]);
+            this.dialog.setContent(progress[0]);
         }
 
         protected void onCancelled() {
@@ -420,7 +422,6 @@ public abstract class ThemesTab extends BaseTab {
         // can use UI thread here
         protected void onPreExecute() {
             try {
-                this.dialog.setMessage(getContext().getResources().getString(R.string.loading));
                 this.dialog.show();
             } catch (Exception ex) {
                 AppLog.e(null, ex);
@@ -454,7 +455,7 @@ public abstract class ThemesTab extends BaseTab {
                     });
             }
 
-            mPullToRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayout.setRefreshing(false);
             super.onPostExecute(success);
         }
 
@@ -557,60 +558,48 @@ public abstract class ThemesTab extends BaseTab {
         final CharSequence[] values = new CharSequence[]{Topic.NAVIGATE_VIEW_FIRST_POST,
                 Topic.NAVIGATE_VIEW_LAST_POST, Topic.NAVIGATE_VIEW_NEW_POST};
         final int[] selected = {2};
-        new AlertDialogBuilder(activity)
-                .setSingleChoiceItems(titles, selected[0], new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(activity)
+                .items(titles)
+                .itemsCallbackSingleChoice(selected[0], new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence titles) {
                         selected[0] = i;
+                        return true; // allow selection
                     }
                 })
-                .setTitle("Действие по умолчанию")
-                .setPositiveButton("Всегда",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.dismiss();
+                .title("Действие по умолчанию")
+                .positiveText("Всегда")
+                .neutralText("Только сейчас")
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        new MaterialDialog.Builder(activity)
+                                .title("Подсказка")
+                                .content("Вы можете изменить действие по умолчанию долгим тапом по теме")
+                                .cancelable(false)
+                                .positiveText("OK")
+                                .callback(new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        String navigateAction = values[selected[0]].toString();
+                                        saveOpenThemeParams(tabId, templateId, navigateAction);
+                                        ExtTopic.showActivity(activity, topicId,
+                                                ThemeOpenParams.getUrlParams(navigateAction, null));
 
-                                new AlertDialogBuilder(activity)
-                                        .setTitle("Подсказка")
-                                        .setMessage("Вы можете изменить действие по умолчанию долгим тапом по теме")
-                                        .setCancelable(false)
-                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                dialogInterface.dismiss();
+                                        onClickListener.onClick(null, -1);
+                                    }
+                                })
+                                .show();
+                    }
+                    @Override
+                    public void onNeutral(MaterialDialog dialog) {
+                        String navigateAction = values[selected[0]].toString();
+                        ExtTopic.showActivity(activity, topicId,
+                                ThemeOpenParams.getUrlParams(navigateAction, null));
 
-                                                String navigateAction = values[selected[0]].toString();
-                                                saveOpenThemeParams(tabId, templateId, navigateAction);
-                                                ExtTopic.showActivity(activity, topicId,
-                                                        ThemeOpenParams.getUrlParams(navigateAction, null));
-
-                                                onClickListener.onClick(null, -1);
-                                            }
-                                        })
-                                        .create().show();
-
-
-                            }
-                        }
-                )
-                .setNeutralButton("Только сейчас",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.dismiss();
-
-
-                                String navigateAction = values[selected[0]].toString();
-                                ExtTopic.showActivity(activity, topicId,
-                                        ThemeOpenParams.getUrlParams(navigateAction, null));
-
-                                onClickListener.onClick(null, -1);
-                            }
-                        }
-                )
-                .create()
+                        onClickListener.onClick(null, -1);
+                    }
+                })
                 .show();
-
     }
-
-
 }

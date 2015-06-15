@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaplus.post;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -44,18 +43,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdaapi.post.EditAttach;
 import org.softeg.slartus.forpdaapi.post.EditPost;
 import org.softeg.slartus.forpdaapi.post.PostApi;
-import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
-import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView;
@@ -81,6 +80,7 @@ public class EditPostActivity extends BaseFragmentActivity {
     private EditText txtPost, txtpost_edit_reason;
 
     private Button btnAttachments;
+    private ImageButton btnUpload;
     private ProgressBar progress_search;
     private EditPost m_EditPost;
 
@@ -133,6 +133,7 @@ public class EditPostActivity extends BaseFragmentActivity {
     public void onCreate(Bundle saveInstance) {
         super.onCreate(saveInstance);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
 
@@ -158,6 +159,13 @@ public class EditPostActivity extends BaseFragmentActivity {
         btnAttachments.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 showAttachesListDialog();
+            }
+        });
+
+        btnUpload = (ImageButton) findViewById(R.id.btnUpload);
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                startAddAttachment();
             }
         });
 
@@ -189,7 +197,30 @@ public class EditPostActivity extends BaseFragmentActivity {
         }
         createActionMenu();
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (!TextUtils.isEmpty(txtPost.getText())) {
+                    new MaterialDialog.Builder(this)
+                            .title("Подтвердите действие")
+                            .content("Имеется введенный текст сообщения! Закрыть?")
+                            .positiveText("Да")
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
+                                    finish();
+                                }
+                            })
+                            .negativeText("Отмена")
+                            .show();
+                }else{
+                    finish();
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     private boolean sendMail() {
         final String body = getPostText();
@@ -197,17 +228,18 @@ public class EditPostActivity extends BaseFragmentActivity {
             return true;
 
         if (Preferences.Topic.getConfirmSend()) {
-            new AlertDialogBuilder(getContext())
-                    .setTitle("Уверены?")
-                    .setMessage("Подтвердите отправку")
-                    .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
+            new MaterialDialog.Builder(getContext())
+                    .title("Уверены?")
+                    .content("Подтвердите отправку")
+                    .positiveText("ОК")
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
                             sendPost(body, getEditReasonText());
                         }
                     })
-                    .setNegativeButton("Отмена", null)
-                    .create().show();
+                    .negativeText("Отмена")
+                    .show();
         } else {
             sendPost(body, getEditReasonText());
         }
@@ -295,36 +327,83 @@ public class EditPostActivity extends BaseFragmentActivity {
 
     private void showAttachesListDialog() {
         if (m_EditPost.getAttaches().size() == 0) {
-            startAddAttachment();
+            new MaterialDialog.Builder(this)
+                    .content("Нет ни одного вложения, загрузить?")
+                    .positiveText("Загрузить")
+                    .negativeText("Отмена")
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            startAddAttachment();
+                        }
+                    }).show();
             return;
         }
         AttachesAdapter adapter = new AttachesAdapter(m_EditPost.getAttaches(), this);
-        mAttachesListDialog = new AlertDialogBuilder(this)
-                .setCancelable(true)
-                .setTitle("Вложения")
-                .setSingleChoiceItems(adapter, -1, null)
-                .setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        startAddAttachment();
+        mAttachesListDialog = new MaterialDialog.Builder(this)
+                .cancelable(true)
+                .title("Вложения")
+                        //.setSingleChoiceItems(adapter, -1, null)
+                .adapter(adapter, new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                     }
                 })
-                .setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+                .neutralText("В спойлер")
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onNeutral(MaterialDialog dialog) {
+                        List<String> listItems = new ArrayList<String>();
+                        int i = 0;
+                        while (i <= (m_EditPost.getAttaches().size()-1)) {
+                            listItems.add(m_EditPost.getAttaches().get(i).getName());
+                            i++;
+                        }
+                        final CharSequence[] items = listItems.toArray(new CharSequence[listItems.size()]);
+                        final StringBuilder str = new StringBuilder();
+                        new MaterialDialog.Builder(getContext())
+                                .title("Добавить в спойлер")
+                                .positiveText("Добавить")
+                                .negativeText("Отмена")
+                                .callback(new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        int selectionStart = txtPost.getSelectionStart();
+                                        if (selectionStart == -1)
+                                            selectionStart = 0;
+                                        if (txtPost.getText() != null)
+                                            //txtPost.getText().insert(selectionStart, "[attachment=" + attach.getId() + ":" + attach.getName() + "]");
+                                            txtPost.getText().insert(selectionStart, "[spoiler]"+str.toString()+"[/spoiler]");
+
+                                    }
+                                })
+                                .items(items)
+                                .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+                                    @Override
+                                    public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                                        str.setLength(0);
+                                        for (int i = 0; i < which.length; i++) {
+                                            str.append("[attachment=" + m_EditPost.getAttaches().get(which[i]).getId() + ":" + m_EditPost.getAttaches().get(which[i]).getName() + "]");
+                                        }
+                                        return true; // allow selection
+                                    }
+                                })
+                                .alwaysCallMultiChoiceCallback()
+                                .show();
                     }
                 })
-                .create();
+                .negativeText("Отмена")
+                .build();
         mAttachesListDialog.show();
     }
 
     private void startAddAttachment() {
         CharSequence[] items = new CharSequence[]{"Файл", "Изображение"};
-        new AlertDialogBuilder(getContext())
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-
+        new MaterialDialog.Builder(getContext())
+                .items(items)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int i, CharSequence items) {
                         switch (i) {
                             case 0://файл
 
@@ -360,7 +439,8 @@ public class EditPostActivity extends BaseFragmentActivity {
                                 break;
                         }
                     }
-                }).create().show();
+                })
+                .show();
     }
 
     @Override
@@ -383,7 +463,7 @@ public class EditPostActivity extends BaseFragmentActivity {
     }
 
     public String getRealPathFromURI(Uri contentUri) throws NotReportException {
-        if(contentUri==null)
+        if (contentUri == null)
             throw new NotReportException("Выбран пустой путь!");
         if (!contentUri.toString().startsWith("content://"))
             return contentUri.getPath();
@@ -444,7 +524,7 @@ public class EditPostActivity extends BaseFragmentActivity {
 
 
     private class UpdateTask extends AsyncTask<String, Pair<String, Integer>, Boolean> {
-        private final ProgressDialog dialog;
+        private final MaterialDialog dialog;
         private ProgressState m_ProgressState;
 
         private List<String> attachFilePaths;
@@ -452,7 +532,10 @@ public class EditPostActivity extends BaseFragmentActivity {
         public UpdateTask(Context context, List<String> attachFilePaths) {
 
             this.attachFilePaths = attachFilePaths;
-            dialog = new AppProgressDialog(context);
+            dialog = new MaterialDialog.Builder(context)
+                    .progress(false, 100, false)
+                    .content("Отправка файла")
+                    .show();
         }
 
         public UpdateTask(Context context, String newAttachFilePath) {
@@ -489,16 +572,14 @@ public class EditPostActivity extends BaseFragmentActivity {
         protected void onProgressUpdate(Pair<String, Integer>... values) {
             super.onProgressUpdate(values);
             if (!TextUtils.isEmpty(values[0].first))
-                dialog.setMessage(values[0].first);
+                dialog.setContent(values[0].first);
             dialog.setProgress(values[0].second);
         }
 
         // can use UI thread here
         protected void onPreExecute() {
-            this.dialog.setMessage("Отправка файла..");
             this.dialog.setCancelable(true);
             this.dialog.setCanceledOnTouchOutside(false);
-            this.dialog.setMax(100);
             this.dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialogInterface) {
@@ -507,8 +588,6 @@ public class EditPostActivity extends BaseFragmentActivity {
                 }
             });
             this.dialog.setProgress(0);
-            this.dialog.setIndeterminate(false);
-            this.dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 
             this.dialog.show();
         }
@@ -562,7 +641,7 @@ public class EditPostActivity extends BaseFragmentActivity {
     }
 
     private class DeleteAttachTask extends AsyncTask<String, Void, Boolean> {
-        private final ProgressDialog dialog;
+        private final MaterialDialog dialog;
 
         private String attachId;
 
@@ -570,7 +649,10 @@ public class EditPostActivity extends BaseFragmentActivity {
 
             this.attachId = attachId;
 
-            dialog = new AppProgressDialog(context);
+            dialog = new MaterialDialog.Builder(context)
+                    .progress(true,0)
+                    .content("Удаление файла")
+                    .build();
         }
 
 
@@ -587,7 +669,6 @@ public class EditPostActivity extends BaseFragmentActivity {
 
         // can use UI thread here
         protected void onPreExecute() {
-            this.dialog.setMessage("Удаление файла...");
             this.dialog.show();
         }
 
@@ -612,7 +693,7 @@ public class EditPostActivity extends BaseFragmentActivity {
     }
 
     private class AcceptEditTask extends AsyncTask<String, Void, Boolean> {
-        private final ProgressDialog dialog;
+        private final MaterialDialog dialog;
         private String postBody;
         private String postEditReason;
         private Boolean enableEmo;
@@ -624,7 +705,10 @@ public class EditPostActivity extends BaseFragmentActivity {
             this.postEditReason = postEditReason;
             this.enableEmo = enableEmo;
             this.enableSign = enableSign;
-            dialog = new AppProgressDialog(context);
+            dialog = new MaterialDialog.Builder(context)
+                    .progress(true,0)
+                    .content("Редактирование сообщения")
+                    .build();
         }
 
         @Override
@@ -641,7 +725,6 @@ public class EditPostActivity extends BaseFragmentActivity {
 
         // can use UI thread here
         protected void onPreExecute() {
-            this.dialog.setMessage("Редактирование сообщения...");
             this.dialog.show();
         }
 
@@ -691,7 +774,7 @@ public class EditPostActivity extends BaseFragmentActivity {
     }
 
     private class LoadTask extends AsyncTask<String, Void, Boolean> {
-        private final ProgressDialog dialog;
+        private final MaterialDialog dialog;
         private String forumId;
         private String topicId;
         private String postId;
@@ -702,15 +785,16 @@ public class EditPostActivity extends BaseFragmentActivity {
             this.topicId = topicId;
             this.postId = postId;
             this.authKey = authKey;
-            dialog = new AppProgressDialog(context);
-            dialog.setCancelable(true);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialogInterface) {
-                    cancel(true);
-                }
-            });
+            dialog = new MaterialDialog.Builder(context)
+                    .progress(true,0)
+                    .cancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            cancel(true);
+                        }
+                    })
+                    .content("Загрузка сообщения")
+                    .build();
         }
 
         private EditPost editPost;
@@ -728,7 +812,6 @@ public class EditPostActivity extends BaseFragmentActivity {
         }
 
         protected void onPreExecute() {
-            this.dialog.setMessage("Загрузка сообщения...");
             this.dialog.show();
         }
 
@@ -762,7 +845,7 @@ public class EditPostActivity extends BaseFragmentActivity {
     }
 
     private class PostTask extends AsyncTask<String, Void, Boolean> {
-        private final ProgressDialog dialog;
+        private final MaterialDialog dialog;
         private String mPostResult = null;// при удачной отправке страница топика
         private String mError = null;
         private String postBody;
@@ -776,7 +859,10 @@ public class EditPostActivity extends BaseFragmentActivity {
             this.postEditReason = postEditReason;
             this.enableEmo = enableEmo;
             this.enableSign = enableSign;
-            dialog = new AppProgressDialog(context);
+            dialog = new MaterialDialog.Builder(context)
+                    .progress(true,0)
+                    .content("Отправка сообщения")
+                    .build();
         }
 
         @Override
@@ -794,7 +880,6 @@ public class EditPostActivity extends BaseFragmentActivity {
         }
 
         protected void onPreExecute() {
-            this.dialog.setMessage("Отправка сообщения...");
             this.dialog.show();
         }
 
@@ -1052,7 +1137,7 @@ public class EditPostActivity extends BaseFragmentActivity {
             MenuItem item;
 
             if (!getInterface().isNewPost()) {
-                item = menu.add("Причина редактирования").setIcon(R.drawable.ic_menu_edit);
+                item = menu.add("Причина редактирования").setIcon(R.drawable.ic_menu_editing);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         getInterface().toggleEditReasonDialog();
@@ -1062,7 +1147,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                 item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
             }
 
-            item = menu.add("Поиск по тексту").setIcon(R.drawable.ic_menu_search);
+            item = menu.add("Поиск по тексту");
             item.setActionView(R.layout.action_collapsible_search);
             getInterface().searchEditText = (EditText) item.getActionView().findViewById(R.id.editText);
             getInterface().searchEditText.setOnKeyListener(new View.OnKeyListener() {
@@ -1092,7 +1177,8 @@ public class EditPostActivity extends BaseFragmentActivity {
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                 }
             });
-            item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            // Переделать для appcompat
+            /*item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
                 @Override
                 public boolean onMenuItemActionExpand(MenuItem item) {
                     getInterface().searchEditText.requestFocus();
@@ -1104,10 +1190,10 @@ public class EditPostActivity extends BaseFragmentActivity {
                     getInterface().txtPost.setText(getInterface().clearPostHighlight());
                     return true;
                 }
-            });
+            });*/
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
-            item = menu.add("Скрыть панели").setIcon(R.drawable.ic_media_fullscreen);
+            item = menu.add("Скрыть панели");
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     getInterface().hidePanels();

@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.classes;
 
 import android.R;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Service;
 import android.content.Context;
@@ -20,6 +19,8 @@ import android.widget.Gallery;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -84,28 +85,22 @@ public class BbCodesPanel extends BbCodesBasePanel {
 
         final int finalSelectionStart = selectionStart;
         final int finalSelectionEnd = selectionEnd;
-        CharSequence[] items = new CharSequence[]{"1", "2", "3", "4", "5", "6", "7"};
-        new AlertDialogBuilder(mContext)
-                .setTitle("Выберите размер текста")
-                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+        final CharSequence[] items = new CharSequence[]{"1", "2", "3", "4", "5", "6", "7"};
+        new MaterialDialog.Builder(mContext)
+                .title("Выберите размер текста")
+                .items(items)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-
+                    public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence items) {
                         String tag = "[SIZE=" + Integer.toString(i + 1) + "]";
                         txtPost.getText().insert(finalSelectionStart, tag);
                         txtPost.getText().insert(finalSelectionEnd + tag.length(), "[/SIZE]");
+                        return true; // allow selection
                     }
                 })
-                .setCancelable(true)
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .create().show();
-
+                .cancelable(true)
+                .negativeText("Отмена")
+                .show();
     }
 
     private class BBColor {
@@ -199,14 +194,11 @@ public class BbCodesPanel extends BbCodesBasePanel {
 
             rowCount++;
         }
-        AlertDialog.Builder builder = new AlertDialogBuilder(mContext);
-
         scrollView.addView(tl, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        m_ColorsDialog = new AlertDialogBuilder(mContext)
-                .setCancelable(true)
-                .setView(scrollView)
-                .create();
-        m_ColorsDialog.show();
+        m_ColorsDialog = new MaterialDialog.Builder(mContext)
+                .cancelable(true)
+                .customView(scrollView,true)
+                .show();
     }
 
     private void getColorBbCodeOnClickListener(final String bbCode, int tagIndex) {
@@ -286,14 +278,14 @@ public class BbCodesPanel extends BbCodesBasePanel {
         final int[] selectionStart = {txtPost.getSelectionStart()};
         final int[] selectionEnd = {txtPost.getSelectionEnd()};
 
-        AlertDialog alertDialog = new AlertDialogBuilder(mContext)
-                .setView(layout)
-                .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-
-
+        new MaterialDialog.Builder(mContext)
+                .customView(layout,true)
+                .cancelable(false)
+                .positiveText("OK")
+                .negativeText("Отмена")
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
                         if (selectionEnd[0] < selectionStart[0] && selectionEnd[0] != -1) {
                             int c = selectionStart[0];
                             selectionStart[0] = selectionEnd[0];
@@ -312,25 +304,20 @@ public class BbCodesPanel extends BbCodesBasePanel {
                             mNotClosedCodes[tagIndex]++;
                         }
                     }
-                })
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
 
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
                         return;
-
                     }
-                }).create();
-        
-            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                public void onShow(DialogInterface dialogInterface) {
-                    input.requestFocus();
-                    InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Service.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(input, 0);
-                }
-            });
-        
-        alertDialog.show();
+                })
+                .showListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        input.requestFocus();
+                        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Service.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(input, 0);
+                    }
+                }).show();
     }
 
     @Override
@@ -393,12 +380,14 @@ public class BbCodesPanel extends BbCodesBasePanel {
         layout.addView(input);
         final int[] selectionStart = {txtPost.getSelectionStart()};
         final int[] selectionEnd = {txtPost.getSelectionEnd()};
-        AlertDialog alertDialog = new AlertDialogBuilder(mContext)
-                .setCancelable(false)
-                .setView(layout)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+        new MaterialDialog.Builder(mContext)
+                .cancelable(false)
+                .customView(layout,true)
+                .positiveText("OK")
+                .negativeText(R.string.cancel)
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
                         String tempUrlText = urlText;
                         String tempUrl = url;
                         if (!TextUtils.isEmpty(url)) {
@@ -420,25 +409,15 @@ public class BbCodesPanel extends BbCodesBasePanel {
                         txtPost.getText().replace(selectionStart[0], selectionEnd[0], "[URL=" + (tempUrl == null ? "" : tempUrl) + "]" + tempUrlText + "[/URL]");
                     }
                 })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-
-                        return;
-
+                .showListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        input.requestFocus();
+                        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Service.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(input, 0);
                     }
-                }).create();
-        
-            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                public void onShow(DialogInterface dialogInterface) {
-                    input.requestFocus();
-                    InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Service.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(input, 0);
-                }
-            });
-        
-
-        alertDialog.show();
+                })
+                .show();
     }
 
     private void getListBbCodeOnClickListener(final String listTagPostFix) throws IOException {
@@ -482,12 +461,14 @@ public class BbCodesPanel extends BbCodesBasePanel {
         input.requestFocus();
         layout.addView(input);
 
-        AlertDialog alertDialog = new AlertDialogBuilder(mContext)
-                .setCancelable(false)
-                .setView(layout)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+        new MaterialDialog.Builder(mContext)
+                .cancelable(false)
+                .customView(layout,true)
+                .positiveText("OK")
+                .negativeText(R.string.cancel)
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
                         if (input.getText().toString().isEmpty()) {
                             tryInsertListText(sb, listTagPostFix);
                             return;
@@ -495,26 +476,20 @@ public class BbCodesPanel extends BbCodesBasePanel {
                         sb.append("[*]" + input.getText().toString() + "\n");
                         createListDialog(ind + 1, sb, listTagPostFix);
                     }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
 
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
                         tryInsertListText(sb, listTagPostFix);
-                        return;
-
                     }
-                }).create();
-        
-            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                public void onShow(DialogInterface dialogInterface) {
-                    input.requestFocus();
-                    InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Service.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(input, 0);
-                }
-            });
-        
-        alertDialog.show();
+                })
+                .showListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        input.requestFocus();
+                        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Service.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(input, 0);
+                    }
+                }).show();
     }
 
     private void tryInsertListText(StringBuilder sb, final String listTagPostFix) {

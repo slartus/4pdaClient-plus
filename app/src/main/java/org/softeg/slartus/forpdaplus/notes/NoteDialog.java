@@ -1,16 +1,15 @@
 package org.softeg.slartus.forpdaplus.notes;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.NotesTable;
 
@@ -53,12 +52,13 @@ public class NoteDialog {
             }
         });
 
-        final AlertDialog dialog = new AlertDialogBuilder(context)
-                .setTitle(context.getString(R.string.NewNote))
-                .setView(view)
-                .setPositiveButton(context.getString(R.string.Save), new DialogInterface.OnClickListener() {
+        final MaterialDialog dialog = new MaterialDialog.Builder(context)
+                .title(context.getString(R.string.NewNote))
+                .customView(view,true)
+                .positiveText(context.getString(R.string.Save))
+                .callback(new MaterialDialog.ButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onPositive(MaterialDialog dialog) {
                         new Thread(new Runnable() {
                             public void run() {
                                 Throwable ex = null;
@@ -92,12 +92,9 @@ public class NoteDialog {
                         }).start();
                     }
                 })
-                .setNegativeButton("Отмена", null)
-                .setCancelable(true)
-                .create();
-
-        dialog.show();
-
+                .negativeText("Отмена")
+                .cancelable(true)
+                .show();
     }
 
 }

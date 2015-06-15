@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.Forum;
 
-
 import java.io.IOException;
 import java.util.HashMap;
 

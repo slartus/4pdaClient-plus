@@ -68,7 +68,7 @@ private Handler mHandler=new Handler();
         if (logged) {
 
             if (Client.getInstance().getQmsCount() > 0) {
-                return R.drawable.ic_menu_user_qms;
+                return R.drawable.ic_action_qms;
             }
             return R.drawable.ic_menu_user_online;
         } else {
@@ -86,7 +86,6 @@ private Handler mHandler=new Handler();
         if (logged) {
             String text = Client.getInstance().getQmsCount() > 0 ? ("QMS (" + Client.getInstance().getQmsCount() + ")") : "QMS";
             mUserMenuItem.add(text)
-                    .setIcon(R.drawable.ic_menu_user_qms)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -96,7 +95,6 @@ private Handler mHandler=new Handler();
                     });
 
             mUserMenuItem.add(R.string.Profile)
-                    .setIcon(R.drawable.ic_menu_user_online)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -107,7 +105,6 @@ private Handler mHandler=new Handler();
 
 
             mUserMenuItem.add(R.string.Reputation)
-                    .setIcon(R.drawable.ic_menu_user_online)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -117,7 +114,6 @@ private Handler mHandler=new Handler();
                     });
 
             mUserMenuItem.add(R.string.Logout)
-                    .setIcon(R.drawable.ic_menu_user_offline)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                 public boolean onMenuItemClick(MenuItem item) {

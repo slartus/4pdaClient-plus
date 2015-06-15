@@ -19,8 +19,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
-import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaapi.devdb.DevModel;
+import org.softeg.slartus.forpdaplus.R;
 
 import java.util.ArrayList;
 

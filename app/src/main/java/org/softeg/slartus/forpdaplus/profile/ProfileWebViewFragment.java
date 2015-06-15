@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,7 +107,7 @@ public class ProfileWebViewFragment extends DialogFragment
         super.onSaveInstanceState(outState);
     }
 
-    protected uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout mPullToRefreshLayout;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -181,7 +182,7 @@ public class ProfileWebViewFragment extends DialogFragment
         super.onViewCreated(view, savedInstanceState);
 
         if (!isDialog())
-            mPullToRefreshLayout = App.getInstance().createPullToRefreshLayout(getActivity(), view, new Runnable() {
+            mSwipeRefreshLayout = App.getInstance().createSwipeRefreshLayout(getActivity(), view, new Runnable() {
                 @Override
                 public void run() {
                     startLoadData();
@@ -199,11 +200,18 @@ public class ProfileWebViewFragment extends DialogFragment
             getLoaderManager().initLoader(ItemsLoader.ID, args, this);
     }
 
-    private void setLoading(Boolean loading) {
+    private void setLoading(final Boolean loading) {
         try {
             if (getActivity() == null) return;
-            if (!isDialog())
-                mPullToRefreshLayout.setRefreshing(loading);
+            if (!isDialog()) {
+                //mSwipeRefreshLayout.setRefreshing(loading);
+                mSwipeRefreshLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwipeRefreshLayout.setRefreshing(loading);
+                    }
+                });
+            }
 
         } catch (Throwable ignore) {
             android.util.Log.e("TAG", ignore.toString());
@@ -251,7 +259,8 @@ public class ProfileWebViewFragment extends DialogFragment
     private static class ProfileHtmlBuilder extends HtmlBuilder {
         @Override
         protected String getStyle() {
-            return "/android_asset/profile/css/" + (App.getInstance().isWhiteTheme() ? "profile_white.css" : "profile_black.css");
+            //return "/android_asset/profile/css/" + (App.getInstance().isWhiteTheme() ? "profile_white.css" : "profile_black.css");
+            return App.getInstance().getThemeCssFileName();
 
         }
     }

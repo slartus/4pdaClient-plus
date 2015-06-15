@@ -1,171 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fab="http://schemas.android.com/tools"
     android:id="@+id/layout_parent"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    tools:context=".topicview.ThemeActivity">
+    android:layout_height="fill_parent">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
         <org.softeg.slartus.forpdaplus.classes.AdvWebView
             android:id="@+id/wvBody"
-            android:background="#000"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_alignParentLeft="true"
+            android:background="#ff000000"
             android:clipToPadding="false"
-            android:textSize="12sp" />
+            android:textSize="12.0dip" />
     </RelativeLayout>
+
 
     <LinearLayout
         android:id="@+id/bottom_panel"
-        android:background="@null"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:orientation="vertical"
-        android:fitsSystemWindows="true">
+        android:background="@null"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
 
 
-        <RelativeLayout
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:fab="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical">
+            android:layout_height="wrap_content"
+            android:paddingLeft="16dp">
 
-            <ImageButton
-                android:id="@+id/btnShowHideEditPost"
+            <com.melnykov.fab.FloatingActionButton
+                android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:background="@null"
-                android:padding="10dip"
+                android:layout_margin="16dp"
                 android:src="@drawable/ic_menu_edit"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:contentDescription="Написать сообщение" />
+                fab:fab_colorNormal="?colorAccent"
+                fab:fab_colorPressed="#ffd8205d"
+                fab:fab_colorRipple="#11000000" />
 
-            <ImageButton
 
-                android:layout_width="60dp"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="вверх"
-                android:id="@+id/btnUp"
-                android:background="@null"
-                android:src="@drawable/ic_btn_up"
-                android:onClick="onBtnUpClick"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="2dp"
-                android:layout_marginLeft="2dp"
-                android:contentDescription="Вверх" />
-
-            <ImageButton
-
-                android:layout_width="60dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/arrows_shadow">
+                <ImageButton
+                    android:layout_width="48dp"
+                    android:layout_height="56dp"
+                    android:background="@null"
+                    android:layout_marginRight="4dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_btn_up"/>
+                <ImageButton
+                    android:layout_width="48dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:src="@drawable/ic_btn_down"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="вниз"
-                android:id="@+id/btnDown"
-                android:background="@null"
-                android:src="@drawable/ic_btn_down"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/btnUp"
-                android:layout_toEndOf="@+id/btnUp"
-                android:onClick="onBtnDownClick"
-                android:layout_marginLeft="2dp"
-                android:layout_marginStart="2dp"
-                android:layout_centerVertical="true"
-                android:contentDescription="Вниз" />
-        </RelativeLayout>
+                android:orientation="horizontal"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/arrows">
+                <ImageButton
+                    android:id="@+id/btnUp"
+                    android:layout_width="48dp"
+                    android:layout_height="56dp"
+                    android:background="@null"
+                    android:layout_marginRight="4dp"
+                    android:layout_gravity="center"
+                    android:onClick="onBtnUpClick"
+                    android:src="?arrow_up"/>
+                <ImageButton
+                    android:id="@+id/btnDown"
+                    android:layout_width="48dp"
+                    android:layout_height="56dp"
+                    android:layout_gravity="center"
+                    android:background="@null"
+                    android:onClick="onBtnDownClick"
+                    android:src="?arrow_down"/>
+            </LinearLayout>
+        </FrameLayout>
+
 
         <LinearLayout
             android:id="@+id/quick_post_panel"
-            android:background="?android:attr/colorBackground"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="visible">
-
-            <fragment
-
-                android:id="@+id/quick_post_fragment"
-                class="org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment"
-                android:layout_width="match_parent"
-
-                android:layout_height="match_parent" />
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/pnlSearch"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:background="?android:attr/colorBackground"
+            android:background="?android:colorBackground"
+            android:visibility="gone">
 
-            android:visibility="visible">
+            <fragment
+                android:id="@+id/quick_post_fragment"
+                class="org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
 
-            <ImageButton
-                android:padding="5dip"
-                android:background="@null"
-                android:id="@+id/btnPrevSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_btn_find_prev"
-                android:contentDescription="Предыдущее совпадение" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
 
-            <ImageButton
-                android:padding="5dip"
-                android:background="@null"
-                android:id="@+id/btnNextSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/btnPrevSearch"
-                android:layout_toEndOf="@+id/btnPrevSearch"
-                android:src="@drawable/ic_btn_find_next"
-                android:contentDescription="Следующее совпадение" />
-
-
-            <EditText
-                android:id="@+id/txtSearch"
-                android:hint="Текст поиска"
+            <RelativeLayout
+                android:id="@+id/pnlSearch"
+                style="?panel"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="2dip"
-                android:layout_marginRight="2dip"
-                android:layout_marginTop="2dip"
-                android:layout_toLeftOf="@+id/btnCloseSearch"
-                android:layout_toRightOf="@+id/btnNextSearch"
-                android:capitalize="sentences"
-                android:padding="5dip"
-                android:singleLine="true"
-                android:inputType="text" />
+                android:minHeight="48dp"
+                android:gravity="center_vertical"
+                android:visibility="visible">
 
-            <ImageButton
-                android:padding="5dip"
-                android:background="@null"
-                android:id="@+id/btnCloseSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/btn_close_normal"
-                android:contentDescription="Закрыть панель поиска" />
+                <ImageButton
+                    android:id="@+id/btnPrevSearch"
+                    style="?btnsend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:minWidth="36dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="6dp"
+                    android:contentDescription="Предыдущее совпадение"
+                    android:src="@drawable/ic_btn_find_prev" />
 
-        </RelativeLayout>
+                <ImageButton
+                    android:id="@+id/btnNextSearch"
+                    style="?btnsend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:minWidth="36dp"
+                    android:layout_marginRight="6dp"
+                    android:src="@drawable/ic_btn_find_next"
+                    android:layout_alignTop="@+id/btnPrevSearch"
+                    android:layout_toRightOf="@+id/btnPrevSearch"
+                    android:layout_toEndOf="@+id/btnPrevSearch" />
 
+                <EditText
+                    android:id="@+id/txtSearch"
+                    android:layout_width="fill_parent"
+                    android:layout_height="36dp"
+                    android:background="#00000000"
+                    android:capitalize="sentences"
+                    android:hint="Текст поиска"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:layout_alignTop="@+id/btnNextSearch"
+                    android:layout_toRightOf="@+id/btnNextSearch"
+                    android:layout_toLeftOf="@+id/btnCloseSearch"
+                    android:layout_toStartOf="@+id/btnCloseSearch"
+                    android:paddingLeft="6dp"/>
 
+                <ImageButton
+                    android:id="@+id/btnCloseSearch"
+                    style="?left_separator"
+                    android:layout_width="48dp"
+                    android:layout_height="36dp"
+                    android:contentDescription="Закрыть панель поиска"
+                    android:src="@drawable/btn_close_normal"
+                    android:layout_alignTop="@+id/txtSearch"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
-
-
 </RelativeLayout>

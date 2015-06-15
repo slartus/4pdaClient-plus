@@ -5,9 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.classes.Forum;
 import org.softeg.slartus.forpdaplus.classes.Themes;
+import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.text.ParseException;

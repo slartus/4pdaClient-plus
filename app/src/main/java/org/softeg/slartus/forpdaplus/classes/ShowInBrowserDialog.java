@@ -1,10 +1,11 @@
 package org.softeg.slartus.forpdaplus.classes;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdacommon.ShowInBrowserException;
 import org.softeg.slartus.forpdaplus.R;
@@ -25,25 +26,21 @@ public class ShowInBrowserDialog {
 
     public static void showDialog(final Context context, String title, String message, final String url) {
         try {
-            new AlertDialogBuilder(context)
-                    .setTitle(title)
-                    .setMessage(message + "\n" + context.getString(R.string.OpenLinkInBrowser) + "?")
-                    .setPositiveButton(context.getString(R.string.Open), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-
+            new MaterialDialog.Builder(context)
+                    .title(title)
+                    .content(message + "\n" + context.getString(R.string.OpenLinkInBrowser) + "?")
+                    .positiveText(context.getString(R.string.Open))
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
                             Intent marketIntent = new Intent(
                                     Intent.ACTION_VIEW,
                                     Uri.parse(url));
                             context.startActivity(Intent.createChooser(marketIntent, "Выберите"));
                         }
                     })
-                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    })
-                    .create().show();
+                    .negativeText(android.R.string.cancel)
+                    .show();
         } catch (Throwable ex) {
             Log.e(TAG,ex.toString());
         }

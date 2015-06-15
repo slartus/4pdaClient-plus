@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/4pdaClient-plus.iml" filepath="$PROJECT_DIR$/4pdaClient-plus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/4pdaClient-plus-mod-merge.iml" filepath="$PROJECT_DIR$/4pdaClient-plus-mod-merge.iml" />
       <module fileurl="file://$PROJECT_DIR$/4pdasources/4pdasources.iml" filepath="$PROJECT_DIR$/4pdasources/4pdasources.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/forpdaapi/forpdaapi.iml" filepath="$PROJECT_DIR$/forpdaapi/forpdaapi.iml" />
@@ -13,4 +13,3 @@
     </modules>
   </component>
 </project>
-

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.softeg.slartus.forpdaplus"
     android:installLocation="auto">
 
@@ -16,10 +17,11 @@
     <application
         android:label="@string/app_name"
         android:description="@string/app_description"
-        android:icon="@drawable/icon"
+        tools:replace="android:icon"
+        android:icon="@drawable/icon_mat"
         android:hardwareAccelerated="true"
         android:name=".App"
-        android:theme="@style/Theme.Black">
+        android:theme="@style/MainPinkBL">
 
         <activity
             android:name="org.softeg.slartus.forpdaplus.MainActivity"
@@ -38,10 +40,17 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+                <data android:host="4pda.ru" android:scheme="http" />
+                <data android:host="www.4pda.ru" android:scheme="http" />
 
-                <data
-                    android:scheme="http"
-                    android:host="4pda.ru" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:host="4pda.to" android:scheme="http" />
+                <data android:host="www.4pda.to" android:scheme="http" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -49,19 +58,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:scheme="http"
-                    android:host="4pda.to" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="4pda"
-                    android:host="4pda.ru" />
+                <data android:host="4pda.ru" android:scheme="4pda" />
+                <data android:host="www.4pda.ru" android:scheme="4pda" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -80,12 +78,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:scheme="http"
-                    android:host="devdb.ru" />
-                <data
-                    android:scheme="https"
-                    android:host="devdb.ru" />
+
+                <data android:host="devdb.ru" android:scheme="http" />
+                <data android:host="www.devdb.ru" android:scheme="http" />
+                <data android:host="devdb.ru" android:scheme="https" />
+                <data android:host="www.devdb.ru" android:scheme="https" />
             </intent-filter>
 
             <intent-filter>
@@ -106,7 +103,9 @@
 
         <activity
             android:name=".controls.imageview.ImageViewActivity"
-            android:label="Изображение" />
+            android:label="Изображение"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleTop"/>
 
         <activity
             android:name="org.acra.CrashReportDialog"
@@ -125,7 +124,7 @@
         </receiver>
 
         <activity
-            android:theme="@style/Theme.Transluent.White"
+            android:theme="@style/Theme.Transluent.WhitePink"
             android:name=".TestActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
 

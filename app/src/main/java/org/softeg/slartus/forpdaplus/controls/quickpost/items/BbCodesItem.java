@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.controls.quickpost.items;
 
 import android.content.Context;
-import android.view.View;
 
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostItem;
 

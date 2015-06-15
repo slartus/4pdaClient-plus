@@ -9,6 +9,7 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.TopicApi;
@@ -64,6 +65,7 @@ public class TopicAttachmentListFragment extends BaseTaskListFragment {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        Toast.makeText(getContext(), "I you father, Luke", Toast.LENGTH_LONG).show();
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         if (info.id == -1) return;
         Object o = getAdapter().getItem((int) info.id );

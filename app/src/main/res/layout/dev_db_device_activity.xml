@@ -3,13 +3,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-
+    android:fitsSystemWindows="true"
     android:padding="5dip">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/txtModel"
@@ -17,7 +18,8 @@
             android:layout_width="wrap_content"
             android:textStyle="bold"
             android:textAppearance="@android:style/TextAppearance.Large"
-            android:textColor="@color/devdb_group_color" />
+            android:textColor="@color/devdb_group_color"
+            android:paddingBottom="8dp"/>
 
         <LinearLayout
             android:id="@+id/pnlRating"
@@ -28,7 +30,8 @@
         <Gallery xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/gallery"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"/>
 
         <TableLayout
             android:id="@+id/infoTable"

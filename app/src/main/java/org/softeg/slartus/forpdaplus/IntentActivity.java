@@ -14,13 +14,14 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdaapi.devdb.DevDbApi;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdacommon.UrlExtensions;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.Email;
@@ -600,26 +601,26 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
             final TextView message = (TextView) view.findViewById(R.id.textView);
             message.setText("Начать закачку файла?");
             checkBox.setText("Подтверждать скачивание");
-            new AlertDialogBuilder(activity)
-                    .setTitle("Подтвердите действие")
-                    .setView(view)
-                    .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
+            new MaterialDialog.Builder(activity)
+                    .title("Подтвердите действие")
+                    .customView(view,true)
+                    .positiveText("ОК")
+                    .negativeText("Отмена")
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            //dialogInterface.dismiss();
                             if (!checkBox.isChecked())
                                 Preferences.Files.setConfirmDownload(false);
                             DownloadsService.download(activity, url,finish);
-
-
                         }
-                    })
-                    .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                        @Override
+                        public void onNegative(MaterialDialog dialog) {
                             if (finish)
                                 activity.finish();
                         }
                     })
-                    .create().show();
+                    .show();
 
         } else {
             DownloadsService.download(activity, url,finish);

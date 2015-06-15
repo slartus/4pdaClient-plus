@@ -1,8 +1,347 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="MainThemeWH" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorAccent">@color/accent</item>
+        <item name="actionBarStyle">@style/actionbar_wh</item>
+        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:windowBackground">@color/app_background_wh</item>
+        <item name="actionOverflowButtonStyle">@style/overflow_button</item>
+        <item name="actionModeBackground">@color/actionbar_background_wh</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:actionModeBackground">@color/actionbar_background_wh</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="forum_header_text_color">@color/holo_blue_light</item>
+        <item name="theme_background">@android:color/white</item>
+        <item name="theme_light_background">@color/theme_light_background_light</item>
+        <item name="btnsend">@style/btnsend_wh</item>
+        <item name="panel">@style/panel_wh</item>
+        <item name="bottom_separator">@style/bottom_separator_wh</item>
+        <item name="left_separator">@style/left_separator_wh</item>
+        <item name="right_separator">@style/right_separator_wh</item>
+        <item name="news">@style/news_wh</item>
+        <item name="news_full">@style/news_full_wh</item>
+        <item name="news_image_corner">@style/news_image_corner_wh</item>
+        <item name="drawer_menu">@style/drawer_menu_wh</item>
+        <item name="drawer_menu_group">@style/drawer_menu_group_wh</item>
+        <item name="drawer_menu_text">@style/drawer_menu_text_wh</item>
+        <item name="drawer_divider">@style/drawer_divider_wh</item>
+        <item name="popup_topic">@style/popup_topic_wh</item>
+        <item name="popup_item">@style/popup_item_wh</item>
+        <item name="popup_item_text">@style/popup_item_text_wh</item>
+        <item name="list_text_general_color">@style/list_text_general_color_wh</item>
+        <item name="list_text_minor_color">@style/list_text_minor_color_wh</item>
+        <item name="list_text_second_color">@style/list_text_second_color_wh</item>
+        <item name="list_text_special_color">@style/list_text_special_color_wh</item>
+        <item name="news_text_general_color">@style/news_text_general_color_wh</item>
+        <item name="news_text_minor_color">@style/news_text_minor_color_wh</item>
+        <item name="news_text_second_color">@style/news_text_second_color_wh</item>
+        <item name="edit_text">@style/edit_text_wh</item>
+        <item name="divider_color">@style/divider_wh</item>
+        <item name="md_dark_theme">false</item>
+        <item name="Divider">@style/Divider_wh</item>
+        <item name="actbar">@color/actionbar_background_wh</item>
+    </style>
 
+    <style name="MainThemeBL" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/accent</item>
+        <item name="actionBarStyle">@style/actionbar_bl</item>
+        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat</item>
+        <item name="actionOverflowButtonStyle">@style/overflow_button</item>
+        <item name="android:windowBackground">@color/app_background_bl</item>
+        <item name="actionModeBackground">@color/actionbar_background_bl</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:actionModeBackground">@color/actionbar_background_bl</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="forum_header_text_color">@color/holo_blue_dark</item>
+        <item name="theme_background">@android:color/black</item>
+        <item name="theme_light_background">@color/theme_light_background_dark</item>
+        <item name="btnsend">@style/btnsend_bl</item>
+        <item name="panel">@style/panel_bl</item>
+        <item name="bottom_separator">@style/bottom_separator_bl</item>
+        <item name="left_separator">@style/left_separator_bl</item>
+        <item name="right_separator">@style/right_separator_bl</item>
+        <item name="news">@style/news_bl</item>
+        <item name="news_full">@style/news_full_bl</item>
+        <item name="news_image_corner">@style/news_image_corner_bl</item>
+        <item name="drawer_menu">@style/drawer_menu_bl</item>
+        <item name="drawer_menu_group">@style/drawer_menu_group_bl</item>
+        <item name="drawer_menu_text">@style/drawer_menu_text_bl</item>
+        <item name="drawer_divider">@style/drawer_divider_bl</item>
+        <item name="popup_topic">@style/popup_topic_bl</item>
+        <item name="popup_item">@style/popup_item_bl</item>
+        <item name="popup_item_text">@style/popup_item_text_bl</item>
+        <item name="list_text_general_color">@style/list_text_general_color_bl</item>
+        <item name="list_text_minor_color">@style/list_text_minor_color_bl</item>
+        <item name="list_text_second_color">@style/list_text_second_color_bl</item>
+        <item name="list_text_special_color">@style/list_text_special_color_bl</item>
+        <item name="news_text_general_color">@style/news_text_general_color_bl</item>
+        <item name="news_text_minor_color">@style/news_text_minor_color_bl</item>
+        <item name="news_text_second_color">@style/news_text_second_color_bl</item>
+        <item name="edit_text">@style/edit_text_bl</item>
+        <item name="divider_color">@style/divider_bl</item>
+        <item name="md_dark_theme">true</item>
+        <item name="Divider">@style/Divider_bl</item>
+        <item name="actbar">@color/actionbar_background_bl</item>
+    </style>
+
+    <style name="actionMode_style" parent="@style/Widget.AppCompat.Light.ActionMode.Inverse">
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:background">?attr/actionModeBackground</item>
+        <item name="android:height">@dimen/ptr_height_bug</item>
+        <item name="height">@dimen/ptr_height_bug</item>
+    </style>
+    <style name="actionbar_wh" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="background">@color/actionbar_background_wh</item>
+        <item name="elevation">2dp</item>
+        <item name="displayOptions">homeAsUp|showTitle</item>
+        <item name="titleTextStyle">@style/actionbar_title</item>
+        <item name="subtitleTextStyle">@style/actionbar_subtitle</item>
+    </style>
+    <style name="actionbar_bl" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="background">@color/actionbar_background_bl</item>
+        <item name="elevation">2dp</item>
+        <item name="displayOptions">homeAsUp|showTitle</item>
+    </style>
+    <style name="actionbar_title">
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="actionbar_subtitle">
+        <item name="android:textColor">#ccffffff</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="overflow_button" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingLeft">-2dp</item>
+    </style>
+
+    <style name="QmsNew">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="QmsOld">
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Divider_wh">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/divider_wh</item>
+    </style>
+    <style name="Divider_bl">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/divider_bl</item>
+    </style>
+
+    <style name="prefs_title_background_bl">
+        <item name="android:background">@color/actionbar_background_bl</item>
+    </style>
+    <style name="prefs_title_background_wh">
+        <item name="android:background">@color/actionbar_background_wh</item>
+    </style>
+    <style name="prefs_title_style">
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="prefs_title_style_kitkat" parent="prefs_title_style">
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:fitsSystemWindows">false</item>
+    </style>
+
+    <style name="btnsend_wh">
+        <item name="android:background">@drawable/action_btnsend_wh</item>
+    </style>
+
+    <style name="btnsend_bl">
+        <item name="android:background">@drawable/action_btnsend_bl</item>
+    </style>
+
+    <style name="panel_wh">
+        <item name="android:background">@drawable/panel_wh</item>
+    </style>
+
+    <style name="panel_bl">
+        <item name="android:background">@drawable/panel_bl</item>
+    </style>
+
+    <style name="bottom_separator_wh">
+        <item name="android:background">@drawable/bottom_separator_wh</item>
+    </style>
+
+    <style name="bottom_separator_bl">
+        <item name="android:background">@drawable/bottom_separator_bl</item>
+    </style>
+
+    <style name="left_separator_wh">
+        <item name="android:background">@drawable/left_separator_wh</item>
+    </style>
+
+    <style name="left_separator_bl">
+        <item name="android:background">@drawable/left_separator_bl</item>
+    </style>
+
+    <style name="right_separator_wh">
+        <item name="android:background">@drawable/right_separator_wh</item>
+    </style>
+
+    <style name="right_separator_bl">
+        <item name="android:background">@drawable/right_separator_bl</item>
+    </style>
+
+    <style name="news_wh">
+        <item name="android:background">@drawable/news_wh</item>
+    </style>
+
+    <style name="news_bl">
+        <item name="android:background">@drawable/news_bl</item>
+    </style>
+
+    <style name="news_image_corner_wh">
+        <item name="android:background">@drawable/news_image_corner_wh</item>
+    </style>
+
+    <style name="news_image_corner_bl">
+        <item name="android:background">@drawable/news_image_corner_bl</item>
+    </style>
+
+    <style name="news_full_wh">
+        <item name="android:background">@drawable/news_full_wh</item>
+    </style>
+
+    <style name="news_full_bl">
+        <item name="android:background">@drawable/news_full_bl</item>
+    </style>
+
+    <style name="news_full_image_corner_wh">
+        <item name="android:background">@drawable/news_full_image_corner_wh</item>
+    </style>
+
+    <style name="news_full_image_corner_bl">
+        <item name="android:background">@drawable/news_full_image_corner_bl</item>
+    </style>
+
+
+    <style name="drawer_menu_wh">
+        <item name="android:background">@color/drawer_menu_background_wh</item>
+    </style>
+    <style name="drawer_menu_bl">
+        <item name="android:background">@color/drawer_menu_background_bl</item>
+    </style>
+    <style name="drawer_menu_group_wh">
+        <item name="android:textColor">@color/drawer_menu_group_wh</item>
+    </style>
+    <style name="drawer_menu_group_bl">
+        <item name="android:textColor">@color/drawer_menu_group_bl</item>
+    </style>
+    <style name="drawer_menu_text_wh">
+        <item name="android:textColor">@color/drawer_menu_text_wh</item>
+    </style>
+    <style name="drawer_menu_text_bl">
+        <item name="android:textColor">@color/drawer_menu_text_bl</item>
+    </style>
+    <style name="drawer_divider_wh">
+        <item name="android:background">@drawable/custom_group_devider_wh</item>
+    </style>
+    <style name="drawer_divider_bl">
+        <item name="android:background">@drawable/custom_group_devider_bl</item>
+    </style>
+
+    <style name="divider_wh">
+        <item name="android:divider">@color/divider_wh</item>
+    </style>
+    <style name="divider_bl">
+        <item name="android:divider">@color/divider_bl</item>
+    </style>
+
+    <style name="popup_topic_wh">
+        <item name="android:background">@drawable/abc_popup_background_wh</item>
+    </style>
+    <style name="popup_topic_bl">
+        <item name="android:background">@drawable/abc_popup_background_bl</item>
+    </style>
+
+    <style name="popup_item_wh">
+        <item name="android:background">@drawable/action_popup_item_wh</item>
+    </style>
+    <style name="popup_item_bl">
+        <item name="android:background">@drawable/action_popup_item_bl</item>
+    </style>
+
+    <style name="popup_item_text_wh">
+        <item name="android:textColor">@color/action_popup_item_text_wh</item>
+    </style>
+    <style name="popup_item_text_bl">
+        <item name="android:textColor">@color/action_popup_item_text_bl</item>
+    </style>
+
+    <style name="list_text_general_color_wh">
+        <item name="android:textColor">@color/list_text_general_color_wh</item>
+    </style>
+    <style name="list_text_general_color_bl">
+        <item name="android:textColor">@color/list_text_general_color_bl</item>
+    </style>
+
+    <style name="list_text_minor_color_wh">
+        <item name="android:textColor">@color/list_text_minor_color_wh</item>
+    </style>
+    <style name="list_text_minor_color_bl">
+        <item name="android:textColor">@color/list_text_minor_color_bl</item>
+    </style>
+
+    <style name="list_text_second_color_wh">
+        <item name="android:textColor">@color/list_text_second_color_wh</item>
+    </style>
+    <style name="list_text_second_color_bl">
+        <item name="android:textColor">@color/list_text_second_color_bl</item>
+    </style>
+
+    <style name="list_text_special_color_wh">
+        <item name="android:textColor">@color/list_text_special_color_wh</item>
+    </style>
+    <style name="list_text_special_color_bl">
+        <item name="android:textColor">@color/list_text_special_color_bl</item>
+    </style>
+
+    <style name="news_text_general_color_wh">
+        <item name="android:textColor">@color/news_text_general_color_wh</item>
+    </style>
+
+    <style name="news_text_general_color_bl">
+        <item name="android:textColor">@color/news_text_general_color_bl</item>
+    </style>
+
+    <style name="news_text_minor_color_wh">
+        <item name="android:textColor">@color/news_text_minor_color_wh</item>
+    </style>
+
+    <style name="news_text_minor_color_bl">
+        <item name="android:textColor">@color/news_text_minor_color_bl</item>
+    </style>
+
+    <style name="news_text_second_color_wh">
+        <item name="android:textColor">@color/news_text_second_color_wh</item>
+    </style>
+
+    <style name="news_text_second_color_bl">
+        <item name="android:textColor">@color/news_text_second_color_bl</item>
+    </style>
+
+    <style name="edit_text_wh">
+        <item name="android:background">@color/edit_text_wh</item>
+    </style>
+
+    <style name="edit_text_bl">
+        <item name="android:background">@color/edit_text_bl</item>
+    </style>
 
     <style name="NotificationText" parent="android:TextAppearance.StatusBar.EventContent" />
+
     <style name="NotificationTitle" parent="android:TextAppearance.StatusBar.EventContent.Title" />
 
 </resources>

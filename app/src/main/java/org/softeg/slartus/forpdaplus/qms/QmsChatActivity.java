@@ -1,10 +1,8 @@
 package org.softeg.slartus.forpdaplus.qms;
 
 
-import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -25,7 +23,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -38,17 +35,17 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdacommon.FileUtils;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
-import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
-import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
@@ -108,7 +105,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         super.onCreate(savedInstanceState);
 
 
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.qms_chat);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -163,8 +160,8 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         if (TextUtils.isEmpty(m_Nick))
             setTitle("QMS");
         else
-            setTitle(m_Nick + ":QMS:" + m_ThemeTitle);
-
+            setTitle(m_ThemeTitle);
+            getSupportActionBar().setSubtitle(m_Nick);
         if (!TextUtils.isEmpty(m_PageBody[0])) {
             m_LastBodyLength = m_PageBody[0].length();
             new Thread(new Runnable() {
@@ -273,26 +270,19 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                     return;
                 }
 
-                new AlertDialogBuilder(QmsChatActivity.this)
-                        .setTitle("Подтвердите действие")
-                        .setCancelable(true)
-                        .setMessage(String.format("Вы действительно хотите удалить выбранные сообщения (%d)?", ids.size()))
-                        .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+                new MaterialDialog.Builder(QmsChatActivity.this)
+                        .title("Подтвердите действие")
+                        .cancelable(true)
+                        .content(String.format("Вы действительно хотите удалить выбранные сообщения (%d)?", ids.size()))
+                        .positiveText("Удалить")
+                        .callback(new MaterialDialog.ButtonCallback() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-
+                            public void onPositive(MaterialDialog dialog) {
                                 m_SendTask = new DeleteTask(QmsChatActivity.this);
                                 m_SendTask.execute(ids);
                             }
                         })
-                        .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .create()
+                        .negativeText("Отмена")
                         .show();
             }
         });
@@ -300,28 +290,21 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
 
     public void deleteDialog() {
 
-        new AlertDialogBuilder(this)
-                .setTitle("Подтвердите действие")
-                .setCancelable(true)
-                .setMessage("Вы действительно хотите удалить диалог?")
-                .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(this)
+                .title("Подтвердите действие")
+                .cancelable(true)
+                .content("Вы действительно хотите удалить диалог?")
+                .positiveText("Удалить")
+                .callback(new MaterialDialog.ButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-
+                    public void onPositive(MaterialDialog dialog) {
                         ArrayList<String> ids = new ArrayList<>();
                         ids.add(m_TId);
                         m_SendTask = new DeleteDialogTask(QmsChatActivity.this, ids);
                         m_SendTask.execute();
                     }
                 })
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .create()
+                .negativeText("Отмена")
                 .show();
 
     }
@@ -373,7 +356,8 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         m_Nick = outState.getString(NICK_KEY);
         m_TId = outState.getString(TID_KEY);
         m_ThemeTitle = outState.getString(THEME_TITLE_KEY);
-        setTitle(m_Nick + "-QMS-" + m_ThemeTitle);
+        setTitle(m_ThemeTitle);
+        getSupportActionBar().setSubtitle(m_Nick);
         edMessage.setText(outState.getString(POST_TEXT_KEY));
 
     }
@@ -506,21 +490,22 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
 
                 if (finalEx == null) {
                     if (finalUpdateTitle)
-                        setTitle(m_Nick + "-QMS-" + m_ThemeTitle);
+                        setTitle(m_ThemeTitle);
+                        getSupportActionBar().setSubtitle(m_Nick);
                     wvChat.loadDataWithBaseURL("\"file:///android_asset/\"", finalChatBody, "text/html", "UTF-8", null);
                 } else {
                     if ("Такого диалога не существует.".equals(finalEx.getMessage())) {
-                        new AlertDialogBuilder(QmsChatActivity.this)
-                                .setTitle("Ошибка")
-                                .setMessage(finalEx.getMessage())
-                                .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                        new MaterialDialog.Builder(QmsChatActivity.this)
+                                .title("Ошибка")
+                                .content(finalEx.getMessage())
+                                .positiveText("ОК")
+                                .callback(new MaterialDialog.ButtonCallback() {
                                     @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
+                                    public void onPositive(MaterialDialog dialog) {
                                         showThread();
                                     }
                                 })
-                                .create().show();
+                                .show();
                         m_UpdateTimer.cancel();
                         m_UpdateTimer.purge();
 
@@ -678,13 +663,15 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
     private class SendTask extends AsyncTask<ArrayList<String>, Void, Boolean> {
 
 
-        private final ProgressDialog dialog;
+        private final MaterialDialog dialog;
         public String m_ChatBody;
 
 
         public SendTask(Context context) {
-
-            dialog = new AppProgressDialog(context);
+            dialog = new MaterialDialog.Builder(context)
+                    .progress(true,0)
+                    .content("Отправка сообщения")
+                    .build();
         }
 
         @Override
@@ -703,7 +690,6 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
 
         // can use UI thread here
         protected void onPreExecute() {
-            this.dialog.setMessage("Отправка сообщения...");
             this.dialog.show();
         }
 
@@ -724,13 +710,16 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
     private class DeleteTask extends AsyncTask<ArrayList<String>, Void, Boolean> {
 
 
-        private final ProgressDialog dialog;
+        private final MaterialDialog dialog;
         public String m_ChatBody;
 
 
         public DeleteTask(Context context) {
 
-            dialog = new AppProgressDialog(context);
+            dialog = new MaterialDialog.Builder(context)
+                    .progress(true,0)
+                    .content("Удаление сообщений")
+                    .build();
         }
 
         @Override
@@ -749,7 +738,6 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
 
         // can use UI thread here
         protected void onPreExecute() {
-            this.dialog.setMessage("Удаление сообщений...");
             this.dialog.show();
         }
 
@@ -768,13 +756,16 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
     private class DeleteDialogTask extends AsyncTask<ArrayList<String>, Void, Boolean> {
 
 
-        private final ProgressDialog dialog;
+        private final MaterialDialog dialog;
 
         ArrayList<String> m_Ids;
 
         public DeleteDialogTask(Context context, ArrayList<String> ids) {
             m_Ids = ids;
-            dialog = new AppProgressDialog(context);
+            dialog = new MaterialDialog.Builder(context)
+                    .progress(true,0)
+                    .content("Удаление диалогов")
+                    .build();
         }
 
         @Override
@@ -792,7 +783,6 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
 
         // can use UI thread here
         protected void onPreExecute() {
-            this.dialog.setMessage("Удаление диалогов...");
             this.dialog.show();
         }
 
@@ -855,24 +845,22 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
 
             }
         });
-        new AlertDialogBuilder(this)
-                .setTitle("Размер шрифта")
-                .setView(v)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(this)
+                .title("Размер шрифта")
+                .customView(v,true)
+                .positiveText("OK")
+                .negativeText("Отмена")
+                .callback(new MaterialDialog.ButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+                    public void onPositive(MaterialDialog dialog) {
                         Preferences.setFontSize(Prefix(), seekBar.getProgress() + 1);
                     }
-                })
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+                    public void onNegative(MaterialDialog dialog) {
                         getWebView().getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
                     }
                 })
-                .create().show();
+                .show();
 
     }
 
@@ -947,7 +935,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                         }
                     });
 
-            item = menu.add("Профиль собеседника").setIcon(R.drawable.ic_action_user_online);
+            item = menu.add("Профиль собеседника");
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     getInterface().showCompanionProfile();

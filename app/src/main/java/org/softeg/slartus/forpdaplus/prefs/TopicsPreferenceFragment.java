@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.prefs;/*
  * Created by slinkin on 16.04.2014.
  */
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -13,8 +12,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 
 public class TopicsPreferenceFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
     public static String ListName = "";
@@ -105,13 +105,14 @@ public class TopicsPreferenceFragment extends PreferenceFragment implements Pref
                 break;
         }
 
-        new AlertDialogBuilder(getActivity())
-                .setTitle("Сортировка")
-                .setView(v)
-                .setPositiveButton("По убыванию", new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getActivity())
+                .title("Сортировка")
+                .customView(v,true)
+                .positiveText("По убыванию")
+                .neutralText("По возрастанию")
+                .callback(new MaterialDialog.ButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+                    public void onPositive(MaterialDialog dialog) {
                         String sortValue = "date";
                         switch (radioGroup.getCheckedRadioButtonId()) {
                             case R.id.rbSortBySortOrder:
@@ -131,11 +132,8 @@ public class TopicsPreferenceFragment extends PreferenceFragment implements Pref
                         Toast.makeText(getActivity(), "Необходимо обновить список для применения сортировки",
                                 Toast.LENGTH_SHORT).show();
                     }
-                })
-                .setNeutralButton("По возрастанию", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+                    public void onNeutral(MaterialDialog dialog) {
                         String sortValue = "date";
                         switch (radioGroup.getCheckedRadioButtonId()) {
                             case R.id.rbSortBySortOrder:
@@ -155,7 +153,8 @@ public class TopicsPreferenceFragment extends PreferenceFragment implements Pref
                         Toast.makeText(getActivity(), "Необходимо обновить список для применения сортировки",
                                 Toast.LENGTH_SHORT).show();
                     }
-                }).create().show();
+                })
+                .show();
     }
 
     private String getListName() {

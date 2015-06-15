@@ -26,6 +26,7 @@ public class ProfileApi {
      * @return если залогинен - true
      */
     public static void checkLogin(String pageBody, LoginResult loginResult) {
+
         Matcher m = Pattern.compile("showuser=(\\d+)\">([^<]*)</a></b>.*?k=([a-z0-9]{32})", Pattern.CASE_INSENSITIVE)
                 .matcher(pageBody);
 

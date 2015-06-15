@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 
+import org.softeg.slartus.forpdaapi.users.Users;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.QuickStartActivity;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaapi.users.Users;
 
 import java.io.IOException;
 

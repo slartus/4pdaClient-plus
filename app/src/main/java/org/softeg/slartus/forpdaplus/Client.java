@@ -1,13 +1,14 @@
 package org.softeg.slartus.forpdaplus;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
@@ -27,7 +28,6 @@ import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.Observer;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdacommon.SimpleCookie;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.DownloadTask;
 import org.softeg.slartus.forpdaplus.classes.DownloadTasks;
 import org.softeg.slartus.forpdaplus.classes.Forum;
@@ -373,18 +373,18 @@ public class Client implements IHttpClient {
 
             final LoginDialog loginDialog = new LoginDialog(mContext);
 
-            new AlertDialogBuilder(mContext)
-                    .setTitle("Вход")
-                    .setView(loginDialog.getView())
-                    .setPositiveButton("Вход", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-
+            new MaterialDialog.Builder(mContext)
+                    .title("Вход")
+                    .customView(loginDialog.getView(), true)
+                    .positiveText("Вход")
+                    .negativeText("Отмена")
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
                             loginDialog.connect(onUserChangedListener);
                         }
                     })
-                    .setNegativeButton("Отмена", null)
-                    .create().show();
+                    .show();
 
         } catch (Exception ex) {
             AppLog.e(mContext, ex);

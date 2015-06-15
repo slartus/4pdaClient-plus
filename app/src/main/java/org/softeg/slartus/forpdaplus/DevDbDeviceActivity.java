@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaplus;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -22,7 +21,8 @@ import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 
-import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaplus.classes.DevDbDevice;
 import org.softeg.slartus.forpdaplus.classes.LazyGallery.LazyAdapter;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
@@ -105,7 +105,6 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add("Браузер")
-                .setIcon(R.drawable.ic_menu_goto)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                     public boolean onMenuItemClick(MenuItem item) {
@@ -119,7 +118,6 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
                     }
                 });
         menu.add("Закрыть")
-                .setIcon(R.drawable.ic_menu_close_clear_cancel)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                     public boolean onMenuItemClick(MenuItem item) {
@@ -254,17 +252,20 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
     public class LoadPageTask extends AsyncTask<String, String, Boolean> {
 
 
-        private final ProgressDialog dialog;
+        private final MaterialDialog dialog;
 
         public LoadPageTask(Context context) {
 
-            dialog = new AppProgressDialog(context);
-            dialog.setCancelable(false);
+            dialog = new MaterialDialog.Builder(context)
+                    .progress(true,0)
+                    .cancelable(false)
+                    .content("Загрузка")
+                    .build();
         }
 
         @Override
         protected void onProgressUpdate(String... progress) {
-            this.dialog.setMessage(progress[0]);
+            this.dialog.setContent(progress[0]);
         }
 
         private Throwable ex;
@@ -285,7 +286,6 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
 
         protected void onPreExecute() {
             try {
-                this.dialog.setMessage("Загрузка...");
                 this.dialog.show();
             } catch (Exception ex) {
                 AppLog.e(null, ex);

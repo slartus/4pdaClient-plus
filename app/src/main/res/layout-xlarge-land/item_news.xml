@@ -1,68 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="5dip">
+    android:padding="8dip">
 
     <!--  ListRow Left sied Thumbnail image -->
-    <FrameLayout
-        android:id="@+id/image_panel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginRight="5dip"
-        android:padding="3dip">
-
-        <ImageView
-            android:id="@+id/imageImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="img" />
-
-        <LinearLayout
-            android:id="@+id/mProgressBar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-    </FrameLayout>
-
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/image_panel">
-        <TextView
-            android:id="@+id/textDate"
+        style="?news_full"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/image_panel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dip"
-            android:gravity="right"
-            android:textAppearance="@android:style/TextAppearance.Small" />
+            android:layout_alignParentLeft="true">
 
-        <TextView
-            android:id="@+id/textTitle"
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/save_ratio" />
+
+            <ImageView
+                android:id="@+id/imageImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:contentDescription="img" />
+
+            <LinearLayout
+                android:id="@+id/mProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <LinearLayout
+                style="?news_full_image_corner"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" />
+        </FrameLayout>
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@android:style/TextAppearance.Medium"
-            android:textStyle="bold" />
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/image_panel"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
 
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="i Ready O превратит iPhone в классический портативный радиоприёмник"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textDescription"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dip"
-            android:textAppearance="@android:style/TextAppearance.Small" />
+            <TextView
+                android:id="@+id/textDate"
+                style="?news_text_second_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="2dp"
+                android:paddingBottom="6dp"
+                android:text="05.03.2015"
+                android:textAppearance="@android:style/TextAppearance.Small" />
+
+            <TextView
+                android:id="@+id/textDescription"
+                style="?news_text_minor_color"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/image_panel"
+                android:layout_toEndOf="@+id/image_panel"
+                android:layout_toRightOf="@+id/image_panel"
+                android:text="Всем пользователям старых iPhone, которые хотят вдохнут в устройства новую жизнь, следует обратить внимание на новый Kickstarter-проект от смелых энтузиастов. На самом деле, относительно старых - подойдут iPhone 4/4S и iPhone 5/5S. Компания K Tech собирает средства на производство аксессуара, который превратит смартфон в некое подобие винтажного радио с относительно большой ручкой. Аксессуар получил название i Ready O. Для превращения iPhone в радио нужно лишь вставить его в отведённую нишу. Кнопки Home и управление звуком дублируются на корпусе i Ready O для придания аутентичности."
+                android:textAppearance="@android:style/TextAppearance.Small" />
+        </LinearLayout>
 
 
     </LinearLayout>

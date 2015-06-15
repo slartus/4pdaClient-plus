@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBarActivity;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -15,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.softeg.slartus.forpdaapi.IListItem;
@@ -85,7 +85,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
         super.onLoadFinished(loader,data);
         if(data.getEx()==null){
             if(data instanceof ReputationsListData){
-                getActivity().getActionBar().setSubtitle(((ReputationsListData) data).getRep());
+                ((ActionBarActivity)getActivity()).getSupportActionBar().setSubtitle(((ReputationsListData) data).getRep());
                 Args.putString(USER_NICK_KEY, ((ReputationsListData) data).getUser());
             }
         }
@@ -180,7 +180,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
                 });
                 item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
-            item = menu.add("Профиль").setIcon(R.drawable.ic_menu_rating_good);
+            item = menu.add("Профиль");
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     ProfileWebViewActivity.startActivity(getActivity(), getUserId(), getUserNick());
@@ -312,9 +312,9 @@ public class UserReputationFragment extends BrickFragmentListBase {
         public android.view.View getView(int position, android.view.View view, android.view.ViewGroup parent) {
             final ViewHolder holder;
             if (view == null) {
-                view = mInflater.inflate(R.layout.list_item, parent, false);
+                view = mInflater.inflate(R.layout.list_item_reputation, parent, false);
                 holder = new ViewHolder();
-                holder.Flag = (ImageView) view.findViewById(R.id.imgFlag);
+                holder.Flag = (TextView) view.findViewById(R.id.imgFlag);
                 holder.TopLeft = (TextView) view.findViewById(R.id.txtTopLeft);
                 holder.TopRight = (TextView) view.findViewById(R.id.txtTopRight);
                 holder.Main = (TextView) view.findViewById(R.id.txtMain);
@@ -334,15 +334,19 @@ public class UserReputationFragment extends BrickFragmentListBase {
             switch (topic.getState()) {
                 case IListItem.STATE_GREEN:
                     setVisibility(holder.Flag,View.VISIBLE);
-                    holder.Flag.setImageResource(R.drawable.new_flag);
+                    holder.Flag.setText("+");
+                    holder.Flag.setBackgroundResource(R.drawable.plusrep);
+                    //holder.Flag.setImageResource(R.drawable.new_flag);
                     break;
                 case IListItem.STATE_RED:
                     setVisibility(holder.Flag,View.VISIBLE);
-                    holder.Flag.setImageResource(R.drawable.old_flag);
+                    holder.Flag.setBackgroundResource(R.drawable.minusrep);
+                    holder.Flag.setText("-");
+                    //holder.Flag.setImageResource(R.drawable.old_flag);
                     break;
                 default:
                     setVisibility(holder.Flag,View.INVISIBLE);
-                    holder.Flag.setImageBitmap(null);
+                   // holder.Flag.setImageBitmap(null);
             }
             return view;
         }
@@ -353,7 +357,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
         }
 
         class ViewHolder {
-            ImageView Flag;
+            TextView Flag;
             View progress;
             TextView TopLeft;
             TextView TopRight;

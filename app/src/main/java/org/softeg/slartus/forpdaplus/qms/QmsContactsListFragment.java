@@ -5,6 +5,7 @@ package org.softeg.slartus.forpdaplus.qms;/*
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,8 @@ import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.qms.QmsUser;
 import org.softeg.slartus.forpdaapi.qms.QmsUsers;
-import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
@@ -197,7 +198,7 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
 
                 holder = new ViewHolder();
                 assert convertView != null;
-                holder.txtIsNew = (ImageView) convertView.findViewById(R.id.txtIsNew);
+                //holder.txtIsNew = (ImageView) convertView.findViewById(R.id.txtIsNew);
                 holder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
                 if (!mShowAvatars)
                     holder.imgAvatar.setVisibility(View.GONE);
@@ -214,13 +215,30 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
             if (TextUtils.isEmpty(user.getNewMessagesCount()))
                 holder.txtCount.setText("");
             else
-                holder.txtCount.setText("(" + user.getNewMessagesCount() + ")");
+                holder.txtCount.setText(user.getNewMessagesCount());
             holder.txtNick.setText(user.getNick());
 
             if (!TextUtils.isEmpty(user.getNewMessagesCount())) {
-                holder.txtIsNew.setImageResource(R.drawable.new_flag);
+                //holder.txtIsNew.setImageResource(R.drawable.new_flag);
+                holder.txtNick.setTextAppearance(getContext(), R.style.QmsNew);
+                holder.txtCount.setTextAppearance(getContext(), R.style.QmsNew);
+                switch (PreferenceManager.getDefaultSharedPreferences(getContext()).getString("mainAccentColor", "pink")) {
+                    case "pink":
+                        holder.txtCount.setBackgroundResource(R.drawable.qmsnew);
+                        break;
+                    case "blue":
+                        holder.txtCount.setBackgroundResource(R.drawable.qmsnewblue);
+                        break;
+                    case "gray":
+                        holder.txtCount.setBackgroundResource(R.drawable.qmsnewgray);
+                        break;
+                }
+
             } else {
-                holder.txtIsNew.setImageBitmap(null);
+                //holder.txtIsNew.setImageBitmap(null);
+                holder.txtCount.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                holder.txtNick.setTextAppearance(getContext(), R.style.QmsOld);
+                holder.txtCount.setTextAppearance(getContext(), R.style.QmsOld);
             }
 
             if (user.getAvatarUrl() != null && mShowAvatars) {
@@ -253,7 +271,7 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
         }
 
         public class ViewHolder {
-            ImageView txtIsNew;
+            //ImageView txtIsNew;
             ImageView imgAvatar;
             TextView txtNick;
 

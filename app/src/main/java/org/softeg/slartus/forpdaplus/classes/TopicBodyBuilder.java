@@ -4,9 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.HtmlUtils;
 import org.softeg.slartus.forpdaplus.emotic.Smiles;
@@ -78,7 +76,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         m_Body.append(getTitleBlock());
 
 
-        m_Body.append("<div style=\"margin-top:54pt\"/>\n");
+        m_Body.append("<div style=\"margin-top:"+getMarginTop()+"px\"/>\n");
         super.endBody();
         super.endHtml();
     }
@@ -98,7 +96,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
     public void addPost(Post post, Boolean spoil) {
 
-        m_Body.append("<div name=\"entry").append(post.getId()).append("\" id=\"entry").append(post.getId()).append("\"></div>\n");
+        m_Body.append("<div name=\"entry").append(post.getId()).append("\" style=\"position: absolute; width: 100%; margin-top:-4em; left: 0;\" id=\"entry").append(post.getId()).append("\"></div>\n");
 
         addPostHeader(m_Body, post);
 
@@ -273,7 +271,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         if (Client.getInstance().getLogined()) {
             String[] postMenuParams = {msg.getId(), msg.getDate(), msg.getUserId(), nickParam, msg.getCanEdit() ? "1" : "0", msg.getCanDelete() ? "1" : "0"};
             sb.append("\t\t\t<td><div align=\"right\">").append("<a ")
-                    .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostMenu", postMenuParams)).append(" class=\"system_link\">меню</a></div></td>");
+                    .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostMenu", postMenuParams)).append(" class=\"system_link\">Меню</a></div></td>");
         }
         sb.append("\t\t</tr>");
         sb.append("\t</table>\n");

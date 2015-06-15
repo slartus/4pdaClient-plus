@@ -4,7 +4,6 @@ package org.softeg.slartus.forpdaplus.topicview;/*
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -18,12 +17,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import net.londatiga.android3d.ActionItem;
 import net.londatiga.android3d.QuickAction;
 
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.TopicAttaches;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -90,37 +90,39 @@ public class HtmloutWebInterface {
                     return;
                 }
                 final boolean[] selection = new boolean[topicAttaches.size()];
-                new AlertDialogBuilder(getContext())
-                        .setTitle("Вложения")
-                        .setMultiChoiceItems(topicAttaches.getList(), selection, new DialogInterface.OnMultiChoiceClickListener() {
-                            public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                                selection[i] = b;
+                new MaterialDialog.Builder(getContext())
+                        .title("Вложения")
+                        .items(topicAttaches.getList())
+                        .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
+                            @Override
+                            public boolean onSelection(MaterialDialog materialDialog, Integer[] which, CharSequence[] charSequence) {
+                                for (int i = 0; i < which.length; i++) {
+                                    selection[which[i]] = true;
+                                }
+                                return true;
                             }
                         })
-                        .setPositiveButton("Скачать", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-
+                        .alwaysCallMultiChoiceCallback()
+                        .positiveText("Скачать")
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
                                 if (!Client.getInstance().getLogined()) {
-                                    new AlertDialogBuilder(getContext())
-                                            .setTitle("Внимание!")
-                                            .setMessage("Для скачивания файлов с сайта необходимо залогиниться!")
-                                            .setPositiveButton("ОК", null)
-                                            .create().show();
+                                    new MaterialDialog.Builder(getContext())
+                                            .title("Внимание!")
+                                            .content("Для скачивания файлов с сайта необходимо залогиниться!")
+                                            .positiveText("ОК")
+                                            .show();
                                     return;
                                 }
                                 for (int j = 0; j < selection.length; j++) {
                                     if (!selection[j]) continue;
                                     DownloadsService.download(getContext(), topicAttaches.get(j).getUri(), false);
+                                    selection[j]=false;
                                 }
                             }
                         })
-                        .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .create()
+                        .negativeText("Отмена")
                         .show();
             }
         });
@@ -142,22 +144,17 @@ public class HtmloutWebInterface {
         getContext().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new AlertDialogBuilder(getContext())
-                        .setTitle("Подтвердите действие")
-                        .setMessage("Понизить рейтинг сообщения?")
-                        .setPositiveButton("Понизить", new DialogInterface.OnClickListener() {
+                new MaterialDialog.Builder(getContext())
+                        .title("Подтвердите действие")
+                        .content("Понизить рейтинг сообщения?")
+                        .positiveText("Понизить")
+                        .negativeText("Отмена")
+                        .callback(new MaterialDialog.ButtonCallback() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
+                            public void onPositive(MaterialDialog dialog) {
                                 org.softeg.slartus.forpdaplus.classes.Post.minusOne(getContext(), new Handler(), postId);
                             }
-                        })
-                        .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        }).create().show();
+                        }).show();
             }
         })
         ;
@@ -168,22 +165,17 @@ public class HtmloutWebInterface {
         getContext().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new AlertDialogBuilder(getContext())
-                        .setTitle("Подтвердите действие")
-                        .setMessage("Повысить рейтинг сообщения?")
-                        .setPositiveButton("Повысить", new DialogInterface.OnClickListener() {
+                new MaterialDialog.Builder(getContext())
+                        .title("Подтвердите действие")
+                        .content("Повысить рейтинг сообщения?")
+                        .positiveText("Повысить")
+                        .negativeText("Отмена")
+                        .callback(new MaterialDialog.ButtonCallback() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
+                            public void onPositive(MaterialDialog dialog) {
                                 org.softeg.slartus.forpdaplus.classes.Post.plusOne(getContext(), new Handler(), postId);
                             }
-                        })
-                        .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        }).create().show();
+                        }).show();
             }
         })
         ;
@@ -210,7 +202,7 @@ public class HtmloutWebInterface {
             @Override
             public void run() {
                 if (getContext().getTopic() == null) {
-                    Toast.makeText(getContext(), "что-то пошло не так", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Что-то пошло не так", Toast.LENGTH_SHORT).show();
                 } else {
                     TopicWritersTab.show(getContext(), getContext().getTopic().getId());
                 }
@@ -390,19 +382,18 @@ public class HtmloutWebInterface {
                     listView.setItemChecked(getContext().getTopic().getCurrentPage() - 1, true);
                     listView.setSelection(getContext().getTopic().getCurrentPage() - 1);
 
-                    new AlertDialogBuilder(getContext())
-                            .setTitle("Перейти к странице")
-                            .setView(view)
-                            .setPositiveButton("Перейти", new DialogInterface.OnClickListener() {
+                    new MaterialDialog.Builder(getContext())
+                            .title("Перейти к странице")
+                            .customView(view,true)
+                            .positiveText("Перейти")
+                            .callback(new MaterialDialog.ButtonCallback() {
                                 @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
+                                public void onPositive(MaterialDialog dialog) {
                                     getContext().openFromSt(listView.getCheckedItemPosition() * postsPerPage);
                                 }
                             })
-                            .setNegativeButton("Отмена", null)
-                            .setCancelable(true)
-                            .create()
+                            .negativeText("Отмена")
+                            .cancelable(true)
                             .show();
                 } catch (Throwable ex) {
                     AppLog.e(getContext(), ex);
@@ -451,22 +442,17 @@ public class HtmloutWebInterface {
                 final QuickAction mQuickAction = new QuickAction(getContext());
                 ActionItem actionItem;
 
-
                 int plusRepPosition = -1;
                 if ("1".equals(canPlus)) {
                     actionItem = new ActionItem();
 
-                    actionItem.setTitle("+1");
-                    actionItem.setIcon(getContext().getResources().getDrawable(R.drawable.ic_menu_rating_good
-                            //MyApp.getInstance().isWhiteTheme() ?R.drawable.rating_good_white : R.drawable.rating_good_dark)
-                    ));
+                    actionItem.setTitle("Поднять (+1)");
                     plusRepPosition = mQuickAction.addActionItem(actionItem);
                 }
 
                 int showRepPosition;
 
                 actionItem = new ActionItem();
-                actionItem.setIcon(getContext().getResources().getDrawable(R.drawable.ic_menu_view));
                 actionItem.setTitle("Посмотреть");
 
                 showRepPosition = mQuickAction.addActionItem(actionItem);
@@ -475,10 +461,7 @@ public class HtmloutWebInterface {
                 if ("1".equals(canMinus)) {
                     actionItem = new ActionItem();
 
-                    actionItem.setTitle("-1");
-                    actionItem.setIcon(getContext().getResources().getDrawable(R.drawable.ic_menu_rating_bad
-                            //MyApp.getInstance().isWhiteTheme() ?R.drawable.rating_good_white : R.drawable.rating_good_dark)
-                    ));
+                    actionItem.setTitle("Опустить (-1)");
                     minusRepPosition = mQuickAction.addActionItem(actionItem);
                 }
 

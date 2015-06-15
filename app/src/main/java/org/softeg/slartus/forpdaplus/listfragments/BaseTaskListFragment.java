@@ -8,8 +8,8 @@ import android.widget.Filterable;
 import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.IListItem;
-import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;

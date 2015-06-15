@@ -1,4 +1,17 @@
-﻿var theSelection = false;
+function customScript(file) {
+    var url = document.getElementsByTagName('link')[0].href;
+    url = url.substring(0, url.length - 4);
+    var script = document.createElement('SCRIPT');
+    script.type = 'text/javascript';
+    script.src = url + '/' + file;
+    script.async = false;
+    document.body.appendChild(script);
+}
+window.onload = function () {
+    customScript('script.js');
+}
+
+var theSelection = false;
 
 var clientPC = navigator.userAgent.toLowerCase();
 var clientVer = parseInt(navigator.appVersion);

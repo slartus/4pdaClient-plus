@@ -2,8 +2,8 @@ package org.softeg.slartus.forpdaplus.listtemplates;
 
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.FavoritesListFragment;
 
 /*
@@ -14,6 +14,11 @@ public class FavoritesBrickInfo extends BrickInfo {
     @Override
     public String getTitle() {
         return "Избранное";
+    }
+
+    @Override
+    public int getIcon() {
+        return R.drawable.ic_star_grey600_24dp;
     }
 
     @Override

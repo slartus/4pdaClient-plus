@@ -1,13 +1,13 @@
 package org.softeg.slartus.forpdaplus.mainnotifiers;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.DonateActivity;
 
@@ -16,11 +16,11 @@ import org.softeg.slartus.forpdaplus.prefs.DonateActivity;
  */
 public class DonateNotifier extends MainNotifier {
     public DonateNotifier(NotifiersManager notifiersManager) {
-        super(notifiersManager,"Donate", 31);
+        super(notifiersManager, "Donate", 31);
     }
 
-    public void start(FragmentActivity fragmentActivity){
-        if(!needShow())
+    public void start(FragmentActivity fragmentActivity) {
+        if (!needShow())
             return;
         saveTime();
         showNotify(fragmentActivity);
@@ -29,32 +29,21 @@ public class DonateNotifier extends MainNotifier {
 
     public void showNotify(final FragmentActivity fragmentActivity) {
         try {
-            addToStack(new AlertDialogBuilder(fragmentActivity)
-                            .setTitle("Неофициальный 4pda клиент")
-                            .setMessage("Ваша поддержка - единственный стимул к дальнейшей разработке и развитию программы\n" +
-                                    "\n" +
-                                    "Вы можете сделать это позже через меню>>настройки>>Помочь проекту")
-                            .setPositiveButton("Помочь проекту..",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog,
-                                                            int which) {
-                                            dialog.dismiss();
-                                            Intent settingsActivity = new Intent(
-                                                    fragmentActivity, DonateActivity.class);
-                                            fragmentActivity.startActivity(settingsActivity);
-
-                                        }
-                                    }
-                            )
-                            .setNegativeButton("Позже",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog,
-                                                            int which) {
-                                            dialog.dismiss();
-
-                                        }
-                                    }
-                            ).create());
+            addToStack(new MaterialDialog.Builder(fragmentActivity)
+                    .title("Неофициальный 4pda клиент")
+                    .content("Ваша поддержка - единственный стимул к дальнейшей разработке и развитию программы\n" +
+                            "\n" +
+                            "Вы можете сделать это позже через меню>>настройки>>Помочь проекту")
+                    .positiveText("Помочь проекту")
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            Intent settingsActivity = new Intent(
+                                    fragmentActivity, DonateActivity.class);
+                            fragmentActivity.startActivity(settingsActivity);
+                        }
+                    })
+                    .negativeText("Позже").build());
         } catch (Throwable ex) {
             AppLog.e(fragmentActivity, ex);
         }
@@ -70,7 +59,7 @@ public class DonateNotifier extends MainNotifier {
         if (prefs.getString("DonateShowVer", "").equals(appVersion)) {
             if (!isTime()) return false;
         }
-        prefs.edit().putString("DonateShowVer",appVersion).commit();
+        prefs.edit().putString("DonateShowVer", appVersion).commit();
         return true;
     }
 

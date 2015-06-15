@@ -4,6 +4,7 @@ package org.softeg.slartus.forpdaplus.listtemplates;/*
 
 import android.support.v4.app.Fragment;
 
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 
 public class UserReputationBrickInfo extends BrickInfo {
@@ -11,6 +12,11 @@ public class UserReputationBrickInfo extends BrickInfo {
     @Override
     public String getTitle() {
         return "Репутация";
+    }
+
+    @Override
+    public int getIcon() {
+        return R.drawable.ic_delete;
     }
 
     @Override

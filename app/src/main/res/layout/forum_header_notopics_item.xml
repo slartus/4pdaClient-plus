@@ -10,13 +10,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:padding="5dp"
+        android:padding="8dp"
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold" />
 
     <View
-        android:background="#999999"
+        android:background="#666666"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignBottom="@+id/textView3" />

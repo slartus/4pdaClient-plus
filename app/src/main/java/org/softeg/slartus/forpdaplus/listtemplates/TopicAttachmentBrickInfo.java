@@ -4,6 +4,7 @@ package org.softeg.slartus.forpdaplus.listtemplates;/*
 
 import android.support.v4.app.Fragment;
 
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
 
 public class TopicAttachmentBrickInfo extends BrickInfo {
@@ -12,6 +13,11 @@ public class TopicAttachmentBrickInfo extends BrickInfo {
     @Override
     public String getTitle() {
         return "Вложения";
+    }
+
+    @Override
+    public int getIcon() {
+        return R.drawable.ic_delete;
     }
 
     @Override

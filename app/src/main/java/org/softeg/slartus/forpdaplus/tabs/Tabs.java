@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdacommon.NotReportException;
 
 /**
  * User: slinkin

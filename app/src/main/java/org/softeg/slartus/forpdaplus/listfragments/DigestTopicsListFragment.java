@@ -4,11 +4,11 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
 
 import android.os.Bundle;
 
-import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.digest.DigestApi;
 import org.softeg.slartus.forpdaapi.digest.DigestCatalog;
+import org.softeg.slartus.forpdaplus.Client;
 
 import java.io.IOException;
 import java.text.ParseException;

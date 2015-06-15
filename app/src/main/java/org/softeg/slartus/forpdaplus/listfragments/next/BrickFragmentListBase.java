@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -21,8 +22,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
-
 
 /*
  * Created by slartus on 18.10.2014.
@@ -34,7 +33,7 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
     private static final String FIRST_VISIBLE_VIEW_KEY = "BrickFragmentListBase.FIRST_VISIBLE_VIEW_KEY";
     private ListView mListView;
     private TextView mEmptyTextView;
-    protected PullToRefreshLayout mPullToRefreshLayout;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
     private ListData mData = createListData();
     private ListViewLoadMoreFooter mListViewLoadMoreFooter;
 
@@ -125,7 +124,7 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPullToRefreshLayout = App.createPullToRefreshLayout(getActivity(), view, new Runnable() {
+        mSwipeRefreshLayout = App.createSwipeRefreshLayout(getActivity(), view, new Runnable() {
             @Override
             public void run() {
                 reloadData();
@@ -222,18 +221,24 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
 
     @Override
     public void onLoaderReset(Loader<ListData> loader) {
-        mPullToRefreshLayout.setRefreshComplete();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     protected void setEmptyText(String s) {
         mEmptyTextView.setText(s);
     }
 
-    protected void setLoading(Boolean loading) {
+    protected void setLoading(final Boolean loading) {
         try {
             if (getActivity() == null) return;
 
-            mPullToRefreshLayout.setRefreshing(loading);
+            //mSwipeRefreshLayout.setRefreshing(loading);
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshLayout.setRefreshing(loading);
+                }
+            });
             if (loading) {
                 setEmptyText("Загрузка..");
             } else {

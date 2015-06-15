@@ -12,75 +12,55 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/UserNameLogin"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textStyle="bold" />
-
             <EditText
                 android:id="@+id/username_edit"
+                android:singleLine="true"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:autoText="false"
-                android:capitalize="none"
                 android:minWidth="250dip"
                 android:scrollHorizontally="true"
-                android:singleLine="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dip"
-                android:singleLine="true"
-                android:text="@string/Password"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textStyle="bold" />
-
+                android:capitalize="none"
+                android:autoText="false"
+                android:hint="@string/UserNameLogin"/>
             <EditText
                 android:id="@+id/password_edit"
+                android:singleLine="true"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:autoText="false"
-                android:capitalize="none"
-                android:inputType="textPassword"
                 android:minWidth="250dip"
-                android:password="true"
                 android:scrollHorizontally="true"
-                android:singleLine="true" />
+                android:capitalize="none"
+                android:autoText="false"
+                android:password="true"
+                android:inputType="textPassword"
+                android:hint="@string/Password"
+                android:layout_marginTop="4dp"/>
 
             <ImageView
                 android:id="@+id/cap_img"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:minHeight="150dp" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Введите число цифрами:"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textStyle="bold" />
-
             <EditText
                 android:id="@+id/cap_value_ed"
-                android:layout_width="match_parent"
+                android:singleLine="true"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:autoText="false"
-                android:capitalize="none"
                 android:minWidth="250dip"
                 android:scrollHorizontally="true"
-                android:singleLine="true" />
+                android:capitalize="none"
+                android:autoText="false"
+                android:hint="Число с картинки"
+                android:layout_marginTop="4dp" />
 
             <CheckBox
                 android:id="@+id/privacy_checkbox"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:checked="false"
-                android:text="@string/Stealth" />
+                android:text="@string/Stealth"
+                android:layout_marginTop="4dp"/>
         </LinearLayout>
     </ScrollView>
 

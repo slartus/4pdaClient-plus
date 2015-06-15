@@ -11,9 +11,8 @@ import android.view.MenuItem;
 import org.softeg.slartus.forpdaapi.FavTopic;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
-import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.prefs.FavoritesPreferencesActivity;
 import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
@@ -113,7 +112,6 @@ public class FavoritesListFragment extends TopicsListFragment {
         super.onCreateOptionsMenu(menu, inflater);
 
         MenuItem item = menu.add("Фильтр и сортировка")
-                .setIcon(R.drawable.ic_menu_preferences)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {

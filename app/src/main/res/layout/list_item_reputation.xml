@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:id="@+id/image_panel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#4c000000"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:indeterminateOnly="true"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:visibility="invisible"/>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="12.0dip"
+            android:paddingLeft="16.0dip"
+            android:paddingRight="16.0dip"
+            android:paddingTop="12.0dip">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/txtMain"
+                    style="?list_text_general_color"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="22dp"
+                    android:maxLines="2"
+                    android:text="Main Text Most looonges"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textSize="16sp"
+                    android:singleLine="false"
+                    android:layout_toLeftOf="@+id/imgFlag"
+                    android:layout_toStartOf="@+id/imgFlag" />
+                <TextView
+                    android:id="@+id/imgFlag"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:minWidth="20dp"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:ellipsize="middle"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textSize="14sp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/txtSubMain"
+                style="?list_text_minor_color"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="20dp"
+                android:maxLines="2"
+                android:text="Sub main textySub main textySub main textySub main textySub main texty"
+                android:textAppearance="?android:textAppearanceSmall" />
+
+            <RelativeLayout
+                android:id="@+id/lnrTop"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtTopLeft"
+                    style="?list_text_minor_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:ellipsize="middle"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:text="Top Left Text"
+                    android:textAppearance="?android:textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/txtTopRight"
+                    style="?list_text_minor_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:gravity="end"
+                    android:lines="1"
+                    android:text="Top Right Text"
+                    android:textAppearance="?android:textAppearanceSmall" />
+            </RelativeLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+</RelativeLayout>

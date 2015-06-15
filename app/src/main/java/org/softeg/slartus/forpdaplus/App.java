@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 
@@ -38,18 +39,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.Options;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-
 /**
  * User: slinkin
  * Date: 05.08.11
  * Time: 8:03
  */
 @ReportsCrashes(
-        mailTo = "slartus+4pda@gmail.com",
+        mailTo = "ololosh10050@gmail.com",
         mode = ReportingInteractionMode.DIALOG,
         customReportContent = {ReportField.APP_VERSION_CODE, ReportField.APP_VERSION_NAME,
                 ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL,
@@ -68,6 +64,10 @@ public class App extends android.app.Application {
     public static final int THEME_WHITE_HD = 13;
     public static final int THEME_BLACK_HD = 14;
 
+    public static final int THEME_WHITE_MATERIAL_CYAN = 15;
+    public static final int THEME_WHITE_MATERIAL_LB = 16;
+    public static final int THEME_WHITE_MATERIAL_GRAY= 17;
+    public static final int THEME_BLACK_MATERIAL_DARK = 18;
 
     public static final int THEME_WHITE_REMIE = 2;
 
@@ -80,7 +80,7 @@ public class App extends android.app.Application {
     public static final int THEME_CUSTOM_CSS = 99;
 
     private final Integer[] WHITE_THEMES = {THEME_WHITE_TRABLONE, THEME_WHITE_VETALORLOV, THEME_WHITE_REMIE,
-            THEME_WHITER_REMIE, THEME_WHITE, THEME_WHITE_OLD, THEME_WHITE_HD};
+            THEME_WHITER_REMIE, THEME_WHITE, THEME_WHITE_OLD, THEME_WHITE_HD, THEME_WHITE_MATERIAL_CYAN, THEME_WHITE_MATERIAL_LB, THEME_WHITE_MATERIAL_GRAY};
 
     private static boolean m_IsDebugModeLoaded = false;
     private static boolean m_IsDebugMode = false;
@@ -116,16 +116,134 @@ public class App extends android.app.Application {
         return m_AtomicInteger.incrementAndGet();
     }
 
+    public int getWebViewFont() {
+        return PreferenceManager.getDefaultSharedPreferences(this).getInt("webViewFont",0);
+    }
+    public int getColorAccent(String type) {
+        int color = 0;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        switch(type) {
+            case "Accent":
+                color = prefs.getInt("accentColor", Color.rgb(233, 30, 99));
+                break;
+            case "Pressed":
+                color = prefs.getInt("accentColorPressed", Color.rgb(233, 30, 99));
+                break;
+        }
+        return color;
+    }
+    public int getMainAccentColor() {
+        int color = R.color.accentPink;
+        switch (PreferenceManager.getDefaultSharedPreferences(this).getString("mainAccentColor", "pink")) {
+            case "pink":
+                color  = R.color.accentPink;
+                break;
+            case "blue":
+                color = R.color.accentBlue;
+                break;
+            case "gray":
+                color = R.color.accentGray;
+                break;
+        }
+        return color;
+    }
     public int getThemeStyleResID() {
-        return isWhiteTheme() ? R.style.Theme_White : R.style.Theme_Black;
+        int theme = R.style.Theme_White;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String color = prefs.getString("mainAccentColor","pink");
+        if (isWhiteTheme()){
+            switch (color) {
+                case "pink":
+                    theme = R.style.MainPinkWH;
+                    break;
+                case "blue":
+                    theme = R.style.MainBlueWH;
+                    break;
+                case "gray":
+                    theme = R.style.MainGrayWH;
+                    break;
+            }
+        }else{
+            switch (color) {
+                case "pink":
+                    theme = R.style.MainPinkBL;
+                    break;
+                case "blue":
+                    theme = R.style.MainBlueBL;
+                    break;
+                case "gray":
+                    theme = R.style.MainGrayBL;
+                    break;
+            }
+        }
+        return theme;
+    }
+    public int getPrefsThemeStyleResID() {
+        int theme = R.style.Theme_Prefs_WhitePink;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String color = prefs.getString("mainAccentColor","pink");
+        if (isWhiteTheme()){
+            switch (color) {
+                case "pink":
+                    theme = R.style.Theme_Prefs_WhitePink;
+                    break;
+                case "blue":
+                    theme = R.style.Theme_Prefs_WhiteBlue;
+                    break;
+                case "gray":
+                    theme = R.style.Theme_Prefs_WhiteGray;
+                    break;
+            }
+        }else{
+            switch (color) {
+                case "pink":
+                    theme = R.style.Theme_Prefs_BlackPink;
+                    break;
+                case "blue":
+                    theme = R.style.Theme_Prefs_BlackBlue;
+                    break;
+                case "gray":
+                    theme = R.style.Theme_Prefs_BlackGray;
+                    break;
+            }
+        }
+        return theme;
     }
 
     public int getTransluentThemeStyleResID() {
-        return isWhiteTheme() ? R.style.Theme_Transluent_White : R.style.Theme_Transluent_Black;
+        int theme = R.style.Theme_Transluent_WhitePink;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String color = prefs.getString("mainAccentColor","pink");
+        if (isWhiteTheme()){
+            switch (color) {
+                case "pink":
+                    theme = R.style.Theme_Transluent_WhitePink;
+                    break;
+                case "blue":
+                    theme = R.style.Theme_Transluent_WhiteBlue;
+                    break;
+                case "gray":
+                    theme = R.style.Theme_Transluent_WhiteGray;
+                    break;
+            }
+        }else{
+            switch (color) {
+                case "pink":
+                    theme = R.style.Theme_Transluent_BlackPink;
+                    break;
+                case "blue":
+                    theme = R.style.Theme_Transluent_BlackBlue;
+                    break;
+                case "gray":
+                    theme = R.style.Theme_Transluent_BlackGray;
+                    break;
+            }
+        }
+        return theme;
     }
 
     public int getThemeBackgroundColorRes() {
-        return isWhiteTheme() ? R.color.pda__background_light : R.color.pda__background_dark;
+        return isWhiteTheme() ? R.color.app_background_wh : R.color.app_background_bl;
     }
 
     public boolean isWhiteTheme() {
@@ -141,7 +259,7 @@ public class App extends android.app.Application {
 
     public String getCurrentTheme() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        return preferences.getString("appstyle", Integer.toString(THEME_WHITE_OLD));
+        return preferences.getString("appstyle", Integer.toString(THEME_WHITE));
     }
 
     public String getCurrentThemeName() {
@@ -149,7 +267,7 @@ public class App extends android.app.Application {
     }
 
     public String getCurrentBackgroundColorHtml() {
-        return isWhiteTheme() ? "#fff" : "#000";
+        return isWhiteTheme() ? "#fafafa" : "#242424";
     }
 
     private String checkThemeFile(String themePath) {
@@ -165,7 +283,7 @@ public class App extends android.app.Application {
     }
 
     private String defaultCssTheme() {
-        return "/android_asset/forum/css/white.css";
+        return "/android_asset/forum/css/coba_white_blue.css";
     }
 
     public String getThemeCssFileName() {
@@ -178,27 +296,60 @@ public class App extends android.app.Application {
             return checkThemeFile(themeStr);
 
         String path = "/android_asset/forum/css/";
-        String cssFile = "white.css";
+        String cssFile = "coba_white_blue.css";
         int theme = Integer.parseInt(themeStr);
         if (theme == -1)
             return themeStr;
+        String color = PreferenceManager.getDefaultSharedPreferences(this).getString("mainAccentColor", "pink");
         switch (theme) {
             case THEME_WHITE:
-                cssFile = "white.css";
+                switch (color) {
+                    case "pink":
+                        cssFile = "coba_white_blue.css";
+                        break;
+                    case "blue":
+                        cssFile = "coba_white_blue_blue.css";
+                        break;
+                    case "gray":
+                        cssFile = "coba_white_blue_gray.css";
+                        break;
+                }
                 break;
+            /*case THEME_WHITE_OLD:
+                cssFile = "coba_white_blue.css";
+                break;*/
             case THEME_BLACK:
-                cssFile = "black.css";
+                switch (color) {
+                    case "pink":
+                        cssFile = "coba_dark_blue.css";
+                        break;
+                    case "blue":
+                        cssFile = "coba_dark_blue_blue.css";
+                        break;
+                    case "gray":
+                        cssFile = "coba_dark_blue_gray.css";
+                        break;
+                }
                 break;
-            case THEME_WHITE_OLD:
-                cssFile = "white_old.css";
+            case THEME_WHITE_MATERIAL_CYAN:
+                cssFile = "material_cyan.css";
+                break;
+            case THEME_WHITE_MATERIAL_LB:
+                cssFile = "material_light-blue.css";
+                break;
+            case THEME_WHITE_MATERIAL_GRAY:
+                cssFile = "material_gray.css";
+                break;
+            case THEME_BLACK_MATERIAL_DARK:
+                cssFile = "material_dark.css";
                 break;
 
-            case THEME_WHITE_HD:
+            /*case THEME_WHITE_HD:
                 cssFile = "white_hd.css";
                 break;
             case THEME_BLACK_HD:
                 cssFile = "black_hd.css";
-                break;
+                break;*/
             case THEME_CUSTOM_CSS:
                 return "/mnt/sdcard/style.css";
         }
@@ -348,21 +499,17 @@ public class App extends android.app.Application {
         return (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
     }
 
-    public static PullToRefreshLayout createPullToRefreshLayout(Activity activity, View view,
+    public static SwipeRefreshLayout createSwipeRefreshLayout(Activity activity, View view,
                                                                 final Runnable refreshAction) {
-        PullToRefreshLayout pullToRefreshLayout = (PullToRefreshLayout) view.findViewById(R.id.ptr_layout);
-        ActionBarPullToRefresh.from(activity)
-                .options(Options.create().scrollDistance(0.3f).refreshOnUp(true).build())
-                .allChildrenArePullable()
-                .listener(new OnRefreshListener() {
-                    @Override
-                    public void onRefreshStarted(View view) {
-                        refreshAction.run();
-
-                    }
-                })
-                .setup(pullToRefreshLayout);
-        return pullToRefreshLayout;
+        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.ptr_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshAction.run();
+            }
+        });
+        swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
+        return swipeRefreshLayout;
     }
 
 

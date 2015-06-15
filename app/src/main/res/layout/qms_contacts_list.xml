@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@+id/main_layout">
-
-
+    android:id="@+id/main_layout"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context="org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity">
+        android:id="@+id/ptr_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fitsSystemWindows="true">
 
         <ListView
             android:id="@android:id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </ListView>
-    </android.support.v4.widget.SwipeRefreshLayout>>
-</LinearLayout>
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fitsSystemWindows="true"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>

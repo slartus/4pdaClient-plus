@@ -3,6 +3,8 @@ package org.softeg.slartus.forpdaplus.classes;
 import android.os.Bundle;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.R;
 
@@ -25,9 +27,9 @@ public class TestActivity extends BaseFragmentActivity {
     }
 
     private void showAlerDialog() {
-        new AlertDialogBuilder(this)
-                .setTitle("title")
-                .setMessage("Message")
-                .setPositiveButton("OK", null).create().show();
+        new MaterialDialog.Builder(this)
+                .title("title")
+                .content("Message")
+                .positiveText("OK").show();
     }
 }

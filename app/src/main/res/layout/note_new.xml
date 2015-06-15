@@ -32,7 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/ic_delete" />
+            android:background="@drawable/ic_delete"
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <FrameLayout
@@ -63,7 +64,7 @@
             android:id="@+id/clear_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+android:visibility="gone"
             android:layout_gravity="right|bottom"
             android:background="@drawable/ic_delete" />
     </FrameLayout>

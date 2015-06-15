@@ -5,64 +5,66 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:orientation="horizontal"
+        android:layout_height="48dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/progressBar"
-        android:layout_gravity="center_horizontal"
-        android:padding="0dp">
-
+        android:gravity="right"
+        android:paddingRight="12dp">
+        <Button
+            android:id="@+id/btnAll"
+            style="?android:attr/buttonStyleSmall"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="ВСЁ"
+            android:textColor="?attr/colorAccent"/>
         <Button
             android:id="@+id/btnAuthor"
             style="?android:attr/buttonStyleSmall"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_gravity="center_horizontal"
-            android:layout_toRightOf="@+id/btnAll"
-            android:minWidth="80dp"
-            android:text="Код" />
+            android:background="@android:color/transparent"
+            android:text="КОД"
+            android:textColor="?attr/colorAccent"/>
 
         <Button
             android:id="@+id/btnText"
             style="?android:attr/buttonStyleSmall"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_gravity="right"
-            android:layout_toRightOf="@+id/btnAuthor"
-            android:minWidth="80dp"
-            android:text="Текст" />
+            android:background="@android:color/transparent"
+            android:text="ТЕКСТ"
+            android:textColor="?attr/colorAccent"/>
 
         <Button
-            android:id="@+id/btnAll"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_centerVertical="true"
-            android:minWidth="80dp"
-            android:text="Всё" />
-
-        <ImageButton
             android:id="@+id/btnClear"
             style="?android:attr/buttonStyleSmall"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:background="@android:color/transparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/btnText"
-            android:text="Очистить"
-            android:src="@drawable/ic_menu_close_clear_cancel"
-            android:contentDescription="Очистить" />
-    </RelativeLayout>
+            android:text="СТЕРЕТЬ"
+            android:textColor="?attr/colorAccent"/>
+    </LinearLayout>
 
     <EditText
         android:id="@+id/txtBody"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/relativeLayout"

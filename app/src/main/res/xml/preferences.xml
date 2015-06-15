@@ -5,7 +5,7 @@
 
     <PreferenceScreen
         android:key="common"
-        android:title="Общее">
+        android:title="Внешний вид">
 
         <Preference
             android:key="appstyle"
@@ -14,6 +14,38 @@
 
         </Preference>
 
+
+        <Preference
+            android:key="accentColor"
+            android:summary="Цвет кнопки в теме и новостях"
+            android:title="Цвет FAB"/>
+        <Preference
+            android:key="mainAccentColor"
+            android:title="Цвет акцента"
+            android:summary="Требуется перезапуск приложения"/>
+        <Preference
+            android:key="webViewFont"
+            android:title="Шрифт WebView"
+            android:summary="Шрифт в новостях, поиске, теме, профиле, QMS"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="paddingBottomMain"
+            android:title="Отступ снизу"
+            android:summary="Убрать галочку, если нет NavigationBar, но есть отступ снизу. Требуется перезапуск приложения"/>
+        <Preference
+            android:key="userBackground"
+            android:summary="Требуется перезапуск приложения"
+            android:title="Изображение в выезжающем меню"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="categoryLast"
+            android:title="Отображать 'Последние'"
+            android:summary="Меню 'Последние' в выезжающем меню. Требуется перезапуск приложения"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="statusbarTransparent"
+            android:title="Прозрачный статусбар"
+            android:summary="Включить, если активирован полноэкранный режим. Требуется перезапуск приложения"/>
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
             android:defaultValue="-1"
             android:entries="@array/screenOrienationArray"
@@ -21,16 +53,9 @@
             android:key="theme.ScreenOrientation"
             android:title="Ориентация экрана" />
 
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="notify.beta_version"
-            android:summary="Сообщать о версиях для тестирования"
-            android:title="Сообщать о бета-версиях" />
-
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:summary="Лучше не трогать ;)"
         android:title="Системное">
 
         <Preference
@@ -123,6 +148,12 @@
             android:key="system.curator"
             android:summary="Функции курирования"
             android:title="Я куратор" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="notify.beta_version"
+            android:summary="Сообщать о версиях для тестирования"
+            android:title="Сообщать о бета-версиях" />
     </PreferenceScreen>
 
     <PreferenceScreen android:title="Просмотр темы">
@@ -306,8 +337,11 @@
 
     <PreferenceScreen android:title="О программе">
         <Preference
+            android:key="checkModNew"
+            android:title="Проверить обновление мода" />
+        <Preference
             android:key="About.AppVersion"
-            android:summary="Нажми меня" />
+            android:title="О программе" />
         <Preference
             android:key="About.History"
             android:title="История изменений" />
@@ -325,7 +359,6 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:summary="Ваше осязаемое 'Спасибо'"
         android:title="Помочь проекту">
         <Preference
             android:key="Qiwi"

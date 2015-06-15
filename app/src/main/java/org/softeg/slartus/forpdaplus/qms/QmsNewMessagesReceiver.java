@@ -7,8 +7,8 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
-import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
+import org.softeg.slartus.forpdaplus.Client;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,12 +1,10 @@
 package org.softeg.slartus.forpdaplus.tabs;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
 
 import org.softeg.slartus.forpdaapi.OnProgressChangedListener;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * User: slinkin

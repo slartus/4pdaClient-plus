@@ -1,96 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="5dip">
-
-    <EditText
-        android:id="@+id/username"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:capitalize="sentences"
-        android:singleLine="true"
-        android:hint="@string/Whom"
-        android:padding="5dip"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_above="@+id/bottomPanel">
+        <EditText
+            android:id="@+id/username"
+            style="?edit_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:capitalize="sentences"
+            android:hint="@string/Whom"
+            android:padding="16dp"
+            android:singleLine="true">
 
-        >
+            <requestFocus />
+        </EditText>
 
-        <requestFocus />
-    </EditText>
+        <EditText
+            android:id="@+id/title"
+            style="?edit_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
 
-    <EditText
-        android:id="@+id/title"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:capitalize="sentences"
-        android:singleLine="true"
+            android:capitalize="sentences"
+            android:hint="@string/EnterSubject_"
+            android:padding="16dp"
+            android:singleLine="true"
+            android:textCursorDrawable="@null">
 
-        android:hint="@string/EnterSubject_"
+            <requestFocus />
+        </EditText>
+        <View style="?Divider" android:layout_width="fill_parent" android:layout_height="1dp"/>
+        <EditText
+            android:id="@+id/message"
+            style="?edit_text"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:capitalize="sentences"
+            android:gravity="top"
+            android:hint="@string/EnterMessage_"
+            android:minLines="10"
+            android:padding="16dp"
+            android:scrollHorizontally="false"
+            android:singleLine="false">
 
-        android:padding="5dip"
-        android:textCursorDrawable="@null"
-        android:layout_below="@+id/username"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <requestFocus />
-    </EditText>
-
-    <EditText
-
-        android:padding="5dip"
-
-        android:hint="@string/EnterMessage_"
-        android:id="@+id/message"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:capitalize="sentences"
-        android:gravity="top"
-        android:minLines="10"
-        android:scrollHorizontally="false"
-
-        android:singleLine="false"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/bottomPanel"
-        android:layout_below="@+id/title">
-
-        <requestFocus />
-    </EditText>
+            <requestFocus />
+        </EditText>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/bottomPanel"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
+        style="?panel"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
 
         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="48dp"
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:gravity="center_vertical">
 
             <ImageButton
                 android:id="@+id/advanced_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/btn_show_post_panel"/>
+                style="?right_separator"
+                android:layout_width="48dp"
+                android:layout_height="36dp"
+                android:layout_marginRight="6dp"
+                android:src="@drawable/btn_show_post_panel" />
 
             <Button
                 android:id="@+id/btnSendPost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:text="Отправить" />
+                style="?btnsend"
+                android:layout_width="fill_parent"
+                android:layout_height="36dp"
+                android:text="Отправить"
+                android:textColor="#ffffffff"
+                android:layout_marginRight="6dp" />
         </LinearLayout>
+
         <LinearLayout
-            android:orientation="vertical"
             android:id="@+id/footer_for_emoticons"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="@dimen/keyboard_height"
-            android:visibility="gone"/>
+            android:orientation="vertical"
+            android:visibility="gone" />
     </LinearLayout>
 </RelativeLayout>

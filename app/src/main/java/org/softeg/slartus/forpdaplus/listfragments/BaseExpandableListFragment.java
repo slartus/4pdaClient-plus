@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.IListItem;
-import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
@@ -30,11 +31,6 @@ import org.softeg.sqliteannotations.BaseDao;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.Options;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
 
 public abstract class BaseExpandableListFragment extends BaseBrickFragment implements
         ExpandableListView.OnChildClickListener {
@@ -137,7 +133,7 @@ super();
         return getActivity();
     }
 
-    protected uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout mPullToRefreshLayout;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     protected void saveListViewScrollPosition() {
         m_FirstVisibleRow = getListView().getFirstVisiblePosition();
@@ -163,31 +159,22 @@ super();
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mPullToRefreshLayout = createPullToRefreshLayout(view);
+        mSwipeRefreshLayout = createSwipeRefreshLayout(view);
     }
 
-    protected PullToRefreshLayout createPullToRefreshLayout(View view) {
-
+    protected SwipeRefreshLayout createSwipeRefreshLayout(View view) {
         // This is the View which is created by ListFragment
         ViewGroup viewGroup = (ViewGroup) view;
-        // We need to create a PullToRefreshLayout manually
-        PullToRefreshLayout pullToRefreshLayout = (PullToRefreshLayout) view.findViewById(R.id.ptr_layout);
 
-        // We can now setup the PullToRefreshLayout
-        ActionBarPullToRefresh.from(getActivity())
-                .options(Options.create().scrollDistance(0.3f).refreshOnUp(true).build())
-                        // We need to insert the PullToRefreshLayout into the Fragment's ViewGroup
-                .allChildrenArePullable()
-
-                        // We can now complete the setup as desired
-                .listener(new OnRefreshListener() {
-                    @Override
-                    public void onRefreshStarted(View view) {
-                        loadData(true);
-                    }
-                })
-                .setup(pullToRefreshLayout);
-        return pullToRefreshLayout;
+        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.ptr_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadData(true);
+            }
+        });
+        swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
+        return swipeRefreshLayout;
     }
 
     @Override
@@ -224,11 +211,17 @@ super();
         return new ExpandableMyListAdapter(getActivity(), mData);
     }
 
-    protected void setLoading(Boolean loading) {
+    protected void setLoading(final Boolean loading) {
         try {
             if (getActivity() == null) return;
 
-            mPullToRefreshLayout.setRefreshing(loading);
+            //mSwipeRefreshLayout.setRefreshing(loading);
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshLayout.setRefreshing(loading);
+                }
+            });
             if (loading) {
                 setEmptyText("Загрузка..");
             } else {

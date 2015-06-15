@@ -7,11 +7,11 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Spinner;
 
-import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
+import org.softeg.slartus.forpdaapi.ICatalogItem;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.CatalogAdapter;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.CatalogCrumbsAdapter;
-import org.softeg.slartus.forpdaapi.ICatalogItem;
+import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 
 import java.io.IOException;
 import java.text.ParseException;

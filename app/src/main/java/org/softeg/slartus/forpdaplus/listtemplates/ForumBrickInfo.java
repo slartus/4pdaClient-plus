@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.listtemplates;
 
 import android.support.v4.app.Fragment;
 
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 
 /**
@@ -13,6 +14,11 @@ public class ForumBrickInfo extends BrickInfo {
     @Override
     public String getTitle() {
         return "Форум";
+    }
+
+    @Override
+    public int getIcon() {
+        return R.drawable.ic_forum_grey600_24dp;
     }
 
     @Override

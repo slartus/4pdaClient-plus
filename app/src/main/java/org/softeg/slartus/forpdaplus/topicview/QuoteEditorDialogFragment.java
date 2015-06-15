@@ -1,10 +1,8 @@
 package org.softeg.slartus.forpdaplus.topicview;
 
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -15,10 +13,12 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.common.HtmlUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.common.HtmlUtils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -81,28 +81,22 @@ public class QuoteEditorDialogFragment extends DialogFragment implements View.On
         progressBar = v.findViewById(R.id.progressBar);
         v.findViewById(R.id.btnAll).setOnClickListener(this);
         v.findViewById(R.id.btnAuthor).setOnClickListener(this);
+        v.findViewById(R.id.btnAuthor).setOnClickListener(this);
         v.findViewById(R.id.btnText).setOnClickListener(this);
         v.findViewById(R.id.btnClear).setOnClickListener(this);
 
 
-        Dialog dialog = new AlertDialog.Builder(getActivity())
-                .setView(v)
-                .setPositiveButton("Вставить",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.dismiss();
-                                ((ThemeActivity) getActivity()).insertTextToPost(txtBody.getText().toString());
-                            }
-                        }
-                )
-                .setNegativeButton("Отмена",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.dismiss();
-                            }
-                        }
-                )
-                .create();
+        MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                .customView(v,false)
+                .positiveText("Вставить")
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        ((ThemeActivity) getActivity()).insertTextToPost(txtBody.getText().toString());
+                    }
+                })
+                .negativeText("Отмена")
+                .build();
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         return dialog;

@@ -1,10 +1,8 @@
 package org.softeg.slartus.forpdaplus;
 
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
@@ -29,7 +27,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -43,11 +40,12 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.melnykov.fab.FloatingActionButton;
+
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
-import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.classes.BrowserViewsFragmentActivity;
 import org.softeg.slartus.forpdaplus.classes.History;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
@@ -79,6 +77,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
     private Handler mHandler = new Handler();
     private AdvWebView webView;
     private RelativeLayout pnlSearch;
+    private FloatingActionButton fabComment;
 
     private Boolean m_FromHistory = false;
     private int m_ScrollY = 0;
@@ -102,13 +101,12 @@ public class NewsActivity extends BrowserViewsFragmentActivity
     }
 
     protected void afterCreate() {
-        getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        //getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         setContentView(R.layout.news_activity);
 
@@ -133,7 +131,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
 
             }
         }
-        webView.setActionBarheight(getActionBar().getHeight());
+        webView.setActionBarheight(getSupportActionBar().getHeight());
         setHideActionBar();
 
         webView.setWebChromeClient(new MyWebChromeClient());
@@ -187,6 +185,20 @@ public class NewsActivity extends BrowserViewsFragmentActivity
         m_NewsUrl = extras.getString(URL_KEY);
         s_NewsUrl = m_NewsUrl;
 
+        fabComment = (FloatingActionButton) findViewById(R.id.fab);
+        fabComment.setColorNormal(App.getInstance().getColorAccent("Accent"));
+        fabComment.setColorPressed(App.getInstance().getColorAccent("Pressed"));
+        fabComment.setColorRipple(App.getInstance().getColorAccent("Pressed"));
+        if(Client.getInstance().getLogined()){
+            fabComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    respond();
+                }
+            });
+        }else{
+            fabComment.setVisibility(View.GONE);
+        }
     }
 
     private final static int FILECHOOSER_RESULTCODE = 1;
@@ -563,16 +575,6 @@ public class NewsActivity extends BrowserViewsFragmentActivity
             super.onCreateOptionsMenu(menu, inflater);
             MenuItem item;
 
-            item = menu.add(R.string.DoComment).setIcon(R.drawable.ic_menu_comment);
-            item.setVisible(Client.getInstance().getLogined());
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    ((NewsActivity) getActivity()).respond();
-                    return true;
-                }
-            });
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
             item = menu.add(R.string.Refresh).setIcon(R.drawable.ic_menu_refresh);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
@@ -598,7 +600,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
             optionsMenu.getItem().setIcon(R.drawable.ic_menu_preferences);
             optionsMenu.getItem().setTitle(R.string.Settings);
             optionsMenu.add("Скрывать верхнюю панель")
-                    .setIcon(R.drawable.ic_menu_images).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     Preferences.setHideActionBar(!Preferences.isHideActionBar());
                     getInterface().setHideActionBar();
@@ -615,7 +617,8 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                         }
                     });
 
-            optionsMenu.add(R.string.LoadImages).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            optionsMenu.add(R.string.LoadImages)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     Boolean loadImagesAutomatically1 = getInterface().getWebView().getSettings().getLoadsImagesAutomatically();
                     getInterface().getWebView().getSettings().setLoadsImagesAutomatically(!loadImagesAutomatically1);
@@ -744,13 +747,16 @@ public class NewsActivity extends BrowserViewsFragmentActivity
     }
 
     private class GetNewsTask extends AsyncTask<String, String, Boolean> {
-        private final ProgressDialog dialog;
+        private final MaterialDialog dialog;
         public String Comment = null;
         public String ReplyId;
         public String Dp;
 
         public GetNewsTask(Context context) {
-            dialog = new AppProgressDialog(context);
+            dialog = new MaterialDialog.Builder(context)
+                    .progress(true,0)
+                    .content("Загрузка новости")
+                    .build();
         }
 
         private String m_ThemeBody;
@@ -784,16 +790,26 @@ public class NewsActivity extends BrowserViewsFragmentActivity
         private String transformBody(String body) {
             NewsHtmlBuilder builder = new NewsHtmlBuilder();
             Matcher matcher = PatternExtensions.compile("<title>([^<>]*)</title>").matcher(body);
+            Matcher matchert = PatternExtensions.compile("<script type=\".*\">wrs([\\s\\S]*?)<.script>").matcher(body);
             m_Title = "Новости";
             if (matcher.find()) {
                 m_Title = Html.fromHtml(matcher.group(1)).toString();
             }
             builder.beginHtml(m_Title);
             builder.beginBody();
-            builder.append("<div style=\"margin-top:72pt\"/>\n");
+            builder.append("<div style=\"padding-top:" + builder.getMarginTop() + "px\"/>\n");
             builder.append("<div id=\"main\">");
+            builder.append("<script type=\"text/javascript\" async=\"async\" src=\"file:///android_asset/forum/js/jqp.min.js\"></script>\n");
+            builder.append("<script type=\"text/javascript\" async=\"async\" src=\"file:///android_asset/forum/js/site.min.js\" charset=\"windows-1251\"></script>\n");
+            builder.append("<script type=\"text/javascript\">(function(f,h){var c=\"$4\";if(\"function\"!=typeof f[c]||.3>f[c].lib4PDA){var g={},b=function(){return f[c]||this},k=function(a,d){return function(){\"function\"==typeof d&&(!a||a in b?d(b[a],a):!g[a]&&(g[a]=[d])||g[a].push(d))}};b.fn=b.prototype={lib4PDA:.3,constructor:b,addModule:function(a,d){if(!(a in b)){b[a]=b.fn[a]=d?\"function\"==typeof d?d(b):d:h;for(var c=0,e=g[a];e&&c<e.length;)e[c++](b[a],a);delete g[a]}return b},onInit:function(a,d){for(var c=(a=(a+\"\").split(\" \")).length,e=d;c;)e=new k(a[--c],\n" +
+                    "e);e();return b}};f[c]=f.lib4PDA=b;for(c in b.fn)b[c]=b.fn[c]}})(window);(function(a){var wrsI=0;\n" +
+                    "window.wrs=function(c,f){a.write('<div id=\"wrs-div'+wrsI+'\"></div>');var d=a.getElementById('wrs-div'+wrsI),i=setInterval(function(w){if(!c()){return;}clearInterval(i);w=a.write;a.write=function(t){d.innerHTML+=t};f();a.write=w},500);wrsI++}})(document);</script>");
 
             builder.append(parseBody(body));
+
+            if (matchert.find()) {
+                builder.append("<script type=\"text/javascript\">wrs"+matchert.group(1)+"</script>");
+            }
 
             builder.append("</div><br/><br/><br/><br/>");
             builder.endBody();
@@ -853,17 +869,15 @@ public class NewsActivity extends BrowserViewsFragmentActivity
         protected void onProgressUpdate(final String... progress) {
             mHandler.post(new Runnable() {
                 public void run() {
-                    dialog.setMessage(progress[0]);
+                    dialog.setContent(progress[0]);
                 }
             });
         }
 
         protected void onPreExecute() {
             try {
-                this.dialog.setMessage("Загрузка новости...");
                 this.dialog.show();
             } catch (Exception ex) {
-
                 this.cancel(true);
             }
         }
@@ -908,13 +922,14 @@ public class NewsActivity extends BrowserViewsFragmentActivity
         final EditText message_edit = (EditText) layout.findViewById(R.id.comment);
         if (user != null)
             message_edit.setText("<b>" + URLDecoder.decode(user) + ",</b>");
-        new AlertDialogBuilder(this)
-                .setTitle(R.string.LeaveComment)
-                .setView(layout)
-                .setPositiveButton(R.string.Send, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-
+        new MaterialDialog.Builder(this)
+                .title(R.string.LeaveComment)
+                .customView(layout,true)
+                .positiveText(R.string.Send)
+                .negativeText("Отмена")
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
                         String message = message_edit.getText().toString();
                         if (TextUtils.isEmpty(message.trim())) {
                             Toast.makeText(NewsActivity.this, "Текст не можут быть пустым!", Toast.LENGTH_SHORT).show();
@@ -926,15 +941,9 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                         getThemeTask.ReplyId = replyId;
                         getThemeTask.Dp = dp;
                         getThemeTask.execute(m_NewsUrl);
-
                     }
                 })
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .create().show();
+                .show();
     }
 
     @Override

@@ -4,7 +4,6 @@ package org.softeg.slartus.forpdaplus.search.ui;/*
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,9 +17,10 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.Forum;
 import org.softeg.slartus.forpdaplus.classes.ForumsAdapter;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -79,33 +79,27 @@ public class ForumsTreeDialogFragment extends DialogFragment {
         initSpinner();
 
         m_Progress = view.findViewById(R.id.progress);
-        return new AlertDialogBuilder(getActivity())
-                .setView(view)
-                .setCancelable(false)
-                .setTitle("Форум")
-                .setPositiveButton("Применить",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.dismiss();
+        return new MaterialDialog.Builder(getActivity())
+                .customView(view,true)
+                .cancelable(false)
+                .title("Форум")
+                .positiveText("Применить")
+                .negativeText("Отмена")
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        Intent intent=new Intent();
+                        String[] ar=new String[m_ListViewAdapter.getCheckedIds().size()];
+                        intent.putExtra(FORUM_IDS_KEY, m_ListViewAdapter.getCheckedIds().toArray(ar));
 
-                                Intent intent=new Intent();
-                                String[] ar=new String[m_ListViewAdapter.getCheckedIds().size()];
-                                intent.putExtra(FORUM_IDS_KEY, m_ListViewAdapter.getCheckedIds().toArray(ar));
-
-                                getTargetFragment().onActivityResult(SearchSettingsDialogFragment.FORUMS_DIALOG_REQUEST, OK_RESULT, intent);
-                            }
-                        }
-                )
-                .setNegativeButton("Отмена",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.dismiss();
-                                getTargetFragment().onActivityResult(SearchSettingsDialogFragment.FORUMS_DIALOG_REQUEST, CANCEL_RESULT, null);
-                            }
-                        }
-                )
-
-                .create();
+                        getTargetFragment().onActivityResult(SearchSettingsDialogFragment.FORUMS_DIALOG_REQUEST, OK_RESULT, intent);
+                    }
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
+                        getTargetFragment().onActivityResult(SearchSettingsDialogFragment.FORUMS_DIALOG_REQUEST, CANCEL_RESULT, null);
+                    }
+                })
+                .build();
     }
 
 

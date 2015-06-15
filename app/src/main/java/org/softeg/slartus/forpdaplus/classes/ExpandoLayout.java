@@ -24,6 +24,7 @@ import android.view.animation.Transformation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import org.softeg.slartus.forpdaplus.R;
 
 

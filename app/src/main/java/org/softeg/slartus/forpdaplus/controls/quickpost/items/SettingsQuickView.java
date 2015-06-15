@@ -2,6 +2,8 @@ package org.softeg.slartus.forpdaplus.controls.quickpost.items;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -10,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
@@ -29,7 +32,7 @@ public class SettingsQuickView extends BaseQuickView {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
 
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        enableEmotics = new CheckBox(getContext());
+        enableEmotics = new AppCompatCheckBox(getContext());
         enableEmotics.setText("Включить смайлики");
         enableEmotics.setChecked(Preferences.Topic.Post.getEnableEmotics());
         enableEmotics.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -41,7 +44,7 @@ public class SettingsQuickView extends BaseQuickView {
         enableEmotics.setLayoutParams(params);
         linearLayout.addView(enableEmotics);
 
-        enableSign = new CheckBox(getContext());
+        enableSign = new AppCompatCheckBox(getContext());
         enableSign.setText("Добавить подпись");
         enableSign.setChecked(Preferences.Topic.Post.getEnableSign());
         enableSign.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -53,9 +56,10 @@ public class SettingsQuickView extends BaseQuickView {
         enableSign.setLayoutParams(params);
         linearLayout.addView(enableSign);
 
-        extendedFormButton = new Button(getContext());
+        extendedFormButton = new AppCompatButton(getContext());
         extendedFormButton.setText("Расширенная форма");
         extendedFormButton.setLayoutParams(params);
+        extendedFormButton.setTextColor(getResources().getColor(R.color.black));
         extendedFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

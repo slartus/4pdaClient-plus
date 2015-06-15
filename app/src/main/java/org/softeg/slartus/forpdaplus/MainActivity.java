@@ -1,22 +1,32 @@
 package org.softeg.slartus.forpdaplus;
 
-import android.app.ActionBar;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewConfiguration;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.softeg.slartus.forpdacommon.NotReportException;
@@ -94,18 +104,59 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
         super.onCreate(saveInstance);
 
         try {
-
-
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
-
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_drawer);
             if (checkIntent())
                 return;
             setContentView(R.layout.main);
 
             createMenu();
 
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            DrawerLayout drawer = (DrawerLayout) inflater.inflate(R.layout.decor, null); // "null" is important.
+            ViewGroup decor = (ViewGroup) getWindow().getDecorView();
+            View child = decor.getChildAt(0);
+            decor.removeView(child);
+            FrameLayout container = (FrameLayout) drawer.findViewById(R.id.ab_cont); // This is the container we defined just now.
+            container.addView(child,0);
+            decor.addView(drawer);
+
+            FrameLayout contentFrame = (FrameLayout) drawer.findViewById(R.id.content_frame);
+            RelativeLayout leftDrawer = (RelativeLayout) drawer.findViewById(R.id.left_drawer);
+            final float scale = getResources().getDisplayMetrics().density;
+            int paddingTop = (int) (80.5 * scale + 0.5f);
+            int paddingTopTab = (int) (88.5 * scale + 0.5f);
+            int paddingBottom = 0;
+
+            boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
+            if(fullScreen){
+                paddingTop = (int) (56 * scale + 0.5f);
+                paddingTopTab = (int) (64 * scale + 0.5f);
+            }
+            if(Integer.valueOf(android.os.Build.VERSION.SDK) > 19){
+                if (!ViewConfiguration.get(this).hasPermanentMenuKey()) {
+                    if(needBottom()) {
+                        paddingBottom = (int) (48 * scale + 0.5f);
+                    }
+                }
+                contentFrame.setPadding(0,paddingTop,0,paddingBottom);
+                leftDrawer.setPadding(0,0,0,paddingBottom);
+                if (isTablet()) {
+                    contentFrame.setPadding(0,paddingTopTab,0,paddingBottom);
+                }
+            }else {
+                contentFrame.setPadding(0, paddingTop, 0, 0);
+                if (isTablet()) {
+                    contentFrame.setPadding(0,paddingTopTab,0,0);
+                }
+            }
+
             mMainDrawerMenu = new MainDrawerMenu(this, this);
+
+
+
+
             NotifiersManager notifiersManager = new NotifiersManager(this);
             new DonateNotifier(notifiersManager).start(this);
             new TopicAttentionNotifier(notifiersManager).start(this);
@@ -114,8 +165,13 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
             AppLog.e(getApplicationContext(), ex);
         }
     }
-
-
+    public boolean isTablet(){
+        int lil = getContext().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+        return ((lil == 4) || (lil == Configuration.SCREENLAYOUT_SIZE_LARGE));
+    }
+    public boolean needBottom(){
+        return PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("paddingBottomMain", true);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -129,8 +185,11 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        if (mMainDrawerMenu != null)
+        if (mMainDrawerMenu != null) {
             mMainDrawerMenu.syncState();
+        }
+        new ShortUserInfo(this);
+
     }
 
     private void createMenu() {
@@ -365,7 +424,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
 
 
         public void setOtherMenu() {
-            MenuItem miQuickStart = m_miOther.add("Быстрый доступ..");
+            MenuItem miQuickStart = m_miOther.add("Быстрый доступ");
             miQuickStart.setIcon(R.drawable.ic_menu_quickrun);
             miQuickStart.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {

@@ -13,13 +13,12 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
-import org.softeg.slartus.forpdaapi.Topic;
-import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
+import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.TopicsApi;
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumTopicsBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
@@ -146,7 +145,6 @@ public class ForumTopicsListFragment extends TopicsListFragment {
         super.onCreateOptionsMenu(menu, inflater);
 
         MenuItem item = menu.add("Фильтр и сортировка")
-                .setIcon(R.drawable.ic_menu_preferences)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {

@@ -7,10 +7,11 @@
 
 
 
-    <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/ptr_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <ListView
             android:id="@android:id/list"
@@ -18,5 +19,5 @@
             android:layout_height="match_parent">
 
         </ListView>
-    </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

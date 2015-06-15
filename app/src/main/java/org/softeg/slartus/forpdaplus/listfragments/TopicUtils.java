@@ -6,15 +6,17 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaapi.FavTopic;
 import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.TopicApi;
-import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.ThemeOpenParams;
 import org.softeg.slartus.forpdaplus.classes.TopicListItemTask;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
@@ -91,54 +93,47 @@ public class TopicUtils {
         final CharSequence[] values = new CharSequence[]{Topic.NAVIGATE_VIEW_FIRST_POST,
                 Topic.NAVIGATE_VIEW_LAST_POST, Topic.NAVIGATE_VIEW_NEW_POST};
         final int[] selected = {2};
-        new AlertDialogBuilder(activity)
-                .setSingleChoiceItems(titles, selected[0], new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(activity)
+                .items(titles)
+                .itemsCallbackSingleChoice(selected[0], new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence titles) {
                         selected[0] = i;
+                        return true; // allow selection
                     }
                 })
-                .setTitle("Действие по умолчанию")
-                .setPositiveButton("Всегда",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.dismiss();
+                .title("Действие по умолчанию")
+                .positiveText("Всегда")
+                .neutralText("Только сейчас")
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
+                        new MaterialDialog.Builder(activity)
+                                .title("Подсказка")
+                                .content("Вы можете изменить действие по умолчанию долгим тапом по теме")
+                                .cancelable(false)
+                                .positiveText("OK")
+                                .callback(new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        String navigateAction = values[selected[0]].toString();
+                                        TopicUtils.saveTopicNavigateAction(templateId, navigateAction);
+                                        ExtTopic.showActivity(activity, topicId,
+                                                ThemeOpenParams.getUrlParams(navigateAction, null));
 
-                                new AlertDialogBuilder(activity)
-                                        .setTitle("Подсказка")
-                                        .setMessage("Вы можете изменить действие по умолчанию долгим тапом по теме")
-                                        .setCancelable(false)
-                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                dialogInterface.dismiss();
-
-                                                String navigateAction = values[selected[0]].toString();
-                                                TopicUtils.saveTopicNavigateAction(templateId, navigateAction);
-                                                ExtTopic.showActivity(activity, topicId,
-                                                        ThemeOpenParams.getUrlParams(navigateAction, null));
-
-                                                onClickListener.onClick(null, -1);
-                                            }
-                                        })
-                                        .create().show();
-                            }
-                        }
-                )
-                .setNeutralButton("Только сейчас",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.dismiss();
-
-                                String navigateAction = values[selected[0]].toString();
-                                ExtTopic.showActivity(activity, topicId,
-                                        ThemeOpenParams.getUrlParams(navigateAction, null));
-
-                                onClickListener.onClick(null, -1);
-                            }
-                        }
-                )
-                .create()
+                                        onClickListener.onClick(null, -1);
+                                    }
+                                })
+                                .show();
+                    }
+                    @Override
+                    public void onNeutral(MaterialDialog dialog) {
+                        String navigateAction = values[selected[0]].toString();
+                        ExtTopic.showActivity(activity, topicId,
+                                ThemeOpenParams.getUrlParams(navigateAction, null));
+                        onClickListener.onClick(null, -1);
+                    }
+                })
                 .show();
 
     }
@@ -162,19 +157,16 @@ public class TopicUtils {
             selectedSubscribe = ((FavTopic) topic).getTrackType();
         }
         final int[] selectedId = {ArrayUtils.indexOf(selectedSubscribe, values)};
-        new AlertDialogBuilder(context)
-                .setTitle("Добавление в избранное/подписки")
-                .setSingleChoiceItems(titles, selectedId[0], new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(context)
+                .title("Добавление в избранное/подписки")
+                .items(titles)
+                .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onSelection(MaterialDialog dialog, View view, int i, CharSequence text) {
                         selectedId[0] = i;
-                    }
-                })
-                .setPositiveButton("Добавить", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
                         if (selectedId[0] == -1)
                             return;
-                        dialogInterface.dismiss();
+
                         String emailtype = values[selectedId[0]];
 
                         Toast.makeText(context, "Запрос на добавление отправлен", Toast.LENGTH_SHORT).show();
@@ -217,12 +209,9 @@ public class TopicUtils {
                         }
                     }
                 })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .create().show();
+                //.positiveText("Добавить")
+                .negativeText(android.R.string.cancel)
+                .show();
     }
 
 

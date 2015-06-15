@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,7 @@ public class UsersTab extends BaseTab implements AdapterView.OnItemClickListener
 
     protected Users m_Users = new Users();
     private UsersAdapter mAdapter;
-    protected uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout mPullToRefreshLayout;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
     public UsersTab(Context context, ITabParent tabParent) {
         super(context, tabParent);
 
@@ -51,7 +52,7 @@ public class UsersTab extends BaseTab implements AdapterView.OnItemClickListener
 
 
         m_ListView = (ListView) findViewById(android.R.id.list);
-        mPullToRefreshLayout = App.createPullToRefreshLayout(getActivity(), findViewById(R.id.main_layout), new Runnable() {
+        mSwipeRefreshLayout = App.createSwipeRefreshLayout(getActivity(), findViewById(R.id.main_layout), new Runnable() {
             @Override
             public void run() {
                 refreshData();
@@ -126,9 +127,14 @@ public class UsersTab extends BaseTab implements AdapterView.OnItemClickListener
 
     }
 
-    private void setState(boolean loading) {
-        mPullToRefreshLayout.setRefreshing(loading);
-
+    private void setState(final boolean loading) {
+        //mSwipeRefreshLayout.setRefreshing(loading);
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(loading);
+            }
+        });
     }
 
     @Override

@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.tabs;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,10 +23,13 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.softeg.slartus.forpdaplus.Client;
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import org.softeg.slartus.forpdacommon.FileUtils;
+import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.DownloadTask;
 import org.softeg.slartus.forpdaplus.classes.DownloadTasks;
 import org.softeg.slartus.forpdaplus.classes.common.Functions;
@@ -36,8 +38,6 @@ import org.softeg.slartus.forpdaplus.db.BaseTable;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.db.DownloadsTable;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
-import org.softeg.slartus.forpdacommon.FileUtils;
-import org.softeg.slartus.forpdacommon.NotReportException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -191,29 +191,31 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
                 case DownloadTask.STATE_PENDING:
                 case DownloadTask.STATE_CONNECTING:
                 case DownloadTask.STATE_DOWNLOADING:
-                    new AlertDialogBuilder(getContext())
-                            .setTitle("Действие")
-                            .setMessage("Отменить загрузку?")
-                            .setCancelable(true)
-                            .setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialogInterface, int i) {
+                    new MaterialDialog.Builder(getContext())
+                            .title("Действие")
+                            .content("Отменить загрузку?")
+                            .cancelable(true)
+                            .positiveText("Да")
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
                                     downloadTask.cancel();
-                                    dialogInterface.dismiss();
                                 }
                             })
-                            .setNegativeButton("Нет", null)
-                            .create().show();
+                            .negativeText("Нет")
+                            .show();
                     break;
                 case DownloadTask.STATE_ERROR:
                 case DownloadTask.STATE_CANCELED:
                     items = new CharSequence[]{"Повторить загрузку", "Докачать файл"};
-                    new AlertDialogBuilder(getContext())
-                            .setTitle("Выберите действие")
-                            .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialogInterface, int i) {
+                    new MaterialDialog.Builder(getContext())
+                            .title("Выберите действие")
+                            .items(items)
+                            .itemsCallback(new MaterialDialog.ListCallback() {
+                                @Override
+                                public void onSelection(MaterialDialog dialog, View view, int i, CharSequence items) {
                                     switch (i) {
                                         case 0: // Повторить загрузку
-                                            dialogInterface.dismiss();
                                             Client.getInstance().getDownloadTasks().remove(downloadTask);
                                             DownloadsService.download(getActivity(), downloadTask.getUrl(),false);
 
@@ -224,7 +226,6 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
                                             });
                                             break;
                                         case 1: // Докачать файл
-                                            dialogInterface.dismiss();
                                             Client.getInstance().getDownloadTasks().remove(downloadTask);
                                             DownloadsService.download(getActivity(), downloadTask.getUrl(),
                                                     downloadTask.getDownloadingFilePath(), downloadTask.getId(),false);
@@ -239,22 +240,23 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
                                     }
                                 }
                             })
-                            .setCancelable(true)
-                            .setNegativeButton("Отмена", null)
-                            .create().show();
+                            .cancelable(true)
+                            .negativeText("Отмена")
+                            .show();
                     break;
                 case DownloadTask.STATE_SUCCESSFULL:
                     items = new CharSequence[]{"Запустить файл", "Повторить загрузку"};
-                    new AlertDialogBuilder(getContext())
-                            .setTitle("Выберите действие")
-                            .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialogInterface, int i) {
+                    new MaterialDialog.Builder(getContext())
+                            .title("Выберите действие")
+                            .items(items)
+                            .itemsCallback(new MaterialDialog.ListCallback() {
+                                @Override
+                                public void onSelection(MaterialDialog dialog, View view, int i, CharSequence items) {
                                     switch (i) {
                                         case 0: // Запустить файл
                                             runFile(downloadTask.getOutputFile());
                                             break;
                                         case 1: // Повторить загрузку
-                                            dialogInterface.dismiss();
                                             //Client.getInstance().getDownloadTasks().remove(downloadTask);
                                             DownloadsService.download(getActivity(), downloadTask.getUrl(),false);
 
@@ -267,9 +269,9 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
                                     }
                                 }
                             })
-                            .setCancelable(true)
-                            .setNegativeButton("Отмена", null)
-                            .create().show();
+                            .cancelable(true)
+                            .negativeText("Отмена")
+                            .show();
 
 
                     break;
@@ -321,23 +323,18 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
         MenuItem item = menu.add("Очистить").setIcon(R.drawable.ic_menu_delete);
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
-                new AlertDialogBuilder(getContext())
-                        .setTitle("Подтвердите действие")
-                        .setMessage("Удалить все неактивные загрузки?")
-                        .setPositiveButton("Удалить", new DialogInterface.OnClickListener() {
+                new MaterialDialog.Builder(getContext())
+                        .title("Подтвердите действие")
+                        .content("Удалить все неактивные загрузки?")
+                        .positiveText("Удалить")
+                        .negativeText("Отмена")
+                        .callback(new MaterialDialog.ButtonCallback() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
+                            public void onPositive(MaterialDialog dialog) {
                                 clearNotActiveDownloads();
                             }
                         })
-                        .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .create().show();
+                        .show();
 
                 return true;
             }

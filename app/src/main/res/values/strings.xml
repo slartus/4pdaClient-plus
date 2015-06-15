@@ -3,9 +3,9 @@
     <string name="app_name">4pda</string>
     <string name="loading">Загрузка...</string>
     <string name="Forums">Форумы</string>
-    <string name="pull_to_refresh_pull_label">Оттяни для обновления...</string>
-    <string name="pull_to_refresh_release_label">Брось для обновления...</string>
-    <string name="pull_to_refresh_refreshing_label">Обновление...</string>
+    <string name="pull_to_refresh_pull_label">Потяните, чтобы обновить</string>
+    <string name="pull_to_refresh_release_label">Отпустите</string>
+    <string name="pull_to_refresh_refreshing_label">Обновление..</string>
     <string name="adv_form">Расш. форма</string>
     <string name="advanced_form">Расш. форма</string>
     <string name="app_description">Неофициальный клиент для сайта 4pda.ru</string>
@@ -85,7 +85,7 @@
     <string name="ChangeReputationRequest">Запрос на изменение репутации отправлен</string>
     <string name="ChangeReputationError">Ошибка изменения репутации</string>
     <string name="Reputation">Репутация</string>
-    <string name="Logout">Выход (Logout)</string>
+    <string name="Logout">Выход</string>
     <string name="Login">Вход</string>
     <string name="Registration">Регистрация</string>
     <string name="SendBy_">Отправить через..</string>

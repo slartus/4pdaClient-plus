@@ -1,7 +1,7 @@
 package org.softeg.slartus.forpdaplus.classes;
 
+import android.content.res.Configuration;
 import android.text.TextUtils;
-
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
@@ -11,7 +11,7 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
  * Created by slinkin on 25.12.13.
  */
 public class HtmlBuilder {
-    public final String ACTIONBAR_TOP_MARGIN="54pt";
+    public final String ACTIONBAR_TOP_MARGIN= getMarginTop()+"px";
     protected StringBuilder m_Body;
 
     public void beginHtml(String title) {
@@ -29,7 +29,14 @@ public class HtmlBuilder {
         m_Body.append("<title>" + title + "</title>\n");
         m_Body.append("</head>\n");
     }
-
+    public int getMarginTop(){
+        int margin = 81;
+        int lil = App.getContext().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+        if ((lil == 4) || (lil == Configuration.SCREENLAYOUT_SIZE_LARGE)) {
+            margin = 89;
+        }
+        return margin;
+    }
     public void addScripts() {
         m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/forum/js/z_forum_helpers.js\"></script>\n");
         m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/theme.js\"></script>\n");
@@ -38,8 +45,6 @@ public class HtmlBuilder {
     }
 
     public void addStyleSheetLink(StringBuilder sb) {
-
-
         sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file://" + getStyle() + "\" />\n");
     }
 
@@ -58,10 +63,20 @@ public class HtmlBuilder {
     }
 
     public void beginBody(CharSequence bodyScript) {
-        if (bodyScript == null || TextUtils.isEmpty(bodyScript))
-            m_Body.append("<body>\n");
-        else
-            m_Body.append("<body " + bodyScript + ">\n");
+        int font = App.getInstance().getWebViewFont();
+        if (bodyScript == null || TextUtils.isEmpty(bodyScript)) {
+            if(font==0){
+                m_Body.append("<body class=\"modification\">\n");
+            }else {
+                m_Body.append("<body class=\"modification\" style=\"font-family:inherit;\">\n");
+            }
+        }else {
+            if(font==0){
+                m_Body.append("<body class=\"modification\" " + bodyScript + ">\n");
+            }else {
+                m_Body.append("<body class=\"modification\" style=\"font-family:inherit;\" " + bodyScript + ">\n");
+            }
+        }
         if(Preferences.System.isDeveloper())
             m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/forum/js/less-dev.js\"></script> <!-- DEVELOPER -->\n");
     }

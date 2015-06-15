@@ -1,14 +1,14 @@
 package org.softeg.slartus.forpdaplus.controls.imageview;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Downloader;
 import com.squareup.picasso.MemoryPolicy;
@@ -19,7 +19,6 @@ import org.apache.http.HttpResponse;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.HttpHelper;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.io.IOException;
@@ -63,18 +62,19 @@ public class ImageViewDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder= new AlertDialogBuilder(getActivity())
-                .setTitle(mTitle)
-                .setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+        View v = getActivity().getLayoutInflater().inflate(R.layout.image_view_dialog, null);
+        m_PhotoView=(PhotoView)v.findViewById(R.id.iv_photo);
+        //m_PhotoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        m_PhotoView.setMaximumScale(10f);
+        m_ProgressView=v.findViewById(R.id.progressBar);
+        MaterialDialog builder= new MaterialDialog.Builder(getActivity())
+                .title(mTitle)
+                .customView(v,false)
+                .negativeText("Закрыть")
+                .positiveText("Полная версия")
+                .callback(new MaterialDialog.ButtonCallback() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .setPositiveButton("Полная версия", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+                    public void onPositive(MaterialDialog dialog) {
                         String url = mUrl;
                         try {
                             URI uri = new URI(mUrl);
@@ -85,14 +85,10 @@ public class ImageViewDialogFragment extends DialogFragment {
                         }
                         ImageViewActivity.startActivity(getActivity(), url);
                     }
-                });
-        View v = getActivity().getLayoutInflater().inflate(R.layout.image_view_dialog, null);
-        m_PhotoView=(PhotoView)v.findViewById(R.id.iv_photo);
-        m_PhotoView.setMaximumScale(10f);
-        m_ProgressView=v.findViewById(R.id.progressBar);
-        builder.setView(v);
+                }).build();
 
-        return builder.create();
+        builder.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        return builder;
 
     }
 

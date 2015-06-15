@@ -8,6 +8,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.Exceptions.MessageInfoException;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
@@ -15,7 +16,6 @@ import org.softeg.slartus.forpdaplus.classes.Post;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.Functions;
 import org.softeg.slartus.forpdaplus.emotic.Smiles;
-import org.softeg.slartus.forpdacommon.NotReportException;
 
 import java.util.Hashtable;
 import java.util.regex.Matcher;
@@ -91,7 +91,7 @@ public class SearchPostsParser extends HtmlBuilder {
 
     public void beginTopic(SearchResult searchResult) {
         beginBody();
-        m_Body.append("<div style=\"margin-top:").append(ACTIONBAR_TOP_MARGIN).append("\"/>\n");
+        m_Body.append("<div class=\"search-web-view\" style=\"margin-top:").append(ACTIONBAR_TOP_MARGIN).append("\"/>\n");
         if (searchResult.getPagesCount() > 1) {
             TopicBodyBuilder.addButtons(m_Body, searchResult.getCurrentPage(), searchResult.getPagesCount(),
                     Functions.isWebviewAllowJavascriptInterface(App.getInstance()), true, true);

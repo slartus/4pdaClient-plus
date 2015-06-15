@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.qms;
 
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,17 +9,17 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaapi.ProfileApi;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView;
 
@@ -46,7 +45,7 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.qms_new_thread);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -204,7 +203,7 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
     }
 
     private class SendTask extends AsyncTask<String, Void, Boolean> {
-        private final ProgressDialog dialog;
+        private final MaterialDialog dialog;
         public String m_ChatBody;
         private String userId;
         private String userNick;
@@ -218,7 +217,10 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
             this.title = title;
             this.body = body;
 
-            dialog = new AppProgressDialog(context);
+            dialog = new MaterialDialog.Builder(context)
+                    .progress(true,0)
+                    .content("Отправка сообщения")
+                    .build();
         }
 
         private Map<String, String> outParams;
@@ -238,7 +240,6 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
         }
 
         protected void onPreExecute() {
-            this.dialog.setMessage("Отправка сообщения...");
             this.dialog.show();
         }
 

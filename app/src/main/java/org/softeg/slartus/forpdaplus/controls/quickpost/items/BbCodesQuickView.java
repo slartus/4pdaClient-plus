@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaplus.controls.quickpost.items;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Service;
 import android.content.Context;
@@ -23,8 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.BbImage;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -61,7 +61,7 @@ public class BbCodesQuickView extends BaseQuickView {
 
     private void loadWebView() {
         StringBuilder sb = new StringBuilder();
-        sb.append("<html><body bgcolor=\"").append(App.getInstance().getCurrentThemeName()).append("\">");
+        sb.append("<html><body bgcolor=\"").append(App.getInstance().getCurrentBackgroundColorHtml()).append("\">");
         String style = App.getInstance().getCurrentThemeName();
         String path = "file:///android_asset/forum/style_images/1/folder_editor_buttons_" + style + "/";
         initVars();
@@ -146,26 +146,21 @@ public class BbCodesQuickView extends BaseQuickView {
         final int finalSelectionStart = selectionStart;
         final int finalSelectionEnd = selectionEnd;
         CharSequence[] items = new CharSequence[]{"1", "2", "3", "4", "5", "6", "7"};
-        new AlertDialogBuilder(getContext())
-                .setTitle("Выберите размер текста")
-                .setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+        new MaterialDialog.Builder(getContext())
+                .title("Выберите размер текста")
+                .items(items)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-
+                    public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence items) {
                         String tag = "[SIZE=" + Integer.toString(i + 1) + "]";
                         getEditor().getText().insert(finalSelectionStart, tag);
                         getEditor().getText().insert(finalSelectionEnd + tag.length(), "[/SIZE]");
+                        return true; // allow selection
                     }
                 })
-                .setCancelable(true)
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .create().show();
+                .cancelable(true)
+                .negativeText("Отмена")
+                .show();
 
     }
 
@@ -263,11 +258,10 @@ public class BbCodesQuickView extends BaseQuickView {
 
 
         scrollView.addView(tl, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        m_ColorsDialog = new AlertDialogBuilder(getContext())
-                .setCancelable(true)
-                .setView(scrollView)
-                .create();
-        m_ColorsDialog.show();
+        m_ColorsDialog = new MaterialDialog.Builder(getContext())
+                .cancelable(true)
+                .customView(scrollView,true)
+                .show();
     }
 
     private void getColorBbCodeOnClickListener(final String bbCode, int tagIndex) {
@@ -347,14 +341,14 @@ public class BbCodesQuickView extends BaseQuickView {
         final int[] selectionStart = {getSelectionStart()};
         final int[] selectionEnd = {getSelectionEnd()};
 
-        AlertDialog alertDialog = new AlertDialogBuilder(getContext())
-                .setView(layout)
-                .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-
-
+        new MaterialDialog.Builder(getContext())
+                .customView(layout,true)
+                .cancelable(false)
+                .positiveText("OK")
+                .negativeText("Отмена")
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
                         if (selectionEnd[0] < selectionStart[0] && selectionEnd[0] != -1) {
                             int c = selectionStart[0];
                             selectionStart[0] = selectionEnd[0];
@@ -376,22 +370,14 @@ public class BbCodesQuickView extends BaseQuickView {
                         }
                     }
                 })
-                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-
+                .showListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        input.requestFocus();
+                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Service.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(input, 0);
                     }
-                }).create();
-
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            public void onShow(DialogInterface dialogInterface) {
-                input.requestFocus();
-                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Service.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(input, 0);
-            }
-        });
-
-        alertDialog.show();
+                }).show();
     }
 
 
@@ -453,12 +439,14 @@ public class BbCodesQuickView extends BaseQuickView {
         layout.addView(input);
         final int[] selectionStart = {getSelectionStart()};
         final int[] selectionEnd = {getSelectionEnd()};
-        AlertDialog alertDialog = new AlertDialogBuilder(getContext())
-                .setCancelable(false)
-                .setView(layout)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+        new MaterialDialog.Builder(getContext())
+                .cancelable(false)
+                .customView(layout,true)
+                .positiveText("OK")
+                .negativeText(android.R.string.cancel)
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
                         String tempUrlText = urlText;
                         String tempUrl = url;
                         if (!TextUtils.isEmpty(url)) {
@@ -479,15 +467,7 @@ public class BbCodesQuickView extends BaseQuickView {
                         }
                         getEditor().getText().replace(selectionStart[0], selectionEnd[0], "[URL=" + (tempUrl == null ? "" : tempUrl) + "]" + tempUrlText + "[/URL]");
                     }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }).create();
-
-
-        alertDialog.show();
+                }).show();
     }
 
     private void getListBbCodeOnClickListener(final String listTagPostFix) throws IOException {
@@ -531,12 +511,14 @@ public class BbCodesQuickView extends BaseQuickView {
         input.requestFocus();
         layout.addView(input);
 
-        AlertDialog alertDialog = new AlertDialogBuilder(getContext())
-                .setCancelable(false)
-                .setView(layout)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+        new MaterialDialog.Builder(getContext())
+                .cancelable(false)
+                .customView(layout,true)
+                .positiveText("OK")
+                .negativeText(android.R.string.cancel)
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onPositive(MaterialDialog dialog) {
                         if (TextUtils.isEmpty(input.getText().toString())) {
                             tryInsertListText(sb, listTagPostFix);
                             return;
@@ -544,25 +526,19 @@ public class BbCodesQuickView extends BaseQuickView {
                         sb.append("[*]").append(input.getText().toString()).append("\n");
                         createListDialog(ind + 1, sb, listTagPostFix);
                     }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-
-                        tryInsertListText(sb, listTagPostFix);
-
+                    @Override
+                    public void onNegative(MaterialDialog dialog) {
+    tryInsertListText(sb, listTagPostFix);
                     }
-                }).create();
-
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            public void onShow(DialogInterface dialogInterface) {
-                input.requestFocus();
-                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Service.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(input, 0);
-            }
-        });
-
-        alertDialog.show();
+                })
+                .showListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        input.requestFocus();
+                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Service.INPUT_METHOD_SERVICE);
+                        imm.showSoftInput(input, 0);
+                    }
+                }).show();
     }
 
     private void tryInsertListText(StringBuilder sb, final String listTagPostFix) {

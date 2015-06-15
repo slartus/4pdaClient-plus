@@ -37,7 +37,7 @@ public class EmoticsQuickView extends BaseQuickView {
 
     private void loadWebView() {
         StringBuilder sb = new StringBuilder();
-        sb.append("<html><body bgcolor=\"").append(App.getInstance().getCurrentThemeName()).append("\">");
+        sb.append("<html><body bgcolor=\"").append(App.getInstance().getCurrentBackgroundColorHtml()).append("\">");
 
         Hashtable<String, String> smiles = Smiles.getSmilesDict();
         Set<String> favorites = Preferences.Topic.Post.getEmoticFavorites();

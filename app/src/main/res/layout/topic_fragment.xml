@@ -7,17 +7,18 @@
     android:orientation="vertical"
     >
 
-    <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout xmlns:ptr="http://schemas.android.com/apk/res-auto"
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ptr_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <org.softeg.slartus.forpdaplus.topicbrowser.TopicWebView
             android:id="@+id/webView"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:textSize="12dip"             />
-    </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
+            android:textSize="12sp"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/bottom_panel"

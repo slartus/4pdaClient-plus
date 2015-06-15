@@ -4,22 +4,27 @@ package org.softeg.slartus.forpdaplus;/*
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
@@ -32,6 +37,7 @@ import java.util.ArrayList;
 
 public class MainDrawerMenu {
     private DrawerLayout mDrawerLayout;
+    private RelativeLayout mDrawer;
     private ExpandableListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private Activity mActivity;
@@ -39,27 +45,39 @@ public class MainDrawerMenu {
     private BaseExpandableListAdapter mAdapter;
     private Handler mHandler = new Handler();
 
+
     public interface SelectItemListener {
         void selectItem(BrickInfo brickInfo);
     }
 
     public MainDrawerMenu(Activity activity, SelectItemListener listener) {
+        DisplayMetrics displayMetrics = App.getContext().getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels;
+        if (dpWidth>displayMetrics.density*400) {
+            dpWidth = displayMetrics.density*400;
+        }
+        dpWidth -= 80*displayMetrics.density;
         mActivity = activity;
         mSelectItemListener = listener;
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 
-        mDrawerList = (ExpandableListView) findViewById(R.id.left_drawer);
 
+        mDrawerList = (ExpandableListView) findViewById(R.id.left_drawer_list);
+        mDrawer = (RelativeLayout) findViewById(R.id.left_drawer);
+
+        mDrawerLayout.setDrawerShadow(R.drawable.navdrawer, GravityCompat.START);
+        DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mDrawer.getLayoutParams();
+        params.width = (int) dpWidth;
         if ("right".equals(Preferences.System.getDrawerMenuPosition())) {
-            DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mDrawerList.getLayoutParams();
 
             params.gravity = Gravity.RIGHT;
 
-            mDrawerList.setLayoutParams(params);
+            mDrawer.setLayoutParams(params);
             setDrawerLayoutArea(activity, false);
         } else {
             setDrawerLayoutArea(activity, true);
+            mDrawer.setLayoutParams(params);
         }
 
         mDrawerList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
@@ -76,7 +94,9 @@ public class MainDrawerMenu {
             }
         });
         mMenuGroups = new ArrayList<>();
-        mMenuGroups.add(new LastActionsGroup());
+        if(PreferenceManager.getDefaultSharedPreferences(App.getContext()).getBoolean("categoryLast", true)){
+            mMenuGroups.add(new LastActionsGroup());
+        }
         mMenuGroups.add(new MainListGroup());
         mMenuGroups.add(new OthersActionsGroup());
 
@@ -99,12 +119,12 @@ public class MainDrawerMenu {
             }
         };
 
+
         BrickInfo brickInfo = ListCore.getRegisteredBrick(Preferences.Lists.getLastSelectedList());
         if (brickInfo == null)
             brickInfo = new NewsPagerBrickInfo();
         selectItem(brickInfo);
     }
-
     /*
     Область вытягивания
      */
@@ -129,19 +149,19 @@ public class MainDrawerMenu {
     }
 
     public void toggleOpenState() {
-        if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
-            mDrawerLayout.closeDrawer(mDrawerList);
+        if (mDrawerLayout.isDrawerOpen(mDrawer)) {
+            mDrawerLayout.closeDrawer(mDrawer);
         } else {
-            mDrawerLayout.openDrawer(mDrawerList);
+            mDrawerLayout.openDrawer(mDrawer);
         }
     }
 
     public void close() {
-        mDrawerLayout.closeDrawer(mDrawerList);
+        mDrawerLayout.closeDrawer(mDrawer);
     }
 
     public Boolean isOpen() {
-        return mDrawerLayout.isDrawerOpen(mDrawerList);
+        return mDrawerLayout.isDrawerOpen(mDrawer);
     }
 
     private void selectItem(BrickInfo brickIinfo) {
@@ -260,6 +280,7 @@ public class MainDrawerMenu {
                 case DownloadsBrickInfo.NAME:
                     try {
                         QuickStartActivity.showTab(mActivity, Tabs.TAB_DOWNLOADS);
+                        //Toast.makeText(mActivity, Client.getInstance().getUser(), Toast.LENGTH_SHORT).show();
                     } catch (Exception ex) {
                         AppLog.e(mActivity, ex);
                     }
@@ -269,12 +290,13 @@ public class MainDrawerMenu {
                         Toast.makeText(mActivity, "Необходимо залогиниться!", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    new AlertDialogBuilder(mActivity)
-                            .setTitle("Подтвердите действие")
-                            .setMessage("Отметить весь форум прочитанным?")
-                            .setPositiveButton("Да", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
+                    new MaterialDialog.Builder(mActivity)
+                            .title("Подтвердите действие")
+                            .content("Отметить весь форум прочитанным?")
+                            .positiveText("Да")
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
                                     Toast.makeText(mActivity, "Запрос отправлен", Toast.LENGTH_SHORT).show();
                                     new Thread(new Runnable() {
                                         public void run() {
@@ -306,12 +328,7 @@ public class MainDrawerMenu {
                                     }).start();
                                 }
                             })
-                            .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .create()
+                            .negativeText("Отмена")
                             .show();
                     break;
             }
@@ -324,6 +341,11 @@ public class MainDrawerMenu {
             @Override
             public String getTitle() {
                 return "Настройки программы";
+            }
+
+            @Override
+            public int getIcon() {
+                return R.drawable.ic_settings_grey600_24dp;
             }
 
             @Override
@@ -346,6 +368,11 @@ public class MainDrawerMenu {
             }
 
             @Override
+            public int getIcon() {
+                return R.drawable.ic_delete;
+            }
+
+            @Override
             public String getName() {
                 return NAME;
             }
@@ -365,6 +392,11 @@ public class MainDrawerMenu {
             }
 
             @Override
+            public int getIcon() {
+                return R.drawable.ic_download_grey600_24dp;
+            }
+
+            @Override
             public String getName() {
                 return NAME;
             }
@@ -381,6 +413,11 @@ public class MainDrawerMenu {
             @Override
             public String getTitle() {
                 return "Отметить весь форум прочитанным";
+            }
+
+            @Override
+            public int getIcon() {
+                return R.drawable.ic_check_all_grey600_24dp;
             }
 
             @Override
@@ -474,6 +511,7 @@ public class MainDrawerMenu {
                 assert convertView != null;
 
                 holder.text = (TextView) convertView.findViewById(R.id.row_title);
+                holder.icon = (ImageView) convertView.findViewById(R.id.icon);
 
                 convertView.setTag(holder);
 
@@ -482,8 +520,10 @@ public class MainDrawerMenu {
             }
 
             BrickInfo item = mMenuGroups.get(groupPosition).getChildren().get(childPosition);
-            if (item != null)
+            if (item != null) {
                 holder.text.setText(item.getTitle());
+                holder.icon.setImageDrawable(getContext().getResources().getDrawable(item.getIcon()));
+            }
 
             return convertView;
         }
@@ -496,6 +536,7 @@ public class MainDrawerMenu {
 
         public class ViewHolder {
             public TextView text;
+            public ImageView icon;
         }
     }
 }

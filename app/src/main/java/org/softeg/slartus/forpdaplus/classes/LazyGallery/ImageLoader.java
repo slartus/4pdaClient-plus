@@ -12,8 +12,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
-import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdacommon.FileUtils;
+import org.softeg.slartus.forpdaplus.R;
 
 import java.io.File;
 import java.io.FileInputStream;

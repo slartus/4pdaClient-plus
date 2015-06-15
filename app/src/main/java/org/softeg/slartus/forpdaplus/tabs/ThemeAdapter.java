@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.tabs;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,12 +20,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -221,26 +221,23 @@ public class ThemeAdapter extends ArrayAdapter<ExtTopic> {
                                                     final Runnable showTopicAction) {
         final String navigateAction = ThemesTab.getTopicNavigateAction(tabId, template);
         if (navigateAction == null || !selectedAction.equals(navigateAction)) {
-            new AlertDialogBuilder(context)
-                    .setTitle("Действие по умолчанию")
-                    .setMessage("Назначить по умолчанию?")
-                    .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+            new MaterialDialog.Builder(context)
+                    .title("Действие по умолчанию")
+                    .content("Назначить по умолчанию?")
+                    .positiveText("Да")
+                    .negativeText("Нет")
+                    .callback(new MaterialDialog.ButtonCallback() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
+                        public void onPositive(MaterialDialog dialog) {
                             ThemesTab.saveOpenThemeParams(tabId, template, selectedAction);
                             showTopicAction.run();
-
                         }
-                    })
-                    .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
+                        public void onNegative(MaterialDialog dialog) {
                             showTopicAction.run();
                         }
                     })
-                    .create().show();
+                    .show();
         } else {
             showTopicAction.run();
         }

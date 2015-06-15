@@ -1,12 +1,17 @@
 package org.softeg.slartus.forpdaplus;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
@@ -18,7 +23,7 @@ import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
  * Date: 14.03.12
  * Time: 12:51
  */
-public class BaseFragmentActivity extends FragmentActivity
+public class BaseFragmentActivity extends ActionBarActivity
         implements SearchSettingsDialogFragment.ISearchDialogListener {
     public static final String SENDER_ACTIVITY = "sender_activity";
     public static final String FORCE_EXIT_APPLICATION = "org.softeg.slartus.forpdaplus.FORCE_EXIT_APPLICATION";
@@ -31,17 +36,15 @@ public class BaseFragmentActivity extends FragmentActivity
         return this;
     }
 
-    public ActionBar getSupportActionBar() {
-        return getActionBar();
+    /*public ActionBar getSupportActionBar() {
+        return getSupportActionBar();
     }
-
-    protected void setSupportProgressBarIndeterminateVisibility(boolean b) {
-        setProgressBarIndeterminateVisibility(b);
+    public void setSupportProgressBarIndeterminateVisibility(boolean b) {
+        setSupportProgressBarIndeterminateVisibility(b);
     }
-
-    protected void setSupportProgressBarIndeterminate(boolean b) {
-        setProgressBarIndeterminate(b);
-    }
+    public void setSupportProgressBarIndeterminate(boolean b) {
+        setSupportProgressBarIndeterminate(b);
+    }*/
 
     @Override
     public void startActivity(android.content.Intent intent) {
@@ -100,6 +103,38 @@ public class BaseFragmentActivity extends FragmentActivity
     protected void onCreate(Bundle saveInstance) {
         setTheme(isTransluent() ? App.getInstance().getTransluentThemeStyleResID() : App.getInstance().getThemeStyleResID());
         super.onCreate(saveInstance);
+        if(PreferenceManager.getDefaultSharedPreferences(App.getContext()).getBoolean("statusbarTransparent",false)) {
+            if (Integer.valueOf(android.os.Build.VERSION.SDK) > 19) {
+                getWindow().setStatusBarColor(Color.TRANSPARENT);
+                getWindow().getDecorView().setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            }
+        }else {
+            if (Integer.valueOf(android.os.Build.VERSION.SDK) == 19) {
+                SystemBarTintManager tintManager = new SystemBarTintManager(this);
+                tintManager.setStatusBarTintEnabled(true);
+                if (App.getInstance().getCurrentThemeName().equals("white")) {
+                    tintManager.setTintColor(getResources().getColor(R.color.statusBar_wh));
+                } else if (App.getInstance().getCurrentThemeName().equals("black")) {
+                    tintManager.setTintColor(getResources().getColor(R.color.statusBar_bl));
+                }
+            } else {
+                getWindow().getDecorView().setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LinearLayout statusBarLay = (LinearLayout) inflater.inflate(R.layout.statusbar, null);
+                LinearLayout statusBar = (LinearLayout) statusBarLay.findViewById(R.id.statusBar);
+                if (App.getInstance().getCurrentThemeName().equals("white")) {
+                    statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_wh));
+                } else if (App.getInstance().getCurrentThemeName().equals("black")) {
+                    statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_bl));
+                }
+                ViewGroup decor = (ViewGroup) getWindow().getDecorView();
+                decor.addView(statusBarLay);
+            }
+        }
 
 
 

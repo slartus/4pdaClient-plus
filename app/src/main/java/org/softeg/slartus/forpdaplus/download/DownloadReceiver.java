@@ -12,13 +12,13 @@ import android.os.ResultReceiver;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
+import org.softeg.slartus.forpdacommon.FileUtils;
+import org.softeg.slartus.forpdacommon.NotificationBridge;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.QuickStartActivity;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.tabs.DownloadsTab;
 import org.softeg.slartus.forpdaplus.classes.DownloadTask;
-import org.softeg.slartus.forpdacommon.FileUtils;
-import org.softeg.slartus.forpdacommon.NotificationBridge;
+import org.softeg.slartus.forpdaplus.tabs.DownloadsTab;
 
 import java.io.UnsupportedEncodingException;
 

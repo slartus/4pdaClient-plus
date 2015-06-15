@@ -14,34 +14,33 @@
         android:padding="5dip"
         android:maxLines="5" />
 
-    <RadioGroup
+    <Button
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rgSortType">
+        android:layout_height="48dp"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical|left"
+        android:id="@+id/rbShowInBrowser"
+        android:text="@string/OpenIn_"/>
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical|left"
+        android:id="@+id/rbShareIt"
+        android:text="@string/Share"/>
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical|left"
+        android:id="@+id/rbCopyToClipboard"
+        android:text="@string/CopyLink"/>
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="48dp"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical|left"
+        android:id="@+id/rbNote"
+        android:text="@string/CreateNote" />
 
-        <RadioButton
-            android:id="@+id/rbShowInBrowser"
-            android:text="@string/OpenIn_"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <RadioButton
-            android:id="@+id/rbShareIt"
-            android:text="@string/Share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <RadioButton
-            android:id="@+id/rbCopyToClipboard"
-            android:text="@string/CopyLink"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <RadioButton
-            android:id="@+id/rbNote"
-            android:text="@string/CreateNote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </RadioGroup>
 </LinearLayout>

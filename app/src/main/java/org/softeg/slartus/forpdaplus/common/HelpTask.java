@@ -1,13 +1,13 @@
 package org.softeg.slartus.forpdaplus.common;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AppProgressDialog;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -25,7 +25,7 @@ public class HelpTask extends AsyncTask<HelpTask.OnMethodListener, String, Boole
     }
 
 
-    private final ProgressDialog dialog;
+    private final MaterialDialog dialog;
     private String m_ProcessMessage = App.getInstance().getString(R.string.Loading_);
     private Context mContext;
 
@@ -33,8 +33,11 @@ public class HelpTask extends AsyncTask<HelpTask.OnMethodListener, String, Boole
         mContext = context;
 
         m_ProcessMessage = processMessage;
-        dialog = new AppProgressDialog(context);
-        dialog.setCancelable(false);
+        dialog = new MaterialDialog.Builder(context)
+                .progress(true,0)
+                .cancelable(false)
+                .content(m_ProcessMessage)
+                .build();
     }
 
     @Override
@@ -69,8 +72,6 @@ public class HelpTask extends AsyncTask<HelpTask.OnMethodListener, String, Boole
 
 
     protected void onPreExecute() {
-        this.dialog.setCancelable(false);
-        this.dialog.setMessage(m_ProcessMessage);
         this.dialog.show();
     }
 

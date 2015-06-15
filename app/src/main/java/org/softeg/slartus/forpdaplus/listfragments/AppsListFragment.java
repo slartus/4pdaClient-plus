@@ -1,7 +1,5 @@
 package org.softeg.slartus.forpdaplus.listfragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -19,9 +17,13 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.softeg.slartus.forpdaplus.Client;
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import org.softeg.slartus.forpdaapi.AppItem;
+import org.softeg.slartus.forpdaapi.IListItem;
+import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
+import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.classes.PdaApplication;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ApplicationRelationsTable;
@@ -29,9 +31,6 @@ import org.softeg.slartus.forpdaplus.db.ApplicationsDbHelper;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ListAdapter;
-import org.softeg.slartus.forpdaapi.AppItem;
-import org.softeg.slartus.forpdaapi.IListItem;
-import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.sqliteannotations.BaseDao;
 
 import java.io.IOException;
@@ -302,18 +301,20 @@ public class AppsListFragment extends TopicsListFragment {
             final AppItem appItem = (AppItem) o;
             menu.add("Связать с темой на форуме").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
-                    AlertDialog.Builder builder = new AlertDialogBuilder(getContext());
-                    builder.setTitle("Введите урл темы");
+                    MaterialDialog.Builder builder = new MaterialDialog.Builder(getContext());
+                    builder.title("Введите URL темы");
 
                     final EditText input = new EditText(getContext());
 
                     input.setInputType(InputType.TYPE_CLASS_TEXT);
                     input.setText(appItem.getId());
-                    builder.setView(input);
+                    builder.customView(input,true);
 
-                    builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    builder.positiveText(android.R.string.ok);
+                    builder.negativeText(android.R.string.cancel);
+                    builder.callback(new MaterialDialog.ButtonCallback() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onPositive(MaterialDialog dialog) {
                             String text = input.getText() == null ? "" : input.getText().toString();
                             if (TextUtils.isEmpty(text)) {
                                 Toast.makeText(getContext(), "Пустой урл!", Toast.LENGTH_SHORT).show();
@@ -337,10 +338,8 @@ public class AppsListFragment extends TopicsListFragment {
                             appItem.setId(m.group(1));
                             mAdapter.notifyDataSetChanged();
                         }
-                    });
-                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onNegative(MaterialDialog dialog) {
                             dialog.cancel();
                         }
                     });

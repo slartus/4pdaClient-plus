@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,7 +15,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ShareActionProvider;
 import android.widget.Toast;
 
 import com.dmitriy.tarasov.android.intents.IntentUtils;
@@ -35,6 +36,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import uk.co.senab.photoview.PhotoView;
+
+//import android.widget.ShareActionProvider;
 
 /*
  * Created by slinkin on 19.02.2015.
@@ -288,9 +291,11 @@ public class ImageViewFragment extends BaseFragment {
         inflater.inflate(R.menu.image_view, menu);
 
         MenuItem item = menu.findItem(R.id.share_it);
-
+        mShareActionProvider = new ShareActionProvider(getActivity());
+        MenuItemCompat.setActionProvider(item, mShareActionProvider);
         // Fetch and store ShareActionProvider
-        mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+
+
     }
 
     @Override
@@ -307,6 +312,8 @@ public class ImageViewFragment extends BaseFragment {
                 return true;
 
             case R.id.close:
+
+
                 getActivity().finish();
                 return true;
             case R.id.share_it:

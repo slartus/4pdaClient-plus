@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.controls.quickpost;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -11,8 +10,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -137,14 +137,9 @@ public class QuickPostFragment extends Fragment {
 
     private Boolean checkPostBody() {
         if (TextUtils.isEmpty(getPostBody())) {
-            new AlertDialogBuilder(getActivity())
-                    .setMessage("Введите сообщение!")
-                    .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    }).create().show();
+            new MaterialDialog.Builder(getActivity())
+                    .content("Введите сообщение!")
+                    .positiveText("ОК").show();
             return false;
         }
         return true;
@@ -158,20 +153,20 @@ public class QuickPostFragment extends Fragment {
             View view = inflater.inflate(R.layout.send_post_confirm_dialog, null);
             assert view != null;
             final CheckBox checkBox = (CheckBox) view.findViewById(R.id.chkConfirmationSend);
-            new AlertDialogBuilder(getActivity())
-                    .setTitle("Подтвердите действие")
-                    .setView(view)
-                    .setPositiveButton("Отправить", new DialogInterface.OnClickListener() {
+            new MaterialDialog.Builder(getActivity())
+                    .title("Подтвердите действие")
+                    .customView(view,true)
+                    .positiveText("Отправить")
+                    .callback(new MaterialDialog.ButtonCallback() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
+                        public void onPositive(MaterialDialog dialog) {
                             if (!checkBox.isChecked())
                                 Preferences.Topic.setConfirmSend(false);
                             post();
                         }
                     })
-                    .setNegativeButton("Отмена", null)
-                    .create().show();
+                    .negativeText("Отмена")
+                    .show();
         } else {
             post();
         }

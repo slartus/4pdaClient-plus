@@ -1,8 +1,6 @@
 package org.softeg.slartus.forpdaplus.classes.common;
 
 import android.graphics.Point;
-import android.hardware.Camera;
-import android.os.Build;
 import android.view.Display;
 
 /**

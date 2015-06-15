@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.classes.TopicsListData;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
@@ -125,10 +126,7 @@ public abstract class TopicsFragmentListBase extends Fragment
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
 
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.gplus_color_1,
-                R.color.gplus_color_2,
-                R.color.gplus_color_3,
-                R.color.gplus_color_4);
+        mSwipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
 
         return v;
     }

@@ -2,11 +2,9 @@ package org.softeg.slartus.forpdaplus.search.ui;/*
  * Created by slinkin on 29.04.2014.
  */
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -17,6 +15,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -32,15 +33,17 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.melnykov.fab.FloatingActionButton;
+
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.FileUtils;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.BaseFragment;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
-import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
-import org.softeg.slartus.forpdaplus.classes.AlertDialogBuilder;
 import org.softeg.slartus.forpdaplus.classes.BrowserViewsFragmentActivity;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
@@ -60,22 +63,19 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import uk.co.senab.actionbarpulltorefresh.library.ActionBarPullToRefresh;
-import uk.co.senab.actionbarpulltorefresh.library.Options;
-import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout;
-import uk.co.senab.actionbarpulltorefresh.library.listeners.OnRefreshListener;
-
 public class SearchPostsResultsFragment extends BaseFragment implements IWebViewContainer, ISearchResultView {
     private Handler mHandler = new Handler();
     private AdvWebView mWvBody;
     private static final String SEARCH_URL_KEY = "SEARCH_URL_KEY";
     private WebViewExternals m_WebViewExternals;
-    protected uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout mPullToRefreshLayout;
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
+    private MaterialDialog progressDialog;
 
     @Override
     public void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        progressDialog = new MaterialDialog.Builder(getContext()).progress(true,0).content("Загрузка...").build();
     }
 
     public static Fragment newFragment(String searchUrl) {
@@ -135,9 +135,11 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
     public void setHideActionBar() {
         if (getWebView() == null || !(getWebView() instanceof AdvWebView))
             return;
-        ActionBar actionBar = getActivity().getActionBar();
+        ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
+        FloatingActionButton fab = (FloatingActionButton) ((ActionBarActivity) getActivity()).findViewById(R.id.fab);
+        if (fab == null) return;
         if (actionBar == null) return;
-        BrowserViewsFragmentActivity.setHideActionBar(mWvBody, actionBar);
+        BrowserViewsFragmentActivity.setHideActionBar(mWvBody, actionBar, fab);
     }
 
     @Override
@@ -194,8 +196,8 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
             }
         }
         mWvBody.addJavascriptInterface(this, "HTMLOUT");
-        mWvBody.loadDataWithBaseURL("http://4pda.ru/forum/","<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
-                "</head><body bgcolor=" + App.getInstance().getCurrentThemeName() + "></body></html>", "text/html", "UTF-8",null);
+        mWvBody.loadDataWithBaseURL("http://4pda.ru/forum/", "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
+                "</head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8", null);
         registerForContextMenu(mWvBody);
         return v;
     }
@@ -203,37 +205,25 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPullToRefreshLayout = createPullToRefreshLayout(getView());
+        mSwipeRefreshLayout = createSwipeRefreshLayout(getView());
 
     }
 
-    protected PullToRefreshLayout createPullToRefreshLayout(View view) {
-        // We need to create a PullToRefreshLayout manually
-        PullToRefreshLayout pullToRefreshLayout = (PullToRefreshLayout) view.findViewById(R.id.ptr_layout);
-
-        // We can now setup the PullToRefreshLayout
-        ActionBarPullToRefresh.from(getActivity())
-                .options(Options.create().scrollDistance(0.3f).refreshOnUp(true).build())
-                        // We need to insert the PullToRefreshLayout into the Fragment's ViewGroup
-                .allChildrenArePullable()
-
-                        // We can now complete the setup as desired
-                .listener(new OnRefreshListener() {
-                    @Override
-                    public void onRefreshStarted(View view) {
-                        search(0);
-                    }
-                })
-                .setup(pullToRefreshLayout);
-        return pullToRefreshLayout;
+    protected SwipeRefreshLayout createSwipeRefreshLayout(View view) {
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.ptr_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                search(0);
+            }
+        });
+        swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
+        return swipeRefreshLayout;
     }
 
-    protected void setLoading(Boolean loading) {
+    protected void setLoading(final Boolean loading) {
         try {
             if (getActivity() == null) return;
-
-            mPullToRefreshLayout.setRefreshing(loading);
-
         } catch (Throwable ignore) {
             android.util.Log.e("TAG", ignore.toString());
         }
@@ -382,15 +372,16 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
                     pages[p] = "Стр. " + (p + 1) + " (" + ((p * postsPerPage + 1) + "-" + (p + 1) * postsPerPage) + ")";
                 }
 
-                new AlertDialogBuilder(getContext())
-                        .setTitle("Перейти к странице")
-                        .setSingleChoiceItems(pages, m_SearchResult.getCurrentPage() - 1, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
+                new MaterialDialog.Builder(getContext())
+                        .title("Перейти к странице")
+                        .items(pages)
+                        .itemsCallbackSingleChoice(m_SearchResult.getCurrentPage() - 1, new MaterialDialog.ListCallbackSingleChoice() {
+                            @Override
+                            public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence pages) {
                                 search(i * postsPerPage);
+                                return true; // allow selection
                             }
                         })
-                        .create()
                         .show();
             }
         });
@@ -577,7 +568,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
+progressDialog.show();
             setLoading(true);
         }
 
@@ -589,14 +580,12 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
 
         protected void onPostExecute(final Boolean success) {
             setLoading(false);
+            progressDialog.dismiss();
+            showHtmlBody(pageBody);
 
-                showHtmlBody(pageBody);
 
-
-            {
-                if (ex != null)
-                    AppLog.e(getContext(), ex);
-            }
+            if (ex != null)
+                AppLog.e(getContext(), ex);
 
             super.onPostExecute(success);
         }
