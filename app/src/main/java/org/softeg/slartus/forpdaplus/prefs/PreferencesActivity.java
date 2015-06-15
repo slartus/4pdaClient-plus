@@ -109,7 +109,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
             findPreference("accentColor").setOnPreferenceClickListener(this);
             findPreference("mainAccentColor").setOnPreferenceClickListener(this);
             findPreference("webViewFont").setOnPreferenceClickListener(this);
-            findPreference("checkModNew").setOnPreferenceClickListener(this);
             findPreference("userBackground").setOnPreferenceClickListener(this);
             findPreference("About.AppVersion").setOnPreferenceClickListener(this);
             findPreference("cookies.path.SetSystemPath").setOnPreferenceClickListener(this);
@@ -219,9 +218,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 case "webViewFont":
                     webViewFontDialog();
                     return true;
-                case "checkModNew":
-                    new checkModNew().execute();
-                    return true;
                 case "userBackground":
                     pickUserBackground();
                     return true;
@@ -308,60 +304,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(column_index);
-        }
-
-        private class checkModNew extends AsyncTask<String, Void, Void> {
-            String[] output = {"","","",""};
-            int nowVersion = 18;
-            MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-                    .progress(true, 0)
-                    .content("Проверка обновления")
-                    .show();
-            @Override
-            protected void onPreExecute(){
-                dialog.show();
-            }
-
-            @Override
-            protected Void doInBackground(String... urls) {
-                try {
-                    Document doc = Jsoup.connect("http://obzorishe.ru/mod4pda/checkversion.html").get();
-                    Element element = doc.select("body").first();
-                    output[0] = element.select("div.version").first().text();
-                    output[1] = element.select("div.release").first().text();
-                    output[2] = element.select("div.important>.state").first().text();
-                    output[3] = element.select("div.important>.text").first().text();
-                } catch (IOException e) {
-                    AppLog.e(getActivity(), e);
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void result) {
-                dialog.dismiss();
-                if(nowVersion == Integer.parseInt(output[0])){
-                    Toast.makeText(getActivity(),"Вы используете последнюю версию мода",Toast.LENGTH_SHORT).show();
-                }else{
-                    String text = "";
-                    if (output[2].equals("true")){
-                        text = "<b>"+output[3]+"</b><br/><br/>";
-                    }
-                    text += "Список всех изменений доступен в теме, в спойлере \"Изменения\"";
-                    new MaterialDialog.Builder(getActivity())
-                            .title("Доступна новая версия "+output[1])
-                            .content(Html.fromHtml(text))
-                            .positiveText("Скачать")
-                            .negativeText("Отмена")
-                            .callback(new MaterialDialog.ButtonCallback() {
-                                @Override
-                                public void onPositive(MaterialDialog dialog) {
-                                    ThemeActivity.showTopicByUrl(getActivity(), "http://4pda.ru/forum/index.php?s=&showtopic=541046&view=findpost&p=35224872");
-                                }
-                            })
-                            .show();
-                }
-            }
         }
 
         public void webViewFontDialog(){

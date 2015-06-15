@@ -337,9 +337,6 @@
 
     <PreferenceScreen android:title="О программе">
         <Preference
-            android:key="checkModNew"
-            android:title="Проверить обновление мода" />
-        <Preference
             android:key="About.AppVersion"
             android:title="О программе" />
         <Preference
