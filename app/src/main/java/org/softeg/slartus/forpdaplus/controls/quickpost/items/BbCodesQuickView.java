@@ -38,11 +38,11 @@ public class BbCodesQuickView extends BaseQuickView {
         super(context);
     }
 
-    private int getSelectionStart(){
+    private int getSelectionStart() {
         return getEditor().getSelectionStart();
     }
 
-    private int getSelectionEnd(){
+    private int getSelectionEnd() {
         return getEditor().getSelectionEnd();
     }
 
@@ -382,15 +382,15 @@ public class BbCodesQuickView extends BaseQuickView {
 
                     }
                 }).create();
-        
-            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                public void onShow(DialogInterface dialogInterface) {
-                    input.requestFocus();
-                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Service.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(input, 0);
-                }
-            });
-        
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            public void onShow(DialogInterface dialogInterface) {
+                input.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Service.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(input, 0);
+            }
+        });
+
         alertDialog.show();
     }
 
@@ -553,15 +553,15 @@ public class BbCodesQuickView extends BaseQuickView {
 
                     }
                 }).create();
-        
-            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                public void onShow(DialogInterface dialogInterface) {
-                    input.requestFocus();
-                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Service.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(input, 0);
-                }
-            });
-        
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            public void onShow(DialogInterface dialogInterface) {
+                input.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Service.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(input, 0);
+            }
+        });
+
         alertDialog.show();
     }
 
@@ -586,6 +586,8 @@ public class BbCodesQuickView extends BaseQuickView {
         if (selectionStart != -1 && selectionStart != selectionEnd) {
             getEditor().getText().insert(selectionStart, "[" + tag + "]");
             getEditor().getText().insert(selectionEnd + tag.length() + 2, "[/" + tag + "]");
+
+            //getEditor().setSelection(selectionStart + tag.length() + 2, selectionEnd);
             return;
         }
 

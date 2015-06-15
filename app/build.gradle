@@ -8,8 +8,8 @@ android {
         minSdkVersion 15
 
         targetSdkVersion 21
-        versionCode 526
-        versionName "2.5.6"
+        versionCode 527
+        versionName "2.5.7"
     }
     buildTypes {
         release {
@@ -19,7 +19,10 @@ android {
     }
     signingConfigs {
         release {
-
+            storeFile file("keystore.key")
+            keyAlias "4pdakey"
+            keyPassword "xjFX06dR7HGj6RvgHUtPQTEJVeuuMOgY"
+            storePassword "xjFX06dR7HGj6RvgHUtPQTEJVeuuMOgY"
         }
     }
     buildTypes {

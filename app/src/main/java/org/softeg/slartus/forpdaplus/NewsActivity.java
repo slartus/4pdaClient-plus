@@ -802,11 +802,13 @@ public class NewsActivity extends BrowserViewsFragmentActivity
         }
 
         private String parseBody(String body) {
-            Matcher m = PatternExtensions.compile("<article id=\"content\" class=\"\">([\\s\\S]*?)<aside id=\"sidebar\">").matcher(body);
+            Matcher m = PatternExtensions.compile("<article id=\"content\" class=\"\" data-ztm=\"[^\"]*\">([\\s\\S]*?)<aside id=\"sidebar\">").matcher(body);
             if (m.find()) {
                 return normalizeCommentUrls(m.group(1)).replaceAll("<form[\\s\\S]*?/form>", "");
             }
-            m = PatternExtensions.compile("<div id=\"main\">([\\s\\S]*?)<form action=\"(http://4pda.ru)?/wp-comments-post.php\" method=\"post\" id=\"commentform\">").matcher(body);
+            m = PatternExtensions
+                    .compile("<div id=\"main\">([\\s\\S]*?)<form action=\"(http://4pda.ru)?/wp-comments-post.php\" method=\"post\" id=\"commentform\">")
+                    .matcher(body);
             if (m.find()) {
                 return normalizeCommentUrls(m.group(1)) + getNavi(body);
             }

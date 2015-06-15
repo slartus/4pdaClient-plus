@@ -6,11 +6,12 @@ import android.text.TextUtils;
 import org.apache.http.cookie.Cookie;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.softeg.slartus.forpdaapi.classes.LoginForm;
+import org.softeg.slartus.forpdacommon.NotReportException;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,7 +55,8 @@ public class ProfileApi {
      * @return
      * @throws Exception
      */
-    public static LoginResult login(IHttpClient httpClient, String login, String password, Boolean privacy) throws Exception {
+    public static LoginResult login(IHttpClient httpClient, String login, String password,
+                                    Boolean privacy, String capA, String capD, String capS, String session) throws Exception {
         LoginResult loginResult = new LoginResult();
 
         Map<String, String> additionalHeaders = new HashMap<String, String>();
@@ -63,14 +65,15 @@ public class ProfileApi {
         additionalHeaders.put("PassWord", password);
         additionalHeaders.put("CookieDate", "1");
         additionalHeaders.put("Privacy", privacy ? "1" : "0");
-        UUID uuid = UUID.randomUUID();
-
-        String outSessionId = uuid.toString().replace("-", "");
-        additionalHeaders.put("s", outSessionId);
         additionalHeaders.put("act", "Login");
         additionalHeaders.put("CODE", "01");
-
         additionalHeaders.put("referer", "http://4pda.ru/forum/index.php?act=UserCP&CODE=24");
+        additionalHeaders.put("s", session);
+        additionalHeaders.put("cap_a", capA);
+        additionalHeaders.put("cap_d", capD);
+        additionalHeaders.put("cap_s", capS);
+
+
 
 
         String res = httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders);
@@ -156,5 +159,45 @@ public class ProfileApi {
         org.jsoup.nodes.Element element = doc.select("div#main").first();
         org.jsoup.nodes.Element userNickElement = element.select("div.user-box > h1").first();
         return userNickElement.text();
+    }
+
+    public static LoginForm getLoginForm(IHttpClient httpClient) throws IOException {
+        String page = httpClient.performGet("http://4pda.ru/forum/index.php?act=login&CODE=01");
+
+        Matcher m = Pattern
+                .compile("<form[^>]*?action=\"http://4pda.ru/forum/index.php\"[^>]*?>([\\s\\S]*?)</form>")
+                .matcher(page);
+        if (!m.find())
+            throw new NotReportException("Форма логина не найдена");
+        String formText = m.group(1);
+        m = Pattern
+                .compile("<img[^>]*?src=\"([^\"]*?turing.gerkon.eu/captcha[^\"]*)\"")
+                .matcher(formText);
+        if(!m.find())
+            throw new NotReportException("Капча не найдена");
+
+        LoginForm loginForm=new LoginForm();
+        loginForm.setCapPath(m.group(1));
+
+        m = Pattern
+                .compile("name=\"cap_d\"[^>]*?value=\"([^\"]*)\"")
+                .matcher(formText);
+        if(!m.find())
+            throw new NotReportException("cap_d не найден");
+        loginForm.setCapD(m.group(1));
+        m = Pattern
+                .compile("name=\"cap_s\"[^>]*?value=\"([^\"]*)\"")
+                .matcher(formText);
+        if(!m.find())
+            throw new NotReportException("cap_s не найден");
+        loginForm.setCapS(m.group(1));
+
+        m = Pattern
+                .compile("name=\"s\"[^>]*?value=\"([^\"]*)\"")
+                .matcher(formText);
+        if(m.find())
+            loginForm.setSession(m.group(1));
+
+        return loginForm;
     }
 }

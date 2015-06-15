@@ -1,58 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/UserNameLogin" />
-
-        <EditText
-            android:id="@+id/username_edit"
-            android:singleLine="true"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:minWidth="250dip"
-            android:scrollHorizontally="true"
-            android:capitalize="none"
-            android:autoText="false" />
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="bold"
-            android:singleLine="true"
-            android:layout_marginTop="2dip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/Password" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/UserNameLogin"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/password_edit"
-            android:singleLine="true"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:minWidth="250dip"
-            android:scrollHorizontally="true"
-            android:capitalize="none"
-            android:autoText="false"
-            android:password="true"
-            android:inputType="textPassword" />
+            <EditText
+                android:id="@+id/username_edit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:autoText="false"
+                android:capitalize="none"
+                android:minWidth="250dip"
+                android:scrollHorizontally="true"
+                android:singleLine="true" />
 
-        <CheckBox
-            android:id="@+id/privacy_checkbox"
-            android:checked="false"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/Stealth" />
-    </LinearLayout>
-</ScrollView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dip"
+                android:singleLine="true"
+                android:text="@string/Password"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/password_edit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:autoText="false"
+                android:capitalize="none"
+                android:inputType="textPassword"
+                android:minWidth="250dip"
+                android:password="true"
+                android:scrollHorizontally="true"
+                android:singleLine="true" />
+
+            <ImageView
+                android:id="@+id/cap_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="150dp" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Введите число цифрами:"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/cap_value_ed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoText="false"
+                android:capitalize="none"
+                android:minWidth="250dip"
+                android:scrollHorizontally="true"
+                android:singleLine="true" />
+
+            <CheckBox
+                android:id="@+id/privacy_checkbox"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="@string/Stealth" />
+        </LinearLayout>
+    </ScrollView>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar2"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+</RelativeLayout>

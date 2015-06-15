@@ -9,8 +9,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.ActionMode;
@@ -53,18 +54,19 @@ import java.util.ArrayList;
  * Time: 15:11
  * To change this template use File | Settings | File Templates.
  */
-public class QmsContactThemesActivity extends BaseFragmentActivity implements AdapterView.OnItemClickListener,
-
-        Loader.OnLoadCompleteListener<QmsUserThemes> {
+public class QmsContactThemesActivity extends BaseFragmentActivity
+        implements LoaderManager.LoaderCallbacks<QmsUserThemes>,
+        AdapterView.OnItemClickListener {
     private QmsContactsAdapter mAdapter;
     private QmsUserThemes m_QmsUsers = new QmsUserThemes();
     private ListView m_ListView;
     private static final String MID_KEY = "mid";
+    private static final String PARSE_NICK_KEY = "PARSE_NICK_KEY";
     private static final String NICK_KEY = "nick";
-    protected uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout mPullToRefreshLayout;
+
     private String m_Id;
     private String m_Nick;
-
+    SwipeRefreshLayout mSwipeRefreshLayout;
     //  private MenuFragment mFragment1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,13 +81,13 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
         createActionMenu();
 
         m_ListView = (ListView) findViewById(android.R.id.list);
-        mPullToRefreshLayout = App.createPullToRefreshLayout(this, findViewById(R.id.main_layout), new Runnable() {
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void run() {
+            public void onRefresh() {
                 refreshData();
             }
         });
-
         setState(true);
 
 
@@ -99,6 +101,8 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
         m_Id = extras.getString(MID_KEY);
         m_Nick = extras.getString(NICK_KEY);
         setTitle(m_Nick + "-QMS-Темы");
+
+        refreshData();
     }
 
     private void createActionMenu() {
@@ -133,47 +137,30 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
     @Override
     public void onResume() {
         super.onResume();
-        refreshData();
+
     }
 
     public void refreshData() {
-        m_QmsUsers.clear();
+
 
         setState(true);
-        QmsUsersLoader qmsUsersLoader = new QmsUsersLoader(this, m_Id, TextUtils.isEmpty(m_Nick));
-        qmsUsersLoader.registerListener(0, this);
-        qmsUsersLoader.startLoading();
+
+        Bundle args=new Bundle();
+        args.putString(MID_KEY,m_Id);
+        args.putBoolean(PARSE_NICK_KEY, TextUtils.isEmpty(m_Nick));
+        if (getLoaderManager().getLoader(QmsUsersLoader.ID) != null)
+            getSupportLoaderManager().restartLoader(QmsUsersLoader.ID, args, this);
+        else
+            getSupportLoaderManager().initLoader(QmsUsersLoader.ID, args, this);
     }
 
-
-    private void setState(boolean loading) {
-        mPullToRefreshLayout.setRefreshing(loading);
-
-    }
-
-    public void onLoadComplete(Loader<QmsUserThemes> qmsUsersLoader, QmsUserThemes data) {
-        if (data != null) {
-            if (data.getError() != null) {
-                AppLog.e(this, data.getError());
-                setState(false);
-                return;
+    private void setState(final boolean loading) {
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(loading);
             }
-            if (!TextUtils.isEmpty(data.Nick)) {
-                m_Nick = data.Nick;
-                setTitle(m_Nick + " - QMS-Темы");
-            }
-            for (QmsUserTheme item : data) {
-                m_QmsUsers.add(item);
-            }
-            mAdapter.setData(m_QmsUsers);
-        } else {
-            m_QmsUsers = new QmsUserThemes();
-            mAdapter.setData(m_QmsUsers);
-        }
-
-
-        setState(false);
-        mAdapter.notifyDataSetChanged();
+        });
 
     }
 
@@ -190,8 +177,6 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
         } else {
             org.softeg.slartus.forpdaplus.qms.QmsChatActivity.openChat(this, m_Id, m_Nick, item.Id, item.Title);
         }
-
-
     }
 
     ActionMode mMode;
@@ -208,16 +193,6 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
     public Boolean DeleteMode = false;
 
     private void startDeleteMode() {
-//        if("0".equals(m_Id))
-//        {
-//            new AlertDialogBuilder(this)
-//                    .setTitle("Внимание!")
-//                    .setMessage("В настоящее время нельзя удалить диалоги от пользователя '"+m_Nick+"'")
-//                    .setCancelable(true)
-//                    .setPositiveButton("OK",null)
-//                    .create().show();
-//            return;
-//        }
         mMode = startActionMode(new AnActionModeOfEpicProportions());
         DeleteMode = true;
         m_ListView.setSelection(AbsListView.CHOICE_MODE_MULTIPLE);
@@ -243,8 +218,43 @@ public class QmsContactThemesActivity extends BaseFragmentActivity implements Ad
         new DeleteTask(this, ids).execute();
     }
 
-    private static class QmsUsersLoader extends AsyncTaskLoader<QmsUserThemes> {
+    @Override
+    public Loader<QmsUserThemes> onCreateLoader(int id, Bundle args) {
+        return new QmsUsersLoader(this, args.getString(MID_KEY), args.getBoolean(PARSE_NICK_KEY));
+    }
 
+    @Override
+    public void onLoadFinished(Loader<QmsUserThemes> loader, QmsUserThemes data) {
+        if (data != null) {
+            if (data.getError() != null) {
+                AppLog.e(this, data.getError());
+                setState(false);
+                return;
+            }
+
+            if (!TextUtils.isEmpty(data.Nick)) {
+                m_Nick = data.Nick;
+                setTitle(m_Nick + " - QMS-Темы");
+            }
+
+            m_QmsUsers.clear();
+            for (QmsUserTheme item : data) {
+                m_QmsUsers.add(item);
+            }
+            mAdapter.setData(m_QmsUsers);
+        }
+
+        setState(false);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<QmsUserThemes> loader) {
+        setState(false);
+    }
+
+    private static class QmsUsersLoader extends android.support.v4.content.AsyncTaskLoader<QmsUserThemes> {
+        public static final int ID = App.getInstance().getUniqueIntValue();
         QmsUserThemes mApps;
 
         Throwable ex;

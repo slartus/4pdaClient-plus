@@ -7,10 +7,12 @@
 
 
 
-    <uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/ptr_layout"
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context="org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity">
 
         <ListView
             android:id="@android:id/list"
@@ -18,5 +20,5 @@
             android:layout_height="match_parent">
 
         </ListView>
-    </uk.co.senab.actionbarpulltorefresh.library.PullToRefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>>
 </LinearLayout>

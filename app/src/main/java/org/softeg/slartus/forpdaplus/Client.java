@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaplus;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,10 +8,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.EditText;
 
 import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
@@ -373,54 +368,24 @@ public class Client implements IHttpClient {
         }
     }
 
-    public void showLoginForm(Context mContext, OnUserChangedListener onUserChangedListener) {
+    public void showLoginForm(Context mContext, final OnUserChangedListener onUserChangedListener) {
         try {
-            // if (m_LoginDialog == null)
-            AlertDialog m_LoginDialog;
-            {
-                final Context context = mContext;
-                final OnUserChangedListener monUserChangedListener = onUserChangedListener;
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View layout = inflater.inflate(R.layout.login_activity, null);
 
-                assert layout != null;
-                final EditText username_edit = (EditText) layout.findViewById(R.id.username_edit);
-                final EditText password_edit = (EditText) layout.findViewById(R.id.password_edit);
-                final CheckBox privacy_checkbox = (CheckBox) layout.findViewById(R.id.privacy_checkbox);
-                final CheckBox remember_checkbox = (CheckBox) layout.findViewById(R.id.remember_checkbox);
-                final CheckBox autologin_checkbox = (CheckBox) layout.findViewById(R.id.autologin_checkbox);
+            final LoginDialog loginDialog = new LoginDialog(mContext);
 
+            new AlertDialogBuilder(mContext)
+                    .setTitle("Вход")
+                    .setView(loginDialog.getView())
+                    .setPositiveButton("Вход", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
 
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-                username_edit.setText(preferences.getString("Login", ""));
-                privacy_checkbox.setChecked(preferences.getBoolean("LoginPrivacy", false));
-                remember_checkbox.setChecked(preferences.getBoolean("LoginRemember", true));
-                autologin_checkbox.setChecked(preferences.getBoolean("AutoLogin", true));
+                            loginDialog.connect(onUserChangedListener);
+                        }
+                    })
+                    .setNegativeButton("Отмена", null)
+                    .create().show();
 
-
-                m_LoginDialog = new AlertDialogBuilder(context)
-                        .setTitle("Вход")
-                        .setView(layout)
-                        .setPositiveButton("Вход", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                LoginTask loginTask = new LoginTask(context);
-                                loginTask.setOnUserChangedListener(monUserChangedListener);
-                                loginTask.execute(username_edit.getText().toString(), password_edit.getText().toString(),
-                                        Boolean.toString(privacy_checkbox.isChecked()),
-                                        Boolean.toString(remember_checkbox.isChecked()), Boolean.toString(autologin_checkbox.isChecked())
-                                );
-                            }
-                        })
-                        .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialogInterface, int i) {
-//                                if (monUserChangedListener != null)
-//                                    monUserChangedListener.onUserChanged(m_User, false);
-                            }
-                        })
-                        .create();
-            }
-
-            m_LoginDialog.show();
         } catch (Exception ex) {
             AppLog.e(mContext, ex);
         }
@@ -455,12 +420,13 @@ public class Client implements IHttpClient {
     }
 
 
-    public Boolean login(String login, String password, Boolean privacy) throws Exception {
+    public Boolean login(String login, String password, Boolean privacy,
+                         String capA, String capD, String capS, String session) throws Exception {
 
         HttpHelper httpHelper = new HttpHelper();
         try {
-            httpHelper.clearCookies();
-            httpHelper.writeExternalCookies();
+//            httpHelper.clearCookies();
+//            httpHelper.writeExternalCookies();
 
 
             final HttpHelper finalHttpHelper = httpHelper;
@@ -531,7 +497,7 @@ public class Client implements IHttpClient {
                     }
                 }
 
-            }, login, password, privacy);
+            }, login, password, privacy, capA, capD, capS, session);
             m_Logined = loginResult.isSuccess();
             m_LoginFailedReason = m_Logined ? null : loginResult.getLoginError().toString();
 

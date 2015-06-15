@@ -49,7 +49,7 @@ public class QmsApi {
         checkChatError(pageBody);
         if (additionalHeaders != null) {
 
-            Matcher m = Pattern.compile("<span class=\"navbar-title\">\\s*?<a href=\"/forum/index.php\\?showuser=\\d+\" target=\"_blank\"><strong>(.*?):</strong></a>([\\s\\S]*?)\\s*?</span>")
+            Matcher m = Pattern.compile("<span class=\"navbar-title\">\\s*?<a href=\"[^\"]*/forum/index.php\\?showuser=\\d+\"[^>]*><strong>(.*?):</strong></a>([\\s\\S]*?)\\s*?</span>")
                     .matcher(pageBody);
             if (m.find()) {
                 additionalHeaders.put("Nick", Html.fromHtml(m.group(1)).toString());
