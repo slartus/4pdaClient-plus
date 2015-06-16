@@ -51,16 +51,18 @@ public class ImageViewActivity extends ActionBarActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setTheme(App.getInstance().getThemeStyleResID());
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if(PreferenceManager.getDefaultSharedPreferences(App.getContext()).getBoolean("statusbarTransparent",false)) {
-            if (Integer.valueOf(android.os.Build.VERSION.SDK) > 19) {
-                getWindow().setStatusBarColor(Color.TRANSPARENT);
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (PreferenceManager.getDefaultSharedPreferences(App.getContext()).getBoolean("statusbarTransparent", false)) {
+            if (android.os.Build.VERSION.SDK_INT > 19) {
+                if (android.os.Build.VERSION.SDK_INT >= 21)
+                    getWindow().setStatusBarColor(Color.TRANSPARENT);
                 getWindow().getDecorView().setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
             }
-        }else{
-            if (Integer.valueOf(android.os.Build.VERSION.SDK) == 19) {
+        } else {
+            if (android.os.Build.VERSION.SDK_INT == 19) {
                 SystemBarTintManager tintManager = new SystemBarTintManager(this);
                 tintManager.setStatusBarTintEnabled(true);
                 if (App.getInstance().getCurrentThemeName().equals("white")) {
@@ -96,6 +98,7 @@ public class ImageViewActivity extends ActionBarActivity {
 
         fragment.showImage(urls, index);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

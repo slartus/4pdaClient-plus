@@ -104,9 +104,11 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
         super.onCreate(saveInstance);
 
         try {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_drawer);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setHomeButtonEnabled(true);
+                getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_drawer);
+            }
             if (checkIntent())
                 return;
             setContentView(R.layout.main);
@@ -119,7 +121,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
             View child = decor.getChildAt(0);
             decor.removeView(child);
             FrameLayout container = (FrameLayout) drawer.findViewById(R.id.ab_cont); // This is the container we defined just now.
-            container.addView(child,0);
+            container.addView(child, 0);
             decor.addView(drawer);
 
             FrameLayout contentFrame = (FrameLayout) drawer.findViewById(R.id.content_frame);
@@ -130,31 +132,29 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
             int paddingBottom = 0;
 
             boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
-            if(fullScreen){
+            if (fullScreen) {
                 paddingTop = (int) (56 * scale + 0.5f);
                 paddingTopTab = (int) (64 * scale + 0.5f);
             }
-            if(Integer.valueOf(android.os.Build.VERSION.SDK) > 19){
+            if (android.os.Build.VERSION.SDK_INT > 19) {
                 if (!ViewConfiguration.get(this).hasPermanentMenuKey()) {
-                    if(needBottom()) {
+                    if (needBottom()) {
                         paddingBottom = (int) (48 * scale + 0.5f);
                     }
                 }
-                contentFrame.setPadding(0,paddingTop,0,paddingBottom);
-                leftDrawer.setPadding(0,0,0,paddingBottom);
+                contentFrame.setPadding(0, paddingTop, 0, paddingBottom);
+                leftDrawer.setPadding(0, 0, 0, paddingBottom);
                 if (isTablet()) {
-                    contentFrame.setPadding(0,paddingTopTab,0,paddingBottom);
+                    contentFrame.setPadding(0, paddingTopTab, 0, paddingBottom);
                 }
-            }else {
+            } else {
                 contentFrame.setPadding(0, paddingTop, 0, 0);
                 if (isTablet()) {
-                    contentFrame.setPadding(0,paddingTopTab,0,0);
+                    contentFrame.setPadding(0, paddingTopTab, 0, 0);
                 }
             }
 
             mMainDrawerMenu = new MainDrawerMenu(this, this);
-
-
 
 
             NotifiersManager notifiersManager = new NotifiersManager(this);
@@ -165,13 +165,16 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
             AppLog.e(getApplicationContext(), ex);
         }
     }
-    public boolean isTablet(){
+
+    public boolean isTablet() {
         int lil = getContext().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
         return ((lil == 4) || (lil == Configuration.SCREENLAYOUT_SIZE_LARGE));
     }
-    public boolean needBottom(){
+
+    public boolean needBottom() {
         return PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("paddingBottomMain", true);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -259,10 +262,11 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
 
             currentFragment.onDestroy();
         }
-        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);// новости выставляют выпадающий список
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setSubtitle(null);
-
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);// новости выставляют выпадающий список
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setSubtitle(null);
+        }
         Fragment fragment = listTemplate.createFragment();
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame, fragment)
@@ -364,7 +368,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
                                     public boolean onMenuItemClick(android.view.MenuItem menuItem) {
                                         SharedPreferences.Editor editor = prefs.edit();
                                         editor.putString("tabs.defaulttab", tabId);
-                                        editor.commit();
+                                        editor.apply();
                                         menuItem.setChecked(true);
                                         return true;
                                     }
@@ -377,13 +381,13 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
                         for (int i = 0; i < actionsValues.length; i++) {
                             final int finalI = i;
                             defaultActionMenu.add(actionsArray[i])
-                                    .setCheckable(true).setChecked(defaultAction.equals(actionsValues[i]))
+                                    .setCheckable(true).setChecked(defaultAction != null && defaultAction.equals(actionsValues[i]))
                                     .setOnMenuItemClickListener(new android.view.MenuItem.OnMenuItemClickListener() {
                                         @Override
                                         public boolean onMenuItemClick(android.view.MenuItem menuItem) {
                                             SharedPreferences.Editor editor = prefs.edit();
                                             editor.putString(actionPrefName, actionsValues[finalI]);
-                                            editor.commit();
+                                            editor.apply();
                                             menuItem.setChecked(true);
                                             return true;
                                         }
