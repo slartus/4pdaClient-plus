@@ -224,6 +224,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
     protected void setLoading(final Boolean loading) {
         try {
             if (getActivity() == null) return;
+            mSwipeRefreshLayout.setRefreshing(loading);
         } catch (Throwable ignore) {
             android.util.Log.e("TAG", ignore.toString());
         }
@@ -568,7 +569,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-progressDialog.show();
+            progressDialog.show();
             setLoading(true);
         }
 

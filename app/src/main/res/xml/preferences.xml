@@ -27,11 +27,6 @@
             android:key="webViewFont"
             android:title="Шрифт WebView"
             android:summary="Шрифт в новостях, поиске, теме, профиле, QMS"/>
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="paddingBottomMain"
-            android:title="Отступ снизу"
-            android:summary="Убрать галочку, если нет NavigationBar, но есть отступ снизу. Требуется перезапуск приложения"/>
         <Preference
             android:key="userBackground"
             android:summary="Требуется перезапуск приложения"

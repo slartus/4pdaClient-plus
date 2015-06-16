@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="100dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/ptr_layout"

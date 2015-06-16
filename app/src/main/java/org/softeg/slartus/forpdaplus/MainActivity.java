@@ -124,38 +124,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
             container.addView(child, 0);
             decor.addView(drawer);
 
-            FrameLayout contentFrame = (FrameLayout) drawer.findViewById(R.id.content_frame);
-            RelativeLayout leftDrawer = (RelativeLayout) drawer.findViewById(R.id.left_drawer);
-            final float scale = getResources().getDisplayMetrics().density;
-            int paddingTop = (int) (80.5 * scale + 0.5f);
-            int paddingTopTab = (int) (88.5 * scale + 0.5f);
-            int paddingBottom = 0;
-
-            boolean fullScreen = (getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != 0;
-            if (fullScreen) {
-                paddingTop = (int) (56 * scale + 0.5f);
-                paddingTopTab = (int) (64 * scale + 0.5f);
-            }
-            if (android.os.Build.VERSION.SDK_INT > 19) {
-                if (!ViewConfiguration.get(this).hasPermanentMenuKey()) {
-                    if (needBottom()) {
-                        paddingBottom = (int) (48 * scale + 0.5f);
-                    }
-                }
-                contentFrame.setPadding(0, paddingTop, 0, paddingBottom);
-                leftDrawer.setPadding(0, 0, 0, paddingBottom);
-                if (isTablet()) {
-                    contentFrame.setPadding(0, paddingTopTab, 0, paddingBottom);
-                }
-            } else {
-                contentFrame.setPadding(0, paddingTop, 0, 0);
-                if (isTablet()) {
-                    contentFrame.setPadding(0, paddingTopTab, 0, 0);
-                }
-            }
-
             mMainDrawerMenu = new MainDrawerMenu(this, this);
-
 
             NotifiersManager notifiersManager = new NotifiersManager(this);
             new DonateNotifier(notifiersManager).start(this);
@@ -164,15 +133,6 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
         } catch (Throwable ex) {
             AppLog.e(getApplicationContext(), ex);
         }
-    }
-
-    public boolean isTablet() {
-        int lil = getContext().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
-        return ((lil == 4) || (lil == Configuration.SCREENLAYOUT_SIZE_LARGE));
-    }
-
-    public boolean needBottom() {
-        return PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("paddingBottomMain", true);
     }
 
     @Override
