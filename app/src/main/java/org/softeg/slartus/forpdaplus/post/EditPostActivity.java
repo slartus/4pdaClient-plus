@@ -35,6 +35,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -146,6 +147,13 @@ public class EditPostActivity extends BaseFragmentActivity {
 
         txtPost = (EditText) findViewById(R.id.txtPost);
         txtpost_edit_reason = (EditText) findViewById(R.id.txtpost_edit_reason);
+        txtPost.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                return false;
+            }
+        });
 
 
         findViewById(R.id.btnSendPost).setOnClickListener(new View.OnClickListener() {

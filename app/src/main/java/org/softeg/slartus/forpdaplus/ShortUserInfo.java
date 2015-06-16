@@ -65,7 +65,7 @@ public class ShortUserInfo {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 userBackground.setImageBitmap(myBitmap);
             }else {
-                userBackground.setImageResource(R.drawable.drawablakaka);
+                userBackground.setImageResource(R.drawable.user_bacground);
             }
         }
 

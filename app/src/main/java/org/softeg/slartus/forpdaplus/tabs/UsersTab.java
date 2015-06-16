@@ -333,7 +333,9 @@ public class UsersTab extends BaseTab implements AdapterView.OnItemClickListener
             holder.txtCount.setText(user.MessagesCount);
             holder.txtNick.setText(user.getNick());
             try {
-                holder.txtNick.setTextColor(ExtColor.parseColor(user.getHtmlColor()));
+                if(!showCount) {
+                    holder.txtNick.setTextColor(ExtColor.parseColor(user.getHtmlColor()));
+                }
             } catch (Exception ex) {
                 AppLog.e(getContext(), new Exception("Не умею цвет: " + user.getHtmlColor()));
             }

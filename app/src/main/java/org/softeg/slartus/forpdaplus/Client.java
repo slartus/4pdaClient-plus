@@ -853,7 +853,7 @@ public class Client implements IHttpClient {
                     .compile("<span class=\"post_user_info[^\"]*\"[^>]*>(<strong[^>]*>.*?</strong><br />)?Группа:(.*?)<font color=\"([^\"]*)\">[\\s\\S]*?mid=(\\d+)");
 
             final Pattern repValuePattern = PatternExtensions
-                    .compile("<span id=\"ajaxrep-\\d+\">(\\d+)</span>");
+                    .compile("<span id=\"ajaxrep-\\d+\">(.\\d+|\\d+)</span>");
             final Pattern repEditPattern = PatternExtensions
                     .compile("href=\"[^\"]*act=rep[^\"]*view=(win_minus|win_add)[^\"]*\"");
             final Pattern editPattern = PatternExtensions.compile("href=\"[^\"]*act=post[^\"]*do=edit_post[^\"]*\"");

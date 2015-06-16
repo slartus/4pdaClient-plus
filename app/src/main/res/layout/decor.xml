@@ -36,7 +36,7 @@
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:src="@drawable/drawablakaka"
+                android:src="@drawable/user_bacground"
                 android:id="@+id/userBackground"
                 android:scaleType="centerCrop"/>
             <RelativeLayout

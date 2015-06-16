@@ -495,7 +495,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             m.invoke(webView, true);
         } catch (Throwable ignored) {
         }
-        onSearchRequested();
+        //onSearchRequested();
     }
 
     private void closeSearch() {

@@ -3,12 +3,15 @@ package org.softeg.slartus.forpdaplus.controls.quickpost;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -126,6 +129,13 @@ public class QuickPostFragment extends Fragment {
         });
 
         mPostEditText = (EditText) v.findViewById(R.id.post_text);
+        mPostEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                return false;
+            }
+        });
 
         ImageButton advanced_button = (ImageButton) v.findViewById(R.id.advanced_button);
         mPopupPanelView.createView(inflater, advanced_button, mPostEditText);
