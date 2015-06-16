@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaplus.mainnotifiers;/*
  */
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -38,7 +37,7 @@ public class NotifiersManager implements DialogInterface.OnDismissListener {
             if (dialogs.contains(dialogInterface))
                 dialogs.remove(dialogInterface);
             if (dialogs.size() > 0)
-                ((AlertDialog) dialogs.get(0)).show();
+                ((MaterialDialog) dialogs.get(0)).show();
         } catch (Throwable ex) {
             AppLog.e(activity, ex);
         }
