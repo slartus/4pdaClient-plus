@@ -52,6 +52,16 @@ public class QuickStartActivity extends BaseFragmentActivity implements ITabPare
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //Toast.makeText(this,Integer.toString(item.getItemId()),Toast.LENGTH_LONG).show();
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return true;
+    }
     public static void showTab(Activity activity, String tabTemplate) {
         showTab(activity, tabTemplate, null);
     }
