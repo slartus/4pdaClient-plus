@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
@@ -77,7 +78,7 @@ public class BaseFragmentActivity extends ActionBarActivity
             SharedPreferences.Editor editor = settings.edit();
             editor.putBoolean(FORCE_EXIT_APPLICATION, false);
             // Commit the edits!
-            editor.commit();
+            editor.apply();
             //HERE STOP ALL YOUR SERVICES
             finish();
         }
@@ -104,14 +105,15 @@ public class BaseFragmentActivity extends ActionBarActivity
         setTheme(isTransluent() ? App.getInstance().getTransluentThemeStyleResID() : App.getInstance().getThemeStyleResID());
         super.onCreate(saveInstance);
         if(PreferenceManager.getDefaultSharedPreferences(App.getContext()).getBoolean("statusbarTransparent",false)) {
-            if (Integer.valueOf(android.os.Build.VERSION.SDK) > 19) {
-                getWindow().setStatusBarColor(Color.TRANSPARENT);
+            if (Build.VERSION.SDK_INT > 19) {
+                if (android.os.Build.VERSION.SDK_INT >= 21)
+                    getWindow().setStatusBarColor(Color.TRANSPARENT);
                 getWindow().getDecorView().setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
             }
         }else {
-            if (Integer.valueOf(android.os.Build.VERSION.SDK) == 19) {
+            if (android.os.Build.VERSION.SDK_INT == 19) {
                 SystemBarTintManager tintManager = new SystemBarTintManager(this);
                 tintManager.setStatusBarTintEnabled(true);
                 if (App.getInstance().getCurrentThemeName().equals("white")) {
@@ -168,6 +170,7 @@ public class BaseFragmentActivity extends ActionBarActivity
         return PreferenceManager.getDefaultSharedPreferences(getContext());
     }
 
+    @SuppressWarnings("ResourceType")
     protected void loadPreferences(SharedPreferences prefs) {
         setRequestedOrientation(ExtPreferences.parseInt(prefs, "theme.ScreenOrientation", -1));
     }
