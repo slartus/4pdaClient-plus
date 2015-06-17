@@ -4,7 +4,7 @@
     <item android:left="-2dp" android:right="-2dp" android:bottom="-2dp">
         <shape android:shape="rectangle">
             <solid android:color="@color/panel_background_wh" />
-            <stroke android:width="1dp" android:color="@color/panel_bordertop_wh" />
+            <stroke android:color="@color/panel_bordertop_wh" />
         </shape>
     </item>
 </layer-list>
