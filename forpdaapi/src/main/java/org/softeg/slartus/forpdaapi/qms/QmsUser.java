@@ -3,12 +3,14 @@ package org.softeg.slartus.forpdaapi.qms;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.sqliteannotations.Column;
 
+import java.io.Serializable;
+
 /**
  * User: slinkin
  * Date: 15.06.12
  * Time: 11:06
  */
-public class QmsUser implements IListItem {
+public class QmsUser implements IListItem,Serializable {
     @Column(name = "_id", isPrimaryKey = true)
     private CharSequence id;
     @Column(name = "nick")

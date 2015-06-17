@@ -3,8 +3,8 @@ package org.softeg.slartus.forpdaplus.qms;/*
  */
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -20,110 +20,42 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import org.softeg.slartus.forpdaapi.IListItem;
+import org.softeg.slartus.forpdaapi.classes.ListData;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.qms.QmsUser;
 import org.softeg.slartus.forpdaapi.qms.QmsUsers;
-import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
-import org.softeg.slartus.forpdaplus.listfragments.BaseTaskListFragment;
+import org.softeg.slartus.forpdaplus.listfragments.BaseLoaderListFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
-import org.softeg.sqliteannotations.BaseDao;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-public class QmsContactsListFragment extends BaseTaskListFragment {
-
-    protected ArrayList<QmsUser> mData = new ArrayList<>();
-    protected ArrayList<QmsUser> mLoadResultList;
-    protected ArrayList<QmsUser> mCacheList = new ArrayList<>();
-
+public class QmsContactsListFragment extends BaseLoaderListFragment {
 
     @Override
-    public void onCreate(android.os.Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-    }
-
     protected BaseAdapter createAdapter() {
-
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        return new QmsContactsAdapter(getContext(), mData, imageLoader);
+        return new QmsContactsAdapter(getActivity(),getData().getItems(),ImageLoader.getInstance());
     }
 
+    @Override
+    protected int getViewResourceId() {
+        return R.layout.list_fragment;
+    }
 
     @Override
-    protected boolean inBackground(boolean isRefresh) throws Throwable {
+    protected ListData loadData(int loaderId, Bundle args) throws Throwable {
+        ListData listData=new ListData();
         ArrayList<QmsUser> users = QmsApi.getQmsSubscribers(Client.getInstance());
+        listData.getItems().addAll(users);
         Client.getInstance().setQmsCount(QmsUsers.unreadMessageUsersCount(users));
         Client.getInstance().doOnMailListener();
-        mLoadResultList = users;
-        return true;
+
+        return listData;
     }
 
-    @Override
-    protected void deliveryResult(boolean isRefresh) {
-        if (isRefresh) {
-            mData.clear();
-        }
-        for (QmsUser item : mLoadResultList) {
-            mData.add(item);
-        }
-
-        mLoadResultList.clear();
-    }
-
-    @Override
-    public void saveCache() throws Exception {
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
-        SQLiteDatabase db = null;
-        try {
-            db = cacheDbHelper.getWritableDatabase();
-            BaseDao<QmsUser> baseDao = new BaseDao<>(App.getContext(), db, getListName(), QmsUser.class);
-            baseDao.createTable(db);
-            for (IListItem item : mData) {
-                QmsUser user = (QmsUser) item;
-                baseDao.insert(user);
-            }
-
-        } finally {
-            if (db != null)
-                db.close();
-        }
-    }
-
-    @Override
-    public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
-        mCacheList = new ArrayList<>();
-
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
-        SQLiteDatabase db = null;
-        try {
-            db = cacheDbHelper.getReadableDatabase();
-            BaseDao<QmsUser> baseDao = new BaseDao<>(App.getContext(), db, getListName(), QmsUser.class);
-            if (baseDao.isTableExists())
-                mCacheList.addAll(baseDao.getAll());
-        } finally {
-            if (db != null)
-                db.close();
-        }
-    }
-
-    @Override
-    protected void deliveryCache() {
-        mData.clear();
-        if (mCacheList != null) {
-            mData.addAll(mCacheList);
-            mCacheList.clear();
-        }
-        setCount();
-        mAdapter.notifyDataSetChanged();
-    }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
@@ -142,17 +74,16 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
         }
     }
 
-
     public class QmsContactsAdapter extends BaseAdapter {
 
-        private ArrayList<QmsUser> dataList;
+        private ArrayList<IListItem> dataList;
 
         final LayoutInflater inflater;
         private ImageLoader imageLoader;
         private Boolean mShowAvatars;
 
 
-        public QmsContactsAdapter(Context context, ArrayList<QmsUser> dataList, ImageLoader imageLoader) {
+        public QmsContactsAdapter(Context context, ArrayList<IListItem> dataList, ImageLoader imageLoader) {
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
@@ -167,10 +98,6 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
             mShowAvatars = Preferences.Topic.isShowAvatars();
 
             super.notifyDataSetChanged();
-        }
-
-        public void setData(ArrayList<QmsUser> data) {
-            this.dataList = data;
         }
 
         @Override
@@ -268,6 +195,10 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
                 });
             }
             return convertView;
+        }
+
+        private Context getContext() {
+            return inflater.getContext();
         }
 
         public class ViewHolder {
