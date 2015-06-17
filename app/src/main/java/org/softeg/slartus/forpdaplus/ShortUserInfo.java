@@ -40,6 +40,7 @@ public class ShortUserInfo {
     private Activity mActivity;
     private SharedPreferences prefs;
     private CircleImageView imgAvatar;
+    private ImageView imgAvatarSquare;
     private ImageView infoRefresh;
     private ImageView userBackground;
     private TextView userNick;
@@ -50,6 +51,7 @@ public class ShortUserInfo {
     private Handler mHandler = new Handler();
     private Client client;
     private RelativeLayout topInform;
+    private boolean isSquare;
 
     public ShortUserInfo(Activity activity) {
         prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
@@ -60,11 +62,14 @@ public class ShortUserInfo {
         loginButton = (TextView) findViewById(R.id.loginButton);
         userRep = (TextView) findViewById(R.id.userRep);
         textWrapper = (RelativeLayout) findViewById(R.id.textWrapper);
-        imgAvatar = (CircleImageView) findViewById(R.id.imgAvatara);
+        imgAvatar = (CircleImageView) findViewById(R.id.imgAvatar);
+        imgAvatarSquare = (ImageView) findViewById(R.id.imgAvatarSquare);
         infoRefresh = (ImageView) findViewById(R.id.infoRefresh);
         userBackground = (ImageView) findViewById(R.id.userBackground);
         topInform = (RelativeLayout) findViewById(R.id.topInform);
         topInform.setVisibility(View.VISIBLE);
+        isSquare = prefs.getBoolean("isSquareAvarars",false);
+
 
         if(prefs.getBoolean("isUserBackground",false)){
             File imgFile = new File(prefs.getString("userBackground",""));
@@ -79,12 +84,22 @@ public class ShortUserInfo {
         if(isOnline()){
             if(client.getLogined()) {
                 new updateAsyncTask().execute();
-                imgAvatar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ProfileWebViewActivity.startActivity(getContext(), client.UserId, client.getUser());
-                    }
-                });
+                if(isSquare){
+                    imgAvatarSquare.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ProfileWebViewActivity.startActivity(getContext(), client.UserId, client.getUser());
+                        }
+                    });
+                }else {
+                    imgAvatar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ProfileWebViewActivity.startActivity(getContext(), client.UserId, client.getUser());
+                        }
+                    });
+                }
+
 
                 client.addOnUserChangedListener(new Client.OnUserChangedListener() {
                     @Override
@@ -180,7 +195,11 @@ public class ShortUserInfo {
                 userRep.setText("Репутация: " + reputation);
                 prefs.edit().putString("shortUserInfoRep", reputation).apply();
                 refreshQms();
-                Picasso.with(App.getContext()).load(avatarUrl).into(imgAvatar);
+                if(isSquare){
+                    Picasso.with(App.getContext()).load(avatarUrl).into(imgAvatarSquare);
+                }else {
+                    Picasso.with(App.getContext()).load(avatarUrl).into(imgAvatar);
+                }
                 //prefs.edit().putBoolean("isLoadShortUserInfo", true).apply();
                 //prefs.edit().putString("shortAvatarUrl", avatarUrl).apply();
             }else {

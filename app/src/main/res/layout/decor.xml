@@ -50,20 +50,31 @@
                 android:layout_height="48dp"
                 android:padding="12dp"
                 android:src="@drawable/ic_menu_refresh"
-                android:layout_alignTop="@+id/imgAvatara"
+                android:layout_alignTop="@+id/avatarWrapper"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginRight="16dp"
                 android:id="@+id/infoRefresh"/>
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imgAvatara"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="40dp"
-                app:border_width="0dp"
-                app:border_color="@android:color/transparent"/>
+                android:id="@+id/avatarWrapper">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgAvatar"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:scaleType="centerCrop"
+                    app:border_width="0dp"
+                    app:border_color="@android:color/transparent"/>
+                <ImageView
+                    android:id="@+id/imgAvatarSquare"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:scaleType="fitCenter"/>
+            </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="56dp"

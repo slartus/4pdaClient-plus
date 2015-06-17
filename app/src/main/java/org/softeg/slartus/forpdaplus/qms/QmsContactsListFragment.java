@@ -24,6 +24,7 @@ import org.softeg.slartus.forpdaapi.classes.ListData;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.qms.QmsUser;
 import org.softeg.slartus.forpdaapi.qms.QmsUsers;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -127,8 +128,11 @@ public class QmsContactsListFragment extends BaseLoaderListFragment {
                 assert convertView != null;
                 //holder.txtIsNew = (ImageView) convertView.findViewById(R.id.txtIsNew);
                 holder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
-                if (!mShowAvatars)
+                holder.imgAvatarSquare = (ImageView) convertView.findViewById(R.id.imgAvatarSquare);
+                if (!mShowAvatars) {
                     holder.imgAvatar.setVisibility(View.GONE);
+                    holder.imgAvatarSquare.setVisibility(View.GONE);
+                }
                 holder.txtCount = (TextView) convertView.findViewById(R.id.txtMessagesCount);
                 holder.txtNick = (TextView) convertView.findViewById(R.id.txtNick);
 
@@ -170,7 +174,35 @@ public class QmsContactsListFragment extends BaseLoaderListFragment {
             }
 
             if (user.getAvatarUrl() != null && mShowAvatars) {
-                imageLoader.displayImage(user.getAvatarUrl(), holder.imgAvatar, new ImageLoadingListener() {
+                if(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("isSquareAvarars",false)){
+                    holder.imgAvatar.setVisibility(View.GONE);
+                    imageLoader.displayImage(user.getAvatarUrl(), holder.imgAvatarSquare, new ImageLoadingListener() {
+
+                        @Override
+                        public void onLoadingStarted(String p1, View p2) {
+                            p2.setVisibility(View.INVISIBLE);
+                            //holder.mProgressBar.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onLoadingFailed(String p1, View p2, FailReason p3) {
+                            // holder.mProgressBar.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String p1, View p2, Bitmap p3) {
+                            p2.setVisibility(View.VISIBLE);
+                            // holder.mProgressBar.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onLoadingCancelled(String p1, View p2) {
+
+                        }
+                    });
+                }else {
+                    holder.imgAvatarSquare.setVisibility(View.GONE);
+                    imageLoader.displayImage(user.getAvatarUrl(), holder.imgAvatar, new ImageLoadingListener() {
 
                     @Override
                     public void onLoadingStarted(String p1, View p2) {
@@ -194,6 +226,8 @@ public class QmsContactsListFragment extends BaseLoaderListFragment {
 
                     }
                 });
+                }
+
             }
             return convertView;
         }
@@ -205,6 +239,7 @@ public class QmsContactsListFragment extends BaseLoaderListFragment {
         public class ViewHolder {
             //ImageView txtIsNew;
             ImageView imgAvatar;
+            ImageView imgAvatarSquare;
             TextView txtNick;
 
             TextView txtCount;
