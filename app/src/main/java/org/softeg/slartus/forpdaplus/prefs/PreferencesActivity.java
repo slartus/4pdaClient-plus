@@ -363,7 +363,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 final int[] selected = {0};
                 new MaterialDialog.Builder(getActivity())
                         .title("Выберите цвет акцента")
-                        .items(new String[]{"Розовый", "Голубой", "Серый"})
+                        .items(new String[]{"Синий", "Голубой", "Серый"})
                         .itemsCallbackSingleChoice(position, new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
@@ -567,7 +567,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                 if (colorPressed[0] < 0) colorPressed[0] = 0;
                                 if (colorPressed[1] < 0) colorPressed[1] = 0;
                                 if (colorPressed[2] < 0) colorPressed[2] = 0;
-                                if(Color.rgb(colors[0], colors[1], colors[2])!=prefs.getInt("accentColor", Color.rgb(233, 30, 99))){
+                                if(Color.rgb(colors[0], colors[1], colors[2])!=prefs.getInt("accentColor", Color.rgb(2, 119, 189))){
                                     prefs.edit().putBoolean("accentColorEdited",true).apply();
                                 }
                                 prefs.edit()
@@ -579,8 +579,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
                             @Override
                             public void onNeutral(MaterialDialog dialog) {
                                 prefs.edit()
-                                        .putInt("accentColor", Color.rgb(233, 30, 99))
-                                        .putInt("accentColorPressed", Color.rgb(203, 0, 69))
+                                        .putInt("accentColor", Color.rgb(2, 119, 189))
+                                        .putInt("accentColorPressed", Color.rgb(0, 89, 159))
                                         .putBoolean("accentColorEdited",false)
                                         //.putInt("accentColor", Color.rgb(96, 125, 139))
                                         //.putInt("accentColorPressed", Color.rgb(76, 95, 109))
