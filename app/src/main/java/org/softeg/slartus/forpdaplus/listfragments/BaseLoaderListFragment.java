@@ -44,6 +44,15 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
         return ItemsLoader.ID;
     }
 
+    /**
+     * Использовать ли кеш списка
+     *
+     * @return
+     */
+    protected Boolean useCache() {
+        return true;
+    }
+
     private BaseAdapter mAdapter;
 
     @Override
@@ -90,7 +99,7 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
 
         setListViewAdapter();
 
-        if (mData.getItems().size() == 0) {
+        if (mData.getItems().size() == 0 && useCache()) {
             startLoadCache();
         } else {
             onBrickFragmentListBaseActivityCreated(savedInstanceState);
@@ -231,12 +240,11 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
 
         refreshLoadMoreFooter();
 
-        if(loader.getId()==CacheLoader.ID){
+        if (loader.getId() == CacheLoader.ID) {
             loadData(true);
-        }
-        else {
+        } else {
             setLoading(false);
-            if (data != null)
+            if (data != null && useCache())
                 new Thread(new Runnable() {
                     @Override
                     public void run() {

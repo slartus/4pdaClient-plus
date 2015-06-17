@@ -37,7 +37,7 @@ public class QmsContactsListFragment extends BaseLoaderListFragment {
 
     @Override
     protected BaseAdapter createAdapter() {
-        return new QmsContactsAdapter(getActivity(),getData().getItems(),ImageLoader.getInstance());
+        return new QmsContactsAdapter(getActivity(), getData().getItems(), ImageLoader.getInstance());
     }
 
     @Override
@@ -47,7 +47,7 @@ public class QmsContactsListFragment extends BaseLoaderListFragment {
 
     @Override
     protected ListData loadData(int loaderId, Bundle args) throws Throwable {
-        ListData listData=new ListData();
+        ListData listData = new ListData();
         ArrayList<QmsUser> users = QmsApi.getQmsSubscribers(Client.getInstance());
         listData.getItems().addAll(users);
         Client.getInstance().setQmsCount(QmsUsers.unreadMessageUsersCount(users));
@@ -149,17 +149,18 @@ public class QmsContactsListFragment extends BaseLoaderListFragment {
                 //holder.txtIsNew.setImageResource(R.drawable.new_flag);
                 holder.txtNick.setTextAppearance(getContext(), R.style.QmsNew);
                 holder.txtCount.setTextAppearance(getContext(), R.style.QmsNew);
-                switch (PreferenceManager.getDefaultSharedPreferences(getContext()).getString("mainAccentColor", "pink")) {
-                    case "pink":
-                        holder.txtCount.setBackgroundResource(R.drawable.qmsnew);
-                        break;
-                    case "blue":
-                        holder.txtCount.setBackgroundResource(R.drawable.qmsnewblue);
-                        break;
-                    case "gray":
-                        holder.txtCount.setBackgroundResource(R.drawable.qmsnewgray);
-                        break;
-                }
+                if (getContext() != null)
+                    switch (PreferenceManager.getDefaultSharedPreferences(getContext()).getString("mainAccentColor", "pink")) {
+                        case "pink":
+                            holder.txtCount.setBackgroundResource(R.drawable.qmsnew);
+                            break;
+                        case "blue":
+                            holder.txtCount.setBackgroundResource(R.drawable.qmsnewblue);
+                            break;
+                        case "gray":
+                            holder.txtCount.setBackgroundResource(R.drawable.qmsnewgray);
+                            break;
+                    }
 
             } else {
                 //holder.txtIsNew.setImageBitmap(null);
