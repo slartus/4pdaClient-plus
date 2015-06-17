@@ -157,15 +157,6 @@ public class QuickStartActivity extends BaseFragmentActivity implements ITabPare
                 });
                 item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
-
-            item = menu.add("Закрыть").setIcon(R.drawable.ic_menu_close_clear_cancel);
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    getActivity().finish();
-
-                    return true;
-                }
-            });
         }
     }
 

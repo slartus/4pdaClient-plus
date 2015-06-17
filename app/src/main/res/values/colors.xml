@@ -70,11 +70,11 @@
     <color name="news_image_corner_wh">@color/app_background_wh</color>
     <color name="news_image_corner_bl">@color/app_background_bl</color>
 
-    <color name="actionbar_background_wh">#ff03a9f4</color>
-    <color name="actionbar_background_bl">#ff1C4556</color>
+    <color name="actionbar_background_wh">#0277bd</color>
+    <color name="actionbar_background_bl">#173A53</color>
 
-    <color name="statusBar_wh">#ff03a9f4</color>
-    <color name="statusBar_bl">#ff1C4556</color>
+    <color name="statusBar_wh">@color/actionbar_background_wh</color>
+    <color name="statusBar_bl">@color/actionbar_background_bl</color>
 
     <color name="statusBarPrefs_wh">#ff0288d1</color>
     <color name="statusBarPrefs_bl">#ff163542</color>
@@ -89,12 +89,12 @@
     <color name="divider_wh">#ffe0e0e0</color>
     <color name="divider_bl">#ff333333</color>
 
-    <color name="list_text_general_color_wh">#ff212121</color>
+    <color name="list_text_general_color_wh">#ff333333</color>
     <color name="list_text_minor_color_wh">#ff757575</color>
     <color name="list_text_second_color_wh">#ff757575</color>
     <color name="list_text_special_color_wh">#ff212121</color>
 
-    <color name="list_text_general_color_bl">#ffdedede</color>
+    <color name="list_text_general_color_bl">#ff888888</color>
     <color name="list_text_minor_color_bl">#ff8a8a8a</color>
     <color name="list_text_second_color_bl">#ff8a8a8a</color>
     <color name="list_text_special_color_bl">#ffdedede</color>
@@ -111,7 +111,7 @@
 
 
     <!-- <color name="accent">#ff607D8B</color> -->
-    <color name="accent">#ffE91E63</color>
+    <color name="accent">#ff0277BD</color>
     <color name="accentPink">@color/accent</color>
     <color name="accentBlue">@color/actionbar_background_wh</color>
     <color name="accentGray">#ff757575</color>

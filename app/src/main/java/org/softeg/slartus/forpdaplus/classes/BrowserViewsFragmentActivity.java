@@ -89,18 +89,21 @@ public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity 
     }
 
     public static void setHideActionBar(AdvWebView advWebView, final ActionBar actionBar, final FloatingActionButton fab) {
-        Boolean hide = Preferences.isHideActionBar();
+        final Boolean hideAb = Preferences.isHideActionBar();
+        final Boolean hideFab = Preferences.isHideFab();
 
-        if (hide) {
+        if (hideAb|hideFab) {
 
             advWebView.setOnScrollChangedCallback(new AdvWebView.OnScrollChangedCallback() {
                 @Override
                 public void onScrollDown(Boolean inTouch) {
                     if (!inTouch)
                         return;
-                    if (actionBar.isShowing()) {
-                        fab.hide();
+                    if (actionBar.isShowing()&hideAb) {
                         actionBar.hide();
+                    }
+                    if (fab.isVisible()&hideFab){
+                        fab.hide();
                     }
                 }
 
@@ -108,10 +111,13 @@ public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity 
                 public void onScrollUp(Boolean inTouch) {
                     if (!inTouch)
                         return;
-                    if (!actionBar.isShowing()) {
-                        fab.show();
+                    if (!actionBar.isShowing()&hideAb) {
                         actionBar.show();
                     }
+                    if (!fab.isVisible()&hideFab){
+                        fab.show();
+                    }
+
                 }
 
                 @Override

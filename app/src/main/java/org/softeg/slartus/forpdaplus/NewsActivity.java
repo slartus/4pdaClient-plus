@@ -608,6 +608,15 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                     return true;
                 }
             }).setCheckable(true).setChecked(Preferences.isHideActionBar());
+            optionsMenu.add("Скрывать карандаш")
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            Preferences.setHideFab(!Preferences.isHideFab());
+                            getInterface().setHideActionBar();
+                            menuItem.setChecked(Preferences.isHideFab());
+                            return true;
+                        }
+                    }).setCheckable(true).setChecked(Preferences.isHideFab());
             optionsMenu.add("Размер шрифта")
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override

@@ -105,6 +105,7 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add("Браузер")
+                .setIcon(R.drawable.ic_menu_browser)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                     public boolean onMenuItemClick(MenuItem item) {
@@ -116,16 +117,7 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
                         DevDbDeviceActivity.this.startActivity(Intent.createChooser(marketIntent, "Выберите"));
                         return true;
                     }
-                });
-        menu.add("Закрыть")
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                    public boolean onMenuItemClick(MenuItem item) {
-
-                        finish();
-                        return true;
-                    }
-                });
+                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         return true;
     }
@@ -136,7 +128,15 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
             gallery.setAdapter(null);
         super.onDestroy();
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
 
+        return true;
+    }
     private void fill() throws IOException {
         LazyAdapter adapter = new LazyAdapter(DevDbDeviceActivity.this,
                 m_DevDbDevice.getScreenshotUrls().toArray(new String[m_DevDbDevice.getScreenshotUrls().size()]));

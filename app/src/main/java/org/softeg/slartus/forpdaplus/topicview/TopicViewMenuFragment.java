@@ -272,27 +272,27 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
             optionsMenu.add(String.format("Аватары (%s)",
                     App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]))
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(final MenuItem menuItem) {
-                   String[] avatars = App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles);
-                   new MaterialDialog.Builder(getActivity())
-                           .title("Показывать аватары")
-                           .cancelable(true)
-                           .items(avatars)
-                           .itemsCallbackSingleChoice(Preferences.Topic.getShowAvatarsOpt(), new MaterialDialog.ListCallbackSingleChoice() {
-                               @Override
-                               public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence avatars) {
-                                   //if(i==-1) return false;
+                        public boolean onMenuItemClick(final MenuItem menuItem) {
+                            String[] avatars = App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles);
+                            new MaterialDialog.Builder(getActivity())
+                                    .title("Показывать аватары")
+                                    .cancelable(true)
+                                    .items(avatars)
+                                    .itemsCallbackSingleChoice(Preferences.Topic.getShowAvatarsOpt(), new MaterialDialog.ListCallbackSingleChoice() {
+                                        @Override
+                                        public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence avatars) {
+                                            //if(i==-1) return false;
 
-                                   Preferences.Topic.setShowAvatarsOpt(i);
-                                   menuItem.setTitle(String.format("Показывать аватары (%s)",
-                                           App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]));
-                                   return true; // allow selection
-                               }
-                           })
-                           .show();
-                    return true;
-                }
-            });
+                                            Preferences.Topic.setShowAvatarsOpt(i);
+                                            menuItem.setTitle(String.format("Показывать аватары (%s)",
+                                                    App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]));
+                                            return true; // allow selection
+                                        }
+                                    })
+                                    .show();
+                            return true;
+                        }
+                    });
 
             optionsMenu.add("Скрывать верхнюю панель")
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -303,6 +303,16 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                     return true;
                 }
             }).setCheckable(true).setChecked(Preferences.isHideActionBar());
+
+            optionsMenu.add("Скрывать карандаш")
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            Preferences.setHideFab(!Preferences.isHideFab());
+                            getInterface().setHideActionBar();
+                            menuItem.setChecked(Preferences.isHideFab());
+                            return true;
+                        }
+                    }).setCheckable(true).setChecked(Preferences.isHideFab());
 
             optionsMenu.add("Скрывать стрелки")
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

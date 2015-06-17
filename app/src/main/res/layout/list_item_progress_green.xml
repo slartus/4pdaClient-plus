@@ -29,7 +29,7 @@
 
             <TextView
                 android:id="@+id/txtMain"
-                style="?list_text_general_color"
+                style="?list_text_special_color"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="22dp"

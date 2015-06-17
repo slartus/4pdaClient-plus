@@ -50,17 +50,27 @@ public class Preferences {
 
         return prefs.getBoolean("actionbar.hide", true);
     }
+    public static void setHideActionBar(Boolean hide) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+
+        prefs.edit().putBoolean("actionbar.hide", hide).apply();
+    }
+
+    public static Boolean isHideFab() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+
+        return prefs.getBoolean("fab.hide", true);
+    }
+    public static void setHideFab(Boolean hide) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+
+        prefs.edit().putBoolean("fab.hide", hide).apply();
+    }
 
     public static Boolean notifyBetaVersions() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
 
         return prefs.getBoolean("notify.beta_version", false);
-    }
-
-    public static void setHideActionBar(Boolean hide) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-
-        prefs.edit().putBoolean("actionbar.hide", hide).apply();
     }
 
     public static void setHideArrows(Boolean hide) {

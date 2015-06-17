@@ -382,8 +382,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                         prefs.edit().putString("mainAccentColor", "pink").apply();
                                         if(!prefs.getBoolean("accentColorEdited",false)){
                                             prefs.edit()
-                                                    .putInt("accentColor", Color.rgb(233, 30, 99))
-                                                    .putInt("accentColorPressed", Color.rgb(203, 0, 69))
+                                                    .putInt("accentColor", Color.rgb(2, 119, 189))
+                                                    .putInt("accentColorPressed", Color.rgb(0, 89, 159))
                                                     .apply();
                                         }
                                         break;
