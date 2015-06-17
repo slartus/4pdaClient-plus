@@ -25,8 +25,10 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        style="?drawer_menu"
         >
         <RelativeLayout
+            android:visibility="gone"
             android:layout_width="fill_parent"
             android:layout_height="168dp"
             android:id="@+id/topInform"
@@ -109,7 +111,6 @@
 
         <ExpandableListView
             android:id="@+id/left_drawer_list"
-            style="?drawer_menu"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:childDivider="#00000000"

@@ -59,6 +59,8 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
     MenuFragment mFragment1;
 
     private MainDrawerMenu mMainDrawerMenu;
+    private RelativeLayout leftDrawer;
+    boolean top;
 
     @Override
     protected void afterCreate() {
@@ -121,11 +123,21 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
             View child = decor.getChildAt(0);
             decor.removeView(child);
             FrameLayout container = (FrameLayout) drawer.findViewById(R.id.ab_cont); // This is the container we defined just now.
+            leftDrawer = (RelativeLayout) drawer.findViewById(R.id.left_drawer);
             container.addView(child, 0);
             decor.addView(drawer);
 
-            if(android.os.Build.VERSION.SDK_INT > 19&PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("isMarginBottomNav",false)){
-                drawer.findViewById(R.id.left_drawer).setPadding(0,0,0,(int) (48 * getResources().getDisplayMetrics().density + 0.5f));
+            int scale = (int) getResources().getDisplayMetrics().density;
+            boolean bottom = getPreferences().getBoolean("isMarginBottomNav",false);
+            top = !getPreferences().getBoolean("isShowShortUserInfo",true);
+            if(bottom){
+                leftDrawer.setPadding(0,0,0,(int) (48 * scale + 0.5f));
+            }
+            if(top){
+                leftDrawer.setPadding(0,(int) (25 * scale + 0.5f),0,0);
+            }
+            if(top&bottom){
+                leftDrawer.setPadding(0,(int) (25 * scale + 0.5f),0,(int) (48 * scale + 0.5f));
             }
 
             mMainDrawerMenu = new MainDrawerMenu(this, this);
@@ -155,7 +167,10 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
         if (mMainDrawerMenu != null) {
             mMainDrawerMenu.syncState();
         }
-        new ShortUserInfo(this);
+
+        if(!top) {
+            new ShortUserInfo(this);
+        }
 
     }
 

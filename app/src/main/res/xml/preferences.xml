@@ -46,6 +46,11 @@
             android:key="isMarginBottomNav"
             android:title="Нижний отступ в боковом меню"
             android:summary="Включить, если не видно последнего пункта. Требуется перезапуск приложения"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="isShowShortUserInfo"
+            android:title="Информация о пользователе"
+            android:summary="Отображать информацию о пользователе в боковом меню. Требуется перезапуск приложения"/>
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
             android:defaultValue="-1"
             android:entries="@array/screenOrienationArray"

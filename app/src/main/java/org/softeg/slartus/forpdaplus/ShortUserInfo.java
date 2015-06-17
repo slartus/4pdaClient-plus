@@ -49,6 +49,7 @@ public class ShortUserInfo {
     private RelativeLayout textWrapper;
     private Handler mHandler = new Handler();
     private Client client;
+    private RelativeLayout topInform;
 
     public ShortUserInfo(Activity activity) {
         prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
@@ -62,6 +63,8 @@ public class ShortUserInfo {
         imgAvatar = (CircleImageView) findViewById(R.id.imgAvatara);
         infoRefresh = (ImageView) findViewById(R.id.infoRefresh);
         userBackground = (ImageView) findViewById(R.id.userBackground);
+        topInform = (RelativeLayout) findViewById(R.id.topInform);
+        topInform.setVisibility(View.VISIBLE);
 
         if(prefs.getBoolean("isUserBackground",false)){
             File imgFile = new File(prefs.getString("userBackground",""));
