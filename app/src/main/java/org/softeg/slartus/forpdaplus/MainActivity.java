@@ -124,6 +124,10 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
             container.addView(child, 0);
             decor.addView(drawer);
 
+            if(android.os.Build.VERSION.SDK_INT > 19&PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("isMarginBottomNav",false)){
+                drawer.findViewById(R.id.left_drawer).setPadding(0,0,0,(int) (48 * getResources().getDisplayMetrics().density + 0.5f));
+            }
+
             mMainDrawerMenu = new MainDrawerMenu(this, this);
 
             NotifiersManager notifiersManager = new NotifiersManager(this);

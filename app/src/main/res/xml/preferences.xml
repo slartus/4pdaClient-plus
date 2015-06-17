@@ -41,6 +41,11 @@
             android:key="statusbarTransparent"
             android:title="Прозрачный статусбар"
             android:summary="Включить, если активирован полноэкранный режим. Требуется перезапуск приложения"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="isMarginBottomNav"
+            android:title="Нижний отступ в боковом меню"
+            android:summary="Включить, если не видно последнего пункта. Требуется перезапуск приложения"/>
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
             android:defaultValue="-1"
             android:entries="@array/screenOrienationArray"
