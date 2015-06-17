@@ -46,7 +46,7 @@
                     app:border_color="@android:color/transparent"/>
                 <TextView
                     android:id="@+id/txtNick"
-                    style="?list_text_general_color"
+                    style="?list_text_special_color"
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:gravity="center_vertical"

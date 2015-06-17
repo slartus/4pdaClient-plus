@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="RadiationX"
-        style="?list_text_general_color"
+        style="?list_text_special_color"
         android:layout_gravity="center_vertical"/>
 
 </LinearLayout>

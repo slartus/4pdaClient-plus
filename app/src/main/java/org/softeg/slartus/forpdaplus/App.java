@@ -117,17 +117,17 @@ public class App extends android.app.Application {
     }
 
     public int getWebViewFont() {
-        return PreferenceManager.getDefaultSharedPreferences(this).getInt("webViewFont",0);
+        return PreferenceManager.getDefaultSharedPreferences(this).getInt("webViewFont", 0);
     }
     public int getColorAccent(String type) {
         int color = 0;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         switch(type) {
             case "Accent":
-                color = prefs.getInt("accentColor", Color.rgb(233, 30, 99));
+                color = prefs.getInt("accentColor", Color.rgb(2, 119, 189));
                 break;
             case "Pressed":
-                color = prefs.getInt("accentColorPressed", Color.rgb(233, 30, 99));
+                color = prefs.getInt("accentColorPressed", Color.rgb(0, 89, 159));
                 break;
         }
         return color;
@@ -257,6 +257,10 @@ public class App extends android.app.Application {
         return isWhiteTheme() ? Color.parseColor("#eeeeee") : Color.parseColor("#212121");
     }
 
+    public String getCurrentBackgroundColorHtml() {
+        return isWhiteTheme() ? "#eeeeee" : "#212121";
+    }
+
     public String getCurrentTheme() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         return preferences.getString("appstyle", Integer.toString(THEME_WHITE));
@@ -264,10 +268,6 @@ public class App extends android.app.Application {
 
     public String getCurrentThemeName() {
         return isWhiteTheme() ? "white" : "black";
-    }
-
-    public String getCurrentBackgroundColorHtml() {
-        return isWhiteTheme() ? "#eeeeee" : "#212121";
     }
 
     private String checkThemeFile(String themePath) {

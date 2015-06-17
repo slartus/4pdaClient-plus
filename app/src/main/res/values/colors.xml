@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="main_title_color">#ffF2F2F2</color>
+    <color name="main_title_color">#F2F2F2</color>
 
     <color name="theme_light_background_light">#FAFAFA</color>
     <color name="theme_light_background_dark">#0C0C0C</color>
     <color name="white_theme_webview_background">#F5F9FD</color>
     <color name="blue">#7FFFFF</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 
 
     <color name="devdb_group_color">#4373c3</color>
 
 
-    <color name="pda__background_dark">#ff000000</color>
-    <color name="pda__background_light">#fff3f3f3</color>
+    <color name="pda__background_dark">#000000</color>
+    <color name="pda__background_light">#f3f3f3</color>
 
-    <color name="pda__primary_text_dark">#fff3f3f3</color>
-    <color name="pda__primary_text_light">#ff000000</color>
+    <color name="pda__primary_text_dark">#f3f3f3</color>
+    <color name="pda__primary_text_light">#000000</color>
 
-    <color name="pda__secondary_text_dark">#fff3f3f3</color>
-    <color name="pda__secondary_text_light">#ff000000</color>
+    <color name="pda__secondary_text_dark">#f3f3f3</color>
+    <color name="pda__secondary_text_light">#000000</color>
 
     <color name="pda__bright_foreground_holo_dark">@color/pda__background_light</color>
     <color name="pda__bright_foreground_holo_light">@color/pda__background_dark</color>
-    <color name="pda__bright_foreground_disabled_holo_dark">#ff4c4c4c</color>
-    <color name="pda__bright_foreground_disabled_holo_light">#ffb2b2b2</color>
+    <color name="pda__bright_foreground_disabled_holo_dark">#4c4c4c</color>
+    <color name="pda__bright_foreground_disabled_holo_light">#b2b2b2</color>
     <color name="pda__bright_foreground_inverse_holo_dark">
         @color/pda__bright_foreground_holo_light
     </color>
@@ -34,39 +34,39 @@
     </color>
 
 
-    <color name="holo_blue_light">#ff33b5e5</color>
-    <color name="holo_blue_dark">#ff0099cc</color>
+    <color name="holo_blue_light">#33b5e5</color>
+    <color name="holo_blue_dark">#0099cc</color>
 
     <!-- Mod -->
-    <color name="app_background_wh">#ffeeeeee</color>
-    <color name="app_background_bl">#ff212121</color>
+    <color name="app_background_wh">#eeeeee</color>
+    <color name="app_background_bl">#212121</color>
 
-    <color name="dialog_background_wh">#fffafafa</color>
-    <color name="dialog_background_bl">#ff303030</color>
+    <color name="dialog_background_wh">#fafafa</color>
+    <color name="dialog_background_bl">#303030</color>
 
-    <color name="left_separator_color_wh">#ffd9d9d9</color>
-    <color name="left_separator_color_bl">#ff494949</color>
-    <color name="bottom_separator_color_wh">#ffc9c9c9</color>
-    <color name="bottom_separator_color_bl">#ff494949</color>
-    <color name="right_separator_color_wh">#ffd9d9d9</color>
-    <color name="right_separator_color_bl">#ff494949</color>
+    <color name="left_separator_color_wh">#d9d9d9</color>
+    <color name="left_separator_color_bl">#494949</color>
+    <color name="bottom_separator_color_wh">#c9c9c9</color>
+    <color name="bottom_separator_color_bl">#494949</color>
+    <color name="right_separator_color_wh">#d9d9d9</color>
+    <color name="right_separator_color_bl">#494949</color>
 
-    <color name="btnsend_color_wh">#ff03a9f4</color>
-    <color name="btnsend_color_bl">#ff28627f</color>
-    <color name="btnsend_color_pressed_wh">#ff0288d1</color>
-    <color name="btnsend_color_pressed_bl">#ff205066</color>
+    <color name="btnsend_color_wh">#03a9f4</color>
+    <color name="btnsend_color_bl">#28627f</color>
+    <color name="btnsend_color_pressed_wh">#0288d1</color>
+    <color name="btnsend_color_pressed_bl">#205066</color>
 
-    <color name="panel_background_wh">#ffffffff</color>
-    <color name="panel_background_bl">#ff333333</color>
-    <color name="panel_bordertop_wh">#ffd9d9d9</color>
-    <color name="panel_bordertop_bl">#ff494949</color>
+    <color name="panel_background_wh">#ffffff</color>
+    <color name="panel_background_bl">#333333</color>
+    <color name="panel_bordertop_wh">#d9d9d9</color>
+    <color name="panel_bordertop_bl">#494949</color>
 
-    <color name="news_background_wh">#ffffffff</color>
-    <color name="news_background_pressed_wh">#ffdddddd</color>
-    <color name="news_background_bl">#ff333333</color>
-    <color name="news_background_pressed_bl">#ff444444</color>
-    <color name="news_border_wh">#ffcccccc</color>
-    <color name="news_border_bl">#ff333333</color>
+    <color name="news_background_wh">#ffffff</color>
+    <color name="news_background_pressed_wh">#dddddd</color>
+    <color name="news_background_bl">#333333</color>
+    <color name="news_background_pressed_bl">#444444</color>
+    <color name="news_border_wh">#cccccc</color>
+    <color name="news_border_bl">#333333</color>
     <color name="news_image_corner_wh">@color/app_background_wh</color>
     <color name="news_image_corner_bl">@color/app_background_bl</color>
 
@@ -76,51 +76,51 @@
     <color name="statusBar_wh">@color/actionbar_background_wh</color>
     <color name="statusBar_bl">@color/actionbar_background_bl</color>
 
-    <color name="statusBarPrefs_wh">#ff02629C</color>
-    <color name="statusBarPrefs_bl">#ff133044</color>
+    <color name="statusBarPrefs_wh">#02629C</color>
+    <color name="statusBarPrefs_bl">#133044</color>
 
-    <color name="drawer_menu_background_wh">#ffffffff</color>
+    <color name="drawer_menu_background_wh">#ffffff</color>
     <color name="drawer_menu_background_bl">@color/app_background_bl</color>
-    <color name="drawer_menu_text_wh">@color/list_text_general_color_wh</color>
-    <color name="drawer_menu_text_bl">@color/list_text_general_color_bl</color>
-    <color name="drawer_menu_group_wh">@color/list_text_minor_color_wh</color>
-    <color name="drawer_menu_group_bl">@color/list_text_minor_color_bl</color>
+    <color name="drawer_menu_text_wh">@color/list_text_special_color_wh</color>
+    <color name="drawer_menu_text_bl">@color/list_text_special_color_bl</color>
+    <color name="drawer_menu_group_wh">@color/list_text_second_color_wh</color>
+    <color name="drawer_menu_group_bl">@color/list_text_second_color_bl</color>
 
-    <color name="divider_wh">#ffe0e0e0</color>
-    <color name="divider_bl">#ff333333</color>
+    <color name="divider_wh">#e0e0e0</color>
+    <color name="divider_bl">#333333</color>
 
-    <color name="list_text_general_color_wh">#ff333333</color>
-    <color name="list_text_minor_color_wh">#ff757575</color>
-    <color name="list_text_second_color_wh">#ff757575</color>
-    <color name="list_text_special_color_wh">#ff212121</color>
+    <color name="list_text_general_color_wh">#4D4D4D</color>
+    <color name="list_text_minor_color_wh">#757575</color>
+    <color name="list_text_second_color_wh">#757575</color>
+    <color name="list_text_special_color_wh">#212121</color>
 
-    <color name="list_text_general_color_bl">#ffcccccc</color>
-    <color name="list_text_minor_color_bl">#ff8a8a8a</color>
-    <color name="list_text_second_color_bl">#ff8a8a8a</color>
-    <color name="list_text_special_color_bl">#ffdedede</color>
+    <color name="list_text_general_color_bl">#999999</color>
+    <color name="list_text_minor_color_bl">#8a8a8a</color>
+    <color name="list_text_second_color_bl">#737373</color>
+    <color name="list_text_special_color_bl">#cccccc</color>
 
-    <color name="news_text_general_color_wh">#ffffffff</color>
-    <color name="news_text_general_color_bl">#ffffffff</color>
-    <color name="news_text_minor_color_wh">@color/list_text_general_color_wh</color>
-    <color name="news_text_minor_color_bl">@color/list_text_general_color_bl</color>
-    <color name="news_text_second_color_wh">@color/list_text_minor_color_wh</color>
-    <color name="news_text_second_color_bl">@color/list_text_minor_color_bl</color>
+    <color name="news_text_general_color_wh">#ffffff</color>
+    <color name="news_text_general_color_bl">#ffffff</color>
+    <color name="news_text_minor_color_wh">@color/list_text_special_color_wh</color>
+    <color name="news_text_minor_color_bl">@color/list_text_special_color_bl</color>
+    <color name="news_text_second_color_wh">@color/list_text_second_color_wh</color>
+    <color name="news_text_second_color_bl">@color/list_text_second_color_bl</color>
 
     <color name="edit_text_wh">@color/panel_background_wh</color>
     <color name="edit_text_bl">@color/panel_background_bl</color>
 
 
-    <!-- <color name="accent">#ff607D8B</color> -->
-    <color name="accent">#ff0277BD</color>
+    <!-- <color name="accent">#607D8B</color> -->
+    <color name="accent">#0277BD</color>
     <color name="accentPink">@color/accent</color>
     <color name="accentBlue">@color/actionbar_background_wh</color>
-    <color name="accentGray">#ff757575</color>
+    <color name="accentGray">#757575</color>
 
-    <color name="plusrep">#ff4caf50</color>
-    <color name="minusrep">#ffE91E63</color>
+    <color name="plusrep">#4caf50</color>
+    <color name="minusrep">#E91E63</color>
 
     <color name="refresh">@color/accent</color>
 
-    <color name="reed">#ffff0000</color>
+    <color name="reed">#ff0000</color>
 
 </resources>

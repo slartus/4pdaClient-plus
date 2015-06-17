@@ -40,7 +40,8 @@
                 android:orientation="horizontal">
                 <TextView
                     android:id="@+id/txtMain"
-                    style="?list_text_general_color"
+                    style="?list_text_special_color"
+                    android:textStyle="bold"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="22dp"
@@ -69,7 +70,7 @@
 
             <TextView
                 android:id="@+id/txtSubMain"
-                style="?list_text_minor_color"
+                style="?list_text_second_color"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="20dp"
@@ -86,7 +87,7 @@
 
                 <TextView
                     android:id="@+id/txtTopLeft"
-                    style="?list_text_minor_color"
+                    style="?list_text_second_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -99,7 +100,7 @@
 
                 <TextView
                     android:id="@+id/txtTopRight"
-                    style="?list_text_minor_color"
+                    style="?list_text_second_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
