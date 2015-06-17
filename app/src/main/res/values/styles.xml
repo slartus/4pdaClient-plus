@@ -282,9 +282,11 @@
 
     <style name="list_text_general_color_wh">
         <item name="android:textColor">@color/list_text_general_color_wh</item>
+        <item name="android:textStyle">bold</item>
     </style>
     <style name="list_text_general_color_bl">
         <item name="android:textColor">@color/list_text_general_color_bl</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="list_text_minor_color_wh">

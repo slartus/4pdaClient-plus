@@ -91,13 +91,13 @@
 
     <color name="list_text_general_color_wh">#ff212121</color>
     <color name="list_text_minor_color_wh">#ff757575</color>
-    <color name="list_text_second_color_wh">#ffbdbdbd</color>
-    <color name="list_text_special_color_wh">#ffababab</color>
+    <color name="list_text_second_color_wh">#ff757575</color>
+    <color name="list_text_special_color_wh">#ff212121</color>
 
     <color name="list_text_general_color_bl">#ffdedede</color>
     <color name="list_text_minor_color_bl">#ff8a8a8a</color>
-    <color name="list_text_second_color_bl">#ff424242</color>
-    <color name="list_text_special_color_bl">#ff6a6a6a</color>
+    <color name="list_text_second_color_bl">#ff8a8a8a</color>
+    <color name="list_text_special_color_bl">#ffdedede</color>
 
     <color name="news_text_general_color_wh">#ffffffff</color>
     <color name="news_text_general_color_bl">#ffffffff</color>
