@@ -29,7 +29,7 @@
                     android:scaleType="fitCenter"
                     android:src="@drawable/save_ratio" />
 
-                <ImageView
+                <org.softeg.slartus.forpdaplus.classes.common.ResizeImageView
                     android:id="@+id/imageImage"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
