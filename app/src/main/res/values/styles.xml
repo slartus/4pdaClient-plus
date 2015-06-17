@@ -153,6 +153,9 @@
         <item name="android:paddingTop">24dp</item>
         <item name="android:fitsSystemWindows">false</item>
     </style>
+    <style name="prefs_title_style_prekitkat" parent="prefs_title_style">
+        <item name="android:fitsSystemWindows">false</item>
+    </style>
 
     <style name="btnsend_wh">
         <item name="android:background">@drawable/action_btnsend_wh</item>

@@ -254,7 +254,7 @@ public class App extends android.app.Application {
     }
 
     public int getThemeStyleWebViewBackground() {
-        return isWhiteTheme() ? getResources().getColor(R.color.white_theme_webview_background) : Color.BLACK;
+        return isWhiteTheme() ? Color.parseColor("#eeeeee") : Color.parseColor("#212121");
     }
 
     public String getCurrentTheme() {
@@ -267,7 +267,7 @@ public class App extends android.app.Application {
     }
 
     public String getCurrentBackgroundColorHtml() {
-        return isWhiteTheme() ? "#fafafa" : "#242424";
+        return isWhiteTheme() ? "#eeeeee" : "#212121";
     }
 
     private String checkThemeFile(String themePath) {
