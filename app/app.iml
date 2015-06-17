@@ -86,28 +86,28 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="systembartint-1.0.3" level="project" />
-    <orderEntry type="library" exported="" name="picasso-2.5.0" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-22.2.0" level="project" />
-    <orderEntry type="library" exported="" name="library-1.2.2" level="project" />
-    <orderEntry type="library" exported="" name="recyclerview-v7-22.2.0" level="project" />
-    <orderEntry type="library" exported="" name="circleimageview-1.1.0" level="project" />
-    <orderEntry type="library" exported="" name="android-intents-1.1.0" level="project" />
-    <orderEntry type="library" exported="" name="httpmime-4.3.6" level="project" />
     <orderEntry type="library" exported="" name="sqliteassethelper-2.0.1" level="project" />
-    <orderEntry type="library" exported="" name="floatingactionbutton-1.2.0" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-22.2.0" level="project" />
-    <orderEntry type="library" exported="" name="acra-4.6.1" level="project" />
-    <orderEntry type="library" exported="" name="httpcore-4.3.3" level="project" />
-    <orderEntry type="library" exported="" name="appcompat-v7-22.2.0" level="project" />
     <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="jsoup-1.8.1" level="project" />
-    <orderEntry type="library" exported="" name="material-dialogs-0.7.6.0" level="project" />
-    <orderEntry type="library" exported="" name="cardview-v7-22.1.1" level="project" />
+    <orderEntry type="library" exported="" name="recyclerview-v7-22.2.0" level="project" />
+    <orderEntry type="library" exported="" name="httpcore-4.3.3" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-22.2.0" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-22.2.0" level="project" />
     <orderEntry type="library" exported="" name="universal-image-loader-1.9.3" level="project" />
+    <orderEntry type="library" exported="" name="acra-4.6.1" level="project" />
+    <orderEntry type="library" exported="" name="picasso-2.5.0" level="project" />
+    <orderEntry type="library" exported="" name="floatingactionbutton-1.2.0" level="project" />
+    <orderEntry type="library" exported="" name="appcompat-v7-22.2.0" level="project" />
+    <orderEntry type="library" exported="" name="android-intents-1.1.0" level="project" />
+    <orderEntry type="library" exported="" name="circleimageview-1.1.0" level="project" />
+    <orderEntry type="library" exported="" name="systembartint-1.0.3" level="project" />
+    <orderEntry type="library" exported="" name="material-dialogs-0.7.6.0" level="project" />
+    <orderEntry type="library" exported="" name="library-1.2.2" level="project" />
+    <orderEntry type="library" exported="" name="httpmime-4.3.6" level="project" />
+    <orderEntry type="library" exported="" name="cardview-v7-22.1.1" level="project" />
     <orderEntry type="module" module-name="forpdanotifyservice" exported="" />
     <orderEntry type="module" module-name="newquickaction" exported="" />
-    <orderEntry type="module" module-name="forpdacommon" exported="" />
     <orderEntry type="module" module-name="4pdasources" exported="" />
+    <orderEntry type="module" module-name="forpdacommon" exported="" />
   </component>
 </module>
