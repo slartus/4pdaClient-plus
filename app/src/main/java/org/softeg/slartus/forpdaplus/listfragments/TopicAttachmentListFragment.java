@@ -65,7 +65,6 @@ public class TopicAttachmentListFragment extends BaseTaskListFragment {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        Toast.makeText(getContext(), "I you father, Luke", Toast.LENGTH_LONG).show();
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
         if (info.id == -1) return;
         Object o = getAdapter().getItem((int) info.id );

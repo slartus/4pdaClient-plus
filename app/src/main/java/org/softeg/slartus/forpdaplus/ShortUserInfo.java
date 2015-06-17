@@ -11,13 +11,16 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Downloader;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.PicassoTools;
 
 import org.apache.http.HttpResponse;
 import org.jsoup.Jsoup;
@@ -45,10 +48,11 @@ public class ShortUserInfo {
     private TextView userRep;
     private RelativeLayout textWrapper;
     private Handler mHandler = new Handler();
+    private Client client;
 
     public ShortUserInfo(Activity activity) {
         prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-
+        client = Client.getInstance();
         mActivity = activity;
         userNick = (TextView) findViewById(R.id.userNick);
         qmsMessages = (TextView) findViewById(R.id.qmsMessages);
@@ -70,16 +74,16 @@ public class ShortUserInfo {
         }
 
         if(isOnline()){
-            if(Client.getInstance().getLogined()) {
+            if(client.getLogined()) {
                 new updateAsyncTask().execute();
                 imgAvatar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ProfileWebViewActivity.startActivity(getContext(), Client.getInstance().UserId, Client.getInstance().getUser());
+                        ProfileWebViewActivity.startActivity(getContext(), client.UserId, client.getUser());
                     }
                 });
 
-                Client.getInstance().addOnUserChangedListener(new Client.OnUserChangedListener() {
+                client.addOnUserChangedListener(new Client.OnUserChangedListener() {
                     @Override
                     public void onUserChanged(String user, Boolean success) {
                         mHandler.post(new Runnable() {
@@ -90,7 +94,7 @@ public class ShortUserInfo {
                         });
                     }
                 });
-                Client.getInstance().addOnMailListener(new Client.OnMailListener() {
+                client.addOnMailListener(new Client.OnMailListener() {
                     @Override
                     public void onMail(int count) {
                         mHandler.post(new Runnable() {
@@ -116,7 +120,7 @@ public class ShortUserInfo {
         infoRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isOnline() & Client.getInstance().getLogined()){
+                if(isOnline() & client.getLogined()){
                     new updateAsyncTask().execute();
                 }
             }
@@ -132,7 +136,7 @@ public class ShortUserInfo {
     }
 
     private void refreshQms() {
-        int qmsCount = Client.getInstance().getQmsCount();
+        int qmsCount = client.getQmsCount();
         if (qmsCount != 0) {
             qmsMessages.setText("Новые сообщения QMS: " + qmsCount);
         } else {
@@ -141,16 +145,15 @@ public class ShortUserInfo {
     }
 
     private class updateAsyncTask extends AsyncTask<String, Void, Void> {
-        String[] strings;
+        String avatarUrl = "";
+        String reputation = "";
 
         @Override
         protected Void doInBackground(String... urls) {
             try {
-                strings = getUserInfo(Client.getInstance(), Client.getInstance().UserId);
-                if ((strings[0] == null) & (strings[1] == null)) {
-                    strings[1] = prefs.getString("shortUserInfoRep", "-100500");
-                    strings[0] = "http://s.4pda.to/img/qms/logo.png";
-                }
+                Document doc = Jsoup.parse(client.performGet("http://4pda.ru/forum/index.php?showuser=" + client.UserId));
+                avatarUrl = doc.select("div.user-box > div.photo > img").first().absUrl("src").toString();
+                reputation = doc.select("div.statistic-box span[id*=\"ajaxrep\"]").first().text().toString();
             } catch (IOException e) {
                 AppLog.e(getContext(), e);
             }
@@ -159,8 +162,9 @@ public class ShortUserInfo {
 
         @Override
         protected void onPostExecute(Void result) {
-
-            if (Client.getInstance().getLogined()) {
+            if(avatarUrl.equals("")|reputation.equals("")){
+                Toast.makeText(getContext(),"Не удалось загрузить данные",Toast.LENGTH_SHORT).show();
+            }else if (client.getLogined()) {
                 loginButton.setVisibility(View.GONE);
                 textWrapper.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -168,27 +172,17 @@ public class ShortUserInfo {
                         ListFragmentActivity.showListFragment(getContext(), QmsContactsBrickInfo.NAME, null);
                     }
                 });
-                userNick.setText(Client.getInstance().getUser());
-                userRep.setText("Репутация: " + strings[1]);
-                prefs.edit().putString("shortUserInfoRep", strings[1]).apply();
+                userNick.setText(client.getUser());
+                userRep.setVisibility(View.VISIBLE);
+                userRep.setText("Репутация: " + reputation);
+                prefs.edit().putString("shortUserInfoRep", reputation).apply();
                 refreshQms();
-                new Picasso.Builder(App.getInstance())
-                        .downloader(new Downloader() {
-                            @Override
-                            public Response load(Uri uri, int networkPolicy) throws IOException {
-                                HttpResponse httpResponse = new HttpHelper().getDownloadResponse(uri.toString(), 0);
-                                return new Response(httpResponse.getEntity().getContent(), false, httpResponse.getEntity().getContentLength());
-                            }
-                            @Override
-                            public void shutdown() {
-                            }
-                        })
-                        .build()
-                        .load(strings[0])
-                        .error(R.drawable.no_image)
-                        .into(imgAvatar);
-                prefs.edit().putBoolean("isLoadShortUserInfo", true).apply();
-                prefs.edit().putString("shortAvatarUrl", strings[0]).apply();
+                Picasso.with(App.getContext()).load(avatarUrl).into(imgAvatar);
+                //prefs.edit().putBoolean("isLoadShortUserInfo", true).apply();
+                //prefs.edit().putString("shortAvatarUrl", avatarUrl).apply();
+            }else {
+                userRep.setVisibility(View.GONE);
+                loginButton.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -201,12 +195,5 @@ public class ShortUserInfo {
             return true;
         }
         return false;
-    }
-    public static String[] getUserInfo(IHttpClient httpClient, CharSequence userID) throws IOException {
-        String page = httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID);
-        Document doc = Jsoup.parse(page);
-        org.jsoup.nodes.Element element = doc.select("div#main").first();
-        return new String[]{element.select("div.user-box > div.photo > img").first().absUrl("src"),
-                element.select("div.statistic-box span[id*=\"ajaxrep\"]").first().text()};
     }
 }
