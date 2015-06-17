@@ -32,6 +32,7 @@ import org.softeg.slartus.forpdaplus.listfragments.DevDbCatalogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.DevDbModelsFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
+import org.softeg.slartus.forpdaplus.listfragments.TopicWritersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.news.NewsListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
@@ -42,13 +43,13 @@ import org.softeg.slartus.forpdaplus.listtemplates.FavoritesBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsChatActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
-import org.softeg.slartus.forpdaplus.tabs.TopicWritersTab;
 import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
 import org.softeg.slartus.forpdaplus.video.PlayerActivity;
 
@@ -533,7 +534,10 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
         if (TextUtils.isEmpty(tid))
             return false;
 
-        TopicWritersTab.show(context, tid);
+
+        Bundle args=new Bundle();
+        args.putString(TopicWritersListFragment.TOPIC_ID_KEY, tid);
+        ListFragmentActivity.showListFragment(context, TopicWritersBrickInfo.NAME, args);
         if (finish)
             context.finish();
         return true;

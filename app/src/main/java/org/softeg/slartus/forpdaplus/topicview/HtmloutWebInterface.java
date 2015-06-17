@@ -4,6 +4,7 @@ package org.softeg.slartus.forpdaplus.topicview;/*
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -28,9 +29,12 @@ import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.TopicAttaches;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
+import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
+import org.softeg.slartus.forpdaplus.listfragments.TopicReadersListFragment;
+import org.softeg.slartus.forpdaplus.listfragments.TopicWritersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
-import org.softeg.slartus.forpdaplus.tabs.TopicReadingUsersTab;
-import org.softeg.slartus.forpdaplus.tabs.TopicWritersTab;
+import org.softeg.slartus.forpdaplus.listtemplates.TopicReadersBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 
 
 public class HtmloutWebInterface {
@@ -187,7 +191,9 @@ public class HtmloutWebInterface {
             @Override
             public void run() {
                 try {
-                    TopicReadingUsersTab.show(getContext(), getContext().getTopic().getId());
+                    Bundle args=new Bundle();
+                    args.putString(TopicReadersListFragment.TOPIC_ID_KEY, getContext().getTopic().getId());
+                    ListFragmentActivity.showListFragment(context, TopicReadersBrickInfo.NAME, args);
                 } catch (ActivityNotFoundException e) {
                     AppLog.e(getContext(), e);
                 }
@@ -204,7 +210,10 @@ public class HtmloutWebInterface {
                 if (getContext().getTopic() == null) {
                     Toast.makeText(getContext(), "Что-то пошло не так", Toast.LENGTH_SHORT).show();
                 } else {
-                    TopicWritersTab.show(getContext(), getContext().getTopic().getId());
+                    Bundle args=new Bundle();
+                    args.putString(TopicWritersListFragment.TOPIC_ID_KEY, getContext().getTopic().getId());
+                    ListFragmentActivity.showListFragment(context, TopicWritersBrickInfo.NAME, args);
+
                 }
             }
         });

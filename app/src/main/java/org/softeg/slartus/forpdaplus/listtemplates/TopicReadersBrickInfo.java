@@ -3,15 +3,17 @@ package org.softeg.slartus.forpdaplus.listtemplates;
 import android.support.v4.app.Fragment;
 
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment;
+import org.softeg.slartus.forpdaplus.listfragments.TopicReadersListFragment;
 
 /*
- * Created by slinkin on 03.03.14.
+ * Created by slinkin on 17.06.2015.
  */
-public class ForumTopicsBrickInfo extends BrickInfo {
+public class TopicReadersBrickInfo  extends BrickInfo {
+    public static final String NAME = "TopicReadersBrickInfo";
+
     @Override
     public String getTitle() {
-        return "Темы форума";
+        return "Кто читает тему";
     }
 
     @Override
@@ -21,13 +23,11 @@ public class ForumTopicsBrickInfo extends BrickInfo {
 
     @Override
     public String getName() {
-        return "ForumTopics";
+        return NAME;
     }
 
     @Override
     public Fragment createFragment() {
-        return new ForumTopicsListFragment().setBrickInfo(this);
+        return new TopicReadersListFragment().setBrickInfo(this);
     }
-
-
 }
