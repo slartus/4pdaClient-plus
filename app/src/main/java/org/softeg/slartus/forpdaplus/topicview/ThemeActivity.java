@@ -690,7 +690,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             int editPosition = -1;
             if (canEdit) {
                 actionItem = new ActionItem();
-                actionItem.setTitle("Редактировать");
+                actionItem.setTitle("Изменить");
                 editPosition = mQuickAction.addActionItem(actionItem);
             }
 

@@ -55,6 +55,7 @@ public class BbCodesQuickView extends BaseQuickView {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         webView = new WebView(inflater.getContext());
         webView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        webView.setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());
         loadWebView();
         return webView;
     }
