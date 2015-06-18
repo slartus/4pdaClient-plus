@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
@@ -37,7 +38,10 @@ public class DownloadReceiver extends ResultReceiver {
         m_Handler = handler;
         m_Context = context;
     }
-
+    private static int getNotificationIcon() {
+        boolean whiteIcon = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+        return whiteIcon ? R.drawable.notify_icon : R.drawable.icon_mat;
+    }
     @Override
     protected void onReceiveResult(int resultCode, Bundle resultData) {
         super.onReceiveResult(resultCode, resultData);
@@ -58,7 +62,7 @@ public class DownloadReceiver extends ResultReceiver {
                 try {
                     notification = NotificationBridge.createBridge(
                             context,
-                            R.drawable.icon,
+                            getNotificationIcon(),
                             context.getString(R.string.DownloadAborted),
                             System.currentTimeMillis())
                             .setContentTitle(downloadTask.getFileName())
@@ -80,7 +84,7 @@ public class DownloadReceiver extends ResultReceiver {
                 try {
                     notification = NotificationBridge.createBridge(
                             context,
-                            R.drawable.icon,
+                            getNotificationIcon(),
                             context.getString(R.string.DownloadComplete),
                             System.currentTimeMillis())
                             .setContentTitle(downloadTask.getFileName())
@@ -124,7 +128,7 @@ public class DownloadReceiver extends ResultReceiver {
         String contentText = percents + "%";
         NotificationBridge notificationBridge = NotificationBridge.createBridge(
                 context,
-                R.drawable.icon,
+                getNotificationIcon(),
                 context.getString(R.string.DownloadFile),
                 System.currentTimeMillis())
                 .setContentTitle(title)

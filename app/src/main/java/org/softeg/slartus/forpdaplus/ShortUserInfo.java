@@ -7,25 +7,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Downloader;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.PicassoTools;
 
-import org.apache.http.HttpResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
@@ -77,7 +71,7 @@ public class ShortUserInfo {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 userBackground.setImageBitmap(myBitmap);
             }else {
-                userBackground.setImageResource(R.drawable.user_bacground);
+                userBackground.setImageResource(R.drawable.user_background);
             }
         }
 
