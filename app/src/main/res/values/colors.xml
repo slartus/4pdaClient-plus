@@ -39,7 +39,7 @@
 
     <!-- Mod -->
     <color name="app_background_wh">#eeeeee</color>
-    <color name="app_background_bl">#212121</color>
+    <color name="app_background_bl">#1A1A1A</color>
 
     <color name="dialog_background_wh">#fafafa</color>
     <color name="dialog_background_bl">#303030</color>
@@ -63,7 +63,7 @@
 
     <color name="news_background_wh">#ffffff</color>
     <color name="news_background_pressed_wh">#dddddd</color>
-    <color name="news_background_bl">#333333</color>
+    <color name="news_background_bl">#303030</color>
     <color name="news_background_pressed_bl">#444444</color>
     <color name="news_border_wh">#cccccc</color>
     <color name="news_border_bl">#333333</color>
@@ -106,7 +106,7 @@
     <color name="news_text_second_color_wh">@color/list_text_second_color_wh</color>
     <color name="news_text_second_color_bl">@color/list_text_second_color_bl</color>
 
-    <color name="edit_text_wh">@color/panel_background_wh</color>
+    <color name="edit_text_wh">@color/white</color>
     <color name="edit_text_bl">@color/panel_background_bl</color>
 
 

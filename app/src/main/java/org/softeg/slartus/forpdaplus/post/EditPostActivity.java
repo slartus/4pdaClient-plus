@@ -229,6 +229,29 @@ public class EditPostActivity extends BaseFragmentActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    public void onBackPressed()
+    {
+        if (!TextUtils.isEmpty(txtPost.getText())) {
+            new MaterialDialog.Builder(this)
+                    .title("Подтвердите действие")
+                    .content("Имеется введенный текст сообщения! Закрыть?")
+                    .positiveText("Да")
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            doOnBackPressed();
+                        }
+                    })
+                    .negativeText("Отмена")
+                    .show();
+        }else{
+            doOnBackPressed();
+        }
+    }
+    public void doOnBackPressed(){
+        super.onBackPressed();
+    }
 
     private boolean sendMail() {
         final String body = getPostText();

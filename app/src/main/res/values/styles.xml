@@ -38,6 +38,11 @@
         <item name="edit_text">@style/edit_text_wh</item>
         <item name="divider_color">@style/divider_wh</item>
         <item name="md_dark_theme">false</item>
+        <item name="md_background_color">#eeeeee</item>
+        <item name="md_title_color">@color/list_text_special_color_wh</item>
+        <item name="md_item_color">@color/list_text_special_color_wh</item>
+        <item name="md_content_color">@color/list_text_second_color_wh</item>
+        <item name="android:textColorSecondary">@color/list_text_second_color_wh</item>
         <item name="Divider">@style/Divider_wh</item>
         <item name="actbar">@color/actionbar_background_wh</item>
     </style>
@@ -79,7 +84,12 @@
         <item name="news_text_second_color">@style/news_text_second_color_bl</item>
         <item name="edit_text">@style/edit_text_bl</item>
         <item name="divider_color">@style/divider_bl</item>
-        <item name="md_dark_theme">true</item>
+        <item name="md_dark_theme">false</item>
+        <item name="md_background_color">#303030</item>
+        <item name="md_title_color">@color/list_text_special_color_bl</item>
+        <item name="md_item_color">@color/list_text_special_color_bl</item>
+        <item name="md_content_color">@color/list_text_second_color_bl</item>
+        <item name="android:textColorSecondary">@color/list_text_second_color_bl</item>
         <item name="Divider">@style/Divider_bl</item>
         <item name="actbar">@color/actionbar_background_bl</item>
     </style>

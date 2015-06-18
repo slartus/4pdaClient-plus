@@ -220,13 +220,13 @@ HTML body {
 /*
 *	ADM TAGS
 */
-.cur {
+.cur > .block-title {
   background: #0a8f08;
 }
-.mod {
+.mod > .block-title {
   background: #039be5;
 }
-.ex {
+.ex > .block-title {
   background: #e84e40;
 }
 .cur,
@@ -586,21 +586,6 @@ br + .topic_title_post {
     margin-top: .6rem;
   }
 }
-.post_header.curator *[class*="nick"] a:after {
-  content: 'K';
-  margin-left: 0.2rem;
-  display: inline-block;
-  position: relative;
-  top: -0.4em;
-  font-weight: 900;
-  font-size: 0.5rem;
-  text-align: center;
-  border-radius: 1rem;
-  width: 1.8em;
-  line-height: 1.8em;
-  color: white;
-  background: #b3b3b3;
-}
 .post_header[title*="Просмотреть репутацию"] {
   color: #000 !important;
   text-decoration: underline !important;
@@ -609,6 +594,31 @@ br + .topic_title_post {
   .post_header table tbody tr td {
     display: block;
   }
+}
+.post_header table tbody tr td .margin_left {
+  display: inline-block;
+  width: 4.4rem;
+}
+@media screen and (min-width: 800px) {
+  .post_header table tbody tr td .margin_left {
+    display: none;
+  }
+}
+.post_header table tbody tr td .curator ~ span a:before {
+  content: ' K ';
+  margin-right: 0.3rem;
+  display: inline-block;
+  position: relative;
+  top: -0.2rem;
+  font-weight: bold;
+  font-size: 0.6rem;
+  text-align: center;
+  width: 1rem;
+  height: 1rem;
+  line-height: 1rem;
+  border-radius: 2rem;
+  color: white;
+  background: #2f82b0;
 }
 .post_header table tbody tr td .post_nick_cli,
 .post_header table tbody tr td .post_nick_online_cli {
@@ -652,15 +662,6 @@ br + .topic_title_post {
 }
 .post_header table tbody tr td div .post_date_cli a {
   float: right;
-}
-.post_header table tbody tr td .margin_left {
-  display: inline-block;
-  width: 4.4rem;
-}
-@media screen and (min-width: 800px) {
-  .post_header table tbody tr td .margin_left {
-    display: none;
-  }
 }
 .post_header table tbody tr td .avatar_parent_container {
   position: absolute;
@@ -1267,10 +1268,10 @@ div[name*="msg"] > .hidetop B:before {
 }
 .s_post_footer {
   display: block;
-  min-height: 1.6em;
+  min-height: 1.4rem;
   position: relative;
   z-index: 12;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: bold;
   padding: 0.3rem;
   margin: 0;
@@ -1295,6 +1296,43 @@ div[name*="msg"] > .hidetop B:before {
 .s_post_footer ~ .between_messages ~ .topic_title_post ~ .post_header {
   margin-top: 0 !important;
 }
+/* .bad-search-result {
+	display: block;
+	margin: 100px auto;
+	padding: 1rem;
+	max-width: 15rem;
+//	text-align: center;
+	font-size: 1.2rem;
+	font-weight: bold;
+	color: @color;
+	.radius;
+	.shadow;
+	background: @bg-color;
+	&:after {
+		content:'Попробуйте сформулировать запрос иначе';
+		display: inline-block;
+		margin-top: 0.5rem;
+		font-size: 0.9rem;
+		font-weight: normal;
+	}
+} */
+.bad-search-result {
+  margin: 100px auto;
+  padding: 1rem;
+  max-width: 16rem;
+  color: black;
+  border-radius: 0.15rem;
+  -webkit-box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.3);
+  background: white;
+}
+.bad-search-result h3 {
+  text-align: left;
+  margin: 0 0 0.7rem;
+}
+.bad-search-result span {
+  font-size: 0.8rem;
+  color: #808080;
+}
 /*
 *	OTHER
 */
@@ -1317,9 +1355,9 @@ img[src*="style_emoticons"] {
 #viewers .href_button,
 #writers .href_button {
   display: inline-block;
-  line-height: 1.2;
+  line-height: 1.4;
   margin: 0;
-  padding: 0.3rem;
+  padding: 0.15rem 0.4rem;
   font-size: 0.75rem;
   text-align: center;
   color: #808080;
@@ -1338,10 +1376,10 @@ img[src*="style_emoticons"] {
 */
 .post_footer {
   display: block;
-  min-height: 1.6em;
+  min-height: 1.4rem;
   position: relative;
   z-index: 12;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: bold;
   padding: 0.3rem;
   margin: 0;
@@ -1365,9 +1403,9 @@ img[src*="style_emoticons"] {
 }
 .post_footer a .insert_nick_button {
   display: inline-block;
-  line-height: 1.2;
+  line-height: 1.4;
   margin: 0;
-  padding: 0.3rem;
+  padding: 0.15rem 0.4rem;
   font-size: 0.75rem;
   text-align: center;
   color: #808080;
@@ -1382,9 +1420,9 @@ img[src*="style_emoticons"] {
 }
 .post_footer a .quote_button {
   display: inline-block;
-  line-height: 1.2;
+  line-height: 1.4;
   margin: 0;
-  padding: 0.3rem;
+  padding: 0.15rem 0.4rem;
   font-size: 0.75rem;
   text-align: center;
   color: #808080;
@@ -1396,78 +1434,82 @@ img[src*="style_emoticons"] {
 @media screen and (max-width: 400px) {
   .post_footer a .post_vote_bad {
     display: inline-block;
-    line-height: 1.3;
-    margin: 0.1rem 0 0;
-    padding: 0.2rem 0.4rem;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0.15rem 0.4rem;
     font-size: 0.75rem;
     text-align: center;
+    color: #808080;
     color: white;
-    opacity: 0.5;
+    opacity: 0.4;
     border-radius: 0.15rem;
     -webkit-box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.3);
-    width: 1.6em;
-    margin-right: 0.15em;
-    background: #e93a3a;
+    width: 1.8rem;
+    margin-right: 0.15rem;
+    background: #c85b5b;
   }
   .post_footer a .post_vote_bad:before {
     line-height: 1;
-    top: 0.1em;
+    top: 0.1rem;
     content: "–";
-    font-size: 1.2em;
+    font-size: 1rem;
   }
   .post_footer a .post_vote_good {
     display: inline-block;
-    line-height: 1.3;
-    margin: 0.1rem 0 0;
-    padding: 0.2rem 0.4rem;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0.15rem 0.4rem;
     font-size: 0.75rem;
     text-align: center;
+    color: #808080;
     color: white;
-    opacity: 0.5;
+    opacity: 0.4;
     border-radius: 0.15rem;
     -webkit-box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.3);
-    width: 1.6em;
-    margin-left: 0.15em;
-    background: green;
+    width: 1.8rem;
+    margin-left: 0.15rem;
+    background: #297b29;
   }
   .post_footer a .post_vote_good:after {
     line-height: 1;
-    top: 0.1em;
+    top: 0.1rem;
     content: "+";
-    font-size: 1.2em;
+    font-size: 1rem;
   }
 }
 @media screen and (min-width: 401px) {
   .post_footer a .post_vote_bad {
     display: inline-block;
-    line-height: 1.3;
-    margin: 0.1rem 0 0;
-    padding: 0.2rem 0.4rem;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0.15rem 0.4rem;
     font-size: 0.75rem;
     text-align: center;
+    color: #808080;
     color: white;
-    opacity: 0.5;
+    opacity: 0.4;
     border-radius: 0.15rem;
     -webkit-box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.3);
     padding-left: 0.7rem;
     padding-right: 0.7rem;
-    background: #e93a3a;
+    background: #c85b5b;
   }
   .post_footer a .post_vote_bad:after {
     content: 'ПЛОХО';
   }
   .post_footer a .post_vote_good {
     display: inline-block;
-    line-height: 1.3;
-    margin: 0.1rem 0 0;
-    padding: 0.2rem 0.4rem;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0.15rem 0.4rem;
     font-size: 0.75rem;
     text-align: center;
+    color: #808080;
     color: white;
-    opacity: 0.5;
+    opacity: 0.4;
     border-radius: 0.15rem;
     -webkit-box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.3);
-    background: green;
+    background: #297b29;
   }
   .post_footer a .post_vote_good:before {
     content: 'ХОРОШО';
@@ -1733,6 +1775,41 @@ img[src*="style_emoticons"] {
 }
 .container .content .content-box P[style="text-align: justify;"] {
   text-align: left !important;
+}
+.container .content .content-box .eg_tbl {
+  font-size: 1rem;
+  padding: 0;
+  margin: 0;
+}
+.container .content .content-box .eg_tbl ._spacer,
+.container .content .content-box .eg_tbl .spacer_ {
+  display: none;
+}
+.container .content .content-box .eg_tbl * {
+  margin: 0;
+  padding: 0;
+  line-height: 1.4em;
+}
+.container .content .content-box .eg_tbl > li {
+  margin: 0;
+  padding: 2rem 0;
+  border-bottom: 1px solid #d9d9d9;
+  background: white;
+}
+.container .content .content-box .eg_tbl > li div h1 {
+  margin: 0 0 1rem;
+}
+@media screen and (max-width: 699px) {
+  .container .content .content-box .eg_tbl > li div h1 {
+    text-align: center;
+  }
+}
+.container .content .content-box .eg_tbl > li div p {
+  text-align: left;
+  margin: 1rem 0;
+}
+.container .content .content-box .eg_tbl > li:last-child {
+  border: none;
 }
 .product-detail {
   position: relative;
@@ -2978,21 +3055,6 @@ h3 a {
   margin-top: 0.7rem;
 }
 /*
-*	MARGIN TOP
-*	Для мода от radiation15
-*	Что б этот код работал удалите код ниже для оригинального клиента от комментария - НАЧАЛО - до комментария - КОНЕЦ -
-*/
-div[style*="margin-top"]:not([name*="entry"]) {
-  margin-top: 81px !important;
-  border-top: 1px solid transparent;
-}
-div[name*="entry"] {
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin-top: -81px !important;
-}
-/*
 *	Верхний отступ
 */
 div[style*="margin-top"]:not([name*="entry"]) {
@@ -3021,7 +3083,7 @@ div[name*="entry"] {
     /* отступ в портретной ориентации */
   }
   .modification div[name*="entry"] {
-    margin-top: -87px !important;
+    margin-top: -79px !important;
     /* ввести то же число, но с знаком минуса */
   }
 }
@@ -3040,7 +3102,7 @@ div[name*="entry"] {
     /* отступ в альбомной ориентации */
   }
   .modification div[name*="entry"] {
-    margin-top: -87px !important;
+    margin-top: -79px !important;
     /* ввести то же число, но с знаком минуса */
   }
 }

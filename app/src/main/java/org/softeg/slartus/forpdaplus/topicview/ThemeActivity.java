@@ -32,6 +32,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -85,7 +86,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     private AdvWebView webView;
     private Handler mHandler = new Handler();
     private EditText txtSearch;
-    private RelativeLayout pnlSearch;
+    private LinearLayout pnlSearch;
     private String m_LastUrl;
     private ArrayList<SessionHistory> m_History = new ArrayList<SessionHistory>();
     private ExtTopic m_Topic;
@@ -193,7 +194,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         });
         mQuickPostPanel = (LinearLayout) findViewById(R.id.quick_post_panel);
 
-        pnlSearch = (RelativeLayout) findViewById(R.id.pnlSearch);
+        pnlSearch = (LinearLayout) findViewById(R.id.pnlSearch);
         txtSearch = (EditText) findViewById(R.id.txtSearch);
         txtSearch.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

@@ -2,9 +2,6 @@
     <style name="Theme.White" parent="MainThemeWH">
         <item name="android:actionModeStyle">@style/actionMode_style</item>
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="md_content_color">#FF757575</item>
-        <item name="md_title_color">#FF212121</item>
-        <item name="md_item_color">#FF212121</item>
     </style>
     <style name="Theme.Black" parent="MainThemeBL">
         <item name="android:actionModeStyle">@style/actionMode_style</item>

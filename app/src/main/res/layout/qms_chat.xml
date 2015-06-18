@@ -10,59 +10,49 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        style="?edit_text">
 
-        <RelativeLayout
-
+        <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:minHeight="36dp"
-            android:gravity="center_vertical"
-            android:paddingBottom="6dp"
-            android:paddingTop="6dp">
-
-            <ImageButton
-                android:id="@+id/advanced_button"
-                style="?right_separator"
-                android:layout_width="48dp"
-                android:layout_height="36dp"
-                android:contentDescription="Дополнительно"
-                android:src="@drawable/btn_show_post_panel"
-                android:layout_alignBottom="@+id/edMessage" />
+            android:minHeight="48dp">
 
             <EditText
-                android:id="@+id/edMessage"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="36dp"
-                android:background="#00000000"
-                android:capitalize="sentences"
+                android:id="@+id/edMessage"
+                android:minHeight="48dp"
+                android:background="@android:color/transparent"
                 android:hint="Сообщение"
                 android:inputType="textCapSentences|textMultiLine"
-                android:maxLines="6"
                 android:minLines="1"
                 android:singleLine="false"
-                android:paddingLeft="12dp"
-                android:paddingTop="6dp"
-                android:paddingRight="12dp"
-                android:paddingBottom="6dp"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/advanced_button"
-                android:layout_toLeftOf="@+id/btnSend"
-                android:layout_toStartOf="@+id/btnSend" />
+                android:paddingLeft="8dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp"
+                android:layout_marginLeft="48dp"
+                android:layout_marginRight="56dp"
+                android:maxLines="5" />
 
             <ImageButton
-                android:id="@+id/btnSend"
-                style="?btnsend"
-                android:layout_width="wrap_content"
-                android:minWidth="56dp"
-                android:layout_height="36dp"
-                android:layout_marginRight="6dp"
-                android:contentDescription="Отправить"
+                android:layout_width="56dp"
+                android:layout_height="48dp"
+                android:background="@android:color/transparent"
                 android:src="@drawable/btn_send"
-                android:layout_alignBottom="@+id/edMessage"
-                android:layout_alignParentRight="true" />
-        </RelativeLayout>
+                android:id="@+id/btnSend"
+                android:layout_gravity="right|bottom" />
+
+            <ImageButton
+                android:layout_width="40dp"
+                android:layout_height="48dp"
+                android:paddingLeft="8dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/btn_show_post_panel"
+                android:id="@+id/advanced_button"
+                android:layout_gravity="left|bottom" />
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/footer_for_emoticons"
@@ -77,4 +67,11 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@id/message_panel" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="6dp"
+        android:orientation="vertical"
+        android:id="@+id/shadow"
+        android:background="@drawable/shadow_to_top"
+        android:layout_above="@id/message_panel"/>
 </RelativeLayout>

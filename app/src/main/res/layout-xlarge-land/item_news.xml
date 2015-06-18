@@ -20,7 +20,7 @@
             android:layout_alignParentLeft="true">
 
             <ImageView
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
@@ -28,8 +28,8 @@
 
             <ImageView
                 android:id="@+id/imageImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:contentDescription="img" />
@@ -52,12 +52,12 @@
                 style="?news_full_image_corner"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="vertical" />
+                android:orientation="vertical"/>
         </FrameLayout>
 
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_toRightOf="@+id/image_panel"
