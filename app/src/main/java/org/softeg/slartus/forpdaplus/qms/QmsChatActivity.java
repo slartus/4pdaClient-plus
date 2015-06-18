@@ -447,8 +447,9 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
     private void reLoadChatSafe() {
         uiHandler.post(new Runnable() {
             public void run() {
-                setSupportProgressBarIndeterminateVisibility(true);
+                //setSupportProgressBarIndeterminateVisibility(true);
                 //pbLoading.setVisibility(View.VISIBLE);
+                //Toast.makeText(getContext(),"Обновление",Toast.LENGTH_SHORT).show();
             }
         });
         String chatBody = null;
@@ -472,7 +473,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                 checkNewQms();
                 uiHandler.post(new Runnable() {
                     public void run() {
-                        setSupportProgressBarIndeterminateVisibility(false);
+                        //setSupportProgressBarIndeterminateVisibility(false);
                     }
                 });
                 return;
@@ -515,7 +516,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                     }
 
                 }
-                setSupportProgressBarIndeterminateVisibility(false);
+                //setSupportProgressBarIndeterminateVisibility(false);
             }
         });
 
@@ -1046,7 +1047,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
             }
 
 
-            setSupportProgressBarIndeterminateVisibility(false);
+            //setSupportProgressBarIndeterminateVisibility(false);
 
         }
 

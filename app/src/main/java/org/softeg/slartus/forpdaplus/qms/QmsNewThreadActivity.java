@@ -170,13 +170,13 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
         protected void onPreExecute() {
             username.setVisibility(View.GONE);
             Toast.makeText(getContext(), "Получение ника пользователя..", Toast.LENGTH_SHORT).show();
-            setSupportProgressBarIndeterminateVisibility(true);
+            //setSupportProgressBarIndeterminateVisibility(true);
         }
 
         private Exception ex;
 
         protected void onPostExecute(final Boolean success) {
-            setSupportProgressBarIndeterminateVisibility(false);
+            //setSupportProgressBarIndeterminateVisibility(false);
             if (success && !TextUtils.isEmpty(userNick)) {
                 m_Nick = userNick;
                 Toast.makeText(getContext(), "Ник получен: " + m_Nick, Toast.LENGTH_SHORT).show();

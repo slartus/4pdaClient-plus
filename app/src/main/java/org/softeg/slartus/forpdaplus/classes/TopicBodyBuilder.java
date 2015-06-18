@@ -70,9 +70,9 @@ public class TopicBodyBuilder extends HtmlBuilder {
 //        addPostForm(m_Body);
 
         m_Body.append("<div id=\"viewers\"><a ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showReadingUsers"))
-                .append(" class=\"href_button\">Кто читает тему..</a></div><br/>\n");
+                .append(" class=\"href_button\">Кто читает тему</a></div><br/>\n");
         m_Body.append("<div id=\"writers\"><a ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showWriters"))
-                .append(" class=\"href_button\">Кто писал сообщения..</a></div><br/><br/>\n");
+                .append(" class=\"href_button\">Кто писал сообщения</a></div><br/><br/>\n");
         m_Body.append(getTitleBlock());
 
 

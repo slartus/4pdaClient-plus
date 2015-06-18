@@ -345,7 +345,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
 
-            NewsActivity.this.setProgressBarIndeterminateVisibility(true);
+            //NewsActivity.this.setProgressBarIndeterminateVisibility(true);
         }
 
         @Override
@@ -353,7 +353,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
             super.onPageFinished(view, url);
 
 
-            NewsActivity.this.setProgressBarIndeterminateVisibility(false);
+            //NewsActivity.this.setProgressBarIndeterminateVisibility(false);
         }
 
         @Override

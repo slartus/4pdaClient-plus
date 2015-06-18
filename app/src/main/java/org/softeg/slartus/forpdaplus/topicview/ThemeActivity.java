@@ -935,7 +935,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
 
-            setSupportProgressBarIndeterminateVisibility(true);
+            //setSupportProgressBarIndeterminateVisibility(true);
             //ThemeActivity.this.setProgressBarIndeterminateVisibility(true);
 
         }
@@ -944,7 +944,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             view.clearHistory();
-            setSupportProgressBarIndeterminateVisibility(false);
+            //setSupportProgressBarIndeterminateVisibility(false);
         }
 
         @Override

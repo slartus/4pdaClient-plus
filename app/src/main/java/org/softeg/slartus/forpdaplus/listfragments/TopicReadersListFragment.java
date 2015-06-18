@@ -111,17 +111,47 @@ public class TopicReadersListFragment extends BaseLoaderListFragment {
 
             OldUser user = (OldUser) this.getItem(position);
 
-
             holder.txtNick.setText(user.getNick());
             try {
-                holder.txtNick.setTextColor(ExtColor.parseColor(user.getHtmlColor()));
+                holder.txtNick.setTextColor(ExtColor.parseColor(correctHtmlColor(user.getHtmlColor())));
             } catch (Exception ex) {
                 AppLog.e(App.getContext(), new Exception("Не умею цвет: " + user.getHtmlColor()));
             }
             return convertView;
 
         }
-
+        public String correctHtmlColor(String color){
+            switch (color){
+                case "green":
+                    color = "#10BB10";//Обычный и активынй пользователь
+                    break;
+                case "#FF9900":
+                    color ="#EC9B22";//Друг 4пда
+                    break;
+                case "purple":
+                    color ="purple";//Почетные форумчане
+                    break;
+                case "#32CD32":
+                    color ="#4EC14E";//FAQMakers
+                    break;
+                case "#9A60FF":
+                    color ="#8461C0";//Участники спецпроекта
+                    break;
+                case "#B100BF":
+                    color ="#8E1E97";//Бизнессмены
+                    break;
+                case "#0099FF":
+                    color ="#107AC0";//Пощники модератора и модераторы
+                    break;
+                case "blue":
+                    color ="#4545E5";//Супермодераторы
+                    break;
+                case "red":
+                    color ="#CB3838";//Администраторы
+                    break;
+            }
+            return color;
+        }
         public class ViewHolder {
             TextView txtNick;
         }

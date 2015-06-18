@@ -83,7 +83,7 @@ public class TopicAttentionNotifier extends MainNotifier {
                                             .title("Объявление клиента")
                                             .cancelable(false)
                                             .content(Html.fromHtml(topicAttention))
-                                            .positiveText("Я прочитал")
+                                            .positiveText("Ок")
                                             .build();
                             addToStack(alertDialog);
                         }
