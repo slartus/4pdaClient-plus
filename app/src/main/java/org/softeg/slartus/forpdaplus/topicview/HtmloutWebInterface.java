@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -393,7 +394,7 @@ public class HtmloutWebInterface {
 
                     new MaterialDialog.Builder(getContext())
                             .title("Перейти к странице")
-                            .customView(view,true)
+                            .customView(view,false)
                             .positiveText("Перейти")
                             .callback(new MaterialDialog.ButtonCallback() {
                                 @Override
