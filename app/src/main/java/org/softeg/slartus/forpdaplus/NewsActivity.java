@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -87,6 +88,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
     public static String s_NewsUrl = null;
     private Uri m_Data = null;
     private ArrayList<History> m_History = new ArrayList<>();
+    private boolean pencil;
 
     public static void shownews(Context context, String url) {
         Intent intent = new Intent(context, NewsActivity.class);
@@ -189,7 +191,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
         fabComment.setColorNormal(App.getInstance().getColorAccent("Accent"));
         fabComment.setColorPressed(App.getInstance().getColorAccent("Pressed"));
         fabComment.setColorRipple(App.getInstance().getColorAccent("Pressed"));
-        if(Client.getInstance().getLogined()){
+        if(Client.getInstance().getLogined()&!PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar", false)){
             fabComment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -574,7 +576,17 @@ public class NewsActivity extends BrowserViewsFragmentActivity
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             super.onCreateOptionsMenu(menu, inflater);
             MenuItem item;
-
+            boolean pencil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar", false);
+            if(Client.getInstance().getLogined()&pencil){
+                item = menu.add("Комментировать").setIcon(R.drawable.ic_menu_editing);
+                item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        ((NewsActivity) getActivity()).refresh();
+                        return true;
+                    }
+                });
+                item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            }
             item = menu.add(R.string.Refresh).setIcon(R.drawable.ic_menu_refresh);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
@@ -582,7 +594,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                     return true;
                 }
             });
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
             item = menu.add(R.string.Like).setIcon(R.drawable.ic_menu_thumb_up
                     //        MyApp.getInstance().isWhiteTheme() ?R.drawable.rating_good_white : R.drawable.rating_good_dark
@@ -608,15 +620,17 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                     return true;
                 }
             }).setCheckable(true).setChecked(Preferences.isHideActionBar());
-            optionsMenu.add("Скрывать карандаш")
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            Preferences.setHideFab(!Preferences.isHideFab());
-                            getInterface().setHideActionBar();
-                            menuItem.setChecked(Preferences.isHideFab());
-                            return true;
-                        }
-                    }).setCheckable(true).setChecked(Preferences.isHideFab());
+            if(!pencil) {
+                optionsMenu.add("Скрывать карандаш")
+                        .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                Preferences.setHideFab(!Preferences.isHideFab());
+                                getInterface().setHideActionBar();
+                                menuItem.setChecked(Preferences.isHideFab());
+                                return true;
+                            }
+                        }).setCheckable(true).setChecked(Preferences.isHideFab());
+            }
             optionsMenu.add("Размер шрифта")
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override

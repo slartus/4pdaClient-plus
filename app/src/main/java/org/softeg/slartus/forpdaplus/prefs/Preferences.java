@@ -47,24 +47,29 @@ public class Preferences {
 
     public static Boolean isHideActionBar() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-
         return prefs.getBoolean("actionbar.hide", true);
     }
     public static void setHideActionBar(Boolean hide) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-
         prefs.edit().putBoolean("actionbar.hide", hide).apply();
     }
 
     public static Boolean isHideFab() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-
         return prefs.getBoolean("fab.hide", true);
     }
     public static void setHideFab(Boolean hide) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-
         prefs.edit().putBoolean("fab.hide", hide).apply();
+    }
+
+    public static Boolean isBrowserView() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+        return prefs.getBoolean("theme.BrowserStyle", true);
+    }
+    public static void setBrowserView(Boolean view) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+        prefs.edit().putBoolean("theme.BrowserStyle", view).apply();
     }
 
     public static Boolean notifyBetaVersions() {

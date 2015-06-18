@@ -231,6 +231,10 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         btnShowHideEditPost.setColorNormal(App.getInstance().getColorAccent("Accent"));
         btnShowHideEditPost.setColorPressed(App.getInstance().getColorAccent("Pressed"));
         btnShowHideEditPost.setColorRipple(App.getInstance().getColorAccent("Pressed"));
+        if(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false)) {
+            btnShowHideEditPost.setVisibility(View.GONE);
+        }
+
 
         btnShowHideEditPost.setOnClickListener(new View.OnClickListener() {
             @Override

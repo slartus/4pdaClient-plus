@@ -41,6 +41,8 @@ import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
+import org.softeg.slartus.forpdaplus.styles.CssStyle;
+import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -191,6 +193,19 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
         super.onCreateOptionsMenu(menu, inflater);
         try {
             MenuItem item;
+            boolean pancil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false);
+            if(pancil) {
+                item = menu.add("Написать")
+                        .setIcon(R.drawable.ic_menu_editing)
+                        .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                            public boolean onMenuItemClick(MenuItem item) {
+                                getInterface().toggleMessagePanelVisibility();
+                                return true;
+                            }
+                        });
+                item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            }
             item = menu.add(R.string.Refresh)
                     .setIcon(R.drawable.ic_menu_refresh)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -200,7 +215,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                             return true;
                         }
                     });
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
             SubMenu subMenu = menu.addSubMenu(R.string.Attaches)
                     .setIcon(R.drawable.ic_menu_download);
             subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
@@ -303,16 +318,17 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                     return true;
                 }
             }).setCheckable(true).setChecked(Preferences.isHideActionBar());
-
-            optionsMenu.add("Скрывать карандаш")
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            Preferences.setHideFab(!Preferences.isHideFab());
-                            getInterface().setHideActionBar();
-                            menuItem.setChecked(Preferences.isHideFab());
-                            return true;
-                        }
-                    }).setCheckable(true).setChecked(Preferences.isHideFab());
+            if(!pancil) {
+                optionsMenu.add("Скрывать карандаш")
+                        .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                Preferences.setHideFab(!Preferences.isHideFab());
+                                getInterface().setHideActionBar();
+                                menuItem.setChecked(Preferences.isHideFab());
+                                return true;
+                            }
+                        }).setCheckable(true).setChecked(Preferences.isHideFab());
+            }
 
             optionsMenu.add("Скрывать стрелки")
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -348,6 +364,25 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                     return true;
                 }
             });
+            optionsMenu.add("Вид как в браузере")
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            Preferences.setBrowserView(!Preferences.isBrowserView());
+                            new MaterialDialog.Builder(getActivity())
+                                    .content("Перезагрузить страницу?")
+                                    .positiveText("Ок")
+                                    .negativeText("Отмена")
+                                    .callback(new MaterialDialog.ButtonCallback() {
+                                        @Override
+                                        public void onPositive(MaterialDialog dialog) {
+                                            getInterface().showTheme(getInterface().getLastUrl());
+                                        }
+                                    })
+                                    .show();
+                            menuItem.setChecked(Preferences.isBrowserView());
+                            return true;
+                        }
+                    }).setCheckable(true).setChecked(Preferences.isBrowserView());
 
             menu.add("Быстрый доступ").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {
@@ -433,45 +468,48 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
             final ArrayList<CharSequence> newStyleValues = new ArrayList<CharSequence>();
 
             PreferencesActivity.getStylesList(getInterface(), newStyleNames, newStyleValues);
-            final int selected = newStyleValues.indexOf(currentValue);
+            final int[] selected = {newStyleValues.indexOf(currentValue)};
+            CharSequence[] styleNames = newStyleNames.toArray(new CharSequence[newStyleNames.size()]);
 
-
-            LayoutInflater inflater = (LayoutInflater) getInterface()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            /*LayoutInflater inflater = (LayoutInflater) getInterface().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.dialog_select_style, null);
             final ListView listView = (ListView) view.findViewById(R.id.listView);
 
-            listView.setAdapter(new ArrayAdapter<CharSequence>(getInterface(),
-                    R.layout.simple_list_item_single_choice, newStyleNames));
+            listView.setAdapter(new ArrayAdapter<CharSequence>(getInterface(),R.layout.simple_list_item_single_choice, newStyleNames));
             listView.setItemChecked(selected, true);
 
             final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
-            checkBox.setChecked(prefs.getBoolean("theme.BrowserStyle", false));
+            checkBox.setChecked(prefs.getBoolean("theme.BrowserStyle", false));*/
 
             new MaterialDialog.Builder(getActivity())
                     .title("Стиль")
                     .cancelable(true)
-                    .customView(view,true)
                     .positiveText("Применить")
+                    .items(styleNames)
+                    .itemsCallbackSingleChoice(selected[0], new MaterialDialog.ListCallbackSingleChoice() {
+                        @Override
+                        public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                            if (which == -1) {
+                                Toast.makeText(getActivity(), "Выберите стиль", Toast.LENGTH_LONG).show();
+                                return false;
+                            }
+                            selected[0] = which;
+                            return true;
+                        }
+                    })
+                    .alwaysCallSingleChoiceCallback()
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
-                            int selected = listView.getCheckedItemPosition();
-                            if (selected == -1) {
-                                Toast.makeText(getActivity(), "Выберите стиль", Toast.LENGTH_LONG).show();
-                                return;
-                            }
                             SharedPreferences.Editor editor = prefs.edit();
-                            editor.putString("appstyle", newStyleValues.get(selected).toString());
-                            editor.putBoolean("theme.BrowserStyle", checkBox.isChecked());
-                            editor.commit();
-
+                            editor.putString("appstyle", newStyleValues.get(selected[0]).toString());
+                            //editor.putBoolean("theme.BrowserStyle", checkBox.isChecked());
+                            editor.apply();
                             getInterface().showTheme(getInterface().getLastUrl());
                         }
                     })
                     .negativeText("Отмена")
                     .show();
-
         } catch (Exception ex) {
             AppLog.e(getInterface(), ex);
         }
