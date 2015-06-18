@@ -12,8 +12,8 @@
 
         <ImageView
             android:id="@+id/imgFlag"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="12dp"
+            android:layout_height="fill_parent"
             android:contentDescription="flag"
             android:scaleType="centerCrop"/>
 

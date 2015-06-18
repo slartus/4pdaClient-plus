@@ -10,11 +10,7 @@
         <Preference
             android:key="appstyle"
             android:summary="Выберите стиль программы"
-            android:title="Стиль">
-
-        </Preference>
-
-
+            android:title="Стиль"/>
         <Preference
             android:key="accentColor"
             android:summary="Цвет кнопки в теме и новостях"
@@ -60,6 +56,11 @@
             android:defaultValue="false"
             android:key="pancilInActionBar"
             android:title="Карандаш в экшнбаре"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="oldIndicator"
+            android:title="Полоса у новых сообщений"
+            android:summary="Требуется перезапуск приложения"/>
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
             android:defaultValue="-1"
             android:entries="@array/screenOrienationArray"
