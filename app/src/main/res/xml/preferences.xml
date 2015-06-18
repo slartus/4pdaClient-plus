@@ -18,7 +18,7 @@
         <Preference
             android:key="accentColor"
             android:summary="Цвет кнопки в теме и новостях"
-            android:title="Цвет FAB"/>
+            android:title="Цвет кнопки с карандашом"/>
         <Preference
             android:key="mainAccentColor"
             android:title="Цвет акцента"
