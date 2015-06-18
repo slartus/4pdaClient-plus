@@ -54,7 +54,10 @@ public class SearchPostsParser extends HtmlBuilder {
         Document doc = Jsoup.parse(body, "http://4pda.ru");
         Elements postsElements = doc.select("div[data-post]");
         if(postsElements.size()==0){
-            m_Body.append("<div class=\"bad-search-result\">Поиск не дал результатов</div>");
+            m_Body.append("<div class=\"bad-search-result\">\n" +
+                    "\t<h3>Поиск не дал результатов</h3>\n" +
+                    "\t<span>Попробуйте сформулировать свой запрос иначе</span>\n" +
+                    "</div>");
         }else {
             for (Element element : postsElements) {
                 m_Body.append(parsePost(element));

@@ -23,6 +23,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -1186,7 +1187,11 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                             AppLog.e(ThemeActivity.this, finalEx);
 
                         m_ScrollY = 0;
-                        showTheme(getLastUrl());
+                        //showTheme(getLastUrl());
+                        getWebView().evalJs("document.querySelector('div[name*=\"entry"+postId+"\"]~.post_footer').remove();");
+                        getWebView().evalJs("document.querySelector('div[name*=\"msg"+postId+"\"]').remove();");
+                        getWebView().evalJs("document.querySelector('div[name*=\"entry"+postId+"\"]~.post_header').remove();");
+                        getWebView().evalJs("document.querySelector('div[name*=\"entry"+postId+"\"]).remove();");
                     }
                 });
             }
