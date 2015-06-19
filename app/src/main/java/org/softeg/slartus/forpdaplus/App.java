@@ -308,10 +308,10 @@ public class App extends android.app.Application {
                         cssFile = "4pda_light_blue.css";
                         break;
                     case "blue":
-                        cssFile = "coba_white_blue_blue.css";
+                        cssFile = "4pda_light_pink.css";
                         break;
                     case "gray":
-                        cssFile = "coba_white_blue_gray.css";
+                        cssFile = "4pda_light_gray.css";
                         break;
                 }
                 break;
@@ -324,10 +324,10 @@ public class App extends android.app.Application {
                         cssFile = "4pda_dark_blue.css";
                         break;
                     case "blue":
-                        cssFile = "coba_dark_blue_blue.css";
+                        cssFile = "4pda_dark_pink.css";
                         break;
                     case "gray":
-                        cssFile = "coba_dark_blue_gray.css";
+                        cssFile = "4pda_dark_gray.css";
                         break;
                 }
                 break;

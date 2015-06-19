@@ -26,7 +26,7 @@
         <Preference
             android:key="userBackground"
             android:summary="Требуется перезапуск приложения"
-            android:title="Изображение в выезжающем меню"/>
+            android:title="Изображение в боковом меню"/>
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="categoryLast"

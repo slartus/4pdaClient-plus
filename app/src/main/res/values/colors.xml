@@ -113,7 +113,7 @@
     <!-- <color name="accent">#607D8B</color> -->
     <color name="accent">#0277BD</color>
     <color name="accentPink">@color/accent</color>
-    <color name="accentBlue">@color/actionbar_background_wh</color>
+    <color name="accentBlue">#E91E63</color>
     <color name="accentGray">#757575</color>
 
     <color name="plusrep">#4caf50</color>

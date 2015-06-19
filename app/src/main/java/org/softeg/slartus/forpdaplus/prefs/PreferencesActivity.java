@@ -363,7 +363,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 final int[] selected = {0};
                 new MaterialDialog.Builder(getActivity())
                         .title("Выберите цвет акцента")
-                        .items(new String[]{"Синий", "Голубой", "Серый"})
+                        .items(new String[]{"Синий", "Розовый", "Серый"})
                         .itemsCallbackSingleChoice(position, new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
@@ -391,8 +391,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                         prefs.edit().putString("mainAccentColor", "blue").apply();
                                         if(!prefs.getBoolean("accentColorEdited",false)){
                                             prefs.edit()
-                                                    .putInt("accentColor", Color.rgb(3, 169, 244))
-                                                    .putInt("accentColorPressed", Color.rgb(0, 139, 214))
+                                                    .putInt("accentColor", Color.rgb(233, 30, 99))
+                                                    .putInt("accentColorPressed", Color.rgb(203, 0, 69))
                                                     .apply();
                                         }
                                         break;
@@ -420,7 +420,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             try {
                 final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-                int prefColor = (int) Long.parseLong(String.valueOf(prefs.getInt("accentColor", Color.rgb(233, 30, 99))), 10);
+                int prefColor = (int) Long.parseLong(String.valueOf(prefs.getInt("accentColor", Color.rgb(2, 119, 189))), 10);
                 //int prefColor = (int) Long.parseLong(String.valueOf(prefs.getInt("accentColor", Color.rgb(96, 125, 139))), 10);
                 final int[] colors = {(prefColor >> 16) & 0xFF, (prefColor >> 8) & 0xFF, (prefColor >> 0) & 0xFF};
 
