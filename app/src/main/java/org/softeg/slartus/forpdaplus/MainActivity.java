@@ -352,7 +352,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
                                         return true;
                                     }
                                 });
-                        android.view.Menu defaultActionMenu = menu.addSubMenu("Действие по умолчанию..");
+                        android.view.Menu defaultActionMenu = menu.addSubMenu("Действие по умолчанию...");
                         String[] actionsArray = getResources().getStringArray(R.array.ThemeActionsArray);
                         final String[] actionsValues = getResources().getStringArray(R.array.ThemeActionsValues);
                         final String actionPrefName = "tabs." + tabId + ".Action";

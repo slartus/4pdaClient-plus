@@ -77,7 +77,7 @@ public class NotesListFragment extends TopicsListFragment {
 
         AddLinksSubMenu(menu, topic);
 
-        menu.add("Удалить..").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add("Удалить...").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 new MaterialDialog.Builder(getContext())
                         .title("Подтвердите действие")

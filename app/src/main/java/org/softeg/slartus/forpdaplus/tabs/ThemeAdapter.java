@@ -247,7 +247,7 @@ public class ThemeAdapter extends ArrayAdapter<ExtTopic> {
 
     public static SubMenu addOptionsMenu(final Context context, final Handler mHandler, Menu menu, final ExtTopic topic,
                                          Boolean addFavorites, final String shareItUrl) {
-        SubMenu optionsMenu = menu.addSubMenu("Опции..").setIcon(R.drawable.ic_menu_more);
+        SubMenu optionsMenu = menu.addSubMenu("Опции...").setIcon(R.drawable.ic_menu_more);
 
         configureOptionsMenu(context, mHandler, optionsMenu, topic, addFavorites, shareItUrl);
         return optionsMenu;

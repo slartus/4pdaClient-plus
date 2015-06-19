@@ -5,7 +5,7 @@
     <string name="Forums">Форумы</string>
     <string name="pull_to_refresh_pull_label">Потяните, чтобы обновить</string>
     <string name="pull_to_refresh_release_label">Отпустите</string>
-    <string name="pull_to_refresh_refreshing_label">Обновление..</string>
+    <string name="pull_to_refresh_refreshing_label">Обновление...</string>
     <string name="adv_form">Расш. форма</string>
     <string name="advanced_form">Расш. форма</string>
     <string name="app_description">Неофициальный клиент для сайта 4pda.ru</string>
@@ -88,7 +88,7 @@
     <string name="Logout">Выход</string>
     <string name="Login">Вход</string>
     <string name="Registration">Регистрация</string>
-    <string name="SendBy_">Отправить через..</string>
+    <string name="SendBy_">Отправить через...</string>
     <string name="Loading_">Загрузка...</string>
     <string name="Canceled">Отменено</string>
     <string name="CheckConnection">Проверьте подключение</string>
@@ -152,7 +152,7 @@
     <string name="Settings">Настройки</string>
     <string name="Refresh">Обновить</string>
     <string name="Downloads">Загрузки</string>
-    <string name="More">Другое..</string>
+    <string name="More">Другое...</string>
     <string name="CloseApp">Закрыть программу</string>
     <string name="guest">гость</string>
     <string name="SupportTheDeveloper">Поддержать разработчика</string>

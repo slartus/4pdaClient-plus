@@ -231,7 +231,7 @@
                 android:entryValues="@array/downloaderManagersValues"
                 android:key="file.downloaderManagers"
                 android:summary="Использовать для скачивания файлов выбранный менеджер"
-                android:title="Скачивать файл при помощи.." />
+                android:title="Скачивать файл при помощи..." />
         </PreferenceScreen>
 
         <!--<CheckBoxPreference-->

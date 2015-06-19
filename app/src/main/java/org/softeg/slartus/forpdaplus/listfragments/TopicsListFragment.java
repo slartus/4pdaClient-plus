@@ -192,7 +192,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
     public SubMenu addOptionsMenu(final Context context, final Handler mHandler, Menu menu, final IListItem topic,
                                   final String shareItUrl) {
-        SubMenu optionsMenu = menu.addSubMenu("Опции..").setIcon(R.drawable.ic_menu_more);
+        SubMenu optionsMenu = menu.addSubMenu("Опции...").setIcon(R.drawable.ic_menu_more);
 
         configureOptionsMenu(context, mHandler, optionsMenu, topic, shareItUrl);
         return optionsMenu;

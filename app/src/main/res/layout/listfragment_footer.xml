@@ -37,7 +37,7 @@
 
         <TextView
 
-            android:text="Загрузка.."
+            android:text="Загрузка..."
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_weight="1"

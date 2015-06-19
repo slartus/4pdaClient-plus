@@ -283,7 +283,7 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
                 }
             });
             if (loading) {
-                setEmptyText("Загрузка..");
+                setEmptyText("Загрузка...");
             } else {
                 setEmptyText("Нет данных");
             }

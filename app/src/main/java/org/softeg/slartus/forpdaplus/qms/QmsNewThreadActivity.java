@@ -169,7 +169,7 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
 
         protected void onPreExecute() {
             username.setVisibility(View.GONE);
-            Toast.makeText(getContext(), "Получение ника пользователя..", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Получение ника пользователя...", Toast.LENGTH_SHORT).show();
             //setSupportProgressBarIndeterminateVisibility(true);
         }
 

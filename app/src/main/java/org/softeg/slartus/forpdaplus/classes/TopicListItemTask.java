@@ -54,7 +54,7 @@ public abstract class TopicListItemTask extends AsyncTask<String, String, String
             topic.inProgress(false);
 
             if (ex == null) {
-                Toast.makeText(context, "\"" + topic.getTitle().substring(0, Math.min(10, topic.getTitle().length() - 1)) + "..\": " + result, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "\"" + topic.getTitle().substring(0, Math.min(10, topic.getTitle().length() - 1)) + "...\": " + result, Toast.LENGTH_SHORT).show();
                 onPostExecute(topic);
             } else
                 AppLog.e(context, ex);

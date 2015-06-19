@@ -35,7 +35,7 @@ public class ExtUrl {
         sendMailIntent.setData(Uri.parse(url));
         sendMailIntent.setType("text/plain");
 
-        context.startActivity(Intent.createChooser(sendMailIntent, "Поделиться через.."));
+        context.startActivity(Intent.createChooser(sendMailIntent, "Поделиться через..."));
     }
 
     public static void copyLinkToClipboard(Context context, String link) {
@@ -45,7 +45,7 @@ public class ExtUrl {
 
     public static SubMenu addUrlSubMenu(final android.os.Handler handler, final Context context, Menu menu, final String url
             , final CharSequence id, final String title) {
-        SubMenu subMenu = menu.addSubMenu("Ссылка..");
+        SubMenu subMenu = menu.addSubMenu("Ссылка...");
         addUrlMenu(handler, context, subMenu, url, id, title);
         return subMenu;
     }
@@ -159,7 +159,7 @@ public class ExtUrl {
     public static void showSelectActionDialog(final android.os.Handler handler, final Context context,
                                               final String title, final String body, final String url, final String topicId, final String topic,
                                               final String postId, final String userId, final String user) {
-        CharSequence[] titles = new CharSequence[]{"Открыть в..", "Поделиться ссылкой", "Скопировать ссылку", "Создать заметку"};
+        CharSequence[] titles = new CharSequence[]{"Открыть в...", "Поделиться ссылкой", "Скопировать ссылку", "Создать заметку"};
         new MaterialDialog.Builder(context)
                 .title("Ссылка...")
                 .content(url)

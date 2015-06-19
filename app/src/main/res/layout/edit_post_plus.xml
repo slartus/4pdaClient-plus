@@ -61,37 +61,41 @@
             style="?edit_text">
             <ImageButton
                 android:id="@+id/advanced_button"
-                android:background="@android:color/transparent"
+                style="?right_separator"
                 android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:src="@drawable/btn_show_post_panel" />
             <Button
                 android:id="@+id/btnAttachments"
-                android:background="@android:color/transparent"
+                style="?right_separator"
                 android:layout_width="wrap_content"
                 android:minWidth="56dp"
-                android:layout_height="48dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:drawableLeft="@drawable/ic_menu_attachment"
                 android:text="0"
                 android:layout_marginLeft="48dp"
-                android:paddingRight="4dp"
+                android:paddingLeft="4dp"
                 android:textSize="14sp"
                 android:textColor="#757575"/>
             <ImageButton
                 android:id="@+id/btnUpload"
-                android:background="@android:color/transparent"
+                style="?right_separator"
                 android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="104dp"
                 android:src="@drawable/btn_upload" />
             <Button
                 android:id="@+id/btnSendPost"
-                android:background="@android:color/transparent"
                 android:layout_width="fill_parent"
                 android:layout_height="48dp"
-                android:layout_marginLeft="152dp"
-                android:text="Отправить"
-                android:textColor="@color/actionbar_background_wh"/>
+                android:layout_marginLeft="156dp"
+                android:text="Отправить"/>
         </FrameLayout>
 
         <LinearLayout

@@ -105,7 +105,7 @@ public class ForumUser {
                         } else if (actionId == finalSendQmsPosition) {
                             new MaterialDialog.Builder(context)
                                     .title(context.getString(R.string.SelectAnAction))
-                                    .content(context.getString(R.string.OpenWith) + " " + finalUserNick + "..")
+                                    .content(context.getString(R.string.OpenWith) + " " + finalUserNick + "...")
                                     .cancelable(true)
                                     .positiveText(context.getString(R.string.NewDialog))
                                     .neutralText(context.getString(R.string.AllDialogs))
@@ -160,7 +160,7 @@ public class ForumUser {
                             public boolean onMenuItemClick(MenuItem menuItem) {
                                 new MaterialDialog.Builder(context)
                                         .title(context.getString(R.string.SelectAnAction))
-                                        .content(context.getString(R.string.OpenWith) + " " + finalUserNick + "..")
+                                        .content(context.getString(R.string.OpenWith) + " " + finalUserNick + "...")
                                         .cancelable(true)
                                         .positiveText(context.getString(R.string.NewDialog))
                                         .neutralText(context.getString(R.string.AllDialogs))

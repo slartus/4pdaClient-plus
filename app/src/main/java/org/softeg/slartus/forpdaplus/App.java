@@ -254,11 +254,11 @@ public class App extends android.app.Application {
     }
 
     public int getThemeStyleWebViewBackground() {
-        return isWhiteTheme() ? Color.parseColor("#eeeeee") : Color.parseColor("#212121");
+        return isWhiteTheme() ? Color.parseColor("#eeeeee") : Color.parseColor("#1a1a1a");
     }
 
     public String getCurrentBackgroundColorHtml() {
-        return isWhiteTheme() ? "#eeeeee" : "#212121";
+        return isWhiteTheme() ? "#eeeeee" : "#1a1a1a";
     }
 
     public String getCurrentTheme() {
@@ -283,7 +283,7 @@ public class App extends android.app.Application {
     }
 
     private String defaultCssTheme() {
-        return "/android_asset/forum/css/coba_white_blue.css";
+        return "/android_asset/forum/css/4pda_light_blue.css";
     }
 
     public String getThemeCssFileName() {
@@ -296,7 +296,7 @@ public class App extends android.app.Application {
             return checkThemeFile(themeStr);
 
         String path = "/android_asset/forum/css/";
-        String cssFile = "coba_white_blue.css";
+        String cssFile = "4pda_light_blue.css";
         int theme = Integer.parseInt(themeStr);
         if (theme == -1)
             return themeStr;
@@ -305,7 +305,7 @@ public class App extends android.app.Application {
             case THEME_WHITE:
                 switch (color) {
                     case "pink":
-                        cssFile = "coba_white_blue.css";
+                        cssFile = "4pda_light_blue.css";
                         break;
                     case "blue":
                         cssFile = "coba_white_blue_blue.css";
@@ -321,7 +321,7 @@ public class App extends android.app.Application {
             case THEME_BLACK:
                 switch (color) {
                     case "pink":
-                        cssFile = "coba_dark_blue.css";
+                        cssFile = "4pda_dark_blue.css";
                         break;
                     case "blue":
                         cssFile = "coba_dark_blue_blue.css";

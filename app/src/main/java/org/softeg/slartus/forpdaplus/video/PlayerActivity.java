@@ -466,14 +466,14 @@ public class PlayerActivity extends BaseFragmentActivity {
                 }
                 subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
-            subMenu = menu.addSubMenu("Ссылка..").setIcon(R.drawable.ic_menu_share);
+            subMenu = menu.addSubMenu("Ссылка...").setIcon(R.drawable.ic_menu_share);
 
             addUrlMenu(getActivity(), subMenu, getMainActivity().getPlayedRequestUrl());
             subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
 
         public void addUrlMenu(final Context context, Menu menu, final String url) {
-            menu.add("Открыть в..").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            menu.add("Открыть в...").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     ExtUrl.showInBrowser(context, url);
                     return true;

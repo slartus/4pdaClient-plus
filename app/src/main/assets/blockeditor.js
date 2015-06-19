@@ -1,3 +1,4 @@
+/*
 function customScript(file) {
     var url = document.getElementsByTagName('link')[0].href;
     url = url.substring(0, url.length - 4);
@@ -10,7 +11,7 @@ function customScript(file) {
 window.onload = function () {
     customScript('script.js');
 }
-
+*/
 Element.prototype.remove = function() {
     this.parentElement.removeChild(this);
 }
