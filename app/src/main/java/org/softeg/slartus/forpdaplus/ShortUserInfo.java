@@ -164,8 +164,12 @@ public class ShortUserInfo {
         protected Void doInBackground(String... urls) {
             try {
                 Document doc = Jsoup.parse(client.performGet("http://4pda.ru/forum/index.php?showuser=" + client.UserId));
-                avatarUrl = doc.select("div.user-box > div.photo > img").first().absUrl("src").toString();
-                reputation = doc.select("div.statistic-box span[id*=\"ajaxrep\"]").first().text().toString();
+                if(doc.select("div.user-box > div.photo > img").first()!=null){
+                    avatarUrl = doc.select("div.user-box > div.photo > img").first().absUrl("src");
+                }
+                if(doc.select("div.statistic-box span[id*=\"ajaxrep\"]").first()!=null){
+                    reputation = doc.select("div.statistic-box span[id*=\"ajaxrep\"]").first().text();
+                }
             } catch (IOException e) {
                 AppLog.e(getContext(), e);
             }
@@ -176,6 +180,8 @@ public class ShortUserInfo {
         protected void onPostExecute(Void result) {
             if(avatarUrl.equals("")|reputation.equals("")){
                 Toast.makeText(getContext(),"Не удалось загрузить данные",Toast.LENGTH_SHORT).show();
+                loginButton.setText("Проблема...");
+                qmsMessages.setVisibility(View.GONE);
             }else if (client.getLogined()) {
                 loginButton.setVisibility(View.GONE);
                 textWrapper.setOnClickListener(new View.OnClickListener() {
