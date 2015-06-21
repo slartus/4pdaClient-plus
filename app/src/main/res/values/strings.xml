@@ -119,7 +119,7 @@
     <string name="RaiseReputation">Поднять репутацию</string>
     <string name="FailedToCreateFolderInPath">Не удалось создать папку по указанному пути</string>
     <string name="FailedToCreateFileInPath">Не удалось создать файл по указанному пути</string>
-    <string name="AcceptStyle">Применить стиль</string>
+    <string name="AcceptStyle">Применить</string>
     <string name="ChooseStyle">Выберите стиль</string>
     <string name="Information">Информация</string>
     <string name="StyleDoesNotContainDesc">Стиль не содержит описания</string>

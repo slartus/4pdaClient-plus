@@ -199,7 +199,7 @@ public class Post {
         new MaterialDialog.Builder(context)
                 .title("Отправить жалобу модератору на сообщение")
                 .customView(layout,true)
-                .positiveText("Отправить жалобу")
+                .positiveText("Отправить")
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
