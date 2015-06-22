@@ -169,21 +169,31 @@ public class HtmloutWebInterfaceForOld {
 
     @JavascriptInterface
     public void showUserMenu(final String postId, final String userId, final String userNick, final String avatar) {
-        ForumUser.showUserQuickAction(getContext(), getContext().getWebView(), postId, userId, userNick, avatar,
-                new ForumUser.InsertNickInterface() {
-                    @Override
-                    public void insert(String text) {
-                        insertTextToPost(text);
-                    }
-                }
-        );
+        getContext().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ForumUser.showUserQuickAction(getContext(), getContext().getWebView(), postId, userId, userNick, avatar,
+                        new ForumUser.InsertNickInterface() {
+                            @Override
+                            public void insert(String text) {
+                                insertTextToPost(text);
+                            }
+                        }
+                );
+            }
+        });
     }
 
     @JavascriptInterface
     public void insertTextToPost(final String text) {
-        new Handler().post(new Runnable() {
+        getContext().runOnUiThread(new Runnable() {
+            @Override
             public void run() {
-                getContext().insertTextToPost(text);
+                new Handler().post(new Runnable() {
+                    public void run() {
+                        getContext().insertTextToPost(text);
+                    }
+                });
             }
         });
     }

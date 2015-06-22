@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -20,6 +21,8 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.HttpHelper;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.topicview.HtmloutWebInterface;
+import org.softeg.slartus.forpdaplus.topicview.HtmloutWebInterfaceForOld;
 
 import java.io.IOException;
 import java.net.URI;
@@ -66,6 +69,9 @@ public class ImageViewDialogFragment extends DialogFragment {
         m_PhotoView=(PhotoView)v.findViewById(R.id.iv_photo);
         //m_PhotoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         m_PhotoView.setMaximumScale(10f);
+        if(android.os.Build.VERSION.SDK_INT < 17){
+            m_PhotoView.setZoomable(false);
+        }
         m_ProgressView=v.findViewById(R.id.progressBar);
         MaterialDialog builder= new MaterialDialog.Builder(getActivity())
                 .title(mTitle)
@@ -88,6 +94,7 @@ public class ImageViewDialogFragment extends DialogFragment {
                 }).build();
 
         builder.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        builder.show();
         return builder;
 
     }

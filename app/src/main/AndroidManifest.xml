@@ -19,7 +19,6 @@
         android:description="@string/app_description"
         tools:replace="android:icon"
         android:icon="@drawable/icon_mat"
-        android:hardwareAccelerated="true"
         android:name=".App"
         android:theme="@style/MainPinkBL">
 

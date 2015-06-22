@@ -180,7 +180,7 @@ public class ShortUserInfo {
         protected void onPostExecute(Void result) {
             if(avatarUrl.equals("")|reputation.equals("")){
                 Toast.makeText(getContext(),"Не удалось загрузить данные",Toast.LENGTH_SHORT).show();
-                loginButton.setText("Проблема...");
+                loginButton.setText("Произошла ошибка");
                 qmsMessages.setVisibility(View.GONE);
             }else if (client.getLogined()) {
                 loginButton.setVisibility(View.GONE);
