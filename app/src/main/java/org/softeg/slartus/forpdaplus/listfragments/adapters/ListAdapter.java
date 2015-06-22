@@ -139,8 +139,8 @@ public class ListAdapter extends BaseAdapter implements Filterable {
                 }
                 break;
             case IListItem.STATE_RED:
-                setVisibility(holder.Flag, View.INVISIBLE);
-                holder.Flag.setImageBitmap(null);
+                setVisibility(holder.Flag, View.VISIBLE);
+                holder.Flag.setImageResource(R.drawable.old_flag);
                 break;
             default:
                 setVisibility(holder.Flag, View.INVISIBLE);

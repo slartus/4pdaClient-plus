@@ -50,7 +50,7 @@ public class SearchPostsParser extends HtmlBuilder {
 
         beginTopic(searchResult);
 
-        m_Body.append("<div class=\"search-results\">");
+        m_Body.append("<div class=\"posts_list search-results\">");
         Document doc = Jsoup.parse(body, "http://4pda.ru");
         Elements postsElements = doc.select("div[data-post]");
         if(postsElements.size()==0){
@@ -180,7 +180,7 @@ public class SearchPostsParser extends HtmlBuilder {
             }
             postFooter = Post.modifyBody(trElements.get(2).children().get(1).html(), m_EmoticsDict, true);
 
-            String POST_TEMPLATE = "<div class=\"between_messages\"></div>\n" +
+            String POST_TEMPLATE = "<div class=\"post_container\"><div class=\"between_messages\"></div>\n" +
                     "<div class=\"topic_title_post\">%1s</div>\n" +
                     "<div class=\"post_header\">\n" +
                     "\t<table width=\"100%%\">\n" +
@@ -190,7 +190,7 @@ public class SearchPostsParser extends HtmlBuilder {
                     "</table>" +
                     "</div>" +
                     "<div class=\"post_body emoticons\">%4s</div>" +
-                    "<div class=\"s_post_footer\"><table width=\"100%%\"><tr><td>%5s</td></tr></table></div>";
+                    "<div class=\"s_post_footer\"><table width=\"100%%\"><tr><td>%5s</td></tr></table></div></div>";
             return String.format(POST_TEMPLATE, topic, user, dateTime, post, postFooter);
         }
 

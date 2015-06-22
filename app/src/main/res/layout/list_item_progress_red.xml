@@ -12,13 +12,10 @@
 
         <ImageView
             android:id="@+id/imgFlag"
-            android:layout_width="fill_parent"
+            android:layout_width="10dp"
             android:layout_height="fill_parent"
             android:contentDescription="flag"
-            android:lines="1"
-            android:minLines="3"
-            android:scaleType="centerCrop"
-            android:src="@drawable/old_flag"/>
+            android:scaleType="centerCrop"/>
 
         <LinearLayout
             android:id="@+id/linearLayout2"

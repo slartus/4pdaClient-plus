@@ -146,6 +146,7 @@ public class EditPostActivity extends BaseFragmentActivity {
         m_BottomPanel = findViewById(R.id.bottomPanel);
 
         txtPost = (EditText) findViewById(R.id.txtPost);
+
         txtpost_edit_reason = (EditText) findViewById(R.id.txtpost_edit_reason);
         txtPost.setOnEditorActionListener(new EditText.OnEditorActionListener() {
 
@@ -335,7 +336,7 @@ public class EditPostActivity extends BaseFragmentActivity {
             if (extras.containsKey("body"))
                 txtPost.setText(extras.get("body").toString());
         }
-
+        txtPost.setSelection(txtPost.getText().length());
     }
 
 

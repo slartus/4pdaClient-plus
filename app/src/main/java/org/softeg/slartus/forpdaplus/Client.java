@@ -827,6 +827,7 @@ public class Client implements IHttpClient {
             topicBodyBuilder.addPoll(poll, urlParams != null && urlParams.contains("poll_open=true"));
         }
         //<<опрос
+        topicBodyBuilder.openPostsList();
 
         if (browserStyle) {
             body = body

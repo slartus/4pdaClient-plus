@@ -57,8 +57,11 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
         m_Body.append(getTitleBlock());
     }
-
+    public void openPostsList() {
+        m_Body.append("<div class=\"posts_list\">");
+    }
     public void endTopic() {
+        m_Body.append("</div>");
         m_Body.append("<div name=\"entryEnd\" id=\"entryEnd\"></div>\n");
         m_Body.append("<br/><br/>");
         if (m_Topic.getPagesCount() > 1) {
@@ -76,7 +79,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         m_Body.append(getTitleBlock());
 
 
-        m_Body.append("<div style=\"margin-top:"+getMarginTop()+"px\"/>\n");
+        //m_Body.append("<div style=\"margin-top:"+getMarginTop()+"px\"/>\n");
         super.endBody();
         super.endHtml();
     }
@@ -95,7 +98,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
     }
 
     public void addPost(Post post, Boolean spoil) {
-
+        m_Body.append("<div class=\"post_container\">");
         m_Body.append("<div name=\"entry").append(post.getId()).append("\" style=\"position: absolute; width: 100%; margin-top:-4em; left: 0;\" id=\"entry").append(post.getId()).append("\"></div>\n");
 
         addPostHeader(m_Body, post);
@@ -115,6 +118,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
         addFooter(m_Body, post);
         m_Body.append("<div class=\"between_messages\"></div>");
+        m_Body.append("</div>");
     }
 
     public String getBody() {
