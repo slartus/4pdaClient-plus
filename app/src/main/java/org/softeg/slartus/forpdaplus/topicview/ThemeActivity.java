@@ -23,7 +23,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,10 +31,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -276,11 +273,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             webView.setActionBarheight(getSupportActionBar().getHeight());
         setHideActionBar();
         setHideArrows(Preferences.isHideArrows());
-        if(android.os.Build.VERSION.SDK_INT < 17){
-            webView.addJavascriptInterface(new HtmloutWebInterfaceForOld(this), HtmloutWebInterface.NAME);
-        }else {
-            webView.addJavascriptInterface(new HtmloutWebInterface(this), HtmloutWebInterface.NAME);
-        }
+        webView.addJavascriptInterface(new HtmloutWebInterface(this), HtmloutWebInterface.NAME);
+
         m_DeveloperWebInterface = new DeveloperWebInterface(this);
         webView.addJavascriptInterface(m_DeveloperWebInterface, DeveloperWebInterface.NAME);
 

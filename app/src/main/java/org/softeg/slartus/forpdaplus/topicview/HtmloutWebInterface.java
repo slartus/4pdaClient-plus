@@ -1,13 +1,11 @@
-package org.softeg.slartus.forpdaplus.topicview;/*
- * Created by slinkin on 09.07.2014.
- */
+package org.softeg.slartus.forpdaplus.topicview;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -37,7 +35,9 @@ import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicReadersBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 
-
+/*
+ * Created by slinkin on 23.06.2015.
+ */
 public class HtmloutWebInterface {
     public static final String NAME = "HTMLOUT";
     private ThemeActivity context;
@@ -50,9 +50,10 @@ public class HtmloutWebInterface {
         return context;
     }
 
+
     @JavascriptInterface
     public void showImgPreview(final String title, final String previewUrl, final String fullUrl) {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 ThemeActivity.showImgPreview(getContext(), title, previewUrl, fullUrl);
@@ -62,19 +63,19 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void quote(final String forumId, final String topicId, final String postId, final String postDate, final String userId, final String userNick) {
-        getContext().runOnUiThread(new Runnable() {
-                                       @Override
-                                       public void run() {
-                                           getContext().quote(forumId, topicId, postId, postDate, userId, userNick);
+        run(new Runnable() {
+                @Override
+                public void run() {
+                    getContext().quote(forumId, topicId, postId, postDate, userId, userNick);
 
-                                       }
-                                   }
+                }
+            }
         );
     }
 
     @JavascriptInterface
     public void checkBodyAndReload(final String postBody) {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 getContext().checkBodyAndReload(postBody);
@@ -85,18 +86,18 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void showTopicAttaches(final String postBody) {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 final TopicAttaches topicAttaches = new TopicAttaches();
                 topicAttaches.parseAttaches(postBody);
                 if (topicAttaches.size() == 0) {
-                    Toast.makeText(getContext(), "РЎС‚СЂР°РЅРёС†Р° РЅРµ РёРјРµРµС‚ РІР»РѕР¶РµРЅРёР№", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Страница не имеет вложений", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 final boolean[] selection = new boolean[topicAttaches.size()];
                 new MaterialDialog.Builder(getContext())
-                        .title("Р’Р»РѕР¶РµРЅРёСЏ")
+                        .title("Вложения")
                         .items(topicAttaches.getList())
                         .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
                             @Override
@@ -108,26 +109,26 @@ public class HtmloutWebInterface {
                             }
                         })
                         .alwaysCallMultiChoiceCallback()
-                        .positiveText("РЎРєР°С‡Р°С‚СЊ")
+                        .positiveText("Скачать")
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
                                 if (!Client.getInstance().getLogined()) {
                                     new MaterialDialog.Builder(getContext())
-                                            .title("Р’РЅРёРјР°РЅРёРµ!")
-                                            .content("Р”Р»СЏ СЃРєР°С‡РёРІР°РЅРёСЏ С„Р°Р№Р»РѕРІ СЃ СЃР°Р№С‚Р° РЅРµРѕР±С…РѕРґРёРјРѕ Р·Р°Р»РѕРіРёРЅРёС‚СЊСЃСЏ!")
-                                            .positiveText("РћРљ")
+                                            .title("Внимание!")
+                                            .content("Для скачивания файлов с сайта необходимо залогиниться!")
+                                            .positiveText("ОК")
                                             .show();
                                     return;
                                 }
                                 for (int j = 0; j < selection.length; j++) {
                                     if (!selection[j]) continue;
                                     DownloadsService.download(getContext(), topicAttaches.get(j).getUri(), false);
-                                    selection[j]=false;
+                                    selection[j] = false;
                                 }
                             }
                         })
-                        .negativeText("РћС‚РјРµРЅР°")
+                        .negativeText("Отмена")
                         .show();
             }
         });
@@ -135,7 +136,7 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void showPostLinkMenu(final String postId) {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 getContext().showLinkMenu(org.softeg.slartus.forpdaplus.classes.Post.getLink(getContext().getTopic().getId(), postId), postId);
@@ -146,14 +147,14 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void postVoteBad(final String postId) {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 new MaterialDialog.Builder(getContext())
-                        .title("РџРѕРґС‚РІРµСЂРґРёС‚Рµ РґРµР№СЃС‚РІРёРµ")
-                        .content("РџРѕРЅРёР·РёС‚СЊ СЂРµР№С‚РёРЅРі СЃРѕРѕР±С‰РµРЅРёСЏ?")
-                        .positiveText("РџРѕРЅРёР·РёС‚СЊ")
-                        .negativeText("РћС‚РјРµРЅР°")
+                        .title("Подтвердите действие")
+                        .content("Понизить рейтинг сообщения?")
+                        .positiveText("Понизить")
+                        .negativeText("Отмена")
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
@@ -167,14 +168,14 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void postVoteGood(final String postId) {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 new MaterialDialog.Builder(getContext())
-                        .title("РџРѕРґС‚РІРµСЂРґРёС‚Рµ РґРµР№СЃС‚РІРёРµ")
-                        .content("РџРѕРІС‹СЃРёС‚СЊ СЂРµР№С‚РёРЅРі СЃРѕРѕР±С‰РµРЅРёСЏ?")
-                        .positiveText("РџРѕРІС‹СЃРёС‚СЊ")
-                        .negativeText("РћС‚РјРµРЅР°")
+                        .title("Подтвердите действие")
+                        .content("Повысить рейтинг сообщения?")
+                        .positiveText("Повысить")
+                        .negativeText("Отмена")
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
@@ -188,11 +189,11 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void showReadingUsers() {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Bundle args=new Bundle();
+                    Bundle args = new Bundle();
                     args.putString(TopicReadersListFragment.TOPIC_ID_KEY, getContext().getTopic().getId());
                     ListFragmentActivity.showListFragment(context, TopicReadersBrickInfo.NAME, args);
                 } catch (ActivityNotFoundException e) {
@@ -205,13 +206,13 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void showWriters() {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 if (getContext().getTopic() == null) {
-                    Toast.makeText(getContext(), "Р§С‚Рѕ-С‚Рѕ РїРѕС€Р»Рѕ РЅРµ С‚Р°Рє", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Что-то пошло не так", Toast.LENGTH_SHORT).show();
                 } else {
-                    Bundle args=new Bundle();
+                    Bundle args = new Bundle();
                     args.putString(TopicWritersListFragment.TOPIC_ID_KEY, getContext().getTopic().getId());
                     ListFragmentActivity.showListFragment(context, TopicWritersBrickInfo.NAME, args);
 
@@ -222,7 +223,7 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void showUserMenu(final String postId, final String userId, final String userNick, final String avatar) {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 ForumUser.showUserQuickAction(getContext(), getContext().getWebView(), postId, userId, userNick, avatar,
@@ -239,7 +240,7 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void insertTextToPost(final String text) {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 new Handler().post(new Runnable() {
@@ -255,7 +256,7 @@ public class HtmloutWebInterface {
     public void showPostMenu(final String postId, final String postDate,
                              final String userId, final String userNick,
                              final String canEdit, final String canDelete) {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 getContext().openActionMenu(postId, postDate, userId, userNick, "1".equals(canEdit), "1".equals(canDelete));
@@ -265,7 +266,7 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void post() {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 getContext().post();
@@ -275,7 +276,7 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void nextPage() {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 getContext().nextPage();
@@ -285,7 +286,7 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void prevPage() {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 getContext().prevPage();
@@ -296,7 +297,7 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void firstPage() {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 getContext().firstPage();
@@ -306,7 +307,7 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void lastPage() {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 getContext().lastPage();
@@ -316,7 +317,7 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void jumpToPage() {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -326,7 +327,7 @@ public class HtmloutWebInterface {
                     final int postsPerPage = getContext().getTopic().getPostsPerPageCount(getContext().getLastUrl());
 
                     for (int p = 0; p < getContext().getTopic().getPagesCount(); p++) {
-                        pages[p] = "РЎС‚СЂ. " + (p + 1) + " (" + ((p * postsPerPage + 1) + "-" + (p + 1) * postsPerPage) + ")";
+                        pages[p] = "Стр. " + (p + 1) + " (" + ((p * postsPerPage + 1) + "-" + (p + 1) * postsPerPage) + ")";
                     }
 
                     LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -337,7 +338,7 @@ public class HtmloutWebInterface {
                     listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
                     ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(getContext(),
                             android.R.layout.simple_list_item_single_choice, pages);
-                    // РїСЂРёСЃРІР°РёРІР°РµРј Р°РґР°РїС‚РµСЂ СЃРїРёСЃРєСѓ
+                    // присваиваем адаптер списку
                     listView.setAdapter(adapter);
 
                     final EditText txtNumberPage = (EditText) view.findViewById(R.id.txtNumberPage);
@@ -393,16 +394,16 @@ public class HtmloutWebInterface {
                     listView.setSelection(getContext().getTopic().getCurrentPage() - 1);
 
                     new MaterialDialog.Builder(getContext())
-                            .title("РџРµСЂРµР№С‚Рё Рє СЃС‚СЂР°РЅРёС†Рµ")
-                            .customView(view,false)
-                            .positiveText("РџРµСЂРµР№С‚Рё")
+                            .title("Перейти к странице")
+                            .customView(view, false)
+                            .positiveText("Перейти")
                             .callback(new MaterialDialog.ButtonCallback() {
                                 @Override
                                 public void onPositive(MaterialDialog dialog) {
                                     getContext().openFromSt(listView.getCheckedItemPosition() * postsPerPage);
                                 }
                             })
-                            .negativeText("РћС‚РјРµРЅР°")
+                            .negativeText("Отмена")
                             .cancelable(true)
                             .show();
                 } catch (Throwable ex) {
@@ -415,27 +416,27 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void plusRep(final String postId, final String userId, final String userNick) {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
-                getContext().showChangeRep(postId, userId, userNick, "add", "РџРѕРґРЅСЏС‚СЊ СЂРµРїСѓС‚Р°С†РёСЋ");
+                getContext().showChangeRep(postId, userId, userNick, "add", "Поднять репутацию");
             }
         });
     }
 
     @JavascriptInterface
     public void minusRep(final String postId, final String userId, final String userNick) {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
-                getContext().showChangeRep(postId, userId, userNick, "minus", "РћРїСѓСЃС‚РёС‚СЊ СЂРµРїСѓС‚Р°С†РёСЋ");
+                getContext().showChangeRep(postId, userId, userNick, "minus", "Опустить репутацию");
             }
         });
     }
 
     @JavascriptInterface
     public void claim(final String postId) {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 org.softeg.slartus.forpdaplus.classes.Post.claim(getContext(), new Handler(), getContext().getTopic().getId(), postId);
@@ -446,7 +447,7 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void showRepMenu(final String postId, final String userId, final String userNick, final String canPlus, final String canMinus) {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 final QuickAction mQuickAction = new QuickAction(getContext());
@@ -456,14 +457,14 @@ public class HtmloutWebInterface {
                 if ("1".equals(canPlus)) {
                     actionItem = new ActionItem();
 
-                    actionItem.setTitle("РџРѕРґРЅСЏС‚СЊ (+1)");
+                    actionItem.setTitle("Поднять (+1)");
                     plusRepPosition = mQuickAction.addActionItem(actionItem);
                 }
 
                 int showRepPosition;
 
                 actionItem = new ActionItem();
-                actionItem.setTitle("РџРѕСЃРјРѕС‚СЂРµС‚СЊ");
+                actionItem.setTitle("Посмотреть");
 
                 showRepPosition = mQuickAction.addActionItem(actionItem);
 
@@ -471,7 +472,7 @@ public class HtmloutWebInterface {
                 if ("1".equals(canMinus)) {
                     actionItem = new ActionItem();
 
-                    actionItem.setTitle("РћРїСѓСЃС‚РёС‚СЊ (-1)");
+                    actionItem.setTitle("Опустить (-1)");
                     minusRepPosition = mQuickAction.addActionItem(actionItem);
                 }
 
@@ -503,7 +504,7 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void go_gadget_show() {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
 
@@ -517,7 +518,7 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void go_gadget_vote() {
-        getContext().runOnUiThread(new Runnable() {
+        run(new Runnable() {
             @Override
             public void run() {
                 String url = "http://4pda.ru/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&poll_open=true&st=" +
@@ -528,4 +529,12 @@ public class HtmloutWebInterface {
 
     }
 
+
+    public void run(final Runnable runnable) {
+        if (Build.VERSION.SDK_INT < 17) {
+            runnable.run();
+        } else {
+            getContext().runOnUiThread(runnable);
+        }
+    }
 }

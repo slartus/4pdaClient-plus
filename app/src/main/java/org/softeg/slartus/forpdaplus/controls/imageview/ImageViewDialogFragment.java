@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -21,8 +20,6 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.HttpHelper;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.topicview.HtmloutWebInterface;
-import org.softeg.slartus.forpdaplus.topicview.HtmloutWebInterfaceForOld;
 
 import java.io.IOException;
 import java.net.URI;
