@@ -92,12 +92,12 @@ public class HtmloutWebInterface {
                 final TopicAttaches topicAttaches = new TopicAttaches();
                 topicAttaches.parseAttaches(postBody);
                 if (topicAttaches.size() == 0) {
-                    Toast.makeText(getContext(), "Страница не имеет вложений", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "РЎС‚СЂР°РЅРёС†Р° РЅРµ РёРјРµРµС‚ РІР»РѕР¶РµРЅРёР№", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 final boolean[] selection = new boolean[topicAttaches.size()];
                 new MaterialDialog.Builder(getContext())
-                        .title("Вложения")
+                        .title("Р’Р»РѕР¶РµРЅРёСЏ")
                         .items(topicAttaches.getList())
                         .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
                             @Override
@@ -109,15 +109,15 @@ public class HtmloutWebInterface {
                             }
                         })
                         .alwaysCallMultiChoiceCallback()
-                        .positiveText("Скачать")
+                        .positiveText("РЎРєР°С‡Р°С‚СЊ")
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
                                 if (!Client.getInstance().getLogined()) {
                                     new MaterialDialog.Builder(getContext())
-                                            .title("Внимание!")
-                                            .content("Для скачивания файлов с сайта необходимо залогиниться!")
-                                            .positiveText("ОК")
+                                            .title("Р’РЅРёРјР°РЅРёРµ!")
+                                            .content("Р”Р»СЏ СЃРєР°С‡РёРІР°РЅРёСЏ С„Р°Р№Р»РѕРІ СЃ СЃР°Р№С‚Р° РЅРµРѕР±С…РѕРґРёРјРѕ Р·Р°Р»РѕРіРёРЅРёС‚СЊСЃСЏ!")
+                                            .positiveText("РћРљ")
                                             .show();
                                     return;
                                 }
@@ -128,7 +128,7 @@ public class HtmloutWebInterface {
                                 }
                             }
                         })
-                        .negativeText("Отмена")
+                        .negativeText("РћС‚РјРµРЅР°")
                         .show();
             }
         });
@@ -151,10 +151,10 @@ public class HtmloutWebInterface {
             @Override
             public void run() {
                 new MaterialDialog.Builder(getContext())
-                        .title("Подтвердите действие")
-                        .content("Понизить рейтинг сообщения?")
-                        .positiveText("Понизить")
-                        .negativeText("Отмена")
+                        .title("РџРѕРґС‚РІРµСЂРґРёС‚Рµ РґРµР№СЃС‚РІРёРµ")
+                        .content("РџРѕРЅРёР·РёС‚СЊ СЂРµР№С‚РёРЅРі СЃРѕРѕР±С‰РµРЅРёСЏ?")
+                        .positiveText("РџРѕРЅРёР·РёС‚СЊ")
+                        .negativeText("РћС‚РјРµРЅР°")
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
@@ -172,10 +172,10 @@ public class HtmloutWebInterface {
             @Override
             public void run() {
                 new MaterialDialog.Builder(getContext())
-                        .title("Подтвердите действие")
-                        .content("Повысить рейтинг сообщения?")
-                        .positiveText("Повысить")
-                        .negativeText("Отмена")
+                        .title("РџРѕРґС‚РІРµСЂРґРёС‚Рµ РґРµР№СЃС‚РІРёРµ")
+                        .content("РџРѕРІС‹СЃРёС‚СЊ СЂРµР№С‚РёРЅРі СЃРѕРѕР±С‰РµРЅРёСЏ?")
+                        .positiveText("РџРѕРІС‹СЃРёС‚СЊ")
+                        .negativeText("РћС‚РјРµРЅР°")
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
@@ -210,7 +210,7 @@ public class HtmloutWebInterface {
             @Override
             public void run() {
                 if (getContext().getTopic() == null) {
-                    Toast.makeText(getContext(), "Что-то пошло не так", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Р§С‚Рѕ-С‚Рѕ РїРѕС€Р»Рѕ РЅРµ С‚Р°Рє", Toast.LENGTH_SHORT).show();
                 } else {
                     Bundle args = new Bundle();
                     args.putString(TopicWritersListFragment.TOPIC_ID_KEY, getContext().getTopic().getId());
@@ -327,7 +327,7 @@ public class HtmloutWebInterface {
                     final int postsPerPage = getContext().getTopic().getPostsPerPageCount(getContext().getLastUrl());
 
                     for (int p = 0; p < getContext().getTopic().getPagesCount(); p++) {
-                        pages[p] = "Стр. " + (p + 1) + " (" + ((p * postsPerPage + 1) + "-" + (p + 1) * postsPerPage) + ")";
+                        pages[p] = "РЎС‚СЂ. " + (p + 1) + " (" + ((p * postsPerPage + 1) + "-" + (p + 1) * postsPerPage) + ")";
                     }
 
                     LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -338,7 +338,7 @@ public class HtmloutWebInterface {
                     listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
                     ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(getContext(),
                             android.R.layout.simple_list_item_single_choice, pages);
-                    // присваиваем адаптер списку
+                    // РїСЂРёСЃРІР°РёРІР°РµРј Р°РґР°РїС‚РµСЂ СЃРїРёСЃРєСѓ
                     listView.setAdapter(adapter);
 
                     final EditText txtNumberPage = (EditText) view.findViewById(R.id.txtNumberPage);
@@ -394,16 +394,16 @@ public class HtmloutWebInterface {
                     listView.setSelection(getContext().getTopic().getCurrentPage() - 1);
 
                     new MaterialDialog.Builder(getContext())
-                            .title("Перейти к странице")
+                            .title("РџРµСЂРµР№С‚Рё Рє СЃС‚СЂР°РЅРёС†Рµ")
                             .customView(view, false)
-                            .positiveText("Перейти")
+                            .positiveText("РџРµСЂРµР№С‚Рё")
                             .callback(new MaterialDialog.ButtonCallback() {
                                 @Override
                                 public void onPositive(MaterialDialog dialog) {
                                     getContext().openFromSt(listView.getCheckedItemPosition() * postsPerPage);
                                 }
                             })
-                            .negativeText("Отмена")
+                            .negativeText("РћС‚РјРµРЅР°")
                             .cancelable(true)
                             .show();
                 } catch (Throwable ex) {
@@ -419,7 +419,7 @@ public class HtmloutWebInterface {
         run(new Runnable() {
             @Override
             public void run() {
-                getContext().showChangeRep(postId, userId, userNick, "add", "Поднять репутацию");
+                getContext().showChangeRep(postId, userId, userNick, "add", "РџРѕРґРЅСЏС‚СЊ СЂРµРїСѓС‚Р°С†РёСЋ");
             }
         });
     }
@@ -429,7 +429,7 @@ public class HtmloutWebInterface {
         run(new Runnable() {
             @Override
             public void run() {
-                getContext().showChangeRep(postId, userId, userNick, "minus", "Опустить репутацию");
+                getContext().showChangeRep(postId, userId, userNick, "minus", "РћРїСѓСЃС‚РёС‚СЊ СЂРµРїСѓС‚Р°С†РёСЋ");
             }
         });
     }
@@ -457,14 +457,14 @@ public class HtmloutWebInterface {
                 if ("1".equals(canPlus)) {
                     actionItem = new ActionItem();
 
-                    actionItem.setTitle("Поднять (+1)");
+                    actionItem.setTitle("РџРѕРґРЅСЏС‚СЊ (+1)");
                     plusRepPosition = mQuickAction.addActionItem(actionItem);
                 }
 
                 int showRepPosition;
 
                 actionItem = new ActionItem();
-                actionItem.setTitle("Посмотреть");
+                actionItem.setTitle("РџРѕСЃРјРѕС‚СЂРµС‚СЊ");
 
                 showRepPosition = mQuickAction.addActionItem(actionItem);
 
@@ -472,7 +472,7 @@ public class HtmloutWebInterface {
                 if ("1".equals(canMinus)) {
                     actionItem = new ActionItem();
 
-                    actionItem.setTitle("Опустить (-1)");
+                    actionItem.setTitle("РћРїСѓСЃС‚РёС‚СЊ (-1)");
                     minusRepPosition = mQuickAction.addActionItem(actionItem);
                 }
 
