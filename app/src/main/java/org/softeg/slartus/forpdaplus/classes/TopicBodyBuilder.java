@@ -79,7 +79,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         m_Body.append(getTitleBlock());
 
 
-        //m_Body.append("<div style=\"margin-top:"+getMarginTop()+"px\"/>\n");
+        m_Body.append("<div style=\"margin-top:88px\"></div>\n");
         super.endBody();
         super.endHtml();
     }

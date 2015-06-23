@@ -181,9 +181,14 @@ public class HtmloutWebInterfaceForOld {
 
     @JavascriptInterface
     public void insertTextToPost(final String text) {
-        new Handler().post(new Runnable() {
+        getContext().runOnUiThread(new Runnable() {
+            @Override
             public void run() {
-                getContext().insertTextToPost(text);
+                new Handler().post(new Runnable() {
+                    public void run() {
+                        getContext().insertTextToPost(text);
+                    }
+                });
             }
         });
     }

@@ -10,18 +10,17 @@
 
     <ImageButton
         android:id="@+id/btnSpoiler"
-        style="?btnsend"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginRight="12dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:src="@drawable/spoiler" />
 
     <TextView
         android:id="@+id/txtFile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="36dp"
+        android:minHeight="48dp"
         android:singleLine="false"
+        android:paddingLeft="16dp"
         android:inputType="textCapSentences|textMultiLine"
         android:text="sadasd"
         android:textAppearance="@android:style/TextAppearance.Medium"
@@ -33,8 +32,8 @@
 
     <ImageButton
         android:id="@+id/btnDelete"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:background="#00000000"
         android:src="@drawable/ic_delete_attach"
         android:layout_alignTop="@+id/btnSpoiler"

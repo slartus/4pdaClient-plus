@@ -5,6 +5,7 @@ package org.softeg.slartus.forpdaapi;/*
 
 import android.net.Uri;
 import android.text.Html;
+import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIUtils;
@@ -60,7 +61,7 @@ public class ReputationsApi {
         ReputationsListData res = new ReputationsListData();
 
         if (el != null) {
-            Matcher userMatcher = Pattern.compile("\\(.*?\\)\\s*(.*?)\\s*([^ ])*\\s*\\[(\\+\\d+\\/-\\d+)\\]",
+            Matcher userMatcher = Pattern.compile("\\(.*?\\)\\s*(.*?)\\s*(\\S*)\\s*\\[(\\+\\d+\\/-\\d+)\\]",
                     Pattern.CASE_INSENSITIVE).matcher(el.text());
             if (userMatcher.find()) {
                 res.setTitle(userMatcher.group(1));

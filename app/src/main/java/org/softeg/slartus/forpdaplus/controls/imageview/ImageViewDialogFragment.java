@@ -69,9 +69,6 @@ public class ImageViewDialogFragment extends DialogFragment {
         m_PhotoView=(PhotoView)v.findViewById(R.id.iv_photo);
         //m_PhotoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         m_PhotoView.setMaximumScale(10f);
-        if(android.os.Build.VERSION.SDK_INT < 17){
-            m_PhotoView.setZoomable(false);
-        }
         m_ProgressView=v.findViewById(R.id.progressBar);
         MaterialDialog builder= new MaterialDialog.Builder(getActivity())
                 .title(mTitle)

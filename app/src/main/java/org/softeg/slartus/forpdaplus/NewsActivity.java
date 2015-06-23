@@ -188,9 +188,9 @@ public class NewsActivity extends BrowserViewsFragmentActivity
         s_NewsUrl = m_NewsUrl;
 
         fabComment = (FloatingActionButton) findViewById(R.id.fab);
-        fabComment.setColorNormal(App.getInstance().getColorAccent("Accent"));
-        fabComment.setColorPressed(App.getInstance().getColorAccent("Pressed"));
-        fabComment.setColorRipple(App.getInstance().getColorAccent("Pressed"));
+        //fabComment.setColorNormal(App.getInstance().getColorAccent("Accent"));
+        //fabComment.setColorPressed(App.getInstance().getColorAccent("Pressed"));
+        //fabComment.setColorRipple(App.getInstance().getColorAccent("Pressed"));
         if(Client.getInstance().getLogined()&!PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar", false)){
             fabComment.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -581,7 +581,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                 item = menu.add("Комментировать").setIcon(R.drawable.ic_menu_editing);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        ((NewsActivity) getActivity()).refresh();
+                        ((NewsActivity) getActivity()).respond();
                         return true;
                     }
                 });
@@ -822,7 +822,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
             builder.beginBody();
             builder.append("<div style=\"padding-top:" + builder.getMarginTop() + "px\"/>\n");
             builder.append("<div id=\"main\">");
-            builder.append("<script type=\"text/javascript\" async=\"async\" src=\"file:///android_asset/forum/js/jqp.js\"></script>\n");
+            builder.append("<script type=\"text/javascript\" async=\"async\" src=\"file:///android_asset/forum/js/jqp.min.js\"></script>\n");
             builder.append("<script type=\"text/javascript\" async=\"async\" src=\"file:///android_asset/forum/js/site.min.js\"></script>\n");
             builder.append("<script type=\"text/javascript\">(function(f,h){var c=\"$4\";if(\"function\"!=typeof f[c]||.3>f[c].lib4PDA){var g={},b=function(){return f[c]||this},k=function(a,d){return function(){\"function\"==typeof d&&(!a||a in b?d(b[a],a):!g[a]&&(g[a]=[d])||g[a].push(d))}};b.fn=b.prototype={lib4PDA:.3,constructor:b,addModule:function(a,d){if(!(a in b)){b[a]=b.fn[a]=d?\"function\"==typeof d?d(b):d:h;for(var c=0,e=g[a];e&&c<e.length;)e[c++](b[a],a);delete g[a]}return b},onInit:function(a,d){for(var c=(a=(a+\"\").split(\" \")).length,e=d;c;)e=new k(a[--c],\n" +
                     "e);e();return b}};f[c]=f.lib4PDA=b;for(c in b.fn)b[c]=b.fn[c]}})(window);(function(a){var wrsI=0;\n" +
