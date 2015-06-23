@@ -240,17 +240,30 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void insertTextToPost(final String text) {
-        getContext().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                getContext().insertTextToPost(text);
-                new Handler().post(new Runnable() {
-                    public void run() {
-                        getContext().insertTextToPost(text);
-                    }
-                });
-            }
-        });
+        if(android.os.Build.VERSION.SDK_INT > 16){
+            run(new Runnable() {
+                @Override
+                public void run() {
+                    new Handler().post(new Runnable() {
+                        public void run() {
+                            getContext().insertTextToPost(text);
+                        }
+                    });
+                }
+            });
+        }else {
+            getContext().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    new Handler().post(new Runnable() {
+                        public void run() {
+                            getContext().insertTextToPost(text);
+                        }
+                    });
+                }
+            });
+        }
+
     }
 
     @JavascriptInterface
