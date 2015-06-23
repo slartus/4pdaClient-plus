@@ -35,7 +35,7 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="statusbarTransparent"
-            android:title="Прозрачный статусбар"
+            android:title="Не красить статусбар"
             android:summary="Включить, если активирован полноэкранный режим. Требуется перезапуск приложения"/>
         <CheckBoxPreference
             android:defaultValue="false"

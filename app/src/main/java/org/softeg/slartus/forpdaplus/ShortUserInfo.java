@@ -183,6 +183,7 @@ public class ShortUserInfo {
                 loginButton.setText("Произошла ошибка");
                 qmsMessages.setVisibility(View.GONE);
             }else if (client.getLogined()) {
+                qmsMessages.setVisibility(View.VISIBLE);
                 loginButton.setVisibility(View.GONE);
                 textWrapper.setOnClickListener(new View.OnClickListener() {
                     @Override

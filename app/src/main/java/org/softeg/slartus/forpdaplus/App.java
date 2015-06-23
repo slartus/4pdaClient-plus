@@ -68,6 +68,7 @@ public class App extends android.app.Application {
     public static final int THEME_WHITE_MATERIAL_LB = 16;
     public static final int THEME_WHITE_MATERIAL_GRAY= 17;
     public static final int THEME_BLACK_MATERIAL_DARK = 18;
+    public static final int THEME_WHITE_OLD_HD = 19;
 
     public static final int THEME_WHITE_REMIE = 2;
 
@@ -80,7 +81,7 @@ public class App extends android.app.Application {
     public static final int THEME_CUSTOM_CSS = 99;
 
     private final Integer[] WHITE_THEMES = {THEME_WHITE_TRABLONE, THEME_WHITE_VETALORLOV, THEME_WHITE_REMIE,
-            THEME_WHITER_REMIE, THEME_WHITE, THEME_WHITE_OLD, THEME_WHITE_HD, THEME_WHITE_MATERIAL_CYAN, THEME_WHITE_MATERIAL_LB, THEME_WHITE_MATERIAL_GRAY};
+            THEME_WHITER_REMIE, THEME_WHITE, THEME_WHITE_OLD, THEME_WHITE_HD, THEME_WHITE_MATERIAL_CYAN, THEME_WHITE_MATERIAL_LB, THEME_WHITE_MATERIAL_GRAY, THEME_WHITE_OLD_HD};
 
     private static boolean m_IsDebugModeLoaded = false;
     private static boolean m_IsDebugMode = false;
@@ -342,6 +343,9 @@ public class App extends android.app.Application {
                 break;
             case THEME_BLACK_MATERIAL_DARK:
                 cssFile = "material_dark.css";
+                break;
+            case THEME_WHITE_OLD_HD:
+                cssFile = "white_old_HD.css";
                 break;
 
             /*case THEME_WHITE_HD:

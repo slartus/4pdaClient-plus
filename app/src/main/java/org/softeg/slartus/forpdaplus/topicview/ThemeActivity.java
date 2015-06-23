@@ -372,22 +372,29 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //Toast.makeText(this,Integer.toString(item.getItemId()),Toast.LENGTH_LONG).show();
-        if (item.getItemId() == android.R.id.home) {
-
-//            if (getIntent().getData() == null)
-//                onBackPressed();
-//            else
-            {
-                App.showMainActivityWithoutBack(this);
-            }
-
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getPostBody();
+                if (!TextUtils.isEmpty(m_PostBody)) {
+                    new MaterialDialog.Builder(this)
+                            .title("Подтвердите действие")
+                            .content("Имеется введенный текст сообщения! Закрыть?")
+                            .positiveText("Да")
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
+                                    finish();
+                                }
+                            })
+                            .negativeText("Отмена")
+                            .show();
+                }else{
+                    App.showMainActivityWithoutBack(this);
+                }
+                return true;
         }
-
         return true;
     }
-
 
     protected void createActionMenu() {
         FragmentManager fm = getSupportFragmentManager();

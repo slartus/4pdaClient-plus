@@ -4,6 +4,7 @@
         <item name="colorAccent">@color/accent</item>
         <item name="actionBarStyle">@style/actionbar_wh</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="panelMenuListTheme">@style/bottom_menu_wh</item>
         <item name="android:windowBackground">@color/app_background_wh</item>
         <item name="actionOverflowButtonStyle">@style/overflow_button</item>
         <item name="actionModeBackground">@color/actionbar_background_wh</item>
@@ -51,6 +52,7 @@
         <item name="colorAccent">@color/accent</item>
         <item name="actionBarStyle">@style/actionbar_bl</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat</item>
+        <item name="panelMenuListTheme">@style/bottom_menu_bl</item>
         <item name="actionOverflowButtonStyle">@style/overflow_button</item>
         <item name="android:windowBackground">@color/app_background_bl</item>
         <item name="actionModeBackground">@color/actionbar_background_bl</item>
@@ -92,6 +94,19 @@
         <item name="android:textColorSecondary">@color/list_text_second_color_bl</item>
         <item name="Divider">@style/Divider_bl</item>
         <item name="actbar">@color/actionbar_background_bl</item>
+    </style>
+
+    <style name="bottom_menu_wh" parent="@style/Theme.AppCompat.CompactMenu">
+        <item name="android:itemTextAppearance">@style/bottom_menu_wh_ta</item>
+    </style>
+    <style name="bottom_menu_wh_ta" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/list_text_special_color_wh</item>
+    </style>
+    <style name="bottom_menu_bl" parent="@style/Theme.AppCompat.CompactMenu">
+        <item name="android:itemTextAppearance">@style/bottom_menu_bl_ta</item>
+    </style>
+    <style name="bottom_menu_bl_ta" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/list_text_special_color_bl</item>
     </style>
 
     <style name="actionMode_style" parent="@style/Widget.AppCompat.Light.ActionMode.Inverse">

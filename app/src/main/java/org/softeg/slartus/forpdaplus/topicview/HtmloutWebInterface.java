@@ -240,9 +240,10 @@ public class HtmloutWebInterface {
 
     @JavascriptInterface
     public void insertTextToPost(final String text) {
-        run(new Runnable() {
+        getContext().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                getContext().insertTextToPost(text);
                 new Handler().post(new Runnable() {
                     public void run() {
                         getContext().insertTextToPost(text);
