@@ -1,7 +1,12 @@
 package org.softeg.slartus.forpdaplus.classes;
 
+import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.text.TextUtils;
+import android.util.Log;
+import android.util.TypedValue;
+import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
@@ -30,13 +35,19 @@ public class HtmlBuilder {
         m_Body.append("</head>\n");
     }
     public int getMarginTop(){
-        int margin = 81;
-        int lil = App.getContext().getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
-        if ((lil == 4) || (lil == Configuration.SCREENLAYOUT_SIZE_LARGE)) {
-            margin = 89;
-        }
+        int margin = 0;
+        Context context = App.getContext();
+        Resources resources = context.getResources();
+
+        int statusBar = resources.getIdentifier("status_bar_height", "dimen", "android");
+        margin += (int) Math.ceil(resources.getDimensionPixelSize(statusBar)/resources.getDisplayMetrics().density);
+        TypedValue tv = new TypedValue();
+        App.getContext().getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.actionBarSize, tv, true);
+        margin += (int) Math.ceil(resources.getDimensionPixelSize(tv.resourceId)/resources.getDisplayMetrics().density);
+
         return margin;
     }
+
     public void addScripts() {
         m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/forum/js/z_forum_helpers.js\"></script>\n");
         m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/theme.js\"></script>\n");
