@@ -793,7 +793,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     }
 
     public void showMessagePanel() {
-        btnShowHideEditPost.setImageResource(R.drawable.ic_menu_edit_close);
+        btnShowHideEditPost.setImageResource(R.drawable.ic_close_white_24dp);
         /*Boolean translucentNavigation = true;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             translucentNavigation = false;
@@ -807,7 +807,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     }
 
     public void hideMessagePanel() {
-        btnShowHideEditPost.setImageResource(R.drawable.ic_menu_edit);
+        btnShowHideEditPost.setImageResource(R.drawable.ic_pencil_white_24dp);
         /*Boolean translucentNavigation = true;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
             translucentNavigation = false;

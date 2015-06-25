@@ -320,7 +320,7 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem item = menu.add("Очистить").setIcon(R.drawable.ic_menu_delete);
+        MenuItem item = menu.add("Очистить").setIcon(R.drawable.ic_delete_white_24dp);
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 new MaterialDialog.Builder(getContext())

@@ -66,7 +66,7 @@ public class MainDrawerMenu {
         mDrawerList = (ExpandableListView) findViewById(R.id.left_drawer_list);
         mDrawer = (RelativeLayout) findViewById(R.id.left_drawer);
 
-        mDrawerLayout.setDrawerShadow(R.drawable.navdrawer, GravityCompat.START);
+        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mDrawer.getLayoutParams();
         params.width = (int) dpWidth;
         if ("right".equals(Preferences.System.getDrawerMenuPosition())) {
@@ -369,7 +369,7 @@ public class MainDrawerMenu {
 
             @Override
             public int getIcon() {
-                return R.drawable.ic_delete;
+                return R.drawable.ic_close_grey600_24dp;
             }
 
             @Override

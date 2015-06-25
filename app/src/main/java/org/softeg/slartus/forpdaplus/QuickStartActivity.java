@@ -148,7 +148,7 @@ public class QuickStartActivity extends BaseFragmentActivity implements ITabPare
 
             MenuItem item;
             if (getInterface().getTab().refreshable()) {
-                item = menu.add("Обновить").setIcon(R.drawable.ic_menu_refresh);
+                item = menu.add("Обновить").setIcon(R.drawable.ic_refresh_white_24dp);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         getInterface().themesTab.refresh();

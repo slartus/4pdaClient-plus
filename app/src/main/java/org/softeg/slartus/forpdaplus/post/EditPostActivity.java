@@ -1169,7 +1169,7 @@ public class EditPostActivity extends BaseFragmentActivity {
             MenuItem item;
 
             if (!getInterface().isNewPost()) {
-                item = menu.add("Причина редактирования").setIcon(R.drawable.ic_menu_editing);
+                item = menu.add("Причина редактирования").setIcon(R.drawable.ic_pencil_white_24dp);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         getInterface().toggleEditReasonDialog();

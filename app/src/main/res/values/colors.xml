@@ -44,12 +44,10 @@
     <color name="dialog_background_wh">#fafafa</color>
     <color name="dialog_background_bl">#303030</color>
 
-    <color name="left_separator_color_wh">#d9d9d9</color>
-    <color name="left_separator_color_bl">#494949</color>
-    <color name="bottom_separator_color_wh">#c9c9c9</color>
-    <color name="bottom_separator_color_bl">#494949</color>
     <color name="right_separator_color_wh">#d9d9d9</color>
     <color name="right_separator_color_bl">#494949</color>
+
+
 
     <color name="btnsend_color_wh">#0277bd</color>
     <color name="btnsend_color_bl">#0277bd</color>
@@ -109,8 +107,6 @@
     <color name="edit_text_wh">@color/white</color>
     <color name="edit_text_bl">#2b2b2b</color>
 
-
-    <!-- <color name="accent">#607D8B</color> -->
     <color name="accent">#0277BD</color>
     <color name="accentPink">@color/accent</color>
     <color name="accentBlue">#E91E63</color>
@@ -122,5 +118,8 @@
     <color name="refresh">@color/accent</color>
 
     <color name="reed">#ff0000</color>
+
+    <color name="old_flag">#46460300</color>
+    <color name="new_flag">#A8014E7D</color>
 
 </resources>

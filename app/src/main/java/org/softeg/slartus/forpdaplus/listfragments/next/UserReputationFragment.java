@@ -161,7 +161,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
             if (Client.getInstance().getLogined() && !getUserId().equals(Client.getInstance().UserId)) {
 
 
-                item = menu.add("Повысить репутацию").setIcon(R.drawable.ic_menu_rating_good);
+                item = menu.add("Повысить репутацию").setIcon(R.drawable.ic_thumb_up_white_24dp);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
 
@@ -171,7 +171,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
                 });
                 item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-                item = menu.add("Понизить репутацию").setIcon(R.drawable.ic_menu_rating_bad);
+                item = menu.add("Понизить репутацию").setIcon(R.drawable.ic_thumb_down_white_24dp);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         minusRep();

@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
@@ -105,7 +107,7 @@ public class ThemeAdapter extends ArrayAdapter<ExtTopic> {
 
 
             holder = new ViewHolder();
-            holder.txtIsNew = (ImageView) convertView
+            holder.txtIsNew = (LinearLayout) convertView
                     .findViewById(R.id.txtIsNew);
             holder.usericon = convertView.findViewById(R.id.usericon);
             //holder.txtIsNew.setTextSize(m_FlagTextSize);
@@ -151,11 +153,11 @@ public class ThemeAdapter extends ArrayAdapter<ExtTopic> {
         }
 
         if (topic.getIsNew()) {
-            holder.txtIsNew.setImageResource(R.drawable.new_flag);
+            holder.txtIsNew.setBackgroundColor(App.getContext().getResources().getColor(R.color.new_flag));
         } else if (topic.getIsOld()) {
-            holder.txtIsNew.setImageResource(R.drawable.old_flag);
+            holder.txtIsNew.setBackgroundColor(App.getContext().getResources().getColor(R.color.new_flag));
         } else {
-            holder.txtIsNew.setImageBitmap(null);
+            holder.txtIsNew.setVisibility(View.GONE);
         }
 
 
@@ -345,7 +347,7 @@ public class ThemeAdapter extends ArrayAdapter<ExtTopic> {
 
     public class ViewHolder {
         View usericon;
-        ImageView txtIsNew;
+        LinearLayout txtIsNew;
         TextView txtAuthor;
         TextView txtLastMessageDate;
         TextView txtTitle;

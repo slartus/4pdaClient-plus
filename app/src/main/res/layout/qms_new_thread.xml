@@ -74,7 +74,7 @@
                 style="?right_separator"
                 android:layout_width="48dp"
                 android:layout_height="32dp"
-                android:src="@drawable/btn_show_post_panel" />
+                android:src="@drawable/ic_plus_grey600_24dp" />
 
             <Button
                 android:id="@+id/btnSendPost"

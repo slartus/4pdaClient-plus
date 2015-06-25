@@ -196,7 +196,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
             boolean pancil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false);
             if(pancil) {
                 item = menu.add("Написать")
-                        .setIcon(R.drawable.ic_menu_editing)
+                        .setIcon(R.drawable.ic_pencil_white_24dp)
                         .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                             public boolean onMenuItemClick(MenuItem item) {
@@ -207,7 +207,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                 item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
             item = menu.add(R.string.Refresh)
-                    .setIcon(R.drawable.ic_menu_refresh)
+                    .setIcon(R.drawable.ic_refresh_white_24dp)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -217,7 +217,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                     });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
             SubMenu subMenu = menu.addSubMenu(R.string.Attaches)
-                    .setIcon(R.drawable.ic_menu_download);
+                    .setIcon(R.drawable.ic_download_white_24dp);
 
             subMenu.add("Вложения текущей страницы")
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -254,7 +254,6 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                     });
 
             menu.add(R.string.Browser)
-                    .setIcon(R.drawable.ic_menu_browser)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -268,8 +267,6 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                             } catch (ActivityNotFoundException e) {
                                 AppLog.e(getActivity(), e);
                             }
-
-
                             return true;
                         }
                     });
@@ -431,7 +428,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
     private void addCloseMenuItem(Menu menu) {
         MenuItem item;
         item = menu.add("Закрыть")
-                .setIcon(R.drawable.ic_menu_close_clear_cancel)
+                .setIcon(R.drawable.ic_close_white_24dp)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         getInterface().getPostBody();

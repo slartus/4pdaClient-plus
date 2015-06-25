@@ -103,7 +103,7 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
         super.onCreateOptionsMenu(menu, inflater);
 
         MenuItem item = menu.add("Настройки списка")
-                .setIcon(R.drawable.ic_menu_preferences)
+                .setIcon(R.drawable.ic_settings_white_24dp)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {

@@ -14,10 +14,6 @@
         <item name="forum_header_text_color">@color/holo_blue_light</item>
         <item name="theme_background">@android:color/white</item>
         <item name="theme_light_background">@color/theme_light_background_light</item>
-        <item name="btnsend">@style/btnsend_wh</item>
-        <item name="panel">@style/panel_wh</item>
-        <item name="bottom_separator">@style/bottom_separator_wh</item>
-        <item name="left_separator">@style/left_separator_wh</item>
         <item name="right_separator">@style/right_separator_wh</item>
         <item name="news">@style/news_wh</item>
         <item name="news_full">@style/news_full_wh</item>
@@ -62,10 +58,6 @@
         <item name="forum_header_text_color">@color/holo_blue_dark</item>
         <item name="theme_background">@android:color/black</item>
         <item name="theme_light_background">@color/theme_light_background_dark</item>
-        <item name="btnsend">@style/btnsend_bl</item>
-        <item name="panel">@style/panel_bl</item>
-        <item name="bottom_separator">@style/bottom_separator_bl</item>
-        <item name="left_separator">@style/left_separator_bl</item>
         <item name="right_separator">@style/right_separator_bl</item>
         <item name="news">@style/news_bl</item>
         <item name="news_full">@style/news_full_bl</item>
@@ -180,38 +172,6 @@
     </style>
     <style name="prefs_title_style_prekitkat" parent="prefs_title_style">
         <item name="android:fitsSystemWindows">false</item>
-    </style>
-
-    <style name="btnsend_wh">
-        <item name="android:background">@drawable/action_btnsend_wh</item>
-    </style>
-
-    <style name="btnsend_bl">
-        <item name="android:background">@drawable/action_btnsend_bl</item>
-    </style>
-
-    <style name="panel_wh">
-        <item name="android:background">@drawable/panel_wh</item>
-    </style>
-
-    <style name="panel_bl">
-        <item name="android:background">@drawable/panel_bl</item>
-    </style>
-
-    <style name="bottom_separator_wh">
-        <item name="android:background">@drawable/bottom_separator_wh</item>
-    </style>
-
-    <style name="bottom_separator_bl">
-        <item name="android:background">@drawable/bottom_separator_bl</item>
-    </style>
-
-    <style name="left_separator_wh">
-        <item name="android:background">@drawable/left_separator_wh</item>
-    </style>
-
-    <style name="left_separator_bl">
-        <item name="android:background">@drawable/left_separator_bl</item>
     </style>
 
     <style name="right_separator_wh">

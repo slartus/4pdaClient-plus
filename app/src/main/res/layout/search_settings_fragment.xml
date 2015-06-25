@@ -17,7 +17,7 @@
             android:layout_toLeftOf="@+id/forHideButton"
             android:layout_toStartOf="@+id/forHideButton" />
         <ImageButton
-            android:src="@drawable/btn_show_post_panel"
+            android:src="@drawable/ic_plus_grey600_24dp"
             android:background="@android:color/transparent"
             android:id="@+id/forHideButton"
             android:layout_width="44dp"

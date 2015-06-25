@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.softeg.slartus.forpdaapi.IListItem;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.BaseExpandableListFragment;
 
@@ -92,7 +94,7 @@ public class ExpandableMyListAdapter extends BaseExpandableListAdapter {
         if (view == null) {
             view = mInflater.inflate(R.layout.list_item, parent, false);
             holder = new ViewHolder();
-            holder.Flag = (ImageView) view.findViewById(R.id.imgFlag);
+            holder.Flag = (LinearLayout) view.findViewById(R.id.imgFlag);
             holder.TopLeft = (TextView) view.findViewById(R.id.txtTopLeft);
             holder.TopRight = (TextView) view.findViewById(R.id.txtTopRight);
             holder.Main = (TextView) view.findViewById(R.id.txtMain);
@@ -110,13 +112,13 @@ public class ExpandableMyListAdapter extends BaseExpandableListAdapter {
 
         switch (topic.getState()) {
             case IListItem.STATE_GREEN:
-                holder.Flag.setImageResource(R.drawable.new_flag);
+                holder.Flag.setBackgroundColor(App.getContext().getResources().getColor(R.color.new_flag));
                 break;
             case IListItem.STATE_RED:
-                holder.Flag.setImageResource(R.drawable.old_flag);
+                holder.Flag.setBackgroundColor(App.getContext().getResources().getColor(R.color.old_flag));
                 break;
             default:
-                holder.Flag.setImageBitmap(null);
+                holder.Flag.setVisibility(View.GONE);
         }
         return view;
     }
@@ -132,7 +134,7 @@ public class ExpandableMyListAdapter extends BaseExpandableListAdapter {
     }
 
     class ViewHolder {
-        ImageView Flag;
+        LinearLayout Flag;
         TextView TopLeft;
         TextView TopRight;
         TextView Main;

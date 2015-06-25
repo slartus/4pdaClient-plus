@@ -887,7 +887,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             super.onCreateOptionsMenu(menu, inflater);
-            MenuItem item = menu.add("Обновить").setIcon(R.drawable.ic_menu_refresh);
+            MenuItem item = menu.add("Обновить").setIcon(R.drawable.ic_refresh_white_24dp);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     new Thread(new Runnable() {
@@ -901,7 +901,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-            item = menu.add("Настройки").setIcon(R.drawable.ic_menu_preferences);
+            item = menu.add("Настройки").setIcon(R.drawable.ic_settings_white_24dp);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     Intent intent = new Intent(getActivity(), QmsChatPreferencesActivity.class);
@@ -912,7 +912,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 
-            item = menu.add("Удалить сообщения").setIcon(R.drawable.ic_menu_delete);
+            item = menu.add("Удалить сообщения").setIcon(R.drawable.ic_delete_white_24dp);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     getInterface().getWebView().loadUrl("javascript:deleteMessages('thread_form');");
@@ -921,7 +921,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-            item = menu.add("Удалить диалог").setIcon(R.drawable.ic_menu_delete);
+            item = menu.add("Удалить диалог").setIcon(R.drawable.ic_delete_white_24dp);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     getInterface().deleteDialog();

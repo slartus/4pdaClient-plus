@@ -250,10 +250,6 @@ public class NewsActivity extends BrowserViewsFragmentActivity
         return true;
     }
 
-    public ImageButton getFullScreenButton() {
-        return (ImageButton) findViewById(R.id.btnFullScreen);
-    }
-
     @Override
     public void nextPage() {
 
@@ -578,7 +574,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
             MenuItem item;
             boolean pencil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar", false);
             if(Client.getInstance().getLogined()&pencil){
-                item = menu.add("Комментировать").setIcon(R.drawable.ic_menu_editing);
+                item = menu.add("Комментировать").setIcon(R.drawable.ic_pencil_white_24dp);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         ((NewsActivity) getActivity()).respond();
@@ -587,7 +583,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                 });
                 item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
-            item = menu.add(R.string.Refresh).setIcon(R.drawable.ic_menu_refresh);
+            item = menu.add(R.string.Refresh).setIcon(R.drawable.ic_refresh_white_24dp);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     ((NewsActivity) getActivity()).refresh();
@@ -596,7 +592,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-            item = menu.add(R.string.Like).setIcon(R.drawable.ic_menu_thumb_up
+            item = menu.add(R.string.Like).setIcon(R.drawable.ic_thumb_up_white_24dp
                     //        MyApp.getInstance().isWhiteTheme() ?R.drawable.rating_good_white : R.drawable.rating_good_dark
             );
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -609,7 +605,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
 
 
             SubMenu optionsMenu = menu.addSubMenu("Настройки");
-            optionsMenu.getItem().setIcon(R.drawable.ic_menu_preferences);
+            optionsMenu.getItem().setIcon(R.drawable.ic_settings_white_24dp);
             optionsMenu.getItem().setTitle(R.string.Settings);
             optionsMenu.add("Скрывать верхнюю панель")
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -666,7 +662,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                 });
             }
 
-            item = menu.add(R.string.Close).setIcon(R.drawable.ic_menu_close_clear_cancel);
+            item = menu.add(R.string.Close).setIcon(R.drawable.ic_close_white_24dp);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                 public boolean onMenuItemClick(MenuItem item) {

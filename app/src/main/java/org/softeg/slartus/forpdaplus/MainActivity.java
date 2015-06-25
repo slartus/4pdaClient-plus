@@ -408,10 +408,8 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
 
         public void setOtherMenu() {
             MenuItem miQuickStart = m_miOther.add("Быстрый доступ");
-            miQuickStart.setIcon(R.drawable.ic_menu_quickrun);
             miQuickStart.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {
-
                     BricksListDialogFragment.showDialog((BricksListDialogFragment.IBricksListDialogCaller) getActivity(),
                             BricksListDialogFragment.QUICK_LIST_ID,
                             ListCore.getBricksNames(ListCore.getQuickBricks()), null);
@@ -430,7 +428,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
 
             m_miOther = menu;
             item = menu.add(R.string.Search)
-                    .setIcon(R.drawable.ic_menu_search)
+                    .setIcon(R.drawable.ic_magnify_white_24dp)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -445,7 +443,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
 
 
             item = menu.add(0, 0, 999, R.string.CloseApp)
-                    .setIcon(R.drawable.ic_menu_close_clear_cancel)
+                    .setIcon(R.drawable.ic_close_white_24dp)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {

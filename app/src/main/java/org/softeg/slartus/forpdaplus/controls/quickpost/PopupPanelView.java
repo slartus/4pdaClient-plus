@@ -154,14 +154,14 @@ public class PopupPanelView {
             }
             popupWindow.showAtLocation(parentLayout, Gravity.BOTTOM, 0, 0);
         }
-        advanced_button.setImageResource(R.drawable.btn_hide_post_panel);
+        advanced_button.setImageResource(R.drawable.ic_close_grey600_24dp);
     }
 
     public void hidePopupWindow() {
         if (popupWindow != null && popupWindow.isShowing()) {
             popupWindow.dismiss();
         }
-        advanced_button.setImageResource(R.drawable.btn_show_post_panel);
+        advanced_button.setImageResource(R.drawable.ic_plus_grey600_24dp);
     }
 
     /**

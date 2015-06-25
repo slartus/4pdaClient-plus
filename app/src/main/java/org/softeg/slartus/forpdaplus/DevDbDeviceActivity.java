@@ -105,7 +105,6 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add("Браузер")
-                .setIcon(R.drawable.ic_menu_browser)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                     public boolean onMenuItemClick(MenuItem item) {
@@ -117,7 +116,7 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
                         DevDbDeviceActivity.this.startActivity(Intent.createChooser(marketIntent, "Выберите"));
                         return true;
                     }
-                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                });
 
         return true;
     }

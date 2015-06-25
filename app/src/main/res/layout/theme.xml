@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_margin="16dp"
-                android:src="@drawable/ic_menu_edit"
+                android:src="@drawable/ic_pencil_white_24dp"
                 fab:fab_colorNormal="?colorAccent"
                 fab:fab_colorPressed="#ffd8205d"
                 fab:fab_colorRipple="#11000000" />
@@ -142,7 +142,7 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="Предыдущее совпадение"
-                    android:src="@drawable/ic_btn_find_prev" />
+                    android:src="@drawable/ic_menu_left_grey600_24dp" />
 
                 <ImageButton
                     android:id="@+id/btnNextSearch"
@@ -151,7 +151,7 @@
                     android:paddingLeft="8dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="48dp"
-                    android:src="@drawable/ic_btn_find_next"/>
+                    android:src="@drawable/ic_menu_right_grey600_24dp"/>
 
                 <EditText
                     android:id="@+id/txtSearch"
@@ -174,7 +174,7 @@
                     android:background="@android:color/transparent"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/btn_close_normal"
+                    android:src="@drawable/ic_close_grey600_24dp"
                     android:layout_gravity="right|bottom" />
             </FrameLayout>
         </LinearLayout>

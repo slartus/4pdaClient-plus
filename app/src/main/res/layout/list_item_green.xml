@@ -10,12 +10,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
 
-        <ImageView
+        <LinearLayout
             android:id="@+id/imgFlag"
             android:layout_width="10dp"
             android:layout_height="fill_parent"
             android:contentDescription="flag"
-            android:scaleType="centerCrop"/>
+            android:orientation="horizontal"/>
 
         <LinearLayout
             android:id="@+id/linearLayout2"

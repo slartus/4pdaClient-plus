@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.softeg.slartus.forpdaapi.IListItem;
@@ -114,7 +115,7 @@ public class ListAdapter extends BaseAdapter implements Filterable {
 
             holder = new ViewHolder();
             assert view != null;
-            holder.Flag = (ImageView) view.findViewById(R.id.imgFlag);
+            holder.Flag = (LinearLayout) view.findViewById(R.id.imgFlag);
             holder.TopLeft = (TextView) view.findViewById(R.id.txtTopLeft);
             holder.TopRight = (TextView) view.findViewById(R.id.txtTopRight);
             holder.Main = (TextView) view.findViewById(R.id.txtMain);
@@ -135,16 +136,15 @@ public class ListAdapter extends BaseAdapter implements Filterable {
             case IListItem.STATE_GREEN:
                 if(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("oldIndicator",false)) {
                     setVisibility(holder.Flag, View.VISIBLE);
-                    holder.Flag.setImageResource(R.drawable.new_flag);
+                    holder.Flag.setBackgroundColor(App.getContext().getResources().getColor(R.color.new_flag));
                 }
                 break;
             case IListItem.STATE_RED:
                 setVisibility(holder.Flag, View.VISIBLE);
-                holder.Flag.setImageResource(R.drawable.old_flag);
+                holder.Flag.setBackgroundColor(App.getContext().getResources().getColor(R.color.old_flag));
                 break;
             default:
                 setVisibility(holder.Flag, View.INVISIBLE);
-                holder.Flag.setImageBitmap(null);
         }
         return view;
     }
@@ -198,7 +198,7 @@ public class ListAdapter extends BaseAdapter implements Filterable {
     }
 
     class ViewHolder {
-        ImageView Flag;
+        LinearLayout Flag;
         View progress;
         TextView TopLeft;
         TextView TopRight;

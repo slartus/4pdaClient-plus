@@ -114,7 +114,7 @@ public class ProfileWebViewActivity extends BaseFragmentActivity {
             MenuItem item;
 
             if (Client.getInstance().getLogined() && userId != null && !userId.equals(Client.getInstance().UserId)) {
-                item = menu.add(getString(R.string.MessagesQms)).setIcon(R.drawable.ic_menu_send);
+                item = menu.add(getString(R.string.MessagesQms)).setIcon(R.drawable.ic_pencil_white_24dp);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         QmsNewThreadActivity.showUserNewThread(getActivity(), userId, userNick);

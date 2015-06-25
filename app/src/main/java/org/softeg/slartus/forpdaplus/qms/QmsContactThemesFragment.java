@@ -123,7 +123,7 @@ public class QmsContactThemesFragment extends BaseLoaderListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem item = menu.add("Новая тема").setIcon(R.drawable.ic_menu_send);
+        MenuItem item = menu.add("Новая тема").setIcon(R.drawable.ic_pencil_white_24dp);
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 QmsNewThreadActivity.showUserNewThread(getActivity(), m_Id

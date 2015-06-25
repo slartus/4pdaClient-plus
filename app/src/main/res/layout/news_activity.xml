@@ -4,17 +4,6 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/btnFullScreen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:background="@null"
-        android:padding="10.0dip"
-        android:src="@drawable/ic_media_fullscreen"
-        android:visibility="gone" />
-
     <LinearLayout
         android:id="@+id/bottom_panel"
         android:layout_width="fill_parent"
@@ -36,7 +25,7 @@
                 android:id="@+id/btnPrevSearch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_btn_find_prev" />
+                android:src="@drawable/ic_menu_left_grey600_24dp" />
 
             <ImageButton
                 android:id="@+id/btnNextSearch"
@@ -44,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/btnPrevSearch"
-                android:src="@drawable/ic_btn_find_next" />
+                android:src="@drawable/ic_menu_right_grey600_24dp" />
 
             <EditText
                 android:id="@+id/txtSearch"
@@ -66,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/btn_close_normal" />
+                android:src="@drawable/ic_close_grey600_24dp" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -98,7 +87,7 @@
                 android:layout_gravity="end"
                 android:layout_margin="16dp"
                 android:clickable="true"
-                android:src="@drawable/ic_menu_edit"
+                android:src="@drawable/ic_pencil_white_24dp"
                 fab:fab_colorNormal="?colorAccent"
                 fab:fab_colorPressed="#ffd8205d"
                 fab:fab_colorRipple="#11000000" />

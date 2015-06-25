@@ -158,7 +158,7 @@ public class ListFragmentActivity extends BaseFragmentActivity {
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             super.onCreateOptionsMenu(menu,inflater);
             MenuItem item = menu.add(R.string.Search)
-                    .setIcon(R.drawable.ic_menu_search)
+                    .setIcon(R.drawable.ic_magnify_white_24dp)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -169,7 +169,7 @@ public class ListFragmentActivity extends BaseFragmentActivity {
                     });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
              item = menu.add(0, 0, 999,"Закрыть")
-                    .setIcon(R.drawable.ic_menu_close_clear_cancel);
+                    .setIcon(R.drawable.ic_close_white_24dp);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     getActivity().finish();

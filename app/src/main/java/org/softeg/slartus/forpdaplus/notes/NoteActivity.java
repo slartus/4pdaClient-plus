@@ -309,7 +309,7 @@ public class NoteActivity extends BaseFragmentActivity {
             super.onCreateOptionsMenu(menu, inflater);
             MenuItem item;
 
-            item = menu.add("Удалить").setIcon(R.drawable.ic_menu_delete);
+            item = menu.add("Удалить").setIcon(R.drawable.ic_delete_white_24dp);
             //item.setVisible(Client.getInstance().getLogined());
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {

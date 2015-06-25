@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="@drawable/ic_delete"
+            android:background="@drawable/ic_close_grey600_24dp"
             android:visibility="gone"/>
     </RelativeLayout>
 
@@ -66,6 +66,6 @@
             android:layout_height="wrap_content"
 android:visibility="gone"
             android:layout_gravity="right|bottom"
-            android:background="@drawable/ic_delete" />
+            android:background="@drawable/ic_close_grey600_24dp" />
     </FrameLayout>
 </LinearLayout>

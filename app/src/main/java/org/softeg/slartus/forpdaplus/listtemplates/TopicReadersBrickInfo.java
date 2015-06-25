@@ -18,7 +18,7 @@ public class TopicReadersBrickInfo  extends BrickInfo {
 
     @Override
     public int getIcon() {
-        return R.drawable.ic_delete;
+        return R.drawable.ic_close_white_24dp;
     }
 
     @Override

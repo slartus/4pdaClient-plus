@@ -449,7 +449,7 @@ public class PlayerActivity extends BaseFragmentActivity {
 
                 subMenu = menu.addSubMenu("Качество");
 
-                subMenu.getItem().setIcon(R.drawable.ic_menu_view);
+                subMenu.getItem().setIcon(R.drawable.ic_settings_white_24dp);
                 subMenu.getItem().setTitle("Качество");
 
 
@@ -466,7 +466,7 @@ public class PlayerActivity extends BaseFragmentActivity {
                 }
                 subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
-            subMenu = menu.addSubMenu("Ссылка...").setIcon(R.drawable.ic_menu_share);
+            subMenu = menu.addSubMenu("Ссылка...").setIcon(R.drawable.abc_ic_menu_share_mtrl_alpha);
 
             addUrlMenu(getActivity(), subMenu, getMainActivity().getPlayedRequestUrl());
             subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);

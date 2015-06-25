@@ -28,7 +28,7 @@
 
     <EditText
         android:id="@+id/txtpost_edit_reason"
-        style="?panel"
+        style="?edit_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottomPanel"
@@ -37,7 +37,7 @@
         android:padding="16dp"
         android:scrollHorizontally="false"
         android:singleLine="true"
-        android:visibility="gone" />
+        android:visibility="visible" />
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="6dp"
@@ -66,7 +66,7 @@
                 android:layout_height="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:src="@drawable/btn_show_post_panel" />
+                android:src="@drawable/ic_plus_grey600_24dp" />
             <Button
                 android:id="@+id/btnAttachments"
                 style="?right_separator"
@@ -75,7 +75,7 @@
                 android:layout_height="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:drawableLeft="@drawable/ic_menu_attachment"
+                android:drawableLeft="@drawable/ic_paperclip_grey600_24dp"
                 android:text="0"
                 android:layout_marginLeft="48dp"
                 android:paddingLeft="4dp"
@@ -89,7 +89,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="104dp"
-                android:src="@drawable/btn_upload" />
+                android:src="@drawable/ic_upload_grey600_24dp" />
             <Button
                 android:id="@+id/btnSendPost"
                 android:layout_width="fill_parent"

@@ -1,9 +1,5 @@
 <resources>
     <!-- Mod -->
-    <attr name="btnsend" format="reference" />
-    <attr name="panel" format="reference" />
-    <attr name="bottom_separator" format="reference" />
-    <attr name="left_separator" format="reference" />
     <attr name="right_separator" format="reference" />
     <attr name="news" format="reference" />
     <attr name="news_image_corner" format="reference" />
