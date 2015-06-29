@@ -49,7 +49,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         String desc = TextUtils.isEmpty(m_Topic.getDescription()) ? "" : (", " + m_Topic.getDescription());
         super.beginHtml(m_Topic.getTitle() + desc);
         super.beginBody();
-        m_Body.append("<div style=\"margin-top:").append(ACTIONBAR_TOP_MARGIN).append("\"/>\n");
+        m_Body.append("<div style=\"padding-top:").append(ACTIONBAR_TOP_MARGIN).append("\"/>\n");
         if (m_Topic.getPagesCount() > 1) {
             addButtons(m_Body, m_Topic.getCurrentPage(), m_Topic.getPagesCount(),
                     m_IsWebviewAllowJavascriptInterface, false, true);
@@ -79,7 +79,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         m_Body.append(getTitleBlock());
 
 
-        m_Body.append("<div style=\"margin-top:88px\"></div>\n");
+        m_Body.append("<div style=\"padding-top:"+ACTIONBAR_TOP_MARGIN+"\"></div>\n");
         super.endBody();
         super.endHtml();
     }
@@ -98,8 +98,8 @@ public class TopicBodyBuilder extends HtmlBuilder {
     }
 
     public void addPost(Post post, Boolean spoil) {
+        m_Body.append("<div name=\"entry").append(post.getId()).append("\"class=\"jump\" style=\"position: absolute; width: 100%; margin-top:-"+ACTIONBAR_TOP_MARGIN+"; left: 0;\" id=\"entry").append(post.getId()).append("\"></div>\n");
         m_Body.append("<div class=\"post_container\">");
-        m_Body.append("<div name=\"entry").append(post.getId()).append("\"class=\"jump_to_post\" style=\"position: absolute; width: 100%; margin-top:-"+ACTIONBAR_TOP_MARGIN+"; left: 0;\" id=\"entry").append(post.getId()).append("\"></div>\n");
 
         addPostHeader(m_Body, post);
 
