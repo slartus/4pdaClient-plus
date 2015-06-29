@@ -3,6 +3,9 @@
 @import "file:///android_asset/fonts/fontello/import.css";
 @import "file:///android_asset/fonts/roboto/import.css";
 @import "file:///android_asset/fonts/flaticons/import.css";
+@import "../../fonts/fontello/import.css";
+@import "../../fonts/roboto/import.css";
+@import "../../fonts/flaticons/import.css";
 /*---
 Name: Coba
 Type: Lignt
@@ -249,6 +252,7 @@ a {
   background: #ffffff;
   padding: 0.2em 0.4em;
   padding-left: 0.6em;
+  color: #212121;
 }
 #main .container .content .content-box .table4site tbody tr td:first-child {
   color: #ffffff;
@@ -1757,6 +1761,7 @@ div[data-post] .post_body {
   -webkit-border-radius: 2px;
   border-radius: 2px;
   margin-top: 2.25em;
+  position: relative;
 }
 .posts_list .post_container .post_header {
   -webkit-border-radius: 2px 2px 0 0;
@@ -1870,8 +1875,8 @@ div[data-post] .post_body {
   left: 0.5em;
   border: 2px solid #0277bd;
   background-color: #ffffff;
-  background-image: url(../LESS/profile/logo.png);
-  background-image: url(coba_src/logo.png);
+  background-image: url("file:///android_asset/profile/logo.png");
+  background-image: url("../../profile/logo.png");
   background-position: center;
   background-size: 100% auto;
   background-repeat: no-repeat;
@@ -2493,7 +2498,6 @@ a[href*=findpost][title="Перейти к сообщению"]:after {
 }
 .post-block .block-title span {
   color: #ffffff !important;
-  line-height: 2.25em!important;
   font-size: 1em!important;
 }
 .post-block .block-title span span {

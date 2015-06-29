@@ -1194,10 +1194,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
                         m_ScrollY = 0;
                         //showTheme(getLastUrl());
-                        getWebView().evalJs("document.querySelector('div[name*=\"entry"+postId+"\"]~.post_footer').remove();");
-                        getWebView().evalJs("document.querySelector('div[name*=\"msg"+postId+"\"]').remove();");
-                        getWebView().evalJs("document.querySelector('div[name*=\"entry"+postId+"\"]~.post_header').remove();");
-                        getWebView().evalJs("document.querySelector('div[name*=\"entry"+postId+"\"]).remove();");
+                        getWebView().evalJs("document.querySelector('div[name*=del"+postId+"]').remove();");
                     }
                 });
             }

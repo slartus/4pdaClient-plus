@@ -59,29 +59,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 )
 public class App extends android.app.Application {
     public static final int THEME_WHITE = 0;
-    public static final int THEME_BLACK = 1;
+    public static final int THEME_DARK = 1;
 
-    public static final int THEME_WHITE_HD = 13;
-    public static final int THEME_BLACK_HD = 14;
+    public static final int THEME_MATERIAL_LIGHT = 2;
+    public static final int THEME_MATERIAL_DARK = 3;
+    public static final int THEME_WHITE_OLD_HD = 4;
 
-    public static final int THEME_WHITE_MATERIAL_CYAN = 15;
-    public static final int THEME_WHITE_MATERIAL_LB = 16;
-    public static final int THEME_WHITE_MATERIAL_GRAY= 17;
-    public static final int THEME_BLACK_MATERIAL_DARK = 18;
-    public static final int THEME_WHITE_OLD_HD = 19;
-
-    public static final int THEME_WHITE_REMIE = 2;
-
-
-    public static final int THEME_WHITE_TRABLONE = 4;
-    public static final int THEME_WHITER_REMIE = 5;
-    public static final int THEME_WHITE_VETALORLOV = 7;
-
-    public static final int THEME_WHITE_OLD = 12;
     public static final int THEME_CUSTOM_CSS = 99;
 
-    private final Integer[] WHITE_THEMES = {THEME_WHITE_TRABLONE, THEME_WHITE_VETALORLOV, THEME_WHITE_REMIE,
-            THEME_WHITER_REMIE, THEME_WHITE, THEME_WHITE_OLD, THEME_WHITE_HD, THEME_WHITE_MATERIAL_CYAN, THEME_WHITE_MATERIAL_LB, THEME_WHITE_MATERIAL_GRAY, THEME_WHITE_OLD_HD};
+    private final Integer[] WHITE_THEMES = {THEME_WHITE, THEME_WHITE_OLD_HD, THEME_MATERIAL_LIGHT};
 
     private static boolean m_IsDebugModeLoaded = false;
     private static boolean m_IsDebugMode = false;
@@ -319,7 +305,7 @@ public class App extends android.app.Application {
             /*case THEME_WHITE_OLD:
                 cssFile = "coba_white_blue.css";
                 break;*/
-            case THEME_BLACK:
+            case THEME_DARK:
                 switch (color) {
                     case "pink":
                         cssFile = "4pda_dark_blue.css";
@@ -332,16 +318,10 @@ public class App extends android.app.Application {
                         break;
                 }
                 break;
-            case THEME_WHITE_MATERIAL_CYAN:
-                cssFile = "material_cyan.css";
+            case THEME_MATERIAL_LIGHT:
+                cssFile = "material_light.css";
                 break;
-            case THEME_WHITE_MATERIAL_LB:
-                cssFile = "material_light-blue.css";
-                break;
-            case THEME_WHITE_MATERIAL_GRAY:
-                cssFile = "material_gray.css";
-                break;
-            case THEME_BLACK_MATERIAL_DARK:
+            case THEME_MATERIAL_DARK:
                 cssFile = "material_dark.css";
                 break;
             case THEME_WHITE_OLD_HD:
