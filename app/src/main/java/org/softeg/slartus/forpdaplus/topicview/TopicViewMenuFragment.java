@@ -327,7 +327,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                         }).setCheckable(true).setChecked(Preferences.isHideFab());
             }
 
-            optionsMenu.add("Скрывать стрелки")
+            optionsMenu.add("Скрыть стрелки")
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             Preferences.setHideArrows(!Preferences.isHideArrows());

@@ -33,7 +33,6 @@
         <item name="news_text_minor_color">@style/news_text_minor_color_wh</item>
         <item name="news_text_second_color">@style/news_text_second_color_wh</item>
         <item name="edit_text">@style/edit_text_wh</item>
-        <item name="divider_color">@style/divider_wh</item>
         <item name="md_dark_theme">false</item>
         <item name="md_background_color">#eeeeee</item>
         <item name="md_title_color">@color/list_text_special_color_wh</item>
@@ -42,6 +41,7 @@
         <item name="android:textColorSecondary">@color/list_text_second_color_wh</item>
         <item name="Divider">@style/Divider_wh</item>
         <item name="actbar">@color/actionbar_background_wh</item>
+        <item name="android:listViewStyle">@style/list_divider_style_wh</item>
     </style>
 
     <style name="MainThemeBL" parent="Theme.AppCompat">
@@ -77,7 +77,6 @@
         <item name="news_text_minor_color">@style/news_text_minor_color_bl</item>
         <item name="news_text_second_color">@style/news_text_second_color_bl</item>
         <item name="edit_text">@style/edit_text_bl</item>
-        <item name="divider_color">@style/divider_bl</item>
         <item name="md_dark_theme">false</item>
         <item name="md_background_color">#303030</item>
         <item name="md_title_color">@color/list_text_special_color_bl</item>
@@ -86,6 +85,16 @@
         <item name="android:textColorSecondary">@color/list_text_second_color_bl</item>
         <item name="Divider">@style/Divider_bl</item>
         <item name="actbar">@color/actionbar_background_bl</item>
+        <item name="android:listViewStyle">@style/list_divider_style_bl</item>
+    </style>
+
+    <style name="list_divider_style_wh" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:divider">@color/divider_wh</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+    <style name="list_divider_style_bl" parent="@android:style/Widget.ListView">
+        <item name="android:divider">@color/divider_bl</item>
+        <item name="android:dividerHeight">1dp</item>
     </style>
 
     <style name="bottom_menu_wh" parent="@style/Theme.AppCompat.CompactMenu">
@@ -119,6 +128,8 @@
         <item name="background">@color/actionbar_background_bl</item>
         <item name="elevation">2dp</item>
         <item name="displayOptions">homeAsUp|showTitle</item>
+        <item name="titleTextStyle">@style/actionbar_title</item>
+        <item name="subtitleTextStyle">@style/actionbar_subtitle</item>
     </style>
     <style name="actionbar_title">
         <item name="android:textColor">#ffffffff</item>
@@ -238,13 +249,6 @@
     </style>
     <style name="drawer_divider_bl">
         <item name="android:background">@drawable/custom_group_devider_bl</item>
-    </style>
-
-    <style name="divider_wh">
-        <item name="android:divider">@color/divider_wh</item>
-    </style>
-    <style name="divider_bl">
-        <item name="android:divider">@color/divider_bl</item>
     </style>
 
     <style name="popup_topic_wh">

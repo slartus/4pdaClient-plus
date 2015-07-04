@@ -84,8 +84,8 @@
     <color name="drawer_menu_group_wh">@color/list_text_second_color_wh</color>
     <color name="drawer_menu_group_bl">@color/list_text_second_color_bl</color>
 
-    <color name="divider_wh">#e0e0e0</color>
-    <color name="divider_bl">#333333</color>
+    <color name="divider_wh">#dbdbdb</color>
+    <color name="divider_bl">#292929</color>
 
     <color name="list_text_general_color_wh">#4D4D4D</color>
     <color name="list_text_minor_color_wh">#757575</color>

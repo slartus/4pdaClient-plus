@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.listfragments.adapters;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.BaseAdapter;
@@ -11,9 +12,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.softeg.slartus.forpdaapi.FavTopic;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.listfragments.FavoritesListFragment;
+import org.softeg.slartus.forpdaplus.listtemplates.FavoritesBrickInfo;
 
 import java.util.ArrayList;
 
@@ -61,8 +65,8 @@ public class ListAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public int getItemViewType(int position) {
-        IListItem topic =mData.get(position);
-        if(topic.isInProgress()){
+        IListItem topic = mData.get(position);
+        if (topic.isInProgress()) {
             switch (topic.getState()) {
                 case IListItem.STATE_GREEN:
                     return ITEM_PROGRESS_NEW_TYPE;
@@ -71,7 +75,7 @@ public class ListAdapter extends BaseAdapter implements Filterable {
                 default:
                     return ITEM_PROGRESS_TYPE;
             }
-        }else{
+        } else {
             switch (topic.getState()) {
                 case IListItem.STATE_GREEN:
                     return ITEM_NEW_TYPE;
@@ -92,7 +96,7 @@ public class ListAdapter extends BaseAdapter implements Filterable {
     public android.view.View getView(int position, android.view.View view, android.view.ViewGroup parent) {
         final ViewHolder holder;
         if (view == null) {
-            switch (getItemViewType(position)){
+            switch (getItemViewType(position)) {
                 case ITEM_TYPE:
                     view = mInflater.inflate(R.layout.list_item, parent, false);
                     break;
@@ -121,6 +125,7 @@ public class ListAdapter extends BaseAdapter implements Filterable {
             holder.Main = (TextView) view.findViewById(R.id.txtMain);
             holder.SubMain = (TextView) view.findViewById(R.id.txtSubMain);
             holder.progress = view.findViewById(R.id.progressBar);
+            holder.isPinned = view.findViewById(R.id.pinned);
             view.setTag(holder);
 
         } else {
@@ -132,9 +137,13 @@ public class ListAdapter extends BaseAdapter implements Filterable {
         holder.Main.setText(topic.getMain());
         holder.SubMain.setText(topic.getSubMain());
         setVisibility(holder.progress, topic.isInProgress() ? View.VISIBLE : View.INVISIBLE);
+        try {
+            setVisibility(holder.isPinned, ((FavTopic) topic).isPinned() ? View.VISIBLE : View.GONE);
+        } catch (ClassCastException ex) {}
+
         switch (topic.getState()) {
             case IListItem.STATE_GREEN:
-                if(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("oldIndicator",false)) {
+                if (PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("oldIndicator", false)) {
                     setVisibility(holder.Flag, View.VISIBLE);
                     holder.Flag.setBackgroundColor(App.getContext().getResources().getColor(R.color.new_flag));
                 }
@@ -204,5 +213,6 @@ public class ListAdapter extends BaseAdapter implements Filterable {
         TextView TopRight;
         TextView Main;
         TextView SubMain;
+        View isPinned;
     }
 }

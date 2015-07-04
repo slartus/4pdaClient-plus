@@ -8,6 +8,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.softeg.slartus.forpdaapi.classes.LoginForm;
 import org.softeg.slartus.forpdacommon.NotReportException;
+import org.softeg.slartus.forpdacommon.PatternExtensions;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -143,7 +144,11 @@ public class ProfileApi {
 
         Document doc = Jsoup.parse(page);
         org.jsoup.nodes.Element element = doc.select("div#main").first();
+
         if (element != null) {
+            doc.select("div.photo").append("<div class=\"img\" style=\"background-image: url("+doc.select("div.photo>img").first().absUrl("src")+");\"></div>");
+            doc.select("div.photo>img").first().remove();
+
             profile.setHtmlBody(element.html());
 
             org.jsoup.nodes.Element userNickElement = element.select("div.user-box > h1").first();

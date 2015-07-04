@@ -2,7 +2,9 @@ package org.softeg.slartus.forpdaplus.classes;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -188,18 +191,41 @@ public class Post {
             final String themeId,
             final String postId) {
 
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        if(prefs.getBoolean("showClaimWarn",true)){
+            new MaterialDialog.Builder(context)
+                    .title("Примечание")
+                    .content(R.string.ClaimDescription)
+                    .positiveText("Я прочитал")
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            prefs.edit().putBoolean("showClaimWarn",false).apply();
+                            showClaimDialog(context, handler,themeId,postId);
+                        }
+                    })
+                    .show();
+        }else {
+            showClaimDialog(context, handler,themeId,postId);
+        }
+    }
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.claim, null);
-
-
-        assert layout != null;
-        final EditText message_edit = (EditText) layout.findViewById(R.id.message_edit);
-
+    public static void showClaimDialog(
+            final Context context,
+            final android.os.Handler handler,
+            final String themeId,
+            final String postId){
+        final String[] text = {""};
         new MaterialDialog.Builder(context)
-                .title("Отправить жалобу модератору на сообщение")
-                .customView(layout,true)
+                .title("Жалоба модератору на сообщение")
+                        //.customView(layout,true)
                 .positiveText("Отправить")
+                .input("Текст жалобы", "", new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
+                        text[0] = charSequence.toString();
+                    }
+                })
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
@@ -211,7 +237,7 @@ public class Post {
 
                                 String res = null;
                                 try {
-                                    res = Client.getInstance().claim(themeId, postId, message_edit.getText().toString());
+                                    res = Client.getInstance().claim(themeId, postId, text[0]);
                                 } catch (IOException e) {
                                     ex = e;
                                 }

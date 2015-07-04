@@ -135,7 +135,7 @@
             android:name="org.softeg.slartus.forpdaplus.topicview.ThemeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
-
+            android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTop">
             <intent-filter>
 

@@ -282,7 +282,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                             .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                 public boolean onMenuItemClick(MenuItem menuItem) {
 
-                                    Toast.makeText(context, "Запрос на \"закрепить\" отправлен", Toast.LENGTH_SHORT)
+                                    Toast.makeText(context, "Запрос на \"открепить\" отправлен", Toast.LENGTH_SHORT)
                                             .show();
                                     new TopicListItemTask(context, (Topic) finalTopic3, mAdapter) {
                                         @Override

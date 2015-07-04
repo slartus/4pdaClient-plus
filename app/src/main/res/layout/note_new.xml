@@ -3,11 +3,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
 
-    >
-
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
@@ -17,39 +15,29 @@
             android:layout_height="wrap_content"
             android:capitalize="sentences"
             android:singleLine="true"
-
-            android:hint="@string/EnterSubject_"
-
-            android:padding="5dip"
-
-            android:layout_toLeftOf="@+id/clear_title">
+            android:paddingRight="48dp"
+            android:hint="@string/EnterSubject_">
 
             <requestFocus />
         </EditText>
 
         <ImageButton
             android:id="@+id/clear_title"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/ic_close_grey600_24dp"
-            android:visibility="gone"/>
-    </RelativeLayout>
+            android:layout_height="36dp"
+            android:layout_width="36dp"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_close_grey600_24dp"
+            android:background="@android:color/transparent"/>
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-
         <EditText
-
-            android:padding="5dip"
-
             android:hint="@string/EnterMessage_"
             android:id="@+id/message"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/bottomPanel"
-            android:layout_below="@+id/topPanel"
             android:capitalize="sentences"
             android:gravity="top"
             android:minLines="10"
@@ -62,10 +50,11 @@
 
         <ImageButton
             android:id="@+id/clear_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-android:visibility="gone"
-            android:layout_gravity="right|bottom"
-            android:background="@drawable/ic_close_grey600_24dp" />
+            android:layout_height="36dp"
+            android:layout_width="36dp"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_close_grey600_24dp"
+            android:background="@android:color/transparent"/>
     </FrameLayout>
 </LinearLayout>
