@@ -103,13 +103,12 @@ public class SearchPostsParser extends HtmlBuilder {
             TopicBodyBuilder.addButtons(m_Body, searchResult.getCurrentPage(), searchResult.getPagesCount(),
                     Functions.isWebviewAllowJavascriptInterface(App.getInstance()), true, true);
         }
-        m_Body.append("<br/><br/>");
+        //m_Body.append("<br/><br/>");
 
     }
 
     public void endTopic(SearchResult searchResult) {
         m_Body.append("<div id=\"entryEnd\"></div>\n");
-        m_Body.append("<br/><br/>");
         if (searchResult.getPagesCount() > 1) {
             TopicBodyBuilder.addButtons(m_Body, searchResult.getCurrentPage(),
                     searchResult.getPagesCount(),

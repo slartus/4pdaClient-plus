@@ -851,7 +851,7 @@ public class Client implements IHttpClient {
             final Pattern nickPattern = PatternExtensions
                     .compile("insertText\\('[^']*\\[B\\](.*?),\\[/B\\]\\s*'\\)\"\\s*data-av=\"([^\"]*)\">");
             Pattern userInfoPattern = PatternExtensions
-                    .compile("<span class=\"post_user_info[^\"]*\"[^>]*>(<strong[^>]*>.*?</strong><br />)?Группа:(.*?)<font color=\"([^\"]*)\">[\\s\\S]*?mid=(\\d+)");
+                    .compile("<span class=\"post_user_info[^\"]*\"[^>]*>(<strong[^>]*>.*?<.strong><br .>)?Группа: (.*?)<br..><font color=\"([^\"]*)\">[\\s\\S]*?mid=(\\d+)");
 
             final Pattern repValuePattern = PatternExtensions
                     .compile("<span id=\"ajaxrep-\\d+\">(.\\d+|\\d+)</span>");
@@ -862,8 +862,8 @@ public class Client implements IHttpClient {
             final Pattern bodyPattern = PatternExtensions.compile("<div class=\"post_body([^\"]*)?\">([\\s\\S]*)</div>");
 
 
-            String today = Functions.getToday();
-            String yesterday = Functions.getYesterToday();
+            //String today = Functions.getToday();
+            //String yesterday = Functions.getYesterToday();
             org.softeg.slartus.forpdaplus.classes.Post post = null;
             Boolean spoil = spoilFirstPost;
 
@@ -874,8 +874,8 @@ public class Client implements IHttpClient {
                 String str = mainMatcher.group(2);
                 Matcher m = postDateNumPattern.matcher(str);
                 if (m.find()) {
-                    post = new org.softeg.slartus.forpdaplus.classes.Post(postId,
-                            Functions.getForumDateTime(Functions.parseForumDateTime(m.group(1), today, yesterday)), m.group(2));
+                    //post = new org.softeg.slartus.forpdaplus.classes.Post(postId, Functions.getForumDateTime(Functions.parseForumDateTime(m.group(1), today, yesterday)), m.group(2));
+                    post = new org.softeg.slartus.forpdaplus.classes.Post(postId, m.group(1), m.group(2));
 
                 } else
                     continue;

@@ -3,6 +3,8 @@ package org.softeg.slartus.forpdaplus.classes;
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.text.format.Time;
+import android.util.Log;
 
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
@@ -11,6 +13,9 @@ import org.softeg.slartus.forpdaplus.emotic.Smiles;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Hashtable;
 
 /**
@@ -49,37 +54,37 @@ public class TopicBodyBuilder extends HtmlBuilder {
         String desc = TextUtils.isEmpty(m_Topic.getDescription()) ? "" : (", " + m_Topic.getDescription());
         super.beginHtml(m_Topic.getTitle() + desc);
         super.beginBody();
-        m_Body.append("<div style=\"padding-top:").append(ACTIONBAR_TOP_MARGIN).append("\"/>\n");
+
+        m_Body.append("<div id=\"topMargin\" style=\"height:" + ACTIONBAR_TOP_MARGIN + ";\"></div>");
+
+        m_Body.append("<div class=\"panel top\">");
         if (m_Topic.getPagesCount() > 1) {
             addButtons(m_Body, m_Topic.getCurrentPage(), m_Topic.getPagesCount(),
                     m_IsWebviewAllowJavascriptInterface, false, true);
         }
-
-        m_Body.append(getTitleBlock());
+        m_Body.append(getTitleBlock()).append("</div>");
     }
+
     public void openPostsList() {
         m_Body.append("<div class=\"posts_list\">");
     }
+
     public void endTopic() {
         m_Body.append("</div>");
         m_Body.append("<div name=\"entryEnd\" id=\"entryEnd\"></div>\n");
-        m_Body.append("<br/><br/>");
+        m_Body.append("<div class=\"panel bottom\">");
         if (m_Topic.getPagesCount() > 1) {
             addButtons(m_Body, m_Topic.getCurrentPage(), m_Topic.getPagesCount(),
                     m_IsWebviewAllowJavascriptInterface, false, false);
         }
-
-        m_Body.append("<br/><br/>");
-//        addPostForm(m_Body);
-
-        m_Body.append("<div id=\"viewers\"><a ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showReadingUsers"))
-                .append(" class=\"href_button\">Кто читает тему</a></div><br/>\n");
-        m_Body.append("<div id=\"writers\"><a ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showWriters"))
-                .append(" class=\"href_button\">Кто писал сообщения</a></div><br/><br/>\n");
-        m_Body.append(getTitleBlock());
+        m_Body.append("<div class=\"who\"><a id=\"viewers\" ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showReadingUsers"))
+                .append("><span>Кто читает тему</span></a>\n");
+        m_Body.append("<a id=\"writers\" ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showWriters"))
+                .append("><span>Кто писал сообщения</span></a></div>\n");
+        m_Body.append(getTitleBlock()).append("</div>");
 
 
-        m_Body.append("<div style=\"padding-top:"+ACTIONBAR_TOP_MARGIN+"\"></div>\n");
+        //m_Body.append("<div style=\"padding-top:"+ACTIONBAR_TOP_MARGIN+"\"></div>\n");
         super.endBody();
         super.endHtml();
     }
@@ -88,33 +93,32 @@ public class TopicBodyBuilder extends HtmlBuilder {
         return
                 (
                         m_HtmlPreferences.isSpoilerByButton() ?
-                                "<div class='hidetop' style='cursor:pointer;' >".concat(title).concat("</div>" +
-                                        "<input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility(this)\"/>")
+                                "<div class=\"hat\"><div class='hidetop' style='cursor:pointer;' >".concat(title).concat("</div>" +
+                                        "<input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility(this)\"/></div>")
                                 :
-                                "<div class='hidetop' style='cursor:pointer;' onclick=\"var _n=this.parentNode.getElementsByTagName('div')[1];" +
+                                "<div class=\"hat\"><div class='hidetop' style='cursor:pointer;' onclick=\"var _n=this.parentNode.getElementsByTagName('div')[1];" +
                                         "if(_n.style.display=='none'){_n.style.display='';}else{_n.style.display='none';}\">"
                                                 .concat(title)
-                ).concat("</div><div class='hidemain'").concat(opened?" ":" style=\"display:none\"").concat(">").concat(body).concat("</div>");
+                ).concat("</div><div class='hidemain'").concat(opened?" ":" style=\"display:none\"").concat(">").concat(body).concat("</div></div>");
     }
 
     public void addPost(Post post, Boolean spoil) {
         m_Body.append("<div name=\"entry").append(post.getId()).append("\"class=\"jump\" style=\"position: absolute; width: 100%; margin-top:-"+ACTIONBAR_TOP_MARGIN+"; left: 0;\" id=\"entry").append(post.getId()).append("\"></div>\n");
-        m_Body.append("<div class=\"post_container\" name=\"del"+post.getId()+"\">");
+        m_Body.append("<div class=\"post_container\" name=\"del" + post.getId() + "\">");
 
         addPostHeader(m_Body, post);
 
-        m_Body.append("<div id=\"msg").append(post.getId()).append("\" name=\"msg").append(post.getId()).append("\">");
+        //m_Body.append("<div id=\"msg").append(post.getId()).append("\" name=\"msg").append(post.getId()).append("\">");
 
         String postBody = post.getBody().trim();
         if (m_HtmlPreferences.isSpoilerByButton())
             postBody = HtmlPreferences.modifySpoiler(postBody);
 
         if (spoil)
-            m_Body.append(getSpoiler("<b>(&gt;&gt;&gt;ШАПКА ТЕМЫ&lt;&lt;&lt;)</b>", postBody,false));
+            m_Body.append(getSpoiler("<b><span>Показать шапку</span></b>", postBody,false));
         else
             m_Body.append(postBody);
-        m_Body.append("</div>\n\n");
-        //m_Body.append("<div class=\"s_post_footer\"><table width=\"100%%\"><tr><td id=\""+post.getId()+"\"></td></tr></table></div>\n\n");
+        //m_Body.append("</div>\n\n");
 
         addFooter(m_Body, post);
         m_Body.append("<div class=\"between_messages\"></div>");
@@ -139,7 +143,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
     }
 
     public void addPoll(String value, boolean openSpoil) {
-        m_Body.append("<div class=\"poll\">").append(getSpoiler("<b>Опрос</b>", value,openSpoil)).append("</div>");
+        m_Body.append("<div class=\"poll\">").append(getSpoiler("<b><span>Опрос</span></b>", value,openSpoil)).append("</div>");
     }
 
     public void clear() {
@@ -156,15 +160,13 @@ public class TopicBodyBuilder extends HtmlBuilder {
                                   Boolean useSelectTextAsNumbers, Boolean top) {
         Boolean prevDisabled = currentPage == 1;
         Boolean nextDisabled = currentPage == pagesCount;
-        sb.append("<div class=\"navi\" id=\"").append(top ? "top_navi" : "bottom_navi").append("\">\n");
-        sb.append("<div class=\"first\"><a ").append(prevDisabled ? "#" : getHtmlout(isUseJs, "firstPage")).append(" class=\"href_button").append(prevDisabled ? "_disable" : "").append("\">&lt;&lt;</a></div>\n");
-        sb.append("<div class=\"prev\"><a ").append(prevDisabled ? "#" : getHtmlout(isUseJs, "prevPage")).append(" class=\"href_button").append(prevDisabled ? "_disable" : "").append("\">  &lt;  </a></div>\n");
-        String selectText = useSelectTextAsNumbers ? (currentPage + "/" + pagesCount) : "Выбор";
-        sb.append("<div class=\"page\"><a ").append(getHtmlout(isUseJs, "jumpToPage")).append(" class=\"href_button\">").append(selectText).append("</a></div>\n");
-        sb.append("<div class=\"next\"><a ").append(nextDisabled ? "#" : getHtmlout(isUseJs, "nextPage")).append(" class=\"href_button").append(nextDisabled ? "_disable" : "").append("\">  &gt;  </a></div>\n");
-        sb.append("<div class=\"last\"><a ").append(nextDisabled ? "#" : getHtmlout(isUseJs, "lastPage")).append(" class=\"href_button").append(nextDisabled ? "_disable" : "").append("\">&gt;&gt;</a></div>\n");
+        sb.append("\n<div class=\"navi ").append(top ? "top" : "bottom").append("\">\n");
+        sb.append("<a class=\"button first").append(prevDisabled ? " disable\"" : "\"" + getHtmlout(isUseJs, "firstPage")).append("><span>&lt;&lt;</span></a>\n");
+        sb.append("<a class=\"button prev").append(prevDisabled ? " disable\"" : "\"" + getHtmlout(isUseJs, "prevPage")).append("><span>&lt;</span></a>\n");
+        sb.append("<a class=\"button page\" ").append(getHtmlout(isUseJs, "jumpToPage")).append("><span>" + (useSelectTextAsNumbers ? (currentPage + "/" + pagesCount) : "Выбор") + "</span></a>\n");
+        sb.append("<a class=\"button next").append(nextDisabled ? " disable\"" : "\"" + getHtmlout(isUseJs, "nextPage")).append("><span>&gt;</span></a>\n");
+        sb.append("<a class=\"button last").append(nextDisabled ? " disable\"" : "\"" + getHtmlout(isUseJs, "lastPage")).append("><span>&gt;&gt;</span></a>\n");
         sb.append("</div>\n");
-
     }
 
     private String normParam(String paramName) {
@@ -219,114 +221,92 @@ public class TopicBodyBuilder extends HtmlBuilder {
         String nick = msg.getNick();
         String nickParam = msg.getNickParam();
 
+        sb.append("<div class=\"post_header\"><div class=\"header_wrapper\">\n");
 
+        //Аватарка
+        sb.append("<div class=\"avatar_parent_container ").append(m_IsShowAvatars ? "\"" : "disable\"")
+                .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showUserMenu", new String[]{ msg.getId(), msg.getUserId(), nickParam}));
+        sb.append("><div class=\"avatar_container\">");
+        String avatar = msg.getAvatarFileName();
+        if (TextUtils.isEmpty(avatar))
+            avatar = "file:///android_asset/profile/logo.png";
+        sb.append("<div class=\"img\" style=\"background-image:url(").append(avatar).append(");\"></div></div></div>");
 
-        String nickLink = nick;
-        if (!TextUtils.isEmpty(msg.getUserId())) {
-            nickLink = "<a " +
-                    getHtmlout(m_IsWebviewAllowJavascriptInterface,
-                            "showUserMenu", new String[]{
-                                    msg.getId(),
-                                    msg.getUserId(),
-                                    nickParam, msg.getAvatarFileName()}
-                    )
-                    + " class=\"system_link\">" + nick + "</a>";
+        //Ник
+        sb.append("<a class=\"inf nick ")
+                .append(msg.getUserState() ? "online " : "")
+                .append(msg.isCurator() ? "curator\"" : "\" ")
+                .append(!TextUtils.isEmpty(msg.getUserId()) ? getHtmlout(m_IsWebviewAllowJavascriptInterface, "showUserMenu", new String[]{msg.getId(), msg.getUserId(), nickParam}) : "")
+                .append("><span><b>").append(nick).append("</b></span></a>");
+
+        //Группа
+        sb.append("<div class=\"inf group\">").append(msg.getUserGroup() == null ? "" : msg.getUserGroup()).append("</div>");
+
+        //Репутация
+        if(!TextUtils.isEmpty(msg.getUserId())) {
+            sb.append("<a class=\"inf reputation\" ")
+                    .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showRepMenu", new String[]{msg.getId(), msg.getUserId(), msg.getNickParam(), msg.getCanPlusRep() ? "1" : "0", msg.getCanMinusRep() ? "1" : "0"}))
+                    .append("><span><span class=\"rep\">Реп</span>")
+                    .append("<span class=\"fullrep\" style=\"display:none;\">утация</span><span class=\"l\">(</span><span class=\"number\">")
+                    .append(msg.getUserReputation())
+                    .append("</span><span class=\"r\">)</span></span></a>");
         }
 
-
-        String userState = msg.getUserState() ? "post_nick_online_cli" : "post_nick_cli";
-
-        String advDiv = m_IsShowAvatars ? "<div class=\"margin_left\"></div>" : "";
-        sb.append("<div></div><div class=\"post_header\">\n");
-        sb.append("\t<table width=\"100%\">\n");
-        sb.append("\t\t<tr><td>").append(advDiv);
-
-        if(msg.isCurator())
-            sb.append("<span class=\"curator\"></span>");
-        sb.append("<span class=\"").append(userState).append("\">").append(nickLink).append("</span></td>\n");
-        sb.append("\t\t\t<td><div align=\"right\"><span class=\"post_date_cli\">").append(msg.getDate()).append("<a ")
-                .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostLinkMenu", msg.getId())).append(">#").append(msg.getNumber()).append("</a></span></div></td>\n");
-        sb.append("\t\t</tr>\n");
-
-
-        sb.append("<tr><td colspan=\"2\">");
-        if (m_IsShowAvatars) {
-            sb.append("<div class=\"avatar_parent_container\">");
-            sb.append("<div class=\"avatar_container\">");
-            String avatar = msg.getAvatarFileName();
-
-            if (TextUtils.isEmpty(avatar))
-                avatar = "file:///android_asset/profile/logo.png";
-            sb.append("<img src=\"").append(avatar).append("\" />");
-            //}
-            sb.append("</div></div>");
-
-        }
-        sb.append("</td></tr>");
-
-        String userGroup = msg.getUserGroup() == null ? "" : msg.getUserGroup();
-        sb.append("<tr>\n" + "\t\t\t<td colspan=\"2\">").append(advDiv)
-                .append("<span  class=\"user_group\">").append(userGroup)
-                .append("</span>");
-
-        sb.append("</td></tr>");
-        sb.append("\t\t<tr>\n");
-        sb.append("\t\t\t<td>").append(advDiv).append(TextUtils.isEmpty(msg.getUserId()) ? "" : getReputation(msg)).append("</td>\n");
+        //Меню
         if (Client.getInstance().getLogined()) {
-            String[] postMenuParams = {msg.getId(), msg.getDate(), msg.getUserId(), nickParam, msg.getCanEdit() ? "1" : "0", msg.getCanDelete() ? "1" : "0"};
-            sb.append("\t\t\t<td><div align=\"right\">").append("<a ")
-                    .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostMenu", postMenuParams)).append(" class=\"system_link\">Меню</a></div></td>");
+            sb.append("<a class=\"inf menu\" ")
+                    .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostMenu", new String[]{msg.getId(), msg.getDate(), msg.getUserId(), nickParam, msg.getCanEdit() ? "1" : "0", msg.getCanDelete() ? "1" : "0"}))
+                    .append("><span>Меню</span></a>");
         }
-        sb.append("\t\t</tr>");
-        sb.append("\t</table>\n");
-        sb.append("</div>\n");
-    }
 
-    private String getReputation(Post msg) {
-        String[] params = new String[]{msg.getId(), msg.getUserId(), msg.getNickParam(), msg.getCanPlusRep() ? "1" : "0", msg.getCanMinusRep() ? "1" : "0"};
-        //        if (!msg.getCanMinusRep() || !msg.getCanPlusRep())
-        return "<a " + getHtmlout(m_IsWebviewAllowJavascriptInterface, "showRepMenu", params) + "  class=\"system_link\" ><span class=\"post_date_cli\">Реп(" + msg.getUserReputation() + ")</span></a>";
+        //Дата
+        sb.append("<span class=\"inf date\"><span>").append(msg.getDate()).append("</span></span>");
+
+        //Ссылка на пост
+        sb.append("<a class=\"inf link\" ")
+                .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostLinkMenu", msg.getId()))
+                .append("><span><span class=\"sharp\">#</span>").append(msg.getNumber()).append("</span></a>");
+
+        sb.append("</div></div>\n");
     }
 
     private void addFooter(StringBuilder sb, Post post) {
         sb.append("<div class=\"post_footer\">");
         if (m_Logined) {
-
             String nickParam = post.getNickParam();
             String postNumber = post.getNumber();
+
             try {
                 postNumber = Integer.toString(Integer.parseInt(post.getNumber()) - 1);
-            } catch (Throwable ignored) {
-            }
-            sb.append(String.format("<a class=\"system_link\" href=\"/forum/index.php?act=report&t=%s&p=%s&st=%s\"><span class=\"send_claim_button\"></span></a>",
-                    m_Topic.getId(), post.getId(), postNumber));
+            } catch (Throwable ignored) {}
 
-            String insertNickText = String.format("[SNAPBACK]%s[/SNAPBACK] [B]%s,[/B] \\n",
-                    post.getId(), nickParam);
-            sb.append("<a class=\"system_link\" ")
-                    .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "insertTextToPost", insertNickText))
-                    .append("><span class=\"insert_nick_button\"></span></a>");
+            /*sb.append(String.format("<a class=\"link button claim\" href=\"href=\"/forum/index.php?act=report&t=%s&p=%s&st=%s\"><span>Жалоба</span></a>",
+                    m_Topic.getId(), post.getId(), postNumber));*/
 
+            sb.append("<a class=\"button nick\" ")
+                    .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "insertTextToPost", String.format("[SNAPBACK]%s[/SNAPBACK] [B]%s,[/B] \\n",post.getId(), nickParam)))
+                    .append("><span>Ник</span></a>");
 
-            String[] quoteParams = {m_Topic.getForumId(), m_Topic.getId(), post.getId(), post.getDate(), post.getUserId(), nickParam};
-            sb.append("<a class=\"system_link\" ")
-                    .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "quote", quoteParams))
-                    .append("><span class=\"quote_button\"></span></a>");
+            sb.append("<a class=\"button quote\" ")
+                    .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "quote", new String[]{m_Topic.getForumId(), m_Topic.getId(), post.getId(), post.getDate(), post.getUserId(), nickParam}))
+                    .append("><span>Цитата</span></a>");
 
             if (!Client.getInstance().UserId.equals(post.getUserId())) {
-                sb.append("<a ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "postVoteBad", post.getId()))
-                        .append(" class=\"system_link\"><span class=\"post_vote_bad\"></span></a>");
+                sb.append("<a class=\"button vote bad\" ")
+                        .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "postVoteBad", post.getId()))
+                        .append("><span>Плохо</span></a>");
 
-                sb.append("<a ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "postVoteGood", post.getId()))
-                        .append(" class=\"system_link\"><span class=\"post_vote_good\"></span></a>");
+                sb.append("<a class=\"button vote bad\" ")
+                        .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "postVoteGood", post.getId()))
+                        .append("><span>Хорошо</span></a>");
             }
+
             if (post.getCanEdit())
-                sb.append(String.format("<a class=\"system_link\" id=\"edit-but-%s\" href=\"/forum/index.php?act=post&do=edit_post&f=%s&t=%s&p=%s&st=%s\"><span class=\"edit_post_button\"></span></a>",
+                sb.append(String.format("<a class=\"button edit\" id=\"edit-but-%s\" href=\"/forum/index.php?act=post&do=edit_post&f=%s&t=%s&p=%s&st=%s\"><span>Изменить</span></a>",
                         post.getId(), m_Topic.getForumId(), m_Topic.getId(), post.getId(), postNumber));
             if (post.getCanDelete())
-                sb.append(String.format("<a class=\"system_link\" href=\"/forum/index.php?act=Mod&CODE=04&f=%s&t=%s&p=%s&st=%s&auth_key=%s\"><span class=\"delete_post_button\"></span></a>",
+                sb.append(String.format("<a class=\"button delete\" href=\"/forum/index.php?act=Mod&CODE=04&f=%s&t=%s&p=%s&st=%s&auth_key=%s\"><span>Удалить</span></a>",
                         m_Topic.getForumId(), m_Topic.getId(), post.getId(), postNumber, m_Topic.getAuthKey()));
-
         }
         sb.append("</div>\n\n");
     }

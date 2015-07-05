@@ -22,54 +22,54 @@ Edited by: RadiationX|*or you nick*
   font-size: inherit !important;
 }
 [style*="font-size:9px"] {
-  line-height: 1.4em!important;
+  line-height: 1.25em!important;
   font-size: 0.75em!important;
 }
 [style*="font-size:8pt"] {
   font-size: 0.85em !important;
-  line-height: 1.4em!important;
+  line-height: 1.25em!important;
 }
 [style*="font-size:8pt"] * {
   font-size: inherit !important;
 }
 [style*="font-size:10pt"] {
   font-size: 1.0625em !important;
-  line-height: 1.4em!important;
+  line-height: 1.25em!important;
 }
 [style*="font-size:10pt"] * {
   font-size: inherit !important;
 }
 [style*="font-size:12pt"] {
   font-size: 1.275em !important;
-  line-height: 1.4em!important;
+  line-height: 1.25em!important;
 }
 [style*="font-size:12pt"] * {
   font-size: inherit !important;
 }
 [style*="font-size:14pt"] {
   font-size: 1.4875em !important;
-  line-height: 1.4em!important;
+  line-height: 1.25em!important;
 }
 [style*="font-size:14pt"] * {
   font-size: inherit !important;
 }
 [style*="font-size:18pt"] {
   font-size: 1.9125em !important;
-  line-height: 1.4em!important;
+  line-height: 1.25em!important;
 }
 [style*="font-size:18pt"] * {
   font-size: inherit !important;
 }
 [style*="font-size:24pt"] {
   font-size: 2.55em !important;
-  line-height: 1.4em!important;
+  line-height: 1.25em!important;
 }
 [style*="font-size:24pt"] * {
   font-size: inherit !important;
 }
 [style*="font-size:36pt"] {
   font-size: 3.825em !important;
-  line-height: 1.4em!important;
+  line-height: 1.25em!important;
 }
 [style*="font-size:36pt"] * {
   font-size: inherit !important;
@@ -85,7 +85,7 @@ body {
   font-family: "roboto";
   font-size: 100%;
   color: #212121;
-  line-height: 1.4em;
+  line-height: 1.25em;
   overflow-wrap: break-word;
   word-wrap: break-word;
 }
@@ -1142,37 +1142,6 @@ a {
   left: 0;
   width: 100%;
 }
-.navi {
-  background: #ffffff;
-  display: table;
-  width: 100%;
-  line-height: 3em;
-}
-.navi > div {
-  display: table-cell;
-  text-align: center;
-}
-.navi > div .href_button,
-.navi > div .href_button_disable {
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  padding: 0 0.5em;
-  color: #0277bd;
-  font-size: 0.875em;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-.navi > div .href_button_disable {
-  color: #bbbbbb;
-}
-.navi .last .href_button:after {
-  display: none;
-}
-.navi .last .href_button_disable:after {
-  display: none;
-}
 .search-web-view .navi {
   background: #ffffff;
   margin: 0.5em 0;
@@ -1182,28 +1151,6 @@ a {
 }
 .search-web-view #bottom_navi {
   margin: 0;
-}
-#bottom_navi {
-  margin-top: 3em;
-}
-.topic_title_post {
-  background: #ffffff;
-  margin: 0.5em 0;
-  box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.15);
-  -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.15);
-  margin: 0;
-  text-align: center;
-  margin-bottom: 3em;
-  box-shadow: 0 4px 10px -5px rgba(0, 0, 0, 0.15);
-  -webkit-box-shadow: 0 4px 10px -5px rgba(0, 0, 0, 0.15);
-  clear: both;
-}
-.topic_title_post a {
-  padding: 0.75em;
-  display: inline-block;
-}
-.topic_title_post + .poll {
-  margin-top: 2.25em;
 }
 .poll .hidetop {
   background: #ffffff;
@@ -1559,21 +1506,6 @@ a {
 .post_body [attach_id][title*="Скачать"]:not(.linked-image)[href*=".txt"][title*=".txt"]:before {
   content: "\e00b";
 }
-.hidetop {
-  position: relative;
-  z-index: 3;
-  text-align: center;
-  line-height: 3em;
-}
-.hidetop:after {
-  content: ">>ШАПКА ТЕМЫ<<";
-  color: #0277bd;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-.hidetop b {
-  display: none;
-}
 div[data-post] {
   background: #ffffff;
   margin: 0.5em 0;
@@ -1747,403 +1679,103 @@ div[data-post] .post_body {
   -webkit-border-radius: 0 0 2px 2px;
   border-radius: 0 0 2px 2px;
 }
-.posts_list .post_container {
+.post_container {
   background: #ffffff;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.15);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.15);
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  margin-top: 2.25em;
+}
+.post_container .post_header {
+  padding: 1em;
+}
+.post_container .post_header .header_wrapper {
   position: relative;
 }
-.posts_list .post_container .post_header {
-  -webkit-border-radius: 2px 2px 0 0;
-  border-radius: 2px 2px 0 0;
-  line-height: 2.25em;
-  min-height: 6.75em;
-}
-.posts_list .post_container .post_header table {
-  display: block;
-  border-spacing: 0;
-  position: relative;
-}
-.posts_list .post_container .post_header table tbody {
-  display: block;
-}
-.posts_list .post_container .post_header table tbody tr {
-  height: 2.25em;
-  padding: 0 0.5em;
-}
-.posts_list .post_container .post_header table tbody tr td {
-  padding: 0;
-}
-.posts_list .post_container .post_header table tbody tr td .post_nick_cli a {
-  color: #212121;
-}
-.posts_list .post_container .post_header table tbody tr td .post_nick_online_cli a {
-  color: #2ecc71;
-}
-.posts_list .post_container .post_header table tbody tr td div[align*=right] .post_date_cli {
-  font-size: 0.9em;
-  white-space: nowrap;
-  text-align: left;
-  display: block;
-  position: relative;
-  line-height: 2.571em;
-}
-.posts_list .post_container .post_header table tbody tr td div[align*=right] .post_date_cli a {
-  float: right;
-  margin-left: 0.5em;
-  color: #ffffff;
-  position: absolute;
-  width: 100%;
-  right: 0;
-  top: 0;
-  text-align: right;
-  font-weight: bold;
-}
-.posts_list .post_container .post_header table tbody tr td .user_group {
-  font-weight: bold;
-}
-.posts_list .post_container .post_header table tbody tr td .user_group span {
-  color: #212121 !important;
-}
-.posts_list .post_container .post_header table tbody tr:first-child {
-  color: #ffffff;
-  background: #0277bd;
-  -webkit-border-radius: 2px 2px 0 0;
-  border-radius: 2px 2px 0 0;
-  display: block;
-  width: 100%;
-  padding-left: 5.5em;
-}
-.posts_list .post_container .post_header table tbody tr:first-child td:first-child {
-  position: absolute;
-  top: 4.5em;
-  left: 0;
-  padding-left: 0.5em;
-  z-index: 10;
-  max-width: 50%;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.posts_list .post_container .post_header table tbody tr:first-child td:first-child span {
-  font-size: 0.875em;
-  font-weight: bold;
-}
-.posts_list .post_container .post_header table tbody tr:first-child td:first-child span a:after {
-  position: absolute;
-  content: "";
-  width: 4.5em;
-  height: 4.5em;
-  top: -5em;
-  left: 0.5em;
-}
-.posts_list .post_container .post_header table tbody tr:first-child td:last-child {
-  display: block;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.posts_list .post_container .post_header table tbody tr:nth-child(2) td {
-  display: block;
-  height: 4.5em;
-  width: 4.5em;
-  position: absolute;
-  top: -0.5em;
-  left: 0.5em;
-  z-index: 9;
-  padding: 0;
-  box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
-  -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
-}
-.posts_list .post_container .post_header table tbody tr:nth-child(2) td:empty {
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  display: block;
-  height: 4.5em;
-  width: 4.5em;
-  position: absolute;
-  top: -0.5em;
-  left: 0.5em;
-  border: 2px solid #0277bd;
-  background-color: #ffffff;
-  background-image: url("file:///android_asset/profile/logo.png");
-  background-image: url("../../profile/logo.png");
+.post_container .post_header .avatar_parent_container .avatar_container .img {
+  height: 4em;
+  width: 4em;
+  background-repeat: no-repeat;
+  background-size: cover;
   background-position: center;
-  background-size: 100% auto;
+  -webkit-border-radius: 4em;
+  border-radius: 4em;
+}
+.post_container .post_header .inf {
+  position: absolute;
+  left: 5em;
+}
+.post_container .post_header .inf.nick {
+  top: 0;
+}
+.post_container .post_header .inf.group {
+  top: 1.25em;
+}
+.post_container .post_header .inf.group > span {
+  font-size: 0.875em;
+}
+.post_container .post_header .inf.reputation {
+  top: 2.5em;
+}
+.post_container .post_header .inf.reputation > span {
+  font-size: 0.875em;
+}
+.post_container .post_header .inf.menu {
+  left: auto;
+  right: -1em;
+  top: -1em;
+  height: 3em;
+  width: 3em;
+  background-image: url(file:///android_asset/forum/style_images/ic_dots_vertical_grey600_24dp.png);
+  background-size: 1.5em;
+  background-position: center;
   background-repeat: no-repeat;
 }
-.posts_list .post_container .post_header table tbody tr:nth-child(2) td .avatar_parent_container {
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  text-align: center;
-  font-size: 0;
-  position: relative;
-  height: 100%;
-  border: 2px solid #0277bd;
-  background: #ffffff;
-}
-.posts_list .post_container .post_header table tbody tr:nth-child(2) td .avatar_parent_container:after {
-  position: relative;
-  content: "";
-  height: 100%;
-  width: 0px;
-  display: inline-block;
-  vertical-align: middle;
-}
-.posts_list .post_container .post_header table tbody tr:nth-child(2) td .avatar_parent_container .avatar_container {
-  max-height: 100%;
-  width: 100%;
-  display: inline-block;
-  text-align: center;
-  overflow: hidden;
-  vertical-align: middle;
-  background: #ffffff;
-}
-.posts_list .post_container .post_header table tbody tr:nth-child(2) td .avatar_parent_container .avatar_container img {
-  width: 100%;
-}
-.posts_list .post_container .post_header table tbody tr:nth-child(2) td .avatar_parent_container .avatar_container img[src*=slogo] {
-  height: 83px;
-  max-width: none;
-}
-.posts_list .post_container .post_header table tbody tr:nth-child(3),
-.posts_list .post_container .post_header table tbody tr:nth-child(4) {
-  top: 2.25em;
-  display: block;
-  padding-left: 5.5em;
-  position: absolute;
-  width: 100%;
-  left: 0;
-}
-.posts_list .post_container .post_header table tbody tr:nth-child(3) {
-  top: 4.5em;
-  border-top: 1px solid #e9e9e9;
-  border-bottom: 1px solid #e9e9e9;
-  left: 0.5em;
-  right: 0.5em;
-  padding: 0;
-  width: auto;
-  text-align: right;
-}
-.posts_list .post_container .post_header table tbody tr:nth-child(3) td {
-  font-size: 0.875em;
-  display: block;
-  float: right;
-  max-width: 50%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.posts_list .post_container .post_header table tbody tr:nth-child(4) {
-  top: 2.25em;
-  text-transform: uppercase;
-}
-.posts_list .post_container .post_header table tbody tr:nth-child(4):after {
-  content: "";
-  display: table;
-  clear: both;
-}
-.posts_list .post_container .post_header table tbody tr:nth-child(4) td a {
-  color: #0277bd;
-  font-weight: bold;
-}
-.posts_list .post_container .post_header table tbody tr:nth-child(4) td:first-child {
-  float: left;
-  font-size: 0.875em;
-}
-.posts_list .post_container .post_header table tbody tr:nth-child(4) td:last-child {
-  font-size: 0.875em;
-  float: right;
-}
-.posts_list .post_container .post_footer {
-  -webkit-border-radius: 0 0 2px 2px;
-  border-radius: 0 0 2px 2px;
-  margin-top: 0;
-  border-top: 1px solid #e9e9e9;
-  text-align: center;
-  position: relative;
-}
-.posts_list .post_container .post_footer:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-.posts_list .post_container .post_footer .system_link {
-  display: inline-block;
-  margin: 0.375em;
-}
-.posts_list .post_container .post_footer .system_link > * {
-  color: #ffffff;
-  background: #0277bd;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  line-height: 2.25em;
-  height: 2.25em;
-  padding: 0 0.5em;
-  display: inline-block;
-  text-transform: uppercase;
-  background: none;
-  color: #0277bd;
-}
-.posts_list .post_container .post_footer .system_link > *:after {
-  font-size: 0.875em;
-  font-weight: bold;
-}
-.posts_list .post_container .post_footer .system_link .send_claim_button:after {
-  content: "Жалоба";
-}
-.posts_list .post_container .post_footer .system_link .insert_nick_button:after {
-  content: "Ник";
-}
-.posts_list .post_container .post_footer .system_link .quote_button:after {
-  content: "Цитата";
-}
-.posts_list .post_container .post_footer .system_link .post_vote_bad:after {
-  content: "-";
-  content: "Плохо";
-}
-.posts_list .post_container .post_footer .system_link .post_vote_good:after {
-  content: "+";
-  content: "Хорошо";
-}
-.posts_list .post_container .post_footer .system_link .edit_post_button:after {
-  content: "Редакт";
-}
-.posts_list .post_container .post_footer .system_link .delete_post_button:after {
-  content: "Удалить";
-}
-.posts_list .post_container .post_footer .system_link[href*=report],
-.posts_list .post_container .post_footer .system_link[href*=edit_post],
-.posts_list .post_container .post_footer .system_link[href*="act=Mod"] {
+.post_container .post_header .inf.menu > span {
   display: none;
 }
-.posts_list .post_container .post_footer .system_link[onclick*=insertTextToPost] {
+.post_container .post_header .inf.date {
+  left: auto;
+  right: 0;
+  top: 2.5em;
+}
+.post_container .post_header .inf.date > span {
+  font-size: 0.875em;
+}
+.post_container .post_header .inf.link {
+  display: none;
+}
+.post_container .post_footer .button {
   float: right;
-}
-.posts_list .post_container .post_footer .system_link[onclick*=quote] {
-  float: right;
-}
-.posts_list .post_container .post_footer .system_link[onclick*=postVoteBad] {
-  float: left;
-}
-.posts_list .post_container .post_footer .system_link[onclick*=postVoteGood] {
-  float: left;
-}
-.posts_list.search-results .topic_title_post {
-  color: white;
-  background: #0277bd;
-  box-shadow: none;
-  -webkit-box-shadow: none;
-  margin-bottom: 0;
-  -webkit-border-radius: 2px 2px 0 0;
-  border-radius: 2px 2px 0 0;
-}
-.posts_list.search-results .topic_title_post a {
-  color: white;
-}
-.posts_list.search-results .post_header {
-  -webkit-border-radius: 0;
-  border-radius: 0;
-  line-height: 2.25em;
-  min-height: 2.25em;
-}
-.posts_list.search-results .post_header table tbody tr:first-child {
-  padding-left: 0.5em;
-  display: block;
-  -webkit-border-radius: 0;
-  border-radius: 0;
-  border-color: rgba(0, 0, 0, 0.15);
-}
-.posts_list.search-results .post_header table tbody tr:first-child td {
-  display: block!important;
-}
-.posts_list.search-results .post_header table tbody tr:first-child td:first-child {
-  padding: 0;
-  line-height: 2em;
-  top: 0;
-  left: 0.5em;
-}
-.posts_list.search-results .post_header table tbody tr:first-child td:first-child .post_nick_cli a {
-  color: #ffffff;
-}
-.posts_list.search-results .post_header table tbody tr:first-child td:last-child {
-  float: right;
-  position: absolute;
-  line-height: 2em;
-  right: 0.5em;
-  top: 0;
-}
-.posts_list.search-results .post_body .postcolor {
-  height: auto!important;
-  overflow: auto!important;
-}
-.posts_list.search-results .s_post_footer {
+  margin: 0.375em 0.5em;
   padding: 0.5em;
-  border-top: 1px solid #e9e9e9;
-}
-.posts_list.search-results ~ br {
-  display: block!important;
-}
-.posts_list .bad-search-result {
-  padding: 1.5em;
+  min-width: 3em;
+  max-height: 2.25em;
   text-align: center;
 }
-.posts_list .bad-search-result h3 {
-  margin: 0;
+.post_container .post_footer .button > span {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.875em;
 }
-.posts_list .bad-search-result span {
-  display: inline-block;
-  padding-top: 0.5em;
-  color: #212121;
+.post_container .post_footer .button.quote {
+  margin-right: 0;
+}
+.post_container .post_footer .button.vote {
+  float: left;
+}
+.post_container .post_footer .button.vote.bad {
+  margin-right: 0;
+}
+.post_container .post_footer:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 .searchlite {
   background: rgba(248, 143, 0, 0.3);
   -webkit-border-radius: 2px;
   border-radius: 2px;
   padding: 0 0.125em;
-}
-#entryEnd ~ br {
-  display: none;
-}
-#viewers,
-#writers {
-  background: #ffffff;
-  margin: 0.5em 0;
-  box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.15);
-  -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.15);
-  margin: 0;
-  box-shadow: none;
-  -webkit-box-shadow: none;
-  display: block;
-  text-align: center;
-  position: relative;
-}
-#viewers .href_button,
-#writers .href_button {
-  display: block;
-  color: #0277bd;
-  font-weight: bold;
-  text-transform: uppercase;
-  line-height: 3.4286em;
-  font-size: 0.875em;
-}
-#viewers {
-  margin-top: 3em;
-}
-#writers:before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 6px;
-  bottom: 6px;
-  display: none;
-}
-#bottom_navi ~ #viewers,
-#bottom_navi ~ #writers {
-  margin-top: 0;
 }
 /*--- END FORUM TOPIC ---*/
 /*--- PROFILE ---*/
@@ -2594,43 +2226,6 @@ a[href*=findpost][title="Перейти к сообщению"]:after {
 }
 .post-block.tbl.mod > .block-body {
   border-color: #2980b9;
-}
-@media screen and (min-width: 480px) {
-  .post_footer .system_link .post_vote_bad:after {
-    content: "Плохо";
-  }
-  .post_footer .system_link .post_vote_good:after {
-    content: "Хорошо";
-  }
-  #viewers,
-  #writers {
-    width: 50%;
-    float: left;
-  }
-  #writers {
-    margin-top: 3em;
-  }
-  #writers:before {
-    display: block;
-  }
-}
-div[style*="margin-top:80px"] > .navi + br + br ~ .between_messages + .topic_title_post ~ #bottom_navi {
-  margin-bottom: 80px;
-}
-@media screen and (max-width: 21em) {
-  .post_footer .system_link[onclick*=insertTextToPost] {
-    float: right;
-  }
-  .post_footer .system_link[onclick*=quote] {
-    float: right;
-  }
-  .post_footer .system_link[onclick*=postVoteBad] {
-    float: right;
-    clear: both;
-  }
-  .post_footer .system_link[onclick*=postVoteGood] {
-    float: right;
-  }
 }
 @media screen and (max-width: 24em) {
   #main .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl {

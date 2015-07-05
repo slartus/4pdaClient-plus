@@ -44,12 +44,12 @@ public class ForumUser {
 
     public static void showUserQuickAction(final FragmentActivity context, View webView, final String userId,
                                            String userNick) {
-        showUserQuickAction(context, webView, "", userId, userNick,null, null);
+        showUserQuickAction(context, webView, "", userId, userNick, null);
     }
 
     public static void showUserQuickAction(final FragmentActivity context, View webView, final String postId,
                                            final String userId,
-                                           String userNick, String avatar,final InsertNickInterface insertNickInterface) {
+                                           String userNick,final InsertNickInterface insertNickInterface) {
         try {
             userNick = Html.fromHtml(userNick.replace("<", "&lt;")).toString();
 

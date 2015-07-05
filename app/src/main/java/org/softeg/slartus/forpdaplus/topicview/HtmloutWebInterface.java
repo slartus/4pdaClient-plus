@@ -222,11 +222,11 @@ public class HtmloutWebInterface {
     }
 
     @JavascriptInterface
-    public void showUserMenu(final String postId, final String userId, final String userNick, final String avatar) {
+    public void showUserMenu(final String postId, final String userId, final String userNick) {
         run(new Runnable() {
             @Override
             public void run() {
-                ForumUser.showUserQuickAction(getContext(), getContext().getWebView(), postId, userId, userNick, avatar,
+                ForumUser.showUserQuickAction(getContext(), getContext().getWebView(), postId, userId, userNick,
                         new ForumUser.InsertNickInterface() {
                             @Override
                             public void insert(String text) {
