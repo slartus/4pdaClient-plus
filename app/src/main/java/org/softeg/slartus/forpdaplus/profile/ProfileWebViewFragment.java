@@ -7,8 +7,10 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +18,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,13 +43,16 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.qms.QmsChatActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.util.regex.Matcher;
 
 public class ProfileWebViewFragment extends DialogFragment
         implements LoaderManager.LoaderCallbacks<Profile> {
 
     private static final String TAG = "ProfileWebViewFragment";
-    private WebView m_WebView;
+    private static WebView m_WebView;
 
 
     protected Bundle args;
@@ -81,6 +87,9 @@ public class ProfileWebViewFragment extends DialogFragment
         DialogFragment newFragment = ProfileWebViewFragment.newInstance(userId, userNick);
         newFragment.getArguments().putBoolean("DIALOG", true);
         newFragment.show(fragmentActivity.getSupportFragmentManager(), "dialog");
+    }
+    public static WebView getWebView(){
+        return m_WebView;
     }
 
     private static ProfileWebViewFragment newInstance(String userId, String userNick) {
@@ -318,7 +327,7 @@ public class ProfileWebViewFragment extends DialogFragment
                         args.getString(ProfileWebViewActivity.USER_ID_KEY));
                 ProfileHtmlBuilder builder = new ProfileHtmlBuilder();
                 builder.beginHtml(profile.getNick().toString());
-                builder.beginBody();
+                builder.beginBody("profile");
                 builder.append(profile.getHtmlBody());
                 builder.endBody();
                 builder.endHtml();
@@ -380,6 +389,39 @@ public class ProfileWebViewFragment extends DialogFragment
             }
         }
 
+    }
+    @JavascriptInterface
+    public void saveHtml(final String html) {
+        Log.d("point2: ", "work");
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.d("point3: ","work");
+
+                FileOutputStream outputStream;
+
+                try {
+                    String state = Environment.getExternalStorageState();
+                    if (!Environment.MEDIA_MOUNTED.equals(state)) {
+                        Toast.makeText(getActivity(), "Внешнее хранилище недоступно!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+
+                    File file = new File(App.getInstance().getExternalFilesDir(null), "profile.txt");
+                    FileWriter out = new FileWriter(file);
+                    out.write(html);
+                    out.close();
+                    Uri uri = Uri.fromFile(file);
+
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(uri, "text/plain");
+                    startActivity(intent);
+                } catch (Exception e) {
+                    AppLog.e(getActivity(), e);
+                }
+            }
+        });
     }
 
 }

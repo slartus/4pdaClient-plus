@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
-    android:padding="5dip">
+    android:padding="5dp">
 
     <LinearLayout
         android:layout_width="fill_parent"

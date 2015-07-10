@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">4pda</string>
+    <string name="app_name">ForPDA</string>
     <string name="loading">Загрузка...</string>
     <string name="Forums">Форумы</string>
     <string name="pull_to_refresh_pull_label">Потяните, чтобы обновить</string>
@@ -46,7 +46,7 @@
     <string name="AuthorLogin">Логин автора</string>
     <string name="SearchInTopic">Искать в теме</string>
     <string name="Search">Искать</string>
-    <string name="SortBy">Сортировать по</string>
+    <string name="SortBy">Сортировка</string>
     <string name="AllForums">Все форумы</string>
     <string name="Subforums">Искать в подфорумах?</string>
     <string name="ResultsInTopicsView">Результаты в виде тем</string>

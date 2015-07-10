@@ -4,25 +4,37 @@ package org.softeg.slartus.forpdaplus.profile;/*
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.NewsActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
+import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.qms.QmsNewThreadActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 
 
 public class ProfileWebViewActivity extends BaseFragmentActivity {
@@ -79,6 +91,10 @@ public class ProfileWebViewActivity extends BaseFragmentActivity {
     public static final class MenuFragment extends ProfileMenuFragment {
         private String userId;
         private String userNick;
+
+        public ProfileWebViewActivity getInterface() {
+            return (ProfileWebViewActivity) getActivity();
+        }
 
         @Override
         public void onCreate(android.os.Bundle savedInstanceState) {
@@ -192,6 +208,29 @@ public class ProfileWebViewActivity extends BaseFragmentActivity {
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
+            if (Preferences.System.isDeveloper()) {
+                menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        try {
+                            getInterface().saveHtml();
+                        } catch (Exception ex) {
+                            return false;
+                        }
+                        return true;
+                    }
+                });
+            }
+
+        }
+
+    }
+
+    public void saveHtml() {
+        try {
+            ProfileWebViewFragment.getWebView().loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+            Log.d("point1: ","work");
+        } catch (Throwable ex) {
+            AppLog.e(this, ex);
         }
     }
 

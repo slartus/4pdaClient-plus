@@ -14,7 +14,6 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;

@@ -4,17 +4,17 @@
     android:layout_height="fill_parent"
 
     android:orientation="vertical"
-    android:paddingLeft="15dip"
-    android:paddingBottom="5dip"
-    android:paddingRight="5dip"
-    android:paddingTop="5dip">
+    android:paddingLeft="15dp"
+    android:paddingBottom="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="5dp">
 
     <TextView
         android:id="@+id/text1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginTop="8dip"
+        android:layout_marginTop="8dp"
         android:text="text1"/>
 
     <TextView

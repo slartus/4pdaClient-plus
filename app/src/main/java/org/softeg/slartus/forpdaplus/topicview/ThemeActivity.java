@@ -655,6 +655,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             AppLog.eToast(getContext(), ex);
         }
 
+
         CharSequence[] titles = new CharSequence[]{"Цитата сообщения", "Пустая цитата", "Цитата буфера"};
         if (TextUtils.isEmpty(clipboardText))
             titles = new CharSequence[]{"Редактор цитаты", "Пустая цитата"};
@@ -671,10 +672,28 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                                 showQuoteEditor("http://4pda.ru/forum/index.php?act=Post&CODE=02&f=" + forumId + "&t=" + topicId + "&qpid=" + postId);
                                 break;
                             case 1:
-                                ThemeActivity.this.insertTextToPost("[quote name=\"" + userNick + "\" date=\"" + postDate + "\" post=\"" + postId + "\"]\n\n[/quote]");
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        new Handler().post(new Runnable() {
+                                            public void run() {
+                                                insertTextToPost("[quote name=\"" + userNick + "\" date=\"" + postDate + "\" post=\"" + postId + "\"]\n\n[/quote]");
+                                            }
+                                        });
+                                    }
+                                });
                                 break;
                             case 2:
-                                ThemeActivity.this.insertTextToPost("[quote name=\"" + userNick + "\" date=\"" + postDate + "\" post=\"" + postId + "\"]\n" + finalClipboardText + "\n[/quote]");
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        new Handler().post(new Runnable() {
+                                            public void run() {
+                                                insertTextToPost("[quote name=\"" + userNick + "\" date=\"" + postDate + "\" post=\"" + postId + "\"]\n" + finalClipboardText + "\n[/quote]");
+                                            }
+                                        });
+                                    }
+                                });
                                 break;
                         }
                     }
@@ -690,6 +709,13 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
             ActionItem actionItem;
 
+
+            int linkPosition = -1;
+            if (Client.getInstance().getLogined()) {
+                actionItem = new ActionItem();
+                actionItem.setTitle("Ссылка");
+                linkPosition = mQuickAction.addActionItem(actionItem);
+            }
 
             int claimPosition = -1;
             if (Client.getInstance().getLogined()) {
@@ -713,6 +739,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 deletePosition = mQuickAction.addActionItem(actionItem);
             }
 
+            /*
             int plusOdinPosition = -1;
             int minusOdinPosition = -1;
             if (Client.getInstance().getLogined() && !Client.getInstance().UserId.equals(userId)) {
@@ -724,7 +751,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 actionItem = new ActionItem();
                 actionItem.setTitle("Плохо (-)");
                 minusOdinPosition = mQuickAction.addActionItem(actionItem);
-            }
+            }*/
 
             int notePosition;
 
@@ -743,9 +770,10 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             final int finalDeletePosition = deletePosition;
             final int finalEditPosition = editPosition;
 
+            final int finalLinkPosition = linkPosition;
             final int finalClaimPosition = claimPosition;
-            final int finalPlusOdinPosition = plusOdinPosition;
-            final int finalMinusOdinPosition = minusOdinPosition;
+            //final int finalPlusOdinPosition = plusOdinPosition;
+            //final int finalMinusOdinPosition = minusOdinPosition;
             final int finalNotePosition = notePosition;
             final int finalQuotePosition = quotePosition;
             mQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
@@ -753,16 +781,17 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 public void onItemClick(QuickAction source, int pos, int actionId) {
                     if (pos == finalDeletePosition) {
                         prepareDeleteMessage(postId);
-
                     } else if (pos == finalEditPosition) {
                         EditPostActivity.editPost(ThemeActivity.this, m_Topic.getForumId(), m_Topic.getId(), postId, m_Topic.getAuthKey());
+                    } else  if (pos== finalLinkPosition) {
+                        showLinkMenu(org.softeg.slartus.forpdaplus.classes.Post.getLink(m_Topic.getId(), postId), postId);
                     } else if (pos == finalClaimPosition) {
                         org.softeg.slartus.forpdaplus.classes.Post.claim(ThemeActivity.this, mHandler, m_Topic.getId(), postId);
-                    } else if (pos == finalPlusOdinPosition) {
+                    }/* else if (pos == finalPlusOdinPosition) {
                         org.softeg.slartus.forpdaplus.classes.Post.plusOne(ThemeActivity.this, mHandler, postId);
                     } else if (pos == finalMinusOdinPosition) {
                         org.softeg.slartus.forpdaplus.classes.Post.minusOne(ThemeActivity.this, mHandler, postId);
-                    } else if (pos == finalNotePosition) {
+                    }*/ else if (pos == finalNotePosition) {
                         NoteDialog.showDialog(mHandler, ThemeActivity.this, m_Topic.getTitle(), null,
                                 "http://4pda.ru/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
                                 m_Topic.getId(), m_Topic.getTitle(), postId, null, null);

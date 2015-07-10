@@ -16,7 +16,7 @@
             android:layout_alignParentLeft="true"
             android:background="#ff000000"
             android:clipToPadding="false"
-            android:textSize="12.0dip" />
+            android:textSize="12dp" />
     </RelativeLayout>
 
 

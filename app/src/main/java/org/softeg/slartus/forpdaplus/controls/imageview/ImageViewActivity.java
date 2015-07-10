@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;

@@ -3,7 +3,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="Общие настройки списков">
     <CheckBoxPreference
-        android:defaultValue="true"
+        android:defaultValue="false"
         android:key="lists.scroll_by_buttons"
         android:summary="Использовать кнопки для скролла списка"
         android:title="Скролл кнопками" />

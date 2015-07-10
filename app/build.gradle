@@ -8,8 +8,8 @@ android {
         minSdkVersion 15
 
         targetSdkVersion 21
-        versionCode 530
-        versionName "3.0.2"
+        versionCode 531
+        versionName "3.0.3"
     }
     buildTypes {
         release {
@@ -50,7 +50,6 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     compile 'com.github.chrisbanes.photoview:library:1.2.2'
-    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     compile 'com.melnykov:floatingactionbutton:1.2.0'
     compile 'com.afollestad:material-dialogs:0.7.6.0'
     compile 'de.hdodenhof:circleimageview:1.1.0'

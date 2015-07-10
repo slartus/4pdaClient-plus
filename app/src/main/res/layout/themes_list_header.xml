@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="5dip"
+    android:padding="5dp"
     >
 
     <TextView
@@ -17,7 +17,7 @@
         android:src="@drawable/ic_settings_grey600_24dp"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_margin="0dip"
+        android:layout_margin="0dp"
         android:background="@null"
         android:layout_alignParentRight="true"
         android:visibility="gone" />
@@ -27,8 +27,8 @@
         android:src="@drawable/ic_star_grey600_24dp"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_marginLeft="2dip"
-        android:layout_marginRight="2dip"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
         android:background="@null"
         android:layout_alignParentRight="true"
         android:visibility="gone" />

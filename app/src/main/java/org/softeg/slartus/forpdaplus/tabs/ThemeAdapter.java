@@ -193,7 +193,16 @@ public class ThemeAdapter extends ArrayAdapter<ExtTopic> {
                     return true;
                 }
             });
+            menu.add(getContext().getString(R.string.NotesByTopic)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
 
+                    Bundle args = new Bundle();
+                    args.putString(NotesListFragment.TOPIC_ID_KEY, topic.getId());
+                    ListFragmentActivity.showListFragment(getContext(), new NotesBrickInfo().getName(), args);
+
+                    return true;
+                }
+            });
             ExtUrl.addUrlSubMenu(handler, getContext(), menu, topic.getShowBrowserUrl(params), topic.getId(),
                     topic.getTitle());
             addOptionsMenu(getContext(), handler, menu, topic, addFavorites, null);
@@ -249,7 +258,7 @@ public class ThemeAdapter extends ArrayAdapter<ExtTopic> {
 
     public static SubMenu addOptionsMenu(final Context context, final Handler mHandler, Menu menu, final ExtTopic topic,
                                          Boolean addFavorites, final String shareItUrl) {
-        SubMenu optionsMenu = menu.addSubMenu("Опции...").setIcon(R.drawable.ic_menu_more);
+        SubMenu optionsMenu = menu.addSubMenu("Опции").setIcon(R.drawable.ic_menu_more);
 
         configureOptionsMenu(context, mHandler, optionsMenu, topic, addFavorites, shareItUrl);
         return optionsMenu;
@@ -307,16 +316,6 @@ public class ThemeAdapter extends ArrayAdapter<ExtTopic> {
 
 
         }
-        optionsMenu.add(context.getString(R.string.NotesByTopic)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-
-                Bundle args = new Bundle();
-                args.putString(NotesListFragment.TOPIC_ID_KEY, topic.getId());
-                ListFragmentActivity.showListFragment(context, new NotesBrickInfo().getName(), args);
-
-                return true;
-            }
-        });
         optionsMenu.add(context.getString(R.string.Share)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
 

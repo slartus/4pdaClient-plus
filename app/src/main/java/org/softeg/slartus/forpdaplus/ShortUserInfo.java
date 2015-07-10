@@ -34,17 +34,11 @@ public class ShortUserInfo {
     private Activity mActivity;
     private SharedPreferences prefs;
     private CircleImageView imgAvatar;
-    private ImageView imgAvatarSquare;
-    private ImageView infoRefresh;
-    private ImageView userBackground;
-    private TextView userNick;
-    private TextView qmsMessages;
-    private TextView loginButton;
-    private TextView userRep;
-    private RelativeLayout textWrapper;
+    private ImageView imgAvatarSquare, infoRefresh,userBackground;
+    private TextView userNick, qmsMessages, loginButton, userRep;
+    private RelativeLayout textWrapper, topInform;
     private Handler mHandler = new Handler();
     private Client client;
-    private RelativeLayout topInform;
     private boolean isSquare;
 
     public ShortUserInfo(Activity activity) {

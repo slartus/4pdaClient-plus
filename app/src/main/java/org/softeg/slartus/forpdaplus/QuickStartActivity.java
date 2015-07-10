@@ -95,15 +95,8 @@ public class QuickStartActivity extends BaseFragmentActivity implements ITabPare
 
     @Override
     public void onBackPressed() {
-
         if (!themesTab.onParentBackPressed()) {
-            if (!m_ExitWarned) {
-                Toast.makeText(getApplicationContext(), "Нажмите кнопку НАЗАД снова, чтобы закрыть", Toast.LENGTH_SHORT).show();
-                m_ExitWarned = true;
-            } else {
-                finish();
-            }
-
+            finish();
         } else {
             m_ExitWarned = false;
         }

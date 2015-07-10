@@ -230,7 +230,7 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
     }
 
     private TextView createStyledTextView() {
-        return (TextView) getLayoutInflater().inflate(R.layout.themed_textview, null);
+        return (TextView) getLayoutInflater().inflate(R.layout.note_first_textview, null);
     }
 
     private void fillRating() {

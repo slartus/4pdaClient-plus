@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="2dip">
+    android:padding="2dp">
 
     <EditText
         android:id="@+id/query_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="2dip"
+        android:layout_margin="2dp"
         android:hint="Ключевые слова"
         android:inputType="textAutoComplete" />
 
@@ -18,7 +18,7 @@
         android:id="@+id/username_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="2dip"
+        android:layout_margin="2dp"
         android:hint="Логин автора (дополнительно)"
         android:inputType="textAutoComplete" />
 
@@ -114,14 +114,14 @@
                 android:layout_height="wrap_content"
                 android:layout_span="2"
                 android:checked="true"
-                android:paddingLeft="50dip"
+                android:paddingLeft="50dp"
                 android:text="@string/Subforums" />
 
             <FrameLayout
                 android:id="@+id/forums_tree"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dip" />
+                android:layout_margin="2dp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

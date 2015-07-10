@@ -33,7 +33,7 @@
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="fill_parent"
-        android:layout_height="8dip"
+        android:layout_height="8dp"
         android:progress="50"
         style="?android:progressBarStyleHorizontal" />
 

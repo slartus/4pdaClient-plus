@@ -4,17 +4,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:padding="16dip">
+    android:fitsSystemWindows="true">
 
     <TableLayout
         android:id="@+id/infoTable"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:shrinkColumns="1" />
+        android:shrinkColumns="1"
+        android:padding="16dp"/>
 
     <org.softeg.slartus.forpdaplus.classes.AdvWebView
-        android:layout_marginTop="5dip"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

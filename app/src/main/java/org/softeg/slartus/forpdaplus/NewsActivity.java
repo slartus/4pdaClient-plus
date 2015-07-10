@@ -815,7 +815,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                 m_Title = Html.fromHtml(matcher.group(1)).toString();
             }
             builder.beginHtml(m_Title);
-            builder.beginBody();
+            builder.beginBody("news");
             builder.append("<div style=\"padding-top:" + builder.getMarginTop() + "px\"/>\n");
             builder.append("<div id=\"main\">");
             builder.append("<script type=\"text/javascript\" async=\"async\" src=\"file:///android_asset/forum/js/jqp.min.js\"></script>\n");

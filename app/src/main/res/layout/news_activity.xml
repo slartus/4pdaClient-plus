@@ -40,13 +40,13 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="2.0dip"
-                android:layout_marginRight="2.0dip"
-                android:layout_marginTop="2.0dip"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginTop="2dp"
                 android:layout_toLeftOf="@+id/btnCloseSearch"
                 android:layout_toRightOf="@+id/btnNextSearch"
                 android:capitalize="sentences"
-                android:padding="5.0dip"
+                android:padding="5dp"
                 android:singleLine="true" />
 
             <ImageButton
@@ -67,7 +67,7 @@
             android:id="@id/wvBody"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:textSize="12.0dip"
+            android:textSize="12dp"
             android:clipToPadding="false"/>
 
         <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"

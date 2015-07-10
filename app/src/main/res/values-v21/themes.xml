@@ -2,11 +2,13 @@
     <style name="Theme.White" parent="MainThemeWH">
         <item name="colorPrimary">@color/actionbar_background_wh</item>
         <item name="android:statusBarColor">#2d000000</item>
+        <item name="android:navigationBarColor">@color/actionbar_background_wh</item>
     </style>
 
     <style name="Theme.Black" parent="MainThemeBL">
         <item name="colorPrimary">@color/actionbar_background_bl</item>
         <item name="android:statusBarColor">#2d000000</item>
+        <item name="android:navigationBarColor">@color/actionbar_background_bl</item>
     </style>
 
     <style name="MainPinkWH" parent="Theme.White">
@@ -111,7 +113,7 @@
         <item name="android:textColor">@color/list_text_special_color_wh</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">56dp</item>
-        <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
+        <item name="android:windowTitleStyle">@style/prefs_title_style</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_wh</item>
     </style>
 
@@ -120,7 +122,7 @@
         <item name="android:textColor">@color/list_text_special_color_bl</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">56dp</item>
-        <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
+        <item name="android:windowTitleStyle">@style/prefs_title_style</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_bl</item>
     </style>
 

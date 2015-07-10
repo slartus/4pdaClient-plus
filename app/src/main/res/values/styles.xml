@@ -17,7 +17,6 @@
         <item name="right_separator">@style/right_separator_wh</item>
         <item name="news">@style/news_wh</item>
         <item name="news_full">@style/news_full_wh</item>
-        <item name="news_image_corner">@style/news_image_corner_wh</item>
         <item name="drawer_menu">@style/drawer_menu_wh</item>
         <item name="drawer_menu_group">@style/drawer_menu_group_wh</item>
         <item name="drawer_menu_text">@style/drawer_menu_text_wh</item>
@@ -61,7 +60,6 @@
         <item name="right_separator">@style/right_separator_bl</item>
         <item name="news">@style/news_bl</item>
         <item name="news_full">@style/news_full_bl</item>
-        <item name="news_image_corner">@style/news_image_corner_bl</item>
         <item name="drawer_menu">@style/drawer_menu_bl</item>
         <item name="drawer_menu_group">@style/drawer_menu_group_bl</item>
         <item name="drawer_menu_text">@style/drawer_menu_text_bl</item>
@@ -88,11 +86,11 @@
         <item name="android:listViewStyle">@style/list_divider_style_bl</item>
     </style>
 
-    <style name="list_divider_style_wh" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+    <style name="list_divider_style_wh" parent="@style/Widget.AppCompat.ListView">
         <item name="android:divider">@color/divider_wh</item>
         <item name="android:dividerHeight">1dp</item>
     </style>
-    <style name="list_divider_style_bl" parent="@android:style/Widget.ListView">
+    <style name="list_divider_style_bl" parent="@style/Widget.AppCompat.ListView">
         <item name="android:divider">@color/divider_bl</item>
         <item name="android:dividerHeight">1dp</item>
     </style>
@@ -194,19 +192,11 @@
     </style>
 
     <style name="news_wh">
-        <item name="android:background">@drawable/news_wh</item>
+        <item name="android:background">@color/news_background_wh</item>
     </style>
 
     <style name="news_bl">
-        <item name="android:background">@drawable/news_bl</item>
-    </style>
-
-    <style name="news_image_corner_wh">
-        <item name="android:background">@drawable/news_image_corner_wh</item>
-    </style>
-
-    <style name="news_image_corner_bl">
-        <item name="android:background">@drawable/news_image_corner_bl</item>
+        <item name="android:background">@color/news_background_bl</item>
     </style>
 
     <style name="news_full_wh">

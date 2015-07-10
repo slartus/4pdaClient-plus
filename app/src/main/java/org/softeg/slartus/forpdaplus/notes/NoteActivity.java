@@ -163,15 +163,14 @@ public class NoteActivity extends BaseFragmentActivity {
                         TableLayout.LayoutParams rowparams, TableRow.LayoutParams textviewparams) {
         TableRow row = new TableRow(this);
 
-        TextView textView = createStyledTextView();
+        TextView textView = createFirtsTextView();
         textView.setText(title);
-        textView.setTypeface(Typeface.DEFAULT_BOLD);
         row.addView(textView, textviewparams);
         infoTable.addView(row, rowparams);
 
         row = new TableRow(this);
 
-        TextView textView2 = createStyledTextView();
+        TextView textView2 = createSecondTextView();
         textView2.setText(Html.fromHtml(text));
         textView2.setEllipsize(null);
         textView2.setOnClickListener(new View.OnClickListener() {
@@ -211,9 +210,11 @@ public class NoteActivity extends BaseFragmentActivity {
         return htmlBuilder.getHtml().toString();
     }
 
-    private TextView createStyledTextView() {
-        return (TextView) getLayoutInflater().inflate(R.layout.themed_textview, null);
-
+    private TextView createFirtsTextView() {
+        return (TextView) getLayoutInflater().inflate(R.layout.note_first_textview, null);
+    }
+    private TextView createSecondTextView() {
+        return (TextView) getLayoutInflater().inflate(R.layout.note_second_textview, null);
     }
 
     public class LoadPageTask extends AsyncTask<String, String, Note> {

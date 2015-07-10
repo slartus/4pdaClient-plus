@@ -45,7 +45,7 @@ public class ExtUrl {
 
     public static SubMenu addUrlSubMenu(final android.os.Handler handler, final Context context, Menu menu, final String url
             , final CharSequence id, final String title) {
-        SubMenu subMenu = menu.addSubMenu("Ссылка...");
+        SubMenu subMenu = menu.addSubMenu("Ссылка");
         addUrlMenu(handler, context, subMenu, url, id, title);
         return subMenu;
     }
@@ -161,7 +161,7 @@ public class ExtUrl {
                                               final String postId, final String userId, final String user) {
         CharSequence[] titles = new CharSequence[]{"Открыть в...", "Поделиться ссылкой", "Скопировать ссылку", "Создать заметку"};
         new MaterialDialog.Builder(context)
-                .title("Ссылка...")
+                .title("Ссылка")
                 .content(url)
                 .items(titles)
                 .itemsCallback(new MaterialDialog.ListCallback() {

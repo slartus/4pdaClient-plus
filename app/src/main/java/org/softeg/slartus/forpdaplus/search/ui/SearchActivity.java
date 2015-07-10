@@ -73,12 +73,7 @@ public class SearchActivity extends BaseFragmentActivity
 
     @Override
     public void onBackPressed() {
-        if (!m_ExitWarned) {
-            Toast.makeText(getApplicationContext(), "Нажмите кнопку НАЗАД снова, чтобы закрыть", Toast.LENGTH_SHORT).show();
-            m_ExitWarned = true;
-        } else {
-            finish();
-        }
+        finish();
     }
 
     private void doSearch() {

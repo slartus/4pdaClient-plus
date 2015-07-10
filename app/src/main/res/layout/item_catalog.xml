@@ -17,7 +17,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="5dip">
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/text1"
@@ -26,7 +26,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#4373C3"
         android:textStyle="bold"
-        android:layout_marginTop="8dip"
+        android:layout_marginTop="8dp"
         android:text="text1"
 
         />

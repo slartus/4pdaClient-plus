@@ -428,7 +428,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         checkNewQms();
         HtmlBuilder htmlBuilder = new HtmlBuilder();
         htmlBuilder.beginHtml("QMS");
-        htmlBuilder.beginBody("onload=\"scrollToElement('bottom_element')\"");
+        htmlBuilder.beginBody("qms","onload=\"scrollToElement('bottom_element')\"");
 
         if (!Preferences.Topic.isShowAvatars())
             chatBody = chatBody.replaceAll("<img[^>]*?class=\"avatar\"[^>]*>", "");

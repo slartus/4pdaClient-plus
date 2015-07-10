@@ -34,7 +34,7 @@ public class HtmlBuilder {
         m_Body.append("<title>" + title + "</title>\n");
         m_Body.append("</head>\n");
     }
-    public int getMarginTop(){
+    public static int getMarginTop(){
         int margin = 0;
         Context context = App.getContext();
         Resources resources = context.getResources();
@@ -72,23 +72,23 @@ public class HtmlBuilder {
         m_Body.append(str);
     }
 
-    public void beginBody() {
-        beginBody(null);
+    public void beginBody(String id) {
+        beginBody(id,null);
     }
 
-    public void beginBody(CharSequence bodyScript) {
+    public void beginBody(String id, CharSequence bodyScript) {
         int font = App.getInstance().getWebViewFont();
         if (bodyScript == null || TextUtils.isEmpty(bodyScript)) {
             if(font==0){
-                m_Body.append("<body class=\"modification\">\n");
+                m_Body.append("<body id=\""+id+"\" class=\"modification\">\n");
             }else {
-                m_Body.append("<body class=\"modification\" style=\"font-family:inherit;\">\n");
+                m_Body.append("<body id=\""+id+"\" class=\"modification\" style=\"font-family:inherit;\">\n");
             }
         }else {
             if(font==0){
-                m_Body.append("<body class=\"modification\" " + bodyScript + ">\n");
+                m_Body.append("<body id=\""+id+"\" class=\"modification\" " + bodyScript + ">\n");
             }else {
-                m_Body.append("<body class=\"modification\" style=\"font-family:inherit;\" " + bodyScript + ">\n");
+                m_Body.append("<body  id=\""+id+"\"class=\"modification\" style=\"font-family:inherit;\" " + bodyScript + ">\n");
             }
         }
         if(Preferences.System.isDeveloper())

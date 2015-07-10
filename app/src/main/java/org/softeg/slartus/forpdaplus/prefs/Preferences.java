@@ -104,7 +104,7 @@ public class Preferences {
 
         public static Boolean getScrollByButtons() {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("lists.scroll_by_buttons", true);
+            return prefs.getBoolean("lists.scroll_by_buttons", false);
         }
 
         public static void setLastSelectedList(String listName) {

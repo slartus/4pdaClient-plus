@@ -22,7 +22,7 @@
             android:singleLine="true"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:minWidth="250dip"
+            android:minWidth="250dp"
             android:scrollHorizontally="true"
             android:capitalize="none"
             android:autoText="false" />
@@ -31,7 +31,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textStyle="bold"
             android:singleLine="true"
-            android:layout_marginTop="2dip"
+            android:layout_marginTop="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Password" />
@@ -41,7 +41,7 @@
             android:singleLine="true"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:minWidth="250dip"
+            android:minWidth="250dp"
             android:scrollHorizontally="true"
             android:capitalize="none"
             android:autoText="false"

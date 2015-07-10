@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="2.0dip"
+    android:padding="2dp"
     android:textAppearance="?android:textAppearanceLarge">
 
     <LinearLayout
@@ -27,9 +27,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="5.0dip"
-            android:layout_marginLeft="4.0dip"
-            android:layout_marginTop="5.0dip"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="5dp"
             android:focusable="false"
             android:gravity="center|left"
             android:visibility="gone" />
@@ -42,9 +42,9 @@
             android:layout_alignBottom="@+id/usericon"
             android:layout_alignParentRight="true"
             android:gravity="center|right"
-            android:paddingRight="5.0dip"
+            android:paddingRight="5dp"
             android:text=""
-            android:textSize="10.0dip" />
+            android:textSize="10dp" />
 
         <TextView
             android:id="@+id/txtAuthor"
@@ -56,21 +56,21 @@
             android:layout_toLeftOf="@+id/txtLastMessageDate"
             android:layout_toRightOf="@+id/usericon"
             android:ellipsize="middle"
-            android:paddingLeft="5.0dip"
-            android:paddingRight="10.0dip"
+            android:paddingLeft="5dp"
+            android:paddingRight="10dp"
             android:singleLine="true"
             android:text=""
-            android:textSize="10.0dip" />
+            android:textSize="10dp" />
 
         <TextView
             android:id="@+id/txtTitle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtLastMessageDate"
-            android:paddingLeft="5.0dip"
-            android:paddingRight="5.0dip"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:text="Test"
-            android:textSize="13.0dip" />
+            android:textSize="13dp" />
 
         <TextView
             android:id="@+id/txtDescription"
@@ -80,10 +80,10 @@
             android:layout_below="@+id/txtTitle"
             android:gravity="center|left"
             android:maxLines="2"
-            android:paddingBottom="5.0dip"
-            android:paddingLeft="5.0dip"
-            android:paddingRight="5.0dip"
-            android:textSize="11.0dip" />
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textSize="11dp" />
 
         <TextView
             android:id="@+id/txtForumTitle"
@@ -93,11 +93,11 @@
             android:layout_alignParentBottom="true"
             android:layout_alignWithParentIfMissing="true"
             android:layout_below="@+id/txtDescription"
-            android:layout_marginRight="5.0dip"
+            android:layout_marginRight="5dp"
             android:gravity="right"
-            android:paddingBottom="5.0dip"
+            android:paddingBottom="5dp"
             android:text=""
-            android:textSize="11.0dip"
+            android:textSize="11dp"
             android:textStyle="italic"
             android:visibility="gone" />
     </RelativeLayout>

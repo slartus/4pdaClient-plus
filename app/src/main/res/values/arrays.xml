@@ -59,9 +59,9 @@
     </string-array>
 
     <string-array name="SearchSortArray">
-        <item>Релевантности (соответствию запросу)</item>
-        <item>Дате (от новых к старым)</item>
-        <item>Дате (от старых к новым)</item>
+        <item>Соответствие запросу</item>
+        <item>Дата (от новых к старым)</item>
+        <item>Дата (от старых к новым)</item>
     </string-array>
 
     <string-array name="SearchSortValues">
@@ -71,8 +71,8 @@
     </string-array>
 
     <string-array name="SearchResultTitles">
-        <item>Сообщений</item>
-        <item>Тем</item>
+        <item>Сообщения</item>
+        <item>Темы</item>
     </string-array>
 
     <string-array name="SearchResultValues">

@@ -53,7 +53,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
     public void beginTopic() {
         String desc = TextUtils.isEmpty(m_Topic.getDescription()) ? "" : (", " + m_Topic.getDescription());
         super.beginHtml(m_Topic.getTitle() + desc);
-        super.beginBody();
+        super.beginBody("topic");
 
         m_Body.append("<div id=\"topMargin\" style=\"height:" + ACTIONBAR_TOP_MARGIN + ";\"></div>");
 
@@ -81,7 +81,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
                 .append("><span>Кто читает тему</span></a>\n");
         m_Body.append("<a id=\"writers\" ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showWriters"))
                 .append("><span>Кто писал сообщения</span></a></div>\n");
-        m_Body.append(getTitleBlock()).append("</div>");
+        m_Body.append(getTitleBlock()).append("</div><div id=\"bottomMargin\"></div>");
 
 
         //m_Body.append("<div style=\"padding-top:"+ACTIONBAR_TOP_MARGIN+"\"></div>\n");
@@ -224,13 +224,13 @@ public class TopicBodyBuilder extends HtmlBuilder {
         sb.append("<div class=\"post_header\"><div class=\"header_wrapper\">\n");
 
         //Аватарка
-        sb.append("<div class=\"avatar_parent_container ").append(m_IsShowAvatars ? "\"" : "disable\"")
-                .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showUserMenu", new String[]{ msg.getId(), msg.getUserId(), nickParam}));
-        sb.append("><div class=\"avatar_container\">");
+        sb.append("<div class=\"avatar ").append(m_IsShowAvatars ? "\"" : "disable\"")
+                .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showUserMenu", new String[]{msg.getId(), msg.getUserId(), nickParam}));
         String avatar = msg.getAvatarFileName();
-        if (TextUtils.isEmpty(avatar))
-            avatar = "file:///android_asset/profile/logo.png";
-        sb.append("<div class=\"img\" style=\"background-image:url(").append(avatar).append(");\"></div></div></div>");
+        if (TextUtils.isEmpty(avatar)){
+            avatar = "file:///android_asset/profile/av.png";
+        }
+        sb.append("><div class=\"img\" style=\"background-image:url(").append((m_IsShowAvatars ? avatar : "file:///android_asset/profile/av.png")).append(");\"></div></div>");
 
         //Ник
         sb.append("<a class=\"inf nick ")
@@ -246,11 +246,16 @@ public class TopicBodyBuilder extends HtmlBuilder {
         if(!TextUtils.isEmpty(msg.getUserId())) {
             sb.append("<a class=\"inf reputation\" ")
                     .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showRepMenu", new String[]{msg.getId(), msg.getUserId(), msg.getNickParam(), msg.getCanPlusRep() ? "1" : "0", msg.getCanMinusRep() ? "1" : "0"}))
-                    .append("><span><span class=\"rep\">Реп</span>")
-                    .append("<span class=\"fullrep\" style=\"display:none;\">утация</span><span class=\"l\">(</span><span class=\"number\">")
-                    .append(msg.getUserReputation())
-                    .append("</span><span class=\"r\">)</span></span></a>");
+                    .append("><span>").append(msg.getUserReputation()).append("</span></a>");
         }
+
+        //Дата
+        sb.append("<div class=\"date-link\"><span class=\"inf date\"><span>").append(msg.getDate()).append("</span></span>");
+
+        //Ссылка на пост
+        sb.append("<a class=\"inf link\" ")
+                .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostLinkMenu", msg.getId()))
+                .append("><span><span class=\"sharp\">#</span>").append(msg.getNumber()).append("</span></a></div>");
 
         //Меню
         if (Client.getInstance().getLogined()) {
@@ -258,15 +263,6 @@ public class TopicBodyBuilder extends HtmlBuilder {
                     .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostMenu", new String[]{msg.getId(), msg.getDate(), msg.getUserId(), nickParam, msg.getCanEdit() ? "1" : "0", msg.getCanDelete() ? "1" : "0"}))
                     .append("><span>Меню</span></a>");
         }
-
-        //Дата
-        sb.append("<span class=\"inf date\"><span>").append(msg.getDate()).append("</span></span>");
-
-        //Ссылка на пост
-        sb.append("<a class=\"inf link\" ")
-                .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showPostLinkMenu", msg.getId()))
-                .append("><span><span class=\"sharp\">#</span>").append(msg.getNumber()).append("</span></a>");
-
         sb.append("</div></div>\n");
     }
 
@@ -280,8 +276,8 @@ public class TopicBodyBuilder extends HtmlBuilder {
                 postNumber = Integer.toString(Integer.parseInt(post.getNumber()) - 1);
             } catch (Throwable ignored) {}
 
-            /*sb.append(String.format("<a class=\"link button claim\" href=\"href=\"/forum/index.php?act=report&t=%s&p=%s&st=%s\"><span>Жалоба</span></a>",
-                    m_Topic.getId(), post.getId(), postNumber));*/
+            sb.append(String.format("<a class=\"link button claim\" href=\"/forum/index.php?act=report&t=%s&p=%s&st=%s\"><span>Жалоба</span></a>",
+                    m_Topic.getId(), post.getId(), postNumber));
 
             sb.append("<a class=\"button nick\" ")
                     .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "insertTextToPost", String.format("[SNAPBACK]%s[/SNAPBACK] [B]%s,[/B] \\n",post.getId(), nickParam)))
@@ -296,7 +292,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
                         .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "postVoteBad", post.getId()))
                         .append("><span>Плохо</span></a>");
 
-                sb.append("<a class=\"button vote bad\" ")
+                sb.append("<a class=\"button vote good\" ")
                         .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "postVoteGood", post.getId()))
                         .append("><span>Хорошо</span></a>");
             }
