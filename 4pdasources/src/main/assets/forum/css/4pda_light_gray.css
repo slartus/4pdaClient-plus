@@ -1733,17 +1733,19 @@ a {
   margin-right: 0;
 }
 .post_container .post_footer .button.vote {
-  float: left;
+  float: right;
 }
 .post_container .post_footer .button.vote.bad {
   margin-right: 0;
+  clear: both;
 }
 .post_container .post_footer .button.edit {
-  float: left;
+  float: right;
   margin-right: 0;
+  clear: both;
 }
 .post_container .post_footer .button.delete {
-  float: left;
+  float: right;
 }
 .post_container .post_footer .button.claim {
   display: none;
@@ -2357,6 +2359,21 @@ div[data-post] .post_body {
 }
 .post-block.tbl.mod > .block-title {
   color: #2980b9;
+}
+@media screen and (min-width: 20em) {
+  .post_container .post_footer .button.vote {
+    float: left;
+  }
+  .post_container .post_footer .button.vote.bad {
+    clear: none;
+  }
+  .post_container .post_footer .button.edit {
+    float: left;
+    clear: none;
+  }
+  .post_container .post_footer .button.delete {
+    float: left;
+  }
 }
 @media screen and (max-width: 24em) {
   #main .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl {
