@@ -42,7 +42,7 @@
     <string name="Message">Сообщение</string>
     <string name="Whom">Кому</string>
     <string name="User__">Пользователь: </string>
-    <string name="EditReason__">Причина изменения: </string>
+    <string name="EditReason__">Причина изменения</string>
     <string name="AuthorLogin">Логин автора</string>
     <string name="SearchInTopic">Искать в теме</string>
     <string name="Search">Искать</string>

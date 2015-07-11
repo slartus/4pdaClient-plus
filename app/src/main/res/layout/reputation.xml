@@ -10,10 +10,11 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
         <TextView
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/User__"
+            android:id="@+id/user"
             android:layout_marginRight="4dp"/>
 
         <TextView
@@ -25,18 +26,12 @@
             android:text="Radiation15" />
     </LinearLayout>
 
-    <TextView
-        android:textSize="14sp"
-        android:layout_marginTop="18dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/EditReason__" />
-
     <EditText
         android:id="@+id/message_edit"
         android:layout_marginTop="4dp"
         android:maxLines="5"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="top" />
+        android:gravity="top"
+        android:hint="@string/EditReason__"/>
 </LinearLayout>

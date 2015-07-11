@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaapi.qms;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -17,10 +18,9 @@ public class QmsUsers extends ArrayList<QmsUser> {
 
     public static int unreadMessageUsersCount(ArrayList<QmsUser> users) {
         int senders = 0;
-
         for (QmsUser qmsUser : users) {
             if (!TextUtils.isEmpty(qmsUser.getNewMessagesCount()))
-                senders += 1;
+                senders += Integer.parseInt(qmsUser.getNewMessagesCount().toString());
         }
         return senders;
     }

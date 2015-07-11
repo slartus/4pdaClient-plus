@@ -99,6 +99,7 @@ public class HtmlBuilder {
         String emoPath = HtmlPreferences.isUseLocalEmoticons(App.getContext()) ?
                 "file:///android_asset/forum/style_emoticons/default/" : "http://s.4pda.to/img/emot/";
         m_Body.append("<script>jsEmoticons.parseAll('" + emoPath + "');initPostBlock();</script>");
+        //m_Body.append("<style>body:after {content: \"\";position: fixed;width: 100%;height: 100%;top:0;left: 0;z-index: 1000000;background-image:-webkit-linear-gradient(rgba(0, 128, 0, 0.3) 1px, transparent 1px),-webkit-linear-gradient(left, rgba(0, 128, 0, 0.3) 1px, transparent 1px);background-image:-o-linear-gradient(rgba(0, 128, 0, 0.3) 1px, transparent 1px),-o-linear-gradient(left, rgba(0, 128, 0, 0.3) 1px, transparent 1px);background-image:linear-gradient(rgba(0, 128, 0, 0.3) 1px, transparent 1px),linear-gradient(to right, rgba(0, 128, 0, 0.3) 1px, transparent 1px);background-size:0.5em 0.5em, 0.5em 0.5em;background-position:-1px -1px, -1px -1px;}</style>");
         m_Body.append("</body>\n");
         return this;
     }
