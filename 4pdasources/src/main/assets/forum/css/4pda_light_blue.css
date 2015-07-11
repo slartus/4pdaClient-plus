@@ -608,13 +608,15 @@ a {
 .container .content .content-box .btn.white {
   background: #0277bd;
 }
-.container .content .content-box .btn:active:after {
+.container .content .content-box .btn:after {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+}
+.container .content .content-box .btn:active:after {
   background: rgba(0, 0, 0, 0.1);
 }
 .container .content .content-box .eg_tbl {
@@ -1209,14 +1211,16 @@ a {
 .poll .hidetop:after {
   display: none;
 }
-.poll .hidetop:active:before {
-  background: rgba(0, 0, 0, 0.1);
+.poll .hidetop:before {
   content: "";
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
+}
+.poll .hidetop:active:before {
+  background: rgba(0, 0, 0, 0.1);
 }
 .poll .hidetop b {
   display: inline;
@@ -1490,6 +1494,10 @@ a {
   max-width: 100%;
   width: auto!important;
   height: auto!important;
+  background-image: url(../style_images/play_video.png);
+  background-size: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 .post_body .edit {
   text-align: right;
@@ -1694,16 +1702,6 @@ a {
   position: relative;
   line-height: 3em;
   text-align: center;
-  cursor: default!important;
-}
-.post_container .hat .hidetop:active:before {
-  background: rgba(0, 0, 0, 0.1);
-  content: "";
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 .post_container .hat .hidetop b span {
   font-size: 0.875em;
@@ -2183,7 +2181,7 @@ div[data-post] .post_body {
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.15);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.15);
 }
-.post-block .block-title {
+.post-block > .block-title {
   color: #ffffff;
   background: #0277bd;
   -webkit-border-radius: 2px 2px 0 0;
@@ -2194,16 +2192,16 @@ div[data-post] .post_body {
   font-weight: bold;
   text-align: left!important;
 }
-.post-block .block-title * {
+.post-block > .block-title * {
   color: #ffffff !important;
   font-size: 1em!important;
   font-style: normal!important;
   line-height: 1.25em!important;
 }
-.post-block .block-title a[href*=findpost][title="Перейти к сообщению"] {
+.post-block > .block-title a[href*=findpost][title="Перейти к сообщению"] {
   background: #0c6296;
 }
-.post-block .block-body {
+.post-block > .block-body {
   -webkit-border-radius: 0 0 2px 2px;
   border-radius: 0 0 2px 2px;
   background: #f4f4f4;
@@ -2213,16 +2211,18 @@ div[data-post] .post_body {
   position: relative;
   z-index: 1;
 }
-.post-block.spoil .block-title {
+.post-block.spoil > .block-title {
   background: #0277bd;
 }
-.post-block.spoil .block-title:active:before {
+.post-block.spoil > .block-title:before {
   content: "";
   position: absolute;
   height: 100%;
   width: 100%;
   top: 0;
   left: 0;
+}
+.post-block.spoil > .block-title:active:before {
   background: rgba(0, 0, 0, 0.1);
 }
 .post-block.spoil.close > .block-title {
@@ -2271,13 +2271,15 @@ div[data-post] .post_body {
 .post-block.code > .block-title {
   background: #17b148;
 }
-.post-block.code > .block-title:active:after {
+.post-block.code > .block-title:after {
   content: "";
   position: absolute;
   height: 100%;
   width: 100%;
   top: 0;
   left: 0;
+}
+.post-block.code > .block-title:active:after {
   background: rgba(0, 0, 0, 0.1);
 }
 .post-block.code > .block-title:before {
@@ -2331,6 +2333,7 @@ div[data-post] .post_body {
   text-align: center!important;
   font-size: 1.5em;
   background: none;
+  width: 2em;
 }
 .post-block.tbl > .block-body {
   display: table-cell;
