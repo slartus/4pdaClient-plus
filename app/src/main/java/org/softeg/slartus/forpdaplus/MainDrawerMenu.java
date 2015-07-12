@@ -5,6 +5,11 @@ package org.softeg.slartus.forpdaplus;/*
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -12,6 +17,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +52,7 @@ public class MainDrawerMenu {
     private SelectItemListener mSelectItemListener;
     private BaseExpandableListAdapter mAdapter;
     private Handler mHandler = new Handler();
+    private SharedPreferences prefs;
 
 
     public interface SelectItemListener {
@@ -51,6 +60,7 @@ public class MainDrawerMenu {
     }
 
     public MainDrawerMenu(Activity activity, SelectItemListener listener) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         DisplayMetrics displayMetrics = App.getContext().getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels;
         if (dpWidth>displayMetrics.density*400) {
@@ -94,7 +104,7 @@ public class MainDrawerMenu {
             }
         });
         mMenuGroups = new ArrayList<>();
-        if(PreferenceManager.getDefaultSharedPreferences(App.getContext()).getBoolean("categoryLast", true)){
+        if(prefs.getBoolean("categoryLast", true)){
             mMenuGroups.add(new LastActionsGroup());
         }
         mMenuGroups.add(new MainListGroup());
@@ -169,7 +179,6 @@ public class MainDrawerMenu {
 
         Preferences.Lists.setLastSelectedList(brickIinfo.getName());
         Preferences.Lists.addLastAction(brickIinfo.getName());
-
         mAdapter.notifyDataSetChanged();
     }
 
@@ -190,12 +199,18 @@ public class MainDrawerMenu {
         @Override
         public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition,
                                     long id) {
+
             Object o = mAdapter.getChild(groupPosition, childPosition);
             MenuGroup menuGroup = (MenuGroup) mAdapter.getGroup(groupPosition);
             BrickInfo brickInfo = (BrickInfo) o;
             assert menuGroup != null;
             menuGroup.itemAction(brickInfo);
-
+            int i = 1;
+            if(!prefs.getBoolean("categoryLast", true)) i=0;
+            if(groupPosition==i){
+                prefs.edit().putInt("menuItemGroup", groupPosition).apply();
+                prefs.edit().putInt("menuItemChild", childPosition).apply();
+            }
             return true;
         }
     }
@@ -512,6 +527,7 @@ public class MainDrawerMenu {
 
                 holder.text = (TextView) convertView.findViewById(R.id.row_title);
                 holder.icon = (ImageView) convertView.findViewById(R.id.icon);
+                holder.item = (LinearLayout) convertView.findViewById(R.id.item);
 
                 convertView.setTag(holder);
 
@@ -523,6 +539,18 @@ public class MainDrawerMenu {
             if (item != null) {
                 holder.text.setText(item.getTitle());
                 holder.icon.setImageDrawable(getContext().getResources().getDrawable(item.getIcon()));
+                if(groupPosition==prefs.getInt("menuItemGroup",0)) {
+                    if (childPosition == prefs.getInt("menuItemChild", 0)) {
+                        holder.text.setTypeface(Typeface.DEFAULT_BOLD);
+                        holder.item.setBackgroundResource(R.color.selectedItem);
+                    } else {
+                        holder.text.setTypeface(Typeface.DEFAULT);
+                        holder.item.setBackgroundResource(Color.TRANSPARENT);
+                    }
+                }else {
+                    holder.text.setTypeface(Typeface.DEFAULT);
+                    holder.item.setBackgroundResource(Color.TRANSPARENT);
+                }
             }
 
             return convertView;
@@ -537,6 +565,7 @@ public class MainDrawerMenu {
         public class ViewHolder {
             public TextView text;
             public ImageView icon;
+            public LinearLayout item;
         }
     }
 }

@@ -38,6 +38,7 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
+import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.qms.QmsChatActivity;
@@ -392,34 +393,10 @@ public class ProfileWebViewFragment extends DialogFragment
     }
     @JavascriptInterface
     public void saveHtml(final String html) {
-        Log.d("point2: ", "work");
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.d("point3: ","work");
-
-                FileOutputStream outputStream;
-
-                try {
-                    String state = Environment.getExternalStorageState();
-                    if (!Environment.MEDIA_MOUNTED.equals(state)) {
-                        Toast.makeText(getActivity(), "Внешнее хранилище недоступно!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-
-                    File file = new File(App.getInstance().getExternalFilesDir(null), "profile.txt");
-                    FileWriter out = new FileWriter(file);
-                    out.write(html);
-                    out.close();
-                    Uri uri = Uri.fromFile(file);
-
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(uri, "text/plain");
-                    startActivity(intent);
-                } catch (Exception e) {
-                    AppLog.e(getActivity(), e);
-                }
+                new SaveHtml(getActivity(),html,"Profile");
             }
         });
     }
