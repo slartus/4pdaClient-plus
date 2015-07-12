@@ -184,6 +184,10 @@
             android:label="Профиль"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity
+            android:name="org.softeg.slartus.forpdaplus.profile.ProfileEditActivity"
+            android:label="Редактировать профиль"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
+        <activity
             android:name="org.softeg.slartus.forpdaplus.prefs.DonateActivity"
             android:label="Помощь проекту"
             android:launchMode="singleTop"

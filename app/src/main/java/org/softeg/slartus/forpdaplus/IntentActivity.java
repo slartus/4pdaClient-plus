@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -46,6 +47,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.profile.ProfileEditActivity;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsChatActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity;
@@ -291,6 +293,21 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
         return false;
     }
 
+    public static boolean tryEditProfile(Activity context, Uri uri, Boolean finish) {
+        if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
+            return false;
+        if (!"usercp".equals(uri.getQueryParameter("act")))
+            return false;
+
+        if ("01".equals(uri.getQueryParameter("code"))) {
+            ProfileEditActivity.startActivity(context);
+            if (finish)
+                context.finish();
+            return true;
+        }
+        return false;
+    }
+
     public static boolean tryShowForum(Activity context, String url, Boolean finish) {
         String[] patterns = {"4pda.ru.*?showforum=(\\d+)$", "4pda.ru/forum/lofiversion/index.php\\?f(\\d+)\\.html",
                 "4pda.ru/forum/index.php.*?act=idx"};
@@ -352,6 +369,10 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
             }
 
             if (tryProfile(context, uri, finishActivity)) {
+                return true;
+            }
+
+            if (tryEditProfile(context, uri, finishActivity)) {
                 return true;
             }
 
