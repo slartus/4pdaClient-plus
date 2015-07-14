@@ -1,6 +1,9 @@
 package org.softeg.slartus.forpdaapi;
 
+import org.apache.http.NameValuePair;
+
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +28,8 @@ public interface IHttpClient {
     String performPost(String s, Map<String, String> additionalHeaders) throws IOException;
 
     String performPost(String s, Map<String, String> additionalHeaders, String encoding) throws IOException;
+
+    String performPost(String s, List<NameValuePair> additionalHeaders) throws IOException;
 
     String uploadFile(String url, String filePath, Map<String, String> additionalHeaders, ProgressState progress) throws Exception;
 

@@ -10,6 +10,7 @@ import android.text.TextUtils;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
 import org.softeg.slartus.forpdaapi.ForumsApi;
@@ -297,6 +298,20 @@ public class Client implements IHttpClient {
         return res;
     }
 
+    @Override
+    public String performPost(String s, List<NameValuePair> additionalHeaders) throws IOException {
+        HttpHelper httpHelper = new HttpHelper();
+        String res = null;
+        try {
+            // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
+            res = httpHelper.performPost(s, additionalHeaders);
+            //  m_HttpHelper.close();
+        } finally {
+            httpHelper.close();
+        }
+        return res;
+    }
+
 
     public List<Cookie> getCookies() throws IOException {
         HttpHelper httpHelper = new HttpHelper();
@@ -452,6 +467,22 @@ public class Client implements IHttpClient {
                 }
 
                 public String performPost(String s, Map<String, String> additionalHeaders) throws IOException {
+
+                    String res = null;
+                    try {
+                        // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
+                        res = finalHttpHelper.performPost(s, additionalHeaders);
+                        checkLogin(res);
+                        finalHttpHelper.writeExternalCookies();
+                    } catch (Exception ignored) {
+
+                    } finally {
+                        finalHttpHelper.close();
+                    }
+                    return res;
+                }
+
+                public String performPost(String s, List<NameValuePair> additionalHeaders) throws IOException {
 
                     String res = null;
                     try {

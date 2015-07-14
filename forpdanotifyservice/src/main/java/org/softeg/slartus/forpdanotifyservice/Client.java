@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdanotifyservice;
 
 import android.text.TextUtils;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.OnProgressChangedListener;
@@ -10,6 +11,7 @@ import org.softeg.slartus.forpdacommon.HttpHelper;
 import org.softeg.slartus.forpdacommon.NotReportException;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -68,6 +70,11 @@ public class Client implements IHttpClient {
     @Override
     public String performPost(String s, Map<String, String> additionalHeaders, String encoding) throws IOException {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String performPost(String s, List<NameValuePair> additionalHeaders) throws IOException {
+        return null;
     }
 
     @Override

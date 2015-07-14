@@ -353,7 +353,7 @@ public class HttpHelper {
     protected final ResponseHandler<String> responseHandler;
 
     public String performGet(final String url) throws IOException {
-        return performRequest(null, url, null, null, null, null, HttpHelper.GET_TYPE, HTTP_CONTENT_CHARSET);
+        return performRequest(null, url, null, null, null, new ArrayList<NameValuePair>(), HttpHelper.GET_TYPE, HTTP_CONTENT_CHARSET);
     }
 
     /**
@@ -361,13 +361,20 @@ public class HttpHelper {
      */
     public String performGet(final String url, final String user, final String pass,
                              final Map<String, String> additionalHeaders) throws IOException {
-        return performRequest(null, url, user, pass, additionalHeaders, null, HttpHelper.GET_TYPE, HTTP_CONTENT_CHARSET);
+        return performRequest(null, url, user, pass, additionalHeaders, new ArrayList<NameValuePair>(), HttpHelper.GET_TYPE, HTTP_CONTENT_CHARSET);
     }
 
     /**
      * Perform a simplified HTTP POST operation.
      */
     public String performPost(final String url, final Map<String, String> params) throws IOException {
+        return performRequest(HttpHelper.MIME_FORM_ENCODED, url, null, null, null, params, HttpHelper.POST_TYPE, HTTP_CONTENT_CHARSET);
+    }
+
+    /**
+     * Perform a simplified HTTP POST operation.
+     */
+    public String performPost(final String url, final List<NameValuePair>  params) throws IOException {
         return performRequest(HttpHelper.MIME_FORM_ENCODED, url, null, null, null, params, HttpHelper.POST_TYPE, HTTP_CONTENT_CHARSET);
     }
 
@@ -387,11 +394,23 @@ public class HttpHelper {
     }
 
 
+    private String performRequest(final String contentType, String url, final String user, final String pass,
+                                  final Map<String, String> headers, final Map<String, String> params, final int requestType,
+                                  String encoding) throws IOException {
+        List<NameValuePair> nvps = null;
+        if ((params != null) && (params.size() > 0)) {
+            nvps = new ArrayList<>();
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
+            }
+        }
+        return performRequest(contentType,url,user,pass,headers,nvps, requestType,encoding);
+    }
     //
     // private methods
     //
     private String performRequest(final String contentType, String url, final String user, final String pass,
-                                  final Map<String, String> headers, final Map<String, String> params, final int requestType,
+                                  final Map<String, String> headers, final List<NameValuePair> nvps, final int requestType,
                                   String encoding) throws IOException {
         url = url.replace("\"", "").replace("'", "");
         m_LastUrl = url;
@@ -434,13 +453,7 @@ public class HttpHelper {
         if (requestType == HttpHelper.POST_TYPE) {
             method = new HttpPost(url);
             // data - name/value params
-            List<NameValuePair> nvps = null;
-            if ((params != null) && (params.size() > 0)) {
-                nvps = new ArrayList<NameValuePair>();
-                for (Map.Entry<String, String> entry : params.entrySet()) {
-                    nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
-                }
-            }
+
             if (nvps != null) {
                 try {
                     HttpPost methodPost = (HttpPost) method;
