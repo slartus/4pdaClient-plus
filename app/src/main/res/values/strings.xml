@@ -36,7 +36,7 @@
     <string name="Author_">Автор:</string>
     <string name="ReceiversNames">Имена получателей</string>
     <string name="MessageSubject">Заголовок сообщения</string>
-    <string name="Comment_">Комментарий:</string>
+    <string name="Comment_">Комментарий</string>
     <string name="EnterSubject_">Введите тему...</string>
     <string name="EnterMessage_">Введите сообщение...</string>
     <string name="Message">Сообщение</string>

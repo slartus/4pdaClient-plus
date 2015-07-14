@@ -185,7 +185,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity
             android:name="org.softeg.slartus.forpdaplus.profile.ProfileEditActivity"
-            android:label="Редактировать профиль"
+            android:label="Изменить личные данные"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity
             android:name="org.softeg.slartus.forpdaplus.prefs.DonateActivity"

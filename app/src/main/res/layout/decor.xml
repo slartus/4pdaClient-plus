@@ -28,7 +28,6 @@
         style="?drawer_menu"
         >
         <RelativeLayout
-            android:visibility="gone"
             android:layout_width="fill_parent"
             android:layout_height="169dp"
             android:id="@+id/topInform"

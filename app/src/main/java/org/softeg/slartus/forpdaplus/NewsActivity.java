@@ -508,7 +508,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
         saveHistory(url);
         m_NewsUrl = url;
         closeSearch();
-        GetNewsTask getThemeTask = new GetNewsTask(this);
+        GetNewsTask getThemeTask = new GetNewsTask(NewsActivity.this);
         getThemeTask.execute(url.replace("|", ""));
     }
 

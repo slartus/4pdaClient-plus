@@ -12,6 +12,15 @@ window.onload = function () {
     customScript('script.js');
 }
 */
+function jsonElem() {
+        var el = document.querySelectorAll('input[type=text], textarea, select');
+        var o = [];
+        for (var i = 0; i < el.length; i++) {
+            o.push({"name":el[i].getAttribute('name'), "value":el[i].value});
+        }
+        window.HTMLOUT.sendProfile(JSON.stringify(o));
+    }
+
 Element.prototype.remove = function() {
     this.parentElement.removeChild(this);
 }

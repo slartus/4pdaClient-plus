@@ -36,7 +36,7 @@ public class ShortUserInfo {
     private CircleImageView imgAvatar;
     private ImageView imgAvatarSquare, infoRefresh,userBackground;
     private TextView userNick, qmsMessages, loginButton, userRep;
-    private RelativeLayout textWrapper, topInform;
+    private RelativeLayout textWrapper;
     private Handler mHandler = new Handler();
     private Client client;
     private boolean isSquare;
@@ -54,8 +54,6 @@ public class ShortUserInfo {
         imgAvatarSquare = (ImageView) findViewById(R.id.imgAvatarSquare);
         infoRefresh = (ImageView) findViewById(R.id.infoRefresh);
         userBackground = (ImageView) findViewById(R.id.userBackground);
-        topInform = (RelativeLayout) findViewById(R.id.topInform);
-        topInform.setVisibility(View.VISIBLE);
         isSquare = prefs.getBoolean("isSquareAvarars",false);
 
 
