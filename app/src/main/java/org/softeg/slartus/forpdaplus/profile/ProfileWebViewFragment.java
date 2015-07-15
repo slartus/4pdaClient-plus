@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
@@ -325,7 +326,8 @@ public class ProfileWebViewFragment extends DialogFragment
         public Profile loadInBackground() {
             try {
                 Profile profile = ProfileApi.getProfile(Client.getInstance(),
-                        args.getString(ProfileWebViewActivity.USER_ID_KEY));
+                        args.getString(ProfileWebViewActivity.USER_ID_KEY),
+                        PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isSquareAvarars",false)?"":"circle");
                 ProfileHtmlBuilder builder = new ProfileHtmlBuilder();
                 builder.beginHtml(profile.getNick().toString());
                 builder.beginBody("profile");

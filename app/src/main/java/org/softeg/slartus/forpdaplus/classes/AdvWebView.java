@@ -24,7 +24,7 @@ import java.util.Calendar;
  */
 public class AdvWebView extends WebView {
     private static final String TOPIC_BODY_KEY = "AdvWebView.TOPIC_BODY_KEY";
-    private int actionBarHeight = HtmlBuilder.getMarginTop();
+    private int actionBarHeight = 56;
 
     public AdvWebView(Context context) {
         super(context);

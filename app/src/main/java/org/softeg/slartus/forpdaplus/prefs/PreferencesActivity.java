@@ -46,6 +46,7 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
+import org.softeg.slartus.forpdaplus.classes.ImageFilePath;
 import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
@@ -252,6 +253,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
             return false;
         }
+        private static final int MY_INTENT_CLICK=302;
         private void pickUserBackground() {
             new MaterialDialog.Builder(getContext())
                     .content("Выберите изображение")
@@ -264,7 +266,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                             try {
                                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                                 intent.setType("image/*");
-                                startActivityForResult(intent, 0);
+                                startActivityForResult(intent, MY_INTENT_CLICK);
                             } catch (ActivityNotFoundException ex) {
                                 Toast.makeText(getActivity(), "Ни одно приложение не установлено для выбора изображения!", Toast.LENGTH_LONG).show();
                             } catch (Exception ex) {
@@ -283,31 +285,22 @@ public class PreferencesActivity extends BasePreferencesActivity {
         }
 
         @Override
-        public void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-            try {
-                if (resultCode == RESULT_OK) {
+        public void onActivityResult(int requestCode, int resultCode, Intent data)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                if (requestCode == MY_INTENT_CLICK)
+                {
+                    if (null == data) return;
+                    Uri selectedImageUri = data.getData();
+                    String selectedImagePath = ImageFilePath.getPath(getApplicationContext(), selectedImageUri);
                     PreferenceManager.getDefaultSharedPreferences(App.getContext())
                             .edit()
-                            .putString("userBackground", getPath(data.getData()))
+                            .putString("userBackground", selectedImagePath)
                             .putBoolean("isUserBackground", true)
                             .apply();
                 }
-            } catch (Exception ex) {
-                AppLog.e(getActivity(), ex);
             }
-
-        }
-        public String getPath(Uri uri) throws NotReportException {
-            if (uri == null)
-                throw new NotReportException("Выбран пустой путь!");
-            if (!uri.toString().startsWith("content://"))
-                return uri.getPath();
-            String[] projection = { MediaStore.Images.Media.DATA };
-            Cursor cursor = managedQuery(uri, projection, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
         }
 
         public void webViewFontDialog(){

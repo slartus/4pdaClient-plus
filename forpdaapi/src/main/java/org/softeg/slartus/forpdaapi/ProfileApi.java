@@ -137,7 +137,7 @@ public class ProfileApi {
         return httpClient.performGet("http://4pda.ru/forum/index.php?act=Login&CODE=03&k=" + k);
     }
 
-    public static Profile getProfile(IHttpClient httpClient, CharSequence userID) throws IOException {
+    public static Profile getProfile(IHttpClient httpClient, CharSequence userID, String avType) throws IOException {
         Profile profile = new Profile();
         profile.setId(userID);
         String page = httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID);
@@ -146,7 +146,7 @@ public class ProfileApi {
         org.jsoup.nodes.Element element = doc.select("div#main").first();
 
         if (element != null) {
-            doc.select("div.photo").append("<div class=\"img\" style=\"background-image: url("+doc.select("div.photo>img").first().absUrl("src")+");\"></div>");
+            doc.select("div.photo").append("<div class=\"img "+avType+"\" style=\"background-image: url("+doc.select("div.photo>img").first().absUrl("src")+");\"></div>");
             doc.select("div.photo>img").first().remove();
 
             profile.setHtmlBody(element.html());

@@ -2,10 +2,12 @@ package org.softeg.slartus.forpdaplus.classes;
 
 import android.content.Context;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.Log;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.HtmlUtils;
@@ -153,7 +155,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
     private String getTitleBlock() {
         String desc = TextUtils.isEmpty(m_Topic.getDescription()) ? "" : (", " + m_Topic.getDescription());
-        return "<div class=\"topic_title_post\"><a href=\"http://4pda.ru/forum/index.php?showtopic=" + m_Topic.getId() + (TextUtils.isEmpty(m_UrlParams) ? "" : ("&" + m_UrlParams)) + "\">" + m_Topic.getTitle() + desc + "</a></div>\n";
+        return "<div class=\"topic_title_post\"><a href=\"http://4pda.ru/forum/index.php?showtopic=" + m_Topic.getId() + (TextUtils.isEmpty(m_UrlParams) ? "" : ("&" + m_UrlParams)) + "\">" + m_Topic.getTitle() + "</a></div>\n";
     }
 
     public static void addButtons(StringBuilder sb, int currentPage, int pagesCount, Boolean isUseJs,
@@ -224,7 +226,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         sb.append("<div class=\"post_header\"><div class=\"header_wrapper\">\n");
 
         //Аватарка
-        sb.append("<div class=\"avatar ").append(m_IsShowAvatars ? "\"" : "disable\"")
+        sb.append("<div class=\"avatar ").append(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isSquareAvarars",false)?"":"circle").append(m_IsShowAvatars ? "\"" : "disable\"")
                 .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showUserMenu", new String[]{msg.getId(), msg.getUserId(), nickParam}));
         String avatar = msg.getAvatarFileName();
         if (TextUtils.isEmpty(avatar)){

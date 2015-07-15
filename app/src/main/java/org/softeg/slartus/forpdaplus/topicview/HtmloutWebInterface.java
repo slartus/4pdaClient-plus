@@ -351,7 +351,7 @@ public class HtmloutWebInterface {
                     final ListView listView = (ListView) view.findViewById(R.id.lstview);
                     listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
                     ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(getContext(),
-                            android.R.layout.simple_list_item_single_choice, pages);
+                            R.layout.simple_list_item_single_choice, pages);
                     // присваиваем адаптер списку
                     listView.setAdapter(adapter);
 

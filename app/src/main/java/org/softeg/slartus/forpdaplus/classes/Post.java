@@ -216,16 +216,19 @@ public class Post {
             final String themeId,
             final String postId){
         final String[] text = {""};
+
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.claim, null);
+
+
+        assert layout != null;
+        final EditText message_edit = (EditText) layout.findViewById(R.id.message_edit);
+
+
         new MaterialDialog.Builder(context)
                 .title("Жалоба модератору на сообщение")
-                        //.customView(layout,true)
+                .customView(layout,true)
                 .positiveText("Отправить")
-                .input("Текст жалобы", "", new MaterialDialog.InputCallback() {
-                    @Override
-                    public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
-                        text[0] = charSequence.toString();
-                    }
-                })
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
@@ -237,7 +240,7 @@ public class Post {
 
                                 String res = null;
                                 try {
-                                    res = Client.getInstance().claim(themeId, postId, text[0]);
+                                    res = Client.getInstance().claim(themeId, postId, message_edit.getText().toString());
                                 } catch (IOException e) {
                                     ex = e;
                                 }

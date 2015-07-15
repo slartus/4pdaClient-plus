@@ -1494,10 +1494,7 @@ a {
   max-width: 100%;
   width: auto!important;
   height: auto!important;
-  background-image: url(../style_images/play_video.png);
-  background-size: 24px;
-  background-repeat: no-repeat;
-  background-position: center;
+  transition: all 2s ease;
 }
 .post_body .edit {
   text-align: right;
@@ -1626,7 +1623,14 @@ a {
   width: 4em;
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
+}
+.post_container .post_header .avatar.disable .img {
+  width: 0;
+}
+.post_container .post_header .avatar.disable ~ .inf {
+  left: auto;
+}
+.post_container .post_header .avatar.circle .img {
   -webkit-border-radius: 4em;
   border-radius: 4em;
 }
@@ -1643,7 +1647,6 @@ a {
 }
 .post_container .post_header .inf.group {
   top: 1.375em;
-  right: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2034,8 +2037,6 @@ div[data-post] .post_body {
   height: 4.5em;
   margin-right: 1em;
   float: left;
-  -webkit-border-radius: 4.5em;
-  border-radius: 4.5em;
   overflow: hidden;
 }
 .user-profile-list > li:first-child .user-box .photo img {
@@ -2049,6 +2050,10 @@ div[data-post] .post_body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+}
+.user-profile-list > li:first-child .user-box .photo .img.circle {
+  -webkit-border-radius: 4.5em;
+  border-radius: 4.5em;
 }
 .user-profile-list > li:first-child .user-box h1 {
   display: block;
@@ -2110,8 +2115,12 @@ div[data-post] .post_body {
   color: #0277bd;
 }
 .user-profile-list > li:nth-child(2) a[href*="act=UserCP"] {
-  padding: 0.5em;
+  padding: 0.57142857em;
+  font-size: 0.875em;
+  font-weight: bold;
+  text-transform: uppercase;
   float: right;
+  color: #0277bd;
 }
 .user-profile-list > li:nth-child(2):after {
   content: "";
@@ -2591,4 +2600,112 @@ div[data-post] .post_body {
 }
 .search-web-view {
   margin-top: 0!important;
+}
+#edit_profile .field {
+  background: #ffffff;
+  margin: 0.5em 0;
+  box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.15);
+  margin: 0 0 0.5em 0;
+  padding: 1em;
+  padding-bottom: 0.5em;
+  border: none;
+}
+#edit_profile .field h2 {
+  margin: 0;
+  font-size: 1.25em;
+}
+#edit_profile .field table {
+  display: block;
+}
+#edit_profile .field table tbody {
+  display: block;
+}
+#edit_profile .field table tr {
+  display: block;
+  padding: 1em 0 0 0;
+}
+#edit_profile .field table td {
+  display: block;
+  width: auto!important;
+  padding: 0!important;
+  color: #757575;
+}
+#edit_profile .field table td b {
+  color: #212121;
+}
+#edit_profile .field table .row2 input[type="text"] {
+  width: 100%;
+  display: block;
+  line-height: 1em;
+  padding: 1em 0 0.25em 0;
+  font-size: 1em;
+  border: none;
+  border-bottom: 1px solid #e9e9e9;
+  outline: none;
+  box-shadow: none;
+}
+#edit_profile .field table .row2 input[type="text"]:focus {
+  border-bottom-color: #0277bd;
+}
+#edit_profile .field table .row2 select {
+  width: 100%;
+  height: 2.25em;
+  line-height: 2.25em;
+  font-size: 1em;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #e9e9e9;
+  outline: none;
+  box-shadow: none;
+  margin: 0;
+}
+#edit_profile .field table .row2 select option {
+  padding: 0;
+}
+#edit_profile .field table .row2 select + select {
+  margin-top: 0.5em;
+}
+#edit_profile .field table .row2 .editor_button input {
+  height: 2.25em;
+  width: 2.25em;
+  display: block;
+  float: left;
+  margin: 0.5em 0.5em 0.5em 0;
+  border: none;
+  background: none;
+  outline: none;
+  color: #0277bd;
+  font-size: 1em;
+  font-weight: bold;
+}
+#edit_profile .field table .row2 .editor_button input:active {
+  background: rgba(0, 0, 0, 0.1);
+}
+#edit_profile .field table .row2 .editor_button textarea {
+  width: 100%;
+  background: none;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #e9e9e9;
+  resize: none;
+}
+#edit_profile .field table .row2 .editor_button textarea:focus {
+  border-bottom-color: #0277bd;
+}
+#edit_profile .field table .formbuttonrow {
+  text-align: right;
+}
+#edit_profile .field table .formbuttonrow input {
+  font-size: 0.875em;
+  font-weight: bold;
+  height: 2.57142857em;
+  border: none;
+  outline: none;
+  background: none;
+  text-transform: uppercase;
+  color: #0277bd;
+}
+#edit_profile .field + br {
+  display: none;
 }

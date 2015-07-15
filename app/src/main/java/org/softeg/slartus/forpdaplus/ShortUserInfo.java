@@ -60,8 +60,7 @@ public class ShortUserInfo {
         if(prefs.getBoolean("isUserBackground",false)){
             File imgFile = new File(prefs.getString("userBackground",""));
             if(imgFile.exists()){
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                userBackground.setImageBitmap(myBitmap);
+                Picasso.with(App.getContext()).load(imgFile).into(userBackground);
             }else {
                 userBackground.setImageResource(R.drawable.user_background);
             }

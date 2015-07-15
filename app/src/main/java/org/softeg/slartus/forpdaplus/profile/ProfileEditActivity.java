@@ -298,9 +298,10 @@ public class ProfileEditActivity extends BaseFragmentActivity {
                 body = m.group(1);
                 //body =  + "</form><input type=\"button\" value=\"asdghjk\" onclick=\"jsonElem();\">";
                 body = body.replaceAll("<td class=\"row1\" width=\"30%\"><b>О себе:</b>[\\s\\S]*?</td>",
-                        "<td class=\"row1\" width=\"30%\"><b>О себе</b></td>")
-                        .replaceAll("<td width=\"30%\" class=\"row1\" style='padding:6px;'><b>Город</b>[\\s\\S]*?</td>",
+                        "<td class=\"row1\" width=\"30%\"><b>О себе</b></td>");
+                body = body.replaceAll("<td width=\"30%\" class=\"row1\" style='padding:6px;'><b>Город</b>[\\s\\S]*?</td>",
                                 "<td class=\"row1\" width=\"30%\" style='padding:6px;'><b>Город</b></td>");
+                body = body.replaceAll("legend","h2").replaceAll("<fieldset>","<div class=\"field\">").replaceAll("</fieldset>","</div>");
                 Document doc = Jsoup.parse(body);
                 doc.select(".formbuttonrow .button").remove();
                 doc.select(".formbuttonrow").append("<input type=\"button\" value=\"Сохранить изменения\" onclick=\"jsonElem();\">");
