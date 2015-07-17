@@ -115,6 +115,10 @@ public class BaseFragmentActivity extends ActionBarActivity
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
+        if (PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("coloredNavBar", true) &&
+                android.os.Build.VERSION.SDK_INT >= 21)
+            getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(getNavBarColor()));
+
         if(PreferenceManager.getDefaultSharedPreferences(App.getContext()).getBoolean("statusbarTransparent",false)) {
             if (android.os.Build.VERSION.SDK_INT >= 21)
                 getWindow().setStatusBarColor(Color.TRANSPARENT);
@@ -153,6 +157,12 @@ public class BaseFragmentActivity extends ActionBarActivity
             result = getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+    public int getNavBarColor(){
+        if(App.getInstance().isWhiteTheme())
+            return R.color.actionbar_background_wh;
+        else
+            return R.color.actionbar_background_bl;
     }
     @Override
     protected void onSaveInstanceState(android.os.Bundle outState) {

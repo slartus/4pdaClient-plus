@@ -234,7 +234,7 @@ public class ImageViewFragment extends BaseFragment {
                 @Override
                 public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
                     progressView.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(App.getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             });
