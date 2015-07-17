@@ -293,7 +293,6 @@ public class ProfileEditActivity extends BaseFragmentActivity {
 
         private String parseBody(String body) {
             Matcher m = PatternExtensions.compile("<div style='padding:6px;'>([\\s\\S]*?<.form>)").matcher(body);
-            StringBuilder mBody = new StringBuilder();
             if (m.find()) {
                 body = m.group(1);
                 //body =  + "</form><input type=\"button\" value=\"asdghjk\" onclick=\"jsonElem();\">";
@@ -304,7 +303,7 @@ public class ProfileEditActivity extends BaseFragmentActivity {
                 body = body.replaceAll("legend","h2").replaceAll("<fieldset>","<div class=\"field\">").replaceAll("</fieldset>","</div>");
                 Document doc = Jsoup.parse(body);
                 doc.select(".formbuttonrow .button").remove();
-                doc.select(".formbuttonrow").append("<input type=\"button\" value=\"Сохранить изменения\" onclick=\"jsonElem();\">");
+                doc.select(".formbuttonrow").append("<input type=\"button\" value=\"Сохранить\" onclick=\"jsonElem();\">");
                 doc.select("textarea").first().attr("maxlength","500");
                 body = doc.html();
                 /*
