@@ -59,7 +59,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
     MenuFragment mFragment1;
 
     private MainDrawerMenu mMainDrawerMenu;
-    private RelativeLayout leftDrawer;
+    private RelativeLayout leftDrawer,topInform;
     boolean top;
 
     @Override
@@ -124,6 +124,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
             decor.removeView(child);
             FrameLayout container = (FrameLayout) drawer.findViewById(R.id.ab_cont); // This is the container we defined just now.
             leftDrawer = (RelativeLayout) drawer.findViewById(R.id.left_drawer);
+            topInform = (RelativeLayout) drawer.findViewById(R.id.topInform);
             container.addView(child, 0);
             decor.addView(drawer);
 
@@ -169,7 +170,10 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
         }
 
         if(!top) {
+
             new ShortUserInfo(this);
+        }else {
+            topInform.setVisibility(View.GONE);
         }
 
     }

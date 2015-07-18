@@ -229,7 +229,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         sb.append("<div class=\"post_header\"><div class=\"header_wrapper\">\n");
 
         //Аватарка
-        sb.append("<div class=\"avatar ").append(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isSquareAvarars",false)?"":"circle").append(m_IsShowAvatars ? "\"" : "disable\"")
+        sb.append("<div class=\"avatar ").append(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isSquareAvarars",false)?"":"circle ").append(m_IsShowAvatars ? "\"" : "disable\"")
                 .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showUserMenu", new String[]{msg.getId(), msg.getUserId(), nickParam}));
         String avatar = msg.getAvatarFileName();
         if (TextUtils.isEmpty(avatar)){

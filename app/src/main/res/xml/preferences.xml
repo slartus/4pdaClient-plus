@@ -65,7 +65,7 @@
             android:defaultValue="true"
             android:key="coloredNavBar"
             android:title="Красить Navigation Bar"
-            android:summary="Для Android 5 и старше. Требуется перезапуск приложения"/>
+            android:summary="Для Android 5 и выше. Требуется перезапуск приложения"/>
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
             android:defaultValue="-1"
             android:entries="@array/screenOrienationArray"
