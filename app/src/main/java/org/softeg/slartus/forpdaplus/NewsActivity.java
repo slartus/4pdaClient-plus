@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -56,9 +55,6 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.video.PlayerActivity;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -113,7 +109,9 @@ public class NewsActivity extends BrowserViewsFragmentActivity
 
         setContentView(R.layout.news_activity);
 
-        if (Preferences.System.isDeveloper())
+        if (Preferences.System.isDevSavePage()|
+                Preferences.System.isDevInterface()|
+                Preferences.System.isDevStyle())
             Toast.makeText(this, "Режим разработчика", Toast.LENGTH_SHORT).show();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -650,7 +648,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
             ExtUrl.addUrlSubMenu(new Handler(), getActivity(), menu,
                     ((NewsActivity) getActivity()).getUrl(), null, null);
 
-            if (Preferences.System.isDeveloper()) {
+            if (Preferences.System.isDevSavePage()) {
                 menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         try {

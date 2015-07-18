@@ -145,7 +145,9 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
         setContentView(R.layout.theme);
 
-        if (Preferences.System.isDeveloper())
+        if (Preferences.System.isDevSavePage()|
+                Preferences.System.isDevInterface()|
+                Preferences.System.isDevStyle())
             Toast.makeText(this, "Режим разработчика", Toast.LENGTH_SHORT).show();
 
         LoadsImagesAutomatically = null;

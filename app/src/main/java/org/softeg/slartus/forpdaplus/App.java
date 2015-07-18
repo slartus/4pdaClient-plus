@@ -325,7 +325,7 @@ public class App extends android.app.Application {
                 cssFile = "material_dark.css";
                 break;
             case THEME_WHITE_OLD_HD:
-                cssFile = "white_old_HD.css";
+                cssFile = "standart4PDA_HD.css";
                 break;
 
             /*case THEME_WHITE_HD:

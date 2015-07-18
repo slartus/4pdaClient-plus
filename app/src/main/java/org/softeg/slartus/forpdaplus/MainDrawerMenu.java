@@ -541,18 +541,15 @@ public class MainDrawerMenu {
             holder.icon.setImageDrawable(getContext().getResources().getDrawable(item.getIcon()));
             if (groupPosition == prefs.getInt("menuItemGroup", 0)) {
                 if (item.getName().equals(prefs.getString("menuItemChild", "News_pages"))) {
-                    holder.text.setTypeface(Typeface.DEFAULT_BOLD);
                     holder.text.setTextColor(resources.getColor(R.color.actionbar_background_wh));
                     holder.item.setBackgroundResource(R.color.selectedItem);
                     holder.icon.setColorFilter(resources.getColor(R.color.actionbar_background_wh), PorterDuff.Mode.SRC_ATOP);
                 } else {
-                    holder.text.setTypeface(Typeface.DEFAULT);
                     holder.text.setTextColor(resources.getColor(getTextColor()));
                     holder.item.setBackgroundResource(Color.TRANSPARENT);
                     holder.icon.clearColorFilter();
                 }
             } else {
-                holder.text.setTypeface(Typeface.DEFAULT);
                 holder.text.setTextColor(resources.getColor(getTextColor()));
                 holder.item.setBackgroundResource(Color.TRANSPARENT);
                 holder.icon.clearColorFilter();

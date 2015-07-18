@@ -352,9 +352,24 @@ public class Preferences {
             return (scrollUpKeys.contains("," + Integer.toString(keyCode) + ","));
         }
 
-        public static boolean isDeveloper() {
+        public static boolean isDevSavePage() {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("system.developer", false);
+            return prefs.getBoolean("system.developerSavePage", false);
+        }
+
+        public static boolean isDevInterface() {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+            return prefs.getBoolean("system.developerInterface", false);
+        }
+
+        public static boolean isDevStyle() {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+            return prefs.getBoolean("system.developerStyle", false);
+        }
+
+        public static boolean isDevGrid() {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+            return prefs.getBoolean("system.developerGrid", false);
         }
 
         public static boolean isCurator() {

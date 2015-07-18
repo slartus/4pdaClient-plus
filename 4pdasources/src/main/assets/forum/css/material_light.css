@@ -247,7 +247,7 @@ HTML body * {
     width: 13rem;
     left: 0;
     bottom: 0;
-    -webkit-box-shadow: 0.15rem 0 0.3rem rgba(0, 0, 0, 0.1);
+    border-right: 1px solid #e6e6e6;
   }
   .post_container .hidetop B:before {
     position: relative;
@@ -603,7 +603,6 @@ DIV[data-post] {
     margin-top: 0;
     min-heigt: 12rem;
     width: 13rem;
-    -webkit-box-shadow: none;
     text-align: center;
     border: none;
   }
@@ -1105,7 +1104,8 @@ DIV[data-post] {
     width: 13rem;
     left: 0rem;
     bottom: 0;
-    -webkit-box-shadow: 0.15rem 0 0.3rem rgba(0, 0, 0, 0.1);
+    z-index: 8;
+    border-right: 1px solid #e6e6e6;
   }
 }
 .post_body a[href*="act=findpost&pid="][title="Перейти к сообщению"] {
@@ -2519,6 +2519,9 @@ h3 a {
   background-size: contain;
   background-repeat: no-repeat;
 }
+.holder.no-hidden .user-profile-list > li .user-box .photo .img.circle {
+  border-radius: 100%;
+}
 .holder.no-hidden .user-profile-list > li .user-box h1 {
   display: block;
   font-size: 1.2rem;
@@ -2695,7 +2698,7 @@ h3 a {
 */
 #edit_profile {
   margin: 0;
-  padding: 0;
+  padding: 0 0 0.5rem;
 }
 #edit_profile form {
   display: block;
@@ -2736,13 +2739,15 @@ h3 a {
     width: auto !important;
   }
 }
-#edit_profile form .field tr {
-  padding: 1rem 0;
-}
 #edit_profile form .field .row1 {
-  padding: 0 0.5rem !important;
+  padding: 0.5rem !important;
   color: #a6a6a6;
   font-size: 0.8rem;
+}
+@media screen and (max-width: 800px) {
+  #edit_profile form .field .row1 {
+    padding: 0.5rem 0.5rem 0!important;
+  }
 }
 #edit_profile form .field .row1 b {
   font-size: 1rem;
@@ -2750,8 +2755,13 @@ h3 a {
   color: #4d4d4d;
 }
 #edit_profile form .field .row2 {
-  padding: 0 0.5rem !important;
+  padding: 0.5rem !important;
   color: #808080;
+}
+@media screen and (max-width: 800px) {
+  #edit_profile form .field .row2 {
+    padding: 0 0.5rem 0.5rem !important;
+  }
 }
 #edit_profile form .field .row2 input,
 #edit_profile form .field .row2 select,
@@ -2764,7 +2774,7 @@ h3 a {
 #edit_profile form .field .row2 input[type="text"] {
   display: block;
   width: 100%;
-  padding: 0.5rem 0;
+  padding: 0 0 0.5rem;
   color: black;
   border-bottom: 1px solid #e6e6e6;
   background: white;
@@ -2778,12 +2788,18 @@ h3 a {
   padding-right: 1.5rem;
   font-weight: bold;
   color: black;
+  background: white;
   border-bottom: 1px solid #e6e6e6;
-  background: white url('material_src/ic_menu_right_grey600_24dp.png') right no-repeat;
+  background-image: url(../../profile/down_grey600_24dp.png);
+  background-repeat: no-repeat;
+  background-position: right;
   background-size: 1.5rem;
 }
 #edit_profile form .field .row2 select:focus {
   border-bottom: 2px solid #1988ca !important;
+}
+#edit_profile form .field .row2 .editor_button {
+  margin-top: 1rem;
 }
 #edit_profile form .field .row2 .editor_button input {
   -webkit-appearance: none;
@@ -2807,9 +2823,15 @@ h3 a {
 #edit_profile form .field .row2 .editor_button textarea:focus {
   border: 2px solid #1988ca !important;
 }
+@media screen and (min-width: 800px) {
+  #edit_profile form .field .formbuttonrow {
+    text-align: right;
+  }
+}
 #edit_profile form .field .formbuttonrow input {
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1rem;
+  padding: 0.5rem;
   line-height: 1.8rem;
   margin: 0.5rem;
   color: #3490c3;
@@ -2820,7 +2842,7 @@ h3 a {
   background: transparent;
 }
 #edit_profile form .field .formbuttonrow input:active {
-  opacity: 0.5;
+  background: rgba(130, 130, 130, 0.2);
 }
 #bottomMargin {
   display: block;

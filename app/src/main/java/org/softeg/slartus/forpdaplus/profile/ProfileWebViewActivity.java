@@ -4,24 +4,19 @@ package org.softeg.slartus.forpdaplus.profile;/*
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.NewsActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
@@ -31,10 +26,6 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.qms.QmsNewThreadActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 
 
 public class ProfileWebViewActivity extends BaseFragmentActivity {
@@ -73,6 +64,10 @@ public class ProfileWebViewActivity extends BaseFragmentActivity {
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment, details).add(menuFragment, "menufragment").commit();
+            if (Preferences.System.isDevSavePage()|
+                    Preferences.System.isDevInterface()|
+                    Preferences.System.isDevStyle())
+                Toast.makeText(this, "Режим разработчика", Toast.LENGTH_SHORT).show();
 
         } catch (Throwable e) {
             AppLog.e(this, e);
@@ -208,7 +203,7 @@ public class ProfileWebViewActivity extends BaseFragmentActivity {
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
-            if (Preferences.System.isDeveloper()) {
+            if (Preferences.System.isDevSavePage()) {
                 menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         try {

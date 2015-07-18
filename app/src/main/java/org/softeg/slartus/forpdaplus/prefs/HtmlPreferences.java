@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.Devices;
+import org.softeg.slartus.forpdaplus.classes.Exceptions.AdditionalInfoException;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 
 import java.util.Hashtable;
@@ -32,6 +34,10 @@ public class HtmlPreferences {
     public static Boolean isUseLocalEmoticons(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean("theme.UseLocalEmoticons", true);
+    }
+    public static Boolean isFullThemeTitle() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
+        return prefs.getBoolean("fullThemeTitle", false);
     }
 
     private static boolean getDefaultSpoilByButton() {

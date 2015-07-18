@@ -2782,6 +2782,130 @@ h3 a {
 .holder.no-hidden .no-min-size .alert-log-list .wlog-neg .a-content .post-link {
   margin-top: 0.7rem;
 }
+/*
+*	EDIT PROFILE
+*/
+#edit_profile {
+  margin: 0;
+  padding: 0.4rem;
+  background: white;
+}
+#edit_profile form {
+  display: block;
+  padding: 1rem 0 0.5rem;
+  border: 1px solid #2982cb;
+  background: #f0f6fb;
+}
+#edit_profile form .field {
+  display: block;
+  margin: 0.5rem 0.5rem 1.5rem;
+  padding: 0.5rem;
+  border: 2px groove #bbb;
+}
+#edit_profile form .field ~ .filed {
+  margin-bottom: 0.5rem;
+}
+#edit_profile form .field [type="hidden"] {
+  display: none;
+}
+#edit_profile form .field ~ br {
+  display: none;
+}
+#edit_profile form .field h2 {
+  display: block;
+  margin: -1.4rem 0 0.5rem;
+  color: black;
+}
+#edit_profile form .field h2 strong {
+  display: inline-block;
+  padding: 0 0.5rem;
+  font-size: 1rem;
+  color: black;
+  background: #f0f6fb;
+}
+@media screen and (max-width: 800px) {
+  #edit_profile form .field table,
+  #edit_profile form .field tbody,
+  #edit_profile form .field tr,
+  #edit_profile form .field td {
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: auto !important;
+  }
+}
+#edit_profile form .field tr {
+  padding: 0;
+}
+#edit_profile form .field .row1 {
+  margin: 1px 0;
+  padding: 0 0.5rem !important;
+  font-size: 0.8rem;
+  background: #cae0f2;
+}
+#edit_profile form .field .row1 b {
+  font-size: 1rem;
+}
+#edit_profile form .field .row2 {
+  padding: 0.5rem !important;
+  color: #808080;
+  background: #d4e6f5;
+}
+#edit_profile form .field .row2 input[type="text"] {
+  max-width: 97%;
+  padding: 0.2rem;
+  color: black;
+  border: 1px solid #2982cb;
+  background: white;
+}
+#edit_profile form .field .row2 select {
+  display: inline-block;
+  padding: 0.2rem;
+  padding-right: 1.5rem;
+  font-weight: bold;
+  color: black;
+  border: 1px solid #2982cb;
+  background: white;
+}
+#edit_profile form .field .row2 .editor_button {
+  padding: 0;
+  margin: 0;
+  border: 1px solid white;
+  background: #7fb4e0;
+}
+#edit_profile form .field .row2 .editor_button input {
+  font-weight: bold;
+  font-family: times;
+  margin: 0;
+  padding: 0.2rem 0.5rem;
+  font-size: 1.2rem;
+  color: #156eb7;
+  border: none;
+  background: transparent;
+}
+#edit_profile form .field .row2 .editor_button textarea {
+  margin: 0;
+  color: black;
+  padding: 0.2rem;
+  border: 1px solid transparent;
+  background: white;
+}
+#edit_profile form .field .formbuttonrow {
+  padding: 0.5rem 0 0;
+  border: 0;
+  border-top: 1px solid #2982cb;
+}
+#edit_profile form .field .formbuttonrow input {
+  font-size: 1rem;
+  line-height: 1.8rem;
+  color: black;
+  -webkit-appearance: none;
+  border: 1px solid #2982cb;
+  background: #d9d9d9;
+}
+#edit_profile form .field .formbuttonrow input:active {
+  opacity: 0.5;
+}
 #bottomMargin {
   display: block;
   height: 100px;

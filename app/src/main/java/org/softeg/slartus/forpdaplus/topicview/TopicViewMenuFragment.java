@@ -9,15 +9,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -41,8 +37,6 @@ import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
-import org.softeg.slartus.forpdaplus.styles.CssStyle;
-import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -392,7 +386,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
             });
 
 
-            if (Preferences.System.isDeveloper()) {
+            if (Preferences.System.isDevSavePage()) {
                 menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         try {

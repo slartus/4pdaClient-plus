@@ -1,12 +1,9 @@
 package org.softeg.slartus.forpdaplus.classes;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.TypedValue;
-import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
@@ -26,11 +23,12 @@ public class HtmlBuilder {
         m_Body.append("<head>\n");
         m_Body.append("<meta http-equiv=\"content-type\" content=\"text/html; charset=windows-1251\" />\n");
         m_Body.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">\n");
-        if (!Preferences.System.isDeveloper())
+        if (!Preferences.System.isDevStyle())
             addStyleSheetLink(m_Body);
 
         addScripts();
-
+        if (Preferences.System.isDevGrid())
+            m_Body.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/grid.css\"/>\n");
         m_Body.append("<title>" + title + "</title>\n");
         m_Body.append("</head>\n");
     }
@@ -91,7 +89,7 @@ public class HtmlBuilder {
                 m_Body.append("<body  id=\""+id+"\"class=\"modification\" style=\"font-family:inherit;\" " + bodyScript + ">\n");
             }
         }
-        if(Preferences.System.isDeveloper())
+        if(Preferences.System.isDevInterface())
             m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/forum/js/less-dev.js\"></script> <!-- DEVELOPER -->\n");
     }
 

@@ -155,7 +155,10 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
     private String getTitleBlock() {
         String desc = TextUtils.isEmpty(m_Topic.getDescription()) ? "" : (", " + m_Topic.getDescription());
-        return "<div class=\"topic_title_post\"><a href=\"http://4pda.ru/forum/index.php?showtopic=" + m_Topic.getId() + (TextUtils.isEmpty(m_UrlParams) ? "" : ("&" + m_UrlParams)) + "\">" + m_Topic.getTitle() + "</a></div>\n";
+        return "<div class=\"topic_title_post\"><a href=\"http://4pda.ru/forum/index.php?showtopic="
+                + m_Topic.getId()
+                + (TextUtils.isEmpty(m_UrlParams) ? "" : ("&" + m_UrlParams)) + "\">"
+                + m_Topic.getTitle() + (HtmlPreferences.isFullThemeTitle()? desc : "") +"</a></div>\n";
     }
 
     public static void addButtons(StringBuilder sb, int currentPage, int pagesCount, Boolean isUseJs,

@@ -8,6 +8,10 @@ Version: 1.2
 Author: RadiationX|Radiation15
 Edited by: RadiationX|*or you nick*
 ---*/
+[style*="color:#ffffff"],
+[style*="color:white"] {
+  color: #212121 !important;
+}
 .mainBox {
   background: #ffffff;
   margin: 0.5em 0;
@@ -454,8 +458,9 @@ a {
 }
 .container .content .content-box blockquote {
   margin: 0.5em 0;
-  padding: 0.25em 0 0.25em 1em;
+  padding: 0.25em 0 0.25em 0.75em;
   border-left: 0.5em solid #0277bd;
+  font-weight: bold;
 }
 .container .content .content-box blockquote p {
   display: inline;
@@ -588,8 +593,7 @@ a {
   clear: both;
 }
 .container .content .content-box .btn {
-  line-height: 2.5em;
-  padding: 0 1em;
+  padding: 0.5em;
   display: inline-block;
   position: relative;
   -webkit-border-radius: 2px;
@@ -1167,7 +1171,7 @@ a {
   background: rgba(0, 0, 0, 0.1);
 }
 .panel .navi .button.disable {
-  color: #757575;
+  color: #bbbbbb;
 }
 .panel .navi .button.disable:active {
   background: none;
@@ -1668,7 +1672,7 @@ a {
   text-transform: uppercase;
 }
 .post_container .post_header .inf.reputation > span:before {
-  content: "Реп(";
+  content: "Реп (";
 }
 .post_container .post_header .inf.reputation > span:after {
   content: ")";
@@ -2387,15 +2391,7 @@ div[data-post] .post_body {
     float: left;
   }
 }
-@media screen and (max-width: 24em) {
-  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl {
-    width: 100%;
-  }
-  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow {
-    margin: 0.5em;
-  }
-}
-@media screen and (min-width: 50em) {
+@media screen and (min-width: 40em) {
   .container .product-detail {
     text-align: left;
     background: #f4f4f4;
@@ -2430,6 +2426,16 @@ div[data-post] .post_body {
     bottom: auto;
     top: 0em;
   }
+}
+@media screen and (max-width: 24em) {
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl {
+    width: 100%;
+  }
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow {
+    margin: 0.5em;
+  }
+}
+@media screen and (min-width: 50em) {
   .container .content .content-box .table4site {
     -webkit-border-radius: 2px;
     border-radius: 2px;
@@ -2558,6 +2564,9 @@ div[data-post] .post_body {
     right: auto;
     left: 5em;
     top: 3.875em;
+  }
+  .posts_list .post_container .post_header .reputation span:before {
+    content: "Репутация (";
   }
   .posts_list .post_container .hat .hidetop {
     overflow: hidden;

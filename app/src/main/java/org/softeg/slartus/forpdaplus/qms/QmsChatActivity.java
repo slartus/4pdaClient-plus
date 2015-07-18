@@ -6,11 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
@@ -59,8 +57,6 @@ import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -183,6 +179,10 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
 
         }
         hideKeyboard();
+        if (Preferences.System.isDevSavePage()|
+                Preferences.System.isDevInterface()|
+                Preferences.System.isDevStyle())
+            Toast.makeText(this, "Режим разработчика", Toast.LENGTH_SHORT).show();
         //  hidePanels();
     }
 
@@ -948,7 +948,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                 }
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-            if (Preferences.System.isDeveloper()) {
+            if (Preferences.System.isDevSavePage()) {
                 menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         try {
