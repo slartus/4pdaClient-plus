@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.OldUser;
@@ -17,6 +19,8 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.ExtColor;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
+import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 
 import java.util.ArrayList;
 
@@ -24,30 +28,30 @@ import java.util.ArrayList;
  * Created by slinkin on 17.06.2015.
  */
 public class TopicReadersListFragment extends BaseLoaderListFragment {
-    public static final String TOPIC_ID_KEY = "TOPIC_ID_KEY"    ;
+    public static final String TOPIC_ID_KEY = "TOPIC_ID_KEY";
     private String m_TopicId;
+    UsersAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState!=null){
-            m_TopicId=savedInstanceState.getString(TOPIC_ID_KEY);
-        }
-        else if(getArguments()!=null){
-            m_TopicId=getArguments().getString(TOPIC_ID_KEY);
+        if (savedInstanceState != null) {
+            m_TopicId = savedInstanceState.getString(TOPIC_ID_KEY);
+        } else if (getArguments() != null) {
+            m_TopicId = getArguments().getString(TOPIC_ID_KEY);
         }
     }
 
     @Override
     protected Bundle getLoadArgs() {
-        Bundle args=new Bundle();
-        args.putString(TOPIC_ID_KEY,m_TopicId);
+        Bundle args = new Bundle();
+        args.putString(TOPIC_ID_KEY, m_TopicId);
         return args;
     }
 
     @Override
     protected BaseAdapter createAdapter() {
-        return new UsersAdapter(getActivity(),getData().getItems());
+        return new UsersAdapter(getActivity(), getData().getItems());
     }
 
     @Override
@@ -62,13 +66,13 @@ public class TopicReadersListFragment extends BaseLoaderListFragment {
 
     @Override
     protected ListData loadData(int loaderId, Bundle args) throws Throwable {
-        Users users= Client.getInstance().getTopicReadingUsers(args.getString(TOPIC_ID_KEY));
-        ListData data=new ListData();
+        Users users = Client.getInstance().getTopicReadingUsers(args.getString(TOPIC_ID_KEY));
+        ListData data = new ListData();
         data.getItems().addAll(users);
         return data;
     }
 
-    public static class UsersAdapter extends BaseAdapter {
+    public class UsersAdapter extends BaseAdapter {
         protected LayoutInflater m_Inflater;
         private ArrayList<IListItem> mUsers;
 
@@ -76,7 +80,6 @@ public class TopicReadersListFragment extends BaseLoaderListFragment {
             mUsers = users;
             m_Inflater = LayoutInflater.from(context);
         }
-
         @Override
         public int getCount() {
             return mUsers.size();
@@ -109,7 +112,7 @@ public class TopicReadersListFragment extends BaseLoaderListFragment {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            OldUser user = (OldUser) this.getItem(position);
+            final OldUser user = (OldUser) this.getItem(position);
 
             holder.txtNick.setText(user.getNick());
             try {
@@ -117,43 +120,54 @@ public class TopicReadersListFragment extends BaseLoaderListFragment {
             } catch (Exception ex) {
                 AppLog.e(App.getContext(), new Exception("Не умею цвет: " + user.getHtmlColor()));
             }
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openProfile(user);
+                }
+            });
             return convertView;
 
         }
-        public String correctHtmlColor(String color){
-            switch (color){
+
+        public String correctHtmlColor(String color) {
+            switch (color) {
                 case "green":
                     color = "#10BB10";//Обычный и активынй пользователь
                     break;
                 case "#FF9900":
-                    color ="#EC9B22";//Друг 4пда
+                    color = "#EC9B22";//Друг 4пда
                     break;
                 case "purple":
-                    color ="purple";//Почетные форумчане
+                    color = "purple";//Почетные форумчане
                     break;
                 case "#32CD32":
-                    color ="#4EC14E";//FAQMakers
+                    color = "#4EC14E";//FAQMakers
                     break;
                 case "#9A60FF":
-                    color ="#8461C0";//Участники спецпроекта
+                    color = "#8461C0";//Участники спецпроекта
                     break;
                 case "#B100BF":
-                    color ="#8E1E97";//Бизнессмены
+                    color = "#8E1E97";//Бизнессмены
                     break;
                 case "#0099FF":
-                    color ="#107AC0";//Пощники модератора и модераторы
+                    color = "#107AC0";//Пощники модератора и модераторы
                     break;
                 case "blue":
-                    color ="#4545E5";//Супермодераторы
+                    color = "#4545E5";//Супермодераторы
                     break;
                 case "red":
-                    color ="#CB3838";//Администраторы
+                    color = "#CB3838";//Администраторы
                     break;
             }
             return color;
         }
+
         public class ViewHolder {
             TextView txtNick;
         }
+    }
+    public void openProfile(OldUser user){
+        ProfileWebViewActivity.startActivity(getActivity(), user.getMid());
     }
 }

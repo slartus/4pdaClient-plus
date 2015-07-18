@@ -9,7 +9,7 @@ android {
 
         targetSdkVersion 21
         versionCode 532
-        versionName "3.0.4"
+        versionName "3.0.4_Debug"
     }
     buildTypes {
         release {

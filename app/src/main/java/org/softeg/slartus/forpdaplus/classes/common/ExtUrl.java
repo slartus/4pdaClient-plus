@@ -126,10 +126,10 @@ public class ExtUrl {
         new MaterialDialog.Builder(context)
                 .title(title)
                 .items(titles)
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence titles) {
-                        switch (i) {
+                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        switch (which) {
                             case 0:
                                 showInBrowser(context, url);
                                 break;
@@ -140,7 +140,6 @@ public class ExtUrl {
                                 copyLinkToClipboard(context, url);
                                 break;
                         }
-                        return true; // allow selection
                     }
                 })
                 .negativeText("Отмена")

@@ -31,49 +31,49 @@ Edited by: RadiationX|*or you nick*
   font-size: 0.75em!important;
 }
 [style*="font-size:8pt"] {
-  font-size: 0.85em !important;
+  font-size: 0.8125em !important;
   line-height: 1.25em!important;
 }
 [style*="font-size:8pt"] * {
   font-size: inherit !important;
 }
 [style*="font-size:10pt"] {
-  font-size: 1.0625em !important;
+  font-size: 1.015625em !important;
   line-height: 1.25em!important;
 }
 [style*="font-size:10pt"] * {
   font-size: inherit !important;
 }
 [style*="font-size:12pt"] {
-  font-size: 1.275em !important;
+  font-size: 1.21875em !important;
   line-height: 1.25em!important;
 }
 [style*="font-size:12pt"] * {
   font-size: inherit !important;
 }
 [style*="font-size:14pt"] {
-  font-size: 1.4875em !important;
+  font-size: 1.421875em !important;
   line-height: 1.25em!important;
 }
 [style*="font-size:14pt"] * {
   font-size: inherit !important;
 }
 [style*="font-size:18pt"] {
-  font-size: 1.9125em !important;
+  font-size: 1.828125em !important;
   line-height: 1.25em!important;
 }
 [style*="font-size:18pt"] * {
   font-size: inherit !important;
 }
 [style*="font-size:24pt"] {
-  font-size: 2.55em !important;
+  font-size: 2.4375em !important;
   line-height: 1.25em!important;
 }
 [style*="font-size:24pt"] * {
   font-size: inherit !important;
 }
 [style*="font-size:36pt"] {
-  font-size: 3.825em !important;
+  font-size: 3.65625em !important;
   line-height: 1.25em!important;
 }
 [style*="font-size:36pt"] * {
@@ -2388,98 +2388,98 @@ div[data-post] .post_body {
   }
 }
 @media screen and (max-width: 24em) {
-  #main .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl {
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl {
     width: 100%;
   }
-  #main .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow {
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow {
     margin: 0.5em;
   }
 }
 @media screen and (min-width: 50em) {
-  #main .container .product-detail {
+  .container .product-detail {
     text-align: left;
     background: #f4f4f4;
     border-bottom: 1px solid #e9e9e9;
   }
-  #main .container .product-detail .photo {
+  .container .product-detail .photo {
     padding-bottom: 30%;
     width: 40%;
   }
-  #main .container .product-detail .photo .label {
+  .container .product-detail .photo .label {
     width: 100%;
     color: #ffffff;
   }
-  #main .container .product-detail .photo img {
+  .container .product-detail .photo img {
     -webkit-border-radius: 2px 0 0 0;
     border-radius: 2px 0 0 0;
   }
-  #main .container .product-detail .description h1 {
+  .container .product-detail .description h1 {
     width: 60%;
     right: 0;
     background: none;
     color: #212121;
     text-shadow: none;
   }
-  #main .container .product-detail .description .info-holder {
+  .container .product-detail .description .info-holder {
     right: 0;
     width: 60%;
     bottom: auto;
     top: 0em;
   }
-  #main .container .product-detail .description .more-box {
+  .container .product-detail .description .more-box {
     bottom: auto;
     top: 0em;
   }
-  #main .container .content .content-box .table4site {
+  .container .content .content-box .table4site {
     -webkit-border-radius: 2px;
     border-radius: 2px;
     display: table;
   }
-  #main .container .content .content-box .table4site tbody {
+  .container .content .content-box .table4site tbody {
     display: table-row-group;
   }
-  #main .container .content .content-box .table4site tbody th {
+  .container .content .content-box .table4site tbody th {
     display: table-row;
   }
-  #main .container .content .content-box .table4site tbody tr {
+  .container .content .content-box .table4site tbody tr {
     -webkit-border-radius: 0;
     border-radius: 0;
     display: table-row;
     border: 1px solid #e9e9e9;
     margin: 0.5em;
   }
-  #main .container .content .content-box .table4site tbody tr p {
+  .container .content .content-box .table4site tbody tr p {
     margin: 0;
     display: inline-block;
   }
-  #main .container .content .content-box .table4site tbody tr td {
+  .container .content .content-box .table4site tbody tr td {
     display: table-cell;
     width: 100%;
     padding: 0.2em 0.4em;
     padding-left: 0.6em;
     border-right: 1px solid #e9e9e9;
   }
-  #main .container .content .content-box .table4site tbody tr td:first-child {
+  .container .content .content-box .table4site tbody tr td:first-child {
     width: auto;
     background: none;
     color: #212121;
   }
-  #main .container .content .content-box .table4site tbody tr td:last-child {
+  .container .content .content-box .table4site tbody tr td:last-child {
     border-left: none;
   }
-  #main .container .content .content-box .mlinks {
+  .container .content .content-box .mlinks {
     position: relative;
   }
-  #main .container .content .content-box .mlinks .mlhead .do-vam > div .mlicon {
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mlicon {
     width: 7em;
   }
-  #main .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl {
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl {
     overflow: hidden;
     position: absolute;
     top: 0.25em;
     right: 0;
   }
-  #main .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow {
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow {
     color: #ffffff;
     background: #0277bd;
     -webkit-border-radius: 2px;
@@ -2488,15 +2488,15 @@ div[data-post] .post_body {
     line-height: 2em;
     margin: 0.25em 0.5em 0.25em 0.5em;
   }
-  #main .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow:first-child {
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow:first-child {
     display: none;
   }
-  #main .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow .mlcell {
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow .mlcell {
     display: inline-block;
     position: relative;
     padding: 0 10px;
   }
-  #main .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow .mlcell a {
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow .mlcell a {
     display: block;
     width: 100%;
     height: 100%;
@@ -2505,14 +2505,14 @@ div[data-post] .post_body {
     top: 0;
     left: 0;
   }
-  #main .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow .mlcell i {
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow .mlcell i {
     display: block;
     text-align: center;
   }
-  #main .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow .mlcell i:before {
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow .mlcell i:before {
     line-height: 2em;
   }
-  #main .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow .mlcell:after {
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow .mlcell:after {
     content: "";
     background: #ffffff;
     position: absolute;
@@ -2521,20 +2521,20 @@ div[data-post] .post_body {
     right: 0;
     top: 0.35em;
   }
-  #main .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow .mlcell:last-child {
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow .mlcell:last-child {
     border-right: none;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
   }
-  #main .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow .mlcell:last-child:after {
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow .mlcell:last-child:after {
     display: none;
   }
-  #main .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow .mlcell:nth-child(3):after {
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow .mlcell:nth-child(3):after {
     width: 0;
   }
-  #main .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow:last-child .mlcell {
+  .container .content .content-box .mlinks .mlhead .do-vam > div .mltbl .mlrow:last-child .mlcell {
     border-bottom: none;
   }
   .posts_list .post_container .post_header {
@@ -2675,7 +2675,7 @@ div[data-post] .post_body {
   outline: none;
   box-shadow: none;
   margin: 0;
-  background-image: url(../../profile/dows_grey600_24dp.png);
+  background-image: url(../../profile/down_grey600_24dp.png);
   background-position: right;
   background-size: 1.5em;
   background-repeat: no-repeat;

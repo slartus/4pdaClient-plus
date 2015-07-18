@@ -14,6 +14,7 @@ import org.softeg.slartus.forpdaapi.classes.ListData;
 import org.softeg.slartus.forpdaapi.users.Users;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 
 import java.util.ArrayList;
 
@@ -64,7 +65,7 @@ public class TopicWritersListFragment extends BaseLoaderListFragment {
         return data;
     }
 
-    public static class UsersAdapter extends BaseAdapter {
+    public class UsersAdapter extends BaseAdapter {
         protected LayoutInflater m_Inflater;
         private ArrayList<IListItem> mUsers;
 
@@ -106,10 +107,16 @@ public class TopicWritersListFragment extends BaseLoaderListFragment {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            OldUser user = (OldUser)this.getItem(position);
+            final OldUser user = (OldUser)this.getItem(position);
 
             holder.txtCount.setText(user.MessagesCount);
             holder.txtNick.setText(user.getNick());
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    openProfile(user);
+                }
+            });
             return convertView;
         }
 
@@ -117,5 +124,8 @@ public class TopicWritersListFragment extends BaseLoaderListFragment {
             TextView txtNick;
             TextView txtCount;
         }
+    }
+    public void openProfile(OldUser user){
+        ProfileWebViewActivity.startActivity(getActivity(), user.getMid());
     }
 }
