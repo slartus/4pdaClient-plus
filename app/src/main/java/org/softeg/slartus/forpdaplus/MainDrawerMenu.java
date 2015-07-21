@@ -541,9 +541,9 @@ public class MainDrawerMenu {
             holder.icon.setImageDrawable(getContext().getResources().getDrawable(item.getIcon()));
             if (groupPosition == prefs.getInt("menuItemGroup", 0)) {
                 if (item.getName().equals(prefs.getString("menuItemChild", "News_pages"))) {
-                    holder.text.setTextColor(resources.getColor(R.color.actionbar_background_wh));
+                    holder.text.setTextColor(resources.getColor(R.color.selectedItemText));
                     holder.item.setBackgroundResource(R.color.selectedItem);
-                    holder.icon.setColorFilter(resources.getColor(R.color.actionbar_background_wh), PorterDuff.Mode.SRC_ATOP);
+                    holder.icon.setColorFilter(resources.getColor(R.color.selectedItemText), PorterDuff.Mode.SRC_ATOP);
                 } else {
                     holder.text.setTextColor(resources.getColor(getTextColor()));
                     holder.item.setBackgroundResource(Color.TRANSPARENT);
@@ -572,9 +572,9 @@ public class MainDrawerMenu {
     }
     private int getTextColor() {
         if (App.getInstance().isWhiteTheme()) {
-            return R.color.list_text_special_color_wh;
+            return R.color.drawer_menu_text_wh;
         } else {
-            return R.color.list_text_special_color_bl;
+            return R.color.drawer_menu_text_bl;
         }
     }
 }

@@ -123,5 +123,6 @@
     <color name="new_flag">#A8014E7D</color>
 
     <color name="selectedItem">#2777</color>
+    <color name="selectedItemText">@color/actionbar_background_wh</color>
 
 </resources>
