@@ -102,6 +102,10 @@ a {
   text-decoration: none;
   color: #0277bd;
 }
+img {
+  -webkit-transform: translate3d(0, 0, 0) rotateZ(0);
+  transform: translate3d(0, 0, 0) rotateZ(0);
+}
 * {
   box-sizing: border-box;
 }
@@ -1627,6 +1631,8 @@ a {
   width: 4em;
   background-repeat: no-repeat;
   background-size: cover;
+  -webkit-transform: translate3d(0, 0, 0) rotateZ(0);
+  transform: translate3d(0, 0, 0) rotateZ(0);
 }
 .post_container .post_header .avatar.disable .img {
   width: 0;
@@ -2054,6 +2060,8 @@ div[data-post] .post_body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+  -webkit-transform: translate3d(0, 0, 0) rotateZ(0);
+  transform: translate3d(0, 0, 0) rotateZ(0);
 }
 .user-profile-list > li:first-child .user-box .photo .img.circle {
   -webkit-border-radius: 4.5em;
