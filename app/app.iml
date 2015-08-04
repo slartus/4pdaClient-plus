@@ -12,10 +12,12 @@
         <option name="SELECTED_TEST_ARTIFACT" value="_android_test_" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
         <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugSources" />
-        <option name="SOURCE_GEN_TASK_NAME" value="generateDebugSources" />
         <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleDebugTest" />
         <option name="COMPILE_JAVA_TEST_TASK_NAME" value="compileDebugTestSources" />
-        <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateDebugTestSources" />
+        <afterSyncTasks>
+          <task>generateDebugSources</task>
+          <task>generateDebugTestSources</task>
+        </afterSyncTasks>
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
@@ -89,14 +91,22 @@
     <orderEntry type="library" exported="" name="sqliteassethelper-2.0.1" level="project" />
     <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="jsoup-1.8.1" level="project" />
+<<<<<<< Updated upstream
     <orderEntry type="library" exported="" name="support-v4-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="httpcore-4.3.3" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-22.2.1" level="project" />
+=======
+    <orderEntry type="library" exported="" name="recyclerview-v7-22.2.0" level="project" />
+    <orderEntry type="library" exported="" name="httpcore-4.3.3" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-22.2.0" level="project" />
+    <orderEntry type="library" exported="" name="support-v4-22.2.0" level="project" />
+>>>>>>> Stashed changes
     <orderEntry type="library" exported="" name="universal-image-loader-1.9.3" level="project" />
     <orderEntry type="library" exported="" name="acra-4.6.1" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.5.0" level="project" />
     <orderEntry type="library" exported="" name="floatingactionbutton-1.2.0" level="project" />
+<<<<<<< Updated upstream
     <orderEntry type="library" exported="" name="android-intents-1.1.0" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="circleimageview-1.1.0" level="project" />
@@ -104,6 +114,15 @@
     <orderEntry type="library" exported="" name="httpmime-4.3.6" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-22.2.1" level="project" />
     <orderEntry type="library" exported="" name="material-dialogs-0.7.7.0" level="project" />
+=======
+    <orderEntry type="library" exported="" name="appcompat-v7-22.2.0" level="project" />
+    <orderEntry type="library" exported="" name="android-intents-1.1.0" level="project" />
+    <orderEntry type="library" exported="" name="circleimageview-1.1.0" level="project" />
+    <orderEntry type="library" exported="" name="material-dialogs-0.7.6.0" level="project" />
+    <orderEntry type="library" exported="" name="library-1.2.2" level="project" />
+    <orderEntry type="library" exported="" name="httpmime-4.3.6" level="project" />
+    <orderEntry type="library" exported="" name="cardview-v7-22.1.1" level="project" />
+>>>>>>> Stashed changes
     <orderEntry type="module" module-name="forpdanotifyservice" exported="" />
     <orderEntry type="module" module-name="newquickaction" exported="" />
     <orderEntry type="module" module-name="4pdasources" exported="" />
