@@ -31,15 +31,15 @@ import java.io.IOException;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ShortUserInfo {
-    private Activity mActivity;
-    private SharedPreferences prefs;
-    private CircleImageView imgAvatar;
-    private ImageView imgAvatarSquare, infoRefresh,userBackground;
-    private TextView userNick, qmsMessages, loginButton, userRep;
-    private RelativeLayout textWrapper;
-    private Handler mHandler = new Handler();
-    private Client client;
-    private boolean isSquare;
+    public Activity mActivity;
+    public SharedPreferences prefs;
+    public CircleImageView imgAvatar;
+    public ImageView imgAvatarSquare, infoRefresh,userBackground;
+    public TextView userNick, qmsMessages, loginButton, userRep;
+    public RelativeLayout textWrapper;
+    public Handler mHandler = new Handler();
+    public Client client;
+    public boolean isSquare;
 
     public ShortUserInfo(Activity activity) {
         prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());

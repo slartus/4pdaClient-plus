@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,7 +39,9 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -384,7 +387,29 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                     return true;
                 }
             });
+            menu.add("Правила форума").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+                    StringBuilder text = new StringBuilder();
+                    try {
 
+                        BufferedReader br = new BufferedReader(new InputStreamReader(App.getInstance().getAssets().open("rules.txt"), "UTF-8"));
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            text.append(line).append("\n");
+                        }
+
+                    } catch (IOException e) {
+                        AppLog.e(getActivity(), e);
+                    }
+                    new MaterialDialog.Builder(getActivity())
+                            .title("Правила форума")
+                            .content(Html.fromHtml(text.toString()))
+                            .positiveText(android.R.string.ok)
+                            .show();
+
+                    return true;
+                }
+            });
 
             if (Preferences.System.isDevSavePage()) {
                 menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

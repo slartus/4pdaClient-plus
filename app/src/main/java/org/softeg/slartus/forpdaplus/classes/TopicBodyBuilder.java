@@ -55,7 +55,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
     public void beginTopic() {
         String desc = TextUtils.isEmpty(m_Topic.getDescription()) ? "" : (", " + m_Topic.getDescription());
         super.beginHtml(m_Topic.getTitle() + desc);
-        super.beginBody("topic");
+        super.beginBody("topic",null,m_IsLoadImages);
 
         m_Body.append("<div id=\"topMargin\" style=\"height:" + ACTIONBAR_TOP_MARGIN + ";\"></div>");
 
@@ -95,8 +95,8 @@ public class TopicBodyBuilder extends HtmlBuilder {
         return
                 (
                         m_HtmlPreferences.isSpoilerByButton() ?
-                                "<div class=\"hat\"><div class='hidetop' style='cursor:pointer;' >".concat(title).concat("</div>" +
-                                        "<input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility(this)\"/></div>")
+                                "<div class=\"hat\"><div class='hidetop' style='cursor:pointer;' ><input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility(this)\"/>"
+                                        .concat(title)
                                 :
                                 "<div class=\"hat\"><div class='hidetop' style='cursor:pointer;' onclick=\"var _n=this.parentNode.getElementsByTagName('div')[1];" +
                                         "if(_n.style.display=='none'){_n.style.display='';}else{_n.style.display='none';}\">"

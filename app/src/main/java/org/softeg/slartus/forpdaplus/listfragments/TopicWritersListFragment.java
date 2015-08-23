@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.OldUser;
 import org.softeg.slartus.forpdaapi.classes.ListData;
@@ -110,7 +111,7 @@ public class TopicWritersListFragment extends BaseLoaderListFragment {
             final OldUser user = (OldUser)this.getItem(position);
 
             holder.txtCount.setText(user.MessagesCount);
-            holder.txtNick.setText(user.getNick());
+            holder.txtNick.setText(StringEscapeUtils.escapeHtml4(user.getNick()));
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

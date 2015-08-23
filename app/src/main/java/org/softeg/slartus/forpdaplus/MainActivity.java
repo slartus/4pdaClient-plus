@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.text.Html;
 import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -29,6 +30,8 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.classes.BrowserViewsFragmentActivity;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
@@ -44,6 +47,10 @@ import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
 import org.softeg.slartus.forpdaplus.mainnotifiers.TopicAttentionNotifier;
 import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.tabs.Tabs;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * Created by IntelliJ IDEA.
@@ -444,7 +451,29 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
             setOtherMenu();
+            menu.add("Правила форума").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+                    StringBuilder text = new StringBuilder();
+                    try {
 
+                        BufferedReader br = new BufferedReader(new InputStreamReader(App.getInstance().getAssets().open("rules.txt"), "UTF-8"));
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            text.append(line).append("\n");
+                        }
+
+                    } catch (IOException e) {
+                        AppLog.e(getActivity(), e);
+                    }
+                    new MaterialDialog.Builder(getActivity())
+                            .title("Правила форума")
+                            .content(Html.fromHtml(text.toString()))
+                            .positiveText(android.R.string.ok)
+                            .show();
+
+                    return true;
+                }
+            });
 
             item = menu.add(0, 0, 999, R.string.CloseApp)
                     .setIcon(R.drawable.ic_close_white_24dp)

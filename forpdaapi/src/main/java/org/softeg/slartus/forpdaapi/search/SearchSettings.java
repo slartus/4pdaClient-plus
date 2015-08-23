@@ -5,6 +5,7 @@ package org.softeg.slartus.forpdaapi.search;/*
 import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIUtils;
@@ -75,7 +76,7 @@ public class SearchSettings implements Parcelable {
     protected String m_Query;
     protected String m_ResultView = RESULT_VIEW_POSTS;
     protected Boolean m_SearchInSubForums = true;
-    protected String m_Sort = RESULT_SORT_RELEVANT;
+    protected String m_Sort = RESULT_SORT_DATE_DESC;
     protected String m_UserName;
     protected String m_Source = SOURCE_ALL;
     protected Set<String> m_ForumsIds = new HashSet<>();

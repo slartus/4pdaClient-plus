@@ -71,22 +71,22 @@ public class HtmlBuilder {
     }
 
     public void beginBody(String id) {
-        beginBody(id,null);
+        beginBody(id, null, true);
     }
 
-    public void beginBody(String id, CharSequence bodyScript) {
+    public void beginBody(String id, CharSequence bodyScript, boolean isImage) {
         int font = App.getInstance().getWebViewFont();
         if (bodyScript == null || TextUtils.isEmpty(bodyScript)) {
             if(font==0){
-                m_Body.append("<body id=\""+id+"\" class=\"modification\">\n");
+                m_Body.append("<body id=\""+id+"\" class=\"modification ").append(isImage?"":"noimages").append("\">\n");
             }else {
-                m_Body.append("<body id=\""+id+"\" class=\"modification\" style=\"font-family:inherit;\">\n");
+                m_Body.append("<body id=\""+id+"\" class=\"modification ").append(isImage?"":"noimages").append("\" style=\"font-family:inherit;\">\n");
             }
         }else {
             if(font==0){
-                m_Body.append("<body id=\""+id+"\" class=\"modification\" " + bodyScript + ">\n");
+                m_Body.append("<body id=\""+id+"\" class=\"modification ").append(isImage?"":"noimages").append("\" " + bodyScript + ">\n");
             }else {
-                m_Body.append("<body  id=\""+id+"\"class=\"modification\" style=\"font-family:inherit;\" " + bodyScript + ">\n");
+                m_Body.append("<body id=\""+id+"\"class=\"modification ").append(isImage?"":"noimages").append("\" style=\"font-family:inherit;\" " + bodyScript + ">\n");
             }
         }
         if(Preferences.System.isDevInterface())

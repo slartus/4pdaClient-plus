@@ -86,6 +86,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
     private Uri m_Data = null;
     private ArrayList<History> m_History = new ArrayList<>();
     private boolean pencil;
+    private boolean loadImages;
 
     public static void shownews(Context context, String url) {
         Intent intent = new Intent(context, NewsActivity.class);
@@ -132,6 +133,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
 
             }
         }
+        loadImages = webView.getSettings().getLoadsImagesAutomatically();
         webView.setActionBarheight(getSupportActionBar().getHeight());
         setHideActionBar();
 
@@ -794,7 +796,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                 m_Title = Html.fromHtml(matcher.group(1)).toString();
             }
             builder.beginHtml(m_Title);
-            builder.beginBody("news");
+            builder.beginBody("news",null,loadImages);
             builder.append("<div style=\"padding-top:" + builder.getMarginTop() + "px\"/>\n");
             builder.append("<div id=\"main\">");
             builder.append("<script type=\"text/javascript\" async=\"async\" src=\"file:///android_asset/forum/js/jqp.min.js\"></script>\n");

@@ -139,11 +139,10 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
 
         wvChat.addJavascriptInterface(this, "HTMLOUT");
         wvChat.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
-
         m_WebViewExternals = new WebViewExternals(this);
         m_WebViewExternals.loadPreferences(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
 
-        m_WebViewExternals.setWebViewSettings();
+        m_WebViewExternals.setWebViewSettings(true);
 
         wvChat.setWebViewClient(new MyWebViewClient());
         Intent intent = getIntent();
@@ -429,7 +428,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         checkNewQms();
         HtmlBuilder htmlBuilder = new HtmlBuilder();
         htmlBuilder.beginHtml("QMS");
-        htmlBuilder.beginBody("qms","onload=\"scrollToElement('bottom_element')\"");
+        htmlBuilder.beginBody("qms","onload=\"scrollToElement('bottom_element')\"",true);
 
         if (!Preferences.Topic.isShowAvatars())
             chatBody = chatBody.replaceAll("<img[^>]*?class=\"avatar\"[^>]*>", "");

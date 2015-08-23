@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.OldUser;
 import org.softeg.slartus.forpdaapi.classes.ListData;
@@ -18,6 +19,7 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.ExtColor;
+import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
@@ -114,7 +116,7 @@ public class TopicReadersListFragment extends BaseLoaderListFragment {
 
             final OldUser user = (OldUser) this.getItem(position);
 
-            holder.txtNick.setText(user.getNick());
+            holder.txtNick.setText(StringEscapeUtils.escapeHtml4(user.getNick()));
             try {
                 holder.txtNick.setTextColor(ExtColor.parseColor(correctHtmlColor(user.getHtmlColor())));
             } catch (Exception ex) {
@@ -129,7 +131,6 @@ public class TopicReadersListFragment extends BaseLoaderListFragment {
             return convertView;
 
         }
-
         public String correctHtmlColor(String color) {
             switch (color) {
                 case "green":

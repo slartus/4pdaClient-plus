@@ -176,6 +176,7 @@
     <string name="ask_player">Спрашивать</string>
     <string name="menu">Меню</string>
 
+
     <string name="crash_toast_text">>Ooooops! Ошибка приложения!</string>
     <string name="crash_dialog_text">Произошла непредвиденная ошибка, остановившая приложение. Пожалуйста помогите исправить её, отправив данные об ошибке</string>
     <string name="crash_dialog_title">Приложение остановлено</string>

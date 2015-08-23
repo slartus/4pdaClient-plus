@@ -223,7 +223,6 @@ public class ProfileWebViewActivity extends BaseFragmentActivity {
     public void saveHtml() {
         try {
             ProfileWebViewFragment.getWebView().loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
-            Log.d("point1: ","work");
         } catch (Throwable ex) {
             AppLog.e(this, ex);
         }
