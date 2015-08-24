@@ -29,6 +29,8 @@ public class BaseFragmentActivity extends ActionBarActivity
         implements SearchSettingsDialogFragment.ISearchDialogListener {
     public static final String SENDER_ACTIVITY = "sender_activity";
     public static final String FORCE_EXIT_APPLICATION = "org.softeg.slartus.forpdaplus.FORCE_EXIT_APPLICATION";
+    public LinearLayout statusBar;
+    public boolean statusBarShowed = false;
 
     protected void afterCreate() {
 
@@ -126,7 +128,7 @@ public class BaseFragmentActivity extends ActionBarActivity
             if (android.os.Build.VERSION.SDK_INT > 18) {
                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 LinearLayout statusBarLay = (LinearLayout) inflater.inflate(R.layout.statusbar, null);
-                LinearLayout statusBar = (LinearLayout) statusBarLay.findViewById(R.id.statusBar);
+                statusBar = (LinearLayout) statusBarLay.findViewById(R.id.statusBar);
                 statusBar.setMinimumHeight(getStatusBarHeight());
                 if (App.getInstance().getCurrentThemeName().equals("white")) {
                     statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_wh));
@@ -135,6 +137,7 @@ public class BaseFragmentActivity extends ActionBarActivity
                 }
                 ViewGroup decor = (ViewGroup) getWindow().getDecorView();
                 decor.addView(statusBarLay);
+                statusBarShowed = true;
             }
         }
 

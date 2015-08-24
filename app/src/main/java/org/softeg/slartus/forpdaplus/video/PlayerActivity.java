@@ -189,9 +189,15 @@ public class PlayerActivity extends BaseFragmentActivity {
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             getSupportActionBar().show();
+            //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            if(statusBarShowed) statusBar.setVisibility(View.VISIBLE);
         }
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             getSupportActionBar().hide();
+            //getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            //getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            if(statusBarShowed) statusBar.setVisibility(View.INVISIBLE);
         }
     }
 
