@@ -44,7 +44,6 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
     private Gallery gallery;
     private TableLayout infoTable;
     private DevDbDevice m_DevDbDevice;
-    private TextView txtModel;
     private LinearLayout pnlRating;
     private static final String DEVICE_ID_KEY = "DeviceId";
 
@@ -61,7 +60,6 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
                 ImageViewActivity.startActivity(DevDbDeviceActivity.this, imgUrl.replace("p.jpg", "n.jpg"));
             }
         });
-        txtModel = (TextView) findViewById(R.id.txtModel);
         infoTable = (TableLayout) findViewById(R.id.infoTable);
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -141,11 +139,17 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
                 m_DevDbDevice.getScreenshotUrls().toArray(new String[m_DevDbDevice.getScreenshotUrls().size()]));
         gallery.setAdapter(adapter);
 
-        txtModel.setText(m_DevDbDevice.getInfo().Model);
+        getSupportActionBar().setTitle(m_DevDbDevice.getInfo().Model);
         fillRating();
-        TableLayout.LayoutParams rowparams = new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+        TableLayout.LayoutParams rowparamsbig = new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT);
-        rowparams.setMargins(5, 5, 5, 5);
+        rowparamsbig.setMargins(0, 12, 0, 0);
+        TableLayout.LayoutParams rowparams1 = new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT);
+        rowparams1.setMargins(0, 4, 0, 0);
+        TableLayout.LayoutParams rowparams2 = new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT);
+        rowparams2.setMargins(0, 0, 0, 4);
         LayoutParams textviewparams = new LayoutParams(LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT);
 
@@ -157,18 +161,21 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
             textView.setText(group.Title.trim());
             textView.setTextAppearance(this, android.R.attr.textAppearanceMedium);
             textView.setTypeface(Typeface.DEFAULT_BOLD);
+            textView.setTextSize(20);
 
             row.addView(textView, textviewparams);
             row.addView(new TextView(this), textviewparams);
-            infoTable.addView(row, rowparams);
+            infoTable.addView(row, rowparamsbig);
 
             for (final DevDbDevice.InfoItem item : group) {
                 TableRow row1 = new TableRow(this);
+                TableRow row2 = new TableRow(this);
 
                 TextView textView1 = createStyledTextView();
                 textView1.setText(Html.fromHtml(item.Title.trim()));
 
                 textView1.setTextAppearance(this, android.R.attr.textAppearanceSmall);
+                textView1.setTypeface(Typeface.DEFAULT_BOLD);
 
                 row1.addView(textView1, textviewparams);
 
@@ -199,10 +206,11 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
                     }
                 });
                 textView2.setTextAppearance(this, android.R.attr.textAppearanceSmall);
-                textView2.setTypeface(Typeface.DEFAULT_BOLD);
-                row1.addView(textView2, textviewparams);
 
-                infoTable.addView(row1, rowparams);
+                row2.addView(textView2, textviewparams);
+
+                infoTable.addView(row1, rowparams1);
+                infoTable.addView(row2, rowparams2);
             }
         }
 
@@ -224,7 +232,7 @@ public class DevDbDeviceActivity extends BaseFragmentActivity {
             textView.setTextColor(getResources().getColor(R.color.devdb_group_color));
             row.addView(textView, textviewparams);
 
-            infoTable.addView(row, rowparams);
+            infoTable.addView(row, rowparams1);
         }
 
     }

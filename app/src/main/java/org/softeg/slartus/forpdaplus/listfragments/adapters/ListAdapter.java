@@ -2,13 +2,11 @@ package org.softeg.slartus.forpdaplus.listfragments.adapters;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,8 +14,6 @@ import org.softeg.slartus.forpdaapi.FavTopic;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.listfragments.FavoritesListFragment;
-import org.softeg.slartus.forpdaplus.listtemplates.FavoritesBrickInfo;
 
 import java.util.ArrayList;
 

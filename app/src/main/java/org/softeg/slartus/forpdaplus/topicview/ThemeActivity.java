@@ -493,6 +493,9 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             doSearch(query);
+        }else {
+            GetThemeTask getThemeTask = new GetThemeTask(this);
+            getThemeTask.execute(intent.getStringExtra(TOPIC_URL_KEY));
         }
     }
 

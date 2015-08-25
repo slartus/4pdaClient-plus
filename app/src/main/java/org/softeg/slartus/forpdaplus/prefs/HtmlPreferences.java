@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.Devices;
-import org.softeg.slartus.forpdaplus.classes.Exceptions.AdditionalInfoException;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 
 import java.util.Hashtable;

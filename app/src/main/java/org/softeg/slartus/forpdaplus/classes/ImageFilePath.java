@@ -1,8 +1,6 @@
 package org.softeg.slartus.forpdaplus.classes;
 
-import android.annotation.TargetApi;
-import
-        android.content.ContentUris;
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;

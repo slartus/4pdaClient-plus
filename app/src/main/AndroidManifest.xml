@@ -136,7 +136,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"
-            android:launchMode="singleTop">
+            android:launchMode="singleTask">
             <intent-filter>
 
                 <action android:name="android.intent.action.SEARCH" />

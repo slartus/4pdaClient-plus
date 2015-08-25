@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.listfragments.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -60,7 +61,12 @@ public class DevDbAdapter extends BaseAdapter {
         ICatalogItem item = mData.get(position);
 
         holder.Main.setText(item.getTitle());
-        holder.SubMain.setText(item.getSubTitle());
+        if(item.getSubTitle() == null){
+            holder.SubMain.setVisibility(View.GONE);
+        }else {
+            holder.SubMain.setText(item.getSubTitle());
+        }
+
 
         return view;
     }

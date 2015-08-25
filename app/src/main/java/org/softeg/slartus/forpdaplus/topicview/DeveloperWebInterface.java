@@ -5,8 +5,6 @@ package org.softeg.slartus.forpdaplus.topicview;/*
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
@@ -14,9 +12,6 @@ import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-
-import java.io.File;
-import java.io.FileWriter;
 
 public class DeveloperWebInterface {
     public static final String NAME = "DEVOUT";

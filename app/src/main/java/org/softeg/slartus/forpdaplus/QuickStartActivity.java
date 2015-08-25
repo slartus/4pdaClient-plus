@@ -12,7 +12,6 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.tabs.BaseTab;
 import org.softeg.slartus.forpdaplus.tabs.ITabParent;
