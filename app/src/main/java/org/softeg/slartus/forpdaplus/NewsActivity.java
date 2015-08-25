@@ -811,7 +811,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                 builder.append("<script type=\"text/javascript\">wrs"+matchert.group(1)+"</script>");
             }
 
-            builder.append("</div><br/><br/><br/><br/>");
+            builder.append("</div>");
             builder.endBody();
             builder.endHtml();
             return builder.getHtml().toString();
@@ -855,6 +855,10 @@ public class NewsActivity extends BrowserViewsFragmentActivity
 
 
         private String normalizeCommentUrls(String body) {
+            if(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("loadNewsComment", false)){
+                body = body.replaceAll("(<div class=\"comment-box\" id=\"comments\">[\\s\\S]*?<ul class=\"page-nav box\">[\\s\\S]*?<\\/ul>)", "");
+            }
+
             body = Pattern.compile("<iframe[^><]*?src=\"http://www.youtube.com/embed/([^\"/]*)\".*?(?:</iframe>|/>)", Pattern.CASE_INSENSITIVE)
                     .matcher(body)
                     .replaceAll("<a class=\"video-thumb-wrapper\" href=\"http://www.youtube.com/watch?v=$1\"><img class=\"video-thumb\" width=\"480\" height=\"320\" src=\"http://img.youtube.com/vi/$1/0.jpg\"/></a>");

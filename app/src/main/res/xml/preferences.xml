@@ -296,6 +296,11 @@
             android:entryValues="@array/video_player_types_values"
             android:key="news.videoplayer"
             android:title="Проигрыватель видео" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="loadNewsComment"
+            android:title="Не загружать комментарии"
+            android:summary="Ускорит отображение страницы"/>
     </PreferenceScreen>
 
     <PreferenceScreen

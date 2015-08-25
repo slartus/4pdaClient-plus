@@ -3,7 +3,9 @@ package org.softeg.slartus.forpdaplus.controls.imageview;
 
 import android.content.Context;
 import android.content.Intent;
+import android.opengl.GLES10;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import org.softeg.slartus.forpdaplus.App;
@@ -11,6 +13,12 @@ import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.R;
 
 import java.util.ArrayList;
+
+import javax.microedition.khronos.egl.EGL10;
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.egl.EGLContext;
+import javax.microedition.khronos.egl.EGLDisplay;
+import javax.microedition.khronos.opengles.GL10;
 
 
 /*

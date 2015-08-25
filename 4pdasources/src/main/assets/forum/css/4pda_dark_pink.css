@@ -1242,6 +1242,16 @@ img {
 .poll .hidetop:active:before {
   background: rgba(255, 255, 255, 0.1);
 }
+.poll .hidetop input {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background: none;
+  color: transparent;
+  opacity: 0;
+}
 .poll .hidetop b {
   display: inline;
   text-transform: uppercase;
@@ -1643,6 +1653,7 @@ img {
   width: 4em;
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
   -webkit-transform: translate3d(0, 0, 0) rotateZ(0);
   transform: translate3d(0, 0, 0) rotateZ(0);
 }
@@ -1676,6 +1687,7 @@ img {
 .post_container .post_header .inf.group > span {
   font-size: 0.875em;
   color: #dedede !important;
+  font-weight: normal!important;
 }
 .post_container .post_header .inf.reputation {
   top: 2.625em;
@@ -1727,6 +1739,16 @@ img {
   position: relative;
   line-height: 3em;
   text-align: center;
+}
+.post_container .hat .hidetop input {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background: none;
+  color: transparent;
+  opacity: 0;
 }
 .post_container .hat .hidetop b span {
   font-size: 0.875em;
@@ -2210,7 +2232,6 @@ div[data-post] .post_body {
 .post-block {
   margin: 0.5em 0;
   position: relative;
-  overflow: hidden;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.15);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.15);
 }
@@ -2685,6 +2706,8 @@ div[data-post] .post_body {
   border-bottom: 1px solid #474747;
   outline: none;
   box-shadow: none;
+  background: none;
+  color: #dedede;
 }
 #edit_profile .field table .row2 input[type="text"]:focus {
   border-bottom-color: #e91e63;
@@ -2693,6 +2716,7 @@ div[data-post] .post_body {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  color: #dedede;
   display: inline-block;
   padding-right: 1.5em;
   height: 2.5em;
@@ -2711,6 +2735,8 @@ div[data-post] .post_body {
 }
 #edit_profile .field table .row2 select option {
   padding: 0;
+  color: #dedede;
+  background: #2b2b2b;
 }
 #edit_profile .field table .row2 select + select {
   margin-top: 0.5em;
@@ -2761,4 +2787,8 @@ div[data-post] .post_body {
 }
 #edit_profile .field + br {
   display: none;
+}
+#news.noimages .container .content .content-box p a[data-lightbox]:after {
+  content: "Прикрепленное изображение";
+  display: block;
 }
