@@ -1636,6 +1636,15 @@ img[src*="style_emoticons"] {
   color: #969696;
   font-size: 0.9rem;
 }
+#news.noimages .container .content a[data-lightbox] {
+  display: inline-block;
+}
+#news.noimages .container .content a[data-lightbox]:before {
+  content: 'Изображение';
+  display: inline-block;
+  padding: 0.5rem;
+  font-weight: bold;
+}
 .container {
   margin: 0;
   border-radius: 0.15rem;
@@ -1707,6 +1716,7 @@ img[src*="style_emoticons"] {
   position: relative;
   display: block;
   text-align: center;
+  min-height: 2.4rem;
 }
 @media screen and (min-width: 800px) {
   .product-detail .photo {

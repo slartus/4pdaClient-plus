@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -342,7 +343,8 @@ public class Post {
             return;
         String path = "http://s.4pda.to/forum/uploads/";
         if (avatarFileName.contains("/"))
-            path = "http://s.4pda.to/forum/style_avatars/";
+            if(!Pattern.compile("\\d+\\/").matcher(avatarFileName).find())
+                path = "http://s.4pda.to/forum/style_avatars/";
         this.avatarFileName = path + avatarFileName;
     }
 

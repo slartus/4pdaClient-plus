@@ -23,6 +23,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -493,9 +494,11 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             doSearch(query);
+        }
+        if(!intent.getData().toString().equals("")){
+            new GetThemeTask(this).execute(intent.getData().toString());
         }else {
-            GetThemeTask getThemeTask = new GetThemeTask(this);
-            getThemeTask.execute(intent.getStringExtra(TOPIC_URL_KEY));
+            new GetThemeTask(this).execute(intent.getStringExtra(TOPIC_URL_KEY));
         }
     }
 

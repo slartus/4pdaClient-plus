@@ -2,12 +2,14 @@ package org.softeg.slartus.forpdaplus.controls.imageview;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,6 +25,7 @@ import com.squareup.picasso.Downloader;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoTools;
+import com.squareup.picasso.Transformation;
 
 import org.apache.http.HttpResponse;
 import org.softeg.slartus.forpdaplus.App;
@@ -221,8 +224,7 @@ public class ImageViewFragment extends BaseFragment {
 
         }
 
-        private void loadImage(View imageLayout) {
-            int maxSize = getMaxTextureSize();
+        private void loadImage(final View imageLayout) {
             if (m_PhotoView != null) {
                 PicassoTools.clearCache(Picasso.with(inflater.getContext()));
                 m_PhotoView.setImageDrawable(null);
@@ -234,6 +236,38 @@ public class ImageViewFragment extends BaseFragment {
             m_PhotoView.setMaximumScale(10f);
 
             progressView.setVisibility(View.VISIBLE);
+
+            Transformation transformation = new Transformation() {
+
+                @Override
+                public Bitmap transform(Bitmap source) {
+                    double maxSize = getMaxTextureSize()*0.75;
+                    int imageWidth = source.getWidth();
+                    int imageHeight = source.getHeight();
+                    double scale = 1;
+                    if(imageWidth>maxSize){
+                        scale = maxSize/imageWidth;
+                        imageWidth = (int)(imageWidth*scale);
+                        imageHeight = (int)(imageHeight*scale);
+                    }
+                    if(imageHeight>maxSize){
+                        scale = maxSize/imageHeight;
+                        imageWidth = (int)(imageWidth*scale);
+                        imageHeight = (int)(imageHeight*scale);
+                    }
+                    Bitmap result = Bitmap.createScaledBitmap(source, imageWidth, imageHeight, false);
+                    if (result != source) {
+                        // Same bitmap is returned if sizes are the same
+                        source.recycle();
+                    }
+                    return result;
+                }
+
+                @Override
+                public String key() {
+                    return "transformation" + " desiredWidth";
+                }
+            };
 
             Picasso.Builder builder = new Picasso.Builder(App.getInstance());
             builder.listener(new Picasso.Listener() {
@@ -260,7 +294,7 @@ public class ImageViewFragment extends BaseFragment {
             });
             builder.build()
                     .load(urls.get(mSelectedIndex))
-                    .transform(new BitmapTransform(maxSize,maxSize))
+                    .transform(transformation)
                     .error(R.drawable.no_image)
                     .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .into(m_PhotoView, new Callback() {
