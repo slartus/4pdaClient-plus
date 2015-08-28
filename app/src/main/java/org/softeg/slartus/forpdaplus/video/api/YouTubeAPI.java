@@ -17,11 +17,11 @@ public class YouTubeAPI {
 
     public static CharSequence getYoutubeId(CharSequence youtubeUrl) {
         String[] patterns = {
-                "v=([^&?#]*)",
-                "v/([^&?#/]*)",
-                "youtu.be/([^/?&#]*)",
-                "vnd.youtube:([^/?&#]*)",
-                "embed/([^&?#]*)",
+                "v=([a-zA-Z0-9_\\-]*)",
+                "v/([a-zA-Z0-9_\\-]*)",
+                "youtu.be/([a-zA-Z0-9_\\-]*)",
+                "vnd.youtube:([a-zA-Z0-9_\\-]*)",
+                "embed/([a-zA-Z0-9_\\-]*)",
         };
         for (String pattern : patterns) {
             Matcher m = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE).matcher(youtubeUrl);

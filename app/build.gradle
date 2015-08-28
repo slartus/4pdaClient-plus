@@ -8,8 +8,8 @@ android {
         minSdkVersion 15
 
         targetSdkVersion 22
-        versionCode 536
-        versionName "3.0.8"
+        versionCode 537
+        versionName "3.0.9"
     }
     buildTypes {
         release {
@@ -54,7 +54,7 @@ dependencies {
     compile 'com.afollestad:material-dialogs:0.7.7.0'
     compile 'de.hdodenhof:circleimageview:1.1.0'
     compile 'com.dmitriy-tarasov:android-intents:1.1.0'
-    compile 'com.squareup.picasso:picasso:2.5.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'ch.acra:acra:4.6.1'
 
     compile project(':newquickaction')

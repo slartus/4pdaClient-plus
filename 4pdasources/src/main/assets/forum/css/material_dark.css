@@ -685,6 +685,10 @@ DIV[data-post] {
 .post_header .header_wrapper .avatar.disable .img {
   display: none;
 }
+.post_header .header_wrapper .avatar.circle .img {
+  overflow: hidden;
+  border-radius: 8rem;
+}
 .post_header .header_wrapper .avatar .img {
   display: inline-block;
   width: 3.8rem;
@@ -1499,10 +1503,6 @@ img[src*="style_emoticons"] {
   margin-bottom: 0.3rem;
   z-index: 50;
   text-align: center;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  background-image: url(material_src/avatar_empty.png);
 }
 #thread_form .list-group-item .avatar-wrap .avatar {
   display: inline-block;
@@ -1597,6 +1597,12 @@ img[src*="style_emoticons"] {
 }
 #thread_form .list-group-item + .list-group-item.our-message .avatar-wrap {
   display: inline-block;
+}
+body.noimages .avatar-wrap {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url(material_src/avatar_empty.png);
 }
 /*
  *	NEWS

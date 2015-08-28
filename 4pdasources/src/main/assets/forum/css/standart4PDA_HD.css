@@ -1128,10 +1128,9 @@ img[src*="style_emoticons"] {
   padding: 0 0.4rem;
   font-size: 0.75rem;
   text-align: center;
-  border: 1px solid #32648E;
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f8ffff), color-stop(1, #a3b7d3));
   color: #32648E;
-  -webkit-box-shadow: inset 0px 1px 0px 0px white;
+  -webkit-box-shadow: 0 0 0 1px #32648e, inset 0 1px 0 0 white;
   opacity: 0.8;
 }
 .post_footer .button.claim,
@@ -1171,8 +1170,8 @@ img[src*="style_emoticons"] {
   }
   .post_footer .button.bad {
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ff9288), color-stop(1, #ce5f55));
-    border: 1px solid #ac3d33;
     color: white;
+    -webkit-box-shadow: 0 0 0 1px #ac3d33, inset 0 1px 0 0 white;
   }
   .post_footer .button.bad:before {
     content: "–";
@@ -1180,8 +1179,8 @@ img[src*="style_emoticons"] {
   }
   .post_footer .button.good {
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #a9d388), color-stop(1, #76a055));
-    border: 1px solid #547e33;
     color: white;
+    -webkit-box-shadow: 0 0 0 1px #547e33, inset 0 1px 0 0 white;
   }
   .post_footer .button.good:after {
     content: "+";
@@ -1199,14 +1198,13 @@ img[src*="style_emoticons"] {
     padding: 0 0.4rem;
     font-size: 0.75rem;
     text-align: center;
-    border: 1px solid #32648E;
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f8ffff), color-stop(1, #a3b7d3));
     color: #32648E;
-    -webkit-box-shadow: inset 0px 1px 0px 0px white;
+    -webkit-box-shadow: 0 0 0 1px #32648e, inset 0 1px 0 0 white;
     opacity: 0.8;
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ff9288), color-stop(1, #ce5f55));
-    border: 1px solid #ac3d33;
     color: white;
+    -webkit-box-shadow: 0 0 0 1px #ac3d33, inset 0 1px 0 0 white;
     padding-left: 0.7rem;
     padding-right: 0.7rem;
   }
@@ -1220,14 +1218,13 @@ img[src*="style_emoticons"] {
     padding: 0 0.4rem;
     font-size: 0.75rem;
     text-align: center;
-    border: 1px solid #32648E;
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f8ffff), color-stop(1, #a3b7d3));
     color: #32648E;
-    -webkit-box-shadow: inset 0px 1px 0px 0px white;
+    -webkit-box-shadow: 0 0 0 1px #32648e, inset 0 1px 0 0 white;
     opacity: 0.8;
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #a9d388), color-stop(1, #76a055));
-    border: 1px solid #547e33;
     color: white;
+    -webkit-box-shadow: 0 0 0 1px #547e33, inset 0 1px 0 0 white;
   }
 }
 @media screen and (min-width: 401px) and (min-width: 500px) {
@@ -1241,14 +1238,13 @@ img[src*="style_emoticons"] {
     padding: 0 0.4rem;
     font-size: 0.75rem;
     text-align: center;
-    border: 1px solid #32648E;
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f8ffff), color-stop(1, #a3b7d3));
     color: #32648E;
-    -webkit-box-shadow: inset 0px 1px 0px 0px white;
+    -webkit-box-shadow: 0 0 0 1px #32648e, inset 0 1px 0 0 white;
     opacity: 0.8;
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ff9288), color-stop(1, #ce5f55));
-    border: 1px solid #ac3d33;
     color: white;
+    -webkit-box-shadow: 0 0 0 1px #ac3d33, inset 0 1px 0 0 white;
   }
   .post_footer .button.bad:before {
     position: relative;

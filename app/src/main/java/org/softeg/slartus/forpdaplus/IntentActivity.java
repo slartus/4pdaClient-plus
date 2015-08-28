@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -347,7 +348,13 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
                                      final Boolean finishActivity, String authKey) {
         url = getRedirect(url).toString();
         Uri uri = Uri.parse(url.toLowerCase());
-        if (uri.getHost() != null && (uri.getHost().contains("4pda.ru") || uri.getHost().contains("4pda.to"))) {
+
+        if (uri.getHost() != null && (uri.getHost().toLowerCase().contains("4pda.ru")
+                || uri.getHost().toLowerCase().contains("4pda.to")
+                || uri.getHost().toLowerCase().contains("ggpht.com")
+                || uri.getHost().toLowerCase().contains("googleusercontent.com")
+                || uri.getHost().toLowerCase().contains("windowsphone.com")
+                || uri.getHost().toLowerCase().contains("mzstatic.com"))) {
             if (isTheme(uri)) {
                 showTopic(context, url);
                 if (finishActivity)
@@ -565,7 +572,11 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
 
     public static boolean tryShowFile(final Activity activity, final Uri uri, final Boolean finish) {
         if (uri.getHost() != null && !(uri.getHost().toLowerCase().contains("4pda.ru")
-                || uri.getHost().toLowerCase().contains("4pda.to")))
+                || uri.getHost().toLowerCase().contains("4pda.to")
+                || uri.getHost().toLowerCase().contains("ggpht.com")
+                || uri.getHost().toLowerCase().contains("googleusercontent.com")
+                || uri.getHost().toLowerCase().contains("windowsphone.com")
+                || uri.getHost().toLowerCase().contains("mzstatic.com")))
             return false;
         boolean isFile = PatternExtensions.compile("http://4pda.ru/forum/dl/post/\\d+/[^\"]*")
                 .matcher(uri.toString()).find() ||
@@ -602,7 +613,10 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
 
             return true;
         }
-        if (imagePattern.matcher(uri.toString()).find()) {
+        if (imagePattern.matcher(uri.toString()).find()
+                ||(uri.getHost().toLowerCase().contains("ggpht.com")
+                || uri.getHost().toLowerCase().contains("googleusercontent.com")
+                || uri.getHost().toLowerCase().contains("windowsphone.com"))) {
             showImage(activity, uri.toString());
             if (finish)
                 activity.finish();

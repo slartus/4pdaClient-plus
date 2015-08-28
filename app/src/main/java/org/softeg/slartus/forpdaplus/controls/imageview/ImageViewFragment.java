@@ -310,6 +310,11 @@ public class ImageViewFragment extends BaseFragment {
                     });
         }
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        m_PhotoView.setImageBitmap(null);
+    }
     public static int getMaxTextureSize() {
         // Safe minimum default size
         final int IMAGE_MAX_BITMAP_DIMENSION = 2048;
