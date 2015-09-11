@@ -521,7 +521,7 @@ public final class TopicViewMenuFragment extends ProfileMenuFragment {
                             editor.putString("appstyle", newStyleValues.get(selected[0]).toString());
                             //editor.putBoolean("theme.BrowserStyle", checkBox.isChecked());
                             editor.apply();
-                            getInterface().showTheme(getInterface().getLastUrl());
+                            getInterface().recreate();
                         }
                     })
                     .negativeText("Отмена")

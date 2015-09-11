@@ -65,6 +65,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
     private MainDrawerMenu mMainDrawerMenu;
     private RelativeLayout leftDrawer,topInform;
     boolean top;
+    int lastTheme;
 
     @Override
     protected void afterCreate() {
@@ -108,7 +109,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
     @Override
     public void onCreate(Bundle saveInstance) {
         super.onCreate(saveInstance);
-
+        lastTheme = App.getInstance().getThemeStyleResID();
         try {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -324,8 +325,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
     @Override
     public void onResume() {
         super.onResume();
-
-
+        if(App.getInstance().getThemeStyleResID()!=lastTheme) recreate();
         m_ExitWarned = false;
     }
 

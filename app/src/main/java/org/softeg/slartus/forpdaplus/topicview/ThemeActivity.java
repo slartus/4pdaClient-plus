@@ -107,6 +107,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
     private QuickPostFragment mQuickPostFragment;
     private LinearLayout mQuickPostPanel;
     private Curator mCurator;
+    private String lastStyle;
 
     public static void showTopicById(Context context, CharSequence topicId, CharSequence urlParams) {
         String url = String.format("http://4pda.ru/forum/index.php?showtopic=%s%s", topicId, TextUtils.isEmpty(urlParams) ? "" : ("&" + urlParams));
@@ -146,6 +147,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
 
         setContentView(R.layout.theme);
 
+        lastStyle = App.getInstance().getThemeCssFileName();
         if (Preferences.System.isDevSavePage()|
                 Preferences.System.isDevInterface()|
                 Preferences.System.isDevStyle())
@@ -308,6 +310,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             webView.saveState(outState);
             outState.putString("LastUrl", getLastUrl());
             outState.putString("ScrollElement", m_ScrollElement);
+            outState.putString("LastStyle", lastStyle);
             outState.putBoolean("FromHistory", m_FromHistory);
 
             outState.putString("LoadsImagesAutomatically", LoadsImagesAutomatically == null ? "null" : (LoadsImagesAutomatically ? "1" : "0"));
@@ -348,7 +351,9 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 if (sessionHistory.getBody() == null) {
                     showTheme(sessionHistory.getUrl());
                 } else {
-                    showThemeBody(sessionHistory.getBody());
+                    String body = sessionHistory.getBody().replace(outState.getString("LastStyle"), App.getInstance().getThemeCssFileName());
+                    showThemeBody(body);
+                    sessionHistory.setBody(body);
                 }
             }
 
@@ -589,12 +594,14 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             if (sessionHistory.getBody() == null) {
                 m_History.remove(m_History.size() - 1);
                 showTheme(sessionHistory.getUrl());
+                Log.e("sadasd", "sadas1");
             } else {
                 m_LastUrl = sessionHistory.getUrl();
                 m_Topic = sessionHistory.getTopic();
                 if (m_Topic != null)
                     mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
                 showThemeBody(sessionHistory.getBody());
+                Log.e("sadasd", "sadas2");
             }
 
 
@@ -1135,14 +1142,20 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             }
             if (anchor == null) {
                 showTheme(topicUrl);
+
+                Log.e("sadasd", "sadas4");
                 return;
             }
             String fragment = anchor;
             String currentBody = m_History.get(m_History.size() - 1).getBody();
             if (currentBody.contains("name=\"" + fragment + "\"")) {
                 webView.scrollTo(fragment);
+
+                Log.e("sadasd", "sadas5");
                 return;
             }
+
+            Log.e("sadasd","sadas6");
             showTheme(topicUrl);
         } catch (Throwable ex) {
             AppLog.e(this, ex);
@@ -1435,6 +1448,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                     }
                 });
             }
+            Log.e("asdasd", "HJFKJDhklag");
+
         }
     }
 

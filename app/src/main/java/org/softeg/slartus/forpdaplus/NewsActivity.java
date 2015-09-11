@@ -954,16 +954,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
     @Override
     public void onPause() {
         super.onPause();
-
-        try {
-            // останавливаем всопроизведение видео
-            Class.forName("android.webkit.WebView")
-                    .getMethod("onPause", (Class[]) null)
-                    .invoke(getWebView(), (Object[]) null);
-
-        } catch (Throwable ignored) {
-
-        }
+        webView.onPause();
         getWebView().setWebViewClient(null);
 
     }
