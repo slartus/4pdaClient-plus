@@ -594,14 +594,12 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             if (sessionHistory.getBody() == null) {
                 m_History.remove(m_History.size() - 1);
                 showTheme(sessionHistory.getUrl());
-                Log.e("sadasd", "sadas1");
             } else {
                 m_LastUrl = sessionHistory.getUrl();
                 m_Topic = sessionHistory.getTopic();
                 if (m_Topic != null)
                     mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
                 showThemeBody(sessionHistory.getBody());
-                Log.e("sadasd", "sadas2");
             }
 
 
@@ -1142,20 +1140,15 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
             }
             if (anchor == null) {
                 showTheme(topicUrl);
-
-                Log.e("sadasd", "sadas4");
                 return;
             }
             String fragment = anchor;
             String currentBody = m_History.get(m_History.size() - 1).getBody();
             if (currentBody.contains("name=\"" + fragment + "\"")) {
                 webView.scrollTo(fragment);
-
-                Log.e("sadasd", "sadas5");
                 return;
             }
 
-            Log.e("sadasd","sadas6");
             showTheme(topicUrl);
         } catch (Throwable ex) {
             AppLog.e(this, ex);
@@ -1439,6 +1432,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                 if (ex.getClass() != NotReportException.class) {
                     ThemeActivity.this.setTitle(ex.getMessage());
                     webView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
+                    addToHistory(m_ThemeBody);
 
                 }
                 AppLog.e(ThemeActivity.this, ex, new Runnable() {
@@ -1448,8 +1442,6 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                     }
                 });
             }
-            Log.e("asdasd", "HJFKJDhklag");
-
         }
     }
 

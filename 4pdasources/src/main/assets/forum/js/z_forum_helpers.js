@@ -83,4 +83,166 @@
                 }
         }
     })(n, h)
+
+    (function ( window, document ) {
+    		c_post_block = "post-block"
+    	,	c_block_title = "block-title"
+    	,	c_open = "open"
+    	,	c_close = "close"
+    	,	c_box = "box"
+    	,	c_unbox = "unbox"
+    	,	c_quote = "quote"
+    	,	c_hidden = "hidden"
+    	,	hasClass = function ( e, c ) {
+    		 return ( e.className && ( (' '+e.className+' ').indexOf ( ' '+c+' ' ) > -1 ) );
+    		}
+    	,	cl_enable = 1
+    	,	b_touch = !1
+    	,	fn_ev = function (ev) {
+    			if ( ev.isDefaultPrevented() ) {
+    				return;
+    			}
+    			var
+    				_t = ev.target
+    			,	_p
+    			;
+    			// check for click in block-title
+    			while ( _t && _t != document && !hasClass ( _t, c_block_title ) ) {
+    				_t = _t.parentNode;
+    			}
+    			if ( _t && _t != document && ( _p = _t.parentNode ) ) {
+    				if ( hasClass ( _t, c_block_title ) && hasClass ( _p, c_post_block ) && cl_enable ) {
+    					cl_enable = 0;
+    					setTimeout ( function () { cl_enable = 1 }, 300 );
+    					if ( hasClass ( _p, c_open ) || hasClass ( _p, c_close ) ) {
+    						toggleClass ( toggleClass ( _p, c_close ), c_open );
+    						return false;
+    					}
+    					if ( hasClass ( _p, c_unbox ) || hasClass ( _p, c_box ) ) {
+    						toggleClass ( toggleClass ( _p, c_unbox ), c_box );
+    						return false;
+    					}
+    				}
+    			}
+    		}
+    	;
+    	addEvent ( document, 'click', fn_ev );
+    	addEvent ( document, 'touchstart', function ( ev ) {
+    		if ( ev.isDefaultPrevented() || b_touch || ev.touches.length != 1 ) {
+    			b_touch = !1;
+    			return;
+    		}
+    		var
+    			_t = ev.target
+    		,	_p
+    		;
+    		// check for click in block-title
+    		while ( _t && _t != document && !hasClass ( _t, c_block_title ) ) {
+    			_t = _t.parentNode;
+    		}
+    		if ( _t && _t != document && ( _p = _t.parentNode ) ) {
+    			if ( hasClass ( _t, c_block_title ) && hasClass ( _p, c_post_block ) && cl_enable ) {
+    				b_touch = {	t : ev.touches[0], e : ev.target };
+    				setTimeout ( function() { b_touch = !1 }, 300 );
+    			}
+    		}
+    	} );
+    	addEvent ( document, 'touchend', function ( ev ) {
+    		if ( ev.isDefaultPrevented() || !b_touch || ( ev.changedTouches.length != 1 && ev.touches.length != 1 ) || ev.target != b_touch.e ) {
+    			b_touch = !1;
+    			return;
+    		}
+    		var t = ev.changedTouches[0] || ev.touches[0],
+    		d = Math.sqrt((b_touch.t.screenY-b_touch.t.screenX)^2)+((t.screenY-t.screenX)^2),
+    		r1 = (b_touch.t.radiusX + b_touch.t.radiusY) / 2,
+    		r2 = (t.radiusX + t.radiusY) / 2,
+    		el = ev.target;
+    		if ( d > r1+r2 ) {
+    			if ( el.fireEvent ) {
+    				el.fireEvent ( 'onclick' );
+    			}
+    			else {
+    				var evObj = document.createEvent('Events');
+    				evObj.initEvent ( 'click', true, false );
+    				el.dispatchEvent(evObj);
+    			}
+    		}
+    	} );
+    	window["initPostBlock"] = function() {
+    		var els,p,e,pc,i=0;
+    		try{
+    			els=document.getElementsByName(location.hash.replace(/^#/,''));
+    			for( i = 0 ; i < els.length ; i++ ) {
+    				e=[];
+    				pc = 0;
+    				if ( els[i].tagName=="A" ) {
+    					p = els[i].parentNode;
+    					while ( p && p != document.body ) {
+    						if ( ( pc = /^post-main-\d+$/.test ( p.id ) ) ) {
+    							break;
+    						}
+    						p = p.parentNode;
+    						e.push(p);
+    					}
+    				}
+    				if ( !pc ) {
+    					continue;
+    				}
+    				while ( e.length ) {
+    					p = e.pop();
+    					if ( hasClass ( p, c_post_block ) && hasClass ( p, c_close ) ) {
+    						toggleClass ( toggleClass ( p, c_close ), c_open );
+    					}
+    				}
+    			}
+    		}catch(e){}
+    		if ( !(function () {
+    			var
+    				className = 'checkPseudoSupport'
+    			,	css = '.'+className+'{position:fixed;left:-100px;top:-100px;display:block;width:auto;height:auto} .'+className+':before{content:"";display:block;height:50px}'
+    			,	body = document.body || document.getElementsByTagName('body')[0]
+    			,	style = document.createElement('style')
+    			,	div = document.createElement ( 'div' )
+    			,	ret = false
+    			;
+    			style.type = 'text/css';
+    			div.className = className;
+    			if ( style.styleSheet ){
+    				style.styleSheet.cssText = css;
+    			} else {
+    				style.appendChild(document.createTextNode(css));
+    			}
+    			body.appendChild ( style );
+    			body.appendChild ( div );
+    			ret = ( div.offsetHeight > 40 );
+    			body.removeChild ( div );
+    			body.removeChild ( style );
+    			return ret;
+    		})() ) {
+    			var needhtml,addevent, blockTitle = "BLOCK";
+    			els = querySelectorAll("."+c_post_block+">."+c_block_title)
+    			for(i=0;i<els.length;i++){
+    				addevent = 0;
+    				p = (e = els[i]).parentNode;
+    				needhtml = !(e.innerHTML+"").replace( /(^\s+)|(\s+$)/g, "");
+    				if ( hasClass ( p, c_close ) || hasClass ( p, c_open ) ) {
+    					blockTitle = "SPOILER";
+    					addevent = 1;
+    				}
+    				else if ( hasClass ( p, c_box ) || hasClass ( p, c_unbox ) ) {
+    					blockTitle = "CODE";
+    					addevent = 1;
+    				}
+    				else if ( hasClass ( p, c_quote ) ) {
+    					blockTitle = "QUOTE";
+    				}
+    				else if ( hasClass ( p, c_hidden ) ) {
+    					blockTitle = "HIDE";
+    				}
+    				needhtml && (e.innerHTML = blockTitle);
+    				addevent && addEvent(els[i],'click',fn_ev);
+    			}
+    		}
+    	};
+    })(window,document);
 })(window, document);

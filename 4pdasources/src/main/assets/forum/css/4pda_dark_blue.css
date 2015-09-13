@@ -114,10 +114,6 @@ a {
   text-decoration: none;
   color: #0277bd;
 }
-img {
-  -webkit-transform: translate3d(0, 0, 0) rotateZ(0);
-  transform: translate3d(0, 0, 0) rotateZ(0);
-}
 * {
   box-sizing: border-box;
 }
@@ -1654,8 +1650,6 @@ img {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  -webkit-transform: translate3d(0, 0, 0) rotateZ(0);
-  transform: translate3d(0, 0, 0) rotateZ(0);
 }
 .post_container .post_header .avatar.disable .img {
   width: 0;
@@ -1820,6 +1814,22 @@ img {
 }
 .posts_list.search-results .post_container .s_post_footer {
   padding: 1em 0.5em;
+}
+.posts_list.search-results .bad-search-result {
+  background: #2b2b2b;
+  margin: 0.5em 0;
+  box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
+  padding: 1em;
+  margin: 0;
+}
+.posts_list.search-results .bad-search-result h3 {
+  margin: 0;
+  padding-bottom: 0.5em;
+  color: #dedede;
+}
+.posts_list.search-results .bad-search-result span {
+  color: #8a8a8a;
 }
 .posts_list.search-results ~ #bottomMargin {
   height: 5.5em;
@@ -2094,8 +2104,6 @@ div[data-post] .post_body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
-  -webkit-transform: translate3d(0, 0, 0) rotateZ(0);
-  transform: translate3d(0, 0, 0) rotateZ(0);
 }
 .user-profile-list > li:first-child .user-box .photo .img.circle {
   -webkit-border-radius: 4.5em;
@@ -2791,4 +2799,10 @@ div[data-post] .post_body {
 #news.noimages .container .content .content-box p a[data-lightbox]:after {
   content: "Прикрепленное изображение";
   display: block;
+}
+body.ongpuimg .post_container .post_header .avatar .img,
+body.ongpuimg .user-profile-list > li:first-child .user-box .photo .img,
+body.ongpuimg img {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }

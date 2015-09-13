@@ -2,7 +2,9 @@ package org.softeg.slartus.forpdaplus.classes;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 
 import org.softeg.slartus.forpdaplus.App;
@@ -76,17 +78,18 @@ public class HtmlBuilder {
 
     public void beginBody(String id, CharSequence bodyScript, boolean isImage) {
         int font = App.getInstance().getWebViewFont();
+        boolean isGpuImg = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isGpuImg", true);
         if (bodyScript == null || TextUtils.isEmpty(bodyScript)) {
             if(font==0){
-                m_Body.append("<body id=\""+id+"\" class=\"modification ").append(isImage?"":"noimages").append("\">\n");
+                m_Body.append("<body id=\""+id+"\" class=\"modification ").append(isImage ? "" : "noimages ").append(isGpuImg?"ongpuimg ":"").append("\">\n");
             }else {
-                m_Body.append("<body id=\""+id+"\" class=\"modification ").append(isImage?"":"noimages").append("\" style=\"font-family:inherit;\">\n");
+                m_Body.append("<body id=\""+id+"\" class=\"modification ").append(isImage ? "" : "noimages").append(isGpuImg?"ongpuimg ":"").append("\" style=\"font-family:inherit;\">\n");
             }
         }else {
             if(font==0){
-                m_Body.append("<body id=\""+id+"\" class=\"modification ").append(isImage?"":"noimages").append("\" " + bodyScript + ">\n");
+                m_Body.append("<body id=\""+id+"\" class=\"modification ").append(isImage ? "" : "noimages").append(isGpuImg?"ongpuimg ":"").append("\" " + bodyScript + ">\n");
             }else {
-                m_Body.append("<body id=\""+id+"\"class=\"modification ").append(isImage?"":"noimages").append("\" style=\"font-family:inherit;\" " + bodyScript + ">\n");
+                m_Body.append("<body id=\""+id+"\"class=\"modification ").append(isImage ? "" : "noimages").append(isGpuImg?"ongpuimg ":"").append("\" style=\"font-family:inherit;\" " + bodyScript + ">\n");
             }
         }
         if(Preferences.System.isDevInterface())

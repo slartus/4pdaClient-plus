@@ -24,6 +24,14 @@ HTML body * {
 HTML body#topic {
   background: white;
 }
+HTML body a:active {
+  background: rgba(0, 100, 255, 0.2);
+}
+HTML body.ongpuimg img,
+HTML body.ongpuimg .img {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
 /*
 *	PICTURES SIZE
 */
@@ -85,6 +93,7 @@ HTML body#topic {
   display: block;
   margin: 0.3em 0;
   font-size: 1rem;
+  border: 1px dotted #aaa;
 }
 .post-block.close > .block-body {
   display: none;
@@ -93,22 +102,39 @@ HTML body#topic {
   max-height: 10rem;
   overflow: auto;
 }
+.post-block.quote > .block-title,
+.post-block.code > .block-title,
+.post-block.hidden > .block-title,
+.post-block.spoil > .block-title {
+  display: block;
+  margin: 0;
+  padding: 0.3rem 0.4rem;
+  font-weight: bold;
+}
+.post-block.quote > .block-body,
+.post-block.code > .block-body,
+.post-block.hidden > .block-body,
+.post-block.spoil > .block-body {
+  margin: 0;
+  padding: 0.4rem;
+  font-size: 1rem;
+  background: white;
+}
+.post-block.quote > .block-body .spoil,
+.post-block.code > .block-body .spoil,
+.post-block.hidden > .block-body .spoil,
+.post-block.spoil > .block-body .spoil {
+  color: black;
+}
 .post-block.quote {
   border-left: 4px solid #4373C3;
 }
 .post-block.quote > .block-title {
-  display: block;
-  font-weight: bold;
-  margin: 0;
-  padding: 0.2rem 0.3rem;
   background: #ddecff;
   background-image: url(file:///android_asset/forum/style_images/1/css_img_quote.gif);
   background-image: url(forum/style_images/1/css_img_quote.gif);
   background-repeat: no-repeat;
   background-position: right;
-  border-right: 1px dotted #4373C3;
-  border-top: 1px dotted #4373C3;
-  color: #000;
 }
 .post-block.quote > .block-title:before {
   content: 'Цитата ( ';
@@ -123,14 +149,8 @@ HTML body#topic {
   content: '';
 }
 .post-block.quote > .block-body {
-  margin: 0;
-  padding: 0.2rem 0.3rem;
-  font-size: 1rem;
-  background: white;
-  background: #4FAFCFE;
-  border-right: 1px dotted #4373C3;
-  border-bottom: 1px dotted #4373C3;
   color: #465584;
+  background: #4FAFCFE;
 }
 .post-block.code {
   border-left: 4px solid #ff6921;
@@ -152,42 +172,22 @@ HTML body#topic {
   content: 'Код (–)';
 }
 .post-block.code > .block-title {
-  display: block;
-  font-weight: bold;
-  margin: 0;
-  padding: 0.2rem 0.3rem;
   background: #FDDBCC;
   background-image: url(file:///android_asset/forum/style_images/1/css_img_code.gif);
   background-image: url(forum/style_images/1/css_img_code.gif);
   background-repeat: no-repeat;
   background-position: right;
-  color: #000;
-  border-top: 1px dotted #000;
-  border-right: 1px dotted #000;
 }
 .post-block.code > .block-body {
-  margin: 0;
-  padding: 0.2rem 0.3rem;
-  font-size: 1rem;
-  background: white;
-  background: #FAFCFE;
-  color: #465584;
   font-family: Courier, "Courier New", Verdana, Arial;
-  border-right: 1px dotted #000;
-  border-bottom: 1px dotted #000;
+  color: #465584;
+  background: #FAFCFE;
 }
 .post-block.hidden {
   border-left: 4px solid #777;
 }
 .post-block.hidden > .block-title {
-  display: block;
-  margin: 0;
-  padding: 0.2rem 0.3rem;
   background: #ddd;
-  color: #000;
-  font-weight: bold;
-  border-right: 1px dotted #000;
-  border-top: 1px dotted #000;
 }
 .post-block.hidden > .block-title:before {
   content: 'Скрытый текст: ';
@@ -196,37 +196,17 @@ HTML body#topic {
   content: 'Скрытый текст';
 }
 .post-block.hidden > .block-body {
-  margin: 0;
-  padding: 0.2rem 0.3rem;
-  font-size: 1rem;
-  background: white;
-  background: #FAFCFE;
-  border-right: 1px dotted #000;
-  border-bottom: 1px dotted #000;
   color: #465584;
+  background: #FAFCFE;
 }
 .post-block.spoil {
   border-left: 4px solid #8394B2;
 }
 .post-block.spoil > .block-title {
   background: #E4EAF2;
-  border-right: 1px dotted #4373C3;
-  border-top: 1px dotted #4373C3;
-  color: #000;
-  font-weight: bold;
-  font-size: 100%;
-  padding: 0.2em;
-  margin: 3px 0px;
 }
 .post-block.spoil > .block-body {
-  margin: 0;
-  padding: 0.2rem 0.3rem;
-  font-size: 1rem;
-  background: white;
-  background: #FAFCFE;
-  border-right: 1px dotted #4373C3;
-  border-bottom: 1px dotted #4373C3;
-  color: #465584;
+  vbackground: #FAFCFE;
 }
 .post-block.spoil.open > .block-title:before {
   content: 'Спойлер (–) ( ';
@@ -416,18 +396,14 @@ HTML body#topic {
   margin: 0.2rem 0;
 }
 .poll .hidetop {
-  background: #E4EAF2;
-  border-right: 1px dotted #4373C3;
-  color: #000;
-  font-weight: bold;
-  font-size: 100%;
-  padding: 0.2em;
-  margin: 3px 0px;
   margin: 0 !important;
+  padding: 0.2rem;
   height: 1.6rem;
   line-height: 1.6rem;
   text-align: center;
-  border-top: 1px dotted #4373C3;
+  border-top: 1px dotted #bbb;
+  border-bottom: 1px dotted #bbb;
+  background: #E4EAF2;
 }
 .poll .hidetop b {
   position: relative;
@@ -569,6 +545,12 @@ HTML body#topic {
   background-size: contain;
   background-repeat: no-repeat;
 }
+.post_header .header_wrapper .avatar .img[style*="background-image:url(file:///android_asset/profile/av.png);"] {
+  background-image: url(file:///android_asset/profile/logo.png) !important;
+}
+.post_header .header_wrapper .avatar.disable {
+  display: none;
+}
 .post_header .header_wrapper .inf {
   color: #4d4d4d;
 }
@@ -599,6 +581,7 @@ HTML body#topic {
   font-size: 0.9rem;
 }
 .post_header .header_wrapper .reputation {
+  display: inline-block;
   font-size: 0.9rem;
 }
 @media screen and (min-width: 800px) {
@@ -818,28 +801,23 @@ div[data-post] {
 *	HIDEMAIN
 */
 .post_container .hidetop {
-  background: #E4EAF2;
-  border-right: 1px dotted #4373C3;
-  border-top: 1px dotted #4373C3;
-  color: #000;
-  font-weight: bold;
-  font-size: 100%;
-  padding: 0.2em;
-  margin: 3px 0px;
   position: relative;
   top: -0.1rem;
   display: block;
   margin: 0;
+  padding: 0.2rem;
   z-index: 11;
   text-align: center;
   line-height: 1.4rem;
   font-size: 1.1rem;
+  border-top: 1px solid white;
+  background: #E4EAF2;
 }
 @media screen and (min-width: 800px) {
   .post_container .hidetop {
     line-height: 13.5rem;
     height: 13.5rem;
-    border-radius: 0.15rem;
+    border: none;
   }
   .post_container .hidetop:before {
     content: '';
@@ -896,7 +874,7 @@ div[data-post] {
 .post_body {
   position: relative;
   display: block;
-  padding: 0.5rem 0.8rem 0.7rem;
+  padding: 0.5rem 0.5rem 0.7rem;
   margin: 0;
   z-index: 11;
   text-align: left;
@@ -946,7 +924,7 @@ div[data-post] {
   margin-bottom: 0.3rem;
 }
 .post_body a {
-  color: #1d5b8e;
+  color: royalblue;
 }
 .post_body font {
   font-size: 0.8rem !important;
@@ -1055,7 +1033,7 @@ div[data-post] {
   color: #808080;
 }
 .s_post_footer a {
-  color: #1d5b8e;
+  color: royalblue;
 }
 .s_post_footer ~ .between_messages ~ .topic_title_post ~ .post_header {
   margin-top: 0 !important;
@@ -1275,7 +1253,7 @@ img[src*="style_emoticons"] {
   padding: 1rem 0.2rem 5rem;
 }
 #thread_form a {
-  color: #1d5b8e;
+  color: royalblue;
 }
 #thread_form .date {
   display: block;
@@ -1464,6 +1442,12 @@ img[src*="style_emoticons"] {
 #thread_form .list-group-item + .list-group-item.our-message .avatar-wrap {
   display: inline-block;
 }
+#qms.noimages .avatar-wrap {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-image: url(file:///android_asset/profile/logo.png), url(profile/logo.png);
+}
 /*
  *	NEWS
 */
@@ -1523,7 +1507,7 @@ img[src*="style_emoticons"] {
   padding: 0.5rem 0.7rem 0.7rem;
 }
 .container .content a {
-  color: #1d5b8e;
+  color: royalblue;
 }
 .container .content .content-box P[style="text-align: justify;"] {
   text-align: left !important;
@@ -1888,7 +1872,7 @@ h3 a {
 .mlinks .mlhead .do-vam > div .mltbl.platforms .mlrow .mlcell a,
 .mlinks.desc .mlright .do-vam > div .mltbl.platforms .mlrow .mlcell a {
   text-decoration: none;
-  color: #1d5b8e !important;
+  color: royalblue !important;
 }
 .mlinks .mlhead .do-vam > div .mldl,
 .mlinks.desc .mlright .do-vam > div .mldl {
@@ -2583,16 +2567,16 @@ h3 a {
   background: white;
 }
 .holder.no-hidden .user-profile-list > li a {
-  color: #1d5b8e;
+  color: royalblue;
 }
 .holder.no-hidden .user-profile-list > li a[title="Изменить данные о себе"] {
   display: inline-block;
   margin: 1rem 0.3rem 0.5rem;
   padding: 0.2rem 0.5rem;
   font-weight: bold;
-  color: #4a7ca5;
+  color: #6787e7;
   text-decoration: none;
-  border: 1px solid #a4bdd2;
+  border: 1px solid #b3c3f3;
 }
 .holder.no-hidden .user-profile-list > li .user-box {
   display: block;
