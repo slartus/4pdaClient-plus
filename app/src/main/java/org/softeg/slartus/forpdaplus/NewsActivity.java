@@ -954,7 +954,13 @@ public class NewsActivity extends BrowserViewsFragmentActivity
     @Override
     public void onPause() {
         super.onPause();
-        webView.onPause();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                webView.onPause();
+            }
+        }, 1500);
         getWebView().setWebViewClient(null);
 
     }
