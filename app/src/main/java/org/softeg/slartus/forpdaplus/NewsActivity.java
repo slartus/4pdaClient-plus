@@ -137,7 +137,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
         webView.setActionBarheight(getSupportActionBar().getHeight());
         setHideActionBar();
 
-        webView.setWebChromeClient(new MyWebChromeClient());
+        //webView.setWebChromeClient(new MyWebChromeClient());
         pnlSearch = (RelativeLayout) findViewById(R.id.pnlSearch);
         txtSearch = (EditText) findViewById(R.id.txtSearch);
         txtSearch.addTextChangedListener(new TextWatcher() {
@@ -280,7 +280,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
     @Override
     public void onResume() {
         super.onResume();
-
+        webView.onResume();
         webView.setWebViewClient(new MyWebViewClient());
         if (s_NewsUrl != null) {
             s_NewsUrl = null;
@@ -315,25 +315,6 @@ public class NewsActivity extends BrowserViewsFragmentActivity
     @Override
     public boolean onError(MediaPlayer mediaPlayer, int i, int i2) {
         return false;
-    }
-
-    private class MyWebChromeClient extends WebChromeClient {
-        @Override
-        public void onShowCustomView(View view, CustomViewCallback callback) {
-
-            super.onShowCustomView(view, callback);
-            if (view instanceof FrameLayout) {
-                FrameLayout frame = (FrameLayout) view;
-                if (frame.getFocusedChild() instanceof VideoView) {
-                    VideoView video = (VideoView) frame.getFocusedChild();
-                    frame.removeView(video);
-                    NewsActivity.this.setContentView(video);
-                    video.setOnCompletionListener(NewsActivity.this);
-                    video.setOnErrorListener(NewsActivity.this);
-                    video.start();
-                }
-            }
-        }
     }
 
 
@@ -961,7 +942,7 @@ public class NewsActivity extends BrowserViewsFragmentActivity
                 webView.onPause();
             }
         }, 1500);
-        getWebView().setWebViewClient(null);
+        webView.setWebViewClient(null);
 
     }
 
