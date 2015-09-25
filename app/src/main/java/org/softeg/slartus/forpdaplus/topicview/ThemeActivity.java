@@ -648,8 +648,8 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
         return m_PostBody;
     }
 
-    public void quote(final String forumId, final String topicId, final String postId, final String postDate, String userId, final String userNick) {
-
+    public void quote(final String forumId, final String topicId, final String postId, final String postDate, String userId, String userNick) {
+        final String mUserNick = userNick.replace("\"","\\\"");
         CharSequence clipboardText = null;
         try {
             ClipboardManager clipboardManager = (android.content.ClipboardManager) App.getInstance().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -692,7 +692,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                                     public void run() {
                                         new Handler().post(new Runnable() {
                                             public void run() {
-                                                insertTextToPost("[quote name=\"" + userNick + "\" date=\"" + postDate + "\" post=\"" + postId + "\"]\n\n[/quote]");
+                                                insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + postDate + "\" post=\"" + postId + "\"]\n\n[/quote]");
                                             }
                                         });
                                     }
@@ -704,7 +704,7 @@ public class ThemeActivity extends BrowserViewsFragmentActivity
                                     public void run() {
                                         new Handler().post(new Runnable() {
                                             public void run() {
-                                                insertTextToPost("[quote name=\"" + userNick + "\" date=\"" + postDate + "\" post=\"" + postId + "\"]\n" + finalClipboardText + "\n[/quote]");
+                                                insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + postDate + "\" post=\"" + postId + "\"]\n" + finalClipboardText + "\n[/quote]");
                                             }
                                         });
                                     }

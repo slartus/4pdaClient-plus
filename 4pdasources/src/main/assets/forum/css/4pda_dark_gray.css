@@ -1183,7 +1183,7 @@ a {
   background: rgba(255, 255, 255, 0.1);
 }
 .panel .navi .button.disable {
-  color: #555555;
+  color: #404040;
 }
 .panel .navi .button.disable:active {
   background: none;
