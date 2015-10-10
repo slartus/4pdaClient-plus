@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +78,7 @@ public class NewsNavigationFragment extends BaseBrickFragment implements ActionB
 
         Preferences.News.setLastSelectedSection(position);
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.news_content_frame);
         if (currentFragment != null) {
             if (((IBrickFragment) currentFragment)
@@ -90,7 +91,7 @@ public class NewsNavigationFragment extends BaseBrickFragment implements ActionB
 
         Fragment fragment = NewsListFragment.newInstance(tag);
         fragmentManager.beginTransaction()
-                .replace(R.id.news_content_frame, fragment)
+                .replace(R.id.news_content_frame, fragment, "News_List")
                 .commit();
     }
 
@@ -113,20 +114,13 @@ public class NewsNavigationFragment extends BaseBrickFragment implements ActionB
         return v;
     }
 
-
+    NavigationListAdapter listAdapter;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        assert ((ActionBarActivity)getActivity()).getSupportActionBar() != null;
-        ((ActionBarActivity)getActivity()).getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        ((ActionBarActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        NavigationListAdapter listAdapter = new NavigationListAdapter(getActivity());
-        ((ActionBarActivity)getActivity()).getSupportActionBar().setListNavigationCallbacks(listAdapter, this);
-
-        ((ActionBarActivity)getActivity()).getSupportActionBar().setSelectedNavigationItem(Preferences.News.getLastSelectedSection());
-
+        listAdapter = new NavigationListAdapter(getActivity());
+        onHiddenChanged(false);
     }
 
     @Override
@@ -141,7 +135,7 @@ public class NewsNavigationFragment extends BaseBrickFragment implements ActionB
 
     @Override
     public void loadData(boolean isRefresh) {
-        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.news_content_frame);
+        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentByTag("News_List");
         if (currentFragment != null) {
             ((IBrickFragment) currentFragment).loadData(isRefresh);
         }
@@ -149,7 +143,7 @@ public class NewsNavigationFragment extends BaseBrickFragment implements ActionB
 
     @Override
     public void startLoad() {
-        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.news_content_frame);
+        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentByTag("News_List");
         if (currentFragment != null) {
             ((IBrickFragment) currentFragment).startLoad();
         }
@@ -157,7 +151,7 @@ public class NewsNavigationFragment extends BaseBrickFragment implements ActionB
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.news_content_frame);
+        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentByTag("News_List");
         if (currentFragment != null) {
             return ((IBrickFragment) currentFragment).dispatchKeyEvent(event);
         }
@@ -166,12 +160,24 @@ public class NewsNavigationFragment extends BaseBrickFragment implements ActionB
 
     @Override
     public void onDestroy() {
-        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.news_content_frame);
+        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentByTag("News_List");
         if (currentFragment != null) {
 //            getFragmentManager().beginTransaction().remove(currentFragment).commit();
             currentFragment.onDestroy();
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+            assert ((AppCompatActivity)getActivity()).getSupportActionBar() != null;
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setListNavigationCallbacks(listAdapter, this);
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setSelectedNavigationItem(Preferences.News.getLastSelectedSection());
+        }
     }
 
     @Override

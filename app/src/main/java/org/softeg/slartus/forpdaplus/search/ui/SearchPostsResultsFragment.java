@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -136,8 +137,8 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
     public void setHideActionBar() {
         if (getWebView() == null || !(getWebView() instanceof AdvWebView))
             return;
-        ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
-        FloatingActionButton fab = (FloatingActionButton) ((ActionBarActivity) getActivity()).findViewById(R.id.fab);
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        FloatingActionButton fab = (FloatingActionButton) ((AppCompatActivity) getActivity()).findViewById(R.id.fab);
         if (fab == null) return;
         if (actionBar == null) return;
         BrowserViewsFragmentActivity.setHideActionBar(mWvBody, actionBar, fab);

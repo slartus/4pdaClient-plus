@@ -71,6 +71,14 @@ public class App extends android.app.Application {
 
     private static boolean m_IsDebugModeLoaded = false;
     private static boolean m_IsDebugMode = false;
+    private static String currentFragmentTag;
+
+    public static String getCurrentFragmentTag(){
+        return currentFragmentTag;
+    }
+    public static void setCurrentFragmentTag(String s){
+        currentFragmentTag = s;
+    }
 
     public static boolean getIsDebugMode() {
 

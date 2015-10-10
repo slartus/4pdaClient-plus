@@ -5,7 +5,7 @@ import android.text.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.softeg.slartus.forpdacommon.Http;
+import org.softeg.slartus.forpdaplus.Client;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -35,7 +35,7 @@ public class YouTubeAPI {
         String url = URL_GET_VIDEO_INFO + id;
 
 
-        String infoStr = Http.getPage(url, "UTF-8");
+        String infoStr = Client.getInstance().performGet(url);
         Matcher m = Pattern.compile("([^&=]*)=([^$&]*)", Pattern.CASE_INSENSITIVE).matcher(infoStr);
 
         String fmtList = null;
@@ -96,7 +96,7 @@ public class YouTubeAPI {
 
     private static boolean parse2(VideoItem info) throws Exception {
 
-        String page = Http.getPage(String.format("https://gdata.youtube.com/feeds/api/videos/%s?v=2&alt=json", info.getvId()), "UTF-8");
+        String page = Client.getInstance().performGet(String.format("https://gdata.youtube.com/feeds/api/videos/%s?v=2&alt=json", info.getvId()));
 
         try {
             JSONObject jsonObject = new JSONObject(page);

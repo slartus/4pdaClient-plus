@@ -31,9 +31,7 @@
             android:layout_width="fill_parent"
             android:layout_height="169dp"
             android:id="@+id/topInform"
-            android:clickable="true"
-            android:background="?actbar"
-            >
+            android:clickable="true">
             <ImageView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"

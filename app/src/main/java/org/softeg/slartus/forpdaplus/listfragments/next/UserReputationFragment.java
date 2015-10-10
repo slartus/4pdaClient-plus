@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -85,7 +86,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
         super.onLoadFinished(loader,data);
         if(data.getEx()==null){
             if(data instanceof ReputationsListData){
-                ((ActionBarActivity)getActivity()).getSupportActionBar().setSubtitle(((ReputationsListData) data).getRep());
+                ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(((ReputationsListData) data).getRep());
                 Args.putString(USER_NICK_KEY, ((ReputationsListData) data).getUser());
             }
         }

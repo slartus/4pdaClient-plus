@@ -42,6 +42,7 @@ import org.softeg.slartus.forpdaplus.mainnotifiers.DonateNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
 import org.softeg.slartus.forpdaplus.mainnotifiers.TopicAttentionNotifier;
+import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.tabs.Tabs;
 
@@ -66,6 +67,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
     private RelativeLayout leftDrawer,topInform;
     boolean top;
     int lastTheme;
+    String currentFragmentTag;
 
     @Override
     protected void afterCreate() {
@@ -75,14 +77,6 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
 
     @Override
     public void onDestroy() {
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment currentFragment = fragmentManager.findFragmentById(R.id.content_frame);
-        if (currentFragment != null) {
-            //fragmentManager.beginTransaction().remove(currentFragment).commit();
-            currentFragment.onDestroy();
-
-        }
         super.onDestroy();
     }
 
@@ -236,43 +230,51 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
      * Swaps fragments in the main content view
      */
     public void selectItem(final BrickInfo listTemplate) {
-        //final BrickInfo listTemplate = ((MenuBrickAdapter) mAdapter).getItem(position);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment currentFragment = fragmentManager.findFragmentById(R.id.content_frame);
-
-        if (currentFragment != null) {
-            if (((IBrickFragment) currentFragment)
-                    .getListName().equals(listTemplate.getName())) {
-                if (mMainDrawerMenu != null)
-                    mMainDrawerMenu.close();
-                return;
-            }
-
-            currentFragment.onDestroy();
-        }
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);// новости выставляют выпадающий список
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
-            getSupportActionBar().setSubtitle(null);
-        }
-        Fragment fragment = listTemplate.createFragment();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment)
-                .commit();
-
-        setTitle(listTemplate.getTitle());
         if (mMainDrawerMenu != null)
             mMainDrawerMenu.close();
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Preferences.Lists.setLastSelectedList(listTemplate.getName());
-//                Preferences.Lists.addLastAction(listTemplate.getName());
-//            }
-//        }).start();
+        currentFragmentTag = App.getCurrentFragmentTag();
+        String itemName = listTemplate.getName();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (itemName.equals(String.valueOf(currentFragmentTag))) {
+            if(getSupportFragmentManager().findFragmentByTag(currentFragmentTag)==null){
+                hideAllFragments(transaction);
+                transaction.add(R.id.content_frame, listTemplate.createFragment(), itemName);
+            }else {
+                hideAllFragments(transaction);
+                transaction.show(getSupportFragmentManager().findFragmentByTag(currentFragmentTag));
+            }
 
+        }else{
+            if (currentFragmentTag == null) {
+                hideAllFragments(transaction);
+                transaction.add(R.id.content_frame, listTemplate.createFragment(), itemName);
+            }else {
+                hideAllFragments(transaction);
+
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag(itemName);
+                if(fragment==null){
+                    transaction.add(R.id.content_frame, listTemplate.createFragment(), itemName);
+                }else {
+                    transaction.show(fragment);
+                    if(Preferences.Lists.isRefresh())
+                        ((IBrickFragment)fragment).loadData(true);
+                }
+            }
+        }
+        transaction.commit();
+        App.setCurrentFragmentTag(itemName);
+        setTitle(listTemplate.getTitle());
     }
-
+    private void hideAllFragments(FragmentTransaction transaction){
+        if(getSupportFragmentManager().getFragments()==null) return;
+        for (Fragment fr:getSupportFragmentManager().getFragments()) {
+            if (fr != null) {
+                if(getSupportFragmentManager().findFragmentByTag("News_List")!=null)
+                    transaction.remove(getSupportFragmentManager().findFragmentByTag("News_List"));
+                if (!fr.getTag().equals("f1")) transaction.hide(fr);
+            }
+        }
+    }
     private Boolean m_ExitWarned = false;
 
     private void appExit() {
@@ -283,7 +285,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         try {
-            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(App.getCurrentFragmentTag());
             if (currentFragment != null && ((IBrickFragment) currentFragment).dispatchKeyEvent(event))
                 return true;
         } catch (Throwable ex) {
@@ -299,7 +301,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
                 mMainDrawerMenu.close();
                 return;
             }
-            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
+            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(App.getCurrentFragmentTag());
             if (currentFragment == null || !((IBrickFragment) currentFragment).onBackPressed()) {
                 if (!m_ExitWarned) {
                     Toast.makeText(this, "Нажмите кнопку НАЗАД снова, чтобы выйти из программы", Toast.LENGTH_SHORT).show();
