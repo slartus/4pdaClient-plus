@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaapi.Profile;
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdaapi.devdb.DevDbApi;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
@@ -46,6 +47,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.profile.DeviceEditDialog;
 import org.softeg.slartus.forpdaplus.profile.ProfileEditActivity;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsChatActivity;
@@ -307,6 +309,24 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
         return false;
     }
 
+    public static boolean tryEditDevice(Activity context, Uri uri, Boolean finish) {
+        if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
+            return false;
+        if ("profile-xhr".equals(uri.getQueryParameter("act"))) {
+            if("device".equals(uri.getQueryParameter("action"))){
+                DeviceEditDialog.showDialog(context,uri.toString(),!TextUtils.isEmpty(uri.getQueryParameter("md_id")));
+            }
+
+
+            if (finish)
+                context.finish();
+            return true;
+        }
+
+
+        return false;
+    }
+
     public static boolean tryShowForum(Activity context, String url, Boolean finish) {
         String[] patterns = {"4pda.ru.*?showforum=(\\d+)$", "4pda.ru/forum/lofiversion/index.php\\?f(\\d+)\\.html",
                 "4pda.ru/forum/index.php.*?act=idx"};
@@ -378,6 +398,10 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
             }
 
             if (tryEditProfile(context, uri, finishActivity)) {
+                return true;
+            }
+
+            if (tryEditDevice(context, uri, finishActivity)) {
                 return true;
             }
 

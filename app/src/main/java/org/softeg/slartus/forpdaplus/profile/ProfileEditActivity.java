@@ -282,9 +282,9 @@ public class ProfileEditActivity extends BaseFragmentActivity {
         }
 
         private String parseBody(String body) {
-            Matcher m = PatternExtensions.compile("<div style='padding:6px;'>([\\s\\S]*?<.form>)").matcher(body);
+            Matcher m = PatternExtensions.compile("br \\/>\\s*(<fieldset>[\\S\\s]*<.form>)").matcher(body);
             if (m.find()) {
-                body = m.group(1);
+                body = "<form>"+m.group(1);
                 //body =  + "</form><input type=\"button\" value=\"asdghjk\" onclick=\"jsonElem();\">";
                 body = body.replaceAll("<td class=\"row1\" width=\"30%\"><b>О себе:</b>[\\s\\S]*?</td>",
                         "<td class=\"row1\" width=\"30%\"><b>О себе</b></td>");
