@@ -263,6 +263,11 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
         }
         transaction.commit();
         App.setCurrentFragmentTag(itemName);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);// новости выставляют выпадающий список
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setSubtitle(null);
+        }
         setTitle(listTemplate.getTitle());
     }
     private void hideAllFragments(FragmentTransaction transaction){

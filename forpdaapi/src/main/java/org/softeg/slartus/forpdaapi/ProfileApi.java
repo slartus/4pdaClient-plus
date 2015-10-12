@@ -154,6 +154,8 @@ public class ProfileApi {
             org.jsoup.nodes.Element userNickElement = element.select("div.user-box > h1").first();
             if (userNickElement != null)
                 profile.setNick(userNickElement.text());
+
+            
         }
         return profile;
     }

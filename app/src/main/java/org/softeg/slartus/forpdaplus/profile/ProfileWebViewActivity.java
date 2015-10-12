@@ -62,7 +62,7 @@ public class ProfileWebViewActivity extends BaseFragmentActivity {
 
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment, details).add(menuFragment, "menufragment").commit();
+                    .add(R.id.fragment, details,"profileFragment").add(menuFragment, "menufragment").commit();
             if (Preferences.System.isDevSavePage()|
                     Preferences.System.isDevInterface()|
                     Preferences.System.isDevStyle())

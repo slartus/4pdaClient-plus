@@ -47,6 +47,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.profile.DeviceDeleteDialog;
 import org.softeg.slartus.forpdaplus.profile.DeviceEditDialog;
 import org.softeg.slartus.forpdaplus.profile.ProfileEditActivity;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
@@ -313,9 +314,12 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
         if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
             return false;
         if ("profile-xhr".equals(uri.getQueryParameter("act"))) {
-            if("device".equals(uri.getQueryParameter("action"))){
+            if("device".equals(uri.getQueryParameter("action")))
                 DeviceEditDialog.showDialog(context,uri.toString(),!TextUtils.isEmpty(uri.getQueryParameter("md_id")));
-            }
+
+            if("dev-del".equals(uri.getQueryParameter("action")))
+                DeviceDeleteDialog.showDialog(context, uri.toString());
+
 
 
             if (finish)

@@ -296,77 +296,7 @@ public class ProfileEditActivity extends BaseFragmentActivity {
                 doc.select(".formbuttonrow").append("<input type=\"button\" value=\"Сохранить\" onclick=\"jsonElem();\">");
                 doc.select("textarea").first().attr("maxlength","500");
                 body = doc.html();
-                /*
-                for(Element fieldset:doc.select("fieldset")){
-                    mBody.append("<div class=\"block\">");
-                    mBody.append("<div class=\"block-header\">").append(fieldset.select("legend").html()).append("</div>");
-                    for (Element row:fieldset.select("table tr")){
-                        mBody.append("<div class=\"row\">");
-                        mBody.append("<div class=\"head\">").append(row.select(".row1").html()).append("</div>");
-                        mBody.append("<div class=\"content\">").append(row.select(".row2").html()).append("</div>");
-
-                        Element el = row.select(".row2 [name]").first();
-
-                        switch (el.attr("name")){
-                            case "field_1":
-                                getValue(el);
-                                break;
-                            case "field_5":
-                                getValue(el);
-                                break;
-                            case "member_title":
-                                getValue(el);
-                                break;
-                            case "day":
-
-                                break;
-                            case "month":
-
-                                break;
-                            case "year":
-
-                                break;
-                            case "gender":
-
-                                break;
-                            case "WebSite":
-                                getValue(el);
-                                break;
-                            case "ICQNumber":
-
-                                break;
-                            case "AOLName":
-
-                                break;
-                            case "YahooName":
-
-                                break;
-                            case "MSNName":
-
-                                break;
-                            case "Links":
-
-                                break;
-                            case "Location":
-
-                                break;
-                            case "bio":
-
-                                break;
-                        }
-                        mBody.append("</div>");
-                    }
-                    mBody.append("</div>");
-                }
-                //Log.d("rows!!!!!", fieldsets.size()+" "+rows.size());
-                /*mBody.append("<div class=\"block\"><div class=\"heading\">");
-                mBody.append(doc.select("fieldset:first-child legend").first().html()).append("</div>");
-                mBody.append();*/
             }
-
-
-
-
             return body;
         }
 
