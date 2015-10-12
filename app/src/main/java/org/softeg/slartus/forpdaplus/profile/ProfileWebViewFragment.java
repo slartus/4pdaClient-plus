@@ -127,7 +127,7 @@ public class ProfileWebViewFragment extends DialogFragment
         m_WebView.getSettings().setLoadWithOverviewMode(false);
         m_WebView.getSettings().setUseWideViewPort(true);
         m_WebView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
-        m_WebView.addJavascriptInterface(new HtmloutInterface(getActivity()), "HTMLOUT");
+        m_WebView.addJavascriptInterface(this, "HTMLOUT");
         if (Build.VERSION.SDK_INT >= 19) {
             try {
                 m_WebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
@@ -137,47 +137,6 @@ public class ProfileWebViewFragment extends DialogFragment
         }
         m_WebView.setWebViewClient(new MyWebViewClient());
         return view;
-    }
-    private class HtmloutInterface{
-        public static final String NAME = "HTMLOUT";
-        private FragmentActivity context;
-
-        public HtmloutInterface(FragmentActivity context) {
-            this.context = context;
-        }
-
-        private FragmentActivity getContext() {
-            return context;
-        }
-        public void run(final Runnable runnable) {
-            if (Build.VERSION.SDK_INT < 17) {
-                runnable.run();
-            } else {
-                getContext().runOnUiThread(runnable);
-            }
-        }
-        @JavascriptInterface
-        public void setPrimaryDevice(final String id) {
-            run(new Runnable() {
-                @Override
-                public void run() {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Map<String, String> additionalHeaders = new HashMap<String, String>();
-                            additionalHeaders.put("auth_key", Client.getInstance().getAuthKey());
-                            try {
-                                Client.getInstance().performPost("http://4pda.ru/forum/index.php?act=profile-xhr&action=dev-primary&md_id=" + id, additionalHeaders);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }).start();
-                    Toast.makeText(getContext(), "Основное устройство изменено", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }
     }
     private final static int FILECHOOSER_RESULTCODE = 1;
 
@@ -440,6 +399,15 @@ public class ProfileWebViewFragment extends DialogFragment
         }
 
     }
+
+    public void run(final Runnable runnable) {
+        if (Build.VERSION.SDK_INT < 17) {
+            runnable.run();
+        } else {
+            getActivity().runOnUiThread(runnable);
+        }
+    }
+
     @JavascriptInterface
     public void saveHtml(final String html) {
         getActivity().runOnUiThread(new Runnable() {
@@ -449,5 +417,26 @@ public class ProfileWebViewFragment extends DialogFragment
             }
         });
     }
+    @JavascriptInterface
+    public void setPrimaryDevice(final String id) {
+        run(new Runnable() {
+            @Override
+            public void run() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Map<String, String> additionalHeaders = new HashMap<String, String>();
+                        additionalHeaders.put("auth_key", Client.getInstance().getAuthKey());
+                        try {
+                            Client.getInstance().performPost("http://4pda.ru/forum/index.php?act=profile-xhr&action=dev-primary&md_id=" + id, additionalHeaders);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+                Toast.makeText(getActivity(), "Основное устройство изменено", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+    }
 }
