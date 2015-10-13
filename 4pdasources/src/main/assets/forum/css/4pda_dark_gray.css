@@ -216,6 +216,14 @@ a {
   padding-top: 1em;
   padding-bottom: 0.5em;
 }
+.container .content .content-box h1,
+.container .content .content-box h2,
+.container .content .content-box h3,
+.container .content .content-box h4,
+.container .content .content-box h5,
+.container .content .content-box h6 {
+  line-height: normal;
+}
 .container .content .content-box img {
   max-width: 100%;
   border: none!important;
@@ -1325,7 +1333,9 @@ a {
   outline: none;
 }
 .poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td input.checkbox + b {
-  line-height: 3em;
+  line-height: 1.25em;
+  padding-top: 0.875em;
+  padding-bottom: 0.875em;
   min-height: 3em;
   display: inline-block;
   vertical-align: middle;
@@ -1380,7 +1390,9 @@ a {
   opacity: 1;
 }
 .poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td input.radiobutton + b {
-  line-height: 3em;
+  line-height: 1.25em;
+  padding-top: 0.875em;
+  padding-bottom: 0.875em;
   min-height: 3em;
   display: inline-block;
   vertical-align: middle;
@@ -2167,6 +2179,87 @@ div[data-post] .post_body {
 }
 .user-profile-list > li:nth-child(2) .contact-social .social-link > li a strong {
   color: #757575;
+}
+.user-profile-list > li:nth-child(2) .info-list[id*="device"] li span {
+  float: right;
+  text-align: center;
+  line-height: 2.25em;
+  margin: 0!important;
+}
+.user-profile-list > li:nth-child(2) .info-list[id*="device"] li span a.noico {
+  height: 2.25em;
+  width: 2.25em;
+  display: block;
+  position: relative;
+  background-image: url(../../profile/ic_close_grey600_24dp.png);
+  background-position: center;
+  background-size: 1.5em;
+  background-repeat: no-repeat;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.user-profile-list > li:nth-child(2) .info-list[id*="device"] li span a.noico:active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.user-profile-list > li:nth-child(2) .info-list[id*="device"] li span a.noico i {
+  display: none;
+}
+.user-profile-list > li:nth-child(2) .info-list[id*="device"] li span label {
+  height: 2.25em;
+  width: 2.25em;
+  display: block;
+  position: relative;
+}
+.user-profile-list > li:nth-child(2) .info-list[id*="device"] li span label input {
+  display: none;
+}
+.user-profile-list > li:nth-child(2) .info-list[id*="device"] li span label input:checked + i {
+  border-color: #757575;
+}
+.user-profile-list > li:nth-child(2) .info-list[id*="device"] li span label input:checked + i:after {
+  background: #757575;
+  -webkit-transition: 0.25s;
+  transition: 0.25s;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+.user-profile-list > li:nth-child(2) .info-list[id*="device"] li span label i {
+  -webkit-border-radius: 100%;
+  border-radius: 100%;
+  position: absolute;
+  height: 1.25em;
+  width: 1.25em;
+  top: 0.5em;
+  left: 0.5em;
+  box-sizing: border-box;
+  border: 0.125em solid #737373;
+}
+.user-profile-list > li:nth-child(2) .info-list[id*="device"] li span label i:before {
+  display: none;
+}
+.user-profile-list > li:nth-child(2) .info-list[id*="device"] li span label i:after {
+  -webkit-border-radius: 100%;
+  border-radius: 100%;
+  content: "";
+  position: absolute;
+  height: 0.625em;
+  width: 0.625em;
+  top: 0.1875em;
+  left: 0.1875em;
+  -webkit-transition: 0.25s;
+  transition: 0.25s;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+}
+.user-profile-list > li:nth-child(2) .info-list[id*="device"] li > a:not(.noico) {
+  line-height: 2.25em;
+}
+.user-profile-list > li:nth-child(2) .info-list[id*="device"] li > a:not(.noico) i {
+  display: none;
+}
+.user-profile-list > li:nth-child(2) .info-list[id*="device"] li > a.noico {
+  line-height: 2.25em;
+  display: inline-block;
+  font-weight: bold;
 }
 .user-profile-list > li:nth-child(2) a[href*="act=UserCP"] {
   padding: 0.57142857em;

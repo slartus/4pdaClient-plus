@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.softeg.slartus.forpdacommon.Http;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
@@ -40,7 +42,7 @@ public class MarketVersionNotifier extends MainNotifier {
                     String currentVersion = getAppVersion(App.getContext());
                     currentVersion = currentVersion.replace("beta", ".");
                     String url = "https://androidquery.appspot.com//api/market?locale=ru&app=" + context.getPackageName();
-                    String page = Client.getInstance().performGet(url);
+                    String page = Http.getPage(url, "windows-1251");
                     JSONObject jObj = new JSONObject(page);
                     releaseVer = jObj.getString("version").replace("beta", ".");
                     siteVersionsNewer = isSiteVersionsNewer(releaseVer, currentVersion);

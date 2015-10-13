@@ -15,6 +15,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.softeg.slartus.forpdacommon.Http;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
@@ -46,7 +48,7 @@ public class ForPdaVersionNotifier extends MainNotifier {
                     currentVersion = currentVersion.trim();
 
                     String url = "http://4pda.ru/forum/index.php?showtopic=271502";
-                    String page = Client.getInstance().performGet(url);
+                    String page = Http.getPage(url, "windows-1251");
                     Matcher m = Pattern
                             .compile("&#91;json_info&#93;([\\s\\S]*?)&#91;/json_info&#93;",
                                     Pattern.CASE_INSENSITIVE | Pattern.MULTILINE).matcher(page);

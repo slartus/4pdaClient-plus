@@ -542,7 +542,7 @@ HTML body.ongpuimg .img {
   width: 3.8rem;
   height: 3.8rem;
   background-position: center;
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
 }
 .post_header .header_wrapper .avatar .img[style*="background-image:url(file:///android_asset/profile/av.png);"] {
@@ -2580,8 +2580,8 @@ h3 a {
 }
 .holder.no-hidden .user-profile-list > li .user-box {
   display: block;
-  margin: -0.7rem -0.7rem 0.7rem;
-  min-height: 3.8rem;
+  margin: -0.5rem -0.5rem 0.7rem;
+  min-height: 4rem;
   padding: 0.5rem;
   border-bottom: 1px solid #d9d9d9;
   background: white;
@@ -2589,7 +2589,7 @@ h3 a {
 .holder.no-hidden .user-profile-list > li .user-box .photo {
   float: left;
   padding: 0;
-  margin: 0 0.5rem 0 0;
+  margin: 0 0.7rem 0 0;
   text-align: center;
   line-height: 3.8rem;
 }
@@ -2631,6 +2631,96 @@ h3 a {
 .holder.no-hidden .user-profile-list .info-list.black-link .area {
   display: inline-block;
 }
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] {
+  display: block;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 0.5rem 0;
+  overflow: hidden;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li > a:not(.noico) {
+  display: block;
+  padding-right: 1.5rem;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li > a:not(.noico) .icon-pencil {
+  display: none;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li:last-child .noico {
+  display: inline-block;
+  font-weight: bold;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li:last-child .noico:before {
+  display: inline-block;
+  content: "+";
+  height: 1.5rem;
+  padding: 0 0.3rem;
+  font-size: 1.5rem;
+  vertical-align: middle;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span {
+  position: relative;
+  height: 1.4rem;
+  line-height: 1.4rem;
+  text-align: center;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span[style="float:right;overflow:hidden;margin:.15em 0"] {
+  margin: 0 !important;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span[style="float:right;overflow:hidden;margin:.15em 0"] a {
+  display: inline-block;
+  width: 2.5rem;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span[style="float:right;overflow:hidden;margin:.15em 0"] a i {
+  display: none;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span[style="float:right;overflow:hidden;margin:.15em 0"] a:before {
+  content: '×';
+  display: inline-block;
+  font-size: 2rem;
+  color: royalblue;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span label {
+  display: inline-block;
+  text-align: center;
+  width: 2.5rem;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span label i {
+  display: none;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span label input[type="radio"] {
+  display: inline-block;
+  position: relative;
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span label input[type="radio"]:checked:before {
+  background: royalblue;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span label input[type="radio"]:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span label input[type="radio"]:before {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  margin: 0 0 0 -0.1rem;
+  border-radius: 1rem;
+  border: 0.15rem solid royalblue;
+  background: white;
+  overflow: hidden;
+  -webkit-box-shadow: inset 0 0 0 0.2em white;
+}
 .holder.no-hidden .user-profile-list .u-note {
   margin-top: 0.7rem;
 }
@@ -2645,35 +2735,30 @@ h3 a {
 }
 .holder.no-hidden li .heading {
   position: relative;
-  line-height: 1.4rem;
-  padding: 0.7rem 0;
-  margin: -0.7rem 0 0.7rem;
+  padding: 0.2rem 0.2rem 0.7rem;
+  margin: 0 0 0.7rem;
+  overflow: hidden;
   border-bottom: 1px solid #d9d9d9;
 }
 .holder.no-hidden li .heading .ico {
-  position: absolute;
-  left: 0.3rem;
-  top: 1rem;
+  float: left;
+  margin-right: 1rem;
   display: inline-block;
-  font-size: 1rem;
-  height: 1.4rem;
-  line-height: 1.4rem;
+}
+.holder.no-hidden li .heading .ico i {
+  display: inline-block;
 }
 .holder.no-hidden li .heading .ico i:before {
+  display: inline-block;
+  font-size: 1.4rem;
   color: #999999 !important;
-}
-.holder.no-hidden li .heading .ico .icon-glyph-1 {
-  position: relative;
 }
 .holder.no-hidden li .heading h2 {
   display: inline-block;
   margin: 0;
-  padding: 0 0 0 2rem;
-  display: block;
-  font-size: 1.2rem;
-  font-weight: normal;
+  padding: 0;
+  font-size: 1.5rem;
   color: #333333;
-  line-height: 1.4rem;
 }
 .holder.no-hidden li h3 {
   display: block;

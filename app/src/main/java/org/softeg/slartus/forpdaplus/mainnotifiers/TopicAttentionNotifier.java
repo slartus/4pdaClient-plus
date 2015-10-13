@@ -10,6 +10,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdacommon.DateExtensions;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
+import org.softeg.slartus.forpdacommon.Http;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -60,8 +61,7 @@ public class TopicAttentionNotifier extends MainNotifier {
             public void run() {
                 try {
                     String url = "http://4pda.ru/forum/index.php?showtopic=271502";
-                    String page = Client.getInstance().performGet(url);
-                    //page = Client.getInstance().performGet(url);
+                    String page = Http.getPage(url,"windows-1251");
                     Matcher m = Pattern
                             .compile("<a name=\"(attention_\\d+_\\d+_\\d+_\\d+)\" title=\"attention_\\d+_\\d+_\\d+_\\d+\">.*?</a>(.*?)<br\\s*/>\\s*---+\\s*<br\\s*/>",
                                     Pattern.CASE_INSENSITIVE).matcher(page);
