@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.text.Html;
-import android.util.Log;
 import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -238,48 +237,39 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
     public void selectItem(final BrickInfo listTemplate) {
         selectFragment(listTemplate.getTitle(), listTemplate.getName(), listTemplate.createFragment());
         mTabDraweMenu.addTab(listTemplate.getTitle(), listTemplate.getName(), listTemplate.createFragment());
+        mTabDraweMenu.notifyDataSetChanged();
     }
     public void selectTab( TabDrawerMenu.TabItem tabItem){
         selectFragment(tabItem.getTitle(), tabItem.getUrl(), tabItem.createFragment());
+        mMainDrawerMenu.notifyDataSetChanged();
     }
     private void selectFragment(final String title, final String tag, final Fragment fragment){
         if(mTabDraweMenu!=null) mTabDraweMenu.close();
         if(mMainDrawerMenu!=null) mMainDrawerMenu.close();
         currentFragmentTag = String.valueOf(App.getCurrentFragmentTag());
-        Log.e("lol0", title + " " + tag + " " + fragment);
-        Log.e("lol1",currentFragmentTag);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_in_bottom, R.anim.slide_out_top);
         if (tag.equals(currentFragmentTag)) {
             if(getSupportFragmentManager().findFragmentByTag(currentFragmentTag) == null) {
                 hideAllFragments(transaction);
                 addFragment(transaction, fragment, tag);
-                Log.e("lol2", currentFragmentTag);
             }else {
                 hideAllFragments(transaction);
                 showFragmentByTag(transaction, tag);
-                Log.e("lol3", currentFragmentTag);
             }
-
         }else{
             if (currentFragmentTag.equals("null")) {
                 hideAllFragments(transaction);
                 addFragment(transaction, fragment, tag);
-                //mTabDraweMenu.addTab(title,tag,fragment);
-                Log.e("lol4",currentFragmentTag);
             }else {
                 hideAllFragments(transaction);
 
                 if(getSupportFragmentManager().findFragmentByTag(tag)==null){
                     addFragment(transaction, fragment, tag);
-                    //mTabDraweMenu.addTab(title,tag,fragment);
-                    Log.e("lol5",currentFragmentTag);
                 }else {
-                    showFragmentByTag(transaction,tag);
-                    /*if(Preferences.Lists.isRefresh())
-                        ((IBrickFragment)getSupportFragmentManager().findFragmentByTag(tag)).loadData(true);*/
-                    Log.e("lol6",currentFragmentTag);
+                    showFragmentByTag(transaction, tag);
+                    if(Preferences.Lists.isRefresh()&!tag.equals("News_Pages"))
+                        ((IBrickFragment)getSupportFragmentManager().findFragmentByTag(tag)).loadData(true);
                 }
             }
         }
@@ -339,7 +329,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
         }else {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             hideAllFragments(transaction);
-            showFragmentByTag(transaction,url);
+            showFragmentByTag(transaction, url);
             transaction.commit();
         }
     }
@@ -352,10 +342,11 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
         if(url.equals("News_Pages"))
             transaction.remove(getSupportFragmentManager().findFragmentByTag("News_List"));
         transaction.commit();
+        mTabDraweMenu.removeTab(url);
+        mMainDrawerMenu.notifyDataSetChanged();
     }
 
     public void reload() {
-Log.e("lol8","NUTHERFUCKER!!!!!!!!");
         Intent intent = getIntent();
         overridePendingTransition(0, 0);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -390,19 +381,27 @@ Log.e("lol8","NUTHERFUCKER!!!!!!!!");
                 mMainDrawerMenu.close();
                 return;
             }
+            if (mTabDraweMenu.isOpen()) {
+                mTabDraweMenu.close();
+                return;
+            }
             Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(App.getCurrentFragmentTag());
             if (currentFragment == null || !((IBrickFragment) currentFragment).onBackPressed()) {
-                if (!m_ExitWarned) {
-                    Toast.makeText(this, "Нажмите кнопку НАЗАД снова, чтобы выйти из программы", Toast.LENGTH_SHORT).show();
-                    m_ExitWarned = true;
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            m_ExitWarned = false;
-                        }
-                    }, 3 * 1000);
-                } else {
-                    appExit();
+                if(App.getTabItems().size()<=1){
+                    if (!m_ExitWarned) {
+                        Toast.makeText(this, "Нажмите кнопку НАЗАД снова, чтобы выйти из программы", Toast.LENGTH_SHORT).show();
+                        m_ExitWarned = true;
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                m_ExitWarned = false;
+                            }
+                        }, 3 * 1000);
+                    } else {
+                        appExit();
+                    }
+                }else {
+                    removeTab(App.getCurrentFragmentTag());
                 }
 
             } else {

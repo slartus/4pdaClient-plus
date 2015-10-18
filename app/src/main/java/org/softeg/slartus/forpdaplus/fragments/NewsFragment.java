@@ -12,9 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.Html;
@@ -58,7 +55,6 @@ import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
-import org.softeg.slartus.forpdaplus.prefs.FavoritesPreferencesActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.video.PlayerActivity;
 
@@ -378,11 +374,6 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
     }
 
     @Override
-    public boolean onBackPressed() {
-        return false;
-    }
-
-    @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         return false;
     }
@@ -497,14 +488,12 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
         }
     }
 
-/*
     @Override
-    public void onBackPressed() {
+    public boolean onBackPressed() {
         if (pnlSearch.getVisibility() == View.VISIBLE) {
             closeSearch();
-            return;
+            return true;
         }
-
         if (!m_History.isEmpty()) {
             m_FromHistory = true;
             History history = m_History.get(m_History.size() - 1);
@@ -512,12 +501,11 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
             m_ScrollX = history.scrollX;
             m_ScrollY = history.scrollY;
             showNews(history.url);
+            return true;
         } else {
-
-            super.onBackPressed();
+            return false;
         }
     }
-*/
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);

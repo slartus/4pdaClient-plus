@@ -3,11 +3,9 @@ package org.softeg.slartus.forpdaplus.fragments;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 

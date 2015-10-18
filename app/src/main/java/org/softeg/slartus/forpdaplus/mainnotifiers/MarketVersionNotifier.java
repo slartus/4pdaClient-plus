@@ -7,11 +7,9 @@ import android.text.TextUtils;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
 import org.softeg.slartus.forpdacommon.Http;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 

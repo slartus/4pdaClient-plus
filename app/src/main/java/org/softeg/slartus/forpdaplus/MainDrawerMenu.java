@@ -129,28 +129,8 @@ public class MainDrawerMenu {
             brickInfo = new NewsPagerBrickInfo();
         selectItem(brickInfo);
     }
-
-    /*
-    Область вытягивания
-     */
-    private void setDrawerLayoutArea(Activity activity, Boolean left) {
-//        try {
-//            String draggerName = left ? "mLeftDragger" : "mRightDragger";
-//            Field draggerField = mDrawerLayout.getClass().getDeclaredField(
-//                    draggerName);//mRightDragger for right obviously
-//            draggerField.setAccessible(true);
-//            ViewDragHelper draggerObj = (ViewDragHelper) draggerField
-//                    .get(mDrawerLayout);
-//
-//            Field edgeSizeField = draggerObj.getClass().getDeclaredField(
-//                    "mEdgeSize");
-//            edgeSizeField.setAccessible(true);
-//            int edge = edgeSizeField.getInt(draggerObj);
-//
-//            edgeSizeField.setInt(draggerObj, edge * 5);
-//        } catch (Throwable ex) {
-//            Log.e(activity, ex);
-//        }
+    public void notifyDataSetChanged(){
+        mAdapter.notifyDataSetChanged();
     }
 
     public void toggleOpenState() {
@@ -534,20 +514,16 @@ public class MainDrawerMenu {
             BrickInfo item = mMenuGroups.get(groupPosition).getChildren().get(childPosition);
             holder.text.setText(item.getTitle());
             holder.icon.setImageDrawable(getContext().getResources().getDrawable(item.getIcon()));
-            if (groupPosition == prefs.getInt("menuItemGroup", 0)) {
-                if (item.getName().equals(prefs.getString("menuItemChild", "News_pages"))) {
-                    holder.text.setTextColor(resources.getColor(R.color.selectedItemText));
-                    holder.item.setBackgroundResource(R.color.selectedItem);
-                    holder.icon.setColorFilter(resources.getColor(R.color.selectedItemText), PorterDuff.Mode.SRC_ATOP);
-                } else {
-                    holder.text.setTextColor(resources.getColor(getTextColor()));
-                    holder.item.setBackgroundResource(Color.TRANSPARENT);
-                    holder.icon.clearColorFilter();
-                }
-            } else {
-                holder.text.setTextColor(resources.getColor(getTextColor()));
-                holder.item.setBackgroundResource(Color.TRANSPARENT);
-                holder.icon.clearColorFilter();
+
+            holder.text.setTextColor(resources.getColor(App.getInstance().isWhiteTheme() ? R.color.drawer_menu_text_wh : R.color.drawer_menu_text_bl));
+            holder.item.setBackgroundResource(Color.TRANSPARENT);
+            holder.icon.clearColorFilter();
+
+            if (groupPosition == prefs.getInt("menuItemGroup", 0)
+                    &item.getName().equals(App.getCurrentFragmentTag())) {
+                holder.text.setTextColor(resources.getColor(R.color.selectedItemText));
+                holder.item.setBackgroundResource(R.color.selectedItem);
+                holder.icon.setColorFilter(resources.getColor(R.color.selectedItemText), PorterDuff.Mode.SRC_ATOP);
             }
 
             return convertView;
@@ -563,13 +539,6 @@ public class MainDrawerMenu {
             public TextView text;
             public ImageView icon;
             public LinearLayout item;
-        }
-    }
-    private int getTextColor() {
-        if (App.getInstance().isWhiteTheme()) {
-            return R.color.drawer_menu_text_wh;
-        } else {
-            return R.color.drawer_menu_text_bl;
         }
     }
 }

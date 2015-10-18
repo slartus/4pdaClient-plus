@@ -3,13 +3,13 @@ package org.softeg.slartus.forpdaplus;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
@@ -86,11 +85,11 @@ public class TabDrawerMenu {
             close();
         }
     }
-
+    public void notifyDataSetChanged(){
+        adapter.notifyDataSetChanged();
+    }
     public void addTab(String name, String url, Fragment fragment){
-        Log.e("lol","preaddtab");
         if(!findTabByTag(url)) {
-            Log.e("lol","addtab");
             TabItem item = new TabItem(name, url, fragment);
             App.getTabItems().add(item);
             adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getTabItems());
@@ -109,20 +108,22 @@ public class TabDrawerMenu {
     public boolean findTabByTag(String tag){
         boolean result=false;
         for(Object item:App.getTabItems()){
-            Log.e("lol",((TabItem)item).getUrl());
             if(((TabItem)item).getUrl().equals(tag)) result=true;
         }
-        Log.e("kek", result + "");
         return result;
     }
     public void removeTab(String tag){
         if(App.getTabItems().size()<=1) return;
 
         for(int i = 0; i <= App.getTabItems().size()-1; i++){
-            if(((TabItem)App.getTabItems().get(i)).getUrl().equals(tag)) {
-                ((MainActivity)getContext()).removeTab(tag);
+            if(App.getTabItems().get(i).getUrl().equals(tag)) {
+                //((MainActivity)getContext()).removeTab(tag);
                 App.getTabItems().remove(i);
-                ((MainActivity)getContext()).showFragment(((TabItem) App.getTabItems().get(0)).getTitle(),((TabItem) App.getTabItems().get(0)).getUrl());
+                ((MainActivity)getContext())
+                        .showFragment(
+                                App.getTabItems().get(App.getLastTabPosition()).getTitle(),
+                                App.getTabItems().get(App.getLastTabPosition()).getUrl()
+                        );
                 adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getTabItems());
                 mListView.setAdapter(adapter);
                 return;
@@ -144,6 +145,7 @@ public class TabDrawerMenu {
 
     private void selectTab(TabItem tabItem) {
         mSelectItemListener.selectTab(tabItem);
+        adapter.notifyDataSetChanged();
     }
 
     private Context getContext() {
@@ -179,10 +181,10 @@ public class TabDrawerMenu {
     }
     public class TabAdapter extends ArrayAdapter{
         final LayoutInflater inflater;
-        List mObjects = null;
-        public TabAdapter(Context context, int item_resource, List objects) {
+        List<TabItem> mObjects = null;
+        public TabAdapter(Context context, int item_resource, List<TabItem> objects) {
             super(context, item_resource, objects);
-            mObjects = new ArrayList(objects);
+            mObjects = new ArrayList<TabItem>(objects);
             inflater = LayoutInflater.from(context);
         }
         @Override
@@ -196,6 +198,7 @@ public class TabDrawerMenu {
 
                 holder.text = (TextView) convertView.findViewById(R.id.text);
                 holder.close = (ImageView) convertView.findViewById(R.id.close);
+                holder.item = (RelativeLayout) convertView.findViewById(R.id.item);
 
                 convertView.setTag(holder);
 
@@ -203,15 +206,24 @@ public class TabDrawerMenu {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            TabItem item = (TabItem) mObjects.get(position);
+            TabItem item = mObjects.get(position);
             holder.text.setText(item.getTitle());
             holder.close.setOnClickListener(new CloseClickListener(item.getUrl()));
+
+            holder.text.setTextColor(resources.getColor(App.getInstance().isWhiteTheme() ? R.color.drawer_menu_text_wh : R.color.drawer_menu_text_bl));
+            holder.item.setBackgroundResource(Color.TRANSPARENT);
+
+            if(App.getCurrentFragmentTag().equals(item.getUrl())){
+                holder.text.setTextColor(resources.getColor(R.color.selectedItemText));
+                holder.item.setBackgroundResource(R.color.selectedItem);
+            }
 
             return convertView;
         }
         public class ViewHolder {
             public TextView text;
             public ImageView close;
+            public RelativeLayout item;
         }
     }
     public class CloseClickListener implements View.OnClickListener {
@@ -220,8 +232,11 @@ public class TabDrawerMenu {
             tag = url;
         }
         public void onClick(View v) {
-            close();
-            removeTab(tag);
+            if(App.getTabItems().size()>1) {
+                ((MainActivity) getContext()).removeTab(tag);
+            }else {
+                close();
+            }
         }
     }
 }

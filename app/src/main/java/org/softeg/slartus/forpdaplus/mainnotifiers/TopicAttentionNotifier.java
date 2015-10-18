@@ -12,7 +12,6 @@ import org.softeg.slartus.forpdacommon.DateExtensions;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdacommon.Http;
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 

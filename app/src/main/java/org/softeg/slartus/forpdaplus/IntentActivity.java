@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.softeg.slartus.forpdaapi.Profile;
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdaapi.devdb.DevDbApi;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;

@@ -82,10 +82,13 @@ public class App extends android.app.Application {
         currentFragmentTag = s;
     }
 
-    private static List mTabItems = new ArrayList();
+    private static List<TabDrawerMenu.TabItem> mTabItems = new ArrayList< TabDrawerMenu.TabItem>();
 
-    public static List getTabItems(){
+    public static List<TabDrawerMenu.TabItem> getTabItems(){
         return mTabItems;
+    }
+    public static int getLastTabPosition(){
+        return mTabItems.size()==0 ? 0 : mTabItems.size()-1;
     }
 
 
