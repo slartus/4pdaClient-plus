@@ -6,9 +6,11 @@ import android.content.res.Resources;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,8 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,16 +67,22 @@ public class TabDrawerMenu {
         //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.END);
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mDrawer.getLayoutParams();
         params.width = (int) dpWidth;
+        if ("right".equals(Preferences.System.getDrawerMenuPosition())) {
+            params.gravity = Gravity.LEFT;
+            mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_start, GravityCompat.START);
+        }else {
+            mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_end, GravityCompat.END);
+        }
         mDrawer.setLayoutParams(params);
 
-        adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, mTabItems);
+        adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getTabItems());
         mListView.setAdapter(adapter);
     }
     private class TabOnClickListener implements ListView.OnItemClickListener{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Object o = adapter.getItem(position);
-            ((TabItem)o).itemAction((TabItem)o);
+            selectTab((TabItem)o);
             close();
         }
     }
@@ -82,8 +92,8 @@ public class TabDrawerMenu {
         if(!findTabByTag(url)) {
             Log.e("lol","addtab");
             TabItem item = new TabItem(name, url, fragment);
-            mTabItems.add(item);
-            adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, mTabItems);
+            App.getTabItems().add(item);
+            adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getTabItems());
             mListView.setAdapter(adapter);
         }
 
@@ -91,14 +101,14 @@ public class TabDrawerMenu {
     public void addTabSelect(String name, String url, Fragment fragment){
         //findTabByTag(url);
         TabItem item = new TabItem(name,url,fragment);
-        mTabItems.add(item);
-        adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, mTabItems);
+        App.getTabItems().add(item);
+        adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getTabItems());
         mListView.setAdapter(adapter);
         selectTab(item);
     }
     public boolean findTabByTag(String tag){
         boolean result=false;
-        for(Object item:mTabItems){
+        for(Object item:App.getTabItems()){
             Log.e("lol",((TabItem)item).getUrl());
             if(((TabItem)item).getUrl().equals(tag)) result=true;
         }
@@ -106,14 +116,14 @@ public class TabDrawerMenu {
         return result;
     }
     public void removeTab(String tag){
-        if(mTabItems.size()<=1) return;
+        if(App.getTabItems().size()<=1) return;
 
-        for(int i = 0; i <= mTabItems.size()-1; i++){
-            if(((TabItem)mTabItems.get(i)).getUrl().equals(tag)) {
+        for(int i = 0; i <= App.getTabItems().size()-1; i++){
+            if(((TabItem)App.getTabItems().get(i)).getUrl().equals(tag)) {
                 ((MainActivity)getContext()).removeTab(tag);
-                mTabItems.remove(i);
-                ((MainActivity)getContext()).showFragment(((TabItem) mTabItems.get(0)).getTitle(),((TabItem) mTabItems.get(0)).getUrl());
-                adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, mTabItems);
+                App.getTabItems().remove(i);
+                ((MainActivity)getContext()).showFragment(((TabItem) App.getTabItems().get(0)).getTitle(),((TabItem) App.getTabItems().get(0)).getUrl());
+                adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getTabItems());
                 mListView.setAdapter(adapter);
                 return;
             }
@@ -166,9 +176,6 @@ public class TabDrawerMenu {
             return url;
         }
         public Fragment createFragment(){return fragment;}
-        public void itemAction(TabItem item){
-            selectTab(item);
-        }
     }
     public class TabAdapter extends ArrayAdapter{
         final LayoutInflater inflater;

@@ -976,15 +976,15 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("kek","news onpause");
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                webView.onPause();
-            }
-        }, 1500);
-        webView.setWebViewClient(null);
-
+        if (webView!=null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    webView.onPause();
+                }
+            }, 1500);
+            webView.setWebViewClient(null);
+        }
     }
 
 

@@ -35,7 +35,9 @@ import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -79,6 +81,13 @@ public class App extends android.app.Application {
     public static void setCurrentFragmentTag(String s){
         currentFragmentTag = s;
     }
+
+    private static List mTabItems = new ArrayList();
+
+    public static List getTabItems(){
+        return mTabItems;
+    }
+
 
     public static boolean getIsDebugMode() {
 

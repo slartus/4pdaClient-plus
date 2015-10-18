@@ -74,20 +74,16 @@ public class MainDrawerMenu {
         mDrawerList = (ExpandableListView) findViewById(R.id.left_drawer_list);
         mDrawer = (RelativeLayout) findViewById(R.id.left_drawer);
 
-        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mDrawer.getLayoutParams();
         params.width = (int) dpWidth;
         if ("right".equals(Preferences.System.getDrawerMenuPosition())) {
-
             params.gravity = Gravity.RIGHT;
-
-            mDrawer.setLayoutParams(params);
-            setDrawerLayoutArea(activity, false);
-        } else {
-            setDrawerLayoutArea(activity, true);
-            mDrawer.setLayoutParams(params);
+            mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_end, GravityCompat.END);
+        }else {
+            mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_start, GravityCompat.START);
         }
-
+        mDrawer.setLayoutParams(params);
         mDrawerList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int i) {

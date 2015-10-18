@@ -13,11 +13,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.classes.ListData;
@@ -117,7 +119,10 @@ public class QmsContactsListFragment extends BaseLoaderListFragment {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-
+            boolean pauseOnScroll = false; // or true
+            boolean pauseOnFling = true; // or false
+            PauseOnScrollListener listener = new PauseOnScrollListener(imageLoader, pauseOnScroll, pauseOnFling);
+            ((ListView)parent.findViewById(android.R.id.list)).setOnScrollListener(listener);
             final ViewHolder holder;
 
             if (convertView == null) {
