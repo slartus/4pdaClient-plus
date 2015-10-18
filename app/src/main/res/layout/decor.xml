@@ -131,6 +131,20 @@
             android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/tab_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:paddingTop="24dp"
+        style="?drawer_menu"
+        >
+        <ListView
+            android:id="@+id/tab_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+        </ListView>
+    </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>

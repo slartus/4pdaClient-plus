@@ -347,7 +347,7 @@ public class ProfileEditActivity extends BaseFragmentActivity {
                         Log.d("asdas!", cookie.getDomain() + " " + cookie.getValue());
                         cookieManager.setCookie(cookie.getDomain(), cookie.getName() + "=" + cookie.getValue());
                     }
-                    //cookieManager.setCookie(cookie.getName(),cookie.getValue());
+                    //cookieManager.setCookie(cookie.getTitle(),cookie.getValue());
                 }
             } catch (IOException e) {
                 e.printStackTrace();

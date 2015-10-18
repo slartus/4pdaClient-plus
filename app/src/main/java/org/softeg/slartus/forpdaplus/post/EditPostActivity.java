@@ -402,7 +402,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                                         if (selectionStart == -1)
                                             selectionStart = 0;
                                         if (txtPost.getText() != null)
-                                            //txtPost.getText().insert(selectionStart, "[attachment=" + attach.getId() + ":" + attach.getName() + "]");
+                                            //txtPost.getText().insert(selectionStart, "[attachment=" + attach.getId() + ":" + attach.getTitle() + "]");
                                             txtPost.getText().insert(selectionStart, "[spoiler]"+str.toString()+"[/spoiler]");
 
                                     }

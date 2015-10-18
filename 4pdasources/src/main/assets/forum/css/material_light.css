@@ -492,43 +492,37 @@ HTML body.ongpuimg .img {
     display: block;
   }
 }
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 .radiobutton,
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 .checkbox {
-  font-size: 1rem;
-  width: 1rem;
-  height: 1rem;
-  margin: 0.3rem 0.7rem;
-  margin-left: 0.2rem;
-}
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 .radiobutton:checked:before,
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 .checkbox:checked:before {
-  background: #5f7aa3;
-}
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 .radiobutton:after,
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 .checkbox:after {
-  content: '';
+.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 input[type="radio"],
+.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 input[type="checkbox"] {
+  opacity: 0;
   position: absolute;
+  width: 2rem;
+  height: 100%;
   left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  font-size: 1rem;
 }
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 .radiobutton:before,
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 .checkbox:before {
+.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 input[type="radio"] + b:before,
+.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 input[type="checkbox"] + b:before {
   content: '';
   display: inline-block;
-  position: absolute;
-  width: 1rem;
   height: 1rem;
-  margin: 0 0 0 -0.1rem;
-  border-radius: 2rem;
-  border: 0.15rem solid #5f7aa3;
-  background: white;
-  transition: all 0.3s ease-out;
+  width: 1rem;
+  margin-right: 1rem;
+  vertical-align: middle;
+  border-radius: 1rem;
+  border: 0.15rem solid #808080;
+  transition: 0.2s ease-out;
   overflow: hidden;
-  -webkit-box-shadow: inset 0 0 0 0.2em white;
+  background: white;
+  -webkit-box-shadow: inset 0 0 0 2rem white;
 }
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 .checkbox:before {
+.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 input[type="radio"]:checked + b:before,
+.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 input[type="checkbox"]:checked + b:before {
+  background: #3490c3;
+  border: 0.15rem solid #3490c3;
+  -webkit-box-shadow: inset 0 0 0 0.2rem white;
+}
+.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 input[type="checkbox"] + b:before {
   border-radius: 2px;
 }
 .poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2[width="25%"] {
@@ -659,7 +653,7 @@ DIV[data-post] {
   height: 3.8rem;
   border-radius: 0.2rem;
   background-position: center;
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
 }
 .post_header .header_wrapper .inf {
@@ -1496,6 +1490,10 @@ img[src*="style_emoticons"] {
   overflow: hidden;
   background: #dbdbdb;
 }
+#thread_form .list-group-item .avatar-wrap .avatar.circle {
+  border-radius: 4rem;
+  overflow: hidden;
+}
 #thread_form .list-group-item strong {
   display: none;
   position: relative;
@@ -1580,7 +1578,7 @@ img[src*="style_emoticons"] {
 #thread_form .list-group-item + .list-group-item.our-message .avatar-wrap {
   display: inline-block;
 }
-body.noimages .avatar-wrap {
+#qms[class*="noimages"] .avatar-wrap {
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -2059,6 +2057,29 @@ h3 a {
   max-width: 100%;
   vertical-align: middle;
 }
+#news .galContainer {
+  display: block;
+  position: relative;
+  padding: 0;
+  overflow-x: auto;
+  list-style: none;
+  white-space: nowrap;
+}
+#news .galContainer li {
+  display: inline-block;
+}
+#news .galContainer li a {
+  display: inline-block;
+  padding: 0;
+  text-decoration: none;
+  font-size: 1rem;
+}
+#news .galContainer li a img {
+  display: inline-block;
+  max-height: 300px;
+  max-width: 100%;
+  vertical-align: middle;
+}
 .table4site {
   display: block;
   color: black !important;
@@ -2508,7 +2529,7 @@ h3 a {
 .holder.no-hidden .user-profile-list > li .user-box .photo {
   float: left;
   padding: 0;
-  margin: 0 0.5rem 0 0;
+  margin: 0 0.7rem 0 0;
 }
 .holder.no-hidden .user-profile-list > li .user-box .photo .img {
   display: inline-block;
@@ -2518,6 +2539,10 @@ h3 a {
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
+}
+.holder.no-hidden .user-profile-list > li .user-box .photo .img.circle {
+  border-radius: 4rem;
+  overflow: hidden;
 }
 .holder.no-hidden .user-profile-list > li .user-box h1 {
   display: block;
@@ -2563,8 +2588,7 @@ h3 a {
   overflow: hidden;
 }
 .holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li > a:not(.noico) {
-  display: block;
-  padding-right: 1.5rem;
+  display: inline-block;
 }
 .holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li > a:not(.noico) .icon-pencil {
   display: none;
@@ -2572,14 +2596,6 @@ h3 a {
 .holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li:last-child .noico {
   display: inline-block;
   font-weight: bold;
-}
-.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li:last-child .noico:before {
-  display: inline-block;
-  content: "+";
-  height: 1.5rem;
-  padding: 0 0.3rem;
-  font-size: 1.5rem;
-  vertical-align: middle;
 }
 .holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span {
   position: relative;
@@ -2600,58 +2616,45 @@ h3 a {
 .holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span[style="float:right;overflow:hidden;margin:.15em 0"] a:before {
   content: '×';
   display: inline-block;
+  vertical-align: middle;
   font-size: 2rem;
-  color: #3490c3;
+  color: #808080;
 }
 .holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span label {
+  position: relative;
   display: inline-block;
   text-align: center;
   width: 2.5rem;
 }
-.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span label i {
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span label i:before {
   display: none;
 }
 .holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span label input[type="radio"] {
-  display: inline-block;
-  position: relative;
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   font-size: 1rem;
-  width: 1rem;
-  height: 1rem;
 }
-.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span label input[type="radio"]:checked:before {
-  background: #3490c3;
-}
-.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span label input[type="radio"]:after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
-.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span label input[type="radio"]:before {
-  content: '';
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span label input[type="radio"] + i {
   display: inline-block;
-  position: absolute;
-  width: 1rem;
   height: 1rem;
-  margin: 0 0 0 -0.1rem;
+  width: 1rem;
+  vertical-align: middle;
   border-radius: 1rem;
-  border: 0.15rem solid #3490c3;
-  background: white;
+  border: 0.15rem solid #808080;
+  transition: 0.2s ease-out;
   overflow: hidden;
-  -webkit-box-shadow: inset 0 0 0 0.2em white;
+  background: white;
+  -webkit-box-shadow: inset 0 0 0 2rem white;
+}
+.holder.no-hidden .user-profile-list .info-list.black-link[id*="device-list"] li span label input[type="radio"]:checked + i {
+  background: #3490c3;
+  border: 0.15rem solid #3490c3;
+  -webkit-box-shadow: inset 0 0 0 0.2rem white;
 }
 .holder.no-hidden .user-profile-list .u-note {
   margin-top: 0.7rem;
-}
-.holder.no-hidden .user-profile-list .u-note:before {
-  content: 'Подпись';
-  display: block;
-  margin: 0 -0.7rem 0.5rem;
-  font-weight: bold;
-  padding: 0.7rem 0.7rem 0;
-  color: #808080;
 }
 .holder.no-hidden li .heading {
   position: relative;
@@ -2662,7 +2665,7 @@ h3 a {
 .holder.no-hidden li .heading .ico {
   float: left;
   margin-right: 1rem;
-  display: inline-block;
+  display: none;
 }
 .holder.no-hidden li .heading .ico i {
   display: inline-block;
@@ -2677,11 +2680,9 @@ h3 a {
   margin: 0;
   padding: 0;
   font-size: 1.5rem;
-  color: #333333;
 }
 .holder.no-hidden li h3 {
   display: block;
-  color: #808080;
   text-align: left;
 }
 .holder.no-hidden li .contact-social .social-link {
@@ -2743,7 +2744,6 @@ h3 a {
 }
 .holder.no-hidden .no-min-size .alert-log-list .wlog-pos,
 .holder.no-hidden .no-min-size .alert-log-list .wlog-neg {
-  border-bottom: 1px solid #d9d9d9;
   padding-bottom: 0.7rem;
   margin-bottom: 0.7rem;
 }

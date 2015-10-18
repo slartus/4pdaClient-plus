@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdacommon.NotReportException;
+import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.BrowserViewsFragmentActivity;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -58,16 +59,18 @@ import java.io.InputStreamReader;
  * To change this template use File | Settings | File Templates.
  */
 public class MainActivity extends BrowserViewsFragmentActivity implements BricksListDialogFragment.IBricksListDialogCaller,
-        MainDrawerMenu.SelectItemListener {
+        MainDrawerMenu.SelectItemListener, TabDrawerMenu.SelectItemListener {
     private Handler mHandler = new Handler();
 
     MenuFragment mFragment1;
 
     private MainDrawerMenu mMainDrawerMenu;
+    private TabDrawerMenu mTabDraweMenu;
     private RelativeLayout leftDrawer,topInform;
     boolean top;
     int lastTheme;
     String currentFragmentTag;
+    AdvWebView mWebview = null;
 
     @Override
     protected void afterCreate() {
@@ -87,7 +90,10 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
 
     @Override
     public WebView getWebView() {
-        return null;
+        return mWebview;
+    }
+    public void setWebView(AdvWebView webView){
+        mWebview = webView;
     }
 
     @Override
@@ -139,8 +145,9 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
             if(top&bottom){
                 leftDrawer.setPadding(0,(int) (25 * scale + 0.5f),0,(int) (48 * scale + 0.5f));
             }
-
+            mTabDraweMenu = new TabDrawerMenu(this, this);
             mMainDrawerMenu = new MainDrawerMenu(this, this);
+
 
             NotifiersManager notifiersManager = new NotifiersManager(this);
             new DonateNotifier(notifiersManager).start(this);
@@ -230,56 +237,116 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
      * Swaps fragments in the main content view
      */
     public void selectItem(final BrickInfo listTemplate) {
-        if (mMainDrawerMenu != null)
-            mMainDrawerMenu.close();
+        selectFragment(listTemplate.getTitle(), listTemplate.getName(), listTemplate.createFragment());
+    }
+    public void selectTab(final TabDrawerMenu.TabItem tabItem){
+        selectFragment(tabItem.getTitle(), tabItem.getUrl(), tabItem.createFragment());
+    }
+    private void selectFragment(final String title, final String tag, final Fragment fragment){
+        if(mTabDraweMenu!=null) mTabDraweMenu.close();
+        if(mMainDrawerMenu!=null) mMainDrawerMenu.close();
         currentFragmentTag = App.getCurrentFragmentTag();
-        String itemName = listTemplate.getName();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if (itemName.equals(String.valueOf(currentFragmentTag))) {
+        if (tag.equals(String.valueOf(currentFragmentTag))) {
             if(getSupportFragmentManager().findFragmentByTag(currentFragmentTag)==null){
                 hideAllFragments(transaction);
-                transaction.add(R.id.content_frame, listTemplate.createFragment(), itemName);
+                addFragment(transaction, fragment, tag);
+                mTabDraweMenu.addTab(title, tag, fragment);
             }else {
                 hideAllFragments(transaction);
-                transaction.show(getSupportFragmentManager().findFragmentByTag(currentFragmentTag));
+                showFragmentByTag(transaction, tag);
             }
 
         }else{
             if (currentFragmentTag == null) {
                 hideAllFragments(transaction);
-                transaction.add(R.id.content_frame, listTemplate.createFragment(), itemName);
+                addFragment(transaction, fragment, tag);
+                mTabDraweMenu.addTab(title,tag,fragment);
             }else {
                 hideAllFragments(transaction);
 
-                Fragment fragment = getSupportFragmentManager().findFragmentByTag(itemName);
-                if(fragment==null){
-                    transaction.add(R.id.content_frame, listTemplate.createFragment(), itemName);
+                if(getSupportFragmentManager().findFragmentByTag(tag)==null){
+                    addFragment(transaction, fragment, tag);
+                    mTabDraweMenu.addTab(title,tag,fragment);
                 }else {
-                    transaction.show(fragment);
-                    if(Preferences.Lists.isRefresh())
-                        ((IBrickFragment)fragment).loadData(true);
+                    showFragmentByTag(transaction,tag);
+                    /*if(Preferences.Lists.isRefresh())
+                        ((IBrickFragment)getSupportFragmentManager().findFragmentByTag(tag)).loadData(true);*/
                 }
             }
         }
         transaction.commit();
-        App.setCurrentFragmentTag(itemName);
+        App.setCurrentFragmentTag(tag);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);// новости выставляют выпадающий список
             getSupportActionBar().setDisplayShowTitleEnabled(true);
             getSupportActionBar().setSubtitle(null);
         }
-        setTitle(listTemplate.getTitle());
+        setTitle(title);
     }
-    private void hideAllFragments(FragmentTransaction transaction){
+
+    private void showFragmentByTag(FragmentTransaction transaction, String tag){
+        getSupportFragmentManager().findFragmentByTag(tag).onResume();
+        transaction.show(getSupportFragmentManager().findFragmentByTag(tag));
+    }
+
+    private void showFragment(FragmentTransaction transaction, Fragment fragment){
+        transaction.show(fragment);
+    }
+
+    private void addFragment(FragmentTransaction transaction, Fragment fragment, String tag) {
+        transaction.add(R.id.content_frame, fragment, tag);
+    }
+    public void showFragment(String title,String tag) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.show(getSupportFragmentManager().findFragmentByTag(tag));
+        transaction.commit();
+        App.setCurrentFragmentTag(tag);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);// новости выставляют выпадающий список
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setSubtitle(null);
+        }
+        setTitle(title);
+    }
+
+    public void hideAllFragments(FragmentTransaction transaction){
         if(getSupportFragmentManager().getFragments()==null) return;
         for (Fragment fr:getSupportFragmentManager().getFragments()) {
             if (fr != null) {
-                if(getSupportFragmentManager().findFragmentByTag("News_List")!=null)
-                    transaction.remove(getSupportFragmentManager().findFragmentByTag("News_List"));
-                if (!fr.getTag().equals("f1")) transaction.hide(fr);
+                //if(getSupportFragmentManager().findFragmentByTag("News_List")!=null)
+                    //transaction.remove(getSupportFragmentManager().findFragmentByTag("News_List"));
+                if (!fr.getTag().equals("f1")){
+                    fr.onPause();
+                    transaction.hide(fr);
+                }
             }
         }
     }
+
+
+    public void addTab(String name, String url, Fragment fragment){
+        if(getSupportFragmentManager().findFragmentByTag(url)==null) {
+            mTabDraweMenu.addTabSelect(name, url, fragment);
+        }else {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            hideAllFragments(transaction);
+            showFragmentByTag(transaction,url);
+            transaction.commit();
+        }
+    }
+
+    public void removeTab(String url){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        //hideAllFragments(transaction);
+        hideAllFragments(transaction);
+        transaction.remove(getSupportFragmentManager().findFragmentByTag(url));
+        if(url.equals("News_Pages"))
+            transaction.remove(getSupportFragmentManager().findFragmentByTag("News_List"));
+        transaction.commit();
+    }
+
+
     private Boolean m_ExitWarned = false;
 
     private void appExit() {

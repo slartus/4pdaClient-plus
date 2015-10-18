@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,11 +80,11 @@ public class NewsNavigationFragment extends BaseBrickFragment implements ActionB
         Preferences.News.setLastSelectedSection(position);
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        Fragment currentFragment = fragmentManager.findFragmentById(R.id.news_content_frame);
+        Fragment currentFragment = fragmentManager.findFragmentByTag("News_List");
         if (currentFragment != null) {
             if (((IBrickFragment) currentFragment)
-                    .getListName().equals(tag)) {
-
+                    .getListName().equals("news_"+tag)) {
+                fragmentManager.beginTransaction().show(currentFragment).commit();
                 return;
             }
             currentFragment.onDestroy();

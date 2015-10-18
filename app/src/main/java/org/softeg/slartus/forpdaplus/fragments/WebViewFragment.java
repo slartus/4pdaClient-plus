@@ -1,35 +1,35 @@
-package org.softeg.slartus.forpdaplus.classes;
+package org.softeg.slartus.forpdaplus.fragments;
 
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
-import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.UniversalFragment;
+import org.softeg.slartus.forpdaplus.classes.AdvWebView;
+import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
+import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 /**
- * Created by IntelliJ IDEA.
- * User: slinkin
- * Date: 16.10.12
- * Time: 8:35
- * To change this template use File | Settings | File Templates.
+ * Created by radiationx on 17.10.15.
  */
-public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity implements IWebViewContainer {
+public abstract class WebViewFragment extends UniversalFragment implements IWebViewContainer{
     public abstract String Prefix();
 
     public abstract WebView getWebView();
 
+    public abstract View getView();
 
     WebViewExternals m_WebViewExternals;
 
@@ -37,12 +37,6 @@ public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity 
         if (m_WebViewExternals == null)
             m_WebViewExternals = new WebViewExternals(this);
         return m_WebViewExternals;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -65,8 +59,8 @@ public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity 
         if (getWebView() == null || !(getWebView() instanceof AdvWebView))
             return;
 
-        LinearLayout arrows = (LinearLayout) findViewById(R.id.arrows);
-        LinearLayout arrowsShadow = (LinearLayout) findViewById(R.id.arrows_shadow);
+        LinearLayout arrows = (LinearLayout) getView().findViewById(R.id.arrows);
+        LinearLayout arrowsShadow = (LinearLayout) getView().findViewById(R.id.arrows_shadow);
 
         if (arrows == null) return;
         if(hide){
@@ -83,19 +77,8 @@ public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity 
         if (getWebView() == null || !(getWebView() instanceof AdvWebView))
             return;
         ActionBar actionBar = getSupportActionBar();
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        Log.e("sethide","yes");
-        if (actionBar == null) return;
-        Log.e("ab","yes");
-        if (fab == null) return;
-        Log.e("fb","yes");
-        setHideActionBar((AdvWebView)getWebView(),actionBar, fab);
-    }
-    public void setHideActionBar(FloatingActionButton fab) {
-        if (getWebView() == null || !(getWebView() instanceof AdvWebView))
-            return;
-        ActionBar actionBar = getSupportActionBar();
-        Log.e("sethide","yes");
+        FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.fab);
+        Log.e("sethide", "yes");
         if (actionBar == null) return;
         Log.e("ab","yes");
         if (fab == null) return;
@@ -108,7 +91,6 @@ public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity 
         final Boolean hideFab = Preferences.isHideFab();
 
         if (hideAb|hideFab) {
-
             advWebView.setOnScrollChangedCallback(new AdvWebView.OnScrollChangedCallback() {
                 @Override
                 public void onScrollDown(Boolean inTouch) {
@@ -162,13 +144,11 @@ public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity 
         getWebViewExternals().onPrepareOptionsMenu();
     }
 
-    @Override
     protected void loadPreferences(SharedPreferences prefs) {
-        super.loadPreferences(prefs);
         getWebViewExternals().loadPreferences(prefs);
 
     }
-
+/*
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         return getWebViewExternals().dispatchKeyEvent(event);
@@ -177,9 +157,10 @@ public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity 
     public boolean dispatchSuperKeyEvent(KeyEvent event) {
         return super.dispatchKeyEvent(event);
     }
+    */
 
     public void showFontSizeDialog() {
-        View v = getLayoutInflater().inflate(R.layout.font_size_dialog, null);
+        View v = getActivity().getLayoutInflater().inflate(R.layout.font_size_dialog, null);
 
         assert v != null;
         final SeekBar seekBar = (SeekBar) v.findViewById(R.id.value_seekbar);
@@ -204,7 +185,7 @@ public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity 
 
             }
         });
-        new MaterialDialog.Builder(this)
+        new MaterialDialog.Builder(getActivity())
                 .title("Размер шрифта")
                 .customView(v,true)
                 .positiveText("OK")
@@ -222,4 +203,5 @@ public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity 
                 .show();
 
     }
+
 }
