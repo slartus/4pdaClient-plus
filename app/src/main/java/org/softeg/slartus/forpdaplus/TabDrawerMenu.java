@@ -119,11 +119,11 @@ public class TabDrawerMenu {
             if(App.getTabItems().get(i).getUrl().equals(tag)) {
                 //((MainActivity)getContext()).removeTab(tag);
                 App.getTabItems().remove(i);
-                ((MainActivity)getContext())
-                        .showFragment(
-                                App.getTabItems().get(App.getLastTabPosition()).getTitle(),
-                                App.getTabItems().get(App.getLastTabPosition()).getUrl()
-                        );
+                if(tag.equals(App.getCurrentFragmentTag())){
+                    App.setCurrentFragmentTag(App.getTabItems().get(App.getLastTabPosition(i)).getUrl());
+                }
+
+                ((MainActivity)getContext()).showFragmentByTag(App.getCurrentFragmentTag());
                 adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getTabItems());
                 mListView.setAdapter(adapter);
                 return;

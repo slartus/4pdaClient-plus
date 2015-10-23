@@ -87,8 +87,9 @@ public class App extends android.app.Application {
     public static List<TabDrawerMenu.TabItem> getTabItems(){
         return mTabItems;
     }
-    public static int getLastTabPosition(){
-        return mTabItems.size()==0 ? 0 : mTabItems.size()-1;
+    public static int getLastTabPosition(int delPos){
+        if((mTabItems.size()-1)<delPos) delPos--;
+        return delPos;
     }
 
 

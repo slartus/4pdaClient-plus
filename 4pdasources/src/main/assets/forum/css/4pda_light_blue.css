@@ -1707,7 +1707,7 @@ a {
   top: -1em;
   height: 3em;
   width: 3em;
-  background-image: url(../../forum/style_images/ic_dots_vertical_grey600_24dp.png);
+  background-image: url(file:///android_asset/forum/style_images/ic_dots_vertical_grey600_24dp.png), url(../../forum/style_images/ic_dots_vertical_grey600_24dp.png);
   background-size: 1.5em;
   background-position: center;
   background-repeat: no-repeat;
@@ -2179,7 +2179,7 @@ div[data-post] .post_body {
   width: 2.25em;
   display: block;
   position: relative;
-  background-image: url(../../profile/ic_close_grey600_24dp.png);
+  background-image: url(file:///android_asset/profile/ic_close_grey600_24dp.png), url(../../profile/ic_close_grey600_24dp.png);
   background-position: center;
   background-size: 1.5em;
   background-repeat: no-repeat;
@@ -2318,22 +2318,27 @@ div[data-post] .post_body {
 .user-profile-list > li.margin-block {
   display: none;
 }
+li .post-block {
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  margin-left: 0!important;
+  margin-right: 0!important;
+  border-left: 1px solid #e9e9e9;
+  border-right: 1px solid #e9e9e9;
+}
 .post-block {
-  margin: 0.5em 0;
+  margin: 0.5rem -1rem;
   position: relative;
-  box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.15);
-  -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.15);
+  border-top: 1px solid #e9e9e9;
+  border-bottom: 1px solid #e9e9e9;
 }
 .post-block > .block-title {
-  color: #ffffff;
-  background: #0277bd;
-  -webkit-border-radius: 2px 2px 0 0;
-  border-radius: 2px 2px 0 0;
-  padding: 0.5em;
+  padding: 0.875em;
   position: relative;
   z-index: 2;
   font-weight: bold;
   text-align: left!important;
+  min-height: 3em;
 }
 .post-block > .block-title * {
   color: #ffffff !important;
@@ -2341,21 +2346,26 @@ div[data-post] .post_body {
   font-style: normal!important;
   line-height: 1.25em!important;
 }
-.post-block > .block-title a[href*=findpost][title="Перейти к сообщению"] {
-  background: #0c6296;
-}
 .post-block > .block-body {
-  -webkit-border-radius: 0 0 2px 2px;
-  border-radius: 0 0 2px 2px;
-  background: #f4f4f4;
-  border: 1px solid #e9e9e9;
-  border-top: none;
-  padding: 0.5em;
+  padding: 0.5em 1em 1em 1em;
   position: relative;
   z-index: 1;
 }
+.post-block.spoil {
+  margin-left: -1em;
+  margin-right: -1em;
+  border-top: 1px solid #e9e9e9;
+  border-bottom: 1px solid #e9e9e9;
+  border-color: rgba(0, 0, 0, 0.05);
+  box-shadow: none;
+  background: rgba(0, 0, 0, 0.05);
+}
 .post-block.spoil > .block-title {
-  background: #0277bd;
+  padding-right: 3em;
+  color: #0277bd;
+}
+.post-block.spoil > .block-title * {
+  color: #0277bd !important;
 }
 .post-block.spoil > .block-title:before {
   content: "";
@@ -2364,9 +2374,38 @@ div[data-post] .post_body {
   width: 100%;
   top: 0;
   left: 0;
+  padding: 0.875em;
+  box-sizing: border-box;
 }
 .post-block.spoil > .block-title:active:before {
   background: rgba(0, 0, 0, 0.1);
+}
+.post-block.spoil > .block-title:empty:before {
+  content: "Спойлер";
+}
+.post-block.spoil > .block-title:after {
+  content: "";
+  position: absolute;
+  right: 1em;
+  bottom: 1.25em;
+  border-left: 0.125em solid #737373;
+  border-bottom: 0.125em solid #737373;
+  box-sizing: border-box;
+  height: 0.75em;
+  width: 0.75em;
+  border-color: #0277bd;
+  -webkit-transform: rotate(-45deg) translateY(0) translateX(0) translateZ(0);
+  transform: rotate(-45deg) translateY(0) translateX(0) translateZ(0);
+  -webkit-transition: 0.25s;
+  transition: 0.25s;
+  -webkit-transform-origin: center;
+  transform-origin: center;
+}
+.post-block.spoil > .block-body > .post-block.spoil {
+  background: rgba(0, 0, 0, 0.03);
+}
+.post-block.spoil > .block-body > .post-block.spoil:last-child {
+  margin-bottom: 0;
 }
 .post-block.spoil.close > .block-title {
   border-radius: 2px;
@@ -2374,25 +2413,15 @@ div[data-post] .post_body {
 .post-block.spoil.close > .block-title:first-letter {
   text-transform: uppercase;
 }
-.post-block.spoil.close > .block-title:empty:after {
-  content: "Спойлер (+)";
-}
-.post-block.spoil.close > .block-title:after {
-  margin-left: 0.25em;
-  content: "(+)";
-}
 .post-block.spoil.close > .block-body {
   display: none;
 }
 .post-block.spoil.open > .block-title:first-letter {
   text-transform: uppercase;
 }
-.post-block.spoil.open > .block-title:empty:after {
-  content: "Спойлер (\2013)";
-}
 .post-block.spoil.open > .block-title:after {
-  margin-left: 0.25em;
-  content: "(\2013)";
+  transform: rotate(135deg) translateY(-0.25em) translateX(0.25em);
+  -webkit-transform: rotate(135deg) translateY(-0.25em) translateX(0.25em);
 }
 .post-block.spoil.open > .block-body {
   display: block;
@@ -2405,14 +2434,50 @@ div[data-post] .post_body {
   display: block;
   z-index: 10;
 }
+.post-block.quote {
+  background: rgba(2, 119, 189, 0.1);
+  border-color: rgba(2, 119, 189, 0.1);
+}
 .post-block.quote > .block-title {
-  background: #2397dd;
+  padding: 0.875em 1em;
+  padding-left: 3em;
+  min-height: 0;
+  font-style: italic;
+}
+.post-block.quote > .block-title:empty {
+  padding-left: 1em;
 }
 .post-block.quote > .block-title:empty:before {
   content: "Цитата";
 }
+.post-block.quote > .block-title a[href*=findpost][title="Перейти к сообщению"] {
+  background: none;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+.post-block.quote > .block-title a[href*=findpost][title="Перейти к сообщению"]:before {
+  border-color: #0277bd;
+  left: 1.5em;
+  width: 0.5625em;
+  height: 0.5625em;
+  margin-top: -0.25em;
+}
+.post-block.quote > .block-title a[href*=findpost][title="Перейти к сообщению"]:after {
+  display: none;
+}
+.post-block.quote > .block-body {
+  padding: 0.5em 1em 1em 1em;
+}
+.post-block.code {
+  border-color: rgba(18, 181, 87, 0.1);
+  background: rgba(18, 181, 87, 0.1);
+}
 .post-block.code > .block-title {
-  background: #17b148;
+  color: #2abc68;
 }
 .post-block.code > .block-title:after {
   content: "";
@@ -2426,7 +2491,7 @@ div[data-post] .post_body {
   background: rgba(0, 0, 0, 0.1);
 }
 .post-block.code > .block-title:before {
-  content: "Код (+)";
+  content: "Показать код";
 }
 .post-block.code > .block-body {
   white-space: pre-wrap;
@@ -2440,29 +2505,38 @@ div[data-post] .post_body {
 }
 .post-block.code.box > .block-body:after {
   position: absolute;
-  content: "";
   bottom: -1em;
   height: 1em;
   left: 0;
   right: 0;
   width: 100%;
-  -webkit-box-shadow: 0 -0.5em 1em #f4f4f4;
-  box-shadow: 0 -0.5em 1em #f4f4f4;
+  -webkit-box-shadow: 0 -0.5em 1em rgba(18, 181, 87, 0.1);
+  box-shadow: 0 -0.5em 1em rgba(18, 181, 87, 0.1);
 }
 .post-block.code.unbox > .block-title:before {
-  content: "Код (\2013)";
+  content: "Скрыть код";
+}
+.post-block.hidden {
+  background: rgba(70, 70, 70, 0.05);
+  border-color: rgba(70, 70, 70, 0.05);
 }
 .post-block.hidden > .block-title {
-  background: #829dab;
+  display: none;
+  color: #595959;
 }
 .post-block.hidden > .block-title:before {
   content: "Скрытый текст";
+}
+.post-block.hidden > .block-body {
+  padding: 0.5em;
 }
 .post-block.tbl {
   position: relative;
   display: table;
   width: 100%;
   background: #f4f4f4;
+  margin-left: 0;
+  margin-right: 0;
   -webkit-border-radius: 2px;
   border-radius: 2px;
 }
@@ -2736,6 +2810,14 @@ div[data-post] .post_body {
     border-left: 1px solid #e9e9e9;
     overflow: hidden;
   }
+  .post-block {
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    margin-left: 0!important;
+    margin-right: 0!important;
+    border-left: 1px solid #e9e9e9;
+    border-right: 1px solid #e9e9e9;
+  }
 }
 .search-web-view {
   margin-top: 0!important;
@@ -2817,7 +2899,7 @@ div[data-post] .post_body {
   outline: none;
   box-shadow: none;
   margin: 0;
-  background-image: url(../../profile/down_grey600_24dp.png);
+  background-image: url(file:///android_asset/profile/down_grey600_24dp.png), url(../../profile/down_grey600_24dp.png);
   background-position: right;
   background-size: 1.5em;
   background-repeat: no-repeat;

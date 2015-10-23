@@ -287,6 +287,12 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
         getSupportFragmentManager().findFragmentByTag(tag).onResume();
         transaction.show(getSupportFragmentManager().findFragmentByTag(tag));
     }
+    public void showFragmentByTag(String tag){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        getSupportFragmentManager().findFragmentByTag(tag).onResume();
+        transaction.show(getSupportFragmentManager().findFragmentByTag(tag));
+        transaction.commit();
+    }
 
     private void showFragment(FragmentTransaction transaction, Fragment fragment){
         transaction.show(fragment);
