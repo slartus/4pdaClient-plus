@@ -99,7 +99,7 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
         fragment.setArguments(args);
         return fragment;
     }
-    private MainActivity getContext(){
+    public MainActivity getContext(){
         return (MainActivity)getActivity();
     }
     private View findViewById(int id){

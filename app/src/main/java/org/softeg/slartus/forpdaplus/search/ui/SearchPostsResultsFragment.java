@@ -263,7 +263,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
 
     }
 
-    private Context getContext() {
+    public Context getContext() {
         return getActivity();
     }
 

@@ -78,7 +78,7 @@ public class DownloadsService extends IntentService {
         }
         return false;
     }
-
+    /*
     private void extractColors() {
         if (notification_text_color != null)
             return;
@@ -95,6 +95,7 @@ public class DownloadsService extends IntentService {
             // notification_text_color = android.R.color.black;
         }
     }
+    */
 
     public static final String DOWNLOAD_FILE_ID_KEY = "DownloadFileIdKey";
 
