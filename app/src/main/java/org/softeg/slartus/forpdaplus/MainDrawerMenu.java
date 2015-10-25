@@ -11,7 +11,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -114,14 +114,10 @@ public class MainDrawerMenu {
                 mDrawerList.expandGroup(i);
         }
 
-        mDrawerToggle = new ActionBarDrawerToggle(mActivity, mDrawerLayout,
-                R.drawable.ic_drawer, R.string.menu, R.string.app_name) {
-            public void onDrawerClosed(View view) {
-            }
-
-            public void onDrawerOpened(View drawerView) {
-            }
-        };
+        mDrawerToggle = new ActionBarDrawerToggle(
+                mActivity, mDrawerLayout, ((MainActivity)mActivity).toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
 
 
         BrickInfo brickInfo = ListCore.getRegisteredBrick(Preferences.Lists.getLastSelectedList());

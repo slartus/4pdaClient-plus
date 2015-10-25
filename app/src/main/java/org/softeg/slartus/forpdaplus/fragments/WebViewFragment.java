@@ -70,6 +70,35 @@ public abstract class WebViewFragment extends UniversalFragment implements IWebV
         }
 
     }
+    public void setHideFab(final FloatingActionButton fab){
+        if (getWebView() == null || !(getWebView() instanceof AdvWebView))
+            return;
+        if(Preferences.isHideFab()) {
+            ((AdvWebView) getWebView()).setOnScrollChangedCallback(new AdvWebView.OnScrollChangedCallback() {
+                @Override
+                public void onScrollDown(Boolean inTouch) {
+                    if (!inTouch) return;
+                    if (fab.isVisible()) fab.hide();
+                }
+
+                @Override
+                public void onScrollUp(Boolean inTouch) {
+                    if (!inTouch) return;
+                    if (!fab.isVisible()) fab.show();
+
+
+                }
+
+                @Override
+                public void onTouch() {
+                    fab.show();
+                }
+            });
+        }else {
+            ((AdvWebView)getWebView()).setOnScrollChangedCallback(null);
+            fab.show();
+        }
+    }
 
     public void setHideActionBar() {
         if (getWebView() == null || !(getWebView() instanceof AdvWebView))

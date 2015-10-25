@@ -18,11 +18,9 @@ import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
 
 /**
- * User: slinkin
- * Date: 14.03.12
- * Time: 12:51
+ * Created by radiationx on 24.10.15.
  */
-public class BaseFragmentActivity extends AppCompatActivity
+public class FragmentActivity extends AppCompatActivity
         implements SearchSettingsDialogFragment.ISearchDialogListener {
     public static final String SENDER_ACTIVITY = "sender_activity";
     public static final String FORCE_EXIT_APPLICATION = "org.softeg.slartus.forpdaplus.FORCE_EXIT_APPLICATION";
@@ -97,7 +95,7 @@ public class BaseFragmentActivity extends AppCompatActivity
     }
 
     protected boolean isTransluent() {
-        return false;
+        return true;
     }
 
     @Override
@@ -117,8 +115,27 @@ public class BaseFragmentActivity extends AppCompatActivity
         if (PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("coloredNavBar", true) &&
                 android.os.Build.VERSION.SDK_INT >= 21)
             getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(getNavBarColor()));
-
-
+/*
+        if(PreferenceManager.getDefaultSharedPreferences(App.getContext()).getBoolean("statusbarTransparent",false)) {
+            if (android.os.Build.VERSION.SDK_INT >= 21)
+                getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }else {
+            if (android.os.Build.VERSION.SDK_INT > 18) {
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LinearLayout statusBarLay = (LinearLayout) inflater.inflate(R.layout.statusbar, null);
+                statusBar = (LinearLayout) statusBarLay.findViewById(R.id.statusBar);
+                statusBar.setMinimumHeight(getStatusBarHeight());
+                if (App.getInstance().getCurrentThemeName().equals("white")) {
+                    statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_wh));
+                } else if (App.getInstance().getCurrentThemeName().equals("black")) {
+                    statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_bl));
+                }
+                ViewGroup decor = (ViewGroup) getWindow().getDecorView();
+                decor.addView(statusBarLay);
+                statusBarShowed = true;
+            }
+        }
+*/
         args.clear();
         if (getIntent().getExtras() != null) {
             args.putAll(getIntent().getExtras());

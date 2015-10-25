@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="MainThemeWH.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="MainThemeWH.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="MainThemeWH" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/actionbar_background_wh</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="actionBarStyle">@style/actionbar_wh</item>
-        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="panelMenuListTheme">@style/bottom_menu_wh</item>
         <item name="android:windowBackground">@color/app_background_wh</item>
         <item name="actionOverflowButtonStyle">@style/overflow_button</item>
-        <item name="actionModeBackground">@color/actionbar_background_wh</item>
         <item name="windowActionModeOverlay">true</item>
-        <item name="android:actionModeBackground">@color/actionbar_background_wh</item>
         <item name="android:windowActionModeOverlay">true</item>
         <item name="forum_header_text_color">@color/holo_blue_light</item>
         <item name="theme_background">@android:color/white</item>

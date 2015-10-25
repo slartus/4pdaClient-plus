@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -12,7 +14,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -24,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -58,7 +63,7 @@ import java.io.InputStreamReader;
  * Time: 22:23
  * To change this template use File | Settings | File Templates.
  */
-public class MainActivity extends BrowserViewsFragmentActivity implements BricksListDialogFragment.IBricksListDialogCaller,
+public class MainActivity extends FragmentActivity implements BricksListDialogFragment.IBricksListDialogCaller,
         MainDrawerMenu.SelectItemListener, TabDrawerMenu.SelectItemListener {
     private Handler mHandler = new Handler();
 
@@ -67,6 +72,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
     private MainDrawerMenu mMainDrawerMenu;
     private TabDrawerMenu mTabDraweMenu;
     private RelativeLayout leftDrawer,topInform;
+    public Toolbar toolbar;
     boolean top;
     int lastTheme;
     String currentFragmentTag;
@@ -84,55 +90,57 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
     }
 
     @Override
-    public String Prefix() {
-        return null;
-    }
-
-    @Override
-    public WebView getWebView() {
-        return mWebview;
-    }
-    public void setWebView(AdvWebView webView){
-        mWebview = webView;
-    }
-
-    @Override
-    public void nextPage() {
-
-    }
-
-    @Override
-    public void prevPage() {
-
-    }
-
-    @Override
     public void onCreate(Bundle saveInstance) {
         super.onCreate(saveInstance);
         lastTheme = App.getInstance().getThemeStyleResID();
         try {
+            if (checkIntent())
+                return;
+            setContentView(R.layout.main);
+
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
+            if(Build.VERSION.SDK_INT>20) {
+                findViewById(R.id.toolbar_shadow).setVisibility(View.GONE);
+                toolbar.setElevation(4);
+            }
+            setSupportActionBar(toolbar);
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setHomeButtonEnabled(true);
                 getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_drawer);
             }
-            if (checkIntent())
-                return;
-            setContentView(R.layout.main);
+            if(PreferenceManager.getDefaultSharedPreferences(App.getContext()).getBoolean("statusbarTransparent", false)) {
+                if (android.os.Build.VERSION.SDK_INT >= 21)
+                    getWindow().setStatusBarColor(Color.TRANSPARENT);
+            }else {
+                if (android.os.Build.VERSION.SDK_INT > 18) {
+                    LinearLayout statusBar = (LinearLayout) findViewById(R.id.statusBar);
+                    statusBar.setMinimumHeight(getStatusBarHeight());
+
+                    if (App.getInstance().getCurrentThemeName().equals("white")) {
+                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_wh));
+                    } else if (App.getInstance().getCurrentThemeName().equals("black")) {
+                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_bl));
+                    }
+                    statusBarShowed = true;
+                }
+            }
+
 
             createMenu();
-
+/*
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             DrawerLayout drawer = (DrawerLayout) inflater.inflate(R.layout.decor, null); // "null" is important.
             ViewGroup decor = (ViewGroup) getWindow().getDecorView();
             View child = decor.getChildAt(0);
             decor.removeView(child);
             FrameLayout container = (FrameLayout) drawer.findViewById(R.id.ab_cont); // This is the container we defined just now.
-            leftDrawer = (RelativeLayout) drawer.findViewById(R.id.left_drawer);
-            topInform = (RelativeLayout) drawer.findViewById(R.id.topInform);
+
             container.addView(child, 0);
             decor.addView(drawer);
-
+*/
+            leftDrawer = (RelativeLayout) findViewById(R.id.left_drawer);
+            topInform = (RelativeLayout) findViewById(R.id.topInform);
             int scale = (int) getResources().getDisplayMetrics().density;
             boolean bottom = getPreferences().getBoolean("isMarginBottomNav",false);
             top = !getPreferences().getBoolean("isShowShortUserInfo",true);
@@ -145,6 +153,7 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
             if(top&bottom){
                 leftDrawer.setPadding(0,(int) (25 * scale + 0.5f),0,(int) (48 * scale + 0.5f));
             }
+
             mTabDraweMenu = new TabDrawerMenu(this, this);
             mMainDrawerMenu = new MainDrawerMenu(this, this);
 
@@ -174,11 +183,12 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
         if (mMainDrawerMenu != null) {
             mMainDrawerMenu.syncState();
         }
+        /*
         if(!top)
             new ShortUserInfo(this);
         else
             topInform.setVisibility(View.GONE);
-
+*/
 
     }
 
@@ -337,6 +347,12 @@ public class MainActivity extends BrowserViewsFragmentActivity implements Bricks
             hideAllFragments(transaction);
             showFragmentByTag(transaction, url);
             transaction.commit();
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);// новости выставляют выпадающий список
+                getSupportActionBar().setDisplayShowTitleEnabled(true);
+                getSupportActionBar().setSubtitle(null);
+            }
+            setTitle(name);
         }
     }
 

@@ -134,7 +134,6 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
         setHasOptionsMenu(true);
         view = inflater.inflate(R.layout.news_activity, container, false);
 
-
         if (Preferences.System.isDevSavePage()|
                 Preferences.System.isDevInterface()|
                 Preferences.System.isDevStyle())
@@ -147,8 +146,7 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
         webView = (AdvWebView) findViewById(R.id.wvBody);
         registerForContextMenu(webView);
 
-        getContext().setWebView(webView);
-        getContext().setWebViewSettings();
+        setWebViewSettings();
         webView.getSettings().setLoadWithOverviewMode(false);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setDefaultFontSize(Preferences.News.getFontSize());
@@ -161,7 +159,7 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
         }
         loadImages = webView.getSettings().getLoadsImagesAutomatically();
         webView.setActionBarheight(getSupportActionBar().getHeight());
-        //getContext().setHideActionBar(fabComment);
+        setHideFab(fabComment);
 
         //webView.setWebChromeClient(new MyWebChromeClient());
         pnlSearch = (RelativeLayout) findViewById(R.id.pnlSearch);
@@ -990,6 +988,5 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
         super.onDestroy();
 
         webView.setWebViewClient(null);
-        getContext().setWebView(null);
     }
 }

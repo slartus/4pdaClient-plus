@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
     <string name="app_name">ForPDA</string>
     <string name="loading">Загрузка...</string>
     <string name="Forums">Форумы</string>
