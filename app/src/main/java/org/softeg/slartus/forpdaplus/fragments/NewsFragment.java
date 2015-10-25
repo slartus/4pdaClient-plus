@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
@@ -45,9 +46,11 @@ import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.FragmentActivity;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.History;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
@@ -99,8 +102,8 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
         fragment.setArguments(args);
         return fragment;
     }
-    public MainActivity getContext(){
-        return (MainActivity)getActivity();
+    public android.support.v4.app.FragmentActivity getContext(){
+        return getActivity();
     }
     private View findViewById(int id){
         return view.findViewById(id);
@@ -109,7 +112,7 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
         return view;
     }
     public ActionBar getSupportActionBar(){
-        return getContext().getSupportActionBar();
+        return ((AppCompatActivity)getContext()).getSupportActionBar();
     }
 
     @Override
@@ -548,6 +551,7 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
         closeSearch();
         GetNewsTask getThemeTask = new GetNewsTask(getContext());
         getThemeTask.execute(url.replace("|", ""));
+
     }
 
     private void showThemeBody(String body) {
@@ -555,7 +559,13 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
 
             getActivity().setTitle(m_Title);
             webView.loadDataWithBaseURL("\"file:///android_asset/\"", body, "text/html", "UTF-8", null);
-
+            for(int i = 0; i <= App.getTabItems().size()-1; i++){
+                if(App.getTabItems().get(i).getUrl().equals(getTag())) {
+                    App.getTabItems().get(i).setTitle(m_Title);
+                    TabDrawerMenu.notifyDataSetChanged();
+                    return;
+                }
+            }
 
         } catch (Exception ex) {
             AppLog.e(getContext(), ex);

@@ -35,7 +35,7 @@ public class TabDrawerMenu {
     private Handler mHandler = new Handler();
     private Resources resources;
 
-    private TabAdapter adapter;
+    private static TabAdapter adapter;
     private ListView mListView;
     List mTabItems = new ArrayList();
 
@@ -85,7 +85,7 @@ public class TabDrawerMenu {
             close();
         }
     }
-    public void notifyDataSetChanged(){
+    public static void notifyDataSetChanged(){
         adapter.notifyDataSetChanged();
     }
     public void addTab(String name, String url, Fragment fragment){
@@ -178,6 +178,9 @@ public class TabDrawerMenu {
             return url;
         }
         public Fragment createFragment(){return fragment;}
+        public void setTitle(String s){
+            this.title = s;
+        }
     }
     public class TabAdapter extends ArrayAdapter{
         final LayoutInflater inflater;

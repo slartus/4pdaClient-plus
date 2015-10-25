@@ -102,7 +102,7 @@ public class BaseFragmentActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle saveInstance) {
-        setTheme(isTransluent() ? App.getInstance().getTransluentThemeStyleResID() : App.getInstance().getThemeStyleResID());
+        setTheme(R.style.Theme_Transluent_BlackPink);
         super.onCreate(saveInstance);
         if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.JELLY_BEAN) {
             getWindow().setFlags(
@@ -118,6 +118,25 @@ public class BaseFragmentActivity extends AppCompatActivity
                 android.os.Build.VERSION.SDK_INT >= 21)
             getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(getNavBarColor()));
 
+        if(PreferenceManager.getDefaultSharedPreferences(App.getContext()).getBoolean("statusbarTransparent",false)) {
+            if (android.os.Build.VERSION.SDK_INT >= 21)
+                getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }else {
+            if (android.os.Build.VERSION.SDK_INT > 18) {
+                LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LinearLayout statusBarLay = (LinearLayout) inflater.inflate(R.layout.statusbar, null);
+                statusBar = (LinearLayout) statusBarLay.findViewById(R.id.statusBar);
+                statusBar.setMinimumHeight(getStatusBarHeight());
+                if (App.getInstance().getCurrentThemeName().equals("white")) {
+                    statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_wh));
+                } else if (App.getInstance().getCurrentThemeName().equals("black")) {
+                    statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_bl));
+                }
+                ViewGroup decor = (ViewGroup) getWindow().getDecorView();
+                decor.addView(statusBarLay);
+                statusBarShowed = true;
+            }
+        }
 
         args.clear();
         if (getIntent().getExtras() != null) {

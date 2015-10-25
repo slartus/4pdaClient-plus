@@ -151,6 +151,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
     public static Boolean tryShowNews(Activity context, String url, Boolean finish) {
         if (isNews(url)) {
             NewsActivity.shownews(context, url);
+
             if (finish)
                 context.finish();
             return true;

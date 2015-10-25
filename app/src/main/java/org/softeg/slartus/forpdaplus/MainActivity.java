@@ -183,12 +183,12 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         if (mMainDrawerMenu != null) {
             mMainDrawerMenu.syncState();
         }
-        /*
+
         if(!top)
             new ShortUserInfo(this);
         else
             topInform.setVisibility(View.GONE);
-*/
+
 
     }
 
