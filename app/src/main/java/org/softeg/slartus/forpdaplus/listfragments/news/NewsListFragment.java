@@ -63,6 +63,13 @@ public class NewsListFragment extends BaseTaskListFragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getListView().setDivider(null);
+        getListView().setDividerHeight(0);
+    }
+
+    @Override
     public String getListName() {
         return "news_" + mTag;
     }

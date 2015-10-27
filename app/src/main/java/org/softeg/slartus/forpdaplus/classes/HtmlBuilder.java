@@ -35,6 +35,7 @@ public class HtmlBuilder {
     }
     public static int getMarginTop(){
         int margin = 0;
+        /*
         Context context = App.getContext();
         Resources resources = context.getResources();
 
@@ -43,7 +44,7 @@ public class HtmlBuilder {
         TypedValue tv = new TypedValue();
         App.getContext().getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.actionBarSize, tv, true);
         margin += (int) Math.ceil(resources.getDimensionPixelSize(tv.resourceId)/resources.getDisplayMetrics().density);
-
+*/
         return margin;
     }
 

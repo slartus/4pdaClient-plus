@@ -559,9 +559,10 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
 
             getActivity().setTitle(m_Title);
             webView.loadDataWithBaseURL("\"file:///android_asset/\"", body, "text/html", "UTF-8", null);
-            for(int i = 0; i <= App.getTabItems().size()-1; i++){
-                if(App.getTabItems().get(i).getUrl().equals(getTag())) {
-                    App.getTabItems().get(i).setTitle(m_Title);
+            for(int i = 0; i <= App.getInstance().getTabItems().size()-1; i++){
+                if(App.getInstance().getTabItems().get(i).getTag().equals(getTag())) {
+                    App.getInstance().getTabItems().get(i).setTitle(m_Title);
+                    App.getInstance().getTabItems().get(i).setUrl(getUrl());
                     TabDrawerMenu.notifyDataSetChanged();
                     return;
                 }
@@ -807,7 +808,7 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
 
         private String transformBody(String body) {
             NewsHtmlBuilder builder = new NewsHtmlBuilder();
-            Matcher matcher = PatternExtensions.compile("<title>([^<>]*)</title>").matcher(body);
+            Matcher matcher = PatternExtensions.compile("<h1 itemprop=\"name\">([\\s\\S]*?)<\\/h1>").matcher(body);
             Matcher matchert = PatternExtensions.compile("<script type=\".*\">wrs([\\s\\S]*?)<.script>").matcher(body);
             m_Title = "Новости";
             if (matcher.find()) {

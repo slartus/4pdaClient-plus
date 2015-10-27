@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaplus;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,7 +11,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -20,14 +18,10 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -36,7 +30,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
-import org.softeg.slartus.forpdaplus.classes.BrowserViewsFragmentActivity;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
@@ -65,6 +58,8 @@ import java.io.InputStreamReader;
  */
 public class MainActivity extends FragmentActivity implements BricksListDialogFragment.IBricksListDialogCaller,
         MainDrawerMenu.SelectItemListener, TabDrawerMenu.SelectItemListener {
+
+    private final static String tabPrefix = "tab";
     private Handler mHandler = new Handler();
 
     MenuFragment mFragment1;
@@ -75,8 +70,6 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     public Toolbar toolbar;
     boolean top;
     int lastTheme;
-    String currentFragmentTag;
-    AdvWebView mWebview = null;
 
     @Override
     protected void afterCreate() {
@@ -244,36 +237,39 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     /**
      * Swaps fragments in the main content view
      */
+
     public void selectItem(final BrickInfo listTemplate) {
-        selectFragment(listTemplate.getTitle(), listTemplate.getName(), listTemplate.createFragment());
-        mTabDraweMenu.addTab(listTemplate.getTitle(), listTemplate.getName(), listTemplate.createFragment());
+        selectFragment(listTemplate.getTitle(), "", listTemplate.getName(), listTemplate.createFragment());
+        mTabDraweMenu.addTab(listTemplate.getTitle(), listTemplate.getName(), listTemplate.getName(), listTemplate.createFragment(), false);
+
         mTabDraweMenu.notifyDataSetChanged();
     }
     public void selectTab( TabDrawerMenu.TabItem tabItem){
-        selectFragment(tabItem.getTitle(), tabItem.getUrl(), tabItem.createFragment());
+        selectFragment(tabItem.getTitle(), tabItem.getUrl(), tabItem.getTag(), tabItem.getFragment());
+
         mMainDrawerMenu.notifyDataSetChanged();
     }
-    private void selectFragment(final String title, final String tag, final Fragment fragment){
+
+    private void selectFragment(final String title, final String url, final String tag, final Fragment fragment){
         if(mTabDraweMenu!=null) mTabDraweMenu.close();
         if(mMainDrawerMenu!=null) mMainDrawerMenu.close();
-        currentFragmentTag = String.valueOf(App.getCurrentFragmentTag());
+        String currentFragmentTag = String.valueOf(App.getInstance().getCurrentFragmentTag());
+
+
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        hideFragments(transaction);
         if (tag.equals(currentFragmentTag)) {
             if(getSupportFragmentManager().findFragmentByTag(currentFragmentTag) == null) {
-                hideAllFragments(transaction);
+
                 addFragment(transaction, fragment, tag);
             }else {
-                hideAllFragments(transaction);
                 showFragmentByTag(transaction, tag);
             }
         }else{
             if (currentFragmentTag.equals("null")) {
-                hideAllFragments(transaction);
                 addFragment(transaction, fragment, tag);
             }else {
-                hideAllFragments(transaction);
-
                 if(getSupportFragmentManager().findFragmentByTag(tag)==null){
                     addFragment(transaction, fragment, tag);
                 }else {
@@ -284,13 +280,19 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
             }
         }
         transaction.commit();
-        App.setCurrentFragmentTag(tag);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);// новости выставляют выпадающий список
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
-            getSupportActionBar().setSubtitle(null);
+        endActionFragment(title, tag);
+    }
+
+    public void hideFragments(FragmentTransaction transaction){
+        if(getSupportFragmentManager().getFragments()==null) return;
+        for (Fragment fr:getSupportFragmentManager().getFragments()) {
+            if (fr != null) {
+                if (!fr.getTag().equals("f1")){
+                    fr.onPause();
+                    transaction.hide(fr);
+                }
+            }
         }
-        setTitle(title);
     }
 
     private void showFragmentByTag(FragmentTransaction transaction, String tag){
@@ -311,11 +313,18 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     private void addFragment(FragmentTransaction transaction, Fragment fragment, String tag) {
         transaction.add(R.id.content_frame, fragment, tag);
     }
+
     public void showFragment(String title,String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.show(getSupportFragmentManager().findFragmentByTag(tag));
         transaction.commit();
-        App.setCurrentFragmentTag(tag);
+    }
+
+    public void endActionFragment(String title, String tag){
+        App.getInstance().setCurrentFragmentTag(tag);
+        endActionFragment(title);
+    }
+    public void endActionFragment(String title){
         if (getSupportActionBar() != null) {
             getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);// новости выставляют выпадающий список
             getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -324,47 +333,28 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         setTitle(title);
     }
 
-    public void hideAllFragments(FragmentTransaction transaction){
-        if(getSupportFragmentManager().getFragments()==null) return;
-        for (Fragment fr:getSupportFragmentManager().getFragments()) {
-            if (fr != null) {
-                //if(getSupportFragmentManager().findFragmentByTag("News_List")!=null)
-                    //transaction.remove(getSupportFragmentManager().findFragmentByTag("News_List"));
-                if (!fr.getTag().equals("f1")){
-                    fr.onPause();
-                    transaction.hide(fr);
-                }
-            }
-        }
-    }
 
 
-    public void addTab(String name, String url, Fragment fragment){
+    public void addTab(String title, String url, Fragment fragment){
         if(getSupportFragmentManager().findFragmentByTag(url)==null) {
-            mTabDraweMenu.addTabSelect(name, url, fragment);
+            mTabDraweMenu.addTab(title, url, tabPrefix + App.getInstance().getTabIterator(), fragment, true);
         }else {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            hideAllFragments(transaction);
+            hideFragments(transaction);
             showFragmentByTag(transaction, url);
             transaction.commit();
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);// новости выставляют выпадающий список
-                getSupportActionBar().setDisplayShowTitleEnabled(true);
-                getSupportActionBar().setSubtitle(null);
-            }
-            setTitle(name);
+            endActionFragment(title);
         }
     }
 
-    public void removeTab(String url){
+    public void removeTab(String tag){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        //hideAllFragments(transaction);
-        hideAllFragments(transaction);
-        transaction.remove(getSupportFragmentManager().findFragmentByTag(url));
-        if(url.equals("News_Pages"))
+        hideFragments(transaction);
+        transaction.remove(getSupportFragmentManager().findFragmentByTag(tag));
+        if(tag.equals("News_Pages"))
             transaction.remove(getSupportFragmentManager().findFragmentByTag("News_List"));
         transaction.commit();
-        mTabDraweMenu.removeTab(url);
+        mTabDraweMenu.removeTab(tag);
         mMainDrawerMenu.notifyDataSetChanged();
     }
 
@@ -387,7 +377,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         try {
-            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(App.getCurrentFragmentTag());
+            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
             if (currentFragment != null && ((IBrickFragment) currentFragment).dispatchKeyEvent(event))
                 return true;
         } catch (Throwable ex) {
@@ -407,9 +397,9 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
                 mTabDraweMenu.close();
                 return;
             }
-            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(App.getCurrentFragmentTag());
+            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
             if (currentFragment == null || !((IBrickFragment) currentFragment).onBackPressed()) {
-                if(App.getTabItems().size()<=1){
+                if(App.getInstance().getTabItems().size()<=1){
                     if (!m_ExitWarned) {
                         Toast.makeText(this, "Нажмите кнопку НАЗАД снова, чтобы выйти из программы", Toast.LENGTH_SHORT).show();
                         m_ExitWarned = true;
@@ -423,7 +413,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
                         appExit();
                     }
                 }else {
-                    removeTab(App.getCurrentFragmentTag());
+                    removeTab(App.getInstance().getCurrentFragmentTag());
                 }
 
             } else {

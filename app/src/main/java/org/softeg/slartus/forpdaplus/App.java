@@ -73,21 +73,30 @@ public class App extends android.app.Application {
 
     private static boolean m_IsDebugModeLoaded = false;
     private static boolean m_IsDebugMode = false;
-    private static String currentFragmentTag;
+    private String currentFragmentTag;
 
-    public static String getCurrentFragmentTag(){
+    private int tabIterator = 0;
+
+    public int getTabIterator(){
+        return tabIterator;
+    }
+    public void plusTabIterator() {
+        tabIterator++;
+    }
+
+    public String getCurrentFragmentTag(){
         return currentFragmentTag;
     }
-    public static void setCurrentFragmentTag(String s){
+    public void setCurrentFragmentTag(String s){
         currentFragmentTag = s;
     }
 
-    private static List<TabDrawerMenu.TabItem> mTabItems = new ArrayList< TabDrawerMenu.TabItem>();
+    private List<TabDrawerMenu.TabItem> mTabItems = new ArrayList<>();
 
-    public static List<TabDrawerMenu.TabItem> getTabItems(){
+    public List<TabDrawerMenu.TabItem> getTabItems(){
         return mTabItems;
     }
-    public static int getLastTabPosition(int delPos){
+    public int getLastTabPosition(int delPos){
         if((mTabItems.size()-1)<delPos) delPos--;
         return delPos;
     }
@@ -516,6 +525,8 @@ public class App extends android.app.Application {
         swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
         return swipeRefreshLayout;
     }
+
+
 
 
     private static final class MyActivityLifecycleCallbacks implements ActivityLifecycleCallbacks {

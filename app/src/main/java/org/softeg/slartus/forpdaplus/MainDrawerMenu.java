@@ -516,7 +516,7 @@ public class MainDrawerMenu {
             holder.icon.clearColorFilter();
 
             if (groupPosition == prefs.getInt("menuItemGroup", 0)
-                    &item.getName().equals(App.getCurrentFragmentTag())) {
+                    &item.getName().equals(App.getInstance().getCurrentFragmentTag())) {
                 holder.text.setTextColor(resources.getColor(R.color.selectedItemText));
                 holder.item.setBackgroundResource(R.color.selectedItem);
                 holder.icon.setColorFilter(resources.getColor(R.color.selectedItemText), PorterDuff.Mode.SRC_ATOP);

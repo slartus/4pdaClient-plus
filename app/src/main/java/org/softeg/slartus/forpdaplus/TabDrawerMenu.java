@@ -74,7 +74,7 @@ public class TabDrawerMenu {
         }
         mDrawer.setLayoutParams(params);
 
-        adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getTabItems());
+        adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
         mListView.setAdapter(adapter);
     }
     private class TabOnClickListener implements ListView.OnItemClickListener{
@@ -88,48 +88,62 @@ public class TabDrawerMenu {
     public static void notifyDataSetChanged(){
         adapter.notifyDataSetChanged();
     }
-    public void addTab(String name, String url, Fragment fragment){
-        if(!findTabByTag(url)) {
-            TabItem item = new TabItem(name, url, fragment);
-            App.getTabItems().add(item);
-            adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getTabItems());
+
+    public void addTab(String name, String url, String tag, Fragment fragment, boolean select){
+        TabItem item = null;
+        if(isContainsByUrl(url)){
+            if(select) item = getTabByUrl(url);
+        }else if(!isContainsByTag(tag)) {
+
+            item = new TabItem(name, url, tag, fragment);
+            App.getInstance().getTabItems().add(item);
+            App.getInstance().plusTabIterator();
+            adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
             mListView.setAdapter(adapter);
+        }else {
+            if(select) item = getTabByTag(tag);
         }
+        if(select) selectTab(item);
+    }
 
+    public boolean isContainsByTag(String tag){
+        for(TabItem item:App.getInstance().getTabItems())
+            if(item.getTag().equals(tag)) return true;
+        return false;
     }
-    public void addTabSelect(String name, String url, Fragment fragment){
-        //findTabByTag(url);
-        TabItem item = new TabItem(name,url,fragment);
-        App.getTabItems().add(item);
-        adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getTabItems());
-        mListView.setAdapter(adapter);
-        selectTab(item);
+    public boolean isContainsByUrl(String url){
+        for(TabItem item:App.getInstance().getTabItems())
+            if(item.getUrl().equals(url)) return true;
+        return false;
     }
-    public boolean findTabByTag(String tag){
-        boolean result=false;
-        for(Object item:App.getTabItems()){
-            if(((TabItem)item).getUrl().equals(tag)) result=true;
-        }
-        return result;
+
+    public TabItem getTabByTag(String tag){
+        for(TabItem item:App.getInstance().getTabItems())
+            if(item.getTag().equals(tag)) return item;
+        return null;
     }
+    public TabItem getTabByUrl(String url){
+        for(TabItem item:App.getInstance().getTabItems())
+            if(item.getUrl().equals(url)) return item;
+        return null;
+    }
+
     public void removeTab(String tag){
-        if(App.getTabItems().size()<=1) return;
+        if(App.getInstance().getTabItems().size()<=1) return;
 
-        for(int i = 0; i <= App.getTabItems().size()-1; i++){
-            if(App.getTabItems().get(i).getUrl().equals(tag)) {
-                //((MainActivity)getContext()).removeTab(tag);
-                App.getTabItems().remove(i);
-                if(tag.equals(App.getCurrentFragmentTag())){
-                    App.setCurrentFragmentTag(App.getTabItems().get(App.getLastTabPosition(i)).getUrl());
-                }
+        for(int i = 0; i <= App.getInstance().getTabItems().size()-1; i++){
+            if(App.getInstance().getTabItems().get(i).getTag().equals(tag)) {
+                App.getInstance().getTabItems().remove(i);
+                if(tag.equals(App.getInstance().getCurrentFragmentTag()))
+                    App.getInstance().setCurrentFragmentTag(App.getInstance().getTabItems().get(App.getInstance().getLastTabPosition(i)).getTag());
 
-                ((MainActivity)getContext()).showFragmentByTag(App.getCurrentFragmentTag());
-                adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getTabItems());
+                ((MainActivity)getContext()).showFragmentByTag(App.getInstance().getCurrentFragmentTag());
+                ((MainActivity)getContext()).endActionFragment(getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
+                adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
                 mListView.setAdapter(adapter);
                 return;
             }
         }
-
     }
 
 
@@ -165,21 +179,34 @@ public class TabDrawerMenu {
     public class TabItem{
         private String title;
         private String url;
+        private String tag;
         private Fragment fragment;
-        public TabItem(String title, String url, Fragment fragment){
+
+        public TabItem(String title, String url, String tag, Fragment fragment){
             this.title = title;
             this.url = url;
+            this.tag = tag;
             this.fragment = fragment;
         }
+
         public String getTitle() {
             return title;
         }
         public String getUrl() {
             return url;
         }
-        public Fragment createFragment(){return fragment;}
-        public void setTitle(String s){
-            this.title = s;
+        public String getTag() {
+            return tag;
+        }
+        public Fragment getFragment() {
+            return fragment;
+        }
+
+        public void setTitle(String title){
+            this.title = title;
+        }
+        public void setUrl(String url){
+            this.url = url;
         }
     }
     public class TabAdapter extends ArrayAdapter{
@@ -211,12 +238,12 @@ public class TabDrawerMenu {
 
             TabItem item = mObjects.get(position);
             holder.text.setText(item.getTitle());
-            holder.close.setOnClickListener(new CloseClickListener(item.getUrl()));
+            holder.close.setOnClickListener(new CloseClickListener(item.getTag()));
 
             holder.text.setTextColor(resources.getColor(App.getInstance().isWhiteTheme() ? R.color.drawer_menu_text_wh : R.color.drawer_menu_text_bl));
             holder.item.setBackgroundResource(Color.TRANSPARENT);
 
-            if(App.getCurrentFragmentTag().equals(item.getUrl())){
+            if(App.getInstance().getCurrentFragmentTag().equals(item.getTag())){
                 holder.text.setTextColor(resources.getColor(R.color.selectedItemText));
                 holder.item.setBackgroundResource(R.color.selectedItem);
             }
@@ -231,11 +258,11 @@ public class TabDrawerMenu {
     }
     public class CloseClickListener implements View.OnClickListener {
         String tag;
-        public CloseClickListener(String url){
-            tag = url;
+        public CloseClickListener(String tag){
+            this.tag = tag;
         }
         public void onClick(View v) {
-            if(App.getTabItems().size()>1) {
+            if(App.getInstance().getTabItems().size()>1) {
                 ((MainActivity) getContext()).removeTab(tag);
             }else {
                 close();
