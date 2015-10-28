@@ -1,11 +1,14 @@
 package org.softeg.slartus.forpdaplus.fragments;
 
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -13,7 +16,10 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
+import org.softeg.slartus.forpdaapi.classes.LoginForm;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.UniversalFragment;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
@@ -23,12 +29,15 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 /**
  * Created by radiationx on 17.10.15.
  */
-public abstract class WebViewFragment extends UniversalFragment implements IWebViewContainer{
+public abstract class WebViewFragment extends Fragment implements IWebViewContainer{
     public abstract String Prefix();
 
     public abstract WebView getWebView();
-
     public abstract View getView();
+    public abstract WebViewClient MyWebViewClient();
+    public abstract String getTitle();
+    public abstract String getUrl();
+    public abstract void refresh();
 
     WebViewExternals m_WebViewExternals;
 
@@ -38,21 +47,55 @@ public abstract class WebViewFragment extends UniversalFragment implements IWebV
         return m_WebViewExternals;
     }
 
+
+    public void showBody(){
+        for(int i = 0; i <= App.getInstance().getTabItems().size()-1; i++){
+            if(App.getInstance().getTabItems().get(i).getTag().equals(getTag())) {
+                App.getInstance().getTabItems().get(i).setTitle(getTitle());
+                App.getInstance().getTabItems().get(i).setUrl(getUrl());
+                TabDrawerMenu.notifyDataSetChanged();
+                return;
+            }
+        }
+    }
     @Override
-    public void onDestroy()
-    {
-        WebView mWebView=getWebView();
-        // null out before the super call
-        if (mWebView != null)
-        {
-            mWebView.setWebChromeClient(null);
-            mWebView.setWebViewClient(null);
-            mWebView.removeAllViews();
-            mWebView.loadUrl("about:blank");
-            mWebView = null;
+    public void onResume() {
+        super.onResume();
+        getWebView().onResume();
+        getWebView().setWebViewClient(MyWebViewClient());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (getWebView()!=null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (getWebView()!=null) getWebView().onPause();
+                }
+            }, 1500);
+            getWebView().setWebViewClient(null);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getWebView().setWebViewClient(null);
+    }
+
+    @Override
+    public void onDestroy(){
+        getWebView().setWebViewClient(null);
+        if (getWebView() != null){
+            getWebView().setWebViewClient(null);
+            getWebView().removeAllViews();
+            getWebView().loadUrl("about:blank");
         }
         super.onDestroy();
     }
+
 
     public void setHideArrows(boolean hide) {
         if (getWebView() == null || !(getWebView() instanceof AdvWebView))

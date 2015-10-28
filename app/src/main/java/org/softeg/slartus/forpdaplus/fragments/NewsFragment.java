@@ -1,6 +1,6 @@
 package org.softeg.slartus.forpdaplus.fragments;
 
-import android.app.SearchManager;
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -14,10 +14,8 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -29,14 +27,11 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -46,9 +41,7 @@ import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.FragmentActivity;
 import org.softeg.slartus.forpdaplus.IntentActivity;
-import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
@@ -61,7 +54,6 @@ import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.video.PlayerActivity;
 
-import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,262 +65,71 @@ import java.util.regex.Pattern;
  * Created by radiationx on 17.10.15.
  */
 public class NewsFragment extends WebViewFragment implements IBrickFragment,MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
-    private static Context mContext;
     private static final String URL_KEY = "Url";
     private static final String TAG = "NewsActivity";
     private Handler mHandler = new Handler();
     private AdvWebView webView;
-    private RelativeLayout pnlSearch;
-    private FloatingActionButton fabComment;
 
     private Boolean m_FromHistory = false;
     private int m_ScrollY = 0;
     private int m_ScrollX = 0;
-    private EditText txtSearch;
     private String m_NewsUrl;
     public static String s_NewsUrl = null;
     private Uri m_Data = null;
     private ArrayList<History> m_History = new ArrayList<>();
-    private boolean pencil;
     private boolean loadImages;
-
-    View view;
+    private String m_Title = "Новости";
+    private View view;
 
     public static NewsFragment newInstance(Context context, String url){
-        mContext = context;
         NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
         args.putString(URL_KEY, url);
         fragment.setArguments(args);
         return fragment;
     }
-    public android.support.v4.app.FragmentActivity getContext(){
-        return getActivity();
-    }
-    private View findViewById(int id){
-        return view.findViewById(id);
-    }
     public View getView(){
         return view;
     }
+
+    private View findViewById(int id){
+        return getView().findViewById(id);
+    }
+
+    @Override
+    public String getTitle() {
+        return m_Title;
+    }
+
+    public String getUrl() {
+        return m_NewsUrl;
+    }
+
+    @Override
+    public WebViewClient MyWebViewClient() {
+        return new MyWebViewClient();
+    }
+
     public ActionBar getSupportActionBar(){
-        return ((AppCompatActivity)getContext()).getSupportActionBar();
+        return ((AppCompatActivity)getActivity()).getSupportActionBar();
     }
 
     @Override
-    public void nextPage() {
-
-    }
+    public void nextPage() {}
 
     @Override
-    public void prevPage() {
-
-    }
+    public void prevPage() {}
 
     @Override
     public boolean dispatchSuperKeyEvent(KeyEvent event) {
         return false;
     }
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-        view = inflater.inflate(R.layout.news_activity, container, false);
-
-        if (Preferences.System.isDevSavePage()|
-                Preferences.System.isDevInterface()|
-                Preferences.System.isDevStyle())
-            Toast.makeText(getContext(), "Режим разработчика", Toast.LENGTH_SHORT).show();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-        fabComment = (FloatingActionButton) findViewById(R.id.fab);
-        webView = (AdvWebView) findViewById(R.id.wvBody);
-        registerForContextMenu(webView);
-
-        setWebViewSettings();
-        webView.getSettings().setLoadWithOverviewMode(false);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setDefaultFontSize(Preferences.News.getFontSize());
-        if (Build.VERSION.SDK_INT >= 19) {
-            try {
-                webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-            } catch (Throwable ignore) {
-
-            }
-        }
-        loadImages = webView.getSettings().getLoadsImagesAutomatically();
-        webView.setActionBarheight(getSupportActionBar().getHeight());
-        setHideFab(fabComment);
-
-        //webView.setWebChromeClient(new MyWebChromeClient());
-        pnlSearch = (RelativeLayout) findViewById(R.id.pnlSearch);
-        txtSearch = (EditText) findViewById(R.id.txtSearch);
-        txtSearch.addTextChangedListener(new TextWatcher() {
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
-
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                doSearch(txtSearch.getText().toString());
-            }
-
-            public void afterTextChanged(Editable editable) {
-                //To change body of implemented methods use File | Settings | File Templates.
-            }
-        });
-        ImageButton btnPrevSearch = (ImageButton) findViewById(R.id.btnPrevSearch);
-        btnPrevSearch.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                webView.findNext(false);
-            }
-        });
-        ImageButton btnNextSearch = (ImageButton) findViewById(R.id.btnNextSearch);
-        btnNextSearch.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                webView.findNext(true);
-            }
-        });
-        ImageButton btnCloseSearch = (ImageButton) findViewById(R.id.btnCloseSearch);
-        btnCloseSearch.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                closeSearch();
-            }
-        });
-
-        webView.setWebViewClient(new MyWebViewClient());
-        webView.addJavascriptInterface(this, "HTMLOUT");
-        /*Intent intent = getIntent();
-        if (intent != null && intent.getData() != null) {
-            m_Data = intent.getData();
-
-
-            return;
-        }
-        assert intent != null;
-
-        Bundle extras = intent.getExtras();
-
-        assert extras != null;
-*/
-        m_NewsUrl = getArguments().getString(URL_KEY);
-        s_NewsUrl = m_NewsUrl;
-
-
-
-        fabComment.setColorNormal(App.getInstance().getColorAccent("Accent"));
-        fabComment.setColorPressed(App.getInstance().getColorAccent("Pressed"));
-        fabComment.setColorRipple(App.getInstance().getColorAccent("Pressed"));
-        if(Client.getInstance().getLogined()&!PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar", false)){
-            fabComment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    respond();
-                }
-            });
-        }else{
-            fabComment.setVisibility(View.GONE);
-        }
-        //getContext().setWebView(webView);
-        return view;
-    }
-
-
-    //@Override
-    protected boolean isTransluent() {
-        return true;
-    }
-
-    protected void afterCreate() {
-        //getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-    }
-
-
-    private final static int FILECHOOSER_RESULTCODE = 1;
-
-    @JavascriptInterface
-    public void showChooseCssDialog() {
-        getContext().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    intent.setType("file/*");
-
-                    // intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
-                    startActivityForResult(intent, FILECHOOSER_RESULTCODE);
-
-                } catch (ActivityNotFoundException ex) {
-                    Toast.makeText(getContext(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
-                } catch (Exception ex) {
-                    AppLog.e(getContext(), ex);
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode,
-                                 Intent data) {
-        if (resultCode == getActivity().RESULT_OK && requestCode == FILECHOOSER_RESULTCODE) {
-            String attachFilePath = FileUtils.getRealPathFromURI(getContext(), data.getData());
-            String cssData = FileUtils.readFileText(attachFilePath)
-                    .replace("\\", "\\\\")
-                    .replace("'", "\\'").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
-            webView.evalJs("window['HtmlInParseLessContent']('" + cssData + "');");
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            //finish();
-            //onBackPressed();
-            return true;
-        }
-
-        return true;
-    }
-/*
-    @Override
-    public void nextPage() {
-
-    }
-
-    @Override
-    public void prevPage() {
-
-    }
-*/
-
     public void refresh() {
         showNews(m_NewsUrl);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        webView.onResume();
-        webView.setWebViewClient(new MyWebViewClient());
-        if (s_NewsUrl != null) {
-            s_NewsUrl = null;
-            showNews(m_NewsUrl);
-        }
-
-        if (m_Data != null) {
-            String url = m_Data.toString();
-            m_Data = null;
-            if (IntentActivity.isNews(url)) {
-                showNews(url);
-            }
-        }
-    }
-
-    public WebView getWebView() {
+    public AdvWebView getWebView() {
         return webView;
     }
 
@@ -337,7 +138,6 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
         return null;
     }
 
-    //@Override
     public String Prefix() {
         return "news";
     }
@@ -345,8 +145,6 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         getActivity().setContentView(R.layout.main);
-//        WebView wb = (WebView) findViewById(R.id.webview);
-//        initWebView();
     }
 
     @Override
@@ -379,216 +177,61 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
         return false;
     }
 
-
-    private class MyWebViewClient extends WebViewClient {
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            super.onPageStarted(view, url, favicon);
-
-            //getContext().setProgressBarIndeterminateVisibility(true);
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-
-
-            //getContext().setProgressBarIndeterminateVisibility(false);
-        }
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            m_ScrollY = 0;
-            m_ScrollX = 0;
-
-            if (isReplyUrl(url))
-                return true;
-
-            if (isAnchor(url)) {
-                showAnchor(url);
-                return true;
-            }
-
-            if (IntentActivity.isNews(url)) {
-                showNews(url);
-                return true;
-            }
-
-            if (IntentActivity.isYoutube(url)) {
-                PlayerActivity.showYoutubeChoiceDialog(getContext(), url);
-                return true;
-            }
-
-            IntentActivity.tryShowUrl(getContext(), mHandler, url, true, false);
-
-            return true;
-        }
-    }
-
-
-    private Boolean isReplyUrl(String url) {
-        Matcher m = Pattern.compile("http://4pdaservice.org/(\\d+)/(\\d+)").matcher(url);
-        if (m.find()) {
-            respond(m.group(1), m.group(2), null);
-            return true;
-        }
-
-        if (Pattern.compile("http://4pdaservice.org/#commentform").matcher(url).find()) {
-            respond();
-            return true;
-        }
-
-        return false;
-    }
-
-    private String getPostId() {
-        final Pattern pattern = Pattern.compile("http://4pda.ru/\\d{4}/\\d{2}/\\d{2}/(\\d+)");
-        Matcher m = pattern.matcher(m_NewsUrl);
-        if (m.find()) {
-            return m.group(1);
-        }
-        return null;
-    }
-
-    public static Boolean isAnchor(String url) {
-        final Pattern pattern = Pattern.compile("http://4pda.ru/\\d{4}/\\d{2}/\\d{2}/\\d+/*#.*");
-        return pattern.matcher(url).find();
-    }
-
-    private void showAnchor(String url) {
-        final Pattern pattern = Pattern.compile("http://4pda.ru/\\d{4}/\\d{2}/\\d{2}/\\d+/*#(.*)");
-        Matcher m = pattern.matcher(url);
-        if (m.find()) {
-            webView.loadUrl("javascript:scrollToElement('" + m.group(1) + "')");
-        }
-    }
-
-    public boolean onSearchRequested() {
-        pnlSearch.setVisibility(View.VISIBLE);
-        return false;
-    }
-/*
     @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent);
-        handleIntent(intent);
-    }
-    */
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        view = inflater.inflate(R.layout.news_fragment, container, false);
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-        WebView.HitTestResult hitTestResult = webView.getHitTestResult();
-        switch (hitTestResult.getType()) {
-            case WebView.HitTestResult.UNKNOWN_TYPE:
-            case WebView.HitTestResult.EDIT_TEXT_TYPE:
-                break;
-            default:
-                ExtUrl.showSelectActionDialog(mHandler, getContext(),
-                        m_Title, "", hitTestResult.getExtra(), "", "", "", "", "");
-        }
-    }
+        if (Preferences.System.isDevSavePage()|
+                Preferences.System.isDevInterface()|
+                Preferences.System.isDevStyle())
+            Toast.makeText(getActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
 
-    @Override
-    public boolean onBackPressed() {
-        if (pnlSearch.getVisibility() == View.VISIBLE) {
-            closeSearch();
-            return true;
-        }
-        if (!m_History.isEmpty()) {
-            m_FromHistory = true;
-            History history = m_History.get(m_History.size() - 1);
-            m_History.remove(m_History.size() - 1);
-            m_ScrollX = history.scrollX;
-            m_ScrollY = history.scrollY;
-            showNews(history.url);
-            return true;
-        } else {
-            return false;
-        }
-    }
-    private void handleIntent(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            doSearch(query);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
-        }
-    }
 
-    private void doSearch(String query) {
-        if (TextUtils.isEmpty(query)) return;
-        webView.findAll(query);
-        try {
-            Method m = WebView.class.getMethod("setFindIsUp", Boolean.TYPE);
-            m.invoke(webView, true);
-        } catch (Throwable ignored) {
-        }
-        onSearchRequested();
-    }
+        webView = (AdvWebView) findViewById(R.id.wvBody);
+        registerForContextMenu(webView);
+        setWebViewSettings();
+        webView.getSettings().setLoadWithOverviewMode(false);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setDefaultFontSize(Preferences.News.getFontSize());
+        if (Build.VERSION.SDK_INT >= 19) {
+            try {
+                webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+            } catch (Throwable ignore) {
 
-    private void closeSearch() {
-        mHandler.post(new Runnable() {
-            public void run() {
-                webView.findAll("");
-                try {
-                    Method m = WebView.class.getMethod("setFindIsUp", Boolean.TYPE);
-                    m.invoke(webView, false);
-                } catch (Throwable ignored) {
-                }
-
-                pnlSearch.setVisibility(View.GONE);
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(pnlSearch.getWindowToken(), 0);
             }
-        });
+        }
+        loadImages = webView.getSettings().getLoadsImagesAutomatically();
+        webView.setActionBarheight(getSupportActionBar().getHeight());
 
-    }
 
-    private void showNews(String url) {
         webView.setWebViewClient(new MyWebViewClient());
-        saveHistory(url);
-        m_NewsUrl = url;
-        closeSearch();
-        GetNewsTask getThemeTask = new GetNewsTask(getContext());
-        getThemeTask.execute(url.replace("|", ""));
+        webView.addJavascriptInterface(this, "HTMLOUT");
 
-    }
+        m_NewsUrl = getArguments().getString(URL_KEY);
+        s_NewsUrl = m_NewsUrl;
 
-    private void showThemeBody(String body) {
-        try {
 
-            getActivity().setTitle(m_Title);
-            webView.loadDataWithBaseURL("\"file:///android_asset/\"", body, "text/html", "UTF-8", null);
-            for(int i = 0; i <= App.getInstance().getTabItems().size()-1; i++){
-                if(App.getInstance().getTabItems().get(i).getTag().equals(getTag())) {
-                    App.getInstance().getTabItems().get(i).setTitle(m_Title);
-                    App.getInstance().getTabItems().get(i).setUrl(getUrl());
-                    TabDrawerMenu.notifyDataSetChanged();
-                    return;
+        FloatingActionButton fabComment = (FloatingActionButton) findViewById(R.id.fab);
+        setHideFab(fabComment);
+        fabComment.setColorNormal(App.getInstance().getColorAccent("Accent"));
+        fabComment.setColorPressed(App.getInstance().getColorAccent("Pressed"));
+        fabComment.setColorRipple(App.getInstance().getColorAccent("Pressed"));
+        if(Client.getInstance().getLogined()&!PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar", false))
+            fabComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    respond();
                 }
-            }
+            });
+        else
+            fabComment.setVisibility(View.GONE);
 
-        } catch (Exception ex) {
-            AppLog.e(getContext(), ex);
-        }
-    }
-
-    private void saveHistory(String nextUrl) {
-        if (m_FromHistory) {
-            m_FromHistory = false;
-            return;
-        }
-//        URI redirectUrl = Client.getInstance().getRedirectUri();
-//        if (redirectUrl != null)
-//            m_History.add(redirectUrl.toString());
-//        else
-        if (m_NewsUrl != null && !TextUtils.isEmpty(m_NewsUrl) && !m_NewsUrl.equals(nextUrl)) {
-            History history = new History();
-            history.url = m_NewsUrl;
-            history.scrollX = m_ScrollX;
-            history.scrollY = m_ScrollY;
-            m_History.add(history);
-        }
+        return view;
     }
 
     @Override
@@ -675,7 +318,7 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
             menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     try {
-                       saveHtml();
+                        saveHtml();
                     } catch (Exception ex) {
                         return false;
                     }
@@ -683,85 +326,225 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
                 }
             });
         }
-/*
-        item = menu.add(R.string.Close).setIcon(R.drawable.ic_close_white_24dp);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-            public boolean onMenuItemClick(MenuItem item) {
-                getActivity().finish();
-                return true;
-            }
-        });
-        */
-
-
     }
-
-    private String m_Title = "Новости";
 
     public void saveHtml() {
         try {
             webView.loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
         } catch (Throwable ex) {
-            AppLog.e(getContext(), ex);
+            AppLog.e(getActivity(), ex);
         }
     }
 
     @JavascriptInterface
     public void saveHtml(final String html) {
-        getContext().runOnUiThread(new Runnable() {
+        getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new SaveHtml(getContext(), html, "News");
+                new SaveHtml(getActivity(), html, "News");
             }
         });
     }
 
-    private void like() {
-        Toast.makeText(getContext(), "Запрос отправлен", Toast.LENGTH_SHORT).show();
-        new Thread(new Runnable() {
-            public void run() {
-
-                Exception ex = null;
-
-
-                try {
-                    Client.getInstance().likeNews(getPostId());
-                } catch (Exception e) {
-                    ex = e;
-                }
-
-                final Exception finalEx = ex;
-                mHandler.post(new Runnable() {
-                    public void run() {
-                        try {
-                            if (finalEx != null) {
-                                Toast.makeText(getContext(), "Ошибка запроса", Toast.LENGTH_SHORT).show();
-                                AppLog.e(getContext(), finalEx);
-                            } else {
-                                Toast.makeText(getContext(), "Запрос выполнен", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (Exception ex) {
-                            AppLog.e(getContext(), ex);
-                        }
-                    }
-                });
-            }
-        }).start();
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        WebView.HitTestResult hitTestResult = webView.getHitTestResult();
+        switch (hitTestResult.getType()) {
+            case WebView.HitTestResult.UNKNOWN_TYPE:
+            case WebView.HitTestResult.EDIT_TEXT_TYPE:
+                break;
+            default:
+                ExtUrl.showSelectActionDialog(mHandler, getActivity(),
+                        m_Title, "", hitTestResult.getExtra(), "", "", "", "", "");
+        }
     }
 
-    private String getUrl() {
-        return m_NewsUrl;
+    @Override
+    public boolean onBackPressed() {
+        if (!m_History.isEmpty()) {
+            m_FromHistory = true;
+            History history = m_History.get(m_History.size() - 1);
+            m_History.remove(m_History.size() - 1);
+            m_ScrollX = history.scrollX;
+            m_ScrollY = history.scrollY;
+            showNews(history.url);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private final static int FILECHOOSER_RESULTCODE = 1;
+    @JavascriptInterface
+    public void showChooseCssDialog() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    intent.setType("file/*");
+
+                    // intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
+                    startActivityForResult(intent, FILECHOOSER_RESULTCODE);
+
+                } catch (ActivityNotFoundException ex) {
+                    Toast.makeText(getActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
+                } catch (Exception ex) {
+                    AppLog.e(getActivity(), ex);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode,
+                                 Intent data) {
+        getActivity();
+        if (resultCode == Activity.RESULT_OK && requestCode == FILECHOOSER_RESULTCODE) {
+            String attachFilePath = FileUtils.getRealPathFromURI(getActivity(), data.getData());
+            String cssData = FileUtils.readFileText(attachFilePath)
+                    .replace("\\", "\\\\")
+                    .replace("'", "\\'").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
+            webView.evalJs("window['HtmlInParseLessContent']('" + cssData + "');");
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (s_NewsUrl != null) {
+            s_NewsUrl = null;
+            showNews(m_NewsUrl);
+        }
+
+        if (m_Data != null) {
+            String url = m_Data.toString();
+            m_Data = null;
+            if (IntentActivity.isNews(url)) {
+                showNews(url);
+            }
+        }
+    }
+
+    private class MyWebViewClient extends WebViewClient {
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            m_ScrollY = 0;
+            m_ScrollX = 0;
+
+            if (isReplyUrl(url))
+                return true;
+
+            if (isAnchor(url)) {
+                showAnchor(url);
+                return true;
+            }
+
+            if (IntentActivity.isNews(url)) {
+                showNews(url);
+                return true;
+            }
+
+            if (IntentActivity.isYoutube(url)) {
+                PlayerActivity.showYoutubeChoiceDialog(getActivity(), url);
+                return true;
+            }
+
+            IntentActivity.tryShowUrl(getActivity(), mHandler, url, true, false);
+
+            return true;
+        }
+    }
+
+
+    private Boolean isReplyUrl(String url) {
+        Matcher m = Pattern.compile("http://4pdaservice.org/(\\d+)/(\\d+)").matcher(url);
+        if (m.find()) {
+            respond(m.group(1), m.group(2), null);
+            return true;
+        }
+
+        if (Pattern.compile("http://4pdaservice.org/#commentform").matcher(url).find()) {
+            respond();
+            return true;
+        }
+
+        return false;
+    }
+
+    private String getPostId() {
+        final Pattern pattern = Pattern.compile("http://4pda.ru/\\d{4}/\\d{2}/\\d{2}/(\\d+)");
+        Matcher m = pattern.matcher(m_NewsUrl);
+        if (m.find()) {
+            return m.group(1);
+        }
+        return null;
+    }
+
+    public static Boolean isAnchor(String url) {
+        final Pattern pattern = Pattern.compile("http://4pda.ru/\\d{4}/\\d{2}/\\d{2}/\\d+/*#.*");
+        return pattern.matcher(url).find();
+    }
+
+    private void showAnchor(String url) {
+        final Pattern pattern = Pattern.compile("http://4pda.ru/\\d{4}/\\d{2}/\\d{2}/\\d+/*#(.*)");
+        Matcher m = pattern.matcher(url);
+        if (m.find()) {
+            webView.loadUrl("javascript:scrollToElement('" + m.group(1) + "')");
+        }
     }
 
     private class NewsHtmlBuilder extends HtmlBuilder {
         @Override
         public void addStyleSheetLink(StringBuilder sb) {
-            sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file://" + getStyle() + "\" />\n");
+            sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file://").append(getStyle()).append("\" />\n");
             sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/fonts/roboto/import.css\"/>\n");
             sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/fonts/flaticons/import.css\"/>\n");
             sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/fonts/fontello/import.css\"/>\n");
             sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/forum/css/youtube_video.css\" type=\"text/css\" />\n");
+        }
+    }
+
+    private void showNews(String url) {
+        webView.setWebViewClient(new MyWebViewClient());
+        saveHistory(url);
+        m_NewsUrl = url;
+        GetNewsTask getThemeTask = new GetNewsTask(getActivity());
+        getThemeTask.execute(url.replace("|", ""));
+    }
+
+    public void showBody(String body) {
+        super.showBody();
+        try {
+            getActivity().setTitle(m_Title);
+            webView.loadDataWithBaseURL("\"file:///android_asset/\"", body, "text/html", "UTF-8", null);
+        } catch (Exception ex) {
+            AppLog.e(getActivity(), ex);
+        }
+    }
+
+    private void saveHistory(String nextUrl) {
+        if (m_FromHistory) {
+            m_FromHistory = false;
+            return;
+        }
+        if (m_NewsUrl != null && !TextUtils.isEmpty(m_NewsUrl) && !m_NewsUrl.equals(nextUrl)) {
+            History history = new History();
+            history.url = m_NewsUrl;
+            history.scrollX = m_ScrollX;
+            history.scrollY = m_ScrollY;
+            m_History.add(history);
         }
     }
 
@@ -795,8 +578,6 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
                     additionalHeaders.put("comment_reply_ID", ReplyId);
                     additionalHeaders.put("comment_reply_dp", Dp);
                     m_ThemeBody = transformBody(client.performPost("http://4pda.ru/wp-comments-post.php", additionalHeaders, "UTF-8"));
-
-
                 }
                 return true;
             } catch (Throwable e) {
@@ -920,16 +701,14 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
 
             if (isCancelled()) return;
             if (success) {
-                showThemeBody(m_ThemeBody);
+                showBody(m_ThemeBody);
 
             } else {
-                getContext().setTitle(ex.getMessage());
+                getActivity().setTitle(ex.getMessage());
                 webView.loadDataWithBaseURL("\"file:///android_asset/\"", m_ThemeBody, "text/html", "UTF-8", null);
-                AppLog.e(getContext(), ex);
+                AppLog.e(getActivity(), ex);
             }
         }
-
-
     }
 
     public void respond() {
@@ -937,8 +716,6 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
     }
 
     public void respond(final String replyId, final String dp, String user) {
-
-
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.news_comment_edit, null);
 
@@ -946,7 +723,7 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
         final EditText message_edit = (EditText) layout.findViewById(R.id.comment);
         if (user != null)
             message_edit.setText("<b>" + URLDecoder.decode(user) + ",</b>");
-        new MaterialDialog.Builder(getContext())
+        new MaterialDialog.Builder(getActivity())
                 .title(R.string.LeaveComment)
                 .customView(layout,true)
                 .positiveText(R.string.Send)
@@ -956,11 +733,11 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
                     public void onPositive(MaterialDialog dialog) {
                         String message = message_edit.getText().toString();
                         if (TextUtils.isEmpty(message.trim())) {
-                            Toast.makeText(getContext(), "Текст не можут быть пустым!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Текст не можут быть пустым!", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
-                        GetNewsTask getThemeTask = new GetNewsTask(getContext());
+                        GetNewsTask getThemeTask = new GetNewsTask(getActivity());
                         getThemeTask.Comment = message;
                         getThemeTask.ReplyId = replyId;
                         getThemeTask.Dp = dp;
@@ -970,34 +747,41 @@ public class NewsFragment extends WebViewFragment implements IBrickFragment,Medi
                 .show();
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (webView!=null) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    webView.onPause();
+    private void like() {
+        Toast.makeText(getActivity(), "Запрос отправлен", Toast.LENGTH_SHORT).show();
+        new Thread(new Runnable() {
+            public void run() {
+
+                Exception ex = null;
+
+                try {
+                    Client.getInstance().likeNews(getPostId());
+                } catch (Exception e) {
+                    ex = e;
                 }
-            }, 1500);
-            webView.setWebViewClient(null);
-        }
+
+                final Exception finalEx = ex;
+                mHandler.post(new Runnable() {
+                    public void run() {
+                        try {
+                            if (finalEx != null) {
+                                Toast.makeText(getActivity(), "Ошибка запроса", Toast.LENGTH_SHORT).show();
+                                AppLog.e(getActivity(), finalEx);
+                            } else {
+                                Toast.makeText(getActivity(), "Запрос выполнен", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception ex) {
+                            AppLog.e(getActivity(), ex);
+                        }
+                    }
+                });
+            }
+        }).start();
     }
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        webView.setWebViewClient(null);
-
-    }
-
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        webView.setWebViewClient(null);
+        webView = null;
     }
 }

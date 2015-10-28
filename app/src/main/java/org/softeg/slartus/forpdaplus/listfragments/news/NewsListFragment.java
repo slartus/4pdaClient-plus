@@ -159,14 +159,14 @@ public class NewsListFragment extends BaseTaskListFragment {
                 .resetViewBeforeLoading(false)  // default
                 .cacheInMemory(true)
                 .cacheOnDisc(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
+                //.bitmapConfig(Bitmap.Config.RGB_565)
                 .handler(new Handler())
                 .build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                 .threadPoolSize(5)
                 .threadPriority(Thread.MIN_PRIORITY)
                 .denyCacheImageMultipleSizesInMemory()
-                .memoryCache(new UsingFreqLimitedMemoryCache(10 * 1024 * 1024)) // 2 Mb
+                .memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024)) // 2 Mb
                 .discCacheFileNameGenerator(new HashCodeFileNameGenerator())
                 .defaultDisplayImageOptions(options)
                 .build();
@@ -231,7 +231,7 @@ public class NewsListFragment extends BaseTaskListFragment {
             //((MainActivity)getActivity()).selectItem(new FavoritesBrickInfo());
             ((MainActivity)getActivity())
                     .addTab(news.getTitle().toString(), news.getUrl(),
-                            new NewsFragment().newInstance(getActivity(),news.getUrl()));
+                            NewsFragment.newInstance(getActivity(), news.getUrl()));
             mAdapter.notifyDataSetChanged();
 
         } catch (Throwable ex) {

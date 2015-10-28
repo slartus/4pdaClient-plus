@@ -61,7 +61,7 @@ public class AdvWebView extends WebView {
         }
 
         setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());
-        loadData("<html><head></head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8");
+        //loadData("<html><head></head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8");
     }
 
     private Point m_LastMotionEvent = null;
