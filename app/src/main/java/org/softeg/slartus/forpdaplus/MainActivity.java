@@ -87,8 +87,10 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         super.onCreate(saveInstance);
         lastTheme = App.getInstance().getThemeStyleResID();
         try {
+            Log.e("kek","0");
             if (checkIntent())
                 return;
+            Log.e("kek","-1");
             setContentView(R.layout.main);
 
             toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -203,6 +205,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     @Override
     protected void onNewIntent(Intent intent) {
         checkIntent(intent);
+        Log.e("Kek","onnewintent");
     }
 
     private boolean checkIntent() {
@@ -210,20 +213,25 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     }
 
     private boolean checkIntent(final Intent intent) {
+        Log.e("kek","1");
         if (IntentActivity.checkSendAction(this, intent))
             return false;
+        Log.e("kek","2");
         //intent.setData(Uri.parse("http://4pda.ru/forum/lofiversion/index.php?t365142-1650.html"));
         if (intent.getData() != null) {
+            Log.e("kek","3");
             final String url = intent.getData().toString();
             if (IntentActivity.tryShowUrl(this, mHandler, url, false, true)) {
+                Log.e("kek","4");
                 return true;
             }
+            Log.e("kek","5");
             startNextMatchingActivity(intent);
-
             Toast.makeText(this, "Не умею обрабатывать ссылки такого типа\n" + url, Toast.LENGTH_LONG).show();
             finish();
             return true;
         }
+        Log.e("kek","6");
         return false;
     }
 
@@ -345,6 +353,14 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
             transaction.commit();
             endActionFragment(title);
         }
+    }
+    public void addTabByIntent(String url, Fragment fragment){
+        Log.e("kek", getIntent().getAction()+" "+getIntent().getData());
+        //addTab("", url, fragment);
+        mTabDraweMenu.addTab("", url, tabPrefix + App.getInstance().getTabIterator(), fragment, true);
+        new MaterialDialog.Builder(this)
+                .title(url)
+                .show();
     }
 
     public void removeTab(String tag){

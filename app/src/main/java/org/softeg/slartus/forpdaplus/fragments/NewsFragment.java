@@ -64,7 +64,7 @@ import java.util.regex.Pattern;
 /**
  * Created by radiationx on 17.10.15.
  */
-public class NewsFragment extends WebViewFragment implements IBrickFragment,MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
+public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
     private static final String URL_KEY = "Url";
     private static final String TAG = "NewsActivity";
     private Handler mHandler = new Handler();

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -27,6 +28,7 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.Email;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
+import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.DevDbCatalogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.DevDbModelsFragment;
@@ -150,10 +152,13 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
 
     public static Boolean tryShowNews(Activity context, String url, Boolean finish) {
         if (isNews(url)) {
-            NewsActivity.shownews(context, url);
+            //NewsActivity.shownews(context, url);
+            //Log.e("kek",context+"");
+            //NewsFragment.newInstance(context, url);
+            //Intent eIntent = new Intent(context, MainActivity.class);
+            //context.startActivity(eIntent);
+            //((MainActivity) context).addTabByIntent(url, NewsFragment.newInstance(context, url));
 
-            if (finish)
-                context.finish();
             return true;
         }
         return false;

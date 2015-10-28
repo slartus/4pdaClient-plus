@@ -24,12 +24,13 @@ import org.softeg.slartus.forpdaplus.UniversalFragment;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
+import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 /**
  * Created by radiationx on 17.10.15.
  */
-public abstract class WebViewFragment extends Fragment implements IWebViewContainer{
+public abstract class WebViewFragment extends Fragment implements IBrickFragment, IWebViewContainer{
     public abstract String Prefix();
 
     public abstract WebView getWebView();

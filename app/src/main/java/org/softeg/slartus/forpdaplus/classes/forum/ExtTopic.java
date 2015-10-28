@@ -7,6 +7,7 @@ import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.classes.ForumItem;
 import org.softeg.slartus.forpdaplus.classes.IListItem;
+import org.softeg.slartus.forpdaplus.fragments.ThemeFragment;
 import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
 
 import java.io.Serializable;
@@ -92,7 +93,7 @@ if(m_PagesCount==1)
     }
 
     public static void showActivity(Context context, CharSequence themeId, CharSequence params) {
-        ThemeActivity.showTopicById(context,themeId,params);
+        ThemeFragment.showTopicById(context, themeId, params);
     }
 
     public String getShowBrowserUrl(String params) {
