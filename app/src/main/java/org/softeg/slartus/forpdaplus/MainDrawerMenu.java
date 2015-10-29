@@ -128,7 +128,12 @@ public class MainDrawerMenu {
     public void notifyDataSetChanged(){
         mAdapter.notifyDataSetChanged();
     }
-
+    public ActionBarDrawerToggle getmDrawerToggle(){
+        return mDrawerToggle;
+    }
+    public DrawerLayout getmDrawerLayout(){
+        return mDrawerLayout;
+    }
     public void toggleOpenState() {
         if (mDrawerLayout.isDrawerOpen(mDrawer)) {
             mDrawerLayout.closeDrawer(mDrawer);

@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.fragments;
 
 import android.app.Activity;
 import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -23,12 +24,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -68,9 +74,11 @@ import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.topicview.Curator;
 import org.softeg.slartus.forpdaplus.topicview.DeveloperWebInterface;
 import org.softeg.slartus.forpdaplus.topicview.QuoteEditorDialogFragment;
@@ -78,6 +86,9 @@ import org.softeg.slartus.forpdaplus.topicview.SessionHistory;
 import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
 import org.softeg.slartus.forpdaplus.topicview.TopicViewMenuFragment;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -126,7 +137,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public static void showTopicById(Context context, CharSequence topicId, CharSequence urlParams) {
         String url = String.format("http://4pda.ru/forum/index.php?showtopic=%s%s", topicId, TextUtils.isEmpty(urlParams) ? "" : ("&" + urlParams));
         //showTopicByUrl(context, url);
-        ((MainActivity)context).addTab("", url, newInstance(context, url));
+        ((MainActivity)context).addTab("Тема", url, newInstance(context, url));
     }
 
     public static void showTopicById(Context context, CharSequence topicId) {
@@ -180,7 +191,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     
     @Override
     public WebViewClient MyWebViewClient() {
-        return null;
+        return new MyWebViewClient();
     }
 
     @Override
@@ -207,7 +218,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.theme, container, false);
-
+        setHasOptionsMenu(true);
         lastStyle = App.getInstance().getThemeCssFileName();
         if (Preferences.System.isDevSavePage()|
                 Preferences.System.isDevInterface()|
@@ -222,10 +233,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         //mCurator = new Curator(getActivity());
 
-        //setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL); чтобы поиск начинался при вводе текста
-/*
-        //mQuickPostFragment = (QuickPostFragment) getSupportFragmentManager().findFragmentById(R.id.quick_post_fragment);
-        //mQuickPostFragment.setOnPostSendListener(new QuickPostFragment.PostSendListener() {
+        getActivity().setDefaultKeyMode(Activity.DEFAULT_KEYS_SEARCH_LOCAL);// чтобы поиск начинался при вводе текста
+
+        mQuickPostFragment = (QuickPostFragment) getChildFragmentManager().findFragmentById(R.id.quick_post_fragment);
+        mQuickPostFragment.setOnPostSendListener(new QuickPostFragment.PostSendListener() {
             @Override
             public void onPostExecute(org.softeg.slartus.forpdaplus.controls.quickpost.PostTask.PostResult postResult) {
                 if (postResult.Success) {
@@ -245,7 +256,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         AppLog.e(getActivity(), postResult.Exception, new Runnable() {
                             @Override
                             public void run() {
-                                //mQuickPostFragment.post();
+                                mQuickPostFragment.post();
                             }
                         });
                     else if (!TextUtils.isEmpty(postResult.ForumErrorMessage))
@@ -256,7 +267,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 }
             }
         });
-        */
+
         mQuickPostPanel = (LinearLayout) findViewById(R.id.quick_post_panel);
 
         pnlSearch = (LinearLayout) findViewById(R.id.pnlSearch);
@@ -349,6 +360,20 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         webView.addJavascriptInterface(m_DeveloperWebInterface, DeveloperWebInterface.NAME);
 
 
+        ImageButton up = (ImageButton) findViewById(R.id.btnUp);
+        ImageButton down = (ImageButton) findViewById(R.id.btnDown);
+        up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                webView.pageUp(true);
+            }
+        });
+        down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                webView.pageDown(true);
+            }
+        });
         hideMessagePanel();
         closeSearch();
 
@@ -382,7 +407,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         try {
             m_Topic = (ExtTopic) outState.getSerializable("Topic");
             if (m_Topic != null)
-                //mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
+                mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
             m_LastUrl = outState.getString("LastUrl");
             m_ScrollElement = outState.getString("ScrollElement");
 
@@ -404,7 +429,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 m_LastUrl = sessionHistory.getUrl();
                 m_Topic = sessionHistory.getTopic();
                 if (m_Topic != null)
-                    //mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
+                    mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
                 if (sessionHistory.getBody() == null) {
                     showTheme(sessionHistory.getUrl());
                 } else {
@@ -448,7 +473,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     protected void createActionMenu() {
-        FragmentManager fm = getSupportFragmentManager();
+        FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         mFragment1 = (TopicViewMenuFragment) fm.findFragmentByTag("f1");
         if (mFragment1 == null) {
@@ -458,16 +483,278 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         ft.commit();
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, final MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        try {
+            MenuItem item;
+            boolean pancil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false);
+            if(pancil) {
+                item = menu.add("Написать")
+                        .setIcon(R.drawable.ic_pencil_white_24dp)
+                        .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                            public boolean onMenuItemClick(MenuItem item) {
+                                toggleMessagePanelVisibility();
+                                return true;
+                            }
+                        });
+                item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            }
+            item = menu.add(R.string.Refresh)
+                    .setIcon(R.drawable.ic_refresh_white_24dp)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                        public boolean onMenuItemClick(MenuItem item) {
+                            reloadTopic();
+                            return true;
+                        }
+                    });
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            SubMenu subMenu = menu.addSubMenu(R.string.Attaches)
+                    .setIcon(R.drawable.ic_download_white_24dp);
+
+            subMenu.add("Вложения текущей страницы")
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            showPageAttaches();
+                            return true;
+                        }
+                    });
+            subMenu.add("Все вложения топика")
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            showTopicAttaches();
+                            return true;
+                        }
+                    });
+
+            item = menu.add(R.string.FindOnPage)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                        public boolean onMenuItemClick(MenuItem item) {
+                            onSearchRequested();
+
+                            return true;
+                        }
+                    });
+            item = menu.add(R.string.FindInTopic)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                        public boolean onMenuItemClick(MenuItem item) {
+                            SearchSettingsDialogFragment.showSearchSettingsDialog(getActivity(),
+                                    SearchSettingsDialogFragment.createTopicSearchSettings(getTopic().getId()));
+                            return true;
+                        }
+                    });
+
+            menu.add(R.string.Browser)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                        public boolean onMenuItemClick(MenuItem item) {
+                            try {
+                                Intent marketIntent = new Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse(getLastUrl()));
+                                startActivity(Intent.createChooser(marketIntent, "Выберите"));
+
+
+                            } catch (ActivityNotFoundException e) {
+                                AppLog.e(getActivity(), e);
+                            }
+                            return true;
+                        }
+                    });
+
+            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+            /*if (getInterface() != null)
+                mTopicOptionsMenu = addOptionsMenu(getActivity(), getHandler(), menu, getInterface(),
+                        true, getLastUrl());*/
+
+
+            SubMenu optionsMenu = menu.addSubMenu("Вид");
+            optionsMenu.getItem().setTitle("Вид");
+
+
+            optionsMenu.add(String.format("Аватары (%s)",
+                    App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]))
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(final MenuItem menuItem) {
+                            String[] avatars = App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles);
+                            new MaterialDialog.Builder(getActivity())
+                                    .title("Показывать аватары")
+                                    .cancelable(true)
+                                    .items(avatars)
+                                    .itemsCallbackSingleChoice(Preferences.Topic.getShowAvatarsOpt(), new MaterialDialog.ListCallbackSingleChoice() {
+                                        @Override
+                                        public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence avatars) {
+                                            //if(i==-1) return false;
+
+                                            Preferences.Topic.setShowAvatarsOpt(i);
+                                            menuItem.setTitle(String.format("Показывать аватары (%s)",
+                                                    App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]));
+                                            return true; // allow selection
+                                        }
+                                    })
+                                    .show();
+                            return true;
+                        }
+                    });
+
+            optionsMenu.add("Скрывать верхнюю панель")
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            Preferences.setHideActionBar(!Preferences.isHideActionBar());
+                            setHideActionBar();
+                            menuItem.setChecked(Preferences.isHideActionBar());
+                            return true;
+                        }
+                    }).setCheckable(true).setChecked(Preferences.isHideActionBar());
+            if(!pancil) {
+                optionsMenu.add("Скрывать карандаш")
+                        .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                Preferences.setHideFab(!Preferences.isHideFab());
+                                setHideActionBar();
+                                menuItem.setChecked(Preferences.isHideFab());
+                                return true;
+                            }
+                        }).setCheckable(true).setChecked(Preferences.isHideFab());
+            }
+
+            optionsMenu.add("Скрыть стрелки")
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            Preferences.setHideArrows(!Preferences.isHideArrows());
+                            setHideArrows(Preferences.isHideArrows());
+                            menuItem.setChecked(Preferences.isHideArrows());
+                            return true;
+                        }
+                    }).setCheckable(true).setChecked(Preferences.isHideArrows());
+
+            optionsMenu.add("Загр-ть изобр-я (для сессии)")
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            Boolean loadImagesAutomatically1 = getLoadsImagesAutomatically();
+                            setLoadsImagesAutomatically(!loadImagesAutomatically1);
+                            menuItem.setChecked(!loadImagesAutomatically1);
+                            return true;
+                        }
+                    }).setCheckable(true).setChecked(getLoadsImagesAutomatically());
+            optionsMenu.add("Размер шрифта")
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            showFontSizeDialog();
+                            return true;
+                        }
+                    });
+
+            optionsMenu.add("Стиль").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    //showStylesDialog(prefs);
+                    return true;
+                }
+            });
+            optionsMenu.add("Вид как в браузере")
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            Preferences.setBrowserView(!Preferences.isBrowserView());
+                            new MaterialDialog.Builder(getActivity())
+                                    .content("Перезагрузить страницу?")
+                                    .positiveText("Ок")
+                                    .negativeText("Отмена")
+                                    .callback(new MaterialDialog.ButtonCallback() {
+                                        @Override
+                                        public void onPositive(MaterialDialog dialog) {
+                                            showTheme(getLastUrl());
+                                        }
+                                    })
+                                    .show();
+                            menuItem.setChecked(Preferences.isBrowserView());
+                            return true;
+                        }
+                    }).setCheckable(true).setChecked(Preferences.isBrowserView());
+
+            menu.add("Быстрый доступ").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+                    BricksListDialogFragment.showDialog((BricksListDialogFragment.IBricksListDialogCaller) getActivity(),
+                            BricksListDialogFragment.QUICK_LIST_ID,
+                            ListCore.getBricksNames(ListCore.getQuickBricks()), null);
+
+                    return true;
+                }
+            });
+            menu.add("Правила форума").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem item) {
+                    StringBuilder text = new StringBuilder();
+                    try {
+
+                        BufferedReader br = new BufferedReader(new InputStreamReader(App.getInstance().getAssets().open("rules.txt"), "UTF-8"));
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            text.append(line).append("\n");
+                        }
+
+                    } catch (IOException e) {
+                        AppLog.e(getActivity(), e);
+                    }
+                    new MaterialDialog.Builder(getActivity())
+                            .title("Правила форума")
+                            .content(Html.fromHtml(text.toString()))
+                            .positiveText(android.R.string.ok)
+                            .show();
+
+                    return true;
+                }
+            });
+
+            if (Preferences.System.isDevSavePage()) {
+                menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        try {
+                            saveHtml();
+                        } catch (Exception ex) {
+                            return false;
+                        }
+                        return true;
+                    }
+                });
+            }
+
+            if (Preferences.System.isCurator()) {
+                menu.add("Мультимодерация").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        try {
+                            getCurator().showMmodDialog();
+                        } catch (Exception ex) {
+                            return false;
+                        }
+                        return true;
+                    }
+                });
+            }
+            //addCloseMenuItem(menu);
+
+        } catch (Exception ex) {
+            AppLog.e(getActivity(), ex);
+        }
+
+
+    }
+
 
     @Override
     public void onResume() {
         super.onResume();
-        webView.setWebViewClient(new MyWebViewClient());
+        if(m_Topic!=null) {
+            getSupportActionBar().setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
+        }
     }
 
 
     private void hideKeyboard() {
-        //mQuickPostFragment.hideKeyboard();
+        mQuickPostFragment.hideKeyboard();
     }
 
     public Handler getHandler() {
@@ -490,9 +777,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     protected void showQuoteEditor(String url) {
-        DialogFragment quoteEditorDialogFragment = QuoteEditorDialogFragment
-                .newInstance(url);
-        quoteEditorDialogFragment.show(getSupportFragmentManager(), "dialog");
+        DialogFragment quoteEditorDialogFragment = ThemeQuoteEditor
+                .newInstance(url,getTag());
+        quoteEditorDialogFragment.show(getChildFragmentManager(), "dialog");
     }
 
     public void saveHtml() {
@@ -661,7 +948,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 m_LastUrl = sessionHistory.getUrl();
                 m_Topic = sessionHistory.getTopic();
                 if (m_Topic != null)
-                    //mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
+                    mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
                 showBody(sessionHistory.getBody());
             }
             return true;
@@ -677,7 +964,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         @Override
                         public void onPositive(MaterialDialog dialog) {
                             clear();
-                            //ThemeActivity.super.onBackPressed();
+                            //onBackPressed();
+                            ((MainActivity)getActivity()).removeTab(getTag());
                         }
                     })
                     .negativeText("Отмена")
@@ -712,7 +1000,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public String getPostBody() {
-        //m_PostBody = mQuickPostFragment.getPostBody();
+        m_PostBody = mQuickPostFragment.getPostBody();
         return m_PostBody;
     }
 
@@ -934,7 +1222,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
 
         mQuickPostPanel.setVisibility(View.GONE);
-        //mQuickPostFragment.hidePopupWindow();
+        mQuickPostFragment.hidePopupWindow();
         hideKeyboard();
     }
 
@@ -973,7 +1261,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     @Override
     public FragmentManager getSupportFragmentManager() {
-        return getActivity().getSupportFragmentManager();
+        return getChildFragmentManager();
     }
 
     @Override
@@ -994,7 +1282,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             if (resultCode == Activity.RESULT_OK) {
                 String url = data.getStringExtra(EditPostActivity.POST_URL_KEY);
                 assert url != null;
-                //mQuickPostFragment.clearPostBody();
+                mQuickPostFragment.clearPostBody();
 
                 closeSearch();
 
@@ -1180,12 +1468,12 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public void insertTextToPost(final String text) {
-        //mQuickPostFragment.insertTextToPost(text);
+        mQuickPostFragment.insertTextToPost(text);
         showMessagePanel();
     }
 
     public void post() {
-        //mQuickPostFragment.post();
+        mQuickPostFragment.post();
     }
 
     public void nextPage() {
@@ -1237,31 +1525,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         if (m_History.size() >= historyLimit && m_History.size() > 0)
             m_History.get(m_History.size() - historyLimit).setBody(null);
         m_History.add(new SessionHistory(m_Topic, m_LastUrl, topicBody, 0));
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-
-        webView.setWebViewClient(null);
-        webView.setPictureListener(null);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        webView.setWebViewClient(null);
-        webView.setPictureListener(null);
-    }
-
-    public void onBtnUpClick(View view) {
-        webView.pageUp(true);
-    }
-
-    public void onBtnDownClick(View view) {
-        webView.pageDown(true);
     }
 
     private class MyPictureListener implements WebView.PictureListener {
@@ -1520,7 +1783,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
             m_ScrollY = scrollY;
             if (m_Topic != null)
-                //mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
+                mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
             if (isCancelled()) return;
 
             if (success) {

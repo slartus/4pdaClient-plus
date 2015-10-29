@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -75,7 +76,9 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     protected void afterCreate() {
 
     }
-
+    public MainDrawerMenu getmMainDrawerMenu(){
+        return mMainDrawerMenu;
+    }
 
     @Override
     public void onDestroy() {
@@ -87,10 +90,8 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         super.onCreate(saveInstance);
         lastTheme = App.getInstance().getThemeStyleResID();
         try {
-            Log.e("kek","0");
             if (checkIntent())
                 return;
-            Log.e("kek","-1");
             setContentView(R.layout.main);
 
             toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -102,7 +103,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setHomeButtonEnabled(true);
-                getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_drawer);
+                //getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_drawer);
             }
             if(PreferenceManager.getDefaultSharedPreferences(App.getContext()).getBoolean("statusbarTransparent", false)) {
                 if (android.os.Build.VERSION.SDK_INT >= 21)
@@ -152,7 +153,6 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
             mTabDraweMenu = new TabDrawerMenu(this, this);
             mMainDrawerMenu = new MainDrawerMenu(this, this);
 
-
             NotifiersManager notifiersManager = new NotifiersManager(this);
             new DonateNotifier(notifiersManager).start(this);
             new TopicAttentionNotifier(notifiersManager).start(this);
@@ -160,15 +160,6 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         } catch (Throwable ex) {
             AppLog.e(getApplicationContext(), ex);
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            mMainDrawerMenu.toggleOpenState();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -205,7 +196,6 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     @Override
     protected void onNewIntent(Intent intent) {
         checkIntent(intent);
-        Log.e("Kek","onnewintent");
     }
 
     private boolean checkIntent() {
@@ -213,25 +203,19 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     }
 
     private boolean checkIntent(final Intent intent) {
-        Log.e("kek","1");
         if (IntentActivity.checkSendAction(this, intent))
             return false;
-        Log.e("kek","2");
         //intent.setData(Uri.parse("http://4pda.ru/forum/lofiversion/index.php?t365142-1650.html"));
         if (intent.getData() != null) {
-            Log.e("kek","3");
             final String url = intent.getData().toString();
             if (IntentActivity.tryShowUrl(this, mHandler, url, false, true)) {
-                Log.e("kek","4");
                 return true;
             }
-            Log.e("kek","5");
             startNextMatchingActivity(intent);
             Toast.makeText(this, "Не умею обрабатывать ссылки такого типа\n" + url, Toast.LENGTH_LONG).show();
             finish();
             return true;
         }
-        Log.e("kek","6");
         return false;
     }
 
@@ -264,7 +248,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         String currentFragmentTag = String.valueOf(App.getInstance().getCurrentFragmentTag());
 
 
-
+        endActionFragment(title, tag);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         hideFragments(transaction);
         if (tag.equals(currentFragmentTag)) {
@@ -288,7 +272,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
             }
         }
         transaction.commit();
-        endActionFragment(title, tag);
+
     }
 
     public void hideFragments(FragmentTransaction transaction){
@@ -336,7 +320,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         if (getSupportActionBar() != null) {
             getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);// новости выставляют выпадающий список
             getSupportActionBar().setDisplayShowTitleEnabled(true);
-            getSupportActionBar().setSubtitle(null);
+            //getSupportActionBar().setSubtitle(null);
         }
         setTitle(title);
     }
@@ -355,14 +339,15 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         }
     }
     public void addTabByIntent(String url, Fragment fragment){
-        Log.e("kek", getIntent().getAction()+" "+getIntent().getData());
         //addTab("", url, fragment);
         mTabDraweMenu.addTab("", url, tabPrefix + App.getInstance().getTabIterator(), fragment, true);
         new MaterialDialog.Builder(this)
                 .title(url)
                 .show();
     }
-
+    public void tryRemoveTab(String tag){
+        if(!((IBrickFragment)getSupportFragmentManager().findFragmentByTag(tag)).onBackPressed()) removeTab(tag);
+    }
     public void removeTab(String tag){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         hideFragments(transaction);
@@ -372,6 +357,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         transaction.commit();
         mTabDraweMenu.removeTab(tag);
         mMainDrawerMenu.notifyDataSetChanged();
+
     }
 
     public void reload() {

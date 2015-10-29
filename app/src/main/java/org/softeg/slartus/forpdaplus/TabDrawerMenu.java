@@ -263,7 +263,7 @@ public class TabDrawerMenu {
         }
         public void onClick(View v) {
             if(App.getInstance().getTabItems().size()>1) {
-                ((MainActivity) getContext()).removeTab(tag);
+                ((MainActivity) getContext()).tryRemoveTab(tag);
             }else {
                 close();
             }

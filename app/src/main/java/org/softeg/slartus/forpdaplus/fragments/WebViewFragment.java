@@ -1,12 +1,16 @@
 package org.softeg.slartus.forpdaplus.fragments;
 
+import android.animation.ValueAnimator;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
@@ -18,6 +22,8 @@ import com.melnykov.fab.FloatingActionButton;
 
 import org.softeg.slartus.forpdaapi.classes.LoginForm;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.MainActivity;
+import org.softeg.slartus.forpdaplus.MainDrawerMenu;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.UniversalFragment;
@@ -48,6 +54,29 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
         return m_WebViewExternals;
     }
 
+    public void animateHamburger(boolean isArrow){
+        final DrawerLayout drawerLayout = ((MainActivity)getActivity()).getmMainDrawerMenu().getmDrawerLayout();
+        final ActionBarDrawerToggle actionBarDrawerToggle = ((MainActivity)getActivity()).getmMainDrawerMenu().getmDrawerToggle();
+        float start = 0, end = 1;
+
+        if(isArrow){
+            start = 1; end = 0;
+            drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        }else{
+            drawerLayout.setDrawerListener(null);
+        }
+        ValueAnimator anim = ValueAnimator.ofFloat(start, end);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float slideOffset = (Float) valueAnimator.getAnimatedValue();
+                actionBarDrawerToggle.onDrawerSlide(drawerLayout, slideOffset);
+            }
+        });
+        anim.setInterpolator(new DecelerateInterpolator());
+        anim.setDuration(250);
+        anim.start();
+    }
 
     public void showBody(){
         for(int i = 0; i <= App.getInstance().getTabItems().size()-1; i++){
@@ -64,10 +93,12 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
         super.onResume();
         getWebView().onResume();
         getWebView().setWebViewClient(MyWebViewClient());
+        //animateHamburger(false);
     }
 
     @Override
     public void onPause() {
+        //animateHamburger(true);
         super.onPause();
         if (getWebView()!=null) {
             new Handler().postDelayed(new Runnable() {
@@ -77,13 +108,18 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
                 }
             }, 1500);
             getWebView().setWebViewClient(null);
+            getWebView().setPictureListener(null);
         }
+        getSupportActionBar().setSubtitle(null);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        getWebView().setWebViewClient(null);
+        if (getWebView()!=null) {
+            getWebView().setWebViewClient(null);
+            getWebView().setPictureListener(null);
+        }
     }
 
     @Override
