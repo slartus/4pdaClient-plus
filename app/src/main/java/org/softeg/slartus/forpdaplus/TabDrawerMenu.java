@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,7 +138,7 @@ public class TabDrawerMenu {
                 if(tag.equals(App.getInstance().getCurrentFragmentTag()))
                     App.getInstance().setCurrentFragmentTag(App.getInstance().getTabItems().get(App.getInstance().getLastTabPosition(i)).getTag());
 
-                ((MainActivity)getContext()).showFragmentByTag(App.getInstance().getCurrentFragmentTag());
+                ((MainActivity)getContext()).showFragmentByTag(App.getInstance().getCurrentFragmentTag(), true);
                 ((MainActivity)getContext()).endActionFragment(getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
                 adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
                 mListView.setAdapter(adapter);
@@ -157,7 +158,7 @@ public class TabDrawerMenu {
         return mDrawerLayout.isDrawerOpen(mDrawer);
     }
 
-    private void selectTab(TabItem tabItem) {
+    public void selectTab(TabItem tabItem) {
         mSelectItemListener.selectTab(tabItem);
         adapter.notifyDataSetChanged();
     }
@@ -176,39 +177,7 @@ public class TabDrawerMenu {
     }
 
 
-    public class TabItem{
-        private String title;
-        private String url;
-        private String tag;
-        private Fragment fragment;
 
-        public TabItem(String title, String url, String tag, Fragment fragment){
-            this.title = title;
-            this.url = url;
-            this.tag = tag;
-            this.fragment = fragment;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-        public String getUrl() {
-            return url;
-        }
-        public String getTag() {
-            return tag;
-        }
-        public Fragment getFragment() {
-            return fragment;
-        }
-
-        public void setTitle(String title){
-            this.title = title;
-        }
-        public void setUrl(String url){
-            this.url = url;
-        }
-    }
     public class TabAdapter extends ArrayAdapter{
         final LayoutInflater inflater;
         List<TabItem> mObjects = null;

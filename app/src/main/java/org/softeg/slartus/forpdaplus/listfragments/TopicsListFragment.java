@@ -30,7 +30,6 @@ import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
-import org.softeg.slartus.forpdaplus.fragments.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.SortedListAdapter;
 import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.FavoritesBrickInfo;

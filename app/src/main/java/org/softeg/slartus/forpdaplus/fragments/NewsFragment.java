@@ -43,14 +43,12 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.History;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.video.PlayerActivity;
 
@@ -231,6 +229,18 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         else
             fabComment.setVisibility(View.GONE);
 
+        if (s_NewsUrl != null) {
+            s_NewsUrl = null;
+            showNews(m_NewsUrl);
+        }
+
+        if (m_Data != null) {
+            String url = m_Data.toString();
+            m_Data = null;
+            if (IntentActivity.isNews(url)) {
+                showNews(url);
+            }
+        }
         return view;
     }
 
@@ -413,18 +423,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     @Override
     public void onResume() {
         super.onResume();
-        if (s_NewsUrl != null) {
-            s_NewsUrl = null;
-            showNews(m_NewsUrl);
-        }
 
-        if (m_Data != null) {
-            String url = m_Data.toString();
-            m_Data = null;
-            if (IntentActivity.isNews(url)) {
-                showNews(url);
-            }
-        }
     }
 
     private class MyWebViewClient extends WebViewClient {

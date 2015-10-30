@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.fragments;
+package org.softeg.slartus.forpdaplus.fragments.topic;
 
 /**
  * Created by radiationx on 28.10.15.

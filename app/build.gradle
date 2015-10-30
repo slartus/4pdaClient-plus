@@ -10,7 +10,7 @@ android {
 
         targetSdkVersion 23
         versionCode 541
-        versionName "3.1.4 Beta2"
+        versionName "3.1.4b3"
     }
     buildTypes {
         release {

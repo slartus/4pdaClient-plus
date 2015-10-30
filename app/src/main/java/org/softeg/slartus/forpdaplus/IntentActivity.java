@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -29,6 +28,8 @@ import org.softeg.slartus.forpdaplus.common.Email;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
+import org.softeg.slartus.forpdaplus.fragments.topic.EditPostFragment;
+import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.DevDbCatalogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.DevDbModelsFragment;
@@ -46,7 +47,6 @@ import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
-import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.profile.DeviceDeleteDialog;
 import org.softeg.slartus.forpdaplus.profile.DeviceEditDialog;
@@ -55,7 +55,6 @@ import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsChatActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
-import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
 import org.softeg.slartus.forpdaplus.video.PlayerActivity;
 
 import java.io.UnsupportedEncodingException;
@@ -152,12 +151,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
 
     public static Boolean tryShowNews(Activity context, String url, Boolean finish) {
         if (isNews(url)) {
-            //NewsActivity.shownews(context, url);
-            //NewsFragment.newInstance(context, url);
-            //Intent eIntent = new Intent(context, MainActivity.class);
-            //context.startActivity(eIntent);
-            //((MainActivity) context).addTabByIntent(url, NewsFragment.newInstance(context, url));
-
+            MainActivity.addTabByIntent(url, NewsFragment.newInstance(context, url));
             return true;
         }
         return false;
@@ -384,8 +378,6 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
                 || uri.getHost().toLowerCase().contains("mzstatic.com"))) {
             if (isTheme(uri)) {
                 showTopic(context, url);
-                if (finishActivity)
-                    context.finish();
                 return true;
             }
 
@@ -461,9 +453,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
     }
 
     public static void showTopic(Activity context, String url) {
-        Intent themeIntent = new Intent(context, ThemeActivity.class);
-        themeIntent.setData(Uri.parse(url));
-        context.startActivity(themeIntent);
+        MainActivity.addTabByIntent(url, ThemeFragment.newInstance(context, url));
     }
 
     private static boolean tryFavorites(Activity context, String url, Boolean finishActivity) {
@@ -530,7 +520,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
                 TextUtils.isEmpty(uri.getQueryParameter("p")))
             return false;
 
-        EditPostActivity.editPost(context, uri.getQueryParameter("f"), uri.getQueryParameter("t"), uri.getQueryParameter("p"), authKey);
+        EditPostFragment.editPost(context, uri.getQueryParameter("f"), uri.getQueryParameter("t"), uri.getQueryParameter("p"), authKey, App.getInstance().getCurrentFragmentTag());
 
         if (finish)
             context.finish();

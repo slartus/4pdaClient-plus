@@ -16,7 +16,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.post.EditPostActivity;
+import org.softeg.slartus.forpdaplus.fragments.topic.EditPostFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 public class QuickPostFragment extends Fragment {
@@ -28,7 +28,10 @@ public class QuickPostFragment extends Fragment {
 
 
     private EditText mPostEditText;
-
+    private String parentTag = "";
+    public void setParentTag(String tag){
+        parentTag = tag;
+    }
 
     private PopupPanelView mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_ALL);
 
@@ -121,8 +124,8 @@ public class QuickPostFragment extends Fragment {
         send_button.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                EditPostActivity.newPost(getActivity(), mForumId, mTopicId, mAuthKey,
-                        getPostBody());
+                EditPostFragment.newPost(getActivity(), mForumId, mTopicId, mAuthKey,
+                        getPostBody(), parentTag);
                 return true;
             }
         });

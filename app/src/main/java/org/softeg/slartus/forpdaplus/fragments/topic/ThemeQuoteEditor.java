@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.fragments;
+package org.softeg.slartus.forpdaplus.fragments.topic;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -19,7 +19,6 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.HtmlUtils;
-import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

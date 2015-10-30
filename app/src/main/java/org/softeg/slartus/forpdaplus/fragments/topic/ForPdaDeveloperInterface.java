@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.fragments;
+package org.softeg.slartus.forpdaplus.fragments.topic;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;

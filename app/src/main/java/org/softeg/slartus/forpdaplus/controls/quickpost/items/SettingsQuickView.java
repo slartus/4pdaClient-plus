@@ -1,8 +1,6 @@
 package org.softeg.slartus.forpdaplus.controls.quickpost.items;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +10,6 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 
@@ -56,6 +52,7 @@ public class SettingsQuickView extends BaseQuickView {
         enableSign.setLayoutParams(params);
         linearLayout.addView(enableSign);
 
+        /*
         extendedFormButton = new AppCompatButton(getContext());
         extendedFormButton.setText("Расширенная форма");
         extendedFormButton.setLayoutParams(params);
@@ -71,6 +68,7 @@ public class SettingsQuickView extends BaseQuickView {
             }
         });
         linearLayout.addView(extendedFormButton);
+        */
 
 //        attachesButton = new Button(getContext());
 //        attachesButton.setText("Прикреплённые файлы");

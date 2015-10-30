@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.fragments;
+package org.softeg.slartus.forpdaplus.fragments.topic;
 
 import android.app.Activity;
 import android.app.SearchManager;
@@ -27,7 +27,6 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -69,6 +68,7 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewDialogFragment;
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
+import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
@@ -81,7 +81,6 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.topicview.Curator;
 import org.softeg.slartus.forpdaplus.topicview.DeveloperWebInterface;
-import org.softeg.slartus.forpdaplus.topicview.QuoteEditorDialogFragment;
 import org.softeg.slartus.forpdaplus.topicview.SessionHistory;
 import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
 import org.softeg.slartus.forpdaplus.topicview.TopicViewMenuFragment;
@@ -134,16 +133,23 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         fragment.setArguments(args);
         return fragment;
     }
-    public static void showTopicById(Context context, CharSequence topicId, CharSequence urlParams) {
-        String url = String.format("http://4pda.ru/forum/index.php?showtopic=%s%s", topicId, TextUtils.isEmpty(urlParams) ? "" : ("&" + urlParams));
-        //showTopicByUrl(context, url);
-        ((MainActivity)context).addTab("Тема", url, newInstance(context, url));
+
+    public static String getThemeUrl(CharSequence topicId){
+        return "http://4pda.ru/forum/index.php?showtopic=" + topicId;
+    }
+    public static String getThemeUrl(CharSequence topicId, CharSequence urlParams){
+        return String.format("http://4pda.ru/forum/index.php?showtopic=%s%s", topicId, TextUtils.isEmpty(urlParams) ? "" : ("&" + urlParams));
     }
 
-    public static void showTopicById(Context context, CharSequence topicId) {
-        String url = "http://4pda.ru/forum/index.php?showtopic=" + topicId;
-        showTopicByUrl(context, url);
+    public static void showTopicById(Context context, CharSequence topicId, CharSequence urlParams) {
+        String url = getThemeUrl(topicId, urlParams);
+        //((MainActivity) context).addTab("Тема", url, newInstance(context, url));
+        MainActivity.addTabByIntent("Тема", url, newInstance(context, url));
     }
+    public static void showTopicById(Context context, CharSequence topicId) {
+        showTopicByUrl(context, getThemeUrl(topicId));
+    }
+
 
     public static void showTopicByUrl(Context context, CharSequence url) {
         Intent intent = new Intent(context, ThemeActivity.class);
@@ -236,6 +242,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         getActivity().setDefaultKeyMode(Activity.DEFAULT_KEYS_SEARCH_LOCAL);// чтобы поиск начинался при вводе текста
 
         mQuickPostFragment = (QuickPostFragment) getChildFragmentManager().findFragmentById(R.id.quick_post_fragment);
+        mQuickPostFragment.setParentTag(getTag());
         mQuickPostFragment.setOnPostSendListener(new QuickPostFragment.PostSendListener() {
             @Override
             public void onPostExecute(org.softeg.slartus.forpdaplus.controls.quickpost.PostTask.PostResult postResult) {
@@ -778,7 +785,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     protected void showQuoteEditor(String url) {
         DialogFragment quoteEditorDialogFragment = ThemeQuoteEditor
-                .newInstance(url,getTag());
+                .newInstance(url, getTag());
         quoteEditorDialogFragment.show(getChildFragmentManager(), "dialog");
     }
 
@@ -1157,7 +1164,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     if (pos == finalDeletePosition) {
                         prepareDeleteMessage(postId);
                     } else if (pos == finalEditPosition) {
-                        EditPostActivity.editPost(getActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, m_Topic.getAuthKey());
+                        EditPostFragment.editPost(getActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, m_Topic.getAuthKey(), getTag());
                     } else  if (pos== finalLinkPosition) {
                         showLinkMenu(org.softeg.slartus.forpdaplus.classes.Post.getLink(m_Topic.getId(), postId), postId);
                     } else if (pos == finalClaimPosition) {
@@ -1454,15 +1461,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     }
 
-    public String getPostText(String postId, String date, String userNick, String innerText) {
-        return org.softeg.slartus.forpdaplus.classes.Post.getQuote(postId, date, userNick, innerText);
-    }
-
-    public void advPost() {
-        EditPostActivity.newPost(getActivity(), m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey(),
-                getPostBody());
-    }
-
     public void showRep(final String userId) {
         UserReputationFragment.showActivity(getActivity(), userId, false);
     }
@@ -1707,7 +1705,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }
 
         protected void onCancelled() {
-            Toast.makeText(getActivity(), "Отменено", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "Отменено", Toast.LENGTH_SHORT).show();
         }
 
         private CharSequence prepareTopicUrl(CharSequence url) {

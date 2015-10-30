@@ -11,11 +11,9 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.util.Log;
 import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -30,7 +28,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdacommon.NotReportException;
-import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
@@ -38,12 +35,14 @@ import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
+import org.softeg.slartus.forpdaplus.listtemplates.NewsPagerBrickInfo;
 import org.softeg.slartus.forpdaplus.mainnotifiers.DonateNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
 import org.softeg.slartus.forpdaplus.mainnotifiers.TopicAttentionNotifier;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
+import org.softeg.slartus.forpdaplus.tabs.TabItem;
 import org.softeg.slartus.forpdaplus.tabs.Tabs;
 
 import java.io.BufferedReader;
@@ -66,11 +65,13 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     MenuFragment mFragment1;
 
     private MainDrawerMenu mMainDrawerMenu;
-    private TabDrawerMenu mTabDraweMenu;
+    private static TabDrawerMenu mTabDraweMenu;
     private RelativeLayout leftDrawer,topInform;
     public Toolbar toolbar;
     boolean top;
     int lastTheme;
+    private static TabItem tabOnIntent = null;
+    private static boolean activityPaused = true;
 
     @Override
     protected void afterCreate() {
@@ -90,10 +91,9 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         super.onCreate(saveInstance);
         lastTheme = App.getInstance().getThemeStyleResID();
         try {
-            if (checkIntent())
-                return;
+            if (checkIntent()&saveInstance!=null) return;
             setContentView(R.layout.main);
-
+            App.getInstance().getTabIterator();
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             if(Build.VERSION.SDK_INT>20) {
                 findViewById(R.id.toolbar_shadow).setVisibility(View.GONE);
@@ -236,7 +236,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
 
         mTabDraweMenu.notifyDataSetChanged();
     }
-    public void selectTab( TabDrawerMenu.TabItem tabItem){
+    public void selectTab(TabItem tabItem){
         selectFragment(tabItem.getTitle(), tabItem.getUrl(), tabItem.getTag(), tabItem.getFragment());
 
         mMainDrawerMenu.notifyDataSetChanged();
@@ -291,9 +291,9 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         getSupportFragmentManager().findFragmentByTag(tag).onResume();
         transaction.show(getSupportFragmentManager().findFragmentByTag(tag));
     }
-    public void showFragmentByTag(String tag){
+    public void showFragmentByTag(String tag, boolean onresume){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        getSupportFragmentManager().findFragmentByTag(tag).onResume();
+        if(onresume) getSupportFragmentManager().findFragmentByTag(tag).onResume();
         transaction.show(getSupportFragmentManager().findFragmentByTag(tag));
         transaction.commit();
     }
@@ -338,13 +338,37 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
             endActionFragment(title);
         }
     }
-    public void addTabByIntent(String url, Fragment fragment){
-        //addTab("", url, fragment);
-        mTabDraweMenu.addTab("", url, tabPrefix + App.getInstance().getTabIterator(), fragment, true);
-        new MaterialDialog.Builder(this)
-                .title(url)
-                .show();
+
+    public static void addTabByIntent(String url, Fragment fragment){
+        addTabByIntent("ForPDA", url, fragment);
     }
+    public static void addTabByIntent(String title, String url, Fragment fragment){
+        App.getInstance().setCurrentFragmentTag(tabPrefix + App.getInstance().getTabIterator());
+
+        //mTabDraweMenu.addTab(title, url, tabPrefix + App.getInstance().getTabIterator(), fragment, false);
+        if(activityPaused){
+            tabOnIntent = new TabItem(title, url, tabPrefix + App.getInstance().getTabIterator(), fragment);
+        }else {
+            mTabDraweMenu.addTab(title, url, tabPrefix + App.getInstance().getTabIterator(), fragment, true);
+        }
+
+    }
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        //if(isNewIntent)
+        if(App.getInstance().getCurrentFragmentTag()==null){
+            BrickInfo brickInfo = ListCore.getRegisteredBrick(Preferences.Lists.getLastSelectedList());
+            if (brickInfo == null)
+                brickInfo = new NewsPagerBrickInfo();
+            selectItem(brickInfo);
+        } else if(tabOnIntent!=null) {
+            mTabDraweMenu.addTab(tabOnIntent.getTitle(), tabOnIntent.getUrl(), tabOnIntent.getTag(), tabOnIntent.getFragment(), true);
+        }
+        tabOnIntent = null;
+        activityPaused = false;
+    }
+
     public void tryRemoveTab(String tag){
         if(!((IBrickFragment)getSupportFragmentManager().findFragmentByTag(tag)).onBackPressed()) removeTab(tag);
     }
@@ -359,6 +383,9 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         mMainDrawerMenu.notifyDataSetChanged();
 
     }
+
+    @Override
+    protected void onResumeFragments() {}
 
     public void reload() {
         Intent intent = getIntent();
@@ -412,6 +439,9 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
                             }
                         }, 3 * 1000);
                     } else {
+                        App.getInstance().setCurrentFragmentTag(null);
+                        App.getInstance().getTabItems().clear();;
+                        App.getInstance().clearTabIterator();
                         appExit();
                     }
                 }else {
@@ -425,6 +455,14 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
             appExit();
         }
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        activityPaused = true;
+    }
+
+
 
     @Override
     public void onResume() {

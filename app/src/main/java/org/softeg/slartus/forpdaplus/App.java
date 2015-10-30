@@ -32,6 +32,7 @@ import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
+import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,6 +81,9 @@ public class App extends android.app.Application {
     public int getTabIterator(){
         return tabIterator;
     }
+    public void clearTabIterator(){
+        tabIterator = 0;
+    }
     public void plusTabIterator() {
         tabIterator++;
     }
@@ -91,9 +95,9 @@ public class App extends android.app.Application {
         currentFragmentTag = s;
     }
 
-    private List<TabDrawerMenu.TabItem> mTabItems = new ArrayList<>();
+    private List<TabItem> mTabItems = new ArrayList<>();
 
-    public List<TabDrawerMenu.TabItem> getTabItems(){
+    public List<TabItem> getTabItems(){
         return mTabItems;
     }
     public int getLastTabPosition(int delPos){
