@@ -28,6 +28,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
+import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -56,6 +57,7 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.classes.ImageFilePath;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView;
@@ -92,7 +94,7 @@ public class EditPostFragment extends Fragment implements IBrickFragment {
     private final int REQUEST_SAVE = 0;
     private final int REQUEST_SAVE_IMAGE = 1;
 
-    private static String parentTag = "";
+    private String parentTag = "";
 
     private View m_BottomPanel;
     private PopupPanelView mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
@@ -108,19 +110,18 @@ public class EditPostFragment extends Fragment implements IBrickFragment {
     }
 
     public static void editPost(Activity context, String forumId, String topicId, String postId, String authKey, String tag) {
-        parentTag = tag;
         String url = thisFragmentUrl+forumId+topicId+postId;
         Bundle args = new Bundle();
         args.putString("forumId", forumId);
         args.putString("themeId", topicId);
         args.putString("postId", postId);
         args.putString("authKey", authKey);
-        ((MainActivity) context).addTab("Ред. сообщения", url, newInstance(context, args));
+        args.putString("parentTag", tag);
+        ((MainActivity) context).addTab("Ред. сообщения в "+App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
     }
 
     public static void newPost(Activity context, String forumId, String topicId, String authKey,
                                final String body, String tag) {
-        parentTag = tag;
         String url = thisFragmentUrl+forumId+topicId+PostApi.NEW_POST_ID;
         Bundle args = new Bundle();
         args.putString("forumId", forumId);
@@ -128,7 +129,8 @@ public class EditPostFragment extends Fragment implements IBrickFragment {
         args.putString("postId", PostApi.NEW_POST_ID);
         args.putString("body", body);
         args.putString("authKey", authKey);
-        ((MainActivity) context).addTab("Ред. сообщения", url, newInstance(context, args));
+        args.putString("parentTag", tag);
+        ((MainActivity) context).addTab("Ответ в "+App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
     }
 
     public static void newPostWithAttach(Context context, String forumId, String topicId, String authKey,
@@ -208,6 +210,7 @@ public class EditPostFragment extends Fragment implements IBrickFragment {
             String topicId = args.getString("themeId");
             String postId = args.getString("postId");
             String authKey = args.getString("authKey");
+            parentTag = args.getString("parentTag");
             m_EditPost = new EditPost();
             m_EditPost.setId(postId);
             m_EditPost.setForumId(forumId);
@@ -755,12 +758,12 @@ public class EditPostFragment extends Fragment implements IBrickFragment {
             }
 
             if (success) {
-
                 ((ThemeFragment)((MainActivity)getActivity())
                         .getSupportFragmentManager()
                         .findFragmentByTag(parentTag))
                         .showTheme(ThemeFragment.getThemeUrl(m_EditPost.getTopicId(), "view=findpost&p=" + m_EditPost.getId()));
-                ((MainActivity)getActivity()).removeTab(getTag());
+                ((MainActivity) getActivity()).removeTab(getTag());
+                MainActivity.selectTabByTag(parentTag);
 
             } else {
                 if (ex != null)
@@ -913,6 +916,7 @@ public class EditPostFragment extends Fragment implements IBrickFragment {
                         .showTheme(String.format("http://4pda.ru/forum/index.php?showtopic=%s&%s", m_EditPost.getTopicId(),
                                 isNewPost() ? "view=getlastpost" : "view=findpost&p=" + m_EditPost.getId()));
                 ((MainActivity)getActivity()).removeTab(getTag());
+                MainActivity.selectTabByTag(parentTag);
             } else {
                 if (ex != null)
                     AppLog.e(getActivity(), ex);

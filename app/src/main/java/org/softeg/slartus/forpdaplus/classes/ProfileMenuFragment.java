@@ -13,6 +13,7 @@ import android.view.SubMenu;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.LoginDialog;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.fragments.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
@@ -98,7 +99,7 @@ private Handler mHandler=new Handler();
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
-                            ProfileWebViewActivity.startActivity(getActivity(), Client.getInstance().UserId, Client.getInstance().getUser());
+                            ProfileFragment.showProfile(Client.getInstance().UserId, Client.getInstance().getUser());
                             return true;
                         }
                     });

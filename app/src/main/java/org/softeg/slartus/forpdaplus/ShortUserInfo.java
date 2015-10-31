@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.fragments.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
@@ -71,14 +72,14 @@ public class ShortUserInfo {
                     imgAvatarSquare.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ProfileWebViewActivity.startActivity(getContext(), client.UserId, client.getUser());
+                            ProfileFragment.showProfile(client.UserId, client.getUser());
                         }
                     });
                 }else {
                     imgAvatar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ProfileWebViewActivity.startActivity(getContext(), client.UserId, client.getUser());
+                            ProfileFragment.showProfile(client.UserId, client.getUser());
                         }
                     });
                 }

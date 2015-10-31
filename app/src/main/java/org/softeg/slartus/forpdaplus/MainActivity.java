@@ -325,7 +325,9 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         setTitle(title);
     }
 
-
+    public static void selectTabByTag(String tag){
+        mTabDraweMenu.selectTab(App.getInstance().getTabByTag(tag));;
+    }
 
     public void addTab(String title, String url, Fragment fragment){
         if(getSupportFragmentManager().findFragmentByTag(url)==null) {
@@ -589,7 +591,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
                     });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-            setOtherMenu();
+            //setOtherMenu();
             menu.add("Правила форума").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {
                     StringBuilder text = new StringBuilder();

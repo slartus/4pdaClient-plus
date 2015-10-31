@@ -105,6 +105,27 @@ public class App extends android.app.Application {
         return delPos;
     }
 
+    public boolean isContainsByTag(String tag){
+        for(TabItem item:getTabItems())
+            if(item.getTag().equals(tag)) return true;
+        return false;
+    }
+    public boolean isContainsByUrl(String url){
+        for(TabItem item:getTabItems())
+            if(item.getUrl().equals(url)) return true;
+        return false;
+    }
+
+    public TabItem getTabByTag(String tag){
+        for(TabItem item:getTabItems())
+            if(item.getTag().equals(tag)) return item;
+        return null;
+    }
+    public TabItem getTabByUrl(String url){
+        for(TabItem item:getTabItems())
+            if(item.getUrl().equals(url)) return item;
+        return null;
+    }
 
     public static boolean getIsDebugMode() {
 

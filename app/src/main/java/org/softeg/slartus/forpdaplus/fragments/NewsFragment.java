@@ -108,15 +108,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         return new MyWebViewClient();
     }
 
-    public ActionBar getSupportActionBar(){
-        return ((AppCompatActivity)getActivity()).getSupportActionBar();
-    }
 
-    @Override
-    public void nextPage() {}
-
-    @Override
-    public void prevPage() {}
 
     @Override
     public boolean dispatchSuperKeyEvent(KeyEvent event) {

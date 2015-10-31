@@ -124,7 +124,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     private Curator mCurator;
     private String lastStyle;
     private ForPdaDeveloperInterface m_DeveloperWebInterface;
-    
+
     View view;
     public static ThemeFragment newInstance(Context context, String url){
         ThemeFragment fragment = new ThemeFragment();
@@ -172,14 +172,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     @Override
-        public Window getWindow() {
+    public Window getWindow() {
         return null;
     }
 
-    @Override 
-    public ActionBar getSupportActionBar() {
-        return ((AppCompatActivity)getActivity()).getSupportActionBar();
-    }
 
     @Override
     public boolean dispatchSuperKeyEvent(KeyEvent event) {
@@ -194,7 +190,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public View findViewById(int id){
         return view.findViewById(id);
     }
-    
+
     @Override
     public WebViewClient MyWebViewClient() {
         return new MyWebViewClient();
@@ -328,7 +324,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             }
         });
 
-        
+
         webView = (AdvWebView) findViewById(R.id.wvBody);
         registerForContextMenu(webView);
         setWebViewSettings(true);
@@ -385,7 +381,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         closeSearch();
 
         showTheme(IntentActivity.normalizeThemeUrl(getArguments().getString(TOPIC_URL_KEY)));
-        
+
         return view;
     }
 
@@ -659,7 +655,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
             optionsMenu.add("Стиль").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
-                    //showStylesDialog(prefs);
+                    showStylesDialog(prefs);
                     return true;
                 }
             });

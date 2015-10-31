@@ -92,9 +92,9 @@ public class TabDrawerMenu {
 
     public void addTab(String name, String url, String tag, Fragment fragment, boolean select){
         TabItem item = null;
-        if(isContainsByUrl(url)){
-            if(select) item = getTabByUrl(url);
-        }else if(!isContainsByTag(tag)) {
+        if(App.getInstance().isContainsByUrl(url)){
+            if(select) item = App.getInstance().getTabByUrl(url);
+        }else if(!App.getInstance().isContainsByTag(tag)) {
 
             item = new TabItem(name, url, tag, fragment);
             App.getInstance().getTabItems().add(item);
@@ -102,31 +102,9 @@ public class TabDrawerMenu {
             adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
             mListView.setAdapter(adapter);
         }else {
-            if(select) item = getTabByTag(tag);
+            if(select) item = App.getInstance().getTabByTag(tag);
         }
         if(select) selectTab(item);
-    }
-
-    public boolean isContainsByTag(String tag){
-        for(TabItem item:App.getInstance().getTabItems())
-            if(item.getTag().equals(tag)) return true;
-        return false;
-    }
-    public boolean isContainsByUrl(String url){
-        for(TabItem item:App.getInstance().getTabItems())
-            if(item.getUrl().equals(url)) return true;
-        return false;
-    }
-
-    public TabItem getTabByTag(String tag){
-        for(TabItem item:App.getInstance().getTabItems())
-            if(item.getTag().equals(tag)) return item;
-        return null;
-    }
-    public TabItem getTabByUrl(String url){
-        for(TabItem item:App.getInstance().getTabItems())
-            if(item.getUrl().equals(url)) return item;
-        return null;
     }
 
     public void removeTab(String tag){
@@ -139,7 +117,7 @@ public class TabDrawerMenu {
                     App.getInstance().setCurrentFragmentTag(App.getInstance().getTabItems().get(App.getInstance().getLastTabPosition(i)).getTag());
 
                 ((MainActivity)getContext()).showFragmentByTag(App.getInstance().getCurrentFragmentTag(), true);
-                ((MainActivity)getContext()).endActionFragment(getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
+                ((MainActivity)getContext()).endActionFragment(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
                 adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
                 mListView.setAdapter(adapter);
                 return;
