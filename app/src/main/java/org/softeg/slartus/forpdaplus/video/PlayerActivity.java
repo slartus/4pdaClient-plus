@@ -189,9 +189,15 @@ public class PlayerActivity extends BaseFragmentActivity {
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             getSupportActionBar().show();
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            if(statusBarShowed) statusBar.setVisibility(View.VISIBLE);
         }
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             getSupportActionBar().hide();
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            if(statusBarShowed) statusBar.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -449,7 +455,7 @@ public class PlayerActivity extends BaseFragmentActivity {
 
                 subMenu = menu.addSubMenu("Качество");
 
-                subMenu.getItem().setIcon(R.drawable.ic_menu_view);
+                subMenu.getItem().setIcon(R.drawable.ic_settings_white_24dp);
                 subMenu.getItem().setTitle("Качество");
 
 
@@ -466,14 +472,14 @@ public class PlayerActivity extends BaseFragmentActivity {
                 }
                 subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
-            subMenu = menu.addSubMenu("Ссылка..").setIcon(R.drawable.ic_menu_share);
+            subMenu = menu.addSubMenu("Ссылка").setIcon(R.drawable.abc_ic_menu_share_mtrl_alpha);
 
             addUrlMenu(getActivity(), subMenu, getMainActivity().getPlayedRequestUrl());
             subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
 
         public void addUrlMenu(final Context context, Menu menu, final String url) {
-            menu.add("Открыть в..").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            menu.add("Открыть в...").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     ExtUrl.showInBrowser(context, url);
                     return true;

@@ -6,11 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
@@ -49,6 +47,7 @@ import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
+import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -58,8 +57,6 @@ import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -107,10 +104,10 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
 
         //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.qms_chat);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
         createActionMenu();
 
         m_HtmlPreferences = new HtmlPreferences();
@@ -142,11 +139,10 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
 
         wvChat.addJavascriptInterface(this, "HTMLOUT");
         wvChat.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
-
         m_WebViewExternals = new WebViewExternals(this);
         m_WebViewExternals.loadPreferences(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
 
-        m_WebViewExternals.setWebViewSettings();
+        m_WebViewExternals.setWebViewSettings(true);
 
         wvChat.setWebViewClient(new MyWebViewClient());
         Intent intent = getIntent();
@@ -161,6 +157,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
             setTitle("QMS");
         else
             setTitle(m_ThemeTitle);
+        if (getSupportActionBar() != null)
             getSupportActionBar().setSubtitle(m_Nick);
         if (!TextUtils.isEmpty(m_PageBody[0])) {
             m_LastBodyLength = m_PageBody[0].length();
@@ -181,9 +178,12 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
 
         }
         hideKeyboard();
+        if (Preferences.System.isDevSavePage()|
+                Preferences.System.isDevInterface()|
+                Preferences.System.isDevStyle())
+            Toast.makeText(this, "Режим разработчика", Toast.LENGTH_SHORT).show();
         //  hidePanels();
     }
-
 
 
     private final static int FILECHOOSER_RESULTCODE = 1;
@@ -213,7 +213,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
     @Override
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent data) {
-        if (resultCode == RESULT_OK &&requestCode == FILECHOOSER_RESULTCODE) {
+        if (resultCode == RESULT_OK && requestCode == FILECHOOSER_RESULTCODE) {
             String attachFilePath = FileUtils.getRealPathFromURI(this, data.getData());
             String cssData = FileUtils.readFileText(attachFilePath)
                     .replace("\\", "\\\\")
@@ -413,7 +413,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         m_UpdateTimeout = ExtPreferences.parseInt(preferences, "qms.chat.update_timer", 15) * 1000;
     }
 
-    private void checkNewQms()  {
+    private void checkNewQms() {
         try {
             Client.getInstance().setQmsCount(QmsApi.getNewQmsCount(Client.getInstance()));
             Client.getInstance().doOnMailListener();
@@ -428,10 +428,10 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         checkNewQms();
         HtmlBuilder htmlBuilder = new HtmlBuilder();
         htmlBuilder.beginHtml("QMS");
-        htmlBuilder.beginBody("onload=\"scrollToElement('bottom_element')\"");
+        htmlBuilder.beginBody("qms","onload=\"scrollToElement('bottom_element')\"",Preferences.Topic.isShowAvatars());
 
-        if(!Preferences.Topic.isShowAvatars())
-            chatBody = chatBody.replaceAll("<img[^>]*?class=\"avatar\"[^>]*>","");
+        if (!Preferences.Topic.isShowAvatars())
+            chatBody = chatBody.replaceAll("<img[^>]*?class=\"avatar\"[^>]*>", "");
         if (m_HtmlPreferences.isSpoilerByButton())
             chatBody = HtmlPreferences.modifySpoiler(chatBody);
         chatBody = HtmlPreferences.modifyBody(chatBody, Smiles.getSmilesDict(), m_HtmlPreferences.isUseLocalEmoticons());
@@ -447,8 +447,9 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
     private void reLoadChatSafe() {
         uiHandler.post(new Runnable() {
             public void run() {
-                setSupportProgressBarIndeterminateVisibility(true);
+                //setSupportProgressBarIndeterminateVisibility(true);
                 //pbLoading.setVisibility(View.VISIBLE);
+                //Toast.makeText(getContext(),"Обновление",Toast.LENGTH_SHORT).show();
             }
         });
         String chatBody = null;
@@ -472,7 +473,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                 checkNewQms();
                 uiHandler.post(new Runnable() {
                     public void run() {
-                        setSupportProgressBarIndeterminateVisibility(false);
+                        //setSupportProgressBarIndeterminateVisibility(false);
                     }
                 });
                 return;
@@ -491,7 +492,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                 if (finalEx == null) {
                     if (finalUpdateTitle)
                         setTitle(m_ThemeTitle);
-                        getSupportActionBar().setSubtitle(m_Nick);
+                    getSupportActionBar().setSubtitle(m_Nick);
                     wvChat.loadDataWithBaseURL("\"file:///android_asset/\"", finalChatBody, "text/html", "UTF-8", null);
                 } else {
                     if ("Такого диалога не существует.".equals(finalEx.getMessage())) {
@@ -515,7 +516,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                     }
 
                 }
-                setSupportProgressBarIndeterminateVisibility(false);
+                //setSupportProgressBarIndeterminateVisibility(false);
             }
         });
 
@@ -560,11 +561,13 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         }, 0L, m_UpdateTimeout);
 
     }
+
     MenuFragment mFragment1;
+
     private void createActionMenu() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        mFragment1= (MenuFragment) fm.findFragmentByTag("f1");
+        mFragment1 = (MenuFragment) fm.findFragmentByTag("f1");
         if (mFragment1 == null) {
             mFragment1 = new MenuFragment();
             ft.add(mFragment1, "f1");
@@ -669,7 +672,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
 
         public SendTask(Context context) {
             dialog = new MaterialDialog.Builder(context)
-                    .progress(true,0)
+                    .progress(true, 0)
                     .content("Отправка сообщения")
                     .build();
         }
@@ -717,7 +720,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         public DeleteTask(Context context) {
 
             dialog = new MaterialDialog.Builder(context)
-                    .progress(true,0)
+                    .progress(true, 0)
                     .content("Удаление сообщений")
                     .build();
         }
@@ -763,7 +766,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         public DeleteDialogTask(Context context, ArrayList<String> ids) {
             m_Ids = ids;
             dialog = new MaterialDialog.Builder(context)
-                    .progress(true,0)
+                    .progress(true, 0)
                     .content("Удаление диалогов")
                     .build();
         }
@@ -847,7 +850,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         });
         new MaterialDialog.Builder(this)
                 .title("Размер шрифта")
-                .customView(v,true)
+                .customView(v, true)
                 .positiveText("OK")
                 .negativeText("Отмена")
                 .callback(new MaterialDialog.ButtonCallback() {
@@ -855,6 +858,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                     public void onPositive(MaterialDialog dialog) {
                         Preferences.setFontSize(Prefix(), seekBar.getProgress() + 1);
                     }
+
                     @Override
                     public void onNegative(MaterialDialog dialog) {
                         getWebView().getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
@@ -882,8 +886,8 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
 
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            super.onCreateOptionsMenu(menu,inflater);
-            MenuItem item = menu.add("Обновить").setIcon(R.drawable.ic_menu_refresh);
+            super.onCreateOptionsMenu(menu, inflater);
+            MenuItem item = menu.add("Обновить").setIcon(R.drawable.ic_refresh_white_24dp);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     new Thread(new Runnable() {
@@ -897,7 +901,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-            item = menu.add("Настройки").setIcon(R.drawable.ic_menu_preferences);
+            item = menu.add("Настройки").setIcon(R.drawable.ic_settings_white_24dp);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     Intent intent = new Intent(getActivity(), QmsChatPreferencesActivity.class);
@@ -908,7 +912,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 
-            item = menu.add("Удалить сообщения").setIcon(R.drawable.ic_menu_delete);
+            item = menu.add("Удалить сообщения").setIcon(R.drawable.ic_delete_white_24dp);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     getInterface().getWebView().loadUrl("javascript:deleteMessages('thread_form');");
@@ -917,7 +921,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-            item = menu.add("Удалить диалог").setIcon(R.drawable.ic_menu_delete);
+            item = menu.add("Удалить диалог").setIcon(R.drawable.ic_delete_white_24dp);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     getInterface().deleteDialog();
@@ -943,7 +947,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
                 }
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-            if(Preferences.System.isDeveloper()){
+            if (Preferences.System.isDevSavePage()) {
                 menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         try {
@@ -971,26 +975,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    String state = Environment.getExternalStorageState();
-                    if (!Environment.MEDIA_MOUNTED.equals(state)) {
-                        Toast.makeText(getContext(), "Внешнее хранилище недоступно!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-
-                    File file = new File(App.getInstance().getExternalFilesDir(null), "qmschat.txt");
-                    FileWriter out = new FileWriter(file);
-                    out.write(html);
-                    out.close();
-                    Uri uri = Uri.fromFile(file);
-
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(uri, "text/plain");
-                    startActivity(intent);
-                } catch (Exception e) {
-                    AppLog.e(QmsChatActivity.this, e);
-                }
+                new SaveHtml(QmsChatActivity.this, html, "QMS");
             }
         });
     }
@@ -1043,7 +1028,7 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
             }
 
 
-            setSupportProgressBarIndeterminateVisibility(false);
+            //setSupportProgressBarIndeterminateVisibility(false);
 
         }
 

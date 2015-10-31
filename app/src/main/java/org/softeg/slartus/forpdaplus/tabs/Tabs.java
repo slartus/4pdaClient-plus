@@ -37,15 +37,7 @@ public final class Tabs {
 
 
         }
-        if (template.equals(UsersTab.TEMPLATE)) {
-            return new UsersTab(context, tabParent);
-        }
-        if (template.equals(TopicReadingUsersTab.TEMPLATE)) {
-            return new TopicReadingUsersTab(context, tabParent);
-        }
-        if (template.equals(TopicWritersTab.TEMPLATE)) {
-            return new TopicWritersTab(context, tabParent);
-        }
+
 
 
         return new QuickStartTab(context, tabId, tabParent,template);
@@ -64,24 +56,6 @@ public final class Tabs {
 
 
         throw new NotReportException(App.getInstance().getString(R.string.UnknownTemplate));
-    }
-
-    /**
-     * Получаем список имён дефолтных шаблонов
-     *
-     */
-    public static String[] getDefaultTemplateNames() {
-        String[] res = new String[templates.length];
-        int length = templates.length;
-        for (int i = 0; i < length; i++) {
-            try {
-                res[i] = getDefaultTemplateName(templates[i]);
-            } catch (Exception ex) {
-                res[i] = ex.getMessage();
-            }
-
-        }
-        return res;
     }
 
     public static String getTemplate(SharedPreferences prefs, String tabId) {

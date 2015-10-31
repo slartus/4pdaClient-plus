@@ -3,8 +3,8 @@ package org.softeg.slartus.forpdaplus.qms;/*
  */
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,117 +13,51 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 import org.softeg.slartus.forpdaapi.IListItem;
+import org.softeg.slartus.forpdaapi.classes.ListData;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.qms.QmsUser;
 import org.softeg.slartus.forpdaapi.qms.QmsUsers;
-import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
-import org.softeg.slartus.forpdaplus.listfragments.BaseTaskListFragment;
+import org.softeg.slartus.forpdaplus.listfragments.BaseLoaderListFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
-import org.softeg.sqliteannotations.BaseDao;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-public class QmsContactsListFragment extends BaseTaskListFragment {
-
-    protected ArrayList<QmsUser> mData = new ArrayList<>();
-    protected ArrayList<QmsUser> mLoadResultList;
-    protected ArrayList<QmsUser> mCacheList = new ArrayList<>();
-
+public class QmsContactsListFragment extends BaseLoaderListFragment {
 
     @Override
-    public void onCreate(android.os.Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-    }
-
     protected BaseAdapter createAdapter() {
-
-        ImageLoader imageLoader = ImageLoader.getInstance();
-        return new QmsContactsAdapter(getContext(), mData, imageLoader);
+        return new QmsContactsAdapter(getActivity(), getData().getItems(), ImageLoader.getInstance());
     }
 
+    @Override
+    protected int getViewResourceId() {
+        return R.layout.list_fragment;
+    }
 
     @Override
-    protected boolean inBackground(boolean isRefresh) throws Throwable {
+    protected ListData loadData(int loaderId, Bundle args) throws Throwable {
+        ListData listData = new ListData();
         ArrayList<QmsUser> users = QmsApi.getQmsSubscribers(Client.getInstance());
+        listData.getItems().addAll(users);
         Client.getInstance().setQmsCount(QmsUsers.unreadMessageUsersCount(users));
         Client.getInstance().doOnMailListener();
-        mLoadResultList = users;
-        return true;
+
+        return listData;
     }
 
-    @Override
-    protected void deliveryResult(boolean isRefresh) {
-        if (isRefresh) {
-            mData.clear();
-        }
-        for (QmsUser item : mLoadResultList) {
-            mData.add(item);
-        }
-
-        mLoadResultList.clear();
-    }
-
-    @Override
-    public void saveCache() throws Exception {
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
-        SQLiteDatabase db = null;
-        try {
-            db = cacheDbHelper.getWritableDatabase();
-            BaseDao<QmsUser> baseDao = new BaseDao<>(App.getContext(), db, getListName(), QmsUser.class);
-            baseDao.createTable(db);
-            for (IListItem item : mData) {
-                QmsUser user = (QmsUser) item;
-                baseDao.insert(user);
-            }
-
-        } finally {
-            if (db != null)
-                db.close();
-        }
-    }
-
-    @Override
-    public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
-        mCacheList = new ArrayList<>();
-
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
-        SQLiteDatabase db = null;
-        try {
-            db = cacheDbHelper.getReadableDatabase();
-            BaseDao<QmsUser> baseDao = new BaseDao<>(App.getContext(), db, getListName(), QmsUser.class);
-            if (baseDao.isTableExists())
-                mCacheList.addAll(baseDao.getAll());
-        } finally {
-            if (db != null)
-                db.close();
-        }
-    }
-
-    @Override
-    protected void deliveryCache() {
-        mData.clear();
-        if (mCacheList != null) {
-            mData.addAll(mCacheList);
-            mCacheList.clear();
-        }
-        setCount();
-        mAdapter.notifyDataSetChanged();
-    }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
@@ -142,17 +76,16 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
         }
     }
 
-
     public class QmsContactsAdapter extends BaseAdapter {
 
-        private ArrayList<QmsUser> dataList;
+        private ArrayList<IListItem> dataList;
 
         final LayoutInflater inflater;
         private ImageLoader imageLoader;
         private Boolean mShowAvatars;
 
 
-        public QmsContactsAdapter(Context context, ArrayList<QmsUser> dataList, ImageLoader imageLoader) {
+        public QmsContactsAdapter(Context context, ArrayList<IListItem> dataList, ImageLoader imageLoader) {
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
@@ -167,10 +100,6 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
             mShowAvatars = Preferences.Topic.isShowAvatars();
 
             super.notifyDataSetChanged();
-        }
-
-        public void setData(ArrayList<QmsUser> data) {
-            this.dataList = data;
         }
 
         @Override
@@ -190,7 +119,10 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-
+            boolean pauseOnScroll = false; // or true
+            boolean pauseOnFling = true; // or false
+            PauseOnScrollListener listener = new PauseOnScrollListener(imageLoader, pauseOnScroll, pauseOnFling);
+            ((ListView)parent.findViewById(android.R.id.list)).setOnScrollListener(listener);
             final ViewHolder holder;
 
             if (convertView == null) {
@@ -200,8 +132,11 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
                 assert convertView != null;
                 //holder.txtIsNew = (ImageView) convertView.findViewById(R.id.txtIsNew);
                 holder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
-                if (!mShowAvatars)
+                holder.imgAvatarSquare = (ImageView) convertView.findViewById(R.id.imgAvatarSquare);
+                if (!mShowAvatars) {
                     holder.imgAvatar.setVisibility(View.GONE);
+                    holder.imgAvatarSquare.setVisibility(View.GONE);
+                }
                 holder.txtCount = (TextView) convertView.findViewById(R.id.txtMessagesCount);
                 holder.txtNick = (TextView) convertView.findViewById(R.id.txtNick);
 
@@ -222,17 +157,18 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
                 //holder.txtIsNew.setImageResource(R.drawable.new_flag);
                 holder.txtNick.setTextAppearance(getContext(), R.style.QmsNew);
                 holder.txtCount.setTextAppearance(getContext(), R.style.QmsNew);
-                switch (PreferenceManager.getDefaultSharedPreferences(getContext()).getString("mainAccentColor", "pink")) {
-                    case "pink":
-                        holder.txtCount.setBackgroundResource(R.drawable.qmsnew);
-                        break;
-                    case "blue":
-                        holder.txtCount.setBackgroundResource(R.drawable.qmsnewblue);
-                        break;
-                    case "gray":
-                        holder.txtCount.setBackgroundResource(R.drawable.qmsnewgray);
-                        break;
-                }
+                if (getContext() != null)
+                    switch (PreferenceManager.getDefaultSharedPreferences(getContext()).getString("mainAccentColor", "pink")) {
+                        case "pink":
+                            holder.txtCount.setBackgroundResource(R.drawable.qmsnew);
+                            break;
+                        case "blue":
+                            holder.txtCount.setBackgroundResource(R.drawable.qmsnewblue);
+                            break;
+                        case "gray":
+                            holder.txtCount.setBackgroundResource(R.drawable.qmsnewgray);
+                            break;
+                    }
 
             } else {
                 //holder.txtIsNew.setImageBitmap(null);
@@ -242,7 +178,35 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
             }
 
             if (user.getAvatarUrl() != null && mShowAvatars) {
-                imageLoader.displayImage(user.getAvatarUrl(), holder.imgAvatar, new ImageLoadingListener() {
+                if(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("isSquareAvarars",false)){
+                    holder.imgAvatar.setVisibility(View.GONE);
+                    imageLoader.displayImage(user.getAvatarUrl(), holder.imgAvatarSquare, new ImageLoadingListener() {
+
+                        @Override
+                        public void onLoadingStarted(String p1, View p2) {
+                            p2.setVisibility(View.INVISIBLE);
+                            //holder.mProgressBar.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onLoadingFailed(String p1, View p2, FailReason p3) {
+                            // holder.mProgressBar.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String p1, View p2, Bitmap p3) {
+                            p2.setVisibility(View.VISIBLE);
+                            // holder.mProgressBar.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onLoadingCancelled(String p1, View p2) {
+
+                        }
+                    });
+                }else {
+                    holder.imgAvatarSquare.setVisibility(View.GONE);
+                    imageLoader.displayImage(user.getAvatarUrl(), holder.imgAvatar, new ImageLoadingListener() {
 
                     @Override
                     public void onLoadingStarted(String p1, View p2) {
@@ -266,13 +230,20 @@ public class QmsContactsListFragment extends BaseTaskListFragment {
 
                     }
                 });
+                }
+
             }
             return convertView;
+        }
+
+        private Context getContext() {
+            return inflater.getContext();
         }
 
         public class ViewHolder {
             //ImageView txtIsNew;
             ImageView imgAvatar;
+            ImageView imgAvatarSquare;
             TextView txtNick;
 
             TextView txtCount;

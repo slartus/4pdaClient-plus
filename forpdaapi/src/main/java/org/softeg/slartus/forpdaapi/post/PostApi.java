@@ -1,8 +1,11 @@
 package org.softeg.slartus.forpdaapi.post;
 
+import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.TextUtils;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,6 +15,7 @@ import org.softeg.slartus.forpdacommon.NotReportException;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,10 +35,7 @@ public class PostApi {
      * @throws IOException
      */
     public static boolean delete(IHttpClient httpClient, String forumId, String topicId, String postId, CharSequence authKey) throws IOException {
-        httpClient.performGet("http://4pda.ru/forum/index.php?act=Mod&CODE=04&f=" + forumId
-                + "&t=" + topicId
-                + "&p=" + postId
-                + "&auth_key=" + authKey);
+        httpClient.performGet("http://4pda.ru/forum/index.php?act=zmod&auth_key="+authKey+"&code=postchoice&tact=delete&selectedpids="+postId);
         return true;// !TODO: проверка ответа
     }
 
@@ -418,18 +419,23 @@ public class PostApi {
 
     }
 
-    public static String sendPost(IHttpClient httpClient, Map<String, String> params,
+    public static String sendPost(IHttpClient httpClient, EditPostParams params,
                                   String postBody, String postEditReason,
                                   Boolean enablesig, Boolean enableemo) throws IOException {
-        params.put("Post", postBody);
-        if (postEditReason != null)
-            params.put("post_edit_reason", postEditReason);
-        if (enableemo)
-            params.put("enableemo", "yes");
-        if (enablesig)
-            params.put("enablesig", "yes");
 
-        return httpClient.performPost("http://4pda.ru/forum/index.php", params);
+        List<NameValuePair> nameValuePairs=params.getListParams();
+        nameValuePairs.add(new BasicNameValuePair("Post", postBody));
+        if (postEditReason != null)
+            nameValuePairs.add(new BasicNameValuePair("post_edit_reason", postEditReason));
+
+        if (enableemo)
+            nameValuePairs.add(new BasicNameValuePair("enableemo", "yes"));
+
+        if (enablesig)
+            nameValuePairs.add(new BasicNameValuePair("enablesig", "yes"));
+
+
+        return httpClient.performPost("http://4pda.ru/forum/index.php", nameValuePairs);
     }
 
     public static EditPost editPost(IHttpClient httpClient, String forumId, String topicId, String postId, String authKey) throws IOException {
@@ -509,35 +515,50 @@ public class PostApi {
             String s = m.group(1) + "'";
             m = Pattern.compile("\\s*(\\d+)\\s*:\\s*'([^']*)'", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE)
                     .matcher(s);
-            while (m.find()) {
-                editPost.getParams().put("question[" + m.group(1) + "]", Html.fromHtml(m.group(2)).toString());
-            }
-        }
 
-        m = Pattern.compile("poll_choices\\s*=\\s*\\{(.*)?'\\}", Pattern.CASE_INSENSITIVE)
-                .matcher(editPage);
-        if (m.find()) {
-            String s = m.group(1) + "'";
-            m = Pattern.compile("\\s*'(\\d+_\\d+)'\\s*:\\s*'([^']*)'", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE)
-                    .matcher(s);
+            String choicesText = getChoicesText(editPage);
             while (m.find()) {
-                editPost.getParams().put("choice[" + m.group(1) + "]", Html.fromHtml(m.group(2)).toString());
-            }
-        }
+                String questionNum = m.group(1);
+                editPost.getParams().put("question[" + questionNum + "]", Html.fromHtml(m.group(2)).toString());
 
-        m = Pattern.compile("poll_multi\\s*=\\s*\\{(.*)?'\\}", Pattern.CASE_INSENSITIVE)
-                .matcher(editPage);
-        if (m.find()) {
-            String s = m.group(1) + "'";
-            m = Pattern.compile("\\s*(\\d+)\\s*:\\s*'([^']*)'", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE)
-                    .matcher(s);
-            while (m.find()) {
-                if ("1".equals(m.group(2))) {
-                    editPost.getParams().put("multi[" + m.group(1) + "]", "1");
+                Matcher choiceMatcher = Pattern.compile("\\s*'(" + questionNum + "_\\d+)'\\s*:\\s*'([^']*)'",
+                        Pattern.CASE_INSENSITIVE | Pattern.MULTILINE)
+                        .matcher(choicesText);
+                while (choiceMatcher.find()) {
+                    editPost.getParams().put("choice[" + choiceMatcher.group(1) + "]", Html.fromHtml(choiceMatcher.group(2)).toString());
+                }
+
+
+                Matcher multiMatcher = Pattern.compile("\\s*" + questionNum + "\\s*:\\s*'([^']*)'", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE)
+                        .matcher(s);
+                while (multiMatcher.find()) {
+                    if ("1".equals(multiMatcher.group(1))) {
+                        editPost.getParams().put("multi[" + questionNum + "]", "1");
+                    }
                 }
             }
         }
     }
 
+    @NonNull
+    private static String getChoicesText(String editPage) {
+        String choicesText = "";
+        Matcher choicesMatcher = Pattern.compile("poll_choices\\s*=\\s*\\{(.*)?'\\}", Pattern.CASE_INSENSITIVE)
+                .matcher(editPage);
+        if (choicesMatcher.find()) {
+            choicesText = choicesMatcher.group(1) + "'";
+        }
+        return choicesText;
+    }
 
+    @NonNull
+    private static String getMultiText(String editPage) {
+        Matcher m = Pattern.compile("poll_multi\\s*=\\s*\\{(.*)?'\\}", Pattern.CASE_INSENSITIVE)
+                .matcher(editPage);
+        if (m.find()) {
+            return m.group(1) + "'";
+
+        }
+        return "";
+    }
 }

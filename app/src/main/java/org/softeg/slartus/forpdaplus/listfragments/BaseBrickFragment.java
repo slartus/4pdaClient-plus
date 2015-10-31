@@ -91,7 +91,7 @@ public abstract class BaseBrickFragment extends Fragment implements
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         MenuItem item = menu.add("Обновить")
 
-                .setIcon(R.drawable.ic_menu_refresh)
+                .setIcon(R.drawable.ic_refresh_white_24dp)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {

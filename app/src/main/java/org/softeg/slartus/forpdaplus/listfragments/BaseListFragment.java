@@ -4,6 +4,7 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,9 +22,11 @@ import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
+import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ListAdapter;
 import org.softeg.slartus.forpdaplus.prefs.ListPreferencesActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.sqliteannotations.BaseDao;
 
 import java.util.ArrayList;
 
@@ -100,7 +103,7 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
         super.onCreateOptionsMenu(menu, inflater);
 
         MenuItem item = menu.add("Настройки списка")
-                .setIcon(R.drawable.ic_menu_preferences)
+                .setIcon(R.drawable.ic_settings_white_24dp)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -214,7 +217,7 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
                 }
             });
             if (loading) {
-                setEmptyText("Загрузка..");
+                setEmptyText("Загрузка...");
             } else {
                 setEmptyText("Нет данных");
             }
@@ -258,4 +261,35 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
         return false;
     }
 
+    protected <T> void updateItemCache(final T item, final Class<T> tClass, Boolean newThread) {
+        if (newThread) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    updateItemCache(item, tClass);
+                }
+            }).start();
+        } else {
+            updateItemCache(item, tClass);
+        }
+    }
+
+    private <T> void updateItemCache(T item, Class<T> tClass) {
+        try {
+            CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
+            SQLiteDatabase db = null;
+            try {
+                db = cacheDbHelper.getWritableDatabase();
+                BaseDao<T> baseDao = new BaseDao<>(App.getContext(), db, getListName(), tClass);
+
+                baseDao.update(item, ((IListItem) item).getId().toString());
+
+            } finally {
+                if (db != null)
+                    db.close();
+            }
+        } catch (Throwable ex) {
+            // Log.e(getContext(), ex);
+        }
+    }
 }

@@ -199,10 +199,10 @@ public class SearchSettingsDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 if(forHide.getVisibility() == View.VISIBLE){
                     forHide.setVisibility(View.GONE);
-                    forHideButton.setImageDrawable(getResources().getDrawable(R.drawable.btn_show_post_panel));
+                    forHideButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_plus_grey600_24dp));
                 }else {
                     forHide.setVisibility(View.VISIBLE);
-                    forHideButton.setImageDrawable(getResources().getDrawable(R.drawable.btn_hide_post_panel));
+                    forHideButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_close_grey600_24dp));
                 }
             }
         });

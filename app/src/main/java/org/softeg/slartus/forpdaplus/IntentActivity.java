@@ -27,11 +27,15 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.Email;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
+import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
+import org.softeg.slartus.forpdaplus.fragments.topic.EditPostFragment;
+import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.DevDbCatalogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.DevDbModelsFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
+import org.softeg.slartus.forpdaplus.listfragments.TopicWritersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.news.NewsListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
@@ -42,14 +46,15 @@ import org.softeg.slartus.forpdaplus.listtemplates.FavoritesBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
-import org.softeg.slartus.forpdaplus.post.EditPostActivity;
+import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.profile.DeviceDeleteDialog;
+import org.softeg.slartus.forpdaplus.profile.DeviceEditDialog;
+import org.softeg.slartus.forpdaplus.profile.ProfileEditActivity;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsChatActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
-import org.softeg.slartus.forpdaplus.tabs.TopicWritersTab;
-import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
 import org.softeg.slartus.forpdaplus.video.PlayerActivity;
 
 import java.io.UnsupportedEncodingException;
@@ -146,9 +151,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
 
     public static Boolean tryShowNews(Activity context, String url, Boolean finish) {
         if (isNews(url)) {
-            NewsActivity.shownews(context, url);
-            if (finish)
-                context.finish();
+            MainActivity.addTabByIntent(url, NewsFragment.newInstance(context, url));
             return true;
         }
         return false;
@@ -290,6 +293,42 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
         return false;
     }
 
+    public static boolean tryEditProfile(Activity context, Uri uri, Boolean finish) {
+        if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
+            return false;
+        if (!"usercp".equals(uri.getQueryParameter("act")))
+            return false;
+
+        if ("01".equals(uri.getQueryParameter("code"))) {
+            ProfileEditActivity.startActivity(context);
+            if (finish)
+                context.finish();
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean tryEditDevice(Activity context, Uri uri, Boolean finish) {
+        if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
+            return false;
+        if ("profile-xhr".equals(uri.getQueryParameter("act"))) {
+            if("device".equals(uri.getQueryParameter("action")))
+                DeviceEditDialog.showDialog(context,uri.toString(),!TextUtils.isEmpty(uri.getQueryParameter("md_id")));
+
+            if("dev-del".equals(uri.getQueryParameter("action")))
+                DeviceDeleteDialog.showDialog(context, uri.toString());
+
+
+
+            if (finish)
+                context.finish();
+            return true;
+        }
+
+
+        return false;
+    }
+
     public static boolean tryShowForum(Activity context, String url, Boolean finish) {
         String[] patterns = {"4pda.ru.*?showforum=(\\d+)$", "4pda.ru/forum/lofiversion/index.php\\?f(\\d+)\\.html",
                 "4pda.ru/forum/index.php.*?act=idx"};
@@ -330,11 +369,15 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
                                      final Boolean finishActivity, String authKey) {
         url = getRedirect(url).toString();
         Uri uri = Uri.parse(url.toLowerCase());
-        if (uri.getHost() != null && (uri.getHost().contains("4pda.ru") || uri.getHost().contains("4pda.to"))) {
+
+        if (uri.getHost() != null && (uri.getHost().toLowerCase().contains("4pda.ru")
+                || uri.getHost().toLowerCase().contains("4pda.to")
+                || uri.getHost().toLowerCase().contains("ggpht.com")
+                || uri.getHost().toLowerCase().contains("googleusercontent.com")
+                || uri.getHost().toLowerCase().contains("windowsphone.com")
+                || uri.getHost().toLowerCase().contains("mzstatic.com"))) {
             if (isTheme(uri)) {
                 showTopic(context, url);
-                if (finishActivity)
-                    context.finish();
                 return true;
             }
 
@@ -351,6 +394,14 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
             }
 
             if (tryProfile(context, uri, finishActivity)) {
+                return true;
+            }
+
+            if (tryEditProfile(context, uri, finishActivity)) {
+                return true;
+            }
+
+            if (tryEditDevice(context, uri, finishActivity)) {
                 return true;
             }
 
@@ -402,9 +453,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
     }
 
     public static void showTopic(Activity context, String url) {
-        Intent themeIntent = new Intent(context, ThemeActivity.class);
-        themeIntent.setData(Uri.parse(url));
-        context.startActivity(themeIntent);
+        MainActivity.addTabByIntent(url, ThemeFragment.newInstance(context, url));
     }
 
     private static boolean tryFavorites(Activity context, String url, Boolean finishActivity) {
@@ -471,7 +520,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
                 TextUtils.isEmpty(uri.getQueryParameter("p")))
             return false;
 
-        EditPostActivity.editPost(context, uri.getQueryParameter("f"), uri.getQueryParameter("t"), uri.getQueryParameter("p"), authKey);
+        EditPostFragment.editPost(context, uri.getQueryParameter("f"), uri.getQueryParameter("t"), uri.getQueryParameter("p"), authKey, App.getInstance().getCurrentFragmentTag());
 
         if (finish)
             context.finish();
@@ -533,7 +582,10 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
         if (TextUtils.isEmpty(tid))
             return false;
 
-        TopicWritersTab.show(context, tid);
+
+        Bundle args=new Bundle();
+        args.putString(TopicWritersListFragment.TOPIC_ID_KEY, tid);
+        ListFragmentActivity.showListFragment(context, TopicWritersBrickInfo.NAME, args);
         if (finish)
             context.finish();
         return true;
@@ -541,7 +593,11 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
 
     public static boolean tryShowFile(final Activity activity, final Uri uri, final Boolean finish) {
         if (uri.getHost() != null && !(uri.getHost().toLowerCase().contains("4pda.ru")
-                || uri.getHost().toLowerCase().contains("4pda.to")))
+                || uri.getHost().toLowerCase().contains("4pda.to")
+                || uri.getHost().toLowerCase().contains("ggpht.com")
+                || uri.getHost().toLowerCase().contains("googleusercontent.com")
+                || uri.getHost().toLowerCase().contains("windowsphone.com")
+                || uri.getHost().toLowerCase().contains("mzstatic.com")))
             return false;
         boolean isFile = PatternExtensions.compile("http://4pda.ru/forum/dl/post/\\d+/[^\"]*")
                 .matcher(uri.toString()).find() ||
@@ -578,7 +634,10 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
 
             return true;
         }
-        if (imagePattern.matcher(uri.toString()).find()) {
+        if (imagePattern.matcher(uri.toString()).find()
+                ||(uri.getHost().toLowerCase().contains("ggpht.com")
+                || uri.getHost().toLowerCase().contains("googleusercontent.com")
+                || uri.getHost().toLowerCase().contains("windowsphone.com"))) {
             showImage(activity, uri.toString());
             if (finish)
                 activity.finish();

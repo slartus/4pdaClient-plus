@@ -3,20 +3,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/share_it"
-        android:icon="@drawable/ic_menu_share"
+        android:icon="@drawable/abc_ic_menu_share_mtrl_alpha"
         android:title="Поделиться"
         android:showAsAction="never"
         android:actionProviderClass=
             "android.widget.ShareActionProvider"/>
     <item
         android:id="@+id/download"
-        android:icon="@drawable/ic_menu_download"
+        android:icon="@drawable/ic_download_white_24dp"
         android:title="Скачать"
         android:showAsAction="always" />
 
     <item
         android:id="@+id/close"
-        android:icon="@drawable/ic_menu_close_clear_cancel"
+        android:icon="@drawable/ic_close_grey600_24dp"
         android:title="Закрыть"
         android:showAsAction="always" />
 </menu>

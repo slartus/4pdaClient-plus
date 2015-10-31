@@ -1,0 +1,284 @@
+@font-face {
+    font-family: 'fontello';
+    src: url('fontello.eot?66808348');
+    src: url('fontello.eot?66808348#iefix') format('embedded-opentype'), url('fontello.woff?66808348') format('woff'), url('fontello.ttf?66808348') format('truetype'), url('fontello.svg?66808348#fontello') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+    font-family: "fontello";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    line-height: 1em;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    text-align: center;
+    /* opacity: .8; */
+    /* For safety - reset parent styles, that can break glyph codes*/
+    
+    font-variant: normal;
+    text-transform: none;
+}
+
+* .icon-hash:before {
+    content: '\23';
+}
+/* '#' */
+
+.icon-karma-up:before {
+    content: '\2b';
+}
+/* '+' */
+
+.icon-hide-comment:before {
+    content: '\2d';
+}
+/* '-' */
+
+.icon-4PDA-plain:before {
+    content: '\34';
+}
+/* '4' */
+
+.icon-android:before {
+    content: '\41';
+}
+/* 'A' */
+
+.icon-comment-baloons:before {
+    content: '\43';
+}
+/* 'C' */
+
+.icon-engines:before {
+    content: '\44';
+}
+/* 'D' */
+
+.icon-pencil:before {
+    content: '\45';
+}
+/* 'E' */
+
+.icon-FB:before {
+    content: '\46';
+}
+/* 'F' */
+
+.icon-home:before {
+    content: '\48';
+}
+/* 'H' */
+
+.icon-apple:before {
+    content: '\49';
+}
+/* 'I' */
+
+.icon-rss:before {
+    content: '\52';
+}
+/* 'R' */
+
+.icon-search:before {
+    content: '\53';
+}
+/* 'S' */
+
+.icon-TWITTER:before {
+    content: '\54';
+}
+/* 'T' */
+
+.icon-VK:before {
+    content: '\56';
+}
+/* 'V' */
+
+.icon-windows:before {
+    content: '\57';
+}
+/* 'W' */
+
+.icon-close:hover:before {
+    content: '\58';
+}
+/* 'X' */
+
+.icon-YOUTUBE:before {
+    content: '\59';
+}
+/* 'Y' */
+
+.icon-up-open:before {
+    content: '\5e';
+}
+/* '^' */
+
+.icon-users:before {
+    content: '\75';
+}
+/* 'u' */
+
+.icon-link:before {
+    content: '\bb';
+}
+/* '»' */
+
+.icon-down-dir-1:before {
+    content: '\1d65';
+}
+/* 'ᵥ' */
+
+.icon-up-dir-1:before {
+    content: '\1dba';
+}
+/* 'ᶺ' */
+
+.icon-karma-down:before {
+    content: '\2013';
+}
+/* '–' */
+
+.icon-left-small:before {
+    content: '\2039';
+}
+/* '‹' */
+
+.icon-right-small:before {
+    content: '\203a';
+}
+/* '›' */
+
+.icon-4pda-logo:before {
+    content: '\2163';
+}
+/* 'Ⅳ' */
+
+.icon-up:before {
+    content: '\2191';
+}
+/* '↑' */
+
+.icon-down:before {
+    content: '\2193';
+}
+/* '↓' */
+
+.icon-back-up:before {
+    content: '\21b5';
+}
+/* '↵' */
+
+.icon-up-small:before {
+    content: '\21d1';
+}
+/* '⇑' */
+
+.icon-login:before {
+    content: '\23ce';
+}
+/* '⏎' */
+
+.icon-profile:before {
+    content: '\263a';
+}
+/* '☺' */
+
+.icon-uncheck:before {
+    content: '\2705';
+}
+/* '✅' */
+
+.icon-check-single:before {
+    content: '\2713';
+}
+/* '✓' */
+
+.icon-check:before {
+    content: '\2714';
+}
+/* '✔' */
+
+.icon-glyph:before {
+    content: '\272a';
+}
+/* '✪' */
+
+.icon-cog:before {
+    content: '\2731';
+}
+/* '✱' */
+
+.icon-del:before {
+    content: '\274e';
+}
+/* '❎' */
+
+.icon-warning-empty:before {
+    content: '\2755';
+}
+/* '❕' */
+
+.icon-attention:before {
+    content: '\2757';
+}
+/* '❗' */
+
+.icon-chart-bar:before {
+    content: '\2758';
+}
+/* '❘' */
+
+.icon-chart-bar-1:before {
+    content: '\2759';
+}
+/* '❙' */
+
+.icon-glyph-1:before {
+    content: '\275a';
+}
+/* '❚' */
+
+.icon-quote-left:before {
+    content: '\275d';
+}
+/* '❝' */
+
+.icon-heart-1:before {
+    content: '\2764';
+}
+/* '❤' */
+
+.icon-heart:before {
+    content: '\2765';
+}
+/* '❥' */
+
+.icon-close:before {
+    content: '\2a09';
+}
+/* '⨉' */
+
+.icon-mlinks-home:before {
+    content: '\e081';
+}
+/* '' */
+
+.icon-edit:before {
+    content: '\e80b';
+}
+/* '' */
+
+.icon-users-1:before {
+    content: '👥';
+}
+/* '\1f465' */
+
+.icon-emo-happy:before {
+    content: '😌';
+}
+/* '\1f60c' */

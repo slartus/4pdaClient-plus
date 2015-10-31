@@ -24,7 +24,7 @@ import java.util.Calendar;
  */
 public class AdvWebView extends WebView {
     private static final String TOPIC_BODY_KEY = "AdvWebView.TOPIC_BODY_KEY";
-    private int actionBarHeight = 72;
+    private int actionBarHeight = 56;
 
     public AdvWebView(Context context) {
         super(context);
@@ -57,11 +57,11 @@ public class AdvWebView extends WebView {
 
         if (Preferences.System.isShowWebViewScroll()) {
             setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-            setScrollbarFadingEnabled(false);
+            setScrollbarFadingEnabled(true);
         }
 
         setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());
-        loadData("<html><head></head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8");
+        //loadData("<html><head></head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8");
     }
 
     private Point m_LastMotionEvent = null;

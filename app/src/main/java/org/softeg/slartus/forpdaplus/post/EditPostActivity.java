@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -16,7 +15,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -35,7 +33,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,6 +53,7 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.classes.ImageFilePath;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView;
@@ -146,6 +144,7 @@ public class EditPostActivity extends BaseFragmentActivity {
         m_BottomPanel = findViewById(R.id.bottomPanel);
 
         txtPost = (EditText) findViewById(R.id.txtPost);
+
         txtpost_edit_reason = (EditText) findViewById(R.id.txtpost_edit_reason);
         txtPost.setOnEditorActionListener(new EditText.OnEditorActionListener() {
 
@@ -229,6 +228,29 @@ public class EditPostActivity extends BaseFragmentActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    public void onBackPressed()
+    {
+        if (!TextUtils.isEmpty(txtPost.getText())) {
+            new MaterialDialog.Builder(this)
+                    .title("Подтвердите действие")
+                    .content("Имеется введенный текст сообщения! Закрыть?")
+                    .positiveText("Да")
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            doOnBackPressed();
+                        }
+                    })
+                    .negativeText("Отмена")
+                    .show();
+        }else{
+            doOnBackPressed();
+        }
+    }
+    public void doOnBackPressed(){
+        super.onBackPressed();
+    }
 
     private boolean sendMail() {
         final String body = getPostText();
@@ -292,13 +314,13 @@ public class EditPostActivity extends BaseFragmentActivity {
             Object attachesObject = extras.get(Intent.EXTRA_STREAM);
             if (attachesObject instanceof Uri) {
                 Uri uri = (Uri) extras.get(Intent.EXTRA_STREAM);
-                m_AttachFilePaths = new ArrayList<>(Arrays.asList(new String[]{getRealPathFromURI(uri)}));
+                m_AttachFilePaths = new ArrayList<>(Arrays.asList(new String[]{ImageFilePath.getPath(getApplicationContext(), uri)}));
             } else if (attachesObject instanceof ArrayList<?>) {
                 m_AttachFilePaths = new ArrayList<>();
                 ArrayList<?> list = (ArrayList<?>) attachesObject;
                 for (Object item : list) {
                     Uri uri = (Uri) item;
-                    m_AttachFilePaths.add(getRealPathFromURI(uri));
+                    m_AttachFilePaths.add(ImageFilePath.getPath(getApplicationContext(), uri));
                 }
             }
         }
@@ -312,7 +334,7 @@ public class EditPostActivity extends BaseFragmentActivity {
             if (extras.containsKey("body"))
                 txtPost.setText(extras.get("body").toString());
         }
-
+        txtPost.setSelection(txtPost.getText().length());
     }
 
 
@@ -380,7 +402,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                                         if (selectionStart == -1)
                                             selectionStart = 0;
                                         if (txtPost.getText() != null)
-                                            //txtPost.getText().insert(selectionStart, "[attachment=" + attach.getId() + ":" + attach.getName() + "]");
+                                            //txtPost.getText().insert(selectionStart, "[attachment=" + attach.getId() + ":" + attach.getTitle() + "]");
                                             txtPost.getText().insert(selectionStart, "[spoiler]"+str.toString()+"[/spoiler]");
 
                                     }
@@ -404,7 +426,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                 .build();
         mAttachesListDialog.show();
     }
-
+    private static final int MY_INTENT_CLICK=302;
     private void startAddAttachment() {
         CharSequence[] items = new CharSequence[]{"Файл", "Изображение"};
         new MaterialDialog.Builder(getContext())
@@ -422,7 +444,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
                                         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                                     intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
-                                    startActivityForResult(intent, REQUEST_SAVE);
+                                    startActivityForResult(intent, MY_INTENT_CLICK);
 
                                 } catch (ActivityNotFoundException ex) {
                                     Toast.makeText(EditPostActivity.this, "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
@@ -438,7 +460,7 @@ public class EditPostActivity extends BaseFragmentActivity {
                                             Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
                                         imageintent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                                    startActivityForResult(imageintent, REQUEST_SAVE_IMAGE);
+                                    startActivityForResult(imageintent, MY_INTENT_CLICK);
                                 } catch (ActivityNotFoundException ex) {
                                     Toast.makeText(EditPostActivity.this, "Ни одно приложение не установлено для выбора изображения!", Toast.LENGTH_LONG).show();
                                 } catch (Exception ex) {
@@ -451,45 +473,6 @@ public class EditPostActivity extends BaseFragmentActivity {
                 .show();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        try {
-            if (resultCode == RESULT_OK) {
-
-                if (requestCode == REQUEST_SAVE || requestCode == REQUEST_SAVE_IMAGE) {
-                    String attachFilePath = getRealPathFromURI(data.getData());
-                    saveAttachDirPath(attachFilePath);
-                    new UpdateTask(EditPostActivity.this, attachFilePath)
-                            .execute();
-                }
-            }
-        } catch (Exception ex) {
-            AppLog.e(this, ex);
-        }
-
-    }
-
-    public String getRealPathFromURI(Uri contentUri) throws NotReportException {
-        if (contentUri == null)
-            throw new NotReportException("Выбран пустой путь!");
-        if (!contentUri.toString().startsWith("content://"))
-            return contentUri.getPath();
-
-        // can post image
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(contentUri,
-                filePathColumn, // Which columns to return
-                null,       // WHERE clause; which rows to return (all rows)
-                null,       // WHERE clause selection arguments (none)
-                null); // Order-by clause (ascending by name)
-        assert cursor != null;
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-
-        return cursor.getString(column_index);
-    }
-
     private void saveAttachDirPath(String attachFilePath) {
         lastSelectDirPath = FileUtils.getDirPath(attachFilePath);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
@@ -497,6 +480,37 @@ public class EditPostActivity extends BaseFragmentActivity {
         editor.putString("EditPost.AttachDirPath", lastSelectDirPath);
         editor.commit();
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (resultCode == RESULT_OK)
+        {
+            if (requestCode == MY_INTENT_CLICK)
+            {
+                if (null == data) return;
+                Uri selectedImageUri = data.getData();
+                String selectedImagePath = ImageFilePath.getPath(getApplicationContext(), selectedImageUri);
+                saveAttachDirPath(selectedImagePath);
+                new UpdateTask(EditPostActivity.this, selectedImagePath).execute();
+
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private void startLoadPost(String forumId, String topicId, String postId, String authKey) {
         new LoadTask(this, forumId, topicId, postId, authKey).execute();
@@ -1145,7 +1159,7 @@ public class EditPostActivity extends BaseFragmentActivity {
             MenuItem item;
 
             if (!getInterface().isNewPost()) {
-                item = menu.add("Причина редактирования").setIcon(R.drawable.ic_menu_editing);
+                item = menu.add("Причина редактирования").setIcon(R.drawable.ic_pencil_white_24dp);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         getInterface().toggleEditReasonDialog();

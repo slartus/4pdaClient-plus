@@ -1,3 +1,4 @@
+/*
 function customScript(file) {
     var url = document.getElementsByTagName('link')[0].href;
     url = url.substring(0, url.length - 4);
@@ -9,6 +10,26 @@ function customScript(file) {
 }
 window.onload = function () {
     customScript('script.js');
+}
+*/
+function jsonElem() {
+        var el = document.querySelectorAll('input[type=text], textarea, select');
+        var o = [];
+        for (var i = 0; i < el.length; i++) {
+            o.push({"name":el[i].getAttribute('name'), "value":el[i].value});
+        }
+        window.HTMLOUT.sendProfile(JSON.stringify(o));
+    }
+
+Element.prototype.remove = function() {
+    this.parentElement.removeChild(this);
+}
+NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+    for(var i = 0, len = this.length; i < len; i++) {
+        if(this[i] && this[i].parentElement) {
+            this[i].parentElement.removeChild(this[i]);
+        }
+    }
 }
 
 var theSelection = false;

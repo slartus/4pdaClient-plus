@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment;
 
-/**
+/*
  * Created by slinkin on 03.03.14.
  */
 public class ForumTopicsBrickInfo extends BrickInfo {
@@ -16,7 +16,7 @@ public class ForumTopicsBrickInfo extends BrickInfo {
 
     @Override
     public int getIcon() {
-        return R.drawable.ic_delete;
+        return R.drawable.ic_close_white_24dp;
     }
 
     @Override

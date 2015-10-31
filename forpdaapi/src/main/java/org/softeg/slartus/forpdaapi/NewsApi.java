@@ -108,6 +108,8 @@ public class NewsApi {
                         news.setTagLink(el.attr("href"));
 
                         news.setTagTitle(el.text().trim());
+                    }else {
+                        news.setTagTitle("");
                     }
 
                     org.jsoup.nodes.Element vPanelElement = divVisualElement.select("div.v-panel").first();

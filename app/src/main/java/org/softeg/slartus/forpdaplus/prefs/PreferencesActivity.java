@@ -8,18 +8,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
@@ -37,15 +34,13 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
+import org.softeg.slartus.forpdaplus.classes.ImageFilePath;
 import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
@@ -117,6 +112,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             findPreference("About.History").setOnPreferenceClickListener(this);
             findPreference("About.ShareIt").setOnPreferenceClickListener(this);
             findPreference("About.AddRep").setOnPreferenceClickListener(this);
+            findPreference("About.AddRepTwo").setOnPreferenceClickListener(this);
             findPreference("About.ShowTheme").setOnPreferenceClickListener(this);
 
             Preference preference = findPreference("notifiers.silent_mode.start_time");
@@ -203,6 +199,9 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 case "About.AddRep":
                     if (showAddRep()) return true;
                     return true;
+                case "About.AddRepTwo":
+                    if (showAddRepTwo()) return true;
+                    return true;
                 case "About.ShowTheme":
                     showTheme();
                     return true;
@@ -248,6 +247,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
             return false;
         }
+        private static final int MY_INTENT_CLICK=302;
         private void pickUserBackground() {
             new MaterialDialog.Builder(getContext())
                     .content("Выберите изображение")
@@ -260,7 +260,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                             try {
                                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                                 intent.setType("image/*");
-                                startActivityForResult(intent, 0);
+                                startActivityForResult(intent, MY_INTENT_CLICK);
                             } catch (ActivityNotFoundException ex) {
                                 Toast.makeText(getActivity(), "Ни одно приложение не установлено для выбора изображения!", Toast.LENGTH_LONG).show();
                             } catch (Exception ex) {
@@ -279,31 +279,22 @@ public class PreferencesActivity extends BasePreferencesActivity {
         }
 
         @Override
-        public void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-            try {
-                if (resultCode == RESULT_OK) {
+        public void onActivityResult(int requestCode, int resultCode, Intent data)
+        {
+            if (resultCode == RESULT_OK)
+            {
+                if (requestCode == MY_INTENT_CLICK)
+                {
+                    if (null == data) return;
+                    Uri selectedImageUri = data.getData();
+                    String selectedImagePath = ImageFilePath.getPath(getApplicationContext(), selectedImageUri);
                     PreferenceManager.getDefaultSharedPreferences(App.getContext())
                             .edit()
-                            .putString("userBackground", getPath(data.getData()))
+                            .putString("userBackground", selectedImagePath)
                             .putBoolean("isUserBackground", true)
                             .apply();
                 }
-            } catch (Exception ex) {
-                AppLog.e(getActivity(), ex);
             }
-
-        }
-        public String getPath(Uri uri) throws NotReportException {
-            if (uri == null)
-                throw new NotReportException("Выбран пустой путь!");
-            if (!uri.toString().startsWith("content://"))
-                return uri.getPath();
-            String[] projection = { MediaStore.Images.Media.DATA };
-            Cursor cursor = managedQuery(uri, projection, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
         }
 
         public void webViewFontDialog(){
@@ -347,7 +338,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
         private void showMainAccentColorDialog(){
             try{
                 final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                String string = prefs.getString("mainAccentColor","pink");
+                String string = prefs.getString("mainAccentColor", "pink");
                 int position = -1;
                 switch (string) {
                     case "pink":
@@ -363,7 +354,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 final int[] selected = {0};
                 new MaterialDialog.Builder(getActivity())
                         .title("Выберите цвет акцента")
-                        .items(new String[]{"Розовый", "Голубой", "Серый"})
+                        .items(new String[]{"Синий", "Розовый", "Серый"})
                         .itemsCallbackSingleChoice(position, new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
@@ -382,8 +373,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                         prefs.edit().putString("mainAccentColor", "pink").apply();
                                         if(!prefs.getBoolean("accentColorEdited",false)){
                                             prefs.edit()
-                                                    .putInt("accentColor", Color.rgb(233, 30, 99))
-                                                    .putInt("accentColorPressed", Color.rgb(203, 0, 69))
+                                                    .putInt("accentColor", Color.rgb(2, 119, 189))
+                                                    .putInt("accentColorPressed", Color.rgb(0, 89, 159))
                                                     .apply();
                                         }
                                         break;
@@ -391,8 +382,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                         prefs.edit().putString("mainAccentColor", "blue").apply();
                                         if(!prefs.getBoolean("accentColorEdited",false)){
                                             prefs.edit()
-                                                    .putInt("accentColor", Color.rgb(3, 169, 244))
-                                                    .putInt("accentColorPressed", Color.rgb(0, 139, 214))
+                                                    .putInt("accentColor", Color.rgb(233, 30, 99))
+                                                    .putInt("accentColorPressed", Color.rgb(203, 0, 69))
                                                     .apply();
                                         }
                                         break;
@@ -420,7 +411,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             try {
                 final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-                int prefColor = (int) Long.parseLong(String.valueOf(prefs.getInt("accentColor", Color.rgb(233, 30, 99))), 10);
+                int prefColor = (int) Long.parseLong(String.valueOf(prefs.getInt("accentColor", Color.rgb(2, 119, 189))), 10);
                 //int prefColor = (int) Long.parseLong(String.valueOf(prefs.getInt("accentColor", Color.rgb(96, 125, 139))), 10);
                 final int[] colors = {(prefColor >> 16) & 0xFF, (prefColor >> 8) & 0xFF, (prefColor >> 0) & 0xFF};
 
@@ -567,7 +558,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                 if (colorPressed[0] < 0) colorPressed[0] = 0;
                                 if (colorPressed[1] < 0) colorPressed[1] = 0;
                                 if (colorPressed[2] < 0) colorPressed[2] = 0;
-                                if(Color.rgb(colors[0], colors[1], colors[2])!=prefs.getInt("accentColor", Color.rgb(233, 30, 99))){
+                                if(Color.rgb(colors[0], colors[1], colors[2])!=prefs.getInt("accentColor", Color.rgb(2, 119, 189))){
                                     prefs.edit().putBoolean("accentColorEdited",true).apply();
                                 }
                                 prefs.edit()
@@ -579,8 +570,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
                             @Override
                             public void onNeutral(MaterialDialog dialog) {
                                 prefs.edit()
-                                        .putInt("accentColor", Color.rgb(233, 30, 99))
-                                        .putInt("accentColorPressed", Color.rgb(203, 0, 69))
+                                        .putInt("accentColor", Color.rgb(2, 119, 189))
+                                        .putInt("accentColorPressed", Color.rgb(0, 89, 159))
                                         .putBoolean("accentColorEdited",false)
                                         //.putInt("accentColor", Color.rgb(96, 125, 139))
                                         //.putInt("accentColorPressed", Color.rgb(76, 95, 109))
@@ -692,16 +683,10 @@ public class PreferencesActivity extends BasePreferencesActivity {
             String text = "<b>Неофициальный клиент для сайта <a href=\"http://www.4pda.ru\">4pda.ru</a></b><br/><br/>\n" +
                     "<b>Автор: </b> Артём Слинкин aka slartus<br/>\n" +
                     "<b>E-mail:</b> <a href=\"mailto:slartus+4pda@gmail.com\">slartus+4pda@gmail.com</a><br/><br/>\n" +
-                    "<b>Автор мода: </b> Евгений Низамиев aka <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
+                    "<b>Помощник: </b> Евгений Низамиев aka <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
                     "<b>E-mail:</b> <a href=\"mailto:radiationx@yandex.ru\">radiationx@yandex.ru</a><br/><br/>\n" +
                     "<b>Дизайнер стилей: </b> <a href=\"http://4pda.ru/forum/index.php?showuser=96664\">Морфий</a> и <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
                     "<b>Благодарности: </b> <br/>\n" +
-                    /* "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=474658\">zlodey.82</a></b> иконка программы<br/>\n" +
-                    "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=1429916\">sbarrofff</a></b> иконка программы<br/>\n" +
-                    "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=680839\">SPIDER3220</a></b> (иконки, баннеры)<br/>\n" +
-                    "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=1392892\">ssmax2015</a></b> (иконки, баннеры)<br/>\n" +
-                    "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=2523\">e202</a></b> (иконки сообщения для черной темы)<br/>\n" +
-                    "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=2040700\">Remie-l</a></b> (новые стили для топиков)<br/>\n" + */
                     "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=1657987\">__KoSyAk__</a></b> Иконка программы<br/>\n" +
                     "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=96664\">Морфий</a></b> Material стили<br/>\n" +
                     "* <b>Пользователям 4pda</b> (тестирование, идеи, поддержка)\n" +
@@ -760,6 +745,16 @@ public class PreferencesActivity extends BasePreferencesActivity {
             }
             Handler mHandler = new Handler();
             ForumUser.startChangeRep(getActivity(), mHandler, "236113", "slartus", "0", "add", getString(R.string.RaiseReputation));
+            return false;
+        }
+
+        private boolean showAddRepTwo() {
+            if (!Client.getInstance().getLogined()) {
+                Toast.makeText(getActivity(), getString(R.string.NeedToLogin), Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            Handler mHandler = new Handler();
+            ForumUser.startChangeRep(getActivity(), mHandler, "2556269", "Radiation15", "0", "add", getString(R.string.RaiseReputation));
             return false;
         }
 

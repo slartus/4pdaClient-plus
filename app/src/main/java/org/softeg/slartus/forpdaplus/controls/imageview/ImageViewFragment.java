@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.controls.imageview;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -23,6 +24,7 @@ import com.squareup.picasso.Downloader;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoTools;
+import com.squareup.picasso.Transformation;
 
 import org.apache.http.HttpResponse;
 import org.softeg.slartus.forpdaplus.App;
@@ -34,6 +36,11 @@ import org.softeg.slartus.forpdaplus.download.DownloadsService;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.microedition.khronos.egl.EGL10;
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.egl.EGLContext;
+import javax.microedition.khronos.egl.EGLDisplay;
 
 import uk.co.senab.photoview.PhotoView;
 
@@ -216,7 +223,7 @@ public class ImageViewFragment extends BaseFragment {
 
         }
 
-        private void loadImage(View imageLayout) {
+        private void loadImage(final View imageLayout) {
             if (m_PhotoView != null) {
                 PicassoTools.clearCache(Picasso.with(inflater.getContext()));
                 m_PhotoView.setImageDrawable(null);
@@ -229,12 +236,44 @@ public class ImageViewFragment extends BaseFragment {
 
             progressView.setVisibility(View.VISIBLE);
 
+            Transformation transformation = new Transformation() {
+
+                @Override
+                public Bitmap transform(Bitmap source) {
+                    double maxSize = getMaxTextureSize()*0.75;
+                    int imageWidth = source.getWidth();
+                    int imageHeight = source.getHeight();
+                    double scale = 1;
+                    if(imageWidth>maxSize){
+                        scale = maxSize/imageWidth;
+                        imageWidth = (int)(imageWidth*scale);
+                        imageHeight = (int)(imageHeight*scale);
+                    }
+                    if(imageHeight>maxSize){
+                        scale = maxSize/imageHeight;
+                        imageWidth = (int)(imageWidth*scale);
+                        imageHeight = (int)(imageHeight*scale);
+                    }
+                    Bitmap result = Bitmap.createScaledBitmap(source, imageWidth, imageHeight, false);
+                    if (result != source) {
+                        // Same bitmap is returned if sizes are the same
+                        source.recycle();
+                    }
+                    return result;
+                }
+
+                @Override
+                public String key() {
+                    return "transformation" + " desiredWidth";
+                }
+            };
+
             Picasso.Builder builder = new Picasso.Builder(App.getInstance());
             builder.listener(new Picasso.Listener() {
                 @Override
                 public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
                     progressView.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(App.getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -254,6 +293,7 @@ public class ImageViewFragment extends BaseFragment {
             });
             builder.build()
                     .load(urls.get(mSelectedIndex))
+                    .transform(transformation)
                     .error(R.drawable.no_image)
                     .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                     .into(m_PhotoView, new Callback() {
@@ -269,7 +309,50 @@ public class ImageViewFragment extends BaseFragment {
                     });
         }
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        m_PhotoView.setImageBitmap(null);
+    }
+    public static int getMaxTextureSize() {
+        // Safe minimum default size
+        final int IMAGE_MAX_BITMAP_DIMENSION = 2048;
 
+        // Get EGL Display
+        EGL10 egl = (EGL10) EGLContext.getEGL();
+        EGLDisplay display = egl.eglGetDisplay(EGL10.EGL_DEFAULT_DISPLAY);
+
+        // Initialise
+        int[] version = new int[2];
+        egl.eglInitialize(display, version);
+
+        // Query total number of configurations
+        int[] totalConfigurations = new int[1];
+        egl.eglGetConfigs(display, null, 0, totalConfigurations);
+
+        // Query actual list configurations
+        EGLConfig[] configurationsList = new EGLConfig[totalConfigurations[0]];
+        egl.eglGetConfigs(display, configurationsList, totalConfigurations[0], totalConfigurations);
+
+        int[] textureSize = new int[1];
+        int maximumTextureSize = 0;
+
+        // Iterate through all the configurations to located the maximum texture size
+        for (int i = 0; i < totalConfigurations[0]; i++) {
+            // Only need to check for width since opengl textures are always squared
+            egl.eglGetConfigAttrib(display, configurationsList[i], EGL10.EGL_MAX_PBUFFER_WIDTH, textureSize);
+
+            // Keep track of the maximum texture size
+            if (maximumTextureSize < textureSize[0])
+                maximumTextureSize = textureSize[0];
+        }
+
+        // Release
+        egl.eglTerminate(display);
+
+        // Return largest texture size found, or default
+        return Math.max(maximumTextureSize, IMAGE_MAX_BITMAP_DIMENSION);
+    }
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putStringArrayList(IMAGE_URLS_KEY, urls);

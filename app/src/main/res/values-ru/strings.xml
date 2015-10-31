@@ -2,5 +2,5 @@
 <resources>
     <string name="pull_to_refresh_pull_label">Потяните, чтобы обновить</string>
     <string name="pull_to_refresh_release_label">Отпустите</string>
-    <string name="pull_to_refresh_refreshing_label">Обновление..</string>
+    <string name="pull_to_refresh_refreshing_label">Обновление...</string>
 </resources>

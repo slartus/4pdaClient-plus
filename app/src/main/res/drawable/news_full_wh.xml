@@ -7,11 +7,11 @@
                 android:width="1.0px"
                 android:color="@color/news_border_wh" />
             <corners
-                android:bottomLeftRadius="2.0dip"
-                android:bottomRightRadius="2.0dip"
-                android:radius="2.0dip"
-                android:topLeftRadius="2.0dip"
-                android:topRightRadius="2.0dip" />
+                android:bottomLeftRadius="2dp"
+                android:bottomRightRadius="2dp"
+                android:radius="2dp"
+                android:topLeftRadius="2dp"
+                android:topRightRadius="2dp" />
         </shape>
     </item>
 </layer-list>

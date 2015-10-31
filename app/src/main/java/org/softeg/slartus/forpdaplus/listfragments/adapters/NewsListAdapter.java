@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 import org.softeg.slartus.forpdaapi.News;
 import org.softeg.slartus.forpdaplus.R;
@@ -71,9 +73,12 @@ public class NewsListAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         final ViewHolder holder;
         View rowView = view;
+        boolean pauseOnScroll = false; // or true
+        boolean pauseOnFling = true; // or false
+        PauseOnScrollListener listener = new PauseOnScrollListener(imageLoader, pauseOnScroll, pauseOnFling);
+        ((ListView)parent.findViewById(android.R.id.list)).setOnScrollListener(listener);
         if (rowView == null || rowView.getId() != mNewsListRowId) {
             rowView = inflater.inflate(mNewsListRowId, null);
-
             holder = new ViewHolder();
 
             assert rowView != null;
@@ -117,7 +122,7 @@ public class NewsListAdapter extends BaseAdapter {
 
                 @Override
                 public void onLoadingStarted(String p1, View p2) {
-                    p2.setVisibility(View.GONE);
+                    p2.setVisibility(View.INVISIBLE);
                     holder.mProgressBar.setVisibility(View.VISIBLE);
                 }
 
@@ -139,8 +144,13 @@ public class NewsListAdapter extends BaseAdapter {
             });
         }
         if (data.getTagTitle() != null && holder.textTag != null) {
-            holder.textTag.setVisibility(View.VISIBLE);
-            holder.textTag.setText(data.getTagTitle());
+            if(data.getTagTitle().equals("")){
+                holder.textTag.setVisibility(View.GONE);
+            }else {
+                holder.textTag.setVisibility(View.VISIBLE);
+                holder.textTag.setText(data.getTagTitle());
+            }
+
         }
         if (data.getSourceTitle() != null && holder.textSource != null) {
             holder.textSource.setVisibility(View.VISIBLE);

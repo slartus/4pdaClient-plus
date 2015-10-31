@@ -50,11 +50,18 @@ public class SearchPostsParser extends HtmlBuilder {
 
         beginTopic(searchResult);
 
-        m_Body.append("<div class=\"search-results\">");
+        m_Body.append("<div class=\"posts_list search-results\">");
         Document doc = Jsoup.parse(body, "http://4pda.ru");
         Elements postsElements = doc.select("div[data-post]");
-        for (Element element : postsElements) {
-            m_Body.append(parsePost(element));
+        if(postsElements.size()==0){
+            m_Body.append("<div class=\"bad-search-result\">\n" +
+                    "\t<h3>Поиск не дал результатов</h3>\n" +
+                    "\t<span>Попробуйте сформулировать свой запрос иначе</span>\n" +
+                    "</div>");
+        }else {
+            for (Element element : postsElements) {
+                m_Body.append(parsePost(element));
+            }
         }
         m_Body.append("</div>");
         endTopic(searchResult);
@@ -66,7 +73,7 @@ public class SearchPostsParser extends HtmlBuilder {
 
         final Pattern pagesCountPattern = Pattern.compile("var pages = parseInt\\((\\d+)\\);");
         // http://4pda.ru/forum/index.php?act=search&source=all&result=posts&sort=rel&subforums=1&query=pda&forums=281&st=90
-        final Pattern lastPageStartPattern = Pattern.compile("(http://4pda.ru)?/forum/index.php\\?act=Search.*?st=(\\d+)");
+        final Pattern lastPageStartPattern = Pattern.compile("(http://4pda.ru)?/forum/index.php\\?act=search.*?st=(\\d+)");
         final Pattern currentPagePattern = Pattern.compile("<span class=\"pagecurrent\">(\\d+)</span>");
 
         SearchResult searchResult = new SearchResult();
@@ -90,29 +97,26 @@ public class SearchPostsParser extends HtmlBuilder {
     }
 
     public void beginTopic(SearchResult searchResult) {
-        beginBody();
-        m_Body.append("<div class=\"search-web-view\" style=\"margin-top:").append(ACTIONBAR_TOP_MARGIN).append("\"/>\n");
+        beginBody("search");
+        m_Body.append("<div id=\"topMargin\"></div>\n<div class=\"panel top\">");
         if (searchResult.getPagesCount() > 1) {
             TopicBodyBuilder.addButtons(m_Body, searchResult.getCurrentPage(), searchResult.getPagesCount(),
                     Functions.isWebviewAllowJavascriptInterface(App.getInstance()), true, true);
         }
-        m_Body.append("<br/><br/>");
+        m_Body.append("</div>");
+        //m_Body.append("<br/><br/>");
 
     }
 
     public void endTopic(SearchResult searchResult) {
         m_Body.append("<div id=\"entryEnd\"></div>\n");
-        m_Body.append("<br/><br/>");
+        m_Body.append("<div class=\"panel bottom\">");
         if (searchResult.getPagesCount() > 1) {
             TopicBodyBuilder.addButtons(m_Body, searchResult.getCurrentPage(),
                     searchResult.getPagesCount(),
                     Functions.isWebviewAllowJavascriptInterface(App.getInstance()), true, false);
         }
-
-        m_Body.append("<br/><br/>");
-
-        m_Body.append("<br/><br/><br/><br/><br/><br/>\n");
-
+        m_Body.append("</div><div id=\"bottomMargin\"></div>");
         endBody();
         endHtml();
     }
@@ -156,10 +160,9 @@ public class SearchPostsParser extends HtmlBuilder {
             tdElement = tdElements.get(0);
             el = tdElement.select("span.postdetails font[color]:matches(\\[(online|offline)\\])").first();
             if (el != null)
-                userState = "[online]".equals(el.text()) ? "post_nick_online_cli" : "post_nick_cli";
+                userState = "[online]".equals(el.text()) ? "online" : "";
 
-            user = "<span class=\"" + userState + "\"><a " + TopicBodyBuilder.getHtmlout(isWebviewAllowJavascriptInterface, "showUserMenu",
-                    userId, userName) + " class=\"system_link\">" + userName + "</a></span>";
+            user = "<a class=\"s_inf nick " + userState + "\" "+TopicBodyBuilder.getHtmlout(isWebviewAllowJavascriptInterface, "showUserMenu", userId, userName)+"><span>"+userName+"</span></a>";
 
             tdElement = tdElements.get(1);
             post = Post.modifyBody(tdElement.html(), m_EmoticsDict, true).replace("<br /><br />--------------------<br />", "");
@@ -173,17 +176,15 @@ public class SearchPostsParser extends HtmlBuilder {
             }
             postFooter = Post.modifyBody(trElements.get(2).children().get(1).html(), m_EmoticsDict, true);
 
-            String POST_TEMPLATE = "<div class=\"between_messages\"></div>\n" +
+            String POST_TEMPLATE = "<div class=\"post_container\">\n" +
                     "<div class=\"topic_title_post\">%1s</div>\n" +
                     "<div class=\"post_header\">\n" +
-                    "\t<table width=\"100%%\">\n" +
-                    "\t\t<tr><td>%2s</td>\n" +
-                    "\t<td><div align=\"right\"><span class=\"post_date_cli\">%3s</span></div></td>\n" +
-                    "</tr>\n" +
-                    "</table>" +
+                    "\t\t%2s\n" +
+                    "\t<div class=\"s_inf date\"><span>%3s</span></div>\n" +
+                    "\n" +
                     "</div>" +
                     "<div class=\"post_body emoticons\">%4s</div>" +
-                    "<div class=\"s_post_footer\"><table width=\"100%%\"><tr><td>%5s</td></tr></table></div>";
+                    "<div class=\"s_post_footer\"><table width=\"100%%\"><tr><td>%5s</td></tr></table></div></div><div class=\"between_messages\"></div>";
             return String.format(POST_TEMPLATE, topic, user, dateTime, post, postFooter);
         }
 

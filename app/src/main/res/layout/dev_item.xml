@@ -36,12 +36,14 @@
             android:id="@+id/titleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="?list_text_special_color"
             android:text="Модель" />
 
         <TextView
             android:id="@+id/descTextView"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            style="?list_text_second_color"
             android:text="Описание модели"/>
     </LinearLayout>
 </LinearLayout>

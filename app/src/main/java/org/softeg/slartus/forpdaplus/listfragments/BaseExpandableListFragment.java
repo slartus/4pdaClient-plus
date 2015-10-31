@@ -223,7 +223,7 @@ super();
                 }
             });
             if (loading) {
-                setEmptyText("Загрузка..");
+                setEmptyText("Загрузка...");
             } else {
                 setEmptyText("Нет данных");
             }

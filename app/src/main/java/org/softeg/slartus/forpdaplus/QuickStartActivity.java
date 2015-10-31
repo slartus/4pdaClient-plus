@@ -12,7 +12,6 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.tabs.BaseTab;
 import org.softeg.slartus.forpdaplus.tabs.ITabParent;
@@ -95,15 +94,8 @@ public class QuickStartActivity extends BaseFragmentActivity implements ITabPare
 
     @Override
     public void onBackPressed() {
-
         if (!themesTab.onParentBackPressed()) {
-            if (!m_ExitWarned) {
-                Toast.makeText(getApplicationContext(), "Нажмите кнопку НАЗАД снова, чтобы закрыть", Toast.LENGTH_SHORT).show();
-                m_ExitWarned = true;
-            } else {
-                finish();
-            }
-
+            finish();
         } else {
             m_ExitWarned = false;
         }
@@ -148,7 +140,7 @@ public class QuickStartActivity extends BaseFragmentActivity implements ITabPare
 
             MenuItem item;
             if (getInterface().getTab().refreshable()) {
-                item = menu.add("Обновить").setIcon(R.drawable.ic_menu_refresh);
+                item = menu.add("Обновить").setIcon(R.drawable.ic_refresh_white_24dp);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         getInterface().themesTab.refresh();
@@ -157,15 +149,6 @@ public class QuickStartActivity extends BaseFragmentActivity implements ITabPare
                 });
                 item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
-
-            item = menu.add("Закрыть").setIcon(R.drawable.ic_menu_close_clear_cancel);
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    getActivity().finish();
-
-                    return true;
-                }
-            });
         }
     }
 

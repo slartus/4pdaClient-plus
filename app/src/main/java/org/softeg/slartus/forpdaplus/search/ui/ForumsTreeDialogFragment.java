@@ -80,7 +80,7 @@ public class ForumsTreeDialogFragment extends DialogFragment {
 
         m_Progress = view.findViewById(R.id.progress);
         return new MaterialDialog.Builder(getActivity())
-                .customView(view,true)
+                .customView(view,false)
                 .cancelable(false)
                 .title("Форум")
                 .positiveText("Применить")

@@ -1,0 +1,16 @@
+body:after{
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 100000;
+    background-image:-webkit-linear-gradient(rgba(0, 128, 0, 0.35) 1px, transparent 1px),
+    -webkit-linear-gradient(left, rgba(0, 128, 0, 0.35) 1px, transparent 1px);
+    background-image:-o-linear-gradient(rgba(0, 128, 0, 0.35) 1px, transparent 1px),
+    -o-linear-gradient(left, rgba(0, 128, 0, 0.35) 1px, transparent 1px);
+    background-image:linear-gradient(rgba(0, 128, 0, 0.35) 1px, transparent 1px),
+    linear-gradient(to right, rgba(0, 128, 0, 0.35) 1px, transparent 1px);;
+    background-size: 8px 8px, 8px 8px;
+    background-position: -1px -1px, -1px -1px
+}

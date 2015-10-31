@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -85,7 +85,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
         super.onLoadFinished(loader,data);
         if(data.getEx()==null){
             if(data instanceof ReputationsListData){
-                ((ActionBarActivity)getActivity()).getSupportActionBar().setSubtitle(((ReputationsListData) data).getRep());
+                ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(((ReputationsListData) data).getRep());
                 Args.putString(USER_NICK_KEY, ((ReputationsListData) data).getUser());
             }
         }
@@ -161,7 +161,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
             if (Client.getInstance().getLogined() && !getUserId().equals(Client.getInstance().UserId)) {
 
 
-                item = menu.add("Повысить репутацию").setIcon(R.drawable.ic_menu_rating_good);
+                item = menu.add("Повысить репутацию").setIcon(R.drawable.ic_thumb_up_white_24dp);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
 
@@ -171,7 +171,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
                 });
                 item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-                item = menu.add("Понизить репутацию").setIcon(R.drawable.ic_menu_rating_bad);
+                item = menu.add("Понизить репутацию").setIcon(R.drawable.ic_thumb_down_white_24dp);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         minusRep();

@@ -10,6 +10,7 @@
     android:paddingBottom="8dp">
     <TextView
         android:id="@android:id/text1"
+        style="?list_text_special_color"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="title"
@@ -19,6 +20,7 @@
 
     <TextView
         android:id="@android:id/text2"
+        style="?list_text_second_color"
         android:text="description"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="2dip">
+    android:padding="2dp">
 
     <EditText
         android:id="@+id/query_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="2dip"
+        android:layout_margin="2dp"
         android:hint="Ключевые слова"
         android:inputType="textAutoComplete" />
 
@@ -18,7 +18,7 @@
         android:id="@+id/username_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="2dip"
+        android:layout_margin="2dp"
         android:hint="Логин автора (дополнительно)"
         android:inputType="textAutoComplete" />
 
@@ -27,7 +27,7 @@
             android:id="@+id/forums_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="2dip"
+            android:layout_margin="2dp"
             android:text="Форумы" />
         <CheckBox
             android:id="@+id/subforums_check"
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="@string/Subforums"
-            android:paddingLeft="50dip" />
+            android:paddingLeft="50dp" />
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

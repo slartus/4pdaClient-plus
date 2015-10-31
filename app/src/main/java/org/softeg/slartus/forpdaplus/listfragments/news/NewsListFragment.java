@@ -24,12 +24,13 @@ import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.News;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.NewsActivity;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
+import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseTaskListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.NewsListAdapter;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
@@ -59,6 +60,13 @@ public class NewsListFragment extends BaseTaskListFragment {
         super();
         initImageLoader(App.getContext());
         imageLoader = ImageLoader.getInstance();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getListView().setDivider(null);
+        getListView().setDividerHeight(0);
     }
 
     @Override
@@ -147,16 +155,18 @@ public class NewsListFragment extends BaseTaskListFragment {
     private static void initImageLoader(Context context) {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageForEmptyUri(R.drawable.no_image)
+                .delayBeforeLoading(1000)
+                .resetViewBeforeLoading(false)  // default
                 .cacheInMemory(true)
                 .cacheOnDisc(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
+                //.bitmapConfig(Bitmap.Config.RGB_565)
                 .handler(new Handler())
                 .build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                 .threadPoolSize(5)
                 .threadPriority(Thread.MIN_PRIORITY)
                 .denyCacheImageMultipleSizesInMemory()
-                .memoryCache(new UsingFreqLimitedMemoryCache(5 * 1024 * 1024)) // 2 Mb
+                .memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024)) // 2 Mb
                 .discCacheFileNameGenerator(new HashCodeFileNameGenerator())
                 .defaultDisplayImageOptions(options)
                 .build();
@@ -216,8 +226,12 @@ public class NewsListFragment extends BaseTaskListFragment {
             final News news = (News) o;
             if (TextUtils.isEmpty(news.getId())) return;
 
-
-            NewsActivity.shownews(getContext(), news.getUrl());
+            //Toast.makeText(getContext(),news.getUrl(),Toast.LENGTH_SHORT).show();
+            //NewsActivity.shownews(getContext(), news.getUrl());
+            //((MainActivity)getActivity()).selectItem(new FavoritesBrickInfo());
+            ((MainActivity)getActivity())
+                    .addTab(news.getTitle().toString(), news.getUrl(),
+                            NewsFragment.newInstance(getActivity(), news.getUrl()));
             mAdapter.notifyDataSetChanged();
 
         } catch (Throwable ex) {

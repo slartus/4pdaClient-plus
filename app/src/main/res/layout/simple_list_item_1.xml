@@ -19,7 +19,7 @@
     android:layout_height="wrap_content"
     android:textAppearance="?android:attr/textAppearanceMedium"
     android:gravity="center_vertical"
-    android:paddingLeft="10dip"
-    android:paddingTop="5dip"
-    android:paddingBottom="5dip"
+    android:paddingLeft="10dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
     />

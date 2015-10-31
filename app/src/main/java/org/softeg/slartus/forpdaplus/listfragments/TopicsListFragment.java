@@ -180,7 +180,14 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                     return true;
                 }
             });
-
+            menu.add(getContext().getString(R.string.NotesByTopic)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    Bundle args = new Bundle();
+                    args.putString(NotesListFragment.TOPIC_ID_KEY, topic.getId().toString());
+                    ListFragmentActivity.showListFragment(getContext(), new NotesBrickInfo().getName(), args);
+                    return true;
+                }
+            });
             ExtUrl.addUrlSubMenu(mHandler, getContext(), menu,
                     TopicUtils.getTopicUrl(topic.getId().toString(), TopicUtils.getOpenTopicArgs(topic.getId(), getListName())), topic.getId().toString(),
                     topic.getMain().toString());
@@ -192,7 +199,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
     public SubMenu addOptionsMenu(final Context context, final Handler mHandler, Menu menu, final IListItem topic,
                                   final String shareItUrl) {
-        SubMenu optionsMenu = menu.addSubMenu("Опции..").setIcon(R.drawable.ic_menu_more);
+        SubMenu optionsMenu = menu.addSubMenu("Опции").setIcon(R.drawable.ic_menu_more);
 
         configureOptionsMenu(context, mHandler, optionsMenu, topic, shareItUrl);
         return optionsMenu;
@@ -282,7 +289,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                             .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                                 public boolean onMenuItemClick(MenuItem menuItem) {
 
-                                    Toast.makeText(context, "Запрос на \"закрепить\" отправлен", Toast.LENGTH_SHORT)
+                                    Toast.makeText(context, "Запрос на \"открепить\" отправлен", Toast.LENGTH_SHORT)
                                             .show();
                                     new TopicListItemTask(context, (Topic) finalTopic3, mAdapter) {
                                         @Override
@@ -310,15 +317,6 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             });
 
         }
-
-        optionsMenu.add(context.getString(R.string.NotesByTopic)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                Bundle args = new Bundle();
-                args.putString(NotesListFragment.TOPIC_ID_KEY, listItem.getId().toString());
-                ListFragmentActivity.showListFragment(context, new NotesBrickInfo().getName(), args);
-                return true;
-            }
-        });
 
         optionsMenu.add("Вложения").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {

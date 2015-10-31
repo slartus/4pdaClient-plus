@@ -240,7 +240,7 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
                 }
             });
             if (loading) {
-                setEmptyText("Загрузка..");
+                setEmptyText("Загрузка...");
             } else {
                 setEmptyText("Нет данных");
             }

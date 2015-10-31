@@ -40,7 +40,7 @@ public class MarketVersionNotifier extends MainNotifier {
                     String currentVersion = getAppVersion(App.getContext());
                     currentVersion = currentVersion.replace("beta", ".");
                     String url = "https://androidquery.appspot.com//api/market?locale=ru&app=" + context.getPackageName();
-                    String page = Http.getPage(url, "utf-8");
+                    String page = Http.getPage(url, "windows-1251");
                     JSONObject jObj = new JSONObject(page);
                     releaseVer = jObj.getString("version").replace("beta", ".");
                     siteVersionsNewer = isSiteVersionsNewer(releaseVer, currentVersion);

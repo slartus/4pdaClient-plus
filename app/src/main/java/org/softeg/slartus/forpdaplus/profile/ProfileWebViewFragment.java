@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
@@ -35,18 +36,22 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
+import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.qms.QmsChatActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 public class ProfileWebViewFragment extends DialogFragment
         implements LoaderManager.LoaderCallbacks<Profile> {
 
     private static final String TAG = "ProfileWebViewFragment";
-    private WebView m_WebView;
+    private static WebView m_WebView;
 
 
     protected Bundle args;
@@ -81,6 +86,9 @@ public class ProfileWebViewFragment extends DialogFragment
         DialogFragment newFragment = ProfileWebViewFragment.newInstance(userId, userNick);
         newFragment.getArguments().putBoolean("DIALOG", true);
         newFragment.show(fragmentActivity.getSupportFragmentManager(), "dialog");
+    }
+    public static WebView getWebView(){
+        return m_WebView;
     }
 
     private static ProfileWebViewFragment newInstance(String userId, String userNick) {
@@ -130,7 +138,6 @@ public class ProfileWebViewFragment extends DialogFragment
         m_WebView.setWebViewClient(new MyWebViewClient());
         return view;
     }
-
     private final static int FILECHOOSER_RESULTCODE = 1;
 
     @JavascriptInterface
@@ -190,7 +197,7 @@ public class ProfileWebViewFragment extends DialogFragment
             });
     }
 
-    private void startLoadData() {
+    protected void startLoadData() {
         Bundle args = new Bundle();
         args.putString(ProfileWebViewActivity.USER_ID_KEY, getUserId());
         setLoading(true);
@@ -315,11 +322,22 @@ public class ProfileWebViewFragment extends DialogFragment
         public Profile loadInBackground() {
             try {
                 Profile profile = ProfileApi.getProfile(Client.getInstance(),
-                        args.getString(ProfileWebViewActivity.USER_ID_KEY));
+                        args.getString(ProfileWebViewActivity.USER_ID_KEY),
+                        PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isSquareAvarars",false)?"":"circle");
                 ProfileHtmlBuilder builder = new ProfileHtmlBuilder();
                 builder.beginHtml(profile.getNick().toString());
-                builder.beginBody();
+                builder.beginBody("profile");
                 builder.append(profile.getHtmlBody());
+                builder.append("<script>\n" +
+                        "        (function () {\n" +
+                        "            var trans = document.querySelectorAll(\"input[type=radio]\")\n" +
+                        "            for (var i = 0, len = trans.length; i < len; i++) {\n" +
+                        "                trans[i].onchange = function () {\n" +
+                        "                    window.HTMLOUT.setPrimaryDevice(this.value)\n" +
+                        "                };\n" +
+                        "            }\n" +
+                        "        }());\n" +
+                        "    </script>");
                 builder.endBody();
                 builder.endHtml();
                 profile.setHtmlBody(builder.getHtml().toString());
@@ -382,4 +400,43 @@ public class ProfileWebViewFragment extends DialogFragment
 
     }
 
+    public void run(final Runnable runnable) {
+        if (Build.VERSION.SDK_INT < 17) {
+            runnable.run();
+        } else {
+            getActivity().runOnUiThread(runnable);
+        }
+    }
+
+    @JavascriptInterface
+    public void saveHtml(final String html) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new SaveHtml(getActivity(),html,"Profile");
+            }
+        });
+    }
+    @JavascriptInterface
+    public void setPrimaryDevice(final String id) {
+        run(new Runnable() {
+            @Override
+            public void run() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Map<String, String> additionalHeaders = new HashMap<String, String>();
+                        additionalHeaders.put("auth_key", Client.getInstance().getAuthKey());
+                        try {
+                            Client.getInstance().performPost("http://4pda.ru/forum/index.php?act=profile-xhr&action=dev-primary&md_id=" + id, additionalHeaders);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+                Toast.makeText(getActivity(), "Основное устройство изменено", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
 }

@@ -4,7 +4,6 @@ package org.softeg.slartus.forpdaplus.listfragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -12,7 +11,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.R;
@@ -71,7 +69,7 @@ public class ListFragmentActivity extends BaseFragmentActivity {
     public void onBackPressed() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.content_frame);
         if (currentFragment == null || !((IBrickFragment) currentFragment).onBackPressed()) {
-            if (!m_ExitWarned) {
+            /*if (!m_ExitWarned) {
                 Toast.makeText(this, "Нажмите кнопку НАЗАД снова, чтобы закрыть", Toast.LENGTH_SHORT).show();
 
                 m_ExitWarned = true;
@@ -83,7 +81,8 @@ public class ListFragmentActivity extends BaseFragmentActivity {
                 }, 3 * 1000);
             } else {
                 super.onBackPressed();
-            }
+            }*/
+            super.onBackPressed();
 
         }else {
             m_ExitWarned = false;
@@ -157,7 +156,7 @@ public class ListFragmentActivity extends BaseFragmentActivity {
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             super.onCreateOptionsMenu(menu,inflater);
             MenuItem item = menu.add(R.string.Search)
-                    .setIcon(R.drawable.ic_menu_search)
+                    .setIcon(R.drawable.ic_magnify_white_24dp)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -168,7 +167,7 @@ public class ListFragmentActivity extends BaseFragmentActivity {
                     });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
              item = menu.add(0, 0, 999,"Закрыть")
-                    .setIcon(R.drawable.ic_menu_close_clear_cancel);
+                    .setIcon(R.drawable.ic_close_white_24dp);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     getActivity().finish();

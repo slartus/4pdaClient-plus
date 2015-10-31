@@ -3,15 +3,15 @@
 
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="8dip">
+    android:orientation="horizontal">
 
     <!--  ListRow Left sied Thumbnail image -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="?news_full"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="8dp">
 
         <FrameLayout
             android:id="@+id/image_panel"
@@ -20,7 +20,7 @@
             android:layout_alignParentLeft="true">
 
             <ImageView
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
@@ -28,8 +28,8 @@
 
             <ImageView
                 android:id="@+id/imageImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:contentDescription="img" />
@@ -52,12 +52,12 @@
                 style="?news_full_image_corner"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="vertical" />
+                android:orientation="vertical"/>
         </FrameLayout>
 
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_toRightOf="@+id/image_panel"
@@ -95,7 +95,15 @@
                 android:text="Всем пользователям старых iPhone, которые хотят вдохнут в устройства новую жизнь, следует обратить внимание на новый Kickstarter-проект от смелых энтузиастов. На самом деле, относительно старых - подойдут iPhone 4/4S и iPhone 5/5S. Компания K Tech собирает средства на производство аксессуара, который превратит смартфон в некое подобие винтажного радио с относительно большой ручкой. Аксессуар получил название i Ready O. Для превращения iPhone в радио нужно лишь вставить его в отведённую нишу. Кнопки Home и управление звуком дублируются на корпусе i Ready O для придания аутентичности."
                 android:textAppearance="@android:style/TextAppearance.Small" />
         </LinearLayout>
-
-
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="6dp"
+        android:orientation="vertical"
+        android:id="@+id/shadow"
+        android:background="@drawable/shadow_to_bottom"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="2dp"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

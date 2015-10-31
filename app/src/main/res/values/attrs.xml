@@ -1,12 +1,7 @@
 <resources>
     <!-- Mod -->
-    <attr name="btnsend" format="reference" />
-    <attr name="panel" format="reference" />
-    <attr name="bottom_separator" format="reference" />
-    <attr name="left_separator" format="reference" />
     <attr name="right_separator" format="reference" />
     <attr name="news" format="reference" />
-    <attr name="news_image_corner" format="reference" />
     <attr name="news_full" format="reference" />
     <attr name="news_full_image_corner" format="reference" />
     <attr name="drawer_menu" format="reference" />
@@ -24,30 +19,18 @@
     <attr name="news_text_minor_color" format="reference" />
     <attr name="news_text_second_color" format="reference" />
     <attr name="edit_text" format="reference" />
-    <attr name="divider_color" format="reference" />
     <attr name="Divider" format="reference" />
     <attr name="fab_pressed" format="reference"/>
     <attr name="fab_ripple" format="reference"/>
     <attr name="actbar" format="reference"/>
     <attr name="arrow_up" format="reference"/>
     <attr name="arrow_down" format="reference"/>
+
     <!-- Default -->
     <attr name="theme_background" format="reference" />
     <attr name="theme_light_background" format="reference" />
 
     <attr name="forum_header_text_color" format="color" />
-    <declare-styleable name="ExpandoLayout">
-        <attr name="text" format="string" />
-        <attr name="titleRowPadding" format="integer" />
-        <attr name="expanded" format="boolean" />
-        <attr name="moreBar" format="boolean" />
-        <attr name="moreBarDefaultViewHeight" format="integer" />
-        <attr name="moreBarFadeColor" format="color" />
-        <attr name="moreBarOnRight" format="boolean" />
-        <attr name="compactText" format="string" />
-        <attr name="expandedText" format="string" />
-        <attr name="showAndHideChildren" format="boolean" />
-    </declare-styleable>
 
     <declare-styleable name="ExpandablePanel">
         <attr name="handle" format="reference" />

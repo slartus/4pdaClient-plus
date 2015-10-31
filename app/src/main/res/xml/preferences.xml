@@ -10,15 +10,11 @@
         <Preference
             android:key="appstyle"
             android:summary="Выберите стиль программы"
-            android:title="Стиль">
-
-        </Preference>
-
-
+            android:title="Стиль"/>
         <Preference
             android:key="accentColor"
             android:summary="Цвет кнопки в теме и новостях"
-            android:title="Цвет FAB"/>
+            android:title="Цвет кнопки с карандашом"/>
         <Preference
             android:key="mainAccentColor"
             android:title="Цвет акцента"
@@ -30,7 +26,7 @@
         <Preference
             android:key="userBackground"
             android:summary="Требуется перезапуск приложения"
-            android:title="Изображение в выезжающем меню"/>
+            android:title="Изображение в боковом меню"/>
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="categoryLast"
@@ -39,8 +35,37 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="statusbarTransparent"
-            android:title="Прозрачный статусбар"
+            android:title="Не красить Status Bar"
             android:summary="Включить, если активирован полноэкранный режим. Требуется перезапуск приложения"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="isMarginBottomNav"
+            android:title="Нижний отступ в боковом меню"
+            android:summary="Включить, если не видно последнего пункта. Требуется перезапуск приложения"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="isShowShortUserInfo"
+            android:title="Информация о пользователе"
+            android:summary="Отображать информацию о пользователе в боковом меню. Требуется перезапуск приложения"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="isSquareAvarars"
+            android:title="Квадратные аватарки"
+            android:summary="Требуется перезапуск приложения"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pancilInActionBar"
+            android:title="Карандаш в экшнбаре"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="oldIndicator"
+            android:title="Полоса у новых сообщений"
+            android:summary="Требуется перезапуск приложения"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="coloredNavBar"
+            android:title="Красить Navigation Bar"
+            android:summary="Для Android 5 и выше. Требуется перезапуск приложения"/>
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
             android:defaultValue="-1"
             android:entries="@array/screenOrienationArray"
@@ -131,12 +156,31 @@
                 android:summary="Можно указать несколько через запятую"
                 android:title="Код кнопки для прокрутки вниз" />
         </PreferenceScreen>
+        <PreferenceScreen android:title="Для разработчика стилей">
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="system.developerSavePage"
+                android:summary="Возможность сохранения страницы"
+                android:title="Сохранить страницу" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="system.developerInterface"
+                android:title="Интерфейс для разработки" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="system.developerStyle"
+                android:title="Отключить стили" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="system.developerGrid"
+                android:title="Сетка 8dp (8px)" />
+        </PreferenceScreen>
 
         <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="system.developer"
-            android:summary="Режим для разработчиков стиля"
-            android:title="Режим разработчика" />
+            android:defaultValue="true"
+            android:key="isGpuImg"
+            android:summary="Отключить, если есть проблемы с аватарками на странице"
+            android:title="Оптимизация GIF анимаций на странице" />
 
         <CheckBoxPreference
             android:defaultValue="false"
@@ -211,9 +255,14 @@
                 android:entryValues="@array/downloaderManagersValues"
                 android:key="file.downloaderManagers"
                 android:summary="Использовать для скачивания файлов выбранный менеджер"
-                android:title="Скачивать файл при помощи.." />
+                android:title="Скачивать файл при помощи..." />
         </PreferenceScreen>
 
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="fullThemeTitle"
+            android:summary="Вместе с названием отображать описание темы на странице"
+            android:title="Полное название темы" />
         <!--<CheckBoxPreference-->
             <!--android:defaultValue="false"-->
             <!--android:key="theme.Fullscreen"-->
@@ -253,6 +302,11 @@
             android:entryValues="@array/video_player_types_values"
             android:key="news.videoplayer"
             android:title="Проигрыватель видео" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="loadNewsComment"
+            android:title="Не загружать комментарии"
+            android:summary="Ускорит отображение страницы"/>
     </PreferenceScreen>
 
     <PreferenceScreen
@@ -344,6 +398,10 @@
             android:key="About.AddRep"
             android:summary="Повысить репутацию разработчика на форуме"
             android:title="Дать в репу" />
+        <Preference
+            android:key="About.AddRepTwo"
+            android:summary="Повысить репутацию помощнику разработчика на форуме"
+            android:title="Дать помощнику в репу" />
         <Preference
             android:key="About.ShowTheme"
             android:summary="Открыть тему обсуждения программы"

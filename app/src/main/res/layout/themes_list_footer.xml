@@ -4,15 +4,15 @@
     android:layout_width="fill_parent"
     
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dip"
+    android:padding="6dp"
     android:gravity="left">
 
     <ImageView
         android:id="@+id/imgPullToLoadMore"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:layout_marginLeft="20dip"
-        android:layout_marginRight="20dip"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_gravity="left"
         android:gravity="center"
         android:src="@drawable/ic_pulltorefresh_arrow" />
@@ -20,8 +20,8 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dip"
-        android:paddingBottom="15dip"
+        android:paddingTop="10dp"
+        android:paddingBottom="15dp"
         
         android:orientation="vertical">
 
@@ -31,9 +31,9 @@
             android:visibility="gone"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"
-            android:paddingTop="5dip"
+            android:paddingTop="5dp"
             android:layout_width="fill_parent"
-            android:layout_height="0dip"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center_vertical" />
 
@@ -42,7 +42,7 @@
             android:text="@string/All_0"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="fill_parent"
-            android:layout_height="0dip"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:singleLine="true"
             android:ellipsize="marquee" />

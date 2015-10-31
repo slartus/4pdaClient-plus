@@ -4,20 +4,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="10dip">
-
-    <TextView
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Comment_" />
+    android:padding="10dp">
 
     <EditText
         android:id="@+id/comment"
-        android:lines="5"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:minWidth="250dip"
-        android:gravity="top" />
+        android:gravity="top"
+        android:hint="@string/Comment_"/>
 </LinearLayout>

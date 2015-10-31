@@ -8,82 +8,88 @@
     <LinearLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
         android:layout_height="48dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/progressBar"
         android:gravity="right"
+        android:orientation="horizontal"
         android:paddingRight="12dp">
+
         <Button
             android:id="@+id/btnAll"
             style="?android:attr/buttonStyleSmall"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             android:text="ВСЁ"
-            android:textColor="?attr/colorAccent"/>
+            android:textColor="?attr/colorAccent" />
+
         <Button
             android:id="@+id/btnAuthor"
             style="?android:attr/buttonStyleSmall"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@android:color/transparent"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             android:text="КОД"
-            android:textColor="?attr/colorAccent"/>
+            android:textColor="?attr/colorAccent" />
 
         <Button
             android:id="@+id/btnText"
             style="?android:attr/buttonStyleSmall"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:background="@android:color/transparent"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             android:text="ТЕКСТ"
-            android:textColor="?attr/colorAccent"/>
+            android:textColor="?attr/colorAccent" />
 
         <Button
             android:id="@+id/btnClear"
             style="?android:attr/buttonStyleSmall"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:background="@android:color/transparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
             android:text="СТЕРЕТЬ"
-            android:textColor="?attr/colorAccent"/>
+            android:textColor="?attr/colorAccent" />
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/txtBody"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/relativeLayout"
-        android:layout_gravity="center_horizontal"
-        android:ems="10"
-        android:gravity="top"
-        android:inputType="textMultiLine|textCapSentences"
-        android:singleLine="false">
+        android:layout_below="@+id/relativeLayout">
 
-        <requestFocus />
-    </EditText>
+        <EditText
+            android:id="@+id/txtBody"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:ems="10"
+            android:gravity="top"
+            android:inputType="textMultiLine|textCapSentences"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:singleLine="false">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:indeterminateOnly="true" />
+            <requestFocus />
+        </EditText>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:indeterminateOnly="true" />
+    </RelativeLayout>
+
 
 </RelativeLayout>

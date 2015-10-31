@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
-import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
@@ -73,12 +72,7 @@ public class SearchActivity extends BaseFragmentActivity
 
     @Override
     public void onBackPressed() {
-        if (!m_ExitWarned) {
-            Toast.makeText(getApplicationContext(), "Нажмите кнопку НАЗАД снова, чтобы закрыть", Toast.LENGTH_SHORT).show();
-            m_ExitWarned = true;
-        } else {
-            finish();
-        }
+        finish();
     }
 
     private void doSearch() {
@@ -211,7 +205,7 @@ public class SearchActivity extends BaseFragmentActivity
 
 
             item = menu.add(R.string.Search)
-                    .setIcon(R.drawable.ic_menu_search)
+                    .setIcon(R.drawable.ic_magnify_white_24dp)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -226,7 +220,7 @@ public class SearchActivity extends BaseFragmentActivity
                     ((SearchActivity) getActivity()).getQueryUrl(), null, null);
 
             item = menu.add(0, 0, 999, "Закрыть")
-                    .setIcon(R.drawable.ic_menu_close_clear_cancel);
+                    .setIcon(R.drawable.ic_close_white_24dp);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     getActivity().finish();

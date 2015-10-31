@@ -60,7 +60,7 @@ public class TopicAttentionNotifier extends MainNotifier {
             public void run() {
                 try {
                     String url = "http://4pda.ru/forum/index.php?showtopic=271502";
-                    String page = Http.getPage(url, "windows-1251");
+                    String page = Http.getPage(url,"windows-1251");
                     Matcher m = Pattern
                             .compile("<a name=\"(attention_\\d+_\\d+_\\d+_\\d+)\" title=\"attention_\\d+_\\d+_\\d+_\\d+\">.*?</a>(.*?)<br\\s*/>\\s*---+\\s*<br\\s*/>",
                                     Pattern.CASE_INSENSITIVE).matcher(page);
@@ -83,7 +83,7 @@ public class TopicAttentionNotifier extends MainNotifier {
                                             .title("Объявление клиента")
                                             .cancelable(false)
                                             .content(Html.fromHtml(topicAttention))
-                                            .positiveText("Я прочитал")
+                                            .positiveText("Ок")
                                             .build();
                             addToStack(alertDialog);
                         }

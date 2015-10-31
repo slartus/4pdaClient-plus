@@ -423,7 +423,7 @@ public class ForumFragment extends Fragment implements
     @Override
     public boolean onBackPressed() {
         if (mData.getCrumbs().size() > 1) {
-            loadForum(mData.getCrumbs().get(mData.getCrumbs().size() - 1).getId());
+            loadForum(mData.getCrumbs().get(mData.getCrumbs().size() - 2).getId());
             return true;
         }
         return false;

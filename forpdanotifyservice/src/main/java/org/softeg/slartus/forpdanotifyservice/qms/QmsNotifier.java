@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
@@ -271,6 +272,11 @@ public class QmsNotifier extends NotifierBase {
 
     private static final int MY_NOTIFICATION_ID = 1;
 
+    private static int getNotificationIcon() {
+        boolean whiteIcon = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+        return whiteIcon ? R.drawable.notify_icon : R.drawable.icon_mat;
+    }
+
     private static void sendNotify(Context context, ArrayList<QmsUser> mails, boolean hasUnreadMessage) {
         Log.i(LOG_TAG, "qms sendNotify");
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -293,7 +299,7 @@ public class QmsNotifier extends NotifierBase {
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, marketIntent, 0);
             NotificationBridge bridge = NotificationBridge.createBridge(
                     context,
-                    R.drawable.icon,
+                    getNotificationIcon(),
                     "Имеются непрочитанные сообщения",
                     System.currentTimeMillis())
                     .setContentTitle(message)

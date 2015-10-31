@@ -88,6 +88,7 @@ public class ImageViewDialogFragment extends DialogFragment {
                 }).build();
 
         builder.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        builder.show();
         return builder;
 
     }

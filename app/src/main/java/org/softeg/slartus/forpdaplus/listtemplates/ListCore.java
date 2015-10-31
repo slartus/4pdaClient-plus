@@ -105,6 +105,8 @@ public class ListCore {
         m_RegisteredBricks.add(new UserReputationBrickInfo());
         m_RegisteredBricks.add(new TopicAttachmentBrickInfo());
         m_RegisteredBricks.add(new QmsContactsBrickInfo());
+        m_RegisteredBricks.add(new TopicWritersBrickInfo());
+        m_RegisteredBricks.add(new TopicReadersBrickInfo());
     }
 
     public static BrickInfo getRegisteredBrick(String name) {

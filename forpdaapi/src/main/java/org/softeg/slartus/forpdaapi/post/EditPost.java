@@ -11,7 +11,7 @@ import java.util.Map;
 public class EditPost implements Serializable {
     private String error;
     private String body;
-    private Map<String, String> params = new HashMap<>();
+    private EditPostParams params =new EditPostParams();
     private List<EditAttach> attaches = new ArrayList<>();
     private String postEditReason;
     private boolean enableEmo;
@@ -21,7 +21,7 @@ public class EditPost implements Serializable {
         return attaches;
     }
 
-    public Map<String, String> getParams() {
+    public EditPostParams getParams() {
         return params;
     }
 

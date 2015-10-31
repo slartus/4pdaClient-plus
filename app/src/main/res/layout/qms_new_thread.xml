@@ -56,7 +56,7 @@
 
     <LinearLayout
         android:id="@+id/bottomPanel"
-        style="?panel"
+        style="?edit_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -73,18 +73,15 @@
                 android:id="@+id/advanced_button"
                 style="?right_separator"
                 android:layout_width="48dp"
-                android:layout_height="36dp"
-                android:layout_marginRight="6dp"
-                android:src="@drawable/btn_show_post_panel" />
+                android:layout_height="32dp"
+                android:src="@drawable/ic_plus_grey600_24dp" />
 
             <Button
                 android:id="@+id/btnSendPost"
-                style="?btnsend"
                 android:layout_width="fill_parent"
-                android:layout_height="36dp"
+                android:layout_height="48dp"
                 android:text="Отправить"
-                android:textColor="#ffffffff"
-                android:layout_marginRight="6dp" />
+                android:layout_marginLeft="4dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -94,4 +91,11 @@
             android:orientation="vertical"
             android:visibility="gone" />
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="6dp"
+        android:orientation="vertical"
+        android:id="@+id/shadow"
+        android:background="@drawable/shadow_to_top"
+        android:layout_above="@+id/bottomPanel"/>
 </RelativeLayout>

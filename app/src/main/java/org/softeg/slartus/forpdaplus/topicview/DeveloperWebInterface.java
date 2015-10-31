@@ -5,17 +5,13 @@ package org.softeg.slartus.forpdaplus.topicview;/*
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-
-import java.io.File;
-import java.io.FileWriter;
 
 public class DeveloperWebInterface {
     public static final String NAME = "DEVOUT";
@@ -55,36 +51,12 @@ public class DeveloperWebInterface {
 
     @JavascriptInterface
     public void saveHtml(final String html) {
-        getContext().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String state = Environment.getExternalStorageState();
-                    if (!Environment.MEDIA_MOUNTED.equals(state)) {
-                        Toast.makeText(getContext(), "Внешнее хранилище недоступно!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-
-                    File file = new File(App.getInstance().getExternalFilesDir(null), "Topic.txt");
-                    FileWriter out = new FileWriter(file);
-                    out.write(html);
-                    out.close();
-                    Uri uri = Uri.fromFile(file);
-
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(uri, "text/plain");
-                    getContext().startActivity(intent);
-                } catch (Exception e) {
-                    AppLog.e(getContext(), e);
-                }
-            }
-        });
+        new SaveHtml(getContext(),html,"Topic");
     }
 
 
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent data) {
+    public void onActivityResult(int requestCode, int resultCode,
+                                 Intent data) {
 
         if (resultCode == Activity.RESULT_OK && requestCode == FILECHOOSER_RESULTCODE) {
             if(data.getData()==null)

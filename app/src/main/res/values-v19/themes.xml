@@ -1,13 +1,8 @@
 <resources>
     <style name="Theme.White" parent="MainThemeWH">
-        <item name="android:actionModeStyle">@style/actionMode_style</item>
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="md_content_color">#FF757575</item>
-        <item name="md_title_color">#FF212121</item>
-        <item name="md_item_color">#FF212121</item>
     </style>
     <style name="Theme.Black" parent="MainThemeBL">
-        <item name="android:actionModeStyle">@style/actionMode_style</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
@@ -72,7 +67,7 @@
     </style>
 
     <style name="Theme.Prefs.WhitePink" parent="MainPinkWH">
-        <item name="android:textColor">@color/list_text_general_color_wh</item>
+        <item name="android:textColor">@color/list_text_special_color_wh</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">80dp</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
@@ -81,7 +76,7 @@
     </style>
 
     <style name="Theme.Prefs.BlackPink" parent="MainPinkBL">
-        <item name="android:textColor">@color/list_text_general_color_bl</item>
+        <item name="android:textColor">@color/list_text_special_color_bl</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">80dp</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
@@ -90,7 +85,7 @@
     </style>
 
     <style name="Theme.Prefs.WhiteGray" parent="MainGrayWH">
-        <item name="android:textColor">@color/list_text_general_color_wh</item>
+        <item name="android:textColor">@color/list_text_special_color_wh</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">80dp</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
@@ -99,7 +94,7 @@
     </style>
 
     <style name="Theme.Prefs.BlackGray" parent="MainGrayBL">
-        <item name="android:textColor">@color/list_text_general_color_bl</item>
+        <item name="android:textColor">@color/list_text_special_color_bl</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">80dp</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
@@ -108,7 +103,7 @@
     </style>
 
     <style name="Theme.Prefs.WhiteBlue" parent="MainBlueWH">
-        <item name="android:textColor">@color/list_text_general_color_wh</item>
+        <item name="android:textColor">@color/list_text_special_color_wh</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">80dp</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
@@ -117,7 +112,7 @@
     </style>
 
     <style name="Theme.Prefs.BlackBlue" parent="MainBlueBL">
-        <item name="android:textColor">@color/list_text_general_color_bl</item>
+        <item name="android:textColor">@color/list_text_special_color_bl</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">80dp</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>

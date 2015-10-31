@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
 
     android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="16dip"
+    android:padding="16dp"
 
     android:gravity="left|center_vertical">
 
@@ -37,7 +37,7 @@
 
         <TextView
 
-            android:text="Загрузка.."
+            android:text="Загрузка..."
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_weight="1"

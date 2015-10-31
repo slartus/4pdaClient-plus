@@ -42,7 +42,7 @@
 
                 <TextView
                     android:id="@+id/txtNick"
-                    style="?list_text_general_color"
+                    style="?list_text_special_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sslartus"
@@ -51,7 +51,7 @@
                     android:layout_centerVertical="true" />
                 <TextView
                     android:id="@+id/txtAllMessagesCount"
-                    style="?list_text_minor_color"
+                    style="?list_text_second_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
@@ -63,13 +63,13 @@
                     android:paddingLeft="8dp"/>
 
                 <TextView
-                        android:id="@+id/txtDateTime"
-                        style="?list_text_minor_color"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="ррр"
-                        android:textAppearance="?android:textAppearanceSmall"
-                        android:visibility="gone"/>
+                    android:id="@+id/txtDateTime"
+                    style="?list_text_minor_color"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="ррр"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/txtMessagesCount"

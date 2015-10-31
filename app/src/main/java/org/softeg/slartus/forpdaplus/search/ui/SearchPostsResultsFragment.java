@@ -11,13 +11,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -47,6 +46,7 @@ import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.BrowserViewsFragmentActivity;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
+import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -55,9 +55,6 @@ import org.softeg.slartus.forpdaplus.search.ISearchResultView;
 import org.softeg.slartus.forpdaplus.search.SearchPostsParser;
 import org.softeg.slartus.forpdaplus.search.SearchResult;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -75,6 +72,10 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
     public void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        if (Preferences.System.isDevSavePage()|
+                Preferences.System.isDevInterface()|
+                Preferences.System.isDevStyle())
+            Toast.makeText(getContext(), "Режим разработчика", Toast.LENGTH_SHORT).show();
         progressDialog = new MaterialDialog.Builder(getContext()).progress(true,0).content("Загрузка...").build();
     }
 
@@ -135,8 +136,8 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
     public void setHideActionBar() {
         if (getWebView() == null || !(getWebView() instanceof AdvWebView))
             return;
-        ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
-        FloatingActionButton fab = (FloatingActionButton) ((ActionBarActivity) getActivity()).findViewById(R.id.fab);
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        FloatingActionButton fab = (FloatingActionButton) ((AppCompatActivity) getActivity()).findViewById(R.id.fab);
         if (fab == null) return;
         if (actionBar == null) return;
         BrowserViewsFragmentActivity.setHideActionBar(mWvBody, actionBar, fab);
@@ -262,7 +263,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
 
     }
 
-    private Context getContext() {
+    public Context getContext() {
         return getActivity();
     }
 
@@ -479,7 +480,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (Preferences.System.isDeveloper()) {
+        if (Preferences.System.isDevSavePage()) {
             menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     try {
@@ -500,30 +501,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
-
-                FileOutputStream outputStream;
-
-                try {
-                    String state = Environment.getExternalStorageState();
-                    if (!Environment.MEDIA_MOUNTED.equals(state)) {
-                        Toast.makeText(getContext(), "Внешнее хранилище недоступно!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-
-                    File file = new File(App.getInstance().getExternalFilesDir(null), "search.txt");
-                    FileWriter out = new FileWriter(file);
-                    out.write(html);
-                    out.close();
-                    Uri uri = Uri.fromFile(file);
-
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(uri, "text/plain");
-                    startActivity(intent);
-                } catch (Exception e) {
-                    AppLog.e(getActivity(), e);
-                }
+                new SaveHtml(getActivity(),html,"Search");
             }
         });
     }

@@ -66,7 +66,7 @@ public class ExpandoLayout extends ViewGroup implements AnimationListener {
     public ExpandoLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-
+/*
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ExpandoLayout);
         try {
             text = a.getString(R.styleable.ExpandoLayout_text);
@@ -85,6 +85,7 @@ public class ExpandoLayout extends ViewGroup implements AnimationListener {
         } finally {
             a.recycle();
         }
+        */
     }
 
     public ExpandoLayout(Context context) {

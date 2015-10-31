@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -20,6 +21,7 @@ import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
+import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.qms.QmsNewThreadActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
@@ -60,7 +62,11 @@ public class ProfileWebViewActivity extends BaseFragmentActivity {
 
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment, details).add(menuFragment, "menufragment").commit();
+                    .add(R.id.fragment, details,"profileFragment").add(menuFragment, "menufragment").commit();
+            if (Preferences.System.isDevSavePage()|
+                    Preferences.System.isDevInterface()|
+                    Preferences.System.isDevStyle())
+                Toast.makeText(this, "Режим разработчика", Toast.LENGTH_SHORT).show();
 
         } catch (Throwable e) {
             AppLog.e(this, e);
@@ -79,6 +85,10 @@ public class ProfileWebViewActivity extends BaseFragmentActivity {
     public static final class MenuFragment extends ProfileMenuFragment {
         private String userId;
         private String userNick;
+
+        public ProfileWebViewActivity getInterface() {
+            return (ProfileWebViewActivity) getActivity();
+        }
 
         @Override
         public void onCreate(android.os.Bundle savedInstanceState) {
@@ -114,7 +124,7 @@ public class ProfileWebViewActivity extends BaseFragmentActivity {
             MenuItem item;
 
             if (Client.getInstance().getLogined() && userId != null && !userId.equals(Client.getInstance().UserId)) {
-                item = menu.add(getString(R.string.MessagesQms)).setIcon(R.drawable.ic_menu_send);
+                item = menu.add(getString(R.string.MessagesQms)).setIcon(R.drawable.ic_pencil_white_24dp);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         QmsNewThreadActivity.showUserNewThread(getActivity(), userId, userNick);
@@ -192,6 +202,28 @@ public class ProfileWebViewActivity extends BaseFragmentActivity {
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
+            if (Preferences.System.isDevSavePage()) {
+                menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        try {
+                            getInterface().saveHtml();
+                        } catch (Exception ex) {
+                            return false;
+                        }
+                        return true;
+                    }
+                });
+            }
+
+        }
+
+    }
+
+    public void saveHtml() {
+        try {
+            ProfileWebViewFragment.getWebView().loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+        } catch (Throwable ex) {
+            AppLog.e(this, ex);
         }
     }
 

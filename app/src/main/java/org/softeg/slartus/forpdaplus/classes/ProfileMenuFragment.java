@@ -68,11 +68,11 @@ private Handler mHandler=new Handler();
         if (logged) {
 
             if (Client.getInstance().getQmsCount() > 0) {
-                return R.drawable.ic_action_qms;
+                return R.drawable.ic_chat_white_24dp;
             }
-            return R.drawable.ic_menu_user_online;
+            return R.drawable.ic_account_white_24dp;
         } else {
-            return R.drawable.ic_menu_user_offline;
+            return R.drawable.ic_account_outline_white_24dp;
         }
     }
 

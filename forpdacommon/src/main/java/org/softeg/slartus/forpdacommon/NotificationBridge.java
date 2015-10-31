@@ -28,6 +28,8 @@ public abstract class NotificationBridge {
 
         if(sdk<16)
             return new Notification11_15(context,icon,tickerText,when);
+        if(sdk>20)
+            return new Notification21_x(context,icon,tickerText,when);
 
         return new Notification16_x(context,icon,tickerText,when);
     }

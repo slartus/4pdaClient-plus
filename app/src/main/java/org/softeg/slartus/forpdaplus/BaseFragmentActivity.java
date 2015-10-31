@@ -3,16 +3,14 @@ package org.softeg.slartus.forpdaplus;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
-
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
@@ -24,10 +22,12 @@ import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
  * Date: 14.03.12
  * Time: 12:51
  */
-public class BaseFragmentActivity extends ActionBarActivity
+public class BaseFragmentActivity extends AppCompatActivity
         implements SearchSettingsDialogFragment.ISearchDialogListener {
     public static final String SENDER_ACTIVITY = "sender_activity";
     public static final String FORCE_EXIT_APPLICATION = "org.softeg.slartus.forpdaplus.FORCE_EXIT_APPLICATION";
+    public LinearLayout statusBar;
+    public boolean statusBarShowed = false;
 
     protected void afterCreate() {
 
@@ -102,32 +102,31 @@ public class BaseFragmentActivity extends ActionBarActivity
 
     @Override
     protected void onCreate(Bundle saveInstance) {
-        setTheme(isTransluent() ? App.getInstance().getTransluentThemeStyleResID() : App.getInstance().getThemeStyleResID());
+        setTheme(R.style.Theme_Transluent_BlackPink);
         super.onCreate(saveInstance);
+        if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            getWindow().setFlags(
+                    WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+                    WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+        }
+
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
+        if (PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("coloredNavBar", true) &&
+                android.os.Build.VERSION.SDK_INT >= 21)
+            getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(getNavBarColor()));
+
         if(PreferenceManager.getDefaultSharedPreferences(App.getContext()).getBoolean("statusbarTransparent",false)) {
-            if (Build.VERSION.SDK_INT > 19) {
-                if (android.os.Build.VERSION.SDK_INT >= 21)
-                    getWindow().setStatusBarColor(Color.TRANSPARENT);
-                getWindow().getDecorView().setSystemUiVisibility(
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            }
+            if (android.os.Build.VERSION.SDK_INT >= 21)
+                getWindow().setStatusBarColor(Color.TRANSPARENT);
         }else {
-            if (android.os.Build.VERSION.SDK_INT == 19) {
-                SystemBarTintManager tintManager = new SystemBarTintManager(this);
-                tintManager.setStatusBarTintEnabled(true);
-                if (App.getInstance().getCurrentThemeName().equals("white")) {
-                    tintManager.setTintColor(getResources().getColor(R.color.statusBar_wh));
-                } else if (App.getInstance().getCurrentThemeName().equals("black")) {
-                    tintManager.setTintColor(getResources().getColor(R.color.statusBar_bl));
-                }
-            } else {
-                getWindow().getDecorView().setSystemUiVisibility(
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            if (android.os.Build.VERSION.SDK_INT > 18) {
                 LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 LinearLayout statusBarLay = (LinearLayout) inflater.inflate(R.layout.statusbar, null);
-                LinearLayout statusBar = (LinearLayout) statusBarLay.findViewById(R.id.statusBar);
+                statusBar = (LinearLayout) statusBarLay.findViewById(R.id.statusBar);
+                statusBar.setMinimumHeight(getStatusBarHeight());
                 if (App.getInstance().getCurrentThemeName().equals("white")) {
                     statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_wh));
                 } else if (App.getInstance().getCurrentThemeName().equals("black")) {
@@ -135,10 +134,9 @@ public class BaseFragmentActivity extends ActionBarActivity
                 }
                 ViewGroup decor = (ViewGroup) getWindow().getDecorView();
                 decor.addView(statusBarLay);
+                statusBarShowed = true;
             }
         }
-
-
 
         args.clear();
         if (getIntent().getExtras() != null) {
@@ -152,7 +150,20 @@ public class BaseFragmentActivity extends ActionBarActivity
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         loadPreferences(prefs);
     }
-
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+    public int getNavBarColor(){
+        if(App.getInstance().isWhiteTheme())
+            return R.color.actionbar_background_wh;
+        else
+            return R.color.actionbar_background_bl;
+    }
     @Override
     protected void onSaveInstanceState(android.os.Bundle outState) {
         if (args != null)

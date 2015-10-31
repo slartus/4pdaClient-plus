@@ -44,12 +44,12 @@ public class ForumUser {
 
     public static void showUserQuickAction(final FragmentActivity context, View webView, final String userId,
                                            String userNick) {
-        showUserQuickAction(context, webView, "", userId, userNick,null, null);
+        showUserQuickAction(context, webView, "", userId, userNick, null);
     }
 
     public static void showUserQuickAction(final FragmentActivity context, View webView, final String postId,
                                            final String userId,
-                                           String userNick, String avatar,final InsertNickInterface insertNickInterface) {
+                                           String userNick,final InsertNickInterface insertNickInterface) {
         try {
             userNick = Html.fromHtml(userNick.replace("<", "&lt;")).toString();
 
@@ -105,7 +105,7 @@ public class ForumUser {
                         } else if (actionId == finalSendQmsPosition) {
                             new MaterialDialog.Builder(context)
                                     .title(context.getString(R.string.SelectAnAction))
-                                    .content(context.getString(R.string.OpenWith) + " " + finalUserNick + "..")
+                                    .content(context.getString(R.string.OpenWith) + " " + finalUserNick + "...")
                                     .cancelable(true)
                                     .positiveText(context.getString(R.string.NewDialog))
                                     .neutralText(context.getString(R.string.AllDialogs))
@@ -160,7 +160,7 @@ public class ForumUser {
                             public boolean onMenuItemClick(MenuItem menuItem) {
                                 new MaterialDialog.Builder(context)
                                         .title(context.getString(R.string.SelectAnAction))
-                                        .content(context.getString(R.string.OpenWith) + " " + finalUserNick + "..")
+                                        .content(context.getString(R.string.OpenWith) + " " + finalUserNick + "...")
                                         .cancelable(true)
                                         .positiveText(context.getString(R.string.NewDialog))
                                         .neutralText(context.getString(R.string.AllDialogs))
@@ -222,8 +222,15 @@ public class ForumUser {
 
         assert layout != null;
         TextView username_view = (TextView) layout.findViewById(R.id.username_view);
+        TextView textUser = (TextView) layout.findViewById(R.id.user);
         final EditText message_edit = (EditText) layout.findViewById(R.id.message_edit);
-        username_view.setText(userNick);
+
+        if(userId.equals(userNick)){
+            textUser.setVisibility(View.GONE);
+            username_view.setVisibility(View.GONE);
+        }else {
+            username_view.setText(userNick);
+        }
         new MaterialDialog.Builder(context)
                 .title(title)
                 .customView(layout,true)

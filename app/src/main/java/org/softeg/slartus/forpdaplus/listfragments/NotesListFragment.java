@@ -77,7 +77,7 @@ public class NotesListFragment extends TopicsListFragment {
 
         AddLinksSubMenu(menu, topic);
 
-        menu.add("Удалить..").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add("Удалить").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 new MaterialDialog.Builder(getContext())
                         .title("Подтвердите действие")
@@ -110,7 +110,7 @@ public class NotesListFragment extends TopicsListFragment {
             if (note != null) {
                 ArrayList<Pair> links = note.getLinks();
                 if (links.size() != 0) {
-                    android.view.SubMenu linksMenu = menu.addSubMenu("Ссылки...");
+                    android.view.SubMenu linksMenu = menu.addSubMenu("Ссылки");
                     for (final Pair pair : links) {
                         linksMenu.add(pair.first.toString())
                                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

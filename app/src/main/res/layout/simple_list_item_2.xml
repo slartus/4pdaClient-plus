@@ -18,14 +18,14 @@
     android:layout_height="fill_parent"
 
     android:orientation="vertical"
-    android:padding="5dip">
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/text1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_marginTop="8dip"
+        android:layout_marginTop="8dp"
         android:text="text1"
 
         />

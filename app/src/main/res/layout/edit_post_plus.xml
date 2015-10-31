@@ -12,23 +12,29 @@
         android:layout_above="@+id/txtpost_edit_reason"
         android:layout_centerInParent="true"
         android:visibility="gone" />
-
-    <EditText
-        android:id="@+id/txtPost"
-        style="?edit_text"
+    <ScrollView android:id="@+id/textAreaScroller"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:scrollbars="vertical"
         android:layout_above="@+id/txtpost_edit_reason"
-        android:gravity="top"
-        android:hint="Введите текст сообщения"
-        android:inputType="textCapSentences|textMultiLine"
-        android:padding="16.0dip"
-        android:scrollHorizontally="false"
-        android:singleLine="false" />
+        style="?edit_text"
+        android:gravity="top">
+        <EditText
+            android:id="@+id/txtPost"
+            android:background="@android:color/transparent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:hint="Введите текст сообщения"
+            android:inputType="textCapSentences|textMultiLine"
+            android:padding="16dp"
+            android:scrollHorizontally="false"
+            android:singleLine="false"
+            android:scrollbars="vertical"/>
+    </ScrollView>
 
     <EditText
         android:id="@+id/txtpost_edit_reason"
-        style="?panel"
+        style="?edit_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottomPanel"
@@ -38,68 +44,65 @@
         android:scrollHorizontally="false"
         android:singleLine="true"
         android:visibility="gone" />
-
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="6dp"
+        android:orientation="vertical"
+        android:id="@+id/shadow"
+        android:background="@drawable/shadow_to_top"
+        android:layout_above="@+id/bottomPanel" />
     <LinearLayout
         android:id="@+id/bottomPanel"
-        style="?panel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
-            android:gravity="center_vertical">
-
+            android:gravity="center_vertical"
+            style="?edit_text">
             <ImageButton
                 android:id="@+id/advanced_button"
                 style="?right_separator"
                 android:layout_width="48dp"
-                android:layout_height="36dp"
-                android:src="@drawable/btn_show_post_panel" />
-
+                android:layout_height="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/ic_plus_grey600_24dp" />
             <Button
                 android:id="@+id/btnAttachments"
                 style="?right_separator"
                 android:layout_width="wrap_content"
-                android:minWidth="48dp"
-                android:layout_height="36dp"
-                android:drawableLeft="@drawable/ic_menu_attachment"
+                android:minWidth="56dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:drawableLeft="@drawable/ic_paperclip_grey600_24dp"
                 android:text="0"
-                android:paddingRight="8dp"
+                android:layout_marginLeft="48dp"
                 android:paddingLeft="4dp"
                 android:textSize="14sp"
-                android:textColor="#ff9D9D9D"
-                android:layout_alignTop="@+id/btnSendPost"
-                android:layout_toRightOf="@+id/advanced_button"
-                android:layout_toEndOf="@+id/advanced_button" />
+                android:textColor="#757575"/>
             <ImageButton
                 android:id="@+id/btnUpload"
                 style="?right_separator"
                 android:layout_width="48dp"
-                android:layout_height="36dp"
-                android:layout_marginRight="6dp"
-                android:src="@drawable/btn_upload"
-                android:layout_alignTop="@+id/btnAttachments"
-                android:layout_toRightOf="@+id/btnAttachments"
-                android:layout_toEndOf="@+id/btnAttachments" />
+                android:layout_height="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="104dp"
+                android:src="@drawable/ic_upload_grey600_24dp" />
             <Button
                 android:id="@+id/btnSendPost"
-                style="?btnsend"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:text="Отправить"
-                android:textColor="#ffffffff"
-                android:layout_alignTop="@+id/advanced_button"
-                android:layout_marginRight="6dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_toRightOf="@+id/btnUpload"
-                android:layout_toEndOf="@+id/btnUpload" />
-        </RelativeLayout>
+                android:layout_width="fill_parent"
+                android:layout_height="48dp"
+                android:layout_marginLeft="156dp"
+                android:text="Отправить"/>
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/footer_for_emoticons"

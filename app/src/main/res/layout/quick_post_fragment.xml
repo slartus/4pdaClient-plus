@@ -5,57 +5,48 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <RelativeLayout
-        style="?panel"
+    <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:minHeight="36dp"
-        android:gravity="center_vertical"
-        android:paddingBottom="6dp"
-        android:paddingTop="6dp">
-
-        <ImageButton
-            android:id="@+id/advanced_button"
-            style="?right_separator"
-            android:layout_width="48dp"
-            android:layout_height="36dp"
-            android:contentDescription="Дополнительно"
-            android:src="@drawable/btn_show_post_panel"
-            android:layout_alignBottom="@+id/post_text" />
+        android:minHeight="48dp"
+        style="?edit_text"
+        android:clickable="true">
 
         <EditText
-            android:id="@+id/post_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:minHeight="36dp"
-            android:background="#00000000"
-            android:capitalize="sentences"
+            android:id="@+id/post_text"
+            android:minHeight="48dp"
+            android:background="@android:color/transparent"
             android:hint="Сообщение"
             android:inputType="textCapSentences|textMultiLine"
-            android:maxLines="6"
             android:minLines="1"
             android:singleLine="false"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/advanced_button"
-            android:layout_toLeftOf="@+id/send_button"
-            android:layout_toStartOf="@+id/send_button"
-            android:paddingLeft="12dp"
-            android:paddingTop="6dp"
-            android:paddingRight="12dp"
-            android:paddingBottom="6dp" />
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="56dp"
+            android:maxLines="5" />
 
         <ImageButton
+            android:layout_width="56dp"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_send_grey600_24dp"
             android:id="@+id/send_button"
-            style="?btnsend"
-            android:layout_width="wrap_content"
-            android:minWidth="56dp"
-            android:layout_height="36dp"
-            android:layout_marginRight="6dp"
-            android:contentDescription="Отправить"
-            android:src="@drawable/btn_send"
-            android:layout_alignBottom="@+id/post_text"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
+            android:layout_gravity="right|bottom" />
+
+        <ImageButton
+            android:layout_width="40dp"
+            android:layout_height="48dp"
+            android:paddingLeft="8dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_plus_grey600_24dp"
+            android:id="@+id/advanced_button"
+            android:layout_gravity="left|bottom" />
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/footer_for_emoticons"

@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatCheckedTextView;
 import android.support.v7.widget.AppCompatEditText;
@@ -14,15 +15,10 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-//import android.support.v7.internal.widget.TintCheckBox;
-//import android.support.v7.internal.widget.TintCheckedTextView;
-//import android.support.v7.internal.widget.TintEditText;
-//import android.support.v7.internal.widget.TintRadioButton;
-//import android.support.v7.internal.widget.TintSpinner;
 
 /*
  * Created by slinkin on 27.12.13.
@@ -34,6 +30,15 @@ public class BasePreferencesActivity extends PreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(App.getInstance().getPrefsThemeStyleResID());
         super.onCreate(savedInstanceState);
+        if (PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("coloredNavBar", true) &&
+                android.os.Build.VERSION.SDK_INT >= 21)
+            getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(getNavBarColor()));
+    }
+    public int getNavBarColor(){
+        if(App.getInstance().isWhiteTheme())
+            return R.color.actionbar_background_wh;
+        else
+            return R.color.actionbar_background_bl;
     }
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
@@ -44,11 +49,8 @@ public class BasePreferencesActivity extends PreferenceActivity {
         }
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            // If we're running pre-L, we need to 'inject' our tint aware Views in place of the
-            // standard framework versions
             switch (name) {
                 case "EditText":
-                    //return new TintEditText(this, attrs);
                     return new AppCompatEditText(this,attrs);
                 case "Spinner":
                     return new AppCompatSpinner(this,attrs);
