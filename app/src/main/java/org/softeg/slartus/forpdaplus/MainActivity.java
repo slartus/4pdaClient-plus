@@ -623,8 +623,9 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
                         public boolean onMenuItemClick(MenuItem item) {
 
 
-                            getActivity().finish();
-                            System.exit(0);
+//                            getActivity().finish();
+                            android.os.Process.killProcess(android.os.Process.myPid());
+                            System.exit(1);
                             return true;
                         }
                     });

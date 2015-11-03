@@ -56,6 +56,7 @@ public class DownloadsService extends IntentService {
     public static Integer notification_text_color = null;
     public static float notification_text_size = -1;
     private final String COLOR_SEARCH_RECURSE_TIP = "SOME_SAMPLE_TEXT";
+    private final static int BUFFER_SIZE = 1024 * 8;
 
 
     private boolean recurseGroup(ViewGroup gp) {
@@ -309,16 +310,19 @@ public class DownloadsService extends IntentService {
                 Date lastUpdateTime = new Date();
                 Boolean first = true;
 
+                // for test
+
                 InputStream in = entity.getContent();
                 FileOutputStream output = new FileOutputStream(downloadingFilePath, true);
 
-                byte data[] = new byte[1024];
+                byte data[] = new byte[BUFFER_SIZE];
                 try {
                     while ((count = in.read(data)) != -1) {
                         if (downloadTask.getState() == DownloadTask.STATE_CANCELED) {
                             sendDownloadProgressState(receiver, notificationId);
                             return;
                         }
+
 
                         output.write(data, 0, count);
                         total += count;
@@ -364,8 +368,6 @@ public class DownloadsService extends IntentService {
 
             ex.printStackTrace();
         }
-
-
     }
 
     public static void sendDownloadProgressState(ResultReceiver receiver, int downloadTaskId) {
