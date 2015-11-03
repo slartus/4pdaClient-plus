@@ -143,7 +143,7 @@ public class ProfileApi {
         String page = httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID);
 
         Document doc = Jsoup.parse(page);
-        org.jsoup.nodes.Element element = doc.select("div#main").first();
+        org.jsoup.nodes.Element element = doc.select("div#rnd-replace-main").first();
 
         if (element != null) {
             doc.select("div.photo").append("<div class=\"img "+avType+"\" style=\"background-image: url("+doc.select("div.photo>img").first().absUrl("src")+");\"></div>");

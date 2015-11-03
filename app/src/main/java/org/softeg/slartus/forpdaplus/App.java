@@ -66,6 +66,7 @@ public class App extends android.app.Application {
 
     public static final int THEME_MATERIAL_LIGHT = 2;
     public static final int THEME_MATERIAL_DARK = 3;
+    public static final int THEME_MATERIAL_BLACK = 5;
     public static final int THEME_WHITE_OLD_HD = 4;
 
     public static final int THEME_CUSTOM_CSS = 99;
@@ -378,6 +379,9 @@ public class App extends android.app.Application {
                 break;
             case THEME_MATERIAL_DARK:
                 cssFile = "material_dark.css";
+                break;
+            case THEME_MATERIAL_BLACK:
+                cssFile = "material_black.css";
                 break;
             case THEME_WHITE_OLD_HD:
                 cssFile = "standart4PDA_HD.css";

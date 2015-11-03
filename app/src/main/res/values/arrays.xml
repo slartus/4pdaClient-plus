@@ -97,6 +97,7 @@
         <item>Темный</item>
         <item>Material Light</item>
         <item>Material Dark</item>
+        <item>Material Black</item>
         <item>Стандартный 4PDA</item>
     </string-array>
 
@@ -105,6 +106,7 @@
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>5</item>
         <item>4</item>
     </string-array>
 
