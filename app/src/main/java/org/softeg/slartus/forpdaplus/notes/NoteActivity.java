@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -175,6 +176,7 @@ public class NoteActivity extends BaseFragmentActivity {
         textView2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 if (!TextUtils.isEmpty(url))
+
                     IntentActivity.tryShowUrl(NoteActivity.this, mHandler, url, true, false);
             }
         });

@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
@@ -54,6 +55,22 @@ public class DownloadReceiver extends ResultReceiver {
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         switch (downloadTask.getState()) {
             case DownloadTask.STATE_ERROR:
+                Intent i = new Intent(context, QuickStartActivity.class);
+
+                Notification notif = null;
+                notif = NotificationBridge.createBridge(
+                        context,
+                        getNotificationIcon(),
+                        context.getString(R.string.DownloadAborted),
+                        System.currentTimeMillis())
+                        .setContentTitle("Не удалось загрузить")
+                        .setContentText("Нажмите для дальнейших действий")
+                        .setContentIntent(PendingIntent.getActivity(context, 0, i, 0))
+                        .setAutoCancel(true)
+                        .createNotification();
+
+                mNotificationManager.notify(downloadTask.getUrl(), notificationId, notif);
+                break;
             case DownloadTask.STATE_CANCELED: {
                 Intent intent = new Intent(context, QuickStartActivity.class);
                 intent.putExtra("template", DownloadsTab.TEMPLATE);
@@ -145,7 +162,6 @@ public class DownloadReceiver extends ResultReceiver {
 
         mNotificationManager.notify(tag, notificationId, notification);
     }
-
 
     private Intent getRunFileIntent(String filePath) {
         MimeTypeMap myMime = MimeTypeMap.getSingleton();
