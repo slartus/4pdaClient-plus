@@ -53,9 +53,9 @@ import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView;
 import org.softeg.slartus.forpdaplus.emotic.Smiles;
+import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -650,7 +650,8 @@ public class QmsChatActivity extends BaseFragmentActivity implements IWebViewCon
     }
 
     private void showCompanionProfile() {
-        ProfileWebViewActivity.startActivity(this, m_Id, m_Nick);
+        //ProfileWebViewActivity.startActivity(this, m_Id, m_Nick);
+        ProfileFragment.showProfile(m_Id, m_Nick);
     }
 
 

@@ -4,11 +4,13 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 
@@ -86,7 +88,7 @@ public abstract class BaseBrickFragment extends Fragment implements
 
         super.onSaveInstanceState(outState);
     }
-
+    private Menu menu;
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         MenuItem item = menu.add("Обновить")
@@ -102,7 +104,22 @@ public abstract class BaseBrickFragment extends Fragment implements
 
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
+        this.menu = menu;
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(menu != null) {
+            menu.clear();
+            getActivity().onCreateOptionsMenu(MainActivity.mainMenu);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(menu!=null) onCreateOptionsMenu(menu, null);
     }
 
     @Override

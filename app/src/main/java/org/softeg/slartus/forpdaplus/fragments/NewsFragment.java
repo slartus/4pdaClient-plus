@@ -12,8 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -78,6 +76,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     private boolean loadImages;
     private String m_Title = "Новости";
     private View view;
+    private Menu menu;
 
     public static NewsFragment newInstance(Context context, String url){
         NewsFragment fragment = new NewsFragment();
@@ -117,6 +116,11 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
     public void refresh() {
         showNews(m_NewsUrl);
+    }
+
+    @Override
+    public Menu getMenu() {
+        return menu;
     }
 
     public AdvWebView getWebView() {
@@ -236,6 +240,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         return view;
     }
 
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -328,6 +333,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 }
             });
         }
+        this.menu = menu;
     }
 
     public void saveHtml() {

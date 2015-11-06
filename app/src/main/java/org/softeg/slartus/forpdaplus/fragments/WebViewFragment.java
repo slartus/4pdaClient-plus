@@ -2,14 +2,14 @@ package org.softeg.slartus.forpdaplus.fragments;
 
 import android.animation.ValueAnimator;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.DecelerateInterpolator;
@@ -23,13 +23,10 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
-import org.softeg.slartus.forpdaapi.classes.LoginForm;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.MainActivity;
-import org.softeg.slartus.forpdaplus.MainDrawerMenu;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.TabDrawerMenu;
-import org.softeg.slartus.forpdaplus.UniversalFragment;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
@@ -52,6 +49,9 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
     public abstract String getTitle();
     public abstract String getUrl();
     public abstract void refresh();
+    public abstract Menu getMenu();
+
+    private ActionBar actionBar;
 
     WebViewExternals m_WebViewExternals;
 
@@ -59,6 +59,13 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
         if (m_WebViewExternals == null)
             m_WebViewExternals = new WebViewExternals(this);
         return m_WebViewExternals;
+    }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        actionBar = ((MainActivity)getActivity()).getSupportActionBar();
     }
 
     @Override
@@ -73,7 +80,7 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
 
     @Override
     public ActionBar getSupportActionBar() {
-        return ((AppCompatActivity)getActivity()).getSupportActionBar();
+        return actionBar;
     }
 
     public void animateHamburger(boolean isArrow){
@@ -116,6 +123,8 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
         getWebView().onResume();
         getWebView().setWebViewClient(MyWebViewClient());
         //animateHamburger(false);
+        onCreateOptionsMenu(getMenu(), null);
+        Log.e("kek","resume");
     }
 
     @Override
@@ -133,6 +142,9 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
             getWebView().setPictureListener(null);
         }
         getSupportActionBar().setSubtitle(null);
+        getMenu().clear();
+        ((MainActivity) getActivity()).onCreateOptionsMenu(MainActivity.mainMenu);
+        Log.e("kek","pause");
     }
 
     @Override
@@ -146,7 +158,6 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
 
     @Override
     public void onDestroy(){
-        getWebView().setWebViewClient(null);
         if (getWebView() != null){
             getWebView().setWebViewClient(null);
             getWebView().removeAllViews();
@@ -154,6 +165,13 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
         }
         super.onDestroy();
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Log.e("kek", "fragment save");
+        super.onSaveInstanceState(outState);
+    }
+
 
 
     public void setHideArrows(boolean hide) {

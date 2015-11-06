@@ -13,11 +13,10 @@ import android.view.SubMenu;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.LoginDialog;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.fragments.ProfileFragment;
+import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
-import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 
 
 /**

@@ -19,11 +19,11 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
+import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseExpandableListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo;
-import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 import org.softeg.sqliteannotations.BaseDao;
 
 import java.io.IOException;
@@ -60,7 +60,7 @@ public class LeadersListFragment extends BaseExpandableListFragment {
                                 long id) {
         Object o = getAdapter().getChild(groupPosition, childPosition);
         if (o == null) return false;
-        ProfileWebViewActivity.startActivity(getContext(), ((User) o).getId().toString());
+        ProfileFragment.showProfile(((User) o).getId().toString(), ((User) o).getId().toString());
         return true;
     }
 

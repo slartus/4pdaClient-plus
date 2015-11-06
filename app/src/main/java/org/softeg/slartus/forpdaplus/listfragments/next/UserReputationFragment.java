@@ -29,9 +29,9 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
+import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listtemplates.UserReputationBrickInfo;
-import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 
 import java.util.ArrayList;
 
@@ -183,7 +183,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
             item = menu.add("Профиль");
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
-                    ProfileWebViewActivity.startActivity(getActivity(), getUserId(), getUserNick());
+                    ProfileFragment.showProfile(getUserId(), getUserNick());
                     return true;
                 }
             });

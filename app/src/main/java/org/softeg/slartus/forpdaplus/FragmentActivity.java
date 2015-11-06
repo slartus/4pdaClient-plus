@@ -1,14 +1,13 @@
 package org.softeg.slartus.forpdaplus;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
@@ -26,6 +25,7 @@ public class FragmentActivity extends AppCompatActivity
     public static final String FORCE_EXIT_APPLICATION = "org.softeg.slartus.forpdaplus.FORCE_EXIT_APPLICATION";
     public LinearLayout statusBar;
     public boolean statusBarShowed = false;
+    public boolean hack = false;
 
     protected void afterCreate() {
 
@@ -47,14 +47,29 @@ public class FragmentActivity extends AppCompatActivity
 
     @Override
     public void startActivity(android.content.Intent intent) {
-        intent.putExtra(BaseFragmentActivity.SENDER_ACTIVITY, getClass().toString());
+        Log.e("kek", "startactivity");
+        intent.putExtra(SENDER_ACTIVITY, getClass().toString());
         super.startActivity(intent);
     }
 
     @Override
     public void startActivityForResult(android.content.Intent intent, int requestCode) {
-        intent.putExtra(BaseFragmentActivity.SENDER_ACTIVITY, getClass().toString());
+        Log.e("kek", "startactivityforresult");
+        intent.putExtra(SENDER_ACTIVITY, getClass().toString());
         super.startActivityForResult(intent, requestCode);
+        hack = true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.e("kek", "onactivity result");
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        Log.e("kek", "activity reent");
+        super.onActivityReenter(resultCode, data);
     }
 
     @Override
@@ -164,16 +179,30 @@ public class FragmentActivity extends AppCompatActivity
     }
     @Override
     protected void onSaveInstanceState(android.os.Bundle outState) {
+        Log.e("kek", "activity onsave");
         if (args != null)
             outState.putAll(args);
         super.onSaveInstanceState(outState);
+        if(hack){
+            onStop();
+            onStart();
+        }
+        hack= false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e("kek", "activity onstart");
     }
 
     @Override
     protected void onRestoreInstanceState(android.os.Bundle outState) {
+        Log.e("kek", "activity onrestore");
         args = outState;
         super.onRestoreInstanceState(outState);
     }
+
 
     public SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(getContext());

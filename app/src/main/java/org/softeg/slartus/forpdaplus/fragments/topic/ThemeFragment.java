@@ -21,12 +21,11 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -124,6 +123,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     private Curator mCurator;
     private String lastStyle;
     private ForPdaDeveloperInterface m_DeveloperWebInterface;
+    private Menu menu;
 
     View view;
     public static ThemeFragment newInstance(Context context, String url){
@@ -209,6 +209,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     @Override
     public void refresh() {
 
+    }
+
+    @Override
+    public Menu getMenu() {
+        return menu;
     }
 
     @Override
@@ -489,6 +494,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     @Override
     public void onCreateOptionsMenu(Menu menu, final MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        this.menu = menu;
         try {
             MenuItem item;
             boolean pancil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false);

@@ -1,10 +1,7 @@
 package org.softeg.slartus.forpdaplus.classes;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.TypedValue;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;

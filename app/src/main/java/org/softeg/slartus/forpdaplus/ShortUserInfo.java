@@ -19,10 +19,9 @@ import com.squareup.picasso.Picasso;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.fragments.ProfileFragment;
+import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
-import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 
 import java.io.File;
 import java.io.IOException;

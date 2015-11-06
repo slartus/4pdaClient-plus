@@ -17,7 +17,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
+import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsNewThreadActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
@@ -123,7 +123,7 @@ public class ForumUser {
 
                         } else if (actionId == finalShowProfilePosition) {
                             //ProfileWebViewFragment.showDialog((FragmentActivity)context,userId, finalUserNick);
-                            ProfileWebViewActivity.startActivity(context, userId, finalUserNick);
+                            ProfileFragment.showProfile(userId, finalUserNick);
                         } else if (actionId == finalShowUserTopicsPosition) {
                             SearchActivity.startForumSearch(context,SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick1));
 
@@ -184,7 +184,7 @@ public class ForumUser {
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
-                            ProfileWebViewActivity.startActivity(context, userId, finalUserNick);
+                            ProfileFragment.showProfile(userId, finalUserNick);
                             return true;
                         }
                     });

@@ -32,8 +32,8 @@ import org.softeg.slartus.forpdaapi.qms.QmsUsers;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseLoaderListFragment;
-import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 
 import java.util.ArrayList;
@@ -137,8 +137,7 @@ public class QmsContactThemesFragment extends BaseLoaderListFragment {
         item = menu.add("Профиль");
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
-                ProfileWebViewActivity.startActivity(getActivity(), m_Id
-                        , m_Nick);
+                ProfileFragment.showProfile(m_Id, m_Nick);
                 return true;
             }
         });

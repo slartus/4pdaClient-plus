@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,12 +15,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,12 +32,15 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
+import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsPagerBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.mainnotifiers.DonateNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
@@ -89,11 +94,11 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     @Override
     public void onCreate(Bundle saveInstance) {
         super.onCreate(saveInstance);
+        Log.e("kek", "activity oncreate");
         lastTheme = App.getInstance().getThemeStyleResID();
         try {
             if (checkIntent()&saveInstance!=null) return;
             setContentView(R.layout.main);
-            App.getInstance().getTabIterator();
             toolbar = (Toolbar) findViewById(R.id.toolbar);
             if(Build.VERSION.SDK_INT>20) {
                 findViewById(R.id.toolbar_shadow).setVisibility(View.GONE);
@@ -123,7 +128,8 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
             }
 
 
-            createMenu();
+            //createMenu();
+
 /*
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             DrawerLayout drawer = (DrawerLayout) inflater.inflate(R.layout.decor, null); // "null" is important.
@@ -175,6 +181,29 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         else
             topInform.setVisibility(View.GONE);
 
+        Client.INSTANCE.checkLoginByCookies();
+        Client.getInstance().addOnUserChangedListener(new Client.OnUserChangedListener() {
+            @Override
+            public void onUserChanged(String user, Boolean success) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        setUserMenu();
+                    }
+                });
+            }
+        });
+        Client.getInstance().addOnMailListener(new Client.OnMailListener() {
+            @Override
+            public void onMail(int count) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        setUserMenu();
+                    }
+                });
+            }
+        });
 
     }
 
@@ -195,6 +224,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
 
     @Override
     protected void onNewIntent(Intent intent) {
+        Log.e("kek","activity onnewintent");
         checkIntent(intent);
     }
 
@@ -255,15 +285,18 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
             if(getSupportFragmentManager().findFragmentByTag(currentFragmentTag) == null) {
 
                 addFragment(transaction, fragment, tag);
+                transaction.show(fragment);
             }else {
                 showFragmentByTag(transaction, tag);
             }
         }else{
             if (currentFragmentTag.equals("null")) {
                 addFragment(transaction, fragment, tag);
+                transaction.show(fragment);
             }else {
                 if(getSupportFragmentManager().findFragmentByTag(tag)==null){
                     addFragment(transaction, fragment, tag);
+                    transaction.show(fragment);
                 }else {
                     showFragmentByTag(transaction, tag);
                     if(Preferences.Lists.isRefresh()&!tag.equals("News_Pages"))
@@ -279,9 +312,11 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         if(getSupportFragmentManager().getFragments()==null) return;
         for (Fragment fr:getSupportFragmentManager().getFragments()) {
             if (fr != null) {
-                if (!fr.getTag().equals("f1")){
-                    fr.onPause();
-                    transaction.hide(fr);
+                if(fr.isVisible()){
+                    if (!fr.getTag().equals("f1")){
+                        fr.onPause();
+                        transaction.hide(fr);
+                    }
                 }
             }
         }
@@ -335,7 +370,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         }else {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             hideFragments(transaction);
-            showFragmentByTag(transaction, url);
+            showFragmentByTag(transaction, App.getInstance().getTabByUrl(url).getTag());
             transaction.commit();
             endActionFragment(title);
         }
@@ -344,7 +379,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     public static void addTabByIntent(String url, Fragment fragment){
         addTabByIntent("ForPDA", url, fragment);
     }
-    public static void addTabByIntent(String title, String url, Fragment fragment){
+    public static void addTabByIntent(String title, String url, Fragment fragment) {
         App.getInstance().setCurrentFragmentTag(tabPrefix + App.getInstance().getTabIterator());
 
         //mTabDraweMenu.addTab(title, url, tabPrefix + App.getInstance().getTabIterator(), fragment, false);
@@ -359,6 +394,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     protected void onPostResume() {
         super.onPostResume();
         //if(isNewIntent)
+        Log.e("kek","activity postresume");
         if(App.getInstance().getCurrentFragmentTag()==null){
             BrickInfo brickInfo = ListCore.getRegisteredBrick(Preferences.Lists.getLastSelectedList());
             if (brickInfo == null)
@@ -369,6 +405,10 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         }
         tabOnIntent = null;
         activityPaused = false;
+        if(!(App.getInstance().getCurrentFragmentTag()+"").equals("null")){
+            if(getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag())!=null)
+                getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag()).onResume();
+        }
     }
 
     public void tryRemoveTab(String tag){
@@ -387,7 +427,10 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     }
 
     @Override
-    protected void onResumeFragments() {}
+    protected void onResumeFragments() {
+        //super.onResumeFragments();
+        Log.e("kek", "activity onresumefragments");
+    }
 
     public void reload() {
         Intent intent = getIntent();
@@ -461,7 +504,12 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     @Override
     protected void onPause() {
         super.onPause();
+        Log.e("kek","activity pause");
         activityPaused = true;
+        if(!(App.getInstance().getCurrentFragmentTag()+"").equals("null")){
+            if(getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag())!=null)
+                getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag()).onPause();
+        }
     }
 
 
@@ -469,8 +517,21 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     @Override
     public void onResume() {
         super.onResume();
+        Log.e("kek", "activity resume");
         if(App.getInstance().getThemeStyleResID()!=lastTheme) reload();
         m_ExitWarned = false;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle outState) {
+        super.onRestoreInstanceState(outState);
+        Log.e("kek", "kekejsdklfdsf");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("kek", "activity onstop");
     }
 
     @Override
@@ -571,67 +632,165 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
             });
         }
 
-        @Override
-        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            super.onCreateOptionsMenu(menu, inflater);
+
+    }
+
+    public static Menu mainMenu;
+    private SubMenu mUserMenuItem;
 
 
-            MenuItem item;
 
-            m_miOther = menu;
-            item = menu.add(R.string.Search)
-                    .setIcon(R.drawable.ic_magnify_white_24dp)
+    private int getUserIconRes() {
+        Boolean logged = Client.getInstance().getLogined();
+        if (logged) {
+
+            if (Client.getInstance().getQmsCount() > 0) {
+                return R.drawable.ic_chat_white_24dp;
+            }
+            return R.drawable.ic_account_white_24dp;
+        } else {
+            return R.drawable.ic_account_outline_white_24dp;
+        }
+    }
+
+    public void setUserMenu() {
+        if (mUserMenuItem == null) return;
+        Boolean logged = Client.getInstance().getLogined();
+
+        mUserMenuItem.getItem().setIcon(getUserIconRes());
+        mUserMenuItem.getItem().setTitle(Client.getInstance().getUser());
+        mUserMenuItem.clear();
+        if (logged) {
+            String text = Client.getInstance().getQmsCount() > 0 ? ("QMS (" + Client.getInstance().getQmsCount() + ")") : "QMS";
+            mUserMenuItem.add(text)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
-                            SearchSettingsDialogFragment.showSearchSettingsDialog(getActivity(),
-                                    SearchSettingsDialogFragment.createForumSearchSettings());
+                            ListFragmentActivity.showListFragment(MainActivity.this, QmsContactsBrickInfo.NAME, null);
                             return true;
                         }
                     });
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-            //setOtherMenu();
-            menu.add("Правила форума").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem item) {
-                    StringBuilder text = new StringBuilder();
-                    try {
+            mUserMenuItem.add(R.string.Profile)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
-                        BufferedReader br = new BufferedReader(new InputStreamReader(App.getInstance().getAssets().open("rules.txt"), "UTF-8"));
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            text.append(line).append("\n");
+                        public boolean onMenuItemClick(MenuItem item) {
+                            ProfileFragment.showProfile(Client.getInstance().UserId, Client.getInstance().getUser());
+                            return true;
                         }
+                    });
 
-                    } catch (IOException e) {
-                        AppLog.e(getActivity(), e);
-                    }
-                    new MaterialDialog.Builder(getActivity())
-                            .title("Правила форума")
-                            .content(Html.fromHtml(text.toString()))
-                            .positiveText(android.R.string.ok)
-                            .show();
 
+            mUserMenuItem.add(R.string.Reputation)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                        public boolean onMenuItemClick(MenuItem item) {
+                            UserReputationFragment.showActivity(MainActivity.this, Client.getInstance().UserId, false);
+                            return true;
+                        }
+                    });
+
+            mUserMenuItem.add(R.string.Logout)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                        public boolean onMenuItemClick(MenuItem item) {
+                            LoginDialog.logout(MainActivity.this);
+                            return true;
+                        }
+                    });
+        } else {
+            mUserMenuItem.add(R.string.Login).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                public boolean onMenuItemClick(MenuItem item) {
+                    LoginDialog.showDialog(MainActivity.this, null);
                     return true;
                 }
             });
 
-            item = menu.add(0, 0, 999, R.string.CloseApp)
-                    .setIcon(R.drawable.ic_close_white_24dp)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            mUserMenuItem.add(R.string.Registration).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
-                        public boolean onMenuItemClick(MenuItem item) {
+                public boolean onMenuItemClick(MenuItem item) {
+                    Intent marketIntent = new Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("http://4pda.ru/forum/index.php?act=Reg&CODE=00"));
+                    MainActivity.this.startActivity(marketIntent);
+                    //
+                    return true;
+                }
+            });
+        }
+    }
+
+    private void createUserMenu(Menu menu) {
+        mUserMenuItem = menu.addSubMenu(Client.getInstance().getUser());
+
+        mUserMenuItem.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        setUserMenu();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        super.onCreateOptionsMenu(menu);
+        menu.clear();
+
+        createUserMenu(menu);
+        MenuItem item;
+
+        //m_miOther = menu;
+        item = menu.add(R.string.Search)
+                .setIcon(R.drawable.ic_magnify_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                    public boolean onMenuItemClick(MenuItem item) {
+                        SearchSettingsDialogFragment.showSearchSettingsDialog(MainActivity.this,
+                                SearchSettingsDialogFragment.createForumSearchSettings());
+                        return true;
+                    }
+                });
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+        //setOtherMenu();
+        menu.add("Правила форума").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                StringBuilder text = new StringBuilder();
+                try {
+
+                    BufferedReader br = new BufferedReader(new InputStreamReader(App.getInstance().getAssets().open("rules.txt"), "UTF-8"));
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        text.append(line).append("\n");
+                    }
+
+                } catch (IOException e) {
+                    AppLog.e(MainActivity.this, e);
+                }
+                new MaterialDialog.Builder(MainActivity.this)
+                        .title("Правила форума")
+                        .content(Html.fromHtml(text.toString()))
+                        .positiveText(android.R.string.ok)
+                        .show();
+
+                return true;
+            }
+        });
+
+        item = menu.add(0, 0, 999, R.string.CloseApp)
+                .setIcon(R.drawable.ic_close_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                    public boolean onMenuItemClick(MenuItem item) {
 
 
 //                            getActivity().finish();
-                            android.os.Process.killProcess(android.os.Process.myPid());
-                            System.exit(1);
-                            return true;
-                        }
-                    });
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                        System.exit(1);
+                        return true;
+                    }
+                });
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-        }
+        mainMenu = menu;
+        return false;
     }
 
     public class TagPair extends Pair<String, String> {

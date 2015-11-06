@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaplus.download;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.IntentService;
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,7 +16,6 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 

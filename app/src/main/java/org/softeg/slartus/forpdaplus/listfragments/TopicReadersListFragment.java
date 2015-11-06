@@ -18,7 +18,7 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.ExtColor;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
+import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 
 import java.util.ArrayList;
 
@@ -165,6 +165,6 @@ public class TopicReadersListFragment extends BaseLoaderListFragment {
         }
     }
     public void openProfile(OldUser user){
-        ProfileWebViewActivity.startActivity(getActivity(), user.getMid());
+        ProfileFragment.showProfile(user.getMid(), user.getMid());
     }
 }

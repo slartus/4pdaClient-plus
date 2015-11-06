@@ -14,6 +14,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,6 +37,7 @@ import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdaapi.classes.ForumsData;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ForumsTable;
@@ -91,50 +93,86 @@ public class ForumFragment extends Fragment implements
         }
         initAdapter();
     }
-
+    private Menu menu;
     @Override
     public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.forum_fragment_menu, menu);
+        menu.add("Обновить")
+                .setIcon(R.drawable.ic_refresh_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        loadData(true);
+                        return false;
+                    }
+                })
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.add("Настройки списка")
+                .setIcon(R.drawable.ic_settings_grey600_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        showListSettings();
+                        return false;
+                    }
+                })
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.add("Отметить этот форум прочитанным")
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        markAsRead();
+                        return false;
+                    }
+                })
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.add("Задать этот форум стартовым")
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Forum f = mData.getCrumbs().get(mData.getCrumbs().size() - 1);
+                        Preferences.List.setStartForum(f.getId(),
+                                f.getTitle());
+                        Toast.makeText(getActivity(), "Форум задан стартовым", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                })
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.add("Обновить структуру форума")
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        new MaterialDialog.Builder(getActivity())
+                                .title("Внимание!")
+                                .content("Обновление структуры форума может занять продолжительное время " +
+                                        "и использует большой объем интернет-траффика")
+                                .positiveText("Обновить")
+                                .callback(new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        new UpdateForumStructTask(getActivity()).execute();
+                                    }
+                                })
+                                .negativeText("Отмена").show();
+                        return false;
+                    }
+                })
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        this.menu = menu;
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(menu != null) {
+            menu.clear();
+            ((MainActivity) getActivity()).onCreateOptionsMenu(MainActivity.mainMenu);
+        }
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.refresh:
-                loadData(true);
-                return true;
-            case R.id.list_settings:
-                showListSettings();
-                return true;
-            case R.id.mark_as_read:
-                markAsRead();
-                return true;
-
-            case R.id.set_started:
-                Forum f = mData.getCrumbs().get(mData.getCrumbs().size() - 1);
-                Preferences.List.setStartForum(f.getId(),
-                        f.getTitle());
-                Toast.makeText(getActivity(), "Форум задан стартовым", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.update_forum_struct:
-                new MaterialDialog.Builder(getActivity())
-                        .title("Внимание!")
-                        .content("Обновление структуры форума может занять продолжительное время " +
-                                "и использует большой объем интернет-траффика")
-                        .positiveText("Обновить")
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                new UpdateForumStructTask(getActivity()).execute();
-                            }
-                        })
-                        .negativeText("Отмена").show();
-
-                return true;
-        }
-        return false;
+    public void onResume() {
+        super.onResume();
+        if(menu!=null) onCreateOptionsMenu(menu, null);
     }
-
     private void markAsRead() {
         if (!Client.getInstance().getLogined()) {
             Toast.makeText(getActivity(), "Необходимо залогиниться!", Toast.LENGTH_SHORT).show();

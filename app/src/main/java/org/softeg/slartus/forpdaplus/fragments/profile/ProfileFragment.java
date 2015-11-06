@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.fragments;
+package org.softeg.slartus.forpdaplus.fragments.profile;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -8,15 +8,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -27,9 +28,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaapi.Profile;
 import org.softeg.slartus.forpdaapi.ProfileApi;
-import org.softeg.slartus.forpdaapi.users.User;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.App;
@@ -39,11 +41,17 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.SaveHtml;
+import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
+import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsChatActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity;
+import org.softeg.slartus.forpdaplus.qms.QmsNewThreadActivity;
+import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
+import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -53,7 +61,9 @@ import java.util.regex.Matcher;
 /**
  * Created by radiationx on 31.10.15.
  */
-public class ProfileFragment extends  WebViewFragment implements LoaderManager.LoaderCallbacks<Profile>{
+public class ProfileFragment extends WebViewFragment implements LoaderManager.LoaderCallbacks<Profile>{
+    private Menu menu;
+    private String title;
 
     @Override
     public String Prefix() {
@@ -83,7 +93,7 @@ public class ProfileFragment extends  WebViewFragment implements LoaderManager.L
 
     @Override
     public String getTitle() {
-        return getUserNick();
+        return title;
     }
 
     @Override
@@ -94,6 +104,11 @@ public class ProfileFragment extends  WebViewFragment implements LoaderManager.L
     @Override
     public void refresh() {
 
+    }
+
+    @Override
+    public Menu getMenu() {
+        return menu;
     }
 
     @Override
@@ -197,6 +212,7 @@ public class ProfileFragment extends  WebViewFragment implements LoaderManager.L
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.profile_web_view_fragment, container, false);
         // getDialog().setTitle("Профиль");
+        setHasOptionsMenu(true);
         assert view != null;
         m_WebView = (WebView) view.findViewById(R.id.wvBody);
         m_WebView.getSettings().setLoadWithOverviewMode(false);
@@ -300,8 +316,9 @@ public class ProfileFragment extends  WebViewFragment implements LoaderManager.L
         }
     }
 
-    private void deliveryResult(Profile profile) {
-
+    private void showBody(Profile profile) {
+        title = profile.getNick().toString();
+        super.showBody();
         m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", profile.getHtmlBody(), "text/html", "UTF-8", null);
         if (profile.getNick() != null)
             args.putString(ProfileWebViewActivity.USER_NAME_KEY, profile.getNick().toString());
@@ -325,7 +342,7 @@ public class ProfileFragment extends  WebViewFragment implements LoaderManager.L
         if (data != null && data.getError() != null) {
             AppLog.e(getActivity(), data.getError());
         } else if (data != null) {
-            deliveryResult(data);
+            showBody(data);
         }
 
 
@@ -515,4 +532,112 @@ public class ProfileFragment extends  WebViewFragment implements LoaderManager.L
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+
+        MenuItem item;
+
+        if (Client.getInstance().getLogined() && getUserId() != null && !getUserId().equals(Client.getInstance().UserId)) {
+            item = menu.add(getString(R.string.MessagesQms)).setIcon(R.drawable.ic_pencil_white_24dp);
+            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    QmsNewThreadActivity.showUserNewThread(getActivity(), getUserId(), getUserNick());
+
+                    return true;
+                }
+            });
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        }
+
+
+        item = menu.add(getString(R.string.Reputation));
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                CharSequence[] items = {"Поднять", "Опустить", "Посмотреть", "Кому изменял репутацию"};
+                new MaterialDialog.Builder(getActivity())
+                        .title("Репутация")
+                        .items(items)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog dialog, View view, int i, CharSequence items) {
+                                switch (i) {
+                                    case 0:
+                                        UserReputationFragment.plusRep(getActivity(), new Handler(), getUserId(), getUserNick());
+                                        break;
+                                    case 1:
+                                        UserReputationFragment.minusRep(getActivity(), new Handler(), getUserId(), getUserNick());
+                                        break;
+                                    case 2:
+                                        UserReputationFragment.showActivity(getActivity(), getUserId(), false);
+                                        break;
+                                    case 3:
+                                        UserReputationFragment.showActivity(getActivity(), getUserId(), true);
+                                        break;
+                                }
+                            }
+                        })
+                        .show();
+
+                return true;
+            }
+        });
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+        item = menu.add(getString(R.string.FindUserTopics));
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                SearchActivity.startForumSearch(getActivity(),
+                        SearchSettingsDialogFragment.
+                                createUserTopicsSearchSettings(getUserNick())
+                );
+                return true;
+            }
+        });
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+        item = menu.add(getString(R.string.FindUserPosts));
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                SearchActivity.startForumSearch(getActivity(),
+                        SearchSettingsDialogFragment.
+                                createUserPostsSearchSettings(getUserNick())
+                );
+                return true;
+            }
+        });
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+        item = menu.add("Ссылка на профиль");
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                ExtUrl.showSelectActionDialog(getActivity(), "Ссылка на профиль", "http://4pda.ru/forum/index.php?showuser=" + getUserId());
+                return true;
+            }
+        });
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+        if (Preferences.System.isDevSavePage()) {
+            menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    try {
+                        saveHtml();
+                    } catch (Exception ex) {
+                        return false;
+                    }
+                    return true;
+                }
+            });
+        }
+
+        this.menu = menu;
+    }
+    public void saveHtml() {
+        try {
+            getWebView().loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+        } catch (Throwable ex) {
+            AppLog.e(getActivity(), ex);
+        }
+    }
 }

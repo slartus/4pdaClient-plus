@@ -15,7 +15,7 @@ import org.softeg.slartus.forpdaapi.classes.ListData;
 import org.softeg.slartus.forpdaapi.users.Users;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
+import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 
 import java.util.ArrayList;
 
@@ -127,6 +127,6 @@ public class TopicWritersListFragment extends BaseLoaderListFragment {
         }
     }
     public void openProfile(OldUser user){
-        ProfileWebViewActivity.startActivity(getActivity(), user.getMid());
+        ProfileFragment.showProfile(user.getMid(), user.getMid());
     }
 }

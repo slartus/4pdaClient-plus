@@ -28,6 +28,10 @@ import org.softeg.slartus.forpdaplus.common.Email;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
+import org.softeg.slartus.forpdaplus.fragments.profile.DeviceDelete;
+import org.softeg.slartus.forpdaplus.fragments.profile.DeviceEdit;
+import org.softeg.slartus.forpdaplus.fragments.profile.ProfileEditFragment;
+import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.fragments.topic.EditPostFragment;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
@@ -51,7 +55,6 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.profile.DeviceDeleteDialog;
 import org.softeg.slartus.forpdaplus.profile.DeviceEditDialog;
 import org.softeg.slartus.forpdaplus.profile.ProfileEditActivity;
-import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsChatActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
@@ -275,18 +278,16 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
             return false;
         if ("profile".equals(uri.getQueryParameter("act"))
                 && !TextUtils.isEmpty(uri.getQueryParameter("id"))) {
-            ProfileWebViewActivity.startActivity(context, uri.getQueryParameter("id"));
+            ProfileFragment.showProfile(uri.getQueryParameter("id"), uri.getQueryParameter("id"));
 
-            if (finish)
-                context.finish();
+
             return true;
         }
 
         if (!TextUtils.isEmpty(uri.getQueryParameter("showuser"))) {
-            ProfileWebViewActivity.startActivity(context, uri.getQueryParameter("showuser"));
+            ProfileFragment.showProfile(uri.getQueryParameter("showuser"), uri.getQueryParameter("showuser"));
 
-            if (finish)
-                context.finish();
+
             return true;
         }
 
@@ -300,7 +301,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
             return false;
 
         if ("01".equals(uri.getQueryParameter("code"))) {
-            ProfileEditActivity.startActivity(context);
+            ProfileEditFragment.editProfile();
             if (finish)
                 context.finish();
             return true;
@@ -313,10 +314,10 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
             return false;
         if ("profile-xhr".equals(uri.getQueryParameter("act"))) {
             if("device".equals(uri.getQueryParameter("action")))
-                DeviceEditDialog.showDialog(context,uri.toString(),!TextUtils.isEmpty(uri.getQueryParameter("md_id")));
+                new DeviceEdit(context, uri.toString(), !TextUtils.isEmpty(uri.getQueryParameter("md_id")), App.getInstance().getCurrentFragmentTag());
 
             if("dev-del".equals(uri.getQueryParameter("action")))
-                DeviceDeleteDialog.showDialog(context, uri.toString());
+                new DeviceDelete(context, uri.toString(), App.getInstance().getCurrentFragmentTag());
 
 
 
