@@ -263,7 +263,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 return true;
             }
         });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         item = menu.add(R.string.Like).setIcon(R.drawable.ic_thumb_up_white_24dp
                 //        MyApp.getInstance().isWhiteTheme() ?R.drawable.rating_good_white : R.drawable.rating_good_dark
@@ -615,7 +615,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
 
         private String parseBody(String body) {
-            Matcher m = PatternExtensions.compile("<article id=\"content\"[\\s\\S]*?>([\\s\\S]*?)<aside id=\"sidebar\">").matcher(body);
+            Matcher m = PatternExtensions.compile("<article [\\s\\S]*?>([\\s\\S]*?)<aside [\\s\\S]*?>").matcher(body);
 
             if (m.find()) {
                 return normalizeCommentUrls(m.group(1)).replaceAll("<form[\\s\\S]*?/form>", "");

@@ -519,7 +519,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                             return true;
                         }
                     });
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             SubMenu subMenu = menu.addSubMenu(R.string.Attaches)
                     .setIcon(R.drawable.ic_download_white_24dp);
 

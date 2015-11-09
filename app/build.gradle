@@ -13,8 +13,8 @@ android {
         minSdkVersion 15
 
         targetSdkVersion 23
-        versionCode 543
-        versionName "3.1.4b3"
+        versionCode 545
+        versionName "3.1.4b4"
     }
     buildTypes {
         release {

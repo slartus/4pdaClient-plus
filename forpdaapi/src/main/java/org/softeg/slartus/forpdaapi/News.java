@@ -224,6 +224,6 @@ public class News implements IListItem {
 
 
     public String getUrl(){
-        return ("http://4pda.ru/" + getId()).replaceAll("([^:])//", "$1/");
+        return (""+getId()).replaceAll("([^:])//", "$1/");
     }
 }
