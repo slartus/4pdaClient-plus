@@ -5,17 +5,15 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 
-public abstract class BaseBrickFragment extends Fragment implements
-        IBrickFragment {
+public abstract class BaseBrickFragment extends GeneralFragment{
 
     public static final String NAME_KEY = "NAME_KEY";
     public static final String TITLE_KEY = "TITLE_KEY";
@@ -29,9 +27,16 @@ public abstract class BaseBrickFragment extends Fragment implements
         super();
     }
 
+    private Menu menu;
+    @Override
+    public Menu getMenu(){
+        return menu;
+    }
+
     /**
      * Заголовок списка
      */
+    @Override
     public String getListTitle() {
         return m_Title;
     }
@@ -39,9 +44,11 @@ public abstract class BaseBrickFragment extends Fragment implements
     /**
      * Уникальный идентификатор списка
      */
+    @Override
     public String getListName() {
         return m_Name;
     }
+
 
     public Boolean needLogin() {
         return m_NeedLogin;
@@ -88,7 +95,7 @@ public abstract class BaseBrickFragment extends Fragment implements
 
         super.onSaveInstanceState(outState);
     }
-    private Menu menu;
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         MenuItem item = menu.add("Обновить")
@@ -110,20 +117,17 @@ public abstract class BaseBrickFragment extends Fragment implements
     @Override
     public void onPause() {
         super.onPause();
-        if(menu != null) {
-            menu.clear();
-            getActivity().onCreateOptionsMenu(MainActivity.mainMenu);
-        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(menu!=null) onCreateOptionsMenu(menu, null);
+        if(m_Title!=null) getActivity().setTitle(m_Title);
     }
 
     @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        return false;
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.e("kek", "onactivitycreated\n"+savedInstanceState);
     }
 }

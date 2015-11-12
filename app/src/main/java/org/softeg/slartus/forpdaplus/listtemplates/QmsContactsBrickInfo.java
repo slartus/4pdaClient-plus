@@ -5,7 +5,7 @@ package org.softeg.slartus.forpdaplus.listtemplates;/*
 import android.support.v4.app.Fragment;
 
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.qms.QmsContactsListFragment;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactsList;
 
 public class QmsContactsBrickInfo extends BrickInfo {
     public static final String NAME = "QmsContacts";
@@ -27,6 +27,6 @@ public class QmsContactsBrickInfo extends BrickInfo {
 
     @Override
     public Fragment createFragment() {
-        return new QmsContactsListFragment().setBrickInfo(this);
+        return new QmsContactsList().setBrickInfo(this);
     }
 }

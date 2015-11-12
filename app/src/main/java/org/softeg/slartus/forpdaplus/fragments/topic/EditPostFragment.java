@@ -249,6 +249,11 @@ public class EditPostFragment extends Fragment implements IBrickFragment {
         }
     }
 
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        return false;
+    }
+
     private boolean sendMail() {
         final String body = getPostText();
         if (TextUtils.isEmpty(body))
@@ -1242,8 +1247,5 @@ public class EditPostFragment extends Fragment implements IBrickFragment {
 
     }
 
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        return false;
-    }
+
 }

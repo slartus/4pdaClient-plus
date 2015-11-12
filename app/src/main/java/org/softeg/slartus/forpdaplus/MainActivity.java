@@ -666,7 +666,9 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
-                            ListFragmentActivity.showListFragment(MainActivity.this, QmsContactsBrickInfo.NAME, null);
+                            //ListFragmentActivity.showListFragment(MainActivity.this, QmsContactsBrickInfo.NAME, null);
+                            QmsContactsBrickInfo brickInfo = new QmsContactsBrickInfo();
+                            MainActivity.addTabByIntent(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
                             return true;
                         }
                     });

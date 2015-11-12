@@ -22,12 +22,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,7 +32,6 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -73,7 +69,6 @@ import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
-import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -84,9 +79,6 @@ import org.softeg.slartus.forpdaplus.topicview.SessionHistory;
 import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
 import org.softeg.slartus.forpdaplus.topicview.TopicViewMenuFragment;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -172,17 +164,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     @Override
-    public Window getWindow() {
-        return null;
-    }
-
-
-    @Override
-    public boolean dispatchSuperKeyEvent(KeyEvent event) {
-        return false;
-    }
-
-    @Override
     public View getView() {
         return view;
     }
@@ -204,11 +185,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     @Override
     public String getUrl() {
         return getLastUrl();
-    }
-
-    @Override
-    public void refresh() {
-
     }
 
     @Override
@@ -685,39 +661,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         }
                     }).setCheckable(true).setChecked(Preferences.isBrowserView());
 
-            menu.add("Быстрый доступ").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem item) {
-                    BricksListDialogFragment.showDialog((BricksListDialogFragment.IBricksListDialogCaller) getActivity(),
-                            BricksListDialogFragment.QUICK_LIST_ID,
-                            ListCore.getBricksNames(ListCore.getQuickBricks()), null);
-
-                    return true;
-                }
-            });
-            menu.add("Правила форума").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem item) {
-                    StringBuilder text = new StringBuilder();
-                    try {
-
-                        BufferedReader br = new BufferedReader(new InputStreamReader(App.getInstance().getAssets().open("rules.txt"), "UTF-8"));
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            text.append(line).append("\n");
-                        }
-
-                    } catch (IOException e) {
-                        AppLog.e(getActivity(), e);
-                    }
-                    new MaterialDialog.Builder(getActivity())
-                            .title("Правила форума")
-                            .content(Html.fromHtml(text.toString()))
-                            .positiveText(android.R.string.ok)
-                            .show();
-
-                    return true;
-                }
-            });
-
             if (Preferences.System.isDevSavePage()) {
                 menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -920,26 +863,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     @Override
-    public String getListName() {
-        return null;
-    }
-
-    @Override
-    public String getListTitle() {
-        return null;
-    }
-
-    @Override
-    public void loadData(boolean isRefresh) {
-
-    }
-
-    @Override
-    public void startLoad() {
-
-    }
-
-    //@Override
     public boolean onBackPressed() {
         if (pnlSearch.getVisibility() == View.VISIBLE) {
             closeSearch();
@@ -986,11 +909,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             //super.onBackPressed();
         }
 
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        return false;
     }
 
     public void clear() {

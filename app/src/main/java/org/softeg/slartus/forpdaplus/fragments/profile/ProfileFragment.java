@@ -12,15 +12,12 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
@@ -44,11 +41,11 @@ import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsChatFragment;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
-import org.softeg.slartus.forpdaplus.qms.QmsChatActivity;
-import org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity;
 import org.softeg.slartus.forpdaplus.qms.QmsNewThreadActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
@@ -64,22 +61,6 @@ import java.util.regex.Matcher;
 public class ProfileFragment extends WebViewFragment implements LoaderManager.LoaderCallbacks<Profile>{
     private Menu menu;
     private String title;
-
-    @Override
-    public String Prefix() {
-        return null;
-    }
-
-    @Override
-    public Window getWindow() {
-        return null;
-    }
-
-
-    @Override
-    public boolean dispatchSuperKeyEvent(KeyEvent event) {
-        return false;
-    }
 
     @Override
     public View getView() {
@@ -102,42 +83,12 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     @Override
-    public void refresh() {
-
-    }
-
-    @Override
     public Menu getMenu() {
         return menu;
     }
 
     @Override
-    public String getListName() {
-        return null;
-    }
-
-    @Override
-    public String getListTitle() {
-        return null;
-    }
-
-    @Override
-    public void loadData(boolean isRefresh) {
-
-    }
-
-    @Override
-    public void startLoad() {
-
-    }
-
-    @Override
     public boolean onBackPressed() {
-        return false;
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
         return false;
     }
 
@@ -379,13 +330,17 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         public boolean tryShowQms_2_0(Activity context, String url) {
             Matcher m = PatternExtensions.compile("4pda.ru/forum/index.php\\?act=qms&mid=(\\d+)&t=(\\d+)").matcher(url);
             if (m.find()) {
-                QmsChatActivity.openChat(context, m.group(1), getUserNick(), m.group(2), null);
+                //QmsChatActivity.openChat(context, m.group(1), getUserNick(), m.group(2), null);
+                QmsChatFragment.openChat(m.group(1), getUserNick(), m.group(2), null);
+
 
                 return true;
             }
             m = PatternExtensions.compile("4pda.ru/forum/index.php\\?act=qms&mid=(\\d+)").matcher(url);
             if (m.find()) {
-                QmsContactThemesActivity.showThemes(context, m.group(1), getUserNick());
+                //QmsContactThemesActivity.showThemes(context, m.group(1), getUserNick());
+
+                QmsContactThemes.showThemes(m.group(1), getUserNick());
 
 
                 return true;

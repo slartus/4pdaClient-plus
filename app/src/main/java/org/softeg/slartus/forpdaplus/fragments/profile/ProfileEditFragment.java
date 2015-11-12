@@ -1,17 +1,10 @@
 package org.softeg.slartus.forpdaplus.fragments.profile;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,20 +27,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
-import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -70,20 +59,12 @@ public class ProfileEditFragment extends WebViewFragment {
         MainActivity.addTabByIntent(m_Title, url, new ProfileEditFragment());
     }
 
-    @Override
-    public String Prefix() {
-        return null;
-    }
 
     @Override
     public WebView getWebView() {
         return m_WebView;
     }
 
-    @Override
-    public boolean dispatchSuperKeyEvent(KeyEvent event) {
-        return false;
-    }
 
     @Override
     public View getView() {
@@ -103,11 +84,6 @@ public class ProfileEditFragment extends WebViewFragment {
     @Override
     public String getUrl() {
         return url;
-    }
-
-    @Override
-    public void refresh() {
-
     }
 
     @Override
@@ -175,35 +151,6 @@ public class ProfileEditFragment extends WebViewFragment {
         });
     }
 
-    @Override
-    public String getListName() {
-        return null;
-    }
-
-    @Override
-    public String getListTitle() {
-        return null;
-    }
-
-    @Override
-    public void loadData(boolean isRefresh) {
-
-    }
-
-    @Override
-    public void startLoad() {
-
-    }
-
-    @Override
-    public boolean onBackPressed() {
-        return false;
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        return false;
-    }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);

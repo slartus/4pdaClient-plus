@@ -32,6 +32,8 @@ import org.softeg.slartus.forpdaplus.fragments.profile.DeviceDelete;
 import org.softeg.slartus.forpdaplus.fragments.profile.DeviceEdit;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileEditFragment;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsChatFragment;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
 import org.softeg.slartus.forpdaplus.fragments.topic.EditPostFragment;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
@@ -52,11 +54,6 @@ import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.profile.DeviceDeleteDialog;
-import org.softeg.slartus.forpdaplus.profile.DeviceEditDialog;
-import org.softeg.slartus.forpdaplus.profile.ProfileEditActivity;
-import org.softeg.slartus.forpdaplus.qms.QmsChatActivity;
-import org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
 import org.softeg.slartus.forpdaplus.video.PlayerActivity;
 
@@ -558,13 +555,17 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
             return false;
         if (!TextUtils.isEmpty(mid)) {
             if (!TextUtils.isEmpty(tid)) {
-                QmsChatActivity.openChat(context, mid, null, tid, null);
+                //QmsChatActivity.openChat(context, mid, null, tid, null);
+                QmsChatFragment.openChat( mid, null, tid, null);
             } else {
-                QmsContactThemesActivity.showThemes(context, mid, "");
+                //QmsContactThemesActivity.showThemes(context, mid, "");
+                QmsContactThemes.showThemes(mid, "");
             }
 
         } else {
-            ListFragmentActivity.showListFragment(context, QmsContactsBrickInfo.NAME, null);
+            //ListFragmentActivity.showListFragment(context, QmsContactsBrickInfo.NAME, null);
+            QmsContactsBrickInfo brickInfo = new QmsContactsBrickInfo();
+            MainActivity.addTabByIntent(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
         }
         if (finish)
             context.finish();

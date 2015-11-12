@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -20,7 +21,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
-import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 
 import java.io.File;
@@ -63,7 +63,7 @@ public class ShortUserInfo {
                 userBackground.setImageResource(R.drawable.user_background);
             }
         }
-
+        client.checkLoginByCookies();
         if(isOnline()){
             if(client.getLogined()) {
                 new updateAsyncTask().execute();
@@ -177,7 +177,9 @@ public class ShortUserInfo {
                 textWrapper.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ListFragmentActivity.showListFragment(getContext(), QmsContactsBrickInfo.NAME, null);
+                        QmsContactsBrickInfo brickInfo = new QmsContactsBrickInfo();
+                        MainActivity.addTabByIntent(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
+                        //ListFragmentActivity.showListFragment(getContext(), QmsContactsBrickInfo.NAME, null);
                     }
                 });
                 userNick.setText(client.getUser());

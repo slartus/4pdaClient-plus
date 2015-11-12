@@ -12,9 +12,9 @@ import android.view.SubMenu;
 
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.LoginDialog;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
-import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 
@@ -89,7 +89,8 @@ private Handler mHandler=new Handler();
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
-                            ListFragmentActivity.showListFragment(getActivity(), QmsContactsBrickInfo.NAME, null);
+                            //ListFragmentActivity.showListFragment(getActivity(), QmsContactsBrickInfo.NAME, null);
+                            MainActivity.addTabByIntent(QmsContactsBrickInfo.NAME, new QmsContactsBrickInfo().createFragment());
                             return true;
                         }
                     });

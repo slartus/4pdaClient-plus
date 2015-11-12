@@ -18,7 +18,7 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
-import org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
 import org.softeg.slartus.forpdaplus.qms.QmsNewThreadActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
 import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
@@ -116,7 +116,7 @@ public class ForumUser {
                                         }
                                         @Override
                                         public void onNeutral(MaterialDialog dialog) {
-                                            QmsContactThemesActivity.showThemes(context, userId, finalUserNick);
+                                            QmsContactThemes.showThemes(userId, finalUserNick);
                                         }
                                     })
                                     .show();
@@ -171,7 +171,7 @@ public class ForumUser {
                                             }
                                             @Override
                                             public void onNeutral(MaterialDialog dialog) {
-                                                QmsContactThemesActivity.showThemes(context, userId, finalUserNick);
+                                                QmsContactThemes.showThemes(userId, finalUserNick);
                                             }
                                         })
                                         .show();

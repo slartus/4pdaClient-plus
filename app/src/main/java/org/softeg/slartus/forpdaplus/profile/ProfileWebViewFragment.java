@@ -38,9 +38,9 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsChatFragment;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.qms.QmsChatActivity;
-import org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -287,13 +287,17 @@ public class ProfileWebViewFragment extends DialogFragment
         public boolean tryShowQms_2_0(Activity context, String url) {
             Matcher m = PatternExtensions.compile("4pda.ru/forum/index.php\\?act=qms&mid=(\\d+)&t=(\\d+)").matcher(url);
             if (m.find()) {
-                QmsChatActivity.openChat(context, m.group(1), getUserNick(), m.group(2), null);
+                //QmsChatActivity.openChat(context, m.group(1), getUserNick(), m.group(2), null);
+                QmsChatFragment.openChat(m.group(1), getUserNick(), m.group(2), null);
+
 
                 return true;
             }
             m = PatternExtensions.compile("4pda.ru/forum/index.php\\?act=qms&mid=(\\d+)").matcher(url);
             if (m.find()) {
-                QmsContactThemesActivity.showThemes(context, m.group(1), getUserNick());
+                //QmsContactThemesActivity.showThemes(context, m.group(1), getUserNick());
+
+                QmsContactThemes.showThemes(m.group(1), getUserNick());
 
 
                 return true;

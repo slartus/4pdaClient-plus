@@ -4,12 +4,11 @@ import android.animation.ValueAnimator;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
-import android.view.Menu;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.DecelerateInterpolator;
@@ -40,18 +39,13 @@ import java.util.ArrayList;
 /**
  * Created by radiationx on 17.10.15.
  */
-public abstract class WebViewFragment extends Fragment implements IBrickFragment, IWebViewContainer{
-    public abstract String Prefix();
+public abstract class WebViewFragment extends GeneralFragment implements IBrickFragment, IWebViewContainer{
 
     public abstract WebView getWebView();
     public abstract View getView();
     public abstract WebViewClient MyWebViewClient();
     public abstract String getTitle();
     public abstract String getUrl();
-    public abstract void refresh();
-    public abstract Menu getMenu();
-
-    private ActionBar actionBar;
 
     WebViewExternals m_WebViewExternals;
 
@@ -59,28 +53,6 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
         if (m_WebViewExternals == null)
             m_WebViewExternals = new WebViewExternals(this);
         return m_WebViewExternals;
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        actionBar = ((MainActivity)getActivity()).getSupportActionBar();
-    }
-
-    @Override
-    public Window getWindow() {
-        return null;
-    }
-    @Override
-    public void nextPage() {}
-
-    @Override
-    public void prevPage() {}
-
-    @Override
-    public ActionBar getSupportActionBar() {
-        return actionBar;
     }
 
     public void animateHamburger(boolean isArrow){
@@ -123,8 +95,7 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
         getWebView().onResume();
         getWebView().setWebViewClient(MyWebViewClient());
         //animateHamburger(false);
-        onCreateOptionsMenu(getMenu(), null);
-        Log.e("kek","resume");
+        Log.e("kek", "resume");
     }
 
     @Override
@@ -141,9 +112,7 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
             getWebView().setWebViewClient(null);
             getWebView().setPictureListener(null);
         }
-        getSupportActionBar().setSubtitle(null);
-        getMenu().clear();
-        ((MainActivity) getActivity()).onCreateOptionsMenu(MainActivity.mainMenu);
+
         Log.e("kek","pause");
     }
 
@@ -228,10 +197,10 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
         FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.fab);
         Log.e("sethide", "yes");
         if (actionBar == null) return;
-        Log.e("ab","yes");
+        Log.e("ab", "yes");
         if (fab == null) return;
-        Log.e("fb","yes");
-        setHideActionBar((AdvWebView)getWebView(),actionBar, fab);
+        Log.e("fb", "yes");
+        setHideActionBar((AdvWebView) getWebView(), actionBar, fab);
     }
 
     public static void setHideActionBar(AdvWebView advWebView, final ActionBar actionBar, final FloatingActionButton fab) {
@@ -244,10 +213,10 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
                 public void onScrollDown(Boolean inTouch) {
                     if (!inTouch)
                         return;
-                    if (actionBar.isShowing()&hideAb) {
+                    if (actionBar.isShowing() & hideAb) {
                         actionBar.hide();
                     }
-                    if (fab.isVisible()&hideFab){
+                    if (fab.isVisible() & hideFab) {
                         fab.hide();
                     }
                 }
@@ -256,10 +225,10 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
                 public void onScrollUp(Boolean inTouch) {
                     if (!inTouch)
                         return;
-                    if (!actionBar.isShowing()&hideAb) {
+                    if (!actionBar.isShowing() & hideAb) {
                         actionBar.show();
                     }
-                    if (!fab.isVisible()&hideFab){
+                    if (!fab.isVisible() & hideFab) {
                         fab.show();
                     }
 
@@ -343,6 +312,7 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
                     public void onPositive(MaterialDialog dialog) {
                         Preferences.setFontSize(Prefix(), seekBar.getProgress() + 1);
                     }
+
                     @Override
                     public void onNegative(MaterialDialog dialog) {
                         getWebView().getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
@@ -361,16 +331,6 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
             PreferencesActivity.getStylesList(getActivity(), newStyleNames, newStyleValues);
             final int[] selected = {newStyleValues.indexOf(currentValue)};
             CharSequence[] styleNames = newStyleNames.toArray(new CharSequence[newStyleNames.size()]);
-
-            /*LayoutInflater inflater = (LayoutInflater) getInterface().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.dialog_select_style, null);
-            final ListView listView = (ListView) view.findViewById(R.id.listView);
-
-            listView.setAdapter(new ArrayAdapter<CharSequence>(getInterface(),R.layout.simple_list_item_single_choice, newStyleNames));
-            listView.setItemChecked(selected, true);
-
-            final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
-            checkBox.setChecked(prefs.getBoolean("theme.BrowserStyle", false));*/
 
             new MaterialDialog.Builder(getActivity())
                     .title("Стиль")
@@ -396,7 +356,7 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
                             editor.putString("appstyle", newStyleValues.get(selected[0]).toString());
                             //editor.putBoolean("theme.BrowserStyle", checkBox.isChecked());
                             editor.apply();
-                            ((MainActivity)getActivity()).reload();
+                            //((MainActivity)getActivity()).reload();
                         }
                     })
                     .negativeText("Отмена")
@@ -405,5 +365,25 @@ public abstract class WebViewFragment extends Fragment implements IBrickFragment
             AppLog.e(getActivity(), ex);
         }
     }
+
+    @Override
+    public String Prefix() {
+        return null;
+    }
+
+    @Override
+    public boolean dispatchSuperKeyEvent(KeyEvent event) {
+        return false;
+    }
+
+    @Override
+    public Window getWindow() {
+        return getActivity().getWindow();
+    }
+    @Override
+    public void nextPage() {}
+
+    @Override
+    public void prevPage() {}
 
 }

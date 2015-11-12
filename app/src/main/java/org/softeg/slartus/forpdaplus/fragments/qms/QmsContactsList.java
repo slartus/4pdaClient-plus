@@ -1,6 +1,4 @@
-package org.softeg.slartus.forpdaplus.qms;/*
- * Created by slinkin on 07.05.2014.
- */
+package org.softeg.slartus.forpdaplus.fragments.qms;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -27,7 +25,6 @@ import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.qms.QmsUser;
 import org.softeg.slartus.forpdaapi.qms.QmsUsers;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.BaseLoaderListFragment;
@@ -36,7 +33,10 @@ import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 
 import java.util.ArrayList;
 
-public class QmsContactsListFragment extends BaseLoaderListFragment {
+/**
+ * Created by radiationx on 12.11.15.
+ */
+public class QmsContactsList extends BaseLoaderListFragment {
 
     @Override
     protected BaseAdapter createAdapter() {
@@ -71,10 +71,7 @@ public class QmsContactsListFragment extends BaseLoaderListFragment {
                 return;
             final QmsUser qmsUser = (QmsUser) o;
             //QmsContactThemesActivity.showThemes(getActivity(), qmsUser.getId(), qmsUser.getNick().toString());
-            Bundle bundle = new Bundle();
-            bundle.putString("mid", qmsUser.getId());
-            bundle.putString("nick", qmsUser.getNick().toString());
-            MainActivity.addTabByIntent(qmsUser.getNick().toString(), qmsUser.getId(), QmsContactThemesFragment.newInstance(bundle));
+            QmsContactThemes.showThemes(qmsUser.getId(), qmsUser.getNick().toString());
 
         } catch (Throwable ex) {
             AppLog.e(getActivity(), ex);
@@ -213,28 +210,28 @@ public class QmsContactsListFragment extends BaseLoaderListFragment {
                     holder.imgAvatarSquare.setVisibility(View.GONE);
                     imageLoader.displayImage(user.getAvatarUrl(), holder.imgAvatar, new ImageLoadingListener() {
 
-                    @Override
-                    public void onLoadingStarted(String p1, View p2) {
-                        p2.setVisibility(View.INVISIBLE);
-                        //holder.mProgressBar.setVisibility(View.VISIBLE);
-                    }
+                        @Override
+                        public void onLoadingStarted(String p1, View p2) {
+                            p2.setVisibility(View.INVISIBLE);
+                            //holder.mProgressBar.setVisibility(View.VISIBLE);
+                        }
 
-                    @Override
-                    public void onLoadingFailed(String p1, View p2, FailReason p3) {
-                        // holder.mProgressBar.setVisibility(View.INVISIBLE);
-                    }
+                        @Override
+                        public void onLoadingFailed(String p1, View p2, FailReason p3) {
+                            // holder.mProgressBar.setVisibility(View.INVISIBLE);
+                        }
 
-                    @Override
-                    public void onLoadingComplete(String p1, View p2, Bitmap p3) {
-                        p2.setVisibility(View.VISIBLE);
-                        // holder.mProgressBar.setVisibility(View.INVISIBLE);
-                    }
+                        @Override
+                        public void onLoadingComplete(String p1, View p2, Bitmap p3) {
+                            p2.setVisibility(View.VISIBLE);
+                            // holder.mProgressBar.setVisibility(View.INVISIBLE);
+                        }
 
-                    @Override
-                    public void onLoadingCancelled(String p1, View p2) {
+                        @Override
+                        public void onLoadingCancelled(String p1, View p2) {
 
-                    }
-                });
+                        }
+                    });
                 }
 
             }
@@ -254,4 +251,5 @@ public class QmsContactsListFragment extends BaseLoaderListFragment {
             TextView txtCount;
         }
     }
+
 }

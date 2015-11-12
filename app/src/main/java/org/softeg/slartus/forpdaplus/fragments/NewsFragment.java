@@ -16,7 +16,6 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,7 +23,6 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -107,13 +105,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         return new MyWebViewClient();
     }
 
-
-
-    @Override
-    public boolean dispatchSuperKeyEvent(KeyEvent event) {
-        return false;
-    }
-
     public void refresh() {
         showNews(m_NewsUrl);
     }
@@ -127,11 +118,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         return webView;
     }
 
-    @Override
-    public Window getWindow() {
-        return null;
-    }
-
     public String Prefix() {
         return "news";
     }
@@ -143,31 +129,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
     @Override
     public boolean onError(MediaPlayer mediaPlayer, int i, int i2) {
-        return false;
-    }
-
-    @Override
-    public String getListName() {
-        return null;
-    }
-
-    @Override
-    public String getListTitle() {
-        return null;
-    }
-
-    @Override
-    public void loadData(boolean isRefresh) {
-
-    }
-
-    @Override
-    public void startLoad() {
-
-    }
-
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
         return false;
     }
 

@@ -161,12 +161,7 @@ public class ProfileApi {
     }
 
     public static String getUserNick(IHttpClient httpClient, CharSequence userID) throws IOException {
-        String page = httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID);
-
-        Document doc = Jsoup.parse(page);
-        org.jsoup.nodes.Element element = doc.select("div#main").first();
-        org.jsoup.nodes.Element userNickElement = element.select("div.user-box > h1").first();
-        return userNickElement.text();
+        return Jsoup.parse(httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID)).select("div.user-box > h1").first().text();
     }
 
     public static LoginForm getLoginForm(IHttpClient httpClient) throws IOException {

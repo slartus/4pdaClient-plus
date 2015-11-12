@@ -85,10 +85,20 @@ public class PopupPanelView {
             }
         });
     }
-
-    public void activityCreated(Activity activity) {
+    public void activityCreated(Activity activity){
+        activityCreated(activity, null);
+    }
+    public void activityCreated(Activity activity, View view) {
+        Log.e("kek", activity+"");
+        Log.e("kek", activity.getWindow()+"");
         parentLayout = activity.getWindow().getDecorView().findViewById(android.R.id.content);
-        this.emoticonsCover = parentLayout.findViewById(R.id.footer_for_emoticons);
+        if(view==null)
+            this.emoticonsCover = parentLayout.findViewById(R.id.footer_for_emoticons);
+        else
+            this.emoticonsCover = view.findViewById(R.id.footer_for_emoticons);
+
+        Log.e("kek", parentLayout+"");
+        Log.e("kek", this.emoticonsCover+"");
 
         final float popUpheight = App.getContext().getResources().getDimension(
                 R.dimen.keyboard_height);

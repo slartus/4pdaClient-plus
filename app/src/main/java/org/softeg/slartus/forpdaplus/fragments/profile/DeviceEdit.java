@@ -27,8 +27,6 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
-import org.softeg.slartus.forpdaplus.profile.ProfileWebViewFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
