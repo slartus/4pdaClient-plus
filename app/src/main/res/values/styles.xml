@@ -90,6 +90,28 @@
         <item name="android:listViewStyle">@style/list_divider_style_bl</item>
     </style>
 
+
+    <style name="ImageViewTheme" parent="Theme.AppCompat">
+        <item name="android:actionBarStyle">@style/actionbar_trans</item>
+        <item name="actionBarStyle">@style/actionbar_trans</item>
+        <item name="panelMenuListTheme">@style/bottom_menu_bl</item>
+        <item name="actionOverflowButtonStyle">@style/overflow_button</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:fitsSystemWindows">false</item>
+    </style>
+
+    <style name="actionbar_trans" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="background">@android:color/transparent</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="elevation">2dp</item>
+        <item name="displayOptions">homeAsUp|showTitle</item>
+        <item name="titleTextStyle">@style/actionbar_title</item>
+        <item name="subtitleTextStyle">@style/actionbar_subtitle</item>
+    </style>
+
     <style name="list_divider_style_wh" parent="@style/Widget.AppCompat.ListView">
         <item name="android:divider">@color/divider_wh</item>
         <item name="android:dividerHeight">1dp</item>

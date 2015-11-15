@@ -16,10 +16,10 @@ import android.widget.Toast;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotificationBridge;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.QuickStartActivity;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.DownloadTask;
-import org.softeg.slartus.forpdaplus.tabs.DownloadsTab;
+import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
 
 import java.io.UnsupportedEncodingException;
 
@@ -54,7 +54,7 @@ public class DownloadReceiver extends ResultReceiver {
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         switch (downloadTask.getState()) {
             case DownloadTask.STATE_ERROR:
-                Intent i = new Intent(context, QuickStartActivity.class);
+                Intent i = new Intent(context, MainActivity.class);
 
                 Notification notif = null;
                 notif = NotificationBridge.createBridge(
@@ -71,8 +71,8 @@ public class DownloadReceiver extends ResultReceiver {
                 mNotificationManager.notify(downloadTask.getUrl(), notificationId, notif);
                 break;
             case DownloadTask.STATE_CANCELED: {
-                Intent intent = new Intent(context, QuickStartActivity.class);
-                intent.putExtra("template", DownloadsTab.TEMPLATE);
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.putExtra("template", DownloadFragment.TEMPLATE);
 
                 Notification notification = null;
                 try {
@@ -139,8 +139,8 @@ public class DownloadReceiver extends ResultReceiver {
     public static void showProgressNotification(Context context, int notificationId, String title, int percents, String tag) {
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Intent intent = new Intent(context, QuickStartActivity.class);
-        intent.putExtra("template", DownloadsTab.TEMPLATE);
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("template", DownloadFragment.TEMPLATE);
         String contentText = percents + "%";
         NotificationBridge notificationBridge = NotificationBridge.createBridge(
                 context,

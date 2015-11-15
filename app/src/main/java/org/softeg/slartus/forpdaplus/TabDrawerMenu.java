@@ -30,15 +30,12 @@ import java.util.List;
 public class TabDrawerMenu {
     private DrawerLayout mDrawerLayout;
     private RelativeLayout mDrawer;
-    private ActionBarDrawerToggle mDrawerToggle;
     private Activity mActivity;
     private SelectItemListener mSelectItemListener;
-    private Handler mHandler = new Handler();
     private Resources resources;
-
+    private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
     private static TabAdapter adapter;
     private ListView mListView;
-    List mTabItems = new ArrayList();
 
 
     public interface SelectItemListener {
@@ -148,13 +145,6 @@ public class TabDrawerMenu {
     private View findViewById(int id) {
         return mActivity.findViewById(id);
     }
-
-    public void syncState() {
-        if (mDrawerToggle != null)
-            mDrawerToggle.syncState();
-    }
-
-
 
     public class TabAdapter extends ArrayAdapter{
         final LayoutInflater inflater;

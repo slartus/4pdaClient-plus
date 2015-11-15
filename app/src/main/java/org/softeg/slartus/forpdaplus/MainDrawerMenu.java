@@ -31,11 +31,11 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
-import org.softeg.slartus.forpdaplus.tabs.Tabs;
 
 import java.util.ArrayList;
 
@@ -267,8 +267,7 @@ public class MainDrawerMenu {
 
                 case DownloadsBrickInfo.NAME:
                     try {
-                        QuickStartActivity.showTab(mActivity, Tabs.TAB_DOWNLOADS);
-                        //Toast.makeText(mActivity, Client.getInstance().getUser(), Toast.LENGTH_SHORT).show();
+                        DownloadFragment.newInstance();
                     } catch (Exception ex) {
                         AppLog.e(mActivity, ex);
                     }

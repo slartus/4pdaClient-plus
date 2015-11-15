@@ -249,7 +249,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
         }
         private static final int MY_INTENT_CLICK=302;
         private void pickUserBackground() {
-            new MaterialDialog.Builder(getContext())
+            new MaterialDialog.Builder(getActivity())
                     .content("Выберите изображение")
                     .positiveText("Выбрать")
                     .negativeText("Отмена")

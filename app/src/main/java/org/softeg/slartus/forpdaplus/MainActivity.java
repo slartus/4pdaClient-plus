@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -10,14 +9,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
-import android.util.Pair;
-import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,8 +26,8 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
-import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchPostFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
@@ -49,7 +45,6 @@ import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
 import org.softeg.slartus.forpdaplus.mainnotifiers.TopicAttentionNotifier;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
-import org.softeg.slartus.forpdaplus.tabs.Tabs;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -216,7 +211,11 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
 
     @Override
     protected void onNewIntent(Intent intent) {
-        Log.e("kek","activity onnewintent");
+        Log.e("kek", "activity onnewintent");
+        if(intent.getStringExtra("template").equals(DownloadFragment.TEMPLATE)){
+            DownloadFragment.newInstance();
+            return;
+        }
         checkIntent(intent);
     }
 
@@ -225,10 +224,12 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     }
 
     private boolean checkIntent(final Intent intent) {
+
         if (IntentActivity.checkSendAction(this, intent))
             return false;
         //intent.setData(Uri.parse("http://4pda.ru/forum/lofiversion/index.php?t365142-1650.html"));
         if (intent.getData() != null) {
+
             final String url = intent.getData().toString();
             if (IntentActivity.tryShowUrl(this, mHandler, url, false, true)) {
                 return true;
@@ -534,65 +535,6 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         Log.e("kek", "activity onstop");
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, android.view.View v, android.view.ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        try {
-            if (v.getTag() != null) {
-                Object o = v.getTag();
-                if (TagPair.class.isInstance(o)) {
-                    TagPair tagPair = TagPair.class.cast(o);
-                    if (tagPair.first.equals("Tab")) {
-
-                        final String tabId = tagPair.second;
-                        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
-
-                        String defaulttabId = prefs.getString("tabs.defaulttab", "Tab1");
-                        try {
-                            menu.setHeaderTitle(Tabs.getTabName(prefs, tabId));
-                        } catch (NotReportException e) {
-                            e.printStackTrace();
-                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                        menu.add("По умолчанию").setCheckable(true).setChecked(tabId.equals(defaulttabId))
-                                .setOnMenuItemClickListener(new android.view.MenuItem.OnMenuItemClickListener() {
-                                    @Override
-                                    public boolean onMenuItemClick(android.view.MenuItem menuItem) {
-                                        SharedPreferences.Editor editor = prefs.edit();
-                                        editor.putString("tabs.defaulttab", tabId);
-                                        editor.apply();
-                                        menuItem.setChecked(true);
-                                        return true;
-                                    }
-                                });
-                        android.view.Menu defaultActionMenu = menu.addSubMenu("Действие по умолчанию");
-                        String[] actionsArray = getResources().getStringArray(R.array.ThemeActionsArray);
-                        final String[] actionsValues = getResources().getStringArray(R.array.ThemeActionsValues);
-                        final String actionPrefName = "tabs." + tabId + ".Action";
-                        String defaultAction = prefs.getString(actionPrefName, "getfirstpost");
-                        for (int i = 0; i < actionsValues.length; i++) {
-                            final int finalI = i;
-                            defaultActionMenu.add(actionsArray[i])
-                                    .setCheckable(true).setChecked(defaultAction != null && defaultAction.equals(actionsValues[i]))
-                                    .setOnMenuItemClickListener(new android.view.MenuItem.OnMenuItemClickListener() {
-                                        @Override
-                                        public boolean onMenuItemClick(android.view.MenuItem menuItem) {
-                                            SharedPreferences.Editor editor = prefs.edit();
-                                            editor.putString(actionPrefName, actionsValues[finalI]);
-                                            editor.apply();
-                                            menuItem.setChecked(true);
-                                            return true;
-                                        }
-                                    });
-                        }
-                    }
-                }
-            }
-        } catch (Throwable ex) {
-            AppLog.e(getContext(), ex);
-        }
-    }
-
     public Handler getHandler() {
         return mHandler;
     }
@@ -755,13 +697,6 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
 
         mainMenu = menu;
         return false;
-    }
-
-    public class TagPair extends Pair<String, String> {
-
-        public TagPair(String first, String second) {
-            super(first, second);
-        }
     }
 
     public static void startForumSearch(SearchSettings searchSettings){

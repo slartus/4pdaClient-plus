@@ -4,7 +4,9 @@ package org.softeg.slartus.forpdaplus.controls.imageview;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.Window;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 /*
  * Created by slartus on 14.10.2014.
  */
-public class ImageViewActivity extends BaseFragmentActivity {
+public class ImageViewActivity extends AppCompatActivity{
     private static final String IMAGE_URLS_KEY = "IMAGE_URLS_KEY";
     private static final String SELECTED_INDEX_KEY = "SELECTED_INDEX_KEY";
 
@@ -45,7 +47,8 @@ public class ImageViewActivity extends BaseFragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setTheme(App.getInstance().getThemeStyleResID());
+        super.setTheme(R.style.ImageViewTheme);
+        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.image_view_activity);
 
         ImageViewFragment fragment =

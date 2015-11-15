@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.tabs;
+package org.softeg.slartus.forpdaplus.fragments;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +30,7 @@ import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.DownloadTask;
 import org.softeg.slartus.forpdaplus.classes.DownloadTasks;
@@ -43,13 +45,13 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by IntelliJ IDEA.
- * User: slinkin
- * Date: 19.10.12
- * Time: 11:48
- * To change this template use File | Settings | File Templates.
+ * Created by radiationx on 16.11.15.
  */
-public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickListener {
+public class DownloadFragment extends GeneralFragment implements AdapterView.OnItemClickListener {
+    @Override
+    public Menu getMenu() {
+        return null;
+    }
     ListView m_ListView;
     private static android.os.Handler mHandler = new android.os.Handler();
     public static final String TEMPLATE = "DownloadsTab";
@@ -57,6 +59,10 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
     private View m_ListFooter;
     private TextView txtLoadMoreThemes, txtPullToLoadMore;
     private ImageView imgPullToLoadMore;
+
+    public static void newInstance(){
+        MainActivity.addTabByIntent(TITLE, TEMPLATE, new DownloadFragment());
+    }
 
     private DownloadTasks getDownloadTasks() {
         DownloadTasks downloadTasks = Client.getInstance().getDownloadTasks();
@@ -123,15 +129,14 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
         return downloadTasks;
     }
 
-    public DownloadsTab(Context context, ITabParent tabParent) {
-        super(context, tabParent);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.downloads_list_activity, container, false);
 
-        addView(inflate(context, R.layout.downloads_list_activity, null),
-                new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-
-        m_ListView = (ListView) findViewById(R.id.lstTree);
-        m_ListView.addFooterView(createListFooter());
+        m_ListView = (ListView) view.findViewById(R.id.lstTree);
+        m_ListView.addFooterView(createListFooter(inflater));
 
         m_Adapter = new DownloadTasksAdapter(getContext(), R.layout.download_task_item, getDownloadTasks());
 
@@ -147,10 +152,12 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
 
             }
         });
+        return view;
     }
 
-    private View createListFooter() {
-        m_ListFooter = inflate(getContext(), R.layout.list_footer, null);
+
+    private View createListFooter(LayoutInflater inflater) {
+        m_ListFooter = inflater.inflate(R.layout.list_footer, null);
 
         m_ListFooter.setVisibility(View.GONE);
         m_ListFooter.setOnClickListener(new View.OnClickListener() {
@@ -217,7 +224,7 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
                                     switch (i) {
                                         case 0: // Повторить загрузку
                                             Client.getInstance().getDownloadTasks().remove(downloadTask);
-                                            DownloadsService.download(getActivity(), downloadTask.getUrl(),false);
+                                            DownloadsService.download(getActivity(), downloadTask.getUrl(), false);
 
                                             mHandler.post(new Runnable() {
                                                 public void run() {
@@ -302,21 +309,7 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
     public Boolean onParentBackPressed() {
         return false;
     }
-
-    @Override
-    public String getTemplate() {
-        return TEMPLATE;
-    }
-
-    @Override
-    public void loadCache() {
-
-    }
-
-    @Override
-    public Boolean refreshable() {
-        return false;
-    }
+    
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -396,16 +389,7 @@ public class DownloadsTab extends BaseTab implements AdapterView.OnItemClickList
     }
 
     private ArrayAdapter<DownloadTask> m_Adapter;
-
-    @Override
-    public void refresh(Bundle extras) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public String getTitle() {
-        return TITLE;
-    }
+    
 
     public class DownloadTasksAdapter extends ArrayAdapter<DownloadTask> {
         private LayoutInflater m_Inflater;

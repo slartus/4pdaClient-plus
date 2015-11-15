@@ -42,7 +42,6 @@ import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseLoaderListFragment;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
