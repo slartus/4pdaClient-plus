@@ -44,9 +44,9 @@ import org.softeg.slartus.forpdaplus.classes.ImageFilePath;
 import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
+import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.styles.CssStyle;
 import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity;
-import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -735,7 +735,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
         }
 
         private void showTheme() {
-            ThemeActivity.showTopicById(getActivity(), "271502");
+            finish();
+            ThemeFragment.showTopicById(getActivity(), "271502");
         }
 
         private boolean showAddRep() {

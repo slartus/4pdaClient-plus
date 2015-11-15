@@ -15,6 +15,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
 import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
+import org.softeg.slartus.forpdaplus.FragmentActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
@@ -25,7 +26,7 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
  * Time: 8:35
  * To change this template use File | Settings | File Templates.
  */
-public abstract class BrowserViewsFragmentActivity extends BaseFragmentActivity implements IWebViewContainer {
+public abstract class BrowserViewsFragmentActivity extends FragmentActivity implements IWebViewContainer {
     public abstract String Prefix();
 
     public abstract WebView getWebView();

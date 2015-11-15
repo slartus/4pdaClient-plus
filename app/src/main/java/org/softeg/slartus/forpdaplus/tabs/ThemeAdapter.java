@@ -27,12 +27,12 @@ import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.HelpTask;
-import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.NotesListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicUtils;
 import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
@@ -197,7 +197,7 @@ public class ThemeAdapter extends ArrayAdapter<ExtTopic> {
 
                     Bundle args = new Bundle();
                     args.putString(NotesListFragment.TOPIC_ID_KEY, topic.getId());
-                    ListFragmentActivity.showListFragment(getContext(), new NotesBrickInfo().getName(), args);
+                    MainActivity.showListFragment(topic.getId(), new NotesBrickInfo().getName(), args);
 
                     return true;
                 }

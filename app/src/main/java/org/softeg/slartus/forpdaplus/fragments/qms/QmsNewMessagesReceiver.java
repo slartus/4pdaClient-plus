@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.qms;
+package org.softeg.slartus.forpdaplus.fragments.qms;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

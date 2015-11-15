@@ -40,8 +40,8 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ForumsTableOld;
 import org.softeg.slartus.forpdaplus.download.DownloadReceiver;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
+import org.softeg.slartus.forpdaplus.fragments.topic.ForPdaWebInterface;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
-import org.softeg.slartus.forpdaplus.topicview.HtmloutWebInterface;
 
 import java.io.IOException;
 import java.net.URI;
@@ -851,8 +851,8 @@ public class Client implements IHttpClient {
             String poll =
                     "<form action=\"modules.php\" method=\"get\">" +
                             pollMatcher.group(1).toString()
-                                    .replace("go_gadget_show()", HtmloutWebInterface.NAME + ".go_gadget_show()")
-                                    .replace("go_gadget_vote()", HtmloutWebInterface.NAME + ".go_gadget_vote()")
+                                    .replace("go_gadget_show()", ForPdaWebInterface.NAME + ".go_gadget_show()")
+                                    .replace("go_gadget_vote()", ForPdaWebInterface.NAME + ".go_gadget_vote()")
                                     .concat("<input type=\"hidden\" name=\"addpoll\" value=\"1\" /></form>");
 
             topicBodyBuilder.addPoll(poll, urlParams != null && urlParams.contains("poll_open=true"));

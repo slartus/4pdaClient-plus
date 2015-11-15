@@ -51,7 +51,6 @@ import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.qms.QmsChatPreferencesActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;

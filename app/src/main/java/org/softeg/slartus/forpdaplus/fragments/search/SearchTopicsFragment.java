@@ -1,7 +1,4 @@
-package org.softeg.slartus.forpdaplus.search.ui;/*
- * Created by slinkin on 29.04.2014.
- */
-
+package org.softeg.slartus.forpdaplus.fragments.search;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,22 +11,25 @@ import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.search.SearchApi;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment;
-import org.softeg.slartus.forpdaplus.search.ISearchResultView;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-public class SearchTopicsResultsFragment extends TopicsListFragment
+/**
+ * Created by radiationx on 15.11.15.
+ */
+public class SearchTopicsFragment extends TopicsListFragment
         implements ISearchResultView, AbsListView.OnScrollListener {
     private static final String SEARCH_URL_KEY = "SEARCH_URL_KEY";
 
 
-    public static SearchTopicsResultsFragment newFragment(CharSequence searchUrl) {
-        SearchTopicsResultsFragment fragment = new SearchTopicsResultsFragment();
+    public static SearchTopicsFragment newFragment(CharSequence searchUrl) {
+        SearchTopicsFragment fragment = new SearchTopicsFragment();
         Bundle args = new Bundle();
         args.putString(SEARCH_URL_KEY, searchUrl.toString());
         fragment.setArguments(args);
@@ -106,5 +106,15 @@ public class SearchTopicsResultsFragment extends TopicsListFragment
 //        }
         m_PrevVisible = firstVisibleItem;
     }
+    @Override
+    public void onPause() {
+        super.onPause();
+        MainActivity.searchSettings = SearchSettingsDialogFragment.createForumSearchSettings();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity.searchSettings = SearchSettings.parse(args.getString(SEARCH_URL_KEY));
+    }
 }

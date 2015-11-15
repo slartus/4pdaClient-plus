@@ -1,14 +1,14 @@
-package org.softeg.slartus.forpdaplus.search.ui;/*
+package org.softeg.slartus.forpdaplus.fragments.search;/*
  * Created by slinkin on 24.04.2014.
  */
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -32,6 +32,7 @@ import org.softeg.slartus.forpdaapi.search.SearchApi;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
 import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
@@ -220,25 +221,18 @@ public class SearchSettingsDialogFragment extends DialogFragment {
             initSpinner(view);
         }
         MaterialDialog adb = new MaterialDialog.Builder(getActivity())
-                .customView(view,true)
+                .customView(view, true)
                 .cancelable(true)
                 .title("Поиск")
                 .positiveText("Найти")
                 .negativeText("Отмена")
-                .showListener(new DialogInterface.OnShowListener() {
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onShow(DialogInterface dialog) {
-
+                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
+                        MainActivity.startForumSearch(createSearchSettings());
                     }
                 })
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        ((ISearchDialogListener) getActivity())
-                                .doSearchDialogPositiveClick(createSearchSettings());
-                    }
-
-                }).build();
+                .build();
 
         // в поиске по теме не показываем "запомнить настройки"
         if (SearchSettings.SEARCH_TYPE_FORUM.equals(getSearchSettings().getSearchType())) {

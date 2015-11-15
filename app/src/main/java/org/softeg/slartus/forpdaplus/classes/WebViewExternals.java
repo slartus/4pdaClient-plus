@@ -12,7 +12,7 @@ import android.webkit.WebView;
 import org.softeg.slartus.forpdacommon.Connectivity;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
+import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 
 /**
  * Created by IntelliJ IDEA.
@@ -105,8 +105,8 @@ public class WebViewExternals {
     }
 
     public static Boolean isLoadImages(String prefix) {
-        if (ThemeActivity.LoadsImagesAutomatically != null)
-            return ThemeActivity.LoadsImagesAutomatically;
+        if (ThemeFragment.LoadsImagesAutomatically != null)
+            return ThemeFragment.LoadsImagesAutomatically;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         return isLoadImages(prefs, prefix);
     }

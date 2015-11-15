@@ -10,7 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.search.CheckableForumItem;
+import org.softeg.slartus.forpdaplus.fragments.search.CheckableForumItem;
 
 import java.util.ArrayList;
 import java.util.HashSet;

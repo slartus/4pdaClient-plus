@@ -11,8 +11,8 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.fragments.topic.EditPostFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicUtils;
-import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 
 /*
  * Created by slinkin on 27.02.2015.
@@ -58,7 +58,7 @@ public abstract class TopicsFragment extends TopicsFragmentListBase {
                 !extras.containsKey(Intent.EXTRA_TEXT) &&
                 !extras.containsKey(Intent.EXTRA_HTML_TEXT)) return false;
 
-        EditPostActivity.newPostWithAttach(getActivity(),
+        EditPostFragment.newPostWithAttach(getActivity(),
                 null, topic.getId(), Client.getInstance().getAuthKey(), extras);
         getActivity().finish();
         return true;

@@ -11,6 +11,7 @@ import org.softeg.slartus.forpdaapi.ICatalogItem;
 import org.softeg.slartus.forpdaapi.digest.DigestApi;
 import org.softeg.slartus.forpdaapi.digest.DigestCatalog;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.CatalogAdapter;
 import org.softeg.slartus.forpdaplus.listtemplates.DigestTopicsListBrickInfo;
 
@@ -113,6 +114,6 @@ public class DigestCatalogFragment extends BaseCatalogFragment {
     protected void onFailureResult() {
         Bundle args = new Bundle();
         args.putParcelable(DigestTopicsListFragment.CATALOG_KEY, (DigestCatalog) m_LoadingCatalogItem);
-        ListFragmentActivity.showListFragment(getActivity(), new DigestTopicsListBrickInfo().getName(), args);
+        MainActivity.showListFragment(new DigestTopicsListBrickInfo().getName(), args);
     }
 }

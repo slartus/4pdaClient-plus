@@ -29,13 +29,15 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.NotReportException;
-import org.softeg.slartus.forpdaplus.classes.ProfileMenuFragment;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
+import org.softeg.slartus.forpdaplus.fragments.search.SearchPostFragment;
+import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
+import org.softeg.slartus.forpdaplus.fragments.search.SearchTopicsFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
-import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
@@ -46,13 +48,13 @@ import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
 import org.softeg.slartus.forpdaplus.mainnotifiers.TopicAttentionNotifier;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 import org.softeg.slartus.forpdaplus.tabs.Tabs;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -67,8 +69,6 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     private final static String tabPrefix = "tab";
     private Handler mHandler = new Handler();
 
-    MenuFragment mFragment1;
-
     private MainDrawerMenu mMainDrawerMenu;
     private static TabDrawerMenu mTabDraweMenu;
     private RelativeLayout leftDrawer,topInform;
@@ -77,6 +77,8 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     int lastTheme;
     private static TabItem tabOnIntent = null;
     private static boolean activityPaused = true;
+
+    public static SearchSettings searchSettings;
 
     @Override
     protected void afterCreate() {
@@ -159,10 +161,15 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
             mTabDraweMenu = new TabDrawerMenu(this, this);
             mMainDrawerMenu = new MainDrawerMenu(this, this);
 
+            searchSettings = SearchSettingsDialogFragment.createForumSearchSettings();
+
             NotifiersManager notifiersManager = new NotifiersManager(this);
             new DonateNotifier(notifiersManager).start(this);
             new TopicAttentionNotifier(notifiersManager).start(this);
             new ForPdaVersionNotifier(notifiersManager, 1).start(this);
+            Log.e("kek", App.getInstance().getCurrentFragmentTag()+"");
+            if(App.getInstance().getCurrentFragmentTag()!=null)
+                selectTab(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()));
         } catch (Throwable ex) {
             AppLog.e(getApplicationContext(), ex);
         }
@@ -207,21 +214,6 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
 
     }
 
-    private void createMenu() {
-        try {
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            mFragment1 = (MenuFragment) fm.findFragmentByTag("f1");
-            if (mFragment1 == null) {
-                mFragment1 = new MenuFragment();
-                ft.add(mFragment1, "f1");
-            }
-            ft.commit();
-        } catch (Exception ex) {
-            AppLog.e(this, ex);
-        }
-    }
-
     @Override
     protected void onNewIntent(Intent intent) {
         Log.e("kek","activity onnewintent");
@@ -253,7 +245,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     public void onBricksListDialogResult(DialogInterface dialog, String dialogId,
                                          BrickInfo brickInfo, Bundle args) {
         dialog.dismiss();
-        ListFragmentActivity.showListFragment(this, brickInfo.getName(), args);
+        showListFragment(brickInfo.getName(), args);
     }
 
     /**
@@ -276,7 +268,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         if(mTabDraweMenu!=null) mTabDraweMenu.close();
         if(mMainDrawerMenu!=null) mMainDrawerMenu.close();
         String currentFragmentTag = String.valueOf(App.getInstance().getCurrentFragmentTag());
-
+        Log.e("lol", ":"+currentFragmentTag+":");
 
         endActionFragment(title, tag);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -375,7 +367,15 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
             endActionFragment(title);
         }
     }
-
+    public static void showListFragment(String brickName, Bundle extras){
+        showListFragment("", brickName, extras);
+    }
+    public static void showListFragment(String prefix, String brickName, Bundle extras){
+        final BrickInfo listTemplate = ListCore.getRegisteredBrick(brickName);
+        Fragment fragment = listTemplate.createFragment();
+        fragment.setArguments(extras);
+        addTabByIntent(listTemplate.getTitle(), prefix+brickName, fragment);
+    }
     public static void addTabByIntent(String url, Fragment fragment){
         addTabByIntent("ForPDA", url, fragment);
     }
@@ -598,43 +598,6 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     }
 
 
-    /**
-     * A fragment that displays a menu.  This fragment happens to not
-     * have a UI (it does not implement onCreateView), but it could also
-     * have one if it wanted.
-     */
-    public static final class MenuFragment extends ProfileMenuFragment {
-
-        public MenuFragment() {
-            super();
-        }
-
-
-        @Override
-        public void onCreate(Bundle saveInstance) {
-            super.onCreate(saveInstance);
-            setHasOptionsMenu(true);
-        }
-
-        private Menu m_miOther;
-
-
-        public void setOtherMenu() {
-            MenuItem miQuickStart = m_miOther.add("Быстрый доступ");
-            miQuickStart.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem item) {
-                    BricksListDialogFragment.showDialog((BricksListDialogFragment.IBricksListDialogCaller) getActivity(),
-                            BricksListDialogFragment.QUICK_LIST_ID,
-                            ListCore.getBricksNames(ListCore.getQuickBricks()), null);
-
-                    return true;
-                }
-            });
-        }
-
-
-    }
-
     public static Menu mainMenu;
     private SubMenu mUserMenuItem;
 
@@ -744,8 +707,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                     public boolean onMenuItemClick(MenuItem item) {
-                        SearchSettingsDialogFragment.showSearchSettingsDialog(MainActivity.this,
-                                SearchSettingsDialogFragment.createForumSearchSettings());
+                        SearchSettingsDialogFragment.showSearchSettingsDialog(MainActivity.this, searchSettings);
                         return true;
                     }
                 });
@@ -802,4 +764,21 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         }
     }
 
+    public static void startForumSearch(SearchSettings searchSettings){
+        String title = "Поиск";
+        if(!searchSettings.getQuery().equals(""))
+            title = searchSettings.getQuery();
+        else if(!searchSettings.getUserName().equals(""))
+            title = "Поиск: "+searchSettings.getUserName();
+
+        try {
+            if (SearchSettings.RESULT_VIEW_TOPICS.equals(searchSettings.getResultView()))
+                MainActivity.addTabByIntent(title, searchSettings.getSearchQuery(), SearchTopicsFragment.newFragment(searchSettings.getSearchQuery()));
+            else
+                MainActivity.addTabByIntent(title, searchSettings.getSearchQuery(), SearchPostFragment.newFragment(searchSettings.getSearchQuery()));
+        }catch (URISyntaxException e){
+            e.printStackTrace();
+        }
+
+    }
 }

@@ -27,6 +27,7 @@
             android:name="org.softeg.slartus.forpdaplus.MainActivity"
             android:label="@string/app_name"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -134,24 +135,6 @@
         </activity>
 
         <activity
-            android:name="org.softeg.slartus.forpdaplus.topicview.ThemeActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize"
-            android:launchMode="singleTask">
-            <intent-filter>
-
-                <action android:name="android.intent.action.SEARCH" />
-
-            </intent-filter>
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
-
-
-
-        <activity
             android:name="org.softeg.slartus.forpdaplus.prefs.ForumPreferencesActivity"
             android:label="Настройки форума"
             android:configChanges="orientation|keyboardHidden|screenSize" />
@@ -182,14 +165,6 @@
             android:label="Настройки избранного"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity
-            android:name="org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity"
-            android:label="Профиль"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity
-            android:name="org.softeg.slartus.forpdaplus.profile.ProfileEditActivity"
-            android:label="Изменить личные данные"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity
             android:name="org.softeg.slartus.forpdaplus.prefs.DonateActivity"
             android:label="Помощь проекту"
             android:launchMode="singleTop"
@@ -200,52 +175,15 @@
             android:launchMode="singleTop"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity
-            android:name=".search.ui.SearchActivity"
-            android:label="Поиск"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop"/>
-
-        <activity
-            android:name=".qms.QmsChatPreferencesActivity"
+            android:name=".fragments.qms.QmsChatPreferencesActivity"
             android:label="Настройки чата QMS"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop" />
         <activity
-            android:name=".qms.QmsPreferencesActivity"
+            android:name=".fragments.qms.QmsPreferencesActivity"
             android:label="Настройки QMS"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop" />
-
-        <activity
-            android:name="org.softeg.slartus.forpdaplus.qms.QmsContactThemesActivity"
-            android:label="QMS темы"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop" />
-        <activity
-            android:name="org.softeg.slartus.forpdaplus.qms.QmsChatActivity"
-            android:label="QMS"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name="org.softeg.slartus.forpdaplus.qms.QmsNewThreadActivity"
-            android:label="QMS - Новая тема"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize"/>
-
-        <activity
-            android:name=".post.EditPostActivity"
-            android:label="Ред. сообщения"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize">
-            <!--<intent-filter android:label="@string/app_name">-->
-            <!--<action android:name="android.intent.action.SEND"/>-->
-            <!--<category android:name="android.intent.category.DEFAULT"/>-->
-            <!--<data android:mimeType="image/*"/>-->
-            <!--</intent-filter>-->
-        </activity>
         <activity
             android:name="org.softeg.slartus.forpdaplus.QuickStartActivity"
             android:label="Быстрый доступ"

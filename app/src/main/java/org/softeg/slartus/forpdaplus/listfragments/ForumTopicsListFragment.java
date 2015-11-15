@@ -19,6 +19,7 @@ import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.TopicsApi;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumTopicsBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
@@ -119,7 +120,7 @@ public class ForumTopicsListFragment extends TopicsListFragment {
         Bundle args = new Bundle();
         args.putString(ForumFragment.FORUM_ID_KEY, forumId.toString());
         args.putString(ForumFragment.FORUM_TITLE_KEY, forumTitle.toString());
-        ListFragmentActivity.showListFragment(context, new ForumTopicsBrickInfo().getName(), args);
+        MainActivity.showListFragment(forumId.toString(), new ForumTopicsBrickInfo().getName(), args);
     }
 
     private static final int FILTER_SORT_REQUEST = 0;

@@ -14,8 +14,7 @@ import android.widget.LinearLayout;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
-import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
-import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
+import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 
 /**
  * User: slinkin
@@ -88,7 +87,7 @@ public class BaseFragmentActivity extends AppCompatActivity
 
     @Override
     public void doSearchDialogPositiveClick(SearchSettings searchSettings) {
-        SearchActivity.startForumSearch(this, searchSettings);
+        MainActivity.startForumSearch(searchSettings);
     }
 
     @Override

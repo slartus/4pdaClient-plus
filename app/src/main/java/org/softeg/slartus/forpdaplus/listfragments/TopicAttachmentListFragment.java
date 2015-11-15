@@ -15,6 +15,7 @@ import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdaapi.post.PostAttach;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicAttachmentBrickInfo;
 
@@ -25,7 +26,7 @@ public class TopicAttachmentListFragment extends BaseTaskListFragment {
     public static void showActivity(Context context, CharSequence topicId){
         Bundle args=new Bundle();
         args.putString(TOPIC_ID_KEY,topicId.toString());
-        ListFragmentActivity.showListFragment(context, TopicAttachmentBrickInfo.NAME,args);
+        MainActivity.showListFragment(topicId.toString(), TopicAttachmentBrickInfo.NAME, args);
     }
     public TopicAttachmentListFragment() {
 

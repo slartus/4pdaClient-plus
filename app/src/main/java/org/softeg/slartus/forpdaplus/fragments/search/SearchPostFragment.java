@@ -1,6 +1,4 @@
-package org.softeg.slartus.forpdaplus.search.ui;/*
- * Created by slinkin on 29.04.2014.
- */
+package org.softeg.slartus.forpdaplus.fragments.search;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -20,10 +18,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -38,35 +38,43 @@ import com.melnykov.fab.FloatingActionButton;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.BaseFragment;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.BrowserViewsFragmentActivity;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
-import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
 import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.search.ISearchResultView;
-import org.softeg.slartus.forpdaplus.search.SearchPostsParser;
-import org.softeg.slartus.forpdaplus.search.SearchResult;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SearchPostsResultsFragment extends BaseFragment implements IWebViewContainer, ISearchResultView {
+/**
+ * Created by radiationx on 15.11.15.
+ */
+public class SearchPostFragment extends WebViewFragment implements ISearchResultView {
     private Handler mHandler = new Handler();
     private AdvWebView mWvBody;
     private static final String SEARCH_URL_KEY = "SEARCH_URL_KEY";
     private WebViewExternals m_WebViewExternals;
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     private MaterialDialog progressDialog;
+    private Bundle args;
+    private View view;
+    private Menu menu;
+
+    @Override
+    public Menu getMenu() {
+        return menu;
+    }
 
     @Override
     public void onCreate(android.os.Bundle savedInstanceState) {
@@ -77,10 +85,12 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
                 Preferences.System.isDevStyle())
             Toast.makeText(getContext(), "Режим разработчика", Toast.LENGTH_SHORT).show();
         progressDialog = new MaterialDialog.Builder(getContext()).progress(true,0).content("Загрузка...").build();
+        args = getArguments();
+
     }
 
     public static Fragment newFragment(String searchUrl) {
-        SearchPostsResultsFragment fragment = new SearchPostsResultsFragment();
+        SearchPostFragment fragment = new SearchPostFragment();
         Bundle args = new Bundle();
         args.putString(SEARCH_URL_KEY, searchUrl);
         fragment.setArguments(args);
@@ -165,17 +175,17 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
         }
     }
 
-    public android.view.View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.search_posts_result, container, false);
-        assert v != null;
-        mWvBody = (AdvWebView) v.findViewById(R.id.body_webview);
-        v.findViewById(R.id.btnUp).setOnClickListener(new View.OnClickListener() {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.search_posts_result, container, false);
+        assert view != null;
+        mWvBody = (AdvWebView) view.findViewById(R.id.body_webview);
+        view.findViewById(R.id.btnUp).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBtnUpClick(view);
             }
         });
-        v.findViewById(R.id.btnDown).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnDown).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBtnDownClick(view);
@@ -200,7 +210,7 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
         mWvBody.loadDataWithBaseURL("http://4pda.ru/forum/", "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
                 "</head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8", null);
         registerForContextMenu(mWvBody);
-        return v;
+        return view;
     }
 
     @Override
@@ -295,10 +305,8 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
 
     private void showHtmlBody(String body) {
         try {
-
+            MainActivity.searchSettings = SearchSettings.parse(getSearchQuery());
             mWvBody.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
-
-
         } catch (Exception ex) {
             AppLog.e(getContext(), ex);
         }
@@ -395,6 +403,26 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
 
     public WebView getWebView() {
         return mWvBody;
+    }
+
+    @Override
+    public View getView() {
+        return view;
+    }
+
+    @Override
+    public WebViewClient MyWebViewClient() {
+        return new MyWebViewClient();
+    }
+
+    @Override
+    public String getTitle() {
+        return "Поиск";
+    }
+
+    @Override
+    public String getUrl() {
+        return getSearchQuery();
     }
 
     public Window getWindow() {
@@ -494,6 +522,8 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
 
             });
         }
+        ExtUrl.addUrlSubMenu(new Handler(), getActivity(), menu, getSearchQuery(), null, null);
+        this.menu = menu;
     }
 
     @JavascriptInterface
@@ -512,6 +542,18 @@ public class SearchPostsResultsFragment extends BaseFragment implements IWebView
         } catch (Throwable ex) {
             AppLog.e(getActivity(), ex);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MainActivity.searchSettings = SearchSettingsDialogFragment.createForumSearchSettings();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity.searchSettings = SearchSettings.parse(getSearchQuery());
     }
 
     private SearchResult m_SearchResult;

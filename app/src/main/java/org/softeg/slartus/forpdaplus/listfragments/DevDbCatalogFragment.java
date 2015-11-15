@@ -11,6 +11,7 @@ import org.softeg.slartus.forpdaapi.ICatalogItem;
 import org.softeg.slartus.forpdaapi.devdb.DevCatalog;
 import org.softeg.slartus.forpdaapi.devdb.DevDbApi;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.DevDbAdapter;
 import org.softeg.slartus.forpdaplus.listtemplates.DevDbModelsBrickInfo;
@@ -103,7 +104,7 @@ public class DevDbCatalogFragment extends BaseCatalogFragment {
         Bundle args = new Bundle();
         args.putString(DevDbModelsFragment.BRAND_URL_KEY, m_LoadingCatalogItem.getId().toString());
         args.putString(DevDbModelsFragment.BRAND_TITLE_KEY, m_LoadingCatalogItem.getTitle().toString());
-        ListFragmentActivity.showListFragment(getActivity(), new DevDbModelsBrickInfo().getName(), args);
+        MainActivity.showListFragment(new DevDbModelsBrickInfo().getName(), args);
     }
 
     protected BaseAdapter createAdapter() {

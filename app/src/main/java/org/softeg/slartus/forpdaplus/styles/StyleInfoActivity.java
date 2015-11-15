@@ -18,8 +18,8 @@ import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.Functions;
 import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
-import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
 
 /*
  * Created by slinkin on 17.06.13.
@@ -143,7 +143,7 @@ public class StyleInfoActivity extends BrowserViewsFragmentActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ThemeActivity.showImgPreview(StyleInfoActivity.this, title, previewUrl, fullUrl);
+                ThemeFragment.showImgPreview(StyleInfoActivity.this, title, previewUrl, fullUrl);
             }
         });
     }

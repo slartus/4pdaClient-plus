@@ -35,7 +35,7 @@ import org.softeg.slartus.forpdaplus.classes.ThemeOpenParams;
 import org.softeg.slartus.forpdaplus.classes.Themes;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.post.EditPostActivity;
+import org.softeg.slartus.forpdaplus.fragments.topic.EditPostFragment;
 
 import java.util.Comparator;
 
@@ -202,7 +202,7 @@ public abstract class ThemesTab extends BaseTab {
                 !extras.containsKey(Intent.EXTRA_TEXT) &&
                 !extras.containsKey(Intent.EXTRA_HTML_TEXT)) return false;
 
-        EditPostActivity.newPostWithAttach(getContext(), topic.getForumId(), topic.getId(), topic.getAuthKey(),
+        EditPostFragment.newPostWithAttach(getContext(), topic.getForumId(), topic.getId(), topic.getAuthKey(),
                 extras);
         assert ((Activity) getContext()) != null;
         ((Activity) getContext()).finish();

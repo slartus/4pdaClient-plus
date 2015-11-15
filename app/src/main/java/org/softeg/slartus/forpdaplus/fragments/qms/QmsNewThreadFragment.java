@@ -1,14 +1,15 @@
-package org.softeg.slartus.forpdaplus.qms;
-
+package org.softeg.slartus.forpdaplus.fragments.qms;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -17,23 +18,22 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaapi.ProfileApi;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
-import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView;
+import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: slinkin
- * Date: 05.02.13
- * Time: 14:21
- * To change this template use File | Settings | File Templates.
+ * Created by radiationx on 15.11.15.
  */
-public class QmsNewThreadActivity extends BaseFragmentActivity {
+public class QmsNewThreadFragment extends GeneralFragment {
     private static final String USER_ID_KEY = "user_id";
     private static final String USER_NICK_KEY = "user_nick";
     private EditText username, title, message;
@@ -42,29 +42,42 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
     private PopupPanelView mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public Menu getMenu() {
+        return null;
+    }
+    public static QmsNewThreadFragment newInstance(Bundle args){
+        QmsNewThreadFragment fragment = new QmsNewThreadFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+    public static void showUserNewThread(Context activity, String userId, String userNick) {
+        Bundle args = new Bundle();
+        args.putString(USER_ID_KEY, userId);
+        args.putString(USER_NICK_KEY, userNick);
+        MainActivity.addTabByIntent(userNick, newInstance(args));
+    }
 
-        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.qms_new_thread);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.qms_new_thread, container, false);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        username = (EditText) findViewById(R.id.username);
-        title = (EditText) findViewById(R.id.title);
-        message = (EditText) findViewById(R.id.message);
-        findViewById(R.id.btnSendPost).setOnClickListener(new View.OnClickListener() {
+        username = (EditText) view.findViewById(R.id.username);
+        title = (EditText) view.findViewById(R.id.title);
+        message = (EditText) view.findViewById(R.id.message);
+        view.findViewById(R.id.btnSendPost).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 send();
             }
         });
-        mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), message);
-        mPopupPanelView.activityCreated(this);
+        mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) view.findViewById(R.id.advanced_button), message);
+        mPopupPanelView.activityCreated(getActivity());
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
+        Bundle extras = getArguments();
 
         assert extras != null;
         m_Id = extras.getString(USER_ID_KEY);
@@ -72,13 +85,19 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
         if (!TextUtils.isEmpty(m_Nick)) {
             username.setText(m_Nick);
             username.setVisibility(View.GONE);
-            setTitle(m_Nick + ":QMS:Новая тема");
+            getActivity().setTitle(m_Nick + ":QMS:Новая тема");
+            App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":QMS:Новая тема");
+
         } else if (!TextUtils.isEmpty(m_Id)) {
-            setTitle("QMS:Новая тема");
+            getActivity().setTitle("QMS:Новая тема");
+            App.getInstance().getTabByTag(getTag()).setTitle("QMS:Новая тема");
             new GetUserTask(m_Id).execute();
         } else {
-            setTitle("QMS:Новая тема");
+            getActivity().setTitle("QMS:Новая тема");
+            App.getInstance().getTabByTag(getTag()).setTitle("QMS:Новая тема");
         }
+        TabDrawerMenu.notifyDataSetChanged();
+        return view;
     }
 
     @Override
@@ -90,15 +109,10 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
         super.onDestroy();
     }
 
-    public static void showUserNewThread(Context activity, String userId, String userNick) {
-        Intent intent = new Intent(activity.getApplicationContext(), QmsNewThreadActivity.class);
-        intent.putExtra(USER_ID_KEY, userId);
-        intent.putExtra(USER_NICK_KEY, userNick);
-        activity.startActivity(intent);
-    }
+
 
     @Override
-    protected void onSaveInstanceState(android.os.Bundle outState) {
+    public void onSaveInstanceState(android.os.Bundle outState) {
         outState.putString(USER_ID_KEY,m_Id);
         outState.putString(USER_NICK_KEY,m_Nick);
         outState.putString("USER_NAME_TEXT",username.getText().toString());
@@ -107,7 +121,7 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
         super.onSaveInstanceState(outState);
     }
 
-    @Override
+    /*@Override
     protected void onRestoreInstanceState(android.os.Bundle outState) {
         args = outState;
         m_Id=outState.getString(USER_ID_KEY,m_Id);
@@ -117,7 +131,7 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
         title.setText(outState.getString("TITLE_TEXT",""));
         message.setText(outState.getString("MESSAGE_TEXT",""));
         super.onRestoreInstanceState(outState);
-    }
+    }*/
 
 
     private void send() {
@@ -127,15 +141,15 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
 
         if (TextUtils.isEmpty(m_Nick)) {
             username.setVisibility(View.VISIBLE);
-            Toast.makeText(this, "Укажите получателя", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Укажите получателя", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (TextUtils.isEmpty(post)) {
-            Toast.makeText(this, "Введите сообщение", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Введите сообщение", Toast.LENGTH_SHORT).show();
             return;
         }
-        new SendTask(this, m_Id, m_Nick, theme, post).execute();
+        new SendTask(getActivity(), m_Id, m_Nick, theme, post).execute();
     }
 
     @Override
@@ -182,21 +196,23 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
                 Toast.makeText(getContext(), "Ник получен: " + m_Nick, Toast.LENGTH_SHORT).show();
                 username.setText(m_Nick);
                 username.setVisibility(View.GONE);
-                setTitle(m_Nick + ":QMS:Новая тема");
+                getActivity().setTitle(m_Nick + ":QMS:Новая тема");
+                App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":QMS:Новая тема");
+                TabDrawerMenu.notifyDataSetChanged();
             } else {
                 username.setVisibility(View.VISIBLE);
                 if (ex != null)
-                    AppLog.e(QmsNewThreadActivity.this, ex, new Runnable() {
+                    AppLog.e(getActivity(), ex, new Runnable() {
                         @Override
                         public void run() {
                             new GetUserTask(userId).execute();
                         }
                     });
                 else if (TextUtils.isEmpty(userNick))
-                    Toast.makeText(QmsNewThreadActivity.this, "Не удалось получить ник пользователя",
+                    Toast.makeText(getActivity(), "Не удалось получить ник пользователя",
                             Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(QmsNewThreadActivity.this, "Неизвестная ошибка",
+                    Toast.makeText(getActivity(), "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();
             }
         }
@@ -230,7 +246,7 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
             try {
                 outParams = new HashMap<>();
                 m_ChatBody = QmsApi.createThread(Client.getInstance(), userId, userNick, title, body,
-                        outParams, QmsChatActivity.getEncoding());
+                        outParams, QmsChatFragment.getEncoding());
 
                 return true;
             } catch (Exception e) {
@@ -251,14 +267,14 @@ public class QmsNewThreadActivity extends BaseFragmentActivity {
             }
 
             if (success) {
-                finish();
-                QmsChatActivity.openChat(QmsNewThreadActivity.this, outParams.get("mid"), outParams.get("user"),
+                ((MainActivity)getActivity()).removeTab(getTag());
+                QmsChatFragment.openChat(outParams.get("mid"), outParams.get("user"),
                         outParams.get("t"), outParams.get("title"), m_ChatBody);
             } else {
                 if (ex != null)
-                    AppLog.e(QmsNewThreadActivity.this, ex);
+                    AppLog.e(getActivity(), ex);
                 else
-                    Toast.makeText(QmsNewThreadActivity.this, "Неизвестная ошибка",
+                    Toast.makeText(getActivity(), "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();
             }
         }

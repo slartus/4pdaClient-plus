@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.search.ui;/*
+package org.softeg.slartus.forpdaplus.fragments.search;/*
  * Created by slinkin on 24.04.2014.
  */
 
@@ -24,7 +24,6 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.Forum;
 import org.softeg.slartus.forpdaplus.classes.ForumsAdapter;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.search.CheckableForumItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;

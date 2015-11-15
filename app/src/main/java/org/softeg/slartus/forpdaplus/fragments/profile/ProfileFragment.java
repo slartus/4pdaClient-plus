@@ -43,12 +43,10 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.fragments.qms.QmsChatFragment;
 import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsNewThreadFragment;
+import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.profile.ProfileWebViewActivity;
-import org.softeg.slartus.forpdaplus.qms.QmsNewThreadActivity;
-import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
-import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -59,6 +57,8 @@ import java.util.regex.Matcher;
  * Created by radiationx on 31.10.15.
  */
 public class ProfileFragment extends WebViewFragment implements LoaderManager.LoaderCallbacks<Profile>{
+    public static final String USER_ID_KEY = "UserIdKey";
+    public static final String USER_NAME_KEY = "UserNameKey";
     private Menu menu;
     private String title;
 
@@ -113,11 +113,11 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     private String getUserId() {
-        return args.getString(ProfileWebViewActivity.USER_ID_KEY);
+        return args.getString(USER_ID_KEY);
     }
 
     private String getUserNick() {
-        return args.getString(ProfileWebViewActivity.USER_NAME_KEY, "");
+        return args.getString(USER_NAME_KEY, "");
     }
 
     private Boolean isDialog() {
@@ -134,8 +134,8 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
     public static ProfileFragment newInstance(String userId, String userNick) {
         Bundle args = new Bundle();
-        args.putString(ProfileWebViewActivity.USER_ID_KEY, userId);
-        args.putString(ProfileWebViewActivity.USER_NAME_KEY, userNick);
+        args.putString(USER_ID_KEY, userId);
+        args.putString(USER_NAME_KEY, userNick);
         ProfileFragment fragment = new ProfileFragment();
         fragment.setArguments(args);
         return fragment;
@@ -241,7 +241,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
 
     protected void startLoadData() {
         Bundle args = new Bundle();
-        args.putString(ProfileWebViewActivity.USER_ID_KEY, getUserId());
+        args.putString(USER_ID_KEY, getUserId());
         setLoading(true);
         if (getLoaderManager().getLoader(ItemsLoader.ID) != null)
             getLoaderManager().restartLoader(ItemsLoader.ID, args, this);
@@ -272,7 +272,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         super.showBody();
         m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", profile.getHtmlBody(), "text/html", "UTF-8", null);
         if (profile.getNick() != null)
-            args.putString(ProfileWebViewActivity.USER_NAME_KEY, profile.getNick().toString());
+            args.putString(USER_NAME_KEY, profile.getNick().toString());
         if (getActivity() != null)
             getActivity().setTitle(profile.getNick());
 
@@ -369,7 +369,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         public Profile loadInBackground() {
             try {
                 Profile profile = ProfileApi.getProfile(Client.getInstance(),
-                        args.getString(ProfileWebViewActivity.USER_ID_KEY),
+                        args.getString(USER_ID_KEY),
                         PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isSquareAvarars", false) ? "" : "circle");
                 ProfileHtmlBuilder builder = new ProfileHtmlBuilder();
                 builder.beginHtml(profile.getNick().toString());
@@ -498,7 +498,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
             item = menu.add(getString(R.string.MessagesQms)).setIcon(R.drawable.ic_pencil_white_24dp);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
-                    QmsNewThreadActivity.showUserNewThread(getActivity(), getUserId(), getUserNick());
+                    QmsNewThreadFragment.showUserNewThread(getActivity(), getUserId(), getUserNick());
 
                     return true;
                 }
@@ -543,10 +543,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         item = menu.add(getString(R.string.FindUserTopics));
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
-                SearchActivity.startForumSearch(getActivity(),
-                        SearchSettingsDialogFragment.
-                                createUserTopicsSearchSettings(getUserNick())
-                );
+                MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(getUserNick()));
                 return true;
             }
         });
@@ -555,10 +552,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         item = menu.add(getString(R.string.FindUserPosts));
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
-                SearchActivity.startForumSearch(getActivity(),
-                        SearchSettingsDialogFragment.
-                                createUserPostsSearchSettings(getUserNick())
-                );
+                MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(getUserNick()));
                 return true;
             }
         });

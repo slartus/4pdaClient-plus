@@ -20,7 +20,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -64,20 +63,13 @@ import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewDialogFragment;
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
+import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
-import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
-import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
-import org.softeg.slartus.forpdaplus.topicview.Curator;
-import org.softeg.slartus.forpdaplus.topicview.DeveloperWebInterface;
-import org.softeg.slartus.forpdaplus.topicview.SessionHistory;
-import org.softeg.slartus.forpdaplus.topicview.ThemeActivity;
-import org.softeg.slartus.forpdaplus.topicview.TopicViewMenuFragment;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -94,7 +86,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     private static final String TAG = "ThemeActivity";
     private static final String TOPIC_URL_KEY = "ThemeActivity.TOPIC_URL_KEY";
     public static Boolean LoadsImagesAutomatically = null;
-    TopicViewMenuFragment mFragment1;
     FloatingActionButton btnShowHideEditPost;
     private AdvWebView webView;
     private Handler mHandler = new Handler();
@@ -112,9 +103,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     private int m_ScrollY = 0;
     private QuickPostFragment mQuickPostFragment;
     private LinearLayout mQuickPostPanel;
-    private Curator mCurator;
+    private ThemeCurator mCurator;
     private String lastStyle;
-    private ForPdaDeveloperInterface m_DeveloperWebInterface;
+    private ForPdaDeveloperInterface m_ForPdaDeveloperInterface;
     private Menu menu;
 
     View view;
@@ -135,18 +126,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     public static void showTopicById(Context context, CharSequence topicId, CharSequence urlParams) {
         String url = getThemeUrl(topicId, urlParams);
-        //((MainActivity) context).addTab("Тема", url, newInstance(context, url));
         MainActivity.addTabByIntent("Тема", url, newInstance(context, url));
     }
     public static void showTopicById(Context context, CharSequence topicId) {
-        showTopicByUrl(context, getThemeUrl(topicId));
-    }
-
-
-    public static void showTopicByUrl(Context context, CharSequence url) {
-        Intent intent = new Intent(context, ThemeActivity.class);
-        intent.putExtra(TOPIC_URL_KEY, url.toString());
-        context.startActivity(intent);
+        String url = getThemeUrl(topicId);
+        MainActivity.addTabByIntent("Тема", url, newInstance(context, url));
     }
 
     public static void showImgPreview(final FragmentActivity context, String title, String previewUrl,
@@ -214,7 +198,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         //createActionMenu();
 
-        //mCurator = new Curator(getActivity());
+        mCurator = new ThemeCurator(getActivity(), this);
 
         getActivity().setDefaultKeyMode(Activity.DEFAULT_KEYS_SEARCH_LOCAL);// чтобы поиск начинался при вводе текста
 
@@ -340,8 +324,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         setHideArrows(Preferences.isHideArrows());
         webView.addJavascriptInterface(new ForPdaWebInterface(this), ForPdaWebInterface.NAME);
 
-        m_DeveloperWebInterface = new ForPdaDeveloperInterface(this);
-        webView.addJavascriptInterface(m_DeveloperWebInterface, DeveloperWebInterface.NAME);
+        m_ForPdaDeveloperInterface = new ForPdaDeveloperInterface(this);
+        webView.addJavascriptInterface(m_ForPdaDeveloperInterface, ForPdaDeveloperInterface.NAME);
 
 
         ImageButton up = (ImageButton) findViewById(R.id.btnUp);
@@ -454,17 +438,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 return true;
         }
         return true;
-    }
-
-    protected void createActionMenu() {
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        mFragment1 = (TopicViewMenuFragment) fm.findFragmentByTag("f1");
-        if (mFragment1 == null) {
-            mFragment1 = new TopicViewMenuFragment();
-            ft.add(mFragment1, "f1");
-        }
-        ft.commit();
     }
 
     @Override
@@ -736,7 +709,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     public void saveHtml() {
         try {
-            webView.evalJs("window." + DeveloperWebInterface.NAME + ".saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+            webView.evalJs("window." + ForPdaDeveloperInterface.NAME + ".saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
         } catch (Throwable ex) {
             AppLog.e(getActivity(), ex);
         }
@@ -1194,28 +1167,28 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     @Override
     public void onBricksListDialogResult(DialogInterface dialog, String dialogId, BrickInfo brickInfo, Bundle args) {
         dialog.dismiss();
-        ListFragmentActivity.showListFragment(getActivity(), brickInfo.getName(), args);
+        MainActivity.showListFragment(brickInfo.getName(), args);
     }
 
-    public Curator getCurator() {
+    public ThemeCurator getCurator() {
         return mCurator;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == DeveloperWebInterface.FILECHOOSER_RESULTCODE) {
-            m_DeveloperWebInterface.onActivityResult(requestCode, resultCode, data);
-        } else if (requestCode == EditPostActivity.NEW_EDIT_POST_REQUEST_CODE) {
+        if (requestCode == ForPdaDeveloperInterface.FILECHOOSER_RESULTCODE) {
+            m_ForPdaDeveloperInterface.onActivityResult(requestCode, resultCode, data);
+        } else if (requestCode == EditPostFragment.NEW_EDIT_POST_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-                String url = data.getStringExtra(EditPostActivity.POST_URL_KEY);
+                String url = data.getStringExtra(EditPostFragment.POST_URL_KEY);
                 assert url != null;
                 mQuickPostFragment.clearPostBody();
 
                 closeSearch();
 
                 GetThemeTask getThemeTask = new GetThemeTask(getActivity());
-                if (data.getExtras() != null && data.getExtras().containsKey(EditPostActivity.TOPIC_BODY_KEY)) {
-                    getThemeTask.execute(url.replace("|", ""), data.getStringExtra(EditPostActivity.TOPIC_BODY_KEY));
+                if (data.getExtras() != null && data.getExtras().containsKey(EditPostFragment.TOPIC_BODY_KEY)) {
+                    getThemeTask.execute(url.replace("|", ""), data.getStringExtra(EditPostFragment.TOPIC_BODY_KEY));
                 } else
                     getThemeTask.execute(url.replace("|", ""));
             }
@@ -1538,7 +1511,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                 parameterValues[i] = objs.get(i);
                             }
                         }
-                        Method method = ThemeActivity.class.getMethod(function, parameterTypes);
+                        Method method = ThemeFragment.class.getMethod(function, parameterTypes);
 
                         method.invoke(getActivity(), parameterValues);
                     } catch (Exception e) {

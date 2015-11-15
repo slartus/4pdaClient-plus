@@ -42,7 +42,6 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ForumsTable;
 import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
-import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo;
@@ -484,7 +483,7 @@ public class ForumFragment extends Fragment implements
             args.putString(ForumFragment.FORUM_ID_KEY, forumId);
         if (!TextUtils.isEmpty(topicId))
             args.putString(TopicsListFragment.KEY_TOPIC_ID, topicId);
-        ListFragmentActivity.showListFragment(context, new ForumBrickInfo().getName(), args);
+        MainActivity.showListFragment(forumId+topicId, new ForumBrickInfo().getName(), args);
     }
 
 

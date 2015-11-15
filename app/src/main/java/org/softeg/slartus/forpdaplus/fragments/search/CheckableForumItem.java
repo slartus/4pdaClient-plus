@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.search;/*
+package org.softeg.slartus.forpdaplus.fragments.search;/*
  * Created by slinkin on 24.04.2014.
  */
 

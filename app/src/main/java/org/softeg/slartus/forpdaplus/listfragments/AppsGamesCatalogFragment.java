@@ -11,6 +11,7 @@ import org.softeg.slartus.forpdaapi.ICatalogItem;
 import org.softeg.slartus.forpdaapi.appsgamescatalog.AppGameCatalog;
 import org.softeg.slartus.forpdaapi.appsgamescatalog.AppsGamesCatalogApi;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.CatalogAdapter;
 import org.softeg.slartus.forpdaplus.listtemplates.AppsGamesTopicsBrickInfo;
 
@@ -116,7 +117,7 @@ public class AppsGamesCatalogFragment extends BaseCatalogFragment {
     protected void onFailureResult() {
         Bundle args = new Bundle();
         args.putParcelable(AppsGamesTopicsListFragment.CATALOG_KEY, (AppGameCatalog) m_LoadingCatalogItem);
-        ListFragmentActivity.showListFragment(getActivity(), new AppsGamesTopicsBrickInfo().getName(), args);
+        MainActivity.showListFragment(new AppsGamesTopicsBrickInfo().getName(), args);
     }
 
 

@@ -1,5 +1,6 @@
-package org.softeg.slartus.forpdaplus.topicview;
+package org.softeg.slartus.forpdaplus.fragments.topic;
 
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,14 +13,16 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 
-/*
- * Created by slinkin on 24.07.2014.
+/**
+ * Created by radiationx on 15.11.15.
  */
-public class Curator {
-    private ThemeActivity mTopicActivity;
+public class ThemeCurator {
+    private FragmentActivity mTopicActivity;
+    private ThemeFragment context;
 
-    public Curator(ThemeActivity topicActivity) {
+    public ThemeCurator(FragmentActivity topicActivity, ThemeFragment context) {
         mTopicActivity = topicActivity;
+        this.context = context;
     }
 
     private String mNums = "500";
@@ -113,7 +116,7 @@ public class Curator {
                         try {
                             String url = String
                                     .format("http://4pda.ru/forum/index.php?act=idx&autocom=mmod&t=%s&num=%s&rating=%s",
-                                            mTopicActivity.getTopic().getId(), mNums, mRating);
+                                            context.getTopic().getId(), mNums, mRating);
                             ExtUrl.showInBrowser(mTopicActivity, url);
                         } catch (Throwable ex) {
                             AppLog.e(mTopicActivity, ex);

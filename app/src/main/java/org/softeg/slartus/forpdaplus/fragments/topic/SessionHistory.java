@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.topicview;
+package org.softeg.slartus.forpdaplus.fragments.topic;
 
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 

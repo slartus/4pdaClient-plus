@@ -45,6 +45,9 @@
     </style>
 
     <style name="MainThemeBL" parent="Theme.AppCompat">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/actionbar_background_bl</item>
         <item name="colorAccent">@color/accent</item>
         <item name="actionBarStyle">@style/actionbar_bl</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat</item>

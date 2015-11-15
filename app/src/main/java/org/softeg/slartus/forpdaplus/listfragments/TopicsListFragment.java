@@ -23,6 +23,7 @@ import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdacommon.ActionSelectDialogFragment;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.TopicListItemTask;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
@@ -30,11 +31,11 @@ import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
+import org.softeg.slartus.forpdaplus.fragments.topic.EditPostFragment;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.SortedListAdapter;
 import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.FavoritesBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
-import org.softeg.slartus.forpdaplus.post.EditPostActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.TopicsListPreferencesActivity;
 import org.softeg.slartus.forpdaplus.prefs.TopicsPreferenceFragment;
@@ -184,7 +185,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     Bundle args = new Bundle();
                     args.putString(NotesListFragment.TOPIC_ID_KEY, topic.getId().toString());
-                    ListFragmentActivity.showListFragment(getContext(), new NotesBrickInfo().getName(), args);
+                    MainActivity.showListFragment(topic.getId().toString(), new NotesBrickInfo().getName(), args);
                     return true;
                 }
             });
@@ -374,7 +375,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                 !extras.containsKey(Intent.EXTRA_TEXT) &&
                 !extras.containsKey(Intent.EXTRA_HTML_TEXT)) return false;
 
-        EditPostActivity.newPostWithAttach(getContext(),
+        EditPostFragment.newPostWithAttach(getContext(),
                 null, topic.getId().toString(), Client.getInstance().getAuthKey(), extras);
         getActivity().finish();
         return true;

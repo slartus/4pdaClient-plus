@@ -26,20 +26,23 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaapi.IListItem;
+import org.softeg.slartus.forpdaapi.ProfileApi;
 import org.softeg.slartus.forpdaapi.classes.ListData;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.qms.QmsUserTheme;
 import org.softeg.slartus.forpdaapi.qms.QmsUserThemes;
 import org.softeg.slartus.forpdaapi.qms.QmsUsers;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseLoaderListFragment;
-import org.softeg.slartus.forpdaplus.qms.QmsNewThreadActivity;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -50,7 +53,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     public static final String NICK_KEY = "nick";
     ActionMode mMode;
     private String m_Id ;
-    private String m_Nick;
+    private String m_Nick = "";
 
     private Boolean DeleteMode = false;
     public Menu menu;
@@ -79,12 +82,65 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         setHasOptionsMenu(true);
 
 
+
         if(savedInstanceState!=null){
             m_Id = savedInstanceState.getString(MID_KEY);
             m_Nick = savedInstanceState.getString(NICK_KEY);
         }else if(getArguments()!=null){
             m_Id = getArguments().getString(MID_KEY);
             m_Nick = getArguments().getString(NICK_KEY);
+        }
+        if(m_Nick.equals(""))
+            new GetUserTask(m_Id).execute();
+    }
+
+    private class GetUserTask extends AsyncTask<String, Void, Boolean> {
+        private String userId;
+        private String userNick;
+
+        public GetUserTask(String userId) {
+            this.userId = userId;
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try {
+                userNick = ProfileApi.getUserNick(Client.getInstance(), userId);
+                return true;
+            } catch (Exception e) {
+                ex = e;
+                return false;
+            }
+        }
+
+        protected void onPreExecute() {
+            Toast.makeText(getContext(), "Получение ника пользователя...", Toast.LENGTH_SHORT).show();
+        }
+
+        private Exception ex;
+
+        protected void onPostExecute(final Boolean success) {
+            if (success && !TextUtils.isEmpty(userNick)) {
+                m_Nick = userNick;
+                Toast.makeText(getContext(), "Ник получен: " + m_Nick, Toast.LENGTH_SHORT).show();
+                getActivity().setTitle(m_Nick);
+                App.getInstance().getTabByTag(getTag()).setTitle(m_Nick);
+                TabDrawerMenu.notifyDataSetChanged();
+            } else {
+                if (ex != null)
+                    AppLog.e(getActivity(), ex, new Runnable() {
+                        @Override
+                        public void run() {
+                            new GetUserTask(userId).execute();
+                        }
+                    });
+                else if (TextUtils.isEmpty(userNick))
+                    Toast.makeText(getActivity(), "Не удалось получить ник пользователя",
+                            Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getActivity(), "Неизвестная ошибка",
+                            Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -147,7 +203,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         MenuItem item = menu.add("Новая тема").setIcon(R.drawable.ic_pencil_white_24dp);
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
-                QmsNewThreadActivity.showUserNewThread(getActivity(), m_Id
+                QmsNewThreadFragment.showUserNewThread(getActivity(), m_Id
                         , m_Nick);
 
                 return true;

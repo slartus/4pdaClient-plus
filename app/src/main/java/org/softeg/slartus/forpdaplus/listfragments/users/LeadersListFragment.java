@@ -17,12 +17,12 @@ import org.softeg.slartus.forpdaapi.users.User;
 import org.softeg.slartus.forpdaapi.users.UsersApi;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseExpandableListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment;
-import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo;
 import org.softeg.sqliteannotations.BaseDao;
 
@@ -92,7 +92,7 @@ public class LeadersListFragment extends BaseExpandableListFragment {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             if (leadUser.isAllForumsOwner()) {
-                                ListFragmentActivity.showListFragment(getActivity(), new ForumBrickInfo().getName(), null);
+                                MainActivity.showListFragment(new ForumBrickInfo().getName(), null);
                             } else {
                                 CharSequence[] forumTitles = new CharSequence[leadUser.getForums().size()];
                                 int i = 0;

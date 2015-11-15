@@ -29,12 +29,12 @@ import net.londatiga.android3d.ActionItem;
 import net.londatiga.android3d.QuickAction;
 
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.TopicAttaches;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
-import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.TopicReadersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicWritersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
@@ -206,7 +206,7 @@ public class ForPdaWebInterface {
                 try {
                     Bundle args = new Bundle();
                     args.putString(TopicReadersListFragment.TOPIC_ID_KEY, getContext().getTopic().getId());
-                    ListFragmentActivity.showListFragment(getActivity(), TopicReadersBrickInfo.NAME, args);
+                    MainActivity.showListFragment(getContext().getTopic().getId(), TopicReadersBrickInfo.NAME, args);
                 } catch (ActivityNotFoundException e) {
                     AppLog.e(getActivity(), e);
                 }
@@ -225,7 +225,7 @@ public class ForPdaWebInterface {
                 } else {
                     Bundle args = new Bundle();
                     args.putString(TopicWritersListFragment.TOPIC_ID_KEY, getContext().getTopic().getId());
-                    ListFragmentActivity.showListFragment(getActivity(), TopicWritersBrickInfo.NAME, args);
+                    MainActivity.showListFragment(getContext().getTopic().getId(), TopicWritersBrickInfo.NAME, args);
 
                 }
             }

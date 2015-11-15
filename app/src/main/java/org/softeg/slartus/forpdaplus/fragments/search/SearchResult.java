@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.search;
+package org.softeg.slartus.forpdaplus.fragments.search;
 
 import org.softeg.slartus.forpdaplus.Client;
 

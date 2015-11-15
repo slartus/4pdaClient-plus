@@ -39,7 +39,6 @@ import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.DevDbCatalogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.DevDbModelsFragment;
-import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicWritersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.news.NewsListFragment;
@@ -54,7 +53,6 @@ import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
 import org.softeg.slartus.forpdaplus.video.PlayerActivity;
 
 import java.io.UnsupportedEncodingException;
@@ -68,7 +66,7 @@ import java.util.regex.Pattern;
  * Time: 13:26
  * To change this template use File | Settings | File Templates.
  */
-public class IntentActivity extends BaseFragmentActivity implements BricksListDialogFragment.IBricksListDialogCaller {
+public class IntentActivity extends FragmentActivity implements BricksListDialogFragment.IBricksListDialogCaller {
     public static final String ACTION_SELECT_TOPIC = "org.softeg.slartus.forpdaplus.SELECT_TOPIC";
     public static final String RESULT_TOPIC_ID = "org.softeg.slartus.forpdaplus.RESULT_TOPIC_ID";
 
@@ -77,7 +75,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
     public void onBricksListDialogResult(DialogInterface dialog, String dialogId,
                                          BrickInfo brickInfo, Bundle args) {
         dialog.dismiss();
-        ListFragmentActivity.showListFragment(this, brickInfo.getName(), args);
+        MainActivity.showListFragment(brickInfo.getName(), args);
     }
 
 
@@ -140,7 +138,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
         if (isNewsList(url)) {
             Bundle args = new Bundle();
             args.putString(NewsListFragment.NEWS_LIST_URL_KEY, url);
-            ListFragmentActivity.showListFragment(context, new NewsBrickInfo("quick").getName(), args);
+            MainActivity.showListFragment(new NewsBrickInfo("quick").getName(), args);
 
             if (finish)
                 context.finish();
@@ -184,11 +182,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
 
         Matcher m = PatternExtensions.compile("4pda.ru.*?act=search").matcher(url);
         if (m.find()) {
-            SearchActivity.startForumSearch(context,
-                    SearchSettings.parse(url));
-
-            if (finish)
-                context.finish();
+            MainActivity.startForumSearch(SearchSettings.parse(url));
             return true;
         }
         return false;
@@ -457,7 +451,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
     private static boolean tryFavorites(Activity context, String url, Boolean finishActivity) {
         Matcher m = PatternExtensions.compile("4pda.ru.*?autocom=favtopics").matcher(url);
         if (m.find()) {
-            ListFragmentActivity.showListFragment(context, new FavoritesBrickInfo().getName(), null);
+            MainActivity.showListFragment(new FavoritesBrickInfo().getName(), null);
 
             if (finishActivity)
                 context.finish();
@@ -469,7 +463,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
     private static boolean tryFav(Activity context, String url, Boolean finishActivity) {
         Matcher m = PatternExtensions.compile("4pda.ru.*?act=fav").matcher(url);
         if (m.find()) {
-            ListFragmentActivity.showListFragment(context, new FavoritesBrickInfo().getName(), null);
+            MainActivity.showListFragment(new FavoritesBrickInfo().getName(), null);
 
             if (finishActivity)
                 context.finish();
@@ -482,7 +476,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
         if (DevDbApi.isCatalogUrl(url)) {
             Bundle args = new Bundle();
             args.putString(DevDbCatalogFragment.URL_KEY, url);
-            ListFragmentActivity.showListFragment(context, new DevDbCatalogBrickInfo().getName(), args);
+            MainActivity.showListFragment(new DevDbCatalogBrickInfo().getName(), args);
 
             if (finish)
                 context.finish();
@@ -491,7 +485,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
         if (DevDbApi.isDevicesListUrl(url)) {
             Bundle args = new Bundle();
             args.putString(DevDbModelsFragment.BRAND_URL_KEY, url);
-            ListFragmentActivity.showListFragment(context, new DevDbModelsBrickInfo().getName(), args);
+            MainActivity.showListFragment(new DevDbModelsBrickInfo().getName(), args);
 
             if (finish)
                 context.finish();
@@ -587,7 +581,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
 
         Bundle args=new Bundle();
         args.putString(TopicWritersListFragment.TOPIC_ID_KEY, tid);
-        ListFragmentActivity.showListFragment(context, TopicWritersBrickInfo.NAME, args);
+        MainActivity.showListFragment(TopicWritersBrickInfo.NAME, args);
         if (finish)
             context.finish();
         return true;

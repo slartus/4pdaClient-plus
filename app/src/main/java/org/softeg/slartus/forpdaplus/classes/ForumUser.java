@@ -15,13 +15,13 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
-import org.softeg.slartus.forpdaplus.qms.QmsNewThreadActivity;
-import org.softeg.slartus.forpdaplus.search.ui.SearchActivity;
-import org.softeg.slartus.forpdaplus.search.ui.SearchSettingsDialogFragment;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsNewThreadFragment;
+import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -112,7 +112,7 @@ public class ForumUser {
                                     .callback(new MaterialDialog.ButtonCallback() {
                                         @Override
                                         public void onPositive(MaterialDialog dialog) {
-                                            QmsNewThreadActivity.showUserNewThread(context, userId, finalUserNick);
+                                            QmsNewThreadFragment.showUserNewThread(context, userId, finalUserNick);
                                         }
                                         @Override
                                         public void onNeutral(MaterialDialog dialog) {
@@ -125,10 +125,10 @@ public class ForumUser {
                             //ProfileWebViewFragment.showDialog((FragmentActivity)context,userId, finalUserNick);
                             ProfileFragment.showProfile(userId, finalUserNick);
                         } else if (actionId == finalShowUserTopicsPosition) {
-                            SearchActivity.startForumSearch(context,SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick1));
+                            MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick1));
 
                         } else if (actionId == finalShowUserPostsPosition) {
-                            SearchActivity.startForumSearch(context,SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick1));
+                            MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick1));
 
                         }
                     } catch (Exception ex) {
@@ -167,7 +167,7 @@ public class ForumUser {
                                         .callback(new MaterialDialog.ButtonCallback() {
                                             @Override
                                             public void onPositive(MaterialDialog dialog) {
-                                                QmsNewThreadActivity.showUserNewThread(context, userId, finalUserNick);
+                                                QmsNewThreadFragment.showUserNewThread(context, userId, finalUserNick);
                                             }
                                             @Override
                                             public void onNeutral(MaterialDialog dialog) {
@@ -193,7 +193,7 @@ public class ForumUser {
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
-                            SearchActivity.startForumSearch(context,SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick));
+                            MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick));
                             return true;
                         }
                     });
@@ -201,7 +201,7 @@ public class ForumUser {
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {
-                            SearchActivity.startForumSearch(context,SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick));
+                            MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick));
                             return true;
                         }
                     });

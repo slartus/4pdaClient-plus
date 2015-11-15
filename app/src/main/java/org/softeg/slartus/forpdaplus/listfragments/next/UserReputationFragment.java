@@ -27,10 +27,10 @@ import org.softeg.slartus.forpdaapi.classes.ReputationsListData;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
-import org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity;
 import org.softeg.slartus.forpdaplus.listtemplates.UserReputationBrickInfo;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
         args.putString(USER_ID_KEY, userId.toString());
         if (from)
             args.putBoolean(USER_FROM_KEY, true);
-        ListFragmentActivity.showListFragment(context, UserReputationBrickInfo.NAME, args);
+        MainActivity.showListFragment(userId.toString(), UserReputationBrickInfo.NAME, args);
     }
 
 
