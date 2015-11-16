@@ -19,8 +19,6 @@ public class DevModel implements IListItem{
         this.name = name;
     }
 
-
-
     @Override
     public CharSequence getId() {
         return id;

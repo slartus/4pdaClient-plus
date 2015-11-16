@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 
 import org.softeg.slartus.forpdaapi.ICatalogItem;
 import org.softeg.slartus.forpdaapi.devdb.DevCatalog;
-import org.softeg.slartus.forpdaapi.devdb.DevDbApi;
+import org.softeg.slartus.forpdaapi.devdb.NewDevDbApi;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
@@ -26,7 +26,7 @@ public class DevDbCatalogFragment extends BaseCatalogFragment {
 
     public DevDbCatalogFragment() {
         super();
-        m_CurrentCatalogItem = new DevCatalog("-1", "DevDb.ru").setType(DevCatalog.ROOT);
+        m_CurrentCatalogItem = new DevCatalog("-1", "Каталог").setType(DevCatalog.ROOT);
     }
 
     private String m_Url;
@@ -73,7 +73,7 @@ public class DevDbCatalogFragment extends BaseCatalogFragment {
     @Override
     protected boolean inBackground(boolean isRefresh, ICatalogItem catalogItem) throws Throwable {
         if (!TextUtils.isEmpty(m_Url)) {
-            catalogItem = DevDbApi.getCatalog(m_Url);
+            catalogItem = NewDevDbApi.getCatalog(m_Url);
             m_Url = null;
             m_LoadingCatalogItem = catalogItem;
         }
@@ -81,13 +81,13 @@ public class DevDbCatalogFragment extends BaseCatalogFragment {
             return false;
         switch (((DevCatalog) catalogItem).getType()) {
             case DevCatalog.ROOT:
-                mLoadResultList = DevDbApi.getStandartDevicesTypes();
+                mLoadResultList = NewDevDbApi.getStandartDevicesTypes();
                 for (DevCatalog c : mLoadResultList) {
                     c.setParent(catalogItem);
                 }
                 break;
             case DevCatalog.DEVICE_TYPE:
-                mLoadResultList = DevDbApi.parseBrands(Client.getInstance(), catalogItem.getId().toString());
+                mLoadResultList = NewDevDbApi.parseBrands(Client.getInstance(), catalogItem.getId().toString());
                 for (DevCatalog c : mLoadResultList) {
                     c.setParent(catalogItem);
                 }
@@ -119,7 +119,6 @@ public class DevDbCatalogFragment extends BaseCatalogFragment {
         for (DevCatalog item : mLoadResultList) {
             mData.add(item);
         }
-
         mLoadResultList.clear();
     }
 

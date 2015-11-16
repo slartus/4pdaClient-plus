@@ -24,8 +24,6 @@ public class DevCatalog implements ICatalogItem, Parcelable {
         mTitle = title;
     }
 
-
-
     @Override
     public CharSequence getId() {
         return mId;
@@ -77,6 +75,7 @@ public class DevCatalog implements ICatalogItem, Parcelable {
     public int getType() {
         return type;
     }
+
 
     public DevCatalog setType(int type) {
         this.type = type;

@@ -33,7 +33,6 @@ import java.util.ArrayList;
 public abstract class BaseListFragment extends BaseBrickFragment implements
         AdapterView.OnItemClickListener {
     protected ArrayList<IListItem> mData = new ArrayList<>();
-    private static final String TAG = "BaseListFragment";
 
     public static final String FIRST_VISIBLE_ROW_KEY = "FIRST_VISIBLE_ROW_KEY";
     public static final String TOP_KEY = "TOP_KEY";

@@ -6,7 +6,5 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/listfragments/TopicWritersListFragment.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/listtemplates/TopicReadersBrickInfo.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/listtemplates/TopicWritersBrickInfo.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/qms/QmsContactThemesFragment.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/src/main/java/org/softeg/slartus/forpdaplus/topicview/HtmloutWebInterface.java" charset="UTF-8" />
   </component>
 </project>
