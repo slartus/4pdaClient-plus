@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaapi.TopicApi;
-import org.softeg.slartus.forpdaapi.devdb.DevDbApi;
+import org.softeg.slartus.forpdaapi.devdb.NewDevDbApi;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
@@ -69,6 +69,7 @@ import java.util.regex.Pattern;
  * To change this template use File | Settings | File Templates.
  */
 public class IntentActivity extends BaseFragmentActivity implements BricksListDialogFragment.IBricksListDialogCaller {
+
     public static final String ACTION_SELECT_TOPIC = "org.softeg.slartus.forpdaplus.SELECT_TOPIC";
     public static final String RESULT_TOPIC_ID = "org.softeg.slartus.forpdaplus.RESULT_TOPIC_ID";
 
@@ -481,7 +482,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
     }
 
     public static boolean tryDevdb(Activity context, String url, Boolean finish) {
-        if (DevDbApi.isCatalogUrl(url)) {
+        if (NewDevDbApi.isCatalogUrl(url)) {
             Bundle args = new Bundle();
             args.putString(DevDbCatalogFragment.URL_KEY, url);
             ListFragmentActivity.showListFragment(context, new DevDbCatalogBrickInfo().getName(), args);
@@ -490,7 +491,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
                 context.finish();
             return true;
         }
-        if (DevDbApi.isDevicesListUrl(url)) {
+        if (NewDevDbApi.isDevicesListUrl(url)) {
             Bundle args = new Bundle();
             args.putString(DevDbModelsFragment.BRAND_URL_KEY, url);
             ListFragmentActivity.showListFragment(context, new DevDbModelsBrickInfo().getName(), args);
@@ -499,7 +500,7 @@ public class IntentActivity extends BaseFragmentActivity implements BricksListDi
                 context.finish();
             return true;
         }
-        if (DevDbApi.isDeviceUrl(url)) {
+        if (NewDevDbApi.isDeviceUrl(url)) {
             DevDbDeviceActivity.showDevice(context, url);
             if (finish)
                 context.finish();

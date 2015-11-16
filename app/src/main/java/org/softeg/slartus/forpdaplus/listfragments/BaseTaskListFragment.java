@@ -26,8 +26,6 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
     protected ArrayList<? extends IListItem> mLoadResultList;
     protected ArrayList<IListItem> mCacheList = new ArrayList<>();
 
-    private static final String TAG = "BaseTaskListFragment";
-
     public BaseTaskListFragment() {
         super();
     }

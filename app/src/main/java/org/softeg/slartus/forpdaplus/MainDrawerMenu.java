@@ -347,29 +347,29 @@ public class MainDrawerMenu {
             }
         }
 
-        private class SearchBrickInfo extends BrickInfo {
-            public static final String NAME = "Search";
-
-            @Override
-            public String getTitle() {
-                return "Поиск по форуму";
-            }
-
-            @Override
-            public int getIcon() {
-                return R.drawable.ic_close_grey600_24dp;
-            }
-
-            @Override
-            public String getName() {
-                return NAME;
-            }
-
-            @Override
-            public Fragment createFragment() {
-                return null;
-            }
-        }
+//        private class SearchBrickInfo extends BrickInfo {
+//            public static final String NAME = "Search";
+//
+//            @Override
+//            public String getTitle() {
+//                return "Поиск по форуму";
+//            }
+//
+//            @Override
+//            public int getIcon() {
+//                return R.drawable.ic_close_grey600_24dp;
+//            }
+//
+//            @Override
+//            public String getName() {
+//                return NAME;
+//            }
+//
+//            @Override
+//            public Fragment createFragment() {
+//                return null;
+//            }
+//        }
 
         private class DownloadsBrickInfo extends BrickInfo {
             public static final String NAME = "Downloads";

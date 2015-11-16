@@ -9,8 +9,8 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 
 import org.softeg.slartus.forpdaapi.IListItem;
-import org.softeg.slartus.forpdaapi.devdb.DevDbApi;
 import org.softeg.slartus.forpdaapi.devdb.DevModel;
+import org.softeg.slartus.forpdaapi.devdb.NewDevDbApi;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.DevDbDeviceActivity;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
@@ -70,7 +70,7 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
 
     @Override
     protected boolean inBackground(boolean isRefresh) throws Throwable {
-        mLoadResultList = DevDbApi.parseModels(Client.getInstance(), m_BrandUrl);
+        mLoadResultList = NewDevDbApi.parseModels(Client.getInstance(), m_BrandUrl);
         return true;
     }
 

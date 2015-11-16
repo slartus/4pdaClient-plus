@@ -93,7 +93,7 @@ public class DevDbModelsAdapter extends BaseAdapter {
         DevModel item = mData.get(position);
 
         holder.titleTextView.setText(item.getMain());
-        holder.descTextView.setText(item.getSubMain());
+        holder.descTextView.setText(item.getDescription());
 
         imageLoader.displayImage(item.getImgUrl(), holder.imageView, new ImageLoadingListener() {
 

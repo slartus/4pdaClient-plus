@@ -10,7 +10,7 @@ import org.softeg.slartus.forpdaplus.listfragments.DevDbModelsFragment;
 public class DevDbModelsBrickInfo extends BrickInfo {
     @Override
     public String getTitle() {
-        return "DevDb.ru";
+        return "DevDb";
     }
 
     @Override
