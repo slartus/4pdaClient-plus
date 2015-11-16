@@ -21,8 +21,6 @@ import java.util.regex.Pattern;
  */
 public class NewDevDbApi {
 
-    private static final String TAG = "HELLO";
-
     public static ArrayList<DevCatalog> getStandartDevicesTypes() {
         ArrayList<DevCatalog> res = new ArrayList<>();
         res.add(new DevCatalog("http://4pda.ru/devdb/phones/", "Телефоны").setType(DevCatalog.DEVICE_TYPE));
@@ -64,10 +62,7 @@ public class NewDevDbApi {
             model.setImgUrl(image);
 
             Element content = doc.getElementsByClass("specifications-list").first();
-            Elements elements = content.select("specifications-row");
-            for (Element element : elements) {
-                model.setDescription(element.text());
-            }
+            model.setDescription(content.text());
 
             res.add(model);
         }
