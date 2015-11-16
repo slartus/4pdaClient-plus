@@ -89,16 +89,11 @@ public class PopupPanelView {
         activityCreated(activity, null);
     }
     public void activityCreated(Activity activity, View view) {
-        Log.e("kek", activity+"");
-        Log.e("kek", activity.getWindow()+"");
         parentLayout = activity.getWindow().getDecorView().findViewById(android.R.id.content);
         if(view==null)
             this.emoticonsCover = parentLayout.findViewById(R.id.footer_for_emoticons);
         else
             this.emoticonsCover = view.findViewById(R.id.footer_for_emoticons);
-
-        Log.e("kek", parentLayout+"");
-        Log.e("kek", this.emoticonsCover+"");
 
         final float popUpheight = App.getContext().getResources().getDimension(
                 R.dimen.keyboard_height);

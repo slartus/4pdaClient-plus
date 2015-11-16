@@ -115,11 +115,6 @@ public abstract class BaseBrickFragment extends GeneralFragment{
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         if(m_Title!=null) getActivity().setTitle(m_Title);
@@ -128,6 +123,5 @@ public abstract class BaseBrickFragment extends GeneralFragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.e("kek", "onactivitycreated\n"+savedInstanceState);
     }
 }

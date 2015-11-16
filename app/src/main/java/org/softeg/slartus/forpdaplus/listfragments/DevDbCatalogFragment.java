@@ -104,7 +104,7 @@ public class DevDbCatalogFragment extends BaseCatalogFragment {
         Bundle args = new Bundle();
         args.putString(DevDbModelsFragment.BRAND_URL_KEY, m_LoadingCatalogItem.getId().toString());
         args.putString(DevDbModelsFragment.BRAND_TITLE_KEY, m_LoadingCatalogItem.getTitle().toString());
-        MainActivity.showListFragment(new DevDbModelsBrickInfo().getName(), args);
+        MainActivity.showListFragment(m_LoadingCatalogItem.getId().toString(), new DevDbModelsBrickInfo().getName(), args);
     }
 
     protected BaseAdapter createAdapter() {

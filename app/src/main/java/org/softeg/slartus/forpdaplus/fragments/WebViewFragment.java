@@ -95,7 +95,6 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
         getWebView().onResume();
         getWebView().setWebViewClient(MyWebViewClient());
         //animateHamburger(false);
-        Log.e("kek", "resume");
     }
 
     @Override
@@ -113,7 +112,6 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
             getWebView().setPictureListener(null);
         }
 
-        Log.e("kek","pause");
     }
 
     @Override
@@ -137,7 +135,6 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.e("kek", "fragment save");
         super.onSaveInstanceState(outState);
     }
 

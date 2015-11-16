@@ -170,11 +170,6 @@
             android:launchMode="singleTop"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity
-            android:name="org.softeg.slartus.forpdaplus.ParsePushActivity"
-            android:label="Важное объявление"
-            android:launchMode="singleTop"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity
             android:name=".fragments.qms.QmsChatPreferencesActivity"
             android:label="Настройки чата QMS"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -182,11 +177,6 @@
         <activity
             android:name=".fragments.qms.QmsPreferencesActivity"
             android:label="Настройки QMS"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop" />
-        <activity
-            android:name="org.softeg.slartus.forpdaplus.QuickStartActivity"
-            android:label="Быстрый доступ"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop" />
         <activity
@@ -232,21 +222,6 @@
 
         <receiver android:name="org.softeg.slartus.forpdanotifyservice.qms.AlarmReceiver" />
         <receiver android:name="org.softeg.slartus.forpdanotifyservice.favorites.FavoritesAlarmReceiver" />
-
-        <activity
-            android:name="org.softeg.slartus.forpdaplus.NewsActivity"
-            android:label="Новости"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop">
-            <intent-filter>
-
-                <action android:name="android.intent.action.SEARCH" />
-
-            </intent-filter>
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
 
         <meta-data
             android:name="com.sec.android.support.multiwindow"

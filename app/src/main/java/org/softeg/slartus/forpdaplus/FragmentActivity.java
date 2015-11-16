@@ -46,14 +46,12 @@ public class FragmentActivity extends AppCompatActivity
 
     @Override
     public void startActivity(android.content.Intent intent) {
-        Log.e("kek", "startactivity");
         intent.putExtra(SENDER_ACTIVITY, getClass().toString());
         super.startActivity(intent);
     }
 
     @Override
     public void startActivityForResult(android.content.Intent intent, int requestCode) {
-        Log.e("kek", "startactivityforresult");
         intent.putExtra(SENDER_ACTIVITY, getClass().toString());
         super.startActivityForResult(intent, requestCode);
         hack = true;
@@ -61,13 +59,11 @@ public class FragmentActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.e("kek", "onactivity result");
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public void onActivityReenter(int resultCode, Intent data) {
-        Log.e("kek", "activity reent");
         super.onActivityReenter(resultCode, data);
     }
 
@@ -178,7 +174,6 @@ public class FragmentActivity extends AppCompatActivity
     }
     @Override
     protected void onSaveInstanceState(android.os.Bundle outState) {
-        Log.e("kek", "activity onsave");
         if (args != null)
             outState.putAll(args);
         super.onSaveInstanceState(outState);
@@ -192,12 +187,10 @@ public class FragmentActivity extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        Log.e("kek", "activity onstart");
     }
 
     @Override
     protected void onRestoreInstanceState(android.os.Bundle outState) {
-        Log.e("kek", "activity onrestore");
         args = outState;
         super.onRestoreInstanceState(outState);
     }

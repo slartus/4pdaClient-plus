@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -27,6 +28,7 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.Email;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
+import org.softeg.slartus.forpdaplus.fragments.DevDbDeviceFragment;
 import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
 import org.softeg.slartus.forpdaplus.fragments.profile.DeviceDelete;
 import org.softeg.slartus.forpdaplus.fragments.profile.DeviceEdit;
@@ -492,9 +494,7 @@ public class IntentActivity extends FragmentActivity implements BricksListDialog
             return true;
         }
         if (NewDevDbApi.isDeviceUrl(url)) {
-            DevDbDeviceActivity.showDevice(context, url);
-            if (finish)
-                context.finish();
+            DevDbDeviceFragment.showDevice(url);
             return true;
         }
         return false;

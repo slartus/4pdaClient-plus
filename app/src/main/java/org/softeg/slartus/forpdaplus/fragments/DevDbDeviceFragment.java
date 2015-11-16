@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus;
+package org.softeg.slartus.forpdaplus.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,8 +6,12 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +19,15 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.MainActivity;
+import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.classes.DevDbDevice;
 import org.softeg.slartus.forpdaplus.classes.LazyGallery.LazyAdapter;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
@@ -34,11 +41,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: slinkin
- * Date: 25.11.11
- * Time: 13:05
+ * Created by radiationx on 16.11.15.
  */
-public class DevDbDeviceActivity extends FragmentActivity {
+public class DevDbDeviceFragment extends GeneralFragment {
     private Handler mHandler = new Handler();
     private String m_DeviceId;
     private Gallery gallery;
@@ -50,57 +55,63 @@ public class DevDbDeviceActivity extends FragmentActivity {
     private static final String[] KEYS = { "line1", "line2" };
     private static final int[] IDS = { R.id.dev_db_title, R.id.dev_db_sub_title };
     private static final int LAYOUT = R.layout.dev_item_x;
+    View view;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.dev_db_activity_x);
-//        pnlRating = (LinearLayout) findViewById(R.id.pnlRating);
-        gallery = (Gallery) findViewById(R.id.gallery);
+    public Menu getMenu() {
+        return menu;
+    }
+    public View getView(){
+        return view;
+    }
 
-
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.dev_db_activity_x, container, false);
+        //        pnlRating = (LinearLayout) findViewById(R.id.pnlRating);
+        gallery = (Gallery) view.findViewById(R.id.gallery);
+        setHasOptionsMenu(true);
 //        infoTable = (TableLayout) findViewById(R.id.infoTable);
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
+        Bundle extras = getArguments();
 
         assert extras != null;
         m_DeviceId = extras.getString(DEVICE_ID_KEY);
-
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         loadPage();
+        return view;
     }
 
 
     @Override
-    protected void onSaveInstanceState(android.os.Bundle outState) {
+    public void onSaveInstanceState(android.os.Bundle outState) {
         outState.putString(DEVICE_ID_KEY, m_DeviceId);
         super.onSaveInstanceState(outState);
     }
-
+/*
     @Override
     protected void onRestoreInstanceState(android.os.Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             m_DeviceId = savedInstanceState.getString(DEVICE_ID_KEY, m_DeviceId);
         }
     }
-
-    public static void showDevice(Context context, String deviceId) {
-        Intent intent = new Intent(context, DevDbDeviceActivity.class);
-        intent.putExtra(DEVICE_ID_KEY, deviceId);
-
-        context.startActivity(intent);
+    */
+    public static DevDbDeviceFragment newInstance(Bundle args){
+        DevDbDeviceFragment fragment = new DevDbDeviceFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+    public static void showDevice(String deviceId) {
+        Bundle args = new Bundle();
+        args.putString(DEVICE_ID_KEY, deviceId);
+        MainActivity.addTabByIntent(deviceId, newInstance(args));
     }
 
     public void loadPage() {
-        new LoadPageTask(this).execute();
+        new LoadPageTask(getContext()).execute();
     }
-
+    Menu menu;
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.add("Браузер")
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
@@ -110,13 +121,14 @@ public class DevDbDeviceActivity extends FragmentActivity {
                                 Intent.ACTION_VIEW,
                                 Uri.parse(m_DeviceId));
 
-                        DevDbDeviceActivity.this.startActivity(Intent.createChooser(marketIntent, "Выберите"));
+                        startActivity(Intent.createChooser(marketIntent, "Выберите"));
                         return true;
                     }
                 });
 
-        return true;
+        this.menu = menu;
     }
+
 
     @Override
     public void onDestroy() {
@@ -124,18 +136,14 @@ public class DevDbDeviceActivity extends FragmentActivity {
             gallery.setAdapter(null);
         super.onDestroy();
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
 
-        return true;
+    private int convertToDp(int p){
+        return (int) (p*getResources().getDisplayMetrics().density + 0.5f);
     }
-
     private void initUI() throws IOException {
-        getSupportActionBar().setTitle(m_DevDbDevice.getInfo().Model);
+        getActivity().setTitle(m_DevDbDevice.getInfo().Model);
+        App.getInstance().getTabByTag(getTag()).setTitle(m_DevDbDevice.getInfo().Model);
+        TabDrawerMenu.notifyDataSetChanged();
 
         imgUrls = new ArrayList<>(m_DevDbDevice.getScreenshotUrls());
         keyInfoList = new ArrayList<>(m_DevDbDevice.getKeyInfo());
@@ -150,13 +158,13 @@ public class DevDbDeviceActivity extends FragmentActivity {
             oneList.add(map);
         }
 
-        LinearLayout scrollView = (LinearLayout) findViewById(R.id.dev_db_btn_con);
+        LinearLayout scrollView = (LinearLayout) getView().findViewById(R.id.dev_db_btn_con);
         List<String> btnControls = m_DevDbDevice.getControls();
         if (btnControls != null) {
             for (int i = 1; i < btnControls.size(); i++) //начинается с одного, потому что кнока "характеристики" нам не нужна
             {
                 String titleControl = btnControls.get(i);
-                Button control = new Button(this);
+                Button control = new Button(getContext());
                 control.setText(titleControl);
                 control.setId(i + 1);
                 control.setOnClickListener(controlClick);
@@ -166,11 +174,22 @@ public class DevDbDeviceActivity extends FragmentActivity {
             }
         }
 
-        ListView list = (ListView) findViewById(R.id.list);
-        SimpleAdapter simpleAdapter = new SimpleAdapter(DevDbDeviceActivity.this, oneList, LAYOUT, KEYS, IDS);
-        list.setAdapter(simpleAdapter);
 
-        LazyAdapter adapter = new LazyAdapter(DevDbDeviceActivity.this,
+        LinearLayout specList = (LinearLayout) getView().findViewById(R.id.spec_list);
+        for(Map list:oneList){
+            LinearLayout item = new LinearLayout(getContext());
+            TextView line1 = new TextView(getContext());
+            item.setOrientation(LinearLayout.HORIZONTAL);
+            item.setPadding(convertToDp(16), convertToDp(12), convertToDp(16), convertToDp(12));
+            line1.setText(list.get("line1")+" "+list.get("line2").toString());
+            item.addView(line1);
+            specList.addView(item);
+        }
+        //ListView list = (ListView) getView().findViewById(R.id.list);
+        //SimpleAdapter simpleAdapter = new SimpleAdapter(getContext(), oneList, LAYOUT, KEYS, IDS);
+        //list.setAdapter(simpleAdapter);
+
+        LazyAdapter adapter = new LazyAdapter(getActivity(),
                 m_DevDbDevice.getScreenshotUrls().toArray(new String[m_DevDbDevice.getScreenshotUrls().size()]));
         gallery.setAdapter(adapter);
 
@@ -181,17 +200,17 @@ public class DevDbDeviceActivity extends FragmentActivity {
          */
         gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ImageViewActivity.startActivity(DevDbDeviceActivity.this, imgUrls, adapterView.getSelectedItemPosition());
+                ImageViewActivity.startActivity(getActivity(), imgUrls, adapterView.getSelectedItemPosition());
             }
         });
 
-        CardView con1 = (CardView) findViewById(R.id.dev_db_activity_con1);
+        CardView con1 = (CardView) getView().findViewById(R.id.dev_db_activity_con1);
         con1.setVisibility(View.VISIBLE);
 
-        LinearLayout con = (LinearLayout) findViewById(R.id.dev_db_activity_con);
+        LinearLayout con = (LinearLayout) getView().findViewById(R.id.dev_db_activity_con);
         con.setVisibility(View.VISIBLE);
 
-        TextView priceTV = (TextView) findViewById(R.id.dev_db_activity_price_tv);
+        TextView priceTV = (TextView) getView().findViewById(R.id.dev_db_activity_price_tv);
         priceTV.setText(m_DevDbDevice.getInfo().Price);
 
     }
@@ -225,7 +244,7 @@ public class DevDbDeviceActivity extends FragmentActivity {
     };
 
     private void showTest(String link) {
-        ExtUrl.showSelectActionDialog(mHandler, DevDbDeviceActivity.this, link);
+        ExtUrl.showSelectActionDialog(mHandler, getActivity(), link);
     }
 
 //    private void fill() throws IOException {
@@ -338,9 +357,7 @@ public class DevDbDeviceActivity extends FragmentActivity {
 //
 //    }
 
-    private TextView createStyledTextView() {
-        return (TextView) getLayoutInflater().inflate(R.layout.note_first_textview, null);
-    }
+    
 
 //    private void fillRating() {
 //        double rating = m_DevDbDevice.getInfo().Rating;
@@ -418,11 +435,11 @@ public class DevDbDeviceActivity extends FragmentActivity {
 //                    fill();
                     initUI();
                 } catch (IOException e) {
-                    AppLog.e(DevDbDeviceActivity.this, ex);
+                    AppLog.e(getActivity(), ex);
                 }
             } else {
                 if (ex != null)
-                    AppLog.e(DevDbDeviceActivity.this, ex);
+                    AppLog.e(getActivity(), ex);
             }
         }
 

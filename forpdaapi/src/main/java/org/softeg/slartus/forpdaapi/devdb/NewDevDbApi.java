@@ -83,7 +83,7 @@ public class NewDevDbApi {
 
     public static Boolean isDeviceUrl(String url) {
         return Pattern
-                .compile("devdb.ru/([^/$?&]+)", Pattern.CASE_INSENSITIVE)
+                .compile("4pda.ru/devdb/([^/$?&]+)", Pattern.CASE_INSENSITIVE)
                 .matcher(url).find();
     }
 

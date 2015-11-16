@@ -11,9 +11,11 @@ import android.widget.BaseAdapter;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.devdb.DevModel;
 import org.softeg.slartus.forpdaapi.devdb.NewDevDbApi;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.DevDbDeviceActivity;
+import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
+import org.softeg.slartus.forpdaplus.fragments.DevDbDeviceFragment;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.DevDbModelsAdapter;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 
@@ -51,6 +53,15 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
             m_BrandUrl = getArguments().getString(BRAND_URL_KEY, m_BrandUrl);
             m_BrandTitle = getArguments().getString(BRAND_TITLE_KEY, m_BrandTitle);
         }
+        getActivity().setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
+        App.getInstance().getTabByTag(getTag()).setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
+        TabDrawerMenu.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
     }
 
     @Override
@@ -99,7 +110,8 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
         final IListItem topic = (IListItem) o;
         if (TextUtils.isEmpty(topic.getId())) return;
 
-        DevDbDeviceActivity.showDevice(getContext(), topic.getId().toString());
+        //DevDbDeviceActivity.showDevice(getContext(), topic.getId().toString());
+        DevDbDeviceFragment.showDevice(topic.getId().toString());
     }
 
     @Override
@@ -110,5 +122,4 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
         if (TextUtils.isEmpty(topic.getId())) return;
         ExtUrl.addUrlMenu(mHandler, getContext(), menu, topic.getId().toString(), topic.getMain().toString());
     }
-
 }
