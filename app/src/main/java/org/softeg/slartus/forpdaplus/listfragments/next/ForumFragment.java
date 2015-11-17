@@ -40,6 +40,7 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ForumsTable;
+import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment;
@@ -55,7 +56,7 @@ import java.util.List;
 /*
  * Created by slartus on 24.02.2015.
  */
-public class ForumFragment extends Fragment implements
+public class ForumFragment extends GeneralFragment implements
         IBrickFragment, LoaderManager.LoaderCallbacks<ForumFragment.ForumBranch> {
     private static final String DATA_KEY = "BrickFragmentListBase.DATA_KEY";
     private static final String SCROLL_POSITION_KEY = "SCROLL_POSITION_KEY";
@@ -69,6 +70,16 @@ public class ForumFragment extends Fragment implements
     private ForumsAdapter mAdapter;
     private String m_ForumId = null;
 
+
+    @Override
+    public Menu getMenu() {
+        return menu;
+    }
+
+    @Override
+    public boolean closeTab() {
+        return false;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

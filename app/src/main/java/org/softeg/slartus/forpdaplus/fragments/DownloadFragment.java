@@ -52,6 +52,12 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
     public Menu getMenu() {
         return null;
     }
+
+    @Override
+    public boolean closeTab() {
+        return false;
+    }
+
     ListView m_ListView;
     private static android.os.Handler mHandler = new android.os.Handler();
     public static final String TEMPLATE = "DownloadsTab";

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="MainThemeWH.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="MainThemeWH.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="MainThemeWH" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/actionbar_background_wh</item>
         <item name="colorAccent">@color/accent</item>
+        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="panelMenuListTheme">@style/bottom_menu_wh</item>
         <item name="android:windowBackground">@color/app_background_wh</item>
         <item name="actionOverflowButtonStyle">@style/overflow_button</item>
@@ -42,6 +42,7 @@
         <item name="Divider">@style/Divider_wh</item>
         <item name="actbar">@color/actionbar_background_wh</item>
         <item name="android:listViewStyle">@style/list_divider_style_wh</item>
+
     </style>
 
     <style name="MainThemeBL" parent="Theme.AppCompat">
@@ -88,6 +89,7 @@
         <item name="Divider">@style/Divider_bl</item>
         <item name="actbar">@color/actionbar_background_bl</item>
         <item name="android:listViewStyle">@style/list_divider_style_bl</item>
+
     </style>
 
 

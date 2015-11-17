@@ -23,6 +23,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TopicAttachmentListFragment extends BaseTaskListFragment {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setArrow();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setArrow();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        removeArrow();
+    }
+
     public static void showActivity(Context context, CharSequence topicId){
         Bundle args=new Bundle();
         args.putString(TOPIC_ID_KEY,topicId.toString());

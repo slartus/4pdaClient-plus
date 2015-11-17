@@ -39,6 +39,24 @@ import java.util.ArrayList;
 public class QmsContactsList extends BaseLoaderListFragment {
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setArrow();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setArrow();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        removeArrow();
+    }
+
+    @Override
     protected BaseAdapter createAdapter() {
         return new QmsContactsAdapter(getActivity(), getData().getItems(), ImageLoader.getInstance());
     }

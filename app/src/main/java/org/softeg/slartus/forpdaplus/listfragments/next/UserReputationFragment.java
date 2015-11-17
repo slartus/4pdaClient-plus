@@ -51,6 +51,33 @@ public class UserReputationFragment extends BrickFragmentListBase {
         MainActivity.showListFragment(userId.toString(), UserReputationBrickInfo.NAME, args);
     }
 
+    @Override
+    public Menu getMenu() {
+        return null;
+    }
+
+    @Override
+    public boolean closeTab() {
+        return false;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setArrow();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setArrow();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        removeArrow();
+    }
 
     private String getUserId() {
         return Args.getString(USER_ID_KEY);

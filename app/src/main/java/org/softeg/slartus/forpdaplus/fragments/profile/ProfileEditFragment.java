@@ -87,6 +87,14 @@ public class ProfileEditFragment extends WebViewFragment {
     }
 
     @Override
+    public void reload() {}
+
+    @Override
+    public boolean closeTab() {
+        return false;
+    }
+
+    @Override
     public Menu getMenu() {
         return menu;
     }

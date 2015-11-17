@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -56,6 +57,7 @@ public class TabDrawerMenu {
         mDrawer = (RelativeLayout) findViewById(R.id.tab_drawer);
         mListView = (ListView) findViewById(R.id.tab_list);
         mListView.setOnItemClickListener(new TabOnClickListener());
+        mListView.setStackFromBottom(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("tabsBottom", false));
 
 
 

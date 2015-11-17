@@ -46,6 +46,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
     public abstract WebViewClient MyWebViewClient();
     public abstract String getTitle();
     public abstract String getUrl();
+    public abstract void reload();
+
 
     WebViewExternals m_WebViewExternals;
 
@@ -89,11 +91,21 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
             }
         }
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setArrow();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        getWebView().onResume();
-        getWebView().setWebViewClient(MyWebViewClient());
+        if(getWebView()!=null){
+            getWebView().onResume();
+            getWebView().setWebViewClient(MyWebViewClient());
+        }
+        setArrow();
         //animateHamburger(false);
     }
 
@@ -111,7 +123,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
             getWebView().setWebViewClient(null);
             getWebView().setPictureListener(null);
         }
-
+        removeArrow();
     }
 
     @Override
@@ -157,6 +169,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
         }
 
     }
+
     public void setHideFab(final FloatingActionButton fab){
         if (getWebView() == null || !(getWebView() instanceof AdvWebView))
             return;
@@ -349,11 +362,15 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
+                            int lastTheme = App.getInstance().getThemeStyleResID();
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putString("appstyle", newStyleValues.get(selected[0]).toString());
                             //editor.putBoolean("theme.BrowserStyle", checkBox.isChecked());
                             editor.apply();
-                            //((MainActivity)getActivity()).reload();
+                            if(App.getInstance().getThemeStyleResID()!=lastTheme)
+                                ((MainActivity)getActivity()).recreate();
+                            else
+                                reload();
                         }
                     })
                     .negativeText("Отмена")

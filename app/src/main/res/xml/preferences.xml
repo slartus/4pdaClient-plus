@@ -66,6 +66,14 @@
             android:key="coloredNavBar"
             android:title="Красить Navigation Bar"
             android:summary="Для Android 5 и выше. Требуется перезапуск приложения"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="showBackArrow"
+            android:title="Показывать стрелку 'назад'"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="tabsBottom"
+            android:title="Список вкладок внизу"/>
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
             android:defaultValue="-1"
             android:entries="@array/screenOrienationArray"

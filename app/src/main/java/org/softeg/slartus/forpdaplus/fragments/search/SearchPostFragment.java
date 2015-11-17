@@ -156,7 +156,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setHideActionBar();
+        //setHideActionBar();
 
         search(0);
 
@@ -175,6 +175,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         }
     }
 
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.search_posts_result, container, false);
         assert view != null;
@@ -423,6 +424,14 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     @Override
     public String getUrl() {
         return getSearchQuery();
+    }
+
+    @Override
+    public void reload() {}
+
+    @Override
+    public boolean closeTab() {
+        return false;
     }
 
     public Window getWindow() {

@@ -38,6 +38,7 @@ import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.History;
@@ -101,6 +102,16 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
 
     @Override
+    public void reload() {
+        refresh();
+    }
+
+    @Override
+    public boolean closeTab() {
+        return false;
+    }
+
+    @Override
     public WebViewClient MyWebViewClient() {
         return new MyWebViewClient();
     }
@@ -143,10 +154,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 Preferences.System.isDevStyle())
             Toast.makeText(getActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-
         webView = (AdvWebView) findViewById(R.id.wvBody);
         registerForContextMenu(webView);
         setWebViewSettings();
@@ -161,7 +168,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             }
         }
         loadImages = webView.getSettings().getLoadsImagesAutomatically();
-        webView.setActionBarheight(getSupportActionBar().getHeight());
+        //webView.setActionBarheight(getSupportActionBar().getHeight());
 
 
         webView.setWebViewClient(new MyWebViewClient());

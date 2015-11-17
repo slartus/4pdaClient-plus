@@ -172,6 +172,35 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     @Override
+    public void reload() {
+        reloadTopic();
+    }
+
+    @Override
+    public boolean closeTab() {
+        getPostBody();
+        if (!TextUtils.isEmpty(m_PostBody)) {
+            new MaterialDialog.Builder(getActivity())
+                    .title("Подтвердите действие")
+                    .content("Имеется введенный текст сообщения! Закрыть тему?")
+                    .positiveText("Да")
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            clear();
+                            ((MainActivity)getActivity()).removeTab(getTag());
+                        }
+                    })
+                    .negativeText("Отмена")
+                    .show();
+            return true;
+        } else {
+            clear();
+            return false;
+        }
+    }
+
+    @Override
     public Menu getMenu() {
         return menu;
     }
@@ -193,10 +222,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             Toast.makeText(getActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
 
         LoadsImagesAutomatically = null;
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //createActionMenu();
 
         mCurator = new ThemeCurator(getActivity(), this);
 
@@ -412,32 +438,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             AppLog.e(getActivity(), ex);
         }
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                getPostBody();
-                if (!TextUtils.isEmpty(m_PostBody)) {
-                    new MaterialDialog.Builder(getActivity())
-                            .title("Подтвердите действие")
-                            .content("Имеется введенный текст сообщения! Закрыть?")
-                            .positiveText("Да")
-                            .callback(new MaterialDialog.ButtonCallback() {
-                                @Override
-                                public void onPositive(MaterialDialog dialog) {
-                                    //finish();
-                                }
-                            })
-                            .negativeText("Отмена")
-                            .show();
-                }else{
-                    App.showMainActivityWithoutBack(getActivity());
-                }
-                return true;
-        }
-        return true;
     }
 
     @Override
@@ -1087,7 +1087,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         try {
             setScrollElement();
             getActivity().setTitle(m_Topic.getTitle());
-            getSupportActionBar().setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
+            if(getSupportActionBar()!=null)
+                getSupportActionBar().setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
 
             webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
 
