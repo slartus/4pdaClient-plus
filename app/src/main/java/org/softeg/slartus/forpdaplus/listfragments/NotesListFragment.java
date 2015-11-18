@@ -20,7 +20,6 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.NotesTable;
 import org.softeg.slartus.forpdaplus.fragments.NoteFragment;
 import org.softeg.slartus.forpdaplus.notes.Note;
-import org.softeg.slartus.forpdaplus.notes.NoteActivity;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 
 import java.io.IOException;

@@ -159,7 +159,7 @@
     </style>
     <style name="actionbar_title">
         <item name="android:textColor">#ffffffff</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/actionbar_title_size</item>
     </style>
     <style name="actionbar_subtitle">
         <item name="android:textColor">#ccffffff</item>

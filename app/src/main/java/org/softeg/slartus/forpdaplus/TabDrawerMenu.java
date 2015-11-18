@@ -20,6 +20,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
@@ -202,7 +205,23 @@ public class TabDrawerMenu {
             if(App.getInstance().getTabItems().size()>1) {
                 ((MainActivity) getContext()).tryRemoveTab(tag);
             }else {
-                close();
+                new MaterialDialog.Builder(getContext())
+                        .content("Закрыть приложение?")
+                        .positiveText("Да")
+                        .negativeText("Нет")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                                App.getInstance().exit();
+                            }
+                        })
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                                close();
+                            }
+                        })
+                        .show();
             }
         }
     }

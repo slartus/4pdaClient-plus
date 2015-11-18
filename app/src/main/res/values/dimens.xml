@@ -14,4 +14,6 @@
 
     <dimen name="ptr_height_bug">80dp</dimen>
     <dimen name="ptr_height">56dp</dimen>
+
+    <dimen name="actionbar_title_size">20sp</dimen>
 </resources>

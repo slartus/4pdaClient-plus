@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaplus.controls.quickpost;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;

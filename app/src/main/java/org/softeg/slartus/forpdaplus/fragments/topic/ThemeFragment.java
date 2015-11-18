@@ -46,6 +46,7 @@ import com.melnykov.fab.FloatingActionButton;
 import net.londatiga.android3d.ActionItem;
 import net.londatiga.android3d.QuickAction;
 
+import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
@@ -59,19 +60,27 @@ import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.common.HelpTask;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewDialogFragment;
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
+import org.softeg.slartus.forpdaplus.listfragments.NotesListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
+import org.softeg.slartus.forpdaplus.listfragments.TopicUtils;
+import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -440,10 +449,119 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     }
 
+    private Boolean m_FirstTime = true;
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        if (!m_FirstTime)
+            onPrepareOptionsMenu();
+        m_FirstTime = false;
+        if (mTopicOptionsMenu != null)
+            configureOptionsMenu(getActivity(), getHandler(), mTopicOptionsMenu, true, getLastUrl());
+        else if (getTopic() != null)
+            mTopicOptionsMenu = addOptionsMenu(getActivity(), getHandler(), menu, true, getLastUrl());
+    }
+
+    private SubMenu mTopicOptionsMenu;
+
+    private SubMenu addOptionsMenu(final Context context, final Handler mHandler,
+                                          Menu menu, Boolean addFavorites, final String shareItUrl) {
+        SubMenu optionsMenu = menu.addSubMenu("Опции темы");
+
+        optionsMenu.getItem().setIcon(R.drawable.ic_menu_more);
+        configureOptionsMenu(context, mHandler, optionsMenu, addFavorites, shareItUrl);
+        return optionsMenu;
+    }
+
+    private void configureOptionsMenu(final Context context, final Handler mHandler, SubMenu optionsMenu,
+                                             Boolean addFavorites, final String shareItUrl) {
+
+        optionsMenu.clear();
+
+
+        if (addFavorites) {
+            optionsMenu.add(R.string.AddToFavorites).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    try {
+                        TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, getTopic());
+                    } catch (Exception ex) {
+                        AppLog.e(context, ex);
+                    }
+
+                    return true;
+                }
+            });
+
+            optionsMenu.add(R.string.DeleteFromFavorites).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    try {
+                        final HelpTask helpTask = new HelpTask(context, context.getString(R.string.DeletingFromFavorites));
+                        helpTask.setOnPostMethod(new HelpTask.OnMethodListener() {
+                            public Object onMethod(Object param) {
+                                if (helpTask.Success)
+                                    Toast.makeText(context, (String) param, Toast.LENGTH_SHORT).show();
+                                else
+                                    AppLog.e(context, helpTask.ex);
+                                return null;
+                            }
+                        });
+                        helpTask.execute(new HelpTask.OnMethodListener() {
+                                             public Object onMethod(Object param) throws IOException, ParseException, URISyntaxException {
+                                                 return TopicApi.deleteFromFavorites(Client.getInstance(),
+                                                         getTopic().getId());
+                                             }
+                                         }
+                        );
+                    } catch (Exception ex) {
+                        AppLog.e(context, ex);
+                    }
+                    return true;
+                }
+            });
+
+
+            optionsMenu.add(R.string.OpenTopicForum).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    try {
+                        ForumFragment.showActivity(context, getTopic().getForumId(), getTopic().getId());
+                    } catch (Exception ex) {
+                        AppLog.e(context, ex);
+                    }
+                    return true;
+                }
+            });
+        }
+
+
+        optionsMenu.add(R.string.NotesByTopic).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                Bundle args = new Bundle();
+                args.putString(NotesListFragment.TOPIC_ID_KEY, getTopic().getId());
+                MainActivity.showListFragment(new NotesBrickInfo().getName(), args);
+                return true;
+            }
+        });
+
+        optionsMenu.add(R.string.Share).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                try {
+                    String url = TextUtils.isEmpty(shareItUrl) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : shareItUrl;
+                    ExtUrl.shareIt(context, shareItUrl, url, url);
+                } catch (Exception ex) {
+                    return false;
+                }
+                return true;
+            }
+        });
+
+
+    }
+
+
     @Override
     public void onCreateOptionsMenu(Menu menu, final MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        this.menu = menu;
+
         try {
             MenuItem item;
             boolean pancil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false);
@@ -468,7 +586,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                             return true;
                         }
                     });
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
             SubMenu subMenu = menu.addSubMenu(R.string.Attaches)
                     .setIcon(R.drawable.ic_download_white_24dp);
 
@@ -525,9 +643,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     });
 
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-            /*if (getInterface() != null)
-                mTopicOptionsMenu = addOptionsMenu(getActivity(), getHandler(), menu, getInterface(),
-                        true, getLastUrl());*/
+            mTopicOptionsMenu = addOptionsMenu(getActivity(), getHandler(), menu, true, getLastUrl());
 
 
             SubMenu optionsMenu = menu.addSubMenu("Вид");
@@ -659,15 +775,13 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     }
                 });
             }
-            //addCloseMenuItem(menu);
 
         } catch (Exception ex) {
             AppLog.e(getActivity(), ex);
         }
 
-
+        this.menu = menu;
     }
-
 
     @Override
     public void onResume() {
@@ -1623,7 +1737,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     pageBody = forums[1];
 
                 m_LastUrl = client.getRedirectUri() == null ? m_LastUrl : client.getRedirectUri().toString();
-
+                m_SpoilFirstPost = Preferences.Topic.getSpoilFirstPost();
                 TopicBodyBuilder topicBodyBuilder = client.parseTopic(pageBody, App.getInstance(), m_LastUrl,
                         m_SpoilFirstPost);
 

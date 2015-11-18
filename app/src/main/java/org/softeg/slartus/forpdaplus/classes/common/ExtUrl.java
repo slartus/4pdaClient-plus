@@ -1,8 +1,10 @@
 package org.softeg.slartus.forpdaplus.classes.common;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 
 /**
@@ -22,6 +25,11 @@ import org.softeg.slartus.forpdaplus.notes.NoteDialog;
  * To change this template use File | Settings | File Templates.
  */
 public class ExtUrl {
+
+    public static void openNewTab(Context context, Handler handler, String url) {
+        if(!IntentActivity.tryShowUrl((Activity)context, handler, url, false, false))
+            Toast.makeText(context, "Такие ссылки не поддерживаются", Toast.LENGTH_SHORT).show();
+    }
 
     public static void showInBrowser(Context context, String url) {
         Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -158,7 +166,7 @@ public class ExtUrl {
     public static void showSelectActionDialog(final android.os.Handler handler, final Context context,
                                               final String title, final String body, final String url, final String topicId, final String topic,
                                               final String postId, final String userId, final String user) {
-        CharSequence[] titles = new CharSequence[]{"Открыть в...", "Поделиться ссылкой", "Скопировать ссылку", "Создать заметку"};
+        CharSequence[] titles = new CharSequence[]{"Открыть в новой вкладке","Открыть в...", "Поделиться ссылкой", "Скопировать ссылку", "Создать заметку"};
         new MaterialDialog.Builder(context)
                 .title("Ссылка")
                 .content(url)
@@ -168,15 +176,18 @@ public class ExtUrl {
                     public void onSelection(MaterialDialog dialog, View view, int i, CharSequence titles) {
                         switch (i) {
                             case 0:
-                                showInBrowser(context, url);
+                                openNewTab(context, handler, url);
                                 break;
                             case 1:
-                                shareIt(context, title, url, url);
+                                showInBrowser(context, url);
                                 break;
                             case 2:
-                                copyLinkToClipboard(context, url);
+                                shareIt(context, title, url, url);
                                 break;
                             case 3:
+                                copyLinkToClipboard(context, url);
+                                break;
+                            case 4:
                                 NoteDialog.showDialog(handler, context,
                                         title, body, url, topicId, topic,
                                         postId, userId, user);

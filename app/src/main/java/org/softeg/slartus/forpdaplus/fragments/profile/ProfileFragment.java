@@ -12,6 +12,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -61,6 +62,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     public static final String USER_NAME_KEY = "UserNameKey";
     private Menu menu;
     private String title;
+    private Handler mHandler = new Handler();
 
     @Override
     public View getView() {
@@ -174,6 +176,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         setHasOptionsMenu(true);
         assert view != null;
         m_WebView = (WebView) view.findViewById(R.id.wvBody);
+        registerForContextMenu(m_WebView);
         m_WebView.getSettings().setLoadWithOverviewMode(false);
         m_WebView.getSettings().setUseWideViewPort(true);
         m_WebView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
@@ -188,6 +191,20 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         m_WebView.setWebViewClient(new MyWebViewClient());
         return view;
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        WebView.HitTestResult hitTestResult = m_WebView.getHitTestResult();
+        switch (hitTestResult.getType()) {
+            case WebView.HitTestResult.UNKNOWN_TYPE:
+            case WebView.HitTestResult.EDIT_TEXT_TYPE:
+                break;
+            default:
+                ExtUrl.showSelectActionDialog(mHandler, getActivity(),
+                        getTitle(), "", hitTestResult.getExtra(), "", "", "", "", "");
+        }
+    }
+
     private final static int FILECHOOSER_RESULTCODE = 1;
 
     @JavascriptInterface

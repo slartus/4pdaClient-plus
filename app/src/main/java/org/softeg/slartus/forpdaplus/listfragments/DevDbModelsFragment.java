@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
  * Created by slinkin on 13.03.14.
  */
 
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.View;

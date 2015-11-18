@@ -15,12 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -37,7 +35,6 @@ import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragme
 import org.softeg.slartus.forpdaplus.fragments.search.SearchTopicsFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
-import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
@@ -287,8 +284,6 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
                     transaction.show(fragment);
                 }else {
                     showFragmentByTag(transaction, tag);
-                    if(Preferences.Lists.isRefresh()&!tag.equals("News_Pages"))
-                        ((IBrickFragment)getSupportFragmentManager().findFragmentByTag(tag)).loadData(true);
                 }
             }
         }
@@ -617,10 +612,8 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         menu.clear();
 
         createUserMenu(menu);
-        MenuItem item;
 
-        //m_miOther = menu;
-        item = menu.add(R.string.Search)
+        menu.add(R.string.Search)
                 .setIcon(R.drawable.ic_magnify_white_24dp)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
@@ -628,10 +621,9 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
                         SearchSettingsDialogFragment.showSearchSettingsDialog(MainActivity.this, searchSettings);
                         return true;
                     }
-                });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                })
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-        //setOtherMenu();
         menu.add("Правила форума").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 StringBuilder text = new StringBuilder();
@@ -656,20 +648,16 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
             }
         });
 
-        item = menu.add(0, 0, 999, R.string.CloseApp)
+        menu.add(0, 0, 999, R.string.CloseApp)
                 .setIcon(R.drawable.ic_close_white_24dp)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                     public boolean onMenuItemClick(MenuItem item) {
-
-
-//                            getActivity().finish();
                         android.os.Process.killProcess(android.os.Process.myPid());
                         System.exit(1);
                         return true;
                     }
                 });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
         mainMenu = menu;
         return false;

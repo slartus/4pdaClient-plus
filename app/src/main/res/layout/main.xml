@@ -21,7 +21,7 @@ android:layout_width="match_parent" android:layout_height="match_parent">
                 <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
                     android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
                     android:background="?attr/colorPrimary" app:popupTheme="?attr/actionBarPopupTheme"
-                    app:subtitleTextAppearance="@style/actionbar_subtitle"/>
+                    app:subtitleTextAppearance="@style/actionbar_subtitle" app:titleTextAppearance="@style/actionbar_title"/>
 
             </android.support.design.widget.AppBarLayout>
 
