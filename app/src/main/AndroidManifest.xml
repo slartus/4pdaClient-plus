@@ -20,11 +20,9 @@
         tools:replace="android:icon"
         android:icon="@drawable/icon_mat"
         android:name=".App"
-        android:hardwareAccelerated="false"
         android:theme="@style/MainPinkBL">
-
         <activity
-            android:name="org.softeg.slartus.forpdaplus.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustResize"

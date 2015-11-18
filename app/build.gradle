@@ -39,14 +39,14 @@ android {
         def defaultSigningVariable = signingConfigs.release
         rel {
             applicationId 'org.softeg.slartus.forpdaplus'
-            versionCode 500
+            versionCode 546
             versionName "3.1.4"
             signingConfig defaultSigningVariable
         }
         beta {
             applicationId 'org.softeg.slartus.forpdaplus.beta'
             versionCode 545
-            versionName "3.1.4b6"
+            versionName "3.1.4b7"
             signingConfig defaultSigningVariable
         }
     }
@@ -60,10 +60,10 @@ android {
 }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:design:23.1.0'
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'com.android.support:cardview-v7:23.1.0'
-    compile 'com.android.support:recyclerview-v7:23.1.0'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:cardview-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
