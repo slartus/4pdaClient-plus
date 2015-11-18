@@ -36,6 +36,19 @@ android {
         }
     }
     productFlavors {
+        def defaultSigningVariable = signingConfigs.release
+        rel {
+            applicationId 'org.softeg.slartus.forpdaplus'
+            versionCode 500
+            versionName "3.1.4"
+            signingConfig defaultSigningVariable
+        }
+        beta {
+            applicationId 'org.softeg.slartus.forpdaplus.beta'
+            versionCode 545
+            versionName "3.1.4b6"
+            signingConfig defaultSigningVariable
+        }
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
