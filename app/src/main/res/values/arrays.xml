@@ -1,16 +1,4 @@
 <resources>
-    <string-array name="ThemeActionsArray">
-        <item>К первому</item>
-        <item>К последнему</item>
-        <item>К первому непрочитанному</item>
-    </string-array>
-
-    <string-array name="ThemeActionsValues">
-        <item>getfirstpost</item>
-        <item>getlastpost</item>
-        <item>getnewpost</item>
-    </string-array>
-
     <string-array name="SearchSourceArray">
         <item>Везде</item>
         <item>Только в заголовках тем</item>
@@ -40,12 +28,6 @@
         <item>Всегда</item>
         <item>Wi-Fi</item>
         <item>Никогда</item>
-    </string-array>
-
-    <string-array name="AvatarsShowValues">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
     </string-array>
 
     <string-array name="NewsListViewTitles">
@@ -146,19 +128,6 @@
         <item>1</item>
     </string-array>
 
-    <string-array name="CacheModeArray">
-        <item>По умолчанию</item>
-        <item>Нормальный</item>
-        <item>Ниже</item>
-    </string-array>
-    <string-array name="CacheModeValues">
-        <item>-1</item>
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
     <string-array name="video_player_types_titles">
         <item>@string/client_player</item>
         <item>@string/system_player</item>
@@ -254,14 +223,5 @@
         <item>moved</item>
         <item>istarted</item>
         <item>ireplied</item>
-    </string-array>
-
-    <string-array name="ImageViwersTitles">
-        <item>Системного менеджера</item>
-        <item>Клиента</item>
-    </string-array>
-    <string-array name="ImageViwersValues">
-        <item>system</item>
-        <item>client</item>
     </string-array>
 </resources>

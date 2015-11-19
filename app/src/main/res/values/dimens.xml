@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="spb_default_stroke_separator_length">4dp</dimen>
-    <dimen name="spb_default_stroke_width">4dp</dimen>
-    <dimen name="ptr_progress_bar_stroke_width">3dp</dimen>
 
-    <dimen name="alert_dialog_title_height">64dp</dimen>
-    <dimen name="alert_dialog_button_bar_height">48dp</dimen>
     <dimen name="keyboard_height" >230dp</dimen>
-    <dimen name="action_bar_height">56dp</dimen>
-    <dimen name="paddingTop">0dp</dimen>
-    <dimen name="paddingBottom">0dp</dimen>
-    <dimen name="paddingRight">0dp</dimen>
 
     <dimen name="ptr_height_bug">80dp</dimen>
-    <dimen name="ptr_height">56dp</dimen>
 
     <dimen name="actionbar_title_size">20sp</dimen>
 </resources>
