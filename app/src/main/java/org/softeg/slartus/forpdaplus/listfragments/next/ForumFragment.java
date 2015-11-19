@@ -14,6 +14,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,6 +35,7 @@ import org.softeg.slartus.forpdaapi.Forum;
 import org.softeg.slartus.forpdaapi.ForumsApi;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdaapi.classes.ForumsData;
+import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
@@ -41,6 +43,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ForumsTable;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
+import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment;
@@ -65,6 +68,7 @@ public class ForumFragment extends GeneralFragment implements
     private RecyclerView mListView;
     private TextView mEmptyTextView;
     private ForumFragment.ForumBranch mData = createListData();
+    private SearchSettings mSearchSetting = SearchSettingsDialogFragment.createForumSearchSettings();
 
 
     private ForumsAdapter mAdapter;
@@ -175,12 +179,14 @@ public class ForumFragment extends GeneralFragment implements
             menu.clear();
             ((MainActivity) getActivity()).onCreateOptionsMenu(MainActivity.mainMenu);
         }
+        MainActivity.searchSettings = SearchSettingsDialogFragment.createForumSearchSettings();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         if(menu!=null) onCreateOptionsMenu(menu, null);
+        MainActivity.searchSettings = mSearchSetting;
     }
     private void markAsRead() {
         if (!Client.getInstance().getLogined()) {
@@ -420,10 +426,17 @@ public class ForumFragment extends GeneralFragment implements
             public void onItemClick(View v) {
                 int itemPosition = mListView.getChildPosition(v);
                 Forum forum = mData.getItems().get(itemPosition - mData.getCrumbs().size());
-                if (forum.isHasForums())
+                if (forum.isHasForums()) {
                     loadForum(forum.getId());
-                else
+                    SearchSettings searchSettings = new SearchSettings();
+                    searchSettings.setSource("all");
+                    searchSettings.getForumsIds().add(forum.getId() + "");
+                    mSearchSetting = searchSettings;
+                    MainActivity.searchSettings = mSearchSetting;
+                }
+                else {
                     ForumTopicsListFragment.showForumTopicsList(getActivity(), forum.getId(), forum.getTitle());
+                }
             }
 
             @Override

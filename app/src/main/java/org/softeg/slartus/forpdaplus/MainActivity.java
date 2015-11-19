@@ -663,6 +663,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     }
 
     public static void startForumSearch(SearchSettings searchSettings){
+
         String title = "Поиск";
         if(searchSettings.getQuery()!=null){
             if(!searchSettings.getQuery().equals(""))
