@@ -8,6 +8,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -35,14 +37,20 @@ public class NewsNavigationFragment extends BaseBrickFragment implements ActionB
             mItems.add(new NewsCategoryItem("", "Новости", "Все"));
             mItems.add(new NewsCategoryItem("news", "Новости", "Новости"));
             mItems.add(new NewsCategoryItem("articles", "Новости", "Статьи"));
+            mItems.add(new NewsCategoryItem("tag/how-to-android/", "Новости", "   Android"));
+            mItems.add(new NewsCategoryItem("tag/how-to-ios/", "Новости", "   iOS"));
+            mItems.add(new NewsCategoryItem("tag/how-to-wp/", "Новости", "   WP"));
+            mItems.add(new NewsCategoryItem("articles/tag/interview/", "Новости", "   Интервью"));
             mItems.add(new NewsCategoryItem("software", "Новости", "Программы"));
             mItems.add(new NewsCategoryItem("software/tag/programs-for-android", "Новости/Программы", "   Android"));
             mItems.add(new NewsCategoryItem("software/tag/programs-for-ios", "Новости/Программы", "   iOS"));
             mItems.add(new NewsCategoryItem("software/tag/programs-for-windows-phone-7", "Новости/Программы", "   WP"));
+            mItems.add(new NewsCategoryItem("software/tag/devstory/", "Новости/Программы", "   DevStory"));
             mItems.add(new NewsCategoryItem("games", "Новости", "Игры"));
             mItems.add(new NewsCategoryItem("games/tag/programs-for-android", "Новости/Игры", "   Android"));
             mItems.add(new NewsCategoryItem("games/tag/programs-for-ios", "Новости/Игры", "   iOS"));
             mItems.add(new NewsCategoryItem("games/tag/programs-for-windows-phone-7", "Новости/Игры", "   WP"));
+            mItems.add(new NewsCategoryItem("games/tag/devstory/", "Новости/Игры", "   DevStory"));
             mItems.add(new NewsCategoryItem("reviews", "Новости", "Обзоры"));
         }
         return mItems;
@@ -120,6 +128,15 @@ public class NewsNavigationFragment extends BaseBrickFragment implements ActionB
 
         listAdapter = new NavigationListAdapter(getActivity());
         onHiddenChanged(false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentByTag("News_List");
+        if (currentFragment != null) {
+            currentFragment.onResume();
+        }
     }
 
     @Override

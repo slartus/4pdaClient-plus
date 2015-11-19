@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -53,6 +54,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     @Override
     public void onResume() {
         super.onResume();
+        Log.e("kek", "onresume "+getTag());
         actionBar = ((MainActivity)getActivity()).getSupportActionBar();
         if(getMenu()!=null)
             onCreateOptionsMenu(getMenu(), null);
@@ -61,6 +63,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     @Override
     public void onPause() {
         super.onPause();
+        Log.e("kek", "pause " + getTag());
         if(getSupportActionBar()!=null)
             getSupportActionBar().setSubtitle(null);
         if(getMenu()!=null)

@@ -10,6 +10,11 @@
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="lists.refresh"
-        android:summary="Обновлять списки при открытии"
-        android:title="Обновлять списки" />
+        android:summary="Обновлять при первом открытии"
+        android:title="Обновлять список" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="lists.refresh_on_tab"
+        android:summary="Обновлять при выборе вкладки"
+        android:title="Обновлять списки из вкладок" />
 </PreferenceScreen>

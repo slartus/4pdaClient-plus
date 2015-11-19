@@ -91,6 +91,7 @@ public class NewsListFragment extends BaseTaskListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             if (getArguments().containsKey(TAG_EXTRA_KEY))
                 mTag = getArguments().getString(TAG_EXTRA_KEY);

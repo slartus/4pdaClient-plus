@@ -283,6 +283,8 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
                     transaction.show(fragment);
                 }else {
                     showFragmentByTag(transaction, tag);
+                    if(Preferences.Lists.isRefreshOnTab()&!tag.equals("News_Pages"))
+                        ((IBrickFragment)getSupportFragmentManager().findFragmentByTag(tag)).loadData(true);
                 }
             }
         }

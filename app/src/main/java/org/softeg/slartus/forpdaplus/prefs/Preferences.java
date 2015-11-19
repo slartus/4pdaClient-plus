@@ -144,6 +144,10 @@ public class Preferences {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
             return prefs.getBoolean("lists.refresh", true);
         }
+        public static boolean isRefreshOnTab() {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+            return prefs.getBoolean("lists.refresh_on_tab", true);
+        }
     }
 
     public static class List {
