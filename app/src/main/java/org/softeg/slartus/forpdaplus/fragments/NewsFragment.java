@@ -322,19 +322,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-        WebView.HitTestResult hitTestResult = webView.getHitTestResult();
-        switch (hitTestResult.getType()) {
-            case WebView.HitTestResult.UNKNOWN_TYPE:
-            case WebView.HitTestResult.EDIT_TEXT_TYPE:
-                break;
-            default:
-                ExtUrl.showSelectActionDialog(mHandler, getActivity(),
-                        m_Title, "", hitTestResult.getExtra(), "", "", "", "", "");
-        }
-    }
-
-    @Override
     public boolean onBackPressed() {
         if (!m_History.isEmpty()) {
             m_FromHistory = true;

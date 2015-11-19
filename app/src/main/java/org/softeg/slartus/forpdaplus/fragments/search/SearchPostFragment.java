@@ -162,18 +162,6 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-        final WebView.HitTestResult hitTestResult = mWvBody.getHitTestResult();
-        switch (hitTestResult.getType()) {
-            case WebView.HitTestResult.UNKNOWN_TYPE:
-            case WebView.HitTestResult.EDIT_TEXT_TYPE:
-                break;
-            default: {
-                showLinkMenu(hitTestResult.getExtra());
-            }
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -298,6 +286,11 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
     }
 
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo, Handler mHandler) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+    }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
@@ -445,25 +438,6 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
     public boolean dispatchSuperKeyEvent(KeyEvent event) {
         return false;
-    }
-
-    public void showLinkMenu(String link) {
-        if (TextUtils.isEmpty(link) || link.contains("HTMLOUT.ru")
-                || link.equals("#")
-                || link.startsWith("file:///")) return;
-        ExtUrl.showSelectActionDialog(mHandler, getContext(), link);
-    }
-
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo, Handler mHandler) {
-        final WebView.HitTestResult hitTestResult = getWebView().getHitTestResult();
-        switch (hitTestResult.getType()) {
-            case WebView.HitTestResult.UNKNOWN_TYPE:
-            case WebView.HitTestResult.EDIT_TEXT_TYPE:
-                break;
-            default: {
-                showLinkMenu(hitTestResult.getExtra());
-            }
-        }
     }
 
     public void onBtnUpClick(View view) {

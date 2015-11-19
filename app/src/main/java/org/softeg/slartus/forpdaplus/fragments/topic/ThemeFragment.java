@@ -16,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -23,6 +24,7 @@ import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -386,6 +388,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
 
+
+
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -586,7 +591,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                             return true;
                         }
                     });
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             SubMenu subMenu = menu.addSubMenu(R.string.Attaches)
                     .setIcon(R.drawable.ic_download_white_24dp);
 
@@ -921,19 +926,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         LoadsImagesAutomatically = WebViewExternals.isLoadImages("theme");
         m_SpoilFirstPost = Preferences.Topic.getSpoilFirstPost();
 
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-        final WebView.HitTestResult hitTestResult = webView.getHitTestResult();
-        switch (hitTestResult.getType()) {
-            case WebView.HitTestResult.UNKNOWN_TYPE:
-            case WebView.HitTestResult.EDIT_TEXT_TYPE:
-                break;
-            default: {
-                showLinkMenu(hitTestResult.getExtra());
-            }
-        }
     }
 
     public void showLinkMenu(final String link) {

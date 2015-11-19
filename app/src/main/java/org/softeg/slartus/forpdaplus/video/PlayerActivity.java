@@ -17,6 +17,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -44,7 +45,7 @@ import org.softeg.slartus.forpdaplus.video.api.exceptions.ApiException;
 import org.softeg.slartus.forpdaplus.video.api.exceptions.IdException;
 import org.softeg.slartus.forpdaplus.video.api.exceptions.ListIdException;
 
-public class PlayerActivity extends BaseFragmentActivity {
+public class PlayerActivity extends AppCompatActivity {
 
     VideoView mVideoView;
     String mVideoUrl;
@@ -59,10 +60,14 @@ public class PlayerActivity extends BaseFragmentActivity {
     protected QueryFormatsYouTubeTask mQueryFormatsYouTubeTask;
     private String playedRequestUrl;
 
+    public Context getContext() {
+        return this;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setTheme(R.style.ImageViewTheme);
         initView();
         ScreenOrientation();
         mVideoUrl = getIntent().getStringExtra("_videoUrl");
@@ -191,13 +196,11 @@ public class PlayerActivity extends BaseFragmentActivity {
             getSupportActionBar().show();
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-            if(statusBarShowed) statusBar.setVisibility(View.VISIBLE);
         }
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             getSupportActionBar().hide();
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            if(statusBarShowed) statusBar.setVisibility(View.INVISIBLE);
         }
     }
 

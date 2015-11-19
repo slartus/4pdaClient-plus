@@ -4,10 +4,13 @@ import android.animation.ValueAnimator;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -29,6 +32,7 @@ import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
+import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -40,6 +44,14 @@ import java.util.ArrayList;
  * Created by radiationx on 17.10.15.
  */
 public abstract class WebViewFragment extends GeneralFragment implements IBrickFragment, IWebViewContainer{
+    class URLHandler extends Handler{
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String url = (String) msg.getData().get("url");
+            showLinkMenu(url);
+        }
+    }
 
     public abstract WebView getWebView();
     public abstract View getView();
@@ -48,6 +60,27 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
     public abstract String getUrl();
     public abstract void reload();
 
+    private Handler mHandler = new Handler();
+    private URLHandler urlHandler = new URLHandler();
+
+    public void showLinkMenu(String url){
+        if (TextUtils.isEmpty(url) || url.contains("HTMLOUT.ru")
+                || url.equals("#")
+                || url.startsWith("file:///")) return;
+        ExtUrl.showSelectActionDialog(mHandler, getContext(), url);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        switch (getWebView().getHitTestResult().getType()) {
+            case WebView.HitTestResult.UNKNOWN_TYPE:
+            case WebView.HitTestResult.EDIT_TEXT_TYPE:
+                break;
+            default: {
+                getWebView().requestFocusNodeHref(urlHandler.obtainMessage());
+            }
+        }
+    }
 
     WebViewExternals m_WebViewExternals;
 

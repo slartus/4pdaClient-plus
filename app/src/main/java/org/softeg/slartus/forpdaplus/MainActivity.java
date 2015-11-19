@@ -261,7 +261,6 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         if(mTabDraweMenu!=null) mTabDraweMenu.close();
         if(mMainDrawerMenu!=null) mMainDrawerMenu.close();
         String currentFragmentTag = String.valueOf(App.getInstance().getCurrentFragmentTag());
-        Log.e("lol", ":"+currentFragmentTag+":");
 
         endActionFragment(title, tag);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

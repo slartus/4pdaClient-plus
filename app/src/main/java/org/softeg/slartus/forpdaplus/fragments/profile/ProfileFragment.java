@@ -86,7 +86,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
 
     @Override
     public void reload() {}
-
+    
     @Override
     public boolean closeTab() {
         return false;

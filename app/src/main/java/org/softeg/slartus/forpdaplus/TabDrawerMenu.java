@@ -212,7 +212,8 @@ public class TabDrawerMenu {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                                App.getInstance().exit();
+                                android.os.Process.killProcess(android.os.Process.myPid());
+                                System.exit(1);
                             }
                         })
                         .onNegative(new MaterialDialog.SingleButtonCallback() {

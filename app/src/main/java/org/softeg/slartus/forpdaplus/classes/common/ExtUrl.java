@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.IntentActivity;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 
 /**
@@ -150,7 +152,6 @@ public class ExtUrl {
                         }
                     }
                 })
-                .negativeText("Отмена")
                 .cancelable(true)
                 .show();
 
@@ -168,7 +169,6 @@ public class ExtUrl {
                                               final String postId, final String userId, final String user) {
         CharSequence[] titles = new CharSequence[]{"Открыть в новой вкладке","Открыть в...", "Поделиться ссылкой", "Скопировать ссылку", "Создать заметку"};
         new MaterialDialog.Builder(context)
-                .title("Ссылка")
                 .content(url)
                 .items(titles)
                 .itemsCallback(new MaterialDialog.ListCallback() {
@@ -195,7 +195,6 @@ public class ExtUrl {
                         }
                     }
                 })
-                .negativeText("Отмена")
                 .cancelable(true)
                 .show();
     }
