@@ -45,9 +45,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
-import net.londatiga.android3d.ActionItem;
-import net.londatiga.android3d.QuickAction;
-
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
@@ -57,6 +54,7 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
+import org.softeg.slartus.forpdaplus.classes.Post;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
@@ -67,6 +65,9 @@ import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewDialogFragment;
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
+import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsNewThreadFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.NotesListFragment;
@@ -84,6 +85,7 @@ import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1086,103 +1088,69 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                final String userId, final String userNick,
                                final Boolean canEdit, final Boolean canDelete) {
         try {
-            final QuickAction mQuickAction = new QuickAction(getActivity());
+            List<String> items = new ArrayList<>();
 
-            ActionItem actionItem;
+            int i = 0;
 
 
             int linkPosition = -1;
-            if (Client.getInstance().getLogined()) {
-                actionItem = new ActionItem();
-                actionItem.setTitle("Ссылка");
-                linkPosition = mQuickAction.addActionItem(actionItem);
-            }
-
             int claimPosition = -1;
-            if (Client.getInstance().getLogined()) {
-                actionItem = new ActionItem();
-                actionItem.setTitle("Жалоба");
-                claimPosition = mQuickAction.addActionItem(actionItem);
-            }
-
             int editPosition = -1;
-            if (canEdit) {
-                actionItem = new ActionItem();
-                actionItem.setTitle("Изменить");
-                editPosition = mQuickAction.addActionItem(actionItem);
-            }
-
-
             int deletePosition = -1;
-            if (canDelete) {
-                actionItem = new ActionItem();
-                actionItem.setTitle("Удалить");
-                deletePosition = mQuickAction.addActionItem(actionItem);
-            }
-
-            /*
-            int plusOdinPosition = -1;
-            int minusOdinPosition = -1;
-            if (Client.getInstance().getLogined() && !Client.getInstance().UserId.equals(userId)) {
-
-                actionItem = new ActionItem();
-                actionItem.setTitle("Хорошо (+)");
-                plusOdinPosition = mQuickAction.addActionItem(actionItem);
-
-                actionItem = new ActionItem();
-                actionItem.setTitle("Плохо (-)");
-                minusOdinPosition = mQuickAction.addActionItem(actionItem);
-            }*/
-
-            int notePosition;
-
-            actionItem = new ActionItem();
-            actionItem.setTitle("Заметка");
-            notePosition = mQuickAction.addActionItem(actionItem);
-
-
+            int notePosition = -1;
             int quotePosition = -1;
             if (Client.getInstance().getLogined()) {
-                actionItem = new ActionItem();
-                actionItem.setTitle("Цитата");
-                quotePosition = mQuickAction.addActionItem(actionItem);
+                items.add("Ссылка на сообщение");
+                linkPosition = i; i++;
+
+                items.add("Жалоба на сообщение");
+                claimPosition = i; i++;
+
+                if (canEdit) {
+                    items.add("Изменить сообщение");
+                    editPosition = i; i++;
+                }
+                if (canDelete) {
+                    items.add("Удалить сообщение");
+                    deletePosition = i; i++;
+                }
+                items.add("Цитата сообщения");
+                quotePosition = i; i++;
             }
+
+            items.add("Сделать заметку");
+            notePosition = i;
 
             final int finalDeletePosition = deletePosition;
             final int finalEditPosition = editPosition;
 
             final int finalLinkPosition = linkPosition;
             final int finalClaimPosition = claimPosition;
-            //final int finalPlusOdinPosition = plusOdinPosition;
-            //final int finalMinusOdinPosition = minusOdinPosition;
             final int finalNotePosition = notePosition;
             final int finalQuotePosition = quotePosition;
-            mQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
-                @Override
-                public void onItemClick(QuickAction source, int pos, int actionId) {
-                    if (pos == finalDeletePosition) {
-                        prepareDeleteMessage(postId);
-                    } else if (pos == finalEditPosition) {
-                        EditPostFragment.editPost(getActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, m_Topic.getAuthKey(), getTag());
-                    } else  if (pos== finalLinkPosition) {
-                        showLinkMenu(org.softeg.slartus.forpdaplus.classes.Post.getLink(m_Topic.getId(), postId), postId);
-                    } else if (pos == finalClaimPosition) {
-                        org.softeg.slartus.forpdaplus.classes.Post.claim(getActivity(), mHandler, m_Topic.getId(), postId);
-                    }/* else if (pos == finalPlusOdinPosition) {
-                        org.softeg.slartus.forpdaplus.classes.Post.plusOne(ThemeActivity.getActivity(), mHandler, postId);
-                    } else if (pos == finalMinusOdinPosition) {
-                        org.softeg.slartus.forpdaplus.classes.Post.minusOne(ThemeActivity.getActivity(), mHandler, postId);
-                    }*/ else if (pos == finalNotePosition) {
-                        NoteDialog.showDialog(mHandler, getActivity(), m_Topic.getTitle(), null,
-                                "http://4pda.ru/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
-                                m_Topic.getId(), m_Topic.getTitle(), postId, null, null);
-                    } else if (pos == finalQuotePosition) {
-                        quote(m_Topic.getForumId(), m_Topic.getId(), postId, postDate, userId, userNick);
-                    }
-                }
-            });
-
-            mQuickAction.show(webView, webView.getLastMotionEvent());
+            new MaterialDialog.Builder(getActivity())
+                    .items(items.toArray(new CharSequence[items.size()]))
+                    .itemsCallback(new MaterialDialog.ListCallback() {
+                        @Override
+                        public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                            if (i == finalDeletePosition) {
+                                prepareDeleteMessage(postId);
+                            } else if (i == finalEditPosition) {
+                                EditPostFragment.editPost(getActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, m_Topic.getAuthKey(), getTag());
+                            } else  if (i== finalLinkPosition) {
+                                showLinkMenu(Post.getLink(m_Topic.getId(), postId), postId);
+                            } else if (i == finalClaimPosition) {
+                                Post.claim(getActivity(), mHandler, m_Topic.getId(), postId);
+                            } else if (i == finalNotePosition) {
+                                NoteDialog.showDialog(mHandler, getActivity(), m_Topic.getTitle(), null,
+                                        "http://4pda.ru/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
+                                        m_Topic.getId(), m_Topic.getTitle(), postId, null, null);
+                            } else if (i == finalQuotePosition) {
+                                quote(m_Topic.getForumId(), m_Topic.getId(), postId, postDate, userId, userNick);
+                            }
+                        }
+                    })
+                    .show();
         } catch (Throwable ex) {
             AppLog.e(getActivity(), ex);
         }

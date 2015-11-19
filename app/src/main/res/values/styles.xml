@@ -23,8 +23,6 @@
         <item name="drawer_menu_text">@style/drawer_menu_text_wh</item>
         <item name="drawer_divider">@style/drawer_divider_wh</item>
         <item name="popup_topic">@style/popup_topic_wh</item>
-        <item name="popup_item">@style/popup_item_wh</item>
-        <item name="popup_item_text">@style/popup_item_text_wh</item>
         <item name="list_text_general_color">@style/list_text_general_color_wh</item>
         <item name="list_text_minor_color">@style/list_text_minor_color_wh</item>
         <item name="list_text_second_color">@style/list_text_second_color_wh</item>
@@ -70,8 +68,6 @@
         <item name="drawer_menu_text">@style/drawer_menu_text_bl</item>
         <item name="drawer_divider">@style/drawer_divider_bl</item>
         <item name="popup_topic">@style/popup_topic_bl</item>
-        <item name="popup_item">@style/popup_item_bl</item>
-        <item name="popup_item_text">@style/popup_item_text_bl</item>
         <item name="list_text_general_color">@style/list_text_general_color_bl</item>
         <item name="list_text_minor_color">@style/list_text_minor_color_bl</item>
         <item name="list_text_second_color">@style/list_text_second_color_bl</item>
@@ -274,20 +270,6 @@
     </style>
     <style name="popup_topic_bl">
         <item name="android:background">@drawable/abc_popup_background_bl</item>
-    </style>
-
-    <style name="popup_item_wh">
-        <item name="android:background">@drawable/action_popup_item_wh</item>
-    </style>
-    <style name="popup_item_bl">
-        <item name="android:background">@drawable/action_popup_item_bl</item>
-    </style>
-
-    <style name="popup_item_text_wh">
-        <item name="android:textColor">@color/action_popup_item_text_wh</item>
-    </style>
-    <style name="popup_item_text_bl">
-        <item name="android:textColor">@color/action_popup_item_text_bl</item>
     </style>
 
     <style name="list_text_general_color_wh">
