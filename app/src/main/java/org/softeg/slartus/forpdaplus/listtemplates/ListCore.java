@@ -87,7 +87,7 @@ public class ListCore {
     private static ArrayList<BrickInfo> m_RegisteredBricks = new ArrayList<>();
 
     public static void registerBricks() {
-        m_RegisteredBricks.add(new NewsBrickInfo("quick"));
+        m_RegisteredBricks.add(new NewsBrickInfo());
         m_RegisteredBricks.add(new NewsPagerBrickInfo());
         m_RegisteredBricks.add(new FavoritesBrickInfo());
         m_RegisteredBricks.add(new ForumBrickInfo());

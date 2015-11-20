@@ -109,6 +109,7 @@ public class ForumFragment extends GeneralFragment implements
     private Menu menu;
     @Override
     public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         menu.add("Обновить")
                 .setIcon(R.drawable.ic_refresh_white_24dp)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -175,17 +176,12 @@ public class ForumFragment extends GeneralFragment implements
     @Override
     public void onPause() {
         super.onPause();
-        if(menu != null) {
-            menu.clear();
-            ((MainActivity) getActivity()).onCreateOptionsMenu(MainActivity.mainMenu);
-        }
         MainActivity.searchSettings = SearchSettingsDialogFragment.createForumSearchSettings();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(menu!=null) onCreateOptionsMenu(menu, null);
         MainActivity.searchSettings = mSearchSetting;
     }
     private void markAsRead() {

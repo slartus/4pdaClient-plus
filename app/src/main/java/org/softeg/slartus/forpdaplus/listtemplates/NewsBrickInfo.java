@@ -9,11 +9,6 @@ import org.softeg.slartus.forpdaplus.listfragments.news.NewsListFragment;
  * Created by slinkin on 20.02.14.
  */
 public class NewsBrickInfo extends BrickInfo {
-    private String mTag;
-
-    public NewsBrickInfo(String tag){
-        mTag = tag;
-    }
     @Override
     public String getTitle() {
         return "Новости";

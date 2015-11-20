@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -72,21 +73,21 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     boolean top;
     int lastTheme;
     private static TabItem tabOnIntent = null;
-    private static boolean activityPaused = true;
+    private static boolean activityPaused = false;
 
     public static SearchSettings searchSettings;
 
-    @Override
-    protected void afterCreate() {
+    private static final int MSG_RECREATE = 1337;
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if(msg.what==MSG_RECREATE)
+                recreate();
+        }
+    };
 
-    }
     public MainDrawerMenu getmMainDrawerMenu(){
         return mMainDrawerMenu;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -150,8 +151,10 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
             new TopicAttentionNotifier(notifiersManager).start(this);
             new ForPdaVersionNotifier(notifiersManager, 1).start(this);
             activityPaused = false;
-            if(App.getInstance().getCurrentFragmentTag()!=null)
-                selectTabByTag(App.getInstance().getCurrentFragmentTag());
+            if(App.getInstance().getCurrentFragmentTag()!=null) {
+                selectTab(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()));
+
+            }
         } catch (Throwable ex) {
             AppLog.e(getApplicationContext(), ex);
         }
@@ -165,9 +168,8 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        if (mMainDrawerMenu != null) {
-            mMainDrawerMenu.syncState();
-        }
+        if (mMainDrawerMenu != null)
+            mMainDrawerMenu.close();
 
         if(!top)
             new ShortUserInfo(this);
@@ -249,7 +251,6 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     public void selectItem(final BrickInfo listTemplate) {
         selectFragment(listTemplate.getTitle(), "", listTemplate.getName(), listTemplate.createFragment());
         mTabDraweMenu.addTab(listTemplate.getTitle(), listTemplate.getName(), listTemplate.getName(), listTemplate.createFragment(), false);
-
         mTabDraweMenu.notifyDataSetChanged();
     }
     public void selectTab(TabItem tabItem){
@@ -283,7 +284,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
                     transaction.show(fragment);
                 }else {
                     showFragmentByTag(transaction, tag);
-                    if(Preferences.Lists.isRefreshOnTab()&!tag.equals("News_Pages"))
+                    if(Preferences.Lists.isRefreshOnTab())
                         ((IBrickFragment)getSupportFragmentManager().findFragmentByTag(tag)).loadData(true);
                 }
             }
@@ -373,8 +374,6 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     }
     public static void addTabByIntent(String title, String url, Fragment fragment) {
         App.getInstance().setCurrentFragmentTag(tabPrefix + App.getInstance().getTabIterator());
-
-        //mTabDraweMenu.addTab(title, url, tabPrefix + App.getInstance().getTabIterator(), fragment, false);
         if(activityPaused){
             tabOnIntent = new TabItem(title, url, tabPrefix + App.getInstance().getTabIterator(), fragment);
         }else {
@@ -386,6 +385,7 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     protected void onPostResume() {
         super.onPostResume();
         //if(isNewIntent)
+
         if(App.getInstance().getCurrentFragmentTag()==null){
             BrickInfo brickInfo = ListCore.getRegisteredBrick(Preferences.Lists.getLastSelectedList());
             if (brickInfo == null)
@@ -409,8 +409,6 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         hideFragments(transaction);
         transaction.remove(getSupportFragmentManager().findFragmentByTag(tag));
-        if(tag.equals("News_Pages"))
-            transaction.remove(getSupportFragmentManager().findFragmentByTag("News_List"));
         transaction.commit();
         mTabDraweMenu.removeTab(tag);
         mMainDrawerMenu.notifyDataSetChanged();
@@ -422,14 +420,16 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
         //super.onResumeFragments();
     }
 
-    public void reload() {
-        Intent intent = getIntent();
-        overridePendingTransition(0, 0);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        finish();
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
 
-        overridePendingTransition(0, 0);
+    }
+
+    public void reload() {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
     private Boolean m_ExitWarned = false;
 
@@ -503,7 +503,11 @@ public class MainActivity extends FragmentActivity implements BricksListDialogFr
     @Override
     public void onResume() {
         super.onResume();
-        if(App.getInstance().getThemeStyleResID()!=lastTheme) reload();
+        if(App.getInstance().getThemeStyleResID()!=lastTheme) {
+            Message msg = handler.obtainMessage();
+            msg.what = MSG_RECREATE;
+            handler.sendMessage(msg);
+        }
         m_ExitWarned = false;
     }
 

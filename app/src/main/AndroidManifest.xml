@@ -178,10 +178,6 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop" />
         <activity
-            android:name="org.softeg.slartus.forpdaplus.listfragments.ListFragmentActivity"
-            android:label="Список"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity
             android:name="org.softeg.slartus.forpdaplus.DevDbDeviceActivity"
             android:label="DevDB.ru"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -191,14 +187,6 @@
             android:label="Информация о стиле"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop" />
-
-
-        <activity
-            android:name="org.softeg.slartus.forpdaplus.notes.NoteActivity"
-            android:label="Заметка"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop" />
-
         <activity
             android:name="org.softeg.slartus.forpdaplus.classes.TestActivity"
             android:label="Тестовая"

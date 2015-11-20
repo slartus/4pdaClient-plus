@@ -6,11 +6,20 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -31,9 +40,11 @@ import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseTaskListFragment;
+import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.NewsListAdapter;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.NewsListPreferencesActivity;
+import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 import org.softeg.sqliteannotations.BaseDao;
 
@@ -43,7 +54,7 @@ import java.util.ArrayList;
 /*
  * Created by slinkin on 20.02.14.
  */
-public class NewsListFragment extends BaseTaskListFragment {
+public class NewsListFragment extends BaseTaskListFragment implements ActionBar.OnNavigationListener{
     /*
      *  Ключ подкаталога новостей:  news, articles..
      */
@@ -55,17 +66,142 @@ public class NewsListFragment extends BaseTaskListFragment {
     protected ArrayList<News> mCacheList = new ArrayList<>();
     ImageLoader imageLoader;
 
-    public NewsListFragment() {
-        super();
-        initImageLoader(App.getContext());
-        imageLoader = ImageLoader.getInstance();
+
+
+
+    public class NewsCategoryItem {
+        public String Path;
+        public String Title;
+        public String Tag;
+
+        public NewsCategoryItem(String tag, String path, String title) {
+            this.Tag = tag;
+            this.Path = path;
+            this.Title = title;
+        }
     }
 
+    public class NavigationListAdapter extends BaseAdapter implements SpinnerAdapter {
+        private final LayoutInflater mInflater;
+
+
+        public NavigationListAdapter(Context context) {
+            super();
+            mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        }
+
+        @Override
+        public int getCount() {
+            return getItems().size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return getItems().get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            final ViewHolder holder;
+            if (view == null) {
+                view = mInflater.inflate(R.layout.news_navigation_item, viewGroup, false);
+                holder = new ViewHolder();
+
+                assert view != null;
+                holder.text1 = (TextView) view.findViewById(R.id.text1);
+
+
+                view.setTag(holder);
+
+            } else {
+                holder = (ViewHolder) view.getTag();
+            }
+            NewsCategoryItem item = getItems().get(i);
+
+
+            holder.text1.setText(item.Title);
+
+            return view;
+        }
+
+        class ViewHolder {
+            TextView text1;
+
+
+        }
+    }
+
+    private ArrayList<NewsCategoryItem> mItems = null;
+
+    private ArrayList<NewsCategoryItem> getItems() {
+        if (mItems == null) {
+            mItems = new ArrayList<>();
+            mItems.add(new NewsCategoryItem("", "Новости", "Все"));
+            mItems.add(new NewsCategoryItem("news", "Новости", "Новости"));
+            mItems.add(new NewsCategoryItem("articles", "Новости", "Статьи"));
+            mItems.add(new NewsCategoryItem("tag/how-to-android/", "Новости", "   Android"));
+            mItems.add(new NewsCategoryItem("tag/how-to-ios/", "Новости", "   iOS"));
+            mItems.add(new NewsCategoryItem("tag/how-to-wp/", "Новости", "   WP"));
+            mItems.add(new NewsCategoryItem("articles/tag/interview/", "Новости", "   Интервью"));
+            mItems.add(new NewsCategoryItem("software", "Новости", "Программы"));
+            mItems.add(new NewsCategoryItem("software/tag/programs-for-android", "Новости/Программы", "   Android"));
+            mItems.add(new NewsCategoryItem("software/tag/programs-for-ios", "Новости/Программы", "   iOS"));
+            mItems.add(new NewsCategoryItem("software/tag/programs-for-windows-phone-7", "Новости/Программы", "   WP"));
+            mItems.add(new NewsCategoryItem("software/tag/devstory/", "Новости/Программы", "   DevStory"));
+            mItems.add(new NewsCategoryItem("games", "Новости", "Игры"));
+            mItems.add(new NewsCategoryItem("games/tag/programs-for-android", "Новости/Игры", "   Android"));
+            mItems.add(new NewsCategoryItem("games/tag/programs-for-ios", "Новости/Игры", "   iOS"));
+            mItems.add(new NewsCategoryItem("games/tag/programs-for-windows-phone-7", "Новости/Игры", "   WP"));
+            mItems.add(new NewsCategoryItem("games/tag/devstory/", "Новости/Игры", "   DevStory"));
+            mItems.add(new NewsCategoryItem("reviews", "Новости", "Обзоры"));
+        }
+        return mItems;
+    }
+    @Override
+    public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+        selectItem(itemPosition);
+        return true;
+    }
+
+    private void selectItem(int position) {
+        position = Math.min(position, getItems().size() - 1);// на всякий случай, если изменится в будущем кол-во разделов
+        String tag = getItems().get(position).Tag;
+        Preferences.News.setLastSelectedSection(position);
+        if(!tag.equals(mTag)) {
+            mTag = tag;
+            loadData(true);
+        }
+
+    }
+
+    NavigationListAdapter listAdapter;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getListView().setDivider(null);
         getListView().setDividerHeight(0);
+    }
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden&getSupportActionBar()!=null){
+            getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setListNavigationCallbacks(listAdapter, this);
+            getSupportActionBar().setSelectedNavigationItem(Preferences.News.getLastSelectedSection());
+        }
+    }
+
+    public NewsListFragment() {
+        super();
+        initImageLoader(App.getContext());
+        imageLoader = ImageLoader.getInstance();
     }
 
     @Override
@@ -75,13 +211,12 @@ public class NewsListFragment extends BaseTaskListFragment {
 
     @Override
     public void onDestroy() {
-        setHasOptionsMenu(false);
         super.onDestroy();
     }
 
     public static Fragment newInstance(String tag) {
         NewsListFragment fragment = new NewsListFragment();
-        fragment.setBrickInfo(new NewsBrickInfo(tag));
+        fragment.setBrickInfo(new NewsBrickInfo());
         Bundle args = new Bundle();
         args.putString(TAG_EXTRA_KEY, tag);
         fragment.setArguments(args);
@@ -93,13 +228,17 @@ public class NewsListFragment extends BaseTaskListFragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         if (getArguments() != null) {
-            if (getArguments().containsKey(TAG_EXTRA_KEY))
+            if (getArguments().containsKey(TAG_EXTRA_KEY)) {
                 mTag = getArguments().getString(TAG_EXTRA_KEY);
+                mTag = getItems().get(Preferences.News.getLastSelectedSection()).Tag;
+            }
             if (getArguments().containsKey(NEWS_LIST_URL_KEY)) {
                 useCache = false;// не используем кеш для открытого по ссылке списка
                 mUrl = getArguments().getString(NEWS_LIST_URL_KEY);
             }
         }
+        listAdapter = new NavigationListAdapter(getActivity());
+        onHiddenChanged(false);
     }
 
     Boolean useCache = true;

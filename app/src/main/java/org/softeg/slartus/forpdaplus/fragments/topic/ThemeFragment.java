@@ -682,7 +682,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         }
                     });
 
-            optionsMenu.add("Скрывать верхнюю панель")
+            /*optionsMenu.add("Скрывать верхнюю панель")
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             Preferences.setHideActionBar(!Preferences.isHideActionBar());
@@ -690,13 +690,13 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                             menuItem.setChecked(Preferences.isHideActionBar());
                             return true;
                         }
-                    }).setCheckable(true).setChecked(Preferences.isHideActionBar());
+                    }).setCheckable(true).setChecked(Preferences.isHideActionBar());*/
             if(!pancil) {
                 optionsMenu.add("Скрывать карандаш")
                         .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             public boolean onMenuItemClick(MenuItem menuItem) {
                                 Preferences.setHideFab(!Preferences.isHideFab());
-                                setHideActionBar();
+                                setHideFab();
                                 menuItem.setChecked(Preferences.isHideFab());
                                 return true;
                             }

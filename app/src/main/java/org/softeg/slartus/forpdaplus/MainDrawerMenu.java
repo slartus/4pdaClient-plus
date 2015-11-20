@@ -159,11 +159,6 @@ public class MainDrawerMenu {
         return mActivity.findViewById(id);
     }
 
-    public void syncState() {
-        if (mDrawerToggle != null)
-            mDrawerToggle.syncState();
-    }
-
     private class BrickItemClickListener implements ExpandableListView.OnChildClickListener {
         @Override
         public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition,

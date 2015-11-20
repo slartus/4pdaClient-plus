@@ -53,7 +53,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
         }
     }
 
-    public abstract WebView getWebView();
+    public abstract AdvWebView getWebView();
     public abstract View getView();
     public abstract WebViewClient MyWebViewClient();
     public abstract String getTitle();
@@ -186,7 +186,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
 
 
     public void setHideArrows(boolean hide) {
-        if (getWebView() == null || !(getWebView() instanceof AdvWebView))
+        if (getWebView() == null)
             return;
 
         LinearLayout arrows = (LinearLayout) getView().findViewById(R.id.arrows);
@@ -202,12 +202,18 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
         }
 
     }
-
+    public void setHideFab() {
+        if (getWebView() == null)
+            return;
+        FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.fab);
+        if (fab == null) return;
+        setHideFab(fab);
+    }
     public void setHideFab(final FloatingActionButton fab){
-        if (getWebView() == null || !(getWebView() instanceof AdvWebView))
+        if (getWebView() == null)
             return;
         if(Preferences.isHideFab()) {
-            ((AdvWebView) getWebView()).setOnScrollChangedCallback(new AdvWebView.OnScrollChangedCallback() {
+            getWebView().setOnScrollChangedCallback(new AdvWebView.OnScrollChangedCallback() {
                 @Override
                 public void onScrollDown(Boolean inTouch) {
                     if (!inTouch) return;
@@ -218,8 +224,6 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
                 public void onScrollUp(Boolean inTouch) {
                     if (!inTouch) return;
                     if (!fab.isVisible()) fab.show();
-
-
                 }
 
                 @Override
@@ -228,13 +232,13 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
                 }
             });
         }else {
-            ((AdvWebView)getWebView()).setOnScrollChangedCallback(null);
+            getWebView().setOnScrollChangedCallback(null);
             fab.show();
         }
     }
 
     public void setHideActionBar() {
-        if (getWebView() == null || !(getWebView() instanceof AdvWebView))
+        if (getWebView() == null)
             return;
         ActionBar actionBar = getSupportActionBar();
         FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.fab);
@@ -243,7 +247,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
         Log.e("ab", "yes");
         if (fab == null) return;
         Log.e("fb", "yes");
-        setHideActionBar((AdvWebView) getWebView(), actionBar, fab);
+        setHideActionBar(getWebView(), actionBar, fab);
     }
 
     public static void setHideActionBar(AdvWebView advWebView, final ActionBar actionBar, final FloatingActionButton fab) {

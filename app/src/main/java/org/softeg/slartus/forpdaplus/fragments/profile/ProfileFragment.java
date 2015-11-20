@@ -37,6 +37,7 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
@@ -103,7 +104,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     private static final String TAG = "ProfileWebViewFragment";
-    private static WebView m_WebView;
+    private static AdvWebView m_WebView;
 
 
     protected Bundle args;
@@ -135,7 +136,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     @Override
-    public WebView getWebView(){
+    public AdvWebView getWebView(){
         return m_WebView;
     }
 
@@ -175,7 +176,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         // getDialog().setTitle("Профиль");
         setHasOptionsMenu(true);
         assert view != null;
-        m_WebView = (WebView) view.findViewById(R.id.wvBody);
+        m_WebView = (AdvWebView) view.findViewById(R.id.wvBody);
         registerForContextMenu(m_WebView);
         m_WebView.getSettings().setLoadWithOverviewMode(false);
         m_WebView.getSettings().setUseWideViewPort(true);

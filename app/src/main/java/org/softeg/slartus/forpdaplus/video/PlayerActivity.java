@@ -32,7 +32,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;

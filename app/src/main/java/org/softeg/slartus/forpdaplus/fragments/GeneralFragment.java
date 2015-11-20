@@ -45,25 +45,32 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         actionBar = ((MainActivity)getActivity()).getSupportActionBar();
     }
 
     public ActionBar getSupportActionBar() {
         return actionBar;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("kek", "onresume "+getTag());
         actionBar = ((MainActivity)getActivity()).getSupportActionBar();
         if(getMenu()!=null)
             onCreateOptionsMenu(getMenu(), null);
+        else
+            onCreateOptionsMenu(MainActivity.mainMenu, null);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("kek", "pause " + getTag());
         if(getSupportActionBar()!=null)
             getSupportActionBar().setSubtitle(null);
         if(getMenu()!=null)

@@ -395,7 +395,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         return "theme";
     }
 
-    public WebView getWebView() {
+    public AdvWebView getWebView() {
         return mWvBody;
     }
 
