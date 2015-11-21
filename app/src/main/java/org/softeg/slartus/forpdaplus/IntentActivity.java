@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -140,7 +139,7 @@ public class IntentActivity extends FragmentActivity implements BricksListDialog
         if (isNewsList(url)) {
             Bundle args = new Bundle();
             args.putString(NewsListFragment.NEWS_LIST_URL_KEY, url);
-            MainActivity.showListFragment(new NewsBrickInfo("quick").getName(), args);
+            MainActivity.showListFragment(new NewsBrickInfo().getName(), args);
 
             if (finish)
                 context.finish();

@@ -12,6 +12,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,6 +37,7 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
@@ -61,6 +63,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     public static final String USER_NAME_KEY = "UserNameKey";
     private Menu menu;
     private String title;
+    private Handler mHandler = new Handler();
 
     @Override
     public View getView() {
@@ -83,6 +86,14 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     @Override
+    public void reload() {}
+    
+    @Override
+    public boolean closeTab() {
+        return false;
+    }
+
+    @Override
     public Menu getMenu() {
         return menu;
     }
@@ -93,7 +104,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     private static final String TAG = "ProfileWebViewFragment";
-    private static WebView m_WebView;
+    private static AdvWebView m_WebView;
 
 
     protected Bundle args;
@@ -125,7 +136,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     @Override
-    public WebView getWebView(){
+    public AdvWebView getWebView(){
         return m_WebView;
     }
 
@@ -165,7 +176,8 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         // getDialog().setTitle("Профиль");
         setHasOptionsMenu(true);
         assert view != null;
-        m_WebView = (WebView) view.findViewById(R.id.wvBody);
+        m_WebView = (AdvWebView) view.findViewById(R.id.wvBody);
+        registerForContextMenu(m_WebView);
         m_WebView.getSettings().setLoadWithOverviewMode(false);
         m_WebView.getSettings().setUseWideViewPort(true);
         m_WebView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
@@ -180,6 +192,20 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         m_WebView.setWebViewClient(new MyWebViewClient());
         return view;
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        WebView.HitTestResult hitTestResult = m_WebView.getHitTestResult();
+        switch (hitTestResult.getType()) {
+            case WebView.HitTestResult.UNKNOWN_TYPE:
+            case WebView.HitTestResult.EDIT_TEXT_TYPE:
+                break;
+            default:
+                ExtUrl.showSelectActionDialog(mHandler, getActivity(),
+                        getTitle(), "", hitTestResult.getExtra(), "", "", "", "", "");
+        }
+    }
+
     private final static int FILECHOOSER_RESULTCODE = 1;
 
     @JavascriptInterface

@@ -18,8 +18,8 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.NotesTable;
+import org.softeg.slartus.forpdaplus.fragments.NoteFragment;
 import org.softeg.slartus.forpdaplus.notes.Note;
-import org.softeg.slartus.forpdaplus.notes.NoteActivity;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 
 import java.io.IOException;
@@ -60,7 +60,20 @@ public class NotesListFragment extends TopicsListFragment {
         final IListItem topic = (IListItem) o;
 
         if (TextUtils.isEmpty(topic.getId())) return;
-        NoteActivity.showNote(getContext(), topic.getId().toString());
+
+        try {
+            Note note = NotesTable.getNote(topic.getId().toString());
+            if (note != null) {
+                if (note.Url!=null) {
+                    IntentActivity.tryShowUrl((Activity) getContext(), mHandler, note.Url, true, false, null);
+                }else {
+                    NoteFragment.showNote(topic.getId().toString());
+                }
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

@@ -117,9 +117,6 @@ public class MainDrawerMenu {
                 mActivity, mDrawerLayout, ((MainActivity)mActivity).toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
-
-
-
     }
     public void notifyDataSetChanged(){
         mAdapter.notifyDataSetChanged();
@@ -160,11 +157,6 @@ public class MainDrawerMenu {
 
     private View findViewById(int id) {
         return mActivity.findViewById(id);
-    }
-
-    public void syncState() {
-        if (mDrawerToggle != null)
-            mDrawerToggle.syncState();
     }
 
     private class BrickItemClickListener implements ExpandableListView.OnChildClickListener {

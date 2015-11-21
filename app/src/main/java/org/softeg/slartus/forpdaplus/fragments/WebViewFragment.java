@@ -4,10 +4,14 @@ import android.animation.ValueAnimator;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -19,9 +23,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
+import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
@@ -29,6 +35,7 @@ import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
+import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -40,12 +47,43 @@ import java.util.ArrayList;
  * Created by radiationx on 17.10.15.
  */
 public abstract class WebViewFragment extends GeneralFragment implements IBrickFragment, IWebViewContainer{
+    class URLHandler extends Handler{
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String url = (String) msg.getData().get("url");
+            showLinkMenu(url);
+        }
+    }
 
-    public abstract WebView getWebView();
+    public abstract AdvWebView getWebView();
     public abstract View getView();
     public abstract WebViewClient MyWebViewClient();
     public abstract String getTitle();
     public abstract String getUrl();
+    public abstract void reload();
+
+    private Handler mHandler = new Handler();
+    private URLHandler urlHandler = new URLHandler();
+
+    public void showLinkMenu(String url){
+        if (TextUtils.isEmpty(url) || url.contains("HTMLOUT.ru")
+                || url.equals("#")
+                || url.startsWith("file:///")) return;
+        ExtUrl.showSelectActionDialog(mHandler, getContext(), url);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        switch (getWebView().getHitTestResult().getType()) {
+            case WebView.HitTestResult.UNKNOWN_TYPE:
+            case WebView.HitTestResult.EDIT_TEXT_TYPE:
+                break;
+            default: {
+                getWebView().requestFocusNodeHref(urlHandler.obtainMessage());
+            }
+        }
+    }
 
     WebViewExternals m_WebViewExternals;
 
@@ -89,11 +127,21 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
             }
         }
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setArrow();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
-        getWebView().onResume();
-        getWebView().setWebViewClient(MyWebViewClient());
+        if(getWebView()!=null){
+            getWebView().onResume();
+            getWebView().setWebViewClient(MyWebViewClient());
+        }
+        setArrow();
         //animateHamburger(false);
     }
 
@@ -111,7 +159,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
             getWebView().setWebViewClient(null);
             getWebView().setPictureListener(null);
         }
-
+        removeArrow();
     }
 
     @Override
@@ -141,7 +189,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
 
 
     public void setHideArrows(boolean hide) {
-        if (getWebView() == null || !(getWebView() instanceof AdvWebView))
+        if (getWebView() == null)
             return;
 
         LinearLayout arrows = (LinearLayout) getView().findViewById(R.id.arrows);
@@ -157,11 +205,18 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
         }
 
     }
+    public void setHideFab() {
+        if (getWebView() == null)
+            return;
+        FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.fab);
+        if (fab == null) return;
+        setHideFab(fab);
+    }
     public void setHideFab(final FloatingActionButton fab){
-        if (getWebView() == null || !(getWebView() instanceof AdvWebView))
+        if (getWebView() == null)
             return;
         if(Preferences.isHideFab()) {
-            ((AdvWebView) getWebView()).setOnScrollChangedCallback(new AdvWebView.OnScrollChangedCallback() {
+            getWebView().setOnScrollChangedCallback(new AdvWebView.OnScrollChangedCallback() {
                 @Override
                 public void onScrollDown(Boolean inTouch) {
                     if (!inTouch) return;
@@ -172,8 +227,6 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
                 public void onScrollUp(Boolean inTouch) {
                     if (!inTouch) return;
                     if (!fab.isVisible()) fab.show();
-
-
                 }
 
                 @Override
@@ -182,13 +235,13 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
                 }
             });
         }else {
-            ((AdvWebView)getWebView()).setOnScrollChangedCallback(null);
+            getWebView().setOnScrollChangedCallback(null);
             fab.show();
         }
     }
 
     public void setHideActionBar() {
-        if (getWebView() == null || !(getWebView() instanceof AdvWebView))
+        if (getWebView() == null)
             return;
         ActionBar actionBar = getSupportActionBar();
         FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.fab);
@@ -197,7 +250,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
         Log.e("ab", "yes");
         if (fab == null) return;
         Log.e("fb", "yes");
-        setHideActionBar((AdvWebView) getWebView(), actionBar, fab);
+        setHideActionBar(getWebView(), actionBar, fab);
     }
 
     public static void setHideActionBar(AdvWebView advWebView, final ActionBar actionBar, final FloatingActionButton fab) {
@@ -299,24 +352,35 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
 
             }
         });
-        new MaterialDialog.Builder(getActivity())
+        MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                 .title("Размер шрифта")
-                .customView(v,true)
+                .customView(v, true)
                 .positiveText("OK")
                 .negativeText("Отмена")
-                .callback(new MaterialDialog.ButtonCallback() {
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onPositive(MaterialDialog dialog) {
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
                         Preferences.setFontSize(Prefix(), seekBar.getProgress() + 1);
                     }
-
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onNegative(MaterialDialog dialog) {
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
                         getWebView().getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
                     }
                 })
                 .show();
-
+        dialog.setActionButton(DialogAction.NEUTRAL, "Сброс");
+        View neutral = dialog.getActionButton(DialogAction.NEUTRAL);
+        neutral.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                seekBar.setProgress(15);
+                Preferences.setFontSize(Prefix(), 16);
+                getWebView().getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
+            }
+        });
+        dialog.show();
     }
     public void showStylesDialog(final SharedPreferences prefs) {
         try {
@@ -349,11 +413,15 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
+                            int lastTheme = App.getInstance().getThemeStyleResID();
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putString("appstyle", newStyleValues.get(selected[0]).toString());
                             //editor.putBoolean("theme.BrowserStyle", checkBox.isChecked());
                             editor.apply();
-                            //((MainActivity)getActivity()).reload();
+                            if(App.getInstance().getThemeStyleResID()!=lastTheme)
+                                ((MainActivity)getActivity()).recreate();
+                            else
+                                reload();
                         }
                     })
                     .negativeText("Отмена")

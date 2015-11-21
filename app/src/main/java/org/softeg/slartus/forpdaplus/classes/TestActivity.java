@@ -5,13 +5,13 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.softeg.slartus.forpdaplus.BaseFragmentActivity;
+import org.softeg.slartus.forpdaplus.FragmentActivity;
 import org.softeg.slartus.forpdaplus.R;
 
 /**
  * Created by slinkin on 18.12.13.
  */
-public class TestActivity extends BaseFragmentActivity {
+public class TestActivity extends FragmentActivity {
     @Override
     public void onCreate(Bundle saveInstance) {
         super.onCreate(saveInstance);

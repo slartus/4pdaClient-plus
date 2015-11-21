@@ -1515,6 +1515,7 @@ a {
 .post_body .postcolor {
   overflow: auto!important;
   height: auto!important;
+  padding: 1em;
 }
 .post_body img {
   max-width: 100%;
@@ -1833,6 +1834,9 @@ a {
 }
 .posts_list.search-results ~ #bottomMargin {
   height: 5.5em;
+}
+.posts_list.search-results .post_body {
+  padding: 0;
 }
 div[data-post] {
   background: #ffffff;

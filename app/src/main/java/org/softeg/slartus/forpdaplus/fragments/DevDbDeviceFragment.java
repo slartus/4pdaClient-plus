@@ -7,8 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Gallery;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -61,8 +60,32 @@ public class DevDbDeviceFragment extends GeneralFragment {
     public Menu getMenu() {
         return menu;
     }
+
+    @Override
+    public boolean closeTab() {
+        return false;
+    }
+
     public View getView(){
         return view;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setArrow();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setArrow();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        removeArrow();
     }
 
     @Nullable
@@ -203,8 +226,7 @@ public class DevDbDeviceFragment extends GeneralFragment {
                 ImageViewActivity.startActivity(getActivity(), imgUrls, adapterView.getSelectedItemPosition());
             }
         });
-
-        CardView con1 = (CardView) getView().findViewById(R.id.dev_db_activity_con1);
+        HorizontalScrollView con1 = (HorizontalScrollView) getView().findViewById(R.id.dev_db_activity_con1);
         con1.setVisibility(View.VISIBLE);
 
         LinearLayout con = (LinearLayout) getView().findViewById(R.id.dev_db_activity_con);

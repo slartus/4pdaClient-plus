@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:project="http://schemas.android.com/apk/res/org.softeg.slartus.forpdaplus">
+    xmlns:project="http://schemas.android.com/apk/res-auto">
     <PreferenceScreen
         android:title="QMS"
         android:summary="Оповещения о новых личных сообщениях">

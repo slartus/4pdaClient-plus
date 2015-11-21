@@ -16,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -23,6 +24,7 @@ import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,9 +45,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
-import net.londatiga.android3d.ActionItem;
-import net.londatiga.android3d.QuickAction;
-
+import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
@@ -54,25 +54,38 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
+import org.softeg.slartus.forpdaplus.classes.Post;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.common.HelpTask;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewDialogFragment;
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
+import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsNewThreadFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
+import org.softeg.slartus.forpdaplus.listfragments.NotesListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
+import org.softeg.slartus.forpdaplus.listfragments.TopicUtils;
+import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -172,6 +185,35 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     @Override
+    public void reload() {
+        reloadTopic();
+    }
+
+    @Override
+    public boolean closeTab() {
+        getPostBody();
+        if (!TextUtils.isEmpty(m_PostBody)) {
+            new MaterialDialog.Builder(getActivity())
+                    .title("Подтвердите действие")
+                    .content("Имеется введенный текст сообщения! Закрыть тему?")
+                    .positiveText("Да")
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            clear();
+                            ((MainActivity)getActivity()).removeTab(getTag());
+                        }
+                    })
+                    .negativeText("Отмена")
+                    .show();
+            return true;
+        } else {
+            clear();
+            return false;
+        }
+    }
+
+    @Override
     public Menu getMenu() {
         return menu;
     }
@@ -193,10 +235,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             Toast.makeText(getActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
 
         LoadsImagesAutomatically = null;
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //createActionMenu();
 
         mCurator = new ThemeCurator(getActivity(), this);
 
@@ -351,6 +390,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
 
+
+
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -414,36 +456,119 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     }
 
+    private Boolean m_FirstTime = true;
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                getPostBody();
-                if (!TextUtils.isEmpty(m_PostBody)) {
-                    new MaterialDialog.Builder(getActivity())
-                            .title("Подтвердите действие")
-                            .content("Имеется введенный текст сообщения! Закрыть?")
-                            .positiveText("Да")
-                            .callback(new MaterialDialog.ButtonCallback() {
-                                @Override
-                                public void onPositive(MaterialDialog dialog) {
-                                    //finish();
-                                }
-                            })
-                            .negativeText("Отмена")
-                            .show();
-                }else{
-                    App.showMainActivityWithoutBack(getActivity());
+    public void onPrepareOptionsMenu(Menu menu) {
+        if (!m_FirstTime)
+            onPrepareOptionsMenu();
+        m_FirstTime = false;
+        if (mTopicOptionsMenu != null)
+            configureOptionsMenu(getActivity(), getHandler(), mTopicOptionsMenu, true, getLastUrl());
+        else if (getTopic() != null)
+            mTopicOptionsMenu = addOptionsMenu(getActivity(), getHandler(), menu, true, getLastUrl());
+    }
+
+    private SubMenu mTopicOptionsMenu;
+
+    private SubMenu addOptionsMenu(final Context context, final Handler mHandler,
+                                          Menu menu, Boolean addFavorites, final String shareItUrl) {
+        SubMenu optionsMenu = menu.addSubMenu("Опции темы");
+
+        optionsMenu.getItem().setIcon(R.drawable.ic_menu_more);
+        configureOptionsMenu(context, mHandler, optionsMenu, addFavorites, shareItUrl);
+        return optionsMenu;
+    }
+
+    private void configureOptionsMenu(final Context context, final Handler mHandler, SubMenu optionsMenu,
+                                             Boolean addFavorites, final String shareItUrl) {
+
+        optionsMenu.clear();
+
+
+        if (addFavorites) {
+            optionsMenu.add(R.string.AddToFavorites).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    try {
+                        TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, getTopic());
+                    } catch (Exception ex) {
+                        AppLog.e(context, ex);
+                    }
+
+                    return true;
+                }
+            });
+
+            optionsMenu.add(R.string.DeleteFromFavorites).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    try {
+                        final HelpTask helpTask = new HelpTask(context, context.getString(R.string.DeletingFromFavorites));
+                        helpTask.setOnPostMethod(new HelpTask.OnMethodListener() {
+                            public Object onMethod(Object param) {
+                                if (helpTask.Success)
+                                    Toast.makeText(context, (String) param, Toast.LENGTH_SHORT).show();
+                                else
+                                    AppLog.e(context, helpTask.ex);
+                                return null;
+                            }
+                        });
+                        helpTask.execute(new HelpTask.OnMethodListener() {
+                                             public Object onMethod(Object param) throws IOException, ParseException, URISyntaxException {
+                                                 return TopicApi.deleteFromFavorites(Client.getInstance(),
+                                                         getTopic().getId());
+                                             }
+                                         }
+                        );
+                    } catch (Exception ex) {
+                        AppLog.e(context, ex);
+                    }
+                    return true;
+                }
+            });
+
+
+            optionsMenu.add(R.string.OpenTopicForum).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    try {
+                        ForumFragment.showActivity(context, getTopic().getForumId(), getTopic().getId());
+                    } catch (Exception ex) {
+                        AppLog.e(context, ex);
+                    }
+                    return true;
+                }
+            });
+        }
+
+
+        optionsMenu.add(R.string.NotesByTopic).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                Bundle args = new Bundle();
+                args.putString(NotesListFragment.TOPIC_ID_KEY, getTopic().getId());
+                MainActivity.showListFragment(new NotesBrickInfo().getName(), args);
+                return true;
+            }
+        });
+
+        optionsMenu.add(R.string.Share).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                try {
+                    String url = TextUtils.isEmpty(shareItUrl) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : shareItUrl;
+                    ExtUrl.shareIt(context, shareItUrl, url, url);
+                } catch (Exception ex) {
+                    return false;
                 }
                 return true;
-        }
-        return true;
+            }
+        });
+
+
     }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, final MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        this.menu = menu;
+
         try {
             MenuItem item;
             boolean pancil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false);
@@ -525,9 +650,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     });
 
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-            /*if (getInterface() != null)
-                mTopicOptionsMenu = addOptionsMenu(getActivity(), getHandler(), menu, getInterface(),
-                        true, getLastUrl());*/
+            mTopicOptionsMenu = addOptionsMenu(getActivity(), getHandler(), menu, true, getLastUrl());
 
 
             SubMenu optionsMenu = menu.addSubMenu("Вид");
@@ -559,7 +682,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         }
                     });
 
-            optionsMenu.add("Скрывать верхнюю панель")
+            /*optionsMenu.add("Скрывать верхнюю панель")
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             Preferences.setHideActionBar(!Preferences.isHideActionBar());
@@ -567,13 +690,13 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                             menuItem.setChecked(Preferences.isHideActionBar());
                             return true;
                         }
-                    }).setCheckable(true).setChecked(Preferences.isHideActionBar());
+                    }).setCheckable(true).setChecked(Preferences.isHideActionBar());*/
             if(!pancil) {
                 optionsMenu.add("Скрывать карандаш")
                         .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             public boolean onMenuItemClick(MenuItem menuItem) {
                                 Preferences.setHideFab(!Preferences.isHideFab());
-                                setHideActionBar();
+                                setHideFab();
                                 menuItem.setChecked(Preferences.isHideFab());
                                 return true;
                             }
@@ -659,15 +782,13 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     }
                 });
             }
-            //addCloseMenuItem(menu);
 
         } catch (Exception ex) {
             AppLog.e(getActivity(), ex);
         }
 
-
+        this.menu = menu;
     }
-
 
     @Override
     public void onResume() {
@@ -807,19 +928,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         LoadsImagesAutomatically = WebViewExternals.isLoadImages("theme");
         m_SpoilFirstPost = Preferences.Topic.getSpoilFirstPost();
 
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-        final WebView.HitTestResult hitTestResult = webView.getHitTestResult();
-        switch (hitTestResult.getType()) {
-            case WebView.HitTestResult.UNKNOWN_TYPE:
-            case WebView.HitTestResult.EDIT_TEXT_TYPE:
-                break;
-            default: {
-                showLinkMenu(hitTestResult.getExtra());
-            }
-        }
     }
 
     public void showLinkMenu(final String link) {
@@ -980,103 +1088,69 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                final String userId, final String userNick,
                                final Boolean canEdit, final Boolean canDelete) {
         try {
-            final QuickAction mQuickAction = new QuickAction(getActivity());
+            List<String> items = new ArrayList<>();
 
-            ActionItem actionItem;
+            int i = 0;
 
 
             int linkPosition = -1;
-            if (Client.getInstance().getLogined()) {
-                actionItem = new ActionItem();
-                actionItem.setTitle("Ссылка");
-                linkPosition = mQuickAction.addActionItem(actionItem);
-            }
-
             int claimPosition = -1;
-            if (Client.getInstance().getLogined()) {
-                actionItem = new ActionItem();
-                actionItem.setTitle("Жалоба");
-                claimPosition = mQuickAction.addActionItem(actionItem);
-            }
-
             int editPosition = -1;
-            if (canEdit) {
-                actionItem = new ActionItem();
-                actionItem.setTitle("Изменить");
-                editPosition = mQuickAction.addActionItem(actionItem);
-            }
-
-
             int deletePosition = -1;
-            if (canDelete) {
-                actionItem = new ActionItem();
-                actionItem.setTitle("Удалить");
-                deletePosition = mQuickAction.addActionItem(actionItem);
-            }
-
-            /*
-            int plusOdinPosition = -1;
-            int minusOdinPosition = -1;
-            if (Client.getInstance().getLogined() && !Client.getInstance().UserId.equals(userId)) {
-
-                actionItem = new ActionItem();
-                actionItem.setTitle("Хорошо (+)");
-                plusOdinPosition = mQuickAction.addActionItem(actionItem);
-
-                actionItem = new ActionItem();
-                actionItem.setTitle("Плохо (-)");
-                minusOdinPosition = mQuickAction.addActionItem(actionItem);
-            }*/
-
-            int notePosition;
-
-            actionItem = new ActionItem();
-            actionItem.setTitle("Заметка");
-            notePosition = mQuickAction.addActionItem(actionItem);
-
-
+            int notePosition = -1;
             int quotePosition = -1;
             if (Client.getInstance().getLogined()) {
-                actionItem = new ActionItem();
-                actionItem.setTitle("Цитата");
-                quotePosition = mQuickAction.addActionItem(actionItem);
+                items.add("Ссылка на сообщение");
+                linkPosition = i; i++;
+
+                items.add("Жалоба на сообщение");
+                claimPosition = i; i++;
+
+                if (canEdit) {
+                    items.add("Изменить сообщение");
+                    editPosition = i; i++;
+                }
+                if (canDelete) {
+                    items.add("Удалить сообщение");
+                    deletePosition = i; i++;
+                }
+                items.add("Цитата сообщения");
+                quotePosition = i; i++;
             }
+
+            items.add("Сделать заметку");
+            notePosition = i;
 
             final int finalDeletePosition = deletePosition;
             final int finalEditPosition = editPosition;
 
             final int finalLinkPosition = linkPosition;
             final int finalClaimPosition = claimPosition;
-            //final int finalPlusOdinPosition = plusOdinPosition;
-            //final int finalMinusOdinPosition = minusOdinPosition;
             final int finalNotePosition = notePosition;
             final int finalQuotePosition = quotePosition;
-            mQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
-                @Override
-                public void onItemClick(QuickAction source, int pos, int actionId) {
-                    if (pos == finalDeletePosition) {
-                        prepareDeleteMessage(postId);
-                    } else if (pos == finalEditPosition) {
-                        EditPostFragment.editPost(getActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, m_Topic.getAuthKey(), getTag());
-                    } else  if (pos== finalLinkPosition) {
-                        showLinkMenu(org.softeg.slartus.forpdaplus.classes.Post.getLink(m_Topic.getId(), postId), postId);
-                    } else if (pos == finalClaimPosition) {
-                        org.softeg.slartus.forpdaplus.classes.Post.claim(getActivity(), mHandler, m_Topic.getId(), postId);
-                    }/* else if (pos == finalPlusOdinPosition) {
-                        org.softeg.slartus.forpdaplus.classes.Post.plusOne(ThemeActivity.getActivity(), mHandler, postId);
-                    } else if (pos == finalMinusOdinPosition) {
-                        org.softeg.slartus.forpdaplus.classes.Post.minusOne(ThemeActivity.getActivity(), mHandler, postId);
-                    }*/ else if (pos == finalNotePosition) {
-                        NoteDialog.showDialog(mHandler, getActivity(), m_Topic.getTitle(), null,
-                                "http://4pda.ru/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
-                                m_Topic.getId(), m_Topic.getTitle(), postId, null, null);
-                    } else if (pos == finalQuotePosition) {
-                        quote(m_Topic.getForumId(), m_Topic.getId(), postId, postDate, userId, userNick);
-                    }
-                }
-            });
-
-            mQuickAction.show(webView, webView.getLastMotionEvent());
+            new MaterialDialog.Builder(getActivity())
+                    .items(items.toArray(new CharSequence[items.size()]))
+                    .itemsCallback(new MaterialDialog.ListCallback() {
+                        @Override
+                        public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                            if (i == finalDeletePosition) {
+                                prepareDeleteMessage(postId);
+                            } else if (i == finalEditPosition) {
+                                EditPostFragment.editPost(getActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, m_Topic.getAuthKey(), getTag());
+                            } else  if (i== finalLinkPosition) {
+                                showLinkMenu(Post.getLink(m_Topic.getId(), postId), postId);
+                            } else if (i == finalClaimPosition) {
+                                Post.claim(getActivity(), mHandler, m_Topic.getId(), postId);
+                            } else if (i == finalNotePosition) {
+                                NoteDialog.showDialog(mHandler, getActivity(), m_Topic.getTitle(), null,
+                                        "http://4pda.ru/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
+                                        m_Topic.getId(), m_Topic.getTitle(), postId, null, null);
+                            } else if (i == finalQuotePosition) {
+                                quote(m_Topic.getForumId(), m_Topic.getId(), postId, postDate, userId, userNick);
+                            }
+                        }
+                    })
+                    .show();
         } catch (Throwable ex) {
             AppLog.e(getActivity(), ex);
         }
@@ -1087,7 +1161,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         try {
             setScrollElement();
             getActivity().setTitle(m_Topic.getTitle());
-            getSupportActionBar().setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
+            if(getSupportActionBar()!=null)
+                getSupportActionBar().setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
 
             webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
 
@@ -1622,7 +1697,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     pageBody = forums[1];
 
                 m_LastUrl = client.getRedirectUri() == null ? m_LastUrl : client.getRedirectUri().toString();
-
+                m_SpoilFirstPost = Preferences.Topic.getSpoilFirstPost();
                 TopicBodyBuilder topicBodyBuilder = client.parseTopic(pageBody, App.getInstance(), m_LastUrl,
                         m_SpoilFirstPost);
 

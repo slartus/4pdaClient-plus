@@ -22,9 +22,12 @@ import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
 import org.softeg.slartus.forpdaplus.fragments.qms.QmsNewThreadFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
+import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,39 +56,32 @@ public class ForumUser {
         try {
             userNick = Html.fromHtml(userNick.replace("<", "&lt;")).toString();
 
+            List<String> items = new ArrayList<>();
 
-            // не забыть менять в ForumUser
-            net.londatiga.android3d.QuickAction mQuickAction = new net.londatiga.android3d.QuickAction(context);
-            int id = 0;
-            Resources resourses = context.getResources();
+            int i = 0;
 
-//            if(!TextUtils.isEmpty(avatar)){
-//                mQuickAction.getImageView().setMinimumHeight(200);
-//                mQuickAction.getImageView().setMinimumWidth(200);
-//                ImageLoader imageLoader = ImageLoader.getInstance();
-//                imageLoader.displayImage(avatar, mQuickAction.getImageView());
-//
-//            }
-            int insertNickPosition = id++;
-            int sendQmsPosition = id++;
+            int insertNickPosition = -1;
+            int sendQmsPosition = -1;
+            int showProfilePosition = -1;
+            int showUserTopicsPosition = -1;
+            int showUserPostsPosition = -1;
+            
             if (Client.getInstance().getLogined()) {
-                if (insertNickInterface != null)
-                    mQuickAction.addActionItem(new net.londatiga.android3d.ActionItem(insertNickPosition,
-                            context.getString(R.string.InsertNick)));
-                mQuickAction.addActionItem(new net.londatiga.android3d.ActionItem(sendQmsPosition,
-                        context.getString(R.string.MessagesQms)));
+                if (insertNickInterface != null){
+                    items.add(context.getString(R.string.InsertNick));
+                    insertNickPosition = i; i++;
+                }
+                items.add(context.getString(R.string.MessagesQms));
+                sendQmsPosition = i; i++;
             }
-            int showProfilePosition = id++;
-            mQuickAction.addActionItem(new net.londatiga.android3d.ActionItem(showProfilePosition,
-                    context.getString(R.string.Profile)));
-            int showUserTopicsPosition = id++;
-            mQuickAction.addActionItem(new net.londatiga.android3d.ActionItem(showUserTopicsPosition,
-                    context.getString(R.string.FindUserTopics)));
-            int showUserPostsPosition = id++;
-            mQuickAction.addActionItem(new net.londatiga.android3d.ActionItem(showUserPostsPosition,
-                    context.getString(R.string.FindUserPosts)));
+            items.add(context.getString(R.string.Profile));
+            showProfilePosition = i; i++;
+            items.add(context.getString(R.string.FindUserTopics));
+            showUserTopicsPosition = i; i++;
+            items.add(context.getString(R.string.FindUserPosts));
+            showUserPostsPosition = i;
 
-            if (mQuickAction.getItemsCount() == 0) return;
+            if (items.size() == 0) return;
 
             final int finalInsertNickPosition = insertNickPosition;
 
@@ -94,53 +90,44 @@ public class ForumUser {
             final int finalShowUserTopicsPosition = showUserTopicsPosition;
             final int finalShowUserPostsPosition = showUserPostsPosition;
             final String finalUserNick = userNick;
-            final String finalUserNick1 = userNick;
-            mQuickAction.setOnActionItemClickListener(new net.londatiga.android3d.QuickAction.OnActionItemClickListener() {
-                @Override
-                public void onItemClick(net.londatiga.android3d.QuickAction source, int pos, int actionId) {
-                    try {
-                        if (actionId == finalInsertNickPosition) {
-                            assert insertNickInterface != null;
-                            insertNickInterface.insert(String.format(TopicBodyBuilder.NICK_SNAPBACK_TEMPLATE,postId, finalUserNick ));
-                        } else if (actionId == finalSendQmsPosition) {
-                            new MaterialDialog.Builder(context)
-                                    .title(context.getString(R.string.SelectAnAction))
-                                    .content(context.getString(R.string.OpenWith) + " " + finalUserNick + "...")
-                                    .cancelable(true)
-                                    .positiveText(context.getString(R.string.NewDialog))
-                                    .neutralText(context.getString(R.string.AllDialogs))
-                                    .callback(new MaterialDialog.ButtonCallback() {
-                                        @Override
-                                        public void onPositive(MaterialDialog dialog) {
-                                            QmsNewThreadFragment.showUserNewThread(context, userId, finalUserNick);
-                                        }
-                                        @Override
-                                        public void onNeutral(MaterialDialog dialog) {
-                                            QmsContactThemes.showThemes(userId, finalUserNick);
-                                        }
-                                    })
-                                    .show();
 
-                        } else if (actionId == finalShowProfilePosition) {
-                            //ProfileWebViewFragment.showDialog((FragmentActivity)context,userId, finalUserNick);
-                            ProfileFragment.showProfile(userId, finalUserNick);
-                        } else if (actionId == finalShowUserTopicsPosition) {
-                            MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick1));
-
-                        } else if (actionId == finalShowUserPostsPosition) {
-                            MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick1));
-
+            new MaterialDialog.Builder(context)
+                    .title(finalUserNick)
+                    .items(items.toArray(new CharSequence[items.size()]))
+                    .itemsCallback(new MaterialDialog.ListCallback() {
+                        @Override
+                        public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                            if (i == finalInsertNickPosition) {
+                                assert insertNickInterface != null;
+                                insertNickInterface.insert(String.format(TopicBodyBuilder.NICK_SNAPBACK_TEMPLATE,postId, finalUserNick ));
+                            } else if (i == finalSendQmsPosition) {
+                                new MaterialDialog.Builder(context)
+                                        .title(context.getString(R.string.SelectAnAction))
+                                        .content(context.getString(R.string.OpenWith) + " " + finalUserNick + "...")
+                                        .cancelable(true)
+                                        .positiveText(context.getString(R.string.NewDialog))
+                                        .neutralText(context.getString(R.string.AllDialogs))
+                                        .callback(new MaterialDialog.ButtonCallback() {
+                                            @Override
+                                            public void onPositive(MaterialDialog dialog) {
+                                                QmsNewThreadFragment.showUserNewThread(context, userId, finalUserNick);
+                                            }
+                                            @Override
+                                            public void onNeutral(MaterialDialog dialog) {
+                                                QmsContactThemes.showThemes(userId, finalUserNick);
+                                            }
+                                        })
+                                        .show();
+                            } else if (i == finalShowProfilePosition) {
+                                ProfileFragment.showProfile(userId, finalUserNick);
+                            } else if (i == finalShowUserTopicsPosition) {
+                                MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick));
+                            } else if (i == finalShowUserPostsPosition) {
+                                MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick));
+                            }
                         }
-                    } catch (Exception ex) {
-                        AppLog.e(context, ex);
-                    }
-                }
-            });
-
-            if (webView.getClass() == AdvWebView.class)
-                mQuickAction.show(webView, ((AdvWebView) webView).getLastMotionEvent());
-            else
-                mQuickAction.show(webView);
+                    })
+                    .show();
         } catch (Throwable ex) {
             AppLog.e(context, ex);
         }

@@ -153,6 +153,14 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
     @Override
+    public void reload() {}
+
+    @Override
+    public boolean closeTab() {
+        return false;
+    }
+
+    @Override
     public Menu getMenu() {
         return menu;
     }
@@ -626,7 +634,7 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
     @Override
-    public WebView getWebView() {
+    public AdvWebView getWebView() {
         return wvChat;
     }
 
@@ -635,25 +643,12 @@ public class QmsChatFragment extends WebViewFragment {
         return m_WebViewExternals.dispatchKeyEvent(event);
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, android.view.View v,
-                                    android.view.ContextMenu.ContextMenuInfo menuInfo) {
-        final WebView.HitTestResult hitTestResult = wvChat.getHitTestResult();
-        switch (hitTestResult.getType()) {
-            case WebView.HitTestResult.UNKNOWN_TYPE:
-            case WebView.HitTestResult.EDIT_TEXT_TYPE:
-                break;
-            default: {
-                showLinkMenu(hitTestResult.getExtra());
-            }
-        }
-    }
-
     private void showCompanionProfile() {
         //ProfileWebViewActivity.startActivity(this, m_Id, m_Nick);
         ProfileFragment.showProfile(m_Id, m_Nick);
     }
 
+    @Override
     public void showLinkMenu(final String link) {
         if (TextUtils.isEmpty(link) || link.contains("HTMLOUT.ru")
                 || link.equals("#")

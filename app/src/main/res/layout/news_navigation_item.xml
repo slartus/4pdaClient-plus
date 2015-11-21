@@ -6,6 +6,6 @@
     android:gravity="center_vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:textAppearance="?android:textAppearanceMedium"
+    android:textSize="18sp"
     android:textColor="#ffffffff"
     android:maxLines="1"/>

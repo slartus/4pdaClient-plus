@@ -51,18 +51,16 @@ public class NewDevDbApi {
         String pageBody = client.performGet(brandUrl + "/all");
 
         Document doc = Jsoup.parse(pageBody);
-        Elements con = doc.select("div.visual");
+        Elements con = doc.select("div.box-holder");
 
         for (int i = 0; i < con.size(); i++) {
-            String link = con.get(i).getElementsByTag("a").attr("href");
-            String title = con.get(i).getElementsByTag("a").attr("title");
-            String image = con.get(i).getElementsByTag("img").attr("src");
+            String link = con.get(i).select(".visual a").first().attr("href");
+            String title = con.get(i).select(".visual a").first().attr("title");
+            String image = con.get(i).select(".visual img").first().attr("src");
 
             DevModel model = new DevModel(link, title);
             model.setImgUrl(image);
-
-            Element content = doc.getElementsByClass("specifications-list").first();
-            model.setDescription(content.text());
+            model.setDescription(con.get(i).select(".frame .specifications-list").first().text());
 
             res.add(model);
         }

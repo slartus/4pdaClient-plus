@@ -10,13 +10,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:padding="8dp"
+        android:padding="12dp"
         android:text="Small Text"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="?attr/forum_header_text_color" />
+        android:textSize="16sp"
+        android:textStyle="bold"/>
 
     <View
-        android:background="#666666"
+        style="?Divider"
         android:layout_width="match_parent"
         android:layout_height="1dp" />
 </LinearLayout>

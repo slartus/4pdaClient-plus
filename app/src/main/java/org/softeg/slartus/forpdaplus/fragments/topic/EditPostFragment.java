@@ -16,9 +16,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -59,6 +56,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ImageFilePath;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView;
+import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
@@ -71,7 +69,7 @@ import java.util.TimerTask;
 /**
  * Created by radiationx on 30.10.15.
  */
-public class EditPostFragment extends Fragment implements IBrickFragment {
+public class EditPostFragment extends GeneralFragment implements IBrickFragment {
 
     public static final int NEW_EDIT_POST_REQUEST_CODE = App.getInstance().getUniqueIntValue();
     public static final String TOPIC_BODY_KEY = "EditPostActivity.TOPIC_BODY_KEY";
@@ -150,12 +148,56 @@ public class EditPostFragment extends Fragment implements IBrickFragment {
     public ActionBar getSupportActionBar() {
         return ((AppCompatActivity)getActivity()).getSupportActionBar();
     }
+
+    @Override
+    public Menu getMenu() {
+        return menu;
+    }
+
+    @Override
+    public boolean closeTab() {
+        if (!TextUtils.isEmpty(txtPost.getText())) {
+            new MaterialDialog.Builder(getActivity())
+                    .title("Подтвердите действие")
+                    .content("Имеется введенный текст сообщения! Закрыть?")
+                    .positiveText("Да")
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            ((MainActivity)getActivity()).removeTab(getTag());
+                        }
+                    })
+                    .negativeText("Отмена")
+                    .show();
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setArrow();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setArrow();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        removeArrow();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.edit_post_plus, container, false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        setHasOptionsMenu(true);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
 
         progress_search = (ProgressBar) findViewById(R.id.progress_search);
@@ -197,7 +239,7 @@ public class EditPostFragment extends Fragment implements IBrickFragment {
         });
 
         mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), txtPost);
-        mPopupPanelView.activityCreated(getActivity());
+        mPopupPanelView.activityCreated(getActivity(), view);
 
 
         try {
@@ -216,6 +258,12 @@ public class EditPostFragment extends Fragment implements IBrickFragment {
             m_EditPost.setAuthKey(authKey);
             mPopupPanelView.setTopic(forumId, topicId, authKey);
 
+            if (isNewPost()) {
+                if (args.getString("body")!=null) {
+                    txtPost.setText(args.getString("body"));
+                    txtPost.setSelection(txtPost.getText().length());
+                }
+            }
             setDataFromExtras(args.getBundle("extras"));
 
             startLoadPost(forumId, topicId, postId, authKey);
@@ -223,7 +271,7 @@ public class EditPostFragment extends Fragment implements IBrickFragment {
             AppLog.e(getActivity(), ex);
             ((MainActivity)getActivity()).removeTab(getTag());
         }
-        createActionMenu();
+        //createActionMenu();
         return view;
     }
 
@@ -331,25 +379,88 @@ public class EditPostFragment extends Fragment implements IBrickFragment {
             txtPost.setText(extras.get(Intent.EXTRA_TEXT).toString());
         if (extras.containsKey(Intent.EXTRA_HTML_TEXT))
             txtPost.setText(extras.get(Intent.EXTRA_HTML_TEXT).toString());
-
         if (isNewPost()) {
             if (extras.containsKey("body"))
                 txtPost.setText(extras.get("body").toString());
         }
         txtPost.setSelection(txtPost.getText().length());
     }
+    Menu menu;
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem item;
 
-
-    private void createActionMenu() {
-        FragmentManager fm = getChildFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        MenuFragment mFragment1 = (MenuFragment) fm.findFragmentByTag("f1");
-        if (mFragment1 == null) {
-            mFragment1 = new MenuFragment();
-            ft.add(mFragment1, "f1");
+        if (!isNewPost()) {
+            item = menu.add("Причина редактирования").setIcon(R.drawable.ic_pencil_white_24dp);
+            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    toggleEditReasonDialog();
+                    return true;
+                }
+            });
+            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
-        ft.commit();
+
+        item = menu.add("Поиск по тексту");
+        item.setActionView(R.layout.action_collapsible_search);
+        searchEditText = (EditText) item.getActionView().findViewById(R.id.editText);
+        searchEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN)
+                        && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    String text = searchEditText.getText() == null ? "" : searchEditText.getText().toString().trim();
+                    startSearch(text, true);
+                    searchEditText.requestFocus();
+                    return true;
+                }
+
+                return false;
+            }
+        });
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable mEdit) {
+                String text = mEdit.toString().trim();
+                startSearch(text, false);
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+        // Переделать для appcompat
+            /*item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+                @Override
+                public boolean onMenuItemActionExpand(MenuItem item) {
+                    getInterface().searchEditText.requestFocus();
+                    return true;
+                }
+
+                @Override
+                public boolean onMenuItemActionCollapse(MenuItem item) {
+                    getInterface().txtPost.setText(getInterface().clearPostHighlight());
+                    return true;
+                }
+            });*/
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+
+        /*item = menu.add("Скрыть панели");
+        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                hidePanels();
+                return true;
+            }
+        });
+
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        */
+        this.menu = menu;
     }
+
 
     private Boolean isNewPost() {
         return PostApi.NEW_POST_ID.equals(m_EditPost.getId());
@@ -1137,94 +1248,6 @@ public class EditPostFragment extends Fragment implements IBrickFragment {
 
     public EditText searchEditText;
 
-    public static final class MenuFragment extends Fragment {
-        public MenuFragment() {
-            super();
-        }
-
-        @Override
-        public void onCreate(Bundle saveInstance) {
-            super.onCreate(saveInstance);
-            setHasOptionsMenu(true);
-        }
-
-        @Override
-        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            super.onCreateOptionsMenu(menu, inflater);
-            MenuItem item;
-
-            if (!getInterface().isNewPost()) {
-                item = menu.add("Причина редактирования").setIcon(R.drawable.ic_pencil_white_24dp);
-                item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        getInterface().toggleEditReasonDialog();
-                        return true;
-                    }
-                });
-                item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-            }
-
-            item = menu.add("Поиск по тексту");
-            item.setActionView(R.layout.action_collapsible_search);
-            getInterface().searchEditText = (EditText) item.getActionView().findViewById(R.id.editText);
-            getInterface().searchEditText.setOnKeyListener(new View.OnKeyListener() {
-                @Override
-                public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                    if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN)
-                            && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                        String text = getInterface().searchEditText.getText() == null ? "" : getInterface().searchEditText.getText().toString().trim();
-                        getInterface().startSearch(text, true);
-                        getInterface().searchEditText.requestFocus();
-                        return true;
-                    }
-
-                    return false;
-                }
-            });
-            getInterface().searchEditText.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void afterTextChanged(Editable mEdit) {
-                    String text = mEdit.toString().trim();
-                    getInterface().startSearch(text, false);
-                }
-
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                }
-            });
-            // Переделать для appcompat
-            /*item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-                @Override
-                public boolean onMenuItemActionExpand(MenuItem item) {
-                    getInterface().searchEditText.requestFocus();
-                    return true;
-                }
-
-                @Override
-                public boolean onMenuItemActionCollapse(MenuItem item) {
-                    getInterface().txtPost.setText(getInterface().clearPostHighlight());
-                    return true;
-                }
-            });*/
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-
-            item = menu.add("Скрыть панели");
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    getInterface().hidePanels();
-                    return true;
-                }
-            });
-
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-        }
-
-        public EditPostFragment getInterface() {
-            return (EditPostFragment) getParentFragment();
-        }
-    }
 
 
     @Override

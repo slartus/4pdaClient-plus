@@ -41,7 +41,6 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
 //        fragment.setArguments(args);
 //        return fragment;
 //    }
-
     @Override
     public void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,12 +55,14 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
         getActivity().setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
         App.getInstance().getTabByTag(getTag()).setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
         TabDrawerMenu.notifyDataSetChanged();
+        setArrow();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         getActivity().setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
+        setArrow();
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
@@ -56,6 +60,7 @@ public class TabDrawerMenu {
         mDrawer = (RelativeLayout) findViewById(R.id.tab_drawer);
         mListView = (ListView) findViewById(R.id.tab_list);
         mListView.setOnItemClickListener(new TabOnClickListener());
+        mListView.setStackFromBottom(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("tabsBottom", false));
 
 
 
@@ -200,7 +205,24 @@ public class TabDrawerMenu {
             if(App.getInstance().getTabItems().size()>1) {
                 ((MainActivity) getContext()).tryRemoveTab(tag);
             }else {
-                close();
+                new MaterialDialog.Builder(getContext())
+                        .content("Закрыть приложение?")
+                        .positiveText("Да")
+                        .negativeText("Нет")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                                android.os.Process.killProcess(android.os.Process.myPid());
+                                System.exit(1);
+                            }
+                        })
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                                close();
+                            }
+                        })
+                        .show();
             }
         }
     }

@@ -14,7 +14,7 @@ android {
 
         targetSdkVersion 23
         versionCode 545
-        versionName "3.1.4b4"
+        versionName "3.1.4b6"
     }
     buildTypes {
         release {
@@ -36,6 +36,19 @@ android {
         }
     }
     productFlavors {
+        def defaultSigningVariable = signingConfigs.release
+        rel {
+            applicationId 'org.softeg.slartus.forpdaplus'
+            versionCode 546
+            versionName "3.1.4"
+            signingConfig defaultSigningVariable
+        }
+        beta {
+            applicationId 'org.softeg.slartus.forpdaplus.beta'
+            versionCode 548
+            versionName "3.1.4b10"
+            signingConfig defaultSigningVariable
+        }
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
@@ -47,15 +60,15 @@ android {
 }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:design:23.1.0'
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'com.android.support:cardview-v7:23.1.0'
-    compile 'com.android.support:recyclerview-v7:23.1.0'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:cardview-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
-    compile('com.github.afollestad.material-dialogs:core:0.8.5.0@aar') {
+    compile('com.github.afollestad.material-dialogs:core:0.8.5.1@aar') {
         transitive = true
     }
     compile 'de.hdodenhof:circleimageview:1.3.0'
@@ -63,7 +76,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'ch.acra:acra:4.6.2'
 
-    compile project(':newquickaction')
     compile project(':forpdacommon')
     compile project(':forpdanotifyservice')
     compile project(':4pdasources')

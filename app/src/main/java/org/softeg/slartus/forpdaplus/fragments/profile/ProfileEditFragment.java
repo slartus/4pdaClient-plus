@@ -32,6 +32,7 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -48,7 +49,7 @@ import java.util.regex.Matcher;
  */
 public class ProfileEditFragment extends WebViewFragment {
     private Menu menu;
-    private WebView m_WebView;
+    private AdvWebView m_WebView;
     private Handler mHandler = new android.os.Handler();
     public final static String m_Title = "Изменить личные данные";
     private String parentTag = App.getInstance().getCurrentFragmentTag();
@@ -61,7 +62,7 @@ public class ProfileEditFragment extends WebViewFragment {
 
 
     @Override
-    public WebView getWebView() {
+    public AdvWebView getWebView() {
         return m_WebView;
     }
 
@@ -87,6 +88,14 @@ public class ProfileEditFragment extends WebViewFragment {
     }
 
     @Override
+    public void reload() {}
+
+    @Override
+    public boolean closeTab() {
+        return false;
+    }
+
+    @Override
     public Menu getMenu() {
         return menu;
     }
@@ -96,7 +105,7 @@ public class ProfileEditFragment extends WebViewFragment {
         view = inflater.inflate(R.layout.profile_edit_activity, container, false);
         setHasOptionsMenu(true);
         assert view != null;
-        m_WebView = (WebView) view.findViewById(R.id.wvBody);
+        m_WebView = (AdvWebView) view.findViewById(R.id.wvBody);
         registerForContextMenu(m_WebView);
 
         m_WebView.getSettings();

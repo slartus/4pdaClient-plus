@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <integer name="spb_default_sections_count">4</integer>
-    <integer name="spb_default_interpolator">0</integer>
-</resources>

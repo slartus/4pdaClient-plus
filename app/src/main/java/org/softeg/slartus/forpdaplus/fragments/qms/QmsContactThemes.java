@@ -56,6 +56,18 @@ public class QmsContactThemes extends BaseLoaderListFragment {
 
     private Boolean DeleteMode = false;
     public Menu menu;
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        setArrow();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        removeArrow();
+    }
 
     @Override
     public Menu getMenu(){
@@ -91,6 +103,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         }
         if(m_Nick.equals(""))
             new GetUserTask(m_Id).execute();
+        setArrow();
     }
 
     private class GetUserTask extends AsyncTask<String, Void, Boolean> {

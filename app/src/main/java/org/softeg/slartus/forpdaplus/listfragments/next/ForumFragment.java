@@ -14,6 +14,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,12 +35,15 @@ import org.softeg.slartus.forpdaapi.Forum;
 import org.softeg.slartus.forpdaapi.ForumsApi;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdaapi.classes.ForumsData;
+import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ForumsTable;
+import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
+import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment;
@@ -55,7 +59,7 @@ import java.util.List;
 /*
  * Created by slartus on 24.02.2015.
  */
-public class ForumFragment extends Fragment implements
+public class ForumFragment extends GeneralFragment implements
         IBrickFragment, LoaderManager.LoaderCallbacks<ForumFragment.ForumBranch> {
     private static final String DATA_KEY = "BrickFragmentListBase.DATA_KEY";
     private static final String SCROLL_POSITION_KEY = "SCROLL_POSITION_KEY";
@@ -64,11 +68,22 @@ public class ForumFragment extends Fragment implements
     private RecyclerView mListView;
     private TextView mEmptyTextView;
     private ForumFragment.ForumBranch mData = createListData();
+    private SearchSettings mSearchSetting = SearchSettingsDialogFragment.createForumSearchSettings();
 
 
     private ForumsAdapter mAdapter;
     private String m_ForumId = null;
 
+
+    @Override
+    public Menu getMenu() {
+        return menu;
+    }
+
+    @Override
+    public boolean closeTab() {
+        return false;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -94,6 +109,7 @@ public class ForumFragment extends Fragment implements
     private Menu menu;
     @Override
     public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         menu.add("Обновить")
                 .setIcon(R.drawable.ic_refresh_white_24dp)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -160,16 +176,13 @@ public class ForumFragment extends Fragment implements
     @Override
     public void onPause() {
         super.onPause();
-        if(menu != null) {
-            menu.clear();
-            ((MainActivity) getActivity()).onCreateOptionsMenu(MainActivity.mainMenu);
-        }
+        MainActivity.searchSettings = SearchSettingsDialogFragment.createForumSearchSettings();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(menu!=null) onCreateOptionsMenu(menu, null);
+        MainActivity.searchSettings = mSearchSetting;
     }
     private void markAsRead() {
         if (!Client.getInstance().getLogined()) {
@@ -409,10 +422,17 @@ public class ForumFragment extends Fragment implements
             public void onItemClick(View v) {
                 int itemPosition = mListView.getChildPosition(v);
                 Forum forum = mData.getItems().get(itemPosition - mData.getCrumbs().size());
-                if (forum.isHasForums())
+                if (forum.isHasForums()) {
                     loadForum(forum.getId());
-                else
+                    SearchSettings searchSettings = new SearchSettings();
+                    searchSettings.setSource("all");
+                    searchSettings.getForumsIds().add(forum.getId() + "");
+                    mSearchSetting = searchSettings;
+                    MainActivity.searchSettings = mSearchSetting;
+                }
+                else {
                     ForumTopicsListFragment.showForumTopicsList(getActivity(), forum.getId(), forum.getTitle());
+                }
             }
 
             @Override

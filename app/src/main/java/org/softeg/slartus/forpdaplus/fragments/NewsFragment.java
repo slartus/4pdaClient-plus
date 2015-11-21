@@ -101,6 +101,16 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
 
     @Override
+    public void reload() {
+        refresh();
+    }
+
+    @Override
+    public boolean closeTab() {
+        return false;
+    }
+
+    @Override
     public WebViewClient MyWebViewClient() {
         return new MyWebViewClient();
     }
@@ -143,10 +153,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 Preferences.System.isDevStyle())
             Toast.makeText(getActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-
         webView = (AdvWebView) findViewById(R.id.wvBody);
         registerForContextMenu(webView);
         setWebViewSettings();
@@ -161,7 +167,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             }
         }
         loadImages = webView.getSettings().getLoadsImagesAutomatically();
-        webView.setActionBarheight(getSupportActionBar().getHeight());
+        //webView.setActionBarheight(getSupportActionBar().getHeight());
 
 
         webView.setWebViewClient(new MyWebViewClient());
@@ -241,7 +247,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         SubMenu optionsMenu = menu.addSubMenu("Настройки");
         optionsMenu.getItem().setIcon(R.drawable.ic_settings_white_24dp);
         optionsMenu.getItem().setTitle(R.string.Settings);
-        optionsMenu.add("Скрывать верхнюю панель")
+        /*optionsMenu.add("Скрывать верхнюю панель")
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         Preferences.setHideActionBar(!Preferences.isHideActionBar());
@@ -249,13 +255,13 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                         menuItem.setChecked(Preferences.isHideActionBar());
                         return true;
                     }
-                }).setCheckable(true).setChecked(Preferences.isHideActionBar());
+                }).setCheckable(true).setChecked(Preferences.isHideActionBar());*/
         if(!pencil) {
             optionsMenu.add("Скрывать карандаш")
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             Preferences.setHideFab(!Preferences.isHideFab());
-                            setHideActionBar();
+                            setHideFab();
                             menuItem.setChecked(Preferences.isHideFab());
                             return true;
                         }
@@ -313,19 +319,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 new SaveHtml(getActivity(), html, "News");
             }
         });
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-        WebView.HitTestResult hitTestResult = webView.getHitTestResult();
-        switch (hitTestResult.getType()) {
-            case WebView.HitTestResult.UNKNOWN_TYPE:
-            case WebView.HitTestResult.EDIT_TEXT_TYPE:
-                break;
-            default:
-                ExtUrl.showSelectActionDialog(mHandler, getActivity(),
-                        m_Title, "", hitTestResult.getExtra(), "", "", "", "", "");
-        }
     }
 
     @Override

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:project="http://schemas.android.com/apk/res/org.softeg.slartus.forpdaplus">
+    xmlns:project="http://schemas.android.com/apk/res-auto">
 
     <PreferenceScreen
         android:key="common"
@@ -66,6 +66,14 @@
             android:key="coloredNavBar"
             android:title="Красить Navigation Bar"
             android:summary="Для Android 5 и выше. Требуется перезапуск приложения"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="showBackArrow"
+            android:title="Показывать стрелку 'назад'"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="tabsBottom"
+            android:title="Список вкладок внизу"/>
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
             android:defaultValue="-1"
             android:entries="@array/screenOrienationArray"

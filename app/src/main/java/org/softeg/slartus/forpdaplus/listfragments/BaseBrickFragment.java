@@ -33,6 +33,11 @@ public abstract class BaseBrickFragment extends GeneralFragment{
         return menu;
     }
 
+    @Override
+    public boolean closeTab() {
+        return false;
+    }
+
     /**
      * Заголовок списка
      */

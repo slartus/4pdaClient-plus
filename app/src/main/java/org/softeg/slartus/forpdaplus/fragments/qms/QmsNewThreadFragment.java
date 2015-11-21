@@ -45,6 +45,12 @@ public class QmsNewThreadFragment extends GeneralFragment {
     public Menu getMenu() {
         return null;
     }
+
+    @Override
+    public boolean closeTab() {
+        return false;
+    }
+
     public static QmsNewThreadFragment newInstance(Bundle args){
         QmsNewThreadFragment fragment = new QmsNewThreadFragment();
         fragment.setArguments(args);

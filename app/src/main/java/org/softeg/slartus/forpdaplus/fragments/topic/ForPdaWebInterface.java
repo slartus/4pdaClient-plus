@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -25,21 +26,26 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import net.londatiga.android3d.ActionItem;
-import net.londatiga.android3d.QuickAction;
-
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.TopicAttaches;
+import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
+import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsNewThreadFragment;
+import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicReadersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicWritersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicReadersBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Created by slinkin on 23.06.2015.
@@ -475,53 +481,47 @@ public class ForPdaWebInterface {
         run(new Runnable() {
             @Override
             public void run() {
-                final QuickAction mQuickAction = new QuickAction(getActivity());
-                ActionItem actionItem;
+                List<String> items = new ArrayList<>();
+
+                int i = 0;
 
                 int plusRepPosition = -1;
-                if ("1".equals(canPlus)) {
-                    actionItem = new ActionItem();
-
-                    actionItem.setTitle("Поднять (+1)");
-                    plusRepPosition = mQuickAction.addActionItem(actionItem);
-                }
-
-                int showRepPosition;
-
-                actionItem = new ActionItem();
-                actionItem.setTitle("Посмотреть");
-
-                showRepPosition = mQuickAction.addActionItem(actionItem);
-
+                int showRepPosition = -1;
                 int minusRepPosition = -1;
-                if ("1".equals(canMinus)) {
-                    actionItem = new ActionItem();
-
-                    actionItem.setTitle("Опустить (-1)");
-                    minusRepPosition = mQuickAction.addActionItem(actionItem);
+                if ("1".equals(canPlus)) {
+                    items.add("Поднять (+1)");
+                    plusRepPosition = i; i++;
                 }
 
+                items.add("Посмотреть");
+                showRepPosition = i; i++;
 
-                if (mQuickAction.getItemsCount() == 0) return;
+                if ("1".equals(canMinus)) {
+                    items.add("Опустить (-1)");
+                    minusRepPosition = i; i++;
+                }
 
+                if (items.size() == 0) return;
 
                 final int finalMinusRepPosition = minusRepPosition;
                 final int finalShowRepPosition = showRepPosition;
                 final int finalPlusRepPosition = plusRepPosition;
-                mQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
-                    @Override
-                    public void onItemClick(QuickAction source, int pos, int actionId) {
-                        if (pos == finalMinusRepPosition) {
-                            UserReputationFragment.minusRep(getActivity(), new Handler(), postId, userId, userNick);
-                        } else if (pos == finalShowRepPosition) {
-                            getContext().showRep(userId);
-                        } else if (pos == finalPlusRepPosition) {
-                            UserReputationFragment.plusRep(getActivity(), new Handler(), postId, userId, userNick);
-                        }
-                    }
-                });
-
-                mQuickAction.show(getContext().getWebView(), getContext().getWebView().getLastMotionEvent());
+                new MaterialDialog.Builder(getActivity())
+                        .title("Репутация "+userNick)
+                        .items(items.toArray(new CharSequence[items.size()]))
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                                if (i == finalMinusRepPosition) {
+                                    UserReputationFragment.minusRep(getActivity(), new Handler(), postId, userId, userNick);
+                                } else if (i == finalShowRepPosition) {
+                                    getContext().showRep(userId);
+                                } else if (i == finalPlusRepPosition) {
+                                    UserReputationFragment.plusRep(getActivity(), new Handler(), postId, userId, userNick);
+                                }
+                            }
+                        })
+                        .show();
             }
         });
 

@@ -27,6 +27,18 @@ public class TopicWritersListFragment extends BaseLoaderListFragment {
     private String m_TopicId;
 
     @Override
+    public void onResume() {
+        super.onResume();
+        setArrow();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        removeArrow();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
@@ -34,6 +46,7 @@ public class TopicWritersListFragment extends BaseLoaderListFragment {
         } else if (getArguments() != null) {
             m_TopicId = getArguments().getString(TOPIC_ID_KEY);
         }
+        setArrow();
     }
 
     @Override

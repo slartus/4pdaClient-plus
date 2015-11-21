@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.R;
 
-/**
+/*
  * Created by slinkin on 15.08.13.
  */
 public class ExtEditTextPreference extends EditTextPreference {

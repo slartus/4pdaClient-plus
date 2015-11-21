@@ -31,6 +31,18 @@ public class TopicReadersListFragment extends BaseLoaderListFragment {
     UsersAdapter mAdapter;
 
     @Override
+    public void onResume() {
+        super.onResume();
+        setArrow();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        removeArrow();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
@@ -38,6 +50,7 @@ public class TopicReadersListFragment extends BaseLoaderListFragment {
         } else if (getArguments() != null) {
             m_TopicId = getArguments().getString(TOPIC_ID_KEY);
         }
+        setArrow();
     }
 
     @Override

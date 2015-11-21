@@ -4,6 +4,7 @@ package org.softeg.slartus.forpdaplus.listfragments.next;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 
@@ -11,7 +12,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 /*
  * Created by slinkin on 25.09.2014.
  */
-public abstract class BrickFragmentBase extends Fragment implements
+public abstract class BrickFragmentBase extends GeneralFragment implements
         IBrickFragment {
 
 

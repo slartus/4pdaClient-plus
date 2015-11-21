@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -21,15 +20,9 @@ import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragme
 public class FragmentActivity extends AppCompatActivity
         implements SearchSettingsDialogFragment.ISearchDialogListener {
     public static final String SENDER_ACTIVITY = "sender_activity";
-    public static final String FORCE_EXIT_APPLICATION = "org.softeg.slartus.forpdaplus.FORCE_EXIT_APPLICATION";
     public LinearLayout statusBar;
     public boolean statusBarShowed = false;
     public boolean hack = false;
-
-    protected void afterCreate() {
-
-    }
-
     public Context getContext() {
         return this;
     }
@@ -65,31 +58,6 @@ public class FragmentActivity extends AppCompatActivity
     @Override
     public void onActivityReenter(int resultCode, Intent data) {
         super.onActivityReenter(resultCode, data);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        checkIfForceKill();
-    }
-
-    private void checkIfForceKill() {
-        //CHECK IF I NEED TO KILL THE APP
-        // Restore preferences
-        SharedPreferences settings = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        boolean forceKill = settings.getBoolean(
-                FORCE_EXIT_APPLICATION, false);
-
-        if (forceKill) {
-            //CLEAR THE FORCE_EXIT SETTINGS
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putBoolean(FORCE_EXIT_APPLICATION, false);
-            // Commit the edits!
-            editor.apply();
-            //HERE STOP ALL YOUR SERVICES
-            finish();
-        }
     }
 
     protected Bundle args = new Bundle();
@@ -154,7 +122,6 @@ public class FragmentActivity extends AppCompatActivity
             args.putAll(saveInstance);
         }
 
-        afterCreate();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         loadPreferences(prefs);
     }

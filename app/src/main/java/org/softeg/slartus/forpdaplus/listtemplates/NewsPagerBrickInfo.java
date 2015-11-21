@@ -3,7 +3,7 @@ package org.softeg.slartus.forpdaplus.listtemplates;
 import android.support.v4.app.Fragment;
 
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.listfragments.news.NewsNavigationFragment;
+import org.softeg.slartus.forpdaplus.listfragments.news.NewsListFragment;
 
 import java.io.Serializable;
 
@@ -28,6 +28,6 @@ public class NewsPagerBrickInfo extends BrickInfo implements Serializable{
 
     @Override
     public Fragment createFragment() {
-        return NewsNavigationFragment.createInstance(this);
+        return NewsListFragment.newInstance("");
     }
 }
