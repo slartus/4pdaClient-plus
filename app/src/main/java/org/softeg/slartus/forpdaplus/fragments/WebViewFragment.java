@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -22,9 +23,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
+import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
@@ -349,24 +352,35 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
 
             }
         });
-        new MaterialDialog.Builder(getActivity())
+        MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                 .title("Размер шрифта")
-                .customView(v,true)
+                .customView(v, true)
                 .positiveText("OK")
                 .negativeText("Отмена")
-                .callback(new MaterialDialog.ButtonCallback() {
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onPositive(MaterialDialog dialog) {
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
                         Preferences.setFontSize(Prefix(), seekBar.getProgress() + 1);
                     }
-
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
                     @Override
-                    public void onNegative(MaterialDialog dialog) {
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
                         getWebView().getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
                     }
                 })
                 .show();
-
+        dialog.setActionButton(DialogAction.NEUTRAL, "Сброс");
+        View neutral = dialog.getActionButton(DialogAction.NEUTRAL);
+        neutral.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                seekBar.setProgress(15);
+                Preferences.setFontSize(Prefix(), 16);
+                getWebView().getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
+            }
+        });
+        dialog.show();
     }
     public void showStylesDialog(final SharedPreferences prefs) {
         try {

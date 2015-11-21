@@ -55,7 +55,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="20dp"
-                android:maxLines="2"
                 android:text="Sub main textySub main textySub main textySub main textySub main texty"
                 android:textAppearance="?android:textAppearanceSmall"/>
 

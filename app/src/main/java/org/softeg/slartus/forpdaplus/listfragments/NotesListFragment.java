@@ -60,7 +60,20 @@ public class NotesListFragment extends TopicsListFragment {
         final IListItem topic = (IListItem) o;
 
         if (TextUtils.isEmpty(topic.getId())) return;
-        NoteFragment.showNote(topic.getId().toString());
+
+        try {
+            Note note = NotesTable.getNote(topic.getId().toString());
+            if (note != null) {
+                if (note.Url!=null) {
+                    IntentActivity.tryShowUrl((Activity) getContext(), mHandler, note.Url, true, false, null);
+                }else {
+                    NoteFragment.showNote(topic.getId().toString());
+                }
+            }
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
