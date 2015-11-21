@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus.controls.quickpost.items;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,10 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.MainActivity;
+import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.fragments.topic.EditPostFragment;
+import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 
@@ -52,35 +57,35 @@ public class SettingsQuickView extends BaseQuickView {
         enableSign.setLayoutParams(params);
         linearLayout.addView(enableSign);
 
-        /*
         extendedFormButton = new AppCompatButton(getContext());
         extendedFormButton.setText("Расширенная форма");
         extendedFormButton.setLayoutParams(params);
-        extendedFormButton.setTextColor(getResources().getColor(R.color.black));
+        //extendedFormButton.setTextColor(getResources().getColor(R.color.black));
         extendedFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (getTopicId() == null || getAuthKey() == null || getPostBody() == null)
                     return;
-                EditPostActivity.newPost((Activity) getContext(), getForumId() == null ? null : getForumId().toString(),
+                ((ThemeFragment) App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getFragment()).hideMessagePanel();
+                EditPostFragment.newPost((MainActivity) getContext(), getForumId() == null ? null : getForumId().toString(),
                         getTopicId().toString(), getAuthKey().toString(),
-                        getPostBody().toString());
+                        getPostBody().toString(), App.getInstance().getCurrentFragmentTag());
             }
         });
         linearLayout.addView(extendedFormButton);
-        */
 
-//        attachesButton = new Button(getContext());
-//        attachesButton.setText("Прикреплённые файлы");
-//        attachesButton.setLayoutParams(params);
-//        attachesButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                EditPostActivity.newPost((Activity)getContext(), getForumId().toString(), getTopicId().toString(), getAuthKey().toString(),
-//                        getPostBody().toString());
-//            }
-//        });
-//        linearLayout.addView(attachesButton);
+
+        /*attachesButton = new Button(getContext());
+        attachesButton.setText("Прикреплённые файлы");
+        attachesButton.setLayoutParams(params);
+        attachesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //EditPostActivity.newPost((MainActivity) getContext(), getForumId().toString(), getTopicId().toString(), getAuthKey().toString(), getPostBody().toString());
+                EditPostFragment.newPost((MainActivity) getContext(), getForumId().toString(), getTopicId().toString(), getAuthKey().toString(), getPostBody().toString(), App.getInstance().getCurrentFragmentTag());
+            }
+        });
+        linearLayout.addView(attachesButton);*/
 
         return linearLayout;
     }

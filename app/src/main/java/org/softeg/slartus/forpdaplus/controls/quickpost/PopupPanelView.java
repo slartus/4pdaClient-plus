@@ -252,6 +252,9 @@ public class PopupPanelView {
             if (popupWindow != null)
                 popupWindow.dismiss();
             popupWindow = null;
+            for(QuickPostItem item:mQuickPostPagerAdapter.mItems)
+                if(item.getName().equals("emotics"))
+                    ((EmoticsItem)item).getEmoticsQuickView().onDestroy();
         } catch (Throwable ex) {
             Log.e("PopupPanelView", ex.toString());
         }

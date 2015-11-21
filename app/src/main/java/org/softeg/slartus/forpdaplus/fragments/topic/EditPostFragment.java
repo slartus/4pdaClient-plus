@@ -239,7 +239,7 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
         });
 
         mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), txtPost);
-        mPopupPanelView.activityCreated(getActivity());
+        mPopupPanelView.activityCreated(getActivity(), view);
 
 
         try {
