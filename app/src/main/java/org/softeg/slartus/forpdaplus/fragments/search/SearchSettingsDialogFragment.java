@@ -104,6 +104,8 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         searchSettings.load(prefs);
         searchSettings.setQuery("");
         searchSettings.setUserName("");
+        searchSettings.getForumsIds().clear();
+        searchSettings.getForumsIds().add("all");
         searchSettings.getTopicIds().clear();
         return searchSettings;
     }

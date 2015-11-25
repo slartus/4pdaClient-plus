@@ -112,7 +112,7 @@ public class ReputationsApi {
             rep.setDescription(tdElement.text());
 
             tdElement = tdElements.get(3);
-            rep.setState(tdElement.html().contains("up.gif") ? IListItem.STATE_GREEN : IListItem.STATE_RED);
+            rep.setState(tdElement.html().contains("JK4K4EiyOnTIi8cEGIZu8z1dhJGJSK8pJ5Ex.gif") ? IListItem.STATE_GREEN : IListItem.STATE_RED);
 
             tdElement = tdElements.get(4);
             rep.setDate(tdElement.text());

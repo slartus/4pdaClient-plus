@@ -872,10 +872,8 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
             }
 
             if (success) {
-                ((ThemeFragment)((MainActivity)getActivity())
-                        .getSupportFragmentManager()
-                        .findFragmentByTag(parentTag))
-                        .showTheme(ThemeFragment.getThemeUrl(m_EditPost.getTopicId(), "view=findpost&p=" + m_EditPost.getId()));
+                ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment())
+                        .showTheme(ThemeFragment.getThemeUrl(m_EditPost.getTopicId(), "view=findpost&p=" + m_EditPost.getId()), true);
                 ((MainActivity) getActivity()).removeTab(getTag());
                 MainActivity.selectTabByTag(parentTag);
 
@@ -1024,11 +1022,9 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
                     Toast.makeText(getActivity(), "Ошибка: " + mError, Toast.LENGTH_LONG).show();
                     return;
                 }
-                ((ThemeFragment)((MainActivity)getActivity())
-                        .getSupportFragmentManager()
-                        .findFragmentByTag(parentTag))
+                ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment())
                         .showTheme(String.format("http://4pda.ru/forum/index.php?showtopic=%s&%s", m_EditPost.getTopicId(),
-                                isNewPost() ? "view=getlastpost" : "view=findpost&p=" + m_EditPost.getId()));
+                                isNewPost() ? "view=getlastpost" : "view=findpost&p=" + m_EditPost.getId()), true);
                 ((MainActivity)getActivity()).removeTab(getTag());
                 MainActivity.selectTabByTag(parentTag);
             } else {

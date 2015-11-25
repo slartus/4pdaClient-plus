@@ -1349,6 +1349,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         return url;
     }
 
+    public void showTheme(String url, boolean clearText) {
+        if(clearText) mQuickPostFragment.clearPostBody();
+        showTheme(url);
+    }
+
     public void showTheme(String url) {
         try {
             closeSearch();

@@ -112,7 +112,8 @@ public class UserReputationFragment extends BrickFragmentListBase {
         super.onLoadFinished(loader,data);
         if(data.getEx()==null){
             if(data instanceof ReputationsListData){
-                ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(((ReputationsListData) data).getRep());
+                if(getSupportActionBar()!=null)
+                    getSupportActionBar().setSubtitle(((ReputationsListData) data).getRep());
                 Args.putString(USER_NICK_KEY, ((ReputationsListData) data).getUser());
             }
         }

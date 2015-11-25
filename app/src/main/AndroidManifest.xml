@@ -20,6 +20,7 @@
         tools:replace="android:icon"
         android:icon="@drawable/icon_mat"
         android:name=".App"
+        android:largeHeap="true"
         android:theme="@style/MainPinkBL">
         <activity
             android:name=".MainActivity"
