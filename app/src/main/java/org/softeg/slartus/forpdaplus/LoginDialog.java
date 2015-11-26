@@ -97,6 +97,10 @@ public class LoginDialog {
     public static void logout(Context context) {
         LogoutTask logoutTask = new LogoutTask(context);
         logoutTask.execute();
+        PreferenceManager.getDefaultSharedPreferences(context).edit()
+                .putBoolean("isRecdRepImage", false)
+                .putString("repPlusImage", "http://s.4pda.to/ShmfPSURw3VD2aNlTerb3hvYwGCMxd4z0muJ.gif")
+                .apply();
     }
 
     public class CapTask extends AsyncTask<String, Void, LoginForm> {
