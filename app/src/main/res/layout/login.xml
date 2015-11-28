@@ -10,31 +10,50 @@
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
-            <EditText
-                android:id="@+id/username_edit"
-                android:singleLine="true"
-                android:layout_width="fill_parent"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/login_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minWidth="250dp"
-                android:scrollHorizontally="true"
-                android:capitalize="none"
-                android:autoText="false"
-                android:hint="@string/UserNameLogin"/>
-            <EditText
-                android:id="@+id/password_edit"
-                android:singleLine="true"
-                android:layout_width="fill_parent"
+                android:layout_marginTop="4dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <EditText
+                    android:id="@+id/username_edit"
+                    android:singleLine="true"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:minWidth="250dp"
+                    android:scrollHorizontally="true"
+                    android:capitalize="none"
+                    android:autoText="false"
+                    android:hint="@string/UserNameLogin"/>
+
+            </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/password_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minWidth="250dp"
-                android:scrollHorizontally="true"
-                android:capitalize="none"
-                android:autoText="false"
-                android:password="true"
-                android:inputType="textPassword"
-                android:hint="@string/Password"
-                android:layout_marginTop="4dp"/>
+                android:layout_marginTop="4dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <EditText
+                    android:id="@+id/password_edit"
+                    android:singleLine="true"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:minWidth="250dp"
+                    android:scrollHorizontally="true"
+                    android:capitalize="none"
+                    android:autoText="false"
+                    android:password="true"
+                    android:inputType="textPassword"
+                    android:hint="@string/Password"
+                    android:layout_marginTop="4dp"/>
+
+            </android.support.design.widget.TextInputLayout>
+
 
             <ImageView
                 android:id="@+id/cap_img"
@@ -42,17 +61,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:minHeight="150dp" />
-            <EditText
-                android:id="@+id/cap_value_ed"
-                android:singleLine="true"
-                android:layout_width="fill_parent"
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/cap_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minWidth="250dp"
-                android:scrollHorizontally="true"
-                android:capitalize="none"
-                android:autoText="false"
-                android:hint="Число с картинки"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="4dp"
+                android:foreground="?android:attr/selectableItemBackground">
+
+                <EditText
+                    android:id="@+id/cap_value_ed"
+                    android:singleLine="true"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:minWidth="250dp"
+                    android:scrollHorizontally="true"
+                    android:capitalize="none"
+                    android:autoText="false"
+                    android:hint="Число с картинки"/>
+
+            </android.support.design.widget.TextInputLayout>
+
 
             <CheckBox
                 android:id="@+id/privacy_checkbox"

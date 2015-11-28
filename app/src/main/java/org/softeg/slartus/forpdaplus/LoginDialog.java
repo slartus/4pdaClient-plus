@@ -9,14 +9,17 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.softeg.slartus.forpdaapi.ProfileApi;
 import org.softeg.slartus.forpdaapi.classes.LoginForm;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.controls.imageview.MaterialImageLoading;
 
 /**
  * User: slinkin
@@ -31,6 +34,8 @@ public class LoginDialog {
     final EditText password_edit;
     CheckBox privacy_checkbox;
     View mView;
+    ImageView mImageView;
+    ProgressBar mProgressBar;
 
     private Context mContext;
 
@@ -39,6 +44,8 @@ public class LoginDialog {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mView = inflater.inflate(R.layout.login, null);
 
+        mImageView = (ImageView) mView.findViewById(R.id.cap_img);
+        mProgressBar = (ProgressBar) mView.findViewById(R.id.progressBar2);
         username_edit = (EditText) mView.findViewById(R.id.username_edit);
         password_edit = (EditText) mView.findViewById(R.id.password_edit);
         privacy_checkbox = (CheckBox) mView.findViewById(R.id.privacy_checkbox);
@@ -131,10 +138,21 @@ public class LoginDialog {
 
         // can use UI thread here
         protected void onPostExecute(final LoginForm loginForm) {
-            mView.findViewById(R.id.progressBar2).setVisibility(View.GONE);
 
             if (loginForm.getError() == null) {
-                Picasso.with(mContext).load(loginForm.getCapPath()).into((ImageView) mView.findViewById(R.id.cap_img));
+                Picasso.with(mContext).load(loginForm.getCapPath()).into(mImageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        MaterialImageLoading.animate(mImageView).setDuration(2000).start();
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        Toast.makeText(mContext, "Не удалось загрузить капчу", Toast.LENGTH_SHORT).show();
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                });
 
                 capD = loginForm.getCapD();
                 capS = loginForm.getCapS();
@@ -303,8 +321,5 @@ public class LoginDialog {
 
             }
         }
-
-
     }
-
 }
