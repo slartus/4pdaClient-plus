@@ -37,7 +37,7 @@ public class ReputationsApi {
      * @throws java.io.IOException
      */
     public static ReputationsListData loadReputation(IHttpClient httpClient, String userId, Boolean self,
-                                                     ListInfo listInfo)
+                                                     ListInfo listInfo, String plusImage)
             throws IOException, URISyntaxException {
 
 
@@ -112,7 +112,7 @@ public class ReputationsApi {
             rep.setDescription(tdElement.text());
 
             tdElement = tdElements.get(3);
-            rep.setState(tdElement.html().contains("up.gif") ? IListItem.STATE_GREEN : IListItem.STATE_RED);
+            rep.setState(tdElement.html().contains(plusImage) ? IListItem.STATE_GREEN : IListItem.STATE_RED);
 
             tdElement = tdElements.get(4);
             rep.setDate(tdElement.text());

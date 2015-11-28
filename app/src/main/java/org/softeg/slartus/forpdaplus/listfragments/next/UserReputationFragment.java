@@ -2,11 +2,14 @@ package org.softeg.slartus.forpdaplus.listfragments.next;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -18,6 +21,9 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.ReputationEvent;
@@ -33,6 +39,7 @@ import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.UserReputationBrickInfo;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /*
@@ -60,7 +67,24 @@ public class UserReputationFragment extends BrickFragmentListBase {
     public boolean closeTab() {
         return false;
     }
+    private class getRepPlusImage extends AsyncTask<Void, Void, Void>{
 
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                String body = Client.getInstance().performGet("http://4pda.ru/forum/index.php?act=rep&view=history&mid=2556269&mode=to&order=asc");
+                Document doc = Jsoup.parse(body);
+                Element el = doc.select("#ipbwrapper .borderwrap .ipbtable tbody").first();
+                //Log.e("kek", el+"");
+                String plusImage = el.select("tr:nth-last-child(2) td img").first().attr("src");
+                if(plusImage!=null)
+                    getPreferences().edit().putString("repPlusImage", plusImage).apply();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,10 +133,11 @@ public class UserReputationFragment extends BrickFragmentListBase {
     }
     @Override
     public void onLoadFinished(Loader<ListData> loader, ListData data) {
-        super.onLoadFinished(loader,data);
+        super.onLoadFinished(loader, data);
         if(data.getEx()==null){
             if(data instanceof ReputationsListData){
-                ((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(((ReputationsListData) data).getRep());
+                if(getSupportActionBar()!=null)
+                    getSupportActionBar().setSubtitle(((ReputationsListData) data).getRep());
                 Args.putString(USER_NICK_KEY, ((ReputationsListData) data).getUser());
             }
         }
@@ -153,6 +178,11 @@ public class UserReputationFragment extends BrickFragmentListBase {
     protected AsyncTaskLoader<ListData> createLoader(int id, Bundle args) {
         ItemsLoader loader = null;
         if (id == ItemsLoader.ID) {
+            if(Client.getInstance().getLogined()&!getPreferences().getBoolean("isRecdRepImage", false))
+                    new getRepPlusImage().execute();
+            else
+                getPreferences().edit().putBoolean("isRecdRepImage", false).apply();
+
             setLoading(true);
             loader = new ItemsLoader(getActivity(), args);
 
@@ -245,7 +275,8 @@ public class UserReputationFragment extends BrickFragmentListBase {
                 listInfo.setFrom(getArgs().getBoolean(IS_REFRESH_KEY) ? 0 : getArgs().getInt(START_KEY));
                 return ReputationsApi.loadReputation(Client.getInstance(),
                         args.getString(USER_ID_KEY),
-                        args.getBoolean(USER_FROM_KEY), listInfo);
+                        args.getBoolean(USER_FROM_KEY), listInfo,
+                        PreferenceManager.getDefaultSharedPreferences(App.getContext()).getString("repPlusImage", "http://s.4pda.to/ShmfPSURw3VD2aNlTerb3hvYwGCMxd4z0muJ.gif"));
             } catch (Throwable e) {
                 ListData forumPage = new ListData();
                 forumPage.setEx(e);
