@@ -33,6 +33,7 @@ import org.softeg.slartus.forpdaplus.HttpHelper;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
+import org.softeg.slartus.forpdaplus.utils.SystemUiHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ import javax.microedition.khronos.egl.EGLContext;
 import javax.microedition.khronos.egl.EGLDisplay;
 
 import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 //import android.widget.ShareActionProvider;
 
@@ -181,10 +183,11 @@ public class ImageViewFragment extends BaseFragment {
     private class SamplePagerAdapter extends PagerAdapter {
         SparseArray<View> views = new SparseArray<>();
         private LayoutInflater inflater;
+        private SystemUiHelper mUiHelper = new SystemUiHelper(getActivity(), SystemUiHelper.FLAG_IMMERSIVE_STICKY, 0);
+        private static final int HIDE_DELAY = 300;
 
         public SamplePagerAdapter() {
             inflater = LayoutInflater.from(getActivity());
-
         }
 
         @Override
@@ -232,6 +235,12 @@ public class ImageViewFragment extends BaseFragment {
             assert imageLayout != null;
             final View progressView = imageLayout.findViewById(R.id.progressBar);
             m_PhotoView = (PhotoView) imageLayout.findViewById(R.id.iv_photo);
+            m_PhotoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                @Override
+                public void onPhotoTap(View view, float x, float y) {
+                    mUiHelper.toggle();
+                }
+            });
 
             m_PhotoView.setMaximumScale(10f);
 
@@ -301,11 +310,13 @@ public class ImageViewFragment extends BaseFragment {
                         @Override
                         public void onSuccess() {
                             progressView.setVisibility(View.GONE);
+                            MaterialImageLoading.animate(m_PhotoView).setDuration(2000).start();
+                            mUiHelper.delayHide(HIDE_DELAY);
+
                         }
 
                         @Override
                         public void onError() {
-                            progressView.setVisibility(View.GONE);
                         }
                     });
         }

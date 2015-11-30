@@ -75,9 +75,9 @@ dependencies {
     compile 'com.dmitriy-tarasov:android-intents:1.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'ch.acra:acra:4.6.2'
-
     compile project(':forpdacommon')
     compile project(':forpdanotifyservice')
     compile project(':4pdasources')
-
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.google.code.gson:gson:2.2.4'
 }
