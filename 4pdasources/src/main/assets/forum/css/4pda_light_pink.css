@@ -465,10 +465,21 @@ a {
   margin-top: -0.9em;
 }
 .container .content .content-box blockquote {
-  margin: 0.5em 0;
-  padding: 0.25em 0 0.25em 0.75em;
-  border-left: 0.5em solid #0277bd;
+  background: rgba(2, 119, 189, 0.1);
+  margin: 0.5em -1em;
+  padding: 1em;
+  padding-top: 0;
+  border-top: 1px solid #e9e9e9;
+  border-bottom: 1px solid #e9e9e9;
+  border-color: rgba(2, 119, 189, 0.1);
+}
+.container .content .content-box blockquote:before {
+  content: "Цитата";
+  height: 3em;
+  line-height: 3em;
   font-weight: bold;
+  display: block;
+  margin-bottom: 0.5em;
 }
 .container .content .content-box blockquote p {
   display: inline;
@@ -2091,8 +2102,8 @@ div[data-post] .post_body {
   clear: both;
 }
 .user-profile-list > li:first-child .user-box .photo {
-  width: 4.5em;
-  height: 4.5em;
+  width: 4em;
+  height: 4em;
   margin-right: 1em;
   float: left;
   overflow: hidden;
@@ -2117,7 +2128,7 @@ div[data-post] .post_body {
   display: block;
   margin: 0;
   font-size: 1em;
-  padding-top: 0.5em;
+  padding-top: 0.25em;
   line-height: 1em;
   padding-bottom: 0.1em;
 }

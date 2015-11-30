@@ -182,6 +182,10 @@
                 android:defaultValue="false"
                 android:key="system.developerGrid"
                 android:title="Сетка 8dp (8px)" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="system.developerBounds"
+                android:title="Границы элементов (outline)" />
         </PreferenceScreen>
 
         <CheckBoxPreference
