@@ -100,9 +100,9 @@
     </style>
 
     <style name="actionbar_trans" parent="@style/Widget.AppCompat.ActionBar">
-        <item name="android:background">@android:color/transparent</item>
+        <item name="android:background">@color/background_toolbar</item>
         <item name="android:windowActionBarOverlay">true</item>
-        <item name="background">@android:color/transparent</item>
+        <item name="background">@color/background_toolbar</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="elevation">2dp</item>
         <item name="displayOptions">homeAsUp|showTitle</item>

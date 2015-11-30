@@ -203,7 +203,6 @@ public class LoginDialog {
                     .build();
         }
 
-
         @Override
         protected Boolean doInBackground(String... params) {
             try {

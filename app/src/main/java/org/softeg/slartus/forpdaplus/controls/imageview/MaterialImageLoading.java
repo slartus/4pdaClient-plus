@@ -9,7 +9,6 @@ import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.ValueAnimator;
 
 public class MaterialImageLoading {
-
     private static final int DEFAULT_DURATION = 3000;
 
     public static MaterialImageLoading animate(ImageView imageView) {

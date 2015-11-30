@@ -18,7 +18,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:foreground="?android:attr/selectableItemBackground">
-
                 <EditText
                     android:id="@+id/username_edit"
                     android:singleLine="true"

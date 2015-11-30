@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="actionbar_trans" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:statusBarColor">@color/background_toolbar</item>
+
+        <item name="android:background">@color/background_toolbar</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="background">@color/background_toolbar</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="elevation">2dp</item>
+        <item name="displayOptions">homeAsUp|showTitle</item>
+        <item name="titleTextStyle">@style/actionbar_title</item>
+        <item name="subtitleTextStyle">@style/actionbar_subtitle</item>
+    </style>
+</resources>
