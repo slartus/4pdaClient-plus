@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -183,7 +185,10 @@ public class ImageViewFragment extends BaseFragment {
     private class SamplePagerAdapter extends PagerAdapter {
         SparseArray<View> views = new SparseArray<>();
         private LayoutInflater inflater;
-        private SystemUiHelper mUiHelper = new SystemUiHelper(getActivity(), SystemUiHelper.FLAG_IMMERSIVE_STICKY, 0);
+        private SystemUiHelper mUiHelper = new SystemUiHelper(getActivity(),
+                Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT?
+                        SystemUiHelper.FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES:
+                        SystemUiHelper.FLAG_IMMERSIVE_STICKY, 0);
         private static final int HIDE_DELAY = 300;
 
         public SamplePagerAdapter() {
