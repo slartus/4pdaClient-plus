@@ -78,7 +78,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         Bundle bundle = new Bundle();
         bundle.putString("mid", userId);
         bundle.putString("nick", userNick);
-        MainActivity.addTabByIntent(userNick, userId, newInstance(bundle));
+        MainActivity.addTab(userNick, userId, newInstance(bundle));
     }
 
     public static QmsContactThemes newInstance(Bundle args){

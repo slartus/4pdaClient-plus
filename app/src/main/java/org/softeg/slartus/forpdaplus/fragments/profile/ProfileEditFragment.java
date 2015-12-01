@@ -15,7 +15,6 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
@@ -57,7 +56,7 @@ public class ProfileEditFragment extends WebViewFragment {
     View view;
 
     public static void editProfile(){
-        MainActivity.addTabByIntent(m_Title, url, new ProfileEditFragment());
+        MainActivity.addTab(m_Title, url, new ProfileEditFragment());
     }
 
 

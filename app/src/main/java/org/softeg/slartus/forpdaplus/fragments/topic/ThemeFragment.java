@@ -16,7 +16,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -24,8 +23,6 @@ import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -65,9 +62,6 @@ import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewDialogFragment;
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
-import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
-import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
-import org.softeg.slartus.forpdaplus.fragments.qms.QmsNewThreadFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.NotesListFragment;
@@ -139,11 +133,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     public static void showTopicById(Context context, CharSequence topicId, CharSequence urlParams) {
         String url = getThemeUrl(topicId, urlParams);
-        MainActivity.addTabByIntent("Тема", url, newInstance(context, url));
+        MainActivity.addTab("Тема", url, newInstance(context, url));
     }
     public static void showTopicById(Context context, CharSequence topicId) {
         String url = getThemeUrl(topicId);
-        MainActivity.addTabByIntent("Тема", url, newInstance(context, url));
+        MainActivity.addTab("Тема", url, newInstance(context, url));
     }
 
     public static void showImgPreview(final FragmentActivity context, String title, String previewUrl,

@@ -62,9 +62,6 @@ public class TabDrawerMenu {
         mListView.setOnItemClickListener(new TabOnClickListener());
         mListView.setStackFromBottom(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("tabsBottom", false));
 
-
-
-        //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.END);
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mDrawer.getLayoutParams();
         params.width = (int) dpWidth;
         if ("right".equals(Preferences.System.getDrawerMenuPosition())) {
@@ -81,8 +78,7 @@ public class TabDrawerMenu {
     private class TabOnClickListener implements ListView.OnItemClickListener{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Object o = adapter.getItem(position);
-            selectTab((TabItem)o);
+            selectTab((TabItem) adapter.getItem(position));
             close();
         }
     }
@@ -90,21 +86,9 @@ public class TabDrawerMenu {
         adapter.notifyDataSetChanged();
     }
 
-    public void addTab(String name, String url, String tag, Fragment fragment, boolean select){
-        TabItem item = null;
-        if(App.getInstance().isContainsByUrl(url)){
-            if(select) item = App.getInstance().getTabByUrl(url);
-        }else if(!App.getInstance().isContainsByTag(tag)) {
-
-            item = new TabItem(name, url, tag, fragment);
-            App.getInstance().getTabItems().add(item);
-            App.getInstance().plusTabIterator();
-            adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
-            mListView.setAdapter(adapter);
-        }else {
-            if(select) item = App.getInstance().getTabByTag(tag);
-        }
-        if(select) selectTab(item);
+    public void setAdapter(){
+        adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
+        mListView.setAdapter(adapter);
     }
 
     public void removeTab(String tag){

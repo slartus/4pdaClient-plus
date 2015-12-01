@@ -126,7 +126,7 @@ public class DevDbDeviceFragment extends GeneralFragment {
     public static void showDevice(String deviceId) {
         Bundle args = new Bundle();
         args.putString(DEVICE_ID_KEY, deviceId);
-        MainActivity.addTabByIntent(deviceId, newInstance(args));
+        MainActivity.addTab(deviceId, newInstance(args));
     }
 
     public void loadPage() {

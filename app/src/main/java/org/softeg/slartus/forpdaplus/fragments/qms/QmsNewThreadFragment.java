@@ -60,7 +60,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
         Bundle args = new Bundle();
         args.putString(USER_ID_KEY, userId);
         args.putString(USER_NICK_KEY, userNick);
-        MainActivity.addTabByIntent(userNick, newInstance(args));
+        MainActivity.addTab(userNick, newInstance(args));
     }
 
     @Nullable

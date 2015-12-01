@@ -141,7 +141,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     public static void showProfile(String userId, String userNick){
-        MainActivity.addTabByIntent(userNick, "http://4pda.ru/forum/index.php?showuser=" + userId, newInstance(userId, userNick));
+        MainActivity.addTab(userNick, "http://4pda.ru/forum/index.php?showuser=" + userId, newInstance(userId, userNick));
     }
     public static ProfileFragment newInstance(String userId, String userNick) {
         Bundle args = new Bundle();

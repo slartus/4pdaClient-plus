@@ -6,11 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -40,7 +36,6 @@ import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseTaskListFragment;
-import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.NewsListAdapter;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.NewsListPreferencesActivity;
@@ -365,12 +360,8 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
             final News news = (News) o;
             if (TextUtils.isEmpty(news.getId())) return;
 
-            //Toast.makeText(getContext(),news.getUrl(),Toast.LENGTH_SHORT).show();
-            //NewsActivity.shownews(getContext(), news.getUrl());
-            //((MainActivity)getActivity()).selectItem(new FavoritesBrickInfo());
-            ((MainActivity)getActivity())
-                    .addTab(news.getTitle().toString(), news.getUrl(),
-                            NewsFragment.newInstance(getActivity(), news.getUrl()));
+            MainActivity.addTab(news.getTitle().toString(), news.getUrl(),
+                    NewsFragment.newInstance(getActivity(), news.getUrl()));
             mAdapter.notifyDataSetChanged();
 
         } catch (Throwable ex) {

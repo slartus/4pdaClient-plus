@@ -67,7 +67,7 @@ import java.util.regex.Pattern;
  * Time: 13:26
  * To change this template use File | Settings | File Templates.
  */
-public class IntentActivity extends FragmentActivity implements BricksListDialogFragment.IBricksListDialogCaller {
+public class IntentActivity extends MainActivity implements BricksListDialogFragment.IBricksListDialogCaller {
     public static final String ACTION_SELECT_TOPIC = "org.softeg.slartus.forpdaplus.SELECT_TOPIC";
     public static final String RESULT_TOPIC_ID = "org.softeg.slartus.forpdaplus.RESULT_TOPIC_ID";
 
@@ -150,7 +150,7 @@ public class IntentActivity extends FragmentActivity implements BricksListDialog
 
     public static Boolean tryShowNews(Activity context, String url, Boolean finish) {
         if (isNews(url)) {
-            MainActivity.addTabByIntent(url, NewsFragment.newInstance(context, url));
+            MainActivity.addTab(url, NewsFragment.newInstance(context, url));
             return true;
         }
         return false;
@@ -446,7 +446,7 @@ public class IntentActivity extends FragmentActivity implements BricksListDialog
     }
 
     public static void showTopic(Activity context, String url) {
-        MainActivity.addTabByIntent(url, ThemeFragment.newInstance(context, url));
+        MainActivity.addTab(url, ThemeFragment.newInstance(context, url));
     }
 
     private static boolean tryFavorites(Activity context, String url, Boolean finishActivity) {
@@ -558,7 +558,7 @@ public class IntentActivity extends FragmentActivity implements BricksListDialog
         } else {
             //ListFragmentActivity.showListFragment(context, QmsContactsBrickInfo.NAME, null);
             QmsContactsBrickInfo brickInfo = new QmsContactsBrickInfo();
-            MainActivity.addTabByIntent(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
+            MainActivity.addTab(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
         }
         if (finish)
             context.finish();

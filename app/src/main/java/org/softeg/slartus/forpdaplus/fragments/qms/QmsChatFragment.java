@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -93,11 +92,11 @@ public class QmsChatFragment extends WebViewFragment {
     private AsyncTask<ArrayList<String>, Void, Boolean> m_SendTask = null;
 
     public static void openChat(String userId, String userNick, String tid, String themeTitle, String pageBody){
-        MainActivity.addTabByIntent(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle, pageBody));
+        MainActivity.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle, pageBody));
     }
 
     public static void openChat(String userId, String userNick, String tid, String themeTitle){
-        MainActivity.addTabByIntent(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle));
+        MainActivity.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle));
     }
 
     public static QmsChatFragment newInstance(String userId, String userNick, String tid, String themeTitle, String pageBody) {

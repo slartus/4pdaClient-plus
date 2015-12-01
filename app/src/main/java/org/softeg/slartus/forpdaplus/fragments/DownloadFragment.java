@@ -67,7 +67,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
     private ImageView imgPullToLoadMore;
 
     public static void newInstance(){
-        MainActivity.addTabByIntent(TITLE, TEMPLATE, new DownloadFragment());
+        MainActivity.addTab(TITLE, TEMPLATE, new DownloadFragment());
     }
 
     private DownloadTasks getDownloadTasks() {

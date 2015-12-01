@@ -113,7 +113,7 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
         args.putString("postId", postId);
         args.putString("authKey", authKey);
         args.putString("parentTag", tag);
-        ((MainActivity) context).addTab("Ред. сообщения в "+App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
+        MainActivity.addTab("Ред. сообщения в " + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
     }
 
     public static void newPost(Activity context, String forumId, String topicId, String authKey,
@@ -126,7 +126,7 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
         args.putString("body", body);
         args.putString("authKey", authKey);
         args.putString("parentTag", tag);
-        ((MainActivity) context).addTab("Ответ в "+App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
+        MainActivity.addTab("Ответ в " + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
     }
 
     public static void newPostWithAttach(Context context, String forumId, String topicId, String authKey,
@@ -138,7 +138,7 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
         args.putString("postId", PostApi.NEW_POST_ID);
         args.putBundle("extras", extras);
         args.putString("authKey", authKey);
-        ((MainActivity) context).addTab("Ред. сообщения", url, newInstance(context, args));
+        MainActivity.addTab("Ред. сообщения", url, newInstance(context, args));
     }
 
     View view;

@@ -108,7 +108,7 @@ public class NoteFragment extends GeneralFragment {
     public static void showNote(String id) {
         Bundle args = new Bundle();
         args.putString(NOTE_ID_KEY, id);
-        MainActivity.addTabByIntent("Заметка", NOTE_ID_KEY + id, newInstance(args));
+        MainActivity.addTab("Заметка", NOTE_ID_KEY + id, newInstance(args));
     }
 
 
