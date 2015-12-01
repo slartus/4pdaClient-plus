@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
@@ -86,7 +85,7 @@ public class TabDrawerMenu {
         adapter.notifyDataSetChanged();
     }
 
-    public void setAdapter(){
+    public void refreshAdapter(){
         adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
         mListView.setAdapter(adapter);
     }
@@ -96,21 +95,21 @@ public class TabDrawerMenu {
 
         for(int i = 0; i <= App.getInstance().getTabItems().size()-1; i++){
             if(App.getInstance().getTabItems().get(i).getTag().equals(tag)) {
+                final TabItem tabItem = App.getInstance().getTabByTag(tag);
                 App.getInstance().getTabItems().remove(i);
-                if(tag.equals(App.getInstance().getCurrentFragmentTag()))
+
+                if(App.getInstance().getTabByTag(tabItem.getParentTag())!=null)
+                    App.getInstance().setCurrentFragmentTag(tabItem.getParentTag());
+                else if(tag.equals(App.getInstance().getCurrentFragmentTag()))
                     App.getInstance().setCurrentFragmentTag(App.getInstance().getTabItems().get(App.getInstance().getLastTabPosition(i)).getTag());
 
                 ((MainActivity)getContext()).showFragmentByTag(App.getInstance().getCurrentFragmentTag(), true);
                 ((MainActivity)getContext()).endActionFragment(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
-                adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
-                mListView.setAdapter(adapter);
+                refreshAdapter();
                 return;
             }
         }
     }
-
-
-
 
     public void close() {
         mDrawerLayout.closeDrawer(mDrawer);

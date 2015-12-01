@@ -19,13 +19,12 @@ public class TabItem{
         this.tag = tag;
         this.fragment = fragment;
     }
-    public TabItem(String title, String url, String tag, String parentTag, String subTitle, Fragment fragment){
+    public TabItem(String title, String url, String tag, String parentTag, Fragment fragment){
         this.title = title;
         this.url = url;
         this.tag = tag;
         this.fragment = fragment;
         this.parentTag = parentTag;
-        this.subTitle = subTitle;
     }
 
     public String getTitle() {

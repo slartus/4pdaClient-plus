@@ -15,9 +15,10 @@ public class ListCore {
         res.add(new ForumBrickInfo());
         res.add(new TopicsHistoryBrickInfo());
         res.add(new NotesBrickInfo());
-        res.add(new AppsBrickInfo());
+        res.add(new AppAndGame());
+        /*res.add(new AppsBrickInfo());
         res.add(new AppsGamesCatalogBrickInfo());
-        res.add(new DigestCatalogBrickInfo());
+        res.add(new DigestCatalogBrickInfo());*/
         res.add(new DevDbCatalogBrickInfo());
         return res;
     }

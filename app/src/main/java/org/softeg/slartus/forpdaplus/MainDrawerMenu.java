@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -16,6 +18,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,12 +35,14 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
+import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainDrawerMenu {
     private DrawerLayout mDrawerLayout;
@@ -210,7 +215,18 @@ public class MainDrawerMenu {
 
         @Override
         public void itemAction(BrickInfo item) {
-            selectItem(item);
+            if(item.getName().equals("AppAndGame")){
+                final List<ApplicationInfo> packages = getContext().getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
+                for (ApplicationInfo packageInfo : packages) {
+                    if(packageInfo.packageName.equals("ru.freeman42.app4pda")){
+                        getContext().startActivity(getContext().getPackageManager().getLaunchIntentForPackage(packageInfo.packageName));
+                        return;
+                    }
+                }
+                ThemeFragment.showTopicById(getContext(), "275433");
+            }else {
+                selectItem(item);
+            }
         }
     }
 
