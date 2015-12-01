@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     private MainDrawerMenu mMainDrawerMenu;
     private static TabDrawerMenu mTabDraweMenu;
-    private RelativeLayout leftDrawer,topInform;
+    private RelativeLayout topInform;
     public Toolbar toolbar;
     boolean top;
     int lastTheme;
@@ -125,18 +125,19 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             intent.addCategory(Intent.CATEGORY_HOME);
             setIntent(intent);
             lastTheme = App.getInstance().getThemeStyleResID();
-            if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            /*if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.JELLY_BEAN) {
                 getWindow().setFlags(
                         WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
                         WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+            }*/
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                getWindow().getDecorView()
+                        .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
             }
 
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-
             if (PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("coloredNavBar", true) &&
-                    android.os.Build.VERSION.SDK_INT >= 21)
+                    Build.VERSION.SDK_INT >= 21)
                 getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(getNavBarColor()));
 
 
@@ -154,10 +155,10 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_left_white_24dp);
             }
             if(PreferenceManager.getDefaultSharedPreferences(App.getContext()).getBoolean("statusbarTransparent", false)) {
-                if (android.os.Build.VERSION.SDK_INT >= 21)
+                if (Build.VERSION.SDK_INT >= 21)
                     getWindow().setStatusBarColor(Color.TRANSPARENT);
             }else {
-                if (android.os.Build.VERSION.SDK_INT > 18) {
+                if (Build.VERSION.SDK_INT > 18) {
                     LinearLayout statusBar = (LinearLayout) findViewById(R.id.statusBar);
                     statusBar.setMinimumHeight(getStatusBarHeight());
 
@@ -170,19 +171,19 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 }
             }
 
-            leftDrawer = (RelativeLayout) findViewById(R.id.left_drawer);
+            RelativeLayout leftDrawer = (RelativeLayout) findViewById(R.id.left_drawer);
             topInform = (RelativeLayout) findViewById(R.id.topInform);
             int scale = (int) getResources().getDisplayMetrics().density;
             boolean bottom = getPreferences().getBoolean("isMarginBottomNav",false);
             top = !getPreferences().getBoolean("isShowShortUserInfo",true);
             if(bottom){
-                leftDrawer.setPadding(0,0,0,(int) (48 * scale + 0.5f));
+                leftDrawer.setPadding(0, 0, 0, (int) (48 * scale + 0.5f));
             }
             if(top){
-                leftDrawer.setPadding(0,(int) (25 * scale + 0.5f),0,0);
+                leftDrawer.setPadding(0, (int) (25 * scale + 0.5f), 0, 0);
             }
             if(top&bottom){
-                leftDrawer.setPadding(0,(int) (25 * scale + 0.5f),0,(int) (48 * scale + 0.5f));
+                leftDrawer.setPadding(0, (int) (25 * scale + 0.5f), 0, (int) (48 * scale + 0.5f));
             }
 
             mTabDraweMenu = new TabDrawerMenu(this, this);
@@ -265,6 +266,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
 
     private boolean checkIntent(final Intent intent) {
+        log("intent: "+intent);
         if (IntentActivity.checkSendAction(this, intent))
             return false;
         //intent.setData(Uri.parse("http://4pda.ru/forum/lofiversion/index.php?t365142-1650.html"));

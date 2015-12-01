@@ -120,8 +120,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     public static Boolean tryShowYoutube(Activity context, String url, Boolean finish) {
         if (!isYoutube(url)) return false;
         PlayerActivity.showYoutubeChoiceDialog(context, url);
-        if (finish)
-            context.finish();
+
         return true;
     }
 
@@ -141,8 +140,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             args.putString(NewsListFragment.NEWS_LIST_URL_KEY, url);
             MainActivity.showListFragment(new NewsBrickInfo().getName(), args);
 
-            if (finish)
-                context.finish();
             return true;
         }
         return false;
@@ -200,8 +197,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 && !TextUtils.isEmpty(uri.getQueryParameter("mid"))) {
             UserReputationFragment.showActivity(context, uri.getQueryParameter("mid"),
                     "from".equals(uri.getQueryParameter("mode")));
-            if (finish)
-                context.finish();
             return true;
         }
 
@@ -235,10 +230,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 default:
                     return false;
             }
-
-
-            if (finish)
-                context.finish();
             return true;
         }
 
@@ -257,8 +248,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             org.softeg.slartus.forpdaplus.classes.Post.claim(context, handler,
                     uri.getQueryParameter("t"), uri.getQueryParameter("p"));
 
-            if (finish)
-                context.finish();
             return true;
         }
         return false;
@@ -294,8 +283,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
         if ("01".equals(uri.getQueryParameter("code"))) {
             ProfileEditFragment.editProfile();
-            if (finish)
-                context.finish();
             return true;
         }
         return false;
@@ -310,11 +297,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
             if("dev-del".equals(uri.getQueryParameter("action")))
                 new DeviceDelete(context, uri.toString(), App.getInstance().getCurrentFragmentTag());
-
-
-
-            if (finish)
-                context.finish();
             return true;
         }
 
@@ -330,8 +312,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             if (m.find()) {
                 String id = m.groupCount() > 0 ? m.group(1) : null;
                 ForumFragment.showActivity(context, id, null);
-                if (finish)
-                    context.finish();
                 return true;
             }
 
@@ -453,9 +433,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         Matcher m = PatternExtensions.compile("4pda.ru.*?autocom=favtopics").matcher(url);
         if (m.find()) {
             MainActivity.showListFragment(new FavoritesBrickInfo().getName(), null);
-
-            if (finishActivity)
-                context.finish();
             return true;
         }
         return false;
@@ -465,9 +442,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         Matcher m = PatternExtensions.compile("4pda.ru.*?act=fav").matcher(url);
         if (m.find()) {
             MainActivity.showListFragment(new FavoritesBrickInfo().getName(), null);
-
-            if (finishActivity)
-                context.finish();
             return true;
         }
         return false;
@@ -478,18 +452,12 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             Bundle args = new Bundle();
             args.putString(DevDbCatalogFragment.URL_KEY, url);
             MainActivity.showListFragment(new DevDbCatalogBrickInfo().getName(), args);
-
-            if (finish)
-                context.finish();
             return true;
         }
         if (NewDevDbApi.isDevicesListUrl(url)) {
             Bundle args = new Bundle();
             args.putString(DevDbModelsFragment.BRAND_URL_KEY, url);
             MainActivity.showListFragment(new DevDbModelsBrickInfo().getName(), args);
-
-            if (finish)
-                context.finish();
             return true;
         }
         if (NewDevDbApi.isDeviceUrl(url)) {
@@ -512,9 +480,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             return false;
 
         EditPostFragment.editPost(context, uri.getQueryParameter("f"), uri.getQueryParameter("t"), uri.getQueryParameter("p"), authKey, App.getInstance().getCurrentFragmentTag());
-
-        if (finish)
-            context.finish();
         return true;
     }
 
@@ -529,8 +494,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             return false;
 
         TopicAttachmentListFragment.showActivity(context, uri.getQueryParameter("tid"));
-        if (finish)
-            context.finish();
         return true;
     }
 
@@ -560,8 +523,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             QmsContactsBrickInfo brickInfo = new QmsContactsBrickInfo();
             MainActivity.addTab(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
         }
-        if (finish)
-            context.finish();
         return true;
     }
 
@@ -581,8 +542,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         Bundle args=new Bundle();
         args.putString(TopicWritersListFragment.TOPIC_ID_KEY, tid);
         MainActivity.showListFragment(TopicWritersBrickInfo.NAME, args);
-        if (finish)
-            context.finish();
         return true;
     }
 

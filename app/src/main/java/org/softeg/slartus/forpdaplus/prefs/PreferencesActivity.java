@@ -113,6 +113,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             findPreference("About.ShareIt").setOnPreferenceClickListener(this);
             findPreference("About.AddRep").setOnPreferenceClickListener(this);
             findPreference("About.AddRepTwo").setOnPreferenceClickListener(this);
+            findPreference("About.AddRepThree").setOnPreferenceClickListener(this);
             findPreference("About.ShowTheme").setOnPreferenceClickListener(this);
 
             Preference preference = findPreference("notifiers.silent_mode.start_time");
@@ -197,10 +198,13 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     showShareIt();
                     return true;
                 case "About.AddRep":
-                    if (showAddRep()) return true;
+                    if (showAddRep("236113", "slartus")) return true;
                     return true;
                 case "About.AddRepTwo":
-                    if (showAddRepTwo()) return true;
+                    if (showAddRep("2556269", "Radiation15")) return true;
+                    return true;
+                case "About.AddRepThree":
+                    if (showAddRep("1726458", "iSanechek")) return true;
                     return true;
                 case "About.ShowTheme":
                     showTheme();
@@ -685,6 +689,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     "<b>E-mail:</b> <a href=\"mailto:slartus+4pda@gmail.com\">slartus+4pda@gmail.com</a><br/><br/>\n" +
                     "<b>Помощник: </b> Евгений Низамиев aka <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
                     "<b>E-mail:</b> <a href=\"mailto:radiationx@yandex.ru\">radiationx@yandex.ru</a><br/><br/>\n" +
+                    "<b>Помощник: </b> Aleksandr Tainyuk aka <a href=\"http://4pda.ru/forum/index.php?showuser=1726458\">iSanechek</a><br/><br/>\n" +
+                    //"<b>E-mail:</b> <a href=\"mailto:radiationx@yandex.ru\">radiationx@yandex.ru</a><br/><br/>\n" +
                     "<b>Дизайнер стилей: </b> <a href=\"http://4pda.ru/forum/index.php?showuser=96664\">Морфий</a> и <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
                     "<b>Благодарности: </b> <br/>\n" +
                     "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=1657987\">__KoSyAk__</a></b> Иконка программы<br/>\n" +
@@ -693,7 +699,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     "<br/><br/>" +
                     "Copyright 2011-2015 Artem Slinkin <slartus@gmail.com>";
 
-            MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+            new MaterialDialog.Builder(getActivity())
                     .title(getProgramFullName(getActivity()))
                     .content(Html.fromHtml(text))
                     .positiveText(android.R.string.ok)
@@ -739,23 +745,13 @@ public class PreferencesActivity extends BasePreferencesActivity {
             ThemeFragment.showTopicById(getActivity(), "271502");
         }
 
-        private boolean showAddRep() {
+        private boolean showAddRep(String id, String nick) {
             if (!Client.getInstance().getLogined()) {
                 Toast.makeText(getActivity(), getString(R.string.NeedToLogin), Toast.LENGTH_SHORT).show();
                 return true;
             }
             Handler mHandler = new Handler();
-            ForumUser.startChangeRep(getActivity(), mHandler, "236113", "slartus", "0", "add", getString(R.string.RaiseReputation));
-            return false;
-        }
-
-        private boolean showAddRepTwo() {
-            if (!Client.getInstance().getLogined()) {
-                Toast.makeText(getActivity(), getString(R.string.NeedToLogin), Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            Handler mHandler = new Handler();
-            ForumUser.startChangeRep(getActivity(), mHandler, "2556269", "Radiation15", "0", "add", getString(R.string.RaiseReputation));
+            ForumUser.startChangeRep(getActivity(), mHandler, id, nick, "0", "add", getString(R.string.RaiseReputation));
             return false;
         }
 
