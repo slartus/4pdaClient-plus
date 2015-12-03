@@ -71,6 +71,23 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements BricksListDialogFragment.IBricksListDialogCaller,
         MainDrawerMenu.SelectItemListener, TabDrawerMenu.SelectItemListener {
 
+    public static final int REQUEST_WRITE_STORAGE = 112;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_WRITE_STORAGE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Toast.makeText(this, "PERMISSION GRANTED", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(this, "PERMISSION DENIED", Toast.LENGTH_LONG).show();
+            }
+        }
+
+    }
+
+
     private final static String tabPrefix = "tab";
     private Handler mHandler = new Handler();
 
