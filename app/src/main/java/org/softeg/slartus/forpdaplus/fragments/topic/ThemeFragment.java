@@ -187,7 +187,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public boolean closeTab() {
         getPostBody();
         if (!TextUtils.isEmpty(m_PostBody)) {
-            new MaterialDialog.Builder(getActivity())
+            new MaterialDialog.Builder(getMainActivity())
                     .title("Подтвердите действие")
                     .content("Имеется введенный текст сообщения! Закрыть тему?")
                     .positiveText("Да")
@@ -195,7 +195,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         @Override
                         public void onPositive(MaterialDialog dialog) {
                             clear();
-                            ((MainActivity)getActivity()).removeTab(getTag());
+                            getMainActivity().removeTab(getTag());
                         }
                     })
                     .negativeText("Отмена")
@@ -226,14 +226,14 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         if (Preferences.System.isDevSavePage()|
                 Preferences.System.isDevInterface()|
                 Preferences.System.isDevStyle())
-            Toast.makeText(getActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getMainActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
 
         LoadsImagesAutomatically = null;
 
 
-        mCurator = new ThemeCurator(getActivity(), this);
+        mCurator = new ThemeCurator(getMainActivity(), this);
 
-        getActivity().setDefaultKeyMode(Activity.DEFAULT_KEYS_SEARCH_LOCAL);// чтобы поиск начинался при вводе текста
+        getMainActivity().setDefaultKeyMode(Activity.DEFAULT_KEYS_SEARCH_LOCAL);// чтобы поиск начинался при вводе текста
 
         mQuickPostFragment = (QuickPostFragment) getChildFragmentManager().findFragmentById(R.id.quick_post_fragment);
         mQuickPostFragment.setParentTag(getTag());
@@ -254,7 +254,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
                 } else {
                     if (postResult.Exception != null)
-                        AppLog.e(getActivity(), postResult.Exception, new Runnable() {
+                        AppLog.e(getMainActivity(), postResult.Exception, new Runnable() {
                             @Override
                             public void run() {
                                 mQuickPostFragment.post();
@@ -401,7 +401,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
             outState.putString("LoadsImagesAutomatically", LoadsImagesAutomatically == null ? "null" : (LoadsImagesAutomatically ? "1" : "0"));
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 
@@ -445,7 +445,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
 
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
 
     }
@@ -458,9 +458,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             onPrepareOptionsMenu();
         m_FirstTime = false;
         if (mTopicOptionsMenu != null)
-            configureOptionsMenu(getActivity(), getHandler(), mTopicOptionsMenu, true, getLastUrl());
+            configureOptionsMenu(getMainActivity(), getHandler(), mTopicOptionsMenu, true, getLastUrl());
         else if (getTopic() != null)
-            mTopicOptionsMenu = addOptionsMenu(getActivity(), getHandler(), menu, true, getLastUrl());
+            mTopicOptionsMenu = addOptionsMenu(getMainActivity(), getHandler(), menu, true, getLastUrl());
     }
 
     private SubMenu mTopicOptionsMenu;
@@ -619,7 +619,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
-                            SearchSettingsDialogFragment.showSearchSettingsDialog(getActivity(),
+                            SearchSettingsDialogFragment.showSearchSettingsDialog(getMainActivity(),
                                     SearchSettingsDialogFragment.createTopicSearchSettings(getTopic().getId()));
                             return true;
                         }
@@ -637,14 +637,14 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
 
                             } catch (ActivityNotFoundException e) {
-                                AppLog.e(getActivity(), e);
+                                AppLog.e(getMainActivity(), e);
                             }
                             return true;
                         }
                     });
 
-            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-            mTopicOptionsMenu = addOptionsMenu(getActivity(), getHandler(), menu, true, getLastUrl());
+            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getMainActivity().getApplicationContext());
+            mTopicOptionsMenu = addOptionsMenu(getMainActivity(), getHandler(), menu, true, getLastUrl());
 
 
             SubMenu optionsMenu = menu.addSubMenu("Вид");
@@ -656,7 +656,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(final MenuItem menuItem) {
                             String[] avatars = App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles);
-                            new MaterialDialog.Builder(getActivity())
+                            new MaterialDialog.Builder(getMainActivity())
                                     .title("Показывать аватары")
                                     .cancelable(true)
                                     .items(avatars)
@@ -735,7 +735,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             Preferences.setBrowserView(!Preferences.isBrowserView());
-                            new MaterialDialog.Builder(getActivity())
+                            new MaterialDialog.Builder(getMainActivity())
                                     .content("Перезагрузить страницу?")
                                     .positiveText("Ок")
                                     .negativeText("Отмена")
@@ -778,7 +778,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             }
 
         } catch (Exception ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
 
         this.menu = menu;
@@ -826,7 +826,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         try {
             webView.evalJs("window." + ForPdaDeveloperInterface.NAME + ".saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 
@@ -840,7 +840,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         try {
             webView.evalJs("window.HTMLOUT.checkBodyAndReload(document.getElementsByTagName('body')[0].innerHTML);");
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 
@@ -848,14 +848,14 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         try {
             webView.evalJs("window.HTMLOUT.showTopicAttaches('<head>'+document.getElementsByTagName('html')[0].innerHTML+'</head>');");
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 
     public void showTopicAttaches() {
         if (m_Topic == null)
             return;
-        TopicAttachmentListFragment.showActivity(getActivity(), m_Topic.getId());
+        TopicAttachmentListFragment.showActivity(getMainActivity(), m_Topic.getId());
     }
 /*
     @Override
@@ -872,10 +872,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }
         if(intent.getData()!=null) {
             if (!intent.getData().toString().equals("")) {
-                new GetThemeTask(getActivity()).execute(intent.getData().toString());
+                new GetThemeTask(getMainActivity()).execute(intent.getData().toString());
             }
         }else {
-            new GetThemeTask(getActivity()).execute(intent.getStringExtra(TOPIC_URL_KEY));
+            new GetThemeTask(getMainActivity()).execute(intent.getStringExtra(TOPIC_URL_KEY));
         }
     }
 
@@ -910,7 +910,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 }
 
                 pnlSearch.setVisibility(View.GONE);
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getMainActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(pnlSearch.getWindowToken(), 0);
             }
         });
@@ -932,7 +932,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         if (TextUtils.isEmpty(link) || link.contains("HTMLOUT.ru")
                 || link.equals("#")
                 || link.startsWith("file:///")) return;
-        ExtUrl.showSelectActionDialog(mHandler, getActivity(), m_Topic.getTitle(), "", link, m_Topic.getId(),
+        ExtUrl.showSelectActionDialog(mHandler, getMainActivity(), m_Topic.getTitle(), "", link, m_Topic.getId(),
                 m_Topic.getTitle(), postId, "", "");
 
     }
@@ -963,7 +963,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         getPostBody();
         if (!TextUtils.isEmpty(m_PostBody)) {
-            new MaterialDialog.Builder(getActivity())
+            new MaterialDialog.Builder(getMainActivity())
                     .title("Подтвердите действие")
                     .content("Имеется введенный текст сообщения! Закрыть тему?")
                     .positiveText("Да")
@@ -972,7 +972,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         public void onPositive(MaterialDialog dialog) {
                             clear();
                             //onBackPressed();
-                            ((MainActivity)getActivity()).removeTab(getTag());
+                            getMainActivity().removeTab(getTag());
                         }
                     })
                     .negativeText("Отмена")
@@ -1049,7 +1049,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                 showQuoteEditor("http://4pda.ru/forum/index.php?act=Post&CODE=02&f=" + forumId + "&t=" + topicId + "&qpid=" + postId);
                                 break;
                             case 1:
-                                getActivity().runOnUiThread(new Runnable() {
+                                getMainActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         new Handler().post(new Runnable() {
@@ -1061,7 +1061,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                 });
                                 break;
                             case 2:
-                                getActivity().runOnUiThread(new Runnable() {
+                                getMainActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         new Handler().post(new Runnable() {
@@ -1122,7 +1122,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             final int finalClaimPosition = claimPosition;
             final int finalNotePosition = notePosition;
             final int finalQuotePosition = quotePosition;
-            new MaterialDialog.Builder(getActivity())
+            new MaterialDialog.Builder(getMainActivity())
                     .items(items.toArray(new CharSequence[items.size()]))
                     .itemsCallback(new MaterialDialog.ListCallback() {
                         @Override
@@ -1130,13 +1130,13 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                             if (i == finalDeletePosition) {
                                 prepareDeleteMessage(postId);
                             } else if (i == finalEditPosition) {
-                                EditPostFragment.editPost(getActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, m_Topic.getAuthKey(), getTag());
+                                EditPostFragment.editPost(getMainActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, m_Topic.getAuthKey(), getTag());
                             } else  if (i== finalLinkPosition) {
                                 showLinkMenu(Post.getLink(m_Topic.getId(), postId), postId);
                             } else if (i == finalClaimPosition) {
-                                Post.claim(getActivity(), mHandler, m_Topic.getId(), postId);
+                                Post.claim(getMainActivity(), mHandler, m_Topic.getId(), postId);
                             } else if (i == finalNotePosition) {
-                                NoteDialog.showDialog(mHandler, getActivity(), m_Topic.getTitle(), null,
+                                NoteDialog.showDialog(mHandler, getMainActivity(), m_Topic.getTitle(), null,
                                         "http://4pda.ru/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
                                         m_Topic.getId(), m_Topic.getTitle(), postId, null, null);
                             } else if (i == finalQuotePosition) {
@@ -1146,7 +1146,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     })
                     .show();
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 
@@ -1154,7 +1154,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         super.showBody();
         try {
             setScrollElement();
-            getActivity().setTitle(m_Topic.getTitle());
+            getMainActivity().setTitle(m_Topic.getTitle());
             if(getSupportActionBar()!=null)
                 getSupportActionBar().setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
 
@@ -1162,7 +1162,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
             TopicsHistoryTable.addHistory(m_Topic, m_LastUrl);
         } catch (Exception ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 
@@ -1197,7 +1197,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     public void toggleMessagePanelVisibility() {
         if (!Client.getInstance().getLogined()) {
-            Toast.makeText(getActivity(), "Необходимо залогиниться!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getMainActivity(), "Необходимо залогиниться!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -1214,7 +1214,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     public void setLoadsImagesAutomatically(boolean loadsImagesAutomatically) {
         LoadsImagesAutomatically = loadsImagesAutomatically;
-        new MaterialDialog.Builder(getActivity())
+        new MaterialDialog.Builder(getMainActivity())
                 .title("Выберите действие")
                 .content("Обновить страницу?")
                 .positiveText("Обновить")
@@ -1255,7 +1255,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
                 closeSearch();
 
-                GetThemeTask getThemeTask = new GetThemeTask(getActivity());
+                GetThemeTask getThemeTask = new GetThemeTask(getMainActivity());
                 if (data.getExtras() != null && data.getExtras().containsKey(EditPostFragment.TOPIC_BODY_KEY)) {
                     getThemeTask.execute(url.replace("|", ""), data.getStringExtra(EditPostFragment.TOPIC_BODY_KEY));
                 } else
@@ -1327,7 +1327,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
             showTheme(topicUrl);
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
 
     }
@@ -1352,7 +1352,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         try {
             closeSearch();
             if (url == null) {
-                Toast.makeText(getActivity(), "Пустой url", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getMainActivity(), "Пустой url", Toast.LENGTH_SHORT).show();
                 return;
             }
             url = lofiversionToNormal(url);
@@ -1363,10 +1363,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             webView.setWebViewClient(new MyWebViewClient());
 
 
-            GetThemeTask getThemeTask = new GetThemeTask(getActivity());
+            GetThemeTask getThemeTask = new GetThemeTask(getMainActivity());
             getThemeTask.execute(url.replace("|", ""));
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 
@@ -1375,7 +1375,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     private void prepareDeleteMessage(final String postId) {
-        new MaterialDialog.Builder(getActivity())
+        new MaterialDialog.Builder(getMainActivity())
                 .title("Подтвердите действие")
                 .content("Вы действительно хотите удалить это сообщение?")
                 .positiveText("Удалить")
@@ -1390,7 +1390,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     private void deleteMessage(final String postId) {
-        final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+        final MaterialDialog dialog = new MaterialDialog.Builder(getMainActivity())
                 .progress(true,0)
                 .cancelable(false)
                 .content("Удаление сообщения...")
@@ -1416,7 +1416,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
                         }
                         if (finalEx != null)
-                            AppLog.e(getActivity(), finalEx);
+                            AppLog.e(getMainActivity(), finalEx);
 
                         m_ScrollY = 0;
                         //showTheme(getLastUrl());
@@ -1429,7 +1429,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public void showRep(final String userId) {
-        UserReputationFragment.showActivity(getActivity(), userId, false);
+        UserReputationFragment.showActivity(getMainActivity(), userId, false);
     }
 
     public void insertTextToPost(final String text) {
@@ -1466,7 +1466,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     protected void showChangeRep(final String postId, String userId, String userNick, final String type, String title) {
-        ForumUser.startChangeRep(getActivity(), mHandler, userId, userNick, postId, type, title);
+        ForumUser.startChangeRep(getMainActivity(), mHandler, userId, userNick, postId, type, title);
     }
 
     private void setScrollElement() {
@@ -1549,7 +1549,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             super.onPageStarted(view, url, favicon);
 
             //setSupportProgressBarIndeterminateVisibility(true);
-            //ThemeActivity.getActivity().setProgressBarIndeterminateVisibility(true);
+            //ThemeActivity.getMainActivity().setProgressBarIndeterminateVisibility(true);
 
         }
 
@@ -1562,7 +1562,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, final String url) {
-            // if (ThemeActivity.getActivity().webView.GetJavascriptInterfaceBroken())
+            // if (ThemeActivity.getMainActivity().webView.GetJavascriptInterfaceBroken())
             {
                 if (url.contains("HTMLOUT.ru")) {
                     Uri uri = Uri.parse(url);
@@ -1587,9 +1587,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         }
                         Method method = ThemeFragment.class.getMethod(function, parameterTypes);
 
-                        method.invoke(getActivity(), parameterValues);
+                        method.invoke(getMainActivity(), parameterValues);
                     } catch (Exception e) {
-                        AppLog.eToast(getActivity(), e);
+                        AppLog.eToast(getMainActivity(), e);
                     }
                     return true;
                 }
@@ -1608,7 +1608,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             if (tryQuote(url))
                 return true;
 
-            IntentActivity.tryShowUrl(getActivity(), mHandler, url, true, false,
+            IntentActivity.tryShowUrl(getMainActivity(), mHandler, url, true, false,
                     m_Topic == null ? null : m_Topic.getAuthKey());
 
             return true;
@@ -1672,7 +1672,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }
 
         protected void onCancelled() {
-            //Toast.makeText(getActivity(), "Отменено", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getMainActivity(), "Отменено", Toast.LENGTH_SHORT).show();
         }
 
         private CharSequence prepareTopicUrl(CharSequence url) {
@@ -1708,7 +1708,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 return true;
             } catch (Throwable e) {
                 m_ThemeBody = pageBody;
-                // Log.e(ThemeActivity.getActivity(), e);
+                // Log.e(ThemeActivity.getMainActivity(), e);
                 ex = e;
                 return false;
             }
@@ -1756,12 +1756,12 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 showBody(m_ThemeBody);
             } else {
                 if (ex.getClass() != NotReportException.class) {
-                    getActivity().setTitle(ex.getMessage());
+                    getMainActivity().setTitle(ex.getMessage());
                     webView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
                     addToHistory(m_ThemeBody);
 
                 }
-                AppLog.e(getActivity(), ex, new Runnable() {
+                AppLog.e(getMainActivity(), ex, new Runnable() {
                     @Override
                     public void run() {
                         showTheme(getLastUrl());

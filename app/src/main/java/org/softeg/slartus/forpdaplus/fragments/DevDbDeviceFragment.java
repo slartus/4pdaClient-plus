@@ -164,7 +164,7 @@ public class DevDbDeviceFragment extends GeneralFragment {
         return (int) (p*getResources().getDisplayMetrics().density + 0.5f);
     }
     private void initUI() throws IOException {
-        getActivity().setTitle(m_DevDbDevice.getInfo().Model);
+        getMainActivity().setTitle(m_DevDbDevice.getInfo().Model);
         App.getInstance().getTabByTag(getTag()).setTitle(m_DevDbDevice.getInfo().Model);
         TabDrawerMenu.notifyDataSetChanged();
 
@@ -212,7 +212,7 @@ public class DevDbDeviceFragment extends GeneralFragment {
         //SimpleAdapter simpleAdapter = new SimpleAdapter(getContext(), oneList, LAYOUT, KEYS, IDS);
         //list.setAdapter(simpleAdapter);
 
-        LazyAdapter adapter = new LazyAdapter(getActivity(),
+        LazyAdapter adapter = new LazyAdapter(getMainActivity(),
                 m_DevDbDevice.getScreenshotUrls().toArray(new String[m_DevDbDevice.getScreenshotUrls().size()]));
         gallery.setAdapter(adapter);
 
@@ -223,7 +223,7 @@ public class DevDbDeviceFragment extends GeneralFragment {
          */
         gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ImageViewActivity.startActivity(getActivity(), imgUrls, adapterView.getSelectedItemPosition());
+                ImageViewActivity.startActivity(getMainActivity(), imgUrls, adapterView.getSelectedItemPosition());
             }
         });
         HorizontalScrollView con1 = (HorizontalScrollView) getView().findViewById(R.id.dev_db_activity_con1);
@@ -266,7 +266,7 @@ public class DevDbDeviceFragment extends GeneralFragment {
     };
 
     private void showTest(String link) {
-        ExtUrl.showSelectActionDialog(mHandler, getActivity(), link);
+        ExtUrl.showSelectActionDialog(mHandler, getMainActivity(), link);
     }
 
 //    private void fill() throws IOException {
@@ -457,11 +457,11 @@ public class DevDbDeviceFragment extends GeneralFragment {
 //                    fill();
                     initUI();
                 } catch (IOException e) {
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
                 }
             } else {
                 if (ex != null)
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
             }
         }
 

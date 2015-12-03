@@ -22,24 +22,31 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     public abstract boolean closeTab();
 
     private ActionBar actionBar;
+    private MainActivity mainActivity;
+
+    public MainActivity getMainActivity() {
+        return mainActivity;
+    }
 
     public static SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(App.getContext());
     }
     public void setArrow(){
         if(getPreferences().getBoolean("showBackArrow", false)) {
-            ((MainActivity) getActivity()).setArrow(true, new View.OnClickListener() {
+            getMainActivity().setArrow(true, new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!closeTab())
-                        ((MainActivity) getActivity()).removeTab(getTag());
+                    if (!closeTab()) {
+                        MainActivity.log("fragment tryremove tab");
+                        getMainActivity().tryRemoveTab(getTag());
+                    }
                 }
             });
         }
     }
     public void removeArrow(){
         if(getPreferences().getBoolean("showBackArrow", false)){
-            ((MainActivity) getActivity()).setArrow(false, null);
+            getMainActivity().setArrow(false, null);
         }
 
     }
@@ -47,7 +54,8 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        actionBar = ((MainActivity)getActivity()).getSupportActionBar();
+        mainActivity = (MainActivity)getActivity();
+        actionBar = mainActivity.getSupportActionBar();
     }
 
     public ActionBar getSupportActionBar() {
@@ -62,7 +70,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     @Override
     public void onResume() {
         super.onResume();
-        actionBar = ((MainActivity)getActivity()).getSupportActionBar();
+        actionBar = getMainActivity().getSupportActionBar();
         if(getMenu()!=null)
             onCreateOptionsMenu(getMenu(), null);
     }
@@ -74,7 +82,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
             getSupportActionBar().setSubtitle(null);
         if(getMenu()!=null)
             getMenu().clear();
-        getActivity().onCreateOptionsMenu(MainActivity.mainMenu);
+        getMainActivity().onCreateOptionsMenu(MainActivity.mainMenu);
     }
 
     @Override

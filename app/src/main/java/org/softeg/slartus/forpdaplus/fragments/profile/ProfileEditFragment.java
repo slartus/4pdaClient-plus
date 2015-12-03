@@ -110,7 +110,7 @@ public class ProfileEditFragment extends WebViewFragment {
         m_WebView.getSettings();
         m_WebView.getSettings().setDomStorageEnabled(true);
         m_WebView.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
-        m_WebView.getSettings().setAppCachePath(getActivity().getApplicationContext().getCacheDir().getAbsolutePath());
+        m_WebView.getSettings().setAppCachePath(getMainActivity().getApplicationContext().getCacheDir().getAbsolutePath());
         m_WebView.getSettings().setAppCacheEnabled(true);
 
         m_WebView.getSettings().setAllowFileAccess(true);
@@ -120,22 +120,22 @@ public class ProfileEditFragment extends WebViewFragment {
         m_WebView.addJavascriptInterface(this, "HTMLOUT");
         m_WebView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
 
-        getEditProfileTask task = new getEditProfileTask(getActivity());
+        getEditProfileTask task = new getEditProfileTask(getMainActivity());
         task.execute("".replace("|", ""));
 
         if (Preferences.System.isDevSavePage()|
                 Preferences.System.isDevInterface()|
                 Preferences.System.isDevStyle())
-            Toast.makeText(getActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getMainActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
         return view;
     }
 
     @JavascriptInterface
     public void saveHtml(final String html) {
-        getActivity().runOnUiThread(new Runnable() {
+        getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new SaveHtml(getActivity(), html, "EditProfile");
+                new SaveHtml(getMainActivity(), html, "EditProfile");
             }
         });
     }
@@ -144,17 +144,17 @@ public class ProfileEditFragment extends WebViewFragment {
         try {
             m_WebView.loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 
     @JavascriptInterface
     public void sendProfile(final String json) {
-        getActivity().runOnUiThread(new Runnable() {
+        getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Log.d("asdasd", json);
-                new editProfileTask(getActivity(), json).execute();
+                new editProfileTask(getMainActivity(), json).execute();
             }
         });
     }
@@ -179,7 +179,7 @@ public class ProfileEditFragment extends WebViewFragment {
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
             public boolean onMenuItemClick(MenuItem item) {
-                getActivity().finish();
+                getMainActivity().finish();
                 return true;
             }
         });
@@ -241,20 +241,18 @@ public class ProfileEditFragment extends WebViewFragment {
                 this.dialog.dismiss();
             }
             Toast.makeText(getContext(),"Данные отправлены",Toast.LENGTH_SHORT).show();
-            ((ProfileFragment)((MainActivity)getActivity())
-                    .getSupportFragmentManager()
-                    .findFragmentByTag(parentTag)).startLoadData();
-            ((MainActivity) getActivity()).removeTab(getTag());
+            ((ProfileFragment)App.getInstance().getTabByTag(parentTag).getFragment()).startLoadData();
+            getMainActivity().removeTab(getTag());
             MainActivity.selectTabByTag(parentTag);
         }
     }
 
     private void showThemeBody(String body) {
         try {
-            getActivity().setTitle(m_Title);
+            getMainActivity().setTitle(m_Title);
             m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
         } catch (Exception ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 
@@ -349,7 +347,7 @@ public class ProfileEditFragment extends WebViewFragment {
             } else {
                 getSupportActionBar().setTitle(ex.getMessage());
                 m_WebView.loadDataWithBaseURL("\"file:///android_asset/\"", m_ThemeBody, "text/html", "UTF-8", null);
-                AppLog.e(getActivity(), ex);
+                AppLog.e(getMainActivity(), ex);
             }
 
             CookieSyncManager syncManager = CookieSyncManager.createInstance(m_WebView.getContext());

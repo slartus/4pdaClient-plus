@@ -186,6 +186,7 @@ public class TabDrawerMenu {
         }
         public void onClick(View v) {
             if(App.getInstance().getTabItems().size()>1) {
+                MainActivity.log("tabdrawer tryremove tab");
                 ((MainActivity) getContext()).tryRemoveTab(tag);
             }else {
                 new MaterialDialog.Builder(getContext())

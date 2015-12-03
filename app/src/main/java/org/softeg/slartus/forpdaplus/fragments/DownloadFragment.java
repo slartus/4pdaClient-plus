@@ -230,7 +230,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
                                     switch (i) {
                                         case 0: // Повторить загрузку
                                             Client.getInstance().getDownloadTasks().remove(downloadTask);
-                                            DownloadsService.download(getActivity(), downloadTask.getUrl(), false);
+                                            DownloadsService.download(getMainActivity(), downloadTask.getUrl(), false);
 
                                             mHandler.post(new Runnable() {
                                                 public void run() {
@@ -240,7 +240,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
                                             break;
                                         case 1: // Докачать файл
                                             Client.getInstance().getDownloadTasks().remove(downloadTask);
-                                            DownloadsService.download(getActivity(), downloadTask.getUrl(),
+                                            DownloadsService.download(getMainActivity(), downloadTask.getUrl(),
                                                     downloadTask.getDownloadingFilePath(), downloadTask.getId(),false);
 
                                             mHandler.post(new Runnable() {
@@ -271,7 +271,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
                                             break;
                                         case 1: // Повторить загрузку
                                             //Client.getInstance().getDownloadTasks().remove(downloadTask);
-                                            DownloadsService.download(getActivity(), downloadTask.getUrl(),false);
+                                            DownloadsService.download(getMainActivity(), downloadTask.getUrl(),false);
 
                                             mHandler.post(new Runnable() {
                                                 public void run() {

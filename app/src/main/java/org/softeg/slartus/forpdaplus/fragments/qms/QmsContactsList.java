@@ -58,7 +58,7 @@ public class QmsContactsList extends BaseLoaderListFragment {
 
     @Override
     protected BaseAdapter createAdapter() {
-        return new QmsContactsAdapter(getActivity(), getData().getItems(), ImageLoader.getInstance());
+        return new QmsContactsAdapter(getMainActivity(), getData().getItems(), ImageLoader.getInstance());
     }
 
     @Override
@@ -81,18 +81,18 @@ public class QmsContactsList extends BaseLoaderListFragment {
     @Override
     public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
         try {
-            id = ListViewMethodsBridge.getItemId(getActivity(), position, id);
+            id = ListViewMethodsBridge.getItemId(getMainActivity(), position, id);
             if (id < 0 || getAdapter().getCount() <= id) return;
 
             Object o = getAdapter().getItem((int) id);
             if (o == null)
                 return;
             final QmsUser qmsUser = (QmsUser) o;
-            //QmsContactThemesActivity.showThemes(getActivity(), qmsUser.getId(), qmsUser.getNick().toString());
+            //QmsContactThemesActivity.showThemes(getMainActivity(), qmsUser.getId(), qmsUser.getNick().toString());
             QmsContactThemes.showThemes(qmsUser.getId(), qmsUser.getNick().toString());
 
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 

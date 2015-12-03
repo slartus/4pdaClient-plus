@@ -134,7 +134,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        getActivity().setContentView(R.layout.main);
+        getMainActivity().setContentView(R.layout.main);
     }
 
     @Override
@@ -151,7 +151,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         if (Preferences.System.isDevSavePage()|
                 Preferences.System.isDevInterface()|
                 Preferences.System.isDevStyle())
-            Toast.makeText(getActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getMainActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
 
         webView = (AdvWebView) findViewById(R.id.wvBody);
         registerForContextMenu(webView);
@@ -286,7 +286,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     }
                 }).setCheckable(true).setChecked(getWebView().getSettings().getLoadsImagesAutomatically());
 
-        ExtUrl.addUrlSubMenu(new Handler(), getActivity(), menu, getUrl(), null, null);
+        ExtUrl.addUrlSubMenu(new Handler(), getMainActivity(), menu, getUrl(), null, null);
 
         if (Preferences.System.isDevSavePage()) {
             menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -307,16 +307,16 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         try {
             webView.loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 
     @JavascriptInterface
     public void saveHtml(final String html) {
-        getActivity().runOnUiThread(new Runnable() {
+        getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new SaveHtml(getActivity(), html, "News");
+                new SaveHtml(getMainActivity(), html, "News");
             }
         });
     }
@@ -339,7 +339,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     private final static int FILECHOOSER_RESULTCODE = 1;
     @JavascriptInterface
     public void showChooseCssDialog() {
-        getActivity().runOnUiThread(new Runnable() {
+        getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -351,9 +351,9 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     startActivityForResult(intent, FILECHOOSER_RESULTCODE);
 
                 } catch (ActivityNotFoundException ex) {
-                    Toast.makeText(getActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getMainActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
                 }
             }
         });
@@ -362,9 +362,9 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     @Override
     public void onActivityResult(int requestCode, int resultCode,
                                  Intent data) {
-        getActivity();
+        getMainActivity();
         if (resultCode == Activity.RESULT_OK && requestCode == FILECHOOSER_RESULTCODE) {
-            String attachFilePath = FileUtils.getRealPathFromURI(getActivity(), data.getData());
+            String attachFilePath = FileUtils.getRealPathFromURI(getMainActivity(), data.getData());
             String cssData = FileUtils.readFileText(attachFilePath)
                     .replace("\\", "\\\\")
                     .replace("'", "\\'").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
@@ -408,11 +408,11 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             }
 
             if (IntentActivity.isYoutube(url)) {
-                PlayerActivity.showYoutubeChoiceDialog(getActivity(), url);
+                PlayerActivity.showYoutubeChoiceDialog(getMainActivity(), url);
                 return true;
             }
 
-            IntentActivity.tryShowUrl(getActivity(), mHandler, url, true, false);
+            IntentActivity.tryShowUrl(getMainActivity(), mHandler, url, true, false);
 
             return true;
         }
@@ -471,17 +471,17 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         webView.setWebViewClient(new MyWebViewClient());
         saveHistory(url);
         m_NewsUrl = url;
-        GetNewsTask getThemeTask = new GetNewsTask(getActivity());
+        GetNewsTask getThemeTask = new GetNewsTask(getMainActivity());
         getThemeTask.execute(url.replace("|", ""));
     }
 
     public void showBody(String body) {
         super.showBody();
         try {
-            getActivity().setTitle(m_Title);
+            getMainActivity().setTitle(m_Title);
             webView.loadDataWithBaseURL("\"file:///android_asset/\"", body, "text/html", "UTF-8", null);
         } catch (Exception ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 
@@ -655,9 +655,9 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 showBody(m_ThemeBody);
 
             } else {
-                getActivity().setTitle(ex.getMessage());
+                getMainActivity().setTitle(ex.getMessage());
                 webView.loadDataWithBaseURL("\"file:///android_asset/\"", m_ThemeBody, "text/html", "UTF-8", null);
-                AppLog.e(getActivity(), ex);
+                AppLog.e(getMainActivity(), ex);
             }
         }
     }
@@ -667,14 +667,14 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
 
     public void respond(final String replyId, final String dp, String user) {
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) getMainActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.news_comment_edit, null);
 
         assert layout != null;
         final EditText message_edit = (EditText) layout.findViewById(R.id.comment);
         if (user != null)
             message_edit.setText("<b>" + URLDecoder.decode(user) + ",</b>");
-        new MaterialDialog.Builder(getActivity())
+        new MaterialDialog.Builder(getMainActivity())
                 .title(R.string.LeaveComment)
                 .customView(layout,true)
                 .positiveText(R.string.Send)
@@ -684,11 +684,11 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     public void onPositive(MaterialDialog dialog) {
                         String message = message_edit.getText().toString();
                         if (TextUtils.isEmpty(message.trim())) {
-                            Toast.makeText(getActivity(), "Текст не можут быть пустым!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getMainActivity(), "Текст не можут быть пустым!", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
-                        GetNewsTask getThemeTask = new GetNewsTask(getActivity());
+                        GetNewsTask getThemeTask = new GetNewsTask(getMainActivity());
                         getThemeTask.Comment = message;
                         getThemeTask.ReplyId = replyId;
                         getThemeTask.Dp = dp;
@@ -699,7 +699,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
 
     private void like() {
-        Toast.makeText(getActivity(), "Запрос отправлен", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getMainActivity(), "Запрос отправлен", Toast.LENGTH_SHORT).show();
         new Thread(new Runnable() {
             public void run() {
 
@@ -716,13 +716,13 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     public void run() {
                         try {
                             if (finalEx != null) {
-                                Toast.makeText(getActivity(), "Ошибка запроса", Toast.LENGTH_SHORT).show();
-                                AppLog.e(getActivity(), finalEx);
+                                Toast.makeText(getMainActivity(), "Ошибка запроса", Toast.LENGTH_SHORT).show();
+                                AppLog.e(getMainActivity(), finalEx);
                             } else {
-                                Toast.makeText(getActivity(), "Запрос выполнен", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getMainActivity(), "Запрос выполнен", Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception ex) {
-                            AppLog.e(getActivity(), ex);
+                            AppLog.e(getMainActivity(), ex);
                         }
                     }
                 });

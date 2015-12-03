@@ -135,22 +135,22 @@ public class QmsContactThemes extends BaseLoaderListFragment {
             if (success && !TextUtils.isEmpty(userNick)) {
                 m_Nick = userNick;
                 Toast.makeText(getContext(), "Ник получен: " + m_Nick, Toast.LENGTH_SHORT).show();
-                getActivity().setTitle(m_Nick);
+                getMainActivity().setTitle(m_Nick);
                 App.getInstance().getTabByTag(getTag()).setTitle(m_Nick);
                 TabDrawerMenu.notifyDataSetChanged();
             } else {
                 if (ex != null)
-                    AppLog.e(getActivity(), ex, new Runnable() {
+                    AppLog.e(getMainActivity(), ex, new Runnable() {
                         @Override
                         public void run() {
                             new GetUserTask(userId).execute();
                         }
                     });
                 else if (TextUtils.isEmpty(userNick))
-                    Toast.makeText(getActivity(), "Не удалось получить ник пользователя",
+                    Toast.makeText(getMainActivity(), "Не удалось получить ник пользователя",
                             Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(getActivity(), "Неизвестная ошибка",
+                    Toast.makeText(getMainActivity(), "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();
             }
         }
@@ -163,7 +163,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
 
     @Override
     protected BaseAdapter createAdapter() {
-        return new QmsContactsAdapter(getActivity(), getData().getItems());
+        return new QmsContactsAdapter(getMainActivity(), getData().getItems());
     }
 
     @Override
@@ -188,7 +188,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-        l = ListViewMethodsBridge.getItemId(getActivity(), i, l);
+        l = ListViewMethodsBridge.getItemId(getMainActivity(), i, l);
         if (l < 0 || getAdapter().getCount() <= l) return;
         QmsUserTheme item = (QmsUserTheme) getAdapter().getItem((int) l);
         if (DeleteMode) {
@@ -197,7 +197,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
             getAdapter().notifyDataSetChanged();
         } else {
             QmsChatFragment.openChat(m_Id, m_Nick, item.Id, item.Title);
-            //org.softeg.slartus.forpdaplus.qms.QmsChatActivity.openChat(getActivity(), m_Id, m_Nick, item.Id, item.Title);
+            //org.softeg.slartus.forpdaplus.qms.QmsChatActivity.openChat(getMainActivity(), m_Id, m_Nick, item.Id, item.Title);
         }
 
 
@@ -215,7 +215,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         MenuItem item = menu.add("Новая тема").setIcon(R.drawable.ic_pencil_white_24dp);
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
-                QmsNewThreadFragment.showUserNewThread(getActivity(), m_Id
+                QmsNewThreadFragment.showUserNewThread(getMainActivity(), m_Id
                         , m_Nick);
 
                 return true;
@@ -235,7 +235,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     }
 
     private void startDeleteMode() {
-        mMode = getActivity().startActionMode(new AnActionModeOfEpicProportions());
+        mMode = getMainActivity().startActionMode(new AnActionModeOfEpicProportions());
         DeleteMode = true;
         getListView().setSelection(AbsListView.CHOICE_MODE_MULTIPLE);
         getAdapter().notifyDataSetChanged();
@@ -258,7 +258,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
             if (theme.isSelected())
                 ids.add(theme.Id);
         }
-        new DeleteTask(getActivity(), ids).execute();
+        new DeleteTask(getMainActivity(), ids).execute();
     }
 
     private final class AnActionModeOfEpicProportions implements ActionMode.Callback {
@@ -291,7 +291,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
                 }
             }
             if (anySelected)
-                new MaterialDialog.Builder(getActivity())
+                new MaterialDialog.Builder(getMainActivity())
                         .title("Подтвердите действие")
                         .content("Вы действительно хотите удалить выбранные диалоги с пользователем " + m_Nick + "?")
                         .positiveText("OK")
@@ -355,9 +355,9 @@ public class QmsContactThemes extends BaseLoaderListFragment {
             stopDeleteMode(true);
             if (!success) {
                 if (ex != null)
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getActivity(), "Неизвестная ошибка",
+                    Toast.makeText(getMainActivity(), "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();
             }
 

@@ -57,13 +57,13 @@ public class ForPdaWebInterface {
 
     public ForPdaWebInterface(ThemeFragment context) {
         this.context = context;
-        this.activity = context.getActivity();
+        this.activity = context.getMainActivity();
     }
 
     private ThemeFragment getContext() {
         return context;
     }
-    private FragmentActivity getActivity(){
+    private FragmentActivity getMainActivity(){
         return activity;
     }
 
@@ -73,7 +73,7 @@ public class ForPdaWebInterface {
         run(new Runnable() {
             @Override
             public void run() {
-                ThemeFragment.showImgPreview(getActivity(), title, previewUrl, fullUrl);
+                ThemeFragment.showImgPreview(getMainActivity(), title, previewUrl, fullUrl);
             }
         });
     }
@@ -109,11 +109,11 @@ public class ForPdaWebInterface {
                 final TopicAttaches topicAttaches = new TopicAttaches();
                 topicAttaches.parseAttaches(postBody);
                 if (topicAttaches.size() == 0) {
-                    Toast.makeText(getActivity(), "Страница не имеет вложений", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getMainActivity(), "Страница не имеет вложений", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 final boolean[] selection = new boolean[topicAttaches.size()];
-                new MaterialDialog.Builder(getActivity())
+                new MaterialDialog.Builder(getMainActivity())
                         .title("Вложения")
                         .items(topicAttaches.getList())
                         .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
@@ -131,7 +131,7 @@ public class ForPdaWebInterface {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
                                 if (!Client.getInstance().getLogined()) {
-                                    new MaterialDialog.Builder(getActivity())
+                                    new MaterialDialog.Builder(getMainActivity())
                                             .title("Внимание!")
                                             .content("Для скачивания файлов с сайта необходимо залогиниться!")
                                             .positiveText("ОК")
@@ -140,7 +140,7 @@ public class ForPdaWebInterface {
                                 }
                                 for (int j = 0; j < selection.length; j++) {
                                     if (!selection[j]) continue;
-                                    DownloadsService.download(((Activity)getActivity()), topicAttaches.get(j).getUri(), false);
+                                    DownloadsService.download(((Activity)getMainActivity()), topicAttaches.get(j).getUri(), false);
                                     selection[j] = false;
                                 }
                             }
@@ -167,7 +167,7 @@ public class ForPdaWebInterface {
         run(new Runnable() {
             @Override
             public void run() {
-                new MaterialDialog.Builder(getActivity())
+                new MaterialDialog.Builder(getMainActivity())
                         .title("Подтвердите действие")
                         .content("Понизить рейтинг сообщения?")
                         .positiveText("Понизить")
@@ -175,7 +175,7 @@ public class ForPdaWebInterface {
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
-                                org.softeg.slartus.forpdaplus.classes.Post.minusOne(getActivity(), new Handler(), postId);
+                                org.softeg.slartus.forpdaplus.classes.Post.minusOne(getMainActivity(), new Handler(), postId);
                             }
                         }).show();
             }
@@ -188,7 +188,7 @@ public class ForPdaWebInterface {
         run(new Runnable() {
             @Override
             public void run() {
-                new MaterialDialog.Builder(getActivity())
+                new MaterialDialog.Builder(getMainActivity())
                         .title("Подтвердите действие")
                         .content("Повысить рейтинг сообщения?")
                         .positiveText("Повысить")
@@ -196,7 +196,7 @@ public class ForPdaWebInterface {
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
-                                org.softeg.slartus.forpdaplus.classes.Post.plusOne(getActivity(), new Handler(), postId);
+                                org.softeg.slartus.forpdaplus.classes.Post.plusOne(getMainActivity(), new Handler(), postId);
                             }
                         }).show();
             }
@@ -214,7 +214,7 @@ public class ForPdaWebInterface {
                     args.putString(TopicReadersListFragment.TOPIC_ID_KEY, getContext().getTopic().getId());
                     MainActivity.showListFragment(getContext().getTopic().getId(), TopicReadersBrickInfo.NAME, args);
                 } catch (ActivityNotFoundException e) {
-                    AppLog.e(getActivity(), e);
+                    AppLog.e(getMainActivity(), e);
                 }
             }
         });
@@ -227,7 +227,7 @@ public class ForPdaWebInterface {
             @Override
             public void run() {
                 if (getContext().getTopic() == null) {
-                    Toast.makeText(getActivity(), "Что-то пошло не так", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getMainActivity(), "Что-то пошло не так", Toast.LENGTH_SHORT).show();
                 } else {
                     Bundle args = new Bundle();
                     args.putString(TopicWritersListFragment.TOPIC_ID_KEY, getContext().getTopic().getId());
@@ -243,7 +243,7 @@ public class ForPdaWebInterface {
         run(new Runnable() {
             @Override
             public void run() {
-                ForumUser.showUserQuickAction(getActivity(), getContext().getWebView(), postId, userId, userNick,
+                ForumUser.showUserQuickAction(getMainActivity(), getContext().getWebView(), postId, userId, userNick,
                         new ForumUser.InsertNickInterface() {
                             @Override
                             public void insert(String text) {
@@ -269,7 +269,7 @@ public class ForPdaWebInterface {
                 }
             });
         }else {
-            getActivity().runOnUiThread(new Runnable() {
+            getMainActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     new Handler().post(new Runnable() {
@@ -361,13 +361,13 @@ public class ForPdaWebInterface {
                         pages[p] = "Стр. " + (p + 1) + " (" + ((p * postsPerPage + 1) + "-" + (p + 1) * postsPerPage) + ")";
                     }
 
-                    LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    LayoutInflater inflater = (LayoutInflater) getMainActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View view = inflater.inflate(R.layout.select_page_layout, null);
 
                     assert view != null;
                     final ListView listView = (ListView) view.findViewById(R.id.lstview);
                     listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-                    ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(getActivity(),
+                    ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(getMainActivity(),
                             R.layout.simple_list_item_single_choice, pages);
                     // присваиваем адаптер списку
                     listView.setAdapter(adapter);
@@ -392,7 +392,7 @@ public class ForPdaWebInterface {
                                 listView.setItemChecked(value, true);
                                 listView.setSelection(value);
                             } catch (Throwable ex) {
-                                AppLog.e(getActivity(), ex);
+                                AppLog.e(getMainActivity(), ex);
                             } finally {
                                 listView.setTag(true);
                             }
@@ -414,7 +414,7 @@ public class ForPdaWebInterface {
                             try {
                                 txtNumberPage.setText(Integer.toString((int) l + 1));
                             } catch (Throwable ex) {
-                                AppLog.e(getActivity(), ex);
+                                AppLog.e(getMainActivity(), ex);
                             } finally {
                                 txtNumberPage.setTag(true);
                             }
@@ -424,7 +424,7 @@ public class ForPdaWebInterface {
                     listView.setItemChecked(getContext().getTopic().getCurrentPage() - 1, true);
                     listView.setSelection(getContext().getTopic().getCurrentPage() - 1);
 
-                    new MaterialDialog.Builder(getActivity())
+                    new MaterialDialog.Builder(getMainActivity())
                             .title("Перейти к странице")
                             .customView(view, false)
                             .positiveText("Перейти")
@@ -438,7 +438,7 @@ public class ForPdaWebInterface {
                             .cancelable(true)
                             .show();
                 } catch (Throwable ex) {
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
                 }
             }
         });
@@ -470,7 +470,7 @@ public class ForPdaWebInterface {
         run(new Runnable() {
             @Override
             public void run() {
-                org.softeg.slartus.forpdaplus.classes.Post.claim(getActivity(), new Handler(), getContext().getTopic().getId(), postId);
+                org.softeg.slartus.forpdaplus.classes.Post.claim(getMainActivity(), new Handler(), getContext().getTopic().getId(), postId);
             }
         });
 
@@ -506,18 +506,18 @@ public class ForPdaWebInterface {
                 final int finalMinusRepPosition = minusRepPosition;
                 final int finalShowRepPosition = showRepPosition;
                 final int finalPlusRepPosition = plusRepPosition;
-                new MaterialDialog.Builder(getActivity())
+                new MaterialDialog.Builder(getMainActivity())
                         .title("Репутация "+userNick)
                         .items(items.toArray(new CharSequence[items.size()]))
                         .itemsCallback(new MaterialDialog.ListCallback() {
                             @Override
                             public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
                                 if (i == finalMinusRepPosition) {
-                                    UserReputationFragment.minusRep(getActivity(), new Handler(), postId, userId, userNick);
+                                    UserReputationFragment.minusRep(getMainActivity(), new Handler(), postId, userId, userNick);
                                 } else if (i == finalShowRepPosition) {
                                     getContext().showRep(userId);
                                 } else if (i == finalPlusRepPosition) {
-                                    UserReputationFragment.plusRep(getActivity(), new Handler(), postId, userId, userNick);
+                                    UserReputationFragment.plusRep(getMainActivity(), new Handler(), postId, userId, userNick);
                                 }
                             }
                         })
@@ -559,7 +559,7 @@ public class ForPdaWebInterface {
         if (Build.VERSION.SDK_INT < 17) {
             runnable.run();
         } else {
-            getActivity().runOnUiThread(runnable);
+            getMainActivity().runOnUiThread(runnable);
         }
     }
 }
