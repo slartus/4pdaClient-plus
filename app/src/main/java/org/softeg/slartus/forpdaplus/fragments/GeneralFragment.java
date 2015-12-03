@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 
@@ -22,8 +23,8 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
 
     private ActionBar actionBar;
 
-    public SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(getContext());
+    public static SharedPreferences getPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(App.getContext());
     }
     public void setArrow(){
         if(getPreferences().getBoolean("showBackArrow", false)) {

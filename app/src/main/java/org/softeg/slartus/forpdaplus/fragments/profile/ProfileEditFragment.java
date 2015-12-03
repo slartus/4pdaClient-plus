@@ -200,7 +200,7 @@ public class ProfileEditFragment extends WebViewFragment {
                 JSONArray jr = new JSONArray(json);
                 JSONObject jb;
                 for (int i = 0; i <jr.length(); i++){
-                    jb = (JSONObject)jr.getJSONObject(i);
+                    jb = jr.getJSONObject(i);
                     if(!jb.getString("name").equals("null")){
                         additionalHeaders.put(jb.getString("name"), jb.getString("value"));
                     }
@@ -358,7 +358,6 @@ public class ProfileEditFragment extends WebViewFragment {
                 for (Cookie cookie : Client.getInstance().getCookies()) {
 
                     if (cookie.getDomain() != null) {
-                        Log.d("asdas!", cookie.getDomain() + " " + cookie.getValue());
                         cookieManager.setCookie(cookie.getDomain(), cookie.getName() + "=" + cookie.getValue());
                     }
                     //cookieManager.setCookie(cookie.getTitle(),cookie.getValue());

@@ -2,14 +2,10 @@ package org.softeg.slartus.forpdaplus.listfragments.next;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -22,8 +18,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.ReputationEvent;
@@ -39,7 +33,6 @@ import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.UserReputationBrickInfo;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /*
@@ -67,24 +60,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
     public boolean closeTab() {
         return false;
     }
-    private class getRepPlusImage extends AsyncTask<Void, Void, Void>{
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                String body = Client.getInstance().performGet("http://4pda.ru/forum/index.php?act=rep&view=history&mid=2556269&mode=to&order=asc");
-                Document doc = Jsoup.parse(body);
-                Element el = doc.select("#ipbwrapper .borderwrap .ipbtable tbody").first();
-                //Log.e("kek", el+"");
-                String plusImage = el.select("tr:nth-last-child(2) td img").first().attr("src");
-                if(plusImage!=null)
-                    getPreferences().edit().putString("repPlusImage", plusImage).apply();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,21 +150,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
     }
 
 
-    @Override
-    protected AsyncTaskLoader<ListData> createLoader(int id, Bundle args) {
-        ItemsLoader loader = null;
-        if (id == ItemsLoader.ID) {
-            if(Client.getInstance().getLogined()&!getPreferences().getBoolean("isRecdRepImage", false))
-                    new getRepPlusImage().execute();
-            else
-                getPreferences().edit().putBoolean("isRecdRepImage", false).apply();
 
-            setLoading(true);
-            loader = new ItemsLoader(getActivity(), args);
-
-        }
-        return loader;
-    }
 
     private static final String START_KEY = "START_KEY";
 
@@ -252,15 +214,37 @@ public class UserReputationFragment extends BrickFragmentListBase {
 
     }
 
+    @Override
+    protected AsyncTaskLoader<ListData> createLoader(int id, Bundle args) {
+        ItemsLoader loader = null;
+        if (id == ItemsLoader.ID) {
+            boolean needLoadRepImage;
+            if (!Client.getInstance().getLogined()){
+                getPreferences().edit().putBoolean("needLoadRepImage", false).remove("repPlusImage").apply();
+                needLoadRepImage = false;
+            }else {
+                needLoadRepImage = getPreferences().getBoolean("needLoadRepImage", false);
+            }
+
+            setLoading(true);
+            loader = new ItemsLoader(getActivity(), args, needLoadRepImage);
+
+        }
+        return loader;
+    }
+
     private static class ItemsLoader extends AsyncTaskLoader<ListData> {
         public static final int ID = App.getInstance().getUniqueIntValue();
         ListData mApps;
         private Bundle args;
+        private boolean needLoadRepImage;
 
-        public ItemsLoader(Context context, Bundle args) {
+
+        public ItemsLoader(Context context, Bundle args, boolean needLoadRepImage) {
             super(context);
 
             this.args = args;
+            this.needLoadRepImage = needLoadRepImage;
         }
 
         public Bundle getArgs() {
@@ -271,12 +255,21 @@ public class UserReputationFragment extends BrickFragmentListBase {
         @Override
         public ListData loadInBackground() {
             try {
+                if(needLoadRepImage){
+                    String plusImage = Jsoup
+                            .parse(Client.getInstance().performGet("http://4pda.ru/forum/index.php?act=rep&view=history&mid=2556269&mode=to&order=asc"))
+                            .select("#ipbwrapper .borderwrap .ipbtable tbody")
+                            .first().select("tr:nth-last-child(2) td img").first().attr("src");
+                    if(plusImage!=null)
+                        getPreferences().edit().putString("repPlusImage", plusImage).putBoolean("needLoadRepImage", false).apply();
+                }
+
                 ListInfo listInfo = new ListInfo();
                 listInfo.setFrom(getArgs().getBoolean(IS_REFRESH_KEY) ? 0 : getArgs().getInt(START_KEY));
                 return ReputationsApi.loadReputation(Client.getInstance(),
                         args.getString(USER_ID_KEY),
                         args.getBoolean(USER_FROM_KEY), listInfo,
-                        PreferenceManager.getDefaultSharedPreferences(App.getContext()).getString("repPlusImage", "http://s.4pda.to/ShmfPSURw3VD2aNlTerb3hvYwGCMxd4z0muJ.gif"));
+                        getPreferences().getString("repPlusImage", "http://s.4pda.to/ShmfPSURw3VD2aNlTerb3hvYwGCMxd4z0muJ.gif"));
             } catch (Throwable e) {
                 ListData forumPage = new ListData();
                 forumPage.setEx(e);
