@@ -9,78 +9,51 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="ThemePrefsLightPink" parent="MainPinkLight">
-        <item name="android:textColor">@color/list_text_special_color_light</item>
-        <item name="android:windowNoTitle">false</item>
-        <item name="android:windowTitleSize">80dp</item>
+    <style name="ThemePrefsLightPink" parent="ThemePrefsLightPinkBase">
+        <item name="android:windowTitleSize">@dimen/actionbar_prefs_height_kk</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
-        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_light</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
-    <style name="ThemePrefsLightGray" parent="MainGrayLight">
-        <item name="android:textColor">@color/list_text_special_color_light</item>
-        <item name="android:windowNoTitle">false</item>
-        <item name="android:windowTitleSize">80dp</item>
+    <style name="ThemePrefsLightGray" parent="ThemePrefsLightGrayBase">
+        <item name="android:windowTitleSize">@dimen/actionbar_prefs_height_kk</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
-        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_light</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
-    <style name="ThemePrefsLightBlue" parent="MainBlueLight">
-        <item name="android:textColor">@color/list_text_special_color_light</item>
-        <item name="android:windowNoTitle">false</item>
-        <item name="android:windowTitleSize">80dp</item>
+    <style name="ThemePrefsLightBlue" parent="ThemePrefsLightBlueBase">
+        <item name="android:windowTitleSize">@dimen/actionbar_prefs_height_kk</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
-        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_light</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="ThemePrefsDarkPink" parent="MainPinkDark">
-        <item name="android:textColor">@color/list_text_special_color_dark</item>
-        <item name="android:windowNoTitle">false</item>
-        <item name="android:windowTitleSize">80dp</item>
+    <style name="ThemePrefsDarkPink" parent="ThemePrefsDarkPinkBase">
+        <item name="android:windowTitleSize">@dimen/actionbar_prefs_height_kk</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
-        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
-    <style name="ThemePrefsDarkGray" parent="MainGrayDark">
-        <item name="android:textColor">@color/list_text_special_color_dark</item>
-        <item name="android:windowNoTitle">false</item>
-        <item name="android:windowTitleSize">80dp</item>
+    <style name="ThemePrefsDarkGray" parent="ThemePrefsDarkGrayBase">
+        <item name="android:windowTitleSize">@dimen/actionbar_prefs_height_kk</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
-        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
-    <style name="ThemePrefsDarkBlue" parent="MainBlueDark">
-        <item name="android:textColor">@color/list_text_special_color_dark</item>
-        <item name="android:windowNoTitle">false</item>
-        <item name="android:windowTitleSize">80dp</item>
+    <style name="ThemePrefsDarkBlue" parent="ThemePrefsDarkBlueBase">
+        <item name="android:windowTitleSize">@dimen/actionbar_prefs_height_kk</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
-        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="ThemePrefsBlackPink" parent="MainPinkBlack">
-        <item name="android:textColor">@color/list_text_special_color_dark</item>
-        <item name="android:windowNoTitle">false</item>
-        <item name="android:windowTitleSize">80dp</item>
+    <style name="ThemePrefsBlackPink" parent="ThemePrefsBlackPinkBase">
+        <item name="android:windowTitleSize">@dimen/actionbar_prefs_height_kk</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
-        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
-    <style name="ThemePrefsBlackGray" parent="MainGrayBlack">
-        <item name="android:textColor">@color/list_text_special_color_dark</item>
-        <item name="android:windowNoTitle">false</item>
-        <item name="android:windowTitleSize">80dp</item>
+    <style name="ThemePrefsBlackGray" parent="ThemePrefsBlackGrayBase">
+        <item name="android:windowTitleSize">@dimen/actionbar_prefs_height_kk</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
-        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
-    <style name="ThemePrefsBlackBlue" parent="MainBlueBlack">
-        <item name="android:textColor">@color/list_text_special_color_dark</item>
-        <item name="android:windowNoTitle">false</item>
-        <item name="android:windowTitleSize">80dp</item>
+    <style name="ThemePrefsBlackBlue" parent="ThemePrefsBlackBlueBase">
+        <item name="android:windowTitleSize">@dimen/actionbar_prefs_height_kk</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
-        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 

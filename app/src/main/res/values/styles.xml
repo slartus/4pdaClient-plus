@@ -2,6 +2,8 @@
 <resources>
     <style name="MainThemeLight.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="MainThemeLight" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionModeBackground">@color/actionbar_background_light</item>
+        <item name="android:actionModeBackground">@color/actionbar_background_light</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/actionbar_background_light</item>
@@ -42,18 +44,17 @@
     </style>
 
     <style name="MainThemeDark" parent="Theme.AppCompat">
+        <item name="actionModeBackground">@color/actionbar_background_dark</item>
+        <item name="android:actionModeBackground">@color/actionbar_background_dark</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">@color/actionbar_background_dark</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="actionBarStyle">@style/actionbar_dark</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat</item>
         <item name="panelMenuListTheme">@style/bottom_menu_dark</item>
         <item name="actionOverflowButtonStyle">@style/overflow_button</item>
         <item name="android:windowBackground">@color/app_background_dark</item>
-        <item name="actionModeBackground">@color/actionbar_background_dark</item>
         <item name="windowActionModeOverlay">true</item>
-        <item name="android:actionModeBackground">@color/actionbar_background_dark</item>
         <item name="android:windowActionModeOverlay">true</item>
         <item name="forum_header_text_color">@color/holo_blue_dark</item>
         <item name="theme_background">@android:color/black</item>
@@ -84,47 +85,11 @@
         <item name="android:listViewStyle">@style/list_divider_style_dark</item>
     </style>
 
-    <style name="MainThemeBlack" parent="Theme.AppCompat">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">@color/actionbar_background_dark</item>
-        <item name="colorAccent">@color/accent</item>
-        <item name="actionBarStyle">@style/actionbar_dark</item>
-        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat</item>
-        <item name="panelMenuListTheme">@style/bottom_menu_dark</item>
-        <item name="actionOverflowButtonStyle">@style/overflow_button</item>
-        <item name="android:windowBackground">@color/app_background_dark</item>
-        <item name="actionModeBackground">@color/actionbar_background_dark</item>
-        <item name="windowActionModeOverlay">true</item>
-        <item name="android:actionModeBackground">@color/actionbar_background_dark</item>
-        <item name="android:windowActionModeOverlay">true</item>
-        <item name="forum_header_text_color">@color/holo_blue_dark</item>
-        <item name="theme_background">@android:color/black</item>
-        <item name="theme_light_background">@color/theme_light_background_dark</item>
-        <item name="right_separator">@style/right_separator_dark</item>
-        <item name="news">@style/news_dark</item>
-        <item name="drawer_menu">@style/drawer_menu_dark</item>
-        <item name="drawer_menu_group">@style/drawer_menu_group_dark</item>
-        <item name="drawer_menu_text">@style/drawer_menu_text_dark</item>
-        <item name="drawer_divider">@style/drawer_divider_dark</item>
-        <item name="popup_topic">@style/popup_topic_dark</item>
-        <item name="list_text_general_color">@style/list_text_general_color_dark</item>
-        <item name="list_text_minor_color">@style/list_text_minor_color_dark</item>
-        <item name="list_text_second_color">@style/list_text_second_color_dark</item>
-        <item name="list_text_special_color">@style/list_text_special_color_dark</item>
-        <item name="news_text_general_color">@style/news_text_general_color_dark</item>
-        <item name="news_text_minor_color">@style/news_text_minor_color_dark</item>
-        <item name="news_text_second_color">@style/news_text_second_color_dark</item>
-        <item name="edit_text">@style/edit_text_dark</item>
-        <item name="md_dark_theme">false</item>
-        <item name="md_background_color">#303030</item>
-        <item name="md_title_color">@color/list_text_special_color_dark</item>
-        <item name="md_item_color">@color/list_text_special_color_dark</item>
-        <item name="md_content_color">@color/list_text_second_color_dark</item>
-        <item name="android:textColorSecondary">@color/list_text_second_color_dark</item>
-        <item name="Divider">@style/Divider_dark</item>
-        <item name="actbar">@color/actionbar_background_dark</item>
-        <item name="android:listViewStyle">@style/list_divider_style_dark</item>
+    <style name="MainThemeBlack" parent="MainThemeDark">
+        <item name="actionModeBackground">@color/actionbar_background_black</item>
+        <item name="android:actionModeBackground">@color/actionbar_background_black</item>
+        <item name="colorPrimary">@color/actionbar_background_black</item>
+        <item name="android:windowBackground">@color/app_background_black</item>
     </style>
 
 
@@ -176,20 +141,7 @@
         <item name="android:height">@dimen/ptr_height_bug</item>
         <item name="height">@dimen/ptr_height_bug</item>
     </style>
-    <style name="actionbar_light" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="background">@color/actionbar_background_light</item>
-        <item name="elevation">2dp</item>
-        <item name="displayOptions">homeAsUp|showTitle</item>
-        <item name="titleTextStyle">@style/actionbar_title</item>
-        <item name="subtitleTextStyle">@style/actionbar_subtitle</item>
-    </style>
-    <style name="actionbar_dark" parent="@style/Widget.AppCompat.ActionBar.Solid">
-        <item name="background">@color/actionbar_background_dark</item>
-        <item name="elevation">2dp</item>
-        <item name="displayOptions">homeAsUp|showTitle</item>
-        <item name="titleTextStyle">@style/actionbar_title</item>
-        <item name="subtitleTextStyle">@style/actionbar_subtitle</item>
-    </style>
+
     <style name="actionbar_title">
         <item name="android:textColor">#ffffffff</item>
         <item name="android:textSize">@dimen/actionbar_title_size</item>
@@ -225,12 +177,16 @@
         <item name="android:background">@color/divider_dark</item>
     </style>
 
-    <style name="prefs_title_background_dark">
-        <item name="android:background">@color/actionbar_background_dark</item>
-    </style>
     <style name="prefs_title_background_light">
         <item name="android:background">@color/actionbar_background_light</item>
     </style>
+    <style name="prefs_title_background_dark">
+        <item name="android:background">@color/actionbar_background_dark</item>
+    </style>
+    <style name="prefs_title_background_black">
+        <item name="android:background">@color/actionbar_background_black</item>
+    </style>
+
     <style name="prefs_title_style">
         <item name="android:paddingLeft">24dp</item>
         <item name="android:textColor">@color/white</item>

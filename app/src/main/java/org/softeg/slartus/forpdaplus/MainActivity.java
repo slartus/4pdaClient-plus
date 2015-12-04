@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                     else if (themeType==App.THEME_TYPE_DARK)
                         statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_dark));
                     else
-                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_dark));
+                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_black));
                     statusBarShowed = true;
                 }
             }

@@ -11,6 +11,27 @@
     <!-- Mod -->
     <color name="app_background_light">#eeeeee</color>
     <color name="app_background_dark">#1A1A1A</color>
+    <color name="app_background_black">#000</color>
+
+    <color name="actionbar_background_light">#0277bd</color>
+    <color name="actionbar_background_dark">#17415f</color>
+    <color name="actionbar_background_black">#111</color>
+
+    <color name="statusBar_light">@color/actionbar_background_light</color>
+    <color name="statusBar_dark">@color/actionbar_background_dark</color>
+    <color name="statusBar_black">@color/actionbar_background_black</color>
+
+    <color name="statusBar_translucent_light">#2d000000</color>
+    <color name="statusBar_translucent_dark">#2d000000</color>
+    <color name="statusBar_translucent_black">#66000000</color>
+
+    <color name="statusBarPrefs_light">#02629C</color>
+    <color name="statusBarPrefs_dark">#133044</color>
+    <color name="statusBarPrefs_black">#0a0a0a</color>
+
+    <color name="navBar_light">@color/actionbar_background_light</color>
+    <color name="navBar_dark">@color/actionbar_background_dark</color>
+    <color name="navBar_black">@color/actionbar_background_black</color>
 
 
     <color name="right_separator_color_light">#d9d9d9</color>
@@ -24,14 +45,7 @@
     <color name="news_image_corner_light">@color/app_background_light</color>
     <color name="news_image_corner_dark">@color/app_background_dark</color>
 
-    <color name="actionbar_background_light">#0277bd</color>
-    <color name="actionbar_background_dark">#17415f</color>
 
-    <color name="statusBar_light">@color/actionbar_background_light</color>
-    <color name="statusBar_dark">@color/actionbar_background_dark</color>
-
-    <color name="statusBarPrefs_light">#02629C</color>
-    <color name="statusBarPrefs_dark">#133044</color>
 
     <color name="drawer_menu_background_light">#ffffff</color>
     <color name="drawer_menu_background_dark">@color/app_background_dark</color>

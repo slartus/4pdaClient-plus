@@ -318,16 +318,11 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
         getWebViewExternals().loadPreferences(prefs);
 
     }
-/*
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         return getWebViewExternals().dispatchKeyEvent(event);
     }
-
-    public boolean dispatchSuperKeyEvent(KeyEvent event) {
-        return super.dispatchKeyEvent(event);
-    }
-    */
 
     public void showFontSizeDialog() {
         View v = getMainActivity().getLayoutInflater().inflate(R.layout.font_size_dialog, null);

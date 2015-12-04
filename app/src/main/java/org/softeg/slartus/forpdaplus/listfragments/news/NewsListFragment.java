@@ -168,7 +168,6 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
     private void selectItem(int position) {
         position = Math.min(position, getItems().size() - 1);// на всякий случай, если изменится в будущем кол-во разделов
         String tag = getItems().get(position).Tag;
-        MainActivity.log("kek "+tag);
         Preferences.News.setLastSelectedSection(position);
         if(!tag.equals(mTag)) {
             mTag = tag;
@@ -335,7 +334,6 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         }
         for (News item : mLoadResultList) {
             mData.add(item);
-            //MainActivity.log("kek "+item.getImgUrl());
         }
 
         mLoadResultList.clear();

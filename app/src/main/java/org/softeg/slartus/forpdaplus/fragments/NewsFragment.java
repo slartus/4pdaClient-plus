@@ -666,7 +666,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             } catch (Exception ex) {
                 Log.e(TAG, ex.toString());
             }
-            Log.e("kek", isCancelled()+" iscanceled");
             if (isCancelled()) return;
             if (success) {
                 showBody(m_ThemeBody);

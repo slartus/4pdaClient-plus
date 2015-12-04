@@ -383,7 +383,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         });
         hideMessagePanel();
         closeSearch();
-
+        loadPreferences(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
         showTheme(IntentActivity.normalizeThemeUrl(getArguments().getString(TOPIC_URL_KEY)));
 
         return view;

@@ -289,17 +289,17 @@ public class App extends android.app.Application {
         else if(themeType==THEME_TYPE_DARK)
             return R.color.app_background_dark;
         else
-            return R.color.app_background_dark;
+            return R.color.app_background_black;
     }
 
     public int getNavBarColor(){
         int themeType = getThemeType();
         if (themeType==THEME_TYPE_LIGHT)
-            return R.color.actionbar_background_light;
+            return R.color.navBar_light;
         else if(themeType==THEME_TYPE_DARK)
-            return R.color.actionbar_background_dark;
+            return R.color.navBar_dark;
         else
-            return R.color.actionbar_background_dark;
+            return R.color.navBar_black;
     }
     public int getDrawerMenuText(){
         int themeType = getThemeType();
@@ -319,7 +319,7 @@ public class App extends android.app.Application {
         else if(themeType==THEME_TYPE_DARK)
             return Color.parseColor("#1a1a1a");
         else
-            return Color.parseColor("#1a1a1a");
+            return Color.parseColor("#000000");
     }
 
     public String getCurrentBackgroundColorHtml() {
@@ -329,7 +329,7 @@ public class App extends android.app.Application {
         else if(themeType==THEME_TYPE_DARK)
             return "#1a1a1a";
         else
-            return "#1a1a1a";
+            return "#000000";
     }
 
     public String getCurrentTheme() {
