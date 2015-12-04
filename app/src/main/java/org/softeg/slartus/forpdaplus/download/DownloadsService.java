@@ -153,7 +153,7 @@ public class DownloadsService extends IntentService {
                             switch (value.toString()) {
                                 case "0":// клиент
                                     if (ContextCompat.checkSelfPermission(context1, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                                        ActivityCompat.requestPermissions(context1, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MainActivity.REQUEST_WRITE_STORAGE);
+                                        Toast.makeText(context1, "Нет прав для данного действия", Toast.LENGTH_SHORT).show();
                                     else
                                         clientDownload(context1, url, tempFilePath, notificationId);
 

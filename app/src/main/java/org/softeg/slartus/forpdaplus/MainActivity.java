@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,8 +15,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -127,11 +130,12 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     public void startActivityForResult(android.content.Intent intent, int requestCode) {
         super.startActivityForResult(intent, requestCode);
         hack = true;
+        log("hack chnge to true");
     }
 
     @Override
     public void onCreate(Bundle saveInstance) {
-        setTheme(App.getInstance().getTransluentThemeStyleResID());
+        setTheme(App.getInstance().getThemeStyleResID());
         super.onCreate(saveInstance);
 
         try {
@@ -142,19 +146,13 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             intent.addCategory(Intent.CATEGORY_HOME);
             setIntent(intent);
             lastTheme = App.getInstance().getThemeStyleResID();
-            /*if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                getWindow().setFlags(
-                        WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
-                        WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
-            }*/
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                 getWindow().getDecorView()
                         .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            }
 
-            if (PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("coloredNavBar", true) &&
-                    Build.VERSION.SDK_INT >= 21)
+            if (getPreferences().getBoolean("coloredNavBar", true) && Build.VERSION.SDK_INT >= 21)
                 getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(getNavBarColor()));
 
 
@@ -217,13 +215,15 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 if(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag())!=null)
                     selectTab(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()));
 
-
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MainActivity.REQUEST_WRITE_STORAGE);
 
         } catch (Throwable ex) {
             AppLog.e(getApplicationContext(), ex);
         }
     }
     public void setArrow(final boolean b, final View.OnClickListener listener){
+        if(mMainDrawerMenu==null) return;
         mMainDrawerMenu.getmDrawerToggle().setDrawerIndicatorEnabled(!b);
         mMainDrawerMenu.getmDrawerToggle().setToolbarNavigationClickListener(listener);
     }
@@ -468,7 +468,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             handler.sendMessage(msg);
         }
         m_ExitWarned = false;
-        log("onResume "+System.currentTimeMillis()/1000);
+        log("onResume " + System.currentTimeMillis() / 1000);
+        onStart();
     }
 
     @Override
@@ -498,7 +499,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         if(!(App.getInstance().getCurrentFragmentTag()+"").equals("null"))
             if(getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag())!=null)
                 getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag()).onPause();
-        log("onPause "+System.currentTimeMillis()/1000);
+        log("onPause " + System.currentTimeMillis() / 1000);
     }
 
 

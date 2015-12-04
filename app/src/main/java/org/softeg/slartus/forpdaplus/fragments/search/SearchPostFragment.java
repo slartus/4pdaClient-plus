@@ -423,6 +423,11 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     public void reload() {}
 
     @Override
+    public AsyncTask getAsyncTask() {
+        return null;
+    }
+
+    @Override
     public boolean closeTab() {
         return false;
     }

@@ -467,12 +467,20 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
     }
 
+    AsyncTask asyncTask = null;
+
+    @Override
+    public AsyncTask getAsyncTask() {
+        return asyncTask;
+    }
+
     private void showNews(String url) {
         webView.setWebViewClient(new MyWebViewClient());
         saveHistory(url);
         m_NewsUrl = url;
         GetNewsTask getThemeTask = new GetNewsTask(getMainActivity());
         getThemeTask.execute(url.replace("|", ""));
+        asyncTask = getThemeTask;
     }
 
     public void showBody(String body) {
@@ -630,6 +638,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             });
         }
 
+        @Override
         protected void onPreExecute() {
             try {
                 this.dialog.show();
@@ -639,7 +648,15 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
 
         private Throwable ex;
+        boolean canceled = false;
 
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            canceled = true;
+        }
+
+        @Override
         protected void onPostExecute(final Boolean success) {
             Comment = null;
             try {
@@ -649,7 +666,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             } catch (Exception ex) {
                 Log.e(TAG, ex.toString());
             }
-
+            Log.e("kek", isCancelled()+" iscanceled");
             if (isCancelled()) return;
             if (success) {
                 showBody(m_ThemeBody);

@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.fragments.topic;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -16,6 +18,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -541,6 +545,10 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
     }
     private static final int MY_INTENT_CLICK=302;
     private void startAddAttachment() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getActivity(), "Нет прав для данного действия", Toast.LENGTH_SHORT).show();
+            return;
+        }
         CharSequence[] items = new CharSequence[]{"Файл", "Изображение"};
         new MaterialDialog.Builder(getContext())
                 .items(items)

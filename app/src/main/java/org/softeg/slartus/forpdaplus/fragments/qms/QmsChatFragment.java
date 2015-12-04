@@ -155,6 +155,11 @@ public class QmsChatFragment extends WebViewFragment {
     public void reload() {}
 
     @Override
+    public AsyncTask getAsyncTask() {
+        return m_SendTask;
+    }
+
+    @Override
     public boolean closeTab() {
         return false;
     }

@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.fragments;
 
 import android.animation.ValueAnimator;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -62,6 +63,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
     public abstract String getTitle();
     public abstract String getUrl();
     public abstract void reload();
+    public abstract AsyncTask getAsyncTask();
 
     private Handler mHandler = new Handler();
     private URLHandler urlHandler = new URLHandler();
@@ -178,6 +180,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
             getWebView().removeAllViews();
             getWebView().loadUrl("about:blank");
         }
+        if(getAsyncTask()!=null) getAsyncTask().cancel(false);
         super.onDestroy();
     }
 

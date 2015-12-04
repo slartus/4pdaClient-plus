@@ -88,6 +88,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
+
     }
 
     @Override

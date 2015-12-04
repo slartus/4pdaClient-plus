@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -87,7 +88,12 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
 
     @Override
     public void reload() {}
-    
+
+    @Override
+    public AsyncTask getAsyncTask() {
+        return null;
+    }
+
     @Override
     public boolean closeTab() {
         return false;

@@ -91,7 +91,7 @@ public class NewsApi {
                     el = descElement.select("h2 > a").first();
                 if (el == null)
                     continue;
-                News news = new News(el.attr("href"),
+                News news = new News(el.attr("href").replace("http://4pda.ru",""),
                         Html.fromHtml(el.attr("title")).toString());
 
                 el = descElement.select("div > p").first();

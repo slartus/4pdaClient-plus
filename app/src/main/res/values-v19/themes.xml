@@ -1,72 +1,12 @@
 <resources>
-    <style name="Theme.White" parent="MainThemeWH">
+    <style name="ThemeLight" parent="MainThemeLight">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
-    <style name="Theme.Black" parent="MainThemeBL">
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
-    <style name="MainPinkWH" parent="Theme.White">
-        <item name="colorAccent">@color/accentPink</item>
-        <item name="arrow_up">@drawable/arrowup</item>
-        <item name="arrow_down">@drawable/arrowdown</item>
-    </style>
-    <style name="MainBlueWH" parent="Theme.White">
-        <item name="colorAccent">@color/accentBlue</item>
-        <item name="arrow_up">@drawable/arrowup_blue</item>
-        <item name="arrow_down">@drawable/arrowdown_blue</item>
-    </style>
-    <style name="MainGrayWH" parent="Theme.White">
-        <item name="colorAccent">@color/accentGray</item>
-        <item name="arrow_up">@drawable/arrowup_gray</item>
-        <item name="arrow_down">@drawable/arrowdown_gray</item>
-    </style>
-
-    <style name="MainPinkBL" parent="Theme.Black">
-        <item name="colorAccent">@color/accentPink</item>
-        <item name="arrow_up">@drawable/arrowup</item>
-        <item name="arrow_down">@drawable/arrowdown</item>
-    </style>
-    <style name="MainBlueBL" parent="Theme.Black">
-        <item name="colorAccent">@color/accentBlue</item>
-        <item name="arrow_up">@drawable/arrowup_blue</item>
-        <item name="arrow_down">@drawable/arrowdown_blue</item>
-    </style>
-    <style name="MainGrayBL" parent="Theme.Black">
-        <item name="colorAccent">@color/accentGray</item>
-        <item name="arrow_up">@drawable/arrowup_gray</item>
-        <item name="arrow_down">@drawable/arrowdown_gray</item>
-    </style>
-
-    <style name="Theme.Transluent.WhitePink" parent="MainPinkWH">
-        <item name="android:fitsSystemWindows">false</item>
+    <style name="ThemeDark" parent="MainThemeDark">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="Theme.Transluent.WhiteBlue" parent="MainBlueWH">
-        <item name="android:fitsSystemWindows">false</item>
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
-    <style name="Theme.Transluent.BlackPink" parent="MainPinkBL">
-        <item name="android:fitsSystemWindows">false</item>
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-    <style name="Theme.Transluent.BlackBlue" parent="MainBlueBL">
-        <item name="android:fitsSystemWindows">false</item>
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
-    <style name="Theme.Transluent.WhiteGray" parent="MainGrayWH">
-        <item name="android:fitsSystemWindows">false</item>
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-    <style name="Theme.Transluent.BlackGray" parent="MainGrayBL">
-        <item name="android:fitsSystemWindows">false</item>
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
-    <style name="Theme.Prefs.WhitePink" parent="MainPinkWH">
+    <style name="Theme.Prefs.WhitePink" parent="Theme.Prefs.WhitePink">
         <item name="android:textColor">@color/list_text_special_color_wh</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">80dp</item>
@@ -75,7 +15,7 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="Theme.Prefs.BlackPink" parent="MainPinkBL">
+    <style name="Theme.Prefs.BlackPink" parent="MainPinkDark">
         <item name="android:textColor">@color/list_text_special_color_bl</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">80dp</item>
@@ -84,7 +24,7 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="Theme.Prefs.WhiteGray" parent="MainGrayWH">
+    <style name="Theme.Prefs.WhiteGray" parent="MainGrayLight">
         <item name="android:textColor">@color/list_text_special_color_wh</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">80dp</item>
@@ -93,7 +33,7 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="Theme.Prefs.BlackGray" parent="MainGrayBL">
+    <style name="Theme.Prefs.BlackGray" parent="MainGrayDark">
         <item name="android:textColor">@color/list_text_special_color_bl</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">80dp</item>
@@ -102,7 +42,7 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="Theme.Prefs.WhiteBlue" parent="MainBlueWH">
+    <style name="Theme.Prefs.WhiteBlue" parent="MainBlueLight">
         <item name="android:textColor">@color/list_text_special_color_wh</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">80dp</item>
@@ -111,7 +51,7 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="Theme.Prefs.BlackBlue" parent="MainBlueBL">
+    <style name="Theme.Prefs.BlackBlue" parent="MainBlueDark">
         <item name="android:textColor">@color/list_text_special_color_bl</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">80dp</item>

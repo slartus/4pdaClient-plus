@@ -89,6 +89,13 @@ public class ProfileEditFragment extends WebViewFragment {
     @Override
     public void reload() {}
 
+    AsyncTask asyncTask = null;
+
+    @Override
+    public AsyncTask getAsyncTask() {
+        return asyncTask;
+    }
+
     @Override
     public boolean closeTab() {
         return false;
@@ -122,6 +129,7 @@ public class ProfileEditFragment extends WebViewFragment {
 
         getEditProfileTask task = new getEditProfileTask(getMainActivity());
         task.execute("".replace("|", ""));
+        asyncTask = task;
 
         if (Preferences.System.isDevSavePage()|
                 Preferences.System.isDevInterface()|
@@ -153,8 +161,7 @@ public class ProfileEditFragment extends WebViewFragment {
         getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.d("asdasd", json);
-                new editProfileTask(getMainActivity(), json).execute();
+               asyncTask = new editProfileTask(getMainActivity(), json).execute();
             }
         });
     }

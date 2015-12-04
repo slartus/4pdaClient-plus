@@ -191,31 +191,31 @@ public class App extends android.app.Application {
         return color;
     }
     public int getThemeStyleResID() {
-        int theme = R.style.Theme_White;
+        int theme = R.style.ThemeLight;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String color = prefs.getString("mainAccentColor","pink");
         if (isWhiteTheme()){
             switch (color) {
                 case "pink":
-                    theme = R.style.MainPinkWH;
+                    theme = R.style.MainPinkLight;
                     break;
                 case "blue":
-                    theme = R.style.MainBlueWH;
+                    theme = R.style.MainBlueLight;
                     break;
                 case "gray":
-                    theme = R.style.MainGrayWH;
+                    theme = R.style.MainGrayLight;
                     break;
             }
         }else{
             switch (color) {
                 case "pink":
-                    theme = R.style.MainPinkBL;
+                    theme = R.style.MainPinkDark;
                     break;
                 case "blue":
-                    theme = R.style.MainBlueBL;
+                    theme = R.style.MainBlueDark;
                     break;
                 case "gray":
-                    theme = R.style.MainGrayBL;
+                    theme = R.style.MainGrayDark;
                     break;
             }
         }
@@ -253,7 +253,7 @@ public class App extends android.app.Application {
         return theme;
     }
 
-    public int getTransluentThemeStyleResID() {
+    /*public int getTranslucentThemeStyleResID() {
         int theme = R.style.Theme_Transluent_WhitePink;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String color = prefs.getString("mainAccentColor","pink");
@@ -283,7 +283,7 @@ public class App extends android.app.Application {
             }
         }
         return theme;
-    }
+    }*/
 
     public int getThemeBackgroundColorRes() {
         return isWhiteTheme() ? R.color.app_background_wh : R.color.app_background_bl;

@@ -183,6 +183,12 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         reloadTopic();
     }
 
+    AsyncTask asyncTask;
+    @Override
+    public AsyncTask getAsyncTask() {
+        return asyncTask;
+    }
+
     @Override
     public boolean closeTab() {
         getPostBody();
@@ -1260,6 +1266,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     getThemeTask.execute(url.replace("|", ""), data.getStringExtra(EditPostFragment.TOPIC_BODY_KEY));
                 } else
                     getThemeTask.execute(url.replace("|", ""));
+                asyncTask = getThemeTask;
             }
         }
     }

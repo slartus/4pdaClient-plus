@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -167,6 +168,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
     private void selectItem(int position) {
         position = Math.min(position, getItems().size() - 1);// на всякий случай, если изменится в будущем кол-во разделов
         String tag = getItems().get(position).Tag;
+        MainActivity.log("kek "+tag);
         Preferences.News.setLastSelectedSection(position);
         if(!tag.equals(mTag)) {
             mTag = tag;
@@ -333,6 +335,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         }
         for (News item : mLoadResultList) {
             mData.add(item);
+            //MainActivity.log("kek "+item.getImgUrl());
         }
 
         mLoadResultList.clear();
@@ -359,7 +362,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
                 return;
             final News news = (News) o;
             if (TextUtils.isEmpty(news.getId())) return;
-
+            MainActivity.log(news.getTitle()+" : "+news.getUrl()+" : "+news.getId());
             MainActivity.addTab(news.getTitle().toString(), news.getUrl(),
                     NewsFragment.newInstance(getActivity(), news.getUrl()));
             mAdapter.notifyDataSetChanged();
