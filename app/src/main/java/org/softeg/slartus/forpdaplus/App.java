@@ -61,20 +61,26 @@ import java.util.concurrent.atomic.AtomicInteger;
         resDialogOkToast = R.string.crash_dialog_ok_toast // optional. displays a Toast message when the user accepts to send a report.)
 )
 public class App extends android.app.Application {
-    public static final int THEME_WHITE = 0;
+    public static final int THEME_LIGHT = 0;
     public static final int THEME_DARK = 1;
+    public static final int THEME_BLACK = 6;
 
     public static final int THEME_MATERIAL_LIGHT = 2;
     public static final int THEME_MATERIAL_DARK = 3;
     public static final int THEME_MATERIAL_BLACK = 5;
-    public static final int THEME_WHITE_OLD_HD = 4;
+
+    public static final int THEME_LIGHT_OLD_HD = 4;
 
     public static final int THEME_CUSTOM_CSS = 99;
 
-    private final Integer[] WHITE_THEMES = {THEME_WHITE, THEME_WHITE_OLD_HD, THEME_MATERIAL_LIGHT};
+    private final Integer[] LIGHT_THEMES = {THEME_LIGHT, THEME_LIGHT_OLD_HD, THEME_MATERIAL_LIGHT};
+    private final Integer[] DARK_THEMES = {THEME_MATERIAL_DARK, THEME_DARK};
 
-    private static boolean m_IsDebugModeLoaded = false;
-    private static boolean m_IsDebugMode = false;
+
+    public static final int THEME_TYPE_LIGHT = 0;
+    public static final int THEME_TYPE_DARK = 2;
+    public static final int THEME_TYPE_BLACK = 3;
+
     private String currentFragmentTag;
 
     private int tabIterator = 0;
@@ -128,32 +134,6 @@ public class App extends android.app.Application {
         return null;
     }
 
-    public static boolean getIsDebugMode() {
-
-        if (!m_IsDebugModeLoaded) {
-            m_IsDebugMode = PreferenceManager
-                    .getDefaultSharedPreferences(INSTANCE).getBoolean("DebugMode", false);
-            m_IsDebugModeLoaded = true;
-        }
-        return m_IsDebugMode;
-    }
-
-    public static void showMainActivityWithoutBack(Activity activity) {
-//        if(activity.getIntent()!=null
-//                &&activity.getIntent().getExtras()!=null
-//                &&activity.getIntent().getExtras().containsKey(BaseFragmentActivity.SENDER_ACTIVITY)){
-//            if(MainActivity.class.toString().equals(activity.getIntent().getExtras().getString(BaseFragmentActivity.SENDER_ACTIVITY))){
-//                activity.onBackPressed();
-//                return;
-//            }
-//        }
-        Intent intent = new Intent(activity.getApplicationContext(), MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        activity.startActivity(intent);
-        activity.finish();
-    }
-
     private AtomicInteger m_AtomicInteger=new AtomicInteger();
     public int getUniqueIntValue(){
         return m_AtomicInteger.incrementAndGet();
@@ -162,6 +142,7 @@ public class App extends android.app.Application {
     public int getWebViewFont() {
         return PreferenceManager.getDefaultSharedPreferences(this).getInt("webViewFont", 0);
     }
+
     public int getColorAccent(String type) {
         int color = 0;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -193,8 +174,9 @@ public class App extends android.app.Application {
     public int getThemeStyleResID() {
         int theme = R.style.ThemeLight;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String color = prefs.getString("mainAccentColor","pink");
-        if (isWhiteTheme()){
+        String color = prefs.getString("mainAccentColor", "pink");
+        int themeType = getThemeType();
+        if (themeType==THEME_TYPE_LIGHT){
             switch (color) {
                 case "pink":
                     theme = R.style.MainPinkLight;
@@ -206,7 +188,7 @@ public class App extends android.app.Application {
                     theme = R.style.MainGrayLight;
                     break;
             }
-        }else{
+        }else if(themeType==THEME_TYPE_DARK){
             switch (color) {
                 case "pink":
                     theme = R.style.MainPinkDark;
@@ -218,99 +200,151 @@ public class App extends android.app.Application {
                     theme = R.style.MainGrayDark;
                     break;
             }
+        }else {
+            switch (color) {
+                case "pink":
+                    theme = R.style.MainPinkBlack;
+                    break;
+                case "blue":
+                    theme = R.style.MainBlueBlack;
+                    break;
+                case "gray":
+                    theme = R.style.MainGrayBlack;
+                    break;
+            }
         }
         return theme;
     }
     public int getPrefsThemeStyleResID() {
-        int theme = R.style.Theme_Prefs_WhitePink;
+        int theme = R.style.ThemePrefsLightPink;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String color = prefs.getString("mainAccentColor","pink");
-        if (isWhiteTheme()){
+        String color = prefs.getString("mainAccentColor", "pink");
+        int themeType = getThemeType();
+        if (themeType==THEME_TYPE_LIGHT){
             switch (color) {
                 case "pink":
-                    theme = R.style.Theme_Prefs_WhitePink;
+                    theme = R.style.ThemePrefsLightPink;
                     break;
                 case "blue":
-                    theme = R.style.Theme_Prefs_WhiteBlue;
+                    theme = R.style.ThemePrefsLightBlue;
                     break;
                 case "gray":
-                    theme = R.style.Theme_Prefs_WhiteGray;
+                    theme = R.style.ThemePrefsLightGray;
                     break;
             }
-        }else{
+        }else if(themeType==THEME_TYPE_DARK){
             switch (color) {
                 case "pink":
-                    theme = R.style.Theme_Prefs_BlackPink;
+                    theme = R.style.ThemePrefsDarkPink;
                     break;
                 case "blue":
-                    theme = R.style.Theme_Prefs_BlackBlue;
+                    theme = R.style.ThemePrefsDarkBlue;
                     break;
                 case "gray":
-                    theme = R.style.Theme_Prefs_BlackGray;
+                    theme = R.style.ThemePrefsDarkGray;
+                    break;
+            }
+        }else {
+            switch (color) {
+                case "pink":
+                    theme = R.style.ThemePrefsBlackPink;
+                    break;
+                case "blue":
+                    theme = R.style.ThemePrefsBlackBlue;
+                    break;
+                case "gray":
+                    theme = R.style.ThemePrefsBlackGray;
                     break;
             }
         }
         return theme;
     }
 
-    /*public int getTranslucentThemeStyleResID() {
-        int theme = R.style.Theme_Transluent_WhitePink;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String color = prefs.getString("mainAccentColor","pink");
-        if (isWhiteTheme()){
-            switch (color) {
-                case "pink":
-                    theme = R.style.Theme_Transluent_WhitePink;
-                    break;
-                case "blue":
-                    theme = R.style.Theme_Transluent_WhiteBlue;
-                    break;
-                case "gray":
-                    theme = R.style.Theme_Transluent_WhiteGray;
-                    break;
-            }
-        }else{
-            switch (color) {
-                case "pink":
-                    theme = R.style.Theme_Transluent_BlackPink;
-                    break;
-                case "blue":
-                    theme = R.style.Theme_Transluent_BlackBlue;
-                    break;
-                case "gray":
-                    theme = R.style.Theme_Transluent_BlackGray;
-                    break;
-            }
+    public int getThemeType(){
+        int themeType = 0;
+        String themeStr = getCurrentTheme();
+        if(themeStr.length()<3){
+            int theme = Integer.parseInt(themeStr);
+            if(ArrayUtils.indexOf(theme, LIGHT_THEMES)!=-1)
+                themeType =  THEME_TYPE_LIGHT;
+            else if(ArrayUtils.indexOf(theme, DARK_THEMES)!=-1)
+                themeType = THEME_TYPE_DARK;
+            else
+                themeType = THEME_TYPE_BLACK;
+        }else {
+            if(themeStr.contains("/light/"))
+                themeType = THEME_TYPE_LIGHT;
+            else if(themeStr.contains("/dark/"))
+                themeType = THEME_TYPE_DARK;
+            else if(themeStr.contains("/black/"))
+                themeType = THEME_TYPE_BLACK;
         }
-        return theme;
-    }*/
+        return themeType;
+    }
 
     public int getThemeBackgroundColorRes() {
-        return isWhiteTheme() ? R.color.app_background_wh : R.color.app_background_bl;
+        int themeType = getThemeType();
+        if (themeType==THEME_TYPE_LIGHT)
+            return R.color.app_background_light;
+        else if(themeType==THEME_TYPE_DARK)
+            return R.color.app_background_dark;
+        else
+            return R.color.app_background_dark;
     }
 
-    public boolean isWhiteTheme() {
-        String themeStr = getCurrentTheme();
-        int theme = themeStr.length() < 3 ? Integer.parseInt(themeStr) : -1;
-
-        return ArrayUtils.indexOf(theme, WHITE_THEMES) != -1 || themeStr.contains("/white/");
+    public int getNavBarColor(){
+        int themeType = getThemeType();
+        if (themeType==THEME_TYPE_LIGHT)
+            return R.color.actionbar_background_light;
+        else if(themeType==THEME_TYPE_DARK)
+            return R.color.actionbar_background_dark;
+        else
+            return R.color.actionbar_background_dark;
     }
+    public int getDrawerMenuText(){
+        int themeType = getThemeType();
+        if (themeType==THEME_TYPE_LIGHT)
+            return R.color.drawer_menu_text_light;
+        else if(themeType==THEME_TYPE_DARK)
+            return R.color.drawer_menu_text_dark;
+        else
+            return R.color.drawer_menu_text_dark;
+    }
+
 
     public int getThemeStyleWebViewBackground() {
-        return isWhiteTheme() ? Color.parseColor("#eeeeee") : Color.parseColor("#1a1a1a");
+        int themeType = getThemeType();
+        if (themeType==THEME_TYPE_LIGHT)
+            return Color.parseColor("#eeeeee");
+        else if(themeType==THEME_TYPE_DARK)
+            return Color.parseColor("#1a1a1a");
+        else
+            return Color.parseColor("#1a1a1a");
     }
 
     public String getCurrentBackgroundColorHtml() {
-        return isWhiteTheme() ? "#eeeeee" : "#1a1a1a";
+        int themeType = getThemeType();
+        if (themeType==THEME_TYPE_LIGHT)
+            return "#eeeeee";
+        else if(themeType==THEME_TYPE_DARK)
+            return "#1a1a1a";
+        else
+            return "#1a1a1a";
     }
 
     public String getCurrentTheme() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        return preferences.getString("appstyle", Integer.toString(THEME_WHITE));
+        return preferences.getString("appstyle", Integer.toString(THEME_LIGHT));
     }
 
     public String getCurrentThemeName() {
-        return isWhiteTheme() ? "white" : "black";
+        int themeType = getThemeType();
+        if (themeType==THEME_TYPE_LIGHT)
+            return "white";
+        else if(themeType==THEME_TYPE_DARK)
+            return "dark";
+        else
+            return "black";
     }
 
     private String checkThemeFile(String themePath) {
@@ -330,7 +364,7 @@ public class App extends android.app.Application {
     }
 
     public String getThemeCssFileName() {
-        String themeStr = App.getInstance().getCurrentTheme();
+        String themeStr = getCurrentTheme();
         return getThemeCssFileName(themeStr);
     }
 
@@ -345,7 +379,7 @@ public class App extends android.app.Application {
             return themeStr;
         String color = PreferenceManager.getDefaultSharedPreferences(this).getString("mainAccentColor", "pink");
         switch (theme) {
-            case THEME_WHITE:
+            case THEME_LIGHT:
                 switch (color) {
                     case "pink":
                         cssFile = "4pda_light_blue.css";
@@ -358,9 +392,6 @@ public class App extends android.app.Application {
                         break;
                 }
                 break;
-            /*case THEME_WHITE_OLD:
-                cssFile = "coba_white_blue.css";
-                break;*/
             case THEME_DARK:
                 switch (color) {
                     case "pink":
@@ -383,7 +414,7 @@ public class App extends android.app.Application {
             case THEME_MATERIAL_BLACK:
                 cssFile = "material_black.css";
                 break;
-            case THEME_WHITE_OLD_HD:
+            case THEME_LIGHT_OLD_HD:
                 cssFile = "standart4PDA_HD.css";
                 break;
 
@@ -536,10 +567,6 @@ public class App extends android.app.Application {
 
     public static Context getContext() {
         return getInstance();
-    }
-
-    public boolean isDebuggable() {
-        return (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
     }
 
     public static SwipeRefreshLayout createSwipeRefreshLayout(Activity activity, View view,

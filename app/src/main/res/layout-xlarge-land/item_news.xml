@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?news_full"
+        style="?news"
         android:orientation="horizontal"
         android:paddingBottom="8dp">
 
@@ -48,11 +48,6 @@
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
-            <LinearLayout
-                style="?news_full_image_corner"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical"/>
         </FrameLayout>
 
 

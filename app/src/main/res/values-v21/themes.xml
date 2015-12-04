@@ -1,66 +1,90 @@
 <resources>
     <style name="ThemeLight" parent="MainThemeLight">
-        <item name="colorPrimary">@color/actionbar_background_wh</item>
+        <item name="colorPrimary">@color/actionbar_background_light</item>
         <item name="android:statusBarColor">#2d000000</item>
     </style>
-
     <style name="ThemeDark" parent="MainThemeDark">
-        <item name="colorPrimary">@color/actionbar_background_bl</item>
+        <item name="colorPrimary">@color/actionbar_background_dark</item>
+        <item name="android:statusBarColor">#2d000000</item>
+    </style>
+    <style name="ThemeBlack" parent="MainThemeBlack">
+        <item name="colorPrimary">@color/actionbar_background_dark</item>
         <item name="android:statusBarColor">#2d000000</item>
     </style>
 
-    <style name="Theme.Prefs.WhitePink" parent="MainPinkLight">
-        <item name="android:statusBarColor">@color/statusBarPrefs_wh</item>
-        <item name="android:textColor">@color/list_text_special_color_wh</item>
+    <style name="ThemePrefsLightPink" parent="MainPinkLight">
+        <item name="android:statusBarColor">@color/statusBarPrefs_light</item>
+        <item name="android:textColor">@color/list_text_special_color_light</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">56dp</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style</item>
-        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_wh</item>
+        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_light</item>
+    </style>
+    <style name="ThemePrefsLightBlue" parent="MainBlueLight">
+        <item name="android:statusBarColor">@color/statusBarPrefs_light</item>
+        <item name="android:textColor">@color/list_text_special_color_light</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowTitleSize">56dp</item>
+        <item name="android:windowTitleStyle">@style/prefs_title_style</item>
+        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_light</item>
+    </style>
+    <style name="ThemePrefsLightGray" parent="MainGrayLight">
+        <item name="android:statusBarColor">@color/statusBarPrefs_light</item>
+        <item name="android:textColor">@color/list_text_special_color_light</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowTitleSize">56dp</item>
+        <item name="android:windowTitleStyle">@style/prefs_title_style</item>
+        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_light</item>
     </style>
 
-    <style name="Theme.Prefs.BlackPink" parent="MainPinkDark">
-        <item name="android:statusBarColor">@color/statusBarPrefs_bl</item>
-        <item name="android:textColor">@color/list_text_special_color_bl</item>
+    <style name="ThemePrefsDarkPink" parent="MainPinkDark">
+        <item name="android:statusBarColor">@color/statusBarPrefs_dark</item>
+        <item name="android:textColor">@color/list_text_special_color_dark</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">56dp</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style</item>
-        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_bl</item>
+        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
+    </style>
+    <style name="ThemePrefsDarkBlue" parent="MainBlueDark">
+        <item name="android:statusBarColor">@color/statusBarPrefs_dark</item>
+        <item name="android:textColor">@color/list_text_special_color_dark</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowTitleSize">56dp</item>
+        <item name="android:windowTitleStyle">@style/prefs_title_style</item>
+        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
+    </style>
+    <style name="ThemePrefsDarkGray" parent="MainGrayDark">
+        <item name="android:statusBarColor">@color/statusBarPrefs_dark</item>
+        <item name="android:textColor">@color/list_text_special_color_dark</item>
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowTitleSize">56dp</item>
+        <item name="android:windowTitleStyle">@style/prefs_title_style</item>
+        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
     </style>
 
-    <style name="Theme.Prefs.WhiteBlue" parent="MainBlueLight">
-        <item name="android:statusBarColor">@color/statusBarPrefs_wh</item>
-        <item name="android:textColor">@color/list_text_special_color_wh</item>
+    <style name="ThemePrefsBlackPink" parent="MainPinkBlack">
+        <item name="android:statusBarColor">@color/statusBarPrefs_dark</item>
+        <item name="android:textColor">@color/list_text_special_color_dark</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">56dp</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style</item>
-        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_wh</item>
+        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
     </style>
-
-    <style name="Theme.Prefs.BlackBlue" parent="MainBlueDark">
-        <item name="android:statusBarColor">@color/statusBarPrefs_bl</item>
-        <item name="android:textColor">@color/list_text_special_color_bl</item>
+    <style name="ThemePrefsBlackBlue" parent="MainBlueBlack">
+        <item name="android:statusBarColor">@color/statusBarPrefs_dark</item>
+        <item name="android:textColor">@color/list_text_special_color_dark</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">56dp</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style</item>
-        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_bl</item>
+        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
     </style>
-
-    <style name="Theme.Prefs.WhiteGray" parent="MainGrayLight">
-        <item name="android:statusBarColor">@color/statusBarPrefs_wh</item>
-        <item name="android:textColor">@color/list_text_special_color_wh</item>
+    <style name="ThemePrefsBlackGray" parent="MainGrayBlack">
+        <item name="android:statusBarColor">@color/statusBarPrefs_dark</item>
+        <item name="android:textColor">@color/list_text_special_color_dark</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">56dp</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style</item>
-        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_wh</item>
-    </style>
-
-    <style name="Theme.Prefs.BlackGray" parent="MainGrayDark">
-        <item name="android:statusBarColor">@color/statusBarPrefs_bl</item>
-        <item name="android:textColor">@color/list_text_special_color_bl</item>
-        <item name="android:windowNoTitle">false</item>
-        <item name="android:windowTitleSize">56dp</item>
-        <item name="android:windowTitleStyle">@style/prefs_title_style</item>
-        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_bl</item>
+        <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
     </style>
 
 </resources>

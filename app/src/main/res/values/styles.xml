@@ -4,137 +4,134 @@
     <style name="MainThemeLight" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">@color/actionbar_background_wh</item>
+        <item name="colorPrimary">@color/actionbar_background_light</item>
         <item name="colorAccent">@color/accent</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="panelMenuListTheme">@style/bottom_menu_wh</item>
-        <item name="android:windowBackground">@color/app_background_wh</item>
+        <item name="panelMenuListTheme">@style/bottom_menu_light</item>
+        <item name="android:windowBackground">@color/app_background_light</item>
         <item name="actionOverflowButtonStyle">@style/overflow_button</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowActionModeOverlay">true</item>
         <item name="forum_header_text_color">@color/holo_blue_light</item>
         <item name="theme_background">@android:color/white</item>
         <item name="theme_light_background">@color/theme_light_background_light</item>
-        <item name="right_separator">@style/right_separator_wh</item>
-        <item name="news">@style/news_wh</item>
-        <item name="news_full">@style/news_full_wh</item>
-        <item name="drawer_menu">@style/drawer_menu_wh</item>
-        <item name="drawer_menu_group">@style/drawer_menu_group_wh</item>
-        <item name="drawer_menu_text">@style/drawer_menu_text_wh</item>
-        <item name="drawer_divider">@style/drawer_divider_wh</item>
-        <item name="popup_topic">@style/popup_topic_wh</item>
-        <item name="list_text_general_color">@style/list_text_general_color_wh</item>
-        <item name="list_text_minor_color">@style/list_text_minor_color_wh</item>
-        <item name="list_text_second_color">@style/list_text_second_color_wh</item>
-        <item name="list_text_special_color">@style/list_text_special_color_wh</item>
-        <item name="news_text_general_color">@style/news_text_general_color_wh</item>
-        <item name="news_text_minor_color">@style/news_text_minor_color_wh</item>
-        <item name="news_text_second_color">@style/news_text_second_color_wh</item>
-        <item name="edit_text">@style/edit_text_wh</item>
+        <item name="right_separator">@style/right_separator_light</item>
+        <item name="news">@style/news_light</item>
+        <item name="drawer_menu">@style/drawer_menu_light</item>
+        <item name="drawer_menu_group">@style/drawer_menu_group_light</item>
+        <item name="drawer_menu_text">@style/drawer_menu_text_light</item>
+        <item name="drawer_divider">@style/drawer_divider_light</item>
+        <item name="popup_topic">@style/popup_topic_light</item>
+        <item name="list_text_general_color">@style/list_text_general_color_light</item>
+        <item name="list_text_minor_color">@style/list_text_minor_color_light</item>
+        <item name="list_text_second_color">@style/list_text_second_color_light</item>
+        <item name="list_text_special_color">@style/list_text_special_color_light</item>
+        <item name="news_text_general_color">@style/news_text_general_color_light</item>
+        <item name="news_text_minor_color">@style/news_text_minor_color_light</item>
+        <item name="news_text_second_color">@style/news_text_second_color_light</item>
+        <item name="edit_text">@style/edit_text_light</item>
         <item name="md_dark_theme">false</item>
         <item name="md_background_color">#eeeeee</item>
-        <item name="md_title_color">@color/list_text_special_color_wh</item>
-        <item name="md_item_color">@color/list_text_special_color_wh</item>
-        <item name="md_content_color">@color/list_text_second_color_wh</item>
-        <item name="android:textColorSecondary">@color/list_text_second_color_wh</item>
-        <item name="Divider">@style/Divider_wh</item>
-        <item name="actbar">@color/actionbar_background_wh</item>
-        <item name="android:listViewStyle">@style/list_divider_style_wh</item>
+        <item name="md_title_color">@color/list_text_special_color_light</item>
+        <item name="md_item_color">@color/list_text_special_color_light</item>
+        <item name="md_content_color">@color/list_text_second_color_light</item>
+        <item name="android:textColorSecondary">@color/list_text_second_color_light</item>
+        <item name="Divider">@style/Divider_light</item>
+        <item name="actbar">@color/actionbar_background_light</item>
+        <item name="android:listViewStyle">@style/list_divider_style_light</item>
     </style>
 
     <style name="MainThemeDark" parent="Theme.AppCompat">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">@color/actionbar_background_bl</item>
+        <item name="colorPrimary">@color/actionbar_background_dark</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="actionBarStyle">@style/actionbar_bl</item>
+        <item name="actionBarStyle">@style/actionbar_dark</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat</item>
-        <item name="panelMenuListTheme">@style/bottom_menu_bl</item>
+        <item name="panelMenuListTheme">@style/bottom_menu_dark</item>
         <item name="actionOverflowButtonStyle">@style/overflow_button</item>
-        <item name="android:windowBackground">@color/app_background_bl</item>
-        <item name="actionModeBackground">@color/actionbar_background_bl</item>
+        <item name="android:windowBackground">@color/app_background_dark</item>
+        <item name="actionModeBackground">@color/actionbar_background_dark</item>
         <item name="windowActionModeOverlay">true</item>
-        <item name="android:actionModeBackground">@color/actionbar_background_bl</item>
+        <item name="android:actionModeBackground">@color/actionbar_background_dark</item>
         <item name="android:windowActionModeOverlay">true</item>
         <item name="forum_header_text_color">@color/holo_blue_dark</item>
         <item name="theme_background">@android:color/black</item>
         <item name="theme_light_background">@color/theme_light_background_dark</item>
-        <item name="right_separator">@style/right_separator_bl</item>
-        <item name="news">@style/news_bl</item>
-        <item name="news_full">@style/news_full_bl</item>
-        <item name="drawer_menu">@style/drawer_menu_bl</item>
-        <item name="drawer_menu_group">@style/drawer_menu_group_bl</item>
-        <item name="drawer_menu_text">@style/drawer_menu_text_bl</item>
-        <item name="drawer_divider">@style/drawer_divider_bl</item>
-        <item name="popup_topic">@style/popup_topic_bl</item>
-        <item name="list_text_general_color">@style/list_text_general_color_bl</item>
-        <item name="list_text_minor_color">@style/list_text_minor_color_bl</item>
-        <item name="list_text_second_color">@style/list_text_second_color_bl</item>
-        <item name="list_text_special_color">@style/list_text_special_color_bl</item>
-        <item name="news_text_general_color">@style/news_text_general_color_bl</item>
-        <item name="news_text_minor_color">@style/news_text_minor_color_bl</item>
-        <item name="news_text_second_color">@style/news_text_second_color_bl</item>
-        <item name="edit_text">@style/edit_text_bl</item>
+        <item name="right_separator">@style/right_separator_dark</item>
+        <item name="news">@style/news_dark</item>
+        <item name="drawer_menu">@style/drawer_menu_dark</item>
+        <item name="drawer_menu_group">@style/drawer_menu_group_dark</item>
+        <item name="drawer_menu_text">@style/drawer_menu_text_dark</item>
+        <item name="drawer_divider">@style/drawer_divider_dark</item>
+        <item name="popup_topic">@style/popup_topic_dark</item>
+        <item name="list_text_general_color">@style/list_text_general_color_dark</item>
+        <item name="list_text_minor_color">@style/list_text_minor_color_dark</item>
+        <item name="list_text_second_color">@style/list_text_second_color_dark</item>
+        <item name="list_text_special_color">@style/list_text_special_color_dark</item>
+        <item name="news_text_general_color">@style/news_text_general_color_dark</item>
+        <item name="news_text_minor_color">@style/news_text_minor_color_dark</item>
+        <item name="news_text_second_color">@style/news_text_second_color_dark</item>
+        <item name="edit_text">@style/edit_text_dark</item>
         <item name="md_dark_theme">false</item>
         <item name="md_background_color">#303030</item>
-        <item name="md_title_color">@color/list_text_special_color_bl</item>
-        <item name="md_item_color">@color/list_text_special_color_bl</item>
-        <item name="md_content_color">@color/list_text_second_color_bl</item>
-        <item name="android:textColorSecondary">@color/list_text_second_color_bl</item>
-        <item name="Divider">@style/Divider_bl</item>
-        <item name="actbar">@color/actionbar_background_bl</item>
-        <item name="android:listViewStyle">@style/list_divider_style_bl</item>
+        <item name="md_title_color">@color/list_text_special_color_dark</item>
+        <item name="md_item_color">@color/list_text_special_color_dark</item>
+        <item name="md_content_color">@color/list_text_second_color_dark</item>
+        <item name="android:textColorSecondary">@color/list_text_second_color_dark</item>
+        <item name="Divider">@style/Divider_dark</item>
+        <item name="actbar">@color/actionbar_background_dark</item>
+        <item name="android:listViewStyle">@style/list_divider_style_dark</item>
     </style>
 
     <style name="MainThemeBlack" parent="Theme.AppCompat">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">@color/actionbar_background_bl</item>
+        <item name="colorPrimary">@color/actionbar_background_dark</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="actionBarStyle">@style/actionbar_bl</item>
+        <item name="actionBarStyle">@style/actionbar_dark</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat</item>
-        <item name="panelMenuListTheme">@style/bottom_menu_bl</item>
+        <item name="panelMenuListTheme">@style/bottom_menu_dark</item>
         <item name="actionOverflowButtonStyle">@style/overflow_button</item>
-        <item name="android:windowBackground">@color/app_background_bl</item>
-        <item name="actionModeBackground">@color/actionbar_background_bl</item>
+        <item name="android:windowBackground">@color/app_background_dark</item>
+        <item name="actionModeBackground">@color/actionbar_background_dark</item>
         <item name="windowActionModeOverlay">true</item>
-        <item name="android:actionModeBackground">@color/actionbar_background_bl</item>
+        <item name="android:actionModeBackground">@color/actionbar_background_dark</item>
         <item name="android:windowActionModeOverlay">true</item>
         <item name="forum_header_text_color">@color/holo_blue_dark</item>
         <item name="theme_background">@android:color/black</item>
         <item name="theme_light_background">@color/theme_light_background_dark</item>
-        <item name="right_separator">@style/right_separator_bl</item>
-        <item name="news">@style/news_bl</item>
-        <item name="news_full">@style/news_full_bl</item>
-        <item name="drawer_menu">@style/drawer_menu_bl</item>
-        <item name="drawer_menu_group">@style/drawer_menu_group_bl</item>
-        <item name="drawer_menu_text">@style/drawer_menu_text_bl</item>
-        <item name="drawer_divider">@style/drawer_divider_bl</item>
-        <item name="popup_topic">@style/popup_topic_bl</item>
-        <item name="list_text_general_color">@style/list_text_general_color_bl</item>
-        <item name="list_text_minor_color">@style/list_text_minor_color_bl</item>
-        <item name="list_text_second_color">@style/list_text_second_color_bl</item>
-        <item name="list_text_special_color">@style/list_text_special_color_bl</item>
-        <item name="news_text_general_color">@style/news_text_general_color_bl</item>
-        <item name="news_text_minor_color">@style/news_text_minor_color_bl</item>
-        <item name="news_text_second_color">@style/news_text_second_color_bl</item>
-        <item name="edit_text">@style/edit_text_bl</item>
+        <item name="right_separator">@style/right_separator_dark</item>
+        <item name="news">@style/news_dark</item>
+        <item name="drawer_menu">@style/drawer_menu_dark</item>
+        <item name="drawer_menu_group">@style/drawer_menu_group_dark</item>
+        <item name="drawer_menu_text">@style/drawer_menu_text_dark</item>
+        <item name="drawer_divider">@style/drawer_divider_dark</item>
+        <item name="popup_topic">@style/popup_topic_dark</item>
+        <item name="list_text_general_color">@style/list_text_general_color_dark</item>
+        <item name="list_text_minor_color">@style/list_text_minor_color_dark</item>
+        <item name="list_text_second_color">@style/list_text_second_color_dark</item>
+        <item name="list_text_special_color">@style/list_text_special_color_dark</item>
+        <item name="news_text_general_color">@style/news_text_general_color_dark</item>
+        <item name="news_text_minor_color">@style/news_text_minor_color_dark</item>
+        <item name="news_text_second_color">@style/news_text_second_color_dark</item>
+        <item name="edit_text">@style/edit_text_dark</item>
         <item name="md_dark_theme">false</item>
         <item name="md_background_color">#303030</item>
-        <item name="md_title_color">@color/list_text_special_color_bl</item>
-        <item name="md_item_color">@color/list_text_special_color_bl</item>
-        <item name="md_content_color">@color/list_text_second_color_bl</item>
-        <item name="android:textColorSecondary">@color/list_text_second_color_bl</item>
-        <item name="Divider">@style/Divider_bl</item>
-        <item name="actbar">@color/actionbar_background_bl</item>
-        <item name="android:listViewStyle">@style/list_divider_style_bl</item>
+        <item name="md_title_color">@color/list_text_special_color_dark</item>
+        <item name="md_item_color">@color/list_text_special_color_dark</item>
+        <item name="md_content_color">@color/list_text_second_color_dark</item>
+        <item name="android:textColorSecondary">@color/list_text_second_color_dark</item>
+        <item name="Divider">@style/Divider_dark</item>
+        <item name="actbar">@color/actionbar_background_dark</item>
+        <item name="android:listViewStyle">@style/list_divider_style_dark</item>
     </style>
 
 
     <style name="ImageViewTheme" parent="Theme.AppCompat">
         <item name="android:actionBarStyle">@style/actionbar_trans</item>
         <item name="actionBarStyle">@style/actionbar_trans</item>
-        <item name="panelMenuListTheme">@style/bottom_menu_bl</item>
+        <item name="panelMenuListTheme">@style/bottom_menu_dark</item>
         <item name="actionOverflowButtonStyle">@style/overflow_button</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowActionModeOverlay">true</item>
@@ -150,26 +147,26 @@
         <item name="subtitleTextStyle">@style/actionbar_subtitle</item>
     </style>
 
-    <style name="list_divider_style_wh" parent="@style/Widget.AppCompat.ListView">
-        <item name="android:divider">@color/divider_wh</item>
+    <style name="list_divider_style_light" parent="@style/Widget.AppCompat.ListView">
+        <item name="android:divider">@color/divider_light</item>
         <item name="android:dividerHeight">1dp</item>
     </style>
-    <style name="list_divider_style_bl" parent="@style/Widget.AppCompat.ListView">
-        <item name="android:divider">@color/divider_bl</item>
+    <style name="list_divider_style_dark" parent="@style/Widget.AppCompat.ListView">
+        <item name="android:divider">@color/divider_dark</item>
         <item name="android:dividerHeight">1dp</item>
     </style>
 
-    <style name="bottom_menu_wh" parent="@style/Theme.AppCompat.CompactMenu">
-        <item name="android:itemTextAppearance">@style/bottom_menu_wh_ta</item>
+    <style name="bottom_menu_light" parent="@style/Theme.AppCompat.CompactMenu">
+        <item name="android:itemTextAppearance">@style/bottom_menu_light_ta</item>
     </style>
-    <style name="bottom_menu_wh_ta" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/list_text_special_color_wh</item>
+    <style name="bottom_menu_light_ta" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/list_text_special_color_light</item>
     </style>
-    <style name="bottom_menu_bl" parent="@style/Theme.AppCompat.CompactMenu">
-        <item name="android:itemTextAppearance">@style/bottom_menu_bl_ta</item>
+    <style name="bottom_menu_dark" parent="@style/Theme.AppCompat.CompactMenu">
+        <item name="android:itemTextAppearance">@style/bottom_menu_dark_ta</item>
     </style>
-    <style name="bottom_menu_bl_ta" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/list_text_special_color_bl</item>
+    <style name="bottom_menu_dark_ta" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColor">@color/list_text_special_color_dark</item>
     </style>
 
     <style name="actionMode_style" parent="@style/Widget.AppCompat.Light.ActionMode.Inverse">
@@ -179,15 +176,15 @@
         <item name="android:height">@dimen/ptr_height_bug</item>
         <item name="height">@dimen/ptr_height_bug</item>
     </style>
-    <style name="actionbar_wh" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="background">@color/actionbar_background_wh</item>
+    <style name="actionbar_light" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="background">@color/actionbar_background_light</item>
         <item name="elevation">2dp</item>
         <item name="displayOptions">homeAsUp|showTitle</item>
         <item name="titleTextStyle">@style/actionbar_title</item>
         <item name="subtitleTextStyle">@style/actionbar_subtitle</item>
     </style>
-    <style name="actionbar_bl" parent="@style/Widget.AppCompat.ActionBar.Solid">
-        <item name="background">@color/actionbar_background_bl</item>
+    <style name="actionbar_dark" parent="@style/Widget.AppCompat.ActionBar.Solid">
+        <item name="background">@color/actionbar_background_dark</item>
         <item name="elevation">2dp</item>
         <item name="displayOptions">homeAsUp|showTitle</item>
         <item name="titleTextStyle">@style/actionbar_title</item>
@@ -217,22 +214,22 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="Divider_wh">
+    <style name="Divider_light">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/divider_wh</item>
+        <item name="android:background">@color/divider_light</item>
     </style>
-    <style name="Divider_bl">
+    <style name="Divider_dark">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/divider_bl</item>
+        <item name="android:background">@color/divider_dark</item>
     </style>
 
-    <style name="prefs_title_background_bl">
-        <item name="android:background">@color/actionbar_background_bl</item>
+    <style name="prefs_title_background_dark">
+        <item name="android:background">@color/actionbar_background_dark</item>
     </style>
-    <style name="prefs_title_background_wh">
-        <item name="android:background">@color/actionbar_background_wh</item>
+    <style name="prefs_title_background_light">
+        <item name="android:background">@color/actionbar_background_light</item>
     </style>
     <style name="prefs_title_style">
         <item name="android:paddingLeft">24dp</item>
@@ -247,129 +244,112 @@
         <item name="android:fitsSystemWindows">false</item>
     </style>
 
-    <style name="right_separator_wh">
-        <item name="android:background">@drawable/right_separator_wh</item>
+    <style name="right_separator_light">
+        <item name="android:background">@drawable/right_separator_light</item>
     </style>
 
-    <style name="right_separator_bl">
-        <item name="android:background">@drawable/right_separator_bl</item>
+    <style name="right_separator_dark">
+        <item name="android:background">@drawable/right_separator_dark</item>
     </style>
 
-    <style name="news_wh">
-        <item name="android:background">@color/news_background_wh</item>
+    <style name="news_light">
+        <item name="android:background">@color/news_background_light</item>
     </style>
 
-    <style name="news_bl">
-        <item name="android:background">@color/news_background_bl</item>
+    <style name="news_dark">
+        <item name="android:background">@color/news_background_dark</item>
     </style>
 
-    <style name="news_full_wh">
-        <item name="android:background">@drawable/news_full_wh</item>
+    <style name="drawer_menu_light">
+        <item name="android:background">@color/drawer_menu_background_light</item>
+    </style>
+    <style name="drawer_menu_dark">
+        <item name="android:background">@color/drawer_menu_background_dark</item>
+    </style>
+    <style name="drawer_menu_group_light">
+        <item name="android:textColor">@color/drawer_menu_group_light</item>
+    </style>
+    <style name="drawer_menu_group_dark">
+        <item name="android:textColor">@color/drawer_menu_group_dark</item>
+    </style>
+    <style name="drawer_menu_text_light">
+        <item name="android:textColor">@color/drawer_menu_text_light</item>
+    </style>
+    <style name="drawer_menu_text_dark">
+        <item name="android:textColor">@color/drawer_menu_text_dark</item>
+    </style>
+    <style name="drawer_divider_light">
+        <item name="android:background">@drawable/custom_group_devider_light</item>
+    </style>
+    <style name="drawer_divider_dark">
+        <item name="android:background">@drawable/custom_group_devider_dark</item>
     </style>
 
-    <style name="news_full_bl">
-        <item name="android:background">@drawable/news_full_bl</item>
+    <style name="popup_topic_light">
+        <item name="android:background">@drawable/abc_popup_background_light</item>
+    </style>
+    <style name="popup_topic_dark">
+        <item name="android:background">@drawable/abc_popup_background_dark</item>
     </style>
 
-    <style name="news_full_image_corner_wh">
-        <item name="android:background">@drawable/news_full_image_corner_wh</item>
+    <style name="list_text_general_color_light">
+        <item name="android:textColor">@color/list_text_general_color_light</item>
+    </style>
+    <style name="list_text_general_color_dark">
+        <item name="android:textColor">@color/list_text_general_color_dark</item>
     </style>
 
-    <style name="news_full_image_corner_bl">
-        <item name="android:background">@drawable/news_full_image_corner_bl</item>
+    <style name="list_text_minor_color_light">
+        <item name="android:textColor">@color/list_text_minor_color_light</item>
+    </style>
+    <style name="list_text_minor_color_dark">
+        <item name="android:textColor">@color/list_text_minor_color_dark</item>
     </style>
 
-
-    <style name="drawer_menu_wh">
-        <item name="android:background">@color/drawer_menu_background_wh</item>
+    <style name="list_text_second_color_light">
+        <item name="android:textColor">@color/list_text_second_color_light</item>
     </style>
-    <style name="drawer_menu_bl">
-        <item name="android:background">@color/drawer_menu_background_bl</item>
-    </style>
-    <style name="drawer_menu_group_wh">
-        <item name="android:textColor">@color/drawer_menu_group_wh</item>
-    </style>
-    <style name="drawer_menu_group_bl">
-        <item name="android:textColor">@color/drawer_menu_group_bl</item>
-    </style>
-    <style name="drawer_menu_text_wh">
-        <item name="android:textColor">@color/drawer_menu_text_wh</item>
-    </style>
-    <style name="drawer_menu_text_bl">
-        <item name="android:textColor">@color/drawer_menu_text_bl</item>
-    </style>
-    <style name="drawer_divider_wh">
-        <item name="android:background">@drawable/custom_group_devider_wh</item>
-    </style>
-    <style name="drawer_divider_bl">
-        <item name="android:background">@drawable/custom_group_devider_bl</item>
+    <style name="list_text_second_color_dark">
+        <item name="android:textColor">@color/list_text_second_color_dark</item>
     </style>
 
-    <style name="popup_topic_wh">
-        <item name="android:background">@drawable/abc_popup_background_wh</item>
+    <style name="list_text_special_color_light">
+        <item name="android:textColor">@color/list_text_special_color_light</item>
     </style>
-    <style name="popup_topic_bl">
-        <item name="android:background">@drawable/abc_popup_background_bl</item>
-    </style>
-
-    <style name="list_text_general_color_wh">
-        <item name="android:textColor">@color/list_text_general_color_wh</item>
-    </style>
-    <style name="list_text_general_color_bl">
-        <item name="android:textColor">@color/list_text_general_color_bl</item>
+    <style name="list_text_special_color_dark">
+        <item name="android:textColor">@color/list_text_special_color_dark</item>
     </style>
 
-    <style name="list_text_minor_color_wh">
-        <item name="android:textColor">@color/list_text_minor_color_wh</item>
-    </style>
-    <style name="list_text_minor_color_bl">
-        <item name="android:textColor">@color/list_text_minor_color_bl</item>
+    <style name="news_text_general_color_light">
+        <item name="android:textColor">@color/news_text_general_color_light</item>
     </style>
 
-    <style name="list_text_second_color_wh">
-        <item name="android:textColor">@color/list_text_second_color_wh</item>
-    </style>
-    <style name="list_text_second_color_bl">
-        <item name="android:textColor">@color/list_text_second_color_bl</item>
+    <style name="news_text_general_color_dark">
+        <item name="android:textColor">@color/news_text_general_color_dark</item>
     </style>
 
-    <style name="list_text_special_color_wh">
-        <item name="android:textColor">@color/list_text_special_color_wh</item>
-    </style>
-    <style name="list_text_special_color_bl">
-        <item name="android:textColor">@color/list_text_special_color_bl</item>
+    <style name="news_text_minor_color_light">
+        <item name="android:textColor">@color/news_text_minor_color_light</item>
     </style>
 
-    <style name="news_text_general_color_wh">
-        <item name="android:textColor">@color/news_text_general_color_wh</item>
+    <style name="news_text_minor_color_dark">
+        <item name="android:textColor">@color/news_text_minor_color_dark</item>
     </style>
 
-    <style name="news_text_general_color_bl">
-        <item name="android:textColor">@color/news_text_general_color_bl</item>
+    <style name="news_text_second_color_light">
+        <item name="android:textColor">@color/news_text_second_color_light</item>
     </style>
 
-    <style name="news_text_minor_color_wh">
-        <item name="android:textColor">@color/news_text_minor_color_wh</item>
+    <style name="news_text_second_color_dark">
+        <item name="android:textColor">@color/news_text_second_color_dark</item>
     </style>
 
-    <style name="news_text_minor_color_bl">
-        <item name="android:textColor">@color/news_text_minor_color_bl</item>
+    <style name="edit_text_light">
+        <item name="android:background">@color/edit_text_light</item>
     </style>
 
-    <style name="news_text_second_color_wh">
-        <item name="android:textColor">@color/news_text_second_color_wh</item>
-    </style>
-
-    <style name="news_text_second_color_bl">
-        <item name="android:textColor">@color/news_text_second_color_bl</item>
-    </style>
-
-    <style name="edit_text_wh">
-        <item name="android:background">@color/edit_text_wh</item>
-    </style>
-
-    <style name="edit_text_bl">
-        <item name="android:background">@color/edit_text_bl</item>
+    <style name="edit_text_dark">
+        <item name="android:background">@color/edit_text_dark</item>
     </style>
 
     <style name="NotificationText" parent="android:TextAppearance.StatusBar.EventContent" />

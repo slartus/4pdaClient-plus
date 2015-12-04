@@ -331,6 +331,7 @@ public class BbCodesPanel extends BbCodesBasePanel {
     @Override
     protected BbImage[] getImages() {
         String style = App.getInstance().getCurrentThemeName();
+        if(style.equals("dark")) style = "black";
 
         BbImage[] res = new BbImage[m_BbCodes.length];
         String path = "forum/style_images/1/folder_editor_buttons_" + style + "/";

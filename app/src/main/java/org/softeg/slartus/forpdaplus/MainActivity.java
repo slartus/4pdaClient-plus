@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                         .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
             if (getPreferences().getBoolean("coloredNavBar", true) && Build.VERSION.SDK_INT >= 21)
-                getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(getNavBarColor()));
+                getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(App.getInstance().getNavBarColor()));
 
 
             setContentView(R.layout.main);
@@ -176,12 +176,13 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 if (Build.VERSION.SDK_INT > 18) {
                     LinearLayout statusBar = (LinearLayout) findViewById(R.id.statusBar);
                     statusBar.setMinimumHeight(getStatusBarHeight());
-
-                    if (App.getInstance().getCurrentThemeName().equals("white")) {
-                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_wh));
-                    } else if (App.getInstance().getCurrentThemeName().equals("black")) {
-                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_bl));
-                    }
+                    int themeType = App.getInstance().getThemeType();
+                    if (themeType==App.THEME_TYPE_LIGHT)
+                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_light));
+                    else if (themeType==App.THEME_TYPE_DARK)
+                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_dark));
+                    else
+                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_dark));
                     statusBarShowed = true;
                 }
             }
@@ -283,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
 
     private boolean checkIntent(final Intent intent) {
-        log("intent: "+intent);
+        log("intent: " + intent);
         if (IntentActivity.checkSendAction(this, intent))
             return false;
         //intent.setData(Uri.parse("http://4pda.ru/forum/lofiversion/index.php?t365142-1650.html"));
@@ -412,7 +413,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
 
     public static void log(String s){
-        Log.e("My log", s+"       ///////// INFO CURRENT TAG: "+ App.getInstance().getCurrentFragmentTag());
+        Log.e("My log", s + "       ///////// INFO CURRENT TAG: " + App.getInstance().getCurrentFragmentTag());
     }
 
     @Override
@@ -439,12 +440,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             result = getResources().getDimensionPixelSize(resourceId);
         }
         return result;
-    }
-    public int getNavBarColor(){
-        if(App.getInstance().isWhiteTheme())
-            return R.color.actionbar_background_wh;
-        else
-            return R.color.actionbar_background_bl;
     }
     public SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(getContext());

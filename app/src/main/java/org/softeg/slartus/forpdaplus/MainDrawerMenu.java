@@ -519,7 +519,7 @@ public class MainDrawerMenu {
             holder.text.setText(item.getTitle());
             holder.icon.setImageDrawable(getContext().getResources().getDrawable(item.getIcon()));
 
-            holder.text.setTextColor(resources.getColor(App.getInstance().isWhiteTheme() ? R.color.drawer_menu_text_wh : R.color.drawer_menu_text_bl));
+            holder.text.setTextColor(resources.getColor(App.getInstance().getDrawerMenuText()));
             holder.item.setBackgroundResource(Color.TRANSPARENT);
             holder.icon.clearColorFilter();
 

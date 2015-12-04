@@ -64,6 +64,7 @@ public class BbCodesQuickView extends BaseQuickView {
         StringBuilder sb = new StringBuilder();
         sb.append("<html><body bgcolor=\"").append(App.getInstance().getCurrentBackgroundColorHtml()).append("\">");
         String style = App.getInstance().getCurrentThemeName();
+        if(style.equals("dark")) style = "black";
         String path = "file:///android_asset/forum/style_images/1/folder_editor_buttons_" + style + "/";
         initVars();
         for (String key : m_BbCodes) {
@@ -389,7 +390,7 @@ public class BbCodesQuickView extends BaseQuickView {
         mNotClosedCodes = new int[m_BbCodes.length];  //+1 - для спойлера с отрицательным индексом
     }
 
-    protected BbImage[] getImages() {
+/*    protected BbImage[] getImages() {
         String style = App.getInstance().getCurrentThemeName();
 
         BbImage[] res = new BbImage[m_BbCodes.length];
@@ -399,7 +400,7 @@ public class BbCodesQuickView extends BaseQuickView {
             res[i] = new BbImage(path, m_BbCodes[i].toLowerCase() + ".png", m_BbCodes[i]);
         }
         return res;
-    }
+    }*/
 
     private String[] m_BbCodes;
     private int[] mNotClosedCodes;

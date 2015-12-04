@@ -9,59 +9,59 @@
     <color name="holo_blue_dark">#0099cc</color>
 
     <!-- Mod -->
-    <color name="app_background_wh">#eeeeee</color>
-    <color name="app_background_bl">#1A1A1A</color>
+    <color name="app_background_light">#eeeeee</color>
+    <color name="app_background_dark">#1A1A1A</color>
 
 
-    <color name="right_separator_color_wh">#d9d9d9</color>
-    <color name="right_separator_color_bl">#494949</color>
+    <color name="right_separator_color_light">#d9d9d9</color>
+    <color name="right_separator_color_dark">#494949</color>
 
 
-    <color name="news_background_wh">#ffffff</color>
-    <color name="news_background_bl">#2b2b2b</color>
-    <color name="news_border_wh">#cccccc</color>
-    <color name="news_border_bl">#333333</color>
-    <color name="news_image_corner_wh">@color/app_background_wh</color>
-    <color name="news_image_corner_bl">@color/app_background_bl</color>
+    <color name="news_background_light">#ffffff</color>
+    <color name="news_background_dark">#2b2b2b</color>
+    <color name="news_border_light">#cccccc</color>
+    <color name="news_border_dark">#333333</color>
+    <color name="news_image_corner_light">@color/app_background_light</color>
+    <color name="news_image_corner_dark">@color/app_background_dark</color>
 
-    <color name="actionbar_background_wh">#0277bd</color>
-    <color name="actionbar_background_bl">#17415f</color>
+    <color name="actionbar_background_light">#0277bd</color>
+    <color name="actionbar_background_dark">#17415f</color>
 
-    <color name="statusBar_wh">@color/actionbar_background_wh</color>
-    <color name="statusBar_bl">@color/actionbar_background_bl</color>
+    <color name="statusBar_light">@color/actionbar_background_light</color>
+    <color name="statusBar_dark">@color/actionbar_background_dark</color>
 
-    <color name="statusBarPrefs_wh">#02629C</color>
-    <color name="statusBarPrefs_bl">#133044</color>
+    <color name="statusBarPrefs_light">#02629C</color>
+    <color name="statusBarPrefs_dark">#133044</color>
 
-    <color name="drawer_menu_background_wh">#ffffff</color>
-    <color name="drawer_menu_background_bl">@color/app_background_bl</color>
-    <color name="drawer_menu_text_wh">@color/list_text_special_color_wh</color>
-    <color name="drawer_menu_text_bl">@color/list_text_special_color_bl</color>
-    <color name="drawer_menu_group_wh">@color/list_text_second_color_wh</color>
-    <color name="drawer_menu_group_bl">@color/list_text_second_color_bl</color>
+    <color name="drawer_menu_background_light">#ffffff</color>
+    <color name="drawer_menu_background_dark">@color/app_background_dark</color>
+    <color name="drawer_menu_text_light">@color/list_text_special_color_light</color>
+    <color name="drawer_menu_text_dark">@color/list_text_special_color_dark</color>
+    <color name="drawer_menu_group_light">@color/list_text_second_color_light</color>
+    <color name="drawer_menu_group_dark">@color/list_text_second_color_dark</color>
 
-    <color name="divider_wh">#dbdbdb</color>
-    <color name="divider_bl">#292929</color>
+    <color name="divider_light">#dbdbdb</color>
+    <color name="divider_dark">#292929</color>
 
-    <color name="list_text_general_color_wh">#4D4D4D</color>
-    <color name="list_text_minor_color_wh">#757575</color>
-    <color name="list_text_second_color_wh">#757575</color>
-    <color name="list_text_special_color_wh">#212121</color>
+    <color name="list_text_general_color_light">#4D4D4D</color>
+    <color name="list_text_minor_color_light">#757575</color>
+    <color name="list_text_second_color_light">#757575</color>
+    <color name="list_text_special_color_light">#212121</color>
 
-    <color name="list_text_general_color_bl">#999999</color>
-    <color name="list_text_minor_color_bl">#8a8a8a</color>
-    <color name="list_text_second_color_bl">#737373</color>
-    <color name="list_text_special_color_bl">#cccccc</color>
+    <color name="list_text_general_color_dark">#999999</color>
+    <color name="list_text_minor_color_dark">#8a8a8a</color>
+    <color name="list_text_second_color_dark">#737373</color>
+    <color name="list_text_special_color_dark">#cccccc</color>
 
-    <color name="news_text_general_color_wh">#ffffff</color>
-    <color name="news_text_general_color_bl">#ffffff</color>
-    <color name="news_text_minor_color_wh">@color/list_text_special_color_wh</color>
-    <color name="news_text_minor_color_bl">@color/list_text_special_color_bl</color>
-    <color name="news_text_second_color_wh">@color/list_text_second_color_wh</color>
-    <color name="news_text_second_color_bl">@color/list_text_second_color_bl</color>
+    <color name="news_text_general_color_light">#ffffff</color>
+    <color name="news_text_general_color_dark">#ffffff</color>
+    <color name="news_text_minor_color_light">@color/list_text_special_color_light</color>
+    <color name="news_text_minor_color_dark">@color/list_text_special_color_dark</color>
+    <color name="news_text_second_color_light">@color/list_text_second_color_light</color>
+    <color name="news_text_second_color_dark">@color/list_text_second_color_dark</color>
 
-    <color name="edit_text_wh">@color/white</color>
-    <color name="edit_text_bl">#2b2b2b</color>
+    <color name="edit_text_light">@color/white</color>
+    <color name="edit_text_dark">#2b2b2b</color>
 
     <color name="accent">#0277BD</color>
     <color name="accentPink">@color/accent</color>
@@ -77,7 +77,7 @@
     <color name="new_flag">#A8014E7D</color>
 
     <color name="selectedItem">#2777</color>
-    <color name="selectedItemText">@color/actionbar_background_wh</color>
+    <color name="selectedItemText">@color/actionbar_background_light</color>
 
     <color name="background_toolbar">#59000000</color>
 

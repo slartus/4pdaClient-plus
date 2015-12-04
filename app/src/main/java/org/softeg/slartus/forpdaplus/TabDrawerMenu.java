@@ -163,7 +163,7 @@ public class TabDrawerMenu {
             holder.text.setText(item.getTitle());
             holder.close.setOnClickListener(new CloseClickListener(item.getTag()));
 
-            holder.text.setTextColor(resources.getColor(App.getInstance().isWhiteTheme() ? R.color.drawer_menu_text_wh : R.color.drawer_menu_text_bl));
+            holder.text.setTextColor(resources.getColor(App.getInstance().getDrawerMenuText()));
             holder.item.setBackgroundResource(Color.TRANSPARENT);
 
             if(App.getInstance().getCurrentFragmentTag().equals(item.getTag())){

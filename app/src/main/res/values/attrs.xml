@@ -2,8 +2,6 @@
     <!-- Mod -->
     <attr name="right_separator" format="reference" />
     <attr name="news" format="reference" />
-    <attr name="news_full" format="reference" />
-    <attr name="news_full_image_corner" format="reference" />
     <attr name="drawer_menu" format="reference" />
     <attr name="drawer_menu_group" format="reference" />
     <attr name="drawer_menu_text" format="reference" />
