@@ -441,8 +441,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         }
         return result;
     }
-    public SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(getContext());
+    public static SharedPreferences getPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(App.getContext());
     }
 
     /**
@@ -465,6 +465,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         m_ExitWarned = false;
         log("onResume " + System.currentTimeMillis() / 1000);
         onStart();
+        if(mMainDrawerMenu!=null) mMainDrawerMenu.setmMenuGroups();
     }
 
     @Override

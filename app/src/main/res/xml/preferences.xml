@@ -28,10 +28,13 @@
             android:summary="Требуется перезапуск приложения"
             android:title="Изображение в боковом меню"/>
         <CheckBoxPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:key="categoryLast"
             android:title="Отображать 'Последние'"
-            android:summary="Меню 'Последние' в выезжающем меню. Требуется перезапуск приложения"/>
+            android:summary="Меню 'Последние' в выезжающем меню"/>
+        <Preference
+            android:key="visibleMenuItems"
+            android:title="Пункты меню в боковой панели"/>
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="statusbarTransparent"
@@ -85,7 +88,6 @@
 
     <PreferenceScreen
         android:title="Системное">
-
         <Preference
             android:key="path.system_path"
             android:title="Путь к папке с данными" />

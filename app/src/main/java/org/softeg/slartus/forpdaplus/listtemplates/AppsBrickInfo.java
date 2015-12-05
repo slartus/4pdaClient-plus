@@ -11,7 +11,7 @@ import org.softeg.slartus.forpdaplus.listfragments.AppsListFragment;
 public class AppsBrickInfo extends BrickInfo {
     @Override
     public String getTitle() {
-        return "Приложения";
+        return "Мои приложения";
     }
 
     @Override

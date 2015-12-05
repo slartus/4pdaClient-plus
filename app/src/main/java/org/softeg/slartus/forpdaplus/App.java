@@ -405,6 +405,19 @@ public class App extends android.app.Application {
                         break;
                 }
                 break;
+            case THEME_BLACK:
+                switch (color) {
+                    case "pink":
+                        cssFile = "4pda_black_blue.css";
+                        break;
+                    case "blue":
+                        cssFile = "4pda_black_pink.css";
+                        break;
+                    case "gray":
+                        cssFile = "4pda_black_gray.css";
+                        break;
+                }
+                break;
             case THEME_MATERIAL_LIGHT:
                 cssFile = "material_light.css";
                 break;

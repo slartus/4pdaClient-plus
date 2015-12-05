@@ -642,11 +642,6 @@ public class QmsChatFragment extends WebViewFragment {
         return wvChat;
     }
 
-    @Override
-    public boolean dispatchSuperKeyEvent(KeyEvent event) {
-        return m_WebViewExternals.dispatchKeyEvent(event);
-    }
-
     private void showCompanionProfile() {
         //ProfileWebViewActivity.startActivity(this, m_Id, m_Nick);
         ProfileFragment.showProfile(m_Id, m_Nick);

@@ -101,12 +101,8 @@ public class MainDrawerMenu {
                 Preferences.Menu.setGroupExpanded(i, false);
             }
         });
-        mMenuGroups = new ArrayList<>();
-        if (prefs.getBoolean("categoryLast", true)) {
-            mMenuGroups.add(new LastActionsGroup());
-        }
-        mMenuGroups.add(new MainListGroup());
-        mMenuGroups.add(new OthersActionsGroup());
+
+        setmMenuGroups();
 
         mAdapter = new MenuBrickAdapter(getContext());
 
@@ -122,6 +118,16 @@ public class MainDrawerMenu {
                 mActivity, mDrawerLayout, ((MainActivity)mActivity).toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
+    }
+    public void setmMenuGroups(){
+        if(mMenuGroups!=null) mMenuGroups.clear();
+        mMenuGroups = new ArrayList<>();
+        if (prefs.getBoolean("categoryLast", false)) {
+            mMenuGroups.add(new LastActionsGroup());
+        }
+        mMenuGroups.add(new MainListGroup());
+        mMenuGroups.add(new OthersActionsGroup());
+        if(mAdapter!=null) notifyDataSetChanged();
     }
     public void notifyDataSetChanged(){
         mAdapter.notifyDataSetChanged();
@@ -175,7 +181,7 @@ public class MainDrawerMenu {
             assert menuGroup != null;
             menuGroup.itemAction(brickInfo);
             int i = 1;
-            if (!prefs.getBoolean("categoryLast", true)) i = 0;
+            if (!prefs.getBoolean("categoryLast", false)) i = 0;
             if (groupPosition <= i) {
                 prefs.edit().putInt("menuItemGroup", groupPosition).apply();
                 prefs.edit().putString("menuItemChild", brickInfo.getName()).apply();
