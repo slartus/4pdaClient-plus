@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.TextUtils;
@@ -134,6 +135,31 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setArrow();
+    }
+
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
+
+    protected void initSwipeRefreshLayout(){
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.ptr_layout);
+        mSwipeRefreshLayout = App.createSwipeRefreshLayout(getMainActivity(), getView(), new Runnable() {
+            @Override
+            public void run() {
+                reload();
+            }
+        });
+    }
+    protected void setLoading(final Boolean loading) {
+        try {
+            if (getMainActivity() == null) return;
+            mSwipeRefreshLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwipeRefreshLayout.setRefreshing(loading);
+                    }
+            });
+        } catch (Throwable ignore) {
+            android.util.Log.e("TAG", ignore.toString());
+        }
     }
 
     @Override

@@ -227,6 +227,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.theme, container, false);
+        initSwipeRefreshLayout();
         setHasOptionsMenu(true);
         lastStyle = App.getInstance().getThemeCssFileName();
         if (Preferences.System.isDevSavePage()|
@@ -1369,7 +1370,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             }
             webView.setWebViewClient(new MyWebViewClient());
 
-
             GetThemeTask getThemeTask = new GetThemeTask(getMainActivity());
             getThemeTask.execute(url.replace("|", ""));
         } catch (Throwable ex) {
@@ -1659,23 +1659,12 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     private class GetThemeTask extends AsyncTask<String, String, Boolean> {
-
-        private final MaterialDialog dialog;
         private int scrollY = 0;
         private String m_ThemeBody;
         private Throwable ex;
 
         public GetThemeTask(Context context) {
-            dialog = new MaterialDialog.Builder(context)
-                    .progress(true,0)
-                    .cancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            cancel(true);
-                        }
-                    })
-                    .content("Загрузка темы")
-                    .build();
+
         }
 
         protected void onCancelled() {
@@ -1721,35 +1710,19 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             }
         }
 
-        @Override
-        protected void onProgressUpdate(final String... progress) {
-            mHandler.post(new Runnable() {
-                public void run() {
-                    dialog.setContent(progress[0]);
-                }
-            });
-        }
 
         protected void onPreExecute() {
             try {
+                setLoading(true);
                 scrollY = m_ScrollY;
                 hideMessagePanel();
-
-                this.dialog.setCanceledOnTouchOutside(false);
-                this.dialog.show();
             } catch (Exception ex) {
                 AppLog.e(null, ex);
             }
         }
 
         protected void onPostExecute(final Boolean success) {
-            try {
-                if (this.dialog.isShowing()) {
-                    this.dialog.dismiss();
-                }
-            } catch (Exception ignored) {
-
-            }
+            setLoading(false);
             if (scrollY != 0)
                 webView.setPictureListener(new MyPictureListener());
 

@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -65,8 +64,6 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     private AdvWebView mWvBody;
     private static final String SEARCH_URL_KEY = "SEARCH_URL_KEY";
     private WebViewExternals m_WebViewExternals;
-    protected SwipeRefreshLayout mSwipeRefreshLayout;
-    private MaterialDialog progressDialog;
     private Bundle args;
     private View view;
     private Menu menu;
@@ -84,7 +81,6 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
                 Preferences.System.isDevInterface()|
                 Preferences.System.isDevStyle())
             Toast.makeText(getContext(), "Режим разработчика", Toast.LENGTH_SHORT).show();
-        progressDialog = new MaterialDialog.Builder(getContext()).progress(true,0).content("Загрузка...").build();
         args = getArguments();
 
     }
@@ -166,6 +162,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.search_posts_result, container, false);
+        initSwipeRefreshLayout();
         assert view != null;
         mWvBody = (AdvWebView) view.findViewById(R.id.body_webview);
         view.findViewById(R.id.btnUp).setOnClickListener(new View.OnClickListener() {
@@ -200,35 +197,6 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
                 "</head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8", null);
         registerForContextMenu(mWvBody);
         return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mSwipeRefreshLayout = createSwipeRefreshLayout(getView());
-
-    }
-
-    protected SwipeRefreshLayout createSwipeRefreshLayout(View view) {
-        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.ptr_layout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                search(0);
-            }
-        });
-        swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
-        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(App.getInstance().getSwipeRefreshBackground());
-        return swipeRefreshLayout;
-    }
-
-    protected void setLoading(final Boolean loading) {
-        try {
-            if (getMainActivity() == null) return;
-            mSwipeRefreshLayout.setRefreshing(loading);
-        } catch (Throwable ignore) {
-            android.util.Log.e("TAG", ignore.toString());
-        }
     }
 
     @Override
@@ -421,7 +389,9 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     }
 
     @Override
-    public void reload() {}
+    public void reload() {
+        search(0);
+    }
 
     @Override
     public AsyncTask getAsyncTask() {
@@ -578,7 +548,6 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog.show();
             setLoading(true);
         }
 
@@ -590,7 +559,6 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
         protected void onPostExecute(final Boolean success) {
             setLoading(false);
-            progressDialog.dismiss();
             showHtmlBody(pageBody);
 
 

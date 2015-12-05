@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -152,7 +153,14 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
     @Override
-    public void reload() {}
+    public void reload() {
+        new Thread(new Runnable() {
+            public void run() {
+                reLoadChatSafe();
+            }
+        }).start();
+
+    }
 
     @Override
     public AsyncTask getAsyncTask() {
@@ -173,6 +181,7 @@ public class QmsChatFragment extends WebViewFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.qms_chat, container, false);
+        initSwipeRefreshLayout();
         // getDialog().setTitle("Профиль");
         setHasOptionsMenu(true);
         assert view != null;
@@ -493,11 +502,10 @@ public class QmsChatFragment extends WebViewFragment {
     private void reLoadChatSafe() {
         uiHandler.post(new Runnable() {
             public void run() {
-                //setSupportProgressBarIndeterminateVisibility(true);
-                //pbLoading.setVisibility(View.VISIBLE);
-                //Toast.makeText(getContext(),"Обновление",Toast.LENGTH_SHORT).show();
+                setLoading(true);
             }
         });
+
         String chatBody = null;
         Throwable ex = null;
         Boolean updateTitle = false;
@@ -519,7 +527,7 @@ public class QmsChatFragment extends WebViewFragment {
                 checkNewQms();
                 uiHandler.post(new Runnable() {
                     public void run() {
-                        //setSupportProgressBarIndeterminateVisibility(false);
+                        setLoading(false);
                     }
                 });
                 return;
@@ -534,7 +542,6 @@ public class QmsChatFragment extends WebViewFragment {
         final Boolean finalUpdateTitle = updateTitle;
         uiHandler.post(new Runnable() {
             public void run() {
-
                 if (finalEx == null) {
                     if (finalUpdateTitle)
                         getMainActivity().setTitle(m_ThemeTitle);
@@ -562,7 +569,7 @@ public class QmsChatFragment extends WebViewFragment {
                     }
 
                 }
-                //setSupportProgressBarIndeterminateVisibility(false);
+                setLoading(false);
             }
         });
 
@@ -661,12 +668,7 @@ public class QmsChatFragment extends WebViewFragment {
         MenuItem item = menu.add("Обновить").setIcon(R.drawable.ic_refresh_white_24dp);
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
-                new Thread(new Runnable() {
-                    public void run() {
-                        reLoadChatSafe();
-                    }
-                }).start();
-
+                reload();
                 return true;
             }
         });
@@ -795,6 +797,7 @@ public class QmsChatFragment extends WebViewFragment {
         // can use UI thread here
         protected void onPreExecute() {
             this.dialog.show();
+            setLoading(true);
         }
 
         // can use UI thread here
@@ -802,6 +805,7 @@ public class QmsChatFragment extends WebViewFragment {
             if (this.dialog.isShowing()) {
                 this.dialog.dismiss();
             }
+            setLoading(false);
 
             onPostChat(m_ChatBody, success, ex);
         }

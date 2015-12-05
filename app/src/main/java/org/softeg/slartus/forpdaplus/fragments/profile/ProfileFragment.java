@@ -87,7 +87,9 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     @Override
-    public void reload() {}
+    public void reload() {
+        startLoadData();
+    }
 
     @Override
     public AsyncTask getAsyncTask() {
@@ -173,12 +175,12 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         super.onSaveInstanceState(outState);
     }
 
-    protected SwipeRefreshLayout mSwipeRefreshLayout;
     View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.profile_web_view_fragment, container, false);
+        initSwipeRefreshLayout();
         // getDialog().setTitle("Профиль");
         setHasOptionsMenu(true);
         assert view != null;
@@ -258,18 +260,6 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         }
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        if (!isDialog())
-            mSwipeRefreshLayout = App.getInstance().createSwipeRefreshLayout(getMainActivity(), view, new Runnable() {
-                @Override
-                public void run() {
-                    startLoadData();
-                }
-            });
-    }
 
     protected void startLoadData() {
         Bundle args = new Bundle();
@@ -279,24 +269,6 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
             getLoaderManager().restartLoader(ItemsLoader.ID, args, this);
         else
             getLoaderManager().initLoader(ItemsLoader.ID, args, this);
-    }
-
-    private void setLoading(final Boolean loading) {
-        try {
-            if (getMainActivity() == null) return;
-            if (!isDialog()) {
-                //mSwipeRefreshLayout.setRefreshing(loading);
-                mSwipeRefreshLayout.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSwipeRefreshLayout.setRefreshing(loading);
-                    }
-                });
-            }
-
-        } catch (Throwable ignore) {
-            android.util.Log.e("TAG", ignore.toString());
-        }
     }
 
     private void showBody(Profile profile) {

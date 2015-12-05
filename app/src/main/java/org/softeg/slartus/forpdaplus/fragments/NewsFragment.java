@@ -147,7 +147,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         view = inflater.inflate(R.layout.news_fragment, container, false);
-
+        initSwipeRefreshLayout();
         if (Preferences.System.isDevSavePage()|
                 Preferences.System.isDevInterface()|
                 Preferences.System.isDevStyle())
@@ -508,17 +508,12 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
 
     private class GetNewsTask extends AsyncTask<String, String, Boolean> {
-        private final MaterialDialog dialog;
+
         public String Comment = null;
         public String ReplyId;
         public String Dp;
 
-        public GetNewsTask(Context context) {
-            dialog = new MaterialDialog.Builder(context)
-                    .progress(true,0)
-                    .content("Загрузка новости")
-                    .build();
-        }
+        public GetNewsTask(Context context) {}
 
         private String m_ThemeBody;
 
@@ -629,43 +624,22 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     ;
         }
 
-        @Override
-        protected void onProgressUpdate(final String... progress) {
-            mHandler.post(new Runnable() {
-                public void run() {
-                    dialog.setContent(progress[0]);
-                }
-            });
-        }
 
         @Override
         protected void onPreExecute() {
             try {
-                this.dialog.show();
+                setLoading(true);
             } catch (Exception ex) {
                 this.cancel(true);
             }
         }
 
         private Throwable ex;
-        boolean canceled = false;
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            canceled = true;
-        }
 
         @Override
         protected void onPostExecute(final Boolean success) {
             Comment = null;
-            try {
-                if (this.dialog.isShowing()) {
-                    this.dialog.dismiss();
-                }
-            } catch (Exception ex) {
-                Log.e(TAG, ex.toString());
-            }
+            setLoading(false);
             if (isCancelled()) return;
             if (success) {
                 showBody(m_ThemeBody);

@@ -109,6 +109,7 @@ public class ProfileEditFragment extends WebViewFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.profile_edit_activity, container, false);
+        initSwipeRefreshLayout();
         setHasOptionsMenu(true);
         assert view != null;
         m_WebView = (AdvWebView) view.findViewById(R.id.wvBody);
@@ -264,14 +265,8 @@ public class ProfileEditFragment extends WebViewFragment {
     }
 
     private class getEditProfileTask extends AsyncTask<String, String, Boolean> {
-        private final MaterialDialog dialog;
 
-        public getEditProfileTask(Context context) {
-            dialog = new MaterialDialog.Builder(context)
-                    .progress(true, 0)
-                    .content("Загрузка")
-                    .build();
-        }
+        public getEditProfileTask(Context context) {}
 
         private String m_ThemeBody;
 
@@ -319,33 +314,15 @@ public class ProfileEditFragment extends WebViewFragment {
             return body;
         }
 
-        @Override
-        protected void onProgressUpdate(final String... progress) {
-            mHandler.post(new Runnable() {
-                public void run() {
-                    dialog.setContent(progress[0]);
-                }
-            });
-        }
 
         protected void onPreExecute() {
-            try {
-                this.dialog.show();
-            } catch (Exception ex) {
-                this.cancel(true);
-            }
+            setLoading(true);
         }
 
         private Throwable ex;
 
         protected void onPostExecute(final Boolean success) {
-            try {
-                if (this.dialog.isShowing()) {
-                    this.dialog.dismiss();
-                }
-            } catch (Exception ex) {
-                Log.e("!!@@#!", ex.toString());
-            }
+            setLoading(false);
 
             if (isCancelled()) return;
 
