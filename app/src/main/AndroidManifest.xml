@@ -22,7 +22,8 @@
         android:hardwareAccelerated="@bool/hardwareAccelerated"
         android:name=".App"
         android:largeHeap="true"
-        android:theme="@style/MainPinkDark">
+        android:theme="@style/MainPinkBlack"
+        android:allowBackup="true">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

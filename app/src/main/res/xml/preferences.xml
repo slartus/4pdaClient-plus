@@ -410,13 +410,13 @@
             android:title="Рассказать друзьям" />
         <Preference
             android:key="About.AddRep"
-            android:title="Поднять репутацию разработчика на форуме" />
+            android:title="Поднять репутацию разработчика" />
         <Preference
             android:key="About.AddRepTwo"
-            android:title="Поднять репутацию помощнику на форуме" />
+            android:title="Поднять репутацию помощнику" />
         <Preference
             android:key="About.AddRepThree"
-            android:title="Поднять репутацию второму помощнику на форуме" />
+            android:title="Поднять репутацию второму помощнику" />
         <Preference
             android:key="About.ShowTheme"
             android:summary="Открыть тему обсуждения программы"

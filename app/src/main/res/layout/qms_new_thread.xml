@@ -56,7 +56,7 @@
 
     <LinearLayout
         android:id="@+id/bottomPanel"
-        style="?edit_text"
+        style="?post_panel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

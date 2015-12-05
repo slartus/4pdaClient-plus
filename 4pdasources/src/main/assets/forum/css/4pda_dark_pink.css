@@ -1236,12 +1236,12 @@ a {
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   color: #ededed;
-  background: #17415f;
   margin-bottom: 0;
-  padding: 0.5em;
+  padding: 0.875em;
   position: relative;
   text-align: left;
   cursor: default!important;
+  background: #17415f;
 }
 .poll .hidetop:after {
   display: none;
@@ -1277,11 +1277,8 @@ a {
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
-  -webkit-border-radius: 0 0 2px 2px;
-  border-radius: 0 0 2px 2px;
-  margin-top: -2px;
-  border-top: 2px solid #17415f;
-  position: relative;
+  margin-top: 0px;
+  0position: relative;
   z-index: 10;
 }
 .poll .hidemain form > .ipbtable {

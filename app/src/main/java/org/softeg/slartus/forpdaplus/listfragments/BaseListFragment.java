@@ -173,6 +173,7 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
             }
         });
         swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
+        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(App.getInstance().getSwipeRefreshBackground());
         return swipeRefreshLayout;
     }
 

@@ -174,6 +174,7 @@ super();
             }
         });
         swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
+        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(App.getInstance().getSwipeRefreshBackground());
         return swipeRefreshLayout;
     }
 

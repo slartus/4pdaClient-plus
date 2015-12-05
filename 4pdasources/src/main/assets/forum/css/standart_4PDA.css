@@ -23,6 +23,9 @@ HTML body * {
 HTML body#topic {
   background: white;
 }
+HTML body a:active {
+  background: rgba(0, 200, 255, 0.2);
+}
 /*
 *	PICTURES SIZE
 */
@@ -639,6 +642,7 @@ HTML body#topic {
   font-size: 0.9rem;
 }
 .post_header .header_wrapper .reputation {
+  display: inline-block;
   font-size: 0.9rem;
 }
 @media screen and (min-width: 800px) {
@@ -653,6 +657,10 @@ HTML body#topic {
 }
 .post_header .header_wrapper .reputation:after {
   content: ')';
+  display: inline-block;
+}
+.post_header .header_wrapper .reputation:active {
+  background: rgba(0, 100, 255, 0.2);
 }
 .post_header .header_wrapper .date-link {
   position: absolute;
@@ -2582,20 +2590,20 @@ h3 a {
 }
 #profile .user-profile-list > li .user-box {
   display: block;
-  margin: -0.5rem -0.5rem 0.7rem;
-  min-height: 3.8rem;
-  padding: 0.5rem;
+  margin: 0 0 0.7rem;
+  padding: 0 0 0.7rem;
+  text-align: center;
+  border-bottom: 1px solid #d9d9d9;
   background: white;
 }
 #profile .user-profile-list > li .user-box .photo {
-  float: left;
   padding: 0;
-  margin: 0 0.7rem 0 0;
+  margin: 0;
 }
 #profile .user-profile-list > li .user-box .photo .img {
   display: inline-block;
-  width: 3.8rem;
-  height: 3.8rem;
+  width: 5.5rem;
+  height: 5.5rem;
   border-radius: 0.2rem;
   background-position: center;
   background-size: contain;
@@ -2603,19 +2611,16 @@ h3 a {
 }
 #profile .user-profile-list > li .user-box h1 {
   display: block;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   margin: 0;
-  line-height: 1.4rem;
-}
-#profile .user-profile-list > li .user-box > .title {
-  display: none;
+  line-height: 1.4em;
 }
 #profile .user-profile-list > li .user-box h2 {
   display: block;
   font-size: 1rem;
   font-weight: normal;
   margin: 0;
-  line-height: 1.4rem;
+  line-height: 1.4em;
 }
 #profile .user-profile-list > li .user-box h2 span {
   font-size: 1em;

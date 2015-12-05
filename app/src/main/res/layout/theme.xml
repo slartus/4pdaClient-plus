@@ -128,7 +128,7 @@
                 android:background="@drawable/shadow_to_top"
                 android:layout_above="@id/message_panel"/>
             <FrameLayout
-                style="?edit_text"
+                style="?post_panel"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"

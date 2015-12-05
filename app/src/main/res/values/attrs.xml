@@ -23,6 +23,8 @@
     <attr name="actbar" format="reference"/>
     <attr name="arrow_up" format="reference"/>
     <attr name="arrow_down" format="reference"/>
+    <attr name="post_panel" format="reference"/>
+
 
     <!-- Default -->
     <attr name="theme_background" format="reference" />

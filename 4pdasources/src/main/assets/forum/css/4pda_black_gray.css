@@ -25,7 +25,7 @@ Edited by: RadiationX|*or you nick*
   color: #dedede !important;
 }
 .mainBox {
-  background: #2b2b2b;
+  background: #000000;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
@@ -123,7 +123,7 @@ a {
   margin: 0 auto;
 }
 .container {
-  background: #2b2b2b;
+  background: #000000;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
@@ -241,10 +241,10 @@ a {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  border: 1px solid #474747;
+  border: 1px solid #212121;
   display: block;
   overflow: hidden;
-  background: #3d3d3d;
+  background: #1a1a1a;
   margin: 0.5em 0;
   position: relative;
 }
@@ -258,7 +258,7 @@ a {
   -webkit-border-radius: 2px;
   border-radius: 2px;
   display: block;
-  border: 1px solid #474747;
+  border: 1px solid #212121;
   margin: 0.5em;
 }
 .container .content .content-box .table4site tbody tr p {
@@ -267,7 +267,7 @@ a {
 .container .content .content-box .table4site tbody tr td {
   display: block;
   width: 100%;
-  background: #2b2b2b;
+  background: #000000;
   padding: 0.2em 0.4em;
   padding-left: 0.6em;
   color: #dedede;
@@ -285,13 +285,13 @@ a {
   border-radius: 0 0 2px 2px;
 }
 .container .content .content-box .mlinks {
-  background: #363636;
-  border-top: 1px solid #474747;
-  border-bottom: 1px solid #474747;
+  background: #000000;
+  border-top: 1px solid #212121;
+  border-bottom: 1px solid #212121;
   margin: 0.5em -1em;
 }
 .container .content .content-box .mlinks .mlhead {
-  background: #3d3d3d;
+  background: #1a1a1a;
   padding-top: 1em;
   min-height: 128px;
 }
@@ -404,7 +404,7 @@ a {
 }
 .container .content .content-box .mlinks .mlscreenshots {
   width: 100%;
-  border-top: 1px solid #474747;
+  border-top: 1px solid #212121;
 }
 .container .content .content-box .mlinks .mlscreenshots .screenshots .sc-btn {
   display: none!important;
@@ -426,13 +426,13 @@ a {
   height: 3.5em;
 }
 .container .content .content-box .mlinks.desc .mlright {
-  background: #363636;
+  background: #000000;
   overflow: hidden;
 }
 .container .content .content-box .mlinks.desc .mlright .mltbl {
   display: table;
   width: 100%;
-  border-top: 1px solid #474747;
+  border-top: 1px solid #212121;
 }
 .container .content .content-box .mlinks.desc .mlright .mltbl .mlrow {
   position: relative;
@@ -443,7 +443,7 @@ a {
   display: table-cell;
   position: relative;
   padding: 0 10px;
-  border: 1px solid #474747;
+  border: 1px solid #212121;
   border-width: 0 1px 1px 0;
 }
 .container .content .content-box .mlinks.desc .mlright .mltbl .mlrow .mlcell:last-of-type {
@@ -463,7 +463,7 @@ a {
   border-bottom: none;
 }
 .container .content .content-box .mlinks.desc .mlscreenshots {
-  background: #3d3d3d;
+  background: #1a1a1a;
   padding: 10px;
 }
 .container .content .content-box p img {
@@ -476,13 +476,13 @@ a {
   margin-top: -0.9em;
 }
 .container .content .content-box blockquote {
-  background: rgba(23, 65, 95, 0.15);
+  background: rgba(23, 65, 95, 0.25);
   margin: 0.5em -1em;
   padding: 1em;
   padding-top: 0;
-  border-top: 1px solid #474747;
-  border-bottom: 1px solid #474747;
-  border-color: rgba(23, 65, 95, 0.15);
+  border-top: 1px solid #212121;
+  border-bottom: 1px solid #212121;
+  border-color: rgba(23, 65, 95, 0.25);
 }
 .container .content .content-box blockquote:before {
   content: "Цитата";
@@ -497,20 +497,20 @@ a {
 }
 .container .content .content-box .review-bottom-informer {
   margin: 0.5em -1em;
-  border-top: 1px solid #474747;
-  border-bottom: 1px solid #474747;
+  border-top: 1px solid #212121;
+  border-bottom: 1px solid #212121;
   padding: 0 0.5em;
-  background: #363636;
+  background: #000000;
 }
 .container .content .content-box .review-bottom-informer .item {
   text-align: center;
   display: block;
-  border: 1px solid #474747;
+  border: 1px solid #212121;
   margin: 0.5em 0;
   box-sizing: border-box;
   padding: 0.5em;
   min-height: 2.25em;
-  background: #3d3d3d;
+  background: #1a1a1a;
 }
 .container .content .content-box .review-bottom-informer .item .title {
   display: block;
@@ -544,7 +544,7 @@ a {
 .container .content .content-box div[id*="poll-ajax-frame"] {
   margin: 0.5em -1em;
   padding: 1em 1em;
-  border-top: 1px solid #474747;
+  border-top: 1px solid #212121;
   position: relative;
 }
 .container .content .content-box div[id*="poll-ajax-frame"] > h2 {
@@ -662,7 +662,7 @@ a {
 }
 .container .content .content-box .eg_tbl > li {
   padding: 0 1em;
-  border-top: 1px solid #474747;
+  border-top: 1px solid #212121;
   background: transparent;
 }
 .container .content .content-box .eg_tbl > li > ol {
@@ -678,10 +678,10 @@ a {
   display: none;
 }
 .container .content .content-box .eg_tbl > li:last-child {
-  border-bottom: 1px solid #474747;
+  border-bottom: 1px solid #212121;
 }
 .materials-box {
-  background: #2b2b2b;
+  background: #000000;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
@@ -729,7 +729,7 @@ a {
   clear: both;
 }
 .page-nav {
-  background: #2b2b2b;
+  background: #000000;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
@@ -771,11 +771,11 @@ a {
   top: 0;
   left: 50%;
   margin-left: -1px;
-  border-left: 1px solid #474747;
+  border-left: 1px solid #212121;
   height: 100%;
 }
 .comment-box {
-  background: #2b2b2b;
+  background: #000000;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
@@ -828,7 +828,7 @@ a {
 }
 .comment-box .comment-list.level-0 > li {
   padding-left: 1em;
-  border-bottom: 1px solid #474747;
+  border-bottom: 1px solid #212121;
 }
 .comment-box .comment-list.level-0 > li > div[id*=comment]:not([id*=comment-form]) {
   margin-top: 0;
@@ -945,7 +945,7 @@ a {
   width: 1.125em;
   height: 1.125em;
   display: block;
-  border: 0.125em solid #737373;
+  border: 0.125em solid #444444;
   -webkit-transition: 0.25s;
   transition: 0.25s;
 }
@@ -961,7 +961,7 @@ a {
   right: 0.8125em;
   top: 0.4375em;
   position: absolute;
-  border: 0.125em solid #737373;
+  border: 0.125em solid #444444;
   border-color: white;
   border-left: none;
   border-top: none;
@@ -1019,7 +1019,7 @@ a {
 .list-group-item .avatar-wrap,
 .our-message .avatar-wrap {
   display: none;
-  background: #2b2b2b;
+  background: #000000;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
@@ -1063,7 +1063,7 @@ a {
   position: relative;
   z-index: 1;
   padding: 0.5em;
-  background: #2b2b2b;
+  background: #000000;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
@@ -1085,7 +1085,7 @@ a {
   content: "";
   height: 0.75em;
   width: 0.75em;
-  background: #2b2b2b;
+  background: #000000;
   position: absolute;
   bottom: 0.25em;
   left: -0.25em;
@@ -1122,7 +1122,7 @@ a {
   float: right;
 }
 .our-message .msg-content {
-  background: #2e393e;
+  background: #121b21;
 }
 .our-message:before {
   float: left;
@@ -1130,7 +1130,7 @@ a {
 .our-message:after {
   left: auto;
   right: -0.25em;
-  background: #2e393e;
+  background: #121b21;
   -webkit-box-shadow: 1px 1px 3px -3px rgba(0, 0, 0, 0.25);
   box-shadow: 1px 1px 3px -3px rgba(0, 0, 0, 0.25);
 }
@@ -1161,7 +1161,7 @@ a {
   width: 100%;
 }
 #topMargin {
-  background: #2b2b2b;
+  background: #000000;
 }
 .topic_title_post {
   text-align: center;
@@ -1175,7 +1175,7 @@ a {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 .panel {
-  background: #2b2b2b;
+  background: #000000;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
@@ -1202,7 +1202,7 @@ a {
   background: rgba(255, 255, 255, 0.1);
 }
 .panel .navi .button.disable {
-  color: #404040;
+  color: #444444;
 }
 .panel .navi .button.disable:active {
   background: none;
@@ -1231,17 +1231,18 @@ a {
   margin-bottom: 0;
 }
 .poll .hidetop {
-  background: #2b2b2b;
+  background: #000000;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   color: #ededed;
   background: #17415f;
   margin-bottom: 0;
-  padding: 0.5em;
+  padding: 0.875em;
   position: relative;
   text-align: left;
   cursor: default!important;
+  background: rgba(23, 65, 95, 0.5);
 }
 .poll .hidetop:after {
   display: none;
@@ -1273,15 +1274,12 @@ a {
   font-size: 0.875em;
 }
 .poll .hidemain {
-  background: #2b2b2b;
+  background: #000000;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
-  -webkit-border-radius: 0 0 2px 2px;
-  border-radius: 0 0 2px 2px;
-  margin-top: -2px;
-  border-top: 2px solid #17415f;
-  position: relative;
+  margin-top: 0px;
+  0position: relative;
   z-index: 10;
 }
 .poll .hidemain form > .ipbtable {
@@ -1309,7 +1307,7 @@ a {
   display: block;
 }
 .poll .hidemain form > .ipbtable > tbody > tr td .borderwrap .row1 {
-  border-top: 1px solid #474747;
+  border-top: 1px solid #212121;
   padding: 0.75em 1em 0 1em!important;
   padding-bottom: 0.25em!important;
   line-height: 1.4em;
@@ -1362,8 +1360,8 @@ a {
   display: block;
   height: 1.125em;
   width: 1.125em;
-  border: 0.125em solid #737373;
-  background: #2b2b2b;
+  border: 0.125em solid #444444;
+  background: #000000;
   position: absolute;
   left: -0.25em;
   top: 50%;
@@ -1377,7 +1375,7 @@ a {
   display: block;
   height: 0.75em;
   width: 0.4375em;
-  border: 0.125em solid #737373;
+  border: 0.125em solid #444444;
   border-color: white;
   box-sizing: border-box;
   border-left: none;
@@ -1419,8 +1417,8 @@ a {
   display: block;
   height: 1.25em;
   width: 1.25em;
-  border: 0.125em solid #737373;
-  background: #2b2b2b;
+  border: 0.125em solid #444444;
+  background: #000000;
   position: absolute;
   left: -0.25em;
   top: 50%;
@@ -1468,9 +1466,9 @@ a {
   text-align: right;
   position: absolute;
   right: 0;
-  background: rgba(43, 43, 43, 0.9);
-  box-shadow: -20px 0 20px -7px #2b2b2b;
-  -webkit-box-shadow: -20px 0 20px -7px #2b2b2b;
+  background: rgba(0, 0, 0, 0.9);
+  box-shadow: -20px 0 20px -7px #000000;
+  -webkit-box-shadow: -20px 0 20px -7px #000000;
 }
 .poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td.post2[width*="10%"] {
   padding: 0;
@@ -1505,7 +1503,7 @@ a {
 }
 .poll .hidemain form > .ipbtable > tbody > tr:nth-last-child(2) .formbuttonrow {
   display: block;
-  border-top: 1px solid #474747;
+  border-top: 1px solid #212121;
   line-height: 3em;
   padding: 0 0.25em 0 0.5em;
   text-align: right;
@@ -1618,7 +1616,7 @@ a {
   background: #17415f;
   -webkit-border-radius: 2px;
   border-radius: 2px;
-  background: #004f79;
+  background: #003653;
   width: 1.25em;
   height: 1.25em;
   display: inline-block;
@@ -1636,7 +1634,7 @@ a {
   height: 0.4375em;
   width: 0.4375em;
   box-sizing: border-box;
-  border: 0.125em solid #737373;
+  border: 0.125em solid #444444;
   border-color: white;
   border-top: none;
   border-right: none;
@@ -1657,7 +1655,7 @@ a {
   left: -0.5em;
 }
 .post_container {
-  background: #2b2b2b;
+  background: #000000;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
@@ -1709,8 +1707,8 @@ a {
 }
 .post_container .post_header .inf.reputation {
   top: 2.625em;
-  background: #2b2b2b;
-  box-shadow: 0.5em 0 0.5em -0.125em #2b2b2b;
+  background: #000000;
+  box-shadow: 0.5em 0 0.5em -0.125em #000000;
   z-index: 1;
   color: #757575;
 }
@@ -1819,7 +1817,7 @@ a {
   clear: both;
 }
 .posts_list.search-results .topic_title_post {
-  border-bottom: 1px solid #474747;
+  border-bottom: 1px solid #212121;
 }
 .posts_list.search-results .post_container .post_header {
   padding: 0.5em 1em;
@@ -1840,7 +1838,7 @@ a {
   padding: 1em 0.5em;
 }
 .posts_list.search-results .bad-search-result {
-  background: #2b2b2b;
+  background: #000000;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
@@ -1862,7 +1860,7 @@ a {
   padding: 0;
 }
 div[data-post] {
-  background: #2b2b2b;
+  background: #000000;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
@@ -1900,7 +1898,7 @@ div[data-post] .post_header_container .post_header:after {
   top: 6.75em;
   left: 0.5em;
   right: 0.5em;
-  border-top: 1px solid #474747;
+  border-top: 1px solid #212121;
 }
 div[data-post] .post_header_container .post_header br {
   display: none;
@@ -1979,7 +1977,7 @@ div[data-post] .post_header_container .post_header [onclick*="rep_change"] {
   display: inline-block;
   height: 2em;
   vertical-align: top;
-  background: #2b2b2b;
+  background: #000000;
 }
 div[data-post] .post_header_container .post_header [onclick*="rep_change"] img {
   display: none;
@@ -2026,7 +2024,7 @@ div[data-post] .post_header_container .post_header .post_action:before {
   top: 4.5em;
   left: 0.5em;
   right: 0.5em;
-  border-top: 1px solid #474747;
+  border-top: 1px solid #212121;
 }
 div[data-post] .post_body {
   -webkit-border-radius: 0 0 2px 2px;
@@ -2040,7 +2038,7 @@ div[data-post] .post_body {
 }
 #bottomMargin {
   height: 3em;
-  background: #2b2b2b;
+  background: #000000;
   position: relative;
   z-index: 1;
 }
@@ -2054,7 +2052,7 @@ div[data-post] .post_body {
   list-style: none;
 }
 .user-profile-list > li {
-  background: #2b2b2b;
+  background: #000000;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
@@ -2246,7 +2244,7 @@ div[data-post] .post_body {
   top: 0.5em;
   left: 0.5em;
   box-sizing: border-box;
-  border: 0.125em solid #737373;
+  border: 0.125em solid #444444;
 }
 .user-profile-list > li:nth-child(2) .info-list[id*="device"] li span label i:before {
   display: none;
@@ -2350,14 +2348,14 @@ li .post-block {
   border-radius: 2px;
   margin-left: 0!important;
   margin-right: 0!important;
-  border-left: 1px solid #474747;
-  border-right: 1px solid #474747;
+  border-left: 1px solid #212121;
+  border-right: 1px solid #212121;
 }
 .post-block {
   margin: 0.5rem -1rem;
   position: relative;
-  border-top: 1px solid #474747;
-  border-bottom: 1px solid #474747;
+  border-top: 1px solid #212121;
+  border-bottom: 1px solid #212121;
 }
 .post-block > .block-title {
   padding: 0.875em;
@@ -2381,11 +2379,11 @@ li .post-block {
 .post-block.spoil {
   margin-left: -1em;
   margin-right: -1em;
-  border-top: 1px solid #474747;
-  border-bottom: 1px solid #474747;
-  border-color: rgba(0, 0, 0, 0.12);
+  border-top: 1px solid #212121;
+  border-bottom: 1px solid #212121;
+  border-color: rgba(255, 255, 255, 0.05);
   box-shadow: none;
-  background: rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.05);
 }
 .post-block.spoil > .block-title {
   padding-right: 3em;
@@ -2415,8 +2413,8 @@ li .post-block {
   position: absolute;
   right: 1em;
   bottom: 1.25em;
-  border-left: 0.125em solid #737373;
-  border-bottom: 0.125em solid #737373;
+  border-left: 0.125em solid #444444;
+  border-bottom: 0.125em solid #444444;
   box-sizing: border-box;
   height: 0.75em;
   width: 0.75em;
@@ -2429,7 +2427,7 @@ li .post-block {
   transform-origin: center;
 }
 .post-block.spoil > .block-body > .post-block.spoil {
-  background: rgba(0, 0, 0, 0.03);
+  background: rgba(255, 255, 255, 0.03);
 }
 .post-block.spoil > .block-body > .post-block.spoil:last-child {
   margin-bottom: 0;
@@ -2462,8 +2460,8 @@ li .post-block {
   z-index: 10;
 }
 .post-block.quote {
-  background: rgba(23, 65, 95, 0.15);
-  border-color: rgba(23, 65, 95, 0.15);
+  background: rgba(23, 65, 95, 0.25);
+  border-color: rgba(23, 65, 95, 0.25);
 }
 .post-block.quote > .block-title {
   padding: 0.875em 1em;
@@ -2504,7 +2502,7 @@ li .post-block {
   background: rgba(18, 181, 87, 0.08);
 }
 .post-block.code > .block-title {
-  color: #15a753;
+  color: #10a34e;
 }
 .post-block.code > .block-title:after {
   content: "";
@@ -2544,12 +2542,12 @@ li .post-block {
   content: "Скрыть код";
 }
 .post-block.hidden {
-  background: rgba(70, 70, 70, 0.15);
-  border-color: rgba(70, 70, 70, 0.15);
+  background: rgba(70, 70, 70, 0.2);
+  border-color: rgba(70, 70, 70, 0.2);
 }
 .post-block.hidden > .block-title {
   display: none;
-  color: #434343;
+  color: #3f3f3f;
 }
 .post-block.hidden > .block-title:before {
   content: "Скрытый текст";
@@ -2561,7 +2559,7 @@ li .post-block {
   position: relative;
   display: table;
   width: 100%;
-  background: #363636;
+  background: #000000;
   margin-left: 0;
   margin-right: 0;
   -webkit-border-radius: 2px;
@@ -2587,22 +2585,22 @@ li .post-block {
   background: none;
 }
 .post-block.tbl.ex {
-  background: rgba(165, 67, 54, 0.1);
-  border: 1px solid rgba(165, 67, 54, 0.1);
+  background: rgba(165, 67, 54, 0.2);
+  border: 1px solid rgba(165, 67, 54, 0.2);
 }
 .post-block.tbl.ex > .block-title {
   color: #a54336;
 }
 .post-block.tbl.cur {
-  background: rgba(26, 155, 67, 0.1);
-  border: 1px solid rgba(26, 155, 67, 0.1);
+  background: rgba(26, 155, 67, 0.2);
+  border: 1px solid rgba(26, 155, 67, 0.2);
 }
 .post-block.tbl.cur > .block-title {
   color: #1a9b43;
 }
 .post-block.tbl.mod {
-  background: rgba(41, 128, 185, 0.1);
-  border: 1px solid rgba(41, 128, 185, 0.1);
+  background: rgba(41, 128, 185, 0.2);
+  border: 1px solid rgba(41, 128, 185, 0.2);
 }
 .post-block.tbl.mod > .block-title {
   color: #2980b9;
@@ -2625,8 +2623,8 @@ li .post-block {
 @media screen and (min-width: 40em) {
   .container .product-detail {
     text-align: left;
-    background: #363636;
-    border-bottom: 1px solid #474747;
+    background: #000000;
+    border-bottom: 1px solid #212121;
   }
   .container .product-detail .photo {
     padding-bottom: 30%;
@@ -2682,7 +2680,7 @@ li .post-block {
     -webkit-border-radius: 0;
     border-radius: 0;
     display: table-row;
-    border: 1px solid #474747;
+    border: 1px solid #212121;
     margin: 0.5em;
   }
   .container .content .content-box .table4site tbody tr p {
@@ -2694,7 +2692,7 @@ li .post-block {
     width: 100%;
     padding: 0.2em 0.4em;
     padding-left: 0.6em;
-    border-right: 1px solid #474747;
+    border-right: 1px solid #212121;
   }
   .container .content .content-box .table4site tbody tr td:first-child {
     width: auto;
@@ -2789,7 +2787,7 @@ li .post-block {
     top: 0.5em;
     right: 0;
     bottom: 0.5em;
-    border-right: 1px solid #474747;
+    border-right: 1px solid #212121;
   }
   .posts_list .post_container .post_header .inf.date {
     right: auto;
@@ -2834,7 +2832,7 @@ li .post-block {
   }
   div[data-post] .post_body {
     min-height: 11.25em;
-    border-left: 1px solid #474747;
+    border-left: 1px solid #212121;
     overflow: hidden;
   }
   .post-block {
@@ -2842,15 +2840,15 @@ li .post-block {
     border-radius: 2px;
     margin-left: 0!important;
     margin-right: 0!important;
-    border-left: 1px solid #474747;
-    border-right: 1px solid #474747;
+    border-left: 1px solid #212121;
+    border-right: 1px solid #212121;
   }
 }
 .search-web-view {
   margin-top: 0!important;
 }
 #edit_profile .field {
-  background: #2b2b2b;
+  background: #000000;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
@@ -2901,7 +2899,7 @@ li .post-block {
   font-size: 1em;
   padding: 1.25em 0 1px 0;
   border: none;
-  border-bottom: 1px solid #474747;
+  border-bottom: 1px solid #212121;
   outline: none;
   box-shadow: none;
   background: none;
@@ -2922,7 +2920,7 @@ li .post-block {
   font-size: 1em;
   background: none;
   border: none;
-  border-bottom: 1px solid #474747;
+  border-bottom: 1px solid #212121;
   outline: none;
   box-shadow: none;
   margin: 0;
@@ -2934,7 +2932,7 @@ li .post-block {
 #edit_profile .field table .row2 select option {
   padding: 0;
   color: #dedede;
-  background: #2b2b2b;
+  background: #000000;
 }
 #edit_profile .field table .row2 select + select {
   margin-top: 0.5em;
@@ -2961,7 +2959,7 @@ li .post-block {
   background: none;
   border: none;
   outline: none;
-  border-bottom: 1px solid #474747;
+  border-bottom: 1px solid #212121;
   resize: none;
 }
 #edit_profile .field table .row2 .editor_button textarea:focus {
@@ -2995,4 +2993,10 @@ body.ongpuimg .user-profile-list > li:first-child .user-box .photo .img,
 body.ongpuimg img {
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
+}
+#qms {
+  background: #000;
+}
+#qms .list-group-item:not(.our-message) .msg-content {
+  background: #1a1a1a;
 }

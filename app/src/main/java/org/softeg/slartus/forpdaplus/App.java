@@ -291,6 +291,15 @@ public class App extends android.app.Application {
         else
             return R.color.app_background_black;
     }
+    public int getSwipeRefreshBackground() {
+        int themeType = getThemeType();
+        if (themeType==THEME_TYPE_LIGHT)
+            return R.color.swipe_background_light;
+        else if(themeType==THEME_TYPE_DARK)
+            return R.color.swipe_background_dark;
+        else
+            return R.color.swipe_background_black;
+    }
 
     public int getNavBarColor(){
         int themeType = getThemeType();
@@ -428,7 +437,7 @@ public class App extends android.app.Application {
                 cssFile = "material_black.css";
                 break;
             case THEME_LIGHT_OLD_HD:
-                cssFile = "standart4PDA_HD.css";
+                cssFile = "standart_4PDA.css";
                 break;
 
             /*case THEME_WHITE_HD:
@@ -592,6 +601,7 @@ public class App extends android.app.Application {
             }
         });
         swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
+        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(App.getInstance().getSwipeRefreshBackground());
         return swipeRefreshLayout;
     }
 

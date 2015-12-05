@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:minHeight="48dp"
             android:gravity="center_vertical"
-            style="?edit_text">
+            style="?post_panel">
             <ImageButton
                 android:id="@+id/advanced_button"
                 style="?right_separator"
