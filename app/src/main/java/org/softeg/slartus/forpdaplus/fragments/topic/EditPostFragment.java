@@ -545,10 +545,10 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
     }
     private static final int MY_INTENT_CLICK=302;
     private void startAddAttachment() {
-        /*if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getActivity(), "Нет прав для данного действия", Toast.LENGTH_SHORT).show();
             return;
-        }*/
+        }
         CharSequence[] items = new CharSequence[]{"Файл", "Изображение"};
         new MaterialDialog.Builder(getContext())
                 .items(items)
