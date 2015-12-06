@@ -23,12 +23,13 @@ import java.util.ArrayList;
 public class ListAdapter extends BaseAdapter implements Filterable {
     private final LayoutInflater mInflater;
     protected ArrayList<? extends IListItem> mData;
+    private boolean showSubMain;
 
 
-    public ListAdapter(Context context, ArrayList<? extends IListItem> data) {
+    public ListAdapter(Context context, ArrayList<? extends IListItem> data, boolean showSubMain) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mData = data;
-
+        this.showSubMain = showSubMain;
     }
 
     public void setData(ArrayList<? extends IListItem> data) {
@@ -131,7 +132,12 @@ public class ListAdapter extends BaseAdapter implements Filterable {
         holder.TopLeft.setText(topic.getTopLeft());
         holder.TopRight.setText(topic.getTopRight());
         holder.Main.setText(topic.getMain());
-        holder.SubMain.setText(topic.getSubMain());
+
+        if(topic.getSubMain().equals("")|showSubMain){
+            holder.SubMain.setVisibility(View.GONE);
+        }else {
+            holder.SubMain.setText(topic.getSubMain());
+        }
         setVisibility(holder.progress, topic.isInProgress() ? View.VISIBLE : View.INVISIBLE);
         try {
             setVisibility(holder.isPinned, ((FavTopic) topic).isPinned() ? View.VISIBLE : View.GONE);

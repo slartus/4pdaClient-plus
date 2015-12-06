@@ -204,7 +204,7 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
     }
 
     protected BaseAdapter createAdapter() {
-        return new ListAdapter(getActivity(), mData);
+        return new ListAdapter(getActivity(), mData, getPreferences().getBoolean("showSubMain", false));
     }
 
     protected void setLoading(final Boolean loading) {

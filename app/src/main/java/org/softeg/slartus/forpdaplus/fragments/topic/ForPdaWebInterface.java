@@ -7,12 +7,10 @@ package org.softeg.slartus.forpdaplus.fragments.topic;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -31,13 +29,8 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.TopicAttaches;
-import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
-import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
-import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
-import org.softeg.slartus.forpdaplus.fragments.qms.QmsNewThreadFragment;
-import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicReadersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicWritersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
@@ -257,7 +250,7 @@ public class ForPdaWebInterface {
 
     @JavascriptInterface
     public void insertTextToPost(final String text) {
-        if(android.os.Build.VERSION.SDK_INT > 16){
+        if(android.os.Build.VERSION.SDK_INT >= 16){
             run(new Runnable() {
                 @Override
                 public void run() {
@@ -556,10 +549,12 @@ public class ForPdaWebInterface {
 
 
     public void run(final Runnable runnable) {
-        if (Build.VERSION.SDK_INT < 17) {
+        //Почему-то перестало работать как раньше
+        /*if (Build.VERSION.SDK_INT < 17) {
             runnable.run();
         } else {
             getMainActivity().runOnUiThread(runnable);
-        }
+        }*/
+        getMainActivity().runOnUiThread(runnable);
     }
 }

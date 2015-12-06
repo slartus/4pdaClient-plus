@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaplus.classes;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -48,7 +47,7 @@ public abstract class BrowserViewsFragmentActivity extends AppCompatActivity imp
     @Override
     public void onDestroy()
     {
-        WebView mWebView=getWebView();
+        WebView mWebView= getWebView();
         // null out before the super call
         if (mWebView != null)
         {
@@ -89,7 +88,7 @@ public abstract class BrowserViewsFragmentActivity extends AppCompatActivity imp
         Log.e("ab","yes");
         if (fab == null) return;
         Log.e("fb","yes");
-        setHideActionBar((AdvWebView)getWebView(),actionBar, fab);
+        setHideActionBar((AdvWebView) getWebView(),actionBar, fab);
     }
     public void setHideActionBar(FloatingActionButton fab) {
         if (getWebView() == null || !(getWebView() instanceof AdvWebView))
@@ -100,7 +99,7 @@ public abstract class BrowserViewsFragmentActivity extends AppCompatActivity imp
         Log.e("ab","yes");
         if (fab == null) return;
         Log.e("fb","yes");
-        setHideActionBar((AdvWebView)getWebView(),actionBar, fab);
+        setHideActionBar((AdvWebView) getWebView(),actionBar, fab);
     }
 
     public static void setHideActionBar(AdvWebView advWebView, final ActionBar actionBar, final FloatingActionButton fab) {

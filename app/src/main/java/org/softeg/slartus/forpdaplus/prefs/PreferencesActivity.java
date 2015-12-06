@@ -289,6 +289,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 namesArray.add(item.getTitle());
 
             final Integer[][] finalItems = new Integer[1][1];
+            finalItems[0]=selectedItems;
 
             new MaterialDialog.Builder(getActivity())
                     .title("Выберите пункты")

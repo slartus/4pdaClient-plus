@@ -545,10 +545,10 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
     }
     private static final int MY_INTENT_CLICK=302;
     private void startAddAttachment() {
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        /*if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getActivity(), "Нет прав для данного действия", Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
         CharSequence[] items = new CharSequence[]{"Файл", "Изображение"};
         new MaterialDialog.Builder(getContext())
                 .items(items)
@@ -880,10 +880,14 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
             }
 
             if (success) {
-                ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment())
-                        .showTheme(ThemeFragment.getThemeUrl(m_EditPost.getTopicId(), "view=findpost&p=" + m_EditPost.getId()), true);
-                getMainActivity().removeTab(getTag());
-                MainActivity.selectTabByTag(parentTag);
+                if(App.getInstance().isContainsByTag(parentTag)){
+                    ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment())
+                            .showTheme(ThemeFragment.getThemeUrl(m_EditPost.getTopicId(), "view=findpost&p=" + m_EditPost.getId()), true);
+                    getMainActivity().removeTab(getTag());
+                    MainActivity.selectTabByTag(parentTag);
+                }else {
+                    getMainActivity().removeTab(getTag());
+                }
 
             } else {
                 if (ex != null)
@@ -1030,11 +1034,17 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
                     Toast.makeText(getMainActivity(), "Ошибка: " + mError, Toast.LENGTH_LONG).show();
                     return;
                 }
-                ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment())
-                        .showTheme(String.format("http://4pda.ru/forum/index.php?showtopic=%s&%s", m_EditPost.getTopicId(),
-                                isNewPost() ? "view=getlastpost" : "view=findpost&p=" + m_EditPost.getId()), true);
-                getMainActivity().removeTab(getTag());
-                MainActivity.selectTabByTag(parentTag);
+                if(App.getInstance().isContainsByTag(parentTag)){
+                    ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment())
+                            .showTheme(String.format("http://4pda.ru/forum/index.php?showtopic=%s&%s", m_EditPost.getTopicId(),
+                                    isNewPost() ? "view=getlastpost" : "view=findpost&p=" + m_EditPost.getId()), true);
+                    getMainActivity().removeTab(getTag());
+                    MainActivity.selectTabByTag(parentTag);
+                }else {
+                    getMainActivity().removeTab(getTag());
+                }
+
+
             } else {
                 if (ex != null)
                     AppLog.e(getMainActivity(), ex);

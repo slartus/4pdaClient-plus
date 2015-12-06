@@ -11,8 +11,8 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class SortedListAdapter extends ListAdapter {
-    public SortedListAdapter(Context context, ArrayList<? extends IListItem> data) {
-        super(context, data);
+    public SortedListAdapter(Context context, ArrayList<? extends IListItem> data, boolean showSubMain) {
+        super(context, data, showSubMain);
     }
 
     public void sort(Comparator<? super IListItem> comparator){

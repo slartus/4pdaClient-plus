@@ -14,8 +14,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -167,7 +165,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             }
         }
         loadImages = webView.getSettings().getLoadsImagesAutomatically();
-        //webView.setActionBarheight(getSupportActionBar().getHeight());
+        //m_WebView.setActionBarheight(getSupportActionBar().getHeight());
 
 
         webView.setWebViewClient(new MyWebViewClient());

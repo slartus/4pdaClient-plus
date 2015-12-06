@@ -1642,7 +1642,7 @@ a {
   margin-top: -0.1875em;
   left: 50%;
   margin-left: -0.125em;
-  position: relative;
+  position: absolute;
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
 }
@@ -2998,5 +2998,8 @@ body.ongpuimg img {
   background: #000;
 }
 #qms .list-group-item:not(.our-message) .msg-content {
+  background: #1a1a1a;
+}
+#qms .list-group-item:not(.our-message):after {
   background: #1a1a1a;
 }

@@ -298,7 +298,7 @@ HTML body.ongpuimg .img {
   background: #212121;
 }
 .post-block.spoil.close > .block-title:before {
-  -webkit-transform: rotate(45deg) translate(0.2rem, 0.2rem);
+  -webkit-transform: rotate(-135deg) translate(0.2rem, 0.2rem);
   border-top-color: white;
   border-left-color: white;
 }
@@ -308,7 +308,7 @@ HTML body.ongpuimg .img {
   margin: 0;
 }
 .post-block.spoil.open > .block-title:before {
-  -webkit-transform: rotate(-135deg) translate(0.2rem, 0.2rem);
+  -webkit-transform: rotate(45deg) translate(0.2rem, 0.2rem);
   border-top-color: #999999;
   border-left-color: #999999;
 }
@@ -2658,7 +2658,6 @@ img[src*="style_emoticons"] {
   text-align: center;
   margin: 0 0 1.5rem;
   padding: 0 0 1.5rem;
-  min-height: 5rem;
   border-bottom: 1px solid #191919;
 }
 #profile .user-profile-list > li .user-box .photo {

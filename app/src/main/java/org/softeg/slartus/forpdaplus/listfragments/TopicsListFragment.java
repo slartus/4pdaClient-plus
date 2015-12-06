@@ -429,7 +429,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
     @Override
     protected BaseAdapter createAdapter() {
-        return new SortedListAdapter(getActivity(), mData);
+        return new SortedListAdapter(getActivity(), mData, getPreferences().getBoolean("showSubMain", false));
     }
 
     private Comparator<? super IListItem> getComparator() {

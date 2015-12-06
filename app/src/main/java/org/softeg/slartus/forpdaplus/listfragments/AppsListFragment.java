@@ -49,7 +49,7 @@ public class AppsListFragment extends TopicsListFragment {
 
     @Override
     protected BaseAdapter createAdapter() {
-        return new ListAdapter(getActivity(), mData);
+        return new ListAdapter(getActivity(), mData, getPreferences().getBoolean("showSubMain", false));
     }
 
     @Override

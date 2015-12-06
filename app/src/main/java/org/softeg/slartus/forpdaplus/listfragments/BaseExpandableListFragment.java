@@ -489,7 +489,7 @@ super();
         @Override
         protected Boolean doInBackground(Boolean[] p1) {
             try {
-                loadCache();
+                //loadCache();
                 return true;
             } catch (Throwable e) {
                 mEx = e;

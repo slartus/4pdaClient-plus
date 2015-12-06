@@ -87,7 +87,11 @@ public class ProfileEditFragment extends WebViewFragment {
     }
 
     @Override
-    public void reload() {}
+    public void reload() {
+        getEditProfileTask task = new getEditProfileTask(getMainActivity());
+        task.execute("".replace("|", ""));
+        asyncTask = task;
+    }
 
     AsyncTask asyncTask = null;
 
@@ -249,9 +253,15 @@ public class ProfileEditFragment extends WebViewFragment {
                 this.dialog.dismiss();
             }
             Toast.makeText(getContext(),"Данные отправлены",Toast.LENGTH_SHORT).show();
-            ((ProfileFragment)App.getInstance().getTabByTag(parentTag).getFragment()).startLoadData();
-            getMainActivity().removeTab(getTag());
-            MainActivity.selectTabByTag(parentTag);
+            if(App.getInstance().isContainsByTag(parentTag)){
+                ((ProfileFragment)App.getInstance().getTabByTag(parentTag).getFragment()).startLoadData();
+                getMainActivity().removeTab(getTag());
+                MainActivity.selectTabByTag(parentTag);
+            }else {
+                getMainActivity().removeTab(getTag());
+            }
+
+
         }
     }
 

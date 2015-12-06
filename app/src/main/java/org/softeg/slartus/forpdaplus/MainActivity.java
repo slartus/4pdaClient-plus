@@ -39,6 +39,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
+import org.softeg.slartus.forpdaplus.fragments.ForumRulesFragment;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchPostFragment;
@@ -146,7 +147,11 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             intent.addCategory(Intent.CATEGORY_HOME);
             setIntent(intent);
             lastTheme = App.getInstance().getThemeStyleResID();
-
+/*if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                getWindow().setFlags(
+                        WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+                        WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+            }*/
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                 getWindow().getDecorView()
@@ -756,7 +761,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
         menu.add("Правила форума").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-                StringBuilder text = new StringBuilder();
+                /*StringBuilder text = new StringBuilder();
                 try {
 
                     BufferedReader br = new BufferedReader(new InputStreamReader(App.getInstance().getAssets().open("rules.txt"), "UTF-8"));
@@ -773,7 +778,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                         .content(Html.fromHtml(text.toString()))
                         .positiveText(android.R.string.ok)
                         .show();
-
+*/
+                ForumRulesFragment.showRules();
                 return true;
             }
         });

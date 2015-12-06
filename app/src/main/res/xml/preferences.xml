@@ -6,77 +6,87 @@
     <PreferenceScreen
         android:key="common"
         android:title="Внешний вид">
+        <PreferenceCategory android:title="Общее">
+            <Preference
+                android:key="appstyle"
+                android:summary="Выберите стиль программы"
+                android:title="Стиль"/>
+            <Preference
+                android:key="accentColor"
+                android:summary="Цвет кнопки в теме и новостях"
+                android:title="Цвет кнопки с карандашом"/>
+            <Preference
+                android:key="mainAccentColor"
+                android:title="Цвет акцента"
+                android:summary="Требуется перезапуск приложения"/>
+            <Preference
+                android:key="webViewFont"
+                android:title="Шрифт WebView"
+                android:summary="Шрифт в новостях, поиске, теме, профиле, QMS"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="statusbarTransparent"
+                android:title="Не красить Status Bar"
+                android:summary="Включить, если активирован полноэкранный режим. Требуется перезапуск приложения"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="isSquareAvarars"
+                android:title="Квадратные аватарки"
+                android:summary="Требуется перезапуск приложения"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="oldIndicator"
+                android:title="Полоса у новых сообщений"
+                android:summary="Требуется перезапуск приложения"/>
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="coloredNavBar"
+                android:title="Красить Navigation Bar"
+                android:summary="Для Android 5 и выше. Требуется перезапуск приложения"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="pancilInActionBar"
+                android:title="Карандаш в экшнбаре"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="showBackArrow"
+                android:title="Показывать стрелку 'назад'"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="showSubMain"
+                android:title="Скрыть описание в пункте списка"
+                android:summary="Требуется перезапуск приложения"/>
+        </PreferenceCategory>
 
-        <Preference
-            android:key="appstyle"
-            android:summary="Выберите стиль программы"
-            android:title="Стиль"/>
-        <Preference
-            android:key="accentColor"
-            android:summary="Цвет кнопки в теме и новостях"
-            android:title="Цвет кнопки с карандашом"/>
-        <Preference
-            android:key="mainAccentColor"
-            android:title="Цвет акцента"
-            android:summary="Требуется перезапуск приложения"/>
-        <Preference
-            android:key="webViewFont"
-            android:title="Шрифт WebView"
-            android:summary="Шрифт в новостях, поиске, теме, профиле, QMS"/>
-        <Preference
-            android:key="userBackground"
-            android:summary="Требуется перезапуск приложения"
-            android:title="Изображение в боковом меню"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="categoryLast"
-            android:title="Отображать 'Последние'"
-            android:summary="Меню 'Последние' в выезжающем меню"/>
-        <Preference
-            android:key="visibleMenuItems"
-            android:title="Пункты меню в боковой панели"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="statusbarTransparent"
-            android:title="Не красить Status Bar"
-            android:summary="Включить, если активирован полноэкранный режим. Требуется перезапуск приложения"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="isMarginBottomNav"
-            android:title="Нижний отступ в боковом меню"
-            android:summary="Включить, если не видно последнего пункта. Требуется перезапуск приложения"/>
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="isShowShortUserInfo"
-            android:title="Информация о пользователе"
-            android:summary="Отображать информацию о пользователе в боковом меню. Требуется перезапуск приложения"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="isSquareAvarars"
-            android:title="Квадратные аватарки"
-            android:summary="Требуется перезапуск приложения"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="pancilInActionBar"
-            android:title="Карандаш в экшнбаре"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="oldIndicator"
-            android:title="Полоса у новых сообщений"
-            android:summary="Требуется перезапуск приложения"/>
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="coloredNavBar"
-            android:title="Красить Navigation Bar"
-            android:summary="Для Android 5 и выше. Требуется перезапуск приложения"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="showBackArrow"
-            android:title="Показывать стрелку 'назад'"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="tabsBottom"
-            android:title="Список вкладок внизу"/>
+        <PreferenceCategory android:title="Боковая панель">
+            <Preference
+                android:key="userBackground"
+                android:summary="Требуется перезапуск приложения"
+                android:title="Изображение в боковом меню"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="categoryLast"
+                android:title="Отображать 'Последние'"
+                android:summary="Меню 'Последние' в выезжающем меню"/>
+            <Preference
+                android:key="visibleMenuItems"
+                android:title="Пункты меню в боковой панели"/>
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="isShowShortUserInfo"
+                android:title="Информация о пользователе"
+                android:summary="Отображать информацию о пользователе в боковом меню. Требуется перезапуск приложения"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="tabsBottom"
+                android:title="Список вкладок внизу"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="isMarginBottomNav"
+                android:title="Нижний отступ в боковом меню"
+                android:summary="Включить, если не видно последнего пункта. Требуется перезапуск приложения"/>
+        </PreferenceCategory>
+
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
             android:defaultValue="-1"
             android:entries="@array/screenOrienationArray"

@@ -101,8 +101,9 @@ public class QmsContactThemes extends BaseLoaderListFragment {
             m_Id = getArguments().getString(MID_KEY);
             m_Nick = getArguments().getString(NICK_KEY);
         }
-        if(m_Nick.equals(""))
-            new GetUserTask(m_Id).execute();
+        if(m_Nick!=null)
+            if(m_Nick.equals(""))
+                new GetUserTask(m_Id).execute();
         setArrow();
     }
 

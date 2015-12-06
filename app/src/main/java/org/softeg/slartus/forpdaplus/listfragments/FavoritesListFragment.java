@@ -115,8 +115,9 @@ public class FavoritesListFragment extends TopicsListFragment {
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
+                        //TODO надо передалать настройки по нормальному
                         Intent settingsActivity = new Intent(
-                                getContext(), FavoritesPreferencesActivity.class);
+                                getContext(), ForumTopicsPreferencesActivity.class);
                         settingsActivity.putExtra("listname", getListName());
                         startActivityForResult(settingsActivity, FILTER_SORT_REQUEST);
                         return true;

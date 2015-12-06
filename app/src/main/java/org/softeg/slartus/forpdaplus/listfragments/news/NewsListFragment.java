@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.listfragments.news;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -294,7 +295,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
                 .resetViewBeforeLoading(false)  // default
                 .cacheInMemory(true)
                 .cacheOnDisc(true)
-                //.bitmapConfig(Bitmap.Config.RGB_565)
+                .bitmapConfig(Bitmap.Config.RGB_565)
                 .handler(new Handler())
                 .build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
