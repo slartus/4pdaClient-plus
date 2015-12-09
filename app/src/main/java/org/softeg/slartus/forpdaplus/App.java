@@ -139,8 +139,8 @@ public class App extends android.app.Application {
         return m_AtomicInteger.incrementAndGet();
     }
 
-    public int getWebViewFont() {
-        return PreferenceManager.getDefaultSharedPreferences(this).getInt("webViewFont", 0);
+    public String getWebViewFont() {
+        return PreferenceManager.getDefaultSharedPreferences(this).getString("webViewFontName", "");
     }
 
     public int getColorAccent(String type) {

@@ -79,7 +79,7 @@ public class HtmlBuilder {
         m_Body.append("<body id=\"").append(id).append("\" class=\"modification ")
                 .append(isImage ? "" : "noimages ")
                 .append(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isGpuImg", false) ? "ongpuimg \" " : "\" ")
-                .append(App.getInstance().getWebViewFont()==0?" ":"style=\"font-family:inherit;\" ")
+                .append(App.getInstance().getWebViewFont().equals("") ? " " : "style=\"font-family:").append(App.getInstance().getWebViewFont()).append(";\" ")
                 .append(bodyScript == null || TextUtils.isEmpty(bodyScript) ? "" : bodyScript)
                 .append(">\n");
         /*if (bodyScript == null || TextUtils.isEmpty(bodyScript)) {
