@@ -14,9 +14,7 @@ import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
-import org.softeg.slartus.forpdaplus.prefs.FavoritesPreferencesActivity;
 import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
-import org.softeg.slartus.forpdaplus.prefs.ListPreferencesActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.sqliteannotations.BaseDao;
 
@@ -92,13 +90,6 @@ public class FavoritesListFragment extends TopicsListFragment {
     private static final int FILTER_SORT_REQUEST = 0;
 
     @Override
-    protected void showSettings() {
-        Intent settingsActivity = new Intent(
-                getContext(), ListPreferencesActivity.class);
-        getContext().startActivity(settingsActivity);
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -110,21 +101,18 @@ public class FavoritesListFragment extends TopicsListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-
-        MenuItem item = menu.add("Фильтр и сортировка")
+        menu.removeItem(settingItemId);
+        menu.add("Фильтр и сортировка")
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        //TODO надо передалать настройки по нормальному
                         Intent settingsActivity = new Intent(
                                 getContext(), ForumTopicsPreferencesActivity.class);
                         settingsActivity.putExtra("listname", getListName());
                         startActivityForResult(settingsActivity, FILTER_SORT_REQUEST);
                         return true;
                     }
-                });
-
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
 }

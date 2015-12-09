@@ -103,8 +103,7 @@ public abstract class BaseBrickFragment extends GeneralFragment{
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem item = menu.add("Обновить")
-
+        menu.add("Обновить")
                 .setIcon(R.drawable.ic_refresh_white_24dp)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
@@ -112,9 +111,7 @@ public abstract class BaseBrickFragment extends GeneralFragment{
                         loadData(true);
                         return true;
                     }
-                });
-
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
         this.menu = menu;
     }

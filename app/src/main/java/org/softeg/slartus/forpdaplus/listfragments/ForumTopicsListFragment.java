@@ -23,7 +23,6 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumTopicsBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
-import org.softeg.slartus.forpdaplus.prefs.ListPreferencesActivity;
 
 import java.io.IOException;
 import java.net.URI;
@@ -126,13 +125,6 @@ public class ForumTopicsListFragment extends TopicsListFragment {
     private static final int FILTER_SORT_REQUEST = 0;
 
     @Override
-    protected void showSettings() {
-        Intent settingsActivity = new Intent(
-                getContext(), ListPreferencesActivity.class);
-        getContext().startActivity(settingsActivity);
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -144,8 +136,9 @@ public class ForumTopicsListFragment extends TopicsListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        menu.removeItem(settingItemId);
 
-        MenuItem item = menu.add("Фильтр и сортировка")
+        menu.add("Фильтр и сортировка")
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -155,8 +148,6 @@ public class ForumTopicsListFragment extends TopicsListFragment {
                         startActivityForResult(settingsActivity, FILTER_SORT_REQUEST);
                         return true;
                     }
-                });
-
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
 }

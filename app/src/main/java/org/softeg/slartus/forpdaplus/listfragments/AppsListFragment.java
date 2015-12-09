@@ -357,7 +357,7 @@ public class AppsListFragment extends TopicsListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
+        menu.removeItem(settingItemId);
     }
 
     private AppItem findById(ArrayList<AppItem> apps, CharSequence id) {

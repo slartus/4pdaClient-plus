@@ -103,11 +103,11 @@ public class PreferencesActivity extends BasePreferencesActivity {
     public class PrefsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
 
 
-        @Override
+       /* @Override
         public void onActivityCreated(android.os.Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
             PreferenceManager.setDefaultValues(getActivity(), R.xml.news_list_prefs, false);
-        }
+        }*/
 
         @SuppressWarnings("ConstantConditions")
         @Override

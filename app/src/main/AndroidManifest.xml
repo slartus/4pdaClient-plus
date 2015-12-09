@@ -136,34 +136,18 @@
         </activity>
 
         <activity
-            android:name="org.softeg.slartus.forpdaplus.prefs.ForumPreferencesActivity"
-            android:label="Настройки форума"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity
             android:name="org.softeg.slartus.forpdaplus.prefs.PreferencesActivity"
             android:label="Настройки"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop" />
-        <activity
-            android:name="org.softeg.slartus.forpdaplus.prefs.NewsListPreferencesActivity"
-            android:label="Настройки списка новостей"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity
             android:name="org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity"
             android:label="Фильтр и сортировка"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
 
         <activity
-            android:name="org.softeg.slartus.forpdaplus.prefs.ListPreferencesActivity"
-            android:label="Настройки списка"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity
             android:name="org.softeg.slartus.forpdaplus.prefs.TopicsListPreferencesActivity"
-            android:label="Настройки тем"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity
-            android:name="org.softeg.slartus.forpdaplus.prefs.FavoritesPreferencesActivity"
-            android:label="Настройки избранного"
+            android:label="Настройки списка"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity
             android:name="org.softeg.slartus.forpdaplus.prefs.DonateActivity"
@@ -173,11 +157,6 @@
         <activity
             android:name=".fragments.qms.QmsChatPreferencesActivity"
             android:label="Настройки чата QMS"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop" />
-        <activity
-            android:name=".fragments.qms.QmsPreferencesActivity"
-            android:label="Настройки QMS"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop" />
         <activity

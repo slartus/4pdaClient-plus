@@ -663,43 +663,42 @@ public class QmsChatFragment extends WebViewFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuItem item = menu.add("Обновить").setIcon(R.drawable.ic_refresh_white_24dp);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add("Обновить")
+                .setIcon(R.drawable.ic_refresh_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 reload();
                 return true;
             }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        item = menu.add("Настройки").setIcon(R.drawable.ic_settings_white_24dp);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add("Настройки")
+                .setIcon(R.drawable.ic_settings_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 Intent intent = new Intent(getMainActivity(), QmsChatPreferencesActivity.class);
                 getMainActivity().startActivity(intent);
                 return true;
             }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-
-        item = menu.add("Удалить сообщения").setIcon(R.drawable.ic_delete_white_24dp);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add("Удалить сообщения")
+                .setIcon(R.drawable.ic_delete_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 getWebView().loadUrl("javascript:deleteMessages('thread_form');");
                 return true;
             }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-        item = menu.add("Удалить диалог").setIcon(R.drawable.ic_delete_white_24dp);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add("Удалить диалог")
+                .setIcon(R.drawable.ic_delete_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 deleteDialog();
                 return true;
             }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
         menu.add("Размер шрифта")
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -710,14 +709,13 @@ public class QmsChatFragment extends WebViewFragment {
                     }
                 });
 
-        item = menu.add("Профиль собеседника");
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add("Профиль собеседника")
+            .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 showCompanionProfile();
                 return true;
             }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         if (Preferences.System.isDevSavePage()) {
             menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {

@@ -96,6 +96,173 @@
 
     </PreferenceScreen>
 
+    <PreferenceScreen android:title="Просмотр темы">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="theme.SpoilFirstPost"
+            android:summary="Прятать первый пост страницы в спойлер"
+            android:title="Прятать первый пост" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="theme.ConfirmSend"
+            android:summary="Подтверждать отправку сообщения"
+            android:title="Подтверждать отправку" />
+        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+            android:defaultValue="1"
+            android:entries="@array/ConnectTypeArray"
+            android:entryValues="@array/ConnectTypeValues"
+            android:key="theme.LoadsImages"
+            android:title="Загружать картинки" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="theme.UseLocalEmoticons"
+            android:summary="Локальные: высокая скорость, меньше траффик; Интернет: низкая скорость, больше траффик"
+            android:title="Использовать локальные картинки" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="theme.UseVolumesScroll"
+            android:summary="Скроллить страницу кнопками громкости"
+            android:title="Скролл громкостью" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="theme.KeepScreenOn"
+            android:title="Не выключать экран" />
+
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="theme.SpoilerByButton"
+            android:summary="Если не работают спойлеры"
+            android:title="Использовать кнопку для спойлеров" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="theme.BrowserStyle"
+            android:summary="Вид темы как в браузере в мобильной версии. !Темы загружаются быстрее!"
+            android:title="Вид как в браузере" />
+
+        <PreferenceScreen android:title="Скачивание файлов">
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="files.ConfirmDownload"
+                android:summary="Подтверждение загрузки файла при выборе ссылки"
+                android:title="Подтверждать загрузку файла" />
+            <EditTextPreference
+                android:key="downloads.path"
+                android:summary="При скачивании менеджером клиента!"
+                android:title="Путь к папке загрузки файлов" />
+            <ListPreference
+                android:entries="@array/downloaderManagersArray"
+                android:entryValues="@array/downloaderManagersValues"
+                android:key="file.downloaderManagers"
+                android:summary="Использовать для скачивания файлов выбранный менеджер"
+                android:title="Скачивать файл при помощи..." />
+        </PreferenceScreen>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="fullThemeTitle"
+            android:summary="Вместе с названием отображать описание темы на странице"
+            android:title="Полное название темы" />
+        <!--<CheckBoxPreference-->
+            <!--android:defaultValue="false"-->
+            <!--android:key="theme.Fullscreen"-->
+            <!--android:summary="Если не работают спойлеры"-->
+            <!--android:title="Fullscreen" />-->
+    </PreferenceScreen>
+
+    <PreferenceScreen android:title="Новости">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="news.ConfirmSend"
+            android:summary="Подтверждать отправку сообщения"
+            android:title="Подтверждать отправку" />
+        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+            android:defaultValue="1"
+            android:entries="@array/ConnectTypeArray"
+            android:entryValues="@array/ConnectTypeValues"
+            android:key="news.LoadsImages"
+            android:title="Загружать картинки" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="news.UseVolumesScroll"
+            android:summary="Скроллить страницу кнопками громкости"
+            android:title="Скролл громкостью" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="news.KeepScreenOn"
+            android:title="Не выключать экран" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="news.FullScreen"
+            android:summary="Просмотр новости во весь экран"
+            android:title="Во весь экран" />
+        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+            android:defaultValue="-1"
+            android:entries="@array/video_player_types_titles"
+            android:entryValues="@array/video_player_types_values"
+            android:key="news.videoplayer"
+            android:title="Проигрыватель видео" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="loadNewsComment"
+            android:title="Не загружать комментарии"
+            android:summary="Ускорит отображение страницы"/>
+    </PreferenceScreen>
+
+
+    <PreferenceScreen android:title="Списки">
+        <PreferenceCategory android:title="Общее">
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="lists.scroll_by_buttons"
+                android:summary="Использовать кнопки для скролла списка"
+                android:title="Скролл кнопками" />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="lists.refresh"
+                android:summary="Обновлять при первом открытии"
+                android:title="Обновлять список" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="lists.refresh_on_tab"
+                android:summary="Обновлять при выборе вкладки"
+                android:title="Обновлять списки из вкладок" />
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="Избранное">
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="lists.favorites.load_all"
+                android:summary="Загружать сразу все страницы"
+                android:title="Загружать все" />
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="Форум">
+            <CheckBoxPreference
+                android:title="Отображать картинки"
+                android:key="forum.list.show_images"
+                android:defaultValue="true"
+                />
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="Новости">
+            <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+                android:defaultValue="1"
+                android:entries="@array/ConnectTypeArray"
+                android:entryValues="@array/ConnectTypeValues"
+                android:key="news.list.loadimages"
+                android:title="Загружать изображения" />
+
+            <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+                android:defaultValue="full"
+                android:entries="@array/NewsListViewTitles"
+                android:entryValues="@array/NewsListViewValues"
+                android:key="news.list.view"
+                android:title="Вид списка" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+
     <PreferenceScreen
         android:title="Системное">
         <Preference
@@ -217,120 +384,6 @@
             android:key="notify.beta_version"
             android:summary="Сообщать о версиях для тестирования"
             android:title="Сообщать о бета-версиях" />
-    </PreferenceScreen>
-
-    <PreferenceScreen android:title="Просмотр темы">
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="theme.SpoilFirstPost"
-            android:summary="Прятать первый пост страницы в спойлер"
-            android:title="Прятать первый пост" />
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="theme.ConfirmSend"
-            android:summary="Подтверждать отправку сообщения"
-            android:title="Подтверждать отправку" />
-        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
-            android:defaultValue="1"
-            android:entries="@array/ConnectTypeArray"
-            android:entryValues="@array/ConnectTypeValues"
-            android:key="theme.LoadsImages"
-            android:title="Загружать картинки" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="theme.UseLocalEmoticons"
-            android:summary="Локальные: высокая скорость, меньше траффик; Интернет: низкая скорость, больше траффик"
-            android:title="Использовать локальные картинки" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="theme.UseVolumesScroll"
-            android:summary="Скроллить страницу кнопками громкости"
-            android:title="Скролл громкостью" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="theme.KeepScreenOn"
-            android:title="Не выключать экран" />
-
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="theme.SpoilerByButton"
-            android:summary="Если не работают спойлеры"
-            android:title="Использовать кнопку для спойлеров" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="theme.BrowserStyle"
-            android:summary="Вид темы как в браузере в мобильной версии. !Темы загружаются быстрее!"
-            android:title="Вид как в браузере" />
-
-        <PreferenceScreen android:title="Скачивание файлов">
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="files.ConfirmDownload"
-                android:summary="Подтверждение загрузки файла при выборе ссылки"
-                android:title="Подтверждать загрузку файла" />
-            <EditTextPreference
-                android:key="downloads.path"
-                android:summary="При скачивании менеджером клиента!"
-                android:title="Путь к папке загрузки файлов" />
-            <ListPreference
-                android:entries="@array/downloaderManagersArray"
-                android:entryValues="@array/downloaderManagersValues"
-                android:key="file.downloaderManagers"
-                android:summary="Использовать для скачивания файлов выбранный менеджер"
-                android:title="Скачивать файл при помощи..." />
-        </PreferenceScreen>
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="fullThemeTitle"
-            android:summary="Вместе с названием отображать описание темы на странице"
-            android:title="Полное название темы" />
-        <!--<CheckBoxPreference-->
-            <!--android:defaultValue="false"-->
-            <!--android:key="theme.Fullscreen"-->
-            <!--android:summary="Если не работают спойлеры"-->
-            <!--android:title="Fullscreen" />-->
-    </PreferenceScreen>
-
-    <PreferenceScreen android:title="Новости">
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="news.ConfirmSend"
-            android:summary="Подтверждать отправку сообщения"
-            android:title="Подтверждать отправку" />
-        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
-            android:defaultValue="1"
-            android:entries="@array/ConnectTypeArray"
-            android:entryValues="@array/ConnectTypeValues"
-            android:key="news.LoadsImages"
-            android:title="Загружать картинки" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="news.UseVolumesScroll"
-            android:summary="Скроллить страницу кнопками громкости"
-            android:title="Скролл громкостью" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="news.KeepScreenOn"
-            android:title="Не выключать экран" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="news.FullScreen"
-            android:summary="Просмотр новости во весь экран"
-            android:title="Во весь экран" />
-        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
-            android:defaultValue="-1"
-            android:entries="@array/video_player_types_titles"
-            android:entryValues="@array/video_player_types_values"
-            android:key="news.videoplayer"
-            android:title="Проигрыватель видео" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="loadNewsComment"
-            android:title="Не загружать комментарии"
-            android:summary="Ускорит отображение страницы"/>
     </PreferenceScreen>
 
     <PreferenceScreen

@@ -24,7 +24,6 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ListAdapter;
-import org.softeg.slartus.forpdaplus.prefs.ListPreferencesActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.sqliteannotations.BaseDao;
 
@@ -89,30 +88,6 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
         outState.putInt(FIRST_VISIBLE_ROW_KEY, m_FirstVisibleRow);
         outState.putInt(TOP_KEY, m_Top);
         super.onSaveInstanceState(outState);
-    }
-
-    protected void showSettings() {
-        Intent settingsActivity = new Intent(
-                getContext(), ListPreferencesActivity.class);
-        getContext().startActivity(settingsActivity);
-    }
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        MenuItem item = menu.add("Настройки списка")
-                .setIcon(R.drawable.ic_settings_white_24dp)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        showSettings();
-                        return true;
-                    }
-                });
-
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
     public void setCount() {

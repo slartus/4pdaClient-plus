@@ -6,8 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
@@ -501,7 +503,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
         return k * (listItem1.getTitle().compareTo(listItem2.getTitle()));
     }
 
-    @Override
+
     protected void showSettings() {
         Intent settingsActivity = new Intent(
                 getContext(), TopicsListPreferencesActivity.class);
@@ -510,4 +512,18 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
         getContext().startActivity(settingsActivity);
     }
 
+    final static int settingItemId = 537;
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.add(0,settingItemId,0,"Настройки списка")
+                .setIcon(R.drawable.ic_settings_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        showSettings();
+                        return true;
+                    }
+                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+    }
 }

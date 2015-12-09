@@ -319,8 +319,8 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem item = menu.add("Очистить").setIcon(R.drawable.ic_delete_white_24dp);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add("Очистить").setIcon(R.drawable.ic_delete_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 new MaterialDialog.Builder(getContext())
                         .title("Подтвердите действие")
@@ -337,8 +337,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
 
                 return true;
             }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
     public void refresh() {

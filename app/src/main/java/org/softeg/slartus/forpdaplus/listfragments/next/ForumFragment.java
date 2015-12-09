@@ -49,7 +49,6 @@ import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo;
-import org.softeg.slartus.forpdaplus.prefs.ForumPreferencesActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.io.Serializable;
@@ -73,6 +72,8 @@ public class ForumFragment extends GeneralFragment implements
 
     private ForumsAdapter mAdapter;
     private String m_ForumId = null;
+
+    boolean lastImageDownload = MainActivity.getPreferences().getBoolean("forum.list.show_images", true);
 
 
     @Override
@@ -116,16 +117,6 @@ public class ForumFragment extends GeneralFragment implements
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         loadData(true);
-                        return false;
-                    }
-                })
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-        menu.add("Настройки списка")
-                .setIcon(R.drawable.ic_settings_grey600_24dp)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        showListSettings();
                         return false;
                     }
                 })
@@ -183,6 +174,12 @@ public class ForumFragment extends GeneralFragment implements
     public void onResume() {
         super.onResume();
         MainActivity.searchSettings = mSearchSetting;
+
+        if(lastImageDownload==MainActivity.getPreferences().getBoolean("forum.list.show_images", true)){
+            mAdapter.notifyDataSetChangedWithLayout();
+            mListView.refreshDrawableState();
+            lastImageDownload = MainActivity.getPreferences().getBoolean("forum.list.show_images", true);
+        }
     }
     private void markAsRead() {
         if (!Client.getInstance().getLogined()) {
@@ -231,22 +228,6 @@ public class ForumFragment extends GeneralFragment implements
                 })
                 .negativeText("Отмена")
                 .show();
-    }
-
-    private void showListSettings() {
-        Intent settingsActivity = new Intent(
-                getActivity(), ForumPreferencesActivity.class);
-        this.startActivityForResult(settingsActivity, ForumPreferencesActivity.REQUEST_CODE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == ForumPreferencesActivity.REQUEST_CODE) {
-            mAdapter.notifyDataSetChangedWithLayout();
-            mListView.refreshDrawableState();
-        }
     }
 
     protected ForumFragment.ForumBranch createListData() {

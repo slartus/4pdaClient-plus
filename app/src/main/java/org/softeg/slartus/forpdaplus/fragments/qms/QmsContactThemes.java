@@ -213,25 +213,24 @@ public class QmsContactThemes extends BaseLoaderListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem item = menu.add("Новая тема").setIcon(R.drawable.ic_pencil_white_24dp);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add("Новая тема")
+                .setIcon(R.drawable.ic_pencil_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 QmsNewThreadFragment.showUserNewThread(getMainActivity(), m_Id
                         , m_Nick);
 
                 return true;
             }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        item = menu.add("Профиль собеседника");
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add("Профиль собеседника")
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 ProfileFragment.showProfile(m_Id, m_Nick);
                 return true;
             }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         this.menu = menu;
     }
 

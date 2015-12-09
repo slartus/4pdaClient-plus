@@ -40,7 +40,6 @@ import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseTaskListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.NewsListAdapter;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
-import org.softeg.slartus.forpdaplus.prefs.NewsListPreferencesActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 import org.softeg.sqliteannotations.BaseDao;
@@ -386,23 +385,10 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
 
     }
 
-    private static final int SETTINGS_REQUEST = 0;
-
     @Override
-    protected void showSettings() {
-        Intent settingsActivity = new Intent(
-                getContext(), NewsListPreferencesActivity.class);
-        startActivityForResult(settingsActivity, SETTINGS_REQUEST);
+    public void onResume() {
+        super.onResume();
+        getAdapter().notifyDataSetChanged();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == SETTINGS_REQUEST) {
-
-            getAdapter().notifyDataSetChanged();
-
-        }
-    }
 }
