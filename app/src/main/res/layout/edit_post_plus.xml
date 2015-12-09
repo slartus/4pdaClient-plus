@@ -18,18 +18,20 @@
         android:scrollbars="vertical"
         android:layout_above="@+id/txtpost_edit_reason"
         style="?edit_text"
-        android:gravity="top">
+        android:gravity="top"
+        android:fillViewport="true">
         <EditText
             android:id="@+id/txtPost"
             android:background="@android:color/transparent"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:hint="Введите текст сообщения"
             android:inputType="textCapSentences|textMultiLine"
             android:padding="16dp"
             android:scrollHorizontally="false"
             android:singleLine="false"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical"
+            android:gravity="top" />
     </ScrollView>
 
     <EditText
