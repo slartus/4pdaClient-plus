@@ -72,7 +72,7 @@ public class SearchTopicsFragment extends TopicsListFragment
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo, Handler mHandler) {
-
+        super.onCreateContextMenu(menu, v, menuInfo);
     }
 
     @Override

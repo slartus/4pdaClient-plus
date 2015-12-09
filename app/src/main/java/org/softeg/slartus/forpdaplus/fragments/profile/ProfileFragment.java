@@ -200,19 +200,6 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         return view;
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-        WebView.HitTestResult hitTestResult = m_WebView.getHitTestResult();
-        switch (hitTestResult.getType()) {
-            case WebView.HitTestResult.UNKNOWN_TYPE:
-            case WebView.HitTestResult.EDIT_TEXT_TYPE:
-                break;
-            default:
-                ExtUrl.showSelectActionDialog(mHandler, getMainActivity(),
-                        getTitle(), "", hitTestResult.getExtra(), "", "", "", "", "");
-        }
-    }
-
     private final static int FILECHOOSER_RESULTCODE = 1;
 
     @JavascriptInterface

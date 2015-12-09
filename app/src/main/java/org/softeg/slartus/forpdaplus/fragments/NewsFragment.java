@@ -370,12 +370,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
-
     private class MyWebViewClient extends WebViewClient {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -716,11 +710,5 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 });
             }
         }).start();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        webView = null;
     }
 }

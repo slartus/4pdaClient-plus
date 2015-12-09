@@ -201,9 +201,9 @@
         </PreferenceScreen>
 
         <CheckBoxPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:key="isGpuImg"
-            android:summary="Отключить, если есть проблемы с аватарками на странице"
+            android:summary="Не рекомендуется для Android версии ниже 4.4 KitKat"
             android:title="Оптимизация GIF анимаций на странице" />
 
         <CheckBoxPreference
