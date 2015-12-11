@@ -1,5 +1,5 @@
 //package org.softeg.slartus.forpdaplus.controls.imageview;
-//
+
 //import android.content.Context;
 //import android.content.Intent;
 //import android.graphics.Bitmap;

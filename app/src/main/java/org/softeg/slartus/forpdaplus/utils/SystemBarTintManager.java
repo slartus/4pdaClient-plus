@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
  * translucent system UI modes.
  *
  */
+
 public class SystemBarTintManager {
 
     static {

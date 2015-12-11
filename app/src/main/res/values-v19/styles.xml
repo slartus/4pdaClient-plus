@@ -6,7 +6,6 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="actionBarStyle">@style/actionbar_trans</item>
-        <item name="panelMenuListTheme">@style/bottom_menu_bl</item>
         <item name="actionOverflowButtonStyle">@style/overflow_button</item>
 
     </style>

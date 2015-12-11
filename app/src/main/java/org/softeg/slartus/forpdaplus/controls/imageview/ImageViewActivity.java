@@ -57,6 +57,7 @@ import javax.microedition.khronos.egl.EGLDisplay;
 /*
  * Created by slartus on 14.10.2014.
  */
+
 public class ImageViewActivity extends AppCompatActivity {
     private static final String IMAGE_URLS_KEY = "IMAGE_URLS_KEY";
     private static final String SELECTED_INDEX_KEY = "SELECTED_INDEX_KEY";
