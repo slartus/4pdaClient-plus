@@ -1,17 +1,21 @@
 package org.softeg.slartus.forpdaplus.download;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ResultReceiver;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.ViewGroup;
@@ -28,6 +32,7 @@ import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.HttpHelper;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.DownloadTask;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -147,7 +152,11 @@ public class DownloadsService extends IntentService {
                         try {
                             switch (value.toString()) {
                                 case "0":// клиент
-                                    clientDownload(context1, url, tempFilePath, notificationId);
+                                    if (ContextCompat.checkSelfPermission(context1, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+                                        Toast.makeText(context1, "Нет прав для данного действия", Toast.LENGTH_SHORT).show();
+                                    else
+                                        clientDownload(context1, url, tempFilePath, notificationId);
+
                                     if (finish)
                                         context1.finish();
                                     break;

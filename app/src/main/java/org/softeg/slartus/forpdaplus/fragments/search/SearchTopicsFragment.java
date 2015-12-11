@@ -72,7 +72,7 @@ public class SearchTopicsFragment extends TopicsListFragment
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo, Handler mHandler) {
-
+        super.onCreateContextMenu(menu, v, menuInfo);
     }
 
     @Override
@@ -100,9 +100,9 @@ public class SearchTopicsFragment extends TopicsListFragment
     @Override
     public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 //        if (firstVisibleItem < m_PrevVisible || firstVisibleItem == 0)
-//            getActivity().getActionBar().show();
+//            getMainActivity().getActionBar().show();
 //        else if (firstVisibleItem > m_PrevVisible) {
-//            getActivity().getActionBar().hide();
+//            getMainActivity().getActionBar().hide();
 //        }
         m_PrevVisible = firstVisibleItem;
     }

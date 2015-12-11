@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.fragments.topic;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -16,6 +18,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -113,7 +117,7 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
         args.putString("postId", postId);
         args.putString("authKey", authKey);
         args.putString("parentTag", tag);
-        ((MainActivity) context).addTab("Ред. сообщения в "+App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
+        MainActivity.addTab("Ред. сообщения в " + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
     }
 
     public static void newPost(Activity context, String forumId, String topicId, String authKey,
@@ -126,7 +130,7 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
         args.putString("body", body);
         args.putString("authKey", authKey);
         args.putString("parentTag", tag);
-        ((MainActivity) context).addTab("Ответ в "+App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
+        MainActivity.addTab("Ответ в " + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
     }
 
     public static void newPostWithAttach(Context context, String forumId, String topicId, String authKey,
@@ -138,7 +142,7 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
         args.putString("postId", PostApi.NEW_POST_ID);
         args.putBundle("extras", extras);
         args.putString("authKey", authKey);
-        ((MainActivity) context).addTab("Ред. сообщения", url, newInstance(context, args));
+        MainActivity.addTab("Ред. сообщения", url, newInstance(context, args));
     }
 
     View view;
@@ -146,7 +150,7 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
         return view.findViewById(id);
     }
     public ActionBar getSupportActionBar() {
-        return ((AppCompatActivity)getActivity()).getSupportActionBar();
+        return ((AppCompatActivity)getMainActivity()).getSupportActionBar();
     }
 
     @Override
@@ -157,14 +161,14 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
     @Override
     public boolean closeTab() {
         if (!TextUtils.isEmpty(txtPost.getText())) {
-            new MaterialDialog.Builder(getActivity())
+            new MaterialDialog.Builder(getMainActivity())
                     .title("Подтвердите действие")
                     .content("Имеется введенный текст сообщения! Закрыть?")
                     .positiveText("Да")
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
-                            ((MainActivity)getActivity()).removeTab(getTag());
+                            getMainActivity().removeTab(getTag());
                         }
                     })
                     .negativeText("Отмена")
@@ -239,7 +243,7 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
         });
 
         mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), txtPost);
-        mPopupPanelView.activityCreated(getActivity(), view);
+        mPopupPanelView.activityCreated(getMainActivity(), view);
 
 
         try {
@@ -268,8 +272,8 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
 
             startLoadPost(forumId, topicId, postId, authKey);
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
-            ((MainActivity)getActivity()).removeTab(getTag());
+            AppLog.e(getMainActivity(), ex);
+            getMainActivity().removeTab(getTag());
         }
         //createActionMenu();
         return view;
@@ -279,14 +283,14 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
     @Override
     public boolean onBackPressed() {
         if (!TextUtils.isEmpty(txtPost.getText())) {
-            new MaterialDialog.Builder(getActivity())
+            new MaterialDialog.Builder(getMainActivity())
                     .title("Подтвердите действие")
                     .content("Имеется введенный текст сообщения! Закрыть?")
                     .positiveText("Да")
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
-                            ((MainActivity)getActivity()).removeTab(getTag());
+                            getMainActivity().removeTab(getTag());
                         }
                     })
                     .negativeText("Отмена")
@@ -364,13 +368,13 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
             Object attachesObject = extras.get(Intent.EXTRA_STREAM);
             if (attachesObject instanceof Uri) {
                 Uri uri = (Uri) extras.get(Intent.EXTRA_STREAM);
-                m_AttachFilePaths = new ArrayList<>(Arrays.asList(new String[]{ImageFilePath.getPath(getActivity().getApplicationContext(), uri)}));
+                m_AttachFilePaths = new ArrayList<>(Arrays.asList(new String[]{ImageFilePath.getPath(getMainActivity().getApplicationContext(), uri)}));
             } else if (attachesObject instanceof ArrayList<?>) {
                 m_AttachFilePaths = new ArrayList<>();
                 ArrayList<?> list = (ArrayList<?>) attachesObject;
                 for (Object item : list) {
                     Uri uri = (Uri) item;
-                    m_AttachFilePaths.add(ImageFilePath.getPath(getActivity().getApplicationContext(), uri));
+                    m_AttachFilePaths.add(ImageFilePath.getPath(getMainActivity().getApplicationContext(), uri));
                 }
             }
         }
@@ -470,7 +474,7 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
 
     private void showAttachesListDialog() {
         if (m_EditPost.getAttaches().size() == 0) {
-            new MaterialDialog.Builder(getActivity())
+            new MaterialDialog.Builder(getMainActivity())
                     .content("Нет ни одного вложения, загрузить?")
                     .positiveText("Загрузить")
                     .negativeText("Отмена")
@@ -482,8 +486,8 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
                     }).show();
             return;
         }
-        AttachesAdapter adapter = new AttachesAdapter(m_EditPost.getAttaches(), getActivity());
-        mAttachesListDialog = new MaterialDialog.Builder(getActivity())
+        AttachesAdapter adapter = new AttachesAdapter(m_EditPost.getAttaches(), getMainActivity());
+        mAttachesListDialog = new MaterialDialog.Builder(getMainActivity())
                 .cancelable(true)
                 .title("Вложения")
                         //.setSingleChoiceItems(adapter, -1, null)
@@ -541,6 +545,10 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
     }
     private static final int MY_INTENT_CLICK=302;
     private void startAddAttachment() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getActivity(), "Нет прав для данного действия", Toast.LENGTH_SHORT).show();
+            return;
+        }
         CharSequence[] items = new CharSequence[]{"Файл", "Изображение"};
         new MaterialDialog.Builder(getContext())
                 .items(items)
@@ -560,9 +568,9 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
                                     startActivityForResult(intent, MY_INTENT_CLICK);
 
                                 } catch (ActivityNotFoundException ex) {
-                                    Toast.makeText(getActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getMainActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
                                 } catch (Exception ex) {
-                                    AppLog.e(getActivity(), ex);
+                                    AppLog.e(getMainActivity(), ex);
                                 }
 
                                 break;
@@ -575,9 +583,9 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
                                         imageintent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                                     startActivityForResult(imageintent, MY_INTENT_CLICK);
                                 } catch (ActivityNotFoundException ex) {
-                                    Toast.makeText(getActivity(), "Ни одно приложение не установлено для выбора изображения!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getMainActivity(), "Ни одно приложение не установлено для выбора изображения!", Toast.LENGTH_LONG).show();
                                 } catch (Exception ex) {
-                                    AppLog.e(getActivity(), ex);
+                                    AppLog.e(getMainActivity(), ex);
                                 }
                                 break;
                         }
@@ -604,9 +612,9 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
             {
                 if (null == data) return;
                 Uri selectedImageUri = data.getData();
-                String selectedImagePath = ImageFilePath.getPath(getActivity().getApplicationContext(), selectedImageUri);
+                String selectedImagePath = ImageFilePath.getPath(getMainActivity().getApplicationContext(), selectedImageUri);
                 saveAttachDirPath(selectedImagePath);
-                new UpdateTask(getActivity(), selectedImagePath).execute();
+                new UpdateTask(getMainActivity(), selectedImagePath).execute();
 
             }
         }
@@ -626,17 +634,17 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
 
 
     private void startLoadPost(String forumId, String topicId, String postId, String authKey) {
-        new LoadTask(getActivity(), forumId, topicId, postId, authKey).execute();
+        new LoadTask(getMainActivity(), forumId, topicId, postId, authKey).execute();
     }
 
     private void sendPost(final String text, String editPostReason) {
 
         if (isNewPost()) {
-            new PostTask(getActivity(), text, editPostReason,
+            new PostTask(getMainActivity(), text, editPostReason,
                     Preferences.Topic.Post.getEnableEmotics(), Preferences.Topic.Post.getEnableSign())
                     .execute();
         } else {
-            new AcceptEditTask(getActivity(), text, editPostReason,
+            new AcceptEditTask(getMainActivity(), text, editPostReason,
                     Preferences.Topic.Post.getEnableEmotics(), Preferences.Topic.Post.getEnableSign())
                     .execute();
         }
@@ -741,9 +749,9 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
             } else {
 
                 if (ex != null)
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getMainActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
 
             }
         }
@@ -757,9 +765,9 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
                 refreshAttachmentsInfo();
             } else {
                 if (ex != null)
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getMainActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
 
             }
         }
@@ -820,9 +828,9 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
                 refreshAttachmentsInfo();
             } else {
                 if (ex != null)
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getMainActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -872,16 +880,20 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
             }
 
             if (success) {
-                ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment())
-                        .showTheme(ThemeFragment.getThemeUrl(m_EditPost.getTopicId(), "view=findpost&p=" + m_EditPost.getId()), true);
-                ((MainActivity) getActivity()).removeTab(getTag());
-                MainActivity.selectTabByTag(parentTag);
+                if(App.getInstance().isContainsByTag(parentTag)){
+                    ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment())
+                            .showTheme(ThemeFragment.getThemeUrl(m_EditPost.getTopicId(), "view=findpost&p=" + m_EditPost.getId()), true);
+                    getMainActivity().removeTab(getTag());
+                    MainActivity.selectTabByTag(parentTag);
+                }else {
+                    getMainActivity().removeTab(getTag());
+                }
 
             } else {
                 if (ex != null)
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getActivity(), "Неизвестная ошибка",
+                    Toast.makeText(getMainActivity(), "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();
 
             }
@@ -945,7 +957,7 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
         private Throwable ex;
 
         protected void onCancelled() {
-            Toast.makeText(getActivity(), "Отменено", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getMainActivity(), "Отменено", Toast.LENGTH_SHORT).show();
             //finish();
         }
 
@@ -959,14 +971,14 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
                 setEditPost(editPost);
 
                 if (m_AttachFilePaths.size() > 0)
-                    new UpdateTask(getActivity(), m_AttachFilePaths)
+                    new UpdateTask(getMainActivity(), m_AttachFilePaths)
                             .execute();
                 m_AttachFilePaths = new ArrayList<>();
             } else {
                 if (ex != null)
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getMainActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -1019,19 +1031,25 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
 
             if (success) {
                 if (!TextUtils.isEmpty(mError)) {
-                    Toast.makeText(getActivity(), "Ошибка: " + mError, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getMainActivity(), "Ошибка: " + mError, Toast.LENGTH_LONG).show();
                     return;
                 }
-                ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment())
-                        .showTheme(String.format("http://4pda.ru/forum/index.php?showtopic=%s&%s", m_EditPost.getTopicId(),
-                                isNewPost() ? "view=getlastpost" : "view=findpost&p=" + m_EditPost.getId()), true);
-                ((MainActivity)getActivity()).removeTab(getTag());
-                MainActivity.selectTabByTag(parentTag);
+                if(App.getInstance().isContainsByTag(parentTag)){
+                    ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment())
+                            .showTheme(String.format("http://4pda.ru/forum/index.php?showtopic=%s&%s", m_EditPost.getTopicId(),
+                                    isNewPost() ? "view=getlastpost" : "view=findpost&p=" + m_EditPost.getId()), true);
+                    getMainActivity().removeTab(getTag());
+                    MainActivity.selectTabByTag(parentTag);
+                }else {
+                    getMainActivity().removeTab(getTag());
+                }
+
+
             } else {
                 if (ex != null)
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getActivity(), "Неизвестная ошибка",
+                    Toast.makeText(getMainActivity(), "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();
 
             }
@@ -1082,7 +1100,7 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
 
                         EditAttach attach = (EditAttach) view.getTag();
 
-                        new DeleteAttachTask(getActivity(),
+                        new DeleteAttachTask(getMainActivity(),
                                 attach.getId())
                                 .execute();
                     }
@@ -1233,7 +1251,7 @@ public class EditPostFragment extends GeneralFragment implements IBrickFragment 
             txtPost.setCursorVisible(true);
             return SEARCH_RESULT_FOUND;
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         } finally {
             if (!fromSelection)
                 searchEditText.requestFocus();

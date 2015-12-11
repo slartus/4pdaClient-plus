@@ -19,9 +19,11 @@
         android:description="@string/app_description"
         tools:replace="android:icon"
         android:icon="@drawable/icon_mat"
+        android:hardwareAccelerated="@bool/hardwareAccelerated"
         android:name=".App"
         android:largeHeap="true"
-        android:theme="@style/MainPinkBL">
+        android:theme="@style/MainPinkBlack"
+        android:allowBackup="true">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -126,7 +128,7 @@
         </receiver>
 
         <activity
-            android:theme="@style/Theme.Transluent.WhitePink"
+            android:theme="@style/ThemeLight"
             android:name=".TestActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
 
@@ -135,34 +137,18 @@
         </activity>
 
         <activity
-            android:name="org.softeg.slartus.forpdaplus.prefs.ForumPreferencesActivity"
-            android:label="Настройки форума"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity
             android:name="org.softeg.slartus.forpdaplus.prefs.PreferencesActivity"
             android:label="Настройки"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop" />
-        <activity
-            android:name="org.softeg.slartus.forpdaplus.prefs.NewsListPreferencesActivity"
-            android:label="Настройки списка новостей"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity
             android:name="org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity"
             android:label="Фильтр и сортировка"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
 
         <activity
-            android:name="org.softeg.slartus.forpdaplus.prefs.ListPreferencesActivity"
-            android:label="Настройки списка"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity
             android:name="org.softeg.slartus.forpdaplus.prefs.TopicsListPreferencesActivity"
-            android:label="Настройки тем"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-        <activity
-            android:name="org.softeg.slartus.forpdaplus.prefs.FavoritesPreferencesActivity"
-            android:label="Настройки избранного"
+            android:label="Настройки списка"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity
             android:name="org.softeg.slartus.forpdaplus.prefs.DonateActivity"
@@ -174,16 +160,6 @@
             android:label="Настройки чата QMS"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop" />
-        <activity
-            android:name=".fragments.qms.QmsPreferencesActivity"
-            android:label="Настройки QMS"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop" />
-        <!--<activity-->
-            <!--android:name="org.softeg.slartus.forpdaplus.DevDbDeviceActivity"-->
-            <!--android:label="DevDB.ru"-->
-            <!--android:configChanges="orientation|keyboardHidden|screenSize"-->
-            <!--android:launchMode="singleTop" />-->
         <activity
             android:name="org.softeg.slartus.forpdaplus.styles.StyleInfoActivity"
             android:label="Информация о стиле"

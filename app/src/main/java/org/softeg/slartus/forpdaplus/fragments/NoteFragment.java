@@ -108,7 +108,7 @@ public class NoteFragment extends GeneralFragment {
     public static void showNote(String id) {
         Bundle args = new Bundle();
         args.putString(NOTE_ID_KEY, id);
-        MainActivity.addTabByIntent("Заметка", NOTE_ID_KEY + id, newInstance(args));
+        MainActivity.addTab("Заметка", NOTE_ID_KEY + id, newInstance(args));
     }
 
 
@@ -118,7 +118,7 @@ public class NoteFragment extends GeneralFragment {
 
     private void fillData(final Note note) {
         try {
-            getActivity().setTitle(DbHelper.getDateString(note.Date));
+            getMainActivity().setTitle(DbHelper.getDateString(note.Date));
             infoTable.removeAllViews();
             TableLayout.LayoutParams rowparams = new TableLayout.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                     TableRow.LayoutParams.WRAP_CONTENT);
@@ -145,7 +145,7 @@ public class NoteFragment extends GeneralFragment {
 
             webView.loadDataWithBaseURL("http://4pda.ru/forum/", transformChatBody(note.Body), "text/html", "UTF-8", null);
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
 
 
@@ -169,14 +169,14 @@ public class NoteFragment extends GeneralFragment {
             public void onClick(View view) {
                 if (!TextUtils.isEmpty(url))
 
-                    IntentActivity.tryShowUrl(getActivity(), mHandler, url, true, false);
+                    IntentActivity.tryShowUrl(getMainActivity(), mHandler, url, true, false);
             }
         });
         textView2.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 if (!TextUtils.isEmpty(url)) {
-                    ExtUrl.showSelectActionDialog(mHandler, getActivity(), url);
+                    ExtUrl.showSelectActionDialog(mHandler, getMainActivity(), url);
                 }
                 return true;
             }
@@ -204,10 +204,10 @@ public class NoteFragment extends GeneralFragment {
     }
 
     private TextView createFirtsTextView() {
-        return (TextView) getActivity().getLayoutInflater().inflate(R.layout.note_first_textview, null);
+        return (TextView) getMainActivity().getLayoutInflater().inflate(R.layout.note_first_textview, null);
     }
     private TextView createSecondTextView() {
-        return (TextView) getActivity().getLayoutInflater().inflate(R.layout.note_second_textview, null);
+        return (TextView) getMainActivity().getLayoutInflater().inflate(R.layout.note_second_textview, null);
     }
 
     public class LoadPageTask extends AsyncTask<String, String, Note> {
@@ -270,7 +270,7 @@ public class NoteFragment extends GeneralFragment {
 
             } else {
                 if (ex != null)
-                    AppLog.e(getActivity(), ex, new Runnable() {
+                    AppLog.e(getMainActivity(), ex, new Runnable() {
                         @Override
                         public void run() {
                             loadData();

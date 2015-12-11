@@ -1,8 +1,8 @@
 package org.softeg.slartus.forpdaplus.classes;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
-import org.softeg.slartus.forpdaplus.FragmentActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
@@ -25,7 +24,7 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
  * Time: 8:35
  * To change this template use File | Settings | File Templates.
  */
-public abstract class BrowserViewsFragmentActivity extends FragmentActivity implements IWebViewContainer {
+public abstract class BrowserViewsFragmentActivity extends AppCompatActivity implements IWebViewContainer {
     public abstract String Prefix();
 
     public abstract WebView getWebView();
@@ -48,7 +47,7 @@ public abstract class BrowserViewsFragmentActivity extends FragmentActivity impl
     @Override
     public void onDestroy()
     {
-        WebView mWebView=getWebView();
+        WebView mWebView= getWebView();
         // null out before the super call
         if (mWebView != null)
         {
@@ -89,7 +88,7 @@ public abstract class BrowserViewsFragmentActivity extends FragmentActivity impl
         Log.e("ab","yes");
         if (fab == null) return;
         Log.e("fb","yes");
-        setHideActionBar((AdvWebView)getWebView(),actionBar, fab);
+        setHideActionBar((AdvWebView) getWebView(),actionBar, fab);
     }
     public void setHideActionBar(FloatingActionButton fab) {
         if (getWebView() == null || !(getWebView() instanceof AdvWebView))
@@ -100,7 +99,7 @@ public abstract class BrowserViewsFragmentActivity extends FragmentActivity impl
         Log.e("ab","yes");
         if (fab == null) return;
         Log.e("fb","yes");
-        setHideActionBar((AdvWebView)getWebView(),actionBar, fab);
+        setHideActionBar((AdvWebView) getWebView(),actionBar, fab);
     }
 
     public static void setHideActionBar(AdvWebView advWebView, final ActionBar actionBar, final FloatingActionButton fab) {
@@ -162,12 +161,12 @@ public abstract class BrowserViewsFragmentActivity extends FragmentActivity impl
         getWebViewExternals().onPrepareOptionsMenu();
     }
 
-    @Override
+    /*@Override
     protected void loadPreferences(SharedPreferences prefs) {
         super.loadPreferences(prefs);
         getWebViewExternals().loadPreferences(prefs);
 
-    }
+    }*/
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {

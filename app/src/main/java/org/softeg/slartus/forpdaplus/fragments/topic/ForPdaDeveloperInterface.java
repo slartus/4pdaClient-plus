@@ -22,12 +22,12 @@ public class ForPdaDeveloperInterface {
 
     public ForPdaDeveloperInterface(ThemeFragment context) {
         this.context = context;
-        this.activity = context.getActivity();
+        this.activity = context.getMainActivity();
     }
     private ThemeFragment getContext(){
         return context;
     }
-    private FragmentActivity getActivity() {
+    private FragmentActivity getMainActivity() {
         return activity;
     }
 
@@ -35,7 +35,7 @@ public class ForPdaDeveloperInterface {
 
     @JavascriptInterface
     public void showChooseCssDialog() {
-        getActivity().runOnUiThread(new Runnable() {
+        getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -44,12 +44,12 @@ public class ForPdaDeveloperInterface {
                     intent.setType("file/*");
 
                     // intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
-                    getActivity().startActivityForResult(intent, FILECHOOSER_RESULTCODE);
+                    getMainActivity().startActivityForResult(intent, FILECHOOSER_RESULTCODE);
 
                 } catch (ActivityNotFoundException ex) {
-                    Toast.makeText(getActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getMainActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
                 }
             }
         });
@@ -57,7 +57,7 @@ public class ForPdaDeveloperInterface {
 
     @JavascriptInterface
     public void saveHtml(final String html) {
-        new SaveHtml(getActivity(),html,"Topic");
+        new SaveHtml(getMainActivity(),html,"Topic");
     }
 
 

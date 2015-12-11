@@ -24,7 +24,6 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ListAdapter;
-import org.softeg.slartus.forpdaplus.prefs.ListPreferencesActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.sqliteannotations.BaseDao;
 
@@ -91,30 +90,6 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
         super.onSaveInstanceState(outState);
     }
 
-    protected void showSettings() {
-        Intent settingsActivity = new Intent(
-                getContext(), ListPreferencesActivity.class);
-        getContext().startActivity(settingsActivity);
-    }
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-
-        MenuItem item = menu.add("Настройки списка")
-                .setIcon(R.drawable.ic_settings_white_24dp)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        showSettings();
-                        return true;
-                    }
-                });
-
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-    }
-
     public void setCount() {
         int count = mAdapter.getCount();
         mListViewLoadMoreFooter.setCount(count, count);
@@ -173,6 +148,7 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
             }
         });
         swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
+        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(App.getInstance().getSwipeRefreshBackground());
         return swipeRefreshLayout;
     }
 
@@ -203,7 +179,7 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
     }
 
     protected BaseAdapter createAdapter() {
-        return new ListAdapter(getActivity(), mData);
+        return new ListAdapter(getActivity(), mData, getPreferences().getBoolean("showSubMain", false));
     }
 
     protected void setLoading(final Boolean loading) {

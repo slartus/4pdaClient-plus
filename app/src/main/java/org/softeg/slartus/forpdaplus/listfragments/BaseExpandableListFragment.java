@@ -174,6 +174,7 @@ super();
             }
         });
         swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
+        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(App.getInstance().getSwipeRefreshBackground());
         return swipeRefreshLayout;
     }
 
@@ -488,7 +489,7 @@ super();
         @Override
         protected Boolean doInBackground(Boolean[] p1) {
             try {
-                loadCache();
+                //loadCache();
                 return true;
             } catch (Throwable e) {
                 mEx = e;

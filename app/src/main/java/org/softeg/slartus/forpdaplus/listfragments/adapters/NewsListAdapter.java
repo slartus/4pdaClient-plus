@@ -17,6 +17,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 import org.softeg.slartus.forpdaapi.News;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
@@ -117,6 +118,10 @@ public class NewsListAdapter extends BaseAdapter {
         if (holder.textTitle != null)
             holder.textTitle.setText(data.getTitle());
 
+        if(data.getImgUrl()==null)
+            holder.imageImage.setVisibility(View.GONE);
+        else
+            holder.imageImage.setVisibility(View.VISIBLE);
         if (holder.image_panel != null && data.getImgUrl() != null && mLoadImages) {
             imageLoader.displayImage(data.getImgUrl().toString(), holder.imageImage, new ImageLoadingListener() {
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,7 +12,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -86,8 +86,15 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     @Override
-    public void reload() {}
-    
+    public void reload() {
+        startLoadData();
+    }
+
+    @Override
+    public AsyncTask getAsyncTask() {
+        return null;
+    }
+
     @Override
     public boolean closeTab() {
         return false;
@@ -141,7 +148,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     public static void showProfile(String userId, String userNick){
-        MainActivity.addTabByIntent(userNick, "http://4pda.ru/forum/index.php?showuser=" + userId, newInstance(userId, userNick));
+        MainActivity.addTab(userNick, "http://4pda.ru/forum/index.php?showuser=" + userId, newInstance(userId, userNick));
     }
     public static ProfileFragment newInstance(String userId, String userNick) {
         Bundle args = new Bundle();
@@ -167,12 +174,12 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         super.onSaveInstanceState(outState);
     }
 
-    protected SwipeRefreshLayout mSwipeRefreshLayout;
     View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.profile_web_view_fragment, container, false);
+        initSwipeRefreshLayout();
         // getDialog().setTitle("Профиль");
         setHasOptionsMenu(true);
         assert view != null;
@@ -193,24 +200,11 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         return view;
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-        WebView.HitTestResult hitTestResult = m_WebView.getHitTestResult();
-        switch (hitTestResult.getType()) {
-            case WebView.HitTestResult.UNKNOWN_TYPE:
-            case WebView.HitTestResult.EDIT_TEXT_TYPE:
-                break;
-            default:
-                ExtUrl.showSelectActionDialog(mHandler, getActivity(),
-                        getTitle(), "", hitTestResult.getExtra(), "", "", "", "", "");
-        }
-    }
-
     private final static int FILECHOOSER_RESULTCODE = 1;
 
     @JavascriptInterface
     public void showChooseCssDialog() {
-        getActivity().runOnUiThread(new Runnable() {
+        getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -222,9 +216,9 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
                     startActivityForResult(intent, FILECHOOSER_RESULTCODE);
 
                 } catch (ActivityNotFoundException ex) {
-                    Toast.makeText(getActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getMainActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
                 }
             }
         });
@@ -234,7 +228,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     public void onActivityResult(int requestCode, int resultCode,
                                  Intent data) {
         if (resultCode == Activity.RESULT_OK && requestCode == FILECHOOSER_RESULTCODE) {
-            String attachFilePath = FileUtils.getRealPathFromURI(getActivity(), data.getData());
+            String attachFilePath = FileUtils.getRealPathFromURI(getMainActivity(), data.getData());
             String cssData = FileUtils.readFileText(attachFilePath)
                     .replace("\\", "\\\\")
                     .replace("'", "\\'").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
@@ -252,18 +246,6 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         }
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        if (!isDialog())
-            mSwipeRefreshLayout = App.getInstance().createSwipeRefreshLayout(getActivity(), view, new Runnable() {
-                @Override
-                public void run() {
-                    startLoadData();
-                }
-            });
-    }
 
     protected void startLoadData() {
         Bundle args = new Bundle();
@@ -275,32 +257,14 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
             getLoaderManager().initLoader(ItemsLoader.ID, args, this);
     }
 
-    private void setLoading(final Boolean loading) {
-        try {
-            if (getActivity() == null) return;
-            if (!isDialog()) {
-                //mSwipeRefreshLayout.setRefreshing(loading);
-                mSwipeRefreshLayout.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSwipeRefreshLayout.setRefreshing(loading);
-                    }
-                });
-            }
-
-        } catch (Throwable ignore) {
-            android.util.Log.e("TAG", ignore.toString());
-        }
-    }
-
     private void showBody(Profile profile) {
         title = profile.getNick().toString();
         super.showBody();
         m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", profile.getHtmlBody(), "text/html", "UTF-8", null);
         if (profile.getNick() != null)
             args.putString(USER_NAME_KEY, profile.getNick().toString());
-        if (getActivity() != null)
-            getActivity().setTitle(profile.getNick());
+        if (getMainActivity() != null)
+            getMainActivity().setTitle(profile.getNick());
 
     }
 
@@ -309,7 +273,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         ItemsLoader loader = null;
         if (id == ItemsLoader.ID) {
             setLoading(true);
-            loader = new ItemsLoader(getActivity(), args);
+            loader = new ItemsLoader(getMainActivity(), args);
         }
         return loader;
     }
@@ -317,7 +281,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<Profile> loader, Profile data) {
         if (data != null && data.getError() != null) {
-            AppLog.e(getActivity(), data.getError());
+            AppLog.e(getMainActivity(), data.getError());
         } else if (data != null) {
             showBody(data);
         }
@@ -344,9 +308,9 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, final String url) {
-            if (tryShowQms_2_0(getActivity(), url))
+            if (tryShowQms_2_0(getMainActivity(), url))
                 return true;
-            if (IntentActivity.tryShowUrl(getActivity(), new Handler(), url, true, false,
+            if (IntentActivity.tryShowUrl(getMainActivity(), new Handler(), url, true, false,
                     Client.getInstance().getAuthKey()))
                 return true;
 
@@ -477,16 +441,16 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         if (Build.VERSION.SDK_INT < 17) {
             runnable.run();
         } else {
-            getActivity().runOnUiThread(runnable);
+            getMainActivity().runOnUiThread(runnable);
         }
     }
 
     @JavascriptInterface
     public void saveHtml(final String html) {
-        getActivity().runOnUiThread(new Runnable() {
+        getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new SaveHtml(getActivity(),html,"Profile");
+                new SaveHtml(getMainActivity(),html,"Profile");
             }
         });
     }
@@ -507,7 +471,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
                         }
                     }
                 }).start();
-                Toast.makeText(getActivity(), "Основное устройство изменено", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getMainActivity(), "Основное устройство изменено", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -524,7 +488,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
             item = menu.add(getString(R.string.MessagesQms)).setIcon(R.drawable.ic_pencil_white_24dp);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
-                    QmsNewThreadFragment.showUserNewThread(getActivity(), getUserId(), getUserNick());
+                    QmsNewThreadFragment.showUserNewThread(getMainActivity(), getUserId(), getUserNick());
 
                     return true;
                 }
@@ -537,7 +501,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 CharSequence[] items = {"Поднять", "Опустить", "Посмотреть", "Кому изменял репутацию"};
-                new MaterialDialog.Builder(getActivity())
+                new MaterialDialog.Builder(getMainActivity())
                         .title("Репутация")
                         .items(items)
                         .itemsCallback(new MaterialDialog.ListCallback() {
@@ -545,16 +509,16 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
                             public void onSelection(MaterialDialog dialog, View view, int i, CharSequence items) {
                                 switch (i) {
                                     case 0:
-                                        UserReputationFragment.plusRep(getActivity(), new Handler(), getUserId(), getUserNick());
+                                        UserReputationFragment.plusRep(getMainActivity(), new Handler(), getUserId(), getUserNick());
                                         break;
                                     case 1:
-                                        UserReputationFragment.minusRep(getActivity(), new Handler(), getUserId(), getUserNick());
+                                        UserReputationFragment.minusRep(getMainActivity(), new Handler(), getUserId(), getUserNick());
                                         break;
                                     case 2:
-                                        UserReputationFragment.showActivity(getActivity(), getUserId(), false);
+                                        UserReputationFragment.showActivity(getMainActivity(), getUserId(), false);
                                         break;
                                     case 3:
-                                        UserReputationFragment.showActivity(getActivity(), getUserId(), true);
+                                        UserReputationFragment.showActivity(getMainActivity(), getUserId(), true);
                                         break;
                                 }
                             }
@@ -587,7 +551,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         item = menu.add("Ссылка на профиль");
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
-                ExtUrl.showSelectActionDialog(getActivity(), "Ссылка на профиль", "http://4pda.ru/forum/index.php?showuser=" + getUserId());
+                ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка на профиль", "http://4pda.ru/forum/index.php?showuser=" + getUserId());
                 return true;
             }
         });
@@ -612,7 +576,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         try {
             getWebView().loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 }

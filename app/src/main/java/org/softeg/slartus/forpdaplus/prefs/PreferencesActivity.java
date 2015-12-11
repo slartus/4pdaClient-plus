@@ -20,8 +20,10 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -32,6 +34,7 @@ import android.widget.SeekBar;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdacommon.FileUtils;
@@ -45,6 +48,19 @@ import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
+import org.softeg.slartus.forpdaplus.listtemplates.AppAndGame;
+import org.softeg.slartus.forpdaplus.listtemplates.AppsBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.AppsGamesCatalogBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.DevDbCatalogBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.DigestCatalogBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.FavoritesBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.LeadsBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
+import org.softeg.slartus.forpdaplus.listtemplates.NewsPagerBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.TopicsHistoryBrickInfo;
 import org.softeg.slartus.forpdaplus.styles.CssStyle;
 import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity;
 
@@ -52,7 +68,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 /**
@@ -85,11 +103,11 @@ public class PreferencesActivity extends BasePreferencesActivity {
     public class PrefsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
 
 
-        @Override
+       /* @Override
         public void onActivityCreated(android.os.Bundle savedInstanceState) {
             super.onActivityCreated(savedInstanceState);
             PreferenceManager.setDefaultValues(getActivity(), R.xml.news_list_prefs, false);
-        }
+        }*/
 
         @SuppressWarnings("ConstantConditions")
         @Override
@@ -105,6 +123,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             findPreference("mainAccentColor").setOnPreferenceClickListener(this);
             findPreference("webViewFont").setOnPreferenceClickListener(this);
             findPreference("userBackground").setOnPreferenceClickListener(this);
+            findPreference("visibleMenuItems").setOnPreferenceClickListener(this);
             findPreference("About.AppVersion").setOnPreferenceClickListener(this);
             findPreference("cookies.path.SetSystemPath").setOnPreferenceClickListener(this);
             findPreference("cookies.path.SetAppPath").setOnPreferenceClickListener(this);
@@ -113,6 +132,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             findPreference("About.ShareIt").setOnPreferenceClickListener(this);
             findPreference("About.AddRep").setOnPreferenceClickListener(this);
             findPreference("About.AddRepTwo").setOnPreferenceClickListener(this);
+            findPreference("About.AddRepThree").setOnPreferenceClickListener(this);
             findPreference("About.ShowTheme").setOnPreferenceClickListener(this);
 
             Preference preference = findPreference("notifiers.silent_mode.start_time");
@@ -197,10 +217,13 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     showShareIt();
                     return true;
                 case "About.AddRep":
-                    if (showAddRep()) return true;
+                    if (showAddRep("236113", "slartus")) return true;
                     return true;
                 case "About.AddRepTwo":
-                    if (showAddRepTwo()) return true;
+                    if (showAddRep("2556269", "Radiation15")) return true;
+                    return true;
+                case "About.AddRepThree":
+                    if (showAddRep("1726458", "iSanechek")) return true;
                     return true;
                 case "About.ShowTheme":
                     showTheme();
@@ -219,6 +242,9 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     return true;
                 case "userBackground":
                     pickUserBackground();
+                    return true;
+                case "visibleMenuItems":
+                    setMenuItems();
                     return true;
                 case "notifiers.service.sound":
                     pickRingtone(NOTIFIERS_SERVICE_SOUND_REQUEST_CODE, Preferences.Notifications.getSound());
@@ -247,6 +273,54 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
             return false;
         }
+
+        private void setMenuItems(){
+            final SharedPreferences preferences = getPreferenceManager().getSharedPreferences();
+
+            String[] items = preferences.getString("selectedMenuItems", "0,1,2,3,4,5,9,10").split(",");
+            Integer[] selectedItems = new Integer[items.length];
+
+            for (int i = 0; i < items.length; i++)
+                selectedItems[i] = Integer.parseInt(items[i]);
+
+            ArrayList<BrickInfo> allItems = ListCore.getAllMenuBricks();
+
+            ArrayList<String> namesArray = new ArrayList<>();
+            for(BrickInfo item:allItems)
+                namesArray.add(item.getTitle());
+
+            final Integer[][] finalItems = new Integer[1][1];
+            finalItems[0]=selectedItems;
+
+            new MaterialDialog.Builder(getActivity())
+                    .title("Выберите пункты")
+                    .items(namesArray.toArray(new CharSequence[namesArray.size()]))
+                    .itemsCallbackMultiChoice(selectedItems, new MaterialDialog.ListCallbackMultiChoice(){
+                        @Override
+                        public boolean onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
+                            finalItems[0] = integers;
+                            return true;
+                        }
+                    })
+                    .alwaysCallMultiChoiceCallback()
+                    .positiveText("Применить")
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                            if(finalItems[0]==null||finalItems[0].length==0) return;
+                            preferences.edit().putString("selectedMenuItems", Arrays.toString(finalItems[0]).replace(" ","").replace("[","").replace("]","")).apply();
+                        }
+                    })
+                    .neutralText("Сброс")
+                    .onNeutral(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                            preferences.edit().putString("selectedMenuItems", "0,1,2,3,4,5,9,10").apply();
+                        }
+                    })
+                    .show();
+        }
+
         private static final int MY_INTENT_CLICK=302;
         private void pickUserBackground() {
             new MaterialDialog.Builder(getActivity())
@@ -300,33 +374,54 @@ public class PreferencesActivity extends BasePreferencesActivity {
         public void webViewFontDialog(){
             try{
                 final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                int type = prefs.getInt("webViewFont",0);
-
-                final int[] selected = {0};
+                final int[] selected = {prefs.getInt("webViewFont", 0)};
+                final CharSequence[] name = {""};
+                final boolean[] dialogShowed = {false};
                 new MaterialDialog.Builder(getActivity())
                         .title("Выберите шрифт")
-                        .items(new String[]{"Шрифт из стиля", "Системный шрифт"})
-                        .itemsCallbackSingleChoice(type, new MaterialDialog.ListCallbackSingleChoice() {
+                        .items(new String[]{"Шрифт из стиля", "Системный шрифт", "Ввести имя шрифта"})
+                        .itemsCallbackSingleChoice(selected[0], new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                 selected[0] = which;
+                                switch (which) {
+                                    case 0:
+                                        name[0] = "";
+                                        break;
+                                    case 1:
+                                        name[0] = "inherit";
+                                        break;
+                                    case 2:
+                                        if(dialogShowed[0]) return true;
+                                        dialogShowed[0] = true;
+                                        new MaterialDialog.Builder(getActivity())
+                                                .inputType(InputType.TYPE_CLASS_TEXT)
+                                                .input("Имя шрифта", prefs.getString("webViewFontName", ""), new MaterialDialog.InputCallback() {
+                                                    @Override
+                                                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                                                        name[0] = input;
+                                                    }
+                                                })
+                                                .positiveText("Ок")
+                                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                                    @Override
+                                                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                                                        prefs.edit().putString("webViewFontName", name[0].toString()).apply();
+                                                    }
+                                                })
+                                                .show();
+                                }
                                 return true;
                             }
                         })
                         .alwaysCallSingleChoiceCallback()
                         .positiveText("Применить")
                         .negativeText("Отмена")
-                        .callback(new MaterialDialog.ButtonCallback() {
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                switch (selected[0]) {
-                                    case 0:
-                                        prefs.edit().putInt("webViewFont", 0).apply();
-                                        break;
-                                    case 1:
-                                        prefs.edit().putInt("webViewFont", 1).apply();
-                                        break;
-                                }
+                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                                prefs.edit().putString("webViewFontName", name[0].toString())
+                                        .putInt("webViewFont", selected[0]).apply();
                             }
                         })
                         .show();
@@ -685,6 +780,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     "<b>E-mail:</b> <a href=\"mailto:slartus+4pda@gmail.com\">slartus+4pda@gmail.com</a><br/><br/>\n" +
                     "<b>Помощник: </b> Евгений Низамиев aka <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
                     "<b>E-mail:</b> <a href=\"mailto:radiationx@yandex.ru\">radiationx@yandex.ru</a><br/><br/>\n" +
+                    "<b>Помощник: </b> Aleksandr Tainyuk aka <a href=\"http://4pda.ru/forum/index.php?showuser=1726458\">iSanechek</a><br/><br/>\n" +
+                    //"<b>E-mail:</b> <a href=\"mailto:radiationx@yandex.ru\">radiationx@yandex.ru</a><br/><br/>\n" +
                     "<b>Дизайнер стилей: </b> <a href=\"http://4pda.ru/forum/index.php?showuser=96664\">Морфий</a> и <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
                     "<b>Благодарности: </b> <br/>\n" +
                     "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=1657987\">__KoSyAk__</a></b> Иконка программы<br/>\n" +
@@ -693,7 +790,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     "<br/><br/>" +
                     "Copyright 2011-2015 Artem Slinkin <slartus@gmail.com>";
 
-            MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+            new MaterialDialog.Builder(getActivity())
                     .title(getProgramFullName(getActivity()))
                     .content(Html.fromHtml(text))
                     .positiveText(android.R.string.ok)
@@ -739,23 +836,13 @@ public class PreferencesActivity extends BasePreferencesActivity {
             ThemeFragment.showTopicById(getActivity(), "271502");
         }
 
-        private boolean showAddRep() {
+        private boolean showAddRep(String id, String nick) {
             if (!Client.getInstance().getLogined()) {
                 Toast.makeText(getActivity(), getString(R.string.NeedToLogin), Toast.LENGTH_SHORT).show();
                 return true;
             }
             Handler mHandler = new Handler();
-            ForumUser.startChangeRep(getActivity(), mHandler, "236113", "slartus", "0", "add", getString(R.string.RaiseReputation));
-            return false;
-        }
-
-        private boolean showAddRepTwo() {
-            if (!Client.getInstance().getLogined()) {
-                Toast.makeText(getActivity(), getString(R.string.NeedToLogin), Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            Handler mHandler = new Handler();
-            ForumUser.startChangeRep(getActivity(), mHandler, "2556269", "Radiation15", "0", "add", getString(R.string.RaiseReputation));
+            ForumUser.startChangeRep(getActivity(), mHandler, id, nick, "0", "add", getString(R.string.RaiseReputation));
             return false;
         }
 

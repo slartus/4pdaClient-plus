@@ -5,20 +5,16 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/ptr_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
         <org.softeg.slartus.forpdaplus.classes.AdvWebView
             android:id="@+id/wvBody"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_alignParentLeft="true"
-            android:background="#ff000000"
-            android:clipToPadding="false"
-            android:textSize="12dp" />
-    </RelativeLayout>
-
+            android:layout_height="fill_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/bottom_panel"
@@ -128,7 +124,7 @@
                 android:background="@drawable/shadow_to_top"
                 android:layout_above="@id/message_panel"/>
             <FrameLayout
-                style="?edit_text"
+                style="?post_panel"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"

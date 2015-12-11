@@ -49,7 +49,7 @@ public class AppsListFragment extends TopicsListFragment {
 
     @Override
     protected BaseAdapter createAdapter() {
-        return new ListAdapter(getActivity(), mData);
+        return new ListAdapter(getActivity(), mData, getPreferences().getBoolean("showSubMain", false));
     }
 
     @Override
@@ -357,7 +357,7 @@ public class AppsListFragment extends TopicsListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
+        menu.removeItem(settingItemId);
     }
 
     private AppItem findById(ArrayList<AppItem> apps, CharSequence id) {

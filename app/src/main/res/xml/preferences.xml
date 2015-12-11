@@ -6,74 +6,87 @@
     <PreferenceScreen
         android:key="common"
         android:title="Внешний вид">
+        <PreferenceCategory android:title="Общее">
+            <Preference
+                android:key="appstyle"
+                android:summary="Выберите стиль программы"
+                android:title="Стиль"/>
+            <Preference
+                android:key="accentColor"
+                android:summary="Цвет кнопки в теме и новостях"
+                android:title="Цвет кнопки с карандашом"/>
+            <Preference
+                android:key="mainAccentColor"
+                android:title="Цвет акцента"
+                android:summary="Требуется перезапуск приложения"/>
+            <Preference
+                android:key="webViewFont"
+                android:title="Шрифт WebView"
+                android:summary="Шрифт в новостях, поиске, теме, профиле, QMS"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="statusbarTransparent"
+                android:title="Не красить Status Bar"
+                android:summary="Включить, если активирован полноэкранный режим. Требуется перезапуск приложения"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="isSquareAvarars"
+                android:title="Квадратные аватарки"
+                android:summary="Требуется перезапуск приложения"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="oldIndicator"
+                android:title="Полоса у новых сообщений"
+                android:summary="Требуется перезапуск приложения"/>
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="coloredNavBar"
+                android:title="Красить Navigation Bar"
+                android:summary="Для Android 5 и выше. Требуется перезапуск приложения"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="pancilInActionBar"
+                android:title="Карандаш в экшнбаре"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="showBackArrow"
+                android:title="Показывать стрелку 'назад'"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="showSubMain"
+                android:title="Скрыть описание в пункте списка"
+                android:summary="Требуется перезапуск приложения"/>
+        </PreferenceCategory>
 
-        <Preference
-            android:key="appstyle"
-            android:summary="Выберите стиль программы"
-            android:title="Стиль"/>
-        <Preference
-            android:key="accentColor"
-            android:summary="Цвет кнопки в теме и новостях"
-            android:title="Цвет кнопки с карандашом"/>
-        <Preference
-            android:key="mainAccentColor"
-            android:title="Цвет акцента"
-            android:summary="Требуется перезапуск приложения"/>
-        <Preference
-            android:key="webViewFont"
-            android:title="Шрифт WebView"
-            android:summary="Шрифт в новостях, поиске, теме, профиле, QMS"/>
-        <Preference
-            android:key="userBackground"
-            android:summary="Требуется перезапуск приложения"
-            android:title="Изображение в боковом меню"/>
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="categoryLast"
-            android:title="Отображать 'Последние'"
-            android:summary="Меню 'Последние' в выезжающем меню. Требуется перезапуск приложения"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="statusbarTransparent"
-            android:title="Не красить Status Bar"
-            android:summary="Включить, если активирован полноэкранный режим. Требуется перезапуск приложения"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="isMarginBottomNav"
-            android:title="Нижний отступ в боковом меню"
-            android:summary="Включить, если не видно последнего пункта. Требуется перезапуск приложения"/>
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="isShowShortUserInfo"
-            android:title="Информация о пользователе"
-            android:summary="Отображать информацию о пользователе в боковом меню. Требуется перезапуск приложения"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="isSquareAvarars"
-            android:title="Квадратные аватарки"
-            android:summary="Требуется перезапуск приложения"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="pancilInActionBar"
-            android:title="Карандаш в экшнбаре"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="oldIndicator"
-            android:title="Полоса у новых сообщений"
-            android:summary="Требуется перезапуск приложения"/>
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="coloredNavBar"
-            android:title="Красить Navigation Bar"
-            android:summary="Для Android 5 и выше. Требуется перезапуск приложения"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="showBackArrow"
-            android:title="Показывать стрелку 'назад'"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="tabsBottom"
-            android:title="Список вкладок внизу"/>
+        <PreferenceCategory android:title="Боковая панель">
+            <Preference
+                android:key="userBackground"
+                android:summary="Требуется перезапуск приложения"
+                android:title="Изображение в боковом меню"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="categoryLast"
+                android:title="Отображать 'Последние'"
+                android:summary="Меню 'Последние' в выезжающем меню"/>
+            <Preference
+                android:key="visibleMenuItems"
+                android:title="Пункты меню в боковой панели"/>
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="isShowShortUserInfo"
+                android:title="Информация о пользователе"
+                android:summary="Отображать информацию о пользователе в боковом меню. Требуется перезапуск приложения"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="tabsBottom"
+                android:title="Список вкладок внизу"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="isMarginBottomNav"
+                android:title="Нижний отступ в боковом меню"
+                android:summary="Включить, если не видно последнего пункта. Требуется перезапуск приложения"/>
+        </PreferenceCategory>
+
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
             android:defaultValue="-1"
             android:entries="@array/screenOrienationArray"
@@ -81,126 +94,6 @@
             android:key="theme.ScreenOrientation"
             android:title="Ориентация экрана" />
 
-    </PreferenceScreen>
-
-    <PreferenceScreen
-        android:title="Системное">
-
-        <Preference
-            android:key="path.system_path"
-            android:title="Путь к папке с данными" />
-
-        <PreferenceScreen android:title="Cookies">
-
-            <EditTextPreference
-                android:key="cookies.path"
-                android:summary="По умолчанию - пусто"
-                android:title="Путь к файлу cookies" />
-
-            <Preference
-                android:key="cookies.path.SetSystemPath"
-                android:summary="Задать системный путь"
-                android:title="Системный" />
-
-            <Preference
-                android:key="cookies.path.SetAppPath"
-                android:summary="Задать путь к общей папке программы на карте памяти"
-                android:title="Общая папка" />
-
-            <Preference
-                android:key="cookies.delete"
-                android:summary="Удалить файл cookies по текущему пути"
-                android:title="Удалить файл cookies" />
-
-
-        </PreferenceScreen>
-
-        <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/listOffsetsArray"
-            android:entryValues="@array/listOffsetsValues"
-            android:key="topics.list.offset"
-            android:summary="При неверном открытии тем выберите какую тему открывать"
-            android:title="Смещение в списке тем" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="system.WebviewAllowJavascriptInterface"
-            android:summary="Снимите галочку, если программа падает при вызове меню в просмотре темы"
-            android:title="Использовать скрипты в просмотре темы" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="system.WebViewScroll"
-            android:summary="Снимите галочку, если программа падает при вызове темы. Например, для Nook Simple Touch"
-            android:title="Показывать скролл в браузере" />
-
-
-        <ListPreference
-            android:defaultValue="left"
-            android:entries="@array/drawermenupositions_titles"
-            android:entryValues="@array/drawermenupositions_values"
-            android:key="system.drawermenuposition"
-            android:summary="С какой стороны удобно вытаскивать меню (требуется перезапуск)"
-            android:title="Выезжающее меню" />
-
-        <PreferenceScreen android:title="Настройка клавиш">
-            <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
-                android:defaultValue="158"
-                android:key="keys.prevPage"
-                android:summary="Можно указать несколько через запятую"
-                android:title="Код кнопки для перехода на предыдущую страницу" />
-            <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
-                android:defaultValue="407"
-                android:key="keys.nextPage"
-                android:summary="Можно указать несколько через запятую"
-                android:title="Код кнопки для перехода на следующую страницу" />
-            <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
-                android:defaultValue="24"
-                android:key="keys.scrollUp"
-                android:summary="Можно указать несколько через запятую"
-                android:title="Код кнопки для прокрутки вверх" />
-            <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
-                android:defaultValue="25"
-                android:key="keys.scrollDown"
-                android:summary="Можно указать несколько через запятую"
-                android:title="Код кнопки для прокрутки вниз" />
-        </PreferenceScreen>
-        <PreferenceScreen android:title="Для разработчика стилей">
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="system.developerSavePage"
-                android:summary="Возможность сохранения страницы"
-                android:title="Сохранить страницу" />
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="system.developerInterface"
-                android:title="Интерфейс для разработки" />
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="system.developerStyle"
-                android:title="Отключить стили" />
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="system.developerGrid"
-                android:title="Сетка 8dp (8px)" />
-        </PreferenceScreen>
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="isGpuImg"
-            android:summary="Отключить, если есть проблемы с аватарками на странице"
-            android:title="Оптимизация GIF анимаций на странице" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="system.curator"
-            android:summary="Функции курирования"
-            android:title="Я куратор" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="notify.beta_version"
-            android:summary="Сообщать о версиях для тестирования"
-            android:title="Сообщать о бета-версиях" />
     </PreferenceScreen>
 
     <PreferenceScreen android:title="Просмотр темы">
@@ -317,6 +210,182 @@
             android:summary="Ускорит отображение страницы"/>
     </PreferenceScreen>
 
+
+    <PreferenceScreen android:title="Списки">
+        <PreferenceCategory android:title="Общее">
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="lists.scroll_by_buttons"
+                android:summary="Использовать кнопки для скролла списка"
+                android:title="Скролл кнопками" />
+            <CheckBoxPreference
+                android:defaultValue="true"
+                android:key="lists.refresh"
+                android:summary="Обновлять при первом открытии"
+                android:title="Обновлять список" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="lists.refresh_on_tab"
+                android:summary="Обновлять при выборе вкладки"
+                android:title="Обновлять списки из вкладок" />
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="Избранное">
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="lists.favorites.load_all"
+                android:summary="Загружать сразу все страницы"
+                android:title="Загружать все" />
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="Форум">
+            <CheckBoxPreference
+                android:title="Отображать картинки"
+                android:key="forum.list.show_images"
+                android:defaultValue="true"
+                />
+        </PreferenceCategory>
+
+        <PreferenceCategory android:title="Новости">
+            <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+                android:defaultValue="1"
+                android:entries="@array/ConnectTypeArray"
+                android:entryValues="@array/ConnectTypeValues"
+                android:key="news.list.loadimages"
+                android:title="Загружать изображения" />
+
+            <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+                android:defaultValue="full"
+                android:entries="@array/NewsListViewTitles"
+                android:entryValues="@array/NewsListViewValues"
+                android:key="news.list.view"
+                android:title="Вид списка" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:title="Системное">
+        <Preference
+            android:key="path.system_path"
+            android:title="Путь к папке с данными" />
+
+        <PreferenceScreen android:title="Cookies">
+
+            <EditTextPreference
+                android:key="cookies.path"
+                android:summary="По умолчанию - пусто"
+                android:title="Путь к файлу cookies" />
+
+            <Preference
+                android:key="cookies.path.SetSystemPath"
+                android:summary="Задать системный путь"
+                android:title="Системный" />
+
+            <Preference
+                android:key="cookies.path.SetAppPath"
+                android:summary="Задать путь к общей папке программы на карте памяти"
+                android:title="Общая папка" />
+
+            <Preference
+                android:key="cookies.delete"
+                android:summary="Удалить файл cookies по текущему пути"
+                android:title="Удалить файл cookies" />
+
+
+        </PreferenceScreen>
+
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/listOffsetsArray"
+            android:entryValues="@array/listOffsetsValues"
+            android:key="topics.list.offset"
+            android:summary="При неверном открытии тем выберите какую тему открывать"
+            android:title="Смещение в списке тем" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="system.WebviewAllowJavascriptInterface"
+            android:summary="Снимите галочку, если программа падает при вызове меню в просмотре темы"
+            android:title="Использовать скрипты в просмотре темы" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="system.WebViewScroll"
+            android:summary="Снимите галочку, если программа падает при вызове темы. Например, для Nook Simple Touch"
+            android:title="Показывать скролл в браузере" />
+
+
+        <ListPreference
+            android:defaultValue="left"
+            android:entries="@array/drawermenupositions_titles"
+            android:entryValues="@array/drawermenupositions_values"
+            android:key="system.drawermenuposition"
+            android:summary="С какой стороны удобно вытаскивать меню (требуется перезапуск)"
+            android:title="Выезжающее меню" />
+
+        <PreferenceScreen android:title="Настройка клавиш">
+            <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
+                android:defaultValue="158"
+                android:key="keys.prevPage"
+                android:summary="Можно указать несколько через запятую"
+                android:title="Код кнопки для перехода на предыдущую страницу" />
+            <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
+                android:defaultValue="407"
+                android:key="keys.nextPage"
+                android:summary="Можно указать несколько через запятую"
+                android:title="Код кнопки для перехода на следующую страницу" />
+            <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
+                android:defaultValue="24"
+                android:key="keys.scrollUp"
+                android:summary="Можно указать несколько через запятую"
+                android:title="Код кнопки для прокрутки вверх" />
+            <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
+                android:defaultValue="25"
+                android:key="keys.scrollDown"
+                android:summary="Можно указать несколько через запятую"
+                android:title="Код кнопки для прокрутки вниз" />
+        </PreferenceScreen>
+        <PreferenceScreen android:title="Для разработчика стилей">
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="system.developerSavePage"
+                android:summary="Возможность сохранения страницы"
+                android:title="Сохранить страницу" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="system.developerInterface"
+                android:title="Интерфейс для разработки" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="system.developerStyle"
+                android:title="Отключить стили" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="system.developerGrid"
+                android:title="Сетка 8dp (8px)" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="system.developerBounds"
+                android:title="Границы элементов (outline)" />
+        </PreferenceScreen>
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="isGpuImg"
+            android:summary="Не рекомендуется для Android версии ниже 4.4 KitKat"
+            android:title="Оптимизация GIF анимаций на странице" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="system.curator"
+            android:summary="Функции курирования"
+            android:title="Я куратор" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="notify.beta_version"
+            android:summary="Сообщать о версиях для тестирования"
+            android:title="Сообщать о бета-версиях" />
+    </PreferenceScreen>
+
     <PreferenceScreen
         android:key="notifiers.service"
         android:title="Уведомления">
@@ -404,12 +473,13 @@
             android:title="Рассказать друзьям" />
         <Preference
             android:key="About.AddRep"
-            android:summary="Повысить репутацию разработчика на форуме"
-            android:title="Дать в репу" />
+            android:title="Поднять репутацию разработчика" />
         <Preference
             android:key="About.AddRepTwo"
-            android:summary="Повысить репутацию помощнику разработчика на форуме"
-            android:title="Дать помощнику в репу" />
+            android:title="Поднять репутацию помощнику" />
+        <Preference
+            android:key="About.AddRepThree"
+            android:title="Поднять репутацию второму помощнику" />
         <Preference
             android:key="About.ShowTheme"
             android:summary="Открыть тему обсуждения программы"

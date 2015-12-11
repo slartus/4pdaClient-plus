@@ -60,7 +60,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
         Bundle args = new Bundle();
         args.putString(USER_ID_KEY, userId);
         args.putString(USER_NICK_KEY, userNick);
-        MainActivity.addTabByIntent(userNick, newInstance(args));
+        MainActivity.addTab(userNick, newInstance(args));
     }
 
     @Nullable
@@ -81,7 +81,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
             }
         });
         mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) view.findViewById(R.id.advanced_button), message);
-        mPopupPanelView.activityCreated(getActivity());
+        mPopupPanelView.activityCreated(getMainActivity());
 
         Bundle extras = getArguments();
 
@@ -91,15 +91,15 @@ public class QmsNewThreadFragment extends GeneralFragment {
         if (!TextUtils.isEmpty(m_Nick)) {
             username.setText(m_Nick);
             username.setVisibility(View.GONE);
-            getActivity().setTitle(m_Nick + ":QMS:Новая тема");
+            getMainActivity().setTitle(m_Nick + ":QMS:Новая тема");
             App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":QMS:Новая тема");
 
         } else if (!TextUtils.isEmpty(m_Id)) {
-            getActivity().setTitle("QMS:Новая тема");
+            getMainActivity().setTitle("QMS:Новая тема");
             App.getInstance().getTabByTag(getTag()).setTitle("QMS:Новая тема");
             new GetUserTask(m_Id).execute();
         } else {
-            getActivity().setTitle("QMS:Новая тема");
+            getMainActivity().setTitle("QMS:Новая тема");
             App.getInstance().getTabByTag(getTag()).setTitle("QMS:Новая тема");
         }
         TabDrawerMenu.notifyDataSetChanged();
@@ -147,15 +147,15 @@ public class QmsNewThreadFragment extends GeneralFragment {
 
         if (TextUtils.isEmpty(m_Nick)) {
             username.setVisibility(View.VISIBLE);
-            Toast.makeText(getActivity(), "Укажите получателя", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getMainActivity(), "Укажите получателя", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (TextUtils.isEmpty(post)) {
-            Toast.makeText(getActivity(), "Введите сообщение", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getMainActivity(), "Введите сообщение", Toast.LENGTH_SHORT).show();
             return;
         }
-        new SendTask(getActivity(), m_Id, m_Nick, theme, post).execute();
+        new SendTask(getMainActivity(), m_Id, m_Nick, theme, post).execute();
     }
 
     @Override
@@ -202,23 +202,23 @@ public class QmsNewThreadFragment extends GeneralFragment {
                 Toast.makeText(getContext(), "Ник получен: " + m_Nick, Toast.LENGTH_SHORT).show();
                 username.setText(m_Nick);
                 username.setVisibility(View.GONE);
-                getActivity().setTitle(m_Nick + ":QMS:Новая тема");
+                getMainActivity().setTitle(m_Nick + ":QMS:Новая тема");
                 App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":QMS:Новая тема");
                 TabDrawerMenu.notifyDataSetChanged();
             } else {
                 username.setVisibility(View.VISIBLE);
                 if (ex != null)
-                    AppLog.e(getActivity(), ex, new Runnable() {
+                    AppLog.e(getMainActivity(), ex, new Runnable() {
                         @Override
                         public void run() {
                             new GetUserTask(userId).execute();
                         }
                     });
                 else if (TextUtils.isEmpty(userNick))
-                    Toast.makeText(getActivity(), "Не удалось получить ник пользователя",
+                    Toast.makeText(getMainActivity(), "Не удалось получить ник пользователя",
                             Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(getActivity(), "Неизвестная ошибка",
+                    Toast.makeText(getMainActivity(), "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();
             }
         }
@@ -273,14 +273,14 @@ public class QmsNewThreadFragment extends GeneralFragment {
             }
 
             if (success) {
-                ((MainActivity)getActivity()).removeTab(getTag());
+                getMainActivity().removeTab(getTag());
                 QmsChatFragment.openChat(outParams.get("mid"), outParams.get("user"),
                         outParams.get("t"), outParams.get("title"), m_ChatBody);
             } else {
                 if (ex != null)
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getActivity(), "Неизвестная ошибка",
+                    Toast.makeText(getMainActivity(), "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();
             }
         }

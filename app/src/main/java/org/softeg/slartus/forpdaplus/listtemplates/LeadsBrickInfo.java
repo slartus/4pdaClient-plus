@@ -15,7 +15,7 @@ public class LeadsBrickInfo extends BrickInfo {
 
     @Override
     public int getIcon() {
-        return R.drawable.ic_close_white_24dp;
+        return R.drawable.ic_account_multiple_grey600_24dp;
     }
 
     @Override

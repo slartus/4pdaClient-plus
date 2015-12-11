@@ -67,7 +67,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
     private ImageView imgPullToLoadMore;
 
     public static void newInstance(){
-        MainActivity.addTabByIntent(TITLE, TEMPLATE, new DownloadFragment());
+        MainActivity.addTab(TITLE, TEMPLATE, new DownloadFragment());
     }
 
     private DownloadTasks getDownloadTasks() {
@@ -230,7 +230,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
                                     switch (i) {
                                         case 0: // Повторить загрузку
                                             Client.getInstance().getDownloadTasks().remove(downloadTask);
-                                            DownloadsService.download(getActivity(), downloadTask.getUrl(), false);
+                                            DownloadsService.download(getMainActivity(), downloadTask.getUrl(), false);
 
                                             mHandler.post(new Runnable() {
                                                 public void run() {
@@ -240,7 +240,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
                                             break;
                                         case 1: // Докачать файл
                                             Client.getInstance().getDownloadTasks().remove(downloadTask);
-                                            DownloadsService.download(getActivity(), downloadTask.getUrl(),
+                                            DownloadsService.download(getMainActivity(), downloadTask.getUrl(),
                                                     downloadTask.getDownloadingFilePath(), downloadTask.getId(),false);
 
                                             mHandler.post(new Runnable() {
@@ -271,7 +271,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
                                             break;
                                         case 1: // Повторить загрузку
                                             //Client.getInstance().getDownloadTasks().remove(downloadTask);
-                                            DownloadsService.download(getActivity(), downloadTask.getUrl(),false);
+                                            DownloadsService.download(getMainActivity(), downloadTask.getUrl(),false);
 
                                             mHandler.post(new Runnable() {
                                                 public void run() {
@@ -319,8 +319,8 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        MenuItem item = menu.add("Очистить").setIcon(R.drawable.ic_delete_white_24dp);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add("Очистить").setIcon(R.drawable.ic_delete_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 new MaterialDialog.Builder(getContext())
                         .title("Подтвердите действие")
@@ -337,8 +337,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
 
                 return true;
             }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
     public void refresh() {

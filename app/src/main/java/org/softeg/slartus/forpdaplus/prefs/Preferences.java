@@ -376,6 +376,11 @@ public class Preferences {
             return prefs.getBoolean("system.developerGrid", false);
         }
 
+        public static boolean isDevBounds() {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+            return prefs.getBoolean("system.developerBounds", false);
+        }
+
         public static boolean isCurator() {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
             return prefs.getBoolean("system.curator", false);

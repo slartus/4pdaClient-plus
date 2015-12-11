@@ -1,17 +1,17 @@
 package org.softeg.slartus.forpdaplus.classes;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.softeg.slartus.forpdaplus.FragmentActivity;
 import org.softeg.slartus.forpdaplus.R;
 
 /**
  * Created by slinkin on 18.12.13.
  */
-public class TestActivity extends FragmentActivity {
+public class TestActivity extends AppCompatActivity{
     @Override
     public void onCreate(Bundle saveInstance) {
         super.onCreate(saveInstance);

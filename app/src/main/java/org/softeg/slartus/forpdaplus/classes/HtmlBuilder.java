@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.classes;
 
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
@@ -27,12 +28,14 @@ public class HtmlBuilder {
         addScripts();
         if (Preferences.System.isDevGrid())
             m_Body.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/grid.css\"/>\n");
-        m_Body.append("<title>" + title + "</title>\n");
+        if (Preferences.System.isDevBounds())
+            m_Body.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/bounds.css\"/>\n");
+        m_Body.append("<title>").append(title).append("</title>\n");
         m_Body.append("</head>\n");
     }
     public static int getMarginTop(){
-        int margin = 0;
-        /*
+        /*int margin = 0;
+
         Context context = App.getContext();
         Resources resources = context.getResources();
 
@@ -41,8 +44,9 @@ public class HtmlBuilder {
         TypedValue tv = new TypedValue();
         App.getContext().getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.actionBarSize, tv, true);
         margin += (int) Math.ceil(resources.getDimensionPixelSize(tv.resourceId)/resources.getDisplayMetrics().density);
-*/
-        return margin;
+
+        return margin;*/
+        return 0;
     }
 
     public void addScripts() {
@@ -53,16 +57,14 @@ public class HtmlBuilder {
     }
 
     public void addStyleSheetLink(StringBuilder sb) {
-        sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file://" + getStyle() + "\" />\n");
+        sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file://").append(getStyle()).append("\" />\n");
         sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/fonts/roboto/import.css\"/>\n");
         sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/fonts/flaticons/import.css\"/>\n");
         sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/fonts/fontello/import.css\"/>\n");
     }
 
     protected String getStyle() {
-        String cssFile = App.getInstance().getThemeCssFileName();
-        return cssFile;
-
+        return App.getInstance().getThemeCssFileName();
     }
 
     public void append(String str) {
@@ -74,9 +76,13 @@ public class HtmlBuilder {
     }
 
     public void beginBody(String id, CharSequence bodyScript, boolean isImage) {
-        int font = App.getInstance().getWebViewFont();
-        boolean isGpuImg = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isGpuImg", true);
-        if (bodyScript == null || TextUtils.isEmpty(bodyScript)) {
+        m_Body.append("<body id=\"").append(id).append("\" class=\"modification ")
+                .append(isImage ? "" : "noimages ")
+                .append(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isGpuImg", false) ? "ongpuimg \" " : "\" ")
+                .append(App.getInstance().getWebViewFont().equals("") ? " " : "style=\"font-family:").append(App.getInstance().getWebViewFont()).append(";\" ")
+                .append(bodyScript == null || TextUtils.isEmpty(bodyScript) ? "" : bodyScript)
+                .append(">\n");
+        /*if (bodyScript == null || TextUtils.isEmpty(bodyScript)) {
             if(font==0){
                 m_Body.append("<body id=\""+id+"\" class=\"modification ").append(isImage ? "" : "noimages ").append(isGpuImg?"ongpuimg ":"").append("\">\n");
             }else {
@@ -88,7 +94,7 @@ public class HtmlBuilder {
             }else {
                 m_Body.append("<body id=\""+id+"\"class=\"modification ").append(isImage ? "" : "noimages").append(isGpuImg?"ongpuimg ":"").append("\" style=\"font-family:inherit;\" " + bodyScript + ">\n");
             }
-        }
+        }*/
         if(Preferences.System.isDevInterface())
             m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/forum/js/less-dev.js\"></script> <!-- DEVELOPER -->\n");
     }
@@ -96,7 +102,7 @@ public class HtmlBuilder {
     public HtmlBuilder endBody() {
         String emoPath = HtmlPreferences.isUseLocalEmoticons(App.getContext()) ?
                 "file:///android_asset/forum/style_emoticons/default/" : "http://s.4pda.to/img/emot/";
-        m_Body.append("<script>jsEmoticons.parseAll('" + emoPath + "');initPostBlock();</script>");
+        m_Body.append("<script>jsEmoticons.parseAll('").append(emoPath).append("');initPostBlock();</script>");
         //m_Body.append("<style>body:after {content: \"\";position: fixed;width: 100%;height: 100%;top:0;left: 0;z-index: 1000000;background-image:-webkit-linear-gradient(rgba(0, 128, 0, 0.3) 1px, transparent 1px),-webkit-linear-gradient(left, rgba(0, 128, 0, 0.3) 1px, transparent 1px);background-image:-o-linear-gradient(rgba(0, 128, 0, 0.3) 1px, transparent 1px),-o-linear-gradient(left, rgba(0, 128, 0, 0.3) 1px, transparent 1px);background-image:linear-gradient(rgba(0, 128, 0, 0.3) 1px, transparent 1px),linear-gradient(to right, rgba(0, 128, 0, 0.3) 1px, transparent 1px);background-size:0.5em 0.5em, 0.5em 0.5em;background-position:-1px -1px, -1px -1px;}</style>");
         m_Body.append("</body>\n");
         return this;

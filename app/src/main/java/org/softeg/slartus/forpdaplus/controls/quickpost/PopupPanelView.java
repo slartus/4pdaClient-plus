@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus.controls.quickpost;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.os.Parcelable;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -89,6 +91,7 @@ public class PopupPanelView {
         activityCreated(activity, null);
     }
     public void activityCreated(Activity activity, View view) {
+        imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         parentLayout = activity.getWindow().getDecorView().findViewById(android.R.id.content);
         if(view==null)
             this.emoticonsCover = parentLayout.findViewById(R.id.footer_for_emoticons);
@@ -189,8 +192,10 @@ public class PopupPanelView {
      * Checking keyboard height and keyboard visibility
      */
     int previousHeightDiffrence = 0;
-    int k = -1;
-
+    int heightDifference;
+    //int k = -1;
+    InputMethodManager imm;
+    Rect r;
     @SuppressWarnings("ConstantConditions")
     private void checkKeyboardHeight(final View parentLayout) {
 
@@ -199,30 +204,27 @@ public class PopupPanelView {
                     @Override
                     public void onGlobalLayout() {
 
-                        Rect r = new Rect();
+                        r = new Rect();
                         parentLayout.getWindowVisibleDisplayFrame(r);
 
-                        int screenHeight = parentLayout.getRootView()
-                                .getHeight();
-                        if (k == -1)
+                        /*if (k == -1)
                             k = screenHeight - r.bottom;
-                        int heightDifference = screenHeight - (r.bottom) - k;
+                        int heightDifference = screenHeight - (r.bottom) - k;*/
+
+                        heightDifference = parentLayout.getRootView().getHeight() - r.bottom;
 
                         if (previousHeightDiffrence - heightDifference > 50) {
                             hidePopupWindow();
                         }
-
                         previousHeightDiffrence = heightDifference;
                         if (heightDifference > 100) {
-                            isKeyBoardVisible = true;
                             changeKeyboardHeight(heightDifference);
-
-                        } else {
-
-                            isKeyBoardVisible = false;
-
                         }
 
+                        if (imm.isAcceptingText())
+                            isKeyBoardVisible = true;
+                        else
+                            isKeyBoardVisible = false;
                     }
                 }
         );

@@ -1,6 +1,11 @@
 package org.softeg.slartus.forpdaplus.listtemplates;
 
+import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
+
+import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.MainActivity;
 
 import java.util.ArrayList;
 
@@ -10,16 +15,25 @@ import java.util.ArrayList;
 public class ListCore {
     public static ArrayList<BrickInfo> getMainMenuBricks() {
         ArrayList<BrickInfo> res = new ArrayList<BrickInfo>();
-        res.add(new NewsPagerBrickInfo());
-        res.add(new FavoritesBrickInfo());
-        res.add(new ForumBrickInfo());
-        res.add(new TopicsHistoryBrickInfo());
-        res.add(new NotesBrickInfo());
-        res.add(new AppsBrickInfo());
-        res.add(new AppsGamesCatalogBrickInfo());
-        res.add(new DigestCatalogBrickInfo());
-        res.add(new DevDbCatalogBrickInfo());
+        ArrayList<BrickInfo> allItems = getAllMenuBricks();
+        for (String item : MainActivity.getPreferences().getString("selectedMenuItems", "0,1,2,3,4,5,9,10").split(","))
+            if(!item.equals("")) res.add(allItems.get(Integer.parseInt(item)));
         return res;
+    }
+    public static ArrayList<BrickInfo> getAllMenuBricks() {
+        ArrayList<BrickInfo> allItems = new ArrayList<>();
+        allItems.add(new NewsPagerBrickInfo());//0
+        allItems.add(new FavoritesBrickInfo());//1
+        allItems.add(new ForumBrickInfo());//2
+        allItems.add(new TopicsHistoryBrickInfo());//3
+        allItems.add(new NotesBrickInfo());//4
+        allItems.add(new AppAndGame());//5
+        allItems.add(new AppsBrickInfo());//6
+        allItems.add(new AppsGamesCatalogBrickInfo());//7
+        allItems.add(new DigestCatalogBrickInfo());//8
+        allItems.add(new DevDbCatalogBrickInfo());//9
+        allItems.add(new LeadsBrickInfo());//10
+        return allItems;
     }
 
     /**

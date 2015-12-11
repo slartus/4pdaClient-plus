@@ -11,8 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -93,11 +91,11 @@ public class QmsChatFragment extends WebViewFragment {
     private AsyncTask<ArrayList<String>, Void, Boolean> m_SendTask = null;
 
     public static void openChat(String userId, String userNick, String tid, String themeTitle, String pageBody){
-        MainActivity.addTabByIntent(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle, pageBody));
+        MainActivity.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle, pageBody));
     }
 
     public static void openChat(String userId, String userNick, String tid, String themeTitle){
-        MainActivity.addTabByIntent(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle));
+        MainActivity.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle));
     }
 
     public static QmsChatFragment newInstance(String userId, String userNick, String tid, String themeTitle, String pageBody) {
@@ -153,7 +151,19 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
     @Override
-    public void reload() {}
+    public void reload() {
+        new Thread(new Runnable() {
+            public void run() {
+                reLoadChatSafe();
+            }
+        }).start();
+
+    }
+
+    @Override
+    public AsyncTask getAsyncTask() {
+        return m_SendTask;
+    }
 
     @Override
     public boolean closeTab() {
@@ -169,6 +179,7 @@ public class QmsChatFragment extends WebViewFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.qms_chat, container, false);
+        initSwipeRefreshLayout();
         // getDialog().setTitle("Профиль");
         setHasOptionsMenu(true);
         assert view != null;
@@ -183,7 +194,7 @@ public class QmsChatFragment extends WebViewFragment {
 
         edMessage = (EditText) view.findViewById(R.id.edMessage);
         mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) view.findViewById(R.id.advanced_button), edMessage);
-        mPopupPanelView.activityCreated(getActivity(), view);
+        mPopupPanelView.activityCreated(getMainActivity(), view);
         view.findViewById(R.id.btnSend).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 startSendMessage();
@@ -197,7 +208,7 @@ public class QmsChatFragment extends WebViewFragment {
 
         wvChat.getSettings().setDomStorageEnabled(true);
         wvChat.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
-        String appCachePath = getActivity().getApplicationContext().getCacheDir().getAbsolutePath();
+        String appCachePath = getMainActivity().getApplicationContext().getCacheDir().getAbsolutePath();
         wvChat.getSettings().setAppCachePath(appCachePath);
         wvChat.getSettings().setAppCacheEnabled(true);
 
@@ -223,9 +234,9 @@ public class QmsChatFragment extends WebViewFragment {
 
         final String[] m_PageBody = {extras.getString(PAGE_BODY_KEY)};
         if (TextUtils.isEmpty(m_Nick))
-            getActivity().setTitle("QMS");
+            getMainActivity().setTitle("QMS");
         else
-            getActivity().setTitle(m_ThemeTitle);
+            getMainActivity().setTitle(m_ThemeTitle);
         if (getSupportActionBar() != null)
             getSupportActionBar().setSubtitle(m_Nick);
         if (!TextUtils.isEmpty(m_PageBody[0])) {
@@ -250,7 +261,7 @@ public class QmsChatFragment extends WebViewFragment {
         if (Preferences.System.isDevSavePage()|
                 Preferences.System.isDevInterface()|
                 Preferences.System.isDevStyle())
-            Toast.makeText(getActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getMainActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
         //  hidePanels();
 
         loadPrefs();
@@ -260,7 +271,7 @@ public class QmsChatFragment extends WebViewFragment {
 
     @JavascriptInterface
     public void showChooseCssDialog() {
-        getActivity().runOnUiThread(new Runnable() {
+        getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -272,9 +283,9 @@ public class QmsChatFragment extends WebViewFragment {
                     startActivityForResult(intent, FILECHOOSER_RESULTCODE);
 
                 } catch (ActivityNotFoundException ex) {
-                    Toast.makeText(getActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getMainActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
                 }
             }
         });
@@ -303,7 +314,7 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
     private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getMainActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(edMessage.getWindowToken(), 0);
     }
 /*
@@ -315,7 +326,7 @@ public class QmsChatFragment extends WebViewFragment {
         m_Nick = outState.getString(NICK_KEY);
         m_TId = outState.getString(TID_KEY);
         m_ThemeTitle = outState.getString(THEME_TITLE_KEY);
-        getActivity().setTitle(m_ThemeTitle);
+        getMainActivity().setTitle(m_ThemeTitle);
         getSupportActionBar().setSubtitle(m_Nick);
         edMessage.setText(outState.getString(POST_TEXT_KEY));
 
@@ -324,21 +335,21 @@ public class QmsChatFragment extends WebViewFragment {
 
     @JavascriptInterface
     public void showMessage(final String message) {
-        getActivity().runOnUiThread(new Runnable() {
+        getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+                Toast.makeText(getMainActivity(), message, Toast.LENGTH_LONG).show();
             }
         });
     }
 
     @JavascriptInterface
     public void deleteMessages(final String[] checkBoxNames) {
-        getActivity().runOnUiThread(new Runnable() {
+        getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (checkBoxNames == null) {
-                    Toast.makeText(getActivity(), "Не выбраны сообщения для удаления!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getMainActivity(), "Не выбраны сообщения для удаления!", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -351,11 +362,11 @@ public class QmsChatFragment extends WebViewFragment {
                     }
                 }
                 if (ids.size() == 0) {
-                    Toast.makeText(getActivity(), "Не выбраны сообщения для удаления!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getMainActivity(), "Не выбраны сообщения для удаления!", Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                new MaterialDialog.Builder(getActivity())
+                new MaterialDialog.Builder(getMainActivity())
                         .title("Подтвердите действие")
                         .cancelable(true)
                         .content(String.format("Вы действительно хотите удалить выбранные сообщения (%d)?", ids.size()))
@@ -363,7 +374,7 @@ public class QmsChatFragment extends WebViewFragment {
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
-                                m_SendTask = new DeleteTask(getActivity());
+                                m_SendTask = new DeleteTask(getMainActivity());
                                 m_SendTask.execute(ids);
                             }
                         })
@@ -375,7 +386,7 @@ public class QmsChatFragment extends WebViewFragment {
 
     public void deleteDialog() {
 
-        new MaterialDialog.Builder(getActivity())
+        new MaterialDialog.Builder(getMainActivity())
                 .title("Подтвердите действие")
                 .cancelable(true)
                 .content("Вы действительно хотите удалить диалог?")
@@ -385,7 +396,7 @@ public class QmsChatFragment extends WebViewFragment {
                     public void onPositive(MaterialDialog dialog) {
                         ArrayList<String> ids = new ArrayList<>();
                         ids.add(m_TId);
-                        m_SendTask = new DeleteDialogTask(getActivity(), ids);
+                        m_SendTask = new DeleteDialogTask(getMainActivity(), ids);
                         m_SendTask.execute();
                     }
                 })
@@ -489,11 +500,10 @@ public class QmsChatFragment extends WebViewFragment {
     private void reLoadChatSafe() {
         uiHandler.post(new Runnable() {
             public void run() {
-                //setSupportProgressBarIndeterminateVisibility(true);
-                //pbLoading.setVisibility(View.VISIBLE);
-                //Toast.makeText(getContext(),"Обновление",Toast.LENGTH_SHORT).show();
+                setLoading(true);
             }
         });
+
         String chatBody = null;
         Throwable ex = null;
         Boolean updateTitle = false;
@@ -515,7 +525,7 @@ public class QmsChatFragment extends WebViewFragment {
                 checkNewQms();
                 uiHandler.post(new Runnable() {
                     public void run() {
-                        //setSupportProgressBarIndeterminateVisibility(false);
+                        setLoading(false);
                     }
                 });
                 return;
@@ -530,15 +540,14 @@ public class QmsChatFragment extends WebViewFragment {
         final Boolean finalUpdateTitle = updateTitle;
         uiHandler.post(new Runnable() {
             public void run() {
-
                 if (finalEx == null) {
                     if (finalUpdateTitle)
-                        getActivity().setTitle(m_ThemeTitle);
+                        getMainActivity().setTitle(m_ThemeTitle);
                     getSupportActionBar().setSubtitle(m_Nick);
                     wvChat.loadDataWithBaseURL("\"file:///android_asset/\"", finalChatBody, "text/html", "UTF-8", null);
                 } else {
                     if ("Такого диалога не существует.".equals(finalEx.getMessage())) {
-                        new MaterialDialog.Builder(getActivity())
+                        new MaterialDialog.Builder(getMainActivity())
                                 .title("Ошибка")
                                 .content(finalEx.getMessage())
                                 .positiveText("ОК")
@@ -553,12 +562,12 @@ public class QmsChatFragment extends WebViewFragment {
                         m_UpdateTimer.purge();
 
                     } else {
-                        Toast.makeText(getActivity(), AppLog.getLocalizedMessage(finalEx, finalEx.getLocalizedMessage()),
+                        Toast.makeText(getMainActivity(), AppLog.getLocalizedMessage(finalEx, finalEx.getLocalizedMessage()),
                                 Toast.LENGTH_SHORT).show();
                     }
 
                 }
-                //setSupportProgressBarIndeterminateVisibility(false);
+                setLoading(false);
             }
         });
 
@@ -571,15 +580,15 @@ public class QmsChatFragment extends WebViewFragment {
             wvChat.loadDataWithBaseURL("\"file:///android_asset/\"", chatBody, "text/html", "UTF-8", null);
         } else {
             if (ex != null)
-                AppLog.e(getActivity(), ex, new Runnable() {
+                AppLog.e(getMainActivity(), ex, new Runnable() {
                     @Override
                     public void run() {
-                        m_SendTask = new SendTask(getActivity());
+                        m_SendTask = new SendTask(getMainActivity());
                         m_SendTask.execute();
                     }
                 });
             else
-                Toast.makeText(getActivity(), "Неизвестная ошибка",
+                Toast.makeText(getMainActivity(), "Неизвестная ошибка",
                         Toast.LENGTH_SHORT).show();
         }
     }
@@ -596,7 +605,7 @@ public class QmsChatFragment extends WebViewFragment {
                         return;
                     reLoadChatSafe();
                 } catch (Throwable ex) {
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
                 }
 
             }
@@ -621,10 +630,10 @@ public class QmsChatFragment extends WebViewFragment {
     private void startSendMessage() {
         m_MessageText = edMessage.getText().toString();
         if (TextUtils.isEmpty(m_MessageText)) {
-            Toast.makeText(getActivity(), "Введите текст для отправки.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getMainActivity(), "Введите текст для отправки.", Toast.LENGTH_SHORT).show();
             return;
         }
-        m_SendTask = new SendTask(getActivity());
+        m_SendTask = new SendTask(getMainActivity());
         m_SendTask.execute();
     }
 
@@ -636,11 +645,6 @@ public class QmsChatFragment extends WebViewFragment {
     @Override
     public AdvWebView getWebView() {
         return wvChat;
-    }
-
-    @Override
-    public boolean dispatchSuperKeyEvent(KeyEvent event) {
-        return m_WebViewExternals.dispatchKeyEvent(event);
     }
 
     private void showCompanionProfile() {
@@ -659,48 +663,42 @@ public class QmsChatFragment extends WebViewFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuItem item = menu.add("Обновить").setIcon(R.drawable.ic_refresh_white_24dp);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add("Обновить")
+                .setIcon(R.drawable.ic_refresh_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
-                new Thread(new Runnable() {
-                    public void run() {
-                        reLoadChatSafe();
-                    }
-                }).start();
-
+                reload();
                 return true;
             }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        item = menu.add("Настройки").setIcon(R.drawable.ic_settings_white_24dp);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add("Настройки")
+                .setIcon(R.drawable.ic_settings_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
-                Intent intent = new Intent(getActivity(), QmsChatPreferencesActivity.class);
-                getActivity().startActivity(intent);
+                Intent intent = new Intent(getMainActivity(), QmsChatPreferencesActivity.class);
+                getMainActivity().startActivity(intent);
                 return true;
             }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-
-        item = menu.add("Удалить сообщения").setIcon(R.drawable.ic_delete_white_24dp);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add("Удалить сообщения")
+                .setIcon(R.drawable.ic_delete_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 getWebView().loadUrl("javascript:deleteMessages('thread_form');");
                 return true;
             }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-        item = menu.add("Удалить диалог").setIcon(R.drawable.ic_delete_white_24dp);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add("Удалить диалог")
+                .setIcon(R.drawable.ic_delete_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 deleteDialog();
                 return true;
             }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
         menu.add("Размер шрифта")
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -711,14 +709,13 @@ public class QmsChatFragment extends WebViewFragment {
                     }
                 });
 
-        item = menu.add("Профиль собеседника");
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add("Профиль собеседника")
+            .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 showCompanionProfile();
                 return true;
             }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         if (Preferences.System.isDevSavePage()) {
             menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
@@ -738,7 +735,7 @@ public class QmsChatFragment extends WebViewFragment {
         try {
             wvChat.loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 /*
@@ -750,17 +747,17 @@ public class QmsChatFragment extends WebViewFragment {
             }
         }
 
-        QmsContactThemesActivity.showThemes(getActivity(), m_Id, m_Nick);
+        QmsContactThemesActivity.showThemes(getMainActivity(), m_Id, m_Nick);
         //finish();
     }
     */
 
     @JavascriptInterface
     public void saveHtml(final String html) {
-        getActivity().runOnUiThread(new Runnable() {
+        getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new SaveHtml(getActivity(), html, "QMS");
+                new SaveHtml(getMainActivity(), html, "QMS");
             }
         });
     }
@@ -796,6 +793,7 @@ public class QmsChatFragment extends WebViewFragment {
         // can use UI thread here
         protected void onPreExecute() {
             this.dialog.show();
+            setLoading(true);
         }
 
         // can use UI thread here
@@ -803,6 +801,7 @@ public class QmsChatFragment extends WebViewFragment {
             if (this.dialog.isShowing()) {
                 this.dialog.dismiss();
             }
+            setLoading(false);
 
             onPostChat(m_ChatBody, success, ex);
         }
@@ -896,9 +895,9 @@ public class QmsChatFragment extends WebViewFragment {
 
             if (!success) {
                 if (ex != null)
-                    AppLog.e(getActivity(), ex);
+                    AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getActivity(), "Неизвестная ошибка",
+                    Toast.makeText(getMainActivity(), "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();
             }
 
@@ -911,7 +910,7 @@ public class QmsChatFragment extends WebViewFragment {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, final String url) {
 
-            IntentActivity.tryShowUrl(getActivity(), mHandler, url, true, false, "");
+            IntentActivity.tryShowUrl(getMainActivity(), mHandler, url, true, false, "");
 
             return true;
         }

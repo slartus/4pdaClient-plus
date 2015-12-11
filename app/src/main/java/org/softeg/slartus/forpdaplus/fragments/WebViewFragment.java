@@ -2,11 +2,12 @@ package org.softeg.slartus.forpdaplus.fragments;
 
 import android.animation.ValueAnimator;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.TextUtils;
@@ -27,9 +28,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
-import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
@@ -62,6 +61,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
     public abstract String getTitle();
     public abstract String getUrl();
     public abstract void reload();
+    public abstract AsyncTask getAsyncTask();
 
     private Handler mHandler = new Handler();
     private URLHandler urlHandler = new URLHandler();
@@ -94,8 +94,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
     }
 
     public void animateHamburger(boolean isArrow){
-        final DrawerLayout drawerLayout = ((MainActivity)getActivity()).getmMainDrawerMenu().getmDrawerLayout();
-        final ActionBarDrawerToggle actionBarDrawerToggle = ((MainActivity)getActivity()).getmMainDrawerMenu().getmDrawerToggle();
+        final DrawerLayout drawerLayout = getMainActivity().getmMainDrawerMenu().getmDrawerLayout();
+        final ActionBarDrawerToggle actionBarDrawerToggle = getMainActivity().getmMainDrawerMenu().getmDrawerToggle();
         float start = 0, end = 1;
 
         if(isArrow){
@@ -132,6 +132,31 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setArrow();
+    }
+
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
+
+    protected void initSwipeRefreshLayout(){
+        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.ptr_layout);
+        mSwipeRefreshLayout = App.createSwipeRefreshLayout(getMainActivity(), getView(), new Runnable() {
+            @Override
+            public void run() {
+                reload();
+            }
+        });
+    }
+    protected void setLoading(final Boolean loading) {
+        try {
+            if (getMainActivity() == null) return;
+            mSwipeRefreshLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwipeRefreshLayout.setRefreshing(loading);
+                    }
+            });
+        } catch (Throwable ignore) {
+            android.util.Log.e("TAG", ignore.toString());
+        }
     }
 
     @Override
@@ -178,6 +203,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
             getWebView().removeAllViews();
             getWebView().loadUrl("about:blank");
         }
+        if(getAsyncTask()!=null) getAsyncTask().cancel(false);
         super.onDestroy();
     }
 
@@ -315,19 +341,14 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
         getWebViewExternals().loadPreferences(prefs);
 
     }
-/*
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         return getWebViewExternals().dispatchKeyEvent(event);
     }
 
-    public boolean dispatchSuperKeyEvent(KeyEvent event) {
-        return super.dispatchKeyEvent(event);
-    }
-    */
-
     public void showFontSizeDialog() {
-        View v = getActivity().getLayoutInflater().inflate(R.layout.font_size_dialog, null);
+        View v = getMainActivity().getLayoutInflater().inflate(R.layout.font_size_dialog, null);
 
         assert v != null;
         final SeekBar seekBar = (SeekBar) v.findViewById(R.id.value_seekbar);
@@ -352,7 +373,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
 
             }
         });
-        MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+        MaterialDialog dialog = new MaterialDialog.Builder(getMainActivity())
                 .title("Размер шрифта")
                 .customView(v, true)
                 .positiveText("OK")
@@ -389,11 +410,11 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
             ArrayList<CharSequence> newStyleNames = new ArrayList<CharSequence>();
             final ArrayList<CharSequence> newStyleValues = new ArrayList<CharSequence>();
 
-            PreferencesActivity.getStylesList(getActivity(), newStyleNames, newStyleValues);
+            PreferencesActivity.getStylesList(getMainActivity(), newStyleNames, newStyleValues);
             final int[] selected = {newStyleValues.indexOf(currentValue)};
             CharSequence[] styleNames = newStyleNames.toArray(new CharSequence[newStyleNames.size()]);
 
-            new MaterialDialog.Builder(getActivity())
+            new MaterialDialog.Builder(getMainActivity())
                     .title("Стиль")
                     .cancelable(true)
                     .positiveText("Применить")
@@ -402,7 +423,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
                         @Override
                         public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                             if (which == -1) {
-                                Toast.makeText(getActivity(), "Выберите стиль", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getMainActivity(), "Выберите стиль", Toast.LENGTH_LONG).show();
                                 return false;
                             }
                             selected[0] = which;
@@ -419,7 +440,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
                             //editor.putBoolean("theme.BrowserStyle", checkBox.isChecked());
                             editor.apply();
                             if(App.getInstance().getThemeStyleResID()!=lastTheme)
-                                ((MainActivity)getActivity()).recreate();
+                                getMainActivity().recreate();
                             else
                                 reload();
                         }
@@ -427,7 +448,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
                     .negativeText("Отмена")
                     .show();
         } catch (Exception ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 
@@ -443,7 +464,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IBrickF
 
     @Override
     public Window getWindow() {
-        return getActivity().getWindow();
+        return getMainActivity().getWindow();
     }
     @Override
     public void nextPage() {}

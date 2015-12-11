@@ -77,6 +77,7 @@
     <string-array name="appthemesArray">
         <item>Светлый</item>
         <item>Темный</item>
+        <item>Чёрный</item>
         <item>Material Light</item>
         <item>Material Dark</item>
         <item>Material Black</item>
@@ -86,6 +87,7 @@
     <string-array name="appthemesValues">
         <item>0</item>
         <item>1</item>
+        <item>6</item>
         <item>2</item>
         <item>3</item>
         <item>5</item>

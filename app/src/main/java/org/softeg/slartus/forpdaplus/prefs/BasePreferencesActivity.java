@@ -32,14 +32,9 @@ public class BasePreferencesActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
         if (PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("coloredNavBar", true) &&
                 android.os.Build.VERSION.SDK_INT >= 21)
-            getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(getNavBarColor()));
+            getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(App.getInstance().getNavBarColor()));
     }
-    public int getNavBarColor(){
-        if(App.getInstance().isWhiteTheme())
-            return R.color.actionbar_background_wh;
-        else
-            return R.color.actionbar_background_bl;
-    }
+
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
         // Allow super to try and create a view first

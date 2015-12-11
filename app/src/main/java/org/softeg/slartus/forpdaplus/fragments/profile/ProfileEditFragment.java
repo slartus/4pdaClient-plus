@@ -15,7 +15,6 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
@@ -57,7 +56,7 @@ public class ProfileEditFragment extends WebViewFragment {
     View view;
 
     public static void editProfile(){
-        MainActivity.addTabByIntent(m_Title, url, new ProfileEditFragment());
+        MainActivity.addTab(m_Title, url, new ProfileEditFragment());
     }
 
 
@@ -88,7 +87,18 @@ public class ProfileEditFragment extends WebViewFragment {
     }
 
     @Override
-    public void reload() {}
+    public void reload() {
+        getEditProfileTask task = new getEditProfileTask(getMainActivity());
+        task.execute("".replace("|", ""));
+        asyncTask = task;
+    }
+
+    AsyncTask asyncTask = null;
+
+    @Override
+    public AsyncTask getAsyncTask() {
+        return asyncTask;
+    }
 
     @Override
     public boolean closeTab() {
@@ -103,6 +113,7 @@ public class ProfileEditFragment extends WebViewFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.profile_edit_activity, container, false);
+        initSwipeRefreshLayout();
         setHasOptionsMenu(true);
         assert view != null;
         m_WebView = (AdvWebView) view.findViewById(R.id.wvBody);
@@ -111,7 +122,7 @@ public class ProfileEditFragment extends WebViewFragment {
         m_WebView.getSettings();
         m_WebView.getSettings().setDomStorageEnabled(true);
         m_WebView.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
-        m_WebView.getSettings().setAppCachePath(getActivity().getApplicationContext().getCacheDir().getAbsolutePath());
+        m_WebView.getSettings().setAppCachePath(getMainActivity().getApplicationContext().getCacheDir().getAbsolutePath());
         m_WebView.getSettings().setAppCacheEnabled(true);
 
         m_WebView.getSettings().setAllowFileAccess(true);
@@ -121,22 +132,23 @@ public class ProfileEditFragment extends WebViewFragment {
         m_WebView.addJavascriptInterface(this, "HTMLOUT");
         m_WebView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
 
-        getEditProfileTask task = new getEditProfileTask(getActivity());
+        getEditProfileTask task = new getEditProfileTask(getMainActivity());
         task.execute("".replace("|", ""));
+        asyncTask = task;
 
         if (Preferences.System.isDevSavePage()|
                 Preferences.System.isDevInterface()|
                 Preferences.System.isDevStyle())
-            Toast.makeText(getActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getMainActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
         return view;
     }
 
     @JavascriptInterface
     public void saveHtml(final String html) {
-        getActivity().runOnUiThread(new Runnable() {
+        getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new SaveHtml(getActivity(), html, "EditProfile");
+                new SaveHtml(getMainActivity(), html, "EditProfile");
             }
         });
     }
@@ -145,17 +157,16 @@ public class ProfileEditFragment extends WebViewFragment {
         try {
             m_WebView.loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
         } catch (Throwable ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 
     @JavascriptInterface
     public void sendProfile(final String json) {
-        getActivity().runOnUiThread(new Runnable() {
+        getMainActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.d("asdasd", json);
-                new editProfileTask(getActivity(), json).execute();
+               asyncTask = new editProfileTask(getMainActivity(), json).execute();
             }
         });
     }
@@ -180,7 +191,7 @@ public class ProfileEditFragment extends WebViewFragment {
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
             public boolean onMenuItemClick(MenuItem item) {
-                getActivity().finish();
+                getMainActivity().finish();
                 return true;
             }
         });
@@ -201,7 +212,7 @@ public class ProfileEditFragment extends WebViewFragment {
                 JSONArray jr = new JSONArray(json);
                 JSONObject jb;
                 for (int i = 0; i <jr.length(); i++){
-                    jb = (JSONObject)jr.getJSONObject(i);
+                    jb = jr.getJSONObject(i);
                     if(!jb.getString("name").equals("null")){
                         additionalHeaders.put(jb.getString("name"), jb.getString("value"));
                     }
@@ -242,32 +253,30 @@ public class ProfileEditFragment extends WebViewFragment {
                 this.dialog.dismiss();
             }
             Toast.makeText(getContext(),"Данные отправлены",Toast.LENGTH_SHORT).show();
-            ((ProfileFragment)((MainActivity)getActivity())
-                    .getSupportFragmentManager()
-                    .findFragmentByTag(parentTag)).startLoadData();
-            ((MainActivity) getActivity()).removeTab(getTag());
-            MainActivity.selectTabByTag(parentTag);
+            if(App.getInstance().isContainsByTag(parentTag)){
+                ((ProfileFragment)App.getInstance().getTabByTag(parentTag).getFragment()).startLoadData();
+                getMainActivity().removeTab(getTag());
+                MainActivity.selectTabByTag(parentTag);
+            }else {
+                getMainActivity().removeTab(getTag());
+            }
+
+
         }
     }
 
     private void showThemeBody(String body) {
         try {
-            getActivity().setTitle(m_Title);
+            getMainActivity().setTitle(m_Title);
             m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
         } catch (Exception ex) {
-            AppLog.e(getActivity(), ex);
+            AppLog.e(getMainActivity(), ex);
         }
     }
 
     private class getEditProfileTask extends AsyncTask<String, String, Boolean> {
-        private final MaterialDialog dialog;
 
-        public getEditProfileTask(Context context) {
-            dialog = new MaterialDialog.Builder(context)
-                    .progress(true, 0)
-                    .content("Загрузка")
-                    .build();
-        }
+        public getEditProfileTask(Context context) {}
 
         private String m_ThemeBody;
 
@@ -315,33 +324,15 @@ public class ProfileEditFragment extends WebViewFragment {
             return body;
         }
 
-        @Override
-        protected void onProgressUpdate(final String... progress) {
-            mHandler.post(new Runnable() {
-                public void run() {
-                    dialog.setContent(progress[0]);
-                }
-            });
-        }
 
         protected void onPreExecute() {
-            try {
-                this.dialog.show();
-            } catch (Exception ex) {
-                this.cancel(true);
-            }
+            setLoading(true);
         }
 
         private Throwable ex;
 
         protected void onPostExecute(final Boolean success) {
-            try {
-                if (this.dialog.isShowing()) {
-                    this.dialog.dismiss();
-                }
-            } catch (Exception ex) {
-                Log.e("!!@@#!", ex.toString());
-            }
+            setLoading(false);
 
             if (isCancelled()) return;
 
@@ -350,7 +341,7 @@ public class ProfileEditFragment extends WebViewFragment {
             } else {
                 getSupportActionBar().setTitle(ex.getMessage());
                 m_WebView.loadDataWithBaseURL("\"file:///android_asset/\"", m_ThemeBody, "text/html", "UTF-8", null);
-                AppLog.e(getActivity(), ex);
+                AppLog.e(getMainActivity(), ex);
             }
 
             CookieSyncManager syncManager = CookieSyncManager.createInstance(m_WebView.getContext());
@@ -359,7 +350,6 @@ public class ProfileEditFragment extends WebViewFragment {
                 for (Cookie cookie : Client.getInstance().getCookies()) {
 
                     if (cookie.getDomain() != null) {
-                        Log.d("asdas!", cookie.getDomain() + " " + cookie.getValue());
                         cookieManager.setCookie(cookie.getDomain(), cookie.getName() + "=" + cookie.getValue());
                     }
                     //cookieManager.setCookie(cookie.getTitle(),cookie.getValue());

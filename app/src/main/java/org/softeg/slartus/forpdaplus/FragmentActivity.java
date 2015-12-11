@@ -1,3 +1,4 @@
+/*
 package org.softeg.slartus.forpdaplus;
 
 import android.content.Context;
@@ -14,20 +15,19 @@ import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 
+*/
 /**
  * Created by radiationx on 24.10.15.
- */
+ *//*
+
 public class FragmentActivity extends AppCompatActivity
         implements SearchSettingsDialogFragment.ISearchDialogListener {
     public static final String SENDER_ACTIVITY = "sender_activity";
     public LinearLayout statusBar;
-    public boolean statusBarShowed = false;
-    public boolean hack = false;
-    public Context getContext() {
-        return this;
-    }
 
-    /*public ActionBar getSupportActionBar() {
+
+    */
+/*public ActionBar getSupportActionBar() {
         return getSupportActionBar();
     }
     public void setSupportProgressBarIndeterminateVisibility(boolean b) {
@@ -35,7 +35,8 @@ public class FragmentActivity extends AppCompatActivity
     }
     public void setSupportProgressBarIndeterminate(boolean b) {
         setSupportProgressBarIndeterminate(b);
-    }*/
+    }*//*
+
 
     @Override
     public void startActivity(android.content.Intent intent) {
@@ -47,7 +48,6 @@ public class FragmentActivity extends AppCompatActivity
     public void startActivityForResult(android.content.Intent intent, int requestCode) {
         intent.putExtra(SENDER_ACTIVITY, getClass().toString());
         super.startActivityForResult(intent, requestCode);
-        hack = true;
     }
 
     @Override
@@ -80,19 +80,8 @@ public class FragmentActivity extends AppCompatActivity
     protected void onCreate(Bundle saveInstance) {
         setTheme(isTransluent() ? App.getInstance().getTransluentThemeStyleResID() : App.getInstance().getThemeStyleResID());
         super.onCreate(saveInstance);
-        if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            getWindow().setFlags(
-                    WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
-                    WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
-        }
 
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-
-        if (PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("coloredNavBar", true) &&
-                android.os.Build.VERSION.SDK_INT >= 21)
-            getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(getNavBarColor()));
+*/
 /*
         if(PreferenceManager.getDefaultSharedPreferences(App.getContext()).getBoolean("statusbarTransparent",false)) {
             if (android.os.Build.VERSION.SDK_INT >= 21)
@@ -113,7 +102,8 @@ public class FragmentActivity extends AppCompatActivity
                 statusBarShowed = true;
             }
         }
-*/
+*//*
+
         args.clear();
         if (getIntent().getExtras() != null) {
             args.putAll(getIntent().getExtras());
@@ -125,20 +115,7 @@ public class FragmentActivity extends AppCompatActivity
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         loadPreferences(prefs);
     }
-    public int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
-    public int getNavBarColor(){
-        if(App.getInstance().isWhiteTheme())
-            return R.color.actionbar_background_wh;
-        else
-            return R.color.actionbar_background_bl;
-    }
+
     @Override
     protected void onSaveInstanceState(android.os.Bundle outState) {
         if (args != null)
@@ -149,6 +126,7 @@ public class FragmentActivity extends AppCompatActivity
             onStart();
         }
         hack= false;
+        MainActivity.log("onsaveinstancestate");
     }
 
     @Override
@@ -160,6 +138,7 @@ public class FragmentActivity extends AppCompatActivity
     protected void onRestoreInstanceState(android.os.Bundle outState) {
         args = outState;
         super.onRestoreInstanceState(outState);
+        MainActivity.log("onrestoreinstancestate");
     }
 
 
@@ -174,3 +153,4 @@ public class FragmentActivity extends AppCompatActivity
 
 
 }
+*/

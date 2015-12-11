@@ -177,7 +177,7 @@ public class ShortUserInfo {
                     @Override
                     public void onClick(View v) {
                         QmsContactsBrickInfo brickInfo = new QmsContactsBrickInfo();
-                        MainActivity.addTabByIntent(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
+                        MainActivity.addTab(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
                         //ListFragmentActivity.showListFragment(getContext(), QmsContactsBrickInfo.NAME, null);
                     }
                 });

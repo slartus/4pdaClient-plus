@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
@@ -62,9 +61,6 @@ public class TabDrawerMenu {
         mListView.setOnItemClickListener(new TabOnClickListener());
         mListView.setStackFromBottom(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("tabsBottom", false));
 
-
-
-        //mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.END);
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mDrawer.getLayoutParams();
         params.width = (int) dpWidth;
         if ("right".equals(Preferences.System.getDrawerMenuPosition())) {
@@ -81,8 +77,7 @@ public class TabDrawerMenu {
     private class TabOnClickListener implements ListView.OnItemClickListener{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Object o = adapter.getItem(position);
-            selectTab((TabItem)o);
+            selectTab((TabItem) adapter.getItem(position));
             close();
         }
     }
@@ -90,21 +85,9 @@ public class TabDrawerMenu {
         adapter.notifyDataSetChanged();
     }
 
-    public void addTab(String name, String url, String tag, Fragment fragment, boolean select){
-        TabItem item = null;
-        if(App.getInstance().isContainsByUrl(url)){
-            if(select) item = App.getInstance().getTabByUrl(url);
-        }else if(!App.getInstance().isContainsByTag(tag)) {
-
-            item = new TabItem(name, url, tag, fragment);
-            App.getInstance().getTabItems().add(item);
-            App.getInstance().plusTabIterator();
-            adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
-            mListView.setAdapter(adapter);
-        }else {
-            if(select) item = App.getInstance().getTabByTag(tag);
-        }
-        if(select) selectTab(item);
+    public void refreshAdapter(){
+        adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
+        mListView.setAdapter(adapter);
     }
 
     public void removeTab(String tag){
@@ -112,21 +95,21 @@ public class TabDrawerMenu {
 
         for(int i = 0; i <= App.getInstance().getTabItems().size()-1; i++){
             if(App.getInstance().getTabItems().get(i).getTag().equals(tag)) {
+                final TabItem tabItem = App.getInstance().getTabByTag(tag);
                 App.getInstance().getTabItems().remove(i);
-                if(tag.equals(App.getInstance().getCurrentFragmentTag()))
+
+                if(App.getInstance().getTabByTag(tabItem.getParentTag())!=null)
+                    App.getInstance().setCurrentFragmentTag(tabItem.getParentTag());
+                else if(tag.equals(App.getInstance().getCurrentFragmentTag()))
                     App.getInstance().setCurrentFragmentTag(App.getInstance().getTabItems().get(App.getInstance().getLastTabPosition(i)).getTag());
 
                 ((MainActivity)getContext()).showFragmentByTag(App.getInstance().getCurrentFragmentTag(), true);
                 ((MainActivity)getContext()).endActionFragment(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
-                adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
-                mListView.setAdapter(adapter);
+                refreshAdapter();
                 return;
             }
         }
     }
-
-
-
 
     public void close() {
         mDrawerLayout.closeDrawer(mDrawer);
@@ -180,7 +163,7 @@ public class TabDrawerMenu {
             holder.text.setText(item.getTitle());
             holder.close.setOnClickListener(new CloseClickListener(item.getTag()));
 
-            holder.text.setTextColor(resources.getColor(App.getInstance().isWhiteTheme() ? R.color.drawer_menu_text_wh : R.color.drawer_menu_text_bl));
+            holder.text.setTextColor(resources.getColor(App.getInstance().getDrawerMenuText()));
             holder.item.setBackgroundResource(Color.TRANSPARENT);
 
             if(App.getInstance().getCurrentFragmentTag().equals(item.getTag())){
@@ -203,6 +186,7 @@ public class TabDrawerMenu {
         }
         public void onClick(View v) {
             if(App.getInstance().getTabItems().size()>1) {
+                MainActivity.log("tabdrawer tryremove tab");
                 ((MainActivity) getContext()).tryRemoveTab(tag);
             }else {
                 new MaterialDialog.Builder(getContext())

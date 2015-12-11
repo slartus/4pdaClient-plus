@@ -6,6 +6,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -16,6 +18,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,12 +35,14 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
+import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainDrawerMenu {
     private DrawerLayout mDrawerLayout;
@@ -96,12 +101,8 @@ public class MainDrawerMenu {
                 Preferences.Menu.setGroupExpanded(i, false);
             }
         });
-        mMenuGroups = new ArrayList<>();
-        if (prefs.getBoolean("categoryLast", true)) {
-            mMenuGroups.add(new LastActionsGroup());
-        }
-        mMenuGroups.add(new MainListGroup());
-        mMenuGroups.add(new OthersActionsGroup());
+
+        setmMenuGroups();
 
         mAdapter = new MenuBrickAdapter(getContext());
 
@@ -117,6 +118,16 @@ public class MainDrawerMenu {
                 mActivity, mDrawerLayout, ((MainActivity)mActivity).toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
+    }
+    public void setmMenuGroups(){
+        if(mMenuGroups!=null) mMenuGroups.clear();
+        mMenuGroups = new ArrayList<>();
+        if (prefs.getBoolean("categoryLast", false)) {
+            mMenuGroups.add(new LastActionsGroup());
+        }
+        mMenuGroups.add(new MainListGroup());
+        mMenuGroups.add(new OthersActionsGroup());
+        if(mAdapter!=null) notifyDataSetChanged();
     }
     public void notifyDataSetChanged(){
         mAdapter.notifyDataSetChanged();
@@ -170,7 +181,7 @@ public class MainDrawerMenu {
             assert menuGroup != null;
             menuGroup.itemAction(brickInfo);
             int i = 1;
-            if (!prefs.getBoolean("categoryLast", true)) i = 0;
+            if (!prefs.getBoolean("categoryLast", false)) i = 0;
             if (groupPosition <= i) {
                 prefs.edit().putInt("menuItemGroup", groupPosition).apply();
                 prefs.edit().putString("menuItemChild", brickInfo.getName()).apply();
@@ -210,7 +221,18 @@ public class MainDrawerMenu {
 
         @Override
         public void itemAction(BrickInfo item) {
-            selectItem(item);
+            if(item.getName().equals("AppAndGame")){
+                final List<ApplicationInfo> packages = getContext().getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
+                for (ApplicationInfo packageInfo : packages) {
+                    if(packageInfo.packageName.equals("ru.freeman42.app4pda")){
+                        getContext().startActivity(getContext().getPackageManager().getLaunchIntentForPackage(packageInfo.packageName));
+                        return;
+                    }
+                }
+                ThemeFragment.showTopicById(getContext(), "275433");
+            }else {
+                selectItem(item);
+            }
         }
     }
 
@@ -503,7 +525,7 @@ public class MainDrawerMenu {
             holder.text.setText(item.getTitle());
             holder.icon.setImageDrawable(getContext().getResources().getDrawable(item.getIcon()));
 
-            holder.text.setTextColor(resources.getColor(App.getInstance().isWhiteTheme() ? R.color.drawer_menu_text_wh : R.color.drawer_menu_text_bl));
+            holder.text.setTextColor(resources.getColor(App.getInstance().getDrawerMenuText()));
             holder.item.setBackgroundResource(Color.TRANSPARENT);
             holder.icon.clearColorFilter();
 

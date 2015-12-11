@@ -240,6 +240,7 @@ public class LoginDialog {
             }
             doOnUserChangedListener(login, success);
             Client.getInstance().doOnUserChangedListener(login, success);
+            PreferenceManager.getDefaultSharedPreferences(App.getContext()).edit().putBoolean("needLoadRepImage", success).apply();
             if (success) {
                 Toast.makeText(mContext, "Вход выполнен",
                         Toast.LENGTH_SHORT).show();
@@ -314,7 +315,7 @@ public class LoginDialog {
                 this.dialog.dismiss();
             }
             doOnUserChangedListener(m_Login, success);
-
+            PreferenceManager.getDefaultSharedPreferences(App.getContext()).edit().putBoolean("needLoadRepImage", !success).apply();
             if (success) {
                 Toast.makeText(mContext, "Выход выполнен",
                         Toast.LENGTH_SHORT).show();
