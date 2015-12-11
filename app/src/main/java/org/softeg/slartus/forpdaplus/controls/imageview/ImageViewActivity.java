@@ -28,11 +28,6 @@ import android.widget.Toast;
 
 import com.dmitriy.tarasov.android.intents.IntentUtils;
 import com.goka.flickableview.FlickableImageView;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Downloader;
 import com.squareup.picasso.MemoryPolicy;
@@ -47,7 +42,6 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.utils.SystemBarTintManager;
-import org.softeg.slartus.forpdaplus.utils.log.LogHelper;
 //import org.softeg.slartus.forpdaplus.utils.ui.SystemUiHelper;
 
 import java.io.IOException;
