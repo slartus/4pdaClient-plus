@@ -79,5 +79,5 @@ dependencies {
     compile project(':forpdanotifyservice')
     compile project(':4pdasources')
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.github.goka.flickableview:flickableview:1.0.0'
 }

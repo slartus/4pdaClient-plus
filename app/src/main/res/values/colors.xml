@@ -79,6 +79,6 @@
     <color name="selectedItem">#2777</color>
     <color name="selectedItemText">@color/actionbar_background_wh</color>
 
-    <color name="background_toolbar">#59000000</color>
+    <color name="background_toolbar">#B3000000</color>
 
 </resources>

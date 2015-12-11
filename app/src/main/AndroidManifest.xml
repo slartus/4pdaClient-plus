@@ -106,7 +106,8 @@
             android:label="Изображение"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
-            android:hardwareAccelerated="true"/>
+            android:hardwareAccelerated="true"
+            android:theme="@style/ImageViewTheme"/>
 
         <activity
             android:name="org.acra.CrashReportDialog"
@@ -178,11 +179,11 @@
             android:label="Настройки QMS"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop" />
-        <activity
-            android:name="org.softeg.slartus.forpdaplus.DevDbDeviceActivity"
-            android:label="DevDB.ru"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop" />
+        <!--<activity-->
+            <!--android:name="org.softeg.slartus.forpdaplus.DevDbDeviceActivity"-->
+            <!--android:label="DevDB.ru"-->
+            <!--android:configChanges="orientation|keyboardHidden|screenSize"-->
+            <!--android:launchMode="singleTop" />-->
         <activity
             android:name="org.softeg.slartus.forpdaplus.styles.StyleInfoActivity"
             android:label="Информация о стиле"
@@ -199,6 +200,8 @@
             android:label="Проигрыватель"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop" />
+
+        <activity android:name=".devdb.TestTestActivity" />
 
 
         <service
@@ -230,4 +233,4 @@
     </application>
 
 
-</manifest> 
+</manifest>

@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <fragment android:name="org.softeg.slartus.forpdaplus.controls.imageview.ImageViewFragment"
-        android:id="@+id/image_view_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <!--<fragment android:name="org.softeg.slartus.forpdaplus.controls.imageview.ImageViewFragment"-->
+        <!--android:id="@+id/image_view_fragment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
+
+    <org.softeg.slartus.forpdaplus.controls.imageview.HackyViewPager android:id="@+id/view_pager"
+                                                                     android:layout_width="match_parent"
+                                                                     android:layout_height="match_parent"/>
 </LinearLayout>
