@@ -103,7 +103,8 @@ public class ForumsTable {
             db.setTransactionSuccessful();
         } finally {
             if (db != null) {
-                db.endTransaction();
+                //what
+                //db.endTransaction();
                 db.close();
             }
         }

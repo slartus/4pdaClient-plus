@@ -5,10 +5,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -23,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -104,6 +107,7 @@ public class ImageViewActivity extends AppCompatActivity {
         @Override
         public void run() {
             hide();
+            if(statusBar!=null) statusBar.animate().alpha(0);
         }
     };
 
@@ -128,14 +132,26 @@ public class ImageViewActivity extends AppCompatActivity {
         context.startActivity(intent);
 
     }
-
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+    LinearLayout statusBar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        super.setTheme(R.style.ImageViewTheme);
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.image_view_activity);
-
+        if (Build.VERSION.SDK_INT==19) {
+            statusBar = (LinearLayout) findViewById(R.id.statusBar);
+            statusBar.setMinimumHeight(getStatusBarHeight());
+            statusBar.setBackgroundColor(getResources().getColor(R.color.background_toolbar));
+        }
         mVisible = true;
         initViewPager(savedInstanceState);
 
@@ -511,8 +527,10 @@ public class ImageViewActivity extends AppCompatActivity {
     private void toggle() {
         if (mVisible) {
             hide();
+            if(statusBar!=null) statusBar.animate().alpha(0);
         } else {
             show();
+            if(statusBar!=null) statusBar.animate().alpha(1);
         }
     }
 

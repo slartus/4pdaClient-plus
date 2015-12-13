@@ -276,7 +276,7 @@ public class MainDrawerMenu {
                 case PreferencesBrickInfo.NAME:
                     Intent settingsActivity = new Intent(
                             mActivity, PreferencesActivity.class);
-                    mActivity.startActivity(settingsActivity);
+                    mActivity.startActivityForResult(settingsActivity, 0);
                     break;
 
                 case DownloadsBrickInfo.NAME:

@@ -36,7 +36,9 @@ import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -471,11 +473,22 @@ public class App extends android.app.Application {
         registerActivityLifecycleCallbacks(m_MyActivityLifecycleCallbacks);
         setTheme(getThemeStyleResID());
 
+        Calendar c = Calendar.getInstance();
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        if(month==11&day>=30) isNewYear = true;
+        if(month==0&day<=2) isNewYear = true;
+
         try {
             DbHelper.prepareBases(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static boolean isNewYear = false;
+    public boolean isNewYear(){
+        return isNewYear;
     }
 
     public void exit() {

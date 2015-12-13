@@ -36,7 +36,7 @@ public class QuickPostFragment extends Fragment {
     private PopupPanelView mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_ALL);
 
     public void hidePopupWindow() {
-        mPopupPanelView.hidePopupWindow();
+        if(mPopupPanelView!=null) mPopupPanelView.hidePopupWindow();
     }
 
     public interface PostSendListener {

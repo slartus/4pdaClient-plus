@@ -177,7 +177,7 @@ public class ForumFragment extends GeneralFragment implements
 
         if(lastImageDownload==MainActivity.getPreferences().getBoolean("forum.list.show_images", true)){
             mAdapter.notifyDataSetChangedWithLayout();
-            mListView.refreshDrawableState();
+            if(mListView!=null) mListView.refreshDrawableState();
             lastImageDownload = MainActivity.getPreferences().getBoolean("forum.list.show_images", true);
         }
     }

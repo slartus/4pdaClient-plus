@@ -11,8 +11,9 @@
     </style>
 
     <style name="actionbar_trans" parent="@style/Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/background_toolbar</item>
         <item name="background">@color/background_toolbar</item>
-        <item name="elevation">2dp</item>
+        <item name="elevation">0dp</item>
         <item name="displayOptions">homeAsUp|showTitle</item>
         <item name="titleTextStyle">@style/actionbar_title</item>
         <item name="subtitleTextStyle">@style/actionbar_subtitle</item>

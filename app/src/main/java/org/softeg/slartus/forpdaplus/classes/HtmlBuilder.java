@@ -78,6 +78,7 @@ public class HtmlBuilder {
     public void beginBody(String id, CharSequence bodyScript, boolean isImage) {
         m_Body.append("<body id=\"").append(id).append("\" class=\"modification ")
                 .append(isImage ? "" : "noimages ")
+                .append(App.getInstance().isNewYear() ? "" : "newyear ")
                 .append(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isGpuImg", false) ? "ongpuimg \" " : "\" ")
                 .append(App.getInstance().getWebViewFont().equals("") ? " " : "style=\"font-family:").append(App.getInstance().getWebViewFont()).append(";\" ")
                 .append(bodyScript == null || TextUtils.isEmpty(bodyScript) ? "" : bodyScript)

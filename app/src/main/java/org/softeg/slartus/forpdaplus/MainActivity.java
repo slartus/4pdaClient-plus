@@ -23,6 +23,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -222,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MainActivity.REQUEST_WRITE_STORAGE);
+
 
         } catch (Throwable ex) {
             AppLog.e(getApplicationContext(), ex);
@@ -549,7 +551,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     public void tryRemoveTab(String tag){
         log("tryRemoveTab");
-        if(!((GeneralFragment)getSupportFragmentManager().findFragmentByTag(tag)).closeTab()) removeTab(tag);
+        if(getSupportFragmentManager().findFragmentByTag(tag)!=null&!((GeneralFragment)getSupportFragmentManager().findFragmentByTag(tag)).closeTab()) removeTab(tag);
     }
     public void removeTab(String tag){
         TabItem tab = App.getInstance().getTabByTag(tag);

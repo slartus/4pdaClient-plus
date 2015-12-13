@@ -178,6 +178,12 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
         return mAdapter;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(getAdapter()!=null) getAdapter().notifyDataSetChanged();
+    }
+
     protected BaseAdapter createAdapter() {
         return new ListAdapter(getActivity(), mData, getPreferences().getBoolean("showSubMain", false));
     }

@@ -385,10 +385,4 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getAdapter().notifyDataSetChanged();
-    }
-
 }
