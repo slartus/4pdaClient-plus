@@ -14,9 +14,11 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.topic.EditPostFragment;
+import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 public class QuickPostFragment extends Fragment {
@@ -92,7 +94,7 @@ public class QuickPostFragment extends Fragment {
             mAuthKey = savedInstanceState.getString("QuickPostFragment.AuthKey");
         }
 
-        mPopupPanelView.activityCreated(getActivity());
+        mPopupPanelView.activityCreated(getActivity(), ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment()).getView());
         mPopupPanelView.setTopic(mForumId, mTopicId, mAuthKey);
 
     }

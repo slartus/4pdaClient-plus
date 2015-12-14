@@ -73,10 +73,23 @@ public class ForumTopicsListFragment extends TopicsListFragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        removeArrow();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setArrow();
+    }
+
+    @Override
     public void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null)
             mUrl = savedInstanceState.getString(URL_KEY, mUrl);
+        setArrow();
     }
 
     @Override

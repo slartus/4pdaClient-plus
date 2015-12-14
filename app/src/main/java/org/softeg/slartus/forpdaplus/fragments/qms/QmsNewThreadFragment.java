@@ -63,6 +63,18 @@ public class QmsNewThreadFragment extends GeneralFragment {
         MainActivity.addTab(userNick, newInstance(args));
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        removeArrow();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setArrow();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,7 +93,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
             }
         });
         mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) view.findViewById(R.id.advanced_button), message);
-        mPopupPanelView.activityCreated(getMainActivity());
+        mPopupPanelView.activityCreated(getMainActivity(), view);
 
         Bundle extras = getArguments();
 
@@ -103,6 +115,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
             App.getInstance().getTabByTag(getTag()).setTitle("QMS:Новая тема");
         }
         TabDrawerMenu.notifyDataSetChanged();
+        setArrow();
         return view;
     }
 

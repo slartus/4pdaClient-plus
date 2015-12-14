@@ -154,10 +154,12 @@ public class PopupPanelView {
     private void showPopupWindow() {
         if (!popupWindow.isShowing()) {
             popupWindow.setHeight(keyboardHeight);
-
+            Log.e("kek", "iskeyboardvisible "+isKeyBoardVisible);
             if (isKeyBoardVisible) {
+                Log.e("kek", "hide");
                 emoticonsCover.setVisibility(LinearLayout.GONE);
             } else {
+                Log.e("kek", "show");
                 emoticonsCover.setVisibility(LinearLayout.VISIBLE);
             }
             popupWindow.showAtLocation(parentLayout, Gravity.BOTTOM, 0, 0);
@@ -204,27 +206,24 @@ public class PopupPanelView {
                     @Override
                     public void onGlobalLayout() {
 
+
                         r = new Rect();
                         parentLayout.getWindowVisibleDisplayFrame(r);
 
-                        /*if (k == -1)
-                            k = screenHeight - r.bottom;
-                        int heightDifference = screenHeight - (r.bottom) - k;*/
-
-                        heightDifference = parentLayout.getRootView().getHeight() - r.bottom;
+                        heightDifference = parentLayout.getRootView()
+                                .getHeight() - r.bottom;
 
                         if (previousHeightDiffrence - heightDifference > 50) {
                             hidePopupWindow();
                         }
+
                         previousHeightDiffrence = heightDifference;
                         if (heightDifference > 100) {
-                            changeKeyboardHeight(heightDifference);
-                        }
-
-                        if (imm.isAcceptingText())
                             isKeyBoardVisible = true;
-                        else
+                            changeKeyboardHeight(heightDifference);
+                        } else {
                             isKeyBoardVisible = false;
+                        }
                     }
                 }
         );
