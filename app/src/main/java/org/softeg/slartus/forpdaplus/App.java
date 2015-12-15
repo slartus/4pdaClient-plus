@@ -463,7 +463,7 @@ public class App extends android.app.Application {
     }
 
     private MyActivityLifecycleCallbacks m_MyActivityLifecycleCallbacks;
-
+    private static boolean isNewYear = false;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -476,8 +476,11 @@ public class App extends android.app.Application {
         Calendar c = Calendar.getInstance();
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
+        Log.e("kek", month+" month");
+        Log.e("kek", day+" day");
         if(month==11&day>=30) isNewYear = true;
         if(month==0&day<=2) isNewYear = true;
+        Log.e("kek", isNewYear+"");
 
         try {
             DbHelper.prepareBases(this);
@@ -486,7 +489,7 @@ public class App extends android.app.Application {
         }
     }
 
-    private static boolean isNewYear = false;
+
     public boolean isNewYear(){
         return isNewYear;
     }

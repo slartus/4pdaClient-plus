@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:background="@drawable/gradient"
-                android:lineSpacingExtra="-5dp"
+                android:lineSpacingExtra="-2dp"
                 android:paddingBottom="16dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
@@ -60,7 +60,7 @@
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="5"
-                android:text="asdhasjkgfkafjkhLKKLJKJKf \nsdfsdf"
+                android:text="Наушники JBL Reflect Mini BT работают до 8 часов по Bluetooth"
                 android:textSize="24sp" />
 
             <LinearLayout
@@ -70,7 +70,7 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <ProgressBar
                     android:layout_width="wrap_content"
@@ -129,6 +129,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
+                android:lineSpacingExtra="1dp"
                 android:text="jdgkfllsakj ah lkshfkl sadjh sajklsg hklk hslakj hkja ghkalh kls;aig oaie hfkhdlshg ldk"
                 android:textSize="16sp" />
 

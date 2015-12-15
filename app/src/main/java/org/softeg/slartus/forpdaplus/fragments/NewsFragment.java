@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
+import org.softeg.slartus.forpdaapi.NewsApi;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.App;
@@ -319,6 +321,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         });
     }
 
+
     @Override
     public boolean onBackPressed() {
         if (!m_History.isEmpty()) {
@@ -536,25 +539,42 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         private String transformBody(String body) {
             NewsHtmlBuilder builder = new NewsHtmlBuilder();
             Matcher matcher = PatternExtensions.compile("<h1 itemprop=\"name\">([\\s\\S]*?)<\\/h1>").matcher(body);
-            Matcher matchert = PatternExtensions.compile("<script type=\".*\">wrs([\\s\\S]*?)<.script>").matcher(body);
+            Matcher matchert = PatternExtensions.compile("<script[\\s\\S]*\\(([\\s\\S]*)[\\s\\S]{3}[\\d]*[\\s\\S]{3}<.script>").matcher(body);
             m_Title = "Новости";
             if (matcher.find()) {
                 m_Title = Html.fromHtml(matcher.group(1)).toString();
             }
             builder.beginHtml(m_Title);
-            builder.beginBody("news",null,loadImages);
-            builder.append("<div style=\"padding-top:" + builder.getMarginTop() + "px\"/>\n");
+            builder.beginBody("news", null, loadImages);
+            builder.append("<div style=\"padding-top:" + HtmlBuilder.getMarginTop() + "px\"/>\n");
             builder.append("<div id=\"main\">");
-            builder.append("<script type=\"text/javascript\" async=\"async\" src=\"file:///android_asset/forum/js/jqp.min.js\"></script>\n");
+            /*builder.append("<script type=\"text/javascript\" async=\"async\" src=\"file:///android_asset/forum/js/jqp.min.js\"></script>\n");
             builder.append("<script type=\"text/javascript\" async=\"async\" src=\"file:///android_asset/forum/js/site.min.js\"></script>\n");
             builder.append("<script type=\"text/javascript\">(function(f,h){var c=\"$4\";if(\"function\"!=typeof f[c]||.3>f[c].lib4PDA){var g={},b=function(){return f[c]||this},k=function(a,d){return function(){\"function\"==typeof d&&(!a||a in b?d(b[a],a):!g[a]&&(g[a]=[d])||g[a].push(d))}};b.fn=b.prototype={lib4PDA:.3,constructor:b,addModule:function(a,d){if(!(a in b)){b[a]=b.fn[a]=d?\"function\"==typeof d?d(b):d:h;for(var c=0,e=g[a];e&&c<e.length;)e[c++](b[a],a);delete g[a]}return b},onInit:function(a,d){for(var c=(a=(a+\"\").split(\" \")).length,e=d;c;)e=new k(a[--c],\n" +
                     "e);e();return b}};f[c]=f.lib4PDA=b;for(c in b.fn)b[c]=b.fn[c]}})(window);(function(a){var wrsI=0;\n" +
                     "window.wrs=function(c,f){a.write('<div id=\"wrs-div'+wrsI+'\"></div>');var d=a.getElementById('wrs-div'+wrsI),i=setInterval(function(w){if(!c()){return;}clearInterval(i);w=a.write;a.write=function(t){d.innerHTML+=t};f();a.write=w},500);wrsI++}})(document);</script>");
-
+*/
             builder.append(parseBody(body));
 
             if (matchert.find()) {
-                builder.append("<script type=\"text/javascript\">wrs"+matchert.group(1)+"</script>");
+                builder.append("<script type=\"text/javascript\">function getCommentsData(){return '"+matchert.group(1)+"';}</script>");
+  ;
+                builder.append("<script>\n" +
+                        "    window.onload = function() {\n" +
+                        "        var anchors = document.querySelectorAll('.karma');\n" +
+                        "        var data = JSON.parse(getCommentsData())["+getPostId()+"];\n" +
+                        "        for(var i = 0; i < anchors.length; i++) {\n" +
+                        "            var found = anchors[i].getAttribute(\"data-karma\").match(/([\\d]*)-([\\d]*)/);\n" +
+                        "            anchors[i].innerHTML= '<b class=\"icon-karma-up\" title=\"Мне нравится\" data-karma-act=\"1-264127-2745153\"></b><span class=\"num-wrap\"><span class=\"num\" title=\"Понравилось\"></span></span>';\n" +
+                        "            anchors[i].querySelector(\".num-wrap .num\").innerHTML = data[found[2]][3];\n" +
+                        "            anchors[i].onclick = function () {\n" +
+                        "                found = this.getAttribute(\"data-karma\").match(/([\\d]*)-([\\d]*)/);\n" +
+                        "                this.querySelector(\".num-wrap .num\").innerHTML = data[found[2]][3]+1;\n" +
+                        "                HTMLOUT.likeComment(found[1],found[2]);\n" +
+                        "            };\n" +
+                        "        }\n" +
+                        "    }\n" +
+                        "</script>");
             }
 
             builder.append("</div>");
@@ -689,6 +709,46 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
                 try {
                     Client.getInstance().likeNews(getPostId());
+                } catch (Exception e) {
+                    ex = e;
+                }
+
+                final Exception finalEx = ex;
+                mHandler.post(new Runnable() {
+                    public void run() {
+                        try {
+                            if (finalEx != null) {
+                                Toast.makeText(getMainActivity(), "Ошибка запроса", Toast.LENGTH_SHORT).show();
+                                AppLog.e(getMainActivity(), finalEx);
+                            } else {
+                                Toast.makeText(getMainActivity(), "Запрос выполнен", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception ex) {
+                            AppLog.e(getMainActivity(), ex);
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
+    @JavascriptInterface
+    public void likeComment(final String id, final String comment) {
+        getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                sendLikeComment(id, comment);
+            }
+        });
+    }
+    private void sendLikeComment(final String id, final String comment) {
+        Toast.makeText(getMainActivity(), "Запрос отправлен", Toast.LENGTH_SHORT).show();
+        new Thread(new Runnable() {
+            public void run() {
+
+                Exception ex = null;
+
+                try {
+                    Client.getInstance().likeComment(id, comment);
                 } catch (Exception e) {
                     ex = e;
                 }

@@ -42,7 +42,7 @@ public class TopicsHistoryTable {
             c = db.query("TopicsHistoryView", new String[]{COLUMN_URL}, TopicsTable.COLUMN_ID + "=?", new String[]{topicId.toString()},
                     null, null, null);
 
-            Forum forum = ForumsTableOld.loadForumsTree();
+            //Forum forum = ForumsTableOld.loadForumsTree();
 
             if (c.moveToFirst()) {
                 return c.getString(c.getColumnIndex(COLUMN_URL));

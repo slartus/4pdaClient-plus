@@ -41,7 +41,7 @@ public class ForumsTable {
 
         Cursor c = null;
         SQLiteDatabase db = null;
-        ArrayList<String> res = new ArrayList<String>();
+        ArrayList<String> res = new ArrayList<>();
         try {
             ForumStructDbHelper dbHelper = new ForumStructDbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
@@ -103,8 +103,7 @@ public class ForumsTable {
             db.setTransactionSuccessful();
         } finally {
             if (db != null) {
-                //what
-                //db.endTransaction();
+                db.endTransaction();
                 db.close();
             }
         }

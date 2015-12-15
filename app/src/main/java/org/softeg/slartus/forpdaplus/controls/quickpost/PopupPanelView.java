@@ -154,12 +154,9 @@ public class PopupPanelView {
     private void showPopupWindow() {
         if (!popupWindow.isShowing()) {
             popupWindow.setHeight(keyboardHeight);
-            Log.e("kek", "iskeyboardvisible "+isKeyBoardVisible);
             if (isKeyBoardVisible) {
-                Log.e("kek", "hide");
                 emoticonsCover.setVisibility(LinearLayout.GONE);
             } else {
-                Log.e("kek", "show");
                 emoticonsCover.setVisibility(LinearLayout.VISIBLE);
             }
             popupWindow.showAtLocation(parentLayout, Gravity.BOTTOM, 0, 0);

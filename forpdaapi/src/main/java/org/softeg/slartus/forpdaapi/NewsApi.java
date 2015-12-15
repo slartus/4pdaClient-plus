@@ -35,7 +35,7 @@ public class NewsApi {
         return res != null;
     }
 
-    public static Boolean likePost(IHttpClient httpClient, String newsId, String postId) throws IOException {
+    public static Boolean likeComment(IHttpClient httpClient, String newsId, String postId) throws IOException {
         String res = httpClient.performGet("http://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=" + postId + "&v=1", false);
         return res != null;
     }

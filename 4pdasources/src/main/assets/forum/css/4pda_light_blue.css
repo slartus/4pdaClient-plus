@@ -162,6 +162,7 @@ a {
   background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.66);
+  line-height: 1.125em;
 }
 .container .product-detail .description .info-holder {
   padding: 0 1em;
@@ -1226,13 +1227,10 @@ a {
   color: #ffffff;
   margin-bottom: 0;
   padding: 0.875em;
-  position: relative;
   text-align: left;
   cursor: default!important;
   background: #0277bd;
-}
-.poll .hidetop:after {
-  display: none;
+  position: relative;
 }
 .poll .hidetop:before {
   content: "";
@@ -1245,6 +1243,24 @@ a {
 .poll .hidetop:active:before {
   background: rgba(0, 0, 0, 0.1);
 }
+.poll .hidetop:after {
+  content: "";
+  position: absolute;
+  right: 1em;
+  bottom: 1.25em;
+  border-left: 0.125em solid #737373;
+  border-bottom: 0.125em solid #737373;
+  box-sizing: border-box;
+  height: 0.75em;
+  width: 0.75em;
+  border-color: #ffffff;
+  -webkit-transform: rotate(-45deg) translateY(0) translateX(0) translateZ(0);
+  transform: rotate(-45deg) translateY(0) translateX(0) translateZ(0);
+  -webkit-transition: 0.25s;
+  transition: 0.25s;
+  -webkit-transform-origin: center;
+  transform-origin: center;
+}
 .poll .hidetop input {
   position: absolute;
   height: 100%;
@@ -1255,10 +1271,23 @@ a {
   color: transparent;
   opacity: 0;
 }
-.poll .hidetop b {
-  display: inline;
-  text-transform: uppercase;
+.poll .hidetop b span {
+  display: none;
+}
+.poll .hidetop b:before {
   font-size: 0.875em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.poll .hidetop.open b:before {
+  content: "Скрыть опрос";
+}
+.poll .hidetop.open:after {
+  transform: rotate(135deg) translateY(-0.25em) translateX(0.25em);
+  -webkit-transform: rotate(135deg) translateY(-0.25em) translateX(0.25em);
+}
+.poll .hidetop.close b:before {
+  content: "Показать опрос";
 }
 .poll .hidemain {
   background: #ffffff;
@@ -1653,6 +1682,9 @@ a {
 .post_container .post_header .header_wrapper {
   position: relative;
 }
+.post_container .post_header .avatar {
+  width: 4em;
+}
 .post_container .post_header .avatar .img {
   height: 4em;
   width: 4em;
@@ -1754,10 +1786,19 @@ a {
   opacity: 0;
 }
 .post_container .hat .hidetop b span {
+  display: none;
+}
+.post_container .hat .hidetop b:before {
   font-size: 0.875em;
   font-weight: bold;
   text-transform: uppercase;
   color: #0277bd;
+}
+.post_container .hat .hidetop.open b:before {
+  content: "Скрыть шапку";
+}
+.post_container .hat .hidetop.close b:before {
+  content: "Показать шапку";
 }
 .post_container .post_footer .button {
   float: right;

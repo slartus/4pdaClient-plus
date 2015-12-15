@@ -16,6 +16,7 @@ import org.apache.http.cookie.Cookie;
 import org.softeg.slartus.forpdaapi.ForumsApi;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.LoginResult;
+import org.softeg.slartus.forpdaapi.NewsApi;
 import org.softeg.slartus.forpdaapi.OnProgressChangedListener;
 import org.softeg.slartus.forpdaapi.ProfileApi;
 import org.softeg.slartus.forpdaapi.ProgressState;
@@ -334,7 +335,10 @@ public class Client implements IHttpClient {
     }
 
     public Boolean likeNews(String postId) throws IOException {
-        return org.softeg.slartus.forpdaapi.NewsApi.like(this, postId);
+        return NewsApi.like(this, postId);
+    }
+    public Boolean likeComment(final String id, final String comment) throws IOException {
+        return NewsApi.likeComment(this, id, comment);
     }
 
 

@@ -93,8 +93,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
                                 "<div class=\"hat\"><div class='hidetop' style='cursor:pointer;' ><input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility(this)\"/>"
                                         .concat(title)
                                 :
-                                "<div class=\"hat\"><div class='hidetop' style='cursor:pointer;' onclick=\"var _n=this.parentNode.getElementsByTagName('div')[1];" +
-                                        "if(_n.style.display=='none'){_n.style.display='';}else{_n.style.display='none';}\">"
+                                "<div class=\"hat\"><div class='hidetop ".concat(opened?"open ":"close").concat("' style='cursor:pointer;' onclick=\"openHat(this);\">")
                                                 .concat(title)
                 ).concat("</div><div class='hidemain'").concat(opened?" ":" style=\"display:none\"").concat(">").concat(body).concat("</div></div>");
     }
