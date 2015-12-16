@@ -73,7 +73,7 @@ import java.util.TimerTask;
 /**
  * Created by radiationx on 30.10.15.
  */
-public class EditPostFragment extends GeneralFragment implements IBrickFragment {
+public class EditPostFragment extends GeneralFragment {
 
     public static final int NEW_EDIT_POST_REQUEST_CODE = App.getInstance().getUniqueIntValue();
     public static final String TOPIC_BODY_KEY = "EditPostActivity.TOPIC_BODY_KEY";

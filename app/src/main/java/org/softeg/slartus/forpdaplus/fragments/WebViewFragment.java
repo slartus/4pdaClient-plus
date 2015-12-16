@@ -45,7 +45,7 @@ import java.util.ArrayList;
 /**
  * Created by radiationx on 17.10.15.
  */
-public abstract class WebViewFragment extends GeneralFragment implements IBrickFragment, IWebViewContainer{
+public abstract class WebViewFragment extends GeneralFragment implements IWebViewContainer{
     class URLHandler extends Handler{
         @Override
         public void handleMessage(Message msg) {

@@ -7,12 +7,16 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.softeg.slartus.forpdaapi.ForumsApi;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.LoginResult;
@@ -852,14 +856,66 @@ public class Client implements IHttpClient {
         Matcher pollMatcher = Pattern.compile("<form[^>]*action=\"[^\"]*addpoll=1[^\"]*\"[^>]*>([\\s\\S]*?)</form>", Pattern.CASE_INSENSITIVE)
                 .matcher(mainMatcher.group(1));
         if (pollMatcher.find()) {
-            String poll =
+            StringBuilder pollBuilder = new StringBuilder();
+
+            Element poll = Jsoup.parse(pollMatcher.group(1)).select(".ipbtable").first();
+            pollBuilder.append("<form action=\\\"modules.php\\\" method=\\\"get\\\">");
+            String poll_title = poll.select("th b").first().text();
+            if(!poll_title.equals("-")) pollBuilder.append("<div class=\"poll_title\"><span>").append(poll_title).append("</span></div>");
+            pollBuilder.append("<div class=\"poll_body\">");
+
+            boolean voted = false;
+            for(Element element:poll.select(".borderwrap")){
+                if(element.select("input").isEmpty()) voted = true;
+                pollBuilder.append("<div class=\"poll_theme\">");
+                pollBuilder.append("<div class=\"poll_title\"><span>").append(poll.select(".postdetails strong").first().text()).append("</span></div>");
+                pollBuilder.append("<div class=\"items").append(voted ? " voted" : "").append("\">");
+                if(voted){
+                    for(Element item:element.select("tr")){
+                        pollBuilder.append("<div class=\"item\">");
+                        pollBuilder.append("<span class=\"name\"><span>").append(item.select("td:nth-child(1)").first().text()).append("</span></span>");
+                        pollBuilder.append("<span class=\"num_votes\"><span>").append(item.select("td:nth-child(2) b").first().text()).append("</span></span>");
+                        pollBuilder.append("<div class=\"range\">");
+                        String percent = item.select("td:nth-child(3)").first().text().replace("[","").replace("]","").replace(",",".");
+                        pollBuilder.append("<div class=\"range_bar\" style=\"width:").append(percent).append(";\"></div>");
+                        pollBuilder.append("<span class=\"value\">").append(percent).append("</span>");
+                        pollBuilder.append("</div>");
+                        pollBuilder.append("</div>");
+                    }
+                }else {
+                    for(Element item:element.select("tr")){
+                        pollBuilder.append("<label class=\"item\">");
+                        pollBuilder.append(item.select("input").first().outerHtml());
+                        pollBuilder.append("<span class=\"checkbox_icon\"></span>");
+                        pollBuilder.append("<span class=\"item_body\"><span class=\"name\">").append(item.select("b").first().text()).append("</span></span>");
+                        pollBuilder.append("</label>");
+                    }
+                }
+                pollBuilder.append("</div>");
+                pollBuilder.append("</div>");
+            }
+            pollBuilder.append("</div>");
+
+
+            pollBuilder.append("<div class=\"votes_info\"><span>").append(poll.select("tbody tr:nth-last-child(3) b").last().text()).append("</span></div>");
+
+
+            if(logined) {
+                pollBuilder.append("<div class=\"buttons\">").append(poll.select(".formbuttonrow").first().html()).append("</div>");
+            }
+            pollBuilder.append("<input type=\"hidden\" name=\"addpoll\" value=\"1\" /></form>");
+            /*String poll =
                     "<form action=\"modules.php\" method=\"get\">" +
                             pollMatcher.group(1).toString()
                                     .replace("go_gadget_show()", ForPdaWebInterface.NAME + ".go_gadget_show()")
                                     .replace("go_gadget_vote()", ForPdaWebInterface.NAME + ".go_gadget_vote()")
-                                    .concat("<input type=\"hidden\" name=\"addpoll\" value=\"1\" /></form>");
+                                    .concat("<input type=\"hidden\" name=\"addpoll\" value=\"1\" /></form>");*/
 
-            topicBodyBuilder.addPoll(poll, urlParams != null && urlParams.contains("poll_open=true"));
+            topicBodyBuilder.addPoll(
+                    pollBuilder.toString()
+                            .replace("go_gadget_show()", ForPdaWebInterface.NAME + ".go_gadget_show()")
+                            .replace("go_gadget_vote()", ForPdaWebInterface.NAME + ".go_gadget_vote()"),
+                    urlParams != null && urlParams.contains("poll_open=true"));
         }
         //<<опрос
         topicBodyBuilder.openPostsList();

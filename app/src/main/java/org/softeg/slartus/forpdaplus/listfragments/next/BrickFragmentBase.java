@@ -12,8 +12,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 /*
  * Created by slinkin on 25.09.2014.
  */
-public abstract class BrickFragmentBase extends GeneralFragment implements
-        IBrickFragment {
+public abstract class BrickFragmentBase extends GeneralFragment{
 
 
     public static final String NAME_KEY = "BrickFragmentBase.NAME_KEY";

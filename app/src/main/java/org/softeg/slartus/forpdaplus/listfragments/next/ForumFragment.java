@@ -58,8 +58,7 @@ import java.util.List;
 /*
  * Created by slartus on 24.02.2015.
  */
-public class ForumFragment extends GeneralFragment implements
-        IBrickFragment, LoaderManager.LoaderCallbacks<ForumFragment.ForumBranch> {
+public class ForumFragment extends GeneralFragment implements LoaderManager.LoaderCallbacks<ForumFragment.ForumBranch> {
     private static final String DATA_KEY = "BrickFragmentListBase.DATA_KEY";
     private static final String SCROLL_POSITION_KEY = "SCROLL_POSITION_KEY";
     public static final String FORUM_ID_KEY = "FORUM_ID_KEY";
