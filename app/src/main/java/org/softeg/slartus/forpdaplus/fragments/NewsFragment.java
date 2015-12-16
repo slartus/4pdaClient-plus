@@ -539,7 +539,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         private String transformBody(String body) {
             NewsHtmlBuilder builder = new NewsHtmlBuilder();
             Matcher matcher = PatternExtensions.compile("<h1 itemprop=\"name\">([\\s\\S]*?)<\\/h1>").matcher(body);
-            Matcher matchert = PatternExtensions.compile("<script[\\s\\S]*\\(([\\s\\S]*)[\\s\\S]{3}[\\d]*[\\s\\S]{3}<.script>").matcher(body);
+            Matcher matchert = PatternExtensions.compile("<script[\\s\\S]*\\(([\\s\\S]*),[\\s\\S]*<.script>").matcher(body);
             m_Title = "Новости";
             if (matcher.find()) {
                 m_Title = Html.fromHtml(matcher.group(1)).toString();
@@ -575,6 +575,36 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                         "        }\n" +
                         "    }\n" +
                         "</script>");
+                if(Client.getInstance().getLogined()){
+                    builder.append("<script>\n" +
+                            "    window.onload = function() {\n" +
+                            "        var anchors = document.querySelectorAll('.karma');\n" +
+                            "        var data = JSON.parse(getCommentsData())["+getPostId()+"];\n" +
+                            "        for(var i = 0; i < anchors.length; i++) {\n" +
+                            "            var found = anchors[i].getAttribute(\"data-karma\").match(/([\\d]*)-([\\d]*)/);\n" +
+                            "            anchors[i].innerHTML= '<b class=\"icon-karma-up\" title=\"Мне нравится\" data-karma-act=\"1-264127-2745153\"></b><span class=\"num-wrap\"><span class=\"num\" title=\"Понравилось\"></span></span>';\n" +
+                            "            anchors[i].querySelector(\".num-wrap .num\").innerHTML = data[found[2]][3];\n" +
+                            "            anchors[i].onclick = function () {\n" +
+                            "                found = this.getAttribute(\"data-karma\").match(/([\\d]*)-([\\d]*)/);\n" +
+                            "                this.querySelector(\".num-wrap .num\").innerHTML = data[found[2]][3]+1;\n" +
+                            "                HTMLOUT.likeComment(found[1],found[2]);\n" +
+                            "            };\n" +
+                            "        }\n" +
+                            "    }\n" +
+                            "</script>");
+                }else {
+                    builder.append("<script>\n" +
+                            "    window.onload = function() {\n" +
+                            "        var anchors = document.querySelectorAll('.karma');\n" +
+                            "        var data = JSON.parse(getCommentsData())["+getPostId()+"];\n" +
+                            "        for(var i = 0; i < anchors.length; i++) {\n" +
+                            "            var found = anchors[i].getAttribute(\"data-karma\").match(/([\\d]*)-([\\d]*)/);\n" +
+                            "            anchors[i].innerHTML= '<b class=\"icon-karma-up\" title=\"Мне нравится\" data-karma-act=\"1-264127-2745153\"></b><span class=\"num-wrap\"><span class=\"num\" title=\"Понравилось\"></span></span>';\n" +
+                            "            anchors[i].querySelector(\".num-wrap .num\").innerHTML = data[found[2]][3];\n" +
+                            "        }\n" +
+                            "    }\n" +
+                            "</script>");
+                }
             }
 
             builder.append("</div>");
