@@ -859,7 +859,7 @@ public class Client implements IHttpClient {
             StringBuilder pollBuilder = new StringBuilder();
 
             Element poll = Jsoup.parse(pollMatcher.group(1)).select(".ipbtable").first();
-            pollBuilder.append("<form action=\\\"modules.php\\\" method=\\\"get\\\">");
+            pollBuilder.append("<form action=\"modules.php\" method=\"get\">");
             String poll_title = poll.select("th b").first().text();
             if(!poll_title.equals("-")) pollBuilder.append("<div class=\"poll_title\"><span>").append(poll_title).append("</span></div>");
             pollBuilder.append("<div class=\"poll_body\">");
@@ -868,7 +868,7 @@ public class Client implements IHttpClient {
             for(Element element:poll.select(".borderwrap")){
                 if(element.select("input").isEmpty()) voted = true;
                 pollBuilder.append("<div class=\"poll_theme\">");
-                pollBuilder.append("<div class=\"poll_title\"><span>").append(poll.select(".postdetails strong").first().text()).append("</span></div>");
+                pollBuilder.append("<div class=\"theme_title\"><span>").append(element.select(".postdetails strong").first().text()).append("</span></div>");
                 pollBuilder.append("<div class=\"items").append(voted ? " voted" : "").append("\">");
                 if(voted){
                     for(Element item:element.select("tr")){
@@ -876,9 +876,9 @@ public class Client implements IHttpClient {
                         pollBuilder.append("<span class=\"name\"><span>").append(item.select("td:nth-child(1)").first().text()).append("</span></span>");
                         pollBuilder.append("<span class=\"num_votes\"><span>").append(item.select("td:nth-child(2) b").first().text()).append("</span></span>");
                         pollBuilder.append("<div class=\"range\">");
-                        String percent = item.select("td:nth-child(3)").first().text().replace("[","").replace("]","").replace(",",".");
+                        String percent = item.select("td:nth-child(3)").first().text().replace(" ","").replace("[","").replace("]","").replace(",",".");
                         pollBuilder.append("<div class=\"range_bar\" style=\"width:").append(percent).append(";\"></div>");
-                        pollBuilder.append("<span class=\"value\">").append(percent).append("</span>");
+                        pollBuilder.append("<span class=\"value\"><span>").append(percent).append("</span></span>");
                         pollBuilder.append("</div>");
                         pollBuilder.append("</div>");
                     }
@@ -886,7 +886,7 @@ public class Client implements IHttpClient {
                     for(Element item:element.select("tr")){
                         pollBuilder.append("<label class=\"item\">");
                         pollBuilder.append(item.select("input").first().outerHtml());
-                        pollBuilder.append("<span class=\"checkbox_icon\"></span>");
+                        pollBuilder.append("<span class=\"icon\"></span>");
                         pollBuilder.append("<span class=\"item_body\"><span class=\"name\">").append(item.select("b").first().text()).append("</span></span>");
                         pollBuilder.append("</label>");
                     }

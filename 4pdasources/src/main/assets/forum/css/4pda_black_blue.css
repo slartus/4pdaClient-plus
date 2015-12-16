@@ -1311,233 +1311,165 @@ a {
   0position: relative;
   z-index: 10;
 }
-.poll .hidemain form > .ipbtable {
-  border-spacing: 0;
-  display: block;
-  overflow-x: auto;
-}
-.poll .hidemain form > .ipbtable > tbody {
+.poll .hidemain form {
   display: block;
 }
-.poll .hidemain form > .ipbtable > tbody > tr {
+.poll .hidemain form .poll_title {
+  padding: 0.75em 1em 0.75em 1em;
+  border-bottom: 1px solid #212121;
+}
+.poll .hidemain form .poll_title span {
+  font-size: 1.125em;
+  font-weight: bold;
+  color: #8a8a8a;
+}
+.poll .hidemain form .poll_body .poll_theme {
+  border-bottom: 1px solid #212121;
+  padding: 1em 1em 0 1em;
+}
+.poll .hidemain form .poll_body .poll_theme:last-of-type {
+  border-bottom: none;
+}
+.poll .hidemain form .poll_body .poll_theme .theme_title span {
+  font-weight: bold;
+  color: #8a8a8a;
+}
+.poll .hidemain form .poll_body .poll_theme .items .item {
+  padding: 0.75em 0;
   display: block;
-}
-.poll .hidemain form > .ipbtable > tbody > tr th {
-  display: block;
-}
-.poll .hidemain form > .ipbtable > tbody > tr:first-child th {
-  padding: 0.5em 1em;
-}
-.poll .hidemain form > .ipbtable > tbody > tr:first-child th b {
-  font-weight: normal;
-}
-.poll .hidemain form > .ipbtable > tbody > tr td {
-  padding: 0;
-  display: block;
-}
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap .row1 {
-  border-top: 1px solid #212121;
-  padding: 0.75em 1em 0 1em!important;
-  padding-bottom: 0.25em!important;
-  line-height: 1.4em;
-}
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable {
-  width: 100%;
-  padding-bottom: 0em;
   position: relative;
 }
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr {
-  position: relative;
+.poll .hidemain form .poll_body .poll_theme .items .item input {
+  display: none;
 }
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr:last-child td {
-  padding-bottom: 0.5em;
-}
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td {
-  display: table-cell;
-  line-height: 3em;
-  padding: 0 1em;
-  position: relative;
-  white-space: nowrap;
-}
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td input {
-  -webkit-appearance: none;
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: -0.35em;
-  vertical-align: middle;
-  z-index: 1;
-  outline: none;
-}
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td input.checkbox + b {
-  line-height: 1.25em;
-  padding-top: 0.875em;
-  padding-bottom: 0.875em;
-  min-height: 3em;
-  display: inline-block;
-  vertical-align: middle;
-  white-space: normal;
-  position: relative;
-  padding-left: 2em;
-  font-weight: normal;
-}
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td input.checkbox + b:before {
+.poll .hidemain form .poll_body .poll_theme .items .item input.checkbox + .icon {
   -webkit-border-radius: 2px;
   border-radius: 2px;
-  content: "";
-  display: block;
-  height: 1.125em;
-  width: 1.125em;
-  border: 0.125em solid #444444;
-  background: #000000;
-  position: absolute;
-  left: -0.25em;
-  top: 50%;
-  margin-top: -0.5625em;
-  -webkit-transition: 0.25s;
-  transition: 0.25s;
-  box-sizing: border-box;
 }
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td input.checkbox + b:after {
+.poll .hidemain form .poll_body .poll_theme .items .item input.checkbox + .icon:after {
   content: "";
-  display: block;
   height: 0.75em;
   width: 0.4375em;
   border: 0.125em solid #444444;
-  border-color: white;
+  border-color: #ededed;
   box-sizing: border-box;
   border-left: none;
   border-top: none;
-  position: absolute;
-  left: 0.125em;
-  bottom: 1.2625em;
+  left: 0.25em;
+  bottom: 0.1875em;
   -webkit-transform: rotate(45deg) scale(0);
   transform: rotate(45deg) scale(0);
-  -webkit-transition: 0.25s;
-  transition: 0.25s;
-  opacity: 0;
 }
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td input.checkbox:checked + b:before {
-  border-color: #0277bd;
-  background: #0277bd;
-}
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td input.checkbox:checked + b:after {
-  -webkit-transform: rotate(45deg) scale(1);
-  transform: rotate(45deg) scale(1);
-  opacity: 1;
-}
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td input.radiobutton + b {
-  line-height: 1.25em;
-  padding-top: 0.875em;
-  padding-bottom: 0.875em;
-  min-height: 3em;
-  display: inline-block;
-  vertical-align: middle;
-  white-space: normal;
-  position: relative;
-  padding-left: 2em;
-  font-weight: normal;
-}
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td input.radiobutton + b:before {
+.poll .hidemain form .poll_body .poll_theme .items .item input.radiobutton + .icon {
   -webkit-border-radius: 100%;
   border-radius: 100%;
-  content: "";
-  display: block;
-  height: 1.25em;
-  width: 1.25em;
-  border: 0.125em solid #444444;
-  background: #000000;
-  position: absolute;
-  left: -0.25em;
-  top: 50%;
-  margin-top: -0.625em;
-  box-sizing: border-box;
-  -webkit-transition: 0.25s;
-  transition: 0.25s;
 }
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td input.radiobutton + b:after {
-  content: "";
-  display: block;
+.poll .hidemain form .poll_body .poll_theme .items .item input.radiobutton + .icon:after {
   height: 0.625em;
   width: 0.625em;
   border-radius: 100%;
   background: #0277bd;
-  position: absolute;
-  left: 0.0625em;
+  left: 0.1875em;
   top: 50%;
   margin-top: -0.3125em;
   -webkit-transform: scale(0);
   transform: scale(0);
-  -webkit-transition: 0.25s;
-  transition: 0.25s;
-  opacity: 0;
 }
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td input.radiobutton:checked + b:after {
+.poll .hidemain form .poll_body .poll_theme .items .item input:checked.checkbox + .icon {
+  background: #0277bd;
+}
+.poll .hidemain form .poll_body .poll_theme .items .item input:checked.checkbox + .icon:after {
+  -webkit-transform: rotate(45deg) scale(1);
+  transform: rotate(45deg) scale(1);
+  opacity: 1;
+}
+.poll .hidemain form .poll_body .poll_theme .items .item input:checked.radiobutton + .icon:after {
   -webkit-transform: scale(1);
   transform: scale(1);
   opacity: 1;
 }
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td input.radiobutton:checked + b:before {
+.poll .hidemain form .poll_body .poll_theme .items .item input:checked + .icon {
   border-color: #0277bd;
 }
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td.post2 {
-  position: relative;
-  width: auto!important;
-  display: block;
-  float: left;
+.poll .hidemain form .poll_body .poll_theme .items .item input:checked + .icon:after {
+  opacity: 1;
 }
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td.post2[colspan*="3"] {
-  width: 100%!important;
-}
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td.post2[width*="70%"] {
-  width: auto;
-  text-align: right;
+.poll .hidemain form .poll_body .poll_theme .items .item .icon {
   position: absolute;
-  right: 0;
-  background: rgba(0, 0, 0, 0.9);
-  box-shadow: -20px 0 20px -7px #000000;
-  -webkit-box-shadow: -20px 0 20px -7px #000000;
+  height: 1.25em;
+  width: 1.25em;
+  top: 50%;
+  margin-top: -0.625em;
+  border: 0.125em solid #444444;
+  background: #000000;
+  box-sizing: border-box;
+  -webkit-transition: 0.25s;
+  transition: 0.25s;
 }
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td.post2[width*="10%"] {
-  padding: 0;
-  margin: 0;
+.poll .hidemain form .poll_body .poll_theme .items .item .icon:after {
+  content: "";
+  display: block;
+  position: absolute;
+  opacity: 0;
+  -webkit-transition: 0.25s;
+  transition: 0.25s;
 }
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td.post2[width*="10%"] b {
-  font-weight: normal;
+.poll .hidemain form .poll_body .poll_theme .items .item .item_body {
+  display: block;
+  margin-left: 3em;
 }
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td.post2 img {
+.poll .hidemain form .poll_body .poll_theme .items.voted .item .num_votes {
+  float: right;
+  font-size: 0.875em;
+}
+.poll .hidemain form .poll_body .poll_theme .items.voted .item .num_votes span {
+  font-weight: bold;
+}
+.poll .hidemain form .poll_body .poll_theme .items.voted .item .num_votes:after {
+  content: " Голосов";
+}
+.poll .hidemain form .poll_body .poll_theme .items.voted .item .range {
+  margin-top: 0.25em;
+  position: relative;
+  background: #e9e9e9;
   -webkit-border-radius: 2px;
   border-radius: 2px;
+}
+.poll .hidemain form .poll_body .poll_theme .items.voted .item .range .range_bar {
+  height: 1.5em;
   background: #17415f;
-  height: 0;
-  padding-bottom: 1em;
-  margin-top: -0.1em;
-  vertical-align: middle;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
 }
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td.post2 img:first-child {
-  display: none;
+.poll .hidemain form .poll_body .poll_theme .items.voted .item .range .value {
+  position: absolute;
+  top: 0;
+  line-height: 1.5em;
+  height: 1.5em;
+  left: 0.5em;
 }
-.poll .hidemain form > .ipbtable > tbody > tr td .borderwrap > .ipbtable tr td.post2 img:last-child {
-  display: none;
+.poll .hidemain form .poll_body .poll_theme .items.voted .item .range .value span {
+  font-size: 0.75em;
+  font-weight: bold;
+  color: #ededed;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
 }
-.poll .hidemain form > .ipbtable > tbody > tr:nth-last-child(3) td {
-  padding: 0.75em 1em 0.25em 0;
-  line-height: 2.25em;
+.poll .hidemain form .votes_info {
+  padding: 0.75em 1em 0.5em 0;
   display: block;
   text-align: right;
 }
-.poll .hidemain form > .ipbtable > tbody > tr:nth-last-child(3) td b {
+.poll .hidemain form .votes_info span {
   color: #8a8a8a;
+  font-size: 0.875em;
 }
-.poll .hidemain form > .ipbtable > tbody > tr:nth-last-child(2) .formbuttonrow {
+.poll .hidemain form .buttons {
   display: block;
-  border-top: 1px solid #212121;
   line-height: 3em;
-  padding: 0 0.25em 0 0.5em;
+  padding: 0 1em 0 0.5em;
   text-align: right;
 }
-.poll .hidemain form > .ipbtable > tbody > tr:nth-last-child(2) .formbuttonrow .button {
+.poll .hidemain form .buttons .button {
   -webkit-border-radius: 2px;
   border-radius: 2px;
   background: none;
@@ -1551,11 +1483,11 @@ a {
   border: none;
   text-transform: uppercase;
 }
-.poll .hidemain form > .ipbtable > tbody > tr:nth-last-child(2) .formbuttonrow .button:last-child {
+.poll .hidemain form .buttons .button:last-child {
   float: left;
 }
-.poll .hidemain form > .ipbtable > tbody > tr:nth-last-child(1) {
-  display: none;
+.poll .hidemain form .buttons .button:first-child {
+  margin-right: -0.75em;
 }
 .post_body {
   padding: 1em;
