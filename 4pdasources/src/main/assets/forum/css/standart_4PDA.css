@@ -346,181 +346,109 @@ HTML body a:active {
 *	POLL
 */
 .poll {
-  margin: 0;
-}
-.poll:after {
-  content: '';
-}
-@media screen and (min-width: 800px) {
-  .poll ~ .post_header,
-  .poll ~ .post_header_container .post_header {
-    margin-top: 0.3rem;
-  }
+  font-size: 1rem;
+  line-height: 1.4em;
 }
 .poll .hidetop {
-  background: #E4EAF2;
-  display: block;
-  margin: 0;
-  padding: 0.3rem 0.4rem;
-  font-weight: bold;
-  margin: 0 0 1px !important;
-  height: 1.6rem;
-  line-height: 1.6rem;
+  padding: 0.3125rem;
   text-align: center;
-  border-top: 1px dotted #aaa;
-  border-bottom: 1px dotted #aaa;
-}
-.poll .hidetop b {
-  font-size: 1rem;
-  text-transform: uppercase;
+  border: 1px solid #d9d9d9;
+  background: white;
 }
 .poll .hidemain {
-  padding: 0;
-  margin: 0 !important;
+  border: 1px solid #d9d9d9;
+  background: white;
+}
+.poll .hidemain FORM {
   overflow: hidden;
 }
-.poll .hidemain FORM > TABLE[cellspacing="1"] {
-  width: 100%;
-  border-spacing: 0;
-}
-.poll .hidemain FORM > TABLE[cellspacing="1"] TH {
-  display: block;
-  padding: 0.2rem 0.4rem;
-  text-align: left;
-  color: #1e5e93;
-  border-top: 0.1rem solid white;
-  border-bottom: 0.1rem solid #2982cb;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #b2e8ff), color-stop(80%, #94caf4));
-}
-.poll .hidemain FORM > TABLE[cellspacing="1"] .formbuttonrow {
-  display: block;
-  padding: 0.3rem 0;
-  color: black;
-  text-align: center;
-  border-top: 1px solid #2982cb;
-  background: #d9eaff;
-}
-.poll .hidemain FORM > TABLE[cellspacing="1"] .formbuttonrow .button {
-  display: inline-block;
-  padding: 0.2rem 0.5rem;
-  border: 1px solid #2982cb;
-  background: #eaeff5;
-}
-.poll .hidemain FORM > TABLE[cellspacing="1"] .formbuttonrow .button * {
-  display: inline-block;
-}
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1[colspan="3"][align="center"] {
+.poll .hidemain FORM .poll_title {
   padding: 0.5rem;
-  background: #d9eaff;
+  text-align: center;
 }
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) {
-  padding: 0.4rem 0;
-  border-top: 1px solid white;
-  border-bottom: 1px solid white;
-  background: #d9eaff;
+.poll .hidemain FORM .poll_title span {
+  font-size: 1.25rem;
+  font-weight: bold;
 }
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap {
-  border: 1px solid #2982cb;
-  background: #f2f8ff;
+.poll .hidemain FORM .poll_body {
+  overflow: hidden;
 }
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap DIV.row1 {
-  padding: 0.2rem 0.4rem !important;
-  font-size: 1rem;
-  background: #d9eaff;
+.poll .hidemain FORM .poll_body .poll_theme {
+  margin: 0.75rem;
 }
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable {
-  width: 100%;
-  padding: 0.2rem 0.5rem 0.5rem;
-  text-align: left;
+.poll .hidemain FORM .poll_body .poll_theme .theme_title {
+  margin: 0.5rem 0;
 }
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 {
+.poll .hidemain FORM .poll_body .poll_theme .theme_title span {
+  font-weight: bold;
+}
+.poll .hidemain FORM .poll_body .poll_theme .items .item {
   position: relative;
-  padding: 0.5rem 0;
+  display: block;
+  padding: 0.5rem;
 }
-@media screen and (max-width: 800px) {
-  .poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2[width] > tbody {
-    display: block;
-  }
-  .poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2[width] > tbody > tr {
-    display: block;
-  }
+.poll .hidemain FORM .poll_body .poll_theme .items .item input {
+  display: none;
 }
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 input[type="radio"],
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 input[type="checkbox"] {
-  opacity: 0;
-  position: absolute;
-  width: 2rem;
-  height: 100%;
-  left: 0;
-  font-size: 1rem;
-}
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 input[type="radio"] + b:before,
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 input[type="checkbox"] + b:before {
-  content: '';
+.poll .hidemain FORM .poll_body .poll_theme .items .item input + .icon {
   display: inline-block;
   height: 1rem;
   width: 1rem;
   margin-right: 1rem;
-  vertical-align: middle;
+  vertical-align: bottom;
   border-radius: 1rem;
-  border: 0.1rem solid #999999;
-  transition: 0.2s ease-out;
+  border: 0.125rem solid #808080;
+  transition: all 0.25s;
   overflow: hidden;
-  -webkit-box-shadow: inset 0 0 0 2rem #e8e8e8;
+  background: white;
+  -webkit-box-shadow: inset 0 0 0 1rem white;
 }
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 input[type="radio"]:checked + b:before,
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 input[type="checkbox"]:checked + b:before {
-  background: grey;
-  border: 0.1rem solid #999999;
-  -webkit-box-shadow: inset 0 0 0 0.2rem #e8e8e8;
+.poll .hidemain FORM .poll_body .poll_theme .items .item input:checked + .icon {
+  background: #004fb3;
+  border: 0.125rem solid #004fb3;
+  -webkit-box-shadow: inset 0 0 0 0.2rem white;
 }
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2 input[type="checkbox"] + b:before {
-  border-radius: 2px;
+.poll .hidemain FORM .poll_body .poll_theme .items .item .checkbox + .icon {
+  border-radius: 0.125rem;
 }
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2[width="25%"] {
-  width: 50% !important;
+.poll .hidemain FORM .poll_body .poll_theme .items .item .num_votes {
+  position: absolute;
+  right: 0.5rem;
+  margin-top: 1.4rem;
+  padding: 0 0.3125rem;
 }
-@media screen and (max-width: 480px) {
-  .poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2[width="25%"] {
-    display: block;
-    padding-bottom: 0;
-    margin-bottom: -0.2rem;
-    clear: both;
-    width: auto !important;
-  }
-}
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2[width="10%"] {
-  text-align: right;
-  padding-right: 0.4rem;
-}
-@media screen and (max-width: 480px) {
-  .poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2[width="10%"] {
-    display: inline-block;
-  }
-}
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2[width="70%"] {
-  width: 40% !important;
-  text-align: left;
-  font-size: 0.9rem;
-}
-@media screen and (max-width: 480px) {
-  .poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2[width="70%"] {
-    display: inline-block;
-    width: auto !important;
-    text-align: right;
-  }
-}
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2[width="70%"] IMG {
+.poll .hidemain FORM .poll_body .poll_theme .items .item .range {
   position: relative;
-  top: -0.3rem;
-  height: 0;
-  padding: 0.35rem 0;
-  border: 1px solid #184c76;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #5bb4fd), color-stop(25%, #1f78c1), color-stop(80%, #47a0e9), color-stop(100%, #2982cb));
+  background: rgba(130, 130, 130, 0.1);
 }
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2[width="70%"] IMG:first-child,
-.poll .hidemain FORM > TABLE[cellspacing="1"] TD.row1:not([align="center"]) .borderwrap .ipbtable .post2[width="70%"] IMG:last-child {
-  display: none;
+.poll .hidemain FORM .poll_body .poll_theme .items .item .range .range_bar {
+  display: block;
+  height: 1.5rem;
+  background: #549bd5;
+}
+.poll .hidemain FORM .poll_body .poll_theme .items .item .range .value {
+  position: absolute;
+  margin-top: -1.5rem;
+  margin-left: 0.3125rem;
+}
+.poll .hidemain FORM .votes_info {
+  margint-top: 0.75rem;
+  text-align: center;
+}
+.poll .hidemain FORM .buttons {
+  text-align: center;
+  margin: 0.5rem;
+  color: #808080;
+}
+.poll .hidemain FORM .buttons .button {
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #004fb3;
+  border: none;
+  outline: none;
+  background: none;
 }
 /*
 *	POST_CONTAINER

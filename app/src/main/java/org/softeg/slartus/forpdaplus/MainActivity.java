@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             mTabDraweMenu = new TabDrawerMenu(this, this);
             mMainDrawerMenu = new MainDrawerMenu(this, this);
 
-            searchSettings = SearchSettingsDialogFragment.createForumSearchSettings();
+            searchSettings = SearchSettingsDialogFragment.createDefaultSearchSettings();
 
             NotifiersManager notifiersManager = new NotifiersManager(this);
             new DonateNotifier(notifiersManager).start(this);

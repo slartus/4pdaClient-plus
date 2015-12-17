@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -14,9 +15,13 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.DecelerateInterpolator;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
@@ -33,6 +38,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
+import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -50,8 +56,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            String url = (String) msg.getData().get("url");
-            showLinkMenu(url);
+            showLinkMenu((String) msg.getData().get("url"));
         }
     }
 
@@ -129,9 +134,27 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (Preferences.System.isDevSavePage()) {
+            menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    try {
+                        saveHtml();
+                    } catch (Exception ex) {
+                        return false;
+                    }
+                    return true;
+                }
+            });
+        }
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setArrow();
+        loadPreferences(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
     }
 
     protected SwipeRefreshLayout mSwipeRefreshLayout;
@@ -339,7 +362,6 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
 
     protected void loadPreferences(SharedPreferences prefs) {
         getWebViewExternals().loadPreferences(prefs);
-
     }
 
     @Override
@@ -442,7 +464,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
                             if(App.getInstance().getThemeStyleResID()!=lastTheme)
                                 getMainActivity().recreate();
                             else
-                                reload();
+                                setStyleSheet();
                         }
                     })
                     .negativeText("Отмена")
@@ -450,6 +472,31 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         } catch (Exception ex) {
             AppLog.e(getMainActivity(), ex);
         }
+    }
+    public void setStyleSheet() {
+        try {
+            getWebView().loadUrl("javascript:changeStyle('file://"+App.getInstance().getThemeCssFileName()+"');");
+        } catch (Throwable ex) {
+            AppLog.e(getMainActivity(), ex);
+        }
+    }
+
+    public void saveHtml() {
+        try {
+            getWebView().loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+        } catch (Throwable ex) {
+            AppLog.e(getMainActivity(), ex);
+        }
+    }
+
+    @JavascriptInterface
+    public void saveHtml(final String html) {
+        getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new SaveHtml(getMainActivity(), html, Prefix()+"");
+            }
+        });
     }
 
     @Override

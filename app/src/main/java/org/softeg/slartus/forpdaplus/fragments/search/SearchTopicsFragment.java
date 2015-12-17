@@ -109,7 +109,7 @@ public class SearchTopicsFragment extends TopicsListFragment
     @Override
     public void onPause() {
         super.onPause();
-        MainActivity.searchSettings = SearchSettingsDialogFragment.createForumSearchSettings();
+        MainActivity.searchSettings = SearchSettingsDialogFragment.createDefaultSearchSettings();
         removeArrow();
     }
 

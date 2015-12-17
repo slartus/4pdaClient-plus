@@ -364,6 +364,17 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         return "theme";
     }
 
+    @Override
+    @JavascriptInterface
+    public void saveHtml(final String html) {
+        getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new SaveHtml(getMainActivity(), html, "search");
+            }
+        });
+    }
+
     public AdvWebView getWebView() {
         return mWvBody;
     }
@@ -467,46 +478,14 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (Preferences.System.isDevSavePage()) {
-            menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    try {
-                        saveHtml();
-                    } catch (Exception ex) {
-                        return false;
-                    }
-                    return true;
-                }
-
-
-            });
-        }
         ExtUrl.addUrlSubMenu(new Handler(), getMainActivity(), menu, getSearchQuery(), null, null);
         this.menu = menu;
-    }
-
-    @JavascriptInterface
-    public void saveHtml(final String html) {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new SaveHtml(getMainActivity(),html,"Search");
-            }
-        });
-    }
-
-    private void saveHtml() {
-        try {
-            mWvBody.loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
-        } catch (Throwable ex) {
-            AppLog.e(getMainActivity(), ex);
-        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        MainActivity.searchSettings = SearchSettingsDialogFragment.createForumSearchSettings();
+        MainActivity.searchSettings = SearchSettingsDialogFragment.createDefaultSearchSettings();
     }
 
     @Override

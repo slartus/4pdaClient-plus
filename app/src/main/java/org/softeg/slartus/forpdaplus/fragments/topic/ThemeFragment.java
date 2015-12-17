@@ -757,20 +757,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                             return true;
                         }
                     }).setCheckable(true).setChecked(Preferences.isBrowserView());
-
-            if (Preferences.System.isDevSavePage()) {
-                menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        try {
-                            saveHtml();
-                        } catch (Exception ex) {
-                            return false;
-                        }
-                        return true;
-                    }
-                });
-            }
-
             if (Preferences.System.isCurator()) {
                 menu.add("Мультимодерация").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -928,7 +914,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         super.loadPreferences(prefs);
         LoadsImagesAutomatically = WebViewExternals.isLoadImages("theme");
         m_SpoilFirstPost = Preferences.Topic.getSpoilFirstPost();
-
     }
 
     public void showLinkMenu(final String link) {

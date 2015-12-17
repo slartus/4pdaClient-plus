@@ -98,6 +98,15 @@ public class SearchSettingsDialogFragment extends DialogFragment {
             outState.putAll(args);
     }
 
+    public static SearchSettings createDefaultSearchSettings() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+        SearchSettings searchSettings = new SearchSettings(SearchSettings.SEARCH_TYPE_FORUM);
+        searchSettings.load(prefs);
+        searchSettings.setQuery("");
+        searchSettings.setUserName("");
+        return searchSettings;
+    }
+
     public static SearchSettings createForumSearchSettings() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         SearchSettings searchSettings = new SearchSettings(SearchSettings.SEARCH_TYPE_FORUM);

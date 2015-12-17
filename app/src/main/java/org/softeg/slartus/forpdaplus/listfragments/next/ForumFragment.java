@@ -166,7 +166,7 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
     @Override
     public void onPause() {
         super.onPause();
-        MainActivity.searchSettings = SearchSettingsDialogFragment.createForumSearchSettings();
+        MainActivity.searchSettings = SearchSettingsDialogFragment.createDefaultSearchSettings();
     }
 
     @Override

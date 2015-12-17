@@ -643,6 +643,17 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
     @Override
+    @JavascriptInterface
+    public void saveHtml(final String html) {
+        getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new SaveHtml(getMainActivity(), html, "qms");
+            }
+        });
+    }
+
+    @Override
     public AdvWebView getWebView() {
         return wvChat;
     }
@@ -716,28 +727,9 @@ public class QmsChatFragment extends WebViewFragment {
                 return true;
             }
         }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-        if (Preferences.System.isDevSavePage()) {
-            menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    try {
-                        saveHtml();
-                    } catch (Exception ex) {
-                        return false;
-                    }
-                    return true;
-                }
-            });
-        }
         this.menu = menu;
     }
 
-    public void saveHtml() {
-        try {
-            wvChat.loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
-        } catch (Throwable ex) {
-            AppLog.e(getMainActivity(), ex);
-        }
-    }
 /*
     private void showThread() {
         if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(BaseFragmentActivity.SENDER_ACTIVITY)) {
@@ -751,16 +743,6 @@ public class QmsChatFragment extends WebViewFragment {
         //finish();
     }
     */
-
-    @JavascriptInterface
-    public void saveHtml(final String html) {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new SaveHtml(getMainActivity(), html, "QMS");
-            }
-        });
-    }
 
     private class SendTask extends AsyncTask<ArrayList<String>, Void, Boolean> {
 

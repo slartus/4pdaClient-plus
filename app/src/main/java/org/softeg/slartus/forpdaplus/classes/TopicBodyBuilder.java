@@ -90,7 +90,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         return
                 (
                         m_HtmlPreferences.isSpoilerByButton() ?
-                                "<div class=\"hat\"><div class='hidetop' style='cursor:pointer;' ><input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility(this)\"/>"
+                                "<div class=\"hat\"><div class='hidetop ".concat(opened?"open ":"close").concat("' style='cursor:pointer;' ><input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility(this)\"/>")
                                         .concat(title)
                                 :
                                 "<div class=\"hat\"><div class='hidetop ".concat(opened?"open ":"close").concat("' style='cursor:pointer;' onclick=\"openHat(this);\">")

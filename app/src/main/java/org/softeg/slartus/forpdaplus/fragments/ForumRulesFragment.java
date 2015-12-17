@@ -79,6 +79,11 @@ public class ForumRulesFragment extends WebViewFragment{
     }
 
     @Override
+    public String Prefix() {
+        return "forum_rules";
+    }
+
+    @Override
     public void reload() {
         LoadRulesTask task = new LoadRulesTask();
         task.execute("".replace("|", ""));

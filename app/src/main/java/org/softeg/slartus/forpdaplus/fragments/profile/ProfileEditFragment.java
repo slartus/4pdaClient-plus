@@ -92,7 +92,10 @@ public class ProfileEditFragment extends WebViewFragment {
         task.execute("".replace("|", ""));
         asyncTask = task;
     }
-
+    @Override
+    public String Prefix() {
+        return "edit_profile";
+    }
     AsyncTask asyncTask = null;
 
     @Override
@@ -144,24 +147,6 @@ public class ProfileEditFragment extends WebViewFragment {
     }
 
     @JavascriptInterface
-    public void saveHtml(final String html) {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new SaveHtml(getMainActivity(), html, "EditProfile");
-            }
-        });
-    }
-
-    public void saveHtml() {
-        try {
-            m_WebView.loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
-        } catch (Throwable ex) {
-            AppLog.e(getMainActivity(), ex);
-        }
-    }
-
-    @JavascriptInterface
     public void sendProfile(final String json) {
         getMainActivity().runOnUiThread(new Runnable() {
             @Override
@@ -175,18 +160,6 @@ public class ProfileEditFragment extends WebViewFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         MenuItem item;
-        if (Preferences.System.isDevSavePage()) {
-            menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    try {
-                        saveHtml();
-                    } catch (Exception ex) {
-                        return false;
-                    }
-                    return true;
-                }
-            });
-        }
         item = menu.add(R.string.Close).setIcon(R.drawable.ic_close_white_24dp);
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 

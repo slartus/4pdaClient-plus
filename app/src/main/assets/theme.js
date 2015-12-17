@@ -27,13 +27,16 @@ function deleteMessages(formId){
     }
 }
 
-function toggleSpoilerVisibility(obj) {
-    var _n = obj.parentNode.parentNode.getElementsByTagName('div')[1];
-    if (_n.style.display == 'none') {
-        _n.style.display = '';
-    } else {
-        _n.style.display = 'none';
-    }
+function toggleSpoilerVisibility(e){var t=e.parentNode.parentNode.getElementsByTagName("div")[1];"none"==t.style.display?(t.style.display="",e.parentNode.setAttribute("class","hidetop open")):(t.style.display="none",e.parentNode.setAttribute("class","hidetop close"))};
+
+function openHat(e){var t=e.parentNode.getElementsByTagName("div")[1];"none"==t.style.display?(t.style.display="",e.setAttribute("class","hidetop open")):(t.style.display="none",e.setAttribute("class","hidetop close"))};
+
+function changeStyle(cssFile) {
+    var newlink = document.createElement("link");
+    newlink.setAttribute("rel", "stylesheet");
+    newlink.setAttribute("type", "text/css");
+    newlink.setAttribute("href", cssFile);
+    document.getElementsByTagName("head").item(0).replaceChild(newlink, document.getElementsByTagName("link").item(0));
 }
 
 function scrollToElement(id) {

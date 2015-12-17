@@ -110,6 +110,11 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         return false;
     }
 
+    @Override
+    public String Prefix() {
+        return "profile";
+    }
+
     private static final String TAG = "ProfileWebViewFragment";
     private static AdvWebView m_WebView;
 
@@ -444,16 +449,6 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
             getMainActivity().runOnUiThread(runnable);
         }
     }
-
-    @JavascriptInterface
-    public void saveHtml(final String html) {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new SaveHtml(getMainActivity(),html,"Profile");
-            }
-        });
-    }
     @JavascriptInterface
     public void setPrimaryDevice(final String id) {
         run(new Runnable() {
@@ -557,26 +552,6 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         });
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
-        if (Preferences.System.isDevSavePage()) {
-            menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    try {
-                        saveHtml();
-                    } catch (Exception ex) {
-                        return false;
-                    }
-                    return true;
-                }
-            });
-        }
-
         this.menu = menu;
-    }
-    public void saveHtml() {
-        try {
-            getWebView().loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
-        } catch (Throwable ex) {
-            AppLog.e(getMainActivity(), ex);
-        }
     }
 }

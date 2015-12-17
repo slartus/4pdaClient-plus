@@ -54,7 +54,6 @@ public class HtmlBuilder {
         m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/theme.js\"></script>\n");
         m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/blockeditor.js\"></script>\n");
         m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/z_emoticons.js\"></script>\n");
-        m_Body.append("<script type=\"text/javascript\">function openHat(e){var t=e.parentNode.getElementsByTagName(\"div\")[1];\"none\"==t.style.display?(t.style.display=\"\",e.setAttribute(\"class\",\"hidetop open\")):(t.style.display=\"none\",e.setAttribute(\"class\",\"hidetop close\"))}</script>\n");
     }
 
     public void addStyleSheetLink(StringBuilder sb) {
@@ -80,9 +79,13 @@ public class HtmlBuilder {
         m_Body.append("<body id=\"").append(id).append("\" class=\"modification ")
                 .append(isImage ? "" : "noimages ")
                 .append(App.getInstance().isNewYear() ? "newyear " : "")
-                .append(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isGpuImg", false) ? "ongpuimg \" " : "\" ")
-                .append(App.getInstance().getWebViewFont().equals("") ? " " : "style=\"font-family:").append(App.getInstance().getWebViewFont()).append(";\" ")
-                .append(bodyScript == null || TextUtils.isEmpty(bodyScript) ? "" : bodyScript)
+                .append(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isGpuImg", false) ? "ongpuimg \" " : "\" ");
+        if(App.getInstance().getWebViewFont().equals("")) {
+            m_Body.append(" ");
+        }else {
+            m_Body.append("style=\"font-family:").append(App.getInstance().getWebViewFont()).append(";\" ");
+        }
+        m_Body.append(bodyScript == null || TextUtils.isEmpty(bodyScript) ? "" : bodyScript)
                 .append(">\n");
         /*if (bodyScript == null || TextUtils.isEmpty(bodyScript)) {
             if(font==0){

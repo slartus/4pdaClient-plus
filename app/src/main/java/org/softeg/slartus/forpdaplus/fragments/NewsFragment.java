@@ -128,6 +128,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         return webView;
     }
 
+    @Override
     public String Prefix() {
         return "news";
     }
@@ -287,39 +288,9 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 }).setCheckable(true).setChecked(getWebView().getSettings().getLoadsImagesAutomatically());
 
         ExtUrl.addUrlSubMenu(new Handler(), getMainActivity(), menu, getUrl(), null, null);
-
-        if (Preferences.System.isDevSavePage()) {
-            menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    try {
-                        saveHtml();
-                    } catch (Exception ex) {
-                        return false;
-                    }
-                    return true;
-                }
-            });
-        }
         this.menu = menu;
     }
 
-    public void saveHtml() {
-        try {
-            webView.loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
-        } catch (Throwable ex) {
-            AppLog.e(getMainActivity(), ex);
-        }
-    }
-
-    @JavascriptInterface
-    public void saveHtml(final String html) {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new SaveHtml(getMainActivity(), html, "News");
-            }
-        });
-    }
 
 
     @Override
@@ -554,6 +525,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     "e);e();return b}};f[c]=f.lib4PDA=b;for(c in b.fn)b[c]=b.fn[c]}})(window);(function(a){var wrsI=0;\n" +
                     "window.wrs=function(c,f){a.write('<div id=\"wrs-div'+wrsI+'\"></div>');var d=a.getElementById('wrs-div'+wrsI),i=setInterval(function(w){if(!c()){return;}clearInterval(i);w=a.write;a.write=function(t){d.innerHTML+=t};f();a.write=w},500);wrsI++}})(document);</script>");
 */
+            body = body.replaceAll("\"//","\"http://");
             builder.append(parseBody(body));
 
             if (matchert.find()) {
