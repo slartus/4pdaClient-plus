@@ -33,6 +33,31 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class BbCodesQuickView extends BaseQuickView {
+    WebView webView;
+
+    @Override
+    public void onDestroy(){
+        if (webView != null) {
+            webView.setWebViewClient(null);
+            webView.removeAllViews();
+            webView.destroy();
+            webView = null;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        if (webView != null) {
+            webView.onResume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        if (webView != null) {
+            webView.onPause();
+        }
+    }
 
     public BbCodesQuickView(Context context) {
         super(context);
@@ -45,9 +70,6 @@ public class BbCodesQuickView extends BaseQuickView {
     private int getSelectionEnd() {
         return getEditor().getSelectionEnd();
     }
-
-
-    WebView webView;
 
 
     @Override

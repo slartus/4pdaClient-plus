@@ -423,6 +423,8 @@ public class QmsChatFragment extends WebViewFragment {
         super.onResume();
         loadPrefs();
         startUpdateTimer();
+        if(mPopupPanelView!=null)
+            mPopupPanelView.resume();
     }
 
     @Override
@@ -430,6 +432,8 @@ public class QmsChatFragment extends WebViewFragment {
         super.onPause();
         m_UpdateTimer.cancel();
         m_UpdateTimer.purge();
+        if(mPopupPanelView!=null)
+            mPopupPanelView.pause();
     }
 
     @Override

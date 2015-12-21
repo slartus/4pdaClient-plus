@@ -8,7 +8,7 @@ import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostItem;
  * Created by slartus on 23.02.14.
  */
 public class EmoticsItem extends QuickPostItem {
-    private EmoticsQuickView emoticsQuickView;
+    private EmoticsQuickView view;
     @Override
     public String getTitle() {
         return "Смайлы";
@@ -21,10 +21,13 @@ public class EmoticsItem extends QuickPostItem {
 
     @Override
     public BaseQuickView createView(Context context) {
-        emoticsQuickView = new EmoticsQuickView(context);
-        return emoticsQuickView;
+        view = new EmoticsQuickView(context);
+        return view;
     }
-    public EmoticsQuickView getEmoticsQuickView(){
-        return emoticsQuickView;
+
+    @Override
+    public BaseQuickView getBaseQuickView() {
+        return view;
     }
+
 }

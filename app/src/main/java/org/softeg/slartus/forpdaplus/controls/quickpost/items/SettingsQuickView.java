@@ -20,6 +20,21 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 public class SettingsQuickView extends BaseQuickView {
 
+    @Override
+    public void onDestroy() {
+
+    }
+
+    @Override
+    public void onResume() {
+
+    }
+
+    @Override
+    public void onPause() {
+
+    }
+
     public SettingsQuickView(Context context) {
         super(context);
     }

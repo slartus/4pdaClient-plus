@@ -189,12 +189,16 @@ public class EditPostFragment extends GeneralFragment {
     public void onResume() {
         super.onResume();
         setArrow();
+        if(mPopupPanelView!=null)
+            mPopupPanelView.resume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         removeArrow();
+        if(mPopupPanelView!=null)
+            mPopupPanelView.pause();
     }
 
     @Nullable

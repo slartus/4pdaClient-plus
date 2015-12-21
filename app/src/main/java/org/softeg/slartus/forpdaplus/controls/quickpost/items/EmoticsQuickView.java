@@ -18,12 +18,30 @@ import java.util.Set;
 
 public class EmoticsQuickView extends BaseQuickView {
     private WebView webView;
+    @Override
     public void onDestroy(){
-        webView.setWebViewClient(null);
-        webView.removeAllViews();
-        webView.destroy();
-        webView = null;
+        if (webView != null) {
+            webView.setWebViewClient(null);
+            webView.removeAllViews();
+            webView.destroy();
+            webView = null;
+        }
     }
+
+    @Override
+    public void onResume() {
+        if (webView != null) {
+            webView.onResume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        if (webView != null) {
+            webView.onPause();
+        }
+    }
+
     public EmoticsQuickView(Context context) {
         super(context);
     }

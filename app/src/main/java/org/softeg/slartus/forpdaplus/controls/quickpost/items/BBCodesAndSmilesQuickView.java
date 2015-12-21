@@ -13,6 +13,21 @@ import org.softeg.slartus.forpdaplus.R;
 
 public class BBCodesAndSmilesQuickView extends  BaseQuickView{
 
+    @Override
+    public void onDestroy() {
+
+    }
+
+    @Override
+    public void onResume() {
+
+    }
+
+    @Override
+    public void onPause() {
+
+    }
+
     public BBCodesAndSmilesQuickView(Context context) {
         super(context);
     }

@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
@@ -91,7 +92,6 @@ public class PopupPanelView {
         activityCreated(activity, null);
     }
     public void activityCreated(Activity activity, View view) {
-        imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         parentLayout = activity.getWindow().getDecorView().findViewById(android.R.id.content);
         if(view==null)
             this.emoticonsCover = parentLayout.findViewById(R.id.footer_for_emoticons);
@@ -103,6 +103,7 @@ public class PopupPanelView {
         changeKeyboardHeight((int) popUpheight);
         enablePopUpView();
         checkKeyboardHeight(parentLayout);
+
 
         ArrayList<QuickPostItem> items = new ArrayList<>();
 
@@ -190,11 +191,11 @@ public class PopupPanelView {
     /**
      * Checking keyboard height and keyboard visibility
      */
-    int previousHeightDiffrence = 0;
-    int heightDifference;
-    //int k = -1;
-    InputMethodManager imm;
-    Rect r;
+    private int previousHeightDiffrence = 0;
+    private int heightDifference;
+    private int k = -1;
+    private Rect r;
+    private String toast="";
     @SuppressWarnings("ConstantConditions")
     private void checkKeyboardHeight(final View parentLayout) {
 
@@ -207,8 +208,11 @@ public class PopupPanelView {
                         r = new Rect();
                         parentLayout.getWindowVisibleDisplayFrame(r);
 
-                        heightDifference = parentLayout.getRootView()
-                                .getHeight() - r.bottom;
+                        int screenHeight = parentLayout.getRootView()
+                                .getHeight();
+                        if (k == -1)
+                            k = screenHeight - r.bottom;
+                        heightDifference = screenHeight - (r.bottom) - k;
 
                         if (previousHeightDiffrence - heightDifference > 50) {
                             hidePopupWindow();
@@ -221,6 +225,11 @@ public class PopupPanelView {
                         } else {
                             isKeyBoardVisible = false;
                         }
+                        /*if(!toast.equals(screenHeight+" : "+k+" : "+heightDifference+" : "+r.bottom+" : "+isKeyBoardVisible)){
+                            toast = screenHeight+" : "+k+" : "+heightDifference+" : "+r.bottom+" : "+isKeyBoardVisible;
+                            Toast.makeText(App.getContext(), toast, Toast.LENGTH_SHORT).show();
+                            Log.e("kek", toast);
+                        }*/
                     }
                 }
         );
@@ -251,8 +260,24 @@ public class PopupPanelView {
                 popupWindow.dismiss();
             popupWindow = null;
             for(QuickPostItem item:mQuickPostPagerAdapter.mItems)
-                if(item.getName().equals("emotics"))
-                    ((EmoticsItem)item).getEmoticsQuickView().onDestroy();
+                    item.getBaseQuickView().onDestroy();
+        } catch (Throwable ex) {
+            Log.e("PopupPanelView", ex.toString());
+        }
+    }
+    public void pause(){
+        try {
+            hidePopupWindow();
+            for(QuickPostItem item:mQuickPostPagerAdapter.mItems)
+                item.getBaseQuickView().onPause();
+        } catch (Throwable ex) {
+            Log.e("PopupPanelView", ex.toString());
+        }
+    }
+    public void resume(){
+        try {
+            for(QuickPostItem item:mQuickPostPagerAdapter.mItems)
+                item.getBaseQuickView().onPause();
         } catch (Throwable ex) {
             Log.e("PopupPanelView", ex.toString());
         }

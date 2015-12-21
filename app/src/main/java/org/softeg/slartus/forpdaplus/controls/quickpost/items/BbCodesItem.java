@@ -5,6 +5,7 @@ import android.content.Context;
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostItem;
 
 public class BbCodesItem extends QuickPostItem {
+    private BbCodesQuickView view;
     @Override
     public String getTitle() {
         return "BB-коды";
@@ -17,7 +18,13 @@ public class BbCodesItem extends QuickPostItem {
 
     @Override
     public BaseQuickView createView(Context context) {
-        return new BbCodesQuickView(context);
+        view = new BbCodesQuickView(context);
+        return view;
+    }
+
+    @Override
+    public BaseQuickView getBaseQuickView() {
+        return view;
     }
 }
 

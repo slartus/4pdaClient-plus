@@ -6,6 +6,7 @@ import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -59,6 +60,8 @@ public class AdvWebView extends WebView {
             setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
             setScrollbarFadingEnabled(true);
         }
+        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN)
+            this.setLayerType(LAYER_TYPE_SOFTWARE, null);
 
         setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());
         //loadData("<html><head></head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8");

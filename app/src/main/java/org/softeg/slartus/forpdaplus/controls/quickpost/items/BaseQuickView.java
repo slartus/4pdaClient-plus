@@ -6,7 +6,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public abstract class BaseQuickView extends LinearLayout {
-
+    public abstract void onDestroy();
+    public abstract void onResume();
+    public abstract void onPause();
     private EditText mEditor;
 
     public BaseQuickView(Context context) {

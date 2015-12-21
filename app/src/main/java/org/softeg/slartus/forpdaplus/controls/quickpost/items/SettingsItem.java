@@ -8,6 +8,7 @@ import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostItem;
  * Created by slartus on 23.02.14.
  */
 public class SettingsItem extends QuickPostItem {
+    private SettingsQuickView view;
     @Override
     public String getTitle() {
         return "Настройки";
@@ -22,6 +23,12 @@ public class SettingsItem extends QuickPostItem {
 
     @Override
     public BaseQuickView createView(Context context) {
-        return new SettingsQuickView(context);
+        view = new SettingsQuickView(context);
+        return view;
+    }
+
+    @Override
+    public BaseQuickView getBaseQuickView() {
+        return view;
     }
 }

@@ -126,6 +126,7 @@ public class QuickPostFragment extends Fragment {
         send_button.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+                hideKeyboard();
                 EditPostFragment.newPost(getActivity(), mForumId, mTopicId, mAuthKey,
                         getPostBody(), parentTag);
                 return true;
@@ -209,6 +210,20 @@ public class QuickPostFragment extends Fragment {
             mPopupPanelView = null;
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(mPopupPanelView!=null)
+            mPopupPanelView.pause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(mPopupPanelView!=null)
+            mPopupPanelView.resume();
     }
 
     private class InnerPostTask extends PostTask {

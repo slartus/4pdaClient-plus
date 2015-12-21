@@ -67,12 +67,16 @@ public class QmsNewThreadFragment extends GeneralFragment {
     public void onPause() {
         super.onPause();
         removeArrow();
+        if(mPopupPanelView!=null)
+            mPopupPanelView.pause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         setArrow();
+        if(mPopupPanelView!=null)
+            mPopupPanelView.resume();
     }
 
     @Nullable
