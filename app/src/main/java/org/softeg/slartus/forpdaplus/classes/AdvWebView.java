@@ -60,7 +60,7 @@ public class AdvWebView extends WebView {
             setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
             setScrollbarFadingEnabled(true);
         }
-        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.JELLY_BEAN)
+        if(Preferences.System.getWebviewCompatMode())
             this.setLayerType(LAYER_TYPE_SOFTWARE, null);
 
         setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());

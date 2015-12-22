@@ -29,6 +29,7 @@ import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.DevDbDeviceFragment;
 import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
+import org.softeg.slartus.forpdaplus.fragments.SpecialView;
 import org.softeg.slartus.forpdaplus.fragments.profile.DeviceDelete;
 import org.softeg.slartus.forpdaplus.fragments.profile.DeviceEdit;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileEditFragment;
@@ -148,6 +149,14 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     public static Boolean tryShowNews(Activity context, String url, Boolean finish) {
         if (isNews(url)) {
             MainActivity.addTab(url, NewsFragment.newInstance(context, url));
+            return true;
+        }
+        return false;
+    }
+
+    public static Boolean tryShowSpecial(Activity context, String url, Boolean finish) {
+        if (url.contains("special")) {
+            SpecialView.showSpecial(url);
             return true;
         }
         return false;
@@ -359,6 +368,10 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             }
 
             if (tryShowNewsList(context, url, finishActivity)) {
+                return true;
+            }
+
+            if (tryShowSpecial(context, url, finishActivity)) {
                 return true;
             }
 

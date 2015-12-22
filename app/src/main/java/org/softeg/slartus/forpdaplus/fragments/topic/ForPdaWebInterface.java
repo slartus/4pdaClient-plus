@@ -13,8 +13,10 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -236,7 +238,7 @@ public class ForPdaWebInterface {
         run(new Runnable() {
             @Override
             public void run() {
-                ForumUser.showUserQuickAction(getMainActivity(), getContext().getWebView(), postId, userId, userNick,
+                ForumUser.showUserQuickAction(getMainActivity(), getContext().getWebView(), getContext().getTopic().getId(), postId, userId, userNick,
                         new ForumUser.InsertNickInterface() {
                             @Override
                             public void insert(String text) {
@@ -417,7 +419,7 @@ public class ForPdaWebInterface {
                     listView.setItemChecked(getContext().getTopic().getCurrentPage() - 1, true);
                     listView.setSelection(getContext().getTopic().getCurrentPage() - 1);
 
-                    new MaterialDialog.Builder(getMainActivity())
+                    MaterialDialog dialog = new MaterialDialog.Builder(getMainActivity())
                             .title("Перейти к странице")
                             .customView(view, false)
                             .positiveText("Перейти")
@@ -430,6 +432,7 @@ public class ForPdaWebInterface {
                             .negativeText("Отмена")
                             .cancelable(true)
                             .show();
+                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 } catch (Throwable ex) {
                     AppLog.e(getMainActivity(), ex);
                 }

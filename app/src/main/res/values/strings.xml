@@ -41,6 +41,7 @@
     <string name="Profile">Профиль</string>
     <string name="FindUserTopics">Темы пользователя</string>
     <string name="FindUserPosts">Сообщения пользователя</string>
+    <string name="FindUserPostsInTopic">Сообщения в этой теме</string>
     <string name="SelectAnAction">Выберите действие</string>
     <string name="OpenWith">Открыть с</string>
     <string name="NewDialog">Новый диалог</string>

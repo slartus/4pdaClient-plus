@@ -866,33 +866,35 @@ public class Client implements IHttpClient {
 
             boolean voted = false;
             for(Element element:poll.select(".borderwrap")){
-                if(element.select("input").isEmpty()) voted = true;
-                pollBuilder.append("<div class=\"poll_theme\">");
-                pollBuilder.append("<div class=\"theme_title\"><span>").append(element.select(".postdetails strong").first().text()).append("</span></div>");
-                pollBuilder.append("<div class=\"items").append(voted ? " voted" : "").append("\">");
-                if(voted){
-                    for(Element item:element.select("tr")){
-                        pollBuilder.append("<div class=\"item\">");
-                        pollBuilder.append("<span class=\"name\"><span>").append(item.select("td:nth-child(1)").first().text()).append("</span></span>");
-                        pollBuilder.append("<span class=\"num_votes\"><span>").append(item.select("td:nth-child(2) b").first().text()).append("</span></span>");
-                        pollBuilder.append("<div class=\"range\">");
-                        String percent = item.select("td:nth-child(3)").first().text().replace(" ","").replace("[","").replace("]","").replace(",",".");
-                        pollBuilder.append("<div class=\"range_bar\" style=\"width:").append(percent).append(";\"></div>");
-                        pollBuilder.append("<span class=\"value\"><span>").append(percent).append("</span></span>");
-                        pollBuilder.append("</div>");
-                        pollBuilder.append("</div>");
+                if(!element.select(".ipbtable").first().text().equals("")) {
+                    if (element.select("input").isEmpty()) voted = true;
+                    pollBuilder.append("<div class=\"poll_theme\">");
+                    pollBuilder.append("<div class=\"theme_title\"><span>").append(element.select(".postdetails strong").first().text()).append("</span></div>");
+                    pollBuilder.append("<div class=\"items").append(voted ? " voted" : "").append("\">");
+                    if (voted) {
+                        for (Element item : element.select("tr")) {
+                            pollBuilder.append("<div class=\"item\">");
+                            pollBuilder.append("<span class=\"name\"><span>").append(item.select("td:nth-child(1)").first().text()).append("</span></span>");
+                            pollBuilder.append("<span class=\"num_votes\"><span>").append(item.select("td:nth-child(2) b").first().text()).append("</span></span>");
+                            pollBuilder.append("<div class=\"range\">");
+                            String percent = item.select("td:nth-child(3)").first().text().replace(" ", "").replace("[", "").replace("]", "").replace(",", ".");
+                            pollBuilder.append("<div class=\"range_bar\" style=\"width:").append(percent).append(";\"></div>");
+                            pollBuilder.append("<span class=\"value\"><span>").append(percent).append("</span></span>");
+                            pollBuilder.append("</div>");
+                            pollBuilder.append("</div>");
+                        }
+                    } else {
+                        for (Element item : element.select("tr")) {
+                            pollBuilder.append("<label class=\"item\">");
+                            pollBuilder.append(item.select("input").first().outerHtml());
+                            pollBuilder.append("<span class=\"icon\"></span>");
+                            pollBuilder.append("<span class=\"item_body\"><span class=\"name\">").append(item.select("b").first().text()).append("</span></span>");
+                            pollBuilder.append("</label>");
+                        }
                     }
-                }else {
-                    for(Element item:element.select("tr")){
-                        pollBuilder.append("<label class=\"item\">");
-                        pollBuilder.append(item.select("input").first().outerHtml());
-                        pollBuilder.append("<span class=\"icon\"></span>");
-                        pollBuilder.append("<span class=\"item_body\"><span class=\"name\">").append(item.select("b").first().text()).append("</span></span>");
-                        pollBuilder.append("</label>");
-                    }
+                    pollBuilder.append("</div>");
+                    pollBuilder.append("</div>");
                 }
-                pollBuilder.append("</div>");
-                pollBuilder.append("</div>");
             }
             pollBuilder.append("</div>");
 

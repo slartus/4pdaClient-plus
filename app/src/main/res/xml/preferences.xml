@@ -17,8 +17,7 @@
                 android:title="Цвет кнопки с карандашом"/>
             <Preference
                 android:key="mainAccentColor"
-                android:title="Цвет акцента"
-                android:summary="Требуется перезапуск приложения"/>
+                android:title="Цвет акцента"/>
             <Preference
                 android:key="webViewFont"
                 android:title="Шрифт WebView"
@@ -372,6 +371,12 @@
             android:key="isGpuImg"
             android:summary="Не рекомендуется для Android версии ниже 4.4 KitKat"
             android:title="Оптимизация GIF анимаций на странице" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="webviewCompatMode"
+            android:summary="Убирает падения приложения, снижает производительность. Рекомендуется для Android 4.1"
+            android:title="Режим совместимости" />
 
         <CheckBoxPreference
             android:defaultValue="false"

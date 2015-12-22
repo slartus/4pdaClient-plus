@@ -17,7 +17,7 @@ public class ListCore {
         ArrayList<BrickInfo> res = new ArrayList<BrickInfo>();
         ArrayList<BrickInfo> allItems = getAllMenuBricks();
         for (String item : MainActivity.getPreferences().getString("selectedMenuItems", "0,1,2,3,4,5,9,10").split(","))
-            if(!item.equals("")) res.add(allItems.get(Integer.parseInt(item)));
+            if(!item.equals("")&!item.equals("null")) res.add(allItems.get(Integer.parseInt(item)));
         return res;
     }
     public static ArrayList<BrickInfo> getAllMenuBricks() {

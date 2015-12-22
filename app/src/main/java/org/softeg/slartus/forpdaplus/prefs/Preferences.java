@@ -316,6 +316,10 @@ public class Preferences {
 
     public static class System {
 
+        public static boolean getWebviewCompatMode() {
+            return PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("webviewCompatMode", false);
+        }
+
         public static void setSystemDir(String value) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
             prefs.edit().putString("path.system_path", value).apply();

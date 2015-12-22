@@ -47,10 +47,10 @@ public class ForumUser {
 
     public static void showUserQuickAction(final FragmentActivity context, View webView, final String userId,
                                            String userNick) {
-        showUserQuickAction(context, webView, "", userId, userNick, null);
+        showUserQuickAction(context, webView, null, "", userId, userNick, null);
     }
 
-    public static void showUserQuickAction(final FragmentActivity context, View webView, final String postId,
+    public static void showUserQuickAction(final FragmentActivity context, View webView, final String topicId, final String postId,
                                            final String userId,
                                            String userNick,final InsertNickInterface insertNickInterface) {
         try {
@@ -65,7 +65,8 @@ public class ForumUser {
             int showProfilePosition = -1;
             int showUserTopicsPosition = -1;
             int showUserPostsPosition = -1;
-            
+            int showUserPostsInTopicPosition = -1;
+
             if (Client.getInstance().getLogined()) {
                 if (insertNickInterface != null){
                     items.add(context.getString(R.string.InsertNick));
@@ -80,6 +81,11 @@ public class ForumUser {
             showUserTopicsPosition = i; i++;
             items.add(context.getString(R.string.FindUserPosts));
             showUserPostsPosition = i;
+            if(topicId!=null){
+                i++;
+                items.add(context.getString(R.string.FindUserPostsInTopic));
+                showUserPostsInTopicPosition = i;
+            }
 
             if (items.size() == 0) return;
 
@@ -89,6 +95,7 @@ public class ForumUser {
             final int finalShowProfilePosition = showProfilePosition;
             final int finalShowUserTopicsPosition = showUserTopicsPosition;
             final int finalShowUserPostsPosition = showUserPostsPosition;
+            final int finalShowUserPostsInTopicPosition = showUserPostsInTopicPosition;
             final String finalUserNick = userNick;
 
             new MaterialDialog.Builder(context)
@@ -124,6 +131,8 @@ public class ForumUser {
                                 MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick));
                             } else if (i == finalShowUserPostsPosition) {
                                 MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick));
+                            } else if (i == finalShowUserPostsInTopicPosition) {
+                                MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsInTopicSearchSettings(finalUserNick, topicId));
                             }
                         }
                     })

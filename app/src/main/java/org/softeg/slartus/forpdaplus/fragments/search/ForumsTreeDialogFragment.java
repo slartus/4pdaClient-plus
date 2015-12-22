@@ -11,6 +11,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -78,9 +79,8 @@ public class ForumsTreeDialogFragment extends DialogFragment {
         initSpinner();
 
         m_Progress = view.findViewById(R.id.progress);
-        return new MaterialDialog.Builder(getActivity())
+        MaterialDialog dialog =new MaterialDialog.Builder(getActivity())
                 .customView(view,false)
-                .cancelable(false)
                 .title("Форум")
                 .positiveText("Применить")
                 .negativeText("Отмена")
@@ -99,6 +99,8 @@ public class ForumsTreeDialogFragment extends DialogFragment {
                     }
                 })
                 .build();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        return dialog;
     }
 
 

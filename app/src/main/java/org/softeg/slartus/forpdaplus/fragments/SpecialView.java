@@ -1,26 +1,19 @@
 package org.softeg.slartus.forpdaplus.fragments;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import org.apache.http.cookie.Cookie;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
@@ -29,20 +22,18 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.fragments.qms.QmsChatFragment;
-import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
-import java.io.IOException;
 import java.util.regex.Matcher;
 
 /**
- * Created by radiationx on 06.12.15.
+ * Created by radiationx on 22.12.15.
  */
-public class ForumRulesFragment extends WebViewFragment{
+public class SpecialView extends WebViewFragment {
     AdvWebView m_WebView;
     AsyncTask asyncTask;
-    public final static String m_Title = "Правила форума";
+    public static String m_Title = "ForPDA";
+    public static String m_Url="";
     @Override
     public Menu getMenu() {
         return null;
@@ -75,12 +66,12 @@ public class ForumRulesFragment extends WebViewFragment{
 
     @Override
     public String getUrl() {
-        return null;
+        return m_Url;
     }
 
     @Override
     public String Prefix() {
-        return "forum_rules";
+        return "special";
     }
 
     @Override
@@ -107,8 +98,9 @@ public class ForumRulesFragment extends WebViewFragment{
         removeArrow();
     }
 
-    public static void showRules() {
-        MainActivity.addTab(m_Title, "RULES", new ForumRulesFragment());
+    public static void showSpecial(String url) {
+        MainActivity.addTab(m_Title, url, new SpecialView());
+        m_Url = url;
     }
 
     View view;
@@ -158,34 +150,22 @@ public class ForumRulesFragment extends WebViewFragment{
         protected Boolean doInBackground(String... forums) {
             try {
                 if (isCancelled()) return false;
-                Client client = Client.getInstance();
-                m_ThemeBody = transformBody(client.performGet("http://4pda.ru/forum/index.php?act=boardrules"));
+                m_ThemeBody = Client.getInstance().performGet(m_Url);
 
+                Matcher matcher = PatternExtensions.compile("<title>([\\S\\s]*?)</title>").matcher(m_ThemeBody);
+                if (matcher.find())
+                    m_Title = Html.fromHtml(matcher.group(1)).toString();
                 return true;
             } catch (Throwable e) {
                 return false;
             }
         }
 
-        private String transformBody(String body) {
-            HtmlBuilder builder = new HtmlBuilder();
-            builder.beginHtml(m_Title);
-            builder.beginBody("rules");
-
-            builder.append("<div class=\"posts_list\"><div class=\"post_container\"><div class=\"post_body \">");
-            builder.append(Jsoup.parse(body).select(".tablepad").first().html());
-            builder.append("</div></div></div>");
-
-            builder.endBody();
-            builder.endHtml();
-            return builder.getHtml().toString();
-        }
 
         protected void onPreExecute() {
             setLoading(true);
         }
 
-        private Throwable ex;
 
         protected void onPostExecute(final Boolean success) {
             setLoading(false);
@@ -195,9 +175,7 @@ public class ForumRulesFragment extends WebViewFragment{
             if (success) {
                 showThemeBody(m_ThemeBody);
             } else {
-                getSupportActionBar().setTitle(ex.getMessage());
                 m_WebView.loadDataWithBaseURL("\"file:///android_asset/\"", m_ThemeBody, "text/html", "UTF-8", null);
-                AppLog.e(getMainActivity(), ex);
             }
         }
     }
@@ -218,36 +196,3 @@ public class ForumRulesFragment extends WebViewFragment{
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

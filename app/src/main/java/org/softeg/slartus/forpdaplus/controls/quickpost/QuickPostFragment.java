@@ -94,7 +94,7 @@ public class QuickPostFragment extends Fragment {
             mAuthKey = savedInstanceState.getString("QuickPostFragment.AuthKey");
         }
 
-        mPopupPanelView.activityCreated(getActivity(), ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment()).getView());
+        mPopupPanelView.activityCreated(getActivity(), null);
         mPopupPanelView.setTopic(mForumId, mTopicId, mAuthKey);
 
     }

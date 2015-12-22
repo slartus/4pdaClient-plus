@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -162,6 +163,22 @@ public class SearchSettingsDialogFragment extends DialogFragment {
 
         return searchSettings;
     }
+    public static SearchSettings createUserPostsInTopicSearchSettings(String userNick, String topic) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+        SearchSettings searchSettings = new SearchSettings(SearchSettings.SEARCH_TYPE_USER_POSTS);
+        searchSettings.load(prefs);
+        searchSettings.setSort(SearchSettings.RESULT_SORT_DATE_DESC);
+        searchSettings.setQuery("");
+        searchSettings.setResultView(SearchSettings.RESULT_VIEW_POSTS);
+        searchSettings.setSource(SearchSettings.SOURCE_POSTS);
+        searchSettings.setUserName(userNick);
+        searchSettings.getTopicIds().clear();
+        searchSettings.getTopicIds().add("topic");
+        searchSettings.getForumsIds().clear();
+        searchSettings.getForumsIds().add("all");
+
+        return searchSettings;
+    }
 
     public static SearchSettingsDialogFragment createSettingsFragment(SearchSettings searchSettings) {
         Bundle args = new Bundle();
@@ -259,6 +276,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
                 }
             });
         }
+        adb.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         final MaterialDialog d = adb;
         return d;
     }

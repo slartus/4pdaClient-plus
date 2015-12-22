@@ -551,7 +551,9 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     public void tryRemoveTab(String tag){
         log("tryRemoveTab");
-        if(getSupportFragmentManager().findFragmentByTag(tag)!=null&!((GeneralFragment)getSupportFragmentManager().findFragmentByTag(tag)).closeTab()) removeTab(tag);
+        if(getSupportFragmentManager().findFragmentByTag(tag)!=null)
+            if(!((GeneralFragment)getSupportFragmentManager().findFragmentByTag(tag)).closeTab())
+                removeTab(tag);
     }
     public void removeTab(String tag){
         TabItem tab = App.getInstance().getTabByTag(tag);
