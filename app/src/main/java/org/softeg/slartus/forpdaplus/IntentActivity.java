@@ -359,7 +359,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 || uri.getHost().toLowerCase().contains("windowsphone.com")
                 || uri.getHost().toLowerCase().contains("mzstatic.com"))) {
             if (isTheme(uri)) {
-                showTopic(context, url);
+                showTopic(url);
                 return true;
             }
 
@@ -438,8 +438,8 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return false;
     }
 
-    public static void showTopic(Activity context, String url) {
-        MainActivity.addTab(url, ThemeFragment.newInstance(context, url));
+    public static void showTopic(String url) {
+        MainActivity.addTab(url, ThemeFragment.newInstance(url));
     }
 
     private static boolean tryFavorites(Activity context, String url, Boolean finishActivity) {

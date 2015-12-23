@@ -229,7 +229,7 @@ public class MainDrawerMenu {
                         return;
                     }
                 }
-                ThemeFragment.showTopicById(getContext(), "275433");
+                ThemeFragment.showTopicById("275433");
             }else {
                 selectItem(item);
             }

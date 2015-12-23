@@ -849,7 +849,7 @@ public class Client implements IHttpClient {
                 isWebviewAllowJavascriptInterface);
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Boolean browserStyle = prefs.getBoolean("theme.BrowserStyle", false);
+        Boolean browserStyle = prefs.getBoolean("theme.BrowserStylePreRemove", false);
         topicBodyBuilder.beginTopic();
 
         //>>ОПРОС

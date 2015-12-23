@@ -116,7 +116,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     private Menu menu;
 
     View view;
-    public static ThemeFragment newInstance(Context context, String url){
+    public static ThemeFragment newInstance(String url){
         ThemeFragment fragment = new ThemeFragment();
         Bundle args = new Bundle();
         args.putString(TOPIC_URL_KEY, url);
@@ -131,13 +131,13 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         return String.format("http://4pda.ru/forum/index.php?showtopic=%s%s", topicId, TextUtils.isEmpty(urlParams) ? "" : ("&" + urlParams));
     }
 
-    public static void showTopicById(Context context, CharSequence topicId, CharSequence urlParams) {
+    public static void showTopicById(CharSequence topicId, CharSequence urlParams) {
         String url = getThemeUrl(topicId, urlParams);
-        MainActivity.addTab("Тема", url, newInstance(context, url));
+        MainActivity.addTab("Тема", url, newInstance(url));
     }
-    public static void showTopicById(Context context, CharSequence topicId) {
+    public static void showTopicById(CharSequence topicId) {
         String url = getThemeUrl(topicId);
-        MainActivity.addTab("Тема", url, newInstance(context, url));
+        MainActivity.addTab("Тема", url, newInstance(url));
     }
 
     public static void showImgPreview(final FragmentActivity context, String title, String previewUrl,
@@ -738,7 +738,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     return true;
                 }
             });
-            optionsMenu.add("Вид как в браузере")
+            /*optionsMenu.add("Вид как в браузере")
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             Preferences.setBrowserView(!Preferences.isBrowserView());
@@ -756,7 +756,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                             menuItem.setChecked(Preferences.isBrowserView());
                             return true;
                         }
-                    }).setCheckable(true).setChecked(Preferences.isBrowserView());
+                    }).setCheckable(true).setChecked(Preferences.isBrowserView());*/
             if (Preferences.System.isCurator()) {
                 menu.add("Мультимодерация").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {

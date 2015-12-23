@@ -83,16 +83,16 @@ if(m_PagesCount==1)
         return m_CurrentPage;
     }
 
-    public void showActivity(Context context) {
-        ThemeFragment.showTopicById(context, m_Id);
+    public void showActivity() {
+        ThemeFragment.showTopicById(m_Id);
     }
 
-    public void showActivity(Context context, String params) {
-        showActivity(context, m_Id, params);
+    public void showActivity(String params) {
+        showActivity(m_Id, params);
     }
 
-    public static void showActivity(Context context, CharSequence themeId, CharSequence params) {
-        ThemeFragment.showTopicById(context, themeId, params);
+    public static void showActivity(CharSequence themeId, CharSequence params) {
+        ThemeFragment.showTopicById(themeId, params);
     }
 
     public String getShowBrowserUrl(String params) {

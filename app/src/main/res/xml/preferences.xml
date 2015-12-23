@@ -136,8 +136,8 @@
             android:title="Использовать кнопку для спойлеров" />
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="theme.BrowserStyle"
-            android:summary="Вид темы как в браузере в мобильной версии. !Темы загружаются быстрее!"
+            android:key="theme.BrowserStylePreRemove"
+            android:summary="Загружается страница практически без изменений в разметке"
             android:title="Вид как в браузере" />
 
         <PreferenceScreen android:title="Скачивание файлов">

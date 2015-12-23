@@ -833,7 +833,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
         private void showTheme() {
             finish();
-            ThemeFragment.showTopicById(getActivity(), "271502");
+            ThemeFragment.showTopicById("271502");
         }
 
         private boolean showAddRep(String id, String nick) {

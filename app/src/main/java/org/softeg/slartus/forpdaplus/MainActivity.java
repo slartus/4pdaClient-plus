@@ -45,6 +45,7 @@ import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchPostFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchTopicsFragment;
+import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
@@ -762,27 +763,15 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-        menu.add("Правила форума").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add(0, 0, 997, "Правила форума").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
-                /*StringBuilder text = new StringBuilder();
-                try {
-
-                    BufferedReader br = new BufferedReader(new InputStreamReader(App.getInstance().getAssets().open("rules.txt"), "UTF-8"));
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        text.append(line).append("\n");
-                    }
-
-                } catch (IOException e) {
-                    AppLog.e(MainActivity.this, e);
-                }
-                new MaterialDialog.Builder(MainActivity.this)
-                        .title("Правила форума")
-                        .content(Html.fromHtml(text.toString()))
-                        .positiveText(android.R.string.ok)
-                        .show();
-*/
                 ForumRulesFragment.showRules();
+                return true;
+            }
+        });
+        menu.add(0, 0, 998, "Помощь (FAQ)").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                IntentActivity.showTopic("http://4pda.ru/forum/index.php?s=&showtopic=271502&view=findpost&p=45570566");
                 return true;
             }
         });

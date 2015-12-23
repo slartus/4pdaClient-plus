@@ -104,7 +104,7 @@ public class TopicAttachmentListFragment extends BaseTaskListFragment {
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        IntentActivity.showTopic(getActivity(),attach.getPostUrl());
+                        IntentActivity.showTopic(attach.getPostUrl());
                         return true;
                     }
                 });

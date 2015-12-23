@@ -118,7 +118,7 @@ public class TopicUtils {
                                     public void onPositive(MaterialDialog dialog) {
                                         String navigateAction = values[selected[0]].toString();
                                         TopicUtils.saveTopicNavigateAction(templateId, navigateAction);
-                                        ExtTopic.showActivity(activity, topicId,
+                                        ExtTopic.showActivity(topicId,
                                                 ThemeOpenParams.getUrlParams(navigateAction, null));
 
                                         onClickListener.onClick(null, -1);
@@ -129,7 +129,7 @@ public class TopicUtils {
                     @Override
                     public void onNeutral(MaterialDialog dialog) {
                         String navigateAction = values[selected[0]].toString();
-                        ExtTopic.showActivity(activity, topicId,
+                        ExtTopic.showActivity(topicId,
                                 ThemeOpenParams.getUrlParams(navigateAction, null));
                         onClickListener.onClick(null, -1);
                     }
