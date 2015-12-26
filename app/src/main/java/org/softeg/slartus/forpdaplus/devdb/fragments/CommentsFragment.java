@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.devdb.adapters.CommentsAdapter;
@@ -19,6 +20,8 @@ import org.softeg.slartus.forpdaplus.devdb.model.CommentsModel;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+
 
 /**
  * Created by isanechek on 14.12.15.
@@ -26,7 +29,6 @@ import java.util.ArrayList;
 public class CommentsFragment extends BaseDevDbFragment implements FLifecycleUtil {
     private static final int LAYOUT = R.layout.dev_db_list_fragment;
 
-    private RecyclerView mRecyclerView;
     private CommentsAdapter mAdapter;
     private ArrayList<CommentsModel> mModelList;
 
@@ -55,15 +57,17 @@ public class CommentsFragment extends BaseDevDbFragment implements FLifecycleUti
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
         if (DevDbUtils.getComments(getActivity()).size() != 0) {
             mModelList = new ArrayList<>(DevDbUtils.getComments(getActivity()));
-            mRecyclerView = (RecyclerView) view.findViewById(R.id.devDbRecyclerView);
-            mRecyclerView.setVisibility(View.VISIBLE);
+            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.devDbRecyclerView);
+            recyclerView.setVisibility(View.VISIBLE);
             mAdapter = new CommentsAdapter(context, mModelList);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-            mRecyclerView.setAdapter(mAdapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         } else {
-            CardView cardView = (CardView) view.findViewById(R.id.dev_db_error_message_con);
-            cardView.setVisibility(View.VISIBLE);
+            /*CardView cardView = (CardView) view.findViewById(R.id.dev_db_error_message_con);
+            cardView.setVisibility(View.VISIBLE);*/
+            TextView textView = ButterKnife.findById(view, R.id.dev_db_error_message);
+            textView.setVisibility(View.VISIBLE);
         }
     }
 

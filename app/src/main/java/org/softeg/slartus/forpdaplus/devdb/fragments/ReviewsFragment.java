@@ -5,12 +5,12 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -27,6 +27,8 @@ import org.softeg.slartus.forpdaplus.devdb.helpers.FLifecycleUtil;
 import org.softeg.slartus.forpdaplus.devdb.model.ReviewsModel;
 
 import java.util.ArrayList;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by isanechek on 14.12.15.
@@ -71,8 +73,10 @@ public class ReviewsFragment extends BaseDevDbFragment implements FLifecycleUtil
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         } else {
-            CardView cardView = (CardView) view.findViewById(R.id.dev_db_error_message_con);
-            cardView.setVisibility(View.VISIBLE);
+            /*CardView cardView = (CardView) view.findViewById(R.id.dev_db_error_message_con);
+            cardView.setVisibility(View.VISIBLE);*/
+            TextView textView = ButterKnife.findById(view, R.id.dev_db_error_message);
+            textView.setVisibility(View.VISIBLE);
         }
     }
 

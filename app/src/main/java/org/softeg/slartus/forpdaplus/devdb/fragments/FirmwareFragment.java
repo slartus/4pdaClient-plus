@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.devdb.adapters.FirmwareAdapter;
@@ -19,6 +20,8 @@ import org.softeg.slartus.forpdaplus.devdb.model.FirmwareModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by isanechek on 14.12.15.
@@ -63,8 +66,10 @@ public class FirmwareFragment extends BaseDevDbFragment implements FLifecycleUti
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         } else {
-            CardView cardView = (CardView) view.findViewById(R.id.dev_db_error_message_con);
-            cardView.setVisibility(View.VISIBLE);
+            /*CardView cardView = (CardView) view.findViewById(R.id.dev_db_error_message_con);
+            cardView.setVisibility(View.VISIBLE);*/
+            TextView textView = ButterKnife.findById(view, R.id.dev_db_error_message);
+            textView.setVisibility(View.VISIBLE);
         }
     }
 

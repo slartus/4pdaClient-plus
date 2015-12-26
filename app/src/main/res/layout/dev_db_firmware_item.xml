@@ -3,59 +3,8 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-
-    <!--  <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:orientation="vertical">
-          <FrameLayout
-              android:layout_width="match_parent"
-              android:layout_height="110dp"
-              android:layout_gravity="top">
-
-              <TextView
-                  android:id="@+id/devDbFirmwareTitle"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:lines="4"
-                  android:text="Apple стала вторым по популярности производителем устройств для фотосьемки. Apple стала вторым по популярности производителем устройств для фотосьемки"
-                  android:gravity="center"
-                  android:textSize="18sp"
-                  android:layout_gravity="center"
-                  android:ellipsize="end"
-                  android:padding="8dp"/>
-
-          </FrameLayout>
-          <FrameLayout
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-              <TextView
-                  android:id="@+id/devDbFirmwareDate"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:lines="1"
-                  android:text="18.12.2015 22:33"
-                  android:layout_gravity="bottom|right"
-                  android:textSize="12sp"
-                  android:layout_marginRight="8dp"
-                  android:layout_marginBottom="8dp"/>
-
-              <TextView
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="Apple iPhone 5S"
-                  android:id="@+id/devDbFirmwareDescription"
-                  android:layout_gravity="bottom|left"
-                  android:layout_marginBottom="8dp"
-                  android:layout_marginLeft="8dp"
-                  android:textSize="16sp"
-                  android:padding="4dp"/>
-
-          </FrameLayout>
-
-
-      </LinearLayout>-->
+              android:layout_height="wrap_content"
+    android:padding="4dp">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -67,15 +16,14 @@
             android:id="@+id/devDbFirmwareTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:textSize="16sp"
-            android:text="Apple iPhone 6S Plus Apple iPhone 6S Plus Apple iPhone 6S Plus"
             android:textColor="@color/accent"
             android:layout_gravity="left|center_vertical"
             android:layout_marginBottom="2dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="2dp"
-            android:layout_marginRight="8dp"/>
+            android:layout_marginRight="8dp"
+            tools:text="Apple iPhone 6S Plus Apple iPhone 6S Plus Apple iPhone 6S Plus"/>
 
         <TextView
             android:id="@+id/devDbFirmwareDescription"
@@ -83,10 +31,10 @@
             android:layout_height="wrap_content"
             android:lines="1"
             android:layout_gravity="left|center_vertical"
-            android:text="продам"
             android:textSize="12sp"
             android:layout_marginLeft="8dp"
-            android:layout_marginBottom="4dp"/>
+            android:layout_marginBottom="4dp"
+            tools:text="продам"/>
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
@@ -97,12 +45,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lines="1"
+            android:layout_marginRight="8dp"
             android:layout_gravity="right"
-            android:text="20.12.1985 12:35"
             android:padding="4dp"
             android:textSize="10sp"
             tools:ignore="SmallSp"
-            android:layout_marginRight="8dp"/>
+            tools:text="20.12.1985 12:35"
+            />
     </LinearLayout>
 
 </LinearLayout>
