@@ -54,7 +54,7 @@ public class ParentFragment extends GeneralFragment {
         args.putString(DEVICE_ID_KEY, deviceId);
         args.putInt(POSITION_ID, position);
         args.putString(TOOLBAR_TITLE, title);
-        MainActivity.addTab(deviceId + "more", newInstance(args));
+        MainActivity.addTab(title, deviceId + "more", newInstance(args));
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -71,11 +71,24 @@ public class ParentFragment extends GeneralFragment {
         m_Position = extras.getInt(POSITION_ID);
         m_Title = extras.getString(TOOLBAR_TITLE);
         getMainActivity().setTitle(m_Title);
+        getMainActivity().getToolbarShadow().setVisibility(View.GONE);
         if (DevDbUtils.isAndroid5()) {
             getMainActivity().toolbar.setElevation(0);
         }
 
         loading();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getMainActivity().getToolbarShadow().setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getMainActivity().getToolbarShadow().setVisibility(View.GONE);
     }
 
     @Override

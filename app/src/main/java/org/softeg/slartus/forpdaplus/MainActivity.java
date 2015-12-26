@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     int lastTheme;
     private static TabItem tabOnIntent = null;
     private static boolean activityPaused = false;
+    private View toolbarShadow;
 
     public static SearchSettings searchSettings;
 
@@ -164,8 +165,9 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
             setContentView(R.layout.main);
             toolbar = (Toolbar) findViewById(R.id.toolbar);
+            toolbarShadow = findViewById(R.id.toolbar_shadow);
             if(Build.VERSION.SDK_INT>20) {
-                findViewById(R.id.toolbar_shadow).setVisibility(View.GONE);
+                toolbarShadow.setVisibility(View.GONE);
                 toolbar.setElevation(4);
             }
             setSupportActionBar(toolbar);
@@ -230,6 +232,11 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             AppLog.e(getApplicationContext(), ex);
         }
     }
+
+    public View getToolbarShadow() {
+        return toolbarShadow;
+    }
+
     public void setArrow(final boolean b, final View.OnClickListener listener){
         if(mMainDrawerMenu==null) return;
         mMainDrawerMenu.getmDrawerToggle().setDrawerIndicatorEnabled(!b);

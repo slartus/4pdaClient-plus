@@ -1602,6 +1602,23 @@ a {
   top: -0.5em;
   left: -0.5em;
 }
+body.newyear .post_container .post_header .avatar .img {
+  -webkit-border-radius: 4em;
+  border-radius: 4em;
+}
+body.newyear .post_container .post_header .avatar:after {
+  content: "";
+  position: absolute;
+  height: 4em;
+  width: 4.5em;
+  background-image: url(hat.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  top: -0.5em;
+  left: 0.625em;
+  -webkit-transform: rotate(10deg);
+  transform: rotate(10deg);
+}
 .post_container {
   background: #ffffff;
   margin: 0.5em 0;
@@ -1616,6 +1633,7 @@ a {
 }
 .post_container .post_header .avatar {
   width: 4em;
+  position: relative;
 }
 .post_container .post_header .avatar .img {
   height: 4em;
@@ -2076,7 +2094,6 @@ div[data-post] .post_body {
   height: 4em;
   margin-right: 1em;
   float: left;
-  overflow: hidden;
 }
 .user-profile-list > li:first-child .user-box .photo img {
   display: block;
@@ -2089,10 +2106,24 @@ div[data-post] .post_body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+  position: relative;
 }
 .user-profile-list > li:first-child .user-box .photo .img.circle {
   -webkit-border-radius: 4.5em;
   border-radius: 4.5em;
+}
+.user-profile-list > li:first-child .user-box .photo .img:after {
+  content: "";
+  position: absolute;
+  height: 4em;
+  width: 4.5em;
+  background-image: url(hat.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  top: -0.5em;
+  left: 0.625em;
+  -webkit-transform: rotate(10deg);
+  transform: rotate(10deg);
 }
 .user-profile-list > li:first-child .user-box h1 {
   display: block;

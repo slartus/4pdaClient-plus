@@ -368,7 +368,7 @@
 
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="isGpuImg"
+            android:key="isAccelerateGif"
             android:summary="Не рекомендуется для Android версии ниже 4.4 KitKat"
             android:title="Оптимизация GIF анимаций на странице" />
 
@@ -389,6 +389,11 @@
             android:key="notify.beta_version"
             android:summary="Сообщать о версиях для тестирования"
             android:title="Сообщать о бета-версиях" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="newYearIsHoliday"
+            android:title="Новый год - праздник не для меня"/>
     </PreferenceScreen>
 
     <PreferenceScreen

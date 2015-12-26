@@ -1,7 +1,9 @@
 package org.softeg.slartus.forpdaplus.devdb.fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.devdb.adapters.ReviewsAdapter;
 import org.softeg.slartus.forpdaplus.devdb.fragments.base.BaseDevDbFragment;
@@ -53,10 +62,11 @@ public class ReviewsFragment extends BaseDevDbFragment implements FLifecycleUtil
         super.onViewCreated(view, savedInstanceState);
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
         if (DevDbUtils.getReviews(getActivity()).size() != 0) {
+            initImageLoader(App.getContext());
             mModelList = new ArrayList<>(DevDbUtils.getReviews(getActivity()));
             mRecyclerView = (RecyclerView) view.findViewById(R.id.devDbRecyclerView);
             mRecyclerView.setVisibility(View.VISIBLE);
-            mAdapter = new ReviewsAdapter(context, mModelList);
+            mAdapter = new ReviewsAdapter(context, mModelList, ImageLoader.getInstance());
             mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
@@ -65,6 +75,29 @@ public class ReviewsFragment extends BaseDevDbFragment implements FLifecycleUtil
             cardView.setVisibility(View.VISIBLE);
         }
     }
+
+    private static void initImageLoader(Context context) {
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageForEmptyUri(R.drawable.no_image)
+                .delayBeforeLoading(1000)
+                .resetViewBeforeLoading(false)  // default
+                .cacheInMemory(true)
+                .cacheOnDisc(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .handler(new Handler())
+                .build();
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                .threadPoolSize(5)
+                .threadPriority(Thread.MIN_PRIORITY)
+                .denyCacheImageMultipleSizesInMemory()
+                .memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024)) // 2 Mb
+                .discCacheFileNameGenerator(new HashCodeFileNameGenerator())
+                .defaultDisplayImageOptions(options)
+                .build();
+
+        ImageLoader.getInstance().init(config);
+    }
+
     @Override
     public void onPauseFragment() {
 

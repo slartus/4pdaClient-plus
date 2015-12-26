@@ -84,6 +84,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
             case WebView.HitTestResult.UNKNOWN_TYPE:
             case WebView.HitTestResult.EDIT_TEXT_TYPE:
                 break;
+            case WebView.HitTestResult.IMAGE_TYPE:
+                ExtUrl.showImageSelectActionDialog(mHandler, getContext(), getWebView().getHitTestResult().getExtra());
             default: {
                 getWebView().requestFocusNodeHref(urlHandler.obtainMessage());
             }

@@ -16,7 +16,10 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.IntentActivity;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
+import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 
 /**
@@ -201,5 +204,34 @@ public class ExtUrl {
 
     public static void showSelectActionDialog(final android.os.Handler handler, final Context context, final String url) {
         showSelectActionDialog(handler, context, "", "", url, "", "", "", "", "");
+    }
+
+
+    public static void showImageSelectActionDialog(final android.os.Handler handler, final Context context, final String url) {
+        CharSequence[] titles = new CharSequence[]{"Открыть","Открыть в...", "Скопировать ссылку", "Сохранить"};
+        new MaterialDialog.Builder(context)
+                .content(url)
+                .items(titles)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View view, int i, CharSequence titles) {
+                        switch (i) {
+                            case 0:
+                                ImageViewActivity.startActivity(context, url);
+                                break;
+                            case 1:
+                                showInBrowser(context, url);
+                                break;
+                            case 2:
+                                copyLinkToClipboard(context, url);
+                                break;
+                            case 3:
+                                DownloadsService.download((Activity)context, url, false);
+                                break;
+                        }
+                    }
+                })
+                .cancelable(true)
+                .show();
     }
 }
