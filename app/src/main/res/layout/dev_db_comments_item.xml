@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="150dp">
+
+    <FrameLayout android:id="@+id/devDbRatingCon"
+                 android:layout_width="100dp"
+                 android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="9"
+            android:id="@+id/devDbCommentsRatingNum"
+            android:layout_gravity="center"
+            android:textSize="55sp"
+            android:padding="8dp"
+            android:layout_marginBottom="8dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="#11a10c"
+            android:layout_gravity="center"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_marginTop="22dp"/>
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+        <!--android:text="Отлично"-->
+        <!--android:id="@+id/devDbCommentsRatingText"-->
+        <!--android:layout_gravity="center_horizontal|bottom"-->
+        <!--android:padding="4dp"-->
+        <!--android:layout_marginBottom="12dp"-->
+        <!--android:textSize="18sp"/>-->
+    </FrameLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout android:id="@+id/devDbCommentsConOne"
+                      android:layout_width="match_parent"
+                      android:layout_height="35dp"
+                      android:orientation="horizontal"
+                      android:layout_gravity="top"
+                      android:layout_alignParentLeft="true"
+                      android:layout_marginLeft="0dp"
+                      android:layout_alignParentTop="true"
+                      android:layout_marginTop="0dp">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="4dp"
+                android:layout_marginTop="4dp">
+                <TextView android:id="@+id/devDbCommentsUserName"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="Валера Пупкин"
+                          android:lines="1"
+                          android:textSize="18sp"
+                          android:textColor="#0b8cf5"/>
+            </FrameLayout>
+
+
+        </LinearLayout>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:layout_gravity="bottom|right"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentRight="true">
+
+            <!--Пока не нужно-->
+            <!--<TextView android:id="@+id/devDbCommentsRating"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Да170/Нет130"-->
+            <!--android:textSize="12sp"-->
+            <!--android:layout_marginRight="2dp"/>-->
+            <TextView android:id="@+id/devDbCommentsDatePost"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="20.09.85"
+                      android:padding="2dp"
+                      android:textSize="12sp"
+                      android:layout_marginRight="2dp" />
+
+        </FrameLayout>
+
+        <TextView android:id="@+id/devDbCommentsBodeText"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="Ваш сраный телефон - епучие говно. Эти пляцкие загнутые края экрана. Да чтоб дизайнер горел в аду, сучий глаз."
+                  android:layout_below="@id/devDbCommentsConOne"
+                  android:lines="4"
+                  android:padding="4dp"
+                  android:layout_marginRight="2dp"
+                  android:ellipsize="end"/>
+
+    </RelativeLayout>
+</LinearLayout>

@@ -32,6 +32,7 @@ import org.softeg.slartus.forpdaplus.classes.LazyGallery.LazyAdapter;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
+import org.softeg.slartus.forpdaplus.devdb.ParentFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,6 +56,8 @@ public class DevDbDeviceFragment extends GeneralFragment {
     private static final int[] IDS = { R.id.dev_db_title, R.id.dev_db_sub_title };
     private static final int LAYOUT = R.layout.dev_item_x;
     View view;
+
+    private String title;
 
     @Override
     public Menu getMenu() {
@@ -164,7 +167,8 @@ public class DevDbDeviceFragment extends GeneralFragment {
         return (int) (p*getResources().getDisplayMetrics().density + 0.5f);
     }
     private void initUI() throws IOException {
-        getMainActivity().setTitle(m_DevDbDevice.getInfo().Model);
+        title = m_DevDbDevice.getInfo().Model;
+        getMainActivity().setTitle(title);
         App.getInstance().getTabByTag(getTag()).setTitle(m_DevDbDevice.getInfo().Model);
         TabDrawerMenu.notifyDataSetChanged();
 
@@ -245,19 +249,24 @@ public class DevDbDeviceFragment extends GeneralFragment {
 //                    // not use
                     break;
                 case 2:
-                    showTest(m_DeviceId + "#comments");
+//                    showTest(m_DeviceId + "#comments");
+                    showFrag(m_DeviceId, title, 0);
                     break;
                 case 3:
-                    showTest(m_DeviceId + "#discussions");
+//                    showTest(m_DeviceId + "#discussions");
+                    showFrag(m_DeviceId, title, 1);
                     break;
                 case 4:
-                    showTest(m_DeviceId + "#reviews");
+//                    showTest(m_DeviceId + "#reviews");
+                    showFrag(m_DeviceId, title, 2);
                     break;
                 case 5:
-                    showTest(m_DeviceId + "#firmware");
+//                    showTest(m_DeviceId + "#firmware");
+                    showFrag(m_DeviceId, title, 3);
                     break;
                 case 6:
-                    showTest(m_DeviceId + "#prices");
+//                    showTest(m_DeviceId + "#prices");
+                    showFrag(m_DeviceId, title, 4);
                     break;
                 default:
                     break;
@@ -268,6 +277,11 @@ public class DevDbDeviceFragment extends GeneralFragment {
     private void showTest(String link) {
         ExtUrl.showSelectActionDialog(mHandler, getMainActivity(), link);
     }
+
+    private void showFrag(String id, String title, int position) {
+        ParentFragment.showDevice1(id, title, position);
+    }
+
 
 //    private void fill() throws IOException {
 //        LazyAdapter adapter = new LazyAdapter(DevDbDeviceActivity.this,

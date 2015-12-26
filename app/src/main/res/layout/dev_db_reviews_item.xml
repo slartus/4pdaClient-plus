@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="150dp">
+
+    <FrameLayout
+        android:layout_width="150dp"
+        android:layout_height="150dp">
+
+        <ImageView
+            android:id="@+id/devDbReviewsIV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"/>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/dev_db_con"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout android:id="@+id/devDbReviewsContainer"
+                     android:layout_width="match_parent"
+                     android:layout_height="120dp"
+                     android:gravity="top">
+
+            <TextView
+                android:id="@+id/devDbReviewsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="4"
+                android:textColor="@color/accent"
+                android:padding="8dp"
+                android:gravity="center"
+                android:textSize="14sp"
+                android:layout_gravity="center"/>
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/devDbReviewsDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:layout_gravity="bottom|right"
+            android:padding="4dp"
+            android:textSize="12sp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

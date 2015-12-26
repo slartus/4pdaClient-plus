@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:padding="8dp">
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/devDbPricesText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:text="Apple iPhone 6S Plus Apple iPhone 6S Plus Apple iPhone 6S Plus"
+            android:textColor="@color/accent"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="8dp"/>
+
+        <TextView
+            android:id="@+id/devDbPricesDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:layout_gravity="left|center_vertical"
+            android:text="продам"
+            android:textSize="12sp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="4dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="100dp"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/devDbPricesDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:layout_gravity="right"
+            android:text="20.12.1985 12:35"
+            android:padding="4dp"
+            android:textSize="10sp"
+            tools:ignore="SmallSp"
+            android:layout_marginRight="8dp"/>
+    </LinearLayout>
+</LinearLayout>
