@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -87,7 +88,7 @@ public class LoginDialog {
 
     public static void showDialog(final Context context, final Client.OnUserChangedListener onConnectResult) {
         final LoginDialog loginDialog = new LoginDialog(context);
-        new MaterialDialog.Builder(context)
+        MaterialDialog dialog = new MaterialDialog.Builder(context)
                 .title("Вход")
                 .customView(loginDialog.getView(),true)
                 .positiveText("Вход")
@@ -98,7 +99,9 @@ public class LoginDialog {
                         loginDialog.connect(onConnectResult);
                     }
                 })
-                .show();
+                .build();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        dialog.show();
     }
 
     public static void logout(Context context) {

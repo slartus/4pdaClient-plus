@@ -173,7 +173,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         searchSettings.setSource(SearchSettings.SOURCE_POSTS);
         searchSettings.setUserName(userNick);
         searchSettings.getTopicIds().clear();
-        searchSettings.getTopicIds().add("topic");
+        searchSettings.getTopicIds().add(topic);
         searchSettings.getForumsIds().clear();
         searchSettings.getForumsIds().add("all");
 

@@ -58,8 +58,8 @@ public class PricesFragment extends BaseDevDbFragment implements FLifecycleUtil 
             mModelList = new ArrayList<>(DevDbUtils.getPrices(getActivity()));
             mRecyclerView = (RecyclerView) view.findViewById(R.id.devDbRecyclerView);
             mRecyclerView.setVisibility(View.VISIBLE);
-            mAdapter = new PricesAdapter(context, mModelList);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+            mAdapter = new PricesAdapter(getActivity(), mModelList);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         } else {

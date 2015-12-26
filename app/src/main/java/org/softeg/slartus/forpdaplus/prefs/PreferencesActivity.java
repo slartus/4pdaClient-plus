@@ -780,15 +780,15 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     "<b>E-mail:</b> <a href=\"mailto:slartus+4pda@gmail.com\">slartus+4pda@gmail.com</a><br/><br/>\n" +
                     "<b>Помощник: </b> Евгений Низамиев aka <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
                     "<b>E-mail:</b> <a href=\"mailto:radiationx@yandex.ru\">radiationx@yandex.ru</a><br/><br/>\n" +
-                    "<b>Помощник: </b> Aleksandr Tainyuk aka <a href=\"http://4pda.ru/forum/index.php?showuser=1726458\">iSanechek</a><br/><br/>\n" +
-                    //"<b>E-mail:</b> <a href=\"mailto:radiationx@yandex.ru\">radiationx@yandex.ru</a><br/><br/>\n" +
+                    "<b>Помощник: </b> Aleksandr Tainyuk aka <a href=\"http://4pda.ru/forum/index.php?showuser=1726458\">iSanechek</a><br/>\n" +
+                    "<b>E-mail:</b> <a href=\"mailto:devuicore@gmail.com\">devuicore@gmail.com</a><br/><br/>\n" +
                     "<b>Дизайнер стилей: </b> <a href=\"http://4pda.ru/forum/index.php?showuser=96664\">Морфий</a> и <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
                     "<b>Благодарности: </b> <br/>\n" +
                     "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=1657987\">__KoSyAk__</a></b> Иконка программы<br/>\n" +
                     "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=96664\">Морфий</a></b> Material стили<br/>\n" +
                     "* <b>Пользователям 4pda</b> (тестирование, идеи, поддержка)\n" +
                     "<br/><br/>" +
-                    "Copyright 2011-2015 Artem Slinkin <slartus@gmail.com>";
+                    "Copyright 2011-2016 Artem Slinkin <slartus@gmail.com>";
 
             new MaterialDialog.Builder(getActivity())
                     .title(getProgramFullName(getActivity()))

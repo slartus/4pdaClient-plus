@@ -2035,6 +2035,19 @@ div[data-post] .post_body {
 }
 /*--- END FORUM TOPIC ---*/
 /*--- PROFILE ---*/
+body.newyear .user-profile-list > li:first-child .user-box .photo .img:after {
+  content: "";
+  position: absolute;
+  height: 4em;
+  width: 4.5em;
+  background-image: url(hat.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  top: -0.5em;
+  left: 0.625em;
+  -webkit-transform: rotate(10deg);
+  transform: rotate(10deg);
+}
 .user-profile-list {
   max-width: 60em;
   margin: 0 auto;
@@ -2120,23 +2133,12 @@ div[data-post] .post_body {
   background-repeat: no-repeat;
   background-size: contain;
   position: relative;
+  -webkit-border-radius: 4em;
+  border-radius: 4em;
 }
 .user-profile-list > li:first-child .user-box .photo .img.circle {
-  -webkit-border-radius: 4.5em;
-  border-radius: 4.5em;
-}
-.user-profile-list > li:first-child .user-box .photo .img:after {
-  content: "";
-  position: absolute;
-  height: 4em;
-  width: 4.5em;
-  background-image: url(hat.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  top: -0.5em;
-  left: 0.625em;
-  -webkit-transform: rotate(10deg);
-  transform: rotate(10deg);
+  -webkit-border-radius: 4em;
+  border-radius: 4em;
 }
 .user-profile-list > li:first-child .user-box h1 {
   display: block;

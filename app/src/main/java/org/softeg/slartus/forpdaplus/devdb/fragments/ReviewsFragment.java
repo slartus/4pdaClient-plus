@@ -68,8 +68,8 @@ public class ReviewsFragment extends BaseDevDbFragment implements FLifecycleUtil
             mModelList = new ArrayList<>(DevDbUtils.getReviews(getActivity()));
             mRecyclerView = (RecyclerView) view.findViewById(R.id.devDbRecyclerView);
             mRecyclerView.setVisibility(View.VISIBLE);
-            mAdapter = new ReviewsAdapter(context, mModelList, ImageLoader.getInstance());
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+            mAdapter = new ReviewsAdapter(getActivity(), mModelList, ImageLoader.getInstance());
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         } else {

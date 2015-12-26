@@ -59,8 +59,8 @@ public class CommentsFragment extends BaseDevDbFragment implements FLifecycleUti
             mModelList = new ArrayList<>(DevDbUtils.getComments(getActivity()));
             RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.devDbRecyclerView);
             recyclerView.setVisibility(View.VISIBLE);
-            mAdapter = new CommentsAdapter(context, mModelList);
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            mAdapter = new CommentsAdapter(getActivity(), mModelList);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             recyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         } else {

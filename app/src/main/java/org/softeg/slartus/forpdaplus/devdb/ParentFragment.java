@@ -71,24 +71,21 @@ public class ParentFragment extends GeneralFragment {
         m_Position = extras.getInt(POSITION_ID);
         m_Title = extras.getString(TOOLBAR_TITLE);
         getMainActivity().setTitle(m_Title);
-        getMainActivity().getToolbarShadow().setVisibility(View.GONE);
-        if (DevDbUtils.isAndroid5()) {
-            getMainActivity().toolbar.setElevation(0);
-        }
-
         loading();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getMainActivity().getToolbarShadow().setVisibility(View.VISIBLE);
+        if(!DevDbUtils.isAndroid5())
+            getMainActivity().getToolbarShadow().setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getMainActivity().getToolbarShadow().setVisibility(View.GONE);
+        if(!DevDbUtils.isAndroid5())
+            getMainActivity().getToolbarShadow().setVisibility(View.GONE);
     }
 
     @Override
@@ -96,6 +93,12 @@ public class ParentFragment extends GeneralFragment {
 //        recLifeCycle(getClass(), CALL_TO_SUPER);
         rootView = inflater.inflate(LAYOUT, container, false);
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
+        getMainActivity().getToolbarShadow().setVisibility(View.GONE);
+
+        if (DevDbUtils.isAndroid5()) {
+            getMainActivity().getAppBarLayout().setElevation(0);
+            rootView.findViewById(R.id.dev_toolbar_shadow).setVisibility(View.GONE);
+        }
         return rootView;
     }
 

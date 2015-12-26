@@ -50,7 +50,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Time: 8:03
  */
 @ReportsCrashes(
-        mailTo = "ololosh10050@gmail.com,slartus@gmail.com",
+        mailTo = "ololosh10050@gmail.com,slartus@gmail.com,devuicore@gmail.com",
         mode = ReportingInteractionMode.DIALOG,
         customReportContent = {ReportField.APP_VERSION_CODE, ReportField.APP_VERSION_NAME,
                 ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL,

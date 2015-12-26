@@ -59,8 +59,8 @@ public class DiscussionFragment extends BaseDevDbFragment implements FLifecycleU
             mModelList = new ArrayList<>(DevDbUtils.getDiscussion(getActivity()));
             mRecyclerView = (RecyclerView) view.findViewById(R.id.devDbRecyclerView);
             mRecyclerView.setVisibility(View.VISIBLE);
-            mAdapter = new DiscussionAdapter(context, mModelList);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+            mAdapter = new DiscussionAdapter(getActivity(), mModelList);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         } else {

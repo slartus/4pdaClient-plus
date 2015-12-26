@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -105,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     private static TabItem tabOnIntent = null;
     private static boolean activityPaused = false;
     private View toolbarShadow;
+    private AppBarLayout appBarLayout;
 
     public static SearchSettings searchSettings;
 
@@ -165,10 +167,12 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
             setContentView(R.layout.main);
             toolbar = (Toolbar) findViewById(R.id.toolbar);
+            appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
             toolbarShadow = findViewById(R.id.toolbar_shadow);
             if(Build.VERSION.SDK_INT>20) {
                 toolbarShadow.setVisibility(View.GONE);
                 toolbar.setElevation(4);
+                appBarLayout.setElevation(4);
             }
             setSupportActionBar(toolbar);
             if (getSupportActionBar() != null) {
@@ -235,6 +239,10 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     public View getToolbarShadow() {
         return toolbarShadow;
+    }
+
+    public AppBarLayout getAppBarLayout() {
+        return appBarLayout;
     }
 
     public void setArrow(final boolean b, final View.OnClickListener listener){

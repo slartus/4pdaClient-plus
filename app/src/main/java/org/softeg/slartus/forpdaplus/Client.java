@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -396,7 +397,7 @@ public class Client implements IHttpClient {
 
             final LoginDialog loginDialog = new LoginDialog(mContext);
 
-            new MaterialDialog.Builder(mContext)
+            MaterialDialog dialog = new MaterialDialog.Builder(mContext)
                     .title("Вход")
                     .customView(loginDialog.getView(), true)
                     .positiveText("Вход")
@@ -407,7 +408,9 @@ public class Client implements IHttpClient {
                             loginDialog.connect(onUserChangedListener);
                         }
                     })
-                    .show();
+                    .build();
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            dialog.show();
 
         } catch (Exception ex) {
             AppLog.e(mContext, ex);

@@ -61,8 +61,8 @@ public class FirmwareFragment extends BaseDevDbFragment implements FLifecycleUti
             mModelList = new ArrayList<>(DevDbUtils.getFirmware(getActivity()));
             mRecyclerView = (RecyclerView) view.findViewById(R.id.devDbRecyclerView);
             mRecyclerView.setVisibility(View.VISIBLE);
-            mAdapter = new FirmwareAdapter(context, mModelList);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+            mAdapter = new FirmwareAdapter(getActivity(), mModelList);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         } else {

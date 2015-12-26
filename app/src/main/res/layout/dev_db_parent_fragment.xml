@@ -28,7 +28,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:id="@+id/toolbar_shadow"
+            android:id="@+id/dev_toolbar_shadow"
             android:background="@drawable/toolbar_shadow" />
     </FrameLayout>
 

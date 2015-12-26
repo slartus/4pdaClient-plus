@@ -74,7 +74,7 @@ HTML {
 }
 HTML body {
   font-family: 'Roboto';
-  background: #141414;
+  background-color: #141414;
   color: white;
   margin: 0;
   padding: 0;
@@ -179,7 +179,6 @@ HTML body ol {
   background: #0f1416;
 }
 .post-block.quote > .block-title {
-  margin-left: 1.4rem;
   color: #69b3d5;
   overflow: visible;
 }
@@ -189,13 +188,15 @@ HTML body ol {
 .post-block.quote > .block-title:empty:before {
   content: 'Цитата';
 }
-.post-block.quote > .block-title a {
-  position: absolute;
-  top: 0.625rem;
-  left: 0.625rem;
+.post-block.quote > .block-title a[title="Перейти к сообщению"] {
+  float: left;
   background: #69b3d5;
   margin-right: 0.5rem;
   opacity: 0.8;
+}
+.post-block.quote > .block-title a[title="Ссылка "] {
+  margin: 0 0.5rem;
+  color: #afd9f9;
 }
 .post-block.quote > .block-body {
   color: #c3e0ee;
@@ -386,7 +387,6 @@ HTML body ol {
   display: none;
 }
 .hat .hidemain {
-  margin: 0.5rem;
   background: #000000;
 }
 .post_container .hat .hidetop {
@@ -414,7 +414,7 @@ HTML body ol {
 }
 @media screen and (min-width: 800px) {
   .post_container .hat .hidemain .post_body {
-    margin-top: 0 !important;
+    margin-top: 0.75rem;
   }
 }
 .post_container .hat .hidemain .post-body {
@@ -426,6 +426,9 @@ HTML body ol {
 }
 .poll .hidetop B:after {
   content: "ОПРОС";
+}
+.poll .hidemain {
+  margin: 0.5rem;
 }
 /*
 * BUTTON ACTIVE
@@ -528,6 +531,12 @@ HTML body ol {
 .poll .hidemain FORM .poll_body .poll_theme .theme_title span {
   font-weight: bold;
 }
+@media screen and (min-width: 800px) {
+  .poll .hidemain FORM .poll_body .poll_theme .items.voted .item {
+    display: table;
+    width: 100%;
+  }
+}
 .poll .hidemain FORM .poll_body .poll_theme .items .item {
   position: relative;
   display: block;
@@ -559,12 +568,21 @@ HTML body ol {
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .num_votes {
   position: absolute;
+  display: inline-block;
   right: 0.5rem;
-  margin-top: 1.4rem;
+  bottom: 0.625rem;
   padding: 0 0.3125rem;
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .range {
   position: relative;
+}
+.poll .hidemain FORM .poll_body .poll_theme .items .item .range:before {
+  content: '';
+  position: absolute;
+  display: block;
+  height: 1.5rem;
+  width: 100%;
+  border-radius: 0.125rem;
   background: rgba(130, 130, 130, 0.1);
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .range .range_bar {
@@ -577,6 +595,26 @@ HTML body ol {
   position: absolute;
   margin-top: -1.5rem;
   margin-left: 0.3125rem;
+}
+@media screen and (min-width: 800px) {
+  .poll .hidemain FORM .poll_body .poll_theme .items.voted .item {
+    display: table;
+    padding: 0.5rem;
+    width: 98%;
+  }
+  .poll .hidemain FORM .poll_body .poll_theme .items.voted .item .name {
+    display: table-cell;
+    width: 50%;
+  }
+  .poll .hidemain FORM .poll_body .poll_theme .items.voted .item .num_votes {
+    bottom: 50%;
+    margin-bottom: -0.625rem;
+  }
+  .poll .hidemain FORM .poll_body .poll_theme .items.voted .item .range {
+    display: table-cell;
+    width: 50%;
+    vertical-align: middle;
+  }
 }
 .poll .hidemain FORM .votes_info {
   margint-top: 0.75rem;
@@ -3183,23 +3221,26 @@ img[src*="style_emoticons"] {
 /*
 *	NEW EAER STYLE
 */
-/*
 @keyframes snow {
-	0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
-	100% {background-position: 500px 1000px, 400px 400px, 300px 300px;}
+  0% {
+    background-position: 0px 0px, 0px 0px, 0px 0px;
+  }
+  100% {
+    background-position: 500px 1000px, 400px 400px, 300px 300px;
+  }
 }
-
 @-webkit-keyframes snow {
-	0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
-	100% {background-position: 500px 1000px, 400px 400px, 300px 300px;}
+  0% {
+    background-position: 0px 0px, 0px 0px, 0px 0px;
+  }
+  100% {
+    background-position: 500px 1000px, 400px 400px, 300px 300px;
+  }
 }
-*/
 .newyear {
   background-image: url('material_src/snow.png'), url('material_src/snow3.png'), url('material_src/snow2.png');
-  /*
-	animation: snow 20s linear infinite;
-	-webkit-animation: snow 20s linear infinite;
-*/
+  animation: snow 20s linear infinite;
+  -webkit-animation: snow 20s linear infinite;
 }
 .newyear:after {
   content: '... от Морфий';
@@ -3228,9 +3269,12 @@ img[src*="style_emoticons"] {
   font: 3rem/1 'Lobster', cursive;
   color: #646464;
 }
+.newyear .post_container .hidetop B:after {
+  content: 'ШАПКУ ❄';
+}
 .newyear .post_container .hidetop.close B:before {
-  content: '❄ ПОКАЗАТЬ ШАПКУ ТЕМЫ ❄';
+  content: '❄ ПОКАЗАТЬ';
 }
 .newyear .post_container .hidetop.open B:before {
-  content: '❄ СКРЫТЬ ШАПКУ ТЕМЫ ❄';
+  content: '❄ СКРЫТЬ';
 }
