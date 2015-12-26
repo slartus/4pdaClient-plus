@@ -142,10 +142,8 @@ public class ParseHelper {
         Elements elements1 = elements.select("li");
         for (int i = 0; i < elements1.size(); i++) {
 
-//            String link2 = elements1.get(i).select("a[href]").attr("href");
             Element el = elements1.get(i).select("a[href]").first();
             String url = "http://4pda.ru" + el.attr("href");
-            Log.d("TASE", "link " + url);
             String imgLink = elements1.get(i).getElementsByClass("article-img").select("img[src]").attr("src");
             if (imgLink.contains("http")) {
                 imgLink1 = imgLink;

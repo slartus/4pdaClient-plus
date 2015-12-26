@@ -45,7 +45,6 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.utils.SystemBarTintManager;
-//import org.softeg.slartus.forpdaplus.utils.ui.SystemUiHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -243,7 +242,6 @@ public class ImageViewActivity extends AppCompatActivity {
     private class SamplePagerAdapter extends PagerAdapter {
         SparseArray<View> views = new SparseArray<>();
         private LayoutInflater inflater;
-//        private SystemUiHelper mUiHelper = new SystemUiHelper(ImageViewActivity.this, SystemUiHelper.FLAG_IMMERSIVE_STICKY, 0);
         private static final int HIDE_DELAY = 300;
 
         public SamplePagerAdapter() {
@@ -318,7 +316,6 @@ public class ImageViewActivity extends AppCompatActivity {
             flickableIV.setOnSingleTapListener(new FlickableImageView.OnFlickableImageViewSingleTapListener() {
                 @Override
                 public void onSingleTapConfirmed() {
-//                    mUiHelper.toggle();
                     toggle();
                 }
             });
@@ -400,7 +397,6 @@ public class ImageViewActivity extends AppCompatActivity {
                         public void onSuccess() {
                             progressView.setVisibility(View.GONE);
                             MaterialImageLoading.animate(flickableIV).setDuration(2000).start();
-//                            mUiHelper.delayHide(HIDE_DELAY);
                             delayedHide(HIDE_DELAY);
 
                         }
