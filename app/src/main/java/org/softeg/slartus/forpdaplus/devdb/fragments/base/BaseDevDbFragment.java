@@ -8,6 +8,7 @@ import android.view.View;
  * Created by isanechek on 14.12.15.
  */
 public class BaseDevDbFragment extends Fragment {
+    public static final String LIST_ARG = "list_arg";
 
     private String title;
     protected Context context;

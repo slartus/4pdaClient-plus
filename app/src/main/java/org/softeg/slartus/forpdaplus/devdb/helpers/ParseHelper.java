@@ -1,5 +1,9 @@
 package org.softeg.slartus.forpdaplus.devdb.helpers;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,8 +22,9 @@ import java.util.List;
  * Created by isanechek on 23.11.15.
  */
 public class ParseHelper {
+    private ParsedModel parsed = new ParsedModel();
 
-    public void parseHelper(String page) {
+    public ParsedModel parseHelper(String page) {
         Document document = Jsoup.parse(page);
         parseTitle(document);
         parseFirmware(document);
@@ -27,30 +32,33 @@ public class ParseHelper {
         parseReviews(document);
         parseDiscussions(document);
         parsePrices(document);
+        return parsed;
     }
 
     private void parseTitle(Document document){
-        DevDbUtils.saveTitle(App.getContext(), document.select(".product-name").first().text());
+        parsed.setTitle(document.select(".product-name").first().text());
     }
 
     private void parseDiscussions(Document document) {
         String link, title, time, description;
         List<DiscussionModel> cache = new ArrayList<>();
+        DiscussionModel model;
         String link1 = null;
-        Elements elements = document.getElementById("discussions").getElementsByClass("article-list").select("li");
+        Elements elements = document.select("#discussions .article-list li");
         for (Element element : elements) {
-            link = element.getElementsByClass("title").select("a[href]").attr("href");
-            if (link.contains("http")) {
+            link = element.select(".title a").attr("href");
+            /*if (link.contains("http")) {
                 link1 = link;
-            }
-            title = element.getElementsByClass("title").text();
-            time = element.getElementsByClass("upd").text();
-            description = element.getElementsByClass("description").text();
+            }*/
+            title = element.select(".title").text();
+            time = element.select(".upd").text();
+            description = element.select(".description").text();
 
-            DiscussionModel model = new DiscussionModel(description, time, link1, title);
+            model = new DiscussionModel(description, time, link, title);
             cache.add(model);
         }
-        DevDbUtils.saveDiscussion(App.getContext(), cache);
+        //DevDbUtils.saveDiscussion(App.getContext(), cache);
+        parsed.setDiscussionModels(new Gson().toJson(cache));
     }
 
     private void parseComments(Document document) {
@@ -58,15 +66,15 @@ public class ParseHelper {
         List<CommentsModel> cache = new ArrayList<>();
         ArrayList<String> dr = new ArrayList<>();
         CommentsModel commentsModel;
-        Elements elements = document.getElementById("comments").select("li");
+        Elements elements = document.select("#comments li");
         if (elements != null) {
             for (Element element1 : elements) {
-                if (!element1.getElementsByClass("text-box").text().isEmpty()) {
+                if (!element1.select(".text-box").text().isEmpty()) {
                     /**
                      * Тут короче если текст бокс не нуль, то и все остальное не нуль.
                      */
 
-                    comment = element1.getElementsByClass("text-box").text();
+                    comment = element1.select(".text-box").text();
                     link = element1.select("div.name a").attr("href");
                     userName = element1.select("div.name a").attr("title");
                     date = element1.select("div.date").text();
@@ -83,7 +91,8 @@ public class ParseHelper {
                     cache.add(commentsModel);
                 }
             }
-            DevDbUtils.saveComments(App.getContext(), cache);
+            //DevDbUtils.saveComments(App.getContext(), cache);
+            parsed.setCommentsModels(new Gson().toJson(cache));
         }
     }
 
@@ -93,20 +102,21 @@ public class ParseHelper {
         List<PricesModel> cache = new ArrayList<>();
         PricesModel model;
         String link1 = null;
-        Elements elements = document.getElementById("prices").getElementsByClass("article-list").select("li");
+        Elements elements = document.select("#prices .article-list li");
         for(Element element:elements){
-            link = element.getElementsByClass("title").select("a[href]").attr("href");
-            if (link.contains("http")) {
+            link = element.select(".title a").attr("href");
+            /*if (link.contains("http")) {
                 link1 = link;
-            }
-            title = element.getElementsByClass("title").text();
-            time = element.getElementsByClass("upd").text();
-            description = element.getElementsByClass("description").text();
+            }*/
+            title = element.select(".title").text();
+            time = element.select(".upd").text();
+            description = element.select(".description").text();
 
-            model = new PricesModel(time, description, link1, title);
+            model = new PricesModel(time, description, link, title);
             cache.add(model);
         }
-        DevDbUtils.savePrices(App.getContext(), cache);
+        //DevDbUtils.savePrices(App.getContext(), cache);
+        parsed.setPricesModels(new Gson().toJson(cache));
     }
 
     private void parseFirmware(Document document) {
@@ -114,21 +124,22 @@ public class ParseHelper {
         List<FirmwareModel> cache = new ArrayList<>();
         FirmwareModel model;
         String link1 = null;
-        Elements elements = document.getElementById("firmware").getElementsByClass("article-list").select("li");
+        Elements elements = document.select("#firmware .article-list li");
 
         for(Element element:elements){
-            link = element.getElementsByClass("title").select("a[href]").attr("href");
-            if (link.contains("http")) {
+            link = element.select(".title a").attr("href");
+            /*if (link.contains("http")) {
                 link1 = link;
-            }
-            title = element.getElementsByClass("title").text();
-            time = element.getElementsByClass("upd").text();
-            description = element.getElementsByClass("description").text();
+            }*/
+            title = element.select(".title").text();
+            time = element.select(".upd").text();
+            description = element.select(".description").text();
 
-            model = new FirmwareModel(time, description, link1, title);
+            model = new FirmwareModel(time, description, link, title);
             cache.add(model);
         }
-        DevDbUtils.saveFirmware(App.getContext(), cache);
+        //DevDbUtils.saveFirmware(App.getContext(), cache);
+        parsed.setFirmwareModels(new Gson().toJson(cache));
     }
 
     private void parseReviews(Document document) {
@@ -136,21 +147,22 @@ public class ParseHelper {
         List<ReviewsModel> cache = new ArrayList<>();
         ReviewsModel model;
         String imgLink1 = null;
-        Elements elements = document.getElementById("reviews").getElementsByClass("article-list").select("li");
+        Elements elements = document.select("#reviews .article-list li");
 
         for(Element element:elements){
-            url = "http://4pda.ru" + element.select("a[href]").first().attr("href");
-            imgLink = element.getElementsByClass("article-img").select("img[src]").attr("src");
-            if (imgLink.contains("http")) {
+            url = "http://4pda.ru" + element.select("a").first().attr("href");
+            imgLink = element.select(".article-img img").attr("src");
+            /*if (imgLink.contains("http")) {
                 imgLink1 = imgLink;
-            }
-            title = element.getElementsByClass("title").text();
-            date = element.getElementsByClass("upd").text();
-            description = element.getElementsByClass("description").text();
+            }*/
+            title = element.select(".title").text();
+            date = element.select(".upd").text();
+            description = element.select(".description").text();
 
-            model = new ReviewsModel(date, imgLink1, url, description, title);
+            model = new ReviewsModel(date, imgLink, url, description, title);
             cache.add(model);
         }
-        DevDbUtils.saveReviews(App.getContext(), cache);
+        //DevDbUtils.saveReviews(App.getContext(), cache);
+        parsed.setReviewsModels(new Gson().toJson(cache));
     }
 }

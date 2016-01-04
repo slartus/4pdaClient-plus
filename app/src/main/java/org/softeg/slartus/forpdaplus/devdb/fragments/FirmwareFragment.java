@@ -11,11 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.devdb.adapters.FirmwareAdapter;
 import org.softeg.slartus.forpdaplus.devdb.fragments.base.BaseDevDbFragment;
 import org.softeg.slartus.forpdaplus.devdb.helpers.DevDbUtils;
 import org.softeg.slartus.forpdaplus.devdb.helpers.FLifecycleUtil;
+import org.softeg.slartus.forpdaplus.devdb.model.CommentsModel;
 import org.softeg.slartus.forpdaplus.devdb.model.FirmwareModel;
 
 import java.util.ArrayList;
@@ -33,9 +37,10 @@ public class FirmwareFragment extends BaseDevDbFragment implements FLifecycleUti
     private FirmwareAdapter mAdapter;
     private List<FirmwareModel> mModelList;
 
-    public static FirmwareFragment newInstance(Context context) {
+    public static FirmwareFragment newInstance(Context context, String list) {
         FirmwareFragment f = new FirmwareFragment();
         Bundle args = new Bundle();
+        args.putString(LIST_ARG, list);
         f.setArguments(args);
         f.setContext(context);
         f.setTitle("Прошивки");
@@ -49,16 +54,8 @@ public class FirmwareFragment extends BaseDevDbFragment implements FLifecycleUti
 //        recLifeCycle(getClass(), CALL_TO_SUPER);
         view = inflater.inflate(LAYOUT, container, false);
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        recLifeCycle(getClass(), CALL_TO_SUPER);
-        super.onViewCreated(view, savedInstanceState);
-//        recLifeCycle(getClass(), RETURN_FROM_SUPER);
-        if (DevDbUtils.getFirmware(getActivity()).size() != 0) {
-            mModelList = new ArrayList<>(DevDbUtils.getFirmware(getActivity()));
+        mModelList = new Gson().fromJson(getArguments().getString(LIST_ARG),  new TypeToken<ArrayList<FirmwareModel>>() {}.getType());
+        if (mModelList.size() != 0) {
             mRecyclerView = (RecyclerView) view.findViewById(R.id.devDbRecyclerView);
             mRecyclerView.setVisibility(View.VISIBLE);
             mAdapter = new FirmwareAdapter(getActivity(), mModelList);
@@ -71,7 +68,16 @@ public class FirmwareFragment extends BaseDevDbFragment implements FLifecycleUti
             TextView textView = ButterKnife.findById(view, R.id.dev_db_error_message);
             textView.setVisibility(View.VISIBLE);
         }
+        return view;
     }
+
+/*    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+//        recLifeCycle(getClass(), CALL_TO_SUPER);
+        super.onViewCreated(view, savedInstanceState);
+//        recLifeCycle(getClass(), RETURN_FROM_SUPER);
+
+    }*/
 
     @Override
     public void onPauseFragment() {

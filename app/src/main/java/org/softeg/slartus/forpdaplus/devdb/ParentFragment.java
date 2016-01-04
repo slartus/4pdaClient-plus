@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -23,6 +24,7 @@ import org.softeg.slartus.forpdaplus.devdb.helpers.Constants;
 import org.softeg.slartus.forpdaplus.devdb.helpers.DevDbUtils;
 import org.softeg.slartus.forpdaplus.devdb.helpers.FLifecycleUtil;
 import org.softeg.slartus.forpdaplus.devdb.helpers.ParseHelper;
+import org.softeg.slartus.forpdaplus.devdb.helpers.ParsedModel;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 
 public class ParentFragment extends GeneralFragment {
@@ -167,9 +169,12 @@ public class ParentFragment extends GeneralFragment {
         }
     }
 
-    private void initUI() {
+    private void initUI(ParsedModel parsed) {
+        m_Title = parsed.getTitle();
+        getMainActivity().setTitle(m_Title);
+        App.getInstance().getTabByTag(getTag()).setTitle(m_Title);
         viewPager = (ViewPager) rootView.findViewById(R.id.devDbViewPager);
-        adapter = new DevDbViewPagerAdapter(getMainActivity(), getChildFragmentManager());
+        adapter = new DevDbViewPagerAdapter(getMainActivity(), getChildFragmentManager(), parsed);
         viewPager.setAdapter(adapter);
         viewPager.setOnPageChangeListener(mChangeListener);
 
@@ -207,17 +212,14 @@ public class ParentFragment extends GeneralFragment {
 
         private Throwable ex;
         private ParseHelper mParseHelper;
+        private ParsedModel parsed;
 
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-                String link = params[0];
-                mParseHelper = new ParseHelper();
-                String pageBody = Client.getInstance().performGet(link);
-                mParseHelper.parseHelper(pageBody);
+                parsed = new ParseHelper().parseHelper(Client.getInstance().performGet(params[0]));
                 return true;
             } catch (Throwable e) {
-
                 ex = e;
                 return false;
             }
@@ -237,9 +239,7 @@ public class ParentFragment extends GeneralFragment {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                 }
-                initUI();
-                m_Title = DevDbUtils.getTitle(App.getContext());
-                getSupportActionBar().setTitle(m_Title);
+                initUI(parsed);
             } else {
                 if (dialog.isShowing()) {
                     dialog.dismiss();

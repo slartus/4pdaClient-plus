@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -25,6 +27,7 @@ import org.softeg.slartus.forpdaplus.devdb.adapters.ReviewsAdapter;
 import org.softeg.slartus.forpdaplus.devdb.fragments.base.BaseDevDbFragment;
 import org.softeg.slartus.forpdaplus.devdb.helpers.DevDbUtils;
 import org.softeg.slartus.forpdaplus.devdb.helpers.FLifecycleUtil;
+import org.softeg.slartus.forpdaplus.devdb.model.PricesModel;
 import org.softeg.slartus.forpdaplus.devdb.model.ReviewsModel;
 
 import java.util.ArrayList;
@@ -41,13 +44,20 @@ public class ReviewsFragment extends BaseDevDbFragment implements FLifecycleUtil
     private ReviewsAdapter mAdapter;
     private ArrayList<ReviewsModel> mModelList;
 
-    public static ReviewsFragment newInstance(Context context) {
+    public static ReviewsFragment newInstance(Context context, String list) {
         ReviewsFragment f = new ReviewsFragment();
         Bundle args = new Bundle();
+        args.putString(LIST_ARG, list);
         f.setArguments(args);
         f.setContext(context);
         f.setTitle("Обзор");
         return f;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initImageLoader(App.getContext());
     }
 
     @Nullable
@@ -56,9 +66,8 @@ public class ReviewsFragment extends BaseDevDbFragment implements FLifecycleUtil
 //        recLifeCycle(getClass(), CALL_TO_SUPER);
         view = inflater.inflate(LAYOUT, container, false);
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
-        if (DevDbUtils.getReviews(getActivity()).size() != 0) {
-            initImageLoader(App.getContext());
-            mModelList = new ArrayList<>(DevDbUtils.getReviews(getActivity()));
+        mModelList = new Gson().fromJson(getArguments().getString(LIST_ARG),  new TypeToken<ArrayList<ReviewsModel>>() {}.getType());
+        if (mModelList.size() != 0) {
             mRecyclerView = (RecyclerView) view.findViewById(R.id.devDbRecyclerView);
             mRecyclerView.setVisibility(View.VISIBLE);
             mAdapter = new ReviewsAdapter(getActivity(), mModelList, ImageLoader.getInstance());

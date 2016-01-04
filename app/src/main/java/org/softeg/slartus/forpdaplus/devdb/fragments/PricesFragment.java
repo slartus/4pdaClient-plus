@@ -10,11 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.devdb.adapters.PricesAdapter;
 import org.softeg.slartus.forpdaplus.devdb.fragments.base.BaseDevDbFragment;
 import org.softeg.slartus.forpdaplus.devdb.helpers.DevDbUtils;
 import org.softeg.slartus.forpdaplus.devdb.helpers.FLifecycleUtil;
+import org.softeg.slartus.forpdaplus.devdb.model.FirmwareModel;
 import org.softeg.slartus.forpdaplus.devdb.model.PricesModel;
 
 import java.util.ArrayList;
@@ -32,9 +36,10 @@ public class PricesFragment extends BaseDevDbFragment implements FLifecycleUtil 
     private PricesAdapter mAdapter;
     private List<PricesModel> mModelList;
 
-    public static PricesFragment newInstance(Context context) {
+    public static PricesFragment newInstance(Context context, String list) {
         PricesFragment f = new PricesFragment();
         Bundle args = new Bundle();
+        args.putString(LIST_ARG, list);
         f.setArguments(args);
         f.setContext(context);
         f.setTitle("Цены");
@@ -46,16 +51,8 @@ public class PricesFragment extends BaseDevDbFragment implements FLifecycleUtil 
 //        recLifeCycle(getClass(), CALL_TO_SUPER);
         view = inflater.inflate(LAYOUT, container, false);
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        recLifeCycle(getClass(), CALL_TO_SUPER);
-        super.onViewCreated(view, savedInstanceState);
-//        recLifeCycle(getClass(), RETURN_FROM_SUPER);
-        if (DevDbUtils.getPrices(getActivity()).size() != 0) {
-            mModelList = new ArrayList<>(DevDbUtils.getPrices(getActivity()));
+        mModelList = new Gson().fromJson(getArguments().getString(LIST_ARG),  new TypeToken<ArrayList<PricesModel>>() {}.getType());
+        if (mModelList.size() != 0) {
             mRecyclerView = (RecyclerView) view.findViewById(R.id.devDbRecyclerView);
             mRecyclerView.setVisibility(View.VISIBLE);
             mAdapter = new PricesAdapter(getActivity(), mModelList);
@@ -68,8 +65,17 @@ public class PricesFragment extends BaseDevDbFragment implements FLifecycleUtil 
             TextView textView = ButterKnife.findById(view, R.id.dev_db_error_message);
             textView.setVisibility(View.VISIBLE);
         }
-
+        return view;
     }
+
+/*    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+//        recLifeCycle(getClass(), CALL_TO_SUPER);
+        super.onViewCreated(view, savedInstanceState);
+//        recLifeCycle(getClass(), RETURN_FROM_SUPER);
+
+
+    }*/
 
     @Override
     public void onPauseFragment() {
