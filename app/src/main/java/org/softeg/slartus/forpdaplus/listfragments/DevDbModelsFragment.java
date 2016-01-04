@@ -15,6 +15,7 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
+import org.softeg.slartus.forpdaplus.devdb.ParentFragment;
 import org.softeg.slartus.forpdaplus.fragments.DevDbDeviceFragment;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.DevDbModelsAdapter;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
@@ -112,7 +113,7 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
         if (TextUtils.isEmpty(topic.getId())) return;
 
         //DevDbDeviceActivity.showDevice(getContext(), topic.getId().toString());
-        DevDbDeviceFragment.showDevice(topic.getId().toString());
+        ParentFragment.showDevice(topic.getId().toString());
     }
 
     @Override

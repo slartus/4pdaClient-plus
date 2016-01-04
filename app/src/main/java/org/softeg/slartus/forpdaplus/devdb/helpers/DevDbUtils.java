@@ -26,6 +26,13 @@ import java.util.List;
  */
 public class DevDbUtils {
 
+    public static void saveTitle(Context context, String title){
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString("devdbDeviceTitle", title).apply();
+    }
+    public static String getTitle(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context).getString("devdbDeviceTitle", "ForPDA");
+    }
+
     // COMMENTS
     public static void saveComments(Context context, List<CommentsModel> list) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);

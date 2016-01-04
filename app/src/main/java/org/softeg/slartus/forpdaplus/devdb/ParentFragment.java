@@ -49,12 +49,19 @@ public class ParentFragment extends GeneralFragment {
         return fragment;
     }
 
-    public static void showDevice1(String deviceId, String title, int position) {
+    public static void showDevice(String deviceId, String title, int position) {
         Bundle args = new Bundle();
         args.putString(DEVICE_ID_KEY, deviceId);
         args.putInt(POSITION_ID, position);
         args.putString(TOOLBAR_TITLE, title);
         MainActivity.addTab(title, deviceId + "more", newInstance(args));
+    }
+    public static void showDevice(String deviceId) {
+        Bundle args = new Bundle();
+        args.putString(DEVICE_ID_KEY, deviceId);
+        args.putInt(POSITION_ID, 0);
+        args.putString(TOOLBAR_TITLE, "ForPDA");
+        MainActivity.addTab(deviceId + "more", newInstance(args));
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -231,6 +238,8 @@ public class ParentFragment extends GeneralFragment {
                     dialog.dismiss();
                 }
                 initUI();
+                m_Title = DevDbUtils.getTitle(App.getContext());
+                getSupportActionBar().setTitle(m_Title);
             } else {
                 if (dialog.isShowing()) {
                     dialog.dismiss();

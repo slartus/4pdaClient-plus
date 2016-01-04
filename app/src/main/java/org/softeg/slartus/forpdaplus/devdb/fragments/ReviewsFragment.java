@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,14 +56,6 @@ public class ReviewsFragment extends BaseDevDbFragment implements FLifecycleUtil
 //        recLifeCycle(getClass(), CALL_TO_SUPER);
         view = inflater.inflate(LAYOUT, container, false);
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-//        recLifeCycle(getClass(), CALL_TO_SUPER);
-        super.onViewCreated(view, savedInstanceState);
-//        recLifeCycle(getClass(), RETURN_FROM_SUPER);
         if (DevDbUtils.getReviews(getActivity()).size() != 0) {
             initImageLoader(App.getContext());
             mModelList = new ArrayList<>(DevDbUtils.getReviews(getActivity()));
@@ -78,7 +71,17 @@ public class ReviewsFragment extends BaseDevDbFragment implements FLifecycleUtil
             TextView textView = ButterKnife.findById(view, R.id.dev_db_error_message);
             textView.setVisibility(View.VISIBLE);
         }
+        return view;
     }
+
+/*
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+//        recLifeCycle(getClass(), CALL_TO_SUPER);
+        super.onViewCreated(view, savedInstanceState);
+//        recLifeCycle(getClass(), RETURN_FROM_SUPER);
+    }
+*/
 
     private static void initImageLoader(Context context) {
         DisplayImageOptions options = new DisplayImageOptions.Builder()

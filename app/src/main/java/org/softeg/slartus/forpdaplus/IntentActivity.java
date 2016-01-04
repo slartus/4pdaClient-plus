@@ -26,6 +26,7 @@ import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.Email;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
+import org.softeg.slartus.forpdaplus.devdb.ParentFragment;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.DevDbDeviceFragment;
 import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
@@ -474,7 +475,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             return true;
         }
         if (NewDevDbApi.isDeviceUrl(url)) {
-            DevDbDeviceFragment.showDevice(url);
+            ParentFragment.showDevice(url);
             return true;
         }
         return false;

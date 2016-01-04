@@ -279,7 +279,7 @@ public class DevDbDeviceFragment extends GeneralFragment {
     }
 
     private void showFrag(String id, String title, int position) {
-        ParentFragment.showDevice1(id, title, position);
+        ParentFragment.showDevice(id, title, position);
     }
 
 

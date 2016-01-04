@@ -77,8 +77,8 @@ public class TabDrawerMenu {
     private class TabOnClickListener implements ListView.OnItemClickListener{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectTab((TabItem) adapter.getItem(position));
             close();
+            selectTab((TabItem) adapter.getItem(position));
         }
     }
     public static void notifyDataSetChanged(){
