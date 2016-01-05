@@ -5,79 +5,52 @@
     android:fitsSystemWindows="true">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:orientation="horizontal" >
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            style="?post_panel">
 
             <Gallery xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/gallery"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:paddingTop="2dp"
+                android:layout_height="192dp"
+                android:paddingTop="16dp"
                 android:paddingRight="8dp"
                 android:paddingLeft="8dp"
-                android:paddingBottom="2dp"/>
-
-        </LinearLayout>
-        <LinearLayout android:id="@+id/dev_db_activity_con"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="50dp" android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Средняя цена:"
-                android:layout_gravity="left|center_vertical"
-                android:textSize="20sp"
-                style="?list_text_special_color"
-                android:paddingLeft="8dp"
-                android:paddingTop="4dp"
-                android:paddingRight="2dp"
-                android:paddingBottom="4dp"/>
-
-            <TextView android:id="@+id/dev_db_activity_price_tv"
-                android:layout_width="wrap_content"
+                android:paddingBottom="16dp"/>
+            <TextView android:id="@+id/price"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Medium Text"
-                android:layout_gravity="center"
-                android:textSize="20sp"
-                style="?list_text_special_color"
-                android:paddingLeft="1dp"
-                android:paddingTop="4dp"
-                android:paddingRight="2dp"
-                android:paddingBottom="4dp"/>
-        </LinearLayout>
+                android:gravity="center_horizontal"
+                android:textSize="24sp"
+                android:textColor="@color/accent"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:layout_below="@+id/gallery"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="6dp"
+            android:orientation="vertical"
+            android:id="@+id/shadow"
+            android:background="@drawable/shadow_to_bottom"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="2dp"/>
 
-        <HorizontalScrollView
-            android:id="@+id/dev_db_activity_con1"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:visibility="gone">
-            <LinearLayout android:id="@+id/dev_db_btn_con"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"/>
-        </HorizontalScrollView>
-
-        <ListView android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:visibility="gone"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:id="@+id/spec_list">
-
-        </LinearLayout>
+            android:id="@+id/spec_list"
+            style="?post_panel"/>
 
 
     </LinearLayout>

@@ -51,9 +51,13 @@ public class ReviewsFragment extends BaseDevDbFragment implements FLifecycleUtil
         f.setArguments(args);
         f.setContext(context);
         f.setTitle("Обзор");
+        f.setData();
         return f;
     }
 
+    public void setData(){
+
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

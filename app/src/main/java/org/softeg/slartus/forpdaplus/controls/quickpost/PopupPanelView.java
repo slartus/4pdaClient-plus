@@ -193,6 +193,7 @@ public class PopupPanelView {
      */
     private int previousHeightDiffrence = 0;
     private int heightDifference;
+    private int screenHeight;
     private int k = -1;
     private Rect r;
     private String toast="";
@@ -208,8 +209,7 @@ public class PopupPanelView {
                         r = new Rect();
                         parentLayout.getWindowVisibleDisplayFrame(r);
 
-                        int screenHeight = parentLayout.getRootView()
-                                .getHeight();
+                        screenHeight = parentLayout.getRootView().getHeight();
                         if (k == -1)
                             k = screenHeight - r.bottom;
                         heightDifference = screenHeight - (r.bottom) - k;

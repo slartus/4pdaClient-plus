@@ -19,6 +19,7 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.devdb.helpers.Constants;
 import org.softeg.slartus.forpdaplus.devdb.helpers.DevDbUtils;
@@ -134,6 +135,12 @@ public class ParentFragment extends GeneralFragment {
 //        recLifeCycle(getClass(), CALL_TO_SUPER);
         super.onDestroy();
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
+        Log.e("kek", "ondestroy");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     @Override
@@ -148,38 +155,43 @@ public class ParentFragment extends GeneralFragment {
     }
 
     private void showTabs(int position) {
-        switch (position) {
-            case 0:
+        viewPager.setCurrentItem(position);
+        /*switch (position) {
+            case 1:
                 viewPager.setCurrentItem(Constants.TAB_COMMENTS);
                 break;
-            case 1:
+            case 2:
                 viewPager.setCurrentItem(Constants.TAB_DISCUSSION);
                 break;
-            case 2:
+            case 3:
                 viewPager.setCurrentItem(Constants.TAB_REVIEWS);
                 break;
-            case 3:
+            case 4:
                 viewPager.setCurrentItem(Constants.TAB_FIRMWARE);
                 break;
-            case 4:
+            case 5:
                 viewPager.setCurrentItem(Constants.TAB_PRICES);
                 break;
             default:
                 break;
-        }
+        }*/
     }
 
     private void initUI(ParsedModel parsed) {
         m_Title = parsed.getTitle();
         getMainActivity().setTitle(m_Title);
         App.getInstance().getTabByTag(getTag()).setTitle(m_Title);
+        TabDrawerMenu.notifyDataSetChanged();
         viewPager = (ViewPager) rootView.findViewById(R.id.devDbViewPager);
+        Log.e("kek","initadapter");
         adapter = new DevDbViewPagerAdapter(getMainActivity(), getChildFragmentManager(), parsed);
         viewPager.setAdapter(adapter);
+        Log.e("kek", "initlistener");
         viewPager.setOnPageChangeListener(mChangeListener);
 
         TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.devDbTabLayout);
         tabLayout.setupWithViewPager(viewPager);
+        Log.e("kek", "showtabs");
         showTabs(m_Position);
     }
 

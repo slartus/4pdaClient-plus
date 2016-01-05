@@ -5,6 +5,7 @@ import org.softeg.slartus.forpdaplus.devdb.model.DiscussionModel;
 import org.softeg.slartus.forpdaplus.devdb.model.FirmwareModel;
 import org.softeg.slartus.forpdaplus.devdb.model.PricesModel;
 import org.softeg.slartus.forpdaplus.devdb.model.ReviewsModel;
+import org.softeg.slartus.forpdaplus.devdb.model.SpecModel;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class ParsedModel {
     private String reviewsModels;
     private String firmwareModels;
     private String pricesModels;
+    private SpecModel specModel;
 
     public void setTitle(String title) {
         this.title = title;
@@ -37,6 +39,9 @@ public class ParsedModel {
     public void setReviewsModels(String reviewsModels) {
         this.reviewsModels = reviewsModels;
     }
+    public void setSpecModel(SpecModel specModel) {
+        this.specModel = specModel;
+    }
 
     public String getTitle() {
         return title;
@@ -55,5 +60,8 @@ public class ParsedModel {
     }
     public String getReviewsModels() {
         return reviewsModels;
+    }
+    public SpecModel getSpecModel() {
+        return specModel;
     }
 }

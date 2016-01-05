@@ -14,9 +14,12 @@ import org.softeg.slartus.forpdaplus.devdb.model.DiscussionModel;
 import org.softeg.slartus.forpdaplus.devdb.model.FirmwareModel;
 import org.softeg.slartus.forpdaplus.devdb.model.PricesModel;
 import org.softeg.slartus.forpdaplus.devdb.model.ReviewsModel;
+import org.softeg.slartus.forpdaplus.devdb.model.SpecModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by isanechek on 23.11.15.
@@ -25,26 +28,41 @@ public class ParseHelper {
     private ParsedModel parsed = new ParsedModel();
 
     public ParsedModel parseHelper(String page) {
-        Document document = Jsoup.parse(page);
-        parseTitle(document);
-        parseFirmware(document);
-        parseComments(document);
-        parseReviews(document);
-        parseDiscussions(document);
-        parsePrices(document);
+        Element main = Jsoup.parse(page).select(".device-frame").first();
+        parseTitle(main);
+        parseSpec(main);
+        parseFirmware(main);
+        parseComments(main);
+        parseReviews(main);
+        parseDiscussions(main);
+        parsePrices(main);
         return parsed;
     }
 
-    private void parseTitle(Document document){
-        parsed.setTitle(document.select(".product-name").first().text());
+    private void parseTitle(Element main){
+        parsed.setTitle(main.select(".product-name").first().text());
     }
 
-    private void parseDiscussions(Document document) {
+    private void parseSpec(Element main){
+        SpecModel specModel = new SpecModel();
+        Element spec = main.select("#specification").first();
+
+        for(Element element:spec.select(".item-visual .item-gallery a")){
+            specModel.getGalleryLinks().add(element.attr("href"));
+            specModel.getGalleryImages().add(element.select("img").first().attr("src"));
+        }
+        Elements temp = spec.select(".item-main .price-box .price strong");
+        if(!temp.text().isEmpty())
+            specModel.setPrice(temp.first().text());
+        specModel.setSpecTable(spec.select(".item-content .content .specifications-list"));
+        parsed.setSpecModel(specModel);
+    }
+    private void parseDiscussions(Element main) {
         String link, title, time, description;
         List<DiscussionModel> cache = new ArrayList<>();
         DiscussionModel model;
         String link1 = null;
-        Elements elements = document.select("#discussions .article-list li");
+        Elements elements = main.select("#discussions .article-list li");
         for (Element element : elements) {
             link = element.select(".title a").attr("href");
             /*if (link.contains("http")) {
@@ -61,12 +79,12 @@ public class ParseHelper {
         parsed.setDiscussionModels(new Gson().toJson(cache));
     }
 
-    private void parseComments(Document document) {
+    private void parseComments(Element main) {
         String comment, link, userName, date, ratingNum, ratingText;
         List<CommentsModel> cache = new ArrayList<>();
         ArrayList<String> dr = new ArrayList<>();
         CommentsModel commentsModel;
-        Elements elements = document.select("#comments li");
+        Elements elements = main.select("#comments li");
         if (elements != null) {
             for (Element element1 : elements) {
                 if (!element1.select(".text-box").text().isEmpty()) {
@@ -97,12 +115,12 @@ public class ParseHelper {
     }
 
 
-    private void parsePrices(Document document) {
+    private void parsePrices(Element main) {
         String link, title, time, description;
         List<PricesModel> cache = new ArrayList<>();
         PricesModel model;
         String link1 = null;
-        Elements elements = document.select("#prices .article-list li");
+        Elements elements = main.select("#prices .article-list li");
         for(Element element:elements){
             link = element.select(".title a").attr("href");
             /*if (link.contains("http")) {
@@ -119,12 +137,12 @@ public class ParseHelper {
         parsed.setPricesModels(new Gson().toJson(cache));
     }
 
-    private void parseFirmware(Document document) {
+    private void parseFirmware(Element main) {
         String link, title, time, description;
         List<FirmwareModel> cache = new ArrayList<>();
         FirmwareModel model;
         String link1 = null;
-        Elements elements = document.select("#firmware .article-list li");
+        Elements elements = main.select("#firmware .article-list li");
 
         for(Element element:elements){
             link = element.select(".title a").attr("href");
@@ -142,12 +160,12 @@ public class ParseHelper {
         parsed.setFirmwareModels(new Gson().toJson(cache));
     }
 
-    private void parseReviews(Document document) {
+    private void parseReviews(Element main) {
         String url, imgLink, title, date, description;
         List<ReviewsModel> cache = new ArrayList<>();
         ReviewsModel model;
         String imgLink1 = null;
-        Elements elements = document.select("#reviews .article-list li");
+        Elements elements = main.select("#reviews .article-list li");
 
         for(Element element:elements){
             url = "http://4pda.ru" + element.select("a").first().attr("href");
