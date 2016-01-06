@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -23,19 +21,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -46,7 +40,6 @@ import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchPostFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchTopicsFragment;
-import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
@@ -61,9 +54,6 @@ import org.softeg.slartus.forpdaplus.mainnotifiers.TopicAttentionNotifier;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -142,7 +132,19 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     public void onCreate(Bundle saveInstance) {
         setTheme(App.getInstance().getThemeStyleResID());
         super.onCreate(saveInstance);
+        if(saveInstance!=null) {
+            App.getInstance().setTabIterator(saveInstance.getInt("tabIterator"));
+            App.getInstance().setCurrentFragmentTag(saveInstance.getString("currentTag"));
+        }
+        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
 
+        if (fragmentList != null) {
+            GeneralFragment frag;
+            for (Fragment fragment : fragmentList) {
+                frag=(GeneralFragment)fragment;
+                App.getInstance().getTabItems().add(new TabItem(frag.getGeneralTitle(), frag.getGeneralUrl(), frag.getTag(), frag.getGeneralParentTag(), frag));
+            }
+        }
         try {
             if (checkIntent()&saveInstance!=null) return;
             //Фиксим intent
@@ -230,7 +232,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MainActivity.REQUEST_WRITE_STORAGE);
-
 
         } catch (Throwable ex) {
             AppLog.e(getApplicationContext(), ex);
@@ -440,6 +441,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     @Override
     protected void onSaveInstanceState(android.os.Bundle outState) {
+        outState.putInt("tabIterator", App.getInstance().getTabIterator());
+        outState.putString("currentTag", App.getInstance().getCurrentFragmentTag());
         super.onSaveInstanceState(outState);
         if(hack){
             onStop();
@@ -603,7 +606,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     private Boolean m_ExitWarned = false;
 
     private void appExit() {
-
         App.getInstance().exit();
     }
 
@@ -766,6 +768,18 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         menu.clear();
 
         createUserMenu(menu);
+        if(getPreferences().getBoolean("openTabDrawerButton", false)){
+            menu.add("Вкладки")
+                    .setIcon(R.drawable.ic_checkbox_multiple_blank_outline_white_24dp)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                        public boolean onMenuItemClick(MenuItem item) {
+                            mTabDraweMenu.toggleOpenState();
+                            return true;
+                        }
+                    })
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        }
 
         menu.add(R.string.Search)
                 .setIcon(R.drawable.ic_magnify_white_24dp)

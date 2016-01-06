@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
@@ -36,7 +35,6 @@ import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -90,6 +88,10 @@ public class App extends android.app.Application {
     public int getTabIterator(){
         return tabIterator;
     }
+
+    public void setTabIterator(int tabIterator) {
+        this.tabIterator = tabIterator;
+    }
     public void clearTabIterator(){
         tabIterator = 0;
     }
@@ -106,6 +108,9 @@ public class App extends android.app.Application {
 
     private List<TabItem> mTabItems = new ArrayList<>();
 
+    public void setmTabItems(List<TabItem> mTabItems) {
+        this.mTabItems = mTabItems;
+    }
     public List<TabItem> getTabItems(){
         return mTabItems;
     }
@@ -126,8 +131,11 @@ public class App extends android.app.Application {
     }
 
     public TabItem getTabByTag(String tag){
-        for(TabItem item:getTabItems())
+        for(TabItem item:getTabItems()){
+            Log.e("kuk", item+" : "+item.getTag()+" : "+tag);
             if(item.getTag().equals(tag)) return item;
+        }
+
         return null;
     }
     public TabItem getTabByUrl(String url){

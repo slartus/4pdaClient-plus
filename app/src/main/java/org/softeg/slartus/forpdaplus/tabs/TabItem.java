@@ -13,7 +13,7 @@ public class TabItem{
     private String subTitle;
     private Fragment fragment;
 
-    public TabItem(String title, String url, String tag, Fragment fragment){
+    public TabItem(Fragment fragment){
         this.title = title;
         this.url = url;
         this.tag = tag;
@@ -54,5 +54,8 @@ public class TabItem{
     }
     public void setSubTitle(final String subTitle){
         this.subTitle = subTitle;
+    }
+    public void setParentTag(String parentTag) {
+        this.parentTag = parentTag;
     }
 }

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -21,7 +20,6 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.devdb.helpers.Constants;
 import org.softeg.slartus.forpdaplus.devdb.helpers.DevDbUtils;
 import org.softeg.slartus.forpdaplus.devdb.helpers.FLifecycleUtil;
 import org.softeg.slartus.forpdaplus.devdb.helpers.ParseHelper;
@@ -135,7 +133,6 @@ public class ParentFragment extends GeneralFragment {
 //        recLifeCycle(getClass(), CALL_TO_SUPER);
         super.onDestroy();
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
-        Log.e("kek", "ondestroy");
     }
 
     @Override
@@ -183,15 +180,12 @@ public class ParentFragment extends GeneralFragment {
         App.getInstance().getTabByTag(getTag()).setTitle(m_Title);
         TabDrawerMenu.notifyDataSetChanged();
         viewPager = (ViewPager) rootView.findViewById(R.id.devDbViewPager);
-        Log.e("kek","initadapter");
         adapter = new DevDbViewPagerAdapter(getMainActivity(), getChildFragmentManager(), parsed);
         viewPager.setAdapter(adapter);
-        Log.e("kek", "initlistener");
         viewPager.setOnPageChangeListener(mChangeListener);
 
         TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.devDbTabLayout);
         tabLayout.setupWithViewPager(viewPager);
-        Log.e("kek", "showtabs");
         showTabs(m_Position);
     }
 

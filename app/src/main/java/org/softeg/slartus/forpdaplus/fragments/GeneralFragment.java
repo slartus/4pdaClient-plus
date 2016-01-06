@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.MainActivity;
+import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 
 /**
@@ -23,6 +23,22 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
 
     private ActionBar actionBar;
     private MainActivity mainActivity;
+
+    private String generalTitle = "ForPda";
+    private String generalUrl = "defurl";
+    private String generalParentTag = "defparenttag";
+
+    public String getGeneralTitle() {
+        return generalTitle;
+    }
+
+    public String getGeneralUrl() {
+        return generalUrl;
+    }
+
+    public String getGeneralParentTag() {
+        return generalParentTag;
+    }
 
     public MainActivity getMainActivity() {
         return mainActivity;
@@ -50,6 +66,34 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         }
 
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState!=null){
+            generalTitle = savedInstanceState.getString("generalTitle");
+            generalUrl = savedInstanceState.getString("generalUrl");
+            generalParentTag = savedInstanceState.getString("generalParentTag");
+            for(int i = 0; i <= App.getInstance().getTabItems().size()-1; i++){
+                if(App.getInstance().getTabItems().get(i).getTag().equals(getTag())) {
+                    App.getInstance().getTabItems().get(i).setTitle(generalTitle);
+                    App.getInstance().getTabItems().get(i).setUrl(generalUrl);
+                    App.getInstance().getTabItems().get(i).setParentTag(generalParentTag);
+                    TabDrawerMenu.notifyDataSetChanged();
+                    return;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("generalTitle", App.getInstance().getTabByTag(getTag()).getTitle());
+        outState.putString("generalUrl", App.getInstance().getTabByTag(getTag()).getUrl());
+        outState.putString("generalParentTag", App.getInstance().getTabByTag(getTag()).getParentTag());
+        super.onSaveInstanceState(outState);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -84,6 +84,10 @@
                 android:key="isMarginBottomNav"
                 android:title="Нижний отступ в боковом меню"
                 android:summary="Включить, если не видно последнего пункта. Требуется перезапуск приложения"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="openTabDrawerButton"
+                android:title="Отображать кнопку открытия панели вкладок"/>
         </PreferenceCategory>
 
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
