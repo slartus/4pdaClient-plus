@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.controls.quickpost;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.os.Parcelable;
@@ -13,12 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
@@ -179,10 +176,11 @@ public class PopupPanelView {
      * @param height minimum height by which we can make sure actual keyboard is
      *               open or not
      */
+    private LinearLayout.LayoutParams params;
     private void changeKeyboardHeight(int height) {
         if (height > 100) {
             keyboardHeight = height;
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+            params = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, keyboardHeight);
             emoticonsCover.setLayoutParams(params);
         }
@@ -196,40 +194,28 @@ public class PopupPanelView {
     private int screenHeight;
     private int k = -1;
     private Rect r;
-    private String toast="";
     @SuppressWarnings("ConstantConditions")
     private void checkKeyboardHeight(final View parentLayout) {
-
         parentLayout.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-
-
                         r = new Rect();
                         parentLayout.getWindowVisibleDisplayFrame(r);
 
                         screenHeight = parentLayout.getRootView().getHeight();
                         if (k == -1)
                             k = screenHeight - r.bottom;
-                        heightDifference = screenHeight - (r.bottom) - k;
+                        heightDifference = screenHeight - r.bottom - k;
 
                         if (previousHeightDiffrence - heightDifference > 50) {
                             hidePopupWindow();
                         }
 
-                        previousHeightDiffrence = heightDifference;
-                        if (heightDifference > 100) {
-                            isKeyBoardVisible = true;
+                        isKeyBoardVisible = heightDifference > 100;
+                        if (previousHeightDiffrence != heightDifference)
                             changeKeyboardHeight(heightDifference);
-                        } else {
-                            isKeyBoardVisible = false;
-                        }
-                        /*if(!toast.equals(screenHeight+" : "+k+" : "+heightDifference+" : "+r.bottom+" : "+isKeyBoardVisible)){
-                            toast = screenHeight+" : "+k+" : "+heightDifference+" : "+r.bottom+" : "+isKeyBoardVisible;
-                            Toast.makeText(App.getContext(), toast, Toast.LENGTH_SHORT).show();
-                            Log.e("kek", toast);
-                        }*/
+                        previousHeightDiffrence = heightDifference;
                     }
                 }
         );
