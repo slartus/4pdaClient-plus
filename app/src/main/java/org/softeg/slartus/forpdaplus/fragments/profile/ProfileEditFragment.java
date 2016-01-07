@@ -7,8 +7,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
@@ -33,7 +31,6 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
-import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -47,7 +44,6 @@ import java.util.regex.Matcher;
  * Created by radiationx on 07.11.15.
  */
 public class ProfileEditFragment extends WebViewFragment {
-    private Menu menu;
     private AdvWebView m_WebView;
     private Handler mHandler = new android.os.Handler();
     public final static String m_Title = "Изменить личные данные";
@@ -110,7 +106,7 @@ public class ProfileEditFragment extends WebViewFragment {
 
     @Override
     public Menu getMenu() {
-        return menu;
+        return null;
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -154,21 +150,6 @@ public class ProfileEditFragment extends WebViewFragment {
                asyncTask = new editProfileTask(getMainActivity(), json).execute();
             }
         });
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        MenuItem item;
-        item = menu.add(R.string.Close).setIcon(R.drawable.ic_close_white_24dp);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-            public boolean onMenuItemClick(MenuItem item) {
-                getMainActivity().finish();
-                return true;
-            }
-        });
-        this.menu = menu;
     }
 
     private class editProfileTask extends AsyncTask<String, Void, Void> {

@@ -478,7 +478,13 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        ExtUrl.addUrlSubMenu(new Handler(), getMainActivity(), menu, getSearchQuery(), null, null);
+        menu.add("Ссылка")
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", getSearchQuery());
+                        return true;
+                    }
+                });
         this.menu = menu;
     }
 

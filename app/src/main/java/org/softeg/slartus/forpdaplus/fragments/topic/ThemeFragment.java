@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.fragments.topic;
 
 import android.app.Activity;
 import android.app.SearchManager;
-import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -550,14 +549,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             }
         });
 
-        optionsMenu.add(R.string.Share).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        optionsMenu.add("Ссылка").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
-                try {
-                    String url = TextUtils.isEmpty(shareItUrl) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : shareItUrl;
-                    ExtUrl.shareIt(context, shareItUrl, url, url);
-                } catch (Exception ex) {
-                    return false;
-                }
+                ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", TextUtils.isEmpty(shareItUrl) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : shareItUrl);
                 return true;
             }
         });
@@ -571,10 +565,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         super.onCreateOptionsMenu(menu, inflater);
 
         try {
-            MenuItem item;
             boolean pancil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false);
             if(pancil) {
-                item = menu.add("Написать")
+                menu.add("Написать")
                         .setIcon(R.drawable.ic_pencil_white_24dp)
                         .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
@@ -582,10 +575,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                 toggleMessagePanelVisibility();
                                 return true;
                             }
-                        });
-                item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
-            item = menu.add(R.string.Refresh)
+            menu.add(R.string.Refresh)
                     .setIcon(R.drawable.ic_refresh_white_24dp)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
@@ -593,8 +585,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                             reloadTopic();
                             return true;
                         }
-                    });
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                    }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             SubMenu subMenu = menu.addSubMenu(R.string.Attaches)
                     .setIcon(R.drawable.ic_download_white_24dp);
 
@@ -613,7 +604,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         }
                     });
 
-            item = menu.add(R.string.FindOnPage)
+            menu.add(R.string.FindOnPage)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -622,7 +613,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                             return true;
                         }
                     });
-            item = menu.add(R.string.FindInTopic)
+            menu.add(R.string.FindInTopic)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -632,23 +623,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         }
                     });
 
-            menu.add(R.string.Browser)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
-                        public boolean onMenuItemClick(MenuItem item) {
-                            try {
-                                Intent marketIntent = new Intent(
-                                        Intent.ACTION_VIEW,
-                                        Uri.parse(getLastUrl()));
-                                startActivity(Intent.createChooser(marketIntent, "Выберите"));
-
-
-                            } catch (ActivityNotFoundException e) {
-                                AppLog.e(getMainActivity(), e);
-                            }
-                            return true;
-                        }
-                    });
 
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getMainActivity().getApplicationContext());
             mTopicOptionsMenu = addOptionsMenu(getMainActivity(), getHandler(), menu, true, getLastUrl());

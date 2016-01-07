@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -328,7 +327,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             }
         });
 
-        optionsMenu.add(context.getString(R.string.Share)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+/*        optionsMenu.add(context.getString(R.string.Share)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
 
                 try {
@@ -344,7 +343,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                 }
                 return true;
             }
-        });
+        });*/
     }
 
     private void showTopicActivity(IListItem topic, String args) {

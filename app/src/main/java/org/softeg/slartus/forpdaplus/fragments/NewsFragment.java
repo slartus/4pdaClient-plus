@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,7 +31,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
-import org.softeg.slartus.forpdaapi.NewsApi;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.App;
@@ -42,7 +40,6 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.History;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
-import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -212,38 +209,34 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuItem item;
         boolean pencil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar", false);
         if(Client.getInstance().getLogined()&pencil){
-            item = menu.add("Комментировать").setIcon(R.drawable.ic_pencil_white_24dp);
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    respond();
-                    return true;
-                }
-            });
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            menu.add("Комментировать").setIcon(R.drawable.ic_pencil_white_24dp)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            respond();
+                            return true;
+                        }
+                    })
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
-        item = menu.add(R.string.Refresh).setIcon(R.drawable.ic_refresh_white_24dp);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                refresh();
-                return true;
-            }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(R.string.Refresh).setIcon(R.drawable.ic_refresh_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        refresh();
+                        return true;
+                    }
+                })
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        item = menu.add(R.string.Like).setIcon(R.drawable.ic_thumb_up_white_24dp
-                //        MyApp.getInstance().isWhiteTheme() ?R.drawable.rating_good_white : R.drawable.rating_good_dark
-        );
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                like();
-                return true;
-            }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
+        menu.add(R.string.Like).setIcon(R.drawable.ic_thumb_up_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        like();
+                        return true;
+                    }
+                })
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
         SubMenu optionsMenu = menu.addSubMenu("Настройки");
         optionsMenu.getItem().setIcon(R.drawable.ic_settings_white_24dp);
@@ -287,7 +280,14 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     }
                 }).setCheckable(true).setChecked(getWebView().getSettings().getLoadsImagesAutomatically());
 
-        ExtUrl.addUrlSubMenu(new Handler(), getMainActivity(), menu, getUrl(), null, null);
+        menu.add("Ссылка")
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", getUrl());
+                        return true;
+                    }
+                });
+        //ExtUrl.addUrlSubMenu(new Handler(), getMainActivity(), menu, getUrl(), null, null);
         this.menu = menu;
     }
 

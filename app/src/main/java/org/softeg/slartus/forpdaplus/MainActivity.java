@@ -805,7 +805,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             }
         });
 
-        menu.add(0, 0, 999, R.string.CloseApp)
+       /* menu.add(0, 0, 999, R.string.CloseApp)
                 .setIcon(R.drawable.ic_close_white_24dp)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
@@ -814,7 +814,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                         System.exit(1);
                         return true;
                     }
-                });
+                });*/
 
         mainMenu = menu;
         return false;

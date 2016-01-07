@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.ActionMode;
@@ -154,6 +155,26 @@ public class QmsContactThemes extends BaseLoaderListFragment {
                     Toast.makeText(getMainActivity(), "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+    private boolean dialogShowed = false;
+
+    @Override
+    public void onLoadFinished(Loader<ListData> loader, ListData data) {
+        super.onLoadFinished(loader, data);
+        if(data.getItems().size()<=0&!dialogShowed) {
+            new MaterialDialog.Builder(getContext())
+                    .content("С пользователем " + m_Nick + " нет диалогов. Создать?")
+                    .positiveText("Да")
+                    .negativeText("Нет")
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            QmsNewThreadFragment.showUserNewThread(getMainActivity(), m_Id, m_Nick);
+                        }
+                    })
+                    .show();
+            dialogShowed = true;
         }
     }
 

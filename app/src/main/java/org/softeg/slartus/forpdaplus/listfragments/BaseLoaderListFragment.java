@@ -293,6 +293,7 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
         }
     }
 
+
     @Override
     public void onSaveInstanceState(android.os.Bundle outState) {
         super.onSaveInstanceState(outState);

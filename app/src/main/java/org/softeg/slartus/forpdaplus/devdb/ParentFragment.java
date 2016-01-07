@@ -9,6 +9,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,6 +21,7 @@ import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.TabDrawerMenu;
+import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.devdb.helpers.DevDbUtils;
 import org.softeg.slartus.forpdaplus.devdb.helpers.FLifecycleUtil;
@@ -83,6 +86,19 @@ public class ParentFragment extends GeneralFragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.add("Ссылка")
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", m_DeviceId);
+                        return true;
+                    }
+                });
+        this.menu = menu;
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         if(!DevDbUtils.isAndroid5())
@@ -140,9 +156,10 @@ public class ParentFragment extends GeneralFragment {
         super.onDetach();
     }
 
+    private Menu menu;
     @Override
     public Menu getMenu() {
-        return null;
+        return menu;
     }
 
 
@@ -153,25 +170,6 @@ public class ParentFragment extends GeneralFragment {
 
     private void showTabs(int position) {
         viewPager.setCurrentItem(position);
-        /*switch (position) {
-            case 1:
-                viewPager.setCurrentItem(Constants.TAB_COMMENTS);
-                break;
-            case 2:
-                viewPager.setCurrentItem(Constants.TAB_DISCUSSION);
-                break;
-            case 3:
-                viewPager.setCurrentItem(Constants.TAB_REVIEWS);
-                break;
-            case 4:
-                viewPager.setCurrentItem(Constants.TAB_FIRMWARE);
-                break;
-            case 5:
-                viewPager.setCurrentItem(Constants.TAB_PRICES);
-                break;
-            default:
-                break;
-        }*/
     }
 
     private void initUI(ParsedModel parsed) {

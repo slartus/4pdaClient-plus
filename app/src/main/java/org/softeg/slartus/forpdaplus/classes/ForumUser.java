@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.classes;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.view.ContextMenu;
@@ -20,9 +19,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
-import org.softeg.slartus.forpdaplus.fragments.qms.QmsNewThreadFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
-import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -108,23 +105,7 @@ public class ForumUser {
                                 assert insertNickInterface != null;
                                 insertNickInterface.insert(String.format(TopicBodyBuilder.NICK_SNAPBACK_TEMPLATE,postId, finalUserNick ));
                             } else if (i == finalSendQmsPosition) {
-                                new MaterialDialog.Builder(context)
-                                        .title(context.getString(R.string.SelectAnAction))
-                                        .content(context.getString(R.string.OpenWith) + " " + finalUserNick + "...")
-                                        .cancelable(true)
-                                        .positiveText(context.getString(R.string.NewDialog))
-                                        .neutralText(context.getString(R.string.AllDialogs))
-                                        .callback(new MaterialDialog.ButtonCallback() {
-                                            @Override
-                                            public void onPositive(MaterialDialog dialog) {
-                                                QmsNewThreadFragment.showUserNewThread(context, userId, finalUserNick);
-                                            }
-                                            @Override
-                                            public void onNeutral(MaterialDialog dialog) {
-                                                QmsContactThemes.showThemes(userId, finalUserNick);
-                                            }
-                                        })
-                                        .show();
+                                QmsContactThemes.showThemes(userId, finalUserNick);
                             } else if (i == finalShowProfilePosition) {
                                 ProfileFragment.showProfile(userId, finalUserNick);
                             } else if (i == finalShowUserTopicsPosition) {
@@ -154,23 +135,7 @@ public class ForumUser {
                         .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem menuItem) {
-                                new MaterialDialog.Builder(context)
-                                        .title(context.getString(R.string.SelectAnAction))
-                                        .content(context.getString(R.string.OpenWith) + " " + finalUserNick + "...")
-                                        .cancelable(true)
-                                        .positiveText(context.getString(R.string.NewDialog))
-                                        .neutralText(context.getString(R.string.AllDialogs))
-                                        .callback(new MaterialDialog.ButtonCallback() {
-                                            @Override
-                                            public void onPositive(MaterialDialog dialog) {
-                                                QmsNewThreadFragment.showUserNewThread(context, userId, finalUserNick);
-                                            }
-                                            @Override
-                                            public void onNeutral(MaterialDialog dialog) {
-                                                QmsContactThemes.showThemes(userId, finalUserNick);
-                                            }
-                                        })
-                                        .show();
+                                QmsContactThemes.showThemes(userId, finalUserNick);
                                 return true;
                             }
                         });
