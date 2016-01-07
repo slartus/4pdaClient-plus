@@ -131,11 +131,8 @@ public class App extends android.app.Application {
     }
 
     public TabItem getTabByTag(String tag){
-        for(TabItem item:getTabItems()){
-            Log.e("kuk", item+" : "+item.getTag()+" : "+tag);
+        for(TabItem item:getTabItems())
             if(item.getTag().equals(tag)) return item;
-        }
-
         return null;
     }
     public TabItem getTabByUrl(String url){

@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         }
         List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
 
-        if (fragmentList != null) {
+        if (fragmentList != null&App.getInstance().getTabItems().size()==0) {
             GeneralFragment frag;
             for (Fragment fragment : fragmentList) {
                 frag=(GeneralFragment)fragment;
@@ -778,7 +778,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                             return true;
                         }
                     })
-                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
 
         menu.add(R.string.Search)

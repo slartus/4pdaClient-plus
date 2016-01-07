@@ -8,12 +8,16 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
@@ -31,7 +35,7 @@ public class ShortUserInfo {
     public Activity mActivity;
     public SharedPreferences prefs;
     public CircleImageView imgAvatar;
-    public ImageView imgAvatarSquare, infoRefresh,userBackground;
+    public ImageView imgAvatarSquare, infoRefresh, userBackground, openLink;
     public TextView userNick, qmsMessages, loginButton, userRep;
     public RelativeLayout textWrapper;
     public Handler mHandler = new Handler();
@@ -50,8 +54,34 @@ public class ShortUserInfo {
         imgAvatar = (CircleImageView) findViewById(R.id.imgAvatar);
         imgAvatarSquare = (ImageView) findViewById(R.id.imgAvatarSquare);
         infoRefresh = (ImageView) findViewById(R.id.infoRefresh);
+        openLink = (ImageView) findViewById(R.id.openLink);
         userBackground = (ImageView) findViewById(R.id.userBackground);
         isSquare = prefs.getBoolean("isSquareAvarars",false);
+
+        openLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MaterialDialog.Builder(getContext())
+                        .input("Вставьте ссылку", null, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog dialog, CharSequence input) {
+
+                            }
+                        })
+                        .inputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_MULTI_LINE)
+                        .positiveText("Открыть")
+                        .negativeText("Отмена")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(MaterialDialog dialog, DialogAction which) {
+                                if(!IntentActivity.tryShowUrl((MainActivity)getContext(), ((MainActivity)getContext()).getHandler(), dialog.getInputEditText().getText()+"", false, false)){
+                                    Toast.makeText(getContext(), "Не умею обрабатывать такие ссылки", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .show();
+            }
+        });
 
 
         if(prefs.getBoolean("isUserBackground",false)){
