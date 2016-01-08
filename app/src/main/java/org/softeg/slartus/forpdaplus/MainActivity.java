@@ -592,7 +592,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         hideFragments(transaction);
         for(TabItem item:items) {
-            transaction.remove(item.getFragment());
+            transaction.remove(getSupportFragmentManager().findFragmentByTag(item.getTag()));
             App.getInstance().getTabItems().remove(item);
         }
         transaction.commit();

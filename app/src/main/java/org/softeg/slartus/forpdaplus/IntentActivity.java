@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.goka.flickableview.LogUtil;
 
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdaapi.devdb.NewDevDbApi;
@@ -55,7 +56,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.utils.LogUtil;
+//import org.softeg.slartus.forpdaplus.utils.LogUtil;
 import org.softeg.slartus.forpdaplus.video.PlayerActivity;
 
 import java.io.UnsupportedEncodingException;

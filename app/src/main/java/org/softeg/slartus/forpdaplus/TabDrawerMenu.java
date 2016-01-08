@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,8 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
@@ -85,17 +89,28 @@ public class TabDrawerMenu {
     }
 
     public void closeAllTabs() {
-        String lastBrick = Preferences.Lists.getLastSelectedList();
-        List<TabItem> itemsForClose = new ArrayList<>();
+        close();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                String lastBrick = Preferences.Lists.getLastSelectedList();
+                List<TabItem> itemsForClose = new ArrayList<>();
 
-        for(TabItem item:App.getInstance().getTabItems())
-            if(!lastBrick.equals(item.getTag()))
-                itemsForClose.add(item);
-        ((MainActivity) getContext()).removeTabs(itemsForClose);
-        refreshAdapter();
-        notifyDataSetChanged();
-        App.getInstance().setCurrentFragmentTag(lastBrick);
-        selectTab(App.getInstance().getTabByTag(lastBrick));
+                for (TabItem item : App.getInstance().getTabItems())
+                    if (!lastBrick.equals(item.getTag()))
+                        itemsForClose.add(item);
+                ((MainActivity) getContext()).removeTabs(itemsForClose);
+                App.getInstance().setCurrentFragmentTag(lastBrick);
+                if (!App.getInstance().isContainsByTag(lastBrick)) {
+                    ((MainActivity) getContext()).selectItem(ListCore.getRegisteredBrick(lastBrick));
+                } else {
+                    ((MainActivity) getContext()).selectTab(App.getInstance().getTabByTag(lastBrick));
+                }
+                refreshAdapter();
+                notifyDataSetChanged();
+            }
+        }, 500);
+
     }
 
     public void toggleOpenState() {
@@ -169,7 +184,7 @@ public class TabDrawerMenu {
         List<TabItem> mObjects = null;
         public TabAdapter(Context context, int item_resource, List<TabItem> objects) {
             super(context, item_resource, objects);
-            mObjects = new ArrayList<TabItem>(objects);
+            mObjects = objects;
             inflater = LayoutInflater.from(context);
         }
         @Override

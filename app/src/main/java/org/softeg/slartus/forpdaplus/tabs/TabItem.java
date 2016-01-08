@@ -13,8 +13,8 @@ public class TabItem{
     private String subTitle;
     private Fragment fragment;
 
-    public TabItem(Fragment fragment){
-        this.title = title;
+    public TabItem(String title, String s, String name, Fragment fragment){
+        this.title = this.title;
         this.url = url;
         this.tag = tag;
         this.fragment = fragment;
