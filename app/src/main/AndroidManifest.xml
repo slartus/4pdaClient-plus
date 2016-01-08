@@ -177,6 +177,8 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop" />
 
+        <activity android:name=".controls.gifs.GifsViewActivity" />
+
 
         <service
             android:enabled="true"
@@ -203,7 +205,12 @@
             android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H"
             android:value="598.0dip" />
 
+        <meta-data android:name="com.inthecheesefactory.lab.glidepicasso.GlideConfiguration"
+                   android:value="GlideModule"/>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="2bfc2256dc145a09ab99f0a0d9bc1bc938bdeb2d" />
     </application>
 
 
