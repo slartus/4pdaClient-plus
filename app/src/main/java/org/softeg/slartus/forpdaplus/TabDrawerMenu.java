@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -37,6 +38,7 @@ public class TabDrawerMenu {
     private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
     private static TabAdapter adapter;
     private ListView mListView;
+    private Button closeAll;
 
 
     public interface SelectItemListener {
@@ -54,6 +56,13 @@ public class TabDrawerMenu {
         mActivity = activity;
         mSelectItemListener = listener;
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        closeAll = (Button) findViewById(R.id.closeAll);
+        closeAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeAllTabs();
+            }
+        });
 
 
         mDrawer = (RelativeLayout) findViewById(R.id.tab_drawer);
@@ -73,6 +82,20 @@ public class TabDrawerMenu {
 
         adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
         mListView.setAdapter(adapter);
+    }
+
+    public void closeAllTabs() {
+        String lastBrick = Preferences.Lists.getLastSelectedList();
+        List<TabItem> itemsForClose = new ArrayList<>();
+
+        for(TabItem item:App.getInstance().getTabItems())
+            if(!lastBrick.equals(item.getTag()))
+                itemsForClose.add(item);
+        ((MainActivity) getContext()).removeTabs(itemsForClose);
+        refreshAdapter();
+        notifyDataSetChanged();
+        App.getInstance().setCurrentFragmentTag(lastBrick);
+        selectTab(App.getInstance().getTabByTag(lastBrick));
     }
 
     public void toggleOpenState() {

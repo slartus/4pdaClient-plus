@@ -20,6 +20,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -142,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             GeneralFragment frag;
             for (Fragment fragment : fragmentList) {
                 frag=(GeneralFragment)fragment;
+                if(frag==null) continue;
                 App.getInstance().getTabItems().add(new TabItem(frag.getGeneralTitle(), frag.getGeneralUrl(), frag.getTag(), frag.getGeneralParentTag(), frag));
             }
         }
@@ -536,7 +538,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         }else {
             addTabToList(title, url, tabPrefix + App.getInstance().getTabIterator(), fragment, true);
         }
-        App.getInstance().setCurrentFragmentTag(tabPrefix + (App.getInstance().getTabIterator()-1));
+        App.getInstance().setCurrentFragmentTag(tabPrefix + (App.getInstance().getTabIterator() - 1));
     }
 
     public static void addTabToList(String name, String url, String tag, Fragment fragment, boolean select){
@@ -585,6 +587,15 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         mTabDraweMenu.removeTab(tag);
         mMainDrawerMenu.notifyDataSetChanged();
 
+    }
+    public void removeTabs(List<TabItem> items){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        hideFragments(transaction);
+        for(TabItem item:items) {
+            transaction.remove(item.getFragment());
+            App.getInstance().getTabItems().remove(item);
+        }
+        transaction.commit();
     }
 
     /**
@@ -765,7 +776,10 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         super.onCreateOptionsMenu(menu);
-        menu.clear();
+        if(menu!=null)
+            menu.clear();
+        else
+            menu = new MenuBuilder(this);
 
         createUserMenu(menu);
         if(getPreferences().getBoolean("openTabDrawerButton", false)){
@@ -804,17 +818,18 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 return true;
             }
         });
+        if(getPreferences().getBoolean("showExitButton",false)) {
+            menu.add(0, 0, 999, R.string.CloseApp)
+                    .setIcon(R.drawable.ic_close_white_24dp)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
-       /* menu.add(0, 0, 999, R.string.CloseApp)
-                .setIcon(R.drawable.ic_close_white_24dp)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                    public boolean onMenuItemClick(MenuItem item) {
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                        System.exit(1);
-                        return true;
-                    }
-                });*/
+                        public boolean onMenuItemClick(MenuItem item) {
+                            android.os.Process.killProcess(android.os.Process.myPid());
+                            System.exit(1);
+                            return true;
+                        }
+                    });
+        }
 
         mainMenu = menu;
         return false;

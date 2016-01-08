@@ -261,7 +261,6 @@ public class MainDrawerMenu {
             children.add(new PreferencesBrickInfo());
             children.add(new DownloadsBrickInfo());
             children.add(new MarkAllReadBrickInfo());
-            children.add(new CloseAppBrickInfo());
         }
 
         @Override
@@ -332,10 +331,6 @@ public class MainDrawerMenu {
                             .negativeText("Отмена")
                             .show();
                     break;
-                case CloseAppBrickInfo.NAME:
-                    android.os.Process.killProcess(android.os.Process.myPid());
-                    System.exit(1);
-                    break;
             }
             close();
         }
@@ -399,30 +394,6 @@ public class MainDrawerMenu {
             @Override
             public int getIcon() {
                 return R.drawable.ic_check_all_grey600_24dp;
-            }
-
-            @Override
-            public String getName() {
-                return NAME;
-            }
-
-            @Override
-            public Fragment createFragment() {
-                return null;
-            }
-        }
-
-        private class CloseAppBrickInfo extends BrickInfo {
-            public static final String NAME = "CloseApp";
-
-            @Override
-            public String getTitle() {
-                return "Закрыть программу";
-            }
-
-            @Override
-            public int getIcon() {
-                return R.drawable.ic_close_grey600_24dp;
             }
 
             @Override

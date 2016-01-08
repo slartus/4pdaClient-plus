@@ -118,8 +118,8 @@
     <orderEntry type="library" exported="" name="library-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="core-0.8.5.3" level="project" />
     <orderEntry type="library" exported="" name="flickableview-1.0.0" level="project" />
-    <orderEntry type="library" exported="" name="jsoup-1.8.3" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
+    <orderEntry type="library" exported="" name="jsoup-1.8.3" level="project" />
     <orderEntry type="library" exported="" name="gson-2.5" level="project" />
     <orderEntry type="library" exported="" name="httpcore-4.3.3" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-23.1.1" level="project" />

@@ -396,8 +396,8 @@
 
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="newYearIsHoliday"
-            android:title="Новый год - праздник не для меня"/>
+            android:key="showExitButton"
+            android:title="Отображать кнопку 'Закрыть программу'"/>
     </PreferenceScreen>
 
     <PreferenceScreen
