@@ -1,7 +1,18 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 repositories {
     maven { url "https://jitpack.io" }
+    maven { url 'https://maven.fabric.io/public' }
 }
 
 android {
@@ -81,4 +92,8 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.github.goka.flickableview:flickableview:1.0.0'
     compile 'com.google.code.gson:gson:2.5'
+    compile 'com.github.florent37:materialleanback:1.0.0@aar'
+    compile('com.crashlytics.sdk.android:answers:1.3.6@aar') {
+        transitive = true;
+    }
 }

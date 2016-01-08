@@ -55,6 +55,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.utils.LogUtil;
 import org.softeg.slartus.forpdaplus.video.PlayerActivity;
 
 import java.io.UnsupportedEncodingException;
@@ -357,6 +358,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 || uri.getHost().toLowerCase().contains("ggpht.com")
                 || uri.getHost().toLowerCase().contains("googleusercontent.com")
                 || uri.getHost().toLowerCase().contains("windowsphone.com")
+                || uri.getHost().toLowerCase().contains("cs3-2.4pda.to")
                 || uri.getHost().toLowerCase().contains("mzstatic.com"))) {
             if (isTheme(uri)) {
                 showTopic(url);
@@ -564,6 +566,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 || uri.getHost().toLowerCase().contains("ggpht.com")
                 || uri.getHost().toLowerCase().contains("googleusercontent.com")
                 || uri.getHost().toLowerCase().contains("windowsphone.com")
+                || uri.getHost().toLowerCase().contains("cs3-2.4pda.to")
                 || uri.getHost().toLowerCase().contains("mzstatic.com")))
             return false;
         boolean isFile = PatternExtensions.compile("http://4pda.ru/forum/dl/post/\\d+/[^\"]*")
@@ -580,7 +583,9 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                     public void onUserChanged(String user, Boolean success) {
                         if (success) {
                             if (imagePattern.matcher(uri.toString()).find()) {
+//                                showImage(activity, uri.toString());
                                 showImage(activity, uri.toString());
+                                LogUtil.D("CHECK", "1");
                                 if (finish)
                                     activity.finish();
                             } else
@@ -592,6 +597,8 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 });
             } else {
                 if (imagePattern.matcher(uri.toString()).find()) {
+//                    showImage(activity, uri.toString());
+                    LogUtil.D("CHECK", "2" + uri.toString());
                     showImage(activity, uri.toString());
                     if (finish)
                         activity.finish();
@@ -605,13 +612,16 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 ||(uri.getHost().toLowerCase().contains("ggpht.com")
                 || uri.getHost().toLowerCase().contains("googleusercontent.com")
                 || uri.getHost().toLowerCase().contains("windowsphone.com"))) {
+//            showImage(activity, uri.toString());
             showImage(activity, uri.toString());
+            LogUtil.D("CHECK", "3");
             if (finish)
                 activity.finish();
             return true;
         }
         return false;
     }
+
 
     private static void showImage(Context context, String url) {
         ImageViewActivity.startActivity(context, url);

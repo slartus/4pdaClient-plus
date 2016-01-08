@@ -23,6 +23,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
 
     private ActionBar actionBar;
     private MainActivity mainActivity;
+    protected View view;
 
     private String generalTitle = "ForPda";
     private String generalUrl = "defurl";
