@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.controls.Surprise;
 import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
 import org.softeg.slartus.forpdaplus.fragments.ForumRulesFragment;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
@@ -137,6 +138,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             App.getInstance().setTabIterator(saveInstance.getInt("tabIterator"));
             App.getInstance().setCurrentFragmentTag(saveInstance.getString("currentTag"));
         }
+
         List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
 
         if (fragmentList != null&App.getInstance().getTabItems().size()==0) {
@@ -819,16 +821,18 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             }
         });
         if(getPreferences().getBoolean("showExitButton",false)) {
-            menu.add(0, 0, 999, R.string.CloseApp)
-                    .setIcon(R.drawable.ic_close_white_24dp)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            if (!Surprise.isBlocked()) {
+                menu.add(0, 0, 999, R.string.CloseApp)
+                        .setIcon(R.drawable.ic_close_white_24dp)
+                        .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
-                        public boolean onMenuItemClick(MenuItem item) {
-                            android.os.Process.killProcess(android.os.Process.myPid());
-                            System.exit(1);
-                            return true;
-                        }
-                    });
+                            public boolean onMenuItemClick(MenuItem item) {
+                                android.os.Process.killProcess(android.os.Process.myPid());
+                                System.exit(1);
+                                return true;
+                            }
+                        });
+            }
         }
 
         mainMenu = menu;

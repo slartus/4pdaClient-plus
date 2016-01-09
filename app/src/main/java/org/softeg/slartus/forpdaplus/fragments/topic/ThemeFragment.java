@@ -72,6 +72,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -1552,6 +1553,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
                             while (m.find()) {
                                 objs.add(Uri.decode(m.group(2)));
+                                LogUtil.D("THEME FRAGMENT", "objs " + Uri.decode(m.group(2)));
                             }
                             parameterValues = new String[objs.size()];
                             parameterTypes = new Class[objs.size()];
