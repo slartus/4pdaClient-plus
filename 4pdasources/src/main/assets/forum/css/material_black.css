@@ -1,6 +1,4 @@
 @charset "utf-8";
-@import 'files:///android_asset/fonts/roboto/import.css';
-@import 'http://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic-ext';
 /*
  *	DARK-COLOR
 */
@@ -3217,64 +3215,4 @@ img[src*="style_emoticons"] {
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
   color: #5b5b5b;
-}
-/*
-*	NEW EAER STYLE
-*/
-@keyframes snow {
-  0% {
-    background-position: 0px 0px, 0px 0px, 0px 0px;
-  }
-  100% {
-    background-position: 500px 1000px, 400px 400px, 300px 300px;
-  }
-}
-@-webkit-keyframes snow {
-  0% {
-    background-position: 0px 0px, 0px 0px, 0px 0px;
-  }
-  100% {
-    background-position: 500px 1000px, 400px 400px, 300px 300px;
-  }
-}
-.newyear {
-  background-image: url('material_src/snow.png'), url('material_src/snow3.png'), url('material_src/snow2.png');
-  animation: snow 20s linear infinite;
-  -webkit-animation: snow 20s linear infinite;
-}
-.newyear:after {
-  content: '... от Морфий';
-  display: block;
-  height: 3rem;
-  position: relative;
-  text-align: right;
-  padding: 0 1rem;
-  font-size: 0.75rem;
-  font-style: italic;
-  color: white;
-  background-image: url('material_src/snowdrift.png'), url('material_src/snowdrift1.png'), -webkit-linear-gradient(bottom, rgba(200, 200, 200, 0.5) 0%, transparent 100%);
-  background-repeat: repeat-x;
-  background-size: auto 2rem;
-  background-position: bottom;
-}
-.newyear .panel {
-  position: relative;
-}
-.newyear .panel.top:before {
-  content: 'С Новым Годом!';
-  display: block;
-  padding: 1rem;
-  line-height: 1.2em;
-  text-align: center;
-  font: 3rem/1 'Lobster', cursive;
-  color: #646464;
-}
-.newyear .post_container .hidetop B:after {
-  content: 'ШАПКУ ❄';
-}
-.newyear .post_container .hidetop.close B:before {
-  content: '❄ ПОКАЗАТЬ';
-}
-.newyear .post_container .hidetop.open B:before {
-  content: '❄ СКРЫТЬ';
 }

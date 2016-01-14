@@ -100,6 +100,10 @@ public class ListCore {
 
     private static ArrayList<BrickInfo> m_RegisteredBricks = new ArrayList<>();
 
+    public static ArrayList<BrickInfo> getRegisteredBricks(){
+        return m_RegisteredBricks;
+    }
+
     public static void registerBricks() {
         m_RegisteredBricks.add(new NewsBrickInfo());
         m_RegisteredBricks.add(new NewsPagerBrickInfo());

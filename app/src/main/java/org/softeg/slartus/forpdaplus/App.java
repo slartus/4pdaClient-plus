@@ -481,13 +481,13 @@ public class App extends android.app.Application {
         registerActivityLifecycleCallbacks(m_MyActivityLifecycleCallbacks);
         setTheme(getThemeStyleResID());
 
-        if(!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("newYearIsHoliday",false)) {
+        /*if(!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("newYearIsHoliday",false)) {
             Calendar c = Calendar.getInstance();
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
             if (month == 11 & day >= 30) isNewYear = true;
             if (month == 0 & day <= 2) isNewYear = true;
-        }
+        }*/
 
         try {
             DbHelper.prepareBases(this);

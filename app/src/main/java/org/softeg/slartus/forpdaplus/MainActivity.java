@@ -136,6 +136,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     public void onCreate(Bundle saveInstance) {
         setTheme(App.getInstance().getThemeStyleResID());
         super.onCreate(saveInstance);
+        if(shortUserInfo!=null)
+            shortUserInfo.mActivity = this;
         if(saveInstance!=null) {
             App.getInstance().setTabIterator(saveInstance.getInt("tabIterator"));
             App.getInstance().setCurrentFragmentTag(saveInstance.getString("currentTag"));
@@ -262,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         mMainDrawerMenu.getmDrawerToggle().setDrawerIndicatorEnabled(!b);
         mMainDrawerMenu.getmDrawerToggle().setToolbarNavigationClickListener(listener);
     }
-
+    private ShortUserInfo shortUserInfo;
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -271,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             mMainDrawerMenu.close();
 
         if(!top)
-            new ShortUserInfo(this);
+            shortUserInfo = new ShortUserInfo(this);
         else
             topInform.setVisibility(View.GONE);
 

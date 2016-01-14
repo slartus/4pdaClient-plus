@@ -152,10 +152,9 @@ public class ShortUserInfo {
         infoRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*if(isOnline() & client.getLogined()){
+                if(isOnline() & client.getLogined()){
                     new updateAsyncTask().execute();
-                }*/
-                Answers.getInstance().logCustom(new CustomEvent("Ya Tvoy Fabric Shatal))))0)"));
+                }
             }
         });
     }

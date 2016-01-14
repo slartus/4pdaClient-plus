@@ -193,9 +193,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         if (s_NewsUrl != null) {
             s_NewsUrl = null;
             showNews(m_NewsUrl);
-        }
-
-        if (m_Data != null) {
+        } else if(m_Data != null) {
             String url = m_Data.toString();
             m_Data = null;
             if (IntentActivity.isNews(url)) {
@@ -641,6 +639,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
         @Override
         protected void onPreExecute() {
+            Log.e("kek", "ONPREEXECUTE");
             try {
                 setLoading(true);
             } catch (Exception ex) {
@@ -652,6 +651,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
         @Override
         protected void onPostExecute(final Boolean success) {
+            Log.e("kek", "ONPOSTEXECUTE "+success);
             Comment = null;
             setLoading(false);
             if (isCancelled()) return;

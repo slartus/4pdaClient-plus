@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
@@ -167,10 +168,14 @@ public class TabDrawerMenu {
     public Boolean isOpen() {
         return mDrawerLayout.isDrawerOpen(mDrawer);
     }
-
     public void selectTab(TabItem tabItem) {
         mSelectItemListener.selectTab(tabItem);
         adapter.notifyDataSetChanged();
+        if(ListCore.getRegisteredBrick(tabItem.getTag())!=null){
+            Preferences.Lists.setLastSelectedList(tabItem.getTag());
+            Preferences.Lists.addLastAction(tabItem.getTag());
+        }
+
     }
 
     private Context getContext() {
