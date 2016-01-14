@@ -46,6 +46,7 @@ import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.ImageFilePath;
 import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.controls.Surprise;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.AppAndGame;
@@ -194,6 +195,9 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
 
             DonateActivity.setDonateClickListeners(this);
+
+            findPreference("showExitButton").setOnPreferenceClickListener(this);
+
         }
 
 
@@ -269,9 +273,31 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         }
                     }, endcalendar.get(Calendar.HOUR_OF_DAY), endcalendar.get(Calendar.MINUTE), true).show();
                     return true;
+                case "":
+                    boom();
+                    return true;
             }
 
             return false;
+        }
+
+        private void boom() {
+            final int[] count = {10};
+//            if (Surprise.isBlocked()) {
+//                boomClick.setDefaultValue(false);
+//                boomClick.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//                    @Override
+//                    public boolean onPreferenceClick(Preference preference) {
+//                        Toast.makeText(getActivity(), "Осталось " + String.valueOf(count[0] = count[0] - 1), Toast.LENGTH_SHORT).show();
+//                        if (count[0] == 0) {
+//                            Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
+//                            boomClick.setEnabled(true);
+//                            boomClick.setSelectable(true);
+//                        }
+//                        return false;
+//                    }
+//                });
+//            }
         }
 
         private void setMenuItems(){

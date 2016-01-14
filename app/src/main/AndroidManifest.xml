@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="org.softeg.slartus.forpdaplus"
-    android:installLocation="auto">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="org.softeg.slartus.forpdaplus"
+          android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -176,9 +175,6 @@
             android:label="Проигрыватель"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop" />
-
-        <activity android:name=".controls.gifs.GifsViewActivity" />
-
 
         <service
             android:enabled="true"

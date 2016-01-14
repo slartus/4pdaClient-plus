@@ -9,7 +9,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
@@ -64,7 +62,10 @@ public class TabDrawerMenu {
         closeAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                closeAllTabs();
+                if (App.getInstance().getTabItems().size()>1)
+                    closeAllTabs();
+                else
+                    closeDialog();
             }
         });
 
@@ -118,6 +119,7 @@ public class TabDrawerMenu {
             mDrawerLayout.closeDrawer(mDrawer);
         } else {
             mDrawerLayout.openDrawer(mDrawer);
+//            ((MainActivity)getContext()).hideKeyboard();
         }
     }
 
@@ -235,27 +237,31 @@ public class TabDrawerMenu {
             if(App.getInstance().getTabItems().size()>1) {
                 MainActivity.log("tabdrawer tryremove tab");
                 ((MainActivity) getContext()).tryRemoveTab(tag);
-            }else {
-                new MaterialDialog.Builder(getContext())
-                        .content("Закрыть приложение?")
-                        .positiveText("Да")
-                        .negativeText("Нет")
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                                android.os.Process.killProcess(android.os.Process.myPid());
-                                System.exit(1);
-                            }
-                        })
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                                close();
-                            }
-                        })
-                        .show();
+            } else {
+                closeDialog();
             }
         }
+    }
+
+    private void closeDialog() {
+        new MaterialDialog.Builder(getContext())
+                .content("Закрыть приложение?")
+                .positiveText("Да")
+                .negativeText("Нет")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                        System.exit(1);
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                        close();
+                    }
+                })
+                .show();
     }
 }
 

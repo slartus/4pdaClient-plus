@@ -179,7 +179,7 @@ public class QmsChatFragment extends WebViewFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.qms_chat, container, false);
-        initSwipeRefreshLayout();
+//        initSwipeRefreshLayout();
         // getDialog().setTitle("Профиль");
         setHasOptionsMenu(true);
         assert view != null;
@@ -504,7 +504,8 @@ public class QmsChatFragment extends WebViewFragment {
     private void reLoadChatSafe() {
         uiHandler.post(new Runnable() {
             public void run() {
-                setLoading(true);
+//                setLoading(false);
+                getSupportActionBar().setSubtitle("Обновление");
             }
         });
 
@@ -529,7 +530,8 @@ public class QmsChatFragment extends WebViewFragment {
                 checkNewQms();
                 uiHandler.post(new Runnable() {
                     public void run() {
-                        setLoading(false);
+//                        setLoading(false);
+                        getSupportActionBar().setSubtitle("");
                     }
                 });
                 return;
@@ -571,7 +573,8 @@ public class QmsChatFragment extends WebViewFragment {
                     }
 
                 }
-                setLoading(false);
+//                setLoading(false);
+                getSupportActionBar().setSubtitle("");
             }
         });
 
@@ -779,7 +782,7 @@ public class QmsChatFragment extends WebViewFragment {
         // can use UI thread here
         protected void onPreExecute() {
             this.dialog.show();
-            setLoading(true);
+//            setLoading(false); //
         }
 
         // can use UI thread here
@@ -787,7 +790,7 @@ public class QmsChatFragment extends WebViewFragment {
             if (this.dialog.isShowing()) {
                 this.dialog.dismiss();
             }
-            setLoading(false);
+//            setLoading(false);
 
             onPostChat(m_ChatBody, success, ex);
         }
