@@ -42,6 +42,12 @@ public class QmsNewThreadFragment extends GeneralFragment {
     private PopupPanelView mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
 
     @Override
+    public void hidePopupWindows() {
+        super.hidePopupWindows();
+        mPopupPanelView.hidePopupWindow();
+    }
+
+    @Override
     public Menu getMenu() {
         return null;
     }

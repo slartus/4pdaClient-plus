@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -85,6 +86,13 @@ public class UserReputationFragment extends BrickFragmentListBase {
 
     private String getUserNick() {
         return Args.getString(USER_NICK_KEY, "");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(USER_ID_KEY, getUserId());
+        outState.putString(USER_NICK_KEY, getUserNick());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -176,7 +184,6 @@ public class UserReputationFragment extends BrickFragmentListBase {
         try {
 
             MenuItem item;
-
             if (Client.getInstance().getLogined() && !getUserId().equals(Client.getInstance().UserId)) {
 
 

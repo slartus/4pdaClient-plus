@@ -102,6 +102,12 @@ public class EditPostFragment extends GeneralFragment {
 
     public static final String thisFragmentUrl = "EditPostFragment";
 
+    @Override
+    public void hidePopupWindows() {
+        super.hidePopupWindows();
+        mPopupPanelView.hidePopupWindow();
+    }
+
     public static EditPostFragment newInstance(Context context, Bundle args){
         EditPostFragment fragment = new EditPostFragment();
 

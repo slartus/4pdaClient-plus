@@ -22,6 +22,7 @@ import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,6 +31,7 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -72,7 +74,6 @@ import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -346,11 +347,13 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
 
         webView.getSettings().setAllowFileAccess(true);
-        webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+
 
         webView.getSettings().setLoadWithOverviewMode(false);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
+        webView.setWebChromeClient(new MyChromeClient());
         if (Build.VERSION.SDK_INT >= 19) {
             try {
                 webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
@@ -772,6 +775,12 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     private void hideKeyboard() {
         mQuickPostFragment.hideKeyboard();
+    }
+
+    @Override
+    public void hidePopupWindows() {
+        super.hidePopupWindows();
+        mQuickPostFragment.hidePopupWindow();
     }
 
     public Handler getHandler() {
@@ -1333,7 +1342,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 return;
             }
             url = lofiversionToNormal(url);
-            webView.clearCache(true);
+            //webView.clearCache(true);
             if (m_History.size() > 0) {
                 m_History.get(m_History.size() - 1).setY(webView.getScrollY());
             }
@@ -1348,6 +1357,14 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     public AdvWebView getWebView() {
         return webView;
+    }
+
+    private class MyChromeClient extends WebChromeClient{
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            super.onProgressChanged(view, newProgress);
+            Log.e("kekp", newProgress+" %");
+        }
     }
 
     private void prepareDeleteMessage(final String postId) {
@@ -1523,7 +1540,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-
+            Log.e("kek", "PAGE STARTED");
             //setSupportProgressBarIndeterminateVisibility(true);
             //ThemeActivity.getMainActivity().setProgressBarIndeterminateVisibility(true);
 
@@ -1532,6 +1549,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            Log.e("kek", "PAGE FINISHED");
             view.clearHistory();
             //setSupportProgressBarIndeterminateVisibility(false);
         }
@@ -1553,7 +1571,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
                             while (m.find()) {
                                 objs.add(Uri.decode(m.group(2)));
-                                LogUtil.D("THEME FRAGMENT", "objs " + Uri.decode(m.group(2)));
+                                //LogUtil.D("THEME FRAGMENT", "objs " + Uri.decode(m.group(2)));
                             }
                             parameterValues = new String[objs.size()];
                             parameterTypes = new Class[objs.size()];

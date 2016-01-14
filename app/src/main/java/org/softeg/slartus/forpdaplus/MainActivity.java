@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -242,6 +244,11 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         }
     }
 
+    public void hidePopupWindows(){
+        ((InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        for(TabItem item:App.getInstance().getTabItems())
+            ((GeneralFragment)item.getFragment()).hidePopupWindows();
+    }
     public View getToolbarShadow() {
         return toolbarShadow;
     }

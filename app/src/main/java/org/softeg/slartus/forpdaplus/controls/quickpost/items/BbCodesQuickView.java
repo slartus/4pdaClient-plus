@@ -29,7 +29,9 @@ import org.softeg.slartus.forpdaplus.classes.BbImage;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class BbCodesQuickView extends BaseQuickView {
@@ -84,18 +86,24 @@ public class BbCodesQuickView extends BaseQuickView {
 
     private void loadWebView() {
         StringBuilder sb = new StringBuilder();
-        sb.append("<html><body bgcolor=\"").append(App.getInstance().getCurrentBackgroundColorHtml()).append("\">");
-        String style = App.getInstance().getCurrentThemeName();
-        if(style.equals("dark")) style = "black";
-        String path = "file:///android_asset/forum/style_images/1/folder_editor_buttons_" + style + "/";
+        sb.append("<html><body style=\"text-align:justify;\" class=\"").append(App.getInstance().getCurrentThemeName()).append("\" bgcolor=\"").append(App.getInstance().getCurrentBackgroundColorHtml()).append("\">");
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(App.getInstance().getAssets().open("bb_codes.html"), "UTF-8"));
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         initVars();
-        for (String key : m_BbCodes) {
+        /*for (String key : m_BbCodes) {
             sb.append("<a style=\"text-decoration: none;\" href=\"")
                     .append(key).append("\">")
                     .append("<img style=\"padding:5px;\" src=\"")
                     .append(path).append(key.toLowerCase()).append(".png\" />").append("</a> ");
         }
-
+*/
         sb.append("</body></html>");
         webView.setWebViewClient(new MyWebViewClient());
         webView.loadDataWithBaseURL("http://4pda.ru/forum/", sb.toString(), "text/html", "UTF-8", null);
@@ -228,6 +236,7 @@ public class BbCodesQuickView extends BaseQuickView {
         colors.add(new BBColor("chocolate", "#C85A17"));
         colors.add(new BBColor("teal", "#037F81"));
         colors.add(new BBColor("silver", "#C0C0C0"));
+        colors.add(new BBColor("gray", "#808080"));
 
         ScrollView scrollView = new ScrollView(getContext());
 

@@ -90,6 +90,12 @@ public class QmsChatFragment extends WebViewFragment {
     private String m_MessageText = null;
     private AsyncTask<ArrayList<String>, Void, Boolean> m_SendTask = null;
 
+    @Override
+    public void hidePopupWindows() {
+        super.hidePopupWindows();
+        mPopupPanelView.hidePopupWindow();
+    }
+
     public static void openChat(String userId, String userNick, String tid, String themeTitle, String pageBody){
         MainActivity.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle, pageBody));
     }

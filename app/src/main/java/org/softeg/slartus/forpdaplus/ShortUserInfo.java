@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.squareup.picasso.Picasso;
 
 import org.jsoup.Jsoup;
@@ -150,9 +152,10 @@ public class ShortUserInfo {
         infoRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isOnline() & client.getLogined()){
+                /*if(isOnline() & client.getLogined()){
                     new updateAsyncTask().execute();
-                }
+                }*/
+                Answers.getInstance().logCustom(new CustomEvent("Ya Tvoy Fabric Shatal))))0)"));
             }
         });
     }

@@ -161,4 +161,6 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     public boolean dispatchKeyEvent(KeyEvent event) {
         return false;
     }
+
+    public void hidePopupWindows(){}
 }

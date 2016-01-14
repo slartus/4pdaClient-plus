@@ -60,7 +60,7 @@ public class MainDrawerMenu {
         void selectItem(BrickInfo brickInfo);
     }
 
-    public MainDrawerMenu(Activity activity, SelectItemListener listener) {
+    public MainDrawerMenu(final Activity activity, SelectItemListener listener) {
         resources = App.getInstance().getResources();
         prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         DisplayMetrics displayMetrics = resources.getDisplayMetrics();
@@ -113,10 +113,18 @@ public class MainDrawerMenu {
                 mDrawerList.expandGroup(i);
         }
 
-        mDrawerToggle = new ActionBarDrawerToggle(
-                mActivity, mDrawerLayout, ((MainActivity)mActivity).toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerToggle = new ActionBarDrawerToggle(mActivity, mDrawerLayout, ((MainActivity)mActivity).toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                ((MainActivity)mActivity).hidePopupWindows();
+            }
+        };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
+    }
+    public void onDrawerOpened(View drawerView) {
+
     }
     public void setmMenuGroups(){
         if(mMenuGroups!=null) mMenuGroups.clear();
