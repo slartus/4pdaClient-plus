@@ -185,15 +185,8 @@ public class QmsChatFragment extends WebViewFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.qms_chat, container, false);
-//        initSwipeRefreshLayout();
-        // getDialog().setTitle("Профиль");
         setHasOptionsMenu(true);
         assert view != null;
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        }
-        //createActionMenu();
 
         m_HtmlPreferences = new HtmlPreferences();
         m_HtmlPreferences.load(getContext());
@@ -268,7 +261,6 @@ public class QmsChatFragment extends WebViewFragment {
                 Preferences.System.isDevInterface()|
                 Preferences.System.isDevStyle())
             Toast.makeText(getMainActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
-        //  hidePanels();
 
         loadPrefs();
         startUpdateTimer();

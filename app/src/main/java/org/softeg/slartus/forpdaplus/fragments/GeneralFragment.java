@@ -41,7 +41,16 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         return generalParentTag;
     }
 
+    public void setTitle(String title){
+        getMainActivity().setTitle(title);
+    }
+    public void setSubTitle(String subTitle){
+        getSupportActionBar().setSubtitle(subTitle);
+    }
+
     public MainActivity getMainActivity() {
+        if(mainActivity==null)
+            mainActivity = (MainActivity)getActivity();
         return mainActivity;
     }
 
@@ -104,6 +113,8 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     }
 
     public ActionBar getSupportActionBar() {
+        if(actionBar==null)
+            actionBar = getMainActivity().getSupportActionBar();
         return actionBar;
     }
 

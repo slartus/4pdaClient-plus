@@ -72,18 +72,17 @@ public class WebViewExternals {
     }
 
     public void setWebViewSettings(Boolean loadImagesAutomaticallyAlways) {
-        WebView webView = getWebView();
         disableWebViewCache();
-        webView.setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());
-        webView.loadData("<html><head></head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8");
+        getWebView().setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());
+        getWebView().loadData("<html><head></head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8");
 
 
-        webView.getSettings().setLoadsImagesAutomatically(loadImagesAutomaticallyAlways || m_LoadsImagesAutomatically);
-        webView.setKeepScreenOn(m_KeepScreenOn);
-        webView.getSettings().setBuiltInZoomControls(false);
+        getWebView().getSettings().setLoadsImagesAutomatically(loadImagesAutomaticallyAlways || m_LoadsImagesAutomatically);
+        getWebView().setKeepScreenOn(m_KeepScreenOn);
+        getWebView().getSettings().setBuiltInZoomControls(false);
 
         if(Build.VERSION.SDK_INT<18)
-        webView.getSettings().setPluginState(WebSettings.PluginState.ON);
+            getWebView().getSettings().setPluginState(WebSettings.PluginState.ON);
     }
 
     private void disableWebViewCache() {

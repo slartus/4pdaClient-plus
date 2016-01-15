@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;

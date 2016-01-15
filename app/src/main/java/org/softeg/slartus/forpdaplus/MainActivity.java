@@ -208,6 +208,10 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                     statusBarShowed = true;
                 }
             }
+            if(getPreferences().getBoolean("statusbarFake", false)&Build.VERSION.SDK_INT==19){
+                findViewById(R.id.fakeSB).setVisibility(View.VISIBLE);
+                findViewById(R.id.fakeSB).setMinimumHeight(getStatusBarHeight());
+            }
 
             RelativeLayout leftDrawer = (RelativeLayout) findViewById(R.id.left_drawer);
             topInform = (RelativeLayout) findViewById(R.id.topInform);
