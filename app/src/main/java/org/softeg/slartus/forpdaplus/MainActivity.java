@@ -36,6 +36,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.Surprise;
@@ -276,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         }
     }
     public static void checkToster(Context context){
-        if(false) return;
+        if(true) return;
         boolean toster = false;
         if(Client.getInstance().UserId.equals("0")) {
             LoginDialog.showDialog(context, null);
@@ -908,16 +911,21 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 return true;
             }
         });
+        boolean showed = getPreferences().getBoolean("showedExitButton", false);
         if(getPreferences().getBoolean("showExitButton",false)) {
-            Answers.getInstance().logCustom(new CustomEvent("Button Exit Enable"));
-            menu.add(0, 0, 999, R.string.CloseApp)
-                    .setIcon(R.drawable.ic_close_white_24dp)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            if(!showed) {
+                Answers.getInstance().logCustom(new CustomEvent("Button Exit Enable"));
+                getPreferences().edit().putBoolean("showedExitButton", true).apply();
+            }
 
-                        public boolean onMenuItemClick(MenuItem item) {
-                            android.os.Process.killProcess(android.os.Process.myPid());
-                            System.exit(1);
-                            return true;
+                menu.add(0, 0, 999, R.string.CloseApp)
+                    .setIcon(R.drawable.ic_close_white_24dp)
+                        .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                            public boolean onMenuItemClick(MenuItem item) {
+                                android.os.Process.killProcess(android.os.Process.myPid());
+                                System.exit(1);
+                                return true;
                         }
                     });
 //            if (!Surprise.isBlocked()) {

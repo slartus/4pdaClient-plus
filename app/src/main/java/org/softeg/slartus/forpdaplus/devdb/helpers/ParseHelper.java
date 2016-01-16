@@ -55,15 +55,12 @@ public class ParseHelper {
         String link, title, time, description;
         List<DiscussionModel> cache = new ArrayList<>();
         DiscussionModel model;
-        Elements elements = main.select("#discussions .article-list li");
-        for (Element element : elements) {
-            link = element.select(".title a").attr("href");
-            title = element.select(".title").text();
-            time = element.select(".upd").text();
-            description = element.select(".description").text();
-
-            model = new DiscussionModel(description, time, link, title);
-            cache.add(model);
+        for (Element element : main.select("#discussions .article-list li")) {
+            link = element.select(".title a").first().attr("href");
+            title = element.select(".title").first().text();
+            time = element.select(".upd").first().text();
+            description = element.select(".description").first().text();
+            cache.add(new DiscussionModel(description, time, link, title));
         }
         parsed.setDiscussionModels(new Gson().toJson(cache));
     }
@@ -72,50 +69,44 @@ public class ParseHelper {
         String comment, link, userName, date, ratingNum, ratingText;
         List<CommentsModel> cache = new ArrayList<>();
         ArrayList<String> dr = new ArrayList<>();
-        CommentsModel commentsModel;
-        Elements elements = main.select("#comments li");
-        if (elements != null) {
-            for (Element element1 : elements) {
-                if (!element1.select(".text-box").text().isEmpty()) {
-                    /**
-                     * Тут короче если текст бокс не нуль, то и все остальное не нуль.
-                     */
-
-                    comment = element1.select(".w-toggle").text();
-                    link = element1.select("div.name a").attr("href");
-                    userName = element1.select("div.name a").attr("title");
-                    date = element1.select("div.date").text();
-                    ratingNum = element1.select("span.num").text();
-                    ratingText = element1.select("span.text").text();
-
-                    // for detail dialog
-                    Elements elements1 = element1.getElementsByClass("reviews-list");
-                    if (elements1 != null)
-                        for (Element element2 : elements1)
-                            dr.add(element2.select("div.line").text());
-
-                    commentsModel = new CommentsModel(date, ratingNum, ratingText, comment, link, userName, dr);
-                    cache.add(commentsModel);
-                }
+        for (Element element1 : main.select("#comments .reviews li")) {
+            if (!element1.select(".text-box").text().isEmpty()) {
+                /**
+                 * Тут короче если текст бокс не нуль, то и все остальное не нуль.
+                 */
+                Element element =  element1.select(".text-box .w-toggle").first();
+                if(element==null)
+                    element = element1.select(".text-box").first();
+                comment = element.text();
+                element = element1.select("div.name a").first();
+                link = element.attr("href");
+                userName = element.attr("title");
+                date = element1.select("div.date").first().text();
+                ratingNum = element1.select("span.num").first().text();
+                ratingText = element1.select("span.text").first().text();
+                // for detail dialog
+                Elements elements1 = element1.getElementsByClass("reviews-list");
+                if (elements1 != null)
+                    for (Element element2 : elements1)
+                        dr.add(element2.select("div.line").text());
+                cache.add(new CommentsModel(date, ratingNum, ratingText, comment, link, userName, dr));
             }
-            parsed.setCommentsModels(new Gson().toJson(cache));
         }
+        parsed.setCommentsModels(new Gson().toJson(cache));
     }
 
 
     private void parsePrices(Element main) {
         String link, title, time, description;
         List<PricesModel> cache = new ArrayList<>();
-        PricesModel model;
         Elements elements = main.select("#prices .article-list li");
         for(Element element:elements){
-            link = element.select(".title a").attr("href");
-            title = element.select(".title").text();
-            time = element.select(".upd").text();
-            description = element.select(".description").text();
+            link = element.select(".title a").first().attr("href");
+            title = element.select(".title").first().text();
+            time = element.select(".upd").first().text();
+            description = element.select(".description").first().text();
 
-            model = new PricesModel(time, description, link, title);
-            cache.add(model);
+            cache.add(new PricesModel(time, description, link, title));
         }
         parsed.setPricesModels(new Gson().toJson(cache));
     }
@@ -123,17 +114,12 @@ public class ParseHelper {
     private void parseFirmware(Element main) {
         String link, title, time, description;
         List<FirmwareModel> cache = new ArrayList<>();
-        FirmwareModel model;
-        Elements elements = main.select("#firmware .article-list li");
-
-        for(Element element:elements){
-            link = element.select(".title a").attr("href");
-            title = element.select(".title").text();
-            time = element.select(".upd").text();
-            description = element.select(".description").text();
-
-            model = new FirmwareModel(time, description, link, title);
-            cache.add(model);
+        for(Element element:main.select("#firmware .article-list li")){
+            link = element.select(".title a").first().attr("href");
+            title = element.select(".title").first().text();
+            time = element.select(".upd").first().text();
+            description = element.select(".description").first().text();
+            cache.add(new FirmwareModel(time, description, link, title));
         }
         parsed.setFirmwareModels(new Gson().toJson(cache));
     }
@@ -141,18 +127,13 @@ public class ParseHelper {
     private void parseReviews(Element main) {
         String url, imgLink, title, date, description;
         List<ReviewsModel> cache = new ArrayList<>();
-        ReviewsModel model;
-        Elements elements = main.select("#reviews .article-list li");
-
-        for(Element element:elements){
+        for(Element element:main.select("#reviews .article-list li")){
             url = "http://4pda.ru" + element.select("a").first().attr("href");
-            imgLink = element.select(".article-img img").attr("src");
-            title = element.select(".title").text();
-            date = element.select(".upd").text();
-            description = element.select(".description").text();
-
-            model = new ReviewsModel(date, imgLink, url, description, title);
-            cache.add(model);
+            imgLink = element.select(".article-img img").first().attr("src");
+            title = element.select(".title").first().text();
+            date = element.select(".upd").first().text();
+            description = element.select(".description").first().text();
+            cache.add(new ReviewsModel(date, imgLink, url, description, title));
         }
         parsed.setReviewsModels(new Gson().toJson(cache));
     }
