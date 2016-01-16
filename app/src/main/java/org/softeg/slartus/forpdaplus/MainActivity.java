@@ -909,7 +909,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             }
         });
         if(getPreferences().getBoolean("showExitButton",false)) {
-            if (!Surprise.isBlocked()) {
+            //if (!Surprise.isBlocked()) {
+            if (getPreferences().getBoolean("showExitButton", false)) {
                 menu.add(0, 0, 999, R.string.CloseApp)
                         .setIcon(R.drawable.ic_close_white_24dp)
                         .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

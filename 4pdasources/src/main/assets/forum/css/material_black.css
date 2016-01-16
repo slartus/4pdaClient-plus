@@ -194,7 +194,9 @@ HTML body ol {
 }
 .post-block.quote > .block-title a[title="Ссылка "] {
   margin: 0 0.5rem;
+  box-sizing: border-box;
   color: #afd9f9;
+  border-bottom: 1px solid #586d7d;
 }
 .post-block.quote > .block-body {
   color: #c3e0ee;
@@ -549,20 +551,37 @@ HTML body ol {
   width: 1rem;
   margin-right: 1rem;
   vertical-align: bottom;
-  border-radius: 1rem;
   border: 0.125rem solid #808080;
   transition: all 0.25s;
   overflow: hidden;
   background: #000000;
+}
+.poll .hidemain FORM .poll_body .poll_theme .items .item .radiobutton + .icon {
+  border-radius: 1rem;
   -webkit-box-shadow: inset 0 0 0 1rem #000000;
 }
-.poll .hidemain FORM .poll_body .poll_theme .items .item input:checked + .icon {
+.poll .hidemain FORM .poll_body .poll_theme .items .item .radiobutton:checked + .icon {
   background: #afd9f9;
   border: 0.125rem solid #afd9f9;
   -webkit-box-shadow: inset 0 0 0 0.2rem #000000;
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .checkbox + .icon {
   border-radius: 0.125rem;
+}
+.poll .hidemain FORM .poll_body .poll_theme .items .item .checkbox:checked + .icon {
+  background: #afd9f9;
+  border: 0.125rem solid #afd9f9;
+}
+.poll .hidemain FORM .poll_body .poll_theme .items .item .checkbox:checked + .icon:before {
+  content: '';
+  font-size: 1rem;
+  position: absolute;
+  display: inline-block;
+  height: 0.7rem;
+  width: 0.4rem;
+  border-bottom: 0.15625rem solid #000000;
+  border-right: 0.15625rem solid #000000;
+  -webkit-transform: rotate(45deg) translate(0.125rem, -0.1875rem);
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .num_votes {
   position: absolute;
@@ -1371,9 +1390,9 @@ div[data-post] > a {
   position: fixed;
   top: 40%;
   left: 50%;
-  width: 18rem;
-  height: 11rem;
-  margin-left: -11rem;
+  width: 19rem;
+  margin: 0.5rem;
+  margin-left: -9.5rem;
   margin-top: -4rem;
   border-radius: 0.125rem;
   -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.2);
@@ -1436,55 +1455,12 @@ img[src*="style_emoticons"] {
   margin: 0;
   padding: 0;
 }
-#thread_form .list-group-item .check-item {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 2.5rem;
-  height: 2.5rem;
-  text-align: center;
-  border-radius: 0.125rem;
-}
 #thread_form .list-group-item .check-item input {
   display: none;
-}
-#thread_form .list-group-item .check-item .checkbox {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 2.5rem;
-  height: 2.5rem;
-  line-height: 2.5rem;
-  text-align: center;
-  border-radius: 0.125rem;
-  opacity: 0;
-  transition: all 0.1s ease-in-out;
-  -webkit-transition: all 0.2s ease-in;
-}
-#thread_form .list-group-item .check-item .checkbox:before {
-  position: absolute;
-  display: inline-block;
-  top: 0.5rem;
-  right: 0.5rem;
-  width: 1.25rem;
-  height: 1.25rem;
-  border-radius: 1.25rem;
-  line-height: 1.25rem;
-  text-align: center;
-  content: '✓';
-  color: #000000;
-  background: green;
-  font-weight: bold;
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 #thread_form .list-group-item .check-item .checkbox .icon-check,
 #thread_form .list-group-item .check-item .checkbox .icon-uncheck {
   display: none;
-}
-#thread_form .list-group-item .check-item input:checked + .checkbox {
-  border-radius: 0.125rem;
-  opacity: 1;
 }
 #thread_form .list-group-item .time {
   position: absolute;
@@ -1538,6 +1514,11 @@ img[src*="style_emoticons"] {
   margin: 0 2rem 0 3rem;
   background: #000000;
   border-radius: 0.5rem;
+}
+@media screen and (min-width: 800px) {
+  #thread_form .list-group-item .msg-content {
+    max-width: 60%;
+  }
 }
 #thread_form .list-group-item .msg-content font {
   font-size: 0.75rem !important;
@@ -2986,231 +2967,6 @@ img[src*="style_emoticons"] {
 #bottomMargin {
   display: block;
   height: 100px;
-}
-@font-face {
-  font-family: 'fontello';
-  src: url('material_src/fontello.ttf?66808348') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'fontello';
-  src: url('file:///android_asset/fonts/fontello/fontello.eot?66808348');
-  src: url('file:///android_asset/fonts/fontello/fontello.eot?66808348#iefix') format('embedded-opentype'), url('file:///android_asset/fonts/fontello/fontello.woff?66808348') format('woff'), url('file:///android_asset/fonts/fontello/fontello.ttf?66808348') format('truetype'), url('file:///android_asset/fonts/fontello/fontello.svg?66808348#fontello') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-[class^="icon-"]:before,
-[class*=" icon-"]:before {
-  font-family: "fontello";
-  font-style: normal;
-  font-weight: normal;
-  speak: none;
-  line-height: 1em;
-  display: inline-block;
-  text-decoration: inherit;
-  width: 1em;
-  text-align: center;
-  /* opacity: .8; */
-  /* For safety - reset parent styles, that can break glyph codes*/
-  font-variant: normal;
-  text-transform: none;
-}
-.icon-hash:before {
-  content: '\23';
-}
-/* '#' */
-.icon-karma-up:before {
-  content: '\2b';
-}
-/* '+' */
-.icon-hide-comment:before {
-  content: '\2d';
-}
-/* '-' */
-.icon-4PDA-plain:before {
-  content: '\34';
-}
-/* '4' */
-.icon-android:before {
-  content: '\41';
-}
-/* 'A' */
-.icon-comment-baloons:before {
-  content: '\43';
-}
-/* 'C' */
-.icon-engines:before {
-  content: '\44';
-}
-/* 'D' */
-.icon-pencil:before {
-  content: '\45';
-}
-/* 'E' */
-.icon-FB:before {
-  content: '\46';
-}
-/* 'F' */
-.icon-home:before {
-  content: '\48';
-}
-/* 'H' */
-.icon-apple:before {
-  content: '\49';
-}
-/* 'I' */
-.icon-rss:before {
-  content: '\52';
-}
-/* 'R' */
-.icon-search:before {
-  content: '\53';
-}
-/* 'S' */
-.icon-TWITTER:before {
-  content: '\54';
-}
-/* 'T' */
-.icon-VK:before {
-  content: '\56';
-}
-/* 'V' */
-.icon-windows:before {
-  content: '\57';
-}
-/* 'W' */
-.icon-close:hover:before {
-  content: '\58';
-}
-/* 'X' */
-.icon-YOUTUBE:before {
-  content: '\59';
-}
-/* 'Y' */
-.icon-up-open:before {
-  content: '\5e';
-}
-/* '^' */
-.icon-users:before {
-  content: '\75';
-}
-/* 'u' */
-.icon-link:before {
-  content: '\bb';
-}
-/* '»' */
-.icon-down-dir-1:before {
-  content: '\1d65';
-}
-/* 'ᵥ' */
-.icon-up-dir-1:before {
-  content: '\1dba';
-}
-/* 'ᶺ' */
-.icon-karma-down:before {
-  content: '\2013';
-}
-/* '–' */
-.icon-left-small:before {
-  content: '\2039';
-}
-/* '‹' */
-.icon-right-small:before {
-  content: '\203a';
-}
-/* '›' */
-.icon-4pda-logo:before {
-  content: '\2163';
-}
-/* 'Ⅳ' */
-.icon-up:before {
-  content: '\2191';
-}
-/* '↑' */
-.icon-down:before {
-  content: '\2193';
-}
-/* '↓' */
-.icon-back-up:before {
-  content: '\21b5';
-}
-/* '↵' */
-.icon-up-small:before {
-  content: '\21d1';
-}
-/* '⇑' */
-.icon-login:before {
-  content: '\23ce';
-}
-/* '⏎' */
-.icon-profile:before {
-  content: '\263a';
-}
-/* '✓' */
-/* '✔' */
-.icon-glyph:before {
-  content: '\272a';
-}
-/* '✪' */
-.icon-cog:before {
-  content: '\2731';
-}
-/* '✱' */
-.icon-del:before {
-  content: '\274e';
-}
-/* '❎' */
-.icon-warning-empty:before {
-  content: '\2755';
-}
-/* '❕' */
-.icon-attention:before {
-  content: '\2757';
-}
-/* '❗' */
-.icon-chart-bar:before {
-  content: '\2758';
-}
-/* '❘' */
-.icon-chart-bar-1:before {
-  content: '\2759';
-}
-/* '❙' */
-.icon-glyph-1:before {
-  content: '\275a';
-}
-/* '❚' */
-.icon-quote-left:before {
-  content: '\275d';
-}
-/* '❝' */
-.icon-heart-1:before {
-  content: '\2764';
-}
-/* '❤' */
-.icon-heart:before {
-  content: '\2765';
-}
-/* '❥' */
-.icon-close:before {
-  content: '\2a09';
-}
-/* '⨉' */
-.icon-mlinks-home:before {
-  content: '\e081';
-}
-/* '' */
-.icon-edit:before {
-  content: '\e80b';
-}
-/* '' */
-.icon-users-1:before {
-  content: '👥';
-}
-/* '\1f465' */
-.icon-emo-happy:before {
-  content: '😌';
 }
 [class^="icon-"]:before,
 [class*=" icon-"]:before {

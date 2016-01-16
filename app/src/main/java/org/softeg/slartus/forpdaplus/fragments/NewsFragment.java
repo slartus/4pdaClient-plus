@@ -155,7 +155,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         webView = (AdvWebView) findViewById(R.id.wvBody);
         registerForContextMenu(webView);
         setWebViewSettings();
-        webView.getSettings().setLoadWithOverviewMode(false);
+        webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setDefaultFontSize(Preferences.News.getFontSize());
         if (Build.VERSION.SDK_INT >= 19) {

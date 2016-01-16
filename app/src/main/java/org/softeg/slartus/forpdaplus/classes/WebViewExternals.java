@@ -74,7 +74,7 @@ public class WebViewExternals {
     public void setWebViewSettings(Boolean loadImagesAutomaticallyAlways) {
         disableWebViewCache();
         getWebView().setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());
-        getWebView().loadData("<html><head></head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8");
+        //getWebView().loadData("<html><head></head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8");
 
 
         getWebView().getSettings().setLoadsImagesAutomatically(m_LoadsImagesAutomatically);
