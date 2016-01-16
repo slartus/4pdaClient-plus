@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -40,12 +41,18 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     public String getGeneralParentTag() {
         return generalParentTag;
     }
+    boolean fragmentPaused = true;
 
-    public void setTitle(String title){
-        getMainActivity().setTitle(title);
+    public void setTitle(CharSequence title){
+        setTitle(title.toString());
     }
-    public void setSubTitle(String subTitle){
-        getSupportActionBar().setSubtitle(subTitle);
+    public void setTitle(String title){
+        if(!fragmentPaused)
+            getMainActivity().setTitle(title);
+    }
+    public void setSubtitle(String subtitle){
+        if(!fragmentPaused)
+            getSupportActionBar().setSubtitle(subtitle);
     }
 
     public MainActivity getMainActivity() {
@@ -57,24 +64,20 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     public static SharedPreferences getPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(App.getContext());
     }
-    public void setArrow(){
-        if(getPreferences().getBoolean("showBackArrow", false)) {
-            getMainActivity().setArrow(true, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!closeTab()) {
-                        MainActivity.log("fragment tryremove tab");
-                        getMainActivity().tryRemoveTab(getTag());
-                    }
-                }
-            });
+    private View.OnClickListener removeTabListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            MainActivity.log("fragment tryremove tab");
+            getMainActivity().tryRemoveTab(getTag());
         }
+    };
+    public void setArrow(){
+        if(getPreferences().getBoolean("showBackArrow", true))
+            getMainActivity().animateHamburger(false, removeTabListener);
     }
     public void removeArrow(){
-        if(getPreferences().getBoolean("showBackArrow", false)){
-            getMainActivity().setArrow(false, null);
-        }
-
+        if(getPreferences().getBoolean("showBackArrow", true))
+            getMainActivity().animateHamburger(true, null);
     }
 
     @Override
@@ -110,6 +113,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         setHasOptionsMenu(true);
         mainActivity = (MainActivity)getActivity();
         actionBar = mainActivity.getSupportActionBar();
+        fragmentPaused = false;
     }
 
     public ActionBar getSupportActionBar() {
@@ -126,6 +130,8 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     @Override
     public void onResume() {
         super.onResume();
+        fragmentPaused = false;
+        Log.e("kekos", "onresume "+getTag());
         actionBar = getMainActivity().getSupportActionBar();
         if(getMenu()!=null)
             onCreateOptionsMenu(getMenu(), null);
@@ -134,6 +140,8 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     @Override
     public void onPause() {
         super.onPause();
+        fragmentPaused = true;
+        Log.e("kekos", "onpause " + getTag());
         if(getSupportActionBar()!=null)
             getSupportActionBar().setSubtitle(null);
         if(getMenu()!=null)

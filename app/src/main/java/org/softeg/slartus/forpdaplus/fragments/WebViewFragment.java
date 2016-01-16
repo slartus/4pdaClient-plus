@@ -100,30 +100,6 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         return m_WebViewExternals;
     }
 
-    public void animateHamburger(boolean isArrow){
-        final DrawerLayout drawerLayout = getMainActivity().getmMainDrawerMenu().getmDrawerLayout();
-        final ActionBarDrawerToggle actionBarDrawerToggle = getMainActivity().getmMainDrawerMenu().getmDrawerToggle();
-        float start = 0, end = 1;
-
-        if(isArrow){
-            start = 1; end = 0;
-            drawerLayout.setDrawerListener(actionBarDrawerToggle);
-        }else{
-            drawerLayout.setDrawerListener(null);
-        }
-        ValueAnimator anim = ValueAnimator.ofFloat(start, end);
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                float slideOffset = (Float) valueAnimator.getAnimatedValue();
-                actionBarDrawerToggle.onDrawerSlide(drawerLayout, slideOffset);
-            }
-        });
-        anim.setInterpolator(new DecelerateInterpolator());
-        anim.setDuration(250);
-        anim.start();
-    }
-
     public void showBody(){
         for(int i = 0; i <= App.getInstance().getTabItems().size()-1; i++){
             if(App.getInstance().getTabItems().get(i).getTag().equals(getTag())) {
@@ -209,7 +185,6 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
             getWebView().setWebViewClient(null);
             getWebView().setPictureListener(null);
         }
-        removeArrow();
     }
 
     @Override

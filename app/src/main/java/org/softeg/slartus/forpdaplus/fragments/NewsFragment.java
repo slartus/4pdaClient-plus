@@ -451,7 +451,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     public void showBody(String body) {
         super.showBody();
         try {
-            getMainActivity().setTitle(m_Title);
+            setTitle(m_Title);
             webView.loadDataWithBaseURL("\"file:///android_asset/\"", body, "text/html", "UTF-8", null);
         } catch (Exception ex) {
             AppLog.e(getMainActivity(), ex);
@@ -660,7 +660,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 showBody(m_ThemeBody);
 
             } else {
-                getMainActivity().setTitle(ex.getMessage());
+                setTitle(ex.getMessage());
                 webView.loadDataWithBaseURL("\"file:///android_asset/\"", m_ThemeBody, "text/html", "UTF-8", null);
                 AppLog.e(getMainActivity(), ex);
             }

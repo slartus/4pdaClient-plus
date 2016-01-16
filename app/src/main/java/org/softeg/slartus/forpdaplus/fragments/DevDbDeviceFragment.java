@@ -168,7 +168,7 @@
 //    }
 //    private void initUI() throws IOException {
 //        title = m_DevDbDevice.getInfo().Model;
-//        getMainActivity().setTitle(title);
+//        setTitle(title);
 //        App.getInstance().getTabByTag(getTag()).setTitle(m_DevDbDevice.getInfo().Model);
 //        TabDrawerMenu.notifyDataSetChanged();
 //

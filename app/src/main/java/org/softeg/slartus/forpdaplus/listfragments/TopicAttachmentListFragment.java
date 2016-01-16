@@ -39,7 +39,6 @@ public class TopicAttachmentListFragment extends BaseTaskListFragment {
     @Override
     public void onPause() {
         super.onPause();
-        removeArrow();
     }
 
     public static void showActivity(Context context, CharSequence topicId){

@@ -72,7 +72,6 @@ public class QmsNewThreadFragment extends GeneralFragment {
     @Override
     public void onPause() {
         super.onPause();
-        removeArrow();
         if(mPopupPanelView!=null)
             mPopupPanelView.pause();
     }
@@ -88,6 +87,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setArrow();
         View view = inflater.inflate(R.layout.qms_new_thread, container, false);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -113,19 +113,18 @@ public class QmsNewThreadFragment extends GeneralFragment {
         if (!TextUtils.isEmpty(m_Nick)) {
             username.setText(m_Nick);
             username.setVisibility(View.GONE);
-            getMainActivity().setTitle(m_Nick + ":QMS:Новая тема");
+            setTitle(m_Nick + ":QMS:Новая тема");
             App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":QMS:Новая тема");
 
         } else if (!TextUtils.isEmpty(m_Id)) {
-            getMainActivity().setTitle("QMS:Новая тема");
+            setTitle("QMS:Новая тема");
             App.getInstance().getTabByTag(getTag()).setTitle("QMS:Новая тема");
             new GetUserTask(m_Id).execute();
         } else {
-            getMainActivity().setTitle("QMS:Новая тема");
+            setTitle("QMS:Новая тема");
             App.getInstance().getTabByTag(getTag()).setTitle("QMS:Новая тема");
         }
         TabDrawerMenu.notifyDataSetChanged();
-        setArrow();
         return view;
     }
 
@@ -225,7 +224,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
                 Toast.makeText(getContext(), "Ник получен: " + m_Nick, Toast.LENGTH_SHORT).show();
                 username.setText(m_Nick);
                 username.setVisibility(View.GONE);
-                getMainActivity().setTitle(m_Nick + ":QMS:Новая тема");
+                setTitle(m_Nick + ":QMS:Новая тема");
                 App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":QMS:Новая тема");
                 TabDrawerMenu.notifyDataSetChanged();
             } else {

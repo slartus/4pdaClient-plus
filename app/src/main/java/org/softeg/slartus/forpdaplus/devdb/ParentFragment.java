@@ -81,7 +81,7 @@ public class ParentFragment extends GeneralFragment {
         m_DeviceId = extras.getString(DEVICE_ID_KEY);
         m_Position = extras.getInt(POSITION_ID);
         m_Title = extras.getString(TOOLBAR_TITLE);
-        getMainActivity().setTitle(m_Title);
+        setTitle(m_Title);
         loading();
     }
 
@@ -174,7 +174,7 @@ public class ParentFragment extends GeneralFragment {
 
     private void initUI(ParsedModel parsed) {
         m_Title = parsed.getTitle();
-        getMainActivity().setTitle(m_Title);
+        setTitle(m_Title);
         App.getInstance().getTabByTag(getTag()).setTitle(m_Title);
         TabDrawerMenu.notifyDataSetChanged();
         viewPager = (ViewPager) rootView.findViewById(R.id.devDbViewPager);

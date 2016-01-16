@@ -760,7 +760,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public void onResume() {
         super.onResume();
         if(m_Topic!=null) {
-            getSupportActionBar().setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
+            setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
         }
         if(mQuickPostFragment!=null)
             mQuickPostFragment.onResume();
@@ -1139,9 +1139,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         super.showBody();
         try {
             setScrollElement();
-            getMainActivity().setTitle(m_Topic.getTitle());
+            setTitle(m_Topic.getTitle());
             if(getSupportActionBar()!=null)
-                getSupportActionBar().setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
+                setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
 
             webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
 
@@ -1724,7 +1724,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 showBody(m_ThemeBody);
             } else {
                 if (ex.getClass() != NotReportException.class) {
-                    getMainActivity().setTitle(ex.getMessage());
+                    setTitle(ex.getMessage());
                     webView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
                     addToHistory(m_ThemeBody);
 

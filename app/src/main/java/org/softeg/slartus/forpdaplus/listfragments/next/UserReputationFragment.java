@@ -77,7 +77,6 @@ public class UserReputationFragment extends BrickFragmentListBase {
     @Override
     public void onPause() {
         super.onPause();
-        removeArrow();
     }
 
     private String getUserId() {
@@ -121,7 +120,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
         if(data.getEx()==null){
             if(data instanceof ReputationsListData){
                 if(getSupportActionBar()!=null)
-                    getSupportActionBar().setSubtitle(((ReputationsListData) data).getRep());
+                    setSubtitle(((ReputationsListData) data).getRep());
                 Args.putString(USER_NICK_KEY, ((ReputationsListData) data).getUser());
             }
         }

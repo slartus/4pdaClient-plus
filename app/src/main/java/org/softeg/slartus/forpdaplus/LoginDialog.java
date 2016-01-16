@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -97,6 +98,12 @@ public class LoginDialog {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         loginDialog.connect(onConnectResult);
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        android.os.Process.killProcess(android.os.Process.myPid());
                     }
                 })
                 .build();
@@ -247,6 +254,7 @@ public class LoginDialog {
             if (success) {
                 Toast.makeText(mContext, "Вход выполнен",
                         Toast.LENGTH_SHORT).show();
+                MainActivity.checkToster(mContext);
             } else {
                 if (ex != null)
                     AppLog.e(mContext, ex);

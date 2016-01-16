@@ -67,7 +67,6 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     @Override
     public void onPause() {
         super.onPause();
-        removeArrow();
     }
 
     @Override
@@ -92,8 +91,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-
+        setArrow();
 
         if(savedInstanceState!=null){
             m_Id = savedInstanceState.getString(MID_KEY);
@@ -105,7 +103,6 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         if(m_Nick!=null)
             if(m_Nick.equals(""))
                 new GetUserTask(m_Id).execute();
-        setArrow();
     }
 
     private class GetUserTask extends AsyncTask<String, Void, Boolean> {
@@ -137,7 +134,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
             if (success && !TextUtils.isEmpty(userNick)) {
                 m_Nick = userNick;
                 Toast.makeText(getContext(), "Ник получен: " + m_Nick, Toast.LENGTH_SHORT).show();
-                getMainActivity().setTitle(m_Nick);
+                setTitle(m_Nick);
                 App.getInstance().getTabByTag(getTag()).setTitle(m_Nick);
                 TabDrawerMenu.notifyDataSetChanged();
             } else {

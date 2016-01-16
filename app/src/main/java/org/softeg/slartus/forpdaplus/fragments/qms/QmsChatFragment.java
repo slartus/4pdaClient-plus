@@ -233,11 +233,11 @@ public class QmsChatFragment extends WebViewFragment {
 
         final String[] m_PageBody = {extras.getString(PAGE_BODY_KEY)};
         if (TextUtils.isEmpty(m_Nick))
-            getMainActivity().setTitle("QMS");
+            setTitle("QMS");
         else
-            getMainActivity().setTitle(m_ThemeTitle);
+            setTitle(m_ThemeTitle);
         if (getSupportActionBar() != null)
-            getSupportActionBar().setSubtitle(m_Nick);
+            setSubtitle(m_Nick);
         if (!TextUtils.isEmpty(m_PageBody[0])) {
             m_LastBodyLength = m_PageBody[0].length();
             new Thread(new Runnable() {
@@ -324,8 +324,8 @@ public class QmsChatFragment extends WebViewFragment {
         m_Nick = outState.getString(NICK_KEY);
         m_TId = outState.getString(TID_KEY);
         m_ThemeTitle = outState.getString(THEME_TITLE_KEY);
-        getMainActivity().setTitle(m_ThemeTitle);
-        getSupportActionBar().setSubtitle(m_Nick);
+        setTitle(m_ThemeTitle);
+        setSubtitle(m_Nick);
         edMessage.setText(outState.getString(POST_TEXT_KEY));
 
     }
@@ -503,7 +503,7 @@ public class QmsChatFragment extends WebViewFragment {
         uiHandler.post(new Runnable() {
             public void run() {
 //                setLoading(false);
-                getSupportActionBar().setSubtitle("Обновление");
+                setSubtitle("Обновление");
             }
         });
 
@@ -529,7 +529,7 @@ public class QmsChatFragment extends WebViewFragment {
                 uiHandler.post(new Runnable() {
                     public void run() {
 //                        setLoading(false);
-                        getSupportActionBar().setSubtitle("");
+                        setSubtitle("");
                     }
                 });
                 return;
@@ -546,8 +546,8 @@ public class QmsChatFragment extends WebViewFragment {
             public void run() {
                 if (finalEx == null) {
                     if (finalUpdateTitle)
-                        getMainActivity().setTitle(m_ThemeTitle);
-                    getSupportActionBar().setSubtitle(m_Nick);
+                        setTitle(m_ThemeTitle);
+                    setSubtitle(m_Nick);
                     wvChat.loadDataWithBaseURL("\"file:///android_asset/\"", finalChatBody, "text/html", "UTF-8", null);
                 } else {
                     if ("Такого диалога не существует.".equals(finalEx.getMessage())) {
@@ -572,7 +572,7 @@ public class QmsChatFragment extends WebViewFragment {
 
                 }
 //                setLoading(false);
-                getSupportActionBar().setSubtitle("");
+                setSubtitle("");
             }
         });
 

@@ -40,6 +40,7 @@ public class DevDbCatalogFragment extends BaseCatalogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        removeArrow();
         m_Url = null;
         if (getArguments() != null) {
             m_Url = getArguments().getString(URL_KEY, null);
@@ -49,6 +50,12 @@ public class DevDbCatalogFragment extends BaseCatalogFragment {
             m_Url = savedInstanceState.getString(URL_KEY, m_Url);
             mData = savedInstanceState.getParcelableArrayList("Data");
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        removeArrow();
     }
 
     @Override

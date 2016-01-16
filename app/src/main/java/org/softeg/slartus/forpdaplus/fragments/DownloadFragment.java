@@ -138,8 +138,8 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        removeArrow();
         View view = inflater.inflate(R.layout.downloads_list_activity, container, false);
-
 
         m_ListView = (ListView) view.findViewById(R.id.lstTree);
         m_ListView.addFooterView(createListFooter(inflater));
@@ -161,6 +161,11 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        removeArrow();
+    }
 
     private View createListFooter(LayoutInflater inflater) {
         m_ListFooter = inflater.inflate(R.layout.list_footer, null);

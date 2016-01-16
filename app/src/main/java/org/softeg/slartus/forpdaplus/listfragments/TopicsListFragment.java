@@ -525,4 +525,16 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                     }
                 }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        removeArrow();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        removeArrow();
+    }
 }

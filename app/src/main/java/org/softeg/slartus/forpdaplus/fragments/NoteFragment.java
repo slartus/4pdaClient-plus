@@ -61,7 +61,6 @@ public class NoteFragment extends GeneralFragment {
     @Override
     public void onPause() {
         super.onPause();
-        removeArrow();
     }
     @Nullable
     @Override
@@ -118,7 +117,7 @@ public class NoteFragment extends GeneralFragment {
 
     private void fillData(final Note note) {
         try {
-            getMainActivity().setTitle(DbHelper.getDateString(note.Date));
+            setTitle(DbHelper.getDateString(note.Date));
             infoTable.removeAllViews();
             TableLayout.LayoutParams rowparams = new TableLayout.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                     TableRow.LayoutParams.WRAP_CONTENT);

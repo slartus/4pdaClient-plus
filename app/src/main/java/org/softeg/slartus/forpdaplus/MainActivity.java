@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus;
 
 import android.Manifest;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,7 +20,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +32,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -59,6 +63,7 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -103,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     private AppBarLayout appBarLayout;
 
     public static SearchSettings searchSettings;
+
+    private static List<String> users = new ArrayList<>();
 
     private static final int MSG_RECREATE = 1337;
     Handler handler = new Handler() {
@@ -245,11 +252,39 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MainActivity.REQUEST_WRITE_STORAGE);
 
+            users.add("4415042");//alex_shadow2014
+            users.add("2848060");//pirog-
+            users.add("691140");//74dimon
+            users.add("959551");//den26448
+            users.add("1882226");//Berkut_Angarsk
+            users.add("1111194");//ангел мститель
+            users.add("1122011");//Matuhan
+            users.add("2760915");//DumF0rGaming
+            users.add("104142");//maxxwell
+            users.add("2696673");//another side
+            users.add("4324432");//Snow Volf
+            users.add("2586315");//l1r_svg
+            users.add("1750050");//pavelpc
+            users.add("96664");//Морфий
+            users.add("2556269");//Radiation15
+            users.add("1726458");//iSanechek
+            users.add("236113");//slartus
         } catch (Throwable ex) {
             AppLog.e(getApplicationContext(), ex);
         }
     }
-
+    public static void checkToster(Context context){
+        if(false) return;
+        boolean toster = false;
+        if(Client.getInstance().UserId.equals("0")) {
+            LoginDialog.showDialog(context, null);
+            return;
+        }
+        for(String user:users)
+            if(user.equals(Client.getInstance().UserId))
+                toster = true;
+        if(!toster) android.os.Process.killProcess(android.os.Process.myPid());
+    }
     public void hidePopupWindows(){
         ((InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
         for(TabItem item:App.getInstance().getTabItems())
@@ -267,6 +302,39 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         if(mMainDrawerMenu==null) return;
         mMainDrawerMenu.getmDrawerToggle().setDrawerIndicatorEnabled(!b);
         mMainDrawerMenu.getmDrawerToggle().setToolbarNavigationClickListener(listener);
+    }
+    private boolean lastHamburgerArrow = true;
+    private ValueAnimator anim;
+    private DecelerateInterpolator interpolator = new DecelerateInterpolator();
+
+    private View.OnClickListener toggleListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(mMainDrawerMenu!=null)
+                mMainDrawerMenu.toggleOpenState();
+        }
+    };
+    public void animateHamburger(final boolean isArrow, final View.OnClickListener listener){
+        if(isArrow){
+            toolbar.setNavigationOnClickListener(toggleListener);
+            getmMainDrawerMenu().getmDrawerLayout().setDrawerListener(getmMainDrawerMenu().getmDrawerToggle());
+        }else{
+            if(listener!=null) toolbar.setNavigationOnClickListener(listener);
+            getmMainDrawerMenu().getmDrawerLayout().setDrawerListener(null);
+        }
+        if(isArrow==lastHamburgerArrow) return;
+
+        anim = ValueAnimator.ofFloat(isArrow?1.0f:0.0f, isArrow?0.0f:1.0f);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                getmMainDrawerMenu().getmDrawerToggle().onDrawerSlide(getmMainDrawerMenu().getmDrawerLayout(), (Float) valueAnimator.getAnimatedValue());
+            }
+        });
+        anim.setInterpolator(interpolator);
+        anim.setDuration(250);
+        anim.start();
+        lastHamburgerArrow = isArrow;
     }
     private ShortUserInfo shortUserInfo;
     @Override
@@ -304,7 +372,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 });
             }
         });
-
+        checkToster(this);
     }
 
     @Override

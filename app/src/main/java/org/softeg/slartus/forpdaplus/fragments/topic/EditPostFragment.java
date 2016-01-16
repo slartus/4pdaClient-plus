@@ -202,7 +202,6 @@ public class EditPostFragment extends GeneralFragment {
     @Override
     public void onPause() {
         super.onPause();
-        removeArrow();
         if(mPopupPanelView!=null)
             mPopupPanelView.pause();
     }

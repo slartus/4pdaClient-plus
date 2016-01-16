@@ -266,7 +266,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         if (profile.getNick() != null)
             args.putString(USER_NAME_KEY, profile.getNick().toString());
         if (getMainActivity() != null)
-            getMainActivity().setTitle(profile.getNick());
+            setTitle(profile.getNick());
 
     }
 

@@ -218,10 +218,15 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         fragment.setArguments(args);
         return fragment;
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        removeArrow();
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        removeArrow();
         setHasOptionsMenu(true);
         if (getArguments() != null) {
             if (getArguments().containsKey(TAG_EXTRA_KEY)) {
@@ -235,6 +240,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         }
         listAdapter = new NavigationListAdapter(getActivity());
         onHiddenChanged(false);
+
     }
 
     Boolean useCache = true;

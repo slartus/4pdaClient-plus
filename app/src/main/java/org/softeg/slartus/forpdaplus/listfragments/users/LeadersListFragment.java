@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.listfragments.users;/*
  */
 
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class LeadersListFragment extends BaseExpandableListFragment {
+    @Override
+    public void onResume() {
+        super.onResume();
+        removeArrow();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        removeArrow();
+    }
 
     @Override
     protected boolean inBackground(boolean isRefresh) throws Throwable {

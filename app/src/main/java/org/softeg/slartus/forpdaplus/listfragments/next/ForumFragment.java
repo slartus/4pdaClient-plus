@@ -86,6 +86,7 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        removeArrow();
         setHasOptionsMenu(true);
         if (getArguments() != null)
             m_ForumId = getArguments().getString(FORUM_ID_KEY, null);
@@ -160,6 +161,7 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
     @Override
     public void onResume() {
         super.onResume();
+        removeArrow();
         MainActivity.searchSettings = mSearchSetting;
 
         if(lastImageDownload==MainActivity.getPreferences().getBoolean("forum.list.show_images", true)){

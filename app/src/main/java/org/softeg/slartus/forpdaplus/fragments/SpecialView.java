@@ -95,7 +95,6 @@ public class SpecialView extends WebViewFragment {
     @Override
     public void onPause() {
         super.onPause();
-        removeArrow();
     }
 
     public static void showSpecial(String url) {
@@ -181,7 +180,7 @@ public class SpecialView extends WebViewFragment {
     }
     private void showThemeBody(String body) {
         try {
-            getMainActivity().setTitle(m_Title);
+            setTitle(m_Title);
             m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
         } catch (Exception ex) {
             AppLog.e(getMainActivity(), ex);
