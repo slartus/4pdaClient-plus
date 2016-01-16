@@ -21,7 +21,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import io.fabric.sdk.android.Fabric;
 import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
@@ -38,11 +37,12 @@ import org.softeg.slartus.forpdaplus.tabs.TabItem;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * User: slinkin
@@ -480,15 +480,6 @@ public class App extends android.app.Application {
         m_MyActivityLifecycleCallbacks = new MyActivityLifecycleCallbacks();
         registerActivityLifecycleCallbacks(m_MyActivityLifecycleCallbacks);
         setTheme(getThemeStyleResID());
-
-        /*if(!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("newYearIsHoliday",false)) {
-            Calendar c = Calendar.getInstance();
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-            if (month == 11 & day >= 30) isNewYear = true;
-            if (month == 0 & day <= 2) isNewYear = true;
-        }*/
-
         try {
             DbHelper.prepareBases(this);
         } catch (IOException e) {

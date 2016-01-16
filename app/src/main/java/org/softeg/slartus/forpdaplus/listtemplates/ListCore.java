@@ -1,10 +1,7 @@
 package org.softeg.slartus.forpdaplus.listtemplates;
 
-import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Log;
 
-import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.MainActivity;
 
 import java.util.ArrayList;

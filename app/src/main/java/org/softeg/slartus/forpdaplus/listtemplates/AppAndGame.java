@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaplus.listtemplates;
 import android.support.v4.app.Fragment;
 
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.listfragments.AppsGamesCatalogFragment;
 
 /**
  * Created by radiationx on 01.12.15.

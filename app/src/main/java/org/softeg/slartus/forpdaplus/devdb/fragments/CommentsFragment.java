@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaplus.devdb.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,12 +16,9 @@ import com.google.gson.reflect.TypeToken;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.devdb.adapters.CommentsAdapter;
 import org.softeg.slartus.forpdaplus.devdb.fragments.base.BaseDevDbFragment;
-import org.softeg.slartus.forpdaplus.devdb.helpers.DevDbUtils;
 import org.softeg.slartus.forpdaplus.devdb.helpers.FLifecycleUtil;
 import org.softeg.slartus.forpdaplus.devdb.model.CommentsModel;
-import org.softeg.slartus.forpdaplus.devdb.model.PricesModel;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;

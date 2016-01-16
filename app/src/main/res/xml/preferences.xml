@@ -48,7 +48,7 @@
                 android:title="Карандаш в экшнбаре"/>
             <CheckBoxPreference
                 android:defaultValue="true"
-                android:key="showBackArrow"
+                android:key="showToolbarBackArrow"
                 android:title="Показывать стрелку 'назад'"/>
             <CheckBoxPreference
                 android:defaultValue="false"

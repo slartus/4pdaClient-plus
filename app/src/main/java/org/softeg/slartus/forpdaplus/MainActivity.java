@@ -20,9 +20,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
@@ -238,6 +236,10 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 leftDrawer.setPadding(0, (int) (25 * scale + 0.5f), 0, (int) (48 * scale + 0.5f));
             }
 
+            /*if(true){
+                startActivity(new Intent(this, FeatureActivity.class));
+            }*/
+
             mTabDraweMenu = new TabDrawerMenu(this, this);
             mMainDrawerMenu = new MainDrawerMenu(this, this);
 
@@ -318,6 +320,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         }
     };
     public void animateHamburger(final boolean isArrow, final View.OnClickListener listener){
+        if(toolbar==null) return;
         if(isArrow){
             toolbar.setNavigationOnClickListener(toggleListener);
             getmMainDrawerMenu().getmDrawerLayout().setDrawerListener(getmMainDrawerMenu().getmDrawerToggle());
@@ -396,8 +399,12 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     private boolean checkIntent(final Intent intent) {
         log("intent: " + intent);
-        if (IntentActivity.checkSendAction(this, intent))
+        /*if (IntentActivity.checkSendAction(this, intent))
+            return false;*/
+        if(intent.getAction().equals(Intent.ACTION_SEND)|intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE)) {
+            Toast.makeText(getContext(), "Данное действие временно не поддерживается", Toast.LENGTH_SHORT).show();
             return false;
+        }
         //intent.setData(Uri.parse("http://4pda.ru/forum/lofiversion/index.php?t365142-1650.html"));
         if (intent.getData() != null) {
 

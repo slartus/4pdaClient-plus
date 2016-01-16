@@ -11,7 +11,6 @@
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="panelMenuListTheme">@style/bottom_menu_light</item>
         <item name="android:windowBackground">@color/app_background_light</item>
-        <item name="actionOverflowButtonStyle">@style/overflow_button</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowActionModeOverlay">true</item>
         <item name="forum_header_text_color">@color/holo_blue_light</item>
@@ -53,7 +52,6 @@
         <item name="colorAccent">@color/accent</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat</item>
         <item name="panelMenuListTheme">@style/bottom_menu_dark</item>
-        <item name="actionOverflowButtonStyle">@style/overflow_button</item>
         <item name="android:windowBackground">@color/app_background_dark</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowActionModeOverlay">true</item>
@@ -113,7 +111,6 @@
         <item name="android:actionBarStyle">@style/actionbar_trans</item>
         <item name="actionBarStyle">@style/actionbar_trans</item>
         <item name="panelMenuListTheme">@style/bottom_menu_dark</item>
-        <item name="actionOverflowButtonStyle">@style/overflow_button</item>
 
     </style>
 

@@ -51,7 +51,7 @@ android {
         rel {
             applicationId 'org.softeg.slartus.forpdaplus'
             versionCode 547
-            versionName "3.1.6_Beta3"
+            versionName "3.1.6_Beta5"
             signingConfig defaultSigningVariable
         }
         beta {

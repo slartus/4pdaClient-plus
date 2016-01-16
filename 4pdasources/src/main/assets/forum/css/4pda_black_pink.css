@@ -1688,23 +1688,6 @@ a {
   top: -0.5em;
   left: -0.5em;
 }
-body.newyear .post_container .post_header .avatar .img {
-  -webkit-border-radius: 4em;
-  border-radius: 4em;
-}
-body.newyear .post_container .post_header .avatar:after {
-  content: "";
-  position: absolute;
-  height: 4em;
-  width: 4.5em;
-  background-image: url(hat.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  top: -0.5em;
-  left: 0.625em;
-  -webkit-transform: rotate(10deg);
-  transform: rotate(10deg);
-}
 .post_container {
   background: #000000;
   margin: 0.5em 0;
@@ -1783,10 +1766,10 @@ body.newyear .post_container .post_header .avatar:after {
   right: -1em;
   top: -1em;
   height: 3em;
-  width: 3em;
+  width: 2.5em;
   background-image: url(file:///android_asset/forum/style_images/ic_dots_vertical_grey600_24dp.png), url(../../forum/style_images/ic_dots_vertical_grey600_24dp.png);
   background-size: 1.5em;
-  background-position: center;
+  background-position: 0.375em center;
   background-repeat: no-repeat;
 }
 .post_container .post_header .inf.menu > span {
@@ -2112,19 +2095,6 @@ div[data-post] .post_body {
 }
 /*--- END FORUM TOPIC ---*/
 /*--- PROFILE ---*/
-body.newyear .user-profile-list > li:first-child .user-box .photo .img:after {
-  content: "";
-  position: absolute;
-  height: 4em;
-  width: 4.5em;
-  background-image: url(hat.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  top: -0.5em;
-  left: 0.625em;
-  -webkit-transform: rotate(10deg);
-  transform: rotate(10deg);
-}
 .user-profile-list {
   max-width: 60em;
   margin: 0 auto;

@@ -4,10 +4,6 @@ package org.softeg.slartus.forpdaplus.prefs;/*
 
 import android.os.Bundle;
 
-import org.softeg.slartus.forpdaplus.R;
-
-import java.util.List;
-
 public class TopicsListPreferencesActivity extends BasePreferencesActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
