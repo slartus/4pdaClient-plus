@@ -909,19 +909,19 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             }
         });
         if(getPreferences().getBoolean("showExitButton",false)) {
-            //if (!Surprise.isBlocked()) {
-            if (getPreferences().getBoolean("showExitButton", false)) {
-                menu.add(0, 0, 999, R.string.CloseApp)
-                        .setIcon(R.drawable.ic_close_white_24dp)
-                        .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            Answers.getInstance().logCustom(new CustomEvent("Button Exit Enable"));
+            menu.add(0, 0, 999, R.string.CloseApp)
+                    .setIcon(R.drawable.ic_close_white_24dp)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
-                            public boolean onMenuItemClick(MenuItem item) {
-                                android.os.Process.killProcess(android.os.Process.myPid());
-                                System.exit(1);
-                                return true;
-                            }
-                        });
-            }
+                        public boolean onMenuItemClick(MenuItem item) {
+                            android.os.Process.killProcess(android.os.Process.myPid());
+                            System.exit(1);
+                            return true;
+                        }
+                    });
+//            if (!Surprise.isBlocked()) {
+//            }
         }
 
         mainMenu = menu;
