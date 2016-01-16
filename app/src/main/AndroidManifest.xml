@@ -102,7 +102,8 @@
                 <data android:mimeType="video/*" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".FeatureActivity"
+            android:label="kekos"/>
         <activity
             android:name=".controls.imageview.ImageViewActivity"
             android:label="Изображение"

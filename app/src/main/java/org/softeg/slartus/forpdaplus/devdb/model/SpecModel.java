@@ -3,8 +3,6 @@ package org.softeg.slartus.forpdaplus.devdb.model;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by radiationx on 05.01.16.

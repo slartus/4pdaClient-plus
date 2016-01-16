@@ -16,9 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.devdb.adapters.DiscussionAdapter;
 import org.softeg.slartus.forpdaplus.devdb.fragments.base.BaseDevDbFragment;
-import org.softeg.slartus.forpdaplus.devdb.helpers.DevDbUtils;
 import org.softeg.slartus.forpdaplus.devdb.helpers.FLifecycleUtil;
-import org.softeg.slartus.forpdaplus.devdb.model.CommentsModel;
 import org.softeg.slartus.forpdaplus.devdb.model.DiscussionModel;
 
 import java.util.ArrayList;

@@ -184,7 +184,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         reloadTopic();
     }
 
-    AsyncTask asyncTask;
+    GetThemeTask asyncTask;
     @Override
     public AsyncTask getAsyncTask() {
         return asyncTask;
@@ -333,7 +333,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         webView = (AdvWebView) findViewById(R.id.wvBody);
         registerForContextMenu(webView);
-        setWebViewSettings(true);
+        setWebViewSettings();
 
 
         webView.getSettings().setDomStorageEnabled(true);
@@ -552,15 +552,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 return true;
             }
         });
-
-        optionsMenu.add("Ссылка").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", TextUtils.isEmpty(shareItUrl) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : shareItUrl);
-                return true;
-            }
-        });
-
-
     }
 
 
@@ -632,7 +623,12 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getMainActivity().getApplicationContext());
             mTopicOptionsMenu = addOptionsMenu(getMainActivity(), getHandler(), menu, true, getLastUrl());
 
-
+            menu.add("Ссылка").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", TextUtils.isEmpty(getLastUrl()) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : getLastUrl());
+                    return true;
+                }
+            });
             SubMenu optionsMenu = menu.addSubMenu("Вид");
             optionsMenu.getItem().setTitle("Вид");
 
@@ -1240,12 +1236,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
                 closeSearch();
 
-                GetThemeTask getThemeTask = new GetThemeTask(getMainActivity());
+                asyncTask = new GetThemeTask(getMainActivity());
                 if (data.getExtras() != null && data.getExtras().containsKey(EditPostFragment.TOPIC_BODY_KEY)) {
-                    getThemeTask.execute(url.replace("|", ""), data.getStringExtra(EditPostFragment.TOPIC_BODY_KEY));
+                    asyncTask.execute(url.replace("|", ""), data.getStringExtra(EditPostFragment.TOPIC_BODY_KEY));
                 } else
-                    getThemeTask.execute(url.replace("|", ""));
-                asyncTask = getThemeTask;
+                    asyncTask.execute(url.replace("|", ""));
             }
         }
     }
@@ -1347,9 +1342,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 m_History.get(m_History.size() - 1).setY(webView.getScrollY());
             }
             webView.setWebViewClient(new MyWebViewClient());
+            webView.getSettings().setLoadsImagesAutomatically(getLoadsImagesAutomatically());
 
-            GetThemeTask getThemeTask = new GetThemeTask(getMainActivity());
-            getThemeTask.execute(url.replace("|", ""));
+            asyncTask = new GetThemeTask(getMainActivity());
+            asyncTask.execute(url.replace("|", ""));
         } catch (Throwable ex) {
             AppLog.e(getMainActivity(), ex);
         }
@@ -1713,6 +1709,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             setLoading(false);
             if (scrollY != 0)
                 webView.setPictureListener(new MyPictureListener());
+            Log.e("kek", webView.getSettings().getLoadsImagesAutomatically()+" loadimages");
 
             m_ScrollY = scrollY;
             if (m_Topic != null)

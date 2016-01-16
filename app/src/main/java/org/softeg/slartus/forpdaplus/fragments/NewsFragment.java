@@ -653,6 +653,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         @Override
         protected void onPostExecute(final Boolean success) {
             Log.e("kek", "ONPOSTEXECUTE "+success);
+            Log.e("kek", webView.getSettings().getLoadsImagesAutomatically()+" loadimages");
             Comment = null;
             setLoading(false);
             if (isCancelled()) return;

@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaplus.classes.forum;
 
-import android.content.Context;
 import android.text.TextUtils;
 
 import org.softeg.slartus.forpdaapi.Topic;

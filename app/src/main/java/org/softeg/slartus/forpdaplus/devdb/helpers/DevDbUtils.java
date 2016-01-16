@@ -12,10 +12,10 @@ import com.google.gson.reflect.TypeToken;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.devdb.model.CommentsModel;
-import org.softeg.slartus.forpdaplus.devdb.model.ReviewsModel;
 import org.softeg.slartus.forpdaplus.devdb.model.DiscussionModel;
 import org.softeg.slartus.forpdaplus.devdb.model.FirmwareModel;
 import org.softeg.slartus.forpdaplus.devdb.model.PricesModel;
+import org.softeg.slartus.forpdaplus.devdb.model.ReviewsModel;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
