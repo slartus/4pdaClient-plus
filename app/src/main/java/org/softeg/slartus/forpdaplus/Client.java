@@ -46,6 +46,7 @@ import org.softeg.slartus.forpdaplus.download.DownloadReceiver;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.topic.ForPdaWebInterface;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
+import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 import java.io.IOException;
 import java.net.URI;
@@ -743,7 +744,7 @@ public class Client implements IHttpClient {
 
         final Pattern navStripPattern = PatternExtensions.compile("<div id=\"navstrip\">(.*?)</div>");
         final Pattern userPattern =
-                PatternExtensions.compile("/forum/index.php\\?act=Login&amp;CODE=03&amp;k=([a-z0-9]{32})\">Выход</a>");
+                PatternExtensions.compile("act=login&CODE=03&k=([a-z0-9]{32})");
         final Pattern titlePattern = PatternExtensions.compile("<title>(.*?) - 4PDA</title>");
         final Pattern descriptionPattern = PatternExtensions.compile("<div class=\"topic_title_post\">([^<]*)<");
         final Pattern moderatorTitlePattern = PatternExtensions.compile("onclick=\"return setpidchecks\\(this.checked\\);\".*?>&nbsp;(.*?)<");
@@ -1075,6 +1076,7 @@ public class Client implements IHttpClient {
             String forumId = parseForumId(res);
             if (forumId != null) {
                 topic.setForumId(forumId);
+                LogUtil.E("BOOM DOOM", "forum id " + forumId);
             }
         }
 
@@ -1084,6 +1086,7 @@ public class Client implements IHttpClient {
             Matcher m = pattern.matcher(res);
             if (m.find()) {
                 topic.setAuthKey(m.group(1));
+                LogUtil.E("BOOM DOOM", "key " + m.group(1));
             }
         }
 
