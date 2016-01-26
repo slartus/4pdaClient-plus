@@ -1203,9 +1203,9 @@ a {
   min-width: 3em;
   text-align: center;
   height: 3em;
-  padding: 0.875em 0;
   color: #e91e63;
   position: relative;
+  line-height: 3em;
 }
 .panel .navi .button > span {
   font-size: 0.875em;
@@ -1230,7 +1230,7 @@ a {
   content: none;
 }
 .panel .navi .button.page > span {
-  display: inline;
+  display: inline-block;
 }
 .panel .navi .button.next:after {
   transform: rotate(225deg);
@@ -2605,7 +2605,7 @@ li .post-block {
   content: "Скрытый текст";
 }
 .post-block.hidden > .block-body {
-  padding: 0.5em;
+  padding: 0.5em 1em;
 }
 .post-block.tbl {
   position: relative;

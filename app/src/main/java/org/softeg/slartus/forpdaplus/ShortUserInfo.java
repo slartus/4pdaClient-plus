@@ -61,6 +61,7 @@ public class ShortUserInfo {
             @Override
             public void onClick(View v) {
                 new MaterialDialog.Builder(getContext())
+                        .title("Перейти по ссылке")
                         .input("Вставьте ссылку", null, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(MaterialDialog dialog, CharSequence input) {

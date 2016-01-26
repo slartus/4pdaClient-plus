@@ -26,7 +26,6 @@ import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 /**
  * Created by radiationx on 06.12.15.
@@ -37,7 +36,7 @@ public class ForumRulesFragment extends WebViewFragment{
     public final static String m_Title = "Правила форума";
     @Override
     public Menu getMenu() {
-        return null;
+        return menu;
     }
 
     @Override
@@ -207,11 +206,13 @@ public class ForumRulesFragment extends WebViewFragment{
 
     }
 
+    Menu menu;
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // TODO Auto-generated method stub
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.forum_rules_item, menu);
+        this.menu = menu;
     }
 
     @Override
