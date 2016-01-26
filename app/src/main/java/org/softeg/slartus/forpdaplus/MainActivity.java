@@ -40,6 +40,7 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
+import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.Surprise;
 import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
@@ -144,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     public void onCreate(Bundle saveInstance) {
         setTheme(App.getInstance().getThemeStyleResID());
         super.onCreate(saveInstance);
+        loadPreferences(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
         if(shortUserInfo!=null)
             shortUserInfo.mActivity = this;
         if(saveInstance!=null) {
@@ -955,5 +957,10 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             e.printStackTrace();
         }
 
+    }
+
+    @SuppressWarnings("ResourceType")
+    protected void loadPreferences(SharedPreferences prefs) {
+        setRequestedOrientation(ExtPreferences.parseInt(prefs, "theme.ScreenOrientation", -1));
     }
 }

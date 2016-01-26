@@ -133,6 +133,10 @@ public class DevDbUtils {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
+    public static boolean isKitKat() {
+        return Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT;
+    }
+
     public static void showUrl(Context context, String url) {
         Handler mHandler = new Handler();
         IntentActivity.tryShowUrl(((MainActivity) context), mHandler, url, false, true);

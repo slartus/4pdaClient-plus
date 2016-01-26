@@ -16,7 +16,7 @@ import android.widget.TextView;
 import org.jsoup.nodes.Element;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.LazyGallery.LazyAdapter;
-import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
+import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.devdb.fragments.base.BaseDevDbFragment;
 import org.softeg.slartus.forpdaplus.devdb.helpers.FLifecycleUtil;
 import org.softeg.slartus.forpdaplus.devdb.model.SpecModel;
@@ -80,12 +80,19 @@ public class SpecFragment extends BaseDevDbFragment implements FLifecycleUtil {
                 specList.addView(rowText);
             }
         }
-        //ListView list = (ListView) getView().findViewById(R.id.list);
-        //SimpleAdapter simpleAdapter = new SimpleAdapter(getContext(), oneList, LAYOUT, KEYS, IDS);
-        //list.setAdapter(simpleAdapter);
+
         Gallery gallery = (Gallery) view.findViewById(R.id.gallery);
         LazyAdapter adapter = new LazyAdapter(getActivity(), data.getGalleryImages().toArray(new String[data.getGalleryImages().size()]));
         gallery.setAdapter(adapter);
+
+//        RecyclerView recyclerView = ButterKnife.findById(getActivity(), R.id.gallery);
+//        final LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+//        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+//        recyclerView.setLayoutManager(manager);
+//        SpecGalleryAdapter adapter = new SpecGalleryAdapter(getActivity(), data.getGalleryImages());
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        recyclerView.setHasFixedSize(true);
 
         /*
         перенес сюда, ибо в onCreate imgUrls return null.
@@ -94,7 +101,8 @@ public class SpecFragment extends BaseDevDbFragment implements FLifecycleUtil {
          */
         gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ImageViewActivity.startActivity(getActivity(), imgUrls, adapterView.getSelectedItemPosition());
+//                ImageViewActivity.startActivity(getActivity(), imgUrls, adapterView.getSelectedItemPosition());
+                ImgViewer.startActivity(getActivity(), imgUrls, adapterView.getSelectedItemPosition());
             }
         });
         /*HorizontalScrollView con1 = (HorizontalScrollView) getView().findViewById(R.id.dev_db_activity_con1);
@@ -140,4 +148,5 @@ public class SpecFragment extends BaseDevDbFragment implements FLifecycleUtil {
     public void setContext(Context context) {
         this.context = context;
     }
+
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.softeg.slartus.forpdaplus.controls.imageview.PullBackLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/image_viewer_pullBack"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <android.support.v4.view.ViewPager
+        android:id="@+id/img_viewer_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="25dp"
+        android:id="@+id/img_viewer_statusBar"
+        android:orientation="horizontal"
+        android:animateLayoutChanges="true"
+        android:visibility="invisible"/>
+
+</org.softeg.slartus.forpdaplus.controls.imageview.PullBackLayout>

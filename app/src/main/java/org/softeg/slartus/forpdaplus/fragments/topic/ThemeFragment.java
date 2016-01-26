@@ -74,13 +74,16 @@ import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1162,6 +1165,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public void hideMessagePanel() {
+        LogUtil.D("BOOM BOOM", "hideMessagePanel");
         btnShowHideEditPost.setImageResource(R.drawable.ic_pencil_white_24dp);
         /*Boolean translucentNavigation = true;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
@@ -1533,27 +1537,36 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     private class MyWebViewClient extends WebViewClient {
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            super.onPageStarted(view, url, favicon);
-            Log.e("kek", "PAGE STARTED");
-            //setSupportProgressBarIndeterminateVisibility(true);
-            //ThemeActivity.getMainActivity().setProgressBarIndeterminateVisibility(true);
+        private final long LOADING_ERROR_TIMEOUT = TimeUnit.SECONDS.toMillis(45);
 
+        // WebView instance is kept in WeakReference because of mPageLoadingTimeoutHandlerTask
+        private WeakReference<WebView> mReference;
+        private boolean mLoadingFinished = false;
+        private boolean mLoadingError = false;
+        private String mOnErrorUrl;
+
+        // Helps to know what page is loading in the moment
+        // Allows check url to prevent onReceivedError/onPageFinished calling for wrong url
+        // Helps to prevent double call of onPageStarted
+        // These problems cached on many devices
+        private String mUrl;
+
+        @Override
+        public void onReceivedError(WebView view, int errorCode, String description, String url) {
+            if (mUrl != null && !mLoadingError) {
+                Log.e(TAG, "onReceivedError: " + errorCode + ", " + description);
+                mLoadingError = true;
+            } else {
+//                mOnErrorUrl = removeLastSlash(url);
+                mOnErrorUrl = url;
+            }
         }
 
         @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            Log.e("kek", "PAGE FINISHED");
-            view.clearHistory();
-            //setSupportProgressBarIndeterminateVisibility(false);
-        }
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, final String url) {
-            // if (ThemeActivity.getMainActivity().webView.GetJavascriptInterfaceBroken())
-            {
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            LogUtil.D("BUG", "url in " + url);
+//            url = removeLastSlash(url);
+            if (!startsWith(url, mUrl) && !mLoadingFinished) {
                 if (url.contains("HTMLOUT.ru")) {
                     Uri uri = Uri.parse(url);
                     try {
@@ -1585,6 +1598,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     return true;
                 }
 
+
+
+                mUrl = null;
+                onPageStarted(view, url, null);
             }
             m_ScrollY = 0;
             if (checkIsTheme(url))
@@ -1601,9 +1618,80 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
             IntentActivity.tryShowUrl(getMainActivity(), mHandler, url, true, false,
                     m_Topic == null ? null : m_Topic.getAuthKey());
-
             return true;
         }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            Log.e("kek", "PAGE STARTED");
+            //setSupportProgressBarIndeterminateVisibility(true);
+            //ThemeActivity.getMainActivity().setProgressBarIndeterminateVisibility(true);
+
+//            url = removeLastSlash(url);
+            if (startsWith(url, mOnErrorUrl)) {
+                mUrl = url;
+                mLoadingError = true;
+                mLoadingFinished = false;
+                onPageFinished(view, url);
+            }
+            if (mUrl == null) {
+                mUrl = url;
+                mLoadingError = false;
+                mLoadingFinished = false;
+                view.removeCallbacks(mPageLoadingTimeoutHandlerTask);
+                view.postDelayed(mPageLoadingTimeoutHandlerTask, LOADING_ERROR_TIMEOUT);
+                mReference = new WeakReference<>(view);
+            }
+
+
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+//            url = removeLastSlash(url);
+            if (startsWith(url, mUrl) && !mLoadingFinished) {
+                mLoadingFinished = true;
+                view.removeCallbacks(mPageLoadingTimeoutHandlerTask);
+                mOnErrorUrl = null;
+                mUrl = null;
+            } else if (mUrl == null) {
+                view.setWebViewClient(new MyWebViewClient());
+                mLoadingFinished = true;
+            }
+
+            Log.e("kek", "PAGE FINISHED");
+            view.clearHistory();
+            //setSupportProgressBarIndeterminateVisibility(false);
+        }
+
+//        private String removeLastSlash(String url) {
+//            LogUtil.D("BUG", "url before " + url);
+//            while (url.endsWith("/")) {
+//                url = url.substring(0, url.length() - 1);
+//                LogUtil.D("BUG", "url after " + url);
+//            }
+//            return url;
+//        }
+
+        private boolean startsWith(String str, String prefix) {
+            return str != null && prefix != null && str.startsWith(prefix);
+        }
+
+        private final Runnable mPageLoadingTimeoutHandlerTask = new Runnable() {
+            @Override
+            public void run() {
+                mUrl = null;
+                mLoadingFinished = true;
+                if (mReference != null) {
+                    WebView webView = mReference.get();
+                    if (webView != null) {
+                        webView.stopLoading();
+                    }
+                }
+            }
+        };
 
         private boolean checkIsPoll(String url) {
             Matcher m = Pattern.compile("4pda.ru.*?addpoll=1").matcher(url);

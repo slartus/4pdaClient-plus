@@ -108,6 +108,7 @@
     </style>
 
     <style name="ImageViewTheme" parent="Theme.AppCompat">
+        <item name="android:windowActionBarOverlay">true</item>
         <item name="android:actionBarStyle">@style/actionbar_trans</item>
         <item name="actionBarStyle">@style/actionbar_trans</item>
         <item name="panelMenuListTheme">@style/bottom_menu_dark</item>
@@ -117,8 +118,6 @@
     <style name="actionbar_trans" parent="@style/Widget.AppCompat.ActionBar">
         <item name="android:background">@color/background_toolbar</item>
         <item name="background">@color/background_toolbar</item>
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="windowActionBarOverlay">true</item>
         <item name="elevation">2dp</item>
         <item name="displayOptions">homeAsUp|showTitle</item>
         <item name="titleTextStyle">@style/actionbar_title</item>

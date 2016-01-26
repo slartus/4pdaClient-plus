@@ -14,8 +14,10 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.IntentActivity;
-import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
+import org.softeg.slartus.forpdaplus.MainActivity;
+import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 
@@ -167,7 +169,7 @@ public class ExtUrl {
     public static void showSelectActionDialog(final android.os.Handler handler, final Context context,
                                               final String title, final String body, final String url, final String topicId, final String topic,
                                               final String postId, final String userId, final String user) {
-        CharSequence[] titles = new CharSequence[]{"Открыть в новой вкладке","Открыть в...", "Поделиться ссылкой", "Скопировать ссылку", "Создать заметку"};
+        CharSequence[] titles = new CharSequence[]{"Открыть в новой вкладке","Открыть в...", "Поделиться ссылкой", "Скопировать ссылку", "Создать заметку", "Сохранить"};
         new MaterialDialog.Builder(context)
                 .content(url)
                 .items(titles)
@@ -192,6 +194,11 @@ public class ExtUrl {
                                         title, body, url, topicId, topic,
                                         postId, userId, user);
                                 break;
+                            case 5:
+                                DownloadsService.download(((MainActivity)context), url, false);
+                                break;
+                            default:
+                                break;
                         }
                     }
                 })
@@ -214,7 +221,8 @@ public class ExtUrl {
                     public void onSelection(MaterialDialog dialog, View view, int i, CharSequence titles) {
                         switch (i) {
                             case 0:
-                                ImageViewActivity.startActivity(context, url);
+//                                ImageViewActivity.startActivity(context, url);
+                                ImgViewer.startActivity(context, url);
                                 break;
                             case 1:
                                 showInBrowser(context, url);

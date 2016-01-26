@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.goka.flickableview.LogUtil;
 
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdaapi.devdb.NewDevDbApi;
@@ -26,7 +25,7 @@ import org.softeg.slartus.forpdacommon.UrlExtensions;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.Email;
-import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
+import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.devdb.ParentFragment;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
@@ -587,7 +586,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                             if (imagePattern.matcher(uri.toString()).find()) {
 //                                showImage(activity, uri.toString());
                                 showImage(activity, uri.toString());
-                                LogUtil.D("CHECK", "1");
                                 if (finish)
                                     activity.finish();
                             } else
@@ -600,7 +598,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             } else {
                 if (imagePattern.matcher(uri.toString()).find()) {
 //                    showImage(activity, uri.toString());
-                    LogUtil.D("CHECK", "2" + uri.toString());
                     showImage(activity, uri.toString());
                     if (finish)
                         activity.finish();
@@ -616,7 +613,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 || uri.getHost().toLowerCase().contains("windowsphone.com"))) {
 //            showImage(activity, uri.toString());
             showImage(activity, uri.toString());
-            LogUtil.D("CHECK", "3");
             if (finish)
                 activity.finish();
             return true;
@@ -626,7 +622,8 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
 
     private static void showImage(Context context, String url) {
-        ImageViewActivity.startActivity(context, url);
+//        ImageViewActivity.startActivity(context, url);
+        ImgViewer.startActivity(context, url);
     }
 
     public static void downloadFileStart(final Activity activity, final String url, final Boolean finish) {

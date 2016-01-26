@@ -1,10 +1,15 @@
 package org.softeg.slartus.forpdaplus.fragments;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
@@ -21,6 +26,7 @@ import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 /**
  * Created by radiationx on 06.12.15.
@@ -85,6 +91,7 @@ public class ForumRulesFragment extends WebViewFragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setArrow();
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -101,14 +108,11 @@ public class ForumRulesFragment extends WebViewFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.webview_fragment, container, false);
         m_WebView = (AdvWebView) view.findViewById(R.id.wvBody);
-        setHasOptionsMenu(true);
-
 
         initSwipeRefreshLayout();
-        setHasOptionsMenu(true);
+
         assert view != null;
         registerForContextMenu(m_WebView);
-
         m_WebView.getSettings();
         m_WebView.getSettings().setDomStorageEnabled(true);
         m_WebView.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
@@ -201,6 +205,29 @@ public class ForumRulesFragment extends WebViewFragment{
             return true;
         }
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // TODO Auto-generated method stub
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.forum_rules_item, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle item selection
+        switch (item.getItemId()) {
+            case R.id.copy_link:
+                ClipboardManager clipboard = (ClipboardManager)
+                        getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("simple text","http://4pda.ru/forum/index.php?act=boardrules");
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(getActivity(), "Ссылка сопирована", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
 

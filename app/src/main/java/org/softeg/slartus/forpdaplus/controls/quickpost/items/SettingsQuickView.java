@@ -15,6 +15,7 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.fragments.topic.EditPostFragment;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 
 public class SettingsQuickView extends BaseQuickView {
@@ -78,12 +79,24 @@ public class SettingsQuickView extends BaseQuickView {
         extendedFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (getTopicId() == null || getAuthKey() == null || getPostBody() == null)
+                LogUtil.D("BOOM BOOM", "CLICK");
+                LogUtil.D("BOOM BOOM forum id ", getForumId() == null ? "false" : getForumId().toString());
+                LogUtil.D("BOOM BOOM topic id", getTopicId() == null ? "false" : getTopicId().toString());
+                LogUtil.D("BOOM BOOM post body", getPostBody() == null ? "false" : getPostBody().toString());
+                if (getAuthKey() == null) {
+                    LogUtil.D("BOOM BOOM", "auth null");
+                } else {
+                    LogUtil.D("BOOM BOOM", "auth not null");
+                }
+                if (getTopicId() == null || getAuthKey() == null || getPostBody() == null) {
                     return;
+                }
+                LogUtil.D("BOOM BOOM", "gogogog");
                 ((ThemeFragment) App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getFragment()).hideMessagePanel();
                 EditPostFragment.newPost((MainActivity) getContext(), getForumId() == null ? null : getForumId().toString(),
                         getTopicId().toString(), getAuthKey().toString(),
                         getPostBody().toString(), App.getInstance().getCurrentFragmentTag());
+
             }
         });
         linearLayout.addView(extendedFormButton);

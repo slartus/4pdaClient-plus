@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaapi.qms;
 
 import android.text.Html;
+import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -170,8 +171,10 @@ public class QmsApi {
             QmsUser qmsUser = new QmsUser();
             qmsUser.setId(m.group(1));
             Matcher countMatcher = newMessagesCountPattern.matcher(m.group(2));
-            if (countMatcher.find())
+            if (countMatcher.find()) {
                 qmsUser.setNewMessagesCount(countMatcher.group(1));
+                Log.d("MSG", "size " + countMatcher.group(1));
+            }
             Matcher userMatcher = userPattern.matcher(m.group(2));
             if (userMatcher.find()) {
                 qmsUser.setNick(Html.fromHtml(userMatcher.group(2)).toString().trim());

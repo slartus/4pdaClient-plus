@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
+        classpath 'io.fabric.tools:gradle:1.21.2'
     }
 }
 apply plugin: 'com.android.application'
@@ -50,8 +50,8 @@ android {
         def defaultSigningVariable = signingConfigs.release
         rel {
             applicationId 'org.softeg.slartus.forpdaplus'
-            versionCode 548
-            versionName "3.1.6"
+            versionCode 555
+            versionName "3.1.6.2"
             signingConfig defaultSigningVariable
         }
         beta {
@@ -74,7 +74,7 @@ android {
     }
 }
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
@@ -94,9 +94,7 @@ dependencies {
     compile project(':forpdanotifyservice')
     compile project(':4pdasources')
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.github.goka.flickableview:flickableview:1.0.0'
     compile 'com.google.code.gson:gson:2.5'
-    compile 'com.github.florent37:materialleanback:1.0.0@aar'
     compile('com.crashlytics.sdk.android:answers:1.3.6@aar') {
         transitive = true;
     }

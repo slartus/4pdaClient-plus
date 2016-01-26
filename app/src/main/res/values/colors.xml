@@ -100,7 +100,7 @@
     <color name="selectedItem">#2777</color>
     <color name="selectedItemText">@color/actionbar_background_light</color>
 
-    <color name="background_toolbar">#B3000000</color>
+    <color name="background_toolbar">#66000000</color>
 
     <color name="dialog_background_light">#eeeeee</color>
     <color name="dialog_background_dark">#303030</color>

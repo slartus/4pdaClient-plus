@@ -64,8 +64,10 @@ public class TabDrawerMenu {
             public void onClick(View v) {
                 if (App.getInstance().getTabItems().size()>1)
                     closeAllTabs();
-                else
+                else {
                     closeDialog();
+                    toggleOpenState();
+                }
             }
         });
 
