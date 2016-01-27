@@ -6,8 +6,8 @@ package org.softeg.slartus.forpdaapi.classes;
 public class LoginForm {
     private Throwable error;
     private String capPath;
-    private String capD;
-    private String capS;
+    private String capTime;
+    private String capSigig;
     private String session;
 
     public String getCapPath() {
@@ -18,20 +18,20 @@ public class LoginForm {
         this.capPath = capPath;
     }
 
-    public String getCapD() {
-        return capD;
+    public String getCapTime() {
+        return capTime;
     }
 
-    public void setCapD(String capD) {
-        this.capD = capD;
+    public void setCapTime(String capTime) {
+        this.capTime = capTime;
     }
 
-    public String getCapS() {
-        return capS;
+    public String getCapSig() {
+        return capSigig;
     }
 
-    public void setCapS(String capS) {
-        this.capS = capS;
+    public void setCapSig(String capSigig) {
+        this.capSigig = capSigig;
     }
 
     public Throwable getError() {

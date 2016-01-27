@@ -29,8 +29,8 @@ import org.softeg.slartus.forpdaplus.controls.imageview.MaterialImageLoading;
  * Time: 7:18
  */
 public class LoginDialog {
-    String capD;
-    String capS;
+    String capTime;
+    String capSig;
     String session;
     EditText username_edit;
     final EditText password_edit;
@@ -65,7 +65,7 @@ public class LoginDialog {
                 username_edit.getText().toString(), password_edit.getText().toString(),
                 privacy_checkbox.isChecked(),
                 ((EditText) mView.findViewById(R.id.cap_value_ed)).getText().toString(),
-                capD, capS,session,
+                capTime, capSig,session,
                 onConnectResult);
         loginTask.execute(username_edit.getText().toString(), password_edit.getText().toString(),
                 Boolean.toString(privacy_checkbox.isChecked()));
@@ -168,8 +168,8 @@ public class LoginDialog {
                     }
                 });
 
-                capD = loginForm.getCapD();
-                capS = loginForm.getCapS();
+                capTime = loginForm.getCapTime();
+                capSig = loginForm.getCapSig();
                 session=loginForm.getSession();
             } else {
 
@@ -187,23 +187,23 @@ public class LoginDialog {
         private String login;
         private String password;
         private Boolean privacy;
-        private String capA;
-        private String capD;
-        private String capS;
+        private String capVal;
+        private String capTime;
+        private String capSig;
         private String session;
         private Client.OnUserChangedListener m_OnConnectResult;
 
         public LoginTask(Context context,
                          String login, String password, Boolean privacy,
-                         String capA, String capD, String capS,String session,
+                         String capVal, String capTime, String capSig,String session,
                          Client.OnUserChangedListener onConnectResult) {
             mContext = context;
             this.login = login;
             this.password = password;
             this.privacy = privacy;
-            this.capA = capA;
-            this.capD = capD;
-            this.capS = capS;
+            this.capVal = capVal;
+            this.capTime = capTime;
+            this.capSig = capSig;
             this.session = session;
             m_OnConnectResult = onConnectResult;
             dialog = new MaterialDialog.Builder(mContext)
@@ -217,7 +217,7 @@ public class LoginDialog {
         protected Boolean doInBackground(String... params) {
             try {
 
-                return Client.getInstance().login(login, password, privacy, capA, capD, capS,session);
+                return Client.getInstance().login(login, password, privacy, capVal, capTime, capSig,session);
             } catch (Exception e) {
 
                 ex = e;

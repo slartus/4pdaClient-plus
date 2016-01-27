@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -446,7 +447,7 @@ public class Client implements IHttpClient {
 
 
     public Boolean login(String login, String password, Boolean privacy,
-                         String capA, String capD, String capS, String session) throws Exception {
+                         String capVal, String capTime, String capSig, String session) throws Exception {
 
         HttpHelper httpHelper = new HttpHelper();
         try {
@@ -538,7 +539,7 @@ public class Client implements IHttpClient {
                     }
                 }
 
-            }, login, password, privacy, capA, capD, capS, session);
+            }, login, password, privacy, capVal, capTime, capSig, session);
             m_Logined = loginResult.isSuccess();
             m_LoginFailedReason = m_Logined ? null : loginResult.getLoginError().toString();
 
