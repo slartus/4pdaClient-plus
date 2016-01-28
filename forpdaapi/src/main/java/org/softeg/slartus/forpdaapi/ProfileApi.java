@@ -67,7 +67,7 @@ public class ProfileApi {
         additionalHeaders.put("password", password);
         //additionalHeaders.put("CookieDate", "1");
         if(privacy)
-            additionalHeaders.put("auth-hidden", "1");
+            additionalHeaders.put("hidden", "1");
         additionalHeaders.put("act", "auth");
         //additionalHeaders.put("CODE", "01");
         additionalHeaders.put("referer", "http://4pda.ru/forum/index.php?act=UserCP&CODE=24");
@@ -143,7 +143,7 @@ public class ProfileApi {
         String page = httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID);
 
         Document doc = Jsoup.parse(page);
-        org.jsoup.nodes.Element element = doc.select("#header+div>div>ul").first();
+        org.jsoup.nodes.Element element = doc.select("#header+div>div ul").first();
 
         if (element != null) {
             doc.select("div.photo").append("<div class=\"img "+avType+"\" style=\"background-image: url("+doc.select("div.photo>img").first().absUrl("src")+");\"></div>");

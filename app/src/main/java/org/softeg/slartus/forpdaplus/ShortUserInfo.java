@@ -3,12 +3,20 @@ package org.softeg.slartus.forpdaplus;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -17,16 +25,29 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.softeg.slartus.forpdaplus.classes.FastBlur;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
+import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -40,6 +61,8 @@ public class ShortUserInfo {
     public Handler mHandler = new Handler();
     public Client client;
     public boolean isSquare;
+
+    private ImageLoader imageLoader = ImageLoader.getInstance();
 
     public ShortUserInfo(Activity activity) {
         prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
@@ -84,13 +107,9 @@ public class ShortUserInfo {
         });
 
 
-        if(prefs.getBoolean("isUserBackground",false)){
-            File imgFile = new File(prefs.getString("userBackground",""));
-            if(imgFile.exists()){
-                Picasso.with(activity).load(imgFile).into(userBackground);
-            }else {
-                userBackground.setImageResource(R.drawable.user_background);
-            }
+        File imgFile = new File(prefs.getString("userInfoBg",""));
+        if(imgFile.exists()){
+            Picasso.with(activity).load(imgFile).into(userBackground);
         }
         client.checkLoginByCookies();
         if(isOnline()){
@@ -214,13 +233,49 @@ public class ShortUserInfo {
                 userNick.setText(client.getUser());
                 userRep.setVisibility(View.VISIBLE);
                 userRep.setText("Репутация: " + reputation);
-                prefs.edit().putString("shortUserInfoRep", reputation).apply();
+
                 refreshQms();
+                //Log.e("kek", avatarUrl+" : "+prefs.getString("userAvatarUrl",""));
+                if(prefs.getBoolean("isUserBackground", false)){
+                    File imgFile = new File(prefs.getString("userInfoBg",""));
+                    if(imgFile.exists()){
+                        Picasso.with(getContext()).load(imgFile).into(userBackground);
+                    }
+                }else {
+                    if(!avatarUrl.equals(prefs.getString("userAvatarUrl",""))|prefs.getString("userInfoBg","").equals("")){
+                        //Log.e("kek", "true");
+                        Picasso.with(App.getContext()).load(avatarUrl).into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                blur(bitmap, userBackground, avatarUrl);
+                                prefs.edit().putString("userAvatarUrl",avatarUrl).apply();
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Drawable errorDrawable) {
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                            }
+                        });
+                    }else {
+                        File imgFile = new File(prefs.getString("userInfoBg",""));
+                        if(imgFile.exists()){
+                            Picasso.with(getContext()).load(imgFile).into(userBackground);
+                        }
+                    }
+                }
+
+
                 if(isSquare){
                     Picasso.with(App.getContext()).load(avatarUrl).into(imgAvatarSquare);
                 }else {
                     Picasso.with(App.getContext()).load(avatarUrl).into(imgAvatar);
                 }
+                prefs.edit()
+                        .putString("shortUserInfoRep", reputation)
+                        .apply();
                 //prefs.edit().putBoolean("isLoadShortUserInfo", true).apply();
                 //prefs.edit().putString("shortAvatarUrl", avatarUrl).apply();
             }else {
@@ -232,11 +287,72 @@ public class ShortUserInfo {
     public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) mActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting()
+        return netInfo != null && netInfo.isConnectedOrConnecting()
                 && cm.getActiveNetworkInfo().isAvailable()
-                && cm.getActiveNetworkInfo().isConnected()) {
-            return true;
+                && cm.getActiveNetworkInfo().isConnected();
+    }
+
+    private Bitmap overlay;
+    private Canvas canvas;
+    private Paint paint;
+    private void blur(Bitmap bkg, ImageView view, String url) {
+        bkg = Bitmap.createScaledBitmap(bkg, view.getMeasuredWidth(), view.getMeasuredHeight(), false);
+
+        float scaleFactor = 4;
+        int radius = 30;
+
+        overlay = Bitmap.createBitmap((int) (view.getMeasuredWidth()/scaleFactor),
+                (int) (view.getMeasuredHeight()/scaleFactor), Bitmap.Config.RGB_565);
+        canvas = new Canvas(overlay);
+        canvas.translate(-view.getLeft()/scaleFactor, -view.getTop()/scaleFactor);
+        canvas.scale(1 / scaleFactor, 1 / scaleFactor);
+        paint = new Paint();
+        paint.setFlags(Paint.FILTER_BITMAP_FLAG);
+        canvas.drawBitmap(bkg, 0, 0, paint);
+
+        overlay = FastBlur.doBlur(overlay, radius, true);
+        view.setImageBitmap(overlay);
+        storeImage(overlay, url);
+    }
+    private void storeImage(Bitmap image, String url) {
+        File pictureFile = getOutputMediaFile(url);
+        if (pictureFile == null) {
+            Log.d("kek", "Error creating media file, check storage permissions: ");// e.getMessage());
+            return;
         }
-        return false;
+        try {
+            FileOutputStream fos = new FileOutputStream(pictureFile);
+            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+        } catch (FileNotFoundException e) {
+            Log.d("kek", "File not found: " + e.getMessage());
+        } catch (IOException e) {
+            Log.d("kek", "Error accessing file: " + e.getMessage());
+        }
+    }
+    private  File getOutputMediaFile(String url){
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+        File mediaStorageDir = new File(Preferences.System.getSystemDir());
+
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                return null;
+            }
+        }
+        // Create a media file name
+        Long tsLong = System.currentTimeMillis()/1000;
+        String name = tsLong.toString();
+        Matcher m = Pattern.compile("http:\\/\\/s.4pda.to\\/(.*?)\\.").matcher(url);
+        if(m.find()){
+            name = m.group(1);
+        }
+        String file = mediaStorageDir.getPath() + File.separator + name + ".png";
+        prefs.edit().putString("userInfoBg", file).apply();
+        return new File(file);
     }
 }

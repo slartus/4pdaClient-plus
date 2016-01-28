@@ -74,7 +74,6 @@
                 <ImageView
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:src="@drawable/user_background"
                     android:id="@+id/userBackground"
                     android:scaleType="centerCrop"/>
                 <RelativeLayout

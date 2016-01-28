@@ -357,6 +357,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         public void onNeutral(MaterialDialog dialog) {
                             PreferenceManager.getDefaultSharedPreferences(App.getContext())
                                     .edit()
+                                    .putString("userInfoBg", "")
                                     .putBoolean("isUserBackground", false)
                                     .apply();
                         }
@@ -376,7 +377,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     String selectedImagePath = ImageFilePath.getPath(getApplicationContext(), selectedImageUri);
                     PreferenceManager.getDefaultSharedPreferences(App.getContext())
                             .edit()
-                            .putString("userBackground", selectedImagePath)
+                            .putString("userInfoBg", selectedImagePath)
                             .putBoolean("isUserBackground", true)
                             .apply();
                 }
