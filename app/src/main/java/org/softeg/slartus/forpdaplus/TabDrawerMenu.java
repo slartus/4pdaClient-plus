@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -41,6 +42,9 @@ public class TabDrawerMenu {
     private static TabAdapter adapter;
     private ListView mListView;
     private Button closeAll;
+    private static final long DOUBLE_CLICK_INTERVAL = 250;
+    private long lastPressTime;
+    private boolean doubleClicked = false;
 
 
     public interface SelectItemListener {
@@ -62,12 +66,29 @@ public class TabDrawerMenu {
         closeAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (App.getInstance().getTabItems().size()>1)
-                    closeAllTabs();
-                else {
-                    closeDialog();
+                long pressTime = System.currentTimeMillis();
+                if (pressTime - lastPressTime <= DOUBLE_CLICK_INTERVAL) {
                     toggleOpenState();
+                    closeDialog();
+                    doubleClicked = true;
+                } else {
+                    doubleClicked = false;
+                    Handler handler = new Handler() {
+                        public void handleMessage(Message m) {
+                            if (!doubleClicked) {
+                                if (App.getInstance().getTabItems().size()>1)
+                                    closeAllTabs();
+                                else {
+                                    closeDialog();
+                                    toggleOpenState();
+                                }
+                            }
+                        }
+                    };
+                    Message m = new Message();
+                    handler.sendMessageDelayed(m, DOUBLE_CLICK_INTERVAL);
                 }
+                lastPressTime = pressTime;
             }
         });
 
