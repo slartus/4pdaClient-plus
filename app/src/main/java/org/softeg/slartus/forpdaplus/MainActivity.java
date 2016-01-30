@@ -16,6 +16,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -42,7 +43,6 @@ import com.crashlytics.android.answers.CustomEvent;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.controls.Surprise;
 import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
 import org.softeg.slartus.forpdaplus.fragments.ForumRulesFragment;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 findViewById(R.id.fakeSB).setMinimumHeight(getStatusBarHeight());
             }
 
-            RelativeLayout leftDrawer = (RelativeLayout) findViewById(R.id.left_drawer);
+            NavigationView leftDrawer = (NavigationView) findViewById(R.id.left_drawer);
             topInform = (RelativeLayout) findViewById(R.id.topInform);
             int scale = (int) getResources().getDisplayMetrics().density;
             boolean bottom = getPreferences().getBoolean("isMarginBottomNav",false);
@@ -307,8 +307,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     public void setArrow(final boolean b, final View.OnClickListener listener){
         if(mMainDrawerMenu==null) return;
-        mMainDrawerMenu.getmDrawerToggle().setDrawerIndicatorEnabled(!b);
-        mMainDrawerMenu.getmDrawerToggle().setToolbarNavigationClickListener(listener);
+        mMainDrawerMenu.getDrawerToggle().setDrawerIndicatorEnabled(!b);
+        mMainDrawerMenu.getDrawerToggle().setToolbarNavigationClickListener(listener);
     }
     private boolean lastHamburgerArrow = true;
     private ValueAnimator anim;
@@ -325,10 +325,10 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         if(toolbar==null) return;
         if(isArrow){
             toolbar.setNavigationOnClickListener(toggleListener);
-            getmMainDrawerMenu().getmDrawerLayout().setDrawerListener(getmMainDrawerMenu().getmDrawerToggle());
+            getmMainDrawerMenu().getDrawerLayout().setDrawerListener(getmMainDrawerMenu().getDrawerToggle());
         }else{
             if(listener!=null) toolbar.setNavigationOnClickListener(listener);
-            getmMainDrawerMenu().getmDrawerLayout().setDrawerListener(null);
+            getmMainDrawerMenu().getDrawerLayout().setDrawerListener(null);
         }
         if(isArrow==lastHamburgerArrow) return;
 
@@ -336,7 +336,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                getmMainDrawerMenu().getmDrawerToggle().onDrawerSlide(getmMainDrawerMenu().getmDrawerLayout(), (Float) valueAnimator.getAnimatedValue());
+                getmMainDrawerMenu().getDrawerToggle().onDrawerSlide(getmMainDrawerMenu().getDrawerLayout(), (Float) valueAnimator.getAnimatedValue());
             }
         });
         anim.setInterpolator(interpolator);
@@ -353,7 +353,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             mMainDrawerMenu.close();
 
         if(!top)
-            shortUserInfo = new ShortUserInfo(this);
+            shortUserInfo = new ShortUserInfo(this, mMainDrawerMenu.getNavigationView().getHeaderView(0));
         else
             topInform.setVisibility(View.GONE);
 
@@ -449,8 +449,9 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         }
         if(mMainDrawerMenu!=null){
             mMainDrawerMenu.close();
-            mMainDrawerMenu.notifyDataSetChanged();
+            mMainDrawerMenu.setItemCheckable(title);
         }
+
         String currentFragmentTag = String.valueOf(App.getInstance().getCurrentFragmentTag());
 
         endActionFragment(title, tag);
@@ -587,7 +588,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         m_ExitWarned = false;
         log("onResume " + System.currentTimeMillis() / 1000);
         onStart();
-        if(mMainDrawerMenu!=null) mMainDrawerMenu.setmMenuGroups();
     }
 
     @Override
@@ -673,14 +673,15 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
     public void removeTab(String tag){
         TabItem tab = App.getInstance().getTabByTag(tag);
-        log("remove tab"+(tab!=null?tab.getTitle():"tab ne sushestvuet((("));
+        log("remove tab" + (tab != null ? tab.getTitle() : "tab ne sushestvuet((("));
         log("remove " + tag);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         hideFragments(transaction);
         transaction.remove(getSupportFragmentManager().findFragmentByTag(tag));
         transaction.commit();
         mTabDraweMenu.removeTab(tag);
-        mMainDrawerMenu.notifyDataSetChanged();
+        if(tab!=null)
+            mMainDrawerMenu.setItemCheckable(tab.getTitle());
 
     }
     public void removeTabs(List<TabItem> items){

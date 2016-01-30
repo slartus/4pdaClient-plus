@@ -4,15 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.InputType;
@@ -25,10 +22,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -44,8 +37,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,13 +52,32 @@ public class ShortUserInfo {
     public Handler mHandler = new Handler();
     public Client client;
     public boolean isSquare;
+    public String avatarUrl = "";
+    private View view;
 
-    private ImageLoader imageLoader = ImageLoader.getInstance();
+    private Target target = new Target() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            blur(bitmap, userBackground, avatarUrl);
+            prefs.edit().putString("userAvatarUrl",avatarUrl).apply();
+        }
 
-    public ShortUserInfo(Activity activity) {
+        @Override
+        public void onBitmapFailed(Drawable errorDrawable) {
+
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+        }
+    };
+
+    public ShortUserInfo(Activity activity, View view) {
         prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         client = Client.getInstance();
         mActivity = activity;
+        this.view = view;
         userNick = (TextView) findViewById(R.id.userNick);
         qmsMessages = (TextView) findViewById(R.id.qmsMessages);
         loginButton = (TextView) findViewById(R.id.loginButton);
@@ -181,7 +191,7 @@ public class ShortUserInfo {
     }
 
     private View findViewById(int id) {
-        return mActivity.findViewById(id);
+        return view.findViewById(id);
     }
 
     private void refreshQms() {
@@ -194,7 +204,6 @@ public class ShortUserInfo {
     }
 
     private class updateAsyncTask extends AsyncTask<String, Void, Void> {
-        String avatarUrl = "";
         String reputation = "";
 
         @Override
@@ -244,21 +253,7 @@ public class ShortUserInfo {
                 }else {
                     if(!avatarUrl.equals(prefs.getString("userAvatarUrl",""))|prefs.getString("userInfoBg","").equals("")){
                         //Log.e("kek", "true");
-                        Picasso.with(App.getContext()).load(avatarUrl).into(new Target() {
-                            @Override
-                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                                blur(bitmap, userBackground, avatarUrl);
-                                prefs.edit().putString("userAvatarUrl",avatarUrl).apply();
-                            }
-
-                            @Override
-                            public void onBitmapFailed(Drawable errorDrawable) {
-                            }
-
-                            @Override
-                            public void onPrepareLoad(Drawable placeHolderDrawable) {
-                            }
-                        });
+                        Picasso.with(App.getContext()).load(avatarUrl).into(target);
                     }else {
                         File imgFile = new File(prefs.getString("userInfoBg",""));
                         if(imgFile.exists()){
@@ -292,21 +287,18 @@ public class ShortUserInfo {
                 && cm.getActiveNetworkInfo().isConnected();
     }
 
-    private Bitmap overlay;
-    private Canvas canvas;
-    private Paint paint;
     private void blur(Bitmap bkg, ImageView view, String url) {
         bkg = Bitmap.createScaledBitmap(bkg, view.getMeasuredWidth(), view.getMeasuredHeight(), false);
 
-        float scaleFactor = 4;
-        int radius = 30;
+        float scaleFactor = 3;
+        int radius = 64;
 
-        overlay = Bitmap.createBitmap((int) (view.getMeasuredWidth()/scaleFactor),
-                (int) (view.getMeasuredHeight()/scaleFactor), Bitmap.Config.RGB_565);
-        canvas = new Canvas(overlay);
-        canvas.translate(-view.getLeft()/scaleFactor, -view.getTop()/scaleFactor);
+        Bitmap overlay = Bitmap.createBitmap((int) (view.getMeasuredWidth() / scaleFactor),
+                (int) (view.getMeasuredHeight() / scaleFactor), Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(overlay);
+        canvas.translate(-view.getLeft() / scaleFactor, -view.getTop() / scaleFactor);
         canvas.scale(1 / scaleFactor, 1 / scaleFactor);
-        paint = new Paint();
+        Paint paint = new Paint();
         paint.setFlags(Paint.FILTER_BITMAP_FLAG);
         canvas.drawBitmap(bkg, 0, 0, paint);
 

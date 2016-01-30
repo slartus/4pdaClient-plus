@@ -5,18 +5,19 @@ import android.support.v4.app.Fragment;
 import org.softeg.slartus.forpdaplus.R;
 
 /**
- * Created by radiationx on 01.12.15.
+ * Created by radiationx on 30.01.16.
  */
-public class AppAndGame extends BrickInfo{
-    public static final String NAME = "AppAndGame";
+public class DownloadsBrickInfo extends BrickInfo {
+    public static final String NAME = "Downloads";
+
     @Override
     public String getTitle() {
-        return "App&Game 4pda";
+        return "Загрузки";
     }
 
     @Override
     public int getIcon() {
-        return R.drawable.ic_apps_grey600_24dp;
+        return R.drawable.ic_download_grey600_24dp;
     }
 
     @Override

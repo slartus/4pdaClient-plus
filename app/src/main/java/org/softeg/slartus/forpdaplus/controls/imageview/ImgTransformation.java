@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus.controls.imageview;
 
 import android.graphics.Bitmap;
+
 import com.squareup.picasso.Transformation;
 
 public class ImgTransformation implements Transformation {

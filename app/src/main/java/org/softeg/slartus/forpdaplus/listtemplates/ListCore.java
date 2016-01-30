@@ -33,6 +33,14 @@ public class ListCore {
         return allItems;
     }
 
+    public static ArrayList<BrickInfo> getOthersBricks(){
+        ArrayList<BrickInfo> res = new ArrayList<>();
+        res.add(new PreferencesBrickInfo());
+        res.add(new DownloadsBrickInfo());
+        res.add(new MarkAllReadBrickInfo());
+        return res;
+    }
+
     /**
      * Кирпичи для создания нового поста извне
      */

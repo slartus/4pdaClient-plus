@@ -19,6 +19,5 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:textStyle="bold"
-        android:textSize="14sp"
-        style="?drawer_menu_text" />
+        android:textSize="14sp"/>
 </LinearLayout>

@@ -52,8 +52,6 @@
     <color name="drawer_menu_background_black">#0d0d0d</color>
     <color name="drawer_menu_text_light">@color/list_text_special_color_light</color>
     <color name="drawer_menu_text_dark">@color/list_text_special_color_dark</color>
-    <color name="drawer_menu_group_light">@color/list_text_second_color_light</color>
-    <color name="drawer_menu_group_dark">@color/list_text_second_color_dark</color>
 
     <color name="divider_light">#dbdbdb</color>
     <color name="divider_dark">#292929</color>
