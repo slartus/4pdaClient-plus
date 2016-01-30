@@ -1,6 +1,8 @@
 package org.softeg.slartus.forpdaplus;
 
 import android.app.Activity;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -93,15 +95,17 @@ public class ShortUserInfo {
         openLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final String url;
+                url = readFromClipboard(getContext());
                 new MaterialDialog.Builder(getContext())
                         .title("Перейти по ссылке")
-                        .input("Вставьте ссылку", null, new MaterialDialog.InputCallback() {
+                        .input("Вставьте ссылку", isPdaLink(url) ? url : null, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(MaterialDialog dialog, CharSequence input) {
 
                             }
                         })
-                        .inputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_FLAG_MULTI_LINE)
+                        .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE)
                         .positiveText("Открыть")
                         .negativeText("Отмена")
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -346,5 +350,22 @@ public class ShortUserInfo {
         String file = mediaStorageDir.getPath() + File.separator + name + ".png";
         prefs.edit().putString("userInfoBg", file).apply();
         return new File(file);
+    }
+
+    private boolean isPdaLink(String url) {
+        if (Pattern.compile("4pda.ru/([^/$?&]+)", Pattern.CASE_INSENSITIVE).matcher(url).find())
+            return true;
+        return false;
+    }
+
+    public static String readFromClipboard(Context context) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        if (clipboard.hasPrimaryClip()) {
+            android.content.ClipDescription description = clipboard.getPrimaryClipDescription();
+            android.content.ClipData data = clipboard.getPrimaryClip();
+            if (data != null && description != null && description.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN))
+                return String.valueOf(data.getItemAt(0).getText());
+        }
+        return null;
     }
 }
