@@ -851,7 +851,7 @@ public class Client implements IHttpClient {
                 isWebviewAllowJavascriptInterface);
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Boolean browserStyle = prefs.getBoolean("theme.BrowserStylePreRemove", false);
+        //Boolean browserStyle = prefs.getBoolean("theme.BrowserStylePreRemove", false);
         topicBodyBuilder.beginTopic();
 
         //>>ОПРОС
@@ -924,118 +924,105 @@ public class Client implements IHttpClient {
         //<<опрос
         topicBodyBuilder.openPostsList();
 
-        if (browserStyle) {
-            body = body
-                    .replace("onclick=\"return confirm('Подтвердите удаление');\"", "")
-                    .replace("href=\"#\"", "")
-            ;
-            if (!WebViewExternals.isLoadImages("theme"))
-                body = HtmlPreferences.modifyAttachedImagesBody(Functions.isWebviewAllowJavascriptInterface(context), body);
-            topicBodyBuilder.addBody(body);
-            topicBodyBuilder.endTopic();
-        } else {
-
-            mainMatcher = Pattern
-                    .compile("<div data-post=\"(\\d+)\"[^>]*>([\\s\\S]*?)((?=<div class=\"post_body[^\"]*?\">)[\\s\\S]*?)(?=<div data-post=\"\\d+\"[^>]*>|<div class=\"topic_foot_nav[^\"]*\">)",
-                            Pattern.MULTILINE | Pattern.CASE_INSENSITIVE)
-                    .matcher(body + "<div class=\"topic_foot_nav\">");
+        mainMatcher = Pattern
+                .compile("<div data-post=\"(\\d+)\"[^>]*>([\\s\\S]*?)((?=<div class=\"post_body[^\"]*?\">)[\\s\\S]*?)(?=<div data-post=\"\\d+\"[^>]*>|<div class=\"topic_foot_nav[^\"]*\">)",
+                        Pattern.MULTILINE | Pattern.CASE_INSENSITIVE)
+                .matcher(body + "<div class=\"topic_foot_nav\">");
 
 
-            final Pattern postDateNumPattern = PatternExtensions
-                    .compile("<span class=\"post_date[^\"]*\">(.*?)&nbsp;[^#]*#(\\d+)");
-            final Pattern nickPattern = PatternExtensions
-                    .compile("insertText\\('[^']*\\[B\\](.*?),\\[/B\\]\\s*'\\)\"\\s*data-av=\"([^\"]*)\">");
-            Pattern userInfoPattern = PatternExtensions
-                    .compile("<span class=\"post_user_info[^\"]*\"[^>]*>(<strong[^>]*>.*?<.strong><br .>)?Группа: (.*?)<br..><font color=\"([^\"]*)\">[\\s\\S]*?mid=(\\d+)");
+        final Pattern postDateNumPattern = PatternExtensions
+                .compile("<span class=\"post_date[^\"]*\">(.*?)&nbsp;[^#]*#(\\d+)");
+        final Pattern nickPattern = PatternExtensions
+                .compile("insertText\\('[^']*\\[B\\](.*?),\\[/B\\]\\s*'\\)\"\\s*data-av=\"([^\"]*)\">");
+        Pattern userInfoPattern = PatternExtensions
+                .compile("<span class=\"post_user_info[^\"]*\"[^>]*>(<strong[^>]*>.*?<.strong><br .>)?Группа: (.*?)<br..><font color=\"([^\"]*)\">[\\s\\S]*?mid=(\\d+)");
 
-            final Pattern repValuePattern = PatternExtensions
-                    .compile("<span id=\"ajaxrep-\\d+\">(.\\d+|\\d+)</span>");
-            final Pattern repEditPattern = PatternExtensions
-                    .compile("href=\"[^\"]*act=rep[^\"]*view=(win_minus|win_add)[^\"]*\"");
-            final Pattern editPattern = PatternExtensions.compile("href=\"[^\"]*act=post[^\"]*do=edit_post[^\"]*\"");
-            final Pattern deletePattern = PatternExtensions.compile("onclick=\"[^\"]*seMODdel");
-            final Pattern bodyPattern = PatternExtensions.compile("<div class=\"post_body([^\"]*)?\">([\\s\\S]*)</div>");
-
-
-            //String today = Functions.getToday();
-            //String yesterday = Functions.getYesterToday();
-            org.softeg.slartus.forpdaplus.classes.Post post = null;
-            Boolean spoil = spoilFirstPost;
-
-            while (mainMatcher.find()) {
-
-                String postId = mainMatcher.group(1);
-
-                String str = mainMatcher.group(2);
-                Matcher m = postDateNumPattern.matcher(str);
-                if (m.find()) {
-                    //post = new org.softeg.slartus.forpdaplus.classes.Post(postId, Functions.getForumDateTime(Functions.parseForumDateTime(m.group(1), today, yesterday)), m.group(2));
-                    post = new org.softeg.slartus.forpdaplus.classes.Post(postId, m.group(1), m.group(2));
-
-                } else
-                    continue;
-
-                m = nickPattern.matcher(str);
-                if (m.find()) {
-                    post.setAuthor(m.group(1));
-                    post.setAvatarFileName(m.group(2));
-                }
-
-                m = userInfoPattern.matcher(str);
-                if (m.find()) {
-                    if (m.group(1) != null)
-                        post.setCurator();
-                    post.setUserGroup(m.group(2));
-                    post.setUserState(m.group(3));
-                    post.setUserId(m.group(4));
-                }
-
-                m = repValuePattern.matcher(str);
-                if (m.find()) {
-                    post.setUserReputation(m.group(1));
-                }
-
-                m = repEditPattern.matcher(str);
-                while (m.find()) {
-                    if ("win_minus".equals(m.group(1)))
-                        post.setCanMinusRep(true);
-                    if ("win_add".equals(m.group(1)))
-                        post.setCanPlusRep(true);
-                }
-
-                m = editPattern.matcher(str);
-                if (m.find()) {
-                    post.setCanEdit(true);
-                }
-
-                m = deletePattern.matcher(str);
-                if (m.find()) {
-                    post.setCanDelete(true);
-                    // если автор поста не совпадает с текущим пользователем и есть возможность удалить-значит, модератор
-                    if (post.getUserId() != null && !post.getUserId().equals(Client.getInstance().UserId)) {
-                        topicBodyBuilder.setMMod(true);
-                    }
-                }
+        final Pattern repValuePattern = PatternExtensions
+                .compile("<span id=\"ajaxrep-\\d+\">(.\\d+|\\d+)</span>");
+        final Pattern repEditPattern = PatternExtensions
+                .compile("href=\"[^\"]*act=rep[^\"]*view=(win_minus|win_add)[^\"]*\"");
+        final Pattern editPattern = PatternExtensions.compile("href=\"[^\"]*act=post[^\"]*do=edit_post[^\"]*\"");
+        final Pattern deletePattern = PatternExtensions.compile("onclick=\"[^\"]*seMODdel");
+        final Pattern bodyPattern = PatternExtensions.compile("<div class=\"post_body([^\"]*)?\">([\\s\\S]*)</div>");
 
 
-                m = bodyPattern.matcher(mainMatcher.group(3));
-                if (m.find()) {
-                    String postBody = m.group(2);
-                    if (postBody != null)
-                        postBody = postBody.trim();
-                    String postClass = "";
-                    if (m.group(1) != null)
-                        postClass = m.group(1);
-                    post.setBody("<div class=\"post_body" + postClass + "\">" + postBody);
-                }
+        //String today = Functions.getToday();
+        //String yesterday = Functions.getYesterToday();
+        org.softeg.slartus.forpdaplus.classes.Post post = null;
+        Boolean spoil = spoilFirstPost;
 
+        while (mainMatcher.find()) {
 
-                topicBodyBuilder.addPost(post, spoil);
-                spoil = false;
+            String postId = mainMatcher.group(1);
+
+            String str = mainMatcher.group(2);
+            Matcher m = postDateNumPattern.matcher(str);
+            if (m.find()) {
+                //post = new org.softeg.slartus.forpdaplus.classes.Post(postId, Functions.getForumDateTime(Functions.parseForumDateTime(m.group(1), today, yesterday)), m.group(2));
+                post = new org.softeg.slartus.forpdaplus.classes.Post(postId, m.group(1), m.group(2));
+            } else
+                continue;
+
+            m = nickPattern.matcher(str);
+            if (m.find()) {
+                post.setAuthor(m.group(1));
+                post.setAvatarFileName(m.group(2));
             }
 
-            topicBodyBuilder.endTopic();
+            m = userInfoPattern.matcher(str);
+            if (m.find()) {
+                if (m.group(1) != null)
+                    post.setCurator();
+                post.setUserGroup(m.group(2));
+                post.setUserState(m.group(3));
+                post.setUserId(m.group(4));
+            }
+
+            m = repValuePattern.matcher(str);
+            if (m.find()) {
+                post.setUserReputation(m.group(1));
+            }
+
+            m = repEditPattern.matcher(str);
+            while (m.find()) {
+                if ("win_minus".equals(m.group(1)))
+                    post.setCanMinusRep(true);
+                if ("win_add".equals(m.group(1)))
+                        post.setCanPlusRep(true);
+            }
+
+            m = editPattern.matcher(str);
+            if (m.find()) {
+                post.setCanEdit(true);
+            }
+
+            m = deletePattern.matcher(str);
+            if (m.find()) {
+                post.setCanDelete(true);
+                // если автор поста не совпадает с текущим пользователем и есть возможность удалить-значит, модератор
+                if (post.getUserId() != null && !post.getUserId().equals(Client.getInstance().UserId)) {
+                    topicBodyBuilder.setMMod(true);
+                }
+            }
+
+
+            m = bodyPattern.matcher(mainMatcher.group(3));
+            if (m.find()) {
+                String postBody = m.group(2);
+                if (postBody != null)
+                    postBody = postBody.trim();
+                String postClass = "";
+                if (m.group(1) != null)
+                    postClass = m.group(1);
+                post.setBody("<div class=\"post_body" + postClass + "\">" + postBody);
+            }
+
+
+            topicBodyBuilder.addPost(post, spoil);
+            spoil = false;
         }
+
+        topicBodyBuilder.endTopic();
 
         return topicBodyBuilder;
     }

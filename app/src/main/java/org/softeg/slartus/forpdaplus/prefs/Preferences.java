@@ -208,6 +208,11 @@ public class Preferences {
 
     public static class Topic {
 
+        public static Boolean getReadersAndWriters() {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+            return prefs.getBoolean("theme.ShowReadersAndWriters", false);
+        }
+
         public static Boolean getSpoilFirstPost() {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
             return prefs.getBoolean("theme.SpoilFirstPost", true);

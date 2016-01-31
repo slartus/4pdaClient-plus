@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.fragments.topic;
 
 import android.app.Activity;
 import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -67,11 +68,15 @@ import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragme
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.NotesListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
+import org.softeg.slartus.forpdaplus.listfragments.TopicReadersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicUtils;
+import org.softeg.slartus.forpdaplus.listfragments.TopicWritersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.TopicReadersBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.utils.LogUtil;
@@ -555,6 +560,24 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 return true;
             }
         });
+        if(!Preferences.Topic.getReadersAndWriters()) {
+            optionsMenu.add("Кто читает тему").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    Bundle args = new Bundle();
+                    args.putString(TopicReadersListFragment.TOPIC_ID_KEY, getTopic().getId());
+                    MainActivity.showListFragment(getTopic().getId(), TopicReadersBrickInfo.NAME, args);
+                    return true;
+                }
+            });
+            optionsMenu.add("Кто писал сообщения").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    Bundle args = new Bundle();
+                    args.putString(TopicWritersListFragment.TOPIC_ID_KEY, getTopic().getId());
+                    MainActivity.showListFragment(getTopic().getId(), TopicWritersBrickInfo.NAME, args);
+                    return true;
+                }
+            });
+        }
     }
 
 
