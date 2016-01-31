@@ -16,9 +16,14 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
+import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,6 +33,23 @@ import org.softeg.slartus.forpdaplus.notes.NoteDialog;
  * To change this template use File | Settings | File Templates.
  */
 public class ExtUrl {
+
+    public static void showContextDialog(final Context context, final String title, final List<MenuListDialog> list){
+        final List<String> names = new ArrayList<>();
+        for(MenuListDialog menuListDialog:list)
+            names.add(menuListDialog.getTitle());
+
+        new MaterialDialog.Builder(context)
+                .title(title)
+                .items(names.toArray(new CharSequence[names.size()]))
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        list.get(which).getRunnable().run();
+                    }
+                })
+                .show();
+    }
 
     public static void openNewTab(Context context, Handler handler, String url) {
         if(!IntentActivity.tryShowUrl((Activity)context, handler, url, false, false))
@@ -54,52 +76,49 @@ public class ExtUrl {
         Toast.makeText(context, "Ссылка скопирована в буфер обмена", Toast.LENGTH_SHORT).show();
     }
 
-    public static SubMenu addUrlSubMenu(final android.os.Handler handler, final Context context, Menu menu, final String url
+    public static void addUrlSubMenu(final android.os.Handler handler, final Context context, List<MenuListDialog> list, final String url
             , final CharSequence id, final String title) {
-        SubMenu subMenu = menu.addSubMenu("Ссылка");
-        addUrlMenu(handler, context, subMenu, url, id, title);
-        return subMenu;
+        addUrlMenu(handler, context, list, url, id, title);
     }
 
-    public static void addUrlMenu(final android.os.Handler handler, final Context context, Menu menu, final String url, final String title) {
-        addTopicUrlMenu(handler, context, menu, title, url, "", "", "", "", "", "");
+    public static void addUrlMenu(final android.os.Handler handler, final Context context, List<MenuListDialog> list, final String url, final String title) {
+        addTopicUrlMenu(handler, context, list, title, url, "", "", "", "", "", "");
     }
 
-    public static void addTopicUrlMenu(final android.os.Handler handler, final Context context, Menu menu,
+    public static void addTopicUrlMenu(final android.os.Handler handler, final Context context, List<MenuListDialog> list,
                                        final String title, final String url, final String body, final CharSequence topicId, final String topic,
                                        final String postId, final String userId, final String user) {
 
-        menu.add("Открыть в браузере")
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        showInBrowser(context, url);
-                        return true;
-                    }
-                });
+        list.add(new MenuListDialog("Открыть в браузере", new Runnable() {
+            @Override
+            public void run() {
+                showInBrowser(context, url);
+            }
+        }));
 
-        menu.add("Поделиться ссылкой").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
+        list.add(new MenuListDialog("Поделиться ссылкой", new Runnable() {
+            @Override
+            public void run() {
                 shareIt(context, title, url, url);
-                return true;
             }
-        });
-
-        menu.add("Скопировать ссылку").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
+        }));
+        list.add(new MenuListDialog("Скопировать ссылку", new Runnable() {
+            @Override
+            public void run() {
                 copyLinkToClipboard(context, url);
-                return true;
             }
-        });
+        }));
+
 
         if (!TextUtils.isEmpty(topicId)) {
-            menu.add("Создать заметку").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
+            list.add(new MenuListDialog("Создать заметку", new Runnable() {
+                @Override
+                public void run() {
                     NoteDialog.showDialog(handler, context,
                             title, body, url, topicId, topic,
                             postId, userId, user);
-                    return true;
                 }
-            });
+            }));
         }
     }
 
@@ -128,6 +147,7 @@ public class ExtUrl {
             }
         });
     }
+
 
     public static void showSelectActionDialog(final Context context,
                                               final String title,
@@ -160,7 +180,7 @@ public class ExtUrl {
 
     }
 
-    public static void addUrlMenu(final android.os.Handler handler, final Context context, Menu menu, final String url,
+    public static void addUrlMenu(final android.os.Handler handler, final Context context, List<MenuListDialog> menu, final String url,
                                   final CharSequence id, final String title) {
         addTopicUrlMenu(handler, context, menu, title, url, url, id, title, "", "", "");
     }

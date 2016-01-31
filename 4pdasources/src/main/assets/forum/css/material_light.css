@@ -1,5 +1,4 @@
 @charset "utf-8";
-@import 'files:///android_asset/fonts/roboto/import.css';
 HTML {
   position: relative;
   font-size: 100%;
@@ -125,9 +124,11 @@ HTML body ol {
 }
 .post-block.quote > .block-title a[title="Перейти к сообщению"] {
   float: left;
-  background: #2486b4;
-  margin-right: 0.5rem;
+  margin: -0.5rem 0.25rem 0 -0.25rem;
   opacity: 0.8;
+}
+.post-block.quote > .block-title a[title="Перейти к сообщению"]:befre {
+  background: #2486b4;
 }
 .post-block.quote > .block-title a[title="Ссылка "] {
   margin: 0 0.5rem;
@@ -332,7 +333,7 @@ HTML body ol {
 @media screen and (min-width: 800px) {
   .post_container .hat .hidetop {
     margin-left: 12rem;
-    line-height: 11rem;
+    line-height: 12rem;
   }
   .post_container .hat .hidetop.open {
     line-height: 1.4rem;
@@ -408,13 +409,19 @@ HTML body ol {
   color: #d6d6d6;
 }
 .panel .topic_title_post a {
-  position: relative;
   display: block;
-  margin: 0;
   padding: 0.7rem 1rem;
-  font-weight: bold;
-  color: gray;
   text-decoration: none;
+}
+.panel .topic_title_post a span {
+  color: gray;
+}
+.panel .topic_title_post a span.name {
+  display: block;
+  font-weight: bold;
+}
+.panel .topic_title_post a span.comma {
+  display: none;
 }
 .panel.bottom .topic_title_post {
   display: none;
@@ -523,12 +530,16 @@ HTML body ol {
 .poll .hidemain FORM .poll_body .poll_theme .items .item .num_votes {
   position: absolute;
   display: inline-block;
-  right: 0.5rem;
   bottom: 0.625rem;
-  padding: 0 0.3125rem;
+  left: 0.5rem;
+  padding: 0 0.375rem;
+  z-index: 99;
+  opacity: 0.5;
+  color: black;
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .range {
   position: relative;
+  margin-top: 0.25rem;
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .range:before {
   content: '';
@@ -543,12 +554,12 @@ HTML body ol {
   display: block;
   height: 1.5rem;
   border-radius: 0.125rem;
-  background: #5ca7cf;
+  background: #438db6;
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .range .value {
   position: absolute;
+  right: 0.3125rem;
   margin-top: -1.5rem;
-  margin-left: 0.3125rem;
 }
 @media screen and (min-width: 800px) {
   .poll .hidemain FORM .poll_body .poll_theme .items.voted .item {
@@ -562,6 +573,7 @@ HTML body ol {
   }
   .poll .hidemain FORM .poll_body .poll_theme .items.voted .item .num_votes {
     bottom: 50%;
+    left: auto;
     margin-bottom: -0.625rem;
   }
   .poll .hidemain FORM .poll_body .poll_theme .items.voted .item .range {
@@ -766,286 +778,6 @@ DIV[data-post] {
   display: none;
 }
 /*
-*	BROVSER VIEW
-*/
-DIV[data-post] .post_header {
-  position: relative;
-  padding: 0 0 0.5rem;
-  margin: 0 0.5rem 0.5rem;
-  font-size: 0.875rem;
-  color: white;
-}
-@media screen and (max-width: 800px) {
-  DIV[data-post] .post_header {
-    border-bottom: 1px solid #e6e6e6;
-  }
-}
-DIV[data-post] .post_header br {
-  display: none;
-}
-DIV[data-post] .post_header img {
-  min-width: 1rem;
-  vertical-align: middle;
-  margin: 0;
-}
-DIV[data-post] .post_header a {
-  text-decoration: none;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #808080;
-}
-DIV[data-post] .post_header .post_date {
-  position: relative;
-  display: block;
-  padding: 0.125rem 0;
-  font-size: 0.75rem;
-  text-align: left;
-  border-bottom: 1px solid #e6e6e6;
-  color: #808080;
-}
-DIV[data-post] .post_header .post_date:after {
-  content: '';
-  padding: 0 0.3125rem;
-  margin-left: -0.3rem;
-  background: white;
-}
-DIV[data-post] .post_header .post_date a {
-  float: right;
-  margin: -0.3125rem -0.3125rem 0 0;
-  padding: 0.3125rem;
-  font-size: 1em;
-  text-decoration: none;
-}
-DIV[data-post] .post_header .post_nick {
-  position: relative;
-  display: block;
-  margin-top: 0.2rem;
-}
-@media screen and (min-width: 800px) {
-  DIV[data-post] .post_header .post_nick {
-    margin-top: 0.3rem;
-  }
-}
-DIV[data-post] .post_header .post_nick a {
-  font-weight: bold;
-  margin-left: 1rem;
-  text-transform: none;
-  font-size: 1.0625rem;
-  color: black;
-}
-@media screen and (min-width: 800px) {
-  DIV[data-post] .post_header .post_nick a {
-    margin-left: 0;
-  }
-}
-DIV[data-post] .post_header .post_user_info {
-  color: transparent;
-}
-DIV[data-post] .post_header .post_user_info STRONG {
-  display: block;
-  color: green;
-  line-height: 1.2;
-}
-DIV[data-post] .post_header .post_user_info span {
-  margin-left: -3.3rem;
-}
-DIV[data-post] .post_header .post_user_info span + br {
-  display: block;
-}
-DIV[data-post] .post_header .post_user_info font {
-  position: absolute;
-  top: 2rem;
-  width: 1rem;
-  height: 1rem;
-  line-height: 1rem;
-  padding: 0;
-  margin: 0;
-  display: inline-block;
-  font-size: 1rem !important;
-  color: transparent;
-}
-@media screen and (min-width: 800px) {
-  DIV[data-post] .post_header .post_user_info font {
-    left: 0;
-    text-align: left;
-  }
-}
-DIV[data-post] .post_header .post_user_info font[color="green"]:before,
-DIV[data-post] .post_header .post_user_info font[color="red"]:before {
-  font-family: roboto, 'droid sans';
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.2rem;
-  font-size: 1.5rem !important;
-  border-radius: 0.7rem;
-  width: 0.7rem;
-  height: 0.7rem;
-  margin: 0;
-  padding: 0;
-  display: inline-block;
-}
-DIV[data-post] .post_header .post_user_info font[color="green"]:before {
-  background: green;
-}
-DIV[data-post] .post_header .post_user_info font[color="red"]:before {
-  background: #b53;
-}
-DIV[data-post] .post_header .post_user_info A[href*="showuser"] {
-  display: block;
-  position: relative;
-  text-decoration: none;
-}
-@media screen and (max-width: 800px) {
-  DIV[data-post] .post_header .post_user_info A[href*="showuser"] {
-    position: absolute;
-    top: 2rem;
-    right: 0.3rem;
-  }
-}
-DIV[data-post] .post_header .post_user_info A[target*="qms"] {
-  display: block;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-}
-@media screen and (max-width: 800px) {
-  DIV[data-post] .post_header .post_user_info A[target*="qms"] {
-    position: absolute;
-    top: 3.3rem;
-    right: 0.3rem;
-    width: 2.8rem;
-    height: 1.4rem;
-    overflow: hidden;
-    text-align: right;
-    color: transparent;
-  }
-  DIV[data-post] .post_header .post_user_info A[target*="qms"]:before {
-    content: 'QMS';
-    position: absolute;
-    right: 0;
-    height: 1.4em;
-    color: #808080;
-  }
-}
-DIV[data-post] .post_header a[title="Просмотреть репутацию"] {
-  margin-left: -2.2rem;
-  margin-right: 0.3rem;
-  font-weight: bold;
-}
-@media screen and (min-width: 800px) {
-  DIV[data-post] .post_header a[title="Просмотреть репутацию"] {
-    margin-left: -2rem;
-  }
-}
-DIV[data-post] .post_header a[title="Просмотреть репутацию"]:before {
-  content: 'Реп.';
-  display: inline;
-  margin-right: 0.3rem;
-}
-DIV[data-post] .post_header A[title*="Опустить репутацию"],
-DIV[data-post] .post_header A[title*="Поднять репутацию"] {
-  display: inline-block;
-  position: relative;
-  margin: 0 0.7rem;
-  width: 1rem;
-  height: 1rem;
-  vertical-align: middle;
-}
-DIV[data-post] .post_header A[title*="Опустить репутацию"] img,
-DIV[data-post] .post_header A[title*="Поднять репутацию"] img {
-  display: none;
-}
-DIV[data-post] .post_header A[title*="Опустить репутацию"]:before,
-DIV[data-post] .post_header A[title*="Поднять репутацию"]:before {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  content: '–';
-  font-weight: bold;
-  font-size: 1.1rem;
-  text-align: center;
-  line-height: 1rem;
-  color: #ed7166;
-}
-DIV[data-post] .post_header A[title*="Поднять репутацию"] {
-  margin-left: -0.6rem;
-}
-DIV[data-post] .post_header A[title*="Поднять репутацию"]:before {
-  content: '+';
-  color: #3ba539;
-}
-DIV[data-post] .post_header A[title*="Опустить репутацию"] {
-  margin-left: 0.2rem;
-}
-DIV[data-post] .post_header A[title*="Опустить репутацию"]:after {
-  display: inline-block;
-  position: absolute;
-  content: '';
-  left: 1.4rem;
-  top: 0.1rem;
-  width: 0.5rem;
-  height: 1.5rem;
-  background: white;
-  opacity: 1;
-}
-DIV[data-post] .post_header .post_action {
-  display: block;
-  position: relative;
-  margin: 0.3rem 0;
-  overflow: visible;
-  -webkit-box-shadow: none;
-}
-DIV[data-post] .post_header .post_action a {
-  position: relative;
-  display: inline-block;
-  margin: 0;
-  padding: 0 0.5rem;
-  font-weight: bold;
-  background: white;
-}
-@media screen and (max-width: 800px) {
-  DIV[data-post] .post_header .post_action {
-    position: absolute;
-    top: 4.4rem;
-    right: 0;
-    padding: 0;
-    text-align: center;
-    border-radius: 0.125rem;
-    background: white;
-    overflow: hidden;
-  }
-  DIV[data-post] .post_header .post_action a {
-    display: none;
-    z-index: 999;
-    padding: 0.3125rem 0.5rem;
-    background: white;
-  }
-  DIV[data-post] .post_header .post_action:after {
-    content: '';
-    display: inline-block;
-    padding: 0;
-    margin-bottom: -0.375rem;
-    width: 2rem;
-    height: 1.25rem;
-    text-align: center;
-    color: #4d4d4d;
-    background: url(material_src/more.png) center no-repeat;
-    background-size: 1.625rem;
-  }
-  DIV[data-post] .post_header .post_action:hover {
-    -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
-  }
-  DIV[data-post] .post_header .post_action:hover:after {
-    opacity: 0.6;
-  }
-  DIV[data-post] .post_header .post_action:hover a {
-    display: inline-block;
-  }
-}
-/*
 *	POST_BODY
 */
 .post_body {
@@ -1064,23 +796,33 @@ DIV[data-post] .post_header .post_action a {
 .post_body a[title="Перейти к сообщению"] {
   position: relative;
   display: inline-block;
-  top: 0.125rem;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 1rem;
-  background: #489cc9;
-  overflow: visible;
+  margin: 0 -0.1875rem 0 0;
+  top: 0.375rem;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 .post_body a[title="Перейти к сообщению"] img {
   display: none;
 }
 .post_body a[title="Перейти к сообщению"]:before {
   position: absolute;
-  display: block;
+  content: '';
+  display: inline-block;
+  top: 0.25rem;
+  left: 0.25rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 1rem;
+  background: #489cc9;
+  overflow: visible;
+}
+.post_body a[title="Перейти к сообщению"]:after {
+  position: absolute;
+  display: inline-block;
   box-sizing: border-box;
   content: '';
-  top: 0.25rem;
-  left: 0.3125rem;
+  top: 0.5rem;
+  left: 0.5625rem;
   width: 0.5rem;
   height: 0.5rem;
   border-top: 0.1875rem solid white;

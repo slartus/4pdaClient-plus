@@ -30,6 +30,7 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
@@ -44,6 +45,7 @@ import org.softeg.sqliteannotations.BaseDao;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Created by slinkin on 20.02.14.
@@ -384,8 +386,10 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         final News news = (News) o;
         if (TextUtils.isEmpty(news.getId())) return;
 
-        ExtUrl.addUrlMenu(mHandler, getContext(), menu, news.getUrl(), news.getId(),
-                news.getTitle().toString());
+
+        List<MenuListDialog> list = new ArrayList<>();
+        ExtUrl.addUrlMenu(mHandler, getContext(), list, news.getUrl(), news.getId(),news.getTitle().toString());
+        ExtUrl.showContextDialog(getContext(), null, list);
 
     }
 

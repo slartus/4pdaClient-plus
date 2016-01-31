@@ -4,6 +4,7 @@ package org.softeg.slartus.forpdaplus.listfragments.users;/*
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,8 +19,11 @@ import org.softeg.slartus.forpdaapi.users.User;
 import org.softeg.slartus.forpdaapi.users.UsersApi;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
+import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
+import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseExpandableListFragment;
@@ -30,6 +34,7 @@ import org.softeg.sqliteannotations.BaseDao;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class LeadersListFragment extends BaseExpandableListFragment {
     @Override
@@ -98,38 +103,36 @@ public class LeadersListFragment extends BaseExpandableListFragment {
             if (o == null) return;
             final LeadUser leadUser = ((LeadUser) o);
 
-
-            menu.add("Список форумов")
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            if (leadUser.isAllForumsOwner()) {
-                                MainActivity.showListFragment(new ForumBrickInfo().getName(), null);
-                            } else {
-                                CharSequence[] forumTitles = new CharSequence[leadUser.getForums().size()];
-                                int i = 0;
-                                for (Forum f : leadUser.getForums()) {
-                                    forumTitles[i++] = f.getTitle();
-                                }
-                                new MaterialDialog.Builder(getContext())
-                                        .title("Форумы")
-                                        .items(forumTitles)
-                                        .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                                            @Override
-                                            public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence forumTitles) {
-                                                ForumTopicsListFragment.showForumTopicsList(getActivity(),
-                                                        leadUser.getForums().get(i).getId(), leadUser.getForums().get(i).getTitle());
-                                                return true; // allow selection
-                                            }
-                                        })
-                                        .show();
-                            }
-                            return true;
+            final List<MenuListDialog> list = new ArrayList<>();
+            list.add(new MenuListDialog("Список форумов", new Runnable() {
+                @Override
+                public void run() {
+                    if (leadUser.isAllForumsOwner()) {
+                        MainActivity.showListFragment(new ForumBrickInfo().getName(), null);
+                    } else {
+                        CharSequence[] forumTitles = new CharSequence[leadUser.getForums().size()];
+                        int i = 0;
+                        for (Forum f : leadUser.getForums()) {
+                            forumTitles[i++] = f.getTitle();
                         }
-                    });
-            ForumUser.onCreateContextMenu(getContext(), menu, leadUser.getId().toString(), leadUser.getNick().toString());
+                        new MaterialDialog.Builder(getContext())
+                                .title("Форумы")
+                                .items(forumTitles)
+                                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                                    @Override
+                                    public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence forumTitles) {
+                                        ForumTopicsListFragment.showForumTopicsList(getActivity(),
+                                                leadUser.getForums().get(i).getId(), leadUser.getForums().get(i).getTitle());
+                                        return true; // allow selection
+                                    }
+                                })
+                                .show();
+                    }
+                }
+            }));
+            ForumUser.onCreateContextMenu(getContext(), list, leadUser.getId().toString(), leadUser.getNick().toString());
+            ExtUrl.showContextDialog(getContext(), null, list);
         }
-
     }
 
     @Override

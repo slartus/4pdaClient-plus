@@ -16,8 +16,11 @@ import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
+import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
+import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.NotesTable;
+import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
 import org.softeg.slartus.forpdaplus.fragments.NoteFragment;
 import org.softeg.slartus.forpdaplus.notes.Note;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
@@ -25,6 +28,7 @@ import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class NotesListFragment extends TopicsListFragment {
     public static final String TOPIC_ID_KEY="TOPIC_ID_KEY";
@@ -88,10 +92,11 @@ public class NotesListFragment extends TopicsListFragment {
             return;
         final IListItem topic = (IListItem) o;
 
-        AddLinksSubMenu(menu, topic);
-
-        menu.add("Удалить").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
+        final List<MenuListDialog> list = new ArrayList<>();
+        AddLinksSubMenu(list, topic);
+        list.add(new MenuListDialog("Удалить", new Runnable() {
+            @Override
+            public void run() {
                 new MaterialDialog.Builder(getContext())
                         .title("Подтвердите действие")
                         .content("Удалить заметку?")
@@ -111,29 +116,33 @@ public class NotesListFragment extends TopicsListFragment {
                             }
                         })
                         .show();
-                return true;
             }
-        });
+        }));
+        ExtUrl.showContextDialog(getContext(), null, list);
 
     }
 
-    private void AddLinksSubMenu(ContextMenu menu, IListItem topic) {
+    private void AddLinksSubMenu(List<MenuListDialog> list, final IListItem topic) {
         try {
-            Note note = NotesTable.getNote(topic.getId().toString());
+            final Note note = NotesTable.getNote(topic.getId().toString());
             if (note != null) {
-                ArrayList<Pair> links = note.getLinks();
+                final ArrayList<Pair> links = note.getLinks();
                 if (links.size() != 0) {
-                    android.view.SubMenu linksMenu = menu.addSubMenu("Ссылки");
-                    for (final Pair pair : links) {
-                        linksMenu.add(pair.first.toString())
-                                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    list.add(new MenuListDialog("Ссылки", new Runnable() {
+                        @Override
+                        public void run() {
+                            final List<MenuListDialog> list1 = new ArrayList<>();
+                            for (final Pair pair : links) {
+                                list1.add(new MenuListDialog(pair.first.toString(), new Runnable() {
                                     @Override
-                                    public boolean onMenuItemClick(MenuItem menuItem) {
+                                    public void run() {
                                         IntentActivity.tryShowUrl((Activity) getContext(), mHandler, pair.second.toString(), true, false, null);
-                                        return true;
                                     }
-                                });
-                    }
+                                }));
+                            }
+                            ExtUrl.showContextDialog(getContext(), null, list1);
+                        }
+                    }));
                 }
             }
         } catch (Throwable e) {

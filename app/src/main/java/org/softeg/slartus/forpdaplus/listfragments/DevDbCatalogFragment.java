@@ -12,11 +12,13 @@ import org.softeg.slartus.forpdaapi.devdb.DevCatalog;
 import org.softeg.slartus.forpdaapi.devdb.NewDevDbApi;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
+import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.DevDbAdapter;
 import org.softeg.slartus.forpdaplus.listtemplates.DevDbModelsBrickInfo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DevDbCatalogFragment extends BaseCatalogFragment {
 
@@ -135,6 +137,9 @@ public class DevDbCatalogFragment extends BaseCatalogFragment {
         if (info.id == -1) return;
         final ICatalogItem topic = (ICatalogItem) getAdapter().getItem((int) info.id);
         if (TextUtils.isEmpty(topic.getId())) return;
-        ExtUrl.addUrlMenu(mHandler, getContext(), menu, topic.getId().toString(), topic.getTitle().toString());
+
+        List<MenuListDialog> list = new ArrayList<>();
+        ExtUrl.addUrlMenu(mHandler, getContext(), list, topic.getId().toString(), topic.getTitle().toString());
+        ExtUrl.showContextDialog(getContext(), null, list);
     }
 }

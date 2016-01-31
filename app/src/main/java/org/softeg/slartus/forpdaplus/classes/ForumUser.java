@@ -123,51 +123,37 @@ public class ForumUser {
         }
     }
 
-    public static void onCreateContextMenu(final Context context, ContextMenu menu, final String userId,
+    public static void onCreateContextMenu(final Context context, List<MenuListDialog> menu, final String userId,
                                            String userNick) {
         try {
-            userNick = Html.fromHtml(userNick).toString();
-            //if(!TextUtils.isEmpty(userNick)&&menu.hea)
-            final String finalUserNick = userNick;
+            final String finalUserNick = Html.fromHtml(userNick).toString();
 
             if (Client.getInstance().getLogined()) {
-                menu.add(context.getString(R.string.MessagesQms))
-                        .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                            @Override
-                            public boolean onMenuItemClick(MenuItem menuItem) {
-                                QmsContactThemes.showThemes(userId, finalUserNick);
-                                return true;
-                            }
-                        });
+                menu.add(new MenuListDialog(context.getString(R.string.MessagesQms), new Runnable() {
+                    @Override
+                    public void run() {
+                        QmsContactThemes.showThemes(userId, finalUserNick);
+                    }
+                }));
             }
-
-            menu.add(context.getString(R.string.Profile))
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            ProfileFragment.showProfile(userId, finalUserNick);
-                            return true;
-                        }
-                    });
-
-            menu.add(context.getString(R.string.FindUserTopics))
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick));
-                            return true;
-                        }
-                    });
-            menu.add(context.getString(R.string.FindUserPosts))
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick));
-                            return true;
-                        }
-                    });
-
-
+            menu.add(new MenuListDialog(context.getString(R.string.Profile), new Runnable() {
+                @Override
+                public void run() {
+                    ProfileFragment.showProfile(userId, finalUserNick);
+                }
+            }));
+            menu.add(new MenuListDialog(context.getString(R.string.FindUserTopics), new Runnable() {
+                @Override
+                public void run() {
+                    MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick));
+                }
+            }));
+            menu.add(new MenuListDialog(context.getString(R.string.FindUserPosts), new Runnable() {
+                @Override
+                public void run() {
+                    MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick));
+                }
+            }));
         } catch (Throwable ex) {
             AppLog.e(context, ex);
         }

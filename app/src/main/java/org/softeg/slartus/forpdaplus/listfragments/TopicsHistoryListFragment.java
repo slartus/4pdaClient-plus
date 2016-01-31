@@ -10,12 +10,17 @@ import android.widget.AdapterView;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.IntentActivity;
+import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
+import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
+import org.softeg.slartus.forpdaplus.download.DownloadsService;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TopicsHistoryListFragment extends TopicsListFragment {
     public TopicsHistoryListFragment() {
@@ -30,7 +35,6 @@ public class TopicsHistoryListFragment extends TopicsListFragment {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
         try {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
             if (info.id == -1) return;
@@ -39,16 +43,16 @@ public class TopicsHistoryListFragment extends TopicsListFragment {
                 return;
             final IListItem topic = (IListItem) o;
 
-            menu.add("Удалить из посещённых")
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            TopicsHistoryTable.delete(topic.getId());
-                            mData.remove(topic);
-                            getAdapter().notifyDataSetChanged();
-                            return true;
-                        }
-                    });
+            final List<MenuListDialog> list = new ArrayList<>();
+            list.add(new MenuListDialog("Удалить из посещённых", new Runnable() {
+                @Override
+                public void run() {
+                    TopicsHistoryTable.delete(topic.getId());
+                    mData.remove(topic);
+                    getAdapter().notifyDataSetChanged();
+                }
+            }));
+            ExtUrl.showContextDialog(getContext(), null, list);
         } catch (Throwable ex) {
             AppLog.e(ex);
         }

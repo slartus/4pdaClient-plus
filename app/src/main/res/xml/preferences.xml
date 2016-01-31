@@ -147,7 +147,7 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="theme.ShowReadersAndWriters"
-            android:summary="Показывать 'Кто читает тему' и 'Кто писал сообщения' на странице"
+            android:summary="Показывать на странице 'Кто читает тему' и 'Кто писал сообщения'"
             android:title="Дополнительные кнопк" />
 
         <PreferenceScreen android:title="Скачивание файлов">
