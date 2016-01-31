@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -352,6 +353,8 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     public static Boolean tryShowUrl(Activity context, Handler handler, String url, Boolean showInDefaultBrowser,
                                      final Boolean finishActivity, String authKey) {
         url = getRedirect(url).toString();
+        if(!url.contains("http://4pda.ru/"))
+            url = "http://"+url;
         Uri uri = Uri.parse(url.toLowerCase());
 
         if (uri.getHost() != null && (uri.getHost().toLowerCase().contains("4pda.ru")

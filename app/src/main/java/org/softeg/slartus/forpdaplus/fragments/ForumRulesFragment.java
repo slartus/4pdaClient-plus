@@ -24,6 +24,7 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
+import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
@@ -209,26 +210,17 @@ public class ForumRulesFragment extends WebViewFragment{
     Menu menu;
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // TODO Auto-generated method stub
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.forum_rules_item, menu);
+        menu.add("Cкопировать ссылку")
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        StringUtils.copyToClipboard(getContext(), "http://4pda.ru/forum/index.php?act=boardrules");
+                        Toast.makeText(getActivity(), "Ссылка сопирована", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                });
         this.menu = menu;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // handle item selection
-        switch (item.getItemId()) {
-            case R.id.copy_link:
-                ClipboardManager clipboard = (ClipboardManager)
-                        getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("simple text","http://4pda.ru/forum/index.php?act=boardrules");
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(getActivity(), "Ссылка сопирована", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 }
 

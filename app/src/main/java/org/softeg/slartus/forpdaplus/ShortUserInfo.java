@@ -95,8 +95,9 @@ public class ShortUserInfo {
         openLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String url;
+                String url;
                 url = readFromClipboard(getContext());
+                if(url==null) url = "";
                 new MaterialDialog.Builder(getContext())
                         .title("Перейти по ссылке")
                         .input("Вставьте ссылку", isPdaLink(url) ? url : null, new MaterialDialog.InputCallback() {
