@@ -53,6 +53,7 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
+import org.softeg.slartus.forpdaplus.classes.IListItem;
 import org.softeg.slartus.forpdaplus.classes.Post;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
@@ -65,12 +66,14 @@ import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
+import org.softeg.slartus.forpdaplus.listfragments.BaseListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.NotesListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicReadersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicUtils;
 import org.softeg.slartus.forpdaplus.listfragments.TopicWritersListFragment;
+import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
@@ -79,6 +82,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.TopicReadersBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.tabs.TabItem;
 import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 import java.io.IOException;
@@ -1818,6 +1822,16 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         protected void onPostExecute(final Boolean success) {
             setLoading(false);
+            String parentTag = App.getInstance().getTabByTag(getTag()).getParentTag();
+            if(parentTag!=null){
+                TabItem tabItem = App.getInstance().getTabByTag(parentTag);
+                if(tabItem!=null){
+                    if(!tabItem.getTag().contains("tag")){
+                        ((TopicsListFragment) getMainActivity().getSupportFragmentManager().findFragmentByTag(parentTag)).topicAfterClick(getTopic().getId());
+                    }
+                }
+            }
+
             if (scrollY != 0)
                 webView.setPictureListener(new MyPictureListener());
             Log.e("kek", webView.getSettings().getLoadsImagesAutomatically()+" loadimages");

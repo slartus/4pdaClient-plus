@@ -680,9 +680,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         transaction.remove(getSupportFragmentManager().findFragmentByTag(tag));
         transaction.commit();
         mTabDraweMenu.removeTab(tag);
-        if(tab!=null)
-            mMainDrawerMenu.setItemCheckable(tab.getTitle());
-
     }
     public void removeTabs(List<TabItem> items){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

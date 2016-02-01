@@ -117,4 +117,13 @@ if(m_PagesCount==1)
     public void dispose() {
 
     }
+
+    private boolean postVote = true;
+    public void setPostVote(boolean b){
+        postVote = b;
+    }
+    public boolean isPostVote(){
+        return postVote;
+    }
+
 }

@@ -270,7 +270,11 @@ public class TopicBodyBuilder extends HtmlBuilder {
     }
 
     private void addFooter(StringBuilder sb, Post post) {
-        sb.append("<div class=\"post_footer\">");
+        sb.append("<div class=\"post_footer")
+                .append(post.getCanDelete() ? " delete" : "")
+                .append(post.getCanEdit() ? " edit" : "")
+                .append(getTopic().isPostVote() ? "" : " nopostvote")
+                .append("\">");
         if (m_Logined) {
             String nickParam = post.getNickParam();
             String postNumber = post.getNumber();
@@ -290,7 +294,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
                     .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "quote", new String[]{m_Topic.getForumId(), m_Topic.getId(), post.getId(), post.getDate(), post.getUserId(), nickParam}))
                     .append("><span>Цитата</span></a>");
 
-            if (!Client.getInstance().UserId.equals(post.getUserId())) {
+            if (!Client.getInstance().UserId.equals(post.getUserId())&getTopic().isPostVote()) {
                 sb.append("<a class=\"button vote bad\" ")
                         .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "postVoteBad", post.getId()))
                         .append("><span>Плохо</span></a>");

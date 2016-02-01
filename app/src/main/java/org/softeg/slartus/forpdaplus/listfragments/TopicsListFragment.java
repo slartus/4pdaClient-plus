@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +25,7 @@ import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.TopicApi;
+import org.softeg.slartus.forpdaapi.classes.LoginForm;
 import org.softeg.slartus.forpdacommon.ActionSelectDialogFragment;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
@@ -313,7 +315,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
     private void showTopicActivity(IListItem topic, String args) {
         ExtTopic.showActivity(topic.getId(), args);
-        topicAfterClick(topic);
+        //topicAfterClick(topic);
 
     }
 
@@ -380,12 +382,15 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
         }
     }
 
-    private void topicAfterClick(IListItem topic) {
-        topic.setState(IListItem.STATE_NORMAL);
-        getAdapter().notifyDataSetChanged();
-
-        updateItem(topic);
-
+    public void topicAfterClick(String id) {
+        for(IListItem item:mData){
+            if(item.getId().equals(id)){
+                item.setState(IListItem.STATE_NORMAL);
+                getAdapter().notifyDataSetChanged();
+                updateItem(item);
+                return;
+            }
+        }
     }
 
     protected void updateItem(IListItem topic) {

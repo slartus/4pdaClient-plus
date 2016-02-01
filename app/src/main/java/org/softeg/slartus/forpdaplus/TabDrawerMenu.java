@@ -42,9 +42,6 @@ public class TabDrawerMenu {
     private static TabAdapter adapter;
     private ListView mListView;
     private Button closeAll;
-    private static final long DOUBLE_CLICK_INTERVAL = 250;
-    private long lastPressTime;
-    private boolean doubleClicked = false;
 
 
     public interface SelectItemListener {
@@ -66,29 +63,20 @@ public class TabDrawerMenu {
         closeAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long pressTime = System.currentTimeMillis();
-                if (pressTime - lastPressTime <= DOUBLE_CLICK_INTERVAL) {
-                    toggleOpenState();
+                if (App.getInstance().getTabItems().size()>1)
+                    closeAllTabs();
+                else {
                     closeDialog();
-                    doubleClicked = true;
-                } else {
-                    doubleClicked = false;
-                    Handler handler = new Handler() {
-                        public void handleMessage(Message m) {
-                            if (!doubleClicked) {
-                                if (App.getInstance().getTabItems().size()>1)
-                                    closeAllTabs();
-                                else {
-                                    closeDialog();
-                                    toggleOpenState();
-                                }
-                            }
-                        }
-                    };
-                    Message m = new Message();
-                    handler.sendMessageDelayed(m, DOUBLE_CLICK_INTERVAL);
+                    toggleOpenState();
                 }
-                lastPressTime = pressTime;
+            }
+        });
+        closeAll.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                toggleOpenState();
+                closeDialog();
+                return false;
             }
         });
 
@@ -177,6 +165,7 @@ public class TabDrawerMenu {
 
                 ((MainActivity)getContext()).showFragmentByTag(App.getInstance().getCurrentFragmentTag(), true);
                 ((MainActivity)getContext()).endActionFragment(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
+                ((MainActivity)getContext()).getmMainDrawerMenu().setItemCheckable(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
                 refreshAdapter();
                 return;
             }

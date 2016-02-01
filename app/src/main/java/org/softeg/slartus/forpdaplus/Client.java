@@ -37,7 +37,6 @@ import org.softeg.slartus.forpdaplus.classes.DownloadTask;
 import org.softeg.slartus.forpdaplus.classes.DownloadTasks;
 import org.softeg.slartus.forpdaplus.classes.Forum;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
-import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.Functions;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -45,7 +44,6 @@ import org.softeg.slartus.forpdaplus.db.ForumsTableOld;
 import org.softeg.slartus.forpdaplus.download.DownloadReceiver;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.topic.ForPdaWebInterface;
-import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
 import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 import java.io.IOException;
@@ -774,6 +772,8 @@ public class Client implements IHttpClient {
             final Pattern forumPatter = PatternExtensions.compile("<a href=\"(http://4pda.ru)?/forum/index.php\\?.*?showforum=(\\d+).*?\">(.*?)</a>");
             Matcher forumMatcher = forumPatter.matcher(m.group(1));
             while (forumMatcher.find()) {
+                if(forumMatcher.group(2).equals("10"))
+                    topic.setPostVote(false);
                 topic.setForumId(forumMatcher.group(2));
                 topic.setForumTitle(forumMatcher.group(3));
             }

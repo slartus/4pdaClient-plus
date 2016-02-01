@@ -15,6 +15,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -121,11 +122,14 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
     }
 
     public void setItemCheckable(String name){
+        SubMenu subMenu;
+        MenuItem item;
         for(int i = 0; i<menu.size();i++){
-            SubMenu subMenu = menu.getItem(i).getSubMenu();
+            subMenu = menu.getItem(i).getSubMenu();
             for(int j = 0; j<subMenu.size(); j++){
-                MenuItem item = subMenu.getItem(j);
+                item = subMenu.getItem(j);
                 if(item.getTitle().equals(name)){
+                    Log.e("keka", "true");
                     menu.getItem(prevSelectedGroup).getSubMenu().getItem(prevSelectedItem).setCheckable(false).setChecked(false);
                     item.setCheckable(true).setChecked(true);
                     prevSelectedGroup = i;
