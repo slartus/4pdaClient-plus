@@ -165,8 +165,8 @@ public class QmsApi {
     public static ArrayList<QmsUser> parseQmsUsers(String pageBody) {
         ArrayList<QmsUser> res = new ArrayList<>();
         Matcher m = Pattern.compile("<a class=\"list-group-item[^\"]*\"[^>]*?data-member-id=\"(\\d+)\"[^>]*?>([\\s\\S]*?)</a>", Pattern.CASE_INSENSITIVE).matcher(pageBody);
-        Pattern newMessagesCountPattern = Pattern.compile("<div class=\"bage[^\"]*\">[\\s\\S]*?\\((\\d+)\\)[\\s\\S]*</div>", Pattern.CASE_INSENSITIVE);
-        Pattern userPattern = Pattern.compile("<img class=\"avatar\" src=\"([^\"]*)\" title=\"([^\"]*)\" alt=\"\" />");
+        Pattern newMessagesCountPattern = Pattern.compile("<div class=\"bage[^\"]*\"[^>]*>\\s*?\\((\\d+)\\)", Pattern.CASE_INSENSITIVE);
+        Pattern userPattern = Pattern.compile("<img class=\"avatar\" src=\"([^\"]*)\" title=\"([^\"]*)\"[^>]*/>");
         while (m.find()) {
             QmsUser qmsUser = new QmsUser();
             qmsUser.setId(m.group(1));
