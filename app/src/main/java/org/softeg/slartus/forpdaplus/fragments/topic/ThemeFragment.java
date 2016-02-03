@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
@@ -1827,7 +1828,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 TabItem tabItem = App.getInstance().getTabByTag(parentTag);
                 if(tabItem!=null){
                     if(!tabItem.getTag().contains("tag")){
-                        ((TopicsListFragment) getMainActivity().getSupportFragmentManager().findFragmentByTag(parentTag)).topicAfterClick(getTopic().getId());
+                        Fragment fragment = getMainActivity().getSupportFragmentManager().findFragmentByTag(parentTag);
+                        if(fragment instanceof TopicsListFragment)
+                            ((TopicsListFragment) fragment).topicAfterClick(getTopic().getId());
                     }
                 }
             }

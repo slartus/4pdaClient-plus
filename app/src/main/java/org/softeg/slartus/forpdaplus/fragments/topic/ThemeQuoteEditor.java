@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -46,6 +47,7 @@ public class ThemeQuoteEditor extends DialogFragment implements View.OnClickList
     protected Bundle args = new Bundle();
     private String m_Author, m_Text;
     private View progressBar;
+    private LinearLayout buttons;
 
     @Override
     public void onCreate(android.os.Bundle savedInstanceState) {
@@ -80,6 +82,7 @@ public class ThemeQuoteEditor extends DialogFragment implements View.OnClickList
         assert v != null;
         txtBody = (EditText) v.findViewById(R.id.txtBody);
         progressBar = v.findViewById(R.id.progressBar);
+        buttons = (LinearLayout) v.findViewById(R.id.relativeLayout);
         v.findViewById(R.id.btnAll).setOnClickListener(this);
         v.findViewById(R.id.btnAuthor).setOnClickListener(this);
         v.findViewById(R.id.btnAuthor).setOnClickListener(this);
@@ -181,6 +184,7 @@ public class ThemeQuoteEditor extends DialogFragment implements View.OnClickList
 
         protected void onPreExecute() {
             progressBar.setVisibility(View.VISIBLE);
+            buttons.setVisibility(View.GONE);
         }
 
         private String m_Quote = "";
@@ -222,10 +226,11 @@ public class ThemeQuoteEditor extends DialogFragment implements View.OnClickList
             if (isCancelled()) return;
 
             if (success) {
+
                 args.putString(QUOTE_TEXT_KEY, m_Quote);
                 txtBody.setText(m_Quote);
                 parseQuote();
-
+                buttons.setVisibility(View.VISIBLE);
             } else {
                 AppLog.e(getActivity(), ex, new Runnable() {
                     @Override

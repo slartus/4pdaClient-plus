@@ -61,6 +61,7 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -412,7 +413,20 @@ public class EditPostFragment extends GeneralFragment {
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
-
+        menu.add("Препросмотр").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                TabItem tabItem = App.getInstance().getTabByUrl("preview_"+getTag());
+                if(tabItem==null) {
+                    PostPreviewFragment.showSpecial(getPostText(), getTag());
+                }else {
+                    ((PostPreviewFragment) tabItem.getFragment()).load(getPostText());
+                    getMainActivity().selectTab(tabItem);
+                    getMainActivity().hidePopupWindows();
+                }
+                return true;
+            }
+        });
         item = menu.add("Поиск по тексту");
         item.setActionView(R.layout.action_collapsible_search);
         searchEditText = (EditText) item.getActionView().findViewById(R.id.editText);
@@ -787,6 +801,8 @@ public class EditPostFragment extends GeneralFragment {
             mPopupPanelView.destroy();
             mPopupPanelView = null;
         }
+        TabItem tabItem = App.getInstance().getTabByUrl("preview_"+getTag());
+        if(tabItem!=null) getMainActivity().removeTab(tabItem.getTag());
         super.onDestroy();
     }
 

@@ -112,10 +112,7 @@ body {
 }
 a {
   text-decoration: none;
-  color: #0277bd !important;
-}
-a > * {
-  color: #0277bd !important;
+  color: #0277bd;
 }
 * {
   box-sizing: border-box;
@@ -2487,6 +2484,9 @@ li .post-block {
 }
 .post-block.tbl > * {
   vertical-align: middle;
+}
+.post-block.tbl a > * {
+  color: #0277bd !important;
 }
 .post-block.tbl > .block-title {
   display: table-cell;
