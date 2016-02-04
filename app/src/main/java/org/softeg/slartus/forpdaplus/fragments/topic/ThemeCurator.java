@@ -1,5 +1,7 @@
 package org.softeg.slartus.forpdaplus.fragments.topic;
 
+import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,23 +20,30 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
  */
 public class ThemeCurator {
     private FragmentActivity mTopicActivity;
-    private ThemeFragment context;
+    private CuratorFragment context;
+    private String topicId;
 
-    public ThemeCurator(FragmentActivity topicActivity, ThemeFragment context) {
+    public ThemeCurator(FragmentActivity topicActivity, String topicId) {
+        mTopicActivity = topicActivity;
+        this.topicId = topicId;
+    }
+    public ThemeCurator(FragmentActivity topicActivity, CuratorFragment context, String topicId) {
         mTopicActivity = topicActivity;
         this.context = context;
+        this.topicId = topicId;
     }
 
-    private String mNums = "500";
-    private String mRating = "0";
+    static String mNums = "500";
+    static String mRating = "0";
+    public static void showMmodDialog(final Activity activity, final Fragment fragment, final String topicId) {
 
-    public void showMmodDialog() {
-        LayoutInflater inflater = mTopicActivity.getLayoutInflater();
+
+        LayoutInflater inflater = activity.getLayoutInflater();
         View view = inflater.inflate(R.layout.mmod_dialog, null);
 
         Spinner num_spinner = (Spinner) view.findViewById(R.id.num_spinner);
         String[] data = new String[]{"100", "500", "1000", "5000", "Все"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mTopicActivity, android.R.layout.simple_spinner_item, data);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         num_spinner.setAdapter(adapter);
         // заголовок
@@ -70,7 +79,7 @@ public class ThemeCurator {
 
         Spinner rating_spinner = (Spinner) view.findViewById(R.id.rating_spinner);
         data = new String[]{"Неважно", "0", "-1", "-2", "-5"};
-        adapter = new ArrayAdapter<String>(mTopicActivity, android.R.layout.simple_spinner_item, data);
+        adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         rating_spinner.setAdapter(adapter);
         // заголовок
@@ -104,7 +113,7 @@ public class ThemeCurator {
             }
         });
 
-        new MaterialDialog.Builder(mTopicActivity)
+        new MaterialDialog.Builder(activity)
                 .title("Мультимодерация")
                 .customView(view,true)
                 .cancelable(true)
@@ -116,10 +125,14 @@ public class ThemeCurator {
                         try {
                             String url = String
                                     .format("http://4pda.ru/forum/index.php?act=idx&autocom=mmod&t=%s&num=%s&rating=%s",
-                                            context.getTopic().getId(), mNums, mRating);
-                            ExtUrl.showInBrowser(mTopicActivity, url);
+                                            topicId, mNums, mRating);
+                            if(fragment instanceof CuratorFragment)
+                                ((CuratorFragment)fragment).load(url, topicId);
+                            else
+                                CuratorFragment.showSpecial(url, topicId);
+
                         } catch (Throwable ex) {
-                            AppLog.e(mTopicActivity, ex);
+                            AppLog.e(activity, ex);
                         }
                     }
                 })

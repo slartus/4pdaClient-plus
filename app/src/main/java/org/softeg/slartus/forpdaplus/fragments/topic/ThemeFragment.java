@@ -124,7 +124,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     private int m_ScrollY = 0;
     private QuickPostFragment mQuickPostFragment;
     private LinearLayout mQuickPostPanel;
-    private ThemeCurator mCurator;
     private String lastStyle;
     private ForPdaDeveloperInterface m_ForPdaDeveloperInterface;
     private Menu menu;
@@ -252,7 +251,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         LoadsImagesAutomatically = null;
 
 
-        mCurator = new ThemeCurator(getMainActivity(), this);
+
 
         getMainActivity().setDefaultKeyMode(Activity.DEFAULT_KEYS_SEARCH_LOCAL);// чтобы поиск начинался при вводе текста
 
@@ -767,7 +766,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 menu.add("Мультимодерация").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         try {
-                            getCurator().showMmodDialog();
+                            ThemeCurator.showMmodDialog(getActivity(), ThemeFragment.this, getTopic().getId());
                         } catch (Exception ex) {
                             return false;
                         }
@@ -1250,10 +1249,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public void onBricksListDialogResult(DialogInterface dialog, String dialogId, BrickInfo brickInfo, Bundle args) {
         dialog.dismiss();
         MainActivity.showListFragment(brickInfo.getName(), args);
-    }
-
-    public ThemeCurator getCurator() {
-        return mCurator;
     }
 
     @Override
