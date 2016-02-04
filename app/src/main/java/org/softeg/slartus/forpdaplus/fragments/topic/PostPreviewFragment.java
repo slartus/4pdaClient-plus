@@ -98,7 +98,7 @@ public class PostPreviewFragment extends WebViewFragment {
         builder.beginHtml("preview");
         builder.beginBody("preview");
 
-        builder.append("<div class=\"panel top\" style=\"text-align:center;\"><div class=\"topic_title_post\"><a>Данная функция является экспериментальной, поэтому реальное отображение сообщения может отличаться<a/></div></div><div class=\"posts_list\"><div class=\"post_container\"><div class=\"post_body \">");
+        builder.append("<div class=\"panel top\" style=\"text-align:center;\"><div class=\"topic_title_post\"><a>Данная функция является экспериментальной, поэтому реальное отображение сообщения может отличаться</a></div></div><div class=\"posts_list\"><div class=\"post_container\"><div class=\"post_body \">");
         builder.append(parse(body));
         builder.append("</div></div></div>");
 
@@ -113,6 +113,7 @@ public class PostPreviewFragment extends WebViewFragment {
         view = inflater.inflate(R.layout.post_preview_layout, container, false);
         title = App.getInstance().getTabByTag(getTag()).getTitle();
         url = App.getInstance().getTabByTag(getTag()).getUrl();
+        initBBCodes();
         webView = (AdvWebView) view.findViewById(R.id.webView);
         registerForContextMenu(webView);
         setWebViewSettings();
@@ -155,6 +156,17 @@ public class PostPreviewFragment extends WebViewFragment {
     public String parse(String text) {
         String html = text;
 
+        for (Map.Entry entry: bbMap.entrySet())
+            html = html.replaceAll(entry.getKey().toString(), entry.getValue().toString());
+
+        for (Map.Entry entry: bbMap.entrySet())
+            html = html.replaceAll(entry.getKey().toString().toLowerCase(), entry.getValue().toString());
+
+        html = html.replaceAll("(\r\n|\r|\n|\n\r)", "<br/>");
+
+        return html;
+    }
+    private void initBBCodes(){
         bbMap.put("\\[B\\]([^$]*?)\\[/B\\]", "<b>$1</b>");
         bbMap.put("\\[I\\]([^$]*?)\\[/I\\]", "<i>$1</i>");
         bbMap.put("\\[U\\]([^$]*?)\\[/U\\]", "<u>$1</u>");
@@ -189,16 +201,5 @@ public class PostPreviewFragment extends WebViewFragment {
         bbMap.put("post=([^]]*)", "<a href=\"/forum/index.php?act=findpost&amp;pid=$1\" target=\"_blank\" title=\"Перейти к сообщению\"><img src=\"http://s.4pda.ru/forum/style_images/1/post_snapback.gif\" alt=\"*\" border=\"0\"></a>");
         bbMap.put("\\[QUOTE([^$]*?)\\]([^$]*?)\\[/QUOTE\\]", "<div class=\"post-block quote\"><div class=\"block-title\">$1</div><div class=\"block-body\">$2</div></div>");
         bbMap.put("\\[ATTACHMENT=\"[\\d]*:([^$]*?)\"\\]", "<a href=\"#\">$1</a> ");
-
-
-        for (Map.Entry entry: bbMap.entrySet())
-            html = html.replaceAll(entry.getKey().toString(), entry.getValue().toString());
-
-        for (Map.Entry entry: bbMap.entrySet())
-            html = html.replaceAll(entry.getKey().toString().toLowerCase(), entry.getValue().toString());
-
-        html = html.replaceAll("(\r\n|\r|\n|\n\r)", "<br/>");
-
-        return html;
     }
 }

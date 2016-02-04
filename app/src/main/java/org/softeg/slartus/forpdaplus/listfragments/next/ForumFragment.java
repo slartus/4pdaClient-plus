@@ -13,6 +13,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -490,6 +491,7 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
             args.putString(ForumFragment.FORUM_ID_KEY, forumId);
         if (!TextUtils.isEmpty(topicId))
             args.putString(TopicsListFragment.KEY_TOPIC_ID, topicId);
+        Log.e("kek", forumId+" : "+topicId);
         MainActivity.showListFragment(forumId+topicId, new ForumBrickInfo().getName(), args);
     }
 

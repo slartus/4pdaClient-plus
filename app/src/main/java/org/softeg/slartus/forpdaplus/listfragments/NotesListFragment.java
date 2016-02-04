@@ -55,6 +55,7 @@ public class NotesListFragment extends TopicsListFragment {
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
+        if(!v.hasWindowFocus()) return;
         id = ListViewMethodsBridge.getItemId(getActivity(), position, id);
         if (id < 0 || getAdapter().getCount() <= id) return;
 

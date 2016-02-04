@@ -301,7 +301,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             optionsMenu.add(new MenuListDialog(context.getString(R.string.OpenTopicForum), new Runnable() {
                 @Override
                 public void run() {
-                    ForumFragment.showActivity(context, null, listItem.getId().toString());
+                    ForumFragment.showActivity(context, topic.getForumId(), topic.getId());
                 }
             }));
         }
@@ -352,6 +352,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
+        if(!v.hasWindowFocus()) return;
         try {
             id = org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge.getItemId(getActivity(), position, id);
             if (id < 0 || getAdapter().getCount() <= id) return;

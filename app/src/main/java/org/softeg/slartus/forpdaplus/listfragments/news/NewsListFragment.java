@@ -357,6 +357,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
+        if(!v.hasWindowFocus()) return;
         try {
             id = ListViewMethodsBridge.getItemId(getActivity(), position, id);
             if (id < 0 || getAdapter().getCount() <= id) return;
