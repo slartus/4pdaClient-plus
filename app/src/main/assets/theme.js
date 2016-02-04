@@ -1,3 +1,18 @@
+function getIds() {
+    var p = document.documentElement ? document.documentElement : document.body;
+    var c = p.getElementsByTagName('input');
+    var result = [];
+    for (i = 0; i < c.length; ++i){
+        if ('checkbox' == c[i].type){
+            if(c[i].checked){
+                result.push(c[i].getAttribute(\"value\"));
+            }
+        }
+    }
+    HTMLOUT.showCuratorDialog(result.join())
+}
+
+
 
 function copySelection(){
     var selObj = window.getSelection();

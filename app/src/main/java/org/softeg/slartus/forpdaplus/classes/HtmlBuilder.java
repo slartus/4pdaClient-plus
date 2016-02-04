@@ -10,7 +10,7 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 /**
  * Created by slinkin on 25.12.13.
  */
-public class HtmlBuilder {
+public class HtmlBuilder{
     public final String ACTIONBAR_TOP_MARGIN= getMarginTop()+"px";
     protected StringBuilder m_Body;
 
@@ -66,8 +66,9 @@ public class HtmlBuilder {
         return App.getInstance().getThemeCssFileName();
     }
 
-    public void append(String str) {
+    public HtmlBuilder append(String str) {
         m_Body.append(str);
+        return this;
     }
 
     public void beginBody(String id) {

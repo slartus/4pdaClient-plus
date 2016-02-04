@@ -174,6 +174,7 @@ public class CuratorFragment extends WebViewFragment {
             if (success) {
                 showThemeBody(m_ThemeBody);
                 getArguments().putString("TOPIC_ID", topicId);
+                System.gc();
             }
         }
     }
@@ -216,57 +217,49 @@ public class CuratorFragment extends WebViewFragment {
     }
     private HtmlBuilder parse(String m_ThemeBody){
         HtmlBuilder builder = new HtmlBuilder();
-        builder.beginHtml("preview");
-        builder.beginBody("preview");
-        builder.append("<script type=\"text/javascript\">\n" +
-                "        function getIds() {\n" +
-                "            var p = document.documentElement ? document.documentElement : document.body;\n" +
-                "            var c = p.getElementsByTagName('input');\n" +
-                "            var result = [];\n" +
-                "            for (i = 0; i < c.length; ++i){\n" +
-                "                if ('checkbox' == c[i].type){\n" +
-                "                    if(c[i].checked){\n" +
-                "                        result.push(c[i].getAttribute(\"value\"));\n" +
-                "                    }\n" +
-                "                }\n" +
-                "            }\n" +
-                "            HTMLOUT.showCuratorDialog(result.join())\n" +
-                "        }\n" +
-                "    </script>");
+        builder.beginHtml("curator");
+        builder.beginBody("curator");
 
         String pages = "";
-        Matcher m = Pattern.compile("<form method=\"post\" action=\"([\\s\\S]*?)\">([\\s\\S]*?)<\\/form>").matcher(m_ThemeBody);
+        Pattern mainPattern = PatternExtensions.compile("<form method=\"post\" action=\"([\\s\\S]*?)\">([\\s\\S]*?)</form>");
+        Pattern postsPattern = PatternExtensions.compile("(<input [\\s\\S]*?)<hr>");
+        Pattern postPattern = PatternExtensions.compile("<input type=\"checkbox\" name=\"postsel\\[\\]\" value=\"(\\d*)\"[\\s\\S]*showuser=(\\d*)\"[^>]*>([^<]*)</a>([^$]*)<br>[^<]*<br>([^$]*)");
+
         Matcher postMatcher;
-        Matcher pagesMatcher = Pattern.compile("<br>Страницы:[^<]*([\\s\\S]*?)<br>").matcher(m_ThemeBody);
-        if(pagesMatcher.find()){
-            pages = pagesMatcher.group(1);
-        }
+        Matcher m = Pattern.compile("<br>Страницы:[^<]*([\\s\\S]*?)<br>").matcher(m_ThemeBody);
+        if(m.find())
+            pages = m.group(1);
+
+        m = mainPattern.matcher(m_ThemeBody);
         if(m.find()){
-            builder.append("<div class=\"panel top\"><div class=\"pages\">"+pages+"</div></div>");
+            builder.append("<div class=\"panel top\"><div class=\"pages\">").append(pages).append("</div></div>");
             builder.append("<div class=\"posts_list\">");
             postUrl = m.group(1);
-            m = Pattern.compile("(<input [\\s\\S]*?)<hr>").matcher(m.group(2));
+
+            m = postsPattern.matcher(m.group(2));
             while (m.find()){
 
-                postMatcher = Pattern.compile("<input type=\"checkbox\" name=\"postsel\\[\\]\" value=\"(\\d*)\"[\\s\\S]*showuser=(\\d*)\"[^>]*>([^<]*)<\\/a>([^$]*)<br>[^<]*<br>([^$]*)").matcher(m.group(1));
+                postMatcher = postPattern.matcher(m.group(1));
                 if(postMatcher.find()){
                     builder.append("<div class=\"post_container\"");
                     builder.append("<div class=\"post_header\">");
-                    builder.append("<a class=\"inf nick\" href=\"http://4pda.ru/forum/index.php?showuser="+postMatcher.group(2)+"\"><span><b>"+postMatcher.group(3)+"</b></span></a>");
-                    builder.append("<a class=\"inf link\" href=\"http://4pda.ru/forum/index.php?act=findpost&amp;pid="+postMatcher.group(1)+"\"><span><span class=\"sharp\">#</span>"+postMatcher.group(1)+"</span></a>");
-                    builder.append("<div class=\"date-link\"><span class=\"inf date\"><span>"+postMatcher.group(4).replaceAll("\n","").replace("@", "")+"</span></span>");
-                    builder.append("<div class=\"checkbox\"><label><input type=\"checkbox\" name=\"postsel[]\" value=\""+postMatcher.group(1)+"\"></label></div>");
+                    builder.append("<a class=\"inf nick\" href=\"http://4pda.ru/forum/index.php?showuser=")
+                            .append(postMatcher.group(2)).append("\"><span><b>").append(postMatcher.group(3))
+                            .append("</b></span></a>");
+                    builder.append("<a class=\"inf link\" href=\"http://4pda.ru/forum/index.php?act=findpost&amp;pid=")
+                            .append(postMatcher.group(1)).append("\"><span><span class=\"sharp\">#</span>").append(postMatcher.group(1))
+                            .append("</span></a>");
+                    builder.append("<div class=\"date-link\"><span class=\"inf date\"><span>").append(postMatcher.group(4).replaceAll("\n","").replace("@", "")).append("</span></span>");
+                    builder.append("<div class=\"checkbox\"><label><input type=\"checkbox\" name=\"postsel[]\" value=\"").append(postMatcher.group(1)).append("\"></label></div>");
                     builder.append("</div>");
                     builder.append("<div class=\"post_body \">");
                     builder.append(postMatcher.group(5));
                     builder.append("</div>");
                     builder.append("</div>");
                 }
-
-
             }
             builder.append("</div>");
-            builder.append("<div class=\"panel bottom\"><div class=\"pages\">"+pages+"</div>");
+            builder.append("<div class=\"panel bottom\"><div class=\"pages\">").append(pages).append("</div>");
         }
         builder.endBody();
         builder.endHtml();
