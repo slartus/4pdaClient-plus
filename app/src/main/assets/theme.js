@@ -5,7 +5,7 @@ function getIds() {
     for (i = 0; i < c.length; ++i){
         if ('checkbox' == c[i].type){
             if(c[i].checked){
-                result.push(c[i].getAttribute(\"value\"));
+                result.push(c[i].getAttribute('value'));
             }
         }
     }

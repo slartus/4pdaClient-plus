@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -22,7 +23,9 @@ import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,7 +38,8 @@ public class PostPreviewFragment extends WebViewFragment {
     private String title;
     private WebViewClient webViewClient;
     private HtmlBuilder builder;
-    private Map<String,String> bbMap = new HashMap<>();
+    private List<BBCode> bbCodes = new ArrayList<>();
+
 
     @Override
     public AdvWebView getWebView() {
@@ -155,51 +159,103 @@ public class PostPreviewFragment extends WebViewFragment {
     }
     public String parse(String text) {
         String html = text;
-
-        for (Map.Entry entry: bbMap.entrySet())
-            html = html.replaceAll(entry.getKey().toString(), entry.getValue().toString());
-
-        for (Map.Entry entry: bbMap.entrySet())
-            html = html.replaceAll(entry.getKey().toString().toLowerCase(), entry.getValue().toString());
+        for (BBCode bbcode:bbCodes)
+            html = html.replaceAll(bbcode.bbcode, bbcode.htmlcode);
 
         html = html.replaceAll("(\r\n|\r|\n|\n\r)", "<br/>");
 
         return html;
     }
     private void initBBCodes(){
-        bbMap.put("\\[B\\]([^$]*?)\\[/B\\]", "<b>$1</b>");
-        bbMap.put("\\[I\\]([^$]*?)\\[/I\\]", "<i>$1</i>");
-        bbMap.put("\\[U\\]([^$]*?)\\[/U\\]", "<u>$1</u>");
-        bbMap.put("\\[S\\]([^$]*?)\\[/S\\]", "<del>$1</del>");
-        bbMap.put("\\[SUB\\]([^$]*?)\\[/SUB\\]", "<sub>$1</sub>");
-        bbMap.put("\\[SUP\\]([^$]*?)\\[/SUP\\]", "<sub>$1</sub>");
-        bbMap.put("\\[LEFT\\]([^$]*?)\\[/LEFT\\]", "<div align=\"left\">$1</div>");
-        bbMap.put("\\[CENTER\\]([^$]*?)\\[/CENTER\\]", "<div align=\"center\">$1</div>");
-        bbMap.put("\\[RIGHT\\]([^$]*?)\\[/RIGHT\\]", "<div align=\"right\">$1</div>");
-        bbMap.put("\\[URL=\"([^$]*?)\"\\]([^$]*?)\\[/URL\\]", "<a href='$1'>$2</a>");
-        bbMap.put("\\[SNAPBACK\\]([^$]*?)\\[/SNAPBACK\\]", "<a href=\"/forum/index.php?act=findpost&amp;pid=$1\" target=\"_blank\" title=\"Перейти к сообщению\"><img src=\"http://s.4pda.ru/forum/style_images/1/post_snapback.gif\" alt=\"*\" border=\"0\"></a>");
-        bbMap.put("\\[OFFTOP\\]([^$]*?)\\[/OFFTOP\\]", "<font style=\"font-size:9px;color:gray;\">$1</font>");
-        bbMap.put("\\[COLOR=\"([^$]*?)\"\\]([^$]*?)\\[/COLOR\\]", "<span style=\"color:$1;\">$2</span>");
-        bbMap.put("\\[COLOR=([^$]*?)\\]([^$]*?)\\[/COLOR\\]", "<span style=\"color:$1;\">$2</span>");
-        bbMap.put("\\[SIZE=1\\]([^$]*?)\\[/SIZE\\]", "<span style='font-size:8pt;line-height:100%;'>$1</span>");
-        bbMap.put("\\[SIZE=2\\]([^$]*?)\\[/SIZE\\]", "<span style='font-size:10pt;line-height:100%;'>$1</span>");
-        bbMap.put("\\[SIZE=3\\]([^$]*?)\\[/SIZE\\]", "<span style='font-size:12pt;line-height:100%;'>$1</span>");
-        bbMap.put("\\[SIZE=4\\]([^$]*?)\\[/SIZE\\]", "<span style='font-size:14pt;line-height:100%;'>$1</span>");
-        bbMap.put("\\[SIZE=5\\]([^$]*?)\\[/SIZE\\]", "<span style='font-size:18pt;line-height:100%;'>$1</span>");
-        bbMap.put("\\[SIZE=6\\]([^$]*?)\\[/SIZE\\]", "<span style='font-size:24pt;line-height:100%;'>$1</span>");
-        bbMap.put("\\[SIZE=7\\]([^$]*?)\\[/SIZE\\]", "<span style='font-size:36pt;line-height:100%;'>$1</span>");
-        bbMap.put("\\[CODE\\]([^$]*?)\\[/CODE\\]", "<div class=\"post-block code box\"><div class=\"block-title\"></div><div class=\"block-body \">$1</div></div>");
-        bbMap.put("\\[HIDE\\]([^$]*?)\\[/HIDE\\]", "<div class=\"post-block hidden\"><div class=\"block-title\"></div><div class=\"block-body\">$1</div></div>");
-        bbMap.put("\\[SPOILER\\]", "<div class=\"post-block spoil close\"><div class=\"block-title\"></div><div class=\"block-body\">");
-        bbMap.put("\\[SPOILER=([^$]*?)\\]", "<div class=\"post-block spoil close\"><div class=\"block-title\">$1</div><div class=\"block-body\">");
-        bbMap.put("\\[/SPOILER\\]", "</div></div>");
-        bbMap.put("\\[LIST\\]([^$]*?)\\[/LIST\\]", "<ul>$1</ul>");
-        bbMap.put("\\[LIST=(\\d*)\\]([^$]*?)\\[/LIST\\]", "<ol type=\"$1\">$2</ol>");
-        bbMap.put("\\[\\*\\]", "<li>");
-        bbMap.put("name=\"([^$]*?)\"", "$1");
-        bbMap.put("date=\"([^$]*?)\"", " @ $1");
-        bbMap.put("post=([^]]*)", "<a href=\"/forum/index.php?act=findpost&amp;pid=$1\" target=\"_blank\" title=\"Перейти к сообщению\"><img src=\"http://s.4pda.ru/forum/style_images/1/post_snapback.gif\" alt=\"*\" border=\"0\"></a>");
-        bbMap.put("\\[QUOTE([^$]*?)\\]([^$]*?)\\[/QUOTE\\]", "<div class=\"post-block quote\"><div class=\"block-title\">$1</div><div class=\"block-body\">$2</div></div>");
-        bbMap.put("\\[ATTACHMENT=\"[\\d]*:([^$]*?)\"\\]", "<a href=\"#\">$1</a> ");
+        bbCodes.add(new BBCode("(?i)\\[B\\]", "<b>"));
+        bbCodes.add(new BBCode("(?i)\\[/B\\]", "</b>"));
+
+        bbCodes.add(new BBCode("(?i)\\[I\\]", "<i>"));
+        bbCodes.add(new BBCode("(?i)\\[/I\\]", "</i>"));
+
+        bbCodes.add(new BBCode("(?i)\\[U\\]", "<u>"));
+        bbCodes.add(new BBCode("(?i)\\[/U\\]", "</u>"));
+
+        bbCodes.add(new BBCode("(?i)\\[S\\]", "<del>"));
+        bbCodes.add(new BBCode("(?i)\\[/S\\]", "</del>"));
+
+        bbCodes.add(new BBCode("(?i)\\[SUB\\]", "<sub>"));
+        bbCodes.add(new BBCode("(?i)\\[/SUB\\]", "</sub>"));
+
+        bbCodes.add(new BBCode("(?i)\\[SUP\\]", "<sub>"));
+        bbCodes.add(new BBCode("(?i)\\[/SUP\\]", "</sub>"));
+
+        bbCodes.add(new BBCode("(?i)\\[LEFT\\]", "<div align=\"left\">"));
+        bbCodes.add(new BBCode("(?i)\\[/LEFT\\]", "</div>"));
+
+        bbCodes.add(new BBCode("(?i)\\[CENTER\\]", "<div align=\"center\">"));
+        bbCodes.add(new BBCode("(?i)\\[/CENTER\\]", "</div>"));
+
+        bbCodes.add(new BBCode("(?i)\\[RIGHT\\]", "<div align=\"right\">"));
+        bbCodes.add(new BBCode("(?i)\\[/RIGHT\\]", "</div>"));
+
+        bbCodes.add(new BBCode("(?i)\\[ANCHOR\\]([^$]*?)\\[/ANCHOR\\]", "<a name=\"$1\" title=\"$1\">ˇ</a>"));
+
+        bbCodes.add(new BBCode("(?i)\\[URL=\"([^$]*?)\"\\]", "<a href='$1'>"));
+        bbCodes.add(new BBCode("(?i)\\[/URL\\]", "</a>"));
+
+        bbCodes.add(new BBCode("(?i)\\[SNAPBACK\\]([^$]*?)\\[/SNAPBACK\\]", "<a href=\"/forum/index.php?act=findpost&amp;pid=$1\" target=\"_blank\" title=\"Перейти к сообщению\"><img src=\"http://s.4pda.ru/forum/style_images/1/post_snapback.gif\" alt=\"*\" border=\"0\"></a>"));
+
+        bbCodes.add(new BBCode("(?i)\\[OFFTOP\\]", "<font style=\"font-size:9px;color:gray;\">"));
+        bbCodes.add(new BBCode("(?i)\\[/OFFTOP\\]", "</font>"));
+
+        bbCodes.add(new BBCode("(?i)\\[SIZE=1\\]", "<span style='font-size:8pt;line-height:100%;'>"));
+        bbCodes.add(new BBCode("(?i)\\[SIZE=2\\]", "<span style='font-size:10pt;line-height:100%;'>"));
+        bbCodes.add(new BBCode("(?i)\\[SIZE=3\\]", "<span style='font-size:12pt;line-height:100%;'>"));
+        bbCodes.add(new BBCode("(?i)\\[SIZE=4\\]", "<span style='font-size:14pt;line-height:100%;'>"));
+        bbCodes.add(new BBCode("(?i)\\[SIZE=5\\]", "<span style='font-size:18pt;line-height:100%;'>"));
+        bbCodes.add(new BBCode("(?i)\\[SIZE=6\\]", "<span style='font-size:24pt;line-height:100%;'>"));
+        bbCodes.add(new BBCode("(?i)\\[SIZE=7\\]", "<span style='font-size:36pt;line-height:100%;'>"));
+        bbCodes.add(new BBCode("(?i)\\[/SIZE\\]", "</span>"));
+
+        bbCodes.add(new BBCode("(?i)\\[LIST\\]([^$]*?)\\[/LIST\\]", "<ul>$1</ul>"));
+        bbCodes.add(new BBCode("(?i)\\[LIST=(\\d*)\\]([^$]*?)\\[/LIST\\]", "<ol type=\"$1\">$2</ol>"));
+        bbCodes.add(new BBCode("(?i)\\[\\*\\]", "<li>"));
+
+        bbCodes.add(new BBCode("(?i)\\[ATTACHMENT=\"[\\d]*:([^$]*?)\"\\]", "<a href=\"#\">$1</a> "));
+
+        bbCodes.add(new BBCode("(?i)\\[COLOR=[\"|^$]*([^$]*?)[\"^$]*\\]", "<span style=\"color:$1;\">"));
+        bbCodes.add(new BBCode("(?i)\\[/COLOR\\]", "</span>"));
+
+        bbCodes.add(new BBCode("(?i)\\[CODE\\]", "<div class=\"post-block code box\"><div class=\"block-title\"></div><div class=\"block-body \">"));
+        bbCodes.add(new BBCode("(?i)\\[/CODE\\]", "</div></div>"));
+
+        bbCodes.add(new BBCode("(?i)\\[HIDE\\]", "<div class=\"post-block hidden\"><div class=\"block-title\"></div><div class=\"block-body\">"));
+        bbCodes.add(new BBCode("(?i)\\[/HIDE\\]", "</div></div>"));
+
+        bbCodes.add(new BBCode("(?i)\\[SPOILER\\]", "<div class=\"post-block spoil close\"><div class=\"block-title\"></div><div class=\"block-body\">"));
+        bbCodes.add(new BBCode("(?i)\\[SPOILER=([^$]*?)\\]", "<div class=\"post-block spoil close\"><div class=\"block-title\">$1</div><div class=\"block-body\">"));
+        bbCodes.add(new BBCode("(?i)\\[/SPOILER\\]", "</div></div>"));
+
+        bbCodes.add(new BBCode("(?i)\\[QUOTE([^$]*?)\\]", "<div class=\"post-block quote\"><div class=\"block-title\">$1</div><div class=\"block-body\">"));
+        bbCodes.add(new BBCode("(?i)\\[/QUOTE\\]", "</div></div>"));
+
+        bbCodes.add(new BBCode("(?i)\\[MOD\\]", "<div class=\"post-block tbl mod\"><div class=\"block-title\">M</div><div class=\"block-body\">"));
+        bbCodes.add(new BBCode("(?i)\\[/MOD\\]", "</div></div>"));
+
+        bbCodes.add(new BBCode("(?i)\\[CUR\\]", "<div class=\"post-block tbl mod\"><div class=\"block-title\">K</div><div class=\"block-body\">"));
+        bbCodes.add(new BBCode("(?i)\\[/CUR\\]", "</div></div>"));
+
+        bbCodes.add(new BBCode("(?i)\\[EX\\]", "<div class=\"post-block tbl mod\"><div class=\"block-title\">!</div><div class=\"block-body\">"));
+        bbCodes.add(new BBCode("(?i)\\[/EX\\]", "</div></div>"));
+
+        bbCodes.add(new BBCode("name=\"([^$]*?)\"", "$1"));
+        bbCodes.add(new BBCode("date=\"([^$]*?)\"", " @ $1"));
+        bbCodes.add(new BBCode("post=([^]]*)", "<a href=\"/forum/index.php?act=findpost&amp;pid=$1\" target=\"_blank\" title=\"Перейти к сообщению\"><img src=\"http://s.4pda.ru/forum/style_images/1/post_snapback.gif\" alt=\"*\" border=\"0\"></a>"));
+
+    }
+    private class BBCode {
+        public String bbcode;
+        public String htmlcode;
+        
+        public BBCode(final String bbcode, final String htmlcode){
+            this.bbcode = bbcode;
+            this.htmlcode = htmlcode;
+        }
     }
 }
