@@ -22,8 +22,8 @@
       >
       <path
          id="81"
-         transform="matrix(0.0039100675,0.0,0.0,-0.0040622884,16.726295,8.0)"
-         fill="rgb(0,0,0)"
+         transform="matrix(0.0039100675,0.0,0.0,-0.0040622884,16.726295,21.0)"
+         fill="rgb(255,255,255)"
          fill-opacity="1.0"
          stroke-width="195.83333"
          stroke-linecap="butt"
@@ -49,7 +49,7 @@
    <rect
       id="69"
       transform="matrix(0.38214153,0.32714826,-0.60755634,0.73872006,13.858001,1.529976)"
-      fill="rgb(0,0,0)"
+      fill="rgb(255,255,255)"
       fill-opacity="1.0"
       stroke-width="1.0"
       stroke-linecap="butt"
@@ -72,7 +72,7 @@
    <rect
       id="73"
       transform="matrix(0.3824985,-0.32714826,-0.60812396,-0.73872006,14.534798,22.458887)"
-      fill="rgb(0,0,0)"
+      fill="rgb(255,255,255)"
       fill-opacity="1.0"
       stroke-width="1.0"
       stroke-linecap="butt"

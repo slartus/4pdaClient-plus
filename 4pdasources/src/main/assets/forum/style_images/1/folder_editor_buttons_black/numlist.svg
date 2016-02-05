@@ -16,7 +16,7 @@
    <rect
       id="15"
       transform="matrix(1.1698269,0.0,0.0,0.49382764,-0.09014678,2.681015)"
-      fill="rgb(0,0,0)"
+      fill="rgb(255,255,255)"
       fill-opacity="1.0"
       stroke-width="1.0"
       stroke-linecap="butt"
@@ -39,7 +39,7 @@
    <rect
       id="33"
       transform="matrix(1.1698269,0.0,0.0,0.49382758,-0.07263565,8.693148)"
-      fill="rgb(0,0,0)"
+      fill="rgb(255,255,255)"
       fill-opacity="1.0"
       stroke-width="1.0"
       stroke-linecap="butt"
@@ -62,7 +62,7 @@
    <rect
       id="36"
       transform="matrix(1.1698269,0.0,0.0,0.4938274,-0.07263589,14.693149)"
-      fill="rgb(0,0,0)"
+      fill="rgb(255,255,255)"
       fill-opacity="1.0"
       stroke-width="1.0"
       stroke-linecap="butt"
@@ -92,7 +92,7 @@
       <path
          id="49"
          transform="matrix(0.0051282053,0.0,0.0,-0.003434066,1.046154,7.0)"
-         fill="rgb(0,0,0)"
+         fill="rgb(255,255,255)"
          fill-opacity="1.0"
          stroke-width="106.818184"
          stroke-linecap="butt"
@@ -122,7 +122,7 @@
       <path
          id="52"
          transform="matrix(0.003903157,0.0,0.0,-0.0033852402,1.7267785,14.0)"
-         fill="rgb(0,0,0)"
+         fill="rgb(255,255,255)"
          fill-opacity="1.0"
          stroke-width="106.818184"
          stroke-linecap="butt"
@@ -155,7 +155,7 @@
       <path
          id="55"
          transform="matrix(0.003944773,0.0,0.0,-0.003989287,1.7514791,21.916225)"
-         fill="rgb(0,0,0)"
+         fill="rgb(255,255,255)"
          fill-opacity="1.0"
          stroke-width="106.818184"
          stroke-linecap="butt"

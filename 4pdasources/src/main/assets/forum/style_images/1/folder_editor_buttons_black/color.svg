@@ -14,8 +14,8 @@
    >
    <desc>Created in Simplector Pro</desc>
    <path
-      id="116"
-      fill="rgb(0,0,0)"
+      id="95"
+      fill="rgb(255,255,255)"
       fill-opacity="1.0"
       stroke-width="1.0"
       stroke-linecap="butt"
@@ -24,40 +24,36 @@
       stroke="rgb(0,0,0)"
       stroke-opacity="0.0"
       d="
-      M 7.77 6.76 L 6.23 5.4800005 L 0.8200002 12.0 L 6.23 18.52 L 7.77 17.24 L 3.42 12.0 
-      L 7.77 6.76 Z M 17.77 5.48 L 16.23 6.76 L 20.58 12.0 L 16.23 17.24 L 17.77 18.52 
-      L 23.18 12.0 L 17.77 5.48 Z 
+      M 11.0 3.0 L 5.5 17.0 L 7.75 17.0 L 8.87 14.0 L 15.12 14.0 L 16.24 17.0 L 18.49 17.0 
+      L 13.0 3.0 L 11.0 3.0 Z M 9.62 12.0 L 12.0 5.67 L 14.38 12.0 L 9.62 12.0 Z 
       "
 
-      sb:layerName="path-116"
+      sb:layerName="path-95"
       sb:layerVisible="true"
       sb:layerLocked="false"
       sb:pathType="path"
       >
    </path>
-   <rect
-      id="118"
-      transform="matrix(0.9659258,0.25881904,-0.2957932,1.1039153,3.9584084,-4.352812)"
-      fill="rgb(0,0,0)"
-      fill-opacity="1.0"
+   <path
+      id="94"
+      fill="white"
+      fill-opacity="0.5"
       stroke-width="1.0"
       stroke-linecap="butt"
       stroke-linejoin="miter"
-      stroke-miterlimit="2.0"
+      stroke-miterlimit="1.0"
       stroke="rgb(0,0,0)"
       stroke-opacity="0.0"
-      x="11.0"
-      y="5.0"
-      width="2.0"
-      height="14.0"
-      rx="0.0"
-      ry="0.0"
+      d="
+      M 0.0 20.0 L 24.0 20.0 L 24.0 24.0 L 0.0 24.0 Z 
+      "
 
-      sb:layerName="RectFigure-118"
+      sb:layerName="path-94"
       sb:layerVisible="true"
       sb:layerLocked="false"
+      sb:pathType="path"
       >
-   </rect>
+   </path>
    <sp:keyframes
 
       sp:step="100"

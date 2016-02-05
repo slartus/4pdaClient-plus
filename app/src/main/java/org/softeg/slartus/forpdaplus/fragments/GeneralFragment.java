@@ -27,6 +27,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     protected View view;
 
     private String generalTitle = "ForPda";
+    private String generalSubtitle;
     private String generalUrl = "defurl";
     private String generalParentTag = "defparenttag";
 
@@ -47,10 +48,12 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         setTitle(title.toString());
     }
     public void setTitle(String title){
+        generalTitle = title;
         if(!fragmentPaused)
             getMainActivity().setTitle(title);
     }
     public void setSubtitle(String subtitle){
+        generalSubtitle = subtitle;
         if(!fragmentPaused)
             getSupportActionBar().setSubtitle(subtitle);
     }
@@ -135,6 +138,8 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         actionBar = getMainActivity().getSupportActionBar();
         if(getMenu()!=null)
             onCreateOptionsMenu(getMenu(), null);
+        getMainActivity().setTitle(generalTitle);
+        getSupportActionBar().setSubtitle(generalSubtitle);
     }
 
     @Override

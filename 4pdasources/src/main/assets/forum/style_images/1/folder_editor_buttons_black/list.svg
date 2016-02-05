@@ -16,7 +16,7 @@
    <rect
       id="15"
       transform="matrix(1.0862677,0.0,0.0,0.49382773,1.4877214,2.6931467)"
-      fill="rgb(0,0,0)"
+      fill="rgb(255,255,255)"
       fill-opacity="1.0"
       stroke-width="1.0"
       stroke-linecap="butt"
@@ -39,7 +39,7 @@
    <ellipse
       id="16"
       transform="matrix(0.8182019,0.0,0.0,0.81820214,0.30742884,0.3384056)"
-      fill="rgb(0,0,0)"
+      fill="rgb(255,255,255)"
       fill-opacity="1.0"
       stroke-width="1.0"
       stroke-linecap="butt"
@@ -60,7 +60,7 @@
    <rect
       id="33"
       transform="matrix(1.0862677,0.0,0.0,0.49382758,1.5039818,8.693148)"
-      fill="rgb(0,0,0)"
+      fill="rgb(255,255,255)"
       fill-opacity="1.0"
       stroke-width="1.0"
       stroke-linecap="butt"
@@ -83,7 +83,7 @@
    <ellipse
       id="34"
       transform="matrix(0.5931868,0.0,0.0,0.5931868,1.5979403,8.620399)"
-      fill="rgb(0,0,0)"
+      fill="rgb(255,255,255)"
       fill-opacity="1.0"
       stroke-width="1.0"
       stroke-linecap="butt"
@@ -104,7 +104,7 @@
    <rect
       id="36"
       transform="matrix(1.0862677,0.0,0.0,0.49382818,1.5039816,14.693145)"
-      fill="rgb(0,0,0)"
+      fill="rgb(255,255,255)"
       fill-opacity="1.0"
       stroke-width="1.0"
       stroke-linecap="butt"
@@ -127,7 +127,7 @@
    <ellipse
       id="37"
       transform="matrix(0.8182017,0.0,0.0,0.8182026,0.3074293,14.338404)"
-      fill="rgb(0,0,0)"
+      fill="rgb(255,255,255)"
       fill-opacity="1.0"
       stroke-width="1.0"
       stroke-linecap="butt"

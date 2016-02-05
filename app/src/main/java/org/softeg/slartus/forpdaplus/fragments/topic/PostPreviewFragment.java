@@ -222,6 +222,9 @@ public class PostPreviewFragment extends WebViewFragment {
         bbCodes.add(new BBCode("(?i)\\[COLOR=[\"|^$]*([^$]*?)[\"^$]*\\]", "<span style=\"color:$1;\">"));
         bbCodes.add(new BBCode("(?i)\\[/COLOR\\]", "</span>"));
 
+        bbCodes.add(new BBCode("(?i)\\[BACKGROUND=[\"|^$]*([^$]*?)[\"^$]*\\]", "<span style=\"background-color:$1;\">"));
+        bbCodes.add(new BBCode("(?i)\\[/BACKGROUND\\]", "</span>"));
+
         bbCodes.add(new BBCode("(?i)\\[CODE\\]", "<div class=\"post-block code box\"><div class=\"block-title\"></div><div class=\"block-body \">"));
         bbCodes.add(new BBCode("(?i)\\[/CODE\\]", "</div></div>"));
 
@@ -238,10 +241,10 @@ public class PostPreviewFragment extends WebViewFragment {
         bbCodes.add(new BBCode("(?i)\\[MOD\\]", "<div class=\"post-block tbl mod\"><div class=\"block-title\">M</div><div class=\"block-body\">"));
         bbCodes.add(new BBCode("(?i)\\[/MOD\\]", "</div></div>"));
 
-        bbCodes.add(new BBCode("(?i)\\[CUR\\]", "<div class=\"post-block tbl mod\"><div class=\"block-title\">K</div><div class=\"block-body\">"));
+        bbCodes.add(new BBCode("(?i)\\[CUR\\]", "<div class=\"post-block tbl cur\"><div class=\"block-title\">K</div><div class=\"block-body\">"));
         bbCodes.add(new BBCode("(?i)\\[/CUR\\]", "</div></div>"));
 
-        bbCodes.add(new BBCode("(?i)\\[EX\\]", "<div class=\"post-block tbl mod\"><div class=\"block-title\">!</div><div class=\"block-body\">"));
+        bbCodes.add(new BBCode("(?i)\\[EX\\]", "<div class=\"post-block tbl ex\"><div class=\"block-title\">!</div><div class=\"block-body\">"));
         bbCodes.add(new BBCode("(?i)\\[/EX\\]", "</div></div>"));
 
         bbCodes.add(new BBCode("name=\"([^$]*?)\"", "$1"));

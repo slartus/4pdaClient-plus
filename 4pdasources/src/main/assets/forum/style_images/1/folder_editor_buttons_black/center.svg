@@ -14,35 +14,30 @@
    >
    <desc>Created in Simplector Pro</desc>
    <g
-      id="48"
+      id="64"
 
-      sb:layerName="TextFigure-47"
+      sb:layerName="svg-64"
       sb:layerVisible="true"
       sb:layerLocked="false"
       >
       <path
-         id="49"
-         transform="matrix(0.011009174,0.0,0.0,-0.010302198,4.4856668,18.986904)"
-         fill="rgb(0,0,0)"
+         id="62"
+         fill="rgb(255,255,255)"
          fill-opacity="1.0"
-         stroke-width="93.85714"
+         stroke-width="1.0"
          stroke-linecap="butt"
          stroke-linejoin="miter"
-         stroke-miterlimit="2.0"
+         stroke-miterlimit="1.0"
          stroke="rgb(0,0,0)"
          stroke-opacity="0.0"
          d="
-         M 136.0 0.0 L 136.0 1456.0 L 636.0 1456.0 Q 897.0 1456.0 1035.0 1358.0 T 1173.0 1057.0 
-         Q 1173.0 954.0 1122.0 876.0 T 969.0 759.0 L 969.0 756.0 Q 1099.0 728.0 1162.0 638.0 
-         T 1226.0 424.0 Q 1226.0 211.0 1094.0 106.0 T 704.0 0.0 L 136.0 0.0 Z M 408.49994 582.3999 
-         L 410.0519 289.92883 L 682.5519 289.92883 Q 842.3799 290.9602 885.5757 328.6234 T 932.0635 438.00293 
-         Q 928.80664 495.97705 891.20703 537.54724 T 682.5519 581.1288 Z M 410.0519 872.32886 
-         L 682.5519 872.32886 Q 778.2717 872.97217 831.5231 906.2844 T 886.64954 1017.2486 
-         Q 884.24963 1090.9218 828.0067 1129.1694 T 682.5519 1163.5288 L 410.0519 1163.5288 
-         Z 
+         M 7.0 15.0 L 7.0 17.0 L 17.0 17.0 L 17.0 15.0 L 7.0 15.0 Z M 3.0 21.0 L 21.0 21.0 
+         L 21.0 19.0 L 3.0 19.0 L 3.0 21.0 Z M 3.0 13.0 L 21.0 13.0 L 21.0 11.0 L 3.0 11.0 
+         L 3.0 13.0 Z M 7.0 7.0 L 7.0 9.0 L 17.0 9.0 L 17.0 7.0 L 7.0 7.0 Z M 3.0 3.0 L 3.0 5.0 
+         L 21.0 5.0 L 21.0 3.0 L 3.0 3.0 Z 
          "
 
-         sb:layerName="unit-0 (В)"
+         sb:layerName="path-62"
          sb:layerVisible="true"
          sb:layerLocked="false"
          sb:pathType="path"

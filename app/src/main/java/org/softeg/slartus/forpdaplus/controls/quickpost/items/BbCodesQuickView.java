@@ -85,24 +85,18 @@ public class BbCodesQuickView extends BaseQuickView {
 
     private void loadWebView() {
         StringBuilder sb = new StringBuilder();
-        sb.append("<html><body style=\"text-align:justify;\" class=\"").append(App.getInstance().getCurrentThemeName()).append("\" bgcolor=\"").append(App.getInstance().getCurrentBackgroundColorHtml()).append("\">");
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(App.getInstance().getAssets().open("bb_codes.html"), "UTF-8"));
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line).append("\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        sb.append("<html><body style=\"text-align: center;\" bgcolor=\"").append(App.getInstance().getCurrentBackgroundColorHtml()).append("\">");
+        String style = App.getInstance().getCurrentThemeName();
+        if(style.equals("dark")) style = "black";
+        String path = "file:///android_asset/forum/style_images/1/folder_editor_buttons_" + style + "/";
         initVars();
-        /*for (String key : m_BbCodes) {
+        for (String key : m_BbCodes) {
             sb.append("<a style=\"text-decoration: none;\" href=\"")
                     .append(key).append("\">")
-                    .append("<img style=\"padding:5px;\" src=\"")
-                    .append(path).append(key.toLowerCase()).append(".png\" />").append("</a> ");
+                    .append("<img style=\"display: inline-block;padding: 0.75rem;width: 1.5rem;height: 1.5rem;\" src=\"")
+                    .append(path).append(key.toLowerCase()).append(".svg\" />").append("</a> ");
         }
-*/
+
         sb.append("</body></html>");
         webView.setWebViewClient(new MyWebViewClient());
         webView.loadDataWithBaseURL("http://4pda.ru/forum/", sb.toString(), "text/html", "UTF-8", null);

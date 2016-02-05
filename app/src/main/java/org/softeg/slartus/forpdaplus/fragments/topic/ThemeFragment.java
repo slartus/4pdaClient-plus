@@ -59,6 +59,7 @@ import org.softeg.slartus.forpdaplus.classes.Post;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
+import org.softeg.slartus.forpdaplus.classes.common.Functions;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.HelpTask;
@@ -1022,6 +1023,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public void quote(final String forumId, final String topicId, final String postId, final String postDate, String userId, String userNick) {
+        final String finalPostDate = Functions.getForumDateTime(Functions.parseForumDateTime(postDate, Functions.getToday(), Functions.getYesterToday()));
         final String mUserNick = userNick.replace("\"","\\\"");
         CharSequence clipboardText = null;
         try {
@@ -1065,7 +1067,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                     public void run() {
                                         new Handler().post(new Runnable() {
                                             public void run() {
-                                                insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + postDate + "\" post=\"" + postId + "\"]\n\n[/quote]");
+                                                insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n\n[/quote]");
                                             }
                                         });
                                     }
@@ -1077,7 +1079,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                     public void run() {
                                         new Handler().post(new Runnable() {
                                             public void run() {
-                                                insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + postDate + "\" post=\"" + postId + "\"]\n" + finalClipboardText + "\n[/quote]");
+                                                insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n" + finalClipboardText + "\n[/quote]");
                                             }
                                         });
                                     }

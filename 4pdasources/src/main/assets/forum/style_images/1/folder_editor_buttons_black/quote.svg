@@ -14,23 +14,22 @@
    >
    <desc>Created in Simplector Pro</desc>
    <g
-      id="52"
+      id="2"
 
-      sb:layerName="svg-52"
+      sb:layerName="svg-2"
       sb:layerVisible="true"
       sb:layerLocked="false"
       >
       <g
-         id="51"
+         id="1"
 
-         sb:layerName="91"
+         sb:layerName="120"
          sb:layerVisible="true"
          sb:layerLocked="false"
          >
          <path
-            id="50"
-            transform="matrix(1.0,0.0,0.0,1.0,0.0,1.0000002)"
-            fill="rgb(0,0,0)"
+            id="0"
+            fill="rgb(255,255,255)"
             fill-opacity="1.0"
             stroke-width="1.0"
             stroke-linecap="butt"
@@ -39,11 +38,11 @@
             stroke="rgb(0,0,0)"
             stroke-opacity="0.0"
             d="
-            M 10.0 3.0 L 10.0 6.0 L 12.0 6.0 L 9.0 15.0 L 6.0 15.0 L 6.0 18.0 L 14.0 18.0 L 14.0 15.0 
-            L 12.0 15.0 L 15.0 6.0 L 18.0 6.0 L 18.0 3.0 Z 
+            M 6.0 17.0 L 9.0 17.0 L 11.0 13.0 L 11.0 7.0 L 5.0 7.0 L 5.0 13.0 L 8.0 13.0 Z M 14.0 17.0 
+            L 17.0 17.0 L 19.0 13.0 L 19.0 7.0 L 13.0 7.0 L 13.0 13.0 L 16.0 13.0 Z 
             "
 
-            sb:layerName="90"
+            sb:layerName="119"
             sb:layerVisible="true"
             sb:layerLocked="false"
             sb:pathType="path"

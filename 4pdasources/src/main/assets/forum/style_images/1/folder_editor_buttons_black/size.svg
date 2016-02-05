@@ -16,7 +16,7 @@
    <path
       id="87"
       transform="matrix(1.0,0.0,0.0,1.0,0.9999995,0.0)"
-      fill="rgb(0,0,0)"
+      fill="rgb(255,255,255)"
       fill-opacity="1.0"
       stroke-width="1.0"
       stroke-linecap="butt"
@@ -47,7 +47,7 @@
       <path
          id="96"
          transform="matrix(0.010619469,0.0,0.0,-0.010013352,1.2035395,18.78972)"
-         fill="rgb(0,0,0)"
+         fill="rgb(255,255,255)"
          fill-opacity="1.0"
          stroke-width="91.42857"
          stroke-linecap="butt"
