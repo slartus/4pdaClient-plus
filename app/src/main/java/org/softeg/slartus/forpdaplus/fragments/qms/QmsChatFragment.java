@@ -894,6 +894,13 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
     private class MyWebViewClient extends WebViewClient {
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            Preferences.Notifications.Qms.readQmsDone();
+        }
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, final String url) {
 

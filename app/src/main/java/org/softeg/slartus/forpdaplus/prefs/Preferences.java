@@ -525,6 +525,16 @@ public class Preferences {
 
         public static class Qms {
 
+            public static void readQmsDone() {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+                prefs.edit().putBoolean("refreshQMSData", true).apply();
+            }
+
+            public static boolean isReadDone() {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+                return prefs.getBoolean("refreshQMSData", false);
+            }
+
         }
 
 

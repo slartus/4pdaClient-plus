@@ -30,7 +30,6 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.BaseLoaderListFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
-import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 import java.util.ArrayList;
 
@@ -49,6 +48,8 @@ public class QmsContactsList extends BaseLoaderListFragment {
     public void onResume() {
         super.onResume();
         setArrow();
+        if (Preferences.Notifications.Qms.isReadDone())
+            reloadData();
     }
 
     @Override
@@ -72,7 +73,6 @@ public class QmsContactsList extends BaseLoaderListFragment {
         ArrayList<QmsUser> users = QmsApi.getQmsSubscribers(Client.getInstance());
         listData.getItems().addAll(users);
         Client.getInstance().setQmsCount(QmsUsers.unreadMessageUsersCount(users));
-        LogUtil.D("QMS", "size message " + QmsUsers.unreadMessageUsersCount(users));
         Client.getInstance().doOnMailListener();
 
         return listData;

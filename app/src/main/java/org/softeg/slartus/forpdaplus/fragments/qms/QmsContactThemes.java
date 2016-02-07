@@ -41,6 +41,7 @@ import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseLoaderListFragment;
+import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 
 import java.util.ArrayList;
@@ -62,6 +63,8 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     public void onResume() {
         super.onResume();
         setArrow();
+        if (Preferences.Notifications.Qms.isReadDone())
+            reloadData();
     }
 
     @Override
