@@ -241,7 +241,7 @@ public class CuratorFragment extends WebViewFragment {
 
                 postMatcher = postPattern.matcher(m.group(1));
                 if(postMatcher.find()){
-                    builder.append("<div class=\"post_container\"");
+                    builder.append("<div class=\"post_container\">");
                     builder.append("<div class=\"post_header\">");
                     builder.append("<a class=\"inf nick\" href=\"http://4pda.ru/forum/index.php?showuser=")
                             .append(postMatcher.group(2)).append("\"><span><b>").append(postMatcher.group(3))

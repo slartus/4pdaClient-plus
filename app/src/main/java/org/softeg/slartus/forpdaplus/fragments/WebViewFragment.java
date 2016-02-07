@@ -132,8 +132,10 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("kek", "oncreate start");
         setArrow();
         loadPreferences(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
+        Log.e("kek", "oncreate end");
     }
 
     protected SwipeRefreshLayout mSwipeRefreshLayout;

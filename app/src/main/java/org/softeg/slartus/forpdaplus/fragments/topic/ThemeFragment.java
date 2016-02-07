@@ -240,7 +240,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.e("kek", "oncreateview start start");
         view = inflater.inflate(R.layout.theme, container, false);
+        Log.e("kek", "oncreateview start");
         initSwipeRefreshLayout();
         setHasOptionsMenu(true);
         lastStyle = App.getInstance().getThemeCssFileName();
@@ -401,6 +403,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         hideMessagePanel();
         closeSearch();
         loadPreferences(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
+        Log.e("kek", "oncreateview end");
         showTheme(IntentActivity.normalizeThemeUrl(getArguments().getString(TOPIC_URL_KEY)));
 
         return view;
@@ -1170,7 +1173,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             setTitle(m_Topic.getTitle());
             if(getSupportActionBar()!=null)
                 setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
-
+            Log.e("kek", "start load");
             webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
 
             TopicsHistoryTable.addHistory(m_Topic, m_LastUrl);
@@ -1359,6 +1362,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public void showTheme(String url) {
+        Log.e("kek", "showtheme start");
         try {
             closeSearch();
             if (url == null) {
@@ -1372,7 +1376,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             }
             webView.setWebViewClient(new MyWebViewClient());
             webView.getSettings().setLoadsImagesAutomatically(getLoadsImagesAutomatically());
-
+            Log.e("kek", "asynctask start");
             asyncTask = new GetThemeTask(getMainActivity());
             asyncTask.execute(url.replace("|", ""));
         } catch (Throwable ex) {
@@ -1559,6 +1563,12 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             m_ScrollElement = null;
             webView.setPictureListener(null);
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.e("kek", "onattach");
     }
 
     private class MyWebViewClient extends WebViewClient {
@@ -1777,19 +1787,23 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         protected Boolean doInBackground(String... forums) {
             String pageBody = null;
             try {
-
+                Log.e("kek", "doinbg start");
                 if (isCancelled()) return false;
 
                 Client client = Client.getInstance();
                 m_LastUrl = forums[0];
                 m_LastUrl = "http://4pda.ru/forum/index.php?" + prepareTopicUrl(m_LastUrl);
                 if (forums.length == 1) {
+                    Log.e("kek", "load from net");
                     pageBody = client.loadPageAndCheckLogin("http://4pda.ru/forum/index.php?" + prepareTopicUrl(m_LastUrl), null);
-                } else
+                } else {
+                    Log.e("kek", "load from nein net");
                     pageBody = forums[1];
+                }
 
                 m_LastUrl = client.getRedirectUri() == null ? m_LastUrl : client.getRedirectUri().toString();
                 m_SpoilFirstPost = Preferences.Topic.getSpoilFirstPost();
+                Log.e("kek", "parse start");
                 TopicBodyBuilder topicBodyBuilder = client.parseTopic(pageBody, App.getInstance(), m_LastUrl,
                         m_SpoilFirstPost);
 
@@ -1819,6 +1833,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }
 
         protected void onPostExecute(final Boolean success) {
+            Log.e("kek", "onpostexecute start");
             setLoading(false);
             String parentTag = App.getInstance().getTabByTag(getTag()).getParentTag();
             if(parentTag!=null){
@@ -1842,6 +1857,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             if (isCancelled()) return;
 
             if (success) {
+                Log.e("kek", "onpostexecute end");
                 addToHistory(m_ThemeBody);
                 showBody(m_ThemeBody);
             } else {

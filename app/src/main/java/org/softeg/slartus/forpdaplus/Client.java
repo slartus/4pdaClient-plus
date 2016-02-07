@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -808,11 +809,12 @@ public class Client implements IHttpClient {
                                        String id, String topicBody, Boolean spoilFirstPost,
                                        Boolean logined, String urlParams) throws IOException {
 
-
+        Log.e("kok", "startload topic");
         Matcher mainMatcher = PatternExtensions
-                .compile("^([\\s\\S]*?)((?=<div data-post=\"\\d+\"[^>]*>)[\\s\\S]*?)<div class=\"topic_foot_nav[^\"]*\">")
+                .compile("^([\\s\\S]*?)<div data-post")
                 .matcher(topicBody);
 
+        Log.e("kok", "end mainmatcher");
         if (!mainMatcher.find()) {
             Matcher errorMatcher = Pattern.compile("<div class=\"wr va-m text\">([\\s\\S]*?)</div>", Pattern.CASE_INSENSITIVE)
                     .matcher(topicBody);
@@ -839,13 +841,13 @@ public class Client implements IHttpClient {
             throw new IOException("Ошибка разбора страницы id=" + id);
         }
 
-
         Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(context);
 
         ExtTopic topic = createTopic(id, mainMatcher.group(1));
 
-        String body = mainMatcher.group(2);
-
+        topicBody = topicBody.replaceFirst("^[\\s\\S]*?(<div data-post)", "$1").replaceFirst("(<div class=\"topic_foot_nav\">)[\\s\\S]*","$1");
+        Log.e("kok", "body initialised");
+        Log.e("kokos", topicBody);
 
         TopicBodyBuilder topicBodyBuilder = new TopicBodyBuilder(context, logined, topic, urlParams,
                 isWebviewAllowJavascriptInterface);
@@ -927,7 +929,7 @@ public class Client implements IHttpClient {
         mainMatcher = Pattern
                 .compile("<div data-post=\"(\\d+)\"[^>]*>([\\s\\S]*?)((?=<div class=\"post_body[^\"]*?\">)[\\s\\S]*?)(?=<div data-post=\"\\d+\"[^>]*>|<div class=\"topic_foot_nav[^\"]*\">)",
                         Pattern.MULTILINE | Pattern.CASE_INSENSITIVE)
-                .matcher(body + "<div class=\"topic_foot_nav\">");
+                .matcher(topicBody);
 
 
         final Pattern postDateNumPattern = PatternExtensions
