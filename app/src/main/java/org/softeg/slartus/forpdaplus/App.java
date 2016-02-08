@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.fabric.sdk.android.Fabric;
+import uk.co.senab.bitmapcache.BitmapLruCache;
 
 /**
  * User: slinkin
@@ -86,6 +87,9 @@ public class App extends android.app.Application {
     private String currentFragmentTag;
 
     private int tabIterator = 0;
+
+    private static final int MEGA_BYTE = 1024 * 1024;
+    private BitmapLruCache mCache;
 
     public int getTabIterator(){
         return tabIterator;
@@ -485,8 +489,19 @@ public class App extends android.app.Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        File imgCacheDir = new File(getCacheDir(), "imgviewer");
+        imgCacheDir.mkdirs();
+
+        BitmapLruCache.Builder builder = new BitmapLruCache.Builder();
+        builder.setMemoryCacheEnabled(true).setMemoryCacheMaxSizeUsingHeapSize(.25f);
+        builder.setDiskCacheEnabled(true).setDiskCacheLocation(imgCacheDir).setDiskCacheMaxSize(100 * MEGA_BYTE);
+        mCache = builder.build();
     }
 
+    public BitmapLruCache getBitmapCache() {
+        return mCache;
+    }
 
     public boolean isNewYear(){
         return isNewYear;

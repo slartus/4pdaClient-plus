@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaplus.controls.imageview;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.MenuItemCompat;
@@ -20,27 +19,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.dmitriy.tarasov.android.intents.IntentUtils;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Downloader;
-import com.squareup.picasso.Picasso;
 
-import org.apache.http.HttpResponse;
-import org.softeg.slartus.forpdaplus.HttpHelper;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.devdb.helpers.DevDbUtils;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.utils.SystemBarTintManager;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.bitmapcache.CacheableBitmapDrawable;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
@@ -99,8 +90,12 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.activity_slide_up, R.anim.activity_slide_down);
         setTheme(R.style.ImageViewTheme);
         setContentView(LAYOUT);
+
+        backLayout = ButterKnife.findById(ImgViewer.this, R.id.image_viewer_pullBack);
+        backLayout.setCallback(ImgViewer.this);
 
         if (DevDbUtils.isKitKat()) {
             statusBar = ButterKnife.findById(ImgViewer.this, R.id.img_viewer_statusBar);
@@ -125,8 +120,8 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
             getWindow().setNavigationBarColor(getResources().getColor(R.color.background_toolbar));
         }
 
-        backLayout = ButterKnife.findById(ImgViewer.this, R.id.image_viewer_pullBack);
-        backLayout.setCallback(this);
+
+
         mVisible = true;
         initUI();
 
@@ -197,10 +192,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
 
     @Override
     public void onPullComplete(@PullBackLayout.Direction int direction) {
-        if (DevDbUtils.isAndroid5())
-            finishAfterTransition();
-        else
-            finish();
+        overridePendingTransition(R.anim.activity_slide_up, R.anim.activity_slide_down);
     }
 
     private void updateSubtitle(int selectedPageIndex) {
@@ -220,8 +212,8 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     class ImgAdapter extends PagerAdapter {
         SparseArray<View> views = new SparseArray<>();
         private LayoutInflater inflater;
-        private PhotoView photoView;
-        private ProgressBar progressBar;
+        private NetworkedCacheableImageView imageView;
+        private LinearLayout progressBar;
 
         public ImgAdapter() {
             this.inflater = LayoutInflater.from(ImgViewer.this);
@@ -275,48 +267,16 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
             assert imageLayout != null;
             progressBar = ButterKnife.findById(imageLayout, R.id.progress);
             progressBar.setVisibility(View.VISIBLE);
-            photoView = ButterKnife.findById(imageLayout, R.id.photo_view);
-            Picasso.Builder builder = new Picasso.Builder(ImgViewer.this);
-            builder.listener(new Picasso.Listener() {
+            imageView = (NetworkedCacheableImageView) imageLayout.findViewById(R.id.pic);
+            PhotoViewAttacher img = new PhotoViewAttacher(imageView);
+            imageView.loadImage(urls.get(selectedIndex), true, new NetworkedCacheableImageView.OnImageLoadedListener() {
                 @Override
-                public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                public void onImageLoaded(CacheableBitmapDrawable result) {
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(ImgViewer.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    delayedHide(300);
                 }
-            });
-            builder.downloader(new Downloader() {
-                @Override
-                public Response load(Uri uri, int networkPolicy) throws IOException {
-                    HttpResponse httpResponse = new HttpHelper().getDownloadResponse(uri.toString(), 0);
-                    return new Response(httpResponse.getEntity().getContent(), false, httpResponse.getEntity().getContentLength());
-                }
-
-                @Override
-                public void shutdown() {
-
-                }
-            });
-            builder.build()
-                    .load(urls.get(selectedIndex))
-                    .transform(new ImgTransformation())
-                    .error(R.drawable.no_image)
-                    .into(photoView, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            progressBar.setVisibility(View.GONE);
-                            photoView.setVisibility(View.VISIBLE);
-                            MaterialImageLoading.animate(photoView).setDuration(2000).start();
-                            delayedHide(UI_ANIMATION_DELAY);
-                        }
-
-                        @Override
-                        public void onError() {
-
-                        }
-                    });
-
-            photoView.setMaximumScale(10f);
-            photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+            }, 0, true);
+            img.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                 @Override
                 public void onPhotoTap(View view, float x, float y) {
                     toggle();

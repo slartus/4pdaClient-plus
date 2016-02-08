@@ -1,5 +1,9 @@
 package org.softeg.slartus.forpdaplus.controls.imageview;
 
+import android.annotation.TargetApi;
+import android.os.AsyncTask;
+import android.os.Build;
+
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLContext;
@@ -45,5 +49,10 @@ public class ImgHelper {
 
         // Return largest texture size found, or default
         return Math.max(maximumTextureSize, IMAGE_MAX_BITMAP_DIMENSION);
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static <P> void executeOnThreadPool(AsyncTask<P, ?, ?> task, P... params) {
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params);
     }
 }
