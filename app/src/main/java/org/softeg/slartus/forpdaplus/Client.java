@@ -809,12 +809,11 @@ public class Client implements IHttpClient {
                                        String id, String topicBody, Boolean spoilFirstPost,
                                        Boolean logined, String urlParams) throws IOException {
 
-        Log.e("kok", "startload topic");
+
         Matcher mainMatcher = PatternExtensions
                 .compile("^([\\s\\S]*?)<div data-post")
                 .matcher(topicBody);
 
-        Log.e("kok", "end mainmatcher");
         if (!mainMatcher.find()) {
             Matcher errorMatcher = Pattern.compile("<div class=\"wr va-m text\">([\\s\\S]*?)</div>", Pattern.CASE_INSENSITIVE)
                     .matcher(topicBody);
@@ -845,9 +844,7 @@ public class Client implements IHttpClient {
 
         ExtTopic topic = createTopic(id, mainMatcher.group(1));
 
-        topicBody = topicBody.replaceFirst("^[\\s\\S]*?(<div data-post)", "$1").replaceFirst("(<div class=\"topic_foot_nav\">)[\\s\\S]*","$1");
-        Log.e("kok", "body initialised");
-        Log.e("kokos", topicBody);
+        topicBody = topicBody.replace("^[\\s\\S]*?<div data-post", "<div data-post").replace("<div class=\"topic_foot_nav\">[\\s\\S]*", "<div class=\"topic_foot_nav\">");
 
         TopicBodyBuilder topicBodyBuilder = new TopicBodyBuilder(context, logined, topic, urlParams,
                 isWebviewAllowJavascriptInterface);
@@ -925,12 +922,10 @@ public class Client implements IHttpClient {
         }
         //<<опрос
         topicBodyBuilder.openPostsList();
-
         mainMatcher = Pattern
                 .compile("<div data-post=\"(\\d+)\"[^>]*>([\\s\\S]*?)((?=<div class=\"post_body[^\"]*?\">)[\\s\\S]*?)(?=<div data-post=\"\\d+\"[^>]*>|<div class=\"topic_foot_nav[^\"]*\">)",
                         Pattern.MULTILINE | Pattern.CASE_INSENSITIVE)
                 .matcher(topicBody);
-
 
         final Pattern postDateNumPattern = PatternExtensions
                 .compile("<span class=\"post_date[^\"]*\">(.*?)&nbsp;[^#]*#(\\d+)");
@@ -1019,13 +1014,10 @@ public class Client implements IHttpClient {
                 post.setBody("<div class=\"post_body" + postClass + "\">" + postBody);
             }
 
-
             topicBodyBuilder.addPost(post, spoil);
             spoil = false;
         }
-
         topicBodyBuilder.endTopic();
-
         return topicBodyBuilder;
     }
 

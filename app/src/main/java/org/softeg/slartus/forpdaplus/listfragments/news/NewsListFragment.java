@@ -196,7 +196,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
 
     public NewsListFragment() {
         super();
-        initImageLoader(App.getContext());
+        //initImageLoader(App.getContext());
         imageLoader = ImageLoader.getInstance();
     }
 
@@ -293,7 +293,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         mAdapter.notifyDataSetChanged();
     }
 
-    private static void initImageLoader(Context context) {
+    /*private static void initImageLoader(Context context) {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageForEmptyUri(R.drawable.no_image)
                 .delayBeforeLoading(1000)
@@ -313,7 +313,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
                 .build();
 
         ImageLoader.getInstance().init(config);
-    }
+    }*/
 
     protected BaseAdapter createAdapter() {
         return new NewsListAdapter(getContext(), mData, imageLoader);
