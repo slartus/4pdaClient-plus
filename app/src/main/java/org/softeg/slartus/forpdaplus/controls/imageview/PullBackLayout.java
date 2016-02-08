@@ -104,13 +104,23 @@ public class PullBackLayout extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return dragger.shouldInterceptTouchEvent(ev);
+        try {
+            return super.onInterceptTouchEvent(ev);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public boolean onTouchEvent(@NonNull MotionEvent event) {
-        dragger.processTouchEvent(event);
-        return true;
+        try {
+            dragger.processTouchEvent(event);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
