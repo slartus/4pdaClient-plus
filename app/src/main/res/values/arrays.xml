@@ -1,14 +1,15 @@
 <resources>
     <string-array name="SearchSourceArray">
-        <item>Везде</item>
         <item>Только в заголовках тем</item>
         <item>Только в сообщениях</item>
+        <item>Везде</item>
+
     </string-array>
 
     <string-array name="SearchSourceValues">
-        <item>all</item>
         <item>top</item>
         <item>pst</item>
+        <item>all</item>
     </string-array>
 
     <string-array name="ConnectTypeArray">

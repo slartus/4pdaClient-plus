@@ -64,6 +64,7 @@
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_main"
+            app:itemBackground="@drawable/nav_bg"
             style="?drawer_menu"/>
 
 

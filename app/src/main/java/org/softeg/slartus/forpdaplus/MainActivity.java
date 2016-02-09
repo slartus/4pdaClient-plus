@@ -281,7 +281,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         }
     }
     public static void checkToster(Context context){
-        if(false) return;
+        if(true) return;
         boolean toster = false;
         if(Client.getInstance().UserId.equals("0")) {
             LoginDialog.showDialog(context, null);
