@@ -2764,7 +2764,21 @@ li .post-block {
   box-sizing: border-box;
 }
 #curator .panel .pages b {
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
   background: rgba(0, 0, 0, 0.1);
+}
+#curator .panel .controls {
+  text-align: center;
+}
+#curator .panel .controls button {
+  font-weight: bold;
+  text-transform: uppercase;
+  background: none;
+  font-size: 0.875em;
+  border: none;
+  color: #0277bd;
+  padding: 1.14285714em;
 }
 #curator .posts_list .post_container .post_header {
   position: relative;

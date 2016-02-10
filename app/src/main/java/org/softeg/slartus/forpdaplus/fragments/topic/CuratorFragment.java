@@ -22,6 +22,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -144,7 +145,20 @@ public class CuratorFragment extends WebViewFragment {
             });
             setHideFab(fab);
         }
-
+        ImageButton up = (ImageButton) view.findViewById(R.id.btnUp);
+        ImageButton down = (ImageButton) view.findViewById(R.id.btnDown);
+        up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                webView.pageUp(true);
+            }
+        });
+        down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                webView.pageDown(true);
+            }
+        });
         initSwipeRefreshLayout();
         webView.addJavascriptInterface(this, "HTMLOUT");
         setHasOptionsMenu(true);
@@ -265,8 +279,8 @@ public class CuratorFragment extends WebViewFragment {
                 }
             }
             builder.append("</div>");
-            builder.append("<div class=\"panel bottom\"><div class=\"pages\">").append(pages).append("</div>");
-            builder.append("<div class=\"controls\"><button onclick=\"invertCheckboxes();\">Инвертировать</button><button onclick=\"setCheckedAll();\">Выделить всё</button></div></div>");
+            builder.append("<div class=\"panel bottom\"><div class=\"controls\"><button onclick=\"invertCheckboxes();\">Инвертировать</button><button onclick=\"setCheckedAll();\">Выделить всё</button></div>");
+            builder.append("<div class=\"pages\">").append(pages).append("</div></div>");
         }
         builder.endBody();
         builder.endHtml();
