@@ -314,64 +314,6 @@ HTML body a {
   background: #f2f2f2;
 }
 /*
-*	HIDETOP,
-*	HIDEMAIN
-*/
-.hat .hidetop {
-  position: relative;
-  margin: 0.5rem;
-  padding: 0.375rem;
-  text-align: center;
-  background: white;
-}
-.hat .hidetop span {
-  display: none;
-}
-.hat .hidemain {
-  background: white;
-}
-.post_container .hat .hidetop {
-  margin: 0;
-}
-@media screen and (min-width: 800px) {
-  .post_container .hat .hidetop {
-    margin-left: 12rem;
-    line-height: 12rem;
-  }
-  .post_container .hat .hidetop.open {
-    line-height: 1.4rem;
-  }
-}
-.post_container .hat .hidetop B:after {
-  content: "ШАПКУ";
-}
-.post_container .hat .hidetop.close B:before {
-  content: 'ПОКАЗАТЬ';
-  margin-right: 0.3125rem;
-}
-.post_container .hat .hidetop.open B:before {
-  content: 'СКРЫТЬ';
-  margin-right: 0.3125rem;
-}
-@media screen and (min-width: 800px) {
-  .post_container .hat .hidemain .post_body {
-    margin-top: 0.75rem;
-  }
-}
-.post_container .hat .hidemain .post-body {
-  color: black !important;
-}
-.poll .hidetop.close B:before {
-  border-top-color: #666666;
-  border-left-color: #666666;
-}
-.poll .hidetop B:after {
-  content: "ОПРОС";
-}
-.poll .hidemain {
-  margin: 0.5rem;
-}
-/*
 *	PANEL
 */
 .panel {
@@ -428,6 +370,64 @@ HTML body a {
   text-transform: uppercase;
   color: gray;
   cursor: pointer;
+}
+/*
+*	HIDETOP,
+*	HIDEMAIN
+*/
+.hat .hidetop {
+  position: relative;
+  margin: 0.5rem;
+  padding: 0.375rem;
+  text-align: center;
+  background: white;
+}
+.hat .hidetop span {
+  display: none;
+}
+.hat .hidemain {
+  background: white;
+}
+.post_container .hat .hidetop {
+  margin: 0;
+}
+@media screen and (min-width: 800px) {
+  .post_container .hat .hidetop {
+    margin-left: 12rem;
+    line-height: 12rem;
+  }
+  .post_container .hat .hidetop.open {
+    line-height: 1.4rem;
+  }
+}
+.post_container .hat .hidetop B:after {
+  content: "ШАПКУ";
+}
+.post_container .hat .hidetop.close B:before {
+  content: 'ПОКАЗАТЬ';
+  margin-right: 0.3125rem;
+}
+.post_container .hat .hidetop.open B:before {
+  content: 'СКРЫТЬ';
+  margin-right: 0.3125rem;
+}
+@media screen and (min-width: 800px) {
+  .post_container .hat .hidemain .post_body {
+    margin-top: 0.75rem;
+  }
+}
+.post_container .hat .hidemain .post-body {
+  color: black !important;
+}
+.poll .hidetop.close B:before {
+  border-top-color: #666666;
+  border-left-color: #666666;
+}
+.poll .hidetop B:after {
+  content: "ОПРОС";
+}
+.poll .hidemain {
+  margin: 0.5rem;
 }
 /*
 *	POLL
@@ -619,6 +619,7 @@ DIV[data-post] {
   position: relative;
   min-height: 4rem;
   padding: 0.5rem;
+  -webkit-user-select: none;
 }
 @media screen and (min-width: 800px) {
   .post_header {
@@ -927,6 +928,7 @@ div[data-post] > a {
   padding: 0 0.25rem;
   margin: 0;
   text-align: center;
+  -webkit-user-select: none;
 }
 .post_footer ~ br {
   display: none;
@@ -2655,8 +2657,106 @@ div[data-post] > a {
 /*
 *		MULTIMODERATION
 */
-#curator .inf {
-  height: 10rem;
+#curator .panel .pages {
+  margin: 1rem 0;
+  padding: 1rem 0.5rem;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+#curator .panel .pages a,
+#curator .panel .pages b {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  text-decoration: none !important;
+  color: gray;
+  font-weight: bold;
+}
+#curator .panel .pages b {
+  color: #cdcdcd;
+}
+#curator .post_header {
+  position: relative;
+  padding: 0 0 0.5rem;
+}
+#curator .post_header a {
+  text-decoration: none !important;
+}
+#curator .post_header .inf {
+  display: block;
+  font-size: 0.875rem;
+  color: #808080;
+}
+#curator .post_header .nick {
+  padding: 0.5rem 0;
+  font-size: 1.125rem;
+  color: black;
+}
+@media screen and (max-width: 800px) {
+  #curator .post_header .nick {
+    padding: 0.5rem 0.75rem;
+    margin-right: 3rem;
+  }
+}
+#curator .post_header .link {
+  padding: 0.5rem 0;
+  font-weight: bold;
+}
+@media screen and (max-width: 800px) {
+  #curator .post_header .link {
+    padding: 0.25rem 0.75rem;
+  }
+}
+@media screen and (max-width: 800px) {
+  #curator .post_header .date-link {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+  }
+}
+#curator .post_header .checkbox {
+  display: block;
+  padding: 1rem;
+  cursor: pointer;
+  text-align: center;
+}
+@media screen and (max-width: 800px) {
+  #curator .post_header .checkbox {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0.75rem 0.75rem;
+  }
+}
+#curator .post_header .checkbox .icon {
+  position: relative;
+  border-radius: 0.125rem;
+}
+#curator .post_header .checkbox input {
+  display: none;
+}
+#curator .post_header .checkbox input + .icon {
+  display: inline-block;
+  height: 1rem;
+  width: 1rem;
+  border: 0.125rem solid #808080;
+  transition: all 0.25s;
+  overflow: hidden;
+  background: white;
+}
+#curator .post_header .checkbox input:checked + .icon {
+  background: #3490c3;
+  border: 0.125rem solid #3490c3;
+}
+#curator .post_header .checkbox input:checked + .icon:before {
+  content: '';
+  font-size: 1rem;
+  position: absolute;
+  display: inline-block;
+  height: 0.7rem;
+  width: 0.4rem;
+  border-bottom: 0.15625rem solid white;
+  border-right: 0.15625rem solid white;
+  -webkit-transform: rotate(45deg) translate(-0.1875rem, 0.125rem);
 }
 /*
 *	OTHER

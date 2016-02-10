@@ -2532,6 +2532,114 @@ h3 a {
 #edit_profile form .field .formbuttonrow input:active {
   opacity: 0.5;
 }
+/*
+*		MULTIMODERATION
+*/
+#curator .panel .pages {
+  margin: 1rem 0;
+  padding: 1rem 0.5rem;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+#curator .panel .pages a,
+#curator .panel .pages b {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  text-decoration: none !important;
+  color: #004fb3;
+  font-weight: bold;
+}
+#curator .panel .pages b {
+  background: #cccccc;
+  color: white;
+}
+#curator .post_header {
+  position: relative;
+  padding: 0 0 0.5rem;
+}
+#curator .post_header a {
+  text-decoration: none !important;
+}
+#curator .post_header .inf {
+  display: block;
+  font-size: 0.875rem;
+  color: #808080;
+}
+#curator .post_header .nick {
+  padding: 0.5rem 0;
+  font-size: 1.125rem;
+  color: black;
+}
+@media screen and (max-width: 800px) {
+  #curator .post_header .nick {
+    padding: 0.5rem 0.75rem;
+    margin-right: 3rem;
+  }
+}
+#curator .post_header .link {
+  padding: 0.5rem 0;
+  font-weight: bold;
+}
+@media screen and (max-width: 800px) {
+  #curator .post_header .link {
+    padding: 0.25rem 0.75rem;
+  }
+}
+@media screen and (max-width: 800px) {
+  #curator .post_header .date-link {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+  }
+}
+#curator .post_header .checkbox {
+  display: block;
+  padding: 1rem;
+  cursor: pointer;
+  text-align: center;
+}
+@media screen and (max-width: 800px) {
+  #curator .post_header .checkbox {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0.75rem 0.75rem;
+  }
+}
+#curator .post_header .checkbox .icon {
+  position: relative;
+  border-radius: 0.125rem;
+}
+#curator .post_header .checkbox input {
+  display: none;
+}
+#curator .post_header .checkbox input + .icon {
+  display: inline-block;
+  height: 1rem;
+  width: 1rem;
+  border: 0.125rem solid #808080;
+  transition: all 0.25s;
+  overflow: hidden;
+  background: white;
+}
+#curator .post_header .checkbox input:checked + .icon {
+  background: #004fb3;
+  border: 0.125rem solid #004fb3;
+}
+#curator .post_header .checkbox input:checked + .icon:before {
+  content: '';
+  font-size: 1rem;
+  position: absolute;
+  display: inline-block;
+  height: 0.7rem;
+  width: 0.4rem;
+  border-bottom: 0.15625rem solid white;
+  border-right: 0.15625rem solid white;
+  -webkit-transform: rotate(45deg) translate(-0.1875rem, 0.125rem);
+}
+/*
+* OTHER
+*/
 #bottomMargin {
   display: block;
   height: 100px;

@@ -130,16 +130,21 @@ public class CuratorFragment extends WebViewFragment {
         view = inflater.inflate(R.layout.curator_fragment, container, false);
         webView = (AdvWebView) view.findViewById(R.id.wvBody);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setColorNormal(App.getInstance().getColorAccent("Accent"));
-        fab.setColorPressed(App.getInstance().getColorAccent("Pressed"));
-        fab.setColorRipple(App.getInstance().getColorAccent("Pressed"));
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                webView.evalJs("getIds();");
-            }
-        });
-        setHideFab(fab);
+        if(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false)){
+            fab.setVisibility(View.GONE);
+        }else {
+            fab.setColorNormal(App.getInstance().getColorAccent("Accent"));
+            fab.setColorPressed(App.getInstance().getColorAccent("Pressed"));
+            fab.setColorRipple(App.getInstance().getColorAccent("Pressed"));
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    webView.evalJs("getIds();");
+                }
+            });
+            setHideFab(fab);
+        }
+
         initSwipeRefreshLayout();
         webView.addJavascriptInterface(this, "HTMLOUT");
         setHasOptionsMenu(true);
@@ -232,7 +237,8 @@ public class CuratorFragment extends WebViewFragment {
 
         m = mainPattern.matcher(m_ThemeBody);
         if(m.find()){
-            builder.append("<div class=\"panel top\"><div class=\"pages\">").append(pages).append("</div></div>");
+            builder.append("<div class=\"panel top\"><div class=\"pages\">").append(pages).append("</div>");
+            builder.append("<div class=\"controls\"><button onclick=\"invertCheckboxes();\">Инвертировать</button><button onclick=\"setCheckedAll();\">Выделить всё</button></div></div>");
             builder.append("<div class=\"posts_list\">");
             postUrl = m.group(1);
 
@@ -260,6 +266,7 @@ public class CuratorFragment extends WebViewFragment {
             }
             builder.append("</div>");
             builder.append("<div class=\"panel bottom\"><div class=\"pages\">").append(pages).append("</div>");
+            builder.append("<div class=\"controls\"><button onclick=\"invertCheckboxes();\">Инвертировать</button><button onclick=\"setCheckedAll();\">Выделить всё</button></div></div>");
         }
         builder.endBody();
         builder.endHtml();
@@ -286,6 +293,18 @@ public class CuratorFragment extends WebViewFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        boolean pancil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false);
+        if(pancil) {
+            menu.add("Написать")
+                    .setIcon(R.drawable.ic_auto_fix_white_24dp)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                        public boolean onMenuItemClick(MenuItem item) {
+                            webView.evalJs("getIds();");
+                            return true;
+                        }
+                    }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
         menu.add("Настройка")
                 .setIcon(R.drawable.ic_settings_white_24dp)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
