@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemor
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
@@ -60,9 +62,6 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
     protected ArrayList<News> mData = new ArrayList<>();
     protected ArrayList<News> mLoadResultList;
     protected ArrayList<News> mCacheList = new ArrayList<>();
-    ImageLoader imageLoader;
-
-
 
 
     public class NewsCategoryItem {
@@ -182,6 +181,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         super.onActivityCreated(savedInstanceState);
         getListView().setDivider(null);
         getListView().setDividerHeight(0);
+        getListView().setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), false, true));
     }
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -196,8 +196,6 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
 
     public NewsListFragment() {
         super();
-        //initImageLoader(App.getContext());
-        imageLoader = ImageLoader.getInstance();
     }
 
     @Override
@@ -293,30 +291,8 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         mAdapter.notifyDataSetChanged();
     }
 
-    /*private static void initImageLoader(Context context) {
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageForEmptyUri(R.drawable.no_image)
-                .delayBeforeLoading(1000)
-                .resetViewBeforeLoading(false)  // default
-                .cacheInMemory(true)
-                .cacheOnDisc(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .handler(new Handler())
-                .build();
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                .threadPoolSize(5)
-                .threadPriority(Thread.MIN_PRIORITY)
-                .denyCacheImageMultipleSizesInMemory()
-                .memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024)) // 2 Mb
-                .discCacheFileNameGenerator(new HashCodeFileNameGenerator())
-                .defaultDisplayImageOptions(options)
-                .build();
-
-        ImageLoader.getInstance().init(config);
-    }*/
-
     protected BaseAdapter createAdapter() {
-        return new NewsListAdapter(getContext(), mData, imageLoader);
+        return new NewsListAdapter(getContext(), mData, ImageLoader.getInstance());
     }
 
     protected ListInfo mListInfo = new ListInfo();

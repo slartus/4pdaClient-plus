@@ -570,6 +570,7 @@ public class App extends android.app.Application {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageForEmptyUri(R.drawable.no_image)
                 .cacheInMemory(true)
+                .resetViewBeforeLoading(true)
                 .cacheOnDisc(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .handler(new Handler())

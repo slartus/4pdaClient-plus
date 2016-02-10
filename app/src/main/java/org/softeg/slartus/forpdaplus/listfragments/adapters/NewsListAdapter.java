@@ -8,16 +8,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 import org.softeg.slartus.forpdaapi.News;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.controls.imageview.MaterialImageLoading;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.util.ArrayList;
@@ -73,14 +72,9 @@ public class NewsListAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup parent) {
         final ViewHolder holder;
         View rowView = view;
-        boolean pauseOnScroll = false; // or true
-        boolean pauseOnFling = true; // or false
-        PauseOnScrollListener listener = new PauseOnScrollListener(imageLoader, pauseOnScroll, pauseOnFling);
-        ((ListView)parent.findViewById(android.R.id.list)).setOnScrollListener(listener);
         if (rowView == null || rowView.getId() != mNewsListRowId) {
             rowView = inflater.inflate(mNewsListRowId, null);
             holder = new ViewHolder();
-
             assert rowView != null;
             rowView.setId(mNewsListRowId);
             holder.image_panel = rowView.findViewById(R.id.image_panel);
@@ -93,7 +87,7 @@ public class NewsListAdapter extends BaseAdapter {
             holder.textComments = (TextView) rowView.findViewById(R.id.textComments);
             holder.textTag = (TextView) rowView.findViewById(R.id.textTag);
 
-            holder.textAutor = (TextView) rowView.findViewById(R.id.textAvtor);
+            holder.textAuthor = (TextView) rowView.findViewById(R.id.textAvtor);
             holder.textDate = (TextView) rowView.findViewById(R.id.textDate);
             holder.textDescription = (TextView) rowView.findViewById(R.id.textDescription);
             holder.textTitle = (TextView) rowView.findViewById(R.id.textTitle);
@@ -105,11 +99,11 @@ public class NewsListAdapter extends BaseAdapter {
             if (holder.image_panel != null)
                 holder.image_panel.setVisibility(mLoadImages ? View.VISIBLE : View.GONE);
         }
-        News data = newsList.get(position);
+        final News data = newsList.get(position);
         if (holder.textComments != null)
             holder.textComments.setText(String.valueOf(data.getCommentsCount()));
-        if (holder.textAutor != null)
-            holder.textAutor.setText(data.getAuthor());
+        if (holder.textAuthor != null)
+            holder.textAuthor.setText(data.getAuthor());
         if (holder.textDate != null)
             holder.textDate.setText(data.getNewsDate());
         if (holder.textDescription != null)
@@ -126,24 +120,24 @@ public class NewsListAdapter extends BaseAdapter {
 
                 @Override
                 public void onLoadingStarted(String p1, View p2) {
-                    p2.setVisibility(View.INVISIBLE);
-                    holder.mProgressBar.setVisibility(View.VISIBLE);
+                    //p2.setVisibility(View.INVISIBLE);
+                    //holder.mProgressBar.setVisibility(View.VISIBLE);
                 }
 
                 @Override
                 public void onLoadingFailed(String p1, View p2, FailReason p3) {
-                    holder.mProgressBar.setVisibility(View.INVISIBLE);
+                    //holder.mProgressBar.setVisibility(View.INVISIBLE);
                 }
 
                 @Override
                 public void onLoadingComplete(String p1, View p2, Bitmap p3) {
-                    p2.setVisibility(View.VISIBLE);
-                    holder.mProgressBar.setVisibility(View.INVISIBLE);
+                    MaterialImageLoading.animate((ImageView) p2).setDuration(500).start();
+                    //p2.setVisibility(View.VISIBLE);
+                    //holder.mProgressBar.setVisibility(View.INVISIBLE);
                 }
 
                 @Override
                 public void onLoadingCancelled(String p1, View p2) {
-
                 }
             });
         }
@@ -170,7 +164,7 @@ public class NewsListAdapter extends BaseAdapter {
         public TextView textTitle;
         public TextView textDate;
         public TextView textDescription;
-        public TextView textAutor;
+        public TextView textAuthor;
         public TextView textTag;
         public TextView textComments;
         public TextView textSource;

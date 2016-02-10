@@ -47,7 +47,8 @@
                         android:layout_marginRight="16dp"
                         android:scaleType="centerCrop"
                         app:border_width="0dp"
-                        app:border_color="@android:color/transparent"/>
+                        app:border_color="@android:color/transparent"
+                        android:visibility="gone"/>
                     <ImageView
                         android:id="@+id/imgAvatarSquare"
                         android:layout_width="40dp"
