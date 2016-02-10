@@ -1895,6 +1895,11 @@ a {
   display: table;
   clear: both;
 }
+.post_container:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 #search .panel.bottom:empty + #bottomMargin {
   display: none;
 }
@@ -2790,14 +2795,69 @@ li .post-block {
 #curator .posts_list .post_container .post_header .date-link .date {
   left: -0.5em;
 }
-#curator .posts_list .post_container .post_header .date-link .checkbox {
+#curator .posts_list .post_container .post_header .checkbox {
   position: absolute;
   right: 0;
   top: 0;
+  height: 3em;
+  width: 3em;
 }
-#curator .posts_list .post_container .post_header .date-link .checkbox label {
-  padding: 0.5em;
+#curator .posts_list .post_container .post_header .checkbox input {
+  display: none;
+}
+#curator .posts_list .post_container .post_header .checkbox input + .icon {
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+}
+#curator .posts_list .post_container .post_header .checkbox input + .icon:after {
+  content: "";
+  height: 0.75em;
+  width: 0.4375em;
+  border: 0.125em solid #444444;
+  border-color: #ededed;
+  box-sizing: border-box;
+  border-left: none;
+  border-top: none;
+  left: 0.25em;
+  bottom: 0.1875em;
+  -webkit-transform: rotate(45deg) scale(0);
+  transform: rotate(45deg) scale(0);
+}
+#curator .posts_list .post_container .post_header .checkbox input:checked + .icon {
+  background: #e91e63;
+}
+#curator .posts_list .post_container .post_header .checkbox input:checked + .icon:after {
+  -webkit-transform: rotate(45deg) scale(1);
+  transform: rotate(45deg) scale(1);
+  opacity: 1;
+}
+#curator .posts_list .post_container .post_header .checkbox input:checked + .icon {
+  border-color: #e91e63;
+}
+#curator .posts_list .post_container .post_header .checkbox input:checked + .icon:after {
+  opacity: 1;
+}
+#curator .posts_list .post_container .post_header .checkbox .icon {
+  position: absolute;
+  height: 1.25em;
+  width: 1.25em;
+  top: 50%;
+  margin-top: -0.625em;
+  left: 50%;
+  margin-left: -0.625em;
+  border: 0.125em solid #444444;
+  background: #000000;
+  box-sizing: border-box;
+  -webkit-transition: 0.25s;
+  transition: 0.25s;
+}
+#curator .posts_list .post_container .post_header .checkbox .icon:after {
+  content: "";
   display: block;
+  position: absolute;
+  opacity: 0;
+  -webkit-transition: 0.25s;
+  transition: 0.25s;
 }
 #edit_profile .field {
   background: #000000;

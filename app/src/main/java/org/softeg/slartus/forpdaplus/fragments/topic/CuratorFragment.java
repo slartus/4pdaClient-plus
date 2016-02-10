@@ -121,7 +121,7 @@ public class CuratorFragment extends WebViewFragment {
         return fragment;
     }
     public static void showSpecial(String url, String topicId) {
-        MainActivity.addTab("КУРАТОР 3000", url, newInstance(url, topicId));
+        MainActivity.addTab("Мультимодерация", url, newInstance(url, topicId));
     }
 
     @Nullable
@@ -249,8 +249,8 @@ public class CuratorFragment extends WebViewFragment {
                     builder.append("<a class=\"inf link\" href=\"http://4pda.ru/forum/index.php?act=findpost&amp;pid=")
                             .append(postMatcher.group(1)).append("\"><span><span class=\"sharp\">#</span>").append(postMatcher.group(1))
                             .append("</span></a>");
-                    builder.append("<div class=\"date-link\"><span class=\"inf date\"><span>").append(postMatcher.group(4).replaceAll("\n","").replace("@", "")).append("</span></span>");
-                    builder.append("<div class=\"checkbox\"><label><input type=\"checkbox\" name=\"postsel[]\" value=\"").append(postMatcher.group(1)).append("\"></label></div>");
+                    builder.append("<div class=\"date-link\"><span class=\"inf date\"><span>").append(postMatcher.group(4).replaceAll("\n","").replace("@", "")).append("</span></span></div>");
+                    builder.append("<label class=\"checkbox\"><input type=\"checkbox\" name=\"postsel[]\" value=\"").append(postMatcher.group(1)).append("\"><span class=\"icon\"></span></label>");
                     builder.append("</div>");
                     builder.append("<div class=\"post_body \">");
                     builder.append(postMatcher.group(5));

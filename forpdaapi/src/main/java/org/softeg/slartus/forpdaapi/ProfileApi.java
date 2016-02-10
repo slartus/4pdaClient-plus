@@ -70,12 +70,12 @@ public class ProfileApi {
             additionalHeaders.put("hidden", "1");
         additionalHeaders.put("act", "auth");
         //additionalHeaders.put("CODE", "01");
-        additionalHeaders.put("referer", "http://4pda.ru/forum/index.php?act=UserCP&CODE=24");
+        additionalHeaders.put("referer", "http://4pda.ru/forum/index.php");
         //additionalHeaders.put("s", session);
         additionalHeaders.put("captcha", capVal);
         additionalHeaders.put("captcha-time", capTime);
         additionalHeaders.put("captcha-sig", capSig);
-        additionalHeaders.put("return", "http://4pda.ru/forum/index.php?act=UserCP&CODE=24");
+        additionalHeaders.put("return", "http://4pda.ru/forum/index.php");
 
 
 
