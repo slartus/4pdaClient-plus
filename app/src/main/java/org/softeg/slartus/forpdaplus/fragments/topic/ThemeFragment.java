@@ -1823,12 +1823,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             String parentTag = App.getInstance().getTabByTag(getTag()).getParentTag();
             if(parentTag!=null){
                 TabItem tabItem = App.getInstance().getTabByTag(parentTag);
-                if(tabItem!=null){
-                    if(!tabItem.getTag().contains("tag")){
-                        Fragment fragment = getMainActivity().getSupportFragmentManager().findFragmentByTag(parentTag);
-                        if(fragment instanceof TopicsListFragment)
-                            ((TopicsListFragment) fragment).topicAfterClick(getTopic().getId());
-                    }
+                if(tabItem!=null&&!tabItem.getTag().contains("tag")){
+                    Fragment fragment = getMainActivity().getSupportFragmentManager().findFragmentByTag(parentTag);
+                    if(fragment instanceof TopicsListFragment&getTopic().getId()!=null)
+                        ((TopicsListFragment) fragment).topicAfterClick(getTopic().getId());
                 }
             }
 

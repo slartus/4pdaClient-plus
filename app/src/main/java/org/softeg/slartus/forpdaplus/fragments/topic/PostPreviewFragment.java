@@ -139,6 +139,7 @@ public class PostPreviewFragment extends WebViewFragment {
 
         webView.getSettings().setLoadWithOverviewMode(false);
         webView.getSettings().setUseWideViewPort(true);
+        webView.addJavascriptInterface(this, "HTMLOUT");
         webView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
         if (Build.VERSION.SDK_INT >= 19) {
             try {

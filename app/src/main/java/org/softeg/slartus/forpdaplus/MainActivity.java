@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     private MainDrawerMenu mMainDrawerMenu;
     private static TabDrawerMenu mTabDraweMenu;
-    private RelativeLayout topInform;
     public Toolbar toolbar;
     boolean top;
     int lastTheme;
@@ -224,7 +223,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             }
 
             NavigationView leftDrawer = (NavigationView) findViewById(R.id.left_drawer);
-            topInform = (RelativeLayout) findViewById(R.id.topInform);
             int scale = (int) getResources().getDisplayMetrics().density;
             boolean bottom = getPreferences().getBoolean("isMarginBottomNav",false);
             top = !getPreferences().getBoolean("isShowShortUserInfo",true);
@@ -281,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         }
     }
     public static void checkToster(Context context){
-        if(false) return;
+        if(true) return;
         boolean toster = false;
         if(Client.getInstance().UserId.equals("0")) {
             LoginDialog.showDialog(context, null);
@@ -355,7 +353,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         if(!top)
             shortUserInfo = new ShortUserInfo(this, mMainDrawerMenu.getNavigationView().getHeaderView(0));
         else
-            topInform.setVisibility(View.GONE);
+            mMainDrawerMenu.getNavigationView().getHeaderView(0).setVisibility(View.GONE);
 
         Client.INSTANCE.checkLoginByCookies();
         Client.getInstance().addOnUserChangedListener(new Client.OnUserChangedListener() {

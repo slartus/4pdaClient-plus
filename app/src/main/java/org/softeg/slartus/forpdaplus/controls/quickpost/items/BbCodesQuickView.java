@@ -85,7 +85,7 @@ public class BbCodesQuickView extends BaseQuickView {
 
     private void loadWebView() {
         StringBuilder sb = new StringBuilder();
-        sb.append("<html><body style=\"text-align: center;\" bgcolor=\"").append(App.getInstance().getCurrentBackgroundColorHtml()).append("\">");
+        sb.append("<html><body style=\"text-align: center; margin:0;\" bgcolor=\"").append(App.getInstance().getCurrentBackgroundColorHtml()).append("\">");
         String style = App.getInstance().getCurrentThemeName();
         if(style.equals("dark")) style = "black";
         String path = "file:///android_asset/forum/style_images/1/folder_editor_buttons_" + style + "/";

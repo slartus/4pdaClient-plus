@@ -22,6 +22,7 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -121,7 +122,7 @@ public class CuratorFragment extends WebViewFragment {
         return fragment;
     }
     public static void showSpecial(String url, String topicId) {
-        MainActivity.addTab("КУРАТОР 3000", url, newInstance(url, topicId));
+        MainActivity.addTab("Мультимодерация", url, newInstance(url, topicId));
     }
 
     @Nullable
@@ -130,16 +131,34 @@ public class CuratorFragment extends WebViewFragment {
         view = inflater.inflate(R.layout.curator_fragment, container, false);
         webView = (AdvWebView) view.findViewById(R.id.wvBody);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setColorNormal(App.getInstance().getColorAccent("Accent"));
-        fab.setColorPressed(App.getInstance().getColorAccent("Pressed"));
-        fab.setColorRipple(App.getInstance().getColorAccent("Pressed"));
-        fab.setOnClickListener(new View.OnClickListener() {
+        if(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false)){
+            fab.setVisibility(View.GONE);
+        }else {
+            fab.setColorNormal(App.getInstance().getColorAccent("Accent"));
+            fab.setColorPressed(App.getInstance().getColorAccent("Pressed"));
+            fab.setColorRipple(App.getInstance().getColorAccent("Pressed"));
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    webView.evalJs("getIds();");
+                }
+            });
+            setHideFab(fab);
+        }
+        ImageButton up = (ImageButton) view.findViewById(R.id.btnUp);
+        ImageButton down = (ImageButton) view.findViewById(R.id.btnDown);
+        up.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                webView.evalJs("getIds();");
+            public void onClick(View v) {
+                webView.pageUp(true);
             }
         });
-        setHideFab(fab);
+        down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                webView.pageDown(true);
+            }
+        });
         initSwipeRefreshLayout();
         webView.addJavascriptInterface(this, "HTMLOUT");
         setHasOptionsMenu(true);
@@ -232,7 +251,8 @@ public class CuratorFragment extends WebViewFragment {
 
         m = mainPattern.matcher(m_ThemeBody);
         if(m.find()){
-            builder.append("<div class=\"panel top\"><div class=\"pages\">").append(pages).append("</div></div>");
+            builder.append("<div class=\"panel top\"><div class=\"pages\">").append(pages).append("</div>");
+            builder.append("<div class=\"controls\"><button onclick=\"invertCheckboxes();\">Инвертировать</button><button onclick=\"setCheckedAll();\">Выделить всё</button></div></div>");
             builder.append("<div class=\"posts_list\">");
             postUrl = m.group(1);
 
@@ -241,7 +261,7 @@ public class CuratorFragment extends WebViewFragment {
 
                 postMatcher = postPattern.matcher(m.group(1));
                 if(postMatcher.find()){
-                    builder.append("<div class=\"post_container\"");
+                    builder.append("<div class=\"post_container\">");
                     builder.append("<div class=\"post_header\">");
                     builder.append("<a class=\"inf nick\" href=\"http://4pda.ru/forum/index.php?showuser=")
                             .append(postMatcher.group(2)).append("\"><span><b>").append(postMatcher.group(3))
@@ -249,8 +269,8 @@ public class CuratorFragment extends WebViewFragment {
                     builder.append("<a class=\"inf link\" href=\"http://4pda.ru/forum/index.php?act=findpost&amp;pid=")
                             .append(postMatcher.group(1)).append("\"><span><span class=\"sharp\">#</span>").append(postMatcher.group(1))
                             .append("</span></a>");
-                    builder.append("<div class=\"date-link\"><span class=\"inf date\"><span>").append(postMatcher.group(4).replaceAll("\n","").replace("@", "")).append("</span></span>");
-                    builder.append("<div class=\"checkbox\"><label><input type=\"checkbox\" name=\"postsel[]\" value=\"").append(postMatcher.group(1)).append("\"></label></div>");
+                    builder.append("<div class=\"date-link\"><span class=\"inf date\"><span>").append(postMatcher.group(4).replaceAll("\n","").replace("@", "")).append("</span></span></div>");
+                    builder.append("<label class=\"checkbox\"><input type=\"checkbox\" name=\"postsel[]\" value=\"").append(postMatcher.group(1)).append("\"><span class=\"icon\"></span></label>");
                     builder.append("</div>");
                     builder.append("<div class=\"post_body \">");
                     builder.append(postMatcher.group(5));
@@ -259,7 +279,8 @@ public class CuratorFragment extends WebViewFragment {
                 }
             }
             builder.append("</div>");
-            builder.append("<div class=\"panel bottom\"><div class=\"pages\">").append(pages).append("</div>");
+            builder.append("<div class=\"panel bottom\"><div class=\"controls\"><button onclick=\"invertCheckboxes();\">Инвертировать</button><button onclick=\"setCheckedAll();\">Выделить всё</button></div>");
+            builder.append("<div class=\"pages\">").append(pages).append("</div></div>");
         }
         builder.endBody();
         builder.endHtml();
@@ -286,6 +307,18 @@ public class CuratorFragment extends WebViewFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        boolean pancil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false);
+        if(pancil) {
+            menu.add("Написать")
+                    .setIcon(R.drawable.ic_auto_fix_white_24dp)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                        public boolean onMenuItemClick(MenuItem item) {
+                            webView.evalJs("getIds();");
+                            return true;
+                        }
+                    }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
         menu.add("Настройка")
                 .setIcon(R.drawable.ic_settings_white_24dp)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

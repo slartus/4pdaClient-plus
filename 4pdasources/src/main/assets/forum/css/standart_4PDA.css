@@ -19,8 +19,8 @@ HTML body {
 HTML body * {
   word-break: break-word;
 }
-HTML body a:active {
-  background: rgba(0, 200, 255, 0.2);
+HTML body a {
+  cursor: pointer;
 }
 HTML body#qms,
 HTML body#news {
@@ -410,12 +410,16 @@ HTML body#news {
 .poll .hidemain FORM .poll_body .poll_theme .items .item .num_votes {
   position: absolute;
   display: inline-block;
-  right: 0.5rem;
   bottom: 0.875rem;
-  padding: 0 0.3125rem;
+  left: 0.5rem;
+  padding: 0 0.375rem;
+  z-index: 99;
+  opacity: 0.5;
+  color: black;
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .range {
   position: relative;
+  margin-top: 0.25rem;
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .range:before {
   content: '';
@@ -434,8 +438,8 @@ HTML body#news {
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .range .value {
   position: absolute;
+  right: 0.3125rem;
   margin-top: -1.5rem;
-  margin-left: 0.3125rem;
 }
 @media screen and (min-width: 800px) {
   .poll .hidemain FORM .poll_body .poll_theme .items.voted .item {
@@ -449,6 +453,7 @@ HTML body#news {
   }
   .poll .hidemain FORM .poll_body .poll_theme .items.voted .item .num_votes {
     bottom: 50%;
+    left: auto;
     margin-bottom: -0.625rem;
   }
   .poll .hidemain FORM .poll_body .poll_theme .items.voted .item .range {
@@ -474,6 +479,7 @@ HTML body#news {
   border-top: 1px solid #2982cb;
 }
 .poll .hidemain FORM .buttons .button {
+  cursor: pointer;
   padding: 0.25rem;
   font-size: 1rem;
   outline: none;
@@ -578,6 +584,7 @@ HTML body#news {
   color: #666666;
 }
 .post_header .header_wrapper .nick {
+  cursor: pointer;
   font-size: 1.1875rem;
   color: #404040;
 }
@@ -640,6 +647,7 @@ HTML body#news {
   display: block;
   margin: 0 auto;
   text-transform: lowercase;
+  cursor: pointer;
 }
 @media screen and (max-width: 799px) {
   .post_header .header_wrapper .menu {
@@ -647,197 +655,6 @@ HTML body#news {
     right: 0.5rem;
     bottom: 0.5rem;
   }
-}
-/*
-*	BROWSER_VIEW
-*/
-DIV[data-post] {
-  clear: both;
-  overflow: hidden;
-  border-top: 0.1rem solid white;
-  background: white;
-}
-@media screen and (min-width: 800px) {
-  DIV[data-post] {
-    border-bottom: 0.8rem solid #2982cb;
-    border-top: 0.8rem solid #2982cb;
-  }
-  DIV[data-post] ~ DIV[data-post] {
-    border-top: none;
-  }
-}
-DIV[data-post] .post_body {
-  border: none;
-  margin: 0;
-  z-index: 10;
-}
-@media screen and (min-width: 800px) {
-  DIV[data-post] .post_body {
-    border-top: none;
-    padding-left: 14rem;
-    min-height: 8rem;
-  }
-  DIV[data-post] .post_body:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    width: 13rem;
-    left: 0;
-    bottom: 0;
-    border-bottom: 1px solid white;
-    background: #d4e6f5;
-  }
-}
-DIV[data-post] .post_header {
-  position: relative;
-  text-align: center;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font-size: 0.8rem;
-  z-index: 12;
-  color: #4d4d4d;
-  border-bottom: 1px solid #2982cb;
-  background: #d4e6f5;
-}
-@media screen and (min-width: 800px) {
-  DIV[data-post] .post_header {
-    border: none;
-    height: 13.2rem
-			width: 13rem;
-  }
-}
-DIV[data-post] .post_header br {
-  display: none;
-}
-DIV[data-post] .post_header img {
-  min-width: 1rem;
-  vertical-align: middle;
-  margin: 0;
-}
-DIV[data-post] .post_header > a {
-  text-decoration: none;
-}
-DIV[data-post] .post_header .post_date {
-  position: relative;
-  display: block;
-  color: #777;
-}
-DIV[data-post] .post_header .post_date a {
-  margin: 0;
-  padding: 0.3rem;
-  font-size: 1em;
-  color: #000 !important;
-}
-DIV[data-post] .post_header .post_nick {
-  position: relative;
-  display: block;
-  text-align: center;
-}
-DIV[data-post] .post_header .post_nick a {
-  line-height: 1.4rem;
-  font-size: 1.4rem !important;
-  text-decoration: underline;
-}
-DIV[data-post] .post_header .post_user_info {
-  color: black;
-  display: block;
-}
-DIV[data-post] .post_header .post_user_info STRONG {
-  display: block;
-  color: black;
-  line-height: 1.4;
-  font-size: 1rem;
-}
-DIV[data-post] .post_header .post_user_info span + br {
-  display: block;
-}
-DIV[data-post] .post_header .post_user_info font {
-  display: inline;
-  font-size: 92% !important;
-}
-DIV[data-post] .post_header .post_user_info a {
-  color: #000 !important;
-  text-decoration: underline !important;
-}
-DIV[data-post] .post_header a[title="Просмотреть репутацию"] {
-  text-decoration: underline !important;
-  color: black;
-}
-DIV[data-post] .post_header A[title*="Опустить репутацию"],
-DIV[data-post] .post_header A[title*="Поднять репутацию"] {
-  position: relative;
-  display: inline-block;
-  padding: 0.1rem;
-}
-DIV[data-post] .post_header A[title*="Опустить репутацию"] img,
-DIV[data-post] .post_header A[title*="Поднять репутацию"] img {
-  opacity: 0;
-}
-DIV[data-post] .post_header A[title*="Опустить репутацию"]:before,
-DIV[data-post] .post_header A[title*="Поднять репутацию"]:before {
-  bottom: 0;
-  right: 0;
-  content: '–';
-  font-weight: bold;
-  font-size: 1.1rem;
-  text-align: center;
-  line-height: 1rem;
-  height: 1rem;
-  width: 1rem;
-  color: rgba(255, 255, 255, 0.8);
-  position: absolute;
-  border-radius: 0.2rem;
-  padding: 0;
-  border: 1px solid #e64c4c;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ff9c9c), color-stop(1, #ec7979));
-}
-DIV[data-post] .post_header A[title*="Опустить репутацию"] {
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-}
-DIV[data-post] .post_header A[title*="Опустить репутацию"]:after {
-  display: inline-block;
-  position: absolute;
-  content: '';
-  left: 1.8rem;
-  top: 0.3rem;
-  width: 0.5rem;
-  height: 1.2rem;
-  background: #d4e6f5;
-  opacity: 1;
-}
-DIV[data-post] .post_header A[title*="Поднять репутацию"] {
-  margin-left: -0.6rem;
-}
-DIV[data-post] .post_header A[title*="Поднять репутацию"]:before {
-  content: '+';
-  border: 1px solid #428a42;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #9ac59a), color-stop(1, #77a277));
-}
-DIV[data-post] .post_header .post_action {
-  display: block;
-}
-@media screen and (min-width: 800px) {
-  DIV[data-post] .post_header .post_action {
-    padding: 0.3rem 0 0.5rem;
-  }
-  DIV[data-post] .post_header .post_action a[title="Удалить пост"] + a {
-    display: block;
-  }
-}
-DIV[data-post] .post_header .post_action a {
-  padding: 0 0.2rem;
-  text-decoration: none;
-  color: #4373C3;
-  font-weight: bold;
-  font-size: 1rem;
-}
-div[data-post] > a {
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin-top: 0;
 }
 /*
 *	HIDETOP,
@@ -2715,6 +2532,114 @@ h3 a {
 #edit_profile form .field .formbuttonrow input:active {
   opacity: 0.5;
 }
+/*
+*		MULTIMODERATION
+*/
+#curator .panel .pages {
+  margin: 1rem 0;
+  padding: 1rem 0.5rem;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+#curator .panel .pages a,
+#curator .panel .pages b {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  text-decoration: none !important;
+  color: #004fb3;
+  font-weight: bold;
+}
+#curator .panel .pages b {
+  background: #cccccc;
+  color: white;
+}
+#curator .post_header {
+  position: relative;
+  padding: 0 0 0.5rem;
+}
+#curator .post_header a {
+  text-decoration: none !important;
+}
+#curator .post_header .inf {
+  display: block;
+  font-size: 0.875rem;
+  color: #808080;
+}
+#curator .post_header .nick {
+  padding: 0.5rem 0;
+  font-size: 1.125rem;
+  color: black;
+}
+@media screen and (max-width: 800px) {
+  #curator .post_header .nick {
+    padding: 0.5rem 0.75rem;
+    margin-right: 3rem;
+  }
+}
+#curator .post_header .link {
+  padding: 0.5rem 0;
+  font-weight: bold;
+}
+@media screen and (max-width: 800px) {
+  #curator .post_header .link {
+    padding: 0.25rem 0.75rem;
+  }
+}
+@media screen and (max-width: 800px) {
+  #curator .post_header .date-link {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+  }
+}
+#curator .post_header .checkbox {
+  display: block;
+  padding: 1rem;
+  cursor: pointer;
+  text-align: center;
+}
+@media screen and (max-width: 800px) {
+  #curator .post_header .checkbox {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0.75rem 0.75rem;
+  }
+}
+#curator .post_header .checkbox .icon {
+  position: relative;
+  border-radius: 0.125rem;
+}
+#curator .post_header .checkbox input {
+  display: none;
+}
+#curator .post_header .checkbox input + .icon {
+  display: inline-block;
+  height: 1rem;
+  width: 1rem;
+  border: 0.125rem solid #808080;
+  transition: all 0.25s;
+  overflow: hidden;
+  background: white;
+}
+#curator .post_header .checkbox input:checked + .icon {
+  background: #004fb3;
+  border: 0.125rem solid #004fb3;
+}
+#curator .post_header .checkbox input:checked + .icon:before {
+  content: '';
+  font-size: 1rem;
+  position: absolute;
+  display: inline-block;
+  height: 0.7rem;
+  width: 0.4rem;
+  border-bottom: 0.15625rem solid white;
+  border-right: 0.15625rem solid white;
+  -webkit-transform: rotate(45deg) translate(-0.1875rem, 0.125rem);
+}
+/*
+* OTHER
+*/
 #bottomMargin {
   display: block;
   height: 100px;

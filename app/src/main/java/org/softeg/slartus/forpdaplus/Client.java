@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -810,7 +811,7 @@ public class Client implements IHttpClient {
 
 
         Matcher mainMatcher = PatternExtensions
-                .compile("^([\\s\\S]*?)((?=<div data-post=\"\\d+\"[^>]*>)[\\s\\S]*?)<div class=\"topic_foot_nav[^\"]*\">")
+                .compile("^([\\s\\S]*?)<div data-post")
                 .matcher(topicBody);
 
         if (!mainMatcher.find()) {
@@ -839,13 +840,11 @@ public class Client implements IHttpClient {
             throw new IOException("Ошибка разбора страницы id=" + id);
         }
 
-
         Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(context);
 
         ExtTopic topic = createTopic(id, mainMatcher.group(1));
 
-        String body = mainMatcher.group(2);
-
+        topicBody = topicBody.replace("^[\\s\\S]*?<div data-post", "<div data-post").replace("<div class=\"topic_foot_nav\">[\\s\\S]*", "<div class=\"topic_foot_nav\">");
 
         TopicBodyBuilder topicBodyBuilder = new TopicBodyBuilder(context, logined, topic, urlParams,
                 isWebviewAllowJavascriptInterface);
@@ -923,12 +922,10 @@ public class Client implements IHttpClient {
         }
         //<<опрос
         topicBodyBuilder.openPostsList();
-
         mainMatcher = Pattern
                 .compile("<div data-post=\"(\\d+)\"[^>]*>([\\s\\S]*?)((?=<div class=\"post_body[^\"]*?\">)[\\s\\S]*?)(?=<div data-post=\"\\d+\"[^>]*>|<div class=\"topic_foot_nav[^\"]*\">)",
                         Pattern.MULTILINE | Pattern.CASE_INSENSITIVE)
-                .matcher(body + "<div class=\"topic_foot_nav\">");
-
+                .matcher(topicBody);
 
         final Pattern postDateNumPattern = PatternExtensions
                 .compile("<span class=\"post_date[^\"]*\">(.*?)&nbsp;[^#]*#(\\d+)");
@@ -1017,13 +1014,10 @@ public class Client implements IHttpClient {
                 post.setBody("<div class=\"post_body" + postClass + "\">" + postBody);
             }
 
-
             topicBodyBuilder.addPost(post, spoil);
             spoil = false;
         }
-
         topicBodyBuilder.endTopic();
-
         return topicBodyBuilder;
     }
 

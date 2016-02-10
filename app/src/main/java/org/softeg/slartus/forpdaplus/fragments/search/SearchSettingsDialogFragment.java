@@ -106,6 +106,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         searchSettings.setQuery("");
         searchSettings.setUserName("");
         searchSettings.getTopicIds().clear();
+        searchSettings.setSource(SearchSettings.SOURCE_TOPICS);
         return searchSettings;
     }
 

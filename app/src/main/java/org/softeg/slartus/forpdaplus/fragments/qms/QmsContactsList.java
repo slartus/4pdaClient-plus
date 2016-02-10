@@ -27,6 +27,7 @@ import org.softeg.slartus.forpdaapi.qms.QmsUsers;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.controls.imageview.MaterialImageLoading;
 import org.softeg.slartus.forpdaplus.listfragments.BaseLoaderListFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
@@ -55,6 +56,12 @@ public class QmsContactsList extends BaseLoaderListFragment {
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getListView().setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), false, true));
     }
 
     @Override
@@ -140,10 +147,6 @@ public class QmsContactsList extends BaseLoaderListFragment {
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            boolean pauseOnScroll = false; // or true
-            boolean pauseOnFling = true; // or false
-            PauseOnScrollListener listener = new PauseOnScrollListener(imageLoader, pauseOnScroll, pauseOnFling);
-            ((ListView)parent.findViewById(android.R.id.list)).setOnScrollListener(listener);
             final ViewHolder holder;
 
             if (convertView == null) {
@@ -152,12 +155,17 @@ public class QmsContactsList extends BaseLoaderListFragment {
                 holder = new ViewHolder();
                 assert convertView != null;
                 //holder.txtIsNew = (ImageView) convertView.findViewById(R.id.txtIsNew);
-                holder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
-                holder.imgAvatarSquare = (ImageView) convertView.findViewById(R.id.imgAvatarSquare);
-                if (!mShowAvatars) {
-                    holder.imgAvatar.setVisibility(View.GONE);
-                    holder.imgAvatarSquare.setVisibility(View.GONE);
+                if(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("isSquareAvarars",false)){
+                    holder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatarSquare);
+                }else {
+                    holder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
                 }
+
+                if (!mShowAvatars)
+                    holder.imgAvatar.setVisibility(View.GONE);
+                else
+                    holder.imgAvatar.setVisibility(View.VISIBLE);
+
                 holder.txtCount = (TextView) convertView.findViewById(R.id.txtMessagesCount);
                 holder.txtNick = (TextView) convertView.findViewById(R.id.txtNick);
 
@@ -199,60 +207,29 @@ public class QmsContactsList extends BaseLoaderListFragment {
             }
 
             if (user.getAvatarUrl() != null && mShowAvatars) {
-                if(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("isSquareAvarars",false)){
-                    holder.imgAvatar.setVisibility(View.GONE);
-                    imageLoader.displayImage(user.getAvatarUrl(), holder.imgAvatarSquare, new ImageLoadingListener() {
+                imageLoader.displayImage(user.getAvatarUrl(), holder.imgAvatar, new ImageLoadingListener() {
 
-                        @Override
-                        public void onLoadingStarted(String p1, View p2) {
-                            p2.setVisibility(View.INVISIBLE);
-                            //holder.mProgressBar.setVisibility(View.VISIBLE);
-                        }
+                    @Override
+                    public void onLoadingStarted(String p1, View p2) {
+                        //holder.mProgressBar.setVisibility(View.VISIBLE);
+                    }
 
-                        @Override
-                        public void onLoadingFailed(String p1, View p2, FailReason p3) {
-                            // holder.mProgressBar.setVisibility(View.INVISIBLE);
-                        }
+                    @Override
+                    public void onLoadingFailed(String p1, View p2, FailReason p3) {
+                        // holder.mProgressBar.setVisibility(View.INVISIBLE);
+                    }
 
-                        @Override
-                        public void onLoadingComplete(String p1, View p2, Bitmap p3) {
-                            p2.setVisibility(View.VISIBLE);
-                            // holder.mProgressBar.setVisibility(View.INVISIBLE);
-                        }
+                    @Override
+                    public void onLoadingComplete(String p1, View p2, Bitmap p3) {
+                        MaterialImageLoading.animate((ImageView) p2).setDuration(500).start();
+                        // holder.mProgressBar.setVisibility(View.INVISIBLE);
+                    }
 
-                        @Override
-                        public void onLoadingCancelled(String p1, View p2) {
+                    @Override
+                    public void onLoadingCancelled(String p1, View p2) {
 
-                        }
-                    });
-                }else {
-                    holder.imgAvatarSquare.setVisibility(View.GONE);
-                    imageLoader.displayImage(user.getAvatarUrl(), holder.imgAvatar, new ImageLoadingListener() {
-
-                        @Override
-                        public void onLoadingStarted(String p1, View p2) {
-                            p2.setVisibility(View.INVISIBLE);
-                            //holder.mProgressBar.setVisibility(View.VISIBLE);
-                        }
-
-                        @Override
-                        public void onLoadingFailed(String p1, View p2, FailReason p3) {
-                            // holder.mProgressBar.setVisibility(View.INVISIBLE);
-                        }
-
-                        @Override
-                        public void onLoadingComplete(String p1, View p2, Bitmap p3) {
-                            p2.setVisibility(View.VISIBLE);
-                            // holder.mProgressBar.setVisibility(View.INVISIBLE);
-                        }
-
-                        @Override
-                        public void onLoadingCancelled(String p1, View p2) {
-
-                        }
-                    });
-                }
-
+                    }
+                });
             }
             return convertView;
         }
@@ -264,7 +241,6 @@ public class QmsContactsList extends BaseLoaderListFragment {
         public class ViewHolder {
             //ImageView txtIsNew;
             ImageView imgAvatar;
-            ImageView imgAvatarSquare;
             TextView txtNick;
 
             TextView txtCount;
