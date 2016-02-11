@@ -164,21 +164,19 @@ public class QmsApi {
 
     public static ArrayList<QmsUser> parseQmsUsers(String pageBody) {
         ArrayList<QmsUser> res = new ArrayList<>();
-        Matcher m = Pattern.compile("<a class=\"list-group-item[^\"]*\"[^>]*?data-member-id=\"(\\d+)\"[^>]*?>([\\s\\S]*?)</a>", Pattern.CASE_INSENSITIVE).matcher(pageBody);
-        Pattern newMessagesCountPattern = Pattern.compile("<div class=\"bage[^\"]*\"[^>]*>\\s*?\\((\\d+)\\)", Pattern.CASE_INSENSITIVE);
-        Pattern userPattern = Pattern.compile("<img class=\"avatar\" src=\"([^\"]*)\" title=\"([^\"]*)\"[^>]*/>");
+        Matcher m = Pattern.compile("(<a class=\"list-group-item[^>]*=(\\d*)\">)[\\s\\S]*?src=\"([^\"]*)\" title=\"([^\"]*)\"[^>]*/>[\\s\\S]*?</a>", Pattern.CASE_INSENSITIVE).matcher(pageBody);
+        Pattern newMessagesCountPattern = Pattern.compile("count=\"(\\d+)\"", Pattern.CASE_INSENSITIVE);
+        Matcher countMatcher;
         while (m.find()) {
             QmsUser qmsUser = new QmsUser();
-            qmsUser.setId(m.group(1));
-            Matcher countMatcher = newMessagesCountPattern.matcher(m.group(2));
+            qmsUser.setId(m.group(2));
+            qmsUser.setAvatarUrl(m.group(3));
+            qmsUser.setNick(Html.fromHtml(m.group(4)).toString().trim());
+
+            countMatcher = newMessagesCountPattern.matcher(m.group(1));
             if (countMatcher.find()) {
                 qmsUser.setNewMessagesCount(countMatcher.group(1));
                 Log.d("MSG", "size " + countMatcher.group(1));
-            }
-            Matcher userMatcher = userPattern.matcher(m.group(2));
-            if (userMatcher.find()) {
-                qmsUser.setNick(Html.fromHtml(userMatcher.group(2)).toString().trim());
-                qmsUser.setAvatarUrl(userMatcher.group(1));
             }
 
             res.add(qmsUser);
@@ -188,54 +186,52 @@ public class QmsApi {
 
     public static QmsUserThemes getQmsUserThemes(IHttpClient httpClient, String mid,
                                                  ArrayList<QmsUser> outUsers, Boolean parseNick) throws Throwable {
-        String pageBody = httpClient.performGet("http://4pda.ru/forum/index.php?act=qms&mid=" + mid);
-
-        Document doc = Jsoup.parse(pageBody);
-
-        Elements threadElements = doc.select("div.threads-list a.list-group-item");
         QmsUserThemes res = new QmsUserThemes();
-        Pattern idPattern = Pattern.compile("(\\d+)");
+        String pageBody = httpClient.performGet("http://4pda.ru/forum/index.php?act=qms&mid=" + mid);
         Pattern newCountPattern = Pattern.compile("(.*?)\\((\\d+)\\s*/\\s*(\\d+)\\)\\s*$");
         Pattern countPattern = Pattern.compile("(.*?)\\((\\d+)\\)\\s*$");
-        for (Element threadElement : threadElements) {
-            QmsUserTheme item = new QmsUserTheme();
-            item.Id = threadElement.attr("data-thread-id");
-
+        Pattern strongPattern = Pattern.compile("<strong>([\\s\\S]*?)</strong>");
+        Matcher matcher = Pattern.compile("<div class=\"list-group\">([\\s\\S]*)<form [^>]*>([\\s\\S]*?)<\\/form>").matcher(pageBody);
+        if(matcher.find()){
+            outUsers.addAll(parseQmsUsers(matcher.group(1)));
+            matcher = Pattern.compile("<a class=\"list-group-item[^>]*-(\\d*)\">[\\s\\S]*?<div[^>]*>([\\s\\S]*?)<\\/div>([\\s\\S]*?)<\\/a>").matcher(matcher.group(2));
+            QmsUserTheme item;
             Matcher m;
-            Element el = threadElement.select("strong").first();
+            String info;
+            while (matcher.find()){
+                item = new QmsUserTheme();
+                item.Id = matcher.group(1);
+                item.Date = matcher.group(2);
 
-            if (el != null) {
-                String txt = el.text();
-                m = newCountPattern.matcher(txt);
-                if (m.find()) {
-                    item.Title = m.group(1);
-                    item.Count = m.group(2);
-                    item.NewCount = m.group(3);
-                } else
-                    item.Title = txt;
-            }else{
-                String txt = threadElement.ownText();
-                m = countPattern.matcher(txt);
-                if (m.find()) {
-                    item.Title = m.group(1);
-                    item.Count = m.group(2);
-                } else
-                    item.Title = txt;
+                info = matcher.group(3);
+                m = strongPattern.matcher(info);
+                if(m.find()){
+                    m = newCountPattern.matcher(m.group(1));
+                    if (m.find()) {
+                        item.Title = m.group(1).trim();
+                        item.Count = m.group(2);
+                        item.NewCount = m.group(3);
+                    } else
+                        item.Title = m.group(2).trim();
+                }else {
+                    m = countPattern.matcher(info);
+                    if (m.find()) {
+                        item.Title = m.group(1).trim();
+                        item.Count = m.group(2).trim();
+                    } else
+                        item.Title = info.trim();
+                }
+                res.add(item);
             }
-            el = threadElement.select("div.bage").first();
-            if(el!=null)
-                item.Date=el.text();
-            res.add(item);
+            if (parseNick) {
+                matcher = Pattern.compile("<div class=\"nav\">[\\s\\S]*?showuser[^>]*([\\s\\S]*?)<\\/a>[\\s\\S]*?<\\/div>").matcher(pageBody);
+                if(matcher.find()){
+                    res.Nick=matcher.group(1);
+                }
+            }
         }
 
-        outUsers.addAll(parseQmsUsers(pageBody));
-        if (parseNick) {
-            Element el=doc.select("div.navbar>div.nav a[href~=showuser=\\d+]").first();
-            if(el!=null){
-                res.Nick=el.text();
-            }
 
-        }
         return res;
     }
 
