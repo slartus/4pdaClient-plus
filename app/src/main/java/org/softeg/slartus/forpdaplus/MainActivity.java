@@ -21,6 +21,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuBuilder;
@@ -292,8 +293,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
     public void hidePopupWindows(){
         ((InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
-        for(TabItem item:App.getInstance().getTabItems())
-            ((GeneralFragment)item.getFragment()).hidePopupWindows();
+        ((GeneralFragment)getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag())).hidePopupWindows();
     }
     public View getToolbarShadow() {
         return toolbarShadow;
@@ -319,6 +319,21 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 mMainDrawerMenu.toggleOpenState();
         }
     };
+    private DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener() {
+        @Override
+        public void onDrawerSlide(View drawerView, float slideOffset) {}
+
+        @Override
+        public void onDrawerOpened(View drawerView) {
+            hidePopupWindows();
+        }
+
+        @Override
+        public void onDrawerClosed(View drawerView) {}
+
+        @Override
+        public void onDrawerStateChanged(int newState) {}
+    };
     public void animateHamburger(final boolean isArrow, final View.OnClickListener listener){
         if(toolbar==null) return;
         if(isArrow){
@@ -326,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             getmMainDrawerMenu().getDrawerLayout().setDrawerListener(getmMainDrawerMenu().getDrawerToggle());
         }else{
             if(listener!=null) toolbar.setNavigationOnClickListener(listener);
-            getmMainDrawerMenu().getDrawerLayout().setDrawerListener(null);
+            getmMainDrawerMenu().getDrawerLayout().setDrawerListener(drawerListener);
         }
         if(isArrow==lastHamburgerArrow) return;
 
