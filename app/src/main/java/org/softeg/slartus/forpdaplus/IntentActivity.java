@@ -151,7 +151,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
     public static Boolean tryShowNews(Activity context, String url, Boolean finish) {
         if (isNews(url)) {
-            MainActivity.addTab(url, NewsFragment.newInstance(context, url));
+            MainActivity.addTab(url, NewsFragment.newInstance(url));
             return true;
         }
         return false;
