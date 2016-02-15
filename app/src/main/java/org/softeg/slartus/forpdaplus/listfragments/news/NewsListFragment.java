@@ -314,9 +314,10 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         if (isRefresh) {
             mData.clear();
         }
-        for (News item : mLoadResultList) {
+        mData.addAll(mLoadResultList);
+        /*for (News item : mLoadResultList) {
             mData.add(item);
-        }
+        }*/
 
         mLoadResultList.clear();
     }
