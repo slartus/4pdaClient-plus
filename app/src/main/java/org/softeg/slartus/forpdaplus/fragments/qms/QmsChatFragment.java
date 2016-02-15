@@ -248,7 +248,7 @@ public class QmsChatFragment extends WebViewFragment {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            wvChat.loadDataWithBaseURL("\"file:///android_asset/\"", body, "text/html", "UTF-8", null);
+                            wvChat.loadDataWithBaseURL("file:///android_asset/", body, "text/html", "UTF-8", null);
                         }
                     });
                 }
@@ -548,7 +548,7 @@ public class QmsChatFragment extends WebViewFragment {
                     if (finalUpdateTitle)
                         setTitle(m_ThemeTitle);
                     setSubtitle(m_Nick);
-                    wvChat.loadDataWithBaseURL("\"file:///android_asset/\"", finalChatBody, "text/html", "UTF-8", null);
+                    wvChat.loadDataWithBaseURL("file:///android_asset/", finalChatBody, "text/html", "UTF-8", null);
                 } else {
                     if ("Такого диалога не существует.".equals(finalEx.getMessage())) {
                         new MaterialDialog.Builder(getMainActivity())
@@ -582,7 +582,7 @@ public class QmsChatFragment extends WebViewFragment {
         if (success) {
             edMessage.getText().clear();
 
-            wvChat.loadDataWithBaseURL("\"file:///android_asset/\"", chatBody, "text/html", "UTF-8", null);
+            wvChat.loadDataWithBaseURL("file:///android_asset/", chatBody, "text/html", "UTF-8", null);
         } else {
             if (ex != null)
                 AppLog.e(getMainActivity(), ex, new Runnable() {

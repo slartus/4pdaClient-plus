@@ -33,6 +33,7 @@ import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
+import org.softeg.slartus.forpdaplus.utils.HttpHelperForImage;
 
 import java.io.File;
 import java.io.IOException;
@@ -576,6 +577,7 @@ public class App extends android.app.Application {
                 .handler(new Handler())
                 .build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                .imageDownloader(new HttpHelperForImage(context))
                 .threadPoolSize(5)
                 .threadPriority(Thread.MIN_PRIORITY)
                 .denyCacheImageMultipleSizesInMemory()

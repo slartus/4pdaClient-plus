@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.controls.imageview;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.MenuItemCompat;
@@ -18,9 +19,21 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.dmitriy.tarasov.android.intents.IntentUtils;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -31,14 +44,13 @@ import org.softeg.slartus.forpdaplus.utils.SystemBarTintManager;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-import uk.co.senab.bitmapcache.CacheableBitmapDrawable;
+import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by isanechek on 24.01.16.
  */
 public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callback {
-    private static final String TAG = ImgViewer.class.getSimpleName();
     private static final int LAYOUT = R.layout.img_viewer;
     private static final String IMAGE_URLS_KEY = "IMAGE_URLS_KEY";
     private static final String SELECTED_INDEX_KEY = "SELECTED_INDEX_KEY";
@@ -52,7 +64,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     private final Handler mHideHandler = new Handler();
     private boolean mVisible;
     private PullBackLayout backLayout;
-    private ViewPager pager;
+    private HackyViewPager pager;
     private ImgAdapter adapter;
     private LinearLayout statusBar;
 
@@ -95,7 +107,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
         setContentView(LAYOUT);
 
         backLayout = ButterKnife.findById(ImgViewer.this, R.id.image_viewer_pullBack);
-        backLayout.setCallback(ImgViewer.this);
+        backLayout.setCallback(this);
 
         if (DevDbUtils.isKitKat()) {
             statusBar = ButterKnife.findById(ImgViewer.this, R.id.img_viewer_statusBar);
@@ -183,6 +195,13 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     @Override
     public void onPull(@PullBackLayout.Direction int direction, float progress) {
         //
+//        Animation animation = new AlphaAnimation(1, 0);
+//        animation.setInterpolator(new AccelerateInterpolator());
+//        animation.setStartOffset(1000);
+//        animation.setDuration(1000);
+//
+//        AnimationSet set = new AnimationSet(false);
+//        set.addAnimation(animation);
     }
 
     @Override
@@ -192,6 +211,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
 
     @Override
     public void onPullComplete(@PullBackLayout.Direction int direction) {
+        finish();
         overridePendingTransition(R.anim.activity_slide_up, R.anim.activity_slide_down);
     }
 
@@ -212,11 +232,25 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     class ImgAdapter extends PagerAdapter {
         SparseArray<View> views = new SparseArray<>();
         private LayoutInflater inflater;
-        private NetworkedCacheableImageView imageView;
         private LinearLayout progressBar;
+        private PhotoView photoView;
+        private ProgressBar progress;
+        private ImageLoader imageLoader;
+        private DisplayImageOptions options;
 
         public ImgAdapter() {
             this.inflater = LayoutInflater.from(ImgViewer.this);
+            imageLoader = ImageLoader.getInstance();
+
+            options = new DisplayImageOptions.Builder()
+                    .showImageOnFail(R.drawable.no_image)
+                    .resetViewBeforeLoading(true)
+                    .cacheOnDisk(true)
+                    .imageScaleType(ImageScaleType.EXACTLY)
+                    .bitmapConfig(Bitmap.Config.RGB_565)
+                    .considerExifParams(true)
+                    .displayer(new FadeInBitmapDisplayer(300))
+                    .build();
         }
 
         @Override
@@ -265,18 +299,37 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
 
         private void loadImage(View imageLayout) {
             assert imageLayout != null;
-            progressBar = ButterKnife.findById(imageLayout, R.id.progress);
-            progressBar.setVisibility(View.VISIBLE);
-            imageView = (NetworkedCacheableImageView) imageLayout.findViewById(R.id.pic);
-            PhotoViewAttacher img = new PhotoViewAttacher(imageView);
-            imageView.loadImage(urls.get(selectedIndex), true, new NetworkedCacheableImageView.OnImageLoadedListener() {
+            progress = ButterKnife.findById(imageLayout, R.id.progress);
+            photoView = ButterKnife.findById(imageLayout, R.id.photo_view);
+            imageLoader.displayImage(urls.get(selectedIndex), photoView, options, new SimpleImageLoadingListener() {
                 @Override
-                public void onImageLoaded(CacheableBitmapDrawable result) {
-                    progressBar.setVisibility(View.GONE);
-                    delayedHide(300);
+                public void onLoadingStarted(String imageUri, View view) {
+                    super.onLoadingStarted(imageUri, view);
                 }
-            }, 0, true);
-            img.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+
+                @Override
+                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                    super.onLoadingFailed(imageUri, view, failReason);
+                    progress.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    super.onLoadingComplete(imageUri, view, loadedImage);
+                    progress.setVisibility(View.INVISIBLE);
+                    delayedHide(1000);
+                    photoView.setVisibility(View.VISIBLE);
+                    MaterialImageLoading.animate(photoView).setDuration(1000).start();
+                }
+
+                @Override
+                public void onLoadingCancelled(String imageUri, View view) {
+                    super.onLoadingCancelled(imageUri, view);
+                    progress.setVisibility(View.INVISIBLE);
+                }
+            });
+
+            photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                 @Override
                 public void onPhotoTap(View view, float x, float y) {
                     toggle();

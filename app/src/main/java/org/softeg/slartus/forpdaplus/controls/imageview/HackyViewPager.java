@@ -25,23 +25,28 @@ public class HackyViewPager extends ViewPager {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return false;
-        //return super.onInterceptTouchEvent(ev);
-//        if (!isLocked) {
-//            try {
-//                return super.onInterceptTouchEvent(ev);
-//            } catch (IllegalArgumentException e) {
-//                e.printStackTrace();
-//                return false;
-//            }
-//        }
 //        return false;
+        //return super.onInterceptTouchEvent(ev);
+        if (!isLocked) {
+            try {
+                return super.onInterceptTouchEvent(ev);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return false;
-//       return super.onTouchEvent(event);
+
+        try {
+            return super.onTouchEvent(event);
+        } catch (Exception e) {
+            return false;
+        }
+
 //        if (!isLocked) {
 //            return super.onTouchEvent(event);
 //        }

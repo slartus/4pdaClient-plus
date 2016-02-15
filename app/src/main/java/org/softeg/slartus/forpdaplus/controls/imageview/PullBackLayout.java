@@ -23,7 +23,6 @@
  */
 
 package org.softeg.slartus.forpdaplus.controls.imageview;
-
 import android.content.Context;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
@@ -105,9 +104,8 @@ public class PullBackLayout extends FrameLayout {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         try {
-            return super.onInterceptTouchEvent(ev);
+            return dragger.shouldInterceptTouchEvent(ev);
         } catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -118,7 +116,6 @@ public class PullBackLayout extends FrameLayout {
             dragger.processTouchEvent(event);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -161,7 +158,7 @@ public class PullBackLayout extends FrameLayout {
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef(value = {DIRECTION_UP, DIRECTION_DOWN}, flag = true)
-    @interface Direction {
+    public @interface Direction {
     }
 
     public interface Callback {
