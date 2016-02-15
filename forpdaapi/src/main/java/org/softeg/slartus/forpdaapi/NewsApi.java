@@ -31,12 +31,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 public class NewsApi {
     public static Boolean like(IHttpClient httpClient, String newsId) throws IOException {
-        String res = httpClient.performGet("http://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=0&v=1", false);
+        String res = httpClient.performGet("http://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=0&v=1", false, false);
         return res != null;
     }
 
     public static Boolean likeComment(IHttpClient httpClient, String newsId, String postId) throws IOException {
-        String res = httpClient.performGet("http://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=" + postId + "&v=1", false);
+        String res = httpClient.performGet("http://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=" + postId + "&v=1", false, false);
         return res != null;
     }
 

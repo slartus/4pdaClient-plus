@@ -427,7 +427,6 @@ super();
             else if (!result) {
                 onFailureResult();
             }
-            new CheckTask().execute();
         }
 
         @Override
@@ -441,36 +440,6 @@ super();
             if (onCancelAction != null)
                 onCancelAction.run();
         }
-    }
-
-    public class CheckTask extends AsyncTask<Boolean, Void, Boolean> {
-        private Throwable mEx;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected Boolean doInBackground(Boolean[] p1) {
-            try {
-                Client.getInstance().loadTestPage();
-                return true;
-            } catch (Throwable e) {
-                mEx = e;
-            }
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-
-            if (mEx != null)
-                Toast.makeText(getContext(), AppLog.getLocalizedMessage(mEx, "Ошибка проверки qms"), Toast.LENGTH_SHORT).show();
-        }
-
     }
 
     public class LoadCacheTask extends AsyncTask<Boolean, Void, Boolean> {

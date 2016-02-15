@@ -19,7 +19,7 @@ public interface IHttpClient {
      */
     String performGetWithCheckLogin(String s, OnProgressChangedListener beforeGetPage, OnProgressChangedListener afterGetPage) throws IOException;
 
-    String performGet(String s, Boolean checkEmptyResult) throws IOException;
+    String performGet(String s, Boolean checkEmptyResult, Boolean checkLoginAndMails) throws IOException;
 
     String performGet(String s) throws IOException;
 

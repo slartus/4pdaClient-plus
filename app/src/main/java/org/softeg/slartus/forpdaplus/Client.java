@@ -191,14 +191,14 @@ public class Client implements IHttpClient {
         if (beforeGetPage != null)
             afterGetPage.onProgressChanged("Получение данных...");
 
-        Matcher headerMatcher = PatternExtensions.compile("<body>([\\s\\S]*?)globalmess").matcher(body);
+        /*Matcher headerMatcher = PatternExtensions.compile("<body>([\\s\\S]*?)globalmess").matcher(body);
         if (headerMatcher.find()) {
             checkLogin(headerMatcher.group(1));
             checkMails(headerMatcher.group(1));
         } else {
             checkLogin(body);
             checkMails(body);
-        }
+        }*/
         return body;
     }
 
@@ -230,10 +230,10 @@ public class Client implements IHttpClient {
     }
 
     public String performGet(String s) throws IOException {
-        return performGet(s, true);
+        return performGet(s, true, true);
     }
 
-    public String performGet(String s, Boolean checkEmptyResult) throws IOException {
+    public String performGet(String s, Boolean checkEmptyResult, Boolean checkLoginAndMails) throws IOException {
 
         HttpHelper httpHelper = new HttpHelper();
         String res = null;
@@ -246,6 +246,13 @@ public class Client implements IHttpClient {
         }
         if (checkEmptyResult && TextUtils.isEmpty(res))
             throw new NotReportException("Сервер вернул пустую страницу");
+        else if(checkLoginAndMails){
+            Log.e("kek", "start kushat' govnetso");
+            checkLogin(res);
+            if(!s.contains("xhr"))
+                checkMails(res);
+            Log.e("kek", "end kushat' govnetso");
+        }
         // m_HttpHelper.close();
         return res;
     }
@@ -461,7 +468,7 @@ public class Client implements IHttpClient {
                     return null;
                 }
 
-                public String performGet(String s, Boolean b) throws IOException {
+                public String performGet(String s, Boolean b, Boolean bb) throws IOException {
                     return null;
                 }
 
@@ -673,6 +680,7 @@ public class Client implements IHttpClient {
 
     public void checkMails(String pageBody) {
         m_QmsCount = QmsApi.getNewQmsCount(pageBody);
+        Log.e("kek", m_QmsCount+" QMS COUNT BLEAT'");
 
         doOnMailListener();
     }
@@ -705,14 +713,14 @@ public class Client implements IHttpClient {
         String body = performGet(url);
         doOnOnProgressChanged(progressChangedListener, "Обработка данных...");
 
-        Matcher headerMatcher = PatternExtensions.compile("<body>([\\s\\S]*?)globalmess").matcher(body);
+        /*Matcher headerMatcher = PatternExtensions.compile("<body>([\\s\\S]*?)globalmess").matcher(body);
         if (headerMatcher.find()) {
             checkLogin(headerMatcher.group(1));
             checkMails(headerMatcher.group(1));
         } else {
             checkLogin(body);
             checkMails(body);
-        }
+        }*/
         return body;
     }
 

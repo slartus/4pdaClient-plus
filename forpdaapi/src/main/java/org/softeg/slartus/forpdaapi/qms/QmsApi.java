@@ -236,7 +236,7 @@ public class QmsApi {
     }
 
     public static int getNewQmsCount(String pageBody) {
-        final Pattern qms_2_0_Pattern = PatternExtensions.compile("id=\"events-count\">Сообщений:\\s+(\\d+)</a>");
+        final Pattern qms_2_0_Pattern = PatternExtensions.compile("id=\"events-count\"[^>]*>[^\\d]*?(\\d+)<");
         Matcher m = qms_2_0_Pattern.matcher(pageBody);
         if (m.find()) {
             return Integer.parseInt(m.group(1));
