@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaapi.qms;
 
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.jsoup.Jsoup;
@@ -156,28 +157,23 @@ public class QmsApi {
     }
 
     public static ArrayList<QmsUser> getQmsSubscribers(IHttpClient httpClient) throws Throwable {
-        //String pageBody = httpClient.performGet("http://4pda.ru/forum/index.php?&act=qms");
         String pageBody = httpClient.performGet("http://4pda.ru/forum/index.php?&act=qms-xhr&action=userlist");
-
         return parseQmsUsers(pageBody);
     }
 
     public static ArrayList<QmsUser> parseQmsUsers(String pageBody) {
         ArrayList<QmsUser> res = new ArrayList<>();
-        Matcher m = Pattern.compile("(<a class=\"list-group-item[^>]*=(\\d*)\">)[\\s\\S]*?src=\"([^\"]*)\" title=\"([^\"]*)\"[^>]*/>[\\s\\S]*?</a>", Pattern.CASE_INSENSITIVE).matcher(pageBody);
-        Pattern newMessagesCountPattern = Pattern.compile("count=\"(\\d+)\"", Pattern.CASE_INSENSITIVE);
-        Matcher countMatcher;
+        Matcher m = Pattern.compile("<a class=\"list-group-item[^>]*=(\\d*)\">[^<]*<div class=\"bage\">([^<]*)[\\s\\S]*?src=\"([^\"]*)\" title=\"([^\"]*)\"", Pattern.CASE_INSENSITIVE).matcher(pageBody);
+        String count;
+        QmsUser qmsUser;
         while (m.find()) {
-            QmsUser qmsUser = new QmsUser();
-            qmsUser.setId(m.group(2));
+            qmsUser = new QmsUser();
+            qmsUser.setId(m.group(1));
             qmsUser.setAvatarUrl(m.group(3));
             qmsUser.setNick(Html.fromHtml(m.group(4)).toString().trim());
-
-            countMatcher = newMessagesCountPattern.matcher(m.group(1));
-            if (countMatcher.find()) {
-                qmsUser.setNewMessagesCount(countMatcher.group(1));
-                Log.d("MSG", "size " + countMatcher.group(1));
-            }
+            count = m.group(2).trim();
+            if(!count.equals(""))
+                qmsUser.setNewMessagesCount(count.replace("(", "").replace(")", ""));
 
             res.add(qmsUser);
         }

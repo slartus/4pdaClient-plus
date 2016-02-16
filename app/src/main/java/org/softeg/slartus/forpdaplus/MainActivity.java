@@ -258,6 +258,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MainActivity.REQUEST_WRITE_STORAGE);
 
+            users.add("2527270");//Dj_GraFlY
             users.add("4415042");//alex_shadow2014
             users.add("2848060");//pirog-
             users.add("691140");//74dimon
@@ -293,7 +294,9 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
     public void hidePopupWindows(){
         ((InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
-        ((GeneralFragment)getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag())).hidePopupWindows();
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
+        if(fragment!=null)
+            ((GeneralFragment)fragment).hidePopupWindows();
     }
     public View getToolbarShadow() {
         return toolbarShadow;

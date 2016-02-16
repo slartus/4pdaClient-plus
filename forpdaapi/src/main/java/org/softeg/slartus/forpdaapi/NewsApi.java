@@ -80,7 +80,7 @@ public class NewsApi {
         String dailyNewsPage = httpClient.performGet(UrlExtensions.removeDoubleSplitters(requestUrl));
         
         Pattern articlesPattern = Pattern.compile("(<article class=\"post\"[^>]*>[\\s\\S]*?href=\"([^\"]*)\" title=\"([^\"]*)\">[\\s\\S]*?src=\"([^\"]*)[\\s\\S]*?<\\/article>)");
-        Pattern descriptionPattern = Pattern.compile("<div itemprop=\"description\"><p [^>]*>([^<]*)");
+        Pattern descriptionPattern = Pattern.compile("<div itemprop=\"description\"><p [^>]*>(.*)<\\/p>[^<]*");
         Pattern labelPattern = Pattern.compile("<a href=\"([^\"]*)\" class=\"label[^>]*>([\\s\\S]*?)<\\/a>");
         Pattern countPattern = Pattern.compile("class=\"v-count\"[^>]*>(\\d*)</a>");
         Pattern datePattern = Pattern.compile("<em class=\"date\">([\\s\\S]*?)</em>");
@@ -100,7 +100,7 @@ public class NewsApi {
             news.setImgUrl(m.group(4));
             matcher = descriptionPattern.matcher(article);
             if(matcher.find()){
-                news.setDescription(matcher.group(1));
+                news.setDescription(matcher.group(1).replaceAll("<a [^>]*>([^<]*)</a>", "$1"));
             }
 
             matcher = labelPattern.matcher(article);
