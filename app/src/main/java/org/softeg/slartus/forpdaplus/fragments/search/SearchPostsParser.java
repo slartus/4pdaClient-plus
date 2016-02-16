@@ -3,10 +3,12 @@ package org.softeg.slartus.forpdaplus.fragments.search;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
@@ -41,27 +43,87 @@ public class SearchPostsParser extends HtmlBuilder {
     public SearchResult searchResult;
 
     public String parse(String body) throws MessageInfoException, NotReportException {
-
-
+        int posts = 0;
+        Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(App.getInstance());
         searchResult = createSearchResult(body);
-
-
         beginHtml("Результаты поиска");
-
         beginTopic(searchResult);
 
         m_Body.append("<div class=\"posts_list search-results\">");
-        Document doc = Jsoup.parse(body, "http://4pda.ru");
-        Elements postsElements = doc.select("div[data-post]");
-        if(postsElements.size()==0){
+
+        final Pattern titlePattern = Pattern.compile("<div class=\"maintitle\">(.*)<\\/div>");
+        final Pattern postPattern = Pattern.compile("<table[^>]*>([\\s\\S]*)<\\/table>");
+        final Pattern userPattern = Pattern.compile("<span class=\"normalname\"><a href=\"([^\"]*)\">(.*)<\\/a>");
+        final Pattern datePattern = Pattern.compile("<td[^<]*<img[^>]*>([^<]*)");
+        final Pattern onlinePattern = Pattern.compile("<font color=\".*?\">([^<]*?)<\\/font>");
+        final Pattern postBodyPattern = Pattern.compile("(<div class=\"postcolor[\\s\\S]*?<\\/div>)<\\/td>[^<]");
+        final Pattern footerPattern = Pattern.compile("<td class=\"row2\"><\\/td>[^>]*>([\\s\\S]*?<\\/div>)[^<]");
+
+        Matcher postMatcher;
+        Matcher matcher;
+
+        String userId = null;
+        String userName = null;
+        String user;
+        String dateTime = null;
+        String userState = null;
+
+        Matcher postsMatcher = Pattern.compile("(<div class=\"borderwrap\" data-post=\"[^>]*>[\\s\\S]*?<\\/table>[^<]*<\\/div>)<br").matcher(body);
+        while (postsMatcher.find()){
+            m_Body.append("<div class=\"post_container\">");
+
+            postMatcher = titlePattern.matcher(postsMatcher.group(1));
+            if(postMatcher.find()){
+                m_Body.append("<div class=\"topic_title_post\">").append(postMatcher.group(1)).append("</div>\n");
+            }
+
+            postMatcher = postPattern.matcher(postsMatcher.group(1));
+
+            if(postMatcher.find()) {
+                matcher = userPattern.matcher(postMatcher.group(1));
+                if(matcher.find()){
+                    Uri uri = Uri.parse(matcher.group(1));
+                    userId = uri.getQueryParameter("showuser");
+                    userName = matcher.group(2);
+                }
+
+                matcher = datePattern.matcher(postMatcher.group(1));
+                if(matcher.find())
+                    dateTime = matcher.group(1).trim();
+
+                matcher = onlinePattern.matcher(postMatcher.group(1));
+                if (matcher.find())
+                    userState = "[online]".equals(matcher.group(1)) ? "online" : "";
+
+                user = "<a class=\"s_inf nick " + userState + "\" "+TopicBodyBuilder.getHtmlout(isWebviewAllowJavascriptInterface, "showUserMenu", userId, userName)+"><span>"+userName+"</span></a>";
+                m_Body.append("<div class=\"post_header\">").append(user).append("<div class=\"s_inf date\"><span>").append(dateTime).append("</span></div></div>");
+
+                matcher = postBodyPattern.matcher(postMatcher.group(1));
+                if(matcher.find()){
+                    if (m_SpoilerByButton) {
+                        String find = "(<div class='hidetop' style='cursor:pointer;' )" +
+                                "(onclick=\"var _n=this.parentNode.getElementsByTagName\\('div'\\)\\[1\\];if\\(_n.style.display=='none'\\)\\{_n.style.display='';\\}else\\{_n.style.display='none';\\}\">)" +
+                                "(Спойлер \\(\\+/-\\).*?</div>)" +
+                                "(\\s*<div class='hidemain' style=\"display:none\">)";
+                        String replace = "$1>$3<input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility\\(this\\)\"/>$4";
+                        m_Body.append("<div class=\"post_body emoticons\">").append(Post.modifyBody(matcher.group(1), m_EmoticsDict, true).replaceAll(find, replace)).append("</div>");
+                    }else {
+                        m_Body.append("<div class=\"post_body emoticons\">").append(Post.modifyBody(matcher.group(1), m_EmoticsDict, true)).append("</div>");
+                    }
+                }
+
+                matcher = footerPattern.matcher(postMatcher.group(1));
+                if(matcher.find())
+                    m_Body.append("<div class=\"s_post_footer\"><table width=\"100%%\"><tr><td>").append(Post.modifyBody(matcher.group(1), m_EmoticsDict, true)).append("</td></tr></table></div></div><div class=\"between_messages\"></div>");
+
+            }
+            posts++;
+        }
+        if(posts==0){
             m_Body.append("<div class=\"bad-search-result\">\n" +
                     "\t<h3>Поиск не дал результатов</h3>\n" +
                     "\t<span>Попробуйте сформулировать свой запрос иначе</span>\n" +
                     "</div>");
-        }else {
-            for (Element element : postsElements) {
-                m_Body.append(parsePost(element));
-            }
         }
         m_Body.append("</div>");
         endTopic(searchResult);
@@ -73,6 +135,8 @@ public class SearchPostsParser extends HtmlBuilder {
 
         final Pattern pagesCountPattern = Pattern.compile("var pages = parseInt\\((\\d+)\\);");
         // http://4pda.ru/forum/index.php?act=search&source=all&result=posts&sort=rel&subforums=1&query=pda&forums=281&st=90
+        //final Pattern paginationPattern = Pattern.compile("<div class=\"pagination\">([\\s\\S]*?)<\\/div><\\/div><br");
+
         final Pattern lastPageStartPattern = Pattern.compile("(http://4pda.ru)?/forum/index.php\\?act=search.*?st=(\\d+)");
         final Pattern currentPagePattern = Pattern.compile("<span class=\"pagecurrent\">(\\d+)</span>");
 
@@ -120,80 +184,4 @@ public class SearchPostsParser extends HtmlBuilder {
         endBody();
         endHtml();
     }
-
-
-
-    private String parsePost(Element element) {
-        Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(App.getInstance());
-
-        String topic = null;
-        String userId = null;
-        String userName = null;
-        String user;
-        String dateTime;
-        String userState = null;
-        String post;
-        String postFooter;
-        Element el = element.select("div.maintitle").first();
-        if (el != null)
-            topic = el.html();
-
-        el = element.select("table.ipbtable>tbody").first();
-        if (el != null) {
-            Elements trElements = el.children();
-
-            Element trElement = trElements.get(0);
-            Elements tdElements = trElement.children();
-
-            Element tdElement = tdElements.get(0);
-            el = tdElement.select("a[href~=showuser=\\d+]").first();
-            if (el != null) {
-                Uri uri = Uri.parse(el.attr("href"));
-                userId = uri.getQueryParameter("showuser");
-                userName = el.text();
-            }
-            tdElement = tdElements.get(1);
-            dateTime = tdElement.text();
-
-            trElement = trElements.get(1);
-            tdElements = trElement.children();
-            tdElement = tdElements.get(0);
-            el = tdElement.select("span.postdetails font[color]:matches(\\[(online|offline)\\])").first();
-            if (el != null)
-                userState = "[online]".equals(el.text()) ? "online" : "";
-
-            user = "<a class=\"s_inf nick " + userState + "\" "+TopicBodyBuilder.getHtmlout(isWebviewAllowJavascriptInterface, "showUserMenu", userId, userName)+"><span>"+userName+"</span></a>";
-
-            tdElement = tdElements.get(1);
-            post = Post.modifyBody(tdElement.html(), m_EmoticsDict, true).replace("<br /><br />--------------------<br />", "");
-            if (m_SpoilerByButton) {
-                String find = "(<div class='hidetop' style='cursor:pointer;' )" +
-                        "(onclick=\"var _n=this.parentNode.getElementsByTagName\\('div'\\)\\[1\\];if\\(_n.style.display=='none'\\)\\{_n.style.display='';\\}else\\{_n.style.display='none';\\}\">)" +
-                        "(Спойлер \\(\\+/-\\).*?</div>)" +
-                        "(\\s*<div class='hidemain' style=\"display:none\">)";
-                String replace = "$1>$3<input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility\\(this\\)\"/>$4";
-                post = post.replaceAll(find, replace);
-            }
-            postFooter = Post.modifyBody(trElements.get(2).children().get(1).html(), m_EmoticsDict, true);
-
-            String POST_TEMPLATE = "<div class=\"post_container\">\n" +
-                    "<div class=\"topic_title_post\">%1s</div>\n" +
-                    "<div class=\"post_header\">\n" +
-                    "\t\t%2s\n" +
-                    "\t<div class=\"s_inf date\"><span>%3s</span></div>\n" +
-                    "\n" +
-                    "</div>" +
-                    "<div class=\"post_body emoticons\">%4s</div>" +
-                    "<div class=\"s_post_footer\"><table width=\"100%%\"><tr><td>%5s</td></tr></table></div></div><div class=\"between_messages\"></div>";
-            return String.format(POST_TEMPLATE, topic, user, dateTime, post, postFooter);
-        }
-
-
-        return "";
-
-        //Post.modifyBody(postMatcher.group(8));
-
-    }
-
-
 }

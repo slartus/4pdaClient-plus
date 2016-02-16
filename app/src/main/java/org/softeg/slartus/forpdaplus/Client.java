@@ -247,11 +247,9 @@ public class Client implements IHttpClient {
         if (checkEmptyResult && TextUtils.isEmpty(res))
             throw new NotReportException("Сервер вернул пустую страницу");
         else if(checkLoginAndMails){
-            Log.e("kek", "start kushat' govnetso");
             checkLogin(res);
             if(!s.contains("xhr"))
                 checkMails(res);
-            Log.e("kek", "end kushat' govnetso");
         }
         // m_HttpHelper.close();
         return res;
@@ -680,8 +678,6 @@ public class Client implements IHttpClient {
 
     public void checkMails(String pageBody) {
         m_QmsCount = QmsApi.getNewQmsCount(pageBody);
-        Log.e("kek", m_QmsCount+" QMS COUNT BLEAT'");
-
         doOnMailListener();
     }
 
