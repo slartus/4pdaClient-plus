@@ -36,7 +36,7 @@ public class Client implements IHttpClient {
     }
 
     @Override
-    public String performGet(String s, Boolean checkEmptyResult) throws IOException {
+    public String performGet(String s, Boolean checkEmptyResult, Boolean checkLoginAndMails) throws IOException {
         return performGet(s);
     }
 

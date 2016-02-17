@@ -23,7 +23,8 @@ HTML body a {
   cursor: pointer;
 }
 HTML body#qms,
-HTML body#news {
+HTML body#news,
+HTML body#profile {
   background-color: #f2f2f2;
 }
 /*
@@ -2118,87 +2119,121 @@ h3 a {
 /*
 *	PROFILE
 */
+#profile {
+  padding: 0;
+}
+@media screen and (max-width: 480px) {
+  #profile .user-profile-list > li {
+    margin: 0.5rem 0;
+    border-left: none;
+    border-right: none;
+  }
+}
 #profile .user-profile-list {
   display: block;
-  margin: 0 auto;
-  padding: 0;
   max-width: 800px;
+  font-size: 1rem;
+  line-height: 1.4em;
   text-align: left;
   list-style-type: none;
+  margin: 0 auto;
+  padding: 0;
 }
 #profile .user-profile-list .margin-block {
   visibility: hidden;
 }
 #profile .user-profile-list > li {
   display: block;
-  padding: 0.7rem;
-  margin: 0.7rem 0;
+  padding: 0.75rem;
+  margin: 0.5rem;
   overflow: hidden;
   border: 1px solid #d9d9d9;
   background: white;
 }
-#profile .user-profile-list > li a {
-  color: #004fb3;
-  text-decoration: none;
-}
-#profile .user-profile-list > li a[title="Изменить данные о себе"] {
-  float: right;
-  display: inline-block;
-  margin: 0;
-  padding: 0.5rem;
-  font-weight: bold;
-  color: #004fb3;
-  text-transform: uppercase;
-}
 #profile .user-profile-list > li .user-box {
   display: block;
-  margin: 0 0 0.7rem;
-  padding: 0 0 0.7rem;
   text-align: center;
+  margin: -0.75rem -0.75rem 1rem;
+  padding: 0.75rem;
   border-bottom: 1px solid #d9d9d9;
-  background: white;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 #profile .user-profile-list > li .user-box .photo {
   padding: 0;
-  margin: 0;
+  margin: 0 0 0.5rem;
 }
 #profile .user-profile-list > li .user-box .photo .img {
   display: inline-block;
-  width: 5.5rem;
-  height: 5.5rem;
-  border-radius: 0.2rem;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 0.125rem;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
+}
+#profile .user-profile-list > li .user-box .photo .img.circle {
+  border-radius: 10rem;
+  overflow: hidden;
 }
 #profile .user-profile-list > li .user-box h1 {
   display: block;
   font-size: 1.5rem;
   margin: 0;
-  line-height: 1.4em;
 }
 #profile .user-profile-list > li .user-box h2 {
   display: block;
   font-size: 1rem;
-  font-weight: normal;
   margin: 0;
-  line-height: 1.4em;
 }
 #profile .user-profile-list > li .user-box h2 span {
+  display: block;
   font-size: 1em;
   font-weight: normal;
+}
+#profile .user-profile-list > li .u-note {
+  margin-top: 0.7rem;
+}
+#profile .user-profile-list > li .profile-edit-links {
+  margin-top: 1rem;
+}
+#profile .user-profile-list > li .profile-edit-links .col {
+  display: inline-block;
+  margin-right: -3px;
+  width: 50%;
+  vertical-align: middle;
+}
+#profile .user-profile-list > li .profile-edit-links .col + .col {
+  text-align: right;
+}
+#profile .user-profile-list > li .profile-edit-links .col a {
+  display: inline-block;
+  padding: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  color: #004fb3;
 }
 #profile .user-profile-list .info-list.black-link {
   list-style-type: none;
   padding: 0;
 }
+#profile .user-profile-list .info-list.black-link li {
+  display: block;
+  padding: 0;
+}
 #profile .user-profile-list .info-list.black-link .title {
   font-weight: bold;
+  vertical-align: middle;
 }
 #profile .user-profile-list .info-list.black-link .area {
   display: inline-block;
+  margin: 0;
+  vertical-align: middle;
 }
 #profile .user-profile-list .info-list.black-link .area a {
+  display: inline-block;
   font-weight: bold;
 }
 #profile .user-profile-list .info-list.black-link[id*="device-list"] {
@@ -2223,8 +2258,6 @@ h3 a {
 }
 #profile .user-profile-list .info-list.black-link[id*="device-list"] li span {
   position: relative;
-  height: 1.4rem;
-  line-height: 1.4rem;
   text-align: center;
 }
 #profile .user-profile-list .info-list.black-link[id*="device-list"] li span[style="float:right;overflow:hidden;margin:.15em 0"] {
@@ -2258,283 +2291,157 @@ h3 a {
   position: absolute;
   width: 100%;
   height: 100%;
-  font-size: 1rem;
 }
 #profile .user-profile-list .info-list.black-link[id*="device-list"] li span label input[type="radio"] + i {
-  content: '';
   display: inline-block;
-  height: 1rem;
-  width: 1rem;
-  margin-right: 1rem;
+  height: 1em;
+  width: 1em;
   vertical-align: middle;
-  border-radius: 1rem;
-  border: 0.1rem solid #999999;
-  transition: 0.2s ease-out;
+  border-radius: 1em;
+  border: 0.125rem solid #808080;
+  transition: all 0.25s;
   overflow: hidden;
-  -webkit-box-shadow: inset 0 0 0 2rem #e8e8e8;
+  background: white;
+  -webkit-box-shadow: inset 0 0 0 1rem white;
 }
 #profile .user-profile-list .info-list.black-link[id*="device-list"] li span label input[type="radio"]:checked + i {
-  background: grey;
-  border: 0.1rem solid #999999;
-  -webkit-box-shadow: inset 0 0 0 0.2rem #e8e8e8;
+  background: #004fb3;
+  border: 0.125rem solid #004fb3;
+  -webkit-box-shadow: inset 0 0 0 0.2rem white;
 }
-#profile .user-profile-list .u-note {
+#profile .user-profile-list li > DIV {
+  overflow: hidden;
+}
+#profile .user-profile-list li .heading {
   position: relative;
-  display: block;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid #d9d9d9;
-}
-#profile .user-profile-list .u-note:before {
-  content: 'подпись';
-  display: inline-block;
-  position: absolute;
-  top: -0.8rem;
-  left: 50%;
-  margin-left: -1rem;
-  color: #808080;
-  padding: 0 0.5rem;
-  background: white;
-}
-#profile li .heading {
-  position: relative;
-  padding: 0.2rem 0.2rem 0.7rem;
+  padding: 0.2rem;
   margin: 0 0 1rem;
   overflow: hidden;
-  border-bottom: 1px solid #d9d9d9;
 }
-#profile li .heading .ico {
+#profile .user-profile-list li .heading .ico {
   float: left;
   margin-right: 1rem;
 }
-#profile li .heading .ico i {
+#profile .user-profile-list li .heading .ico i {
   display: inline-block;
 }
-#profile li .heading .ico i:before {
+#profile .user-profile-list li .heading .ico i:before {
   display: inline-block;
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   color: #999999 !important;
 }
-#profile li .heading h2 {
+#profile .user-profile-list li .heading h2 {
   display: inline-block;
   margin: 0;
   padding: 0;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
 }
-#profile li h3 {
+#profile .user-profile-list li h3 {
   display: block;
   text-align: left;
 }
-#profile li .contact-social .social-link {
+#profile .user-profile-list li .contact-social .social-link {
   list-style-type: none;
   padding: 0;
   margin-left: -0.5rem;
 }
-#profile li .contact-social .social-link li {
+#profile .user-profile-list li .contact-social .social-link li {
   display: inline-block;
-  line-height: 1.4rem;
   padding: 0.5rem;
 }
-#profile li .statistic-box .col {
-  float: left;
-  width: 49%;
+#profile .user-profile-list li .statistic-box .col {
+  display: inline-block;
+  width: 50%;
+  min-width: 9rem;
+  margin-right: -3px;
 }
-#profile li .statistic-box .col h3 {
+#profile .user-profile-list li .statistic-box .col h3 {
   margin: 0 0 0.7rem;
   padding: 0;
 }
-#profile li .statistic-box .col ul {
+#profile .user-profile-list li .statistic-box .col ul {
   list-style-type: none;
   padding: 0;
 }
-#profile li .statistic-box .col ul li .title {
+#profile .user-profile-list li .statistic-box .col ul li .title {
+  margin: 0;
   margin-right: 0.3rem;
+  vertical-align: middle;
 }
-#profile li .statistic-box .col ul li .area {
+#profile .user-profile-list li .statistic-box .col ul li .area {
   display: inline-block;
   font-weight: bold;
+  vertical-align: middle;
 }
-#profile li .statistic-box .col ul li .area A[title="Просмотреть репутацию"] {
+#profile .user-profile-list li .statistic-box .col ul li .area A[title="Просмотреть репутацию"] {
   margin: 0;
 }
-#profile li .statistic-box .col ul li .area .warn-btn strong {
+#profile .user-profile-list li .statistic-box .col ul li .area .warn-btn strong {
   display: inline-block;
   margin: 0;
-  width: 1rem;
-  height: 1rem;
-  line-height: 1rem;
+  width: 1em;
+  height: 1em;
+  line-height: 1em;
   text-align: center;
   color: white;
+  border-radius: 0.125rem;
 }
-#profile li .statistic-box .col ul li .area .warn-btn[title="Опустить репутацию"] strong {
+#profile .user-profile-list li .statistic-box .col ul li .area .warn-btn[title="Опустить репутацию"] strong {
   background: #fb6a6a;
 }
-#profile li .statistic-box .col ul li .area .warn-btn[title="Поднять репутацию"] strong {
+#profile .user-profile-list li .statistic-box .col ul li .area .warn-btn[title="Поднять репутацию"] strong {
   background: #1ca11c;
 }
-#profile .no-min-size .alert-log-list {
+#profile .user-profile-list li .profile-textarea {
+  width: 96% !important;
+  padding: 2%;
+  color: black;
+  border: none;
+  background: white;
+}
+#profile .user-profile-list li .profile-textarea:focus {
+  outline: 1px solid #004fb3;
+}
+#profile .user-profile-list .no-min-size .alert-log-list {
   list-style-type: none;
   padding: 0;
 }
-#profile .no-min-size .alert-log-list li:last-child {
+#profile .user-profile-list .no-min-size .alert-log-list li:last-child {
   border: none;
   padding-bottom: 0;
   margin-bottom: 0;
 }
-#profile .no-min-size .alert-log-list .wlog-pos,
-#profile .no-min-size .alert-log-list .wlog-neg {
-  padding-bottom: 0.7rem;
-  margin-bottom: 0.7rem;
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-pos,
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-neg {
+  padding-bottom: 0.1rem;
+  margin-bottom: 0.1rem;
 }
-#profile .no-min-size .alert-log-list .wlog-pos .a-heading,
-#profile .no-min-size .alert-log-list .wlog-neg .a-heading {
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-pos .a-heading,
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-neg .a-heading {
   position: relative;
 }
-#profile .no-min-size .alert-log-list .wlog-pos .a-heading h4,
-#profile .no-min-size .alert-log-list .wlog-neg .a-heading h4 {
-  margin: 0 0 0.7rem;
-  line-height: 1.4rem;
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-pos .a-heading h4,
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-neg .a-heading h4 {
+  margin: 0 0 0.1rem;
 }
-#profile .no-min-size .alert-log-list .wlog-pos .a-heading span,
-#profile .no-min-size .alert-log-list .wlog-neg .a-heading span {
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-pos .a-heading span,
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-neg .a-heading span {
   position: absolute;
   right: 0;
   top: 0;
-  font-size: 0.8rem;
-  line-height: 1.4rem;
+  font-size: 0.875rem;
   color: #666666;
 }
-#profile .no-min-size .alert-log-list .wlog-pos .a-content .post-link,
-#profile .no-min-size .alert-log-list .wlog-neg .a-content .post-link {
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-pos .a-content .post-link,
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-neg .a-content .post-link {
   margin-top: 0.7rem;
-}
-/*
-*	EDIT PROFILE
-*/
-#edit_profile {
-  margin: 0;
-  padding: 0.4rem;
-  background: white;
-}
-#edit_profile form {
-  display: block;
-  padding: 1rem 0 0.5rem;
-  border: 1px solid #2982cb;
-  background: #f2f8ff;
-}
-#edit_profile form .field {
-  display: block;
-  margin: 0.5rem 0.5rem 1.5rem;
-  padding: 0.5rem;
-  border: 2px groove #bbb;
-}
-#edit_profile form .field ~ .filed {
-  margin-bottom: 0.5rem;
-}
-#edit_profile form .field [type="hidden"] {
-  display: none;
-}
-#edit_profile form .field ~ br {
-  display: none;
-}
-#edit_profile form .field h2 {
-  display: block;
-  margin: -1.4rem 0 0.5rem;
-  color: black;
-}
-#edit_profile form .field h2 strong {
-  display: inline-block;
-  padding: 0 0.5rem;
-  font-size: 1rem;
-  color: black;
-  background: #f2f8ff;
-}
-@media screen and (max-width: 800px) {
-  #edit_profile form .field table,
-  #edit_profile form .field tbody,
-  #edit_profile form .field tr,
-  #edit_profile form .field td {
-    display: block;
-    margin: 0;
-    padding: 0;
-    width: auto !important;
-  }
-}
-#edit_profile form .field tr {
-  padding: 0;
-}
-#edit_profile form .field .row1 {
-  margin: 1px 0;
-  padding: 0 0.5rem !important;
-  font-size: 0.8rem;
-  background: #cae0f2;
-}
-#edit_profile form .field .row1 b {
-  font-size: 1rem;
-}
-#edit_profile form .field .row2 {
-  padding: 0.5rem !important;
-  color: #808080;
-  background: #d4e6f5;
-}
-#edit_profile form .field .row2 input[type="text"] {
-  max-width: 97%;
-  padding: 0.2rem;
-  color: black;
-  border: 1px solid #2982cb;
-  background: white;
-}
-#edit_profile form .field .row2 select {
-  display: inline-block;
-  padding: 0.2rem;
-  padding-right: 1.5rem;
-  font-weight: bold;
-  color: black;
-  border: 1px solid #2982cb;
-  background: white;
-}
-#edit_profile form .field .row2 .editor_button {
-  padding: 0;
-  margin: 0;
-  border: 1px solid white;
-  background: #7fb4e0;
-}
-#edit_profile form .field .row2 .editor_button input {
-  font-weight: bold;
-  font-family: times;
-  margin: 0;
-  padding: 0.2rem 0.5rem;
-  font-size: 1.2rem;
-  color: #156eb7;
-  border: none;
-  background: transparent;
-}
-#edit_profile form .field .row2 .editor_button textarea {
-  margin: 0;
-  color: black;
-  padding: 0.2rem;
-  border: 1px solid transparent;
-  background: white;
-}
-#edit_profile form .field .formbuttonrow {
-  padding: 0.5rem 0 0;
-  border: 0;
-  border-top: 1px solid #2982cb;
-}
-#edit_profile form .field .formbuttonrow input {
-  font-size: 1rem;
-  line-height: 1.8rem;
-  color: black;
-  -webkit-appearance: none;
-  border: 1px solid #2982cb;
-  background: #d9d9d9;
-}
-#edit_profile form .field .formbuttonrow input:active {
-  opacity: 0.5;
 }
 /*
 *		MULTIMODERATION
 */
+#curator .panel {
+  text-align: center;
+}
 #curator .panel .pages {
   margin: 1rem 0;
   padding: 1rem 0.5rem;
@@ -2552,6 +2459,21 @@ h3 a {
 #curator .panel .pages b {
   background: #cccccc;
   color: white;
+}
+#curator .panel .controls {
+  display: inline-block;
+  margin: 1rem 0;
+}
+#curator .panel .controls button {
+  display: inline-block;
+  padding: 0.2rem 1rem;
+  margin: 0;
+  cursor: pointer;
+  font-size: 1rem;
+  color: black;
+  outline: none;
+  background: #f1f7ff;
+  border: 0.1rem solid #337;
 }
 #curator .post_header {
   position: relative;

@@ -191,14 +191,14 @@ public class Client implements IHttpClient {
         if (beforeGetPage != null)
             afterGetPage.onProgressChanged("Получение данных...");
 
-        Matcher headerMatcher = PatternExtensions.compile("<body>([\\s\\S]*?)globalmess").matcher(body);
+        /*Matcher headerMatcher = PatternExtensions.compile("<body>([\\s\\S]*?)globalmess").matcher(body);
         if (headerMatcher.find()) {
             checkLogin(headerMatcher.group(1));
             checkMails(headerMatcher.group(1));
         } else {
             checkLogin(body);
             checkMails(body);
-        }
+        }*/
         return body;
     }
 
@@ -230,10 +230,10 @@ public class Client implements IHttpClient {
     }
 
     public String performGet(String s) throws IOException {
-        return performGet(s, true);
+        return performGet(s, true, true);
     }
 
-    public String performGet(String s, Boolean checkEmptyResult) throws IOException {
+    public String performGet(String s, Boolean checkEmptyResult, Boolean checkLoginAndMails) throws IOException {
 
         HttpHelper httpHelper = new HttpHelper();
         String res = null;
@@ -246,6 +246,11 @@ public class Client implements IHttpClient {
         }
         if (checkEmptyResult && TextUtils.isEmpty(res))
             throw new NotReportException("Сервер вернул пустую страницу");
+        else if(checkLoginAndMails){
+            checkLogin(res);
+            if(!s.contains("xhr"))
+                checkMails(res);
+        }
         // m_HttpHelper.close();
         return res;
     }
@@ -461,7 +466,7 @@ public class Client implements IHttpClient {
                     return null;
                 }
 
-                public String performGet(String s, Boolean b) throws IOException {
+                public String performGet(String s, Boolean b, Boolean bb) throws IOException {
                     return null;
                 }
 
@@ -673,7 +678,6 @@ public class Client implements IHttpClient {
 
     public void checkMails(String pageBody) {
         m_QmsCount = QmsApi.getNewQmsCount(pageBody);
-
         doOnMailListener();
     }
 
@@ -705,14 +709,14 @@ public class Client implements IHttpClient {
         String body = performGet(url);
         doOnOnProgressChanged(progressChangedListener, "Обработка данных...");
 
-        Matcher headerMatcher = PatternExtensions.compile("<body>([\\s\\S]*?)globalmess").matcher(body);
+        /*Matcher headerMatcher = PatternExtensions.compile("<body>([\\s\\S]*?)globalmess").matcher(body);
         if (headerMatcher.find()) {
             checkLogin(headerMatcher.group(1));
             checkMails(headerMatcher.group(1));
         } else {
             checkLogin(body);
             checkMails(body);
-        }
+        }*/
         return body;
     }
 
@@ -923,7 +927,7 @@ public class Client implements IHttpClient {
         //<<опрос
         topicBodyBuilder.openPostsList();
         mainMatcher = Pattern
-                .compile("<div data-post=\"(\\d+)\"[^>]*>([\\s\\S]*?)((?=<div class=\"post_body[^\"]*?\">)[\\s\\S]*?)(?=<div data-post=\"\\d+\"[^>]*>|<div class=\"topic_foot_nav[^\"]*\">)",
+                .compile("<div data-post=\"(\\d+)\"[^>]*>([\\s\\S]*?)((?=<div class=\"post_body[^>]*?\">)[\\s\\S]*?)(?=<div data-post=\"\\d+\"[^>]*>|<div class=\"topic_foot_nav[^\"]*\">)",
                         Pattern.MULTILINE | Pattern.CASE_INSENSITIVE)
                 .matcher(topicBody);
 
@@ -940,7 +944,7 @@ public class Client implements IHttpClient {
                 .compile("href=\"[^\"]*act=rep[^\"]*view=(win_minus|win_add)[^\"]*\"");
         final Pattern editPattern = PatternExtensions.compile("href=\"[^\"]*act=post[^\"]*do=edit_post[^\"]*\"");
         final Pattern deletePattern = PatternExtensions.compile("onclick=\"[^\"]*seMODdel");
-        final Pattern bodyPattern = PatternExtensions.compile("<div class=\"post_body([^\"]*)?\">([\\s\\S]*)</div>");
+        final Pattern bodyPattern = PatternExtensions.compile("<div class=\"post_body([^\"]*)?\"[^>]*>([\\s\\S]*)<\\/div>");
 
 
         //String today = Functions.getToday();

@@ -174,7 +174,7 @@ public class CuratorFragment extends WebViewFragment {
         protected Boolean doInBackground(Boolean... get) {
             try {
                 if (isCancelled()) return false;
-                m_ThemeBody = parse(Client.getInstance().performGet(url)).getHtml().toString();
+                m_ThemeBody = parse(Client.getInstance().performGet(url,true,false)).getHtml().toString();
                 return true;
             } catch (Throwable e) {
                 return false;

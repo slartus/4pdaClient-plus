@@ -26,12 +26,12 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.cookie.Cookie;
-import org.softeg.slartus.forpdacommon.ActionSelectDialogFragment;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.HttpHelper;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.classes.ActionSelectDialogFragment;
 import org.softeg.slartus.forpdaplus.classes.DownloadTask;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.DownloadsTable;

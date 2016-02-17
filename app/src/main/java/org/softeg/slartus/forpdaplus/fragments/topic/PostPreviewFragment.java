@@ -197,8 +197,16 @@ public class PostPreviewFragment extends WebViewFragment {
 
         bbCodes.add(new BBCode("(?i)\\[ANCHOR\\]([^$]*?)\\[/ANCHOR\\]", "<a name=\"$1\" title=\"$1\">ˇ</a>"));
 
+        bbCodes.add(new BBCode("(?i)\\[URL\\]([^\\[]*)\\[\\/URL\\]", "<a href='$1'>$1</a>"));
         bbCodes.add(new BBCode("(?i)\\[URL=\"([^$]*?)\"\\]", "<a href='$1'>"));
         bbCodes.add(new BBCode("(?i)\\[/URL\\]", "</a>"));
+
+        bbCodes.add(new BBCode("(?i)\\[EMAIL\\]([^\\[]*)\\[\\/EMAIL\\]", "<a href='mailto:$1'>$1</a>"));
+        bbCodes.add(new BBCode("(?i)\\[EMAIL=\"([^$]*?)\"\\]", "<a href='mailto:$1'>"));
+        bbCodes.add(new BBCode("(?i)\\[/EMAIL\\]", "</a>"));
+
+        bbCodes.add(new BBCode("(?i)\\[FONT=[\"|^$]*([^$]*?)[\"^$]*\\]", "<span style=\"font-family:$1\">"));
+        bbCodes.add(new BBCode("(?i)\\[/FONT\\]", "</span>"));
 
         bbCodes.add(new BBCode("(?i)\\[SNAPBACK\\]([^$]*?)\\[/SNAPBACK\\]", "<a href=\"/forum/index.php?act=findpost&amp;pid=$1\" target=\"_blank\" title=\"Перейти к сообщению\"><img src=\"http://s.4pda.ru/forum/style_images/1/post_snapback.gif\" alt=\"*\" border=\"0\"></a>"));
 
@@ -215,7 +223,7 @@ public class PostPreviewFragment extends WebViewFragment {
         bbCodes.add(new BBCode("(?i)\\[/SIZE\\]", "</span>"));
 
         bbCodes.add(new BBCode("(?i)\\[LIST\\]([^$]*?)\\[/LIST\\]", "<ul>$1</ul>"));
-        bbCodes.add(new BBCode("(?i)\\[LIST=(\\d*)\\]([^$]*?)\\[/LIST\\]", "<ol type=\"$1\">$2</ol>"));
+        bbCodes.add(new BBCode("(?i)\\[LIST=([^\\]]*)\\]([^$]*?)\\[\\/LIST\\]", "<ol type=\"$1\">$2</ol>"));
         bbCodes.add(new BBCode("(?i)\\[\\*\\]", "<li>"));
 
         bbCodes.add(new BBCode("(?i)\\[ATTACHMENT=\"[\\d]*:([^$]*?)\"\\]", "<a href=\"#\">$1</a> "));
@@ -227,15 +235,17 @@ public class PostPreviewFragment extends WebViewFragment {
         bbCodes.add(new BBCode("(?i)\\[/BACKGROUND\\]", "</span>"));
 
         bbCodes.add(new BBCode("(?i)\\[CODE\\]", "<div class=\"post-block code box\"><div class=\"block-title\"></div><div class=\"block-body \">"));
+        bbCodes.add(new BBCode("(?i)\\[CODE=[\"|^$]*([^$]*?)[\"^$]*\\]", "<div class=\"post-block code box\"><div class=\"block-title\">$1</div><div class=\"block-body \">"));
         bbCodes.add(new BBCode("(?i)\\[/CODE\\]", "</div></div>"));
 
-        bbCodes.add(new BBCode("(?i)\\[HIDE\\]", "<div class=\"post-block hidden\"><div class=\"block-title\"></div><div class=\"block-body\">"));
+        bbCodes.add(new BBCode("(?i)\\[HIDE[^\\]]*\\]", "<div class=\"post-block hidden\"><div class=\"block-title\"></div><div class=\"block-body\">"));
         bbCodes.add(new BBCode("(?i)\\[/HIDE\\]", "</div></div>"));
 
         bbCodes.add(new BBCode("(?i)\\[SPOILER\\]", "<div class=\"post-block spoil close\"><div class=\"block-title\"></div><div class=\"block-body\">"));
-        bbCodes.add(new BBCode("(?i)\\[SPOILER=([^$]*?)\\]", "<div class=\"post-block spoil close\"><div class=\"block-title\">$1</div><div class=\"block-body\">"));
+        bbCodes.add(new BBCode("(?i)\\[SPOILER=[\"|^$]*([^$]*?)[\"^$]*\\]", "<div class=\"post-block spoil close\"><div class=\"block-title\">$1</div><div class=\"block-body\">"));
         bbCodes.add(new BBCode("(?i)\\[/SPOILER\\]", "</div></div>"));
 
+        bbCodes.add(new BBCode("(?i)\\[QUOTE=[\"|^$]*([^$]*?)[\"^$]*\\]", "<div class=\"post-block quote\"><div class=\"block-title\">$1</div><div class=\"block-body\">"));
         bbCodes.add(new BBCode("(?i)\\[QUOTE([^$]*?)\\]", "<div class=\"post-block quote\"><div class=\"block-title\">$1</div><div class=\"block-body\">"));
         bbCodes.add(new BBCode("(?i)\\[/QUOTE\\]", "</div></div>"));
 
@@ -250,7 +260,7 @@ public class PostPreviewFragment extends WebViewFragment {
 
         bbCodes.add(new BBCode("name=\"([^$]*?)\"", "$1"));
         bbCodes.add(new BBCode("date=\"([^$]*?)\"", " @ $1"));
-        bbCodes.add(new BBCode("post=([^]]*)", "<a href=\"/forum/index.php?act=findpost&amp;pid=$1\" target=\"_blank\" title=\"Перейти к сообщению\"><img src=\"http://s.4pda.ru/forum/style_images/1/post_snapback.gif\" alt=\"*\" border=\"0\"></a>"));
+        bbCodes.add(new BBCode("post=([^]^<]*)", "<a href=\"/forum/index.php?act=findpost&amp;pid=$1\" target=\"_blank\" title=\"Перейти к сообщению\"><img src=\"http://s.4pda.ru/forum/style_images/1/post_snapback.gif\" alt=\"*\" border=\"0\"></a>"));
 
     }
     private class BBCode {

@@ -1371,7 +1371,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 m_History.get(m_History.size() - 1).setY(webView.getScrollY());
             }
             webView.setWebViewClient(new MyWebViewClient());
-            webView.getSettings().setLoadsImagesAutomatically(getLoadsImagesAutomatically());
+            //webView.getSettings().setLoadsImagesAutomatically(getLoadsImagesAutomatically());
 
             asyncTask = new GetThemeTask(getMainActivity());
             asyncTask.execute(url.replace("|", ""));

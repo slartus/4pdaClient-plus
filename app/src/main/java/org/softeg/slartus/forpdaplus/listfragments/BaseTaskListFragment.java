@@ -108,15 +108,12 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
     public void onDestroy() {
         super.onDestroy();
 
-        if (mCheckTask != null)
-            mCheckTask.cancel(false);
         if (mCacheTask != null)
             mCacheTask.cancel(false);
         if (mTask != null)
             mTask.cancel(null);
     }
 
-    private CheckTask mCheckTask = null;
     private Task mTask = null;
     private LoadCacheTask mCacheTask = null;
 
@@ -152,8 +149,6 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
                 mTask.execute();
             }
         };
-        if (mCheckTask != null && mCheckTask.getStatus() != AsyncTask.Status.FINISHED)
-            mCheckTask.cancel(false);
         if (mTask != null && mTask.getStatus() != AsyncTask.Status.FINISHED)
             mTask.cancel(runnable);
         else {
@@ -161,13 +156,6 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
         }
     }
 
-    private void startCheckTask() {
-
-        if (mCheckTask == null || mCheckTask.getStatus() == AsyncTask.Status.FINISHED) {
-            mCheckTask = new CheckTask();
-            mCheckTask.execute();
-        }
-    }
 
     protected abstract boolean inBackground(boolean isRefresh) throws Throwable;
 
@@ -226,11 +214,6 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
         @Override
         protected Boolean doInBackground(Boolean[] p1) {
             try {
-                try {
-                    Client.getInstance().loadTestPage();
-                } catch (Throwable ignored) {
-
-                }
                 return inBackground(mRefresh);
             } catch (Throwable e) {
                 mEx = e;
@@ -258,9 +241,6 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
             else if (!result) {
                 onFailureResult();
             }
-
-            startCheckTask();
-
         }
 
         @Override
@@ -274,36 +254,6 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
             if (onCancelAction != null)
                 onCancelAction.run();
         }
-    }
-
-    public class CheckTask extends AsyncTask<Boolean, Void, Boolean> {
-        private Throwable mEx;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected Boolean doInBackground(Boolean[] p1) {
-            try {
-                Client.getInstance().loadTestPage();
-                return true;
-            } catch (Throwable e) {
-                mEx = e;
-            }
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-
-            if (mEx != null)
-                Toast.makeText(getContext(), AppLog.getLocalizedMessage(mEx, "Ошибка проверки qms"), Toast.LENGTH_SHORT).show();
-        }
-
     }
 
     public class LoadCacheTask extends AsyncTask<Boolean, Void, Boolean> {
@@ -343,7 +293,6 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
                     startLoad();
                 else {
                     setLoading(false);
-                    startCheckTask();
                 }
             }
         }

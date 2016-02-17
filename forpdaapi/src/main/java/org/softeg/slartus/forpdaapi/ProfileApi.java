@@ -142,20 +142,14 @@ public class ProfileApi {
         profile.setId(userID);
         String page = httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID);
 
-        Document doc = Jsoup.parse(page);
-        org.jsoup.nodes.Element element = doc.select("#header+div>div ul").first();
-
-        if (element != null) {
-            doc.select("div.photo").append("<div class=\"img "+avType+"\" style=\"background-image: url("+doc.select("div.photo>img").first().absUrl("src")+");\"></div>");
-            doc.select("div.photo>img").first().remove();
-
-            profile.setHtmlBody("<div class=\"user-profile-list\">"+element.html()+"</div>");
-
-            org.jsoup.nodes.Element userNickElement = element.select("div.user-box > h1").first();
-            if (userNickElement != null)
-                profile.setNick(userNickElement.text());
-
-            
+        Matcher matcher = Pattern.compile("<form action=\"http:\\/\\/4pda\\.ru\\/forum\\/index\\.php\\?showuser[^>]*>[\\s\\S]*?<ul[^>]*>([\\s\\S]*)<\\/ul>[\\s\\S]*?<\\/form>").matcher(page);
+        if(matcher.find()){
+            page = matcher.group(1).replaceFirst("<div class=\"photo\">[^<]*<img src=\"([^\"]*)\"[^<]*</div>",
+                    "<div class=\"photo\"><div class=\"img " + avType + "\" style=\"background-image: url($1);\"></div></div>");
+            matcher = Pattern.compile("<div class=\"user-box\">[\\s\\S]*?<h1>([\\s\\S]*?)</h1>").matcher(page);
+            if (matcher.find())
+                profile.setNick(matcher.group(1));
+            profile.setHtmlBody("<div class=\"user-profile-list\">"+page+"</div>");
         }
         return profile;
     }

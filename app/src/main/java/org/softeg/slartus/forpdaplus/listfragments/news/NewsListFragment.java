@@ -314,9 +314,10 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         if (isRefresh) {
             mData.clear();
         }
-        for (News item : mLoadResultList) {
+        mData.addAll(mLoadResultList);
+        /*for (News item : mLoadResultList) {
             mData.add(item);
-        }
+        }*/
 
         mLoadResultList.clear();
     }
@@ -343,9 +344,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
                 return;
             final News news = (News) o;
             if (TextUtils.isEmpty(news.getId())) return;
-            MainActivity.log(news.getTitle()+" : "+news.getUrl()+" : "+news.getId());
-            MainActivity.addTab(news.getTitle().toString(), news.getUrl(),
-                    NewsFragment.newInstance(getActivity(), news.getUrl()));
+            MainActivity.addTab(news.getTitle().toString(), news.getUrl(), NewsFragment.newInstance(news.getUrl()));
             mAdapter.notifyDataSetChanged();
 
         } catch (Throwable ex) {

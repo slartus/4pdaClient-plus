@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.prefs;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.Devices;
@@ -105,15 +106,20 @@ public class HtmlPreferences {
     }
 
     public static String modifyAttachedImagesBody(Boolean webViewAllowJs, String value) {
+        Log.e("kek", "modify images");
         return value
-                .replaceAll("<a attach_id=\"\\d+\"[^>]*?href=\"([^\"]*)\"[^>]*?title=\"([^\"]*)\"[^>]*?><img src=\"([^\"]*)\"[^>]*id=\"ipb-attach-img-\\d+-bb\".*?</a>",
+                .replaceAll("<a id=\"ipb-attach-url-\\d+-bb\"[^>]*?href=\"([^\"]*)\"[^>]*?title=\"([^\"]*)\"[^>]*?><img src=\"([^\"]*)\"[^>]*id=\"ipb-attach-img-\\d+-bb\".*?</a>",
                         "<img src=\"file:///android_asset/forum/style_images/1/folder_mime_types/gif.gif\"><a class=\"sp_img\" "
                                 + TopicBodyBuilder.getHtmlout(webViewAllowJs, "showImgPreview",
                                 new String[]{"Прикрепленное изображение", "$3", "$1"}, false) + ">$2</a>")
-                .replaceAll("<img attach_id=\"\\d+\"[^>]*?src=\"([^\"]*)\"[^>]*?>",
+                .replaceAll("<img src=\"([^\"]*)\" class=\"linked-image\"[^>]*?>",
                         "<img src=\"file:///android_asset/forum/style_images/1/folder_mime_types/gif.gif\"><a class=\"sp_img\" "
                                 + TopicBodyBuilder.getHtmlout(webViewAllowJs, "showImgPreview",
-                                new String[]{"Прикрепленное изображение", "$1", "$1"}, false) + ">Прикрепленное изображение</a>");
+                                new String[]{"Прикрепленное изображение", "$1", "$1"}, false) + ">Прикрепленное изображение</a>")
+                /*.replaceAll("<img attach_id=\"\\d+\"[^>]*?src=\"([^\"]*)\"[^>]*?>",
+                "<img src=\"file:///android_asset/forum/style_images/1/folder_mime_types/gif.gif\"><a class=\"sp_img\" "
+                        + TopicBodyBuilder.getHtmlout(webViewAllowJs, "showImgPreview",
+                        new String[]{"Прикрепленное изображение", "$1", "$1"}, false) + ">Прикрепленное изображение</a>")*/;
 
     }
 

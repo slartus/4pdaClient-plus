@@ -31,12 +31,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 public class NewsApi {
     public static Boolean like(IHttpClient httpClient, String newsId) throws IOException {
-        String res = httpClient.performGet("http://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=0&v=1", false);
+        String res = httpClient.performGet("http://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=0&v=1", false, false);
         return res != null;
     }
 
     public static Boolean likeComment(IHttpClient httpClient, String newsId, String postId) throws IOException {
-        String res = httpClient.performGet("http://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=" + postId + "&v=1", false);
+        String res = httpClient.performGet("http://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=" + postId + "&v=1", false, false);
         return res != null;
     }
 
@@ -77,57 +77,57 @@ public class NewsApi {
         String requestUrl = justUrl + "/page/" + pageNum + "/" + params;
 
         ArrayList<News> res = new ArrayList<>();
-
         String dailyNewsPage = httpClient.performGet(UrlExtensions.removeDoubleSplitters(requestUrl));
-        Document doc = Jsoup.parse(dailyNewsPage);
-        listInfo.setTitle(doc.title());
-        Elements newsHeadlines = doc.select("article.post");
+        
+        Pattern articlesPattern = Pattern.compile("(<article class=\"post\"[^>]*>[\\s\\S]*?href=\"([^\"]*)\" title=\"([^\"]*)\">[\\s\\S]*?src=\"([^\"]*)[\\s\\S]*?<\\/article>)");
+        Pattern descriptionPattern = Pattern.compile("<div itemprop=\"description\"><p [^>]*>([\\s\\S]*)<\\/p>[^<]*");
+        Pattern labelPattern = Pattern.compile("<a href=\"([^\"]*)\" class=\"label[^>]*>([\\s\\S]*?)<\\/a>");
+        Pattern countPattern = Pattern.compile("class=\"v-count\"[^>]*>(\\d*)</a>");
+        Pattern datePattern = Pattern.compile("<em class=\"date\">([\\s\\S]*?)</em>");
+        Pattern authorPattern = Pattern.compile("<span class=\"autor\"><a [^>]*>([^<]*)</a>");
+        
+        m = articlesPattern.matcher(dailyNewsPage);
+        Matcher matcher = null;
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
-        for (org.jsoup.nodes.Element newsElement : newsHeadlines) {
-            org.jsoup.nodes.Element descElement = newsElement.select("div.description").first();
-            if (descElement != null) {
-                org.jsoup.nodes.Element el = descElement.select("h1 > a").first();
-                if (el == null)
-                    el = descElement.select("h2 > a").first();
-                if (el == null)
-                    continue;
-                News news = new News(el.attr("href").replace("http://4pda.ru",""),
-                        Html.fromHtml(el.attr("title")).toString());
+        News news;
+        while (m.find()){
+            news = new News();
+            news.setId(m.group(2).replace("http://4pda.ru", ""));
+            news.setTitle(Html.fromHtml(m.group(3)).toString());
+            news.setImgUrl(m.group(4));
 
-                el = descElement.select("div > p").first();
-                news.setDescription(Html.fromHtml(el.text()));
-
-                org.jsoup.nodes.Element divVisualElement = newsElement.select("div.visual").first();
-                if (divVisualElement != null) {
-                    el = divVisualElement.select("a > img").first();
-                    if (el != null)
-                        news.setImgUrl(el.attr("src"));
-
-                    el = divVisualElement.select("a.label").first();
-                    if (el != null) {
-                        news.setTagLink(el.attr("href"));
-
-                        news.setTagTitle(el.text().trim());
-                    }else {
-                        news.setTagTitle("");
-                    }
-
-                    org.jsoup.nodes.Element vPanelElement = divVisualElement.select("div.v-panel").first();
-                    if (vPanelElement != null) {
-                        el = vPanelElement.select("a.v-count").first();
-                        if (el != null)
-                            news.setCommentsCount(Integer.parseInt(el.html()));
-                        el = vPanelElement.select("div.p-description > em.date").first();
-                        if (el != null)
-                            news.setNewsDate(DateTimeExternals.getDateString(dateFormat.parse(el.html())));
-                        el = vPanelElement.select("div.p-description > span.autor").first();
-                        if (el != null)
-                            news.setAuthor(Html.fromHtml(el.html()).toString());
-                    }
-
-                }
-                res.add(news);
+            if(matcher==null)
+                matcher = descriptionPattern.matcher(m.group(1));
+            else
+                matcher.usePattern(descriptionPattern).reset(m.group(1));
+            if(matcher.find()){
+                news.setDescription(Html.fromHtml(matcher.group(1).replaceAll("<a [^>]*>([^<]*)</a>", "$1")).toString().trim());
             }
+
+            matcher.usePattern(labelPattern).reset(m.group(1));
+            if (matcher.find()){
+                news.setTagLink(matcher.group(1));
+                news.setTagTitle(Html.fromHtml(matcher.group(2).trim()));
+            }else {
+                news.setTagTitle("");
+            }
+
+            matcher.usePattern(countPattern).reset(m.group(1));
+            if(matcher.find()){
+                news.setCommentsCount(Integer.parseInt(matcher.group(1)));
+            }
+
+            matcher.usePattern(datePattern).reset(m.group(1));
+            if(matcher.find()){
+                news.setNewsDate(DateTimeExternals.getDateString(dateFormat.parse(matcher.group(1))));
+            }
+
+            matcher.usePattern(authorPattern).reset(m.group(1));
+            if(matcher.find()){
+                news.setAuthor(matcher.group(1));
+            }
+            res.add(news);
         }
         if (res.size() == 0 && pageNum == 1 && listInfo.getFrom() == 0)
             return getNewsFromRss(httpClient, UrlExtensions.removeDoubleSplitters(url + "/feed/"));
