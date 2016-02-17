@@ -59,8 +59,8 @@ public class SearchPostsParser extends HtmlBuilder {
         final Pattern postBodyPattern = Pattern.compile("(<div class=\"postcolor[\\s\\S]*?<\\/div>)<\\/td>[^<]");
         final Pattern footerPattern = Pattern.compile("<td class=\"row2\"><\\/td>[^>]*>([\\s\\S]*?<\\/div>)[^<]");
 
-        Matcher postMatcher;
-        Matcher matcher;
+        Matcher postMatcher = null;
+        Matcher matcher = null;
 
         String userId = null;
         String userName = null;
@@ -68,58 +68,64 @@ public class SearchPostsParser extends HtmlBuilder {
         String dateTime = null;
         String userState = null;
 
-        Matcher postsMatcher = Pattern.compile("(<div class=\"borderwrap\" data-post=\"[^>]*>[\\s\\S]*?<\\/table>[^<]*<\\/div>)<br").matcher(body);
-        while (postsMatcher.find()){
+        Log.e("kek", "start matcher");
+        Matcher postsMatcher = Pattern.compile("(<div class=\"borderwrap\" data-post=\"[^>]*>[\\s\\S]*?(<div class=\"postcolor[\\s\\S]*?<\\/div>)<\\/td>[^<][\\s\\S]*?<\\/table>[^<]*<\\/div>)<br").matcher(body);
+        while (postsMatcher.find()) {
             m_Body.append("<div class=\"post_container\">");
 
-            postMatcher = titlePattern.matcher(postsMatcher.group(1));
-            if(postMatcher.find()){
+            if(postMatcher==null)
+                postMatcher = titlePattern.matcher(postsMatcher.group(1));
+            else
+                postMatcher.usePattern(titlePattern).reset(postsMatcher.group(1));
+
+
+            if (postMatcher.find())
                 m_Body.append("<div class=\"topic_title_post\">").append(postMatcher.group(1)).append("</div>\n");
-            }
 
-            postMatcher = postPattern.matcher(postsMatcher.group(1));
+            postMatcher.usePattern(postPattern).reset(postsMatcher.group(1));
+            if (postMatcher.find()) {
 
-            if(postMatcher.find()) {
-                matcher = userPattern.matcher(postMatcher.group(1));
-                if(matcher.find()){
+                if(matcher==null)
+                    matcher = userPattern.matcher(postMatcher.group(1));
+                else
+                    matcher.usePattern(userPattern).reset(postMatcher.group(1));
+                if (matcher.find()) {
                     Uri uri = Uri.parse(matcher.group(1));
                     userId = uri.getQueryParameter("showuser");
                     userName = matcher.group(2);
                 }
 
-                matcher = datePattern.matcher(postMatcher.group(1));
-                if(matcher.find())
+                matcher.usePattern(datePattern).reset(postMatcher.group(1));
+                if (matcher.find())
                     dateTime = matcher.group(1).trim();
 
-                matcher = onlinePattern.matcher(postMatcher.group(1));
+                matcher.usePattern(onlinePattern).reset(postMatcher.group(1));
                 if (matcher.find())
                     userState = "[online]".equals(matcher.group(1)) ? "online" : "";
 
-                user = "<a class=\"s_inf nick " + userState + "\" "+TopicBodyBuilder.getHtmlout(isWebviewAllowJavascriptInterface, "showUserMenu", userId, userName)+"><span>"+userName+"</span></a>";
+                user = "<a class=\"s_inf nick " + userState + "\" " + TopicBodyBuilder.getHtmlout(isWebviewAllowJavascriptInterface, "showUserMenu", userId, userName) + "><span>" + userName + "</span></a>";
                 m_Body.append("<div class=\"post_header\">").append(user).append("<div class=\"s_inf date\"><span>").append(dateTime).append("</span></div></div>");
 
-                matcher = postBodyPattern.matcher(postMatcher.group(1));
-                if(matcher.find()){
-                    if (m_SpoilerByButton) {
-                        String find = "(<div class='hidetop' style='cursor:pointer;' )" +
-                                "(onclick=\"var _n=this.parentNode.getElementsByTagName\\('div'\\)\\[1\\];if\\(_n.style.display=='none'\\)\\{_n.style.display='';\\}else\\{_n.style.display='none';\\}\">)" +
-                                "(Спойлер \\(\\+/-\\).*?</div>)" +
-                                "(\\s*<div class='hidemain' style=\"display:none\">)";
-                        String replace = "$1>$3<input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility\\(this\\)\"/>$4";
-                        m_Body.append("<div class=\"post_body emoticons\">").append(Post.modifyBody(matcher.group(1), m_EmoticsDict, true).replaceAll(find, replace)).append("</div>");
-                    }else {
-                        m_Body.append("<div class=\"post_body emoticons\">").append(Post.modifyBody(matcher.group(1), m_EmoticsDict, true)).append("</div>");
-                    }
+                if (m_SpoilerByButton) {
+                    String find = "(<div class='hidetop' style='cursor:pointer;' )" +
+                            "(onclick=\"var _n=this.parentNode.getElementsByTagName\\('div'\\)\\[1\\];if\\(_n.style.display=='none'\\)\\{_n.style.display='';\\}else\\{_n.style.display='none';\\}\">)" +
+                            "(Спойлер \\(\\+/-\\).*?</div>)" +
+                            "(\\s*<div class='hidemain' style=\"display:none\">)";
+                    String replace = "$1>$3<input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility\\(this\\)\"/>$4";
+                    m_Body.append("<div class=\"post_body emoticons\">").append(Post.modifyBody(postsMatcher.group(2), m_EmoticsDict, true).replaceAll(find, replace)).append("</div>");
+                } else {
+                    m_Body.append("<div class=\"post_body emoticons\">").append(Post.modifyBody(postsMatcher.group(2), m_EmoticsDict, true)).append("</div>");
                 }
 
-                matcher = footerPattern.matcher(postMatcher.group(1));
-                if(matcher.find())
-                    m_Body.append("<div class=\"s_post_footer\"><table width=\"100%%\"><tr><td>").append(Post.modifyBody(matcher.group(1), m_EmoticsDict, true)).append("</td></tr></table></div></div><div class=\"between_messages\"></div>");
-
+                matcher.usePattern(footerPattern).reset(postMatcher.group(1));
+                if (matcher.find())
+                    m_Body.append("<div class=\"s_post_footer\"><table width=\"100%%\"><tr><td>").append(Post.modifyBody(matcher.group(1), m_EmoticsDict, true)).append("</td></tr></table></div>");
+                m_Body.append("</div><div class=\"between_messages\"></div>");
             }
             posts++;
         }
-        if(posts==0){
+        Log.e("kek", "start matcher");
+        if (posts == 0) {
             m_Body.append("<div class=\"bad-search-result\">\n" +
                     "\t<h3>Поиск не дал результатов</h3>\n" +
                     "\t<span>Попробуйте сформулировать свой запрос иначе</span>\n" +

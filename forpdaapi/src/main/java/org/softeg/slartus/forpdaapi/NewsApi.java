@@ -80,30 +80,32 @@ public class NewsApi {
         String dailyNewsPage = httpClient.performGet(UrlExtensions.removeDoubleSplitters(requestUrl));
         
         Pattern articlesPattern = Pattern.compile("(<article class=\"post\"[^>]*>[\\s\\S]*?href=\"([^\"]*)\" title=\"([^\"]*)\">[\\s\\S]*?src=\"([^\"]*)[\\s\\S]*?<\\/article>)");
-        Pattern descriptionPattern = Pattern.compile("<div itemprop=\"description\"><p [^>]*>(.*)<\\/p>[^<]*");
+        Pattern descriptionPattern = Pattern.compile("<div itemprop=\"description\"><p [^>]*>([\\s\\S]*)<\\/p>[^<]*");
         Pattern labelPattern = Pattern.compile("<a href=\"([^\"]*)\" class=\"label[^>]*>([\\s\\S]*?)<\\/a>");
         Pattern countPattern = Pattern.compile("class=\"v-count\"[^>]*>(\\d*)</a>");
         Pattern datePattern = Pattern.compile("<em class=\"date\">([\\s\\S]*?)</em>");
         Pattern authorPattern = Pattern.compile("<span class=\"autor\"><a [^>]*>([^<]*)</a>");
         
         m = articlesPattern.matcher(dailyNewsPage);
-        Matcher matcher;
+        Matcher matcher = null;
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
         News news;
-        String article;
         while (m.find()){
             news = new News();
-            article = m.group(1);
-            news.setId(m.group(2).replace("http://4pda.ru",""));
+            news.setId(m.group(2).replace("http://4pda.ru", ""));
             news.setTitle(Html.fromHtml(m.group(3)).toString());
             news.setImgUrl(m.group(4));
-            matcher = descriptionPattern.matcher(article);
+
+            if(matcher==null)
+                matcher = descriptionPattern.matcher(m.group(1));
+            else
+                matcher.usePattern(descriptionPattern).reset(m.group(1));
             if(matcher.find()){
-                news.setDescription(matcher.group(1).replaceAll("<a [^>]*>([^<]*)</a>", "$1"));
+                news.setDescription(Html.fromHtml(matcher.group(1).replaceAll("<a [^>]*>([^<]*)</a>", "$1")).toString().trim());
             }
 
-            matcher = labelPattern.matcher(article);
+            matcher.usePattern(labelPattern).reset(m.group(1));
             if (matcher.find()){
                 news.setTagLink(matcher.group(1));
                 news.setTagTitle(Html.fromHtml(matcher.group(2).trim()));
@@ -111,17 +113,17 @@ public class NewsApi {
                 news.setTagTitle("");
             }
 
-            matcher = countPattern.matcher(article);
+            matcher.usePattern(countPattern).reset(m.group(1));
             if(matcher.find()){
                 news.setCommentsCount(Integer.parseInt(matcher.group(1)));
             }
 
-            matcher = datePattern.matcher(article);
+            matcher.usePattern(datePattern).reset(m.group(1));
             if(matcher.find()){
                 news.setNewsDate(DateTimeExternals.getDateString(dateFormat.parse(matcher.group(1))));
             }
 
-            matcher = authorPattern.matcher(article);
+            matcher.usePattern(authorPattern).reset(m.group(1));
             if(matcher.find()){
                 news.setAuthor(matcher.group(1));
             }
