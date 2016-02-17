@@ -64,7 +64,7 @@ public class QmsApi {
     }
 
     private static String matchChatBody(String pageBody) {
-        Matcher m = Pattern.compile("<div class=\"scrollframe-body\">[\\s\\S]*?<div id=\"thread-inside-top\"></div>([\\s\\S]*?)<div id=\"thread-inside-bottom\">").matcher(pageBody);
+        Matcher m = Pattern.compile("<div id=\"thread-inside-top\"><\\/div>([\\s\\S]*)<div id=\"thread-inside-bottom\">").matcher(pageBody);
         if (m.find())
             return "<div id=\"thread_form\"><div id=\"thread-inside-top\"></div>" + m.group(1) + "</div>";
 

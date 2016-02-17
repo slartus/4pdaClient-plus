@@ -2,61 +2,44 @@
 /*
  *	DARK-COLOR
 */
-*[style*="color:royalblue"] {
+*[style*="color: royalblue;"] {
   color: #ced8f7 !important;
 }
-*[style*="color:blue"] {
+*[style*="color: blue;"] {
   color: #9999ff !important;
 }
-*[style*="color:darkblue"] {
+*[style*="color: darkblue;"] {
   color: #3f3fff !important;
 }
-*[style*="color:indigo"] {
+*[style*="color: indigo;"] {
   color: #aa35ff !important;
 }
-*[style*="color:crimson"] {
+*[style*="color: crimson;"] {
   color: #ee4062 !important;
 }
-*[style*="color:red"] {
+*[style*="color: red;"] {
   color: #ff4242 !important;
 }
-*[style*="color:darkred"] {
+*[style*="color: darkred;"] {
   color: #ff2525 !important;
 }
-*[style*="color:deeppink"] {
+*[style*="color: deeppink;"] {
   color: #ff61b6 !important;
 }
-*[style*="color:purple"] {
+*[style*="color: purple;"] {
   color: #ff3ae6 !important;
 }
-*[style*="color:Black"],
-*[style*="color:black"],
-*[style*="color:#000000"],
-*[style*="color:#000"] {
-  color: #fff!important;
-}
-*[style*="background-color:white"] *[style*="color:black"],
-*[style*="color:black"] *[style*="background-color:white"],
-*[style*="background-color:white"] *[style*="color:#000000"],
-*[style*="color:#000000"] *[style*="background-color:white"],
-*[style*="background-color:white"] *[style*="color:#000"],
-*[style*="color:#000"] *[style*="background-color:white"] {
-  color: #000!important;
-}
-.post_header SPAN[style*="color:#BC33FF"],
-.post_header SPAN[style*="color:purple"],
-.post_header SPAN[style*="color:#9A60FF"],
-.post_header SPAN[style*="color:#B100BF"] {
-  color: #c875c8 !important;
-}
-.post_header SPAN[style*="color:green"] {
-  color: #089208 !important;
-}
-.post_header SPAN[style*="color:#32CD32"] {
-  color: #4bb44b !important;
-}
-.post_header SPAN[style*="color:#0099FF"] {
-  color: #2093df !important;
+*[style*="color: Black;"],
+*[style*="color: black;"],
+*[style*="color: #000000;"],
+*[style*="color: #000;"],
+*[style*="background-color: white;"] *[style*="color: black;"],
+*[style*="color: black;"] *[style*="background-color: white;"],
+*[style*="background-color: white;"] *[style*="color: #000000;"],
+*[style*="color: #000000;"] *[style*="background-color: white;"],
+*[style*="background-color: white;"] *[style*="color: #000;"],
+*[style*="color: #000;"] *[style*="background-color: white;"] {
+  color: white !important;
 }
 .cur,
 .mod,
@@ -90,8 +73,9 @@ HTML body ol {
   padding-left: 1.5rem;
 }
 HTML body a {
-  margin: 0;
   cursor: pointer;
+  text-decoration: none;
+  color: #afd9f9;
 }
 /*
 *	PICTURES SIZE
@@ -1629,8 +1613,9 @@ div[data-post] > a {
   padding: 0;
   margin: 1rem 0;
   overflow: hidden;
+  text-align: left !important;
   border-radius: 0.125rem;
-  background: #1a2125;
+  background: #0f1416;
 }
 #news BLOCKQUOTE:before {
   content: 'Цитата';
@@ -1876,14 +1861,19 @@ div[data-post] > a {
   vertical-align: middle;
 }
 #news .table4site {
-  display: table-block;
+  display: block;
   color: white !important;
   overflow-x: auto;
   box-sizing: border-box;
   background: #000000;
   border-spacing: 0;
+  word-break: normal;
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
   border-radius: 0.125rem;
+}
+#news .table4site tbody {
+  display: table;
+  width: 100%;
 }
 #news .table4site tbody TR {
   margin: 0;
@@ -2303,32 +2293,23 @@ div[data-post] > a {
 }
 #profile .user-profile-list > li {
   display: block;
-  padding: 0.7rem;
+  padding: 0.75rem;
   margin: 0.5rem;
   border-radius: 0.125rem;
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   background: #000000;
 }
-#profile .user-profile-list > li a {
-  color: #afd9f9;
-  text-decoration: none;
-}
-#profile .user-profile-list > li a[title="Изменить данные о себе"] {
-  float: right;
-  display: inline-block;
-  margin: 0 -0.3rem -0.3rem;
-  padding: 0.5rem;
-  font-weight: bold;
-  color: #afd9f9;
-  text-transform: uppercase;
-}
 #profile .user-profile-list > li .user-box {
   display: block;
   text-align: center;
-  margin: 0 0 1rem;
-  padding: 0 0 1rem;
+  margin: -0.75rem -0.75rem 1rem;
+  padding: 0.75rem;
   border-bottom: 1px solid #191919;
+  background-image: url(../profile.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 #profile .user-profile-list > li .user-box .photo {
   padding: 0;
@@ -2355,7 +2336,6 @@ div[data-post] > a {
 #profile .user-profile-list > li .user-box h2 {
   display: block;
   font-size: 1rem;
-  font-weight: normal;
   margin: 0;
 }
 #profile .user-profile-list > li .user-box h2 span {
@@ -2363,17 +2343,48 @@ div[data-post] > a {
   font-size: 1em;
   font-weight: normal;
 }
+#profile .user-profile-list > li .u-note {
+  margin-top: 0.7rem;
+}
+#profile .user-profile-list > li .profile-edit-links {
+  margin-top: 1rem;
+}
+#profile .user-profile-list > li .profile-edit-links .col {
+  display: inline-block;
+  margin-right: -3px;
+  width: 50%;
+  vertical-align: middle;
+}
+#profile .user-profile-list > li .profile-edit-links .col + .col {
+  text-align: right;
+}
+#profile .user-profile-list > li .profile-edit-links .col a {
+  display: inline-block;
+  padding: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  color: #afd9f9;
+}
 #profile .user-profile-list .info-list.black-link {
   list-style-type: none;
   padding: 0;
 }
+#profile .user-profile-list .info-list.black-link li {
+  display: block;
+  padding: 0;
+}
 #profile .user-profile-list .info-list.black-link .title {
   font-weight: bold;
+  vertical-align: middle;
 }
 #profile .user-profile-list .info-list.black-link .area {
   display: inline-block;
+  margin: 0;
+  vertical-align: middle;
 }
 #profile .user-profile-list .info-list.black-link .area a {
+  display: inline-block;
   font-weight: bold;
 }
 #profile .user-profile-list .info-list.black-link[id*="device-list"] {
@@ -2449,8 +2460,8 @@ div[data-post] > a {
   border: 0.125rem solid #afd9f9;
   -webkit-box-shadow: inset 0 0 0 0.2rem #000000;
 }
-#profile .user-profile-list .u-note {
-  margin-top: 0.7rem;
+#profile .user-profile-list li > DIV {
+  overflow: hidden;
 }
 #profile .user-profile-list li .heading {
   position: relative;
@@ -2491,8 +2502,10 @@ div[data-post] > a {
   padding: 0.5rem;
 }
 #profile .user-profile-list li .statistic-box .col {
-  float: left;
-  width: 49%;
+  display: inline-block;
+  width: 50%;
+  min-width: 9rem;
+  margin-right: -3px;
 }
 #profile .user-profile-list li .statistic-box .col h3 {
   margin: 0 0 0.7rem;
@@ -2503,11 +2516,14 @@ div[data-post] > a {
   padding: 0;
 }
 #profile .user-profile-list li .statistic-box .col ul li .title {
+  margin: 0;
   margin-right: 0.3rem;
+  vertical-align: middle;
 }
 #profile .user-profile-list li .statistic-box .col ul li .area {
   display: inline-block;
   font-weight: bold;
+  vertical-align: middle;
 }
 #profile .user-profile-list li .statistic-box .col ul li .area A[title="Просмотреть репутацию"] {
   margin: 0;
@@ -2527,6 +2543,16 @@ div[data-post] > a {
 }
 #profile .user-profile-list li .statistic-box .col ul li .area .warn-btn[title="Поднять репутацию"] strong {
   background: #1ca11c;
+}
+#profile .user-profile-list li .profile-textarea {
+  width: 96% !important;
+  padding: 2%;
+  color: white;
+  border: none;
+  background: #000000;
+}
+#profile .user-profile-list li .profile-textarea:focus {
+  outline: 1px solid #afd9f9;
 }
 #profile .user-profile-list .no-min-size .alert-log-list {
   list-style-type: none;
@@ -2721,6 +2747,12 @@ div[data-post] > a {
 /*
 *		MULTIMODERATION
 */
+#curator {
+  padding: 1rem 0;
+}
+#curator .panel {
+  text-align: center;
+}
 #curator .panel .pages {
   margin: 1rem 0;
   padding: 1rem 0.5rem;
@@ -2730,6 +2762,7 @@ div[data-post] > a {
 #curator .panel .pages a,
 #curator .panel .pages b {
   display: inline-block;
+  margin: 0;
   padding: 0.5rem 0.75rem;
   text-decoration: none !important;
   color: rgba(225, 225, 225, 0.7);
@@ -2737,6 +2770,23 @@ div[data-post] > a {
 }
 #curator .panel .pages b {
   color: rgba(58, 58, 58, 0.91);
+}
+#curator .panel .controls {
+  display: inline-block;
+  margin: 1rem 0;
+}
+#curator .panel .controls button {
+  display: inline-block;
+  padding: 0.75rem;
+  margin: 0;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: rgba(225, 225, 225, 0.7);
+  outline: none;
+  border: none;
+  background: none;
 }
 #curator .post_header {
   position: relative;
