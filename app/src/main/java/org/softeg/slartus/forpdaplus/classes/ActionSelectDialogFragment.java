@@ -130,7 +130,7 @@ public class ActionSelectDialogFragment {
                             okListener.execute(newValue);
                     }
                 })
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                .onNeutral(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
                         okListener.execute(values[selectedValue[0]]);

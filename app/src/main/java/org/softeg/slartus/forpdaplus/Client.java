@@ -927,7 +927,7 @@ public class Client implements IHttpClient {
         //<<опрос
         topicBodyBuilder.openPostsList();
         mainMatcher = Pattern
-                .compile("<div data-post=\"(\\d+)\"[^>]*>([\\s\\S]*?)((?=<div class=\"post_body[^\"]*?\">)[\\s\\S]*?)(?=<div data-post=\"\\d+\"[^>]*>|<div class=\"topic_foot_nav[^\"]*\">)",
+                .compile("<div data-post=\"(\\d+)\"[^>]*>([\\s\\S]*?)((?=<div class=\"post_body[^>]*?\">)[\\s\\S]*?)(?=<div data-post=\"\\d+\"[^>]*>|<div class=\"topic_foot_nav[^\"]*\">)",
                         Pattern.MULTILINE | Pattern.CASE_INSENSITIVE)
                 .matcher(topicBody);
 
@@ -944,7 +944,7 @@ public class Client implements IHttpClient {
                 .compile("href=\"[^\"]*act=rep[^\"]*view=(win_minus|win_add)[^\"]*\"");
         final Pattern editPattern = PatternExtensions.compile("href=\"[^\"]*act=post[^\"]*do=edit_post[^\"]*\"");
         final Pattern deletePattern = PatternExtensions.compile("onclick=\"[^\"]*seMODdel");
-        final Pattern bodyPattern = PatternExtensions.compile("<div class=\"post_body([^\"]*)?\">([\\s\\S]*)</div>");
+        final Pattern bodyPattern = PatternExtensions.compile("<div class=\"post_body([^\"]*)?\"[^>]*>([\\s\\S]*)<\\/div>");
 
 
         //String today = Functions.getToday();
