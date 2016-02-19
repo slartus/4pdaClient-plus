@@ -286,7 +286,7 @@ public class Post {
 
                 String message = null;
                 try {
-                    String res = Client.getInstance().performGet("http://4pda.ru/forum/zka.php?i=" + postId + "&v=" + direction);
+                    String res = Client.getInstance().performGet("http://4pda.ru/forum/zka.php?i=" + postId + "&v=" + direction, true, false);
 
                     Matcher m = Pattern.compile("ok:\\s*?((?:\\+|\\-)?\\d+)").matcher(res);
                     if (m.find()) {
