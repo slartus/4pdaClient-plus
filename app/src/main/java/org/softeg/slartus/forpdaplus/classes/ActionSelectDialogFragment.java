@@ -42,7 +42,6 @@ public class ActionSelectDialogFragment {
                                         final String selectedAction,
                                         final Runnable showTopicAction) {
         new MaterialDialog.Builder(context)
-                .title("Действие по умолчанию")
                 .content("Назначить по умолчанию?")
                 .positiveText("Да")
                 .negativeText("Нет")
@@ -101,6 +100,7 @@ public class ActionSelectDialogFragment {
                         return true;
                     }
                 })
+                .alwaysCallSingleChoiceCallback()
                 .positiveText("Всегда")
                 .neutralText("Только сейчас")
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
