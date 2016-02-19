@@ -105,12 +105,12 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
         SubMenu subMenu;
         List<BrickInfo> list;
 
-        if (prefs.getBoolean("categoryLast", false)) {
-            subMenu = menu.addSubMenu(0, 0, 0,"Последние");
-            list = ListCore.createBricks(Preferences.Lists.getLastActions());
-            for (; i<list.size(); i++, itemId++)
-                subMenu.add(0, itemId, i, list.get(i).getTitle()).setIcon(list.get(i).getIcon());
-        }
+//        if (prefs.getBoolean("categoryLast", false)) {
+//            subMenu = menu.addSubMenu(0, 0, 0,"Последние");
+//            list = ListCore.createBricks(Preferences.Lists.getLastActions());
+//            for (; i<list.size(); i++, itemId++)
+//                subMenu.add(0, itemId, i, list.get(i).getTitle()).setIcon(list.get(i).getIcon());
+//        }
         subMenu = menu.addSubMenu(1, 0, 0,"Все");
         list = ListCore.getMainMenuBricks();
         for (i=0; i<list.size(); i++, itemId++)
@@ -199,14 +199,16 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
 
         switcha: switch (selectedBrick.getName()){
             case AppAndGame.NAME:
-                final List<ApplicationInfo> packages = getContext().getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
-                for (ApplicationInfo packageInfo : packages) {
-                    if(packageInfo.packageName.equals("ru.freeman42.app4pda")){
-                        getContext().startActivity(getContext().getPackageManager().getLaunchIntentForPackage(packageInfo.packageName));
-                        break switcha;
-                    }
-                }
                 ThemeFragment.showTopicById("275433");
+//                final List<ApplicationInfo> packages = getContext().getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
+//                for (ApplicationInfo packageInfo : packages) {
+//                    if(packageInfo.packageName.equals("ru.freeman42.app4pda")){
+//                        getContext().startActivity(getContext().getPackageManager().getLaunchIntentForPackage(packageInfo.packageName));
+//                        break switcha;
+//                    } else {
+//
+//                    }
+//                }
                 break;
             case PreferencesBrickInfo.NAME:
                 mActivity.startActivityForResult(new Intent(mActivity, PreferencesActivity.class), 0);
@@ -265,14 +267,14 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
                         .show();
                 break;
             default:
-                if (prefs.getBoolean("categoryLast", false)&item.getGroupId()==0) {
-                    SubMenu subMenu = menu.getItem(item.getGroupId()).getSubMenu();
-                    subMenu.clear();
-                    subMenu.setHeaderTitle("Последние");
-                    List<BrickInfo> list = ListCore.createBricks(Preferences.Lists.getLastActions());
-                    for (int i=0, itemId = 0; i<list.size(); i++, itemId++)
-                        subMenu.add(0, itemId, i, list.get(i).getTitle()).setIcon(list.get(i).getIcon());
-                }
+//                if (prefs.getBoolean("categoryLast", false)&item.getGroupId()==0) {
+//                    SubMenu subMenu = menu.getItem(item.getGroupId()).getSubMenu();
+//                    subMenu.clear();
+//                    subMenu.setHeaderTitle("Последние");
+//                    List<BrickInfo> list = ListCore.createBricks(Preferences.Lists.getLastActions());
+//                    for (int i=0, itemId = 0; i<list.size(); i++, itemId++)
+//                        subMenu.add(0, itemId, i, list.get(i).getTitle()).setIcon(list.get(i).getIcon());
+//                }
                 if(item.getGroupId()!=2)
                     selectItem(selectedBrick);
         }
