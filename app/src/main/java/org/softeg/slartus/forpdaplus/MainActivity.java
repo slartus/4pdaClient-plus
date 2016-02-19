@@ -485,7 +485,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             }else {
                 if(getSupportFragmentManager().findFragmentByTag(tag)==null){
                     addFragment(transaction, fragment, tag);
-                    transaction.show(fragment);
+                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(fragment);
                 }else {
                     showFragmentByTag(transaction, tag);
                     if(Preferences.Lists.isRefreshOnTab())
@@ -503,14 +503,14 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             if (fr != null) {
                 if(fr.isVisible())
                     fr.onPause();
-                transaction.hide(fr);
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).hide(fr);
             }
         }
     }
 
     private void showFragmentByTag(FragmentTransaction transaction, String tag){
         getSupportFragmentManager().findFragmentByTag(tag).onResume();
-        transaction.show(getSupportFragmentManager().findFragmentByTag(tag));
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(getSupportFragmentManager().findFragmentByTag(tag));
     }
     public void showFragmentByTag(String tag, boolean onresume){
 
@@ -526,14 +526,14 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             return;
         }
         if(onresume) getSupportFragmentManager().findFragmentByTag(tag).onResume();
-        transaction.show(getSupportFragmentManager().findFragmentByTag(tag));
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(getSupportFragmentManager().findFragmentByTag(tag));
         transaction.commit();
     }
 
     private void addFragment(FragmentTransaction transaction, Fragment fragment, String tag) {
         if(fragment.isAdded()) return;
         transaction.add(R.id.content_frame, fragment, tag);
-        transaction.show(fragment);
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(fragment);
     }
 
     public void endActionFragment(String title, String tag){
