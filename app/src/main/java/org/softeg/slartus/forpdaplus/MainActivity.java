@@ -78,7 +78,7 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity implements BricksListDialogFragment.IBricksListDialogCaller,
         MainDrawerMenu.SelectItemListener, TabDrawerMenu.SelectItemListener {
-
+// test commit to beta
     public static final int REQUEST_WRITE_STORAGE = 112;
 
     @Override
