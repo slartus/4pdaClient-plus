@@ -139,7 +139,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
                 Toast.makeText(getContext(), "Ник получен: " + m_Nick, Toast.LENGTH_SHORT).show();
                 setTitle(m_Nick);
                 App.getInstance().getTabByTag(getTag()).setTitle(m_Nick);
-                TabDrawerMenu.notifyDataSetChanged();
+                getMainActivity().notifyTabAdapter();
             } else {
                 if (ex != null)
                     AppLog.e(getMainActivity(), ex, new Runnable() {

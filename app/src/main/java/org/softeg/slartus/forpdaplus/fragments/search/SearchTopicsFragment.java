@@ -42,10 +42,10 @@ public class SearchTopicsFragment extends TopicsListFragment
 
     @Override
     public android.view.View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {
-        View v = super.onCreateView(inflater, container, savedInstanceState);
+        view = super.onCreateView(inflater, container, savedInstanceState);
 
         getListView().setOnScrollListener(this);
-        return v;
+        return view;
     }
 
 //    @Override

@@ -107,13 +107,14 @@ super();
 
     @Override
     public android.view.View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {
-        View v = inflater.inflate(getViewId(), container, false);
-        assert v != null;
-        mListView = (ExpandableListView) v.findViewById(android.R.id.list);
+
+        view = inflater.inflate(getViewId(), container, false);
+        assert view != null;
+        mListView = (ExpandableListView) findViewById(android.R.id.list);
         mListView.setOnChildClickListener(this);
-        mEmptyTextView = (TextView) v.findViewById(android.R.id.empty);
+        mEmptyTextView = (TextView) findViewById(android.R.id.empty);
         mListView.setEmptyView(mEmptyTextView);
-        return v;
+        return view;
     }
 
     @Override

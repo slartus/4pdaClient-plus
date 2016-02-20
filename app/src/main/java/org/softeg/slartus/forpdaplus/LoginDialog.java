@@ -104,6 +104,7 @@ public class LoginDialog {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
                         MainActivity.checkToster(context);
+                        MainActivity.checkUsers(context);
                     }
                 })
                 .build();
@@ -255,6 +256,7 @@ public class LoginDialog {
                 Toast.makeText(mContext, "Вход выполнен",
                         Toast.LENGTH_SHORT).show();
                 MainActivity.checkToster(mContext);
+                MainActivity.checkUsers(mContext);
             } else {
                 if (ex != null)
                     AppLog.e(mContext, ex);

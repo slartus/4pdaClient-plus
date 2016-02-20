@@ -250,15 +250,15 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
     @Override
     public View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.forum_fragment, container, false);
-        assert v != null;
-        mListView = (RecyclerView) v.findViewById(android.R.id.list);
+        view = inflater.inflate(R.layout.forum_fragment, container, false);
+        assert view != null;
+        mListView = (RecyclerView) findViewById(android.R.id.list);
 
         registerForContextMenu(mListView);
-        mEmptyTextView = (TextView) v.findViewById(android.R.id.empty);
+        mEmptyTextView = (TextView) findViewById(android.R.id.empty);
 
 
-        return v;
+        return view;
     }
 
     public void reloadData() {

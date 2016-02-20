@@ -175,7 +175,7 @@ public class ParentFragment extends GeneralFragment {
         m_Title = parsed.getTitle();
         setTitle(m_Title);
         App.getInstance().getTabByTag(getTag()).setTitle(m_Title);
-        TabDrawerMenu.notifyDataSetChanged();
+        getMainActivity().notifyTabAdapter();
         viewPager = (ViewPager) findViewById(R.id.devDbViewPager);
         adapter = new DevDbViewPagerAdapter(getMainActivity(), getChildFragmentManager(), parsed);
         viewPager.setAdapter(adapter);

@@ -124,7 +124,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
             setTitle("QMS:Новая тема");
             App.getInstance().getTabByTag(getTag()).setTitle("QMS:Новая тема");
         }
-        TabDrawerMenu.notifyDataSetChanged();
+        getMainActivity().notifyTabAdapter();
         return view;
     }
 
@@ -226,7 +226,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
                 username.setVisibility(View.GONE);
                 setTitle(m_Nick + ":QMS:Новая тема");
                 App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":QMS:Новая тема");
-                TabDrawerMenu.notifyDataSetChanged();
+                getMainActivity().notifyTabAdapter();
             } else {
                 username.setVisibility(View.VISIBLE);
                 if (ex != null)

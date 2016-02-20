@@ -57,7 +57,7 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
         }
         getActivity().setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
         App.getInstance().getTabByTag(getTag()).setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
-        TabDrawerMenu.notifyDataSetChanged();
+        getMainActivity().notifyTabAdapter();
     }
 
     @Override

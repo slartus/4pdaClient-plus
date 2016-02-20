@@ -97,7 +97,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
 
     public void showBody(){
         getThisTab().setTitle(getTitle()).setUrl(getUrl());
-        TabDrawerMenu.notifyDataSetChanged();
+        getMainActivity().notifyTabAdapter();
     }
 
     @Override

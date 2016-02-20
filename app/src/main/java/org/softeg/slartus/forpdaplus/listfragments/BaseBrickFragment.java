@@ -118,7 +118,8 @@ public abstract class BaseBrickFragment extends GeneralFragment{
     @Override
     public void onResume() {
         super.onResume();
-        if(m_Title!=null) getActivity().setTitle(m_Title);
+        if(m_Title!=null)
+            setTitle(m_Title);
     }
 
     @Override

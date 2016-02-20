@@ -41,6 +41,7 @@ public class TabDrawerMenu {
     private static TabAdapter adapter;
     private ListView mListView;
     private Button closeAll;
+    private Handler handler = new Handler();
 
 
     public interface SelectItemListener {
@@ -136,18 +137,19 @@ public class TabDrawerMenu {
     private class TabOnClickListener implements ListView.OnItemClickListener{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            close();
+
             selectTab((TabItem) adapter.getItem(position));
+            close();
         }
     }
-    public static void notifyDataSetChanged(){
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                adapter.notifyDataSetChanged();
-            }
-        },300);
-
+    private Runnable notifyAdapter = new Runnable() {
+        @Override
+        public void run() {
+            adapter.notifyDataSetChanged();
+        }
+    };
+    public void notifyDataSetChanged(){
+        handler.postDelayed(notifyAdapter, 300);
     }
 
     public void refreshAdapter(){

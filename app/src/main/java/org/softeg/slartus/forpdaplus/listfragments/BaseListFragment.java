@@ -64,16 +64,16 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
 
     @Override
     public android.view.View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {
-        View v = inflater.inflate(getViewId(), container, false);
-        assert v != null;
-        mListView = (ListView) v.findViewById(android.R.id.list);
+        view = inflater.inflate(getViewId(), container, false);
+        assert view != null;
+        mListView = (ListView) findViewById(android.R.id.list);
         mListView.setOnItemClickListener(this);
         View header = getListViewHeader();
         if (header != null)
             mListView.addHeaderView(header);
-        mEmptyTextView = (TextView) v.findViewById(android.R.id.empty);
+        mEmptyTextView = (TextView) findViewById(android.R.id.empty);
         mListView.setEmptyView(mEmptyTextView);
-        return v;
+        return view;
     }
 
     @Override
@@ -174,10 +174,18 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
         return mAdapter;
     }
 
+    private Runnable notifyAdapter = new Runnable() {
+        @Override
+        public void run() {
+            getAdapter().notifyDataSetChanged();
+        }
+    };
     @Override
     public void onResume() {
         super.onResume();
-        if(getAdapter()!=null) getAdapter().notifyDataSetChanged();
+        if(getAdapter()!=null)
+            mHandler.postDelayed(notifyAdapter, 300);
+
     }
 
     protected BaseAdapter createAdapter() {

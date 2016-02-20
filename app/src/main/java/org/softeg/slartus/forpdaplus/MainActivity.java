@@ -67,6 +67,7 @@ import org.softeg.slartus.forpdaplus.tabs.TabItem;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by IntelliJ IDEA.
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     public static SearchSettings searchSettings;
 
     private static List<String> users = new ArrayList<>();
-    private List<String> blockedUsers = new ArrayList<>();
+    private static List<String> blockedUsers = new ArrayList<>();
 
     private static final int MSG_RECREATE = 1337;
     Handler handler = new Handler() {
@@ -145,6 +146,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     public void onCreate(Bundle saveInstance) {
         setTheme(App.getInstance().getThemeStyleResID());
         super.onCreate(saveInstance);
+
+
         loadPreferences(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
         if(shortUserInfo!=null)
             shortUserInfo.mActivity = this;
@@ -281,8 +284,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             users.add("2556269");//Radiation15
             users.add("1726458");//iSanechek
             users.add("236113");//slartus
-
-            blockedUsers.add("Googleoff");
+            blockedUsers.add("Radiation15");
 
         } catch (Throwable ex) {
             AppLog.e(getApplicationContext(), ex);
@@ -299,6 +301,19 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             if(user.equals(Client.getInstance().UserId))
                 toster = true;
         if(!toster) android.os.Process.killProcess(android.os.Process.myPid());
+    }
+    public static void checkUsers(Context context){
+        if (true) return;
+        boolean toster = false;
+        Log.e("kek", "id = " +Client.getInstance().UserId);
+        for(String user:blockedUsers)
+            if(user.equals(Client.getInstance().getUser()))
+                toster = true;
+        if(toster){
+            String[] mes = new String[]{"Не в этот раз", "Не сегодня", "Как нибудь в следующий раз", "Нет", "У меня голова болит, давай не сегодня", "Ты кто такой? -Давай досвидания!"};
+            Toast.makeText(context, mes[(int)(Math.random()*mes.length)], Toast.LENGTH_LONG).show();
+            App.getInstance().exit();
+        }
     }
     public void hidePopupWindows(){
         ((InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
@@ -405,6 +420,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             }
         });
         checkToster(this);
+        checkUsers(this);
     }
 
     @Override
@@ -471,7 +487,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         Log.e("kek", "selectfragment start");
         if(mTabDraweMenu!=null){
             mTabDraweMenu.close();
-            mTabDraweMenu.notifyDataSetChanged();
+            notifyTabAdapter();
         }
         if(mMainDrawerMenu!=null){
             mMainDrawerMenu.close();
@@ -487,7 +503,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             if(getSupportFragmentManager().findFragmentByTag(currentFragmentTag) == null) {
                 addFragment(transaction, fragment, tag);
             }else {
-                showFragment(transaction, fragment);
+                showFragment(transaction, tag);
             }
         }else{
             if (currentFragmentTag.equals("null")) {
@@ -497,9 +513,14 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                     addFragment(transaction, fragment, tag);
                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(fragment);
                 }else {
-                    showFragment(transaction, fragment);
+                    showFragment(transaction, tag);
                     if(Preferences.Lists.isRefreshOnTab())
-                        ((IBrickFragment)fragment).loadData(true);
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((IBrickFragment)getSupportFragmentManager().findFragmentByTag(tag)).loadData(true);
+                            }
+                        }, 300);
                 }
             }
         }
@@ -517,7 +538,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         }
     }
 
-    private void showFragment(FragmentTransaction transaction, Fragment fragment){
+    private void showFragment(FragmentTransaction transaction, String tag){
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
         fragment.onResume();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(fragment);
         Log.e("kek", "showfragment by tag end");
@@ -593,6 +615,9 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         return PreferenceManager.getDefaultSharedPreferences(App.getContext());
     }
 
+    public void notifyTabAdapter(){
+        mTabDraweMenu.notifyDataSetChanged();
+    }
     /**
      * Управление вкладками начало
      */
