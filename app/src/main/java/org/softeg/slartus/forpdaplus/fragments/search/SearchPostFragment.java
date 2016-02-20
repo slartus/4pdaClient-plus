@@ -65,7 +65,6 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     private static final String SEARCH_URL_KEY = "SEARCH_URL_KEY";
     private WebViewExternals m_WebViewExternals;
     private Bundle args;
-    private View view;
     private Menu menu;
 
     @Override
@@ -164,14 +163,14 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         view = inflater.inflate(R.layout.search_posts_result, container, false);
         initSwipeRefreshLayout();
         assert view != null;
-        mWvBody = (AdvWebView) view.findViewById(R.id.body_webview);
-        view.findViewById(R.id.btnUp).setOnClickListener(new View.OnClickListener() {
+        mWvBody = (AdvWebView) findViewById(R.id.body_webview);
+        findViewById(R.id.btnUp).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBtnUpClick(view);
             }
         });
-        view.findViewById(R.id.btnDown).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btnDown).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBtnDownClick(view);
@@ -377,11 +376,6 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
     public AdvWebView getWebView() {
         return mWvBody;
-    }
-
-    @Override
-    public View getView() {
-        return view;
     }
 
     @Override

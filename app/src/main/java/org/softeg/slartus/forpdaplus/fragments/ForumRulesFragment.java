@@ -51,11 +51,6 @@ public class ForumRulesFragment extends WebViewFragment{
     }
 
     @Override
-    public View getView() {
-        return view;
-    }
-
-    @Override
     public WebViewClient MyWebViewClient() {
         return new MyWebViewClient();
     }
@@ -103,11 +98,10 @@ public class ForumRulesFragment extends WebViewFragment{
         MainActivity.addTab(m_Title, "RULES", new ForumRulesFragment());
     }
 
-    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.webview_fragment, container, false);
-        m_WebView = (AdvWebView) view.findViewById(R.id.wvBody);
+        m_WebView = (AdvWebView) findViewById(R.id.wvBody);
 
         initSwipeRefreshLayout();
 

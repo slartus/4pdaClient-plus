@@ -57,7 +57,6 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     }
 
     public abstract AdvWebView getWebView();
-    public abstract View getView();
     public abstract WebViewClient MyWebViewClient();
     public abstract String getTitle();
     public abstract String getUrl();
@@ -97,14 +96,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     }
 
     public void showBody(){
-        for(int i = 0; i <= App.getInstance().getTabItems().size()-1; i++){
-            if(App.getInstance().getTabItems().get(i).getTag().equals(getTag())) {
-                App.getInstance().getTabItems().get(i).setTitle(getTitle());
-                App.getInstance().getTabItems().get(i).setUrl(getUrl());
-                TabDrawerMenu.notifyDataSetChanged();
-                return;
-            }
-        }
+        getThisTab().setTitle(getTitle()).setUrl(getUrl());
+        TabDrawerMenu.notifyDataSetChanged();
     }
 
     @Override

@@ -69,8 +69,8 @@ public class NoteFragment extends GeneralFragment {
         setHasOptionsMenu(true);
         //createActionMenu();
 
-        infoTable = (TableLayout) view.findViewById(R.id.infoTable);
-        webView = (AdvWebView) view.findViewById(R.id.webView);
+        infoTable = (TableLayout) findViewById(R.id.infoTable);
+        webView = (AdvWebView) findViewById(R.id.webView);
         Bundle extras = getArguments();
 
         m_Id = extras.getString(NOTE_ID_KEY);

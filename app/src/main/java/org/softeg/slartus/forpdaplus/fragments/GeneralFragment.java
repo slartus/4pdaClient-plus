@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -14,6 +15,7 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
+import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
 /**
  * Created by radiationx on 12.11.15.
@@ -24,12 +26,22 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
 
     private ActionBar actionBar;
     private MainActivity mainActivity;
-    protected View view;
+    public View view;
+    private boolean fragmentPaused = true;
 
     private String generalTitle = "ForPda";
-    private String generalSubtitle;
-    private String generalUrl = "defurl";
-    private String generalParentTag = "defparenttag";
+    private String generalSubtitle = null;
+    private String generalUrl = "DefaultURL";
+    private String generalParentTag = "DefaultParentTag";
+
+    @Nullable
+    @Override
+    public View getView() {
+        return view;
+    }
+    public View findViewById(int id){
+        return view.findViewById(id);
+    }
 
     public String getGeneralTitle() {
         return generalTitle;
@@ -42,7 +54,6 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     public String getGeneralParentTag() {
         return generalParentTag;
     }
-    boolean fragmentPaused = true;
 
     public void setTitle(CharSequence title){
         setTitle(title.toString());
@@ -62,6 +73,16 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         if(mainActivity==null)
             mainActivity = (MainActivity)getActivity();
         return mainActivity;
+    }
+
+    private TabItem thisTab;
+
+    public void setThisTab(TabItem thisTab) {
+        this.thisTab = thisTab;
+    }
+
+    public TabItem getThisTab() {
+        return thisTab;
     }
 
     public static SharedPreferences getPreferences() {
@@ -90,23 +111,16 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
             generalTitle = savedInstanceState.getString("generalTitle");
             generalUrl = savedInstanceState.getString("generalUrl");
             generalParentTag = savedInstanceState.getString("generalParentTag");
-            for(int i = 0; i <= App.getInstance().getTabItems().size()-1; i++){
-                if(App.getInstance().getTabItems().get(i).getTag().equals(getTag())) {
-                    App.getInstance().getTabItems().get(i).setTitle(generalTitle);
-                    App.getInstance().getTabItems().get(i).setUrl(generalUrl);
-                    App.getInstance().getTabItems().get(i).setParentTag(generalParentTag);
-                    TabDrawerMenu.notifyDataSetChanged();
-                    return;
-                }
-            }
+            getThisTab().setTitle(generalTitle).setUrl(getGeneralUrl()).setParentTag(generalParentTag);
+            TabDrawerMenu.notifyDataSetChanged();
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString("generalTitle", App.getInstance().getTabByTag(getTag()).getTitle());
-        outState.putString("generalUrl", App.getInstance().getTabByTag(getTag()).getUrl());
-        outState.putString("generalParentTag", App.getInstance().getTabByTag(getTag()).getParentTag());
+        outState.putString("generalTitle", getThisTab().getTitle());
+        outState.putString("generalUrl", getThisTab().getUrl());
+        outState.putString("generalParentTag", getThisTab().getParentTag());
         super.onSaveInstanceState(outState);
     }
 
@@ -115,8 +129,9 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         mainActivity = (MainActivity)getActivity();
-        actionBar = mainActivity.getSupportActionBar();
+        actionBar = getMainActivity().getSupportActionBar();
         fragmentPaused = false;
+        Log.e("kek", getTag() + " FRAGMENT " + thisTab);
     }
 
     public ActionBar getSupportActionBar() {
@@ -165,7 +180,10 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     public void onDetach() {
         super.onDetach();
         System.gc();
+        Log.e("kek", "ondetach "+ getTag());
     }
+
+
 
     @Override
     public String getListName() {

@@ -139,9 +139,9 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         removeArrow();
-        View view = inflater.inflate(R.layout.downloads_list_activity, container, false);
+        view = inflater.inflate(R.layout.downloads_list_activity, container, false);
 
-        m_ListView = (ListView) view.findViewById(R.id.lstTree);
+        m_ListView = (ListView) findViewById(R.id.lstTree);
         m_ListView.addFooterView(createListFooter(inflater));
 
         m_Adapter = new DownloadTasksAdapter(getContext(), R.layout.download_task_item, getDownloadTasks());

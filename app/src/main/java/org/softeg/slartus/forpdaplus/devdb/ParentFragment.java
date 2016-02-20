@@ -38,7 +38,6 @@ public class ParentFragment extends GeneralFragment {
     private int m_Position;
     private String m_Title;
 
-    private View rootView;
     private int LAYOUT = R.layout.dev_db_parent_fragment;
     private ViewPager viewPager;
     private MaterialDialog dialog;
@@ -115,15 +114,15 @@ public class ParentFragment extends GeneralFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        recLifeCycle(getClass(), CALL_TO_SUPER);
-        rootView = inflater.inflate(LAYOUT, container, false);
+        view = inflater.inflate(LAYOUT, container, false);
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
         getMainActivity().getToolbarShadow().setVisibility(View.GONE);
 
         if (DevDbUtils.isAndroid5()) {
             getMainActivity().getAppBarLayout().setElevation(0);
-            rootView.findViewById(R.id.dev_toolbar_shadow).setVisibility(View.GONE);
+            view.findViewById(R.id.dev_toolbar_shadow).setVisibility(View.GONE);
         }
-        return rootView;
+        return view;
     }
 
     @Override
@@ -177,12 +176,12 @@ public class ParentFragment extends GeneralFragment {
         setTitle(m_Title);
         App.getInstance().getTabByTag(getTag()).setTitle(m_Title);
         TabDrawerMenu.notifyDataSetChanged();
-        viewPager = (ViewPager) rootView.findViewById(R.id.devDbViewPager);
+        viewPager = (ViewPager) findViewById(R.id.devDbViewPager);
         adapter = new DevDbViewPagerAdapter(getMainActivity(), getChildFragmentManager(), parsed);
         viewPager.setAdapter(adapter);
         viewPager.setOnPageChangeListener(mChangeListener);
 
-        TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.devDbTabLayout);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.devDbTabLayout);
         tabLayout.setupWithViewPager(viewPager);
         showTabs(m_Position);
     }

@@ -49,7 +49,6 @@ public class ProfileEditFragment extends WebViewFragment {
     public final static String m_Title = "Изменить личные данные";
     private String parentTag = App.getInstance().getCurrentFragmentTag();
     private final static String url = "http://4pda.ru/forum/index.php?act=UserCP&CODE=01";
-    View view;
 
     public static void editProfile(){
         MainActivity.addTab(m_Title, url, new ProfileEditFragment());
@@ -61,11 +60,6 @@ public class ProfileEditFragment extends WebViewFragment {
         return m_WebView;
     }
 
-
-    @Override
-    public View getView() {
-        return view;
-    }
 
     @Override
     public WebViewClient MyWebViewClient() {
@@ -115,7 +109,7 @@ public class ProfileEditFragment extends WebViewFragment {
         initSwipeRefreshLayout();
         setHasOptionsMenu(true);
         assert view != null;
-        m_WebView = (AdvWebView) view.findViewById(R.id.wvBody);
+        m_WebView = (AdvWebView) findViewById(R.id.wvBody);
         registerForContextMenu(m_WebView);
 
         m_WebView.getSettings();

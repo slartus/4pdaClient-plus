@@ -33,7 +33,6 @@ import java.util.Map;
  */
 public class PostPreviewFragment extends WebViewFragment {
     private AdvWebView webView;
-    private View view;
     private String url;
     private String title;
     private WebViewClient webViewClient;
@@ -44,11 +43,6 @@ public class PostPreviewFragment extends WebViewFragment {
     @Override
     public AdvWebView getWebView() {
         return webView;
-    }
-
-    @Override
-    public View getView() {
-        return view;
     }
 
     @Override
@@ -118,7 +112,7 @@ public class PostPreviewFragment extends WebViewFragment {
         title = App.getInstance().getTabByTag(getTag()).getTitle();
         url = App.getInstance().getTabByTag(getTag()).getUrl();
         initBBCodes();
-        webView = (AdvWebView) view.findViewById(R.id.webView);
+        webView = (AdvWebView) findViewById(R.id.webView);
         registerForContextMenu(webView);
         setWebViewSettings();
 

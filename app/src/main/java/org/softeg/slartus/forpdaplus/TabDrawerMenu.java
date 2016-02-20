@@ -3,13 +3,12 @@ package org.softeg.slartus.forpdaplus;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Handler;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -121,7 +120,7 @@ public class TabDrawerMenu {
                 refreshAdapter();
                 notifyDataSetChanged();
             }
-        }, 500);
+        }, 300);
 
     }
 
@@ -142,7 +141,13 @@ public class TabDrawerMenu {
         }
     }
     public static void notifyDataSetChanged(){
-        adapter.notifyDataSetChanged();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        },300);
+
     }
 
     public void refreshAdapter(){
@@ -156,6 +161,8 @@ public class TabDrawerMenu {
         for(int i = 0; i <= App.getInstance().getTabItems().size()-1; i++){
             if(App.getInstance().getTabItems().get(i).getTag().equals(tag)) {
                 final TabItem tabItem = App.getInstance().getTabByTag(tag);
+                Log.e("kek", tabItem.getFragment()+" WTF");
+                tabItem.setFragment(null);
                 App.getInstance().getTabItems().remove(i);
 
                 if(App.getInstance().getTabByTag(tabItem.getParentTag())!=null)
@@ -163,7 +170,7 @@ public class TabDrawerMenu {
                 else if(tag.equals(App.getInstance().getCurrentFragmentTag()))
                     App.getInstance().setCurrentFragmentTag(App.getInstance().getTabItems().get(App.getInstance().getLastTabPosition(i)).getTag());
 
-                ((MainActivity)getContext()).showFragmentByTag(App.getInstance().getCurrentFragmentTag(), true);
+                ((MainActivity)getContext()).showFragment(App.getInstance().getCurrentFragmentTag(), true);
                 ((MainActivity)getContext()).endActionFragment(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
                 ((MainActivity)getContext()).getmMainDrawerMenu().setItemCheckable(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
                 refreshAdapter();
@@ -181,12 +188,13 @@ public class TabDrawerMenu {
     }
     public void selectTab(TabItem tabItem) {
         mSelectItemListener.selectTab(tabItem);
-        adapter.notifyDataSetChanged();
+        notifyDataSetChanged();
+        Log.e("kek", "select save");
         if(ListCore.getRegisteredBrick(tabItem.getTag())!=null){
             Preferences.Lists.setLastSelectedList(tabItem.getTag());
             Preferences.Lists.addLastAction(tabItem.getTag());
         }
-
+        Log.e("kek", "select save end");
     }
 
     private Context getContext() {
@@ -229,7 +237,7 @@ public class TabDrawerMenu {
             holder.close.setOnClickListener(new CloseClickListener(item.getTag()));
 
             holder.text.setTextColor(resources.getColor(App.getInstance().getDrawerMenuText()));
-            holder.item.setBackgroundResource(Color.TRANSPARENT);
+            holder.item.setBackgroundResource(android.R.color.transparent);
 
             if(App.getInstance().getCurrentFragmentTag().equals(item.getTag())){
                 holder.text.setTextColor(resources.getColor(R.color.selectedItemText));

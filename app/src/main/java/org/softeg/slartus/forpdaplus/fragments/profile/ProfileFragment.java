@@ -63,11 +63,6 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     private Handler mHandler = new Handler();
 
     @Override
-    public View getView() {
-        return view;
-    }
-
-    @Override
     public WebViewClient MyWebViewClient() {
         return new MyWebViewClient();
     }
@@ -176,7 +171,6 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         super.onSaveInstanceState(outState);
     }
 
-    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -185,7 +179,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         // getDialog().setTitle("Профиль");
         setHasOptionsMenu(true);
         assert view != null;
-        m_WebView = (AdvWebView) view.findViewById(R.id.wvBody);
+        m_WebView = (AdvWebView) findViewById(R.id.wvBody);
         registerForContextMenu(m_WebView);
         m_WebView.getSettings().setLoadWithOverviewMode(false);
         m_WebView.getSettings().setUseWideViewPort(true);

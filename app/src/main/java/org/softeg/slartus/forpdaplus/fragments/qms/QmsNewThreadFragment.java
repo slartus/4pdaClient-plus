@@ -88,21 +88,21 @@ public class QmsNewThreadFragment extends GeneralFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setArrow();
-        View view = inflater.inflate(R.layout.qms_new_thread, container, false);
+        view = inflater.inflate(R.layout.qms_new_thread, container, false);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        username = (EditText) view.findViewById(R.id.username);
-        title = (EditText) view.findViewById(R.id.title);
-        message = (EditText) view.findViewById(R.id.message);
-        view.findViewById(R.id.btnSendPost).setOnClickListener(new View.OnClickListener() {
+        username = (EditText) findViewById(R.id.username);
+        title = (EditText) findViewById(R.id.title);
+        message = (EditText) findViewById(R.id.message);
+        findViewById(R.id.btnSendPost).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 send();
             }
         });
-        mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) view.findViewById(R.id.advanced_button), message);
+        mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), message);
         mPopupPanelView.activityCreated(getMainActivity(), view);
 
         Bundle extras = getArguments();

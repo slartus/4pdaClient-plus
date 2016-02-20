@@ -60,7 +60,6 @@ import java.util.regex.Pattern;
  * Created by radiationx on 04.02.16.
  */
 public class CuratorFragment extends WebViewFragment {
-    private View view;
     private AdvWebView webView;
     private Menu menu;
     private String topicId = "";
@@ -72,11 +71,6 @@ public class CuratorFragment extends WebViewFragment {
     @Override
     public AdvWebView getWebView() {
         return webView;
-    }
-
-    @Override
-    public View getView() {
-        return view;
     }
 
     @Override
@@ -129,8 +123,8 @@ public class CuratorFragment extends WebViewFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.curator_fragment, container, false);
-        webView = (AdvWebView) view.findViewById(R.id.wvBody);
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        webView = (AdvWebView) findViewById(R.id.wvBody);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false)){
             fab.setVisibility(View.GONE);
         }else {
@@ -145,8 +139,8 @@ public class CuratorFragment extends WebViewFragment {
             });
             setHideFab(fab);
         }
-        ImageButton up = (ImageButton) view.findViewById(R.id.btnUp);
-        ImageButton down = (ImageButton) view.findViewById(R.id.btnDown);
+        ImageButton up = (ImageButton) findViewById(R.id.btnUp);
+        ImageButton down = (ImageButton) findViewById(R.id.btnDown);
         up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

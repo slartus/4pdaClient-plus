@@ -129,7 +129,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     private ForPdaDeveloperInterface m_ForPdaDeveloperInterface;
     private Menu menu;
 
-    View view;
     public static ThemeFragment newInstance(String url){
         ThemeFragment fragment = new ThemeFragment();
         Bundle args = new Bundle();
@@ -166,15 +165,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         fragment.setArguments(args);
         fragment.show(context.getSupportFragmentManager(), "dlg1");
 
-    }
-
-    @Override
-    public View getView() {
-        return view;
-    }
-
-    public View findViewById(int id){
-        return view.findViewById(id);
     }
 
     @Override

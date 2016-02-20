@@ -13,12 +13,6 @@ public class TabItem{
     private String subTitle;
     private Fragment fragment;
 
-    public TabItem(String title, String s, String name, Fragment fragment){
-        this.title = this.title;
-        this.url = url;
-        this.tag = tag;
-        this.fragment = fragment;
-    }
     public TabItem(String title, String url, String tag, String parentTag, Fragment fragment){
         this.title = title;
         this.url = url;
@@ -46,16 +40,24 @@ public class TabItem{
         return fragment;
     }
 
-    public void setTitle(final String title){
+    public TabItem setTitle(final String title){
         this.title = title;
+        return this;
     }
-    public void setUrl(final String url){
+    public TabItem setUrl(final String url){
         this.url = url;
+        return this;
     }
-    public void setSubTitle(final String subTitle){
+    public TabItem setSubTitle(final String subTitle){
         this.subTitle = subTitle;
+        return this;
     }
-    public void setParentTag(String parentTag) {
+    public TabItem setParentTag(String parentTag) {
         this.parentTag = parentTag;
+        return this;
+    }
+
+    public void setFragment(Fragment fragment) {
+        this.fragment = fragment;
     }
 }

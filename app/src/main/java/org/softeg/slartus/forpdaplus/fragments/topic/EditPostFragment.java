@@ -150,10 +150,6 @@ public class EditPostFragment extends GeneralFragment {
         MainActivity.addTab("Ред. сообщения", url, newInstance(context, args));
     }
 
-    View view;
-    private View findViewById(int id){
-        return view.findViewById(id);
-    }
     public ActionBar getSupportActionBar() {
         return ((AppCompatActivity)getMainActivity()).getSupportActionBar();
     }

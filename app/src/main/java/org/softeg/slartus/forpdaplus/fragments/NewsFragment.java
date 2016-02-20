@@ -69,7 +69,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     private ArrayList<History> m_History = new ArrayList<>();
     private boolean loadImages;
     private String m_Title = "Новости";
-    private View view;
     private Menu menu;
 
     public static NewsFragment newInstance(String url){
@@ -78,13 +77,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         args.putString(URL_KEY, url);
         fragment.setArguments(args);
         return fragment;
-    }
-    public View getView(){
-        return view;
-    }
-
-    private View findViewById(int id){
-        return getView().findViewById(id);
     }
 
     @Override

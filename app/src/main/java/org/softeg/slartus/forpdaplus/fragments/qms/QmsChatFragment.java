@@ -85,7 +85,6 @@ public class QmsChatFragment extends WebViewFragment {
     private Timer m_UpdateTimer = new Timer();
     private HtmlPreferences m_HtmlPreferences;
     private WebViewExternals m_WebViewExternals;
-    private View view;
     private PopupPanelView mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
     private String m_MessageText = null;
     private AsyncTask<ArrayList<String>, Void, Boolean> m_SendTask = null;
@@ -134,11 +133,6 @@ public class QmsChatFragment extends WebViewFragment {
 
         return prefs.getString("qms.chat.encoding", "UTF-8");
 
-    }
-
-    @Override
-    public View getView() {
-        return view;
     }
 
     @Override
@@ -191,17 +185,17 @@ public class QmsChatFragment extends WebViewFragment {
         m_HtmlPreferences = new HtmlPreferences();
         m_HtmlPreferences.load(getContext());
 
-        edMessage = (EditText) view.findViewById(R.id.edMessage);
-        mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) view.findViewById(R.id.advanced_button), edMessage);
+        edMessage = (EditText) findViewById(R.id.edMessage);
+        mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), edMessage);
         mPopupPanelView.activityCreated(getMainActivity(), view);
-        view.findViewById(R.id.btnSend).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btnSend).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 startSendMessage();
             }
         });
 
 
-        wvChat = (AdvWebView) view.findViewById(R.id.wvChat);
+        wvChat = (AdvWebView) findViewById(R.id.wvChat);
         registerForContextMenu(wvChat);
 
 

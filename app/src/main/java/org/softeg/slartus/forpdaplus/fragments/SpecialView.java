@@ -48,11 +48,6 @@ public class SpecialView extends WebViewFragment {
     }
 
     @Override
-    public View getView() {
-        return view;
-    }
-
-    @Override
     public WebViewClient MyWebViewClient() {
         return new MyWebViewClient();
     }
@@ -100,11 +95,10 @@ public class SpecialView extends WebViewFragment {
         m_Url = url;
     }
 
-    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.webview_fragment, container, false);
-        m_WebView = (AdvWebView) view.findViewById(R.id.wvBody);
+        m_WebView = (AdvWebView) findViewById(R.id.wvBody);
         setHasOptionsMenu(true);
 
 
