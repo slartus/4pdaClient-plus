@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.listfragments.next;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -40,12 +39,12 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ForumsTable;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment;
-import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo;
@@ -88,6 +87,7 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        removeArrow();
         setHasOptionsMenu(true);
         if (getArguments() != null)
             m_ForumId = getArguments().getString(FORUM_ID_KEY, null);
@@ -110,16 +110,6 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
     @Override
     public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add("Обновить")
-                .setIcon(R.drawable.ic_refresh_white_24dp)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        loadData(true);
-                        return false;
-                    }
-                })
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         menu.add("Отметить этот форум прочитанным")
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
@@ -172,6 +162,7 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
     @Override
     public void onResume() {
         super.onResume();
+        removeArrow();
         MainActivity.searchSettings = mSearchSetting;
 
         if(lastImageDownload==MainActivity.getPreferences().getBoolean("forum.list.show_images", true)){
@@ -259,15 +250,15 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
     @Override
     public View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.forum_fragment, container, false);
-        assert v != null;
-        mListView = (RecyclerView) v.findViewById(android.R.id.list);
+        view = inflater.inflate(R.layout.forum_fragment, container, false);
+        assert view != null;
+        mListView = (RecyclerView) findViewById(android.R.id.list);
 
         registerForContextMenu(mListView);
-        mEmptyTextView = (TextView) v.findViewById(android.R.id.empty);
+        mEmptyTextView = (TextView) findViewById(android.R.id.empty);
 
 
-        return v;
+        return view;
     }
 
     public void reloadData() {
@@ -409,8 +400,7 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
                     searchSettings.getForumsIds().add(forum.getId() + "");
                     mSearchSetting = searchSettings;
                     MainActivity.searchSettings = mSearchSetting;
-                }
-                else {
+                } else {
                     ForumTopicsListFragment.showForumTopicsList(getActivity(), forum.getId(), forum.getTitle());
                 }
             }
@@ -430,6 +420,24 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
             }
 
 
+        }, new ForumsAdapter.OnLongClickListener() {
+            private void show(String id){
+                ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", "http://4pda.ru/forum/index.php?showforum="+id);
+            }
+            @Override
+            public void onItemClick(View v) {
+                show(mData.getItems().get(mListView.getChildPosition(v) - mData.getCrumbs().size()).getId());
+            }
+
+            @Override
+            public void onHeaderClick(View v) {
+                show(mData.getCrumbs().get(mListView.getChildPosition(v)).getId());
+            }
+
+            @Override
+            public void onHeaderTopicsClick(View v) {
+                show(mData.getCrumbs().get(mListView.getChildPosition(v)).getId());
+            }
         });
     }
 
@@ -483,6 +491,7 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
             args.putString(ForumFragment.FORUM_ID_KEY, forumId);
         if (!TextUtils.isEmpty(topicId))
             args.putString(TopicsListFragment.KEY_TOPIC_ID, topicId);
+        Log.e("kek", forumId+" : "+topicId);
         MainActivity.showListFragment(forumId+topicId, new ForumBrickInfo().getName(), args);
     }
 
@@ -525,9 +534,18 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
             void onHeaderTopicsClick(View v);
 
         }
+        public interface OnLongClickListener {
+            void onItemClick(View v);
+
+            void onHeaderClick(View v);
+
+            void onHeaderTopicsClick(View v);
+
+        }
 
         private List<Forum> mDataset;
         private OnClickListener mOnClickListener;
+        private OnLongClickListener mOnLongClickListener;
         private List<Forum> mHeaderset;
 
         // Provide a reference to the views for each data item
@@ -596,10 +614,11 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
 
         // Provide a suitable constructor (depends on the kind of dataset)
         public ForumsAdapter(List<Forum> headerDataset, List<Forum> myDataset,
-                             OnClickListener onClickListener) {
+                             OnClickListener onClickListener, OnLongClickListener onLongClickListener) {
             mHeaderset = headerDataset;
             mDataset = myDataset;
             mOnClickListener = onClickListener;
+            mOnLongClickListener = onLongClickListener;
             mIsShowImages = Preferences.Forums.isShowImages();
         }
 
@@ -627,6 +646,13 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
                             mOnClickListener.onItemClick(v);
                         }
                     });
+                    v.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            mOnLongClickListener.onItemClick(v);
+                            return true;
+                        }
+                    });
 
                     return viewHolder;
                 case HEADER_VIEW_TYPE:
@@ -639,6 +665,13 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
                         @Override
                         public void onClick(View v) {
                             mOnClickListener.onHeaderClick(v);
+                        }
+                    });
+                    headerV.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            mOnLongClickListener.onHeaderClick(v);
+                            return true;
                         }
                     });
                     return headerViewHolder;
@@ -654,6 +687,13 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
                             mOnClickListener.onHeaderTopicsClick(v);
                         }
                     });
+                    headerCV.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            mOnLongClickListener.onHeaderTopicsClick(v);
+                            return true;
+                        }
+                    });
 
                     return headerCViewHolder;
                 case HEADER_CURRENT_NOTOPICS_VIEW_TYPE:
@@ -666,6 +706,13 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
                         @Override
                         public void onClick(View v) {
                             mOnClickListener.onHeaderClick(v);
+                        }
+                    });
+                    headerCNV.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            mOnLongClickListener.onHeaderClick(v);
+                            return false;
                         }
                     });
 

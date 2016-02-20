@@ -55,13 +55,19 @@ public class AppsGamesCatalogFragment extends BaseCatalogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        removeArrow();
         if (savedInstanceState != null) {
             m_CurrentCatalogItem = (AppGameCatalog) savedInstanceState.getParcelable("CurrentCatalogItem");
             m_LoadingCatalogItem = (AppGameCatalog) savedInstanceState.getParcelable("LoadingCatalogItem");
             mData = savedInstanceState.getParcelableArrayList("Data");
             mCatalogData = savedInstanceState.getParcelableArrayList("CatalogData");
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        removeArrow();
     }
 
     @Override

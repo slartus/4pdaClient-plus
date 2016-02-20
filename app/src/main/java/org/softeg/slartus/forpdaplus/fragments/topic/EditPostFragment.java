@@ -18,7 +18,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -61,8 +60,8 @@ import org.softeg.slartus.forpdaplus.classes.ImageFilePath;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
-import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -101,6 +100,12 @@ public class EditPostFragment extends GeneralFragment {
 
 
     public static final String thisFragmentUrl = "EditPostFragment";
+
+    @Override
+    public void hidePopupWindows() {
+        super.hidePopupWindows();
+        mPopupPanelView.hidePopupWindow();
+    }
 
     public static EditPostFragment newInstance(Context context, Bundle args){
         EditPostFragment fragment = new EditPostFragment();
@@ -145,10 +150,6 @@ public class EditPostFragment extends GeneralFragment {
         MainActivity.addTab("Ред. сообщения", url, newInstance(context, args));
     }
 
-    View view;
-    private View findViewById(int id){
-        return view.findViewById(id);
-    }
     public ActionBar getSupportActionBar() {
         return ((AppCompatActivity)getMainActivity()).getSupportActionBar();
     }
@@ -196,7 +197,6 @@ public class EditPostFragment extends GeneralFragment {
     @Override
     public void onPause() {
         super.onPause();
-        removeArrow();
         if(mPopupPanelView!=null)
             mPopupPanelView.pause();
     }
@@ -409,7 +409,20 @@ public class EditPostFragment extends GeneralFragment {
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
-
+        menu.add("Препросмотр").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                TabItem tabItem = App.getInstance().getTabByUrl("preview_"+getTag());
+                if(tabItem==null) {
+                    PostPreviewFragment.showSpecial(getPostText(), getTag());
+                }else {
+                    ((PostPreviewFragment) tabItem.getFragment()).load(getPostText());
+                    getMainActivity().selectTab(tabItem);
+                    getMainActivity().hidePopupWindows();
+                }
+                return true;
+            }
+        });
         item = menu.add("Поиск по тексту");
         item.setActionView(R.layout.action_collapsible_search);
         searchEditText = (EditText) item.getActionView().findViewById(R.id.editText);
@@ -784,6 +797,8 @@ public class EditPostFragment extends GeneralFragment {
             mPopupPanelView.destroy();
             mPopupPanelView = null;
         }
+        TabItem tabItem = App.getInstance().getTabByUrl("preview_"+getTag());
+        if(tabItem!=null) getMainActivity().removeTab(tabItem.getTag());
         super.onDestroy();
     }
 

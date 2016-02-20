@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.classes;
 
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
@@ -11,7 +10,7 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 /**
  * Created by slinkin on 25.12.13.
  */
-public class HtmlBuilder {
+public class HtmlBuilder{
     public final String ACTIONBAR_TOP_MARGIN= getMarginTop()+"px";
     protected StringBuilder m_Body;
 
@@ -67,8 +66,9 @@ public class HtmlBuilder {
         return App.getInstance().getThemeCssFileName();
     }
 
-    public void append(String str) {
+    public HtmlBuilder append(String str) {
         m_Body.append(str);
+        return this;
     }
 
     public void beginBody(String id) {
@@ -79,7 +79,7 @@ public class HtmlBuilder {
         m_Body.append("<body id=\"").append(id).append("\" class=\"modification ")
                 .append(isImage ? "" : "noimages ")
                 .append(App.getInstance().isNewYear() ? "newyear " : "")
-                .append(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isGpuImg", false) ? "ongpuimg \" " : "\" ");
+                .append(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isAccelerateGif", false) ? "ongpuimg \" " : "\" ");
         if(App.getInstance().getWebViewFont().equals("")) {
             m_Body.append(" ");
         }else {

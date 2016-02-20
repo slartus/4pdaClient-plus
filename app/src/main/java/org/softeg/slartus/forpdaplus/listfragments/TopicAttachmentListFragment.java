@@ -16,6 +16,8 @@ import org.softeg.slartus.forpdaapi.post.PostAttach;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
+import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
+import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicAttachmentBrickInfo;
 
@@ -39,7 +41,6 @@ public class TopicAttachmentListFragment extends BaseTaskListFragment {
     @Override
     public void onPause() {
         super.onPause();
-        removeArrow();
     }
 
     public static void showActivity(Context context, CharSequence topicId){
@@ -92,22 +93,21 @@ public class TopicAttachmentListFragment extends BaseTaskListFragment {
         final IListItem item = (IListItem) o;
         if (TextUtils.isEmpty(item.getId())) return;
         final PostAttach attach=(PostAttach)item;
-        menu.add("Скачать вложение")
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        DownloadsService.download(getActivity(),attach.getUrl().toString(),false);
-                        return true;
-                    }
-                });
-        menu.add("Перейти к сообщению")
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        IntentActivity.showTopic(attach.getPostUrl());
-                        return true;
-                    }
-                });
+
+        final List<MenuListDialog> list = new ArrayList<>();
+        list.add(new MenuListDialog("Скачать вложение", new Runnable() {
+            @Override
+            public void run() {
+                DownloadsService.download(getActivity(), attach.getUrl().toString(), false);
+            }
+        }));
+        list.add(new MenuListDialog("Перейти к сообщению", new Runnable() {
+            @Override
+            public void run() {
+                IntentActivity.showTopic(attach.getPostUrl());
+            }
+        }));
+        ExtUrl.showContextDialog(getContext(), null, list);
     }
 
 }

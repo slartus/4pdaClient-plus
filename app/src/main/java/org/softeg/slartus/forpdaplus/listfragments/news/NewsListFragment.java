@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.listfragments.news;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -9,13 +8,13 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
@@ -24,6 +23,7 @@ import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemor
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
@@ -32,6 +32,7 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
@@ -46,6 +47,7 @@ import org.softeg.sqliteannotations.BaseDao;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Created by slinkin on 20.02.14.
@@ -60,9 +62,6 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
     protected ArrayList<News> mData = new ArrayList<>();
     protected ArrayList<News> mLoadResultList;
     protected ArrayList<News> mCacheList = new ArrayList<>();
-    ImageLoader imageLoader;
-
-
 
 
     public class NewsCategoryItem {
@@ -182,6 +181,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         super.onActivityCreated(savedInstanceState);
         getListView().setDivider(null);
         getListView().setDividerHeight(0);
+        getListView().setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), false, true));
     }
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -196,8 +196,6 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
 
     public NewsListFragment() {
         super();
-        initImageLoader(App.getContext());
-        imageLoader = ImageLoader.getInstance();
     }
 
     @Override
@@ -218,10 +216,15 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         fragment.setArguments(args);
         return fragment;
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        removeArrow();
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        removeArrow();
         setHasOptionsMenu(true);
         if (getArguments() != null) {
             if (getArguments().containsKey(TAG_EXTRA_KEY)) {
@@ -235,6 +238,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         }
         listAdapter = new NavigationListAdapter(getActivity());
         onHiddenChanged(false);
+
     }
 
     Boolean useCache = true;
@@ -287,30 +291,8 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         mAdapter.notifyDataSetChanged();
     }
 
-    private static void initImageLoader(Context context) {
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageForEmptyUri(R.drawable.no_image)
-                .delayBeforeLoading(1000)
-                .resetViewBeforeLoading(false)  // default
-                .cacheInMemory(true)
-                .cacheOnDisc(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .handler(new Handler())
-                .build();
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                .threadPoolSize(5)
-                .threadPriority(Thread.MIN_PRIORITY)
-                .denyCacheImageMultipleSizesInMemory()
-                .memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024)) // 2 Mb
-                .discCacheFileNameGenerator(new HashCodeFileNameGenerator())
-                .defaultDisplayImageOptions(options)
-                .build();
-
-        ImageLoader.getInstance().init(config);
-    }
-
     protected BaseAdapter createAdapter() {
-        return new NewsListAdapter(getContext(), mData, imageLoader);
+        return new NewsListAdapter(getContext(), mData, ImageLoader.getInstance());
     }
 
     protected ListInfo mListInfo = new ListInfo();
@@ -332,9 +314,10 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         if (isRefresh) {
             mData.clear();
         }
-        for (News item : mLoadResultList) {
+        mData.addAll(mLoadResultList);
+        /*for (News item : mLoadResultList) {
             mData.add(item);
-        }
+        }*/
 
         mLoadResultList.clear();
     }
@@ -351,6 +334,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
+        if(!v.hasWindowFocus()) return;
         try {
             id = ListViewMethodsBridge.getItemId(getActivity(), position, id);
             if (id < 0 || getAdapter().getCount() <= id) return;
@@ -360,9 +344,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
                 return;
             final News news = (News) o;
             if (TextUtils.isEmpty(news.getId())) return;
-            MainActivity.log(news.getTitle()+" : "+news.getUrl()+" : "+news.getId());
-            MainActivity.addTab(news.getTitle().toString(), news.getUrl(),
-                    NewsFragment.newInstance(getActivity(), news.getUrl()));
+            MainActivity.addTab(news.getTitle().toString(), news.getUrl(), NewsFragment.newInstance(news.getUrl()));
             mAdapter.notifyDataSetChanged();
 
         } catch (Throwable ex) {
@@ -380,8 +362,10 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         final News news = (News) o;
         if (TextUtils.isEmpty(news.getId())) return;
 
-        ExtUrl.addUrlMenu(mHandler, getContext(), menu, news.getUrl(), news.getId(),
-                news.getTitle().toString());
+
+        List<MenuListDialog> list = new ArrayList<>();
+        ExtUrl.addUrlMenu(mHandler, getContext(), list, news.getUrl(), news.getId(),news.getTitle().toString());
+        ExtUrl.showContextDialog(getContext(), null, list);
 
     }
 

@@ -120,10 +120,10 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
     @Override
     public android.view.View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container,
                                           android.os.Bundle savedInstanceState) {
-        View v = inflater.inflate(getViewResourceId(), container, false);
-        assert v != null;
-        mListView = (ListView) v.findViewById(android.R.id.list);
-        mEmptyTextView = (TextView) v.findViewById(android.R.id.empty);
+        view = inflater.inflate(getViewResourceId(), container, false);
+        assert view != null;
+        mListView = (ListView) view.findViewById(android.R.id.list);
+        mEmptyTextView = (TextView) view.findViewById(android.R.id.empty);
         mListView.setEmptyView(mEmptyTextView);
         mListView.setOnItemClickListener(this);
         mListView.setOnItemLongClickListener(this);
@@ -132,7 +132,7 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
         }
 
 
-        return v;
+        return view;
     }
 
     protected void addLoadMoreFooter(Context context) {
@@ -292,6 +292,7 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
             android.util.Log.e("TAG", ignore.toString());
         }
     }
+
 
     @Override
     public void onSaveInstanceState(android.os.Bundle outState) {

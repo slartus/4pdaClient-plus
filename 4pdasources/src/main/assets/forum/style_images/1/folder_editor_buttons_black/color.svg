@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sb="http://simplector.lyoshka.net/base/2.0"
+   xmlns:sp="http://simplector.lyoshka.net/pro/2.0"
+   width="24.0px"
+   height="24.0px"
+   viewBox="0 0 24.0 24.0"
+   sb:fontSize="Custom"
+   sb:pageOrientation="Portrait"
+   version="1.1"
+   sb:version="2.0.19"
+   >
+   <desc>Created in Simplector Pro</desc>
+   <path
+      id="95"
+      fill="rgb(255,255,255)"
+      fill-opacity="1.0"
+      stroke-width="1.0"
+      stroke-linecap="butt"
+      stroke-linejoin="miter"
+      stroke-miterlimit="1.0"
+      stroke="rgb(0,0,0)"
+      stroke-opacity="0.0"
+      d="
+      M 11.0 3.0 L 5.5 17.0 L 7.75 17.0 L 8.87 14.0 L 15.12 14.0 L 16.24 17.0 L 18.49 17.0 
+      L 13.0 3.0 L 11.0 3.0 Z M 9.62 12.0 L 12.0 5.67 L 14.38 12.0 L 9.62 12.0 Z 
+      "
+
+      sb:layerName="path-95"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      sb:pathType="path"
+      >
+   </path>
+   <path
+      id="94"
+      fill="white"
+      fill-opacity="0.5"
+      stroke-width="1.0"
+      stroke-linecap="butt"
+      stroke-linejoin="miter"
+      stroke-miterlimit="1.0"
+      stroke="rgb(0,0,0)"
+      stroke-opacity="0.0"
+      d="
+      M 0.0 20.0 L 24.0 20.0 L 24.0 24.0 L 0.0 24.0 Z 
+      "
+
+      sb:layerName="path-94"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      sb:pathType="path"
+      >
+   </path>
+   <sp:keyframes
+
+      sp:step="100"
+      sp:dur="10000"
+      >
+      <sp:keyframe
+
+         sp:time="0"
+         >
+      </sp:keyframe>
+   </sp:keyframes>
+</svg>

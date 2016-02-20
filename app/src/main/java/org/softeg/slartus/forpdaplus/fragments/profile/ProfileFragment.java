@@ -12,7 +12,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,13 +38,11 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
-import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.fragments.qms.QmsChatFragment;
 import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
-import org.softeg.slartus.forpdaplus.fragments.qms.QmsNewThreadFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -64,11 +61,6 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     private Menu menu;
     private String title;
     private Handler mHandler = new Handler();
-
-    @Override
-    public View getView() {
-        return view;
-    }
 
     @Override
     public WebViewClient MyWebViewClient() {
@@ -179,7 +171,6 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         super.onSaveInstanceState(outState);
     }
 
-    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -188,7 +179,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         // getDialog().setTitle("Профиль");
         setHasOptionsMenu(true);
         assert view != null;
-        m_WebView = (AdvWebView) view.findViewById(R.id.wvBody);
+        m_WebView = (AdvWebView) findViewById(R.id.wvBody);
         registerForContextMenu(m_WebView);
         m_WebView.getSettings().setLoadWithOverviewMode(false);
         m_WebView.getSettings().setUseWideViewPort(true);
@@ -269,7 +260,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         if (profile.getNick() != null)
             args.putString(USER_NAME_KEY, profile.getNick().toString());
         if (getMainActivity() != null)
-            getMainActivity().setTitle(profile.getNick());
+            setTitle(profile.getNick());
 
     }
 
@@ -476,81 +467,76 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-
-        MenuItem item;
-
         if (Client.getInstance().getLogined() && getUserId() != null && !getUserId().equals(Client.getInstance().UserId)) {
-            item = menu.add(getString(R.string.MessagesQms)).setIcon(R.drawable.ic_pencil_white_24dp);
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    QmsNewThreadFragment.showUserNewThread(getMainActivity(), getUserId(), getUserNick());
-
-                    return true;
-                }
-            });
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            menu.add(getString(R.string.MessagesQms)).setIcon(R.drawable.ic_pencil_white_24dp)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            QmsContactThemes.showThemes(getUserId(), getUserNick());
+                            return true;
+                        }
+                    })
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
 
+        menu.add(getString(R.string.Reputation))
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        CharSequence[] items = {"Поднять", "Опустить", "Посмотреть", "Кому изменял репутацию"};
+                        new MaterialDialog.Builder(getMainActivity())
+                                .title("Репутация")
+                                .items(items)
+                                .itemsCallback(new MaterialDialog.ListCallback() {
+                                    @Override
+                                    public void onSelection(MaterialDialog dialog, View view, int i, CharSequence items) {
+                                        switch (i) {
+                                            case 0:
+                                                UserReputationFragment.plusRep(getMainActivity(), new Handler(), getUserId(), getUserNick());
+                                                break;
+                                            case 1:
+                                                UserReputationFragment.minusRep(getMainActivity(), new Handler(), getUserId(), getUserNick());
+                                                break;
+                                            case 2:
+                                                UserReputationFragment.showActivity(getMainActivity(), getUserId(), false);
+                                                break;
+                                            case 3:
+                                                UserReputationFragment.showActivity(getMainActivity(), getUserId(), true);
+                                                break;
+                                        }
+                                    }
+                                })
+                                .show();
 
-        item = menu.add(getString(R.string.Reputation));
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                CharSequence[] items = {"Поднять", "Опустить", "Посмотреть", "Кому изменял репутацию"};
-                new MaterialDialog.Builder(getMainActivity())
-                        .title("Репутация")
-                        .items(items)
-                        .itemsCallback(new MaterialDialog.ListCallback() {
-                            @Override
-                            public void onSelection(MaterialDialog dialog, View view, int i, CharSequence items) {
-                                switch (i) {
-                                    case 0:
-                                        UserReputationFragment.plusRep(getMainActivity(), new Handler(), getUserId(), getUserNick());
-                                        break;
-                                    case 1:
-                                        UserReputationFragment.minusRep(getMainActivity(), new Handler(), getUserId(), getUserNick());
-                                        break;
-                                    case 2:
-                                        UserReputationFragment.showActivity(getMainActivity(), getUserId(), false);
-                                        break;
-                                    case 3:
-                                        UserReputationFragment.showActivity(getMainActivity(), getUserId(), true);
-                                        break;
-                                }
-                            }
-                        })
-                        .show();
+                        return true;
+                    }
+                })
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
-                return true;
-            }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.add("Темы")
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(getUserNick()));
+                        return true;
+                    }
+                })
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
-        item = menu.add(getString(R.string.FindUserTopics));
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(getUserNick()));
-                return true;
-            }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.add("Сообщения")
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(getUserNick()));
+                        return true;
+                    }
+                })
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
-        item = menu.add(getString(R.string.FindUserPosts));
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(getUserNick()));
-                return true;
-            }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-
-        item = menu.add("Ссылка на профиль");
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка на профиль", "http://4pda.ru/forum/index.php?showuser=" + getUserId());
-                return true;
-            }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.add("Ссылка")
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка на профиль", "http://4pda.ru/forum/index.php?showuser=" + getUserId());
+                        return true;
+                    }
+                })
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
         this.menu = menu;
     }

@@ -4,7 +4,6 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -119,7 +118,8 @@ public abstract class BaseBrickFragment extends GeneralFragment{
     @Override
     public void onResume() {
         super.onResume();
-        if(m_Title!=null) getActivity().setTitle(m_Title);
+        if(m_Title!=null)
+            setTitle(m_Title);
     }
 
     @Override

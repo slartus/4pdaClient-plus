@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaapi;
 import android.net.Uri;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIUtils;
@@ -122,8 +123,13 @@ public class TopicsApi {
             if (elements.size() > 0) {
                 Element topicBodyDivElement = elements.first();
                 elements = topicBodyDivElement.select("span.topic_desc");
-                if (elements.size() > 0)
+                if (elements.size() > 0) {
                     topic.setDescription(elements.first().text());
+                    m = Pattern.compile("showforum=(\\d*)").matcher(elements.first().select("a").last().attr("href"));
+                    if(m.find()) {
+                        topic.setForumId(m.group(1));
+                    }
+                }
                 String text = topicBodyDivElement.html();
                 topic.setIsNew(text.contains("view=getnewpost"));
 

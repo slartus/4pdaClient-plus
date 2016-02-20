@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -15,7 +16,6 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.softeg.slartus.forpdaapi.ForumsApi;
 import org.softeg.slartus.forpdaapi.IHttpClient;
@@ -38,7 +38,6 @@ import org.softeg.slartus.forpdaplus.classes.DownloadTask;
 import org.softeg.slartus.forpdaplus.classes.DownloadTasks;
 import org.softeg.slartus.forpdaplus.classes.Forum;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
-import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.Functions;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -46,7 +45,7 @@ import org.softeg.slartus.forpdaplus.db.ForumsTableOld;
 import org.softeg.slartus.forpdaplus.download.DownloadReceiver;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.topic.ForPdaWebInterface;
-import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
+import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 import java.io.IOException;
 import java.net.URI;
@@ -192,14 +191,14 @@ public class Client implements IHttpClient {
         if (beforeGetPage != null)
             afterGetPage.onProgressChanged("Получение данных...");
 
-        Matcher headerMatcher = PatternExtensions.compile("<body>([\\s\\S]*?)globalmess").matcher(body);
+        /*Matcher headerMatcher = PatternExtensions.compile("<body>([\\s\\S]*?)globalmess").matcher(body);
         if (headerMatcher.find()) {
             checkLogin(headerMatcher.group(1));
             checkMails(headerMatcher.group(1));
         } else {
             checkLogin(body);
             checkMails(body);
-        }
+        }*/
         return body;
     }
 
@@ -231,10 +230,10 @@ public class Client implements IHttpClient {
     }
 
     public String performGet(String s) throws IOException {
-        return performGet(s, true);
+        return performGet(s, true, true);
     }
 
-    public String performGet(String s, Boolean checkEmptyResult) throws IOException {
+    public String performGet(String s, Boolean checkEmptyResult, Boolean checkLoginAndMails) throws IOException {
 
         HttpHelper httpHelper = new HttpHelper();
         String res = null;
@@ -247,6 +246,11 @@ public class Client implements IHttpClient {
         }
         if (checkEmptyResult && TextUtils.isEmpty(res))
             throw new NotReportException("Сервер вернул пустую страницу");
+        else if(checkLoginAndMails){
+            checkLogin(res);
+            if(!s.contains("xhr"))
+                checkMails(res);
+        }
         // m_HttpHelper.close();
         return res;
     }
@@ -396,7 +400,7 @@ public class Client implements IHttpClient {
 
             final LoginDialog loginDialog = new LoginDialog(mContext);
 
-            new MaterialDialog.Builder(mContext)
+            MaterialDialog dialog = new MaterialDialog.Builder(mContext)
                     .title("Вход")
                     .customView(loginDialog.getView(), true)
                     .positiveText("Вход")
@@ -407,7 +411,9 @@ public class Client implements IHttpClient {
                             loginDialog.connect(onUserChangedListener);
                         }
                     })
-                    .show();
+                    .build();
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            dialog.show();
 
         } catch (Exception ex) {
             AppLog.e(mContext, ex);
@@ -444,7 +450,7 @@ public class Client implements IHttpClient {
 
 
     public Boolean login(String login, String password, Boolean privacy,
-                         String capA, String capD, String capS, String session) throws Exception {
+                         String capVal, String capTime, String capSig, String session) throws Exception {
 
         HttpHelper httpHelper = new HttpHelper();
         try {
@@ -460,7 +466,7 @@ public class Client implements IHttpClient {
                     return null;
                 }
 
-                public String performGet(String s, Boolean b) throws IOException {
+                public String performGet(String s, Boolean b, Boolean bb) throws IOException {
                     return null;
                 }
 
@@ -536,7 +542,7 @@ public class Client implements IHttpClient {
                     }
                 }
 
-            }, login, password, privacy, capA, capD, capS, session);
+            }, login, password, privacy, capVal, capTime, capSig, session);
             m_Logined = loginResult.isSuccess();
             m_LoginFailedReason = m_Logined ? null : loginResult.getLoginError().toString();
 
@@ -672,7 +678,6 @@ public class Client implements IHttpClient {
 
     public void checkMails(String pageBody) {
         m_QmsCount = QmsApi.getNewQmsCount(pageBody);
-
         doOnMailListener();
     }
 
@@ -704,14 +709,14 @@ public class Client implements IHttpClient {
         String body = performGet(url);
         doOnOnProgressChanged(progressChangedListener, "Обработка данных...");
 
-        Matcher headerMatcher = PatternExtensions.compile("<body>([\\s\\S]*?)globalmess").matcher(body);
+        /*Matcher headerMatcher = PatternExtensions.compile("<body>([\\s\\S]*?)globalmess").matcher(body);
         if (headerMatcher.find()) {
             checkLogin(headerMatcher.group(1));
             checkMails(headerMatcher.group(1));
         } else {
             checkLogin(body);
             checkMails(body);
-        }
+        }*/
         return body;
     }
 
@@ -742,7 +747,7 @@ public class Client implements IHttpClient {
 
         final Pattern navStripPattern = PatternExtensions.compile("<div id=\"navstrip\">(.*?)</div>");
         final Pattern userPattern =
-                PatternExtensions.compile("/forum/index.php\\?act=Login&amp;CODE=03&amp;k=([a-z0-9]{32})\">Выход</a>");
+                PatternExtensions.compile("act=login&CODE=03&k=([a-z0-9]{32})");
         final Pattern titlePattern = PatternExtensions.compile("<title>(.*?) - 4PDA</title>");
         final Pattern descriptionPattern = PatternExtensions.compile("<div class=\"topic_title_post\">([^<]*)<");
         final Pattern moderatorTitlePattern = PatternExtensions.compile("onclick=\"return setpidchecks\\(this.checked\\);\".*?>&nbsp;(.*?)<");
@@ -772,6 +777,8 @@ public class Client implements IHttpClient {
             final Pattern forumPatter = PatternExtensions.compile("<a href=\"(http://4pda.ru)?/forum/index.php\\?.*?showforum=(\\d+).*?\">(.*?)</a>");
             Matcher forumMatcher = forumPatter.matcher(m.group(1));
             while (forumMatcher.find()) {
+                if(forumMatcher.group(2).equals("10"))
+                    topic.setPostVote(false);
                 topic.setForumId(forumMatcher.group(2));
                 topic.setForumTitle(forumMatcher.group(3));
             }
@@ -808,7 +815,7 @@ public class Client implements IHttpClient {
 
 
         Matcher mainMatcher = PatternExtensions
-                .compile("^([\\s\\S]*?)((?=<div data-post=\"\\d+\"[^>]*>)[\\s\\S]*?)<div class=\"topic_foot_nav[^\"]*\">")
+                .compile("^([\\s\\S]*?)<div data-post")
                 .matcher(topicBody);
 
         if (!mainMatcher.find()) {
@@ -837,19 +844,17 @@ public class Client implements IHttpClient {
             throw new IOException("Ошибка разбора страницы id=" + id);
         }
 
-
         Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(context);
 
         ExtTopic topic = createTopic(id, mainMatcher.group(1));
 
-        String body = mainMatcher.group(2);
-
+        topicBody = topicBody.replace("^[\\s\\S]*?<div data-post", "<div data-post").replace("<div class=\"topic_foot_nav\">[\\s\\S]*", "<div class=\"topic_foot_nav\">");
 
         TopicBodyBuilder topicBodyBuilder = new TopicBodyBuilder(context, logined, topic, urlParams,
                 isWebviewAllowJavascriptInterface);
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Boolean browserStyle = prefs.getBoolean("theme.BrowserStylePreRemove", false);
+        //Boolean browserStyle = prefs.getBoolean("theme.BrowserStylePreRemove", false);
         topicBodyBuilder.beginTopic();
 
         //>>ОПРОС
@@ -921,120 +926,102 @@ public class Client implements IHttpClient {
         }
         //<<опрос
         topicBodyBuilder.openPostsList();
+        mainMatcher = Pattern
+                .compile("<div data-post=\"(\\d+)\"[^>]*>([\\s\\S]*?)((?=<div class=\"post_body[^>]*?\">)[\\s\\S]*?)(?=<div data-post=\"\\d+\"[^>]*>|<div class=\"topic_foot_nav[^\"]*\">)",
+                        Pattern.MULTILINE | Pattern.CASE_INSENSITIVE)
+                .matcher(topicBody);
 
-        if (browserStyle) {
-            body = body
-                    .replace("onclick=\"return confirm('Подтвердите удаление');\"", "")
-                    .replace("href=\"#\"", "")
-            ;
-            if (!WebViewExternals.isLoadImages("theme"))
-                body = HtmlPreferences.modifyAttachedImagesBody(Functions.isWebviewAllowJavascriptInterface(context), body);
-            topicBodyBuilder.addBody(body);
-            topicBodyBuilder.endTopic();
-        } else {
+        final Pattern postDateNumPattern = PatternExtensions
+                .compile("<span class=\"post_date[^\"]*\">(.*?)&nbsp;[^#]*#(\\d+)");
+        final Pattern nickPattern = PatternExtensions
+                .compile("insertText\\('[^']*\\[B\\](.*?),\\[/B\\]\\s*'\\)\"\\s*data-av=\"([^\"]*)\">");
+        Pattern userInfoPattern = PatternExtensions
+                .compile("<span class=\"post_user_info[^\"]*\"[^>]*>(<strong[^>]*>.*?<.strong><br .>)?Группа: (.*?)<br..><font color=\"([^\"]*)\">[\\s\\S]*?mid=(\\d+)");
 
-            mainMatcher = Pattern
-                    .compile("<div data-post=\"(\\d+)\"[^>]*>([\\s\\S]*?)((?=<div class=\"post_body[^\"]*?\">)[\\s\\S]*?)(?=<div data-post=\"\\d+\"[^>]*>|<div class=\"topic_foot_nav[^\"]*\">)",
-                            Pattern.MULTILINE | Pattern.CASE_INSENSITIVE)
-                    .matcher(body + "<div class=\"topic_foot_nav\">");
-
-
-            final Pattern postDateNumPattern = PatternExtensions
-                    .compile("<span class=\"post_date[^\"]*\">(.*?)&nbsp;[^#]*#(\\d+)");
-            final Pattern nickPattern = PatternExtensions
-                    .compile("insertText\\('[^']*\\[B\\](.*?),\\[/B\\]\\s*'\\)\"\\s*data-av=\"([^\"]*)\">");
-            Pattern userInfoPattern = PatternExtensions
-                    .compile("<span class=\"post_user_info[^\"]*\"[^>]*>(<strong[^>]*>.*?<.strong><br .>)?Группа: (.*?)<br..><font color=\"([^\"]*)\">[\\s\\S]*?mid=(\\d+)");
-
-            final Pattern repValuePattern = PatternExtensions
-                    .compile("<span id=\"ajaxrep-\\d+\">(.\\d+|\\d+)</span>");
-            final Pattern repEditPattern = PatternExtensions
-                    .compile("href=\"[^\"]*act=rep[^\"]*view=(win_minus|win_add)[^\"]*\"");
-            final Pattern editPattern = PatternExtensions.compile("href=\"[^\"]*act=post[^\"]*do=edit_post[^\"]*\"");
-            final Pattern deletePattern = PatternExtensions.compile("onclick=\"[^\"]*seMODdel");
-            final Pattern bodyPattern = PatternExtensions.compile("<div class=\"post_body([^\"]*)?\">([\\s\\S]*)</div>");
+        final Pattern repValuePattern = PatternExtensions
+                .compile("<span id=\"ajaxrep-\\d+\">(.\\d+|\\d+)</span>");
+        final Pattern repEditPattern = PatternExtensions
+                .compile("href=\"[^\"]*act=rep[^\"]*view=(win_minus|win_add)[^\"]*\"");
+        final Pattern editPattern = PatternExtensions.compile("href=\"[^\"]*act=post[^\"]*do=edit_post[^\"]*\"");
+        final Pattern deletePattern = PatternExtensions.compile("onclick=\"[^\"]*seMODdel");
+        final Pattern bodyPattern = PatternExtensions.compile("<div class=\"post_body([^\"]*)?\"[^>]*>([\\s\\S]*)<\\/div>");
 
 
-            //String today = Functions.getToday();
-            //String yesterday = Functions.getYesterToday();
-            org.softeg.slartus.forpdaplus.classes.Post post = null;
-            Boolean spoil = spoilFirstPost;
+        //String today = Functions.getToday();
+        //String yesterday = Functions.getYesterToday();
+        org.softeg.slartus.forpdaplus.classes.Post post = null;
+        Boolean spoil = spoilFirstPost;
 
-            while (mainMatcher.find()) {
+        while (mainMatcher.find()) {
 
-                String postId = mainMatcher.group(1);
+            String postId = mainMatcher.group(1);
 
-                String str = mainMatcher.group(2);
-                Matcher m = postDateNumPattern.matcher(str);
-                if (m.find()) {
-                    //post = new org.softeg.slartus.forpdaplus.classes.Post(postId, Functions.getForumDateTime(Functions.parseForumDateTime(m.group(1), today, yesterday)), m.group(2));
-                    post = new org.softeg.slartus.forpdaplus.classes.Post(postId, m.group(1), m.group(2));
+            String str = mainMatcher.group(2);
+            Matcher m = postDateNumPattern.matcher(str);
+            if (m.find()) {
+                //post = new org.softeg.slartus.forpdaplus.classes.Post(postId, Functions.getForumDateTime(Functions.parseForumDateTime(m.group(1), today, yesterday)), m.group(2));
+                post = new org.softeg.slartus.forpdaplus.classes.Post(postId, m.group(1), m.group(2));
+            } else
+                continue;
 
-                } else
-                    continue;
-
-                m = nickPattern.matcher(str);
-                if (m.find()) {
-                    post.setAuthor(m.group(1));
-                    post.setAvatarFileName(m.group(2));
-                }
-
-                m = userInfoPattern.matcher(str);
-                if (m.find()) {
-                    if (m.group(1) != null)
-                        post.setCurator();
-                    post.setUserGroup(m.group(2));
-                    post.setUserState(m.group(3));
-                    post.setUserId(m.group(4));
-                }
-
-                m = repValuePattern.matcher(str);
-                if (m.find()) {
-                    post.setUserReputation(m.group(1));
-                }
-
-                m = repEditPattern.matcher(str);
-                while (m.find()) {
-                    if ("win_minus".equals(m.group(1)))
-                        post.setCanMinusRep(true);
-                    if ("win_add".equals(m.group(1)))
-                        post.setCanPlusRep(true);
-                }
-
-                m = editPattern.matcher(str);
-                if (m.find()) {
-                    post.setCanEdit(true);
-                }
-
-                m = deletePattern.matcher(str);
-                if (m.find()) {
-                    post.setCanDelete(true);
-                    // если автор поста не совпадает с текущим пользователем и есть возможность удалить-значит, модератор
-                    if (post.getUserId() != null && !post.getUserId().equals(Client.getInstance().UserId)) {
-                        topicBodyBuilder.setMMod(true);
-                    }
-                }
-
-
-                m = bodyPattern.matcher(mainMatcher.group(3));
-                if (m.find()) {
-                    String postBody = m.group(2);
-                    if (postBody != null)
-                        postBody = postBody.trim();
-                    String postClass = "";
-                    if (m.group(1) != null)
-                        postClass = m.group(1);
-                    post.setBody("<div class=\"post_body" + postClass + "\">" + postBody);
-                }
-
-
-                topicBodyBuilder.addPost(post, spoil);
-                spoil = false;
+            m = nickPattern.matcher(str);
+            if (m.find()) {
+                post.setAuthor(m.group(1));
+                post.setAvatarFileName(m.group(2));
             }
 
-            topicBodyBuilder.endTopic();
-        }
+            m = userInfoPattern.matcher(str);
+            if (m.find()) {
+                if (m.group(1) != null)
+                    post.setCurator();
+                post.setUserGroup(m.group(2));
+                post.setUserState(m.group(3));
+                post.setUserId(m.group(4));
+            }
 
+            m = repValuePattern.matcher(str);
+            if (m.find()) {
+                post.setUserReputation(m.group(1));
+            }
+
+            m = repEditPattern.matcher(str);
+            while (m.find()) {
+                if ("win_minus".equals(m.group(1)))
+                    post.setCanMinusRep(true);
+                if ("win_add".equals(m.group(1)))
+                        post.setCanPlusRep(true);
+            }
+
+            m = editPattern.matcher(str);
+            if (m.find()) {
+                post.setCanEdit(true);
+            }
+
+            m = deletePattern.matcher(str);
+            if (m.find()) {
+                post.setCanDelete(true);
+                // если автор поста не совпадает с текущим пользователем и есть возможность удалить-значит, модератор
+                if (post.getUserId() != null && !post.getUserId().equals(Client.getInstance().UserId)) {
+                    topicBodyBuilder.setMMod(true);
+                }
+            }
+
+
+            m = bodyPattern.matcher(mainMatcher.group(3));
+            if (m.find()) {
+                String postBody = m.group(2);
+                if (postBody != null)
+                    postBody = postBody.trim();
+                String postClass = "";
+                if (m.group(1) != null)
+                    postClass = m.group(1);
+                post.setBody("<div class=\"post_body" + postClass + "\">" + postBody);
+            }
+
+            topicBodyBuilder.addPost(post, spoil);
+            spoil = false;
+        }
+        topicBodyBuilder.endTopic();
         return topicBodyBuilder;
     }
 
@@ -1074,6 +1061,7 @@ public class Client implements IHttpClient {
             String forumId = parseForumId(res);
             if (forumId != null) {
                 topic.setForumId(forumId);
+                LogUtil.E("BOOM DOOM", "forum id " + forumId);
             }
         }
 
@@ -1083,6 +1071,7 @@ public class Client implements IHttpClient {
             Matcher m = pattern.matcher(res);
             if (m.find()) {
                 topic.setAuthKey(m.group(1));
+                LogUtil.E("BOOM DOOM", "key " + m.group(1));
             }
         }
 

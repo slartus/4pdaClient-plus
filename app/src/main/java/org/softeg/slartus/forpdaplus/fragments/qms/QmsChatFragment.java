@@ -85,10 +85,15 @@ public class QmsChatFragment extends WebViewFragment {
     private Timer m_UpdateTimer = new Timer();
     private HtmlPreferences m_HtmlPreferences;
     private WebViewExternals m_WebViewExternals;
-    private View view;
     private PopupPanelView mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
     private String m_MessageText = null;
     private AsyncTask<ArrayList<String>, Void, Boolean> m_SendTask = null;
+
+    @Override
+    public void hidePopupWindows() {
+        super.hidePopupWindows();
+        mPopupPanelView.hidePopupWindow();
+    }
 
     public static void openChat(String userId, String userNick, String tid, String themeTitle, String pageBody){
         MainActivity.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle, pageBody));
@@ -128,11 +133,6 @@ public class QmsChatFragment extends WebViewFragment {
 
         return prefs.getString("qms.chat.encoding", "UTF-8");
 
-    }
-
-    @Override
-    public View getView() {
-        return view;
     }
 
     @Override
@@ -179,30 +179,23 @@ public class QmsChatFragment extends WebViewFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.qms_chat, container, false);
-        initSwipeRefreshLayout();
-        // getDialog().setTitle("Профиль");
         setHasOptionsMenu(true);
         assert view != null;
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        }
-        //createActionMenu();
 
         m_HtmlPreferences = new HtmlPreferences();
         m_HtmlPreferences.load(getContext());
 
-        edMessage = (EditText) view.findViewById(R.id.edMessage);
-        mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) view.findViewById(R.id.advanced_button), edMessage);
+        edMessage = (EditText) findViewById(R.id.edMessage);
+        mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), edMessage);
         mPopupPanelView.activityCreated(getMainActivity(), view);
-        view.findViewById(R.id.btnSend).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btnSend).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 startSendMessage();
             }
         });
 
 
-        wvChat = (AdvWebView) view.findViewById(R.id.wvChat);
+        wvChat = (AdvWebView) findViewById(R.id.wvChat);
         registerForContextMenu(wvChat);
 
 
@@ -234,11 +227,11 @@ public class QmsChatFragment extends WebViewFragment {
 
         final String[] m_PageBody = {extras.getString(PAGE_BODY_KEY)};
         if (TextUtils.isEmpty(m_Nick))
-            getMainActivity().setTitle("QMS");
+            setTitle("QMS");
         else
-            getMainActivity().setTitle(m_ThemeTitle);
+            setTitle(m_ThemeTitle);
         if (getSupportActionBar() != null)
-            getSupportActionBar().setSubtitle(m_Nick);
+            setSubtitle(m_Nick);
         if (!TextUtils.isEmpty(m_PageBody[0])) {
             m_LastBodyLength = m_PageBody[0].length();
             new Thread(new Runnable() {
@@ -249,7 +242,7 @@ public class QmsChatFragment extends WebViewFragment {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            wvChat.loadDataWithBaseURL("\"file:///android_asset/\"", body, "text/html", "UTF-8", null);
+                            wvChat.loadDataWithBaseURL("file:///android_asset/", body, "text/html", "UTF-8", null);
                         }
                     });
                 }
@@ -262,7 +255,6 @@ public class QmsChatFragment extends WebViewFragment {
                 Preferences.System.isDevInterface()|
                 Preferences.System.isDevStyle())
             Toast.makeText(getMainActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
-        //  hidePanels();
 
         loadPrefs();
         startUpdateTimer();
@@ -326,8 +318,8 @@ public class QmsChatFragment extends WebViewFragment {
         m_Nick = outState.getString(NICK_KEY);
         m_TId = outState.getString(TID_KEY);
         m_ThemeTitle = outState.getString(THEME_TITLE_KEY);
-        getMainActivity().setTitle(m_ThemeTitle);
-        getSupportActionBar().setSubtitle(m_Nick);
+        setTitle(m_ThemeTitle);
+        setSubtitle(m_Nick);
         edMessage.setText(outState.getString(POST_TEXT_KEY));
 
     }
@@ -504,7 +496,8 @@ public class QmsChatFragment extends WebViewFragment {
     private void reLoadChatSafe() {
         uiHandler.post(new Runnable() {
             public void run() {
-                setLoading(true);
+//                setLoading(false);
+                setSubtitle("Обновление");
             }
         });
 
@@ -529,7 +522,8 @@ public class QmsChatFragment extends WebViewFragment {
                 checkNewQms();
                 uiHandler.post(new Runnable() {
                     public void run() {
-                        setLoading(false);
+//                        setLoading(false);
+                        setSubtitle("");
                     }
                 });
                 return;
@@ -546,9 +540,9 @@ public class QmsChatFragment extends WebViewFragment {
             public void run() {
                 if (finalEx == null) {
                     if (finalUpdateTitle)
-                        getMainActivity().setTitle(m_ThemeTitle);
-                    getSupportActionBar().setSubtitle(m_Nick);
-                    wvChat.loadDataWithBaseURL("\"file:///android_asset/\"", finalChatBody, "text/html", "UTF-8", null);
+                        setTitle(m_ThemeTitle);
+                    setSubtitle(m_Nick);
+                    wvChat.loadDataWithBaseURL("file:///android_asset/", finalChatBody, "text/html", "UTF-8", null);
                 } else {
                     if ("Такого диалога не существует.".equals(finalEx.getMessage())) {
                         new MaterialDialog.Builder(getMainActivity())
@@ -571,7 +565,8 @@ public class QmsChatFragment extends WebViewFragment {
                     }
 
                 }
-                setLoading(false);
+//                setLoading(false);
+                setSubtitle("");
             }
         });
 
@@ -581,7 +576,7 @@ public class QmsChatFragment extends WebViewFragment {
         if (success) {
             edMessage.getText().clear();
 
-            wvChat.loadDataWithBaseURL("\"file:///android_asset/\"", chatBody, "text/html", "UTF-8", null);
+            wvChat.loadDataWithBaseURL("file:///android_asset/", chatBody, "text/html", "UTF-8", null);
         } else {
             if (ex != null)
                 AppLog.e(getMainActivity(), ex, new Runnable() {
@@ -779,7 +774,7 @@ public class QmsChatFragment extends WebViewFragment {
         // can use UI thread here
         protected void onPreExecute() {
             this.dialog.show();
-            setLoading(true);
+//            setLoading(false); //
         }
 
         // can use UI thread here
@@ -787,7 +782,7 @@ public class QmsChatFragment extends WebViewFragment {
             if (this.dialog.isShowing()) {
                 this.dialog.dismiss();
             }
-            setLoading(false);
+//            setLoading(false);
 
             onPostChat(m_ChatBody, success, ex);
         }
@@ -893,6 +888,13 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
     private class MyWebViewClient extends WebViewClient {
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            Preferences.Notifications.Qms.readQmsDone();
+        }
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, final String url) {
 

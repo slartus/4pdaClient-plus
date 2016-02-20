@@ -14,12 +14,14 @@ import org.softeg.slartus.forpdaapi.devdb.NewDevDbApi;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.TabDrawerMenu;
+import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
-import org.softeg.slartus.forpdaplus.fragments.DevDbDeviceFragment;
+import org.softeg.slartus.forpdaplus.devdb.ParentFragment;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.DevDbModelsAdapter;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DevDbModelsFragment extends BaseTaskListFragment {
     public static final String BRAND_URL_KEY = "BRAND_URL_KEY";
@@ -44,6 +46,7 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
     @Override
     public void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setArrow();
         if (savedInstanceState != null) {
             m_BrandUrl = savedInstanceState.getString(BRAND_URL_KEY, m_BrandUrl);
             m_BrandTitle = savedInstanceState.getString(BRAND_TITLE_KEY, m_BrandTitle);
@@ -54,15 +57,14 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
         }
         getActivity().setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
         App.getInstance().getTabByTag(getTag()).setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
-        TabDrawerMenu.notifyDataSetChanged();
-        setArrow();
+        getMainActivity().notifyTabAdapter();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
         setArrow();
+        getActivity().setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
     }
 
     @Override
@@ -112,7 +114,7 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
         if (TextUtils.isEmpty(topic.getId())) return;
 
         //DevDbDeviceActivity.showDevice(getContext(), topic.getId().toString());
-        DevDbDeviceFragment.showDevice(topic.getId().toString());
+        ParentFragment.showDevice(topic.getId().toString());
     }
 
     @Override
@@ -121,6 +123,9 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
         if (info.id == -1) return;
         final IListItem topic = (IListItem) getAdapter().getItem((int) info.id);
         if (TextUtils.isEmpty(topic.getId())) return;
-        ExtUrl.addUrlMenu(mHandler, getContext(), menu, topic.getId().toString(), topic.getMain().toString());
+
+        List<MenuListDialog> list = new ArrayList<>();
+        ExtUrl.addUrlMenu(mHandler, getContext(), list, topic.getId().toString(), topic.getMain().toString());
+        ExtUrl.showContextDialog(getContext(), null, list);
     }
 }

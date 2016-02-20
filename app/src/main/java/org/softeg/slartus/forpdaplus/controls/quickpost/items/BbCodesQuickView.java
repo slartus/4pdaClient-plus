@@ -25,11 +25,12 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.classes.BbImage;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class BbCodesQuickView extends BaseQuickView {
@@ -84,7 +85,7 @@ public class BbCodesQuickView extends BaseQuickView {
 
     private void loadWebView() {
         StringBuilder sb = new StringBuilder();
-        sb.append("<html><body bgcolor=\"").append(App.getInstance().getCurrentBackgroundColorHtml()).append("\">");
+        sb.append("<html><body style=\"text-align: center; margin:0;\" bgcolor=\"").append(App.getInstance().getCurrentBackgroundColorHtml()).append("\">");
         String style = App.getInstance().getCurrentThemeName();
         if(style.equals("dark")) style = "black";
         String path = "file:///android_asset/forum/style_images/1/folder_editor_buttons_" + style + "/";
@@ -92,8 +93,8 @@ public class BbCodesQuickView extends BaseQuickView {
         for (String key : m_BbCodes) {
             sb.append("<a style=\"text-decoration: none;\" href=\"")
                     .append(key).append("\">")
-                    .append("<img style=\"padding:5px;\" src=\"")
-                    .append(path).append(key.toLowerCase()).append(".png\" />").append("</a> ");
+                    .append("<img style=\"display: inline-block;padding: 0.75rem;width: 1.5rem;height: 1.5rem;\" src=\"")
+                    .append(path).append(key.toLowerCase()).append(".svg\" />").append("</a> ");
         }
 
         sb.append("</body></html>");
@@ -228,6 +229,7 @@ public class BbCodesQuickView extends BaseQuickView {
         colors.add(new BBColor("chocolate", "#C85A17"));
         colors.add(new BBColor("teal", "#037F81"));
         colors.add(new BBColor("silver", "#C0C0C0"));
+        colors.add(new BBColor("gray", "#808080"));
 
         ScrollView scrollView = new ScrollView(getContext());
 

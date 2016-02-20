@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <!--<LinearLayout android:id="@+id/progressLayout"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:gravity="center" >-->
+
+        <!---->
+
+    <!--</LinearLayout>-->
+
+    <!--<org.softeg.slartus.forpdaplus.controls.imageview.NetworkedCacheableImageView-->
+        <!--android:id="@+id/pic"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:minHeight="300dp"-->
+        <!--android:minWidth="300dp"-->
+        <!--android:scaleType="centerInside"/>-->
+
+    <uk.co.senab.photoview.PhotoView
+        android:id="@+id/photo_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="invisible"/>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateOnly="true"
+        android:layout_gravity="center" />
+
+
+</FrameLayout>

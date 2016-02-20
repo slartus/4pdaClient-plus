@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.ActionMode;
@@ -40,6 +41,7 @@ import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseLoaderListFragment;
+import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 
 import java.util.ArrayList;
@@ -61,12 +63,13 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     public void onResume() {
         super.onResume();
         setArrow();
+        if (Preferences.Notifications.Qms.isReadDone())
+            reloadData();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        removeArrow();
     }
 
     @Override
@@ -91,8 +94,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-
+        setArrow();
 
         if(savedInstanceState!=null){
             m_Id = savedInstanceState.getString(MID_KEY);
@@ -104,7 +106,6 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         if(m_Nick!=null)
             if(m_Nick.equals(""))
                 new GetUserTask(m_Id).execute();
-        setArrow();
     }
 
     private class GetUserTask extends AsyncTask<String, Void, Boolean> {
@@ -136,9 +137,9 @@ public class QmsContactThemes extends BaseLoaderListFragment {
             if (success && !TextUtils.isEmpty(userNick)) {
                 m_Nick = userNick;
                 Toast.makeText(getContext(), "Ник получен: " + m_Nick, Toast.LENGTH_SHORT).show();
-                getMainActivity().setTitle(m_Nick);
+                setTitle(m_Nick);
                 App.getInstance().getTabByTag(getTag()).setTitle(m_Nick);
-                TabDrawerMenu.notifyDataSetChanged();
+                getMainActivity().notifyTabAdapter();
             } else {
                 if (ex != null)
                     AppLog.e(getMainActivity(), ex, new Runnable() {
@@ -154,6 +155,26 @@ public class QmsContactThemes extends BaseLoaderListFragment {
                     Toast.makeText(getMainActivity(), "Неизвестная ошибка",
                             Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+    private boolean dialogShowed = false;
+
+    @Override
+    public void onLoadFinished(Loader<ListData> loader, ListData data) {
+        super.onLoadFinished(loader, data);
+        if(data.getItems().size()<=0&!dialogShowed) {
+            new MaterialDialog.Builder(getContext())
+                    .content("С пользователем " + m_Nick + " нет диалогов. Создать?")
+                    .positiveText("Да")
+                    .negativeText("Нет")
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            QmsNewThreadFragment.showUserNewThread(getMainActivity(), m_Id, m_Nick);
+                        }
+                    })
+                    .show();
+            dialogShowed = true;
         }
     }
 

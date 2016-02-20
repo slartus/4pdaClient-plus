@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="ImageViewTheme" parent="Theme.AppCompat">
-        <item name="windowActionModeOverlay">true</item>
-        <item name="android:fitsSystemWindows">false</item>
+        <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="actionBarStyle">@style/actionbar_trans</item>
@@ -12,7 +11,6 @@
 
     <style name="actionbar_trans" parent="@style/Widget.AppCompat.ActionBar">
         <item name="background">@color/background_toolbar</item>
-        <item name="elevation">2dp</item>
         <item name="displayOptions">homeAsUp|showTitle</item>
         <item name="titleTextStyle">@style/actionbar_title</item>
         <item name="subtitleTextStyle">@style/actionbar_subtitle</item>

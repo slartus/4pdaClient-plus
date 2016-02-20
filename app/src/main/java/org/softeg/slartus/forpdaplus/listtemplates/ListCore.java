@@ -1,10 +1,7 @@
 package org.softeg.slartus.forpdaplus.listtemplates;
 
-import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Log;
 
-import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.MainActivity;
 
 import java.util.ArrayList;
@@ -34,6 +31,14 @@ public class ListCore {
         allItems.add(new DevDbCatalogBrickInfo());//9
         allItems.add(new LeadsBrickInfo());//10
         return allItems;
+    }
+
+    public static ArrayList<BrickInfo> getOthersBricks(){
+        ArrayList<BrickInfo> res = new ArrayList<>();
+        res.add(new PreferencesBrickInfo());
+        res.add(new DownloadsBrickInfo());
+        res.add(new MarkAllReadBrickInfo());
+        return res;
     }
 
     /**
@@ -99,6 +104,10 @@ public class ListCore {
     }
 
     private static ArrayList<BrickInfo> m_RegisteredBricks = new ArrayList<>();
+
+    public static ArrayList<BrickInfo> getRegisteredBricks(){
+        return m_RegisteredBricks;
+    }
 
     public static void registerBricks() {
         m_RegisteredBricks.add(new NewsBrickInfo());

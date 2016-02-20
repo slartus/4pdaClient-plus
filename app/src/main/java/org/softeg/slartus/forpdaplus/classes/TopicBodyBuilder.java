@@ -52,7 +52,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         super.beginHtml(m_Topic.getTitle() + desc);
         super.beginBody("topic",null,m_IsLoadImages);
 
-        m_Body.append("<div id=\"topMargin\" style=\"height:" + ACTIONBAR_TOP_MARGIN + ";\"></div>");
+        m_Body.append("<div id=\"topMargin\" style=\"height:").append(ACTIONBAR_TOP_MARGIN).append(";\"></div>");
 
         m_Body.append("<div class=\"panel top\">");
         if (m_Topic.getPagesCount() > 1) {
@@ -74,10 +74,13 @@ public class TopicBodyBuilder extends HtmlBuilder {
             addButtons(m_Body, m_Topic.getCurrentPage(), m_Topic.getPagesCount(),
                     m_IsWebviewAllowJavascriptInterface, false, false);
         }
-        m_Body.append("<div class=\"who\"><a id=\"viewers\" ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showReadingUsers"))
-                .append("><span>Кто читает тему</span></a>\n");
-        m_Body.append("<a id=\"writers\" ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showWriters"))
-                .append("><span>Кто писал сообщения</span></a></div>\n");
+        if(Preferences.Topic.getReadersAndWriters()){
+            m_Body.append("<div class=\"who\"><a id=\"viewers\" ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showReadingUsers"))
+                    .append("><span>Кто читает тему</span></a>\n");
+            m_Body.append("<a id=\"writers\" ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showWriters"))
+                    .append("><span>Кто писал сообщения</span></a></div>\n");
+        }
+
         m_Body.append(getTitleBlock()).append("</div><div id=\"bottomMargin\"></div>");
 
 
@@ -99,8 +102,8 @@ public class TopicBodyBuilder extends HtmlBuilder {
     }
 
     public void addPost(Post post, Boolean spoil) {
-        m_Body.append("<div name=\"entry").append(post.getId()).append("\"class=\"jump\" style=\"position: absolute; width: 100%; margin-top:-"+ACTIONBAR_TOP_MARGIN+"; left: 0;\" id=\"entry").append(post.getId()).append("\"></div>\n");
-        m_Body.append("<div class=\"post_container\" name=\"del" + post.getId() + "\">");
+        m_Body.append("<div name=\"entry").append(post.getId()).append("\"class=\"jump\" style=\"position: absolute; width: 100%; margin-top:-").append(ACTIONBAR_TOP_MARGIN).append("; left: 0;\" id=\"entry").append(post.getId()).append("\"></div>\n");
+        m_Body.append("<div class=\"post_container\" name=\"del").append(post.getId()).append("\">");
 
         addPostHeader(m_Body, post);
 
@@ -148,11 +151,12 @@ public class TopicBodyBuilder extends HtmlBuilder {
     }
 
     private String getTitleBlock() {
-        String desc = TextUtils.isEmpty(m_Topic.getDescription()) ? "" : (", " + m_Topic.getDescription());
+        String desc = TextUtils.isEmpty(m_Topic.getDescription()) ? "" : ("<span class=\"comma\">, </span>" + m_Topic.getDescription());
         return "<div class=\"topic_title_post\"><a href=\"http://4pda.ru/forum/index.php?showtopic="
                 + m_Topic.getId()
                 + (TextUtils.isEmpty(m_UrlParams) ? "" : ("&" + m_UrlParams)) + "\">"
-                + m_Topic.getTitle() + (HtmlPreferences.isFullThemeTitle()? desc : "") +"</a></div>\n";
+                + "<span class=\"name\">"+m_Topic.getTitle()+"</span>"
+                + (HtmlPreferences.isFullThemeTitle()? "<span class=\"description\">"+desc+"</span>" : "") +"</a></div>\n";
     }
 
     public static void addButtons(StringBuilder sb, int currentPage, int pagesCount, Boolean isUseJs,
@@ -162,7 +166,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         sb.append("\n<div class=\"navi ").append(top ? "top" : "bottom").append("\">\n");
         sb.append("<a class=\"button first").append(prevDisabled ? " disable\"" : "\"" + getHtmlout(isUseJs, "firstPage")).append("><span>&lt;&lt;</span></a>\n");
         sb.append("<a class=\"button prev").append(prevDisabled ? " disable\"" : "\"" + getHtmlout(isUseJs, "prevPage")).append("><span>&lt;</span></a>\n");
-        sb.append("<a class=\"button page\" ").append(getHtmlout(isUseJs, "jumpToPage")).append("><span>" + (useSelectTextAsNumbers ? (currentPage + "/" + pagesCount) : "Выбор") + "</span></a>\n");
+        sb.append("<a class=\"button page\" ").append(getHtmlout(isUseJs, "jumpToPage")).append("><span>").append(useSelectTextAsNumbers ? (currentPage + "/" + pagesCount) : "Выбор").append("</span></a>\n");
         sb.append("<a class=\"button next").append(nextDisabled ? " disable\"" : "\"" + getHtmlout(isUseJs, "nextPage")).append("><span>&gt;</span></a>\n");
         sb.append("<a class=\"button last").append(nextDisabled ? " disable\"" : "\"" + getHtmlout(isUseJs, "lastPage")).append("><span>&gt;&gt;</span></a>\n");
         sb.append("</div>\n");
@@ -266,7 +270,11 @@ public class TopicBodyBuilder extends HtmlBuilder {
     }
 
     private void addFooter(StringBuilder sb, Post post) {
-        sb.append("<div class=\"post_footer\">");
+        sb.append("<div class=\"post_footer")
+                .append(post.getCanDelete() ? " delete" : "")
+                .append(post.getCanEdit() ? " edit" : "")
+                .append(getTopic().isPostVote() ? "" : " nopostvote")
+                .append("\">");
         if (m_Logined) {
             String nickParam = post.getNickParam();
             String postNumber = post.getNumber();
@@ -286,7 +294,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
                     .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "quote", new String[]{m_Topic.getForumId(), m_Topic.getId(), post.getId(), post.getDate(), post.getUserId(), nickParam}))
                     .append("><span>Цитата</span></a>");
 
-            if (!Client.getInstance().UserId.equals(post.getUserId())) {
+            if (!Client.getInstance().UserId.equals(post.getUserId())&getTopic().isPostVote()) {
                 sb.append("<a class=\"button vote bad\" ")
                         .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "postVoteBad", post.getId()))
                         .append("><span>Плохо</span></a>");

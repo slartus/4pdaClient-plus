@@ -13,14 +13,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import org.jsoup.Jsoup;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
-import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
@@ -47,11 +45,6 @@ public class SpecialView extends WebViewFragment {
     @Override
     public AdvWebView getWebView() {
         return m_WebView;
-    }
-
-    @Override
-    public View getView() {
-        return view;
     }
 
     @Override
@@ -95,7 +88,6 @@ public class SpecialView extends WebViewFragment {
     @Override
     public void onPause() {
         super.onPause();
-        removeArrow();
     }
 
     public static void showSpecial(String url) {
@@ -103,11 +95,10 @@ public class SpecialView extends WebViewFragment {
         m_Url = url;
     }
 
-    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.webview_fragment, container, false);
-        m_WebView = (AdvWebView) view.findViewById(R.id.wvBody);
+        m_WebView = (AdvWebView) findViewById(R.id.wvBody);
         setHasOptionsMenu(true);
 
 
@@ -181,7 +172,7 @@ public class SpecialView extends WebViewFragment {
     }
     private void showThemeBody(String body) {
         try {
-            getMainActivity().setTitle(m_Title);
+            setTitle(m_Title);
             m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
         } catch (Exception ex) {
             AppLog.e(getMainActivity(), ex);

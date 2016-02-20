@@ -1,4 +1,98 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 48 48">
-    <path d="M0 0h48v48h-48z" fill="none"/>
-    <path d="M20 38h8v-6h-8v6zm-10-30v6h10v6h8v-6h10v-6h-28zm-4 20h36v-4h-36v4z"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sb="http://simplector.lyoshka.net/base/2.0"
+   xmlns:sp="http://simplector.lyoshka.net/pro/2.0"
+   width="24.0px"
+   height="24.0px"
+   viewBox="0 0 24.0 24.0"
+   sb:fontSize="Custom"
+   sb:pageOrientation="Portrait"
+   version="1.1"
+   sb:version="2.0.19"
+   >
+   <desc>Created in Simplector Pro</desc>
+   <path
+      id="116"
+      transform="matrix(0.010619468,0.0,-0.0,-0.010013352,4.9699097,18.728973)"
+      fill="rgb(0,0,0)"
+      fill-opacity="1.0"
+      stroke-width="91.42857"
+      stroke-linecap="butt"
+      stroke-linejoin="miter"
+      stroke-miterlimit="2.0"
+      stroke="rgb(0,0,0)"
+      stroke-opacity="0.0"
+      d="
+      M 191.16684 871.7334 T 141.85324 923.96075 T 95.49524 1075.2303 Q 100.765625 1248.2699 240.70886 1358.2736 
+      T 662.0001 1470.9333 Q 915.25867 1472.8981 1055.0 1351.0 T 1227.0 1074.5002 L 944.5 1074.5002 
+      Q 913.0 1132.0 847.0 1193.0 T 657.0 1255.0 Q 537.0 1255.0 474.0 1204.0 T 411.0 1070.0 
+      Q 411.0 994.0 478.0 948.0 T 662.0001 871.7334 Z 
+      "
+
+      sb:layerName="copy of 96"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      sb:pathType="path"
+      >
+   </path>
+   <rect
+      id="112"
+      transform="matrix(-0.9411763,-0.0,-0.0,-1.9999955,23.764704,35.999947)"
+      fill="rgb(0,0,0)"
+      fill-opacity="1.0"
+      stroke-width="1.0"
+      stroke-linecap="butt"
+      stroke-linejoin="miter"
+      stroke-miterlimit="2.0"
+      stroke="rgb(0,0,0)"
+      stroke-opacity="0.0"
+      x="4.0"
+      y="11.499998"
+      width="17.000004"
+      height="1.0000029"
+      rx="0.0"
+      ry="0.0"
+
+      sb:layerName="RectFigure-112"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+   </rect>
+   <path
+      id="119"
+      transform="matrix(-0.010619468,-0.0,0.0,0.010013352,19.030087,4.240653)"
+      fill="rgb(0,0,0)"
+      fill-opacity="1.0"
+      stroke-width="91.42857"
+      stroke-linecap="butt"
+      stroke-linejoin="miter"
+      stroke-miterlimit="2.0"
+      stroke="rgb(0,0,0)"
+      stroke-opacity="0.0"
+      d="
+      M 191.16684 871.7334 T 141.85324 923.96075 T 95.49524 1075.2303 Q 101.91797 1242.5806 240.70886 1358.2736 
+      T 661.0 1477.0 Q 899.7992 1473.3198 1055.0 1351.0 T 1227.0 1074.5002 L 944.5 1074.5002 
+      Q 913.0 1132.0 847.0 1193.0 T 657.0 1255.0 Q 537.0 1255.0 474.0 1204.0 T 411.0 1070.0 
+      Q 411.0 994.0 478.0 948.0 T 662.0001 871.7334 Z 
+      "
+
+      sb:layerName="copy of copy of 96"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      sb:pathType="path"
+      >
+   </path>
+   <sp:keyframes
+
+      sp:step="100"
+      sp:dur="10000"
+      >
+      <sp:keyframe
+
+         sp:time="0"
+         >
+      </sp:keyframe>
+   </sp:keyframes>
 </svg>

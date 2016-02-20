@@ -83,7 +83,8 @@ public class ImageViewDialogFragment extends DialogFragment {
                         } catch (URISyntaxException e) {
                             e.printStackTrace();
                         }
-                        ImageViewActivity.startActivity(getActivity(), url);
+//                        ImageViewActivity.startActivity(getActivity(), url);
+                        ImgViewer.startActivity(getActivity(), url);
                     }
                 }).build();
 

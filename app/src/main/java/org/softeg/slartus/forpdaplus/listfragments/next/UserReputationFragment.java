@@ -30,10 +30,14 @@ import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
+import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
+import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
+import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
 import org.softeg.slartus.forpdaplus.listtemplates.UserReputationBrickInfo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /*
  * Created by slinkin on 19.02.2015.
@@ -76,7 +80,6 @@ public class UserReputationFragment extends BrickFragmentListBase {
     @Override
     public void onPause() {
         super.onPause();
-        removeArrow();
     }
 
     private String getUserId() {
@@ -85,6 +88,13 @@ public class UserReputationFragment extends BrickFragmentListBase {
 
     private String getUserNick() {
         return Args.getString(USER_NICK_KEY, "");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(USER_ID_KEY, getUserId());
+        outState.putString(USER_NICK_KEY, getUserNick());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -113,7 +123,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
         if(data.getEx()==null){
             if(data instanceof ReputationsListData){
                 if(getSupportActionBar()!=null)
-                    getSupportActionBar().setSubtitle(((ReputationsListData) data).getRep());
+                    setSubtitle(((ReputationsListData) data).getRep());
                 Args.putString(USER_NICK_KEY, ((ReputationsListData) data).getUser());
             }
         }
@@ -133,20 +143,17 @@ public class UserReputationFragment extends BrickFragmentListBase {
         if (info.id == -1) return;
         final ReputationEvent item = (ReputationEvent) getAdapter().getItem((int) info.id);
 
-        menu.setHeaderTitle(item.getUser());
-
+        final List<MenuListDialog> list = new ArrayList<>();
         if (item.getSourceUrl()!=null&&!item.getSourceUrl().contains("forum/index.php?showuser=")) {
-            menu.add("Перейти к сообщению")
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            IntentActivity.tryShowUrl(getActivity(), new Handler(), item.getSourceUrl(), true, false);
-                            return true;
-                        }
-                    });
+            list.add(new MenuListDialog("Перейти к сообщению", new Runnable() {
+                @Override
+                public void run() {
+                    IntentActivity.tryShowUrl(getActivity(), new Handler(), item.getSourceUrl(), true, false);
+                }
+            }));
         }
-
-        ForumUser.onCreateContextMenu(getActivity(), menu, item.getUserId(), item.getUser());
+        ForumUser.onCreateContextMenu(getActivity(), list, item.getUserId(), item.getUser());
+        ExtUrl.showContextDialog(getContext(), item.getUser(), list);
     }
 
 
@@ -176,7 +183,6 @@ public class UserReputationFragment extends BrickFragmentListBase {
         try {
 
             MenuItem item;
-
             if (Client.getInstance().getLogined() && !getUserId().equals(Client.getInstance().UserId)) {
 
 

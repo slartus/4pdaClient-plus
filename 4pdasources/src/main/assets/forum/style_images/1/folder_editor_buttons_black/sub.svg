@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sb="http://simplector.lyoshka.net/base/2.0"
+   xmlns:sp="http://simplector.lyoshka.net/pro/2.0"
+   width="24.0px"
+   height="24.0px"
+   viewBox="0 0 24.0 24.0"
+   sb:fontSize="Custom"
+   sb:pageOrientation="Portrait"
+   version="1.1"
+   sb:version="2.0.19"
+   >
+   <desc>Created in Simplector Pro</desc>
+   <g
+      id="80"
+
+      sb:layerName="TextFigure-75"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+      <path
+         id="81"
+         transform="matrix(0.0039100675,0.0,0.0,-0.0040622884,16.726295,21.0)"
+         fill="rgb(255,255,255)"
+         fill-opacity="1.0"
+         stroke-width="195.83333"
+         stroke-linecap="butt"
+         stroke-linejoin="miter"
+         stroke-miterlimit="2.0"
+         stroke="rgb(0,0,0)"
+         stroke-opacity="0.0"
+         d="
+         M 1093.0 0.0 L 70.0 0.0 L 70.0 246.16663 L 570.0 696.0 Q 680.26904 802.7186 752.9956 899.8036 
+         Q 849.6914 1038.1295 786.8828 1132.6387 T 581.5 1230.8334 Q 457.06738 1228.5208 392.3794 1178.1516 
+         T 325.75 984.6667 L 70.0 984.6667 Q 71.12988 1232.05 194.65869 1352.7639 T 568.0 1477.0 
+         Q 839.41797 1474.9175 963.7119 1350.6792 T 1086.6919 1071.3834 Q 1091.0801 917.43506 1007.24414 811.31616 
+         T 738.0 512.0 L 479.19995 246.16663 L 1093.0002 246.16663 L 1093.0 0.0 Z 
+         "
+
+         sb:layerName="unit-0 (2)"
+         sb:layerVisible="true"
+         sb:layerLocked="false"
+         sb:pathType="path"
+         >
+      </path>
+   </g>
+   <rect
+      id="69"
+      transform="matrix(0.38214153,0.32714826,-0.60755634,0.73872006,13.858001,1.529976)"
+      fill="rgb(255,255,255)"
+      fill-opacity="1.0"
+      stroke-width="1.0"
+      stroke-linecap="butt"
+      stroke-linejoin="miter"
+      stroke-miterlimit="2.0"
+      stroke="rgb(0,0,0)"
+      stroke-opacity="0.0"
+      x="3.0"
+      y="2.0"
+      width="5.784998"
+      height="17.758537"
+      rx="0.0"
+      ry="0.0"
+
+      sb:layerName="RectFigure-69"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+   </rect>
+   <rect
+      id="73"
+      transform="matrix(0.3824985,-0.32714826,-0.60812396,-0.73872006,14.534798,22.458887)"
+      fill="rgb(255,255,255)"
+      fill-opacity="1.0"
+      stroke-width="1.0"
+      stroke-linecap="butt"
+      stroke-linejoin="miter"
+      stroke-miterlimit="2.0"
+      stroke="rgb(0,0,0)"
+      stroke-opacity="0.0"
+      x="3.230877"
+      y="3.2514505"
+      width="5.769123"
+      height="17.74855"
+      rx="0.0"
+      ry="0.0"
+
+      sb:layerName="copy of RectFigure-69"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+   </rect>
+   <sp:keyframes
+
+      sp:step="100"
+      sp:dur="10000"
+      >
+      <sp:keyframe
+
+         sp:time="0"
+         >
+      </sp:keyframe>
+   </sp:keyframes>
+</svg>

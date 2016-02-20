@@ -18,11 +18,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +33,7 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -51,10 +54,12 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
+import org.softeg.slartus.forpdaplus.classes.IListItem;
 import org.softeg.slartus.forpdaplus.classes.Post;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
+import org.softeg.slartus.forpdaplus.classes.common.Functions;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.HelpTask;
@@ -63,23 +68,33 @@ import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
+import org.softeg.slartus.forpdaplus.listfragments.BaseListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.NotesListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
+import org.softeg.slartus.forpdaplus.listfragments.TopicReadersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicUtils;
+import org.softeg.slartus.forpdaplus.listfragments.TopicWritersListFragment;
+import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.TopicReadersBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.tabs.TabItem;
+import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -110,12 +125,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     private int m_ScrollY = 0;
     private QuickPostFragment mQuickPostFragment;
     private LinearLayout mQuickPostPanel;
-    private ThemeCurator mCurator;
     private String lastStyle;
     private ForPdaDeveloperInterface m_ForPdaDeveloperInterface;
     private Menu menu;
 
-    View view;
     public static ThemeFragment newInstance(String url){
         ThemeFragment fragment = new ThemeFragment();
         Bundle args = new Bundle();
@@ -155,15 +168,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     @Override
-    public View getView() {
-        return view;
-    }
-
-    public View findViewById(int id){
-        return view.findViewById(id);
-    }
-
-    @Override
     public WebViewClient MyWebViewClient() {
         return new MyWebViewClient();
     }
@@ -183,7 +187,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         reloadTopic();
     }
 
-    AsyncTask asyncTask;
+    GetThemeTask asyncTask;
     @Override
     public AsyncTask getAsyncTask() {
         return asyncTask;
@@ -238,7 +242,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         LoadsImagesAutomatically = null;
 
 
-        mCurator = new ThemeCurator(getMainActivity(), this);
+
 
         getMainActivity().setDefaultKeyMode(Activity.DEFAULT_KEYS_SEARCH_LOCAL);// чтобы поиск начинался при вводе текста
 
@@ -332,7 +336,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         webView = (AdvWebView) findViewById(R.id.wvBody);
         registerForContextMenu(webView);
-        setWebViewSettings(true);
+        setWebViewSettings();
 
 
         webView.getSettings().setDomStorageEnabled(true);
@@ -346,11 +350,13 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
 
         webView.getSettings().setAllowFileAccess(true);
-        webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+
 
         webView.getSettings().setLoadWithOverviewMode(false);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
+        webView.setWebChromeClient(new MyChromeClient());
         if (Build.VERSION.SDK_INT >= 19) {
             try {
                 webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
@@ -549,20 +555,24 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 return true;
             }
         });
-
-        optionsMenu.add(R.string.Share).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                try {
-                    String url = TextUtils.isEmpty(shareItUrl) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : shareItUrl;
-                    ExtUrl.shareIt(context, shareItUrl, url, url);
-                } catch (Exception ex) {
-                    return false;
+        if(!Preferences.Topic.getReadersAndWriters()) {
+            optionsMenu.add("Кто читает тему").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    Bundle args = new Bundle();
+                    args.putString(TopicReadersListFragment.TOPIC_ID_KEY, getTopic().getId());
+                    MainActivity.showListFragment(getTopic().getId(), TopicReadersBrickInfo.NAME, args);
+                    return true;
                 }
-                return true;
-            }
-        });
-
-
+            });
+            optionsMenu.add("Кто писал сообщения").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    Bundle args = new Bundle();
+                    args.putString(TopicWritersListFragment.TOPIC_ID_KEY, getTopic().getId());
+                    MainActivity.showListFragment(getTopic().getId(), TopicWritersBrickInfo.NAME, args);
+                    return true;
+                }
+            });
+        }
     }
 
 
@@ -571,10 +581,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         super.onCreateOptionsMenu(menu, inflater);
 
         try {
-            MenuItem item;
             boolean pancil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false);
             if(pancil) {
-                item = menu.add("Написать")
+                menu.add("Написать")
                         .setIcon(R.drawable.ic_pencil_white_24dp)
                         .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
@@ -582,10 +591,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                 toggleMessagePanelVisibility();
                                 return true;
                             }
-                        });
-                item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
-            item = menu.add(R.string.Refresh)
+            menu.add(R.string.Refresh)
                     .setIcon(R.drawable.ic_refresh_white_24dp)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
@@ -593,8 +601,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                             reloadTopic();
                             return true;
                         }
-                    });
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                    }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             SubMenu subMenu = menu.addSubMenu(R.string.Attaches)
                     .setIcon(R.drawable.ic_download_white_24dp);
 
@@ -613,7 +620,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         }
                     });
 
-            item = menu.add(R.string.FindOnPage)
+            menu.add(R.string.FindOnPage)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -622,7 +629,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                             return true;
                         }
                     });
-            item = menu.add(R.string.FindInTopic)
+            menu.add(R.string.FindInTopic)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -632,28 +639,17 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         }
                     });
 
-            menu.add(R.string.Browser)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
-                        public boolean onMenuItemClick(MenuItem item) {
-                            try {
-                                Intent marketIntent = new Intent(
-                                        Intent.ACTION_VIEW,
-                                        Uri.parse(getLastUrl()));
-                                startActivity(Intent.createChooser(marketIntent, "Выберите"));
-
-
-                            } catch (ActivityNotFoundException e) {
-                                AppLog.e(getMainActivity(), e);
-                            }
-                            return true;
-                        }
-                    });
 
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getMainActivity().getApplicationContext());
             mTopicOptionsMenu = addOptionsMenu(getMainActivity(), getHandler(), menu, true, getLastUrl());
 
-
+            menu.add("Ссылка").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", TextUtils.isEmpty(getLastUrl()) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : getLastUrl());
+                    return true;
+                }
+            });
             SubMenu optionsMenu = menu.addSubMenu("Вид");
             optionsMenu.getItem().setTitle("Вид");
 
@@ -761,7 +757,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 menu.add("Мультимодерация").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         try {
-                            getCurator().showMmodDialog();
+                            ThemeCurator.showMmodDialog(getActivity(), ThemeFragment.this, getTopic().getId());
                         } catch (Exception ex) {
                             return false;
                         }
@@ -781,7 +777,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public void onResume() {
         super.onResume();
         if(m_Topic!=null) {
-            getSupportActionBar().setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
+            setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
         }
         if(mQuickPostFragment!=null)
             mQuickPostFragment.onResume();
@@ -796,6 +792,12 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     private void hideKeyboard() {
         mQuickPostFragment.hideKeyboard();
+    }
+
+    @Override
+    public void hidePopupWindows() {
+        super.hidePopupWindows();
+        mQuickPostFragment.hidePopupWindow();
     }
 
     public Handler getHandler() {
@@ -1011,6 +1013,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public void quote(final String forumId, final String topicId, final String postId, final String postDate, String userId, String userNick) {
+        final String finalPostDate = Functions.getForumDateTime(Functions.parseForumDateTime(postDate, Functions.getToday(), Functions.getYesterToday()));
         final String mUserNick = userNick.replace("\"","\\\"");
         CharSequence clipboardText = null;
         try {
@@ -1054,7 +1057,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                     public void run() {
                                         new Handler().post(new Runnable() {
                                             public void run() {
-                                                insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + postDate + "\" post=\"" + postId + "\"]\n\n[/quote]");
+                                                insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n\n[/quote]");
                                             }
                                         });
                                     }
@@ -1066,7 +1069,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                     public void run() {
                                         new Handler().post(new Runnable() {
                                             public void run() {
-                                                insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + postDate + "\" post=\"" + postId + "\"]\n" + finalClipboardText + "\n[/quote]");
+                                                insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n" + finalClipboardText + "\n[/quote]");
                                             }
                                         });
                                     }
@@ -1154,9 +1157,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         super.showBody();
         try {
             setScrollElement();
-            getMainActivity().setTitle(m_Topic.getTitle());
+            setTitle(m_Topic.getTitle());
             if(getSupportActionBar()!=null)
-                getSupportActionBar().setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
+                setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
 
             webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
 
@@ -1181,6 +1184,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public void hideMessagePanel() {
+        LogUtil.D("BOOM BOOM", "hideMessagePanel");
         btnShowHideEditPost.setImageResource(R.drawable.ic_pencil_white_24dp);
         /*Boolean translucentNavigation = true;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
@@ -1239,10 +1243,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         MainActivity.showListFragment(brickInfo.getName(), args);
     }
 
-    public ThemeCurator getCurator() {
-        return mCurator;
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ForPdaDeveloperInterface.FILECHOOSER_RESULTCODE) {
@@ -1255,12 +1255,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
                 closeSearch();
 
-                GetThemeTask getThemeTask = new GetThemeTask(getMainActivity());
+                asyncTask = new GetThemeTask(getMainActivity());
                 if (data.getExtras() != null && data.getExtras().containsKey(EditPostFragment.TOPIC_BODY_KEY)) {
-                    getThemeTask.execute(url.replace("|", ""), data.getStringExtra(EditPostFragment.TOPIC_BODY_KEY));
+                    asyncTask.execute(url.replace("|", ""), data.getStringExtra(EditPostFragment.TOPIC_BODY_KEY));
                 } else
-                    getThemeTask.execute(url.replace("|", ""));
-                asyncTask = getThemeTask;
+                    asyncTask.execute(url.replace("|", ""));
             }
         }
     }
@@ -1357,14 +1356,15 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 return;
             }
             url = lofiversionToNormal(url);
-            webView.clearCache(true);
+            //webView.clearCache(true);
             if (m_History.size() > 0) {
                 m_History.get(m_History.size() - 1).setY(webView.getScrollY());
             }
             webView.setWebViewClient(new MyWebViewClient());
+            //webView.getSettings().setLoadsImagesAutomatically(getLoadsImagesAutomatically());
 
-            GetThemeTask getThemeTask = new GetThemeTask(getMainActivity());
-            getThemeTask.execute(url.replace("|", ""));
+            asyncTask = new GetThemeTask(getMainActivity());
+            asyncTask.execute(url.replace("|", ""));
         } catch (Throwable ex) {
             AppLog.e(getMainActivity(), ex);
         }
@@ -1372,6 +1372,14 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     public AdvWebView getWebView() {
         return webView;
+    }
+
+    private class MyChromeClient extends WebChromeClient{
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            super.onProgressChanged(view, newProgress);
+            Log.e("kekp", newProgress+" %");
+        }
     }
 
     private void prepareDeleteMessage(final String postId) {
@@ -1544,26 +1552,36 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     private class MyWebViewClient extends WebViewClient {
+        private final long LOADING_ERROR_TIMEOUT = TimeUnit.SECONDS.toMillis(45);
+
+        // WebView instance is kept in WeakReference because of mPageLoadingTimeoutHandlerTask
+        private WeakReference<WebView> mReference;
+        private boolean mLoadingFinished = false;
+        private boolean mLoadingError = false;
+        private String mOnErrorUrl;
+
+        // Helps to know what page is loading in the moment
+        // Allows check url to prevent onReceivedError/onPageFinished calling for wrong url
+        // Helps to prevent double call of onPageStarted
+        // These problems cached on many devices
+        private String mUrl;
+
         @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            super.onPageStarted(view, url, favicon);
-
-            //setSupportProgressBarIndeterminateVisibility(true);
-            //ThemeActivity.getMainActivity().setProgressBarIndeterminateVisibility(true);
-
+        public void onReceivedError(WebView view, int errorCode, String description, String url) {
+            if (mUrl != null && !mLoadingError) {
+                Log.e(TAG, "onReceivedError: " + errorCode + ", " + description);
+                mLoadingError = true;
+            } else {
+//                mOnErrorUrl = removeLastSlash(url);
+                mOnErrorUrl = url;
+            }
         }
 
         @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            view.clearHistory();
-            //setSupportProgressBarIndeterminateVisibility(false);
-        }
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, final String url) {
-            // if (ThemeActivity.getMainActivity().webView.GetJavascriptInterfaceBroken())
-            {
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            LogUtil.D("BUG", "url in " + url);
+//            url = removeLastSlash(url);
+            if (!startsWith(url, mUrl) && !mLoadingFinished) {
                 if (url.contains("HTMLOUT.ru")) {
                     Uri uri = Uri.parse(url);
                     try {
@@ -1577,6 +1595,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
                             while (m.find()) {
                                 objs.add(Uri.decode(m.group(2)));
+                                //LogUtil.D("THEME FRAGMENT", "objs " + Uri.decode(m.group(2)));
                             }
                             parameterValues = new String[objs.size()];
                             parameterTypes = new Class[objs.size()];
@@ -1594,6 +1613,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     return true;
                 }
 
+
+
+                mUrl = null;
+                onPageStarted(view, url, null);
             }
             m_ScrollY = 0;
             if (checkIsTheme(url))
@@ -1610,9 +1633,80 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
             IntentActivity.tryShowUrl(getMainActivity(), mHandler, url, true, false,
                     m_Topic == null ? null : m_Topic.getAuthKey());
-
             return true;
         }
+
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            super.onPageStarted(view, url, favicon);
+            Log.e("kek", "PAGE STARTED");
+            //setSupportProgressBarIndeterminateVisibility(true);
+            //ThemeActivity.getMainActivity().setProgressBarIndeterminateVisibility(true);
+
+//            url = removeLastSlash(url);
+            if (startsWith(url, mOnErrorUrl)) {
+                mUrl = url;
+                mLoadingError = true;
+                mLoadingFinished = false;
+                onPageFinished(view, url);
+            }
+            if (mUrl == null) {
+                mUrl = url;
+                mLoadingError = false;
+                mLoadingFinished = false;
+                view.removeCallbacks(mPageLoadingTimeoutHandlerTask);
+                view.postDelayed(mPageLoadingTimeoutHandlerTask, LOADING_ERROR_TIMEOUT);
+                mReference = new WeakReference<>(view);
+            }
+
+
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+//            url = removeLastSlash(url);
+            if (startsWith(url, mUrl) && !mLoadingFinished) {
+                mLoadingFinished = true;
+                view.removeCallbacks(mPageLoadingTimeoutHandlerTask);
+                mOnErrorUrl = null;
+                mUrl = null;
+            } else if (mUrl == null) {
+                view.setWebViewClient(new MyWebViewClient());
+                mLoadingFinished = true;
+            }
+
+            Log.e("kek", "PAGE FINISHED");
+            view.clearHistory();
+            //setSupportProgressBarIndeterminateVisibility(false);
+        }
+
+//        private String removeLastSlash(String url) {
+//            LogUtil.D("BUG", "url before " + url);
+//            while (url.endsWith("/")) {
+//                url = url.substring(0, url.length() - 1);
+//                LogUtil.D("BUG", "url after " + url);
+//            }
+//            return url;
+//        }
+
+        private boolean startsWith(String str, String prefix) {
+            return str != null && prefix != null && str.startsWith(prefix);
+        }
+
+        private final Runnable mPageLoadingTimeoutHandlerTask = new Runnable() {
+            @Override
+            public void run() {
+                mUrl = null;
+                mLoadingFinished = true;
+                if (mReference != null) {
+                    WebView webView = mReference.get();
+                    if (webView != null) {
+                        webView.stopLoading();
+                    }
+                }
+            }
+        };
 
         private boolean checkIsPoll(String url) {
             Matcher m = Pattern.compile("4pda.ru.*?addpoll=1").matcher(url);
@@ -1716,8 +1810,19 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         protected void onPostExecute(final Boolean success) {
             setLoading(false);
+            TabItem item = App.getInstance().getTabByTag(getTag());
+            if(item!=null){
+                TabItem tabItem = App.getInstance().getTabByTag(item.getParentTag());
+                if(tabItem!=null&&!tabItem.getTag().contains("tag")){
+                    Fragment fragment = getMainActivity().getSupportFragmentManager().findFragmentByTag(item.getParentTag());
+                    if(fragment instanceof TopicsListFragment&&getTopic()!=null&&getTopic().getId()!=null)
+                        ((TopicsListFragment) fragment).topicAfterClick(getTopic().getId());
+                }
+            }
+
             if (scrollY != 0)
                 webView.setPictureListener(new MyPictureListener());
+            Log.e("kek", webView.getSettings().getLoadsImagesAutomatically()+" loadimages");
 
             m_ScrollY = scrollY;
             if (m_Topic != null)
@@ -1729,7 +1834,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 showBody(m_ThemeBody);
             } else {
                 if (ex.getClass() != NotReportException.class) {
-                    getMainActivity().setTitle(ex.getMessage());
+                    setTitle(ex.getMessage());
                     webView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
                     addToHistory(m_ThemeBody);
 

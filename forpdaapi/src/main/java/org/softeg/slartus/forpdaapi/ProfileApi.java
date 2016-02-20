@@ -2,13 +2,13 @@ package org.softeg.slartus.forpdaapi;
 
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.apache.http.cookie.Cookie;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.softeg.slartus.forpdaapi.classes.LoginForm;
 import org.softeg.slartus.forpdacommon.NotReportException;
-import org.softeg.slartus.forpdacommon.PatternExtensions;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -58,27 +58,28 @@ public class ProfileApi {
      * @throws Exception
      */
     public static LoginResult login(IHttpClient httpClient, String login, String password,
-                                    Boolean privacy, String capA, String capD, String capS, String session) throws Exception {
+                                    Boolean privacy, String capVal, String capTime, String capSig, String session) throws Exception {
         LoginResult loginResult = new LoginResult();
 
         Map<String, String> additionalHeaders = new HashMap<String, String>();
 
-        additionalHeaders.put("UserName", login);
-        additionalHeaders.put("PassWord", password);
-        additionalHeaders.put("CookieDate", "1");
-        additionalHeaders.put("Privacy", privacy ? "1" : "0");
-        additionalHeaders.put("act", "Login");
-        additionalHeaders.put("CODE", "01");
-        additionalHeaders.put("referer", "http://4pda.ru/forum/index.php?act=UserCP&CODE=24");
-        additionalHeaders.put("s", session);
-        additionalHeaders.put("cap_a", capA);
-        additionalHeaders.put("cap_d", capD);
-        additionalHeaders.put("cap_s", capS);
+        additionalHeaders.put("login", login);
+        additionalHeaders.put("password", password);
+        //additionalHeaders.put("CookieDate", "1");
+        if(privacy)
+            additionalHeaders.put("hidden", "1");
+        additionalHeaders.put("act", "auth");
+        //additionalHeaders.put("CODE", "01");
+        additionalHeaders.put("referer", "http://4pda.ru/forum/index.php");
+        //additionalHeaders.put("s", session);
+        additionalHeaders.put("captcha", capVal);
+        additionalHeaders.put("captcha-time", capTime);
+        additionalHeaders.put("captcha-sig", capSig);
+        additionalHeaders.put("return", "http://4pda.ru/forum/index.php");
 
 
 
-
-        String res = httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders);
+        String res = httpClient.performPost("http://4pda.ru/forum/index.php?act=auth", additionalHeaders);
 
         if (TextUtils.isEmpty(res)) {
             loginResult.setLoginError("Сервер вернул пустую страницу");
@@ -110,8 +111,7 @@ public class ProfileApi {
             if (m.find()) {
                 loginResult.setLoginError(m.group(1));
             } else {
-                checkPattern = Pattern.compile("\t<div class=\"formsubtitle\">Обнаружены следующие ошибки:</div>\n" +
-                        "\t<div class=\"tablepad\"><span class=\"postcolor\">(.*?)</span></div>");
+                checkPattern = Pattern.compile("<ul[\\s\\S]*?<li>([\\s\\S]*?)</li>");
                 m = checkPattern.matcher(res);
                 if (m.find()) {
                     loginResult.setLoginError(m.group(1));
@@ -142,20 +142,14 @@ public class ProfileApi {
         profile.setId(userID);
         String page = httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID);
 
-        Document doc = Jsoup.parse(page);
-        org.jsoup.nodes.Element element = doc.select("#header+div>div>ul").first();
-
-        if (element != null) {
-            doc.select("div.photo").append("<div class=\"img "+avType+"\" style=\"background-image: url("+doc.select("div.photo>img").first().absUrl("src")+");\"></div>");
-            doc.select("div.photo>img").first().remove();
-
-            profile.setHtmlBody("<div class=\"user-profile-list\">"+element.html()+"</div>");
-
-            org.jsoup.nodes.Element userNickElement = element.select("div.user-box > h1").first();
-            if (userNickElement != null)
-                profile.setNick(userNickElement.text());
-
-            
+        Matcher matcher = Pattern.compile("<form action=\"http:\\/\\/4pda\\.ru\\/forum\\/index\\.php\\?showuser[^>]*>[\\s\\S]*?<ul[^>]*>([\\s\\S]*)<\\/ul>[\\s\\S]*?<\\/form>").matcher(page);
+        if(matcher.find()){
+            page = matcher.group(1).replaceFirst("<div class=\"photo\">[^<]*<img src=\"([^\"]*)\"[^<]*</div>",
+                    "<div class=\"photo\"><div class=\"img " + avType + "\" style=\"background-image: url($1);\"></div></div>");
+            matcher = Pattern.compile("<div class=\"user-box\">[\\s\\S]*?<h1>([\\s\\S]*?)</h1>").matcher(page);
+            if (matcher.find())
+                profile.setNick(matcher.group(1));
+            profile.setHtmlBody("<div class=\"user-profile-list\">"+page+"</div>");
         }
         return profile;
     }
@@ -165,10 +159,10 @@ public class ProfileApi {
     }
 
     public static LoginForm getLoginForm(IHttpClient httpClient) throws IOException {
-        String page = httpClient.performGet("http://4pda.ru/forum/index.php?act=login&CODE=01");
+        String page = httpClient.performGet("http://4pda.ru/forum/index.php?act=login&CODE=00");
 
         Matcher m = Pattern
-                .compile("<form[^>]*?action=\"http://4pda.ru/forum/index.php\"[^>]*?>([\\s\\S]*?)</form>")
+                .compile("<form[^>]*?>([\\s\\S]*?)</form>")
                 .matcher(page);
         if (!m.find())
             throw new NotReportException("Форма логина не найдена");
@@ -183,17 +177,17 @@ public class ProfileApi {
         loginForm.setCapPath(m.group(1));
 
         m = Pattern
-                .compile("name=\"cap_d\"[^>]*?value=\"([^\"]*)\"")
+                .compile("name=\"captcha-time\"[^>]*?value=\"([^\"]*)\"")
                 .matcher(formText);
         if(!m.find())
-            throw new NotReportException("cap_d не найден");
-        loginForm.setCapD(m.group(1));
+            throw new NotReportException("cap_time не найден");
+        loginForm.setCapTime(m.group(1));
         m = Pattern
-                .compile("name=\"cap_s\"[^>]*?value=\"([^\"]*)\"")
+                .compile("name=\"captcha-sig\"[^>]*?value=\"([^\"]*)\"")
                 .matcher(formText);
         if(!m.find())
-            throw new NotReportException("cap_s не найден");
-        loginForm.setCapS(m.group(1));
+            throw new NotReportException("cap_sig не найден");
+        loginForm.setCapSig(m.group(1));
 
         m = Pattern
                 .compile("name=\"s\"[^>]*?value=\"([^\"]*)\"")

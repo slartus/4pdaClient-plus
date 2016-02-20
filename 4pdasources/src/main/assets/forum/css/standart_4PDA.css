@@ -1,5 +1,4 @@
 @charset "utf-8";
-@import 'http://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic-ext';
 HTML {
   position: relative;
   font-size: 1rem;
@@ -9,23 +8,24 @@ HTML {
 }
 HTML body {
   font-family: 'Roboto';
-  background: white;
   color: black;
   font-size: 1em;
   line-height: 1.4em;
   margin: 0 auto;
   padding: 0.4rem;
   word-break: break-word;
-  background: #f2f2f2;
+  background-color: white;
 }
 HTML body * {
   word-break: break-word;
 }
-HTML body#topic {
-  background: white;
+HTML body a {
+  cursor: pointer;
 }
-HTML body a:active {
-  background: rgba(0, 200, 255, 0.2);
+HTML body#qms,
+HTML body#news,
+HTML body#profile {
+  background-color: #f2f2f2;
 }
 /*
 *	PICTURES SIZE
@@ -352,103 +352,140 @@ HTML body a:active {
 .poll .hidetop {
   padding: 0.3125rem;
   text-align: center;
-  border: 1px solid #d9d9d9;
-  background: white;
+  border-top: 1px dotted #aaa;
+  border-bottom: 1px dotted #aaa;
+  background: #E4EAF2;
 }
 .poll .hidemain {
-  border: 1px solid #d9d9d9;
-  background: white;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  background: #d9eaff;
 }
 .poll .hidemain FORM {
   overflow: hidden;
 }
 .poll .hidemain FORM .poll_title {
-  padding: 0.5rem;
-  text-align: center;
+  padding: 0.25rem 0.5rem;
+  background-image: -webkit-linear-gradient(top, #e0effd 0%, #95cbf4 100%);
 }
 .poll .hidemain FORM .poll_title span {
-  font-size: 1.25rem;
   font-weight: bold;
+  color: #4b667a;
 }
 .poll .hidemain FORM .poll_body {
   overflow: hidden;
 }
 .poll .hidemain FORM .poll_body .poll_theme {
-  margin: 0.75rem;
+  padding: 0.5rem;
+  border-top: 1px solid white;
 }
 .poll .hidemain FORM .poll_body .poll_theme .theme_title {
-  margin: 0.5rem 0;
+  padding: 0.25rem;
+  border: 1px solid #2982cb;
+  border-bottom: none;
 }
 .poll .hidemain FORM .poll_body .poll_theme .theme_title span {
   font-weight: bold;
 }
+.poll .hidemain FORM .poll_body .poll_theme .items {
+  border: 1px solid #2982cb;
+  border-top: none;
+  background: #f2f8ff;
+}
+.poll .hidemain FORM .poll_body .poll_theme .items.voted .item {
+  padding-top: 0.25rem;
+}
 .poll .hidemain FORM .poll_body .poll_theme .items .item {
   position: relative;
   display: block;
-  padding: 0.5rem;
+  padding: 0.75rem 0.5rem;
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item input {
-  display: none;
-}
-.poll .hidemain FORM .poll_body .poll_theme .items .item input + .icon {
   display: inline-block;
-  height: 1rem;
+  position: relative;
+  top: 0.125rem;
+  margin-right: 0.5rem;
   width: 1rem;
-  margin-right: 1rem;
-  vertical-align: bottom;
-  border-radius: 1rem;
-  border: 0.125rem solid #808080;
-  transition: all 0.25s;
-  overflow: hidden;
-  background: white;
-  -webkit-box-shadow: inset 0 0 0 1rem white;
-}
-.poll .hidemain FORM .poll_body .poll_theme .items .item input:checked + .icon {
-  background: #004fb3;
-  border: 0.125rem solid #004fb3;
-  -webkit-box-shadow: inset 0 0 0 0.2rem white;
-}
-.poll .hidemain FORM .poll_body .poll_theme .items .item .checkbox + .icon {
-  border-radius: 0.125rem;
+  height: 1rem;
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .num_votes {
   position: absolute;
-  right: 0.5rem;
-  margin-top: 1.4rem;
-  padding: 0 0.3125rem;
+  display: inline-block;
+  bottom: 0.875rem;
+  left: 0.5rem;
+  padding: 0 0.375rem;
+  z-index: 99;
+  opacity: 0.5;
+  color: black;
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .range {
   position: relative;
+  margin-top: 0.25rem;
+}
+.poll .hidemain FORM .poll_body .poll_theme .items .item .range:before {
+  content: '';
+  position: absolute;
+  display: block;
+  height: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #2982cb;
   background: rgba(130, 130, 130, 0.1);
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .range .range_bar {
   display: block;
   height: 1.5rem;
-  background: #549bd5;
+  background-image: -webkit-linear-gradient(top, #338cd5 0%, #65beff 100%);
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .range .value {
   position: absolute;
+  right: 0.3125rem;
   margin-top: -1.5rem;
-  margin-left: 0.3125rem;
+}
+@media screen and (min-width: 800px) {
+  .poll .hidemain FORM .poll_body .poll_theme .items.voted .item {
+    display: table;
+    padding: 0.5rem;
+    width: 98%;
+  }
+  .poll .hidemain FORM .poll_body .poll_theme .items.voted .item .name {
+    display: table-cell;
+    width: 50%;
+  }
+  .poll .hidemain FORM .poll_body .poll_theme .items.voted .item .num_votes {
+    bottom: 50%;
+    left: auto;
+    margin-bottom: -0.625rem;
+  }
+  .poll .hidemain FORM .poll_body .poll_theme .items.voted .item .range {
+    display: table-cell;
+    width: 50%;
+    vertical-align: middle;
+  }
 }
 .poll .hidemain FORM .votes_info {
-  margint-top: 0.75rem;
+  margint-top: 0.5rem;
+  padding: 0.5rem;
   text-align: center;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+}
+.poll .hidemain FORM .votes_info span {
+  font-weight: bold;
 }
 .poll .hidemain FORM .buttons {
   text-align: center;
-  margin: 0.5rem;
+  padding: 0.5rem;
   color: #808080;
+  border-top: 1px solid #2982cb;
 }
 .poll .hidemain FORM .buttons .button {
-  padding: 0.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
   font-size: 1rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #004fb3;
-  border: none;
   outline: none;
-  background: none;
+  border: 0.1rem solid #2982cb;
+  background: rgba(230, 230, 230, 0.5);
 }
 /*
 *	POST_CONTAINER
@@ -480,26 +517,18 @@ HTML body a:active {
 *	POST_HEADER
 */
 .post_header {
-  position: relative;
   display: block;
-  font-size: 1rem;
-  min-height: 3.8rem;
-  overflow: hidden;
-  z-index: 9;
-  text-decoration: none;
-  margin: 0;
-  padding: 2rem 0.5rem 0.3rem;
+  position: relative;
+  min-height: 4rem;
+  padding: 2.125rem 0.5rem 0.5rem;
   border-bottom: 1px solid white;
 }
 @media screen and (min-width: 800px) {
   .post_header {
-    z-index: 13;
     float: left;
-    padding-left: 0;
-    padding-right: 0;
-    width: 13rem;
+    padding: 2rem 0.5rem 0.75rem;
+    width: 12rem;
     text-align: center;
-    border: none;
   }
 }
 .post_header[title*="Просмотреть репутацию"] {
@@ -507,317 +536,126 @@ HTML body a:active {
   text-decoration: underline !important;
 }
 .post_header .header_wrapper .avatar {
+  position: relative;
   float: left;
-  margin: 0.2rem 0.5rem 0 0;
+  margin: 0.25rem 0.625rem 0 0.25rem;
 }
 @media screen and (min-width: 800px) {
   .post_header .header_wrapper .avatar {
-    diasplay: inline-block;
     float: none;
-    margin: 0.4rem 0;
+    margin: 0.5rem 0;
+    padding: 0;
   }
 }
-.post_header .header_wrapper .avatar .img {
-  display: inline-block;
-  width: 3.8rem;
-  height: 3.8rem;
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-.post_header .header_wrapper .avatar .img[style*="av.png"] {
-  background-image: url(profile/logo.png), url("file:///android_asset/profile/logo.png") !important;
-}
 .post_header .header_wrapper .avatar.disable {
+  margin: 0.25rem 0 0;
   overflow: hidden;
-  margin: 0.3rem 0 0;
 }
 @media screen and (max-width: 800px) {
   .post_header .header_wrapper .avatar.disable {
-    height: 3.8rem;
-    margin: 0;
+    height: 4rem;
+    margin: 0 0.1875rem 0 0;
   }
 }
 .post_header .header_wrapper .avatar.disable .img {
   display: none;
 }
+.post_header .header_wrapper .avatar.circle .img {
+  overflow: hidden;
+  border-radius: 3.75rem;
+}
+.post_header .header_wrapper .avatar .img {
+  display: block;
+  position: relative;
+  width: 3.75rem;
+  height: 3.75rem;
+  margin: 0 auto;
+  padding: 0;
+  border-radius: 0.125rem;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+@media screen and (min-width: 800px) {
+  .post_header .header_wrapper .avatar .img[style*="av.png"] {
+    height: 2rem;
+  }
+}
 .post_header .header_wrapper .inf {
-  color: #4d4d4d;
+  color: #666666;
 }
 .post_header .header_wrapper .nick {
-  font-size: 1.1rem;
+  cursor: pointer;
+  font-size: 1.1875rem;
   color: #404040;
 }
 .post_header .header_wrapper .nick.online {
   color: rgba(0, 130, 0, 0.8);
 }
 .post_header .header_wrapper .nick.curator:before {
-  content: ' K ';
-  margin-right: 0.3rem;
+  content: 'к';
   display: inline-block;
   position: relative;
-  top: -0.2rem;
-  font-weight: bold;
-  font-size: 0.6rem;
-  text-align: center;
+  margin-right: 0.25rem;
+  font-size: 1rem;
+  top: -0.1875rem;
   width: 1rem;
   height: 1rem;
-  line-height: 1rem;
-  border-radius: 2rem;
+  text-align: center;
+  line-height: 0.85em;
+  border-radius: 1rem;
   color: white;
   background: rgba(0, 130, 0, 0.8);
 }
 .post_header .header_wrapper .group {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 .post_header .header_wrapper .reputation {
-  display: inline-block;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 @media screen and (min-width: 800px) {
   .post_header .header_wrapper .reputation {
     display: block;
   }
 }
-.post_header .header_wrapper .reputation:before {
-  content: 'Реп(';
+.post_header .header_wrapper .reputation span:before {
+  content: 'Реп. ';
   display: inline-block;
-  margin-right: 0.1rem;
-}
-.post_header .header_wrapper .reputation:after {
-  content: ')';
-  display: inline-block;
-}
-.post_header .header_wrapper .reputation:active {
-  background: rgba(0, 100, 255, 0.2);
 }
 .post_header .header_wrapper .date-link {
+  padding: 0.15rem 0.25rem;
   position: absolute;
-  padding: 0.1rem 0.5rem;
-  text-align: left;
+  top: 0;
   left: 0;
   right: 0;
-  top: 0;
-  display: block;
-  line-height: 1.5rem;
-  font-size: 0.8rem;
-  color: #4d4d4d !important;
+  font-size: 0.875rem;
+  text-align: left;
   border-bottom: 1px solid white;
   background: #d9eaff;
 }
-@media screen and (min-width: 800px) {
+@media screen and (max-width: 800px) {
   .post_header .header_wrapper .date-link {
-    padding: 0.1rem 0.4rem;
+    display: inline-block;
+    padding: 0.125rem 0.25rem;
   }
 }
 .post_header .header_wrapper .date-link .link {
-  float: right;
+  position: absolute;
+  right: 0.25rem;
 }
 .post_header .header_wrapper .menu {
   position: relative;
-  display: inline-block;
-  text-align: center;
-  margin-bottom: 0.5rem;
+  display: block;
+  margin: 0 auto;
+  text-transform: lowercase;
+  cursor: pointer;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 799px) {
   .post_header .header_wrapper .menu {
     position: absolute;
     right: 0.5rem;
-    bottom: 0.4rem;
-    margin-bottom: 0;
-    text-transform: lowercase;
+    bottom: 0.5rem;
   }
-}
-/*
-*	BROWSER_VIEW
-*/
-DIV[data-post] {
-  clear: both;
-  overflow: hidden;
-  border-top: 0.1rem solid white;
-  background: white;
-}
-@media screen and (min-width: 800px) {
-  DIV[data-post] {
-    border-bottom: 0.8rem solid #2982cb;
-    border-top: 0.8rem solid #2982cb;
-  }
-  DIV[data-post] ~ DIV[data-post] {
-    border-top: none;
-  }
-}
-DIV[data-post] .post_body {
-  border: none;
-  margin: 0;
-  z-index: 10;
-}
-@media screen and (min-width: 800px) {
-  DIV[data-post] .post_body {
-    border-top: none;
-    padding-left: 14rem;
-    min-height: 8rem;
-  }
-  DIV[data-post] .post_body:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    width: 13rem;
-    left: 0;
-    bottom: 0;
-    border-bottom: 1px solid white;
-    background: #d4e6f5;
-  }
-}
-DIV[data-post] .post_header {
-  position: relative;
-  text-align: center;
-  border: none;
-  padding: 0;
-  margin: 0;
-  font-size: 0.8rem;
-  z-index: 12;
-  color: #4d4d4d;
-  border-bottom: 1px solid #2982cb;
-  background: #d4e6f5;
-}
-@media screen and (min-width: 800px) {
-  DIV[data-post] .post_header {
-    border: none;
-    height: 13.2rem
-			width: 13rem;
-  }
-}
-DIV[data-post] .post_header br {
-  display: none;
-}
-DIV[data-post] .post_header img {
-  min-width: 1rem;
-  vertical-align: middle;
-  margin: 0;
-}
-DIV[data-post] .post_header > a {
-  text-decoration: none;
-}
-DIV[data-post] .post_header .post_date {
-  position: relative;
-  display: block;
-  color: #777;
-}
-DIV[data-post] .post_header .post_date a {
-  margin: 0;
-  padding: 0.3rem;
-  font-size: 1em;
-  color: #000 !important;
-}
-DIV[data-post] .post_header .post_nick {
-  position: relative;
-  display: block;
-  text-align: center;
-}
-DIV[data-post] .post_header .post_nick a {
-  line-height: 1.4rem;
-  font-size: 1.4rem !important;
-  text-decoration: underline;
-}
-DIV[data-post] .post_header .post_user_info {
-  color: black;
-  display: block;
-}
-DIV[data-post] .post_header .post_user_info STRONG {
-  display: block;
-  color: black;
-  line-height: 1.4;
-  font-size: 1rem;
-}
-DIV[data-post] .post_header .post_user_info span + br {
-  display: block;
-}
-DIV[data-post] .post_header .post_user_info font {
-  display: inline;
-  font-size: 92% !important;
-}
-DIV[data-post] .post_header .post_user_info a {
-  color: #000 !important;
-  text-decoration: underline !important;
-}
-DIV[data-post] .post_header a[title="Просмотреть репутацию"] {
-  text-decoration: underline !important;
-  color: black;
-}
-DIV[data-post] .post_header A[title*="Опустить репутацию"],
-DIV[data-post] .post_header A[title*="Поднять репутацию"] {
-  position: relative;
-  display: inline-block;
-  padding: 0.1rem;
-}
-DIV[data-post] .post_header A[title*="Опустить репутацию"] img,
-DIV[data-post] .post_header A[title*="Поднять репутацию"] img {
-  opacity: 0;
-}
-DIV[data-post] .post_header A[title*="Опустить репутацию"]:before,
-DIV[data-post] .post_header A[title*="Поднять репутацию"]:before {
-  bottom: 0;
-  right: 0;
-  content: '–';
-  font-weight: bold;
-  font-size: 1.1rem;
-  text-align: center;
-  line-height: 1rem;
-  height: 1rem;
-  width: 1rem;
-  color: rgba(255, 255, 255, 0.8);
-  position: absolute;
-  border-radius: 0.2rem;
-  padding: 0;
-  border: 1px solid #e64c4c;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ff9c9c), color-stop(1, #ec7979));
-}
-DIV[data-post] .post_header A[title*="Опустить репутацию"] {
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-}
-DIV[data-post] .post_header A[title*="Опустить репутацию"]:after {
-  display: inline-block;
-  position: absolute;
-  content: '';
-  left: 1.8rem;
-  top: 0.3rem;
-  width: 0.5rem;
-  height: 1.2rem;
-  background: #d4e6f5;
-  opacity: 1;
-}
-DIV[data-post] .post_header A[title*="Поднять репутацию"] {
-  margin-left: -0.6rem;
-}
-DIV[data-post] .post_header A[title*="Поднять репутацию"]:before {
-  content: '+';
-  border: 1px solid #428a42;
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #9ac59a), color-stop(1, #77a277));
-}
-DIV[data-post] .post_header .post_action {
-  display: block;
-}
-@media screen and (min-width: 800px) {
-  DIV[data-post] .post_header .post_action {
-    padding: 0.3rem 0 0.5rem;
-  }
-  DIV[data-post] .post_header .post_action a[title="Удалить пост"] + a {
-    display: block;
-  }
-}
-DIV[data-post] .post_header .post_action a {
-  padding: 0 0.2rem;
-  text-decoration: none;
-  color: #4373C3;
-  font-weight: bold;
-  font-size: 1rem;
-}
-div[data-post] > a {
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin-top: 0;
 }
 /*
 *	HIDETOP,
@@ -844,6 +682,12 @@ div[data-post] > a {
     height: 12.5rem;
     margin-left: 13rem;
   }
+  .post_container .hidetop.open {
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+    line-height: 1.4em;
+    height: auto;
+  }
 }
 .post_container .hidetop B {
   display: block;
@@ -858,10 +702,10 @@ div[data-post] > a {
   color: #e84e40;
 }
 .post_container .hidetop.close B:before {
-  content: '>>> ПОКАЗАТЬ ШАПКУ ТЕМЫ <<<';
+  content: '>>> ПОКАЗАТЬ ШАПКУ <<<';
 }
 .post_container .hidetop.open B:before {
-  content: '>>> СКРЫТЬ ШАПКУ ТЕМЫ <<<';
+  content: '>>> СКРЫТЬ ШАПКУ <<<';
 }
 .post_container .hidemain {
   padding: 0;
@@ -875,6 +719,12 @@ div[data-post] > a {
 }
 .post_container .hidemain .post-body {
   color: black !important;
+}
+.poll .hidetop.close b span:before {
+  content: 'Показать ';
+}
+.poll .hidetop.open b span:before {
+  content: 'Скрыть ';
 }
 /*
 *	POST_BODY
@@ -891,7 +741,7 @@ div[data-post] > a {
 @media screen and (min-width: 800px) {
   .post_body {
     margin: 0;
-    padding-left: 13.7rem;
+    margin-left: 13.25rem;
     border-radius: 0.15rem 0.15rem 0 0;
     border-left: none;
     border-right: none;
@@ -1051,6 +901,9 @@ img[src*="style_emoticons"] {
 .post_body ~ br,
 #bottom_navi ~ br {
   display: none;
+}
+.img[style*="av.png"] {
+  background-image: url(profile/logo.png), url("file:///android_asset/profile/logo.png") !important;
 }
 /*
  *	POST_FOOTER
@@ -1864,231 +1717,6 @@ h3 a {
   max-width: 100%;
   vertical-align: middle;
 }
-@font-face {
-  font-family: 'fontello';
-  src: url('material_src/fontello.ttf?66808348') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'fontello';
-  src: url('file:///android_asset/fonts/fontello/fontello.eot?66808348');
-  src: url('file:///android_asset/fonts/fontello/fontello.eot?66808348#iefix') format('embedded-opentype'), url('file:///android_asset/fonts/fontello/fontello.woff?66808348') format('woff'), url('file:///android_asset/fonts/fontello/fontello.ttf?66808348') format('truetype'), url('file:///android_asset/fonts/fontello/fontello.svg?66808348#fontello') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-[class^="icon-"]:before,
-[class*=" icon-"]:before {
-  font-family: "fontello";
-  font-style: normal;
-  font-weight: normal;
-  speak: none;
-  line-height: 1em;
-  display: inline-block;
-  text-decoration: inherit;
-  width: 1em;
-  text-align: center;
-  /* opacity: .8; */
-  /* For safety - reset parent styles, that can break glyph codes*/
-  font-variant: normal;
-  text-transform: none;
-}
-.icon-hash:before {
-  content: '\23';
-}
-/* '#' */
-.icon-karma-up:before {
-  content: '\2b';
-}
-/* '+' */
-.icon-hide-comment:before {
-  content: '\2d';
-}
-/* '-' */
-.icon-4PDA-plain:before {
-  content: '\34';
-}
-/* '4' */
-.icon-android:before {
-  content: '\41';
-}
-/* 'A' */
-.icon-comment-baloons:before {
-  content: '\43';
-}
-/* 'C' */
-.icon-engines:before {
-  content: '\44';
-}
-/* 'D' */
-.icon-pencil:before {
-  content: '\45';
-}
-/* 'E' */
-.icon-FB:before {
-  content: '\46';
-}
-/* 'F' */
-.icon-home:before {
-  content: '\48';
-}
-/* 'H' */
-.icon-apple:before {
-  content: '\49';
-}
-/* 'I' */
-.icon-rss:before {
-  content: '\52';
-}
-/* 'R' */
-.icon-search:before {
-  content: '\53';
-}
-/* 'S' */
-.icon-TWITTER:before {
-  content: '\54';
-}
-/* 'T' */
-.icon-VK:before {
-  content: '\56';
-}
-/* 'V' */
-.icon-windows:before {
-  content: '\57';
-}
-/* 'W' */
-.icon-close:hover:before {
-  content: '\58';
-}
-/* 'X' */
-.icon-YOUTUBE:before {
-  content: '\59';
-}
-/* 'Y' */
-.icon-up-open:before {
-  content: '\5e';
-}
-/* '^' */
-.icon-users:before {
-  content: '\75';
-}
-/* 'u' */
-.icon-link:before {
-  content: '\bb';
-}
-/* '»' */
-.icon-down-dir-1:before {
-  content: '\1d65';
-}
-/* 'ᵥ' */
-.icon-up-dir-1:before {
-  content: '\1dba';
-}
-/* 'ᶺ' */
-.icon-karma-down:before {
-  content: '\2013';
-}
-/* '–' */
-.icon-left-small:before {
-  content: '\2039';
-}
-/* '‹' */
-.icon-right-small:before {
-  content: '\203a';
-}
-/* '›' */
-.icon-4pda-logo:before {
-  content: '\2163';
-}
-/* 'Ⅳ' */
-.icon-up:before {
-  content: '\2191';
-}
-/* '↑' */
-.icon-down:before {
-  content: '\2193';
-}
-/* '↓' */
-.icon-back-up:before {
-  content: '\21b5';
-}
-/* '↵' */
-.icon-up-small:before {
-  content: '\21d1';
-}
-/* '⇑' */
-.icon-login:before {
-  content: '\23ce';
-}
-/* '⏎' */
-.icon-profile:before {
-  content: '\263a';
-}
-/* '✓' */
-/* '✔' */
-.icon-glyph:before {
-  content: '\272a';
-}
-/* '✪' */
-.icon-cog:before {
-  content: '\2731';
-}
-/* '✱' */
-.icon-del:before {
-  content: '\274e';
-}
-/* '❎' */
-.icon-warning-empty:before {
-  content: '\2755';
-}
-/* '❕' */
-.icon-attention:before {
-  content: '\2757';
-}
-/* '❗' */
-.icon-chart-bar:before {
-  content: '\2758';
-}
-/* '❘' */
-.icon-chart-bar-1:before {
-  content: '\2759';
-}
-/* '❙' */
-.icon-glyph-1:before {
-  content: '\275a';
-}
-/* '❚' */
-.icon-quote-left:before {
-  content: '\275d';
-}
-/* '❝' */
-.icon-heart-1:before {
-  content: '\2764';
-}
-/* '❤' */
-.icon-heart:before {
-  content: '\2765';
-}
-/* '❥' */
-.icon-close:before {
-  content: '\2a09';
-}
-/* '⨉' */
-.icon-mlinks-home:before {
-  content: '\e081';
-}
-/* '' */
-.icon-edit:before {
-  content: '\e80b';
-}
-/* '' */
-.icon-users-1:before {
-  content: '👥';
-}
-/* '\1f465' */
-.icon-emo-happy:before {
-  content: '😌';
-}
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
   color: #1d5b8e;
@@ -2491,87 +2119,121 @@ h3 a {
 /*
 *	PROFILE
 */
+#profile {
+  padding: 0;
+}
+@media screen and (max-width: 480px) {
+  #profile .user-profile-list > li {
+    margin: 0.5rem 0;
+    border-left: none;
+    border-right: none;
+  }
+}
 #profile .user-profile-list {
   display: block;
-  margin: 0 auto;
-  padding: 0;
   max-width: 800px;
+  font-size: 1rem;
+  line-height: 1.4em;
   text-align: left;
   list-style-type: none;
+  margin: 0 auto;
+  padding: 0;
 }
 #profile .user-profile-list .margin-block {
   visibility: hidden;
 }
 #profile .user-profile-list > li {
   display: block;
-  padding: 0.7rem;
-  margin: 0.7rem 0;
+  padding: 0.75rem;
+  margin: 0.5rem;
   overflow: hidden;
   border: 1px solid #d9d9d9;
   background: white;
 }
-#profile .user-profile-list > li a {
-  color: #004fb3;
-  text-decoration: none;
-}
-#profile .user-profile-list > li a[title="Изменить данные о себе"] {
-  float: right;
-  display: inline-block;
-  margin: 0;
-  padding: 0.5rem;
-  font-weight: bold;
-  color: #004fb3;
-  text-transform: uppercase;
-}
 #profile .user-profile-list > li .user-box {
   display: block;
-  margin: 0 0 0.7rem;
-  padding: 0 0 0.7rem;
   text-align: center;
+  margin: -0.75rem -0.75rem 1rem;
+  padding: 0.75rem;
   border-bottom: 1px solid #d9d9d9;
-  background: white;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 #profile .user-profile-list > li .user-box .photo {
   padding: 0;
-  margin: 0;
+  margin: 0 0 0.5rem;
 }
 #profile .user-profile-list > li .user-box .photo .img {
   display: inline-block;
-  width: 5.5rem;
-  height: 5.5rem;
-  border-radius: 0.2rem;
+  width: 8rem;
+  height: 8rem;
+  border-radius: 0.125rem;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
+}
+#profile .user-profile-list > li .user-box .photo .img.circle {
+  border-radius: 10rem;
+  overflow: hidden;
 }
 #profile .user-profile-list > li .user-box h1 {
   display: block;
   font-size: 1.5rem;
   margin: 0;
-  line-height: 1.4em;
 }
 #profile .user-profile-list > li .user-box h2 {
   display: block;
   font-size: 1rem;
-  font-weight: normal;
   margin: 0;
-  line-height: 1.4em;
 }
 #profile .user-profile-list > li .user-box h2 span {
+  display: block;
   font-size: 1em;
   font-weight: normal;
+}
+#profile .user-profile-list > li .u-note {
+  margin-top: 0.7rem;
+}
+#profile .user-profile-list > li .profile-edit-links {
+  margin-top: 1rem;
+}
+#profile .user-profile-list > li .profile-edit-links .col {
+  display: inline-block;
+  margin-right: -3px;
+  width: 50%;
+  vertical-align: middle;
+}
+#profile .user-profile-list > li .profile-edit-links .col + .col {
+  text-align: right;
+}
+#profile .user-profile-list > li .profile-edit-links .col a {
+  display: inline-block;
+  padding: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  color: #004fb3;
 }
 #profile .user-profile-list .info-list.black-link {
   list-style-type: none;
   padding: 0;
 }
+#profile .user-profile-list .info-list.black-link li {
+  display: block;
+  padding: 0;
+}
 #profile .user-profile-list .info-list.black-link .title {
   font-weight: bold;
+  vertical-align: middle;
 }
 #profile .user-profile-list .info-list.black-link .area {
   display: inline-block;
+  margin: 0;
+  vertical-align: middle;
 }
 #profile .user-profile-list .info-list.black-link .area a {
+  display: inline-block;
   font-weight: bold;
 }
 #profile .user-profile-list .info-list.black-link[id*="device-list"] {
@@ -2596,8 +2258,6 @@ h3 a {
 }
 #profile .user-profile-list .info-list.black-link[id*="device-list"] li span {
   position: relative;
-  height: 1.4rem;
-  line-height: 1.4rem;
   text-align: center;
 }
 #profile .user-profile-list .info-list.black-link[id*="device-list"] li span[style="float:right;overflow:hidden;margin:.15em 0"] {
@@ -2631,280 +2291,277 @@ h3 a {
   position: absolute;
   width: 100%;
   height: 100%;
-  font-size: 1rem;
 }
 #profile .user-profile-list .info-list.black-link[id*="device-list"] li span label input[type="radio"] + i {
-  content: '';
   display: inline-block;
-  height: 1rem;
-  width: 1rem;
-  margin-right: 1rem;
+  height: 1em;
+  width: 1em;
   vertical-align: middle;
-  border-radius: 1rem;
-  border: 0.1rem solid #999999;
-  transition: 0.2s ease-out;
+  border-radius: 1em;
+  border: 0.125rem solid #808080;
+  transition: all 0.25s;
   overflow: hidden;
-  -webkit-box-shadow: inset 0 0 0 2rem #e8e8e8;
+  background: white;
+  -webkit-box-shadow: inset 0 0 0 1rem white;
 }
 #profile .user-profile-list .info-list.black-link[id*="device-list"] li span label input[type="radio"]:checked + i {
-  background: grey;
-  border: 0.1rem solid #999999;
-  -webkit-box-shadow: inset 0 0 0 0.2rem #e8e8e8;
+  background: #004fb3;
+  border: 0.125rem solid #004fb3;
+  -webkit-box-shadow: inset 0 0 0 0.2rem white;
 }
-#profile .user-profile-list .u-note {
+#profile .user-profile-list li > DIV {
+  overflow: hidden;
+}
+#profile .user-profile-list li .heading {
   position: relative;
-  display: block;
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid #d9d9d9;
-}
-#profile .user-profile-list .u-note:before {
-  content: 'подпись';
-  display: inline-block;
-  position: absolute;
-  top: -0.8rem;
-  left: 50%;
-  margin-left: -1rem;
-  color: #808080;
-  padding: 0 0.5rem;
-  background: white;
-}
-#profile li .heading {
-  position: relative;
-  padding: 0.2rem 0.2rem 0.7rem;
+  padding: 0.2rem;
   margin: 0 0 1rem;
   overflow: hidden;
-  border-bottom: 1px solid #d9d9d9;
 }
-#profile li .heading .ico {
+#profile .user-profile-list li .heading .ico {
   float: left;
   margin-right: 1rem;
 }
-#profile li .heading .ico i {
+#profile .user-profile-list li .heading .ico i {
   display: inline-block;
 }
-#profile li .heading .ico i:before {
+#profile .user-profile-list li .heading .ico i:before {
   display: inline-block;
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   color: #999999 !important;
 }
-#profile li .heading h2 {
+#profile .user-profile-list li .heading h2 {
   display: inline-block;
   margin: 0;
   padding: 0;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
 }
-#profile li h3 {
+#profile .user-profile-list li h3 {
   display: block;
   text-align: left;
 }
-#profile li .contact-social .social-link {
+#profile .user-profile-list li .contact-social .social-link {
   list-style-type: none;
   padding: 0;
   margin-left: -0.5rem;
 }
-#profile li .contact-social .social-link li {
+#profile .user-profile-list li .contact-social .social-link li {
   display: inline-block;
-  line-height: 1.4rem;
   padding: 0.5rem;
 }
-#profile li .statistic-box .col {
-  float: left;
-  width: 49%;
+#profile .user-profile-list li .statistic-box .col {
+  display: inline-block;
+  width: 50%;
+  min-width: 9rem;
+  margin-right: -3px;
 }
-#profile li .statistic-box .col h3 {
+#profile .user-profile-list li .statistic-box .col h3 {
   margin: 0 0 0.7rem;
   padding: 0;
 }
-#profile li .statistic-box .col ul {
+#profile .user-profile-list li .statistic-box .col ul {
   list-style-type: none;
   padding: 0;
 }
-#profile li .statistic-box .col ul li .title {
+#profile .user-profile-list li .statistic-box .col ul li .title {
+  margin: 0;
   margin-right: 0.3rem;
+  vertical-align: middle;
 }
-#profile li .statistic-box .col ul li .area {
+#profile .user-profile-list li .statistic-box .col ul li .area {
   display: inline-block;
   font-weight: bold;
+  vertical-align: middle;
 }
-#profile li .statistic-box .col ul li .area A[title="Просмотреть репутацию"] {
+#profile .user-profile-list li .statistic-box .col ul li .area A[title="Просмотреть репутацию"] {
   margin: 0;
 }
-#profile li .statistic-box .col ul li .area .warn-btn strong {
+#profile .user-profile-list li .statistic-box .col ul li .area .warn-btn strong {
   display: inline-block;
   margin: 0;
-  width: 1rem;
-  height: 1rem;
-  line-height: 1rem;
+  width: 1em;
+  height: 1em;
+  line-height: 1em;
   text-align: center;
   color: white;
+  border-radius: 0.125rem;
 }
-#profile li .statistic-box .col ul li .area .warn-btn[title="Опустить репутацию"] strong {
+#profile .user-profile-list li .statistic-box .col ul li .area .warn-btn[title="Опустить репутацию"] strong {
   background: #fb6a6a;
 }
-#profile li .statistic-box .col ul li .area .warn-btn[title="Поднять репутацию"] strong {
+#profile .user-profile-list li .statistic-box .col ul li .area .warn-btn[title="Поднять репутацию"] strong {
   background: #1ca11c;
 }
-#profile .no-min-size .alert-log-list {
+#profile .user-profile-list li .profile-textarea {
+  width: 96% !important;
+  padding: 2%;
+  color: black;
+  border: none;
+  background: white;
+}
+#profile .user-profile-list li .profile-textarea:focus {
+  outline: 1px solid #004fb3;
+}
+#profile .user-profile-list .no-min-size .alert-log-list {
   list-style-type: none;
   padding: 0;
 }
-#profile .no-min-size .alert-log-list li:last-child {
+#profile .user-profile-list .no-min-size .alert-log-list li:last-child {
   border: none;
   padding-bottom: 0;
   margin-bottom: 0;
 }
-#profile .no-min-size .alert-log-list .wlog-pos,
-#profile .no-min-size .alert-log-list .wlog-neg {
-  padding-bottom: 0.7rem;
-  margin-bottom: 0.7rem;
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-pos,
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-neg {
+  padding-bottom: 0.1rem;
+  margin-bottom: 0.1rem;
 }
-#profile .no-min-size .alert-log-list .wlog-pos .a-heading,
-#profile .no-min-size .alert-log-list .wlog-neg .a-heading {
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-pos .a-heading,
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-neg .a-heading {
   position: relative;
 }
-#profile .no-min-size .alert-log-list .wlog-pos .a-heading h4,
-#profile .no-min-size .alert-log-list .wlog-neg .a-heading h4 {
-  margin: 0 0 0.7rem;
-  line-height: 1.4rem;
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-pos .a-heading h4,
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-neg .a-heading h4 {
+  margin: 0 0 0.1rem;
 }
-#profile .no-min-size .alert-log-list .wlog-pos .a-heading span,
-#profile .no-min-size .alert-log-list .wlog-neg .a-heading span {
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-pos .a-heading span,
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-neg .a-heading span {
   position: absolute;
   right: 0;
   top: 0;
-  font-size: 0.8rem;
-  line-height: 1.4rem;
+  font-size: 0.875rem;
   color: #666666;
 }
-#profile .no-min-size .alert-log-list .wlog-pos .a-content .post-link,
-#profile .no-min-size .alert-log-list .wlog-neg .a-content .post-link {
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-pos .a-content .post-link,
+#profile .user-profile-list .no-min-size .alert-log-list .wlog-neg .a-content .post-link {
   margin-top: 0.7rem;
 }
 /*
-*	EDIT PROFILE
+*		MULTIMODERATION
 */
-#edit_profile {
-  margin: 0;
-  padding: 0.4rem;
-  background: white;
+#curator .panel {
+  text-align: center;
 }
-#edit_profile form {
-  display: block;
-  padding: 1rem 0 0.5rem;
-  border: 1px solid #2982cb;
-  background: #f2f8ff;
+#curator .panel .pages {
+  margin: 1rem 0;
+  padding: 1rem 0.5rem;
+  overflow-x: auto;
+  white-space: nowrap;
 }
-#edit_profile form .field {
-  display: block;
-  margin: 0.5rem 0.5rem 1.5rem;
-  padding: 0.5rem;
-  border: 2px groove #bbb;
-}
-#edit_profile form .field ~ .filed {
-  margin-bottom: 0.5rem;
-}
-#edit_profile form .field [type="hidden"] {
-  display: none;
-}
-#edit_profile form .field ~ br {
-  display: none;
-}
-#edit_profile form .field h2 {
-  display: block;
-  margin: -1.4rem 0 0.5rem;
-  color: black;
-}
-#edit_profile form .field h2 strong {
+#curator .panel .pages a,
+#curator .panel .pages b {
   display: inline-block;
-  padding: 0 0.5rem;
+  padding: 0.5rem 0.75rem;
+  text-decoration: none !important;
+  color: #004fb3;
+  font-weight: bold;
+}
+#curator .panel .pages b {
+  background: #cccccc;
+  color: white;
+}
+#curator .panel .controls {
+  display: inline-block;
+  margin: 1rem 0;
+}
+#curator .panel .controls button {
+  display: inline-block;
+  padding: 0.2rem 1rem;
+  margin: 0;
+  cursor: pointer;
   font-size: 1rem;
   color: black;
-  background: #f2f8ff;
+  outline: none;
+  background: #f1f7ff;
+  border: 0.1rem solid #337;
+}
+#curator .post_header {
+  position: relative;
+  padding: 0 0 0.5rem;
+}
+#curator .post_header a {
+  text-decoration: none !important;
+}
+#curator .post_header .inf {
+  display: block;
+  font-size: 0.875rem;
+  color: #808080;
+}
+#curator .post_header .nick {
+  padding: 0.5rem 0;
+  font-size: 1.125rem;
+  color: black;
 }
 @media screen and (max-width: 800px) {
-  #edit_profile form .field table,
-  #edit_profile form .field tbody,
-  #edit_profile form .field tr,
-  #edit_profile form .field td {
-    display: block;
-    margin: 0;
-    padding: 0;
-    width: auto !important;
+  #curator .post_header .nick {
+    padding: 0.5rem 0.75rem;
+    margin-right: 3rem;
   }
 }
-#edit_profile form .field tr {
-  padding: 0;
+#curator .post_header .link {
+  padding: 0.5rem 0;
+  font-weight: bold;
 }
-#edit_profile form .field .row1 {
-  margin: 1px 0;
-  padding: 0 0.5rem !important;
-  font-size: 0.8rem;
-  background: #cae0f2;
+@media screen and (max-width: 800px) {
+  #curator .post_header .link {
+    padding: 0.25rem 0.75rem;
+  }
 }
-#edit_profile form .field .row1 b {
-  font-size: 1rem;
+@media screen and (max-width: 800px) {
+  #curator .post_header .date-link {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+  }
 }
-#edit_profile form .field .row2 {
-  padding: 0.5rem !important;
-  color: #808080;
-  background: #d4e6f5;
+#curator .post_header .checkbox {
+  display: block;
+  padding: 1rem;
+  cursor: pointer;
+  text-align: center;
 }
-#edit_profile form .field .row2 input[type="text"] {
-  max-width: 97%;
-  padding: 0.2rem;
-  color: black;
-  border: 1px solid #2982cb;
-  background: white;
+@media screen and (max-width: 800px) {
+  #curator .post_header .checkbox {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0.75rem 0.75rem;
+  }
 }
-#edit_profile form .field .row2 select {
+#curator .post_header .checkbox .icon {
+  position: relative;
+  border-radius: 0.125rem;
+}
+#curator .post_header .checkbox input {
+  display: none;
+}
+#curator .post_header .checkbox input + .icon {
   display: inline-block;
-  padding: 0.2rem;
-  padding-right: 1.5rem;
-  font-weight: bold;
-  color: black;
-  border: 1px solid #2982cb;
+  height: 1rem;
+  width: 1rem;
+  border: 0.125rem solid #808080;
+  transition: all 0.25s;
+  overflow: hidden;
   background: white;
 }
-#edit_profile form .field .row2 .editor_button {
-  padding: 0;
-  margin: 0;
-  border: 1px solid white;
-  background: #7fb4e0;
+#curator .post_header .checkbox input:checked + .icon {
+  background: #004fb3;
+  border: 0.125rem solid #004fb3;
 }
-#edit_profile form .field .row2 .editor_button input {
-  font-weight: bold;
-  font-family: times;
-  margin: 0;
-  padding: 0.2rem 0.5rem;
-  font-size: 1.2rem;
-  color: #156eb7;
-  border: none;
-  background: transparent;
-}
-#edit_profile form .field .row2 .editor_button textarea {
-  margin: 0;
-  color: black;
-  padding: 0.2rem;
-  border: 1px solid transparent;
-  background: white;
-}
-#edit_profile form .field .formbuttonrow {
-  padding: 0.5rem 0 0;
-  border: 0;
-  border-top: 1px solid #2982cb;
-}
-#edit_profile form .field .formbuttonrow input {
+#curator .post_header .checkbox input:checked + .icon:before {
+  content: '';
   font-size: 1rem;
-  line-height: 1.8rem;
-  color: black;
-  -webkit-appearance: none;
-  border: 1px solid #2982cb;
-  background: #d9d9d9;
+  position: absolute;
+  display: inline-block;
+  height: 0.7rem;
+  width: 0.4rem;
+  border-bottom: 0.15625rem solid white;
+  border-right: 0.15625rem solid white;
+  -webkit-transform: rotate(45deg) translate(-0.1875rem, 0.125rem);
 }
-#edit_profile form .field .formbuttonrow input:active {
-  opacity: 0.5;
-}
+/*
+* OTHER
+*/
 #bottomMargin {
   display: block;
   height: 100px;
@@ -2912,58 +2569,4 @@ h3 a {
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
   color: #1d5b8e;
-}
-/*
-*	NEW EAER STYLE
-*/
-/*
-@keyframes snow {
-	0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
-	100% {background-position: 500px 1000px, 400px 400px, 300px 300px;}
-}
-
-@-webkit-keyframes snow {
-	0% {background-position: 0px 0px, 0px 0px, 0px 0px;}
-	100% {background-position: 500px 1000px, 400px 400px, 300px 300px;}
-}
-*/
-.newyear {
-  background-image: url('material_src/snow.png'), url('material_src/snow3.png'), url('material_src/snow2.png');
-  /*
-	animation: snow 20s linear infinite;
-	-webkit-animation: snow 20s linear infinite;
-*/
-}
-.newyear:after {
-  content: '... от Морфий';
-  display: block;
-  height: 3rem;
-  position: relative;
-  text-align: right;
-  padding: 0 1rem;
-  font-size: 0.75rem;
-  font-style: italic;
-  color: black;
-  background-image: url('material_src/snowdrift.png'), url('material_src/snowdrift1.png'), -webkit-linear-gradient(bottom, rgba(200, 200, 200, 0.5) 0%, transparent 100%);
-  background-repeat: repeat-x;
-  background-size: auto 2rem;
-  background-position: bottom;
-}
-.newyear .panel {
-  position: relative;
-}
-.newyear .panel.top:before {
-  content: 'С Новым Годом!';
-  display: block;
-  padding: 1rem;
-  line-height: 1.2em;
-  text-align: center;
-  font: 3rem/1 'Lobster', cursive;
-  color: #2982cb;
-}
-.newyear .post_container .hidetop.close B:before {
-  content: '❄ ПОКАЗАТЬ ШАПКУ ТЕМЫ ❄';
-}
-.newyear .post_container .hidetop.open B:before {
-  content: '❄ СКРЫТЬ ШАПКУ ТЕМЫ ❄';
 }

@@ -15,7 +15,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.R;
 
 import java.util.ArrayList;
 import java.util.List;

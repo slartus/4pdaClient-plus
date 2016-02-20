@@ -23,7 +23,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -48,19 +47,8 @@ import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
-import org.softeg.slartus.forpdaplus.listtemplates.AppAndGame;
-import org.softeg.slartus.forpdaplus.listtemplates.AppsBrickInfo;
-import org.softeg.slartus.forpdaplus.listtemplates.AppsGamesCatalogBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
-import org.softeg.slartus.forpdaplus.listtemplates.DevDbCatalogBrickInfo;
-import org.softeg.slartus.forpdaplus.listtemplates.DigestCatalogBrickInfo;
-import org.softeg.slartus.forpdaplus.listtemplates.FavoritesBrickInfo;
-import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo;
-import org.softeg.slartus.forpdaplus.listtemplates.LeadsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
-import org.softeg.slartus.forpdaplus.listtemplates.NewsPagerBrickInfo;
-import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
-import org.softeg.slartus.forpdaplus.listtemplates.TopicsHistoryBrickInfo;
 import org.softeg.slartus.forpdaplus.styles.CssStyle;
 import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity;
 
@@ -68,7 +56,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -194,6 +181,9 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
 
             DonateActivity.setDonateClickListeners(this);
+
+            findPreference("showExitButton").setOnPreferenceClickListener(this);
+
         }
 
 
@@ -269,9 +259,31 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         }
                     }, endcalendar.get(Calendar.HOUR_OF_DAY), endcalendar.get(Calendar.MINUTE), true).show();
                     return true;
+                case "":
+                    boom();
+                    return true;
             }
 
             return false;
+        }
+
+        private void boom() {
+            final int[] count = {10};
+//            if (Surprise.isBlocked()) {
+//                boomClick.setDefaultValue(false);
+//                boomClick.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//                    @Override
+//                    public boolean onPreferenceClick(Preference preference) {
+//                        Toast.makeText(getActivity(), "Осталось " + String.valueOf(count[0] = count[0] - 1), Toast.LENGTH_SHORT).show();
+//                        if (count[0] == 0) {
+//                            Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
+//                            boomClick.setEnabled(true);
+//                            boomClick.setSelectable(true);
+//                        }
+//                        return false;
+//                    }
+//                });
+//            }
         }
 
         private void setMenuItems(){
@@ -345,6 +357,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         public void onNeutral(MaterialDialog dialog) {
                             PreferenceManager.getDefaultSharedPreferences(App.getContext())
                                     .edit()
+                                    .putString("userInfoBg", "")
                                     .putBoolean("isUserBackground", false)
                                     .apply();
                         }
@@ -364,7 +377,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     String selectedImagePath = ImageFilePath.getPath(getApplicationContext(), selectedImageUri);
                     PreferenceManager.getDefaultSharedPreferences(App.getContext())
                             .edit()
-                            .putString("userBackground", selectedImagePath)
+                            .putString("userInfoBg", selectedImagePath)
                             .putBoolean("isUserBackground", true)
                             .apply();
                 }
@@ -780,15 +793,15 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     "<b>E-mail:</b> <a href=\"mailto:slartus+4pda@gmail.com\">slartus+4pda@gmail.com</a><br/><br/>\n" +
                     "<b>Помощник: </b> Евгений Низамиев aka <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
                     "<b>E-mail:</b> <a href=\"mailto:radiationx@yandex.ru\">radiationx@yandex.ru</a><br/><br/>\n" +
-                    "<b>Помощник: </b> Aleksandr Tainyuk aka <a href=\"http://4pda.ru/forum/index.php?showuser=1726458\">iSanechek</a><br/><br/>\n" +
-                    //"<b>E-mail:</b> <a href=\"mailto:radiationx@yandex.ru\">radiationx@yandex.ru</a><br/><br/>\n" +
+                    "<b>Помощник: </b> Aleksandr Tainyuk aka <a href=\"http://4pda.ru/forum/index.php?showuser=1726458\">iSanechek</a><br/>\n" +
+                    "<b>E-mail:</b> <a href=\"mailto:devuicore@gmail.com\">devuicore@gmail.com</a><br/><br/>\n" +
                     "<b>Дизайнер стилей: </b> <a href=\"http://4pda.ru/forum/index.php?showuser=96664\">Морфий</a> и <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
                     "<b>Благодарности: </b> <br/>\n" +
                     "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=1657987\">__KoSyAk__</a></b> Иконка программы<br/>\n" +
                     "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=96664\">Морфий</a></b> Material стили<br/>\n" +
                     "* <b>Пользователям 4pda</b> (тестирование, идеи, поддержка)\n" +
                     "<br/><br/>" +
-                    "Copyright 2011-2015 Artem Slinkin <slartus@gmail.com>";
+                    "Copyright 2011-2016 Artem Slinkin <slartus@gmail.com>";
 
             new MaterialDialog.Builder(getActivity())
                     .title(getProgramFullName(getActivity()))

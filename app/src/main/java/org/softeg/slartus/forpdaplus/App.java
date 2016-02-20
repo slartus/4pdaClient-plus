@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
@@ -15,6 +14,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 
+import com.crashlytics.android.answers.Answers;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -33,16 +33,18 @@ import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
+import org.softeg.slartus.forpdaplus.utils.HttpHelperForImage;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import io.fabric.sdk.android.Fabric;
+import uk.co.senab.bitmapcache.BitmapLruCache;
 
 /**
  * User: slinkin
@@ -50,7 +52,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Time: 8:03
  */
 @ReportsCrashes(
-        mailTo = "ololosh10050@gmail.com,slartus@gmail.com",
+        mailTo = "ololosh10050@gmail.com,slartus@gmail.com,devuicore@gmail.com",
         mode = ReportingInteractionMode.DIALOG,
         customReportContent = {ReportField.APP_VERSION_CODE, ReportField.APP_VERSION_NAME,
                 ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL,
@@ -87,8 +89,15 @@ public class App extends android.app.Application {
 
     private int tabIterator = 0;
 
+    private static final int MEGA_BYTE = 1024 * 1024;
+    private BitmapLruCache mCache;
+
     public int getTabIterator(){
         return tabIterator;
+    }
+
+    public void setTabIterator(int tabIterator) {
+        this.tabIterator = tabIterator;
     }
     public void clearTabIterator(){
         tabIterator = 0;
@@ -106,6 +115,9 @@ public class App extends android.app.Application {
 
     private List<TabItem> mTabItems = new ArrayList<>();
 
+    public void setmTabItems(List<TabItem> mTabItems) {
+        this.mTabItems = mTabItems;
+    }
     public List<TabItem> getTabItems(){
         return mTabItems;
     }
@@ -467,25 +479,30 @@ public class App extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Answers());
         ACRA.init(this);
         initImageLoader(this);
         m_MyActivityLifecycleCallbacks = new MyActivityLifecycleCallbacks();
         registerActivityLifecycleCallbacks(m_MyActivityLifecycleCallbacks);
         setTheme(getThemeStyleResID());
-
-        Calendar c = Calendar.getInstance();
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        if(month==11&day>=30) isNewYear = true;
-        if(month==0&day<=2) isNewYear = true;
-
         try {
             DbHelper.prepareBases(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        File imgCacheDir = new File(getCacheDir(), "imgviewer");
+        imgCacheDir.mkdirs();
+
+        BitmapLruCache.Builder builder = new BitmapLruCache.Builder();
+        builder.setMemoryCacheEnabled(true).setMemoryCacheMaxSizeUsingHeapSize(.25f);
+        builder.setDiskCacheEnabled(true).setDiskCacheLocation(imgCacheDir).setDiskCacheMaxSize(100 * MEGA_BYTE);
+        mCache = builder.build();
     }
 
+    public BitmapLruCache getBitmapCache() {
+        return mCache;
+    }
 
     public boolean isNewYear(){
         return isNewYear;
@@ -554,11 +571,13 @@ public class App extends android.app.Application {
         DisplayImageOptions options = new DisplayImageOptions.Builder()
                 .showImageForEmptyUri(R.drawable.no_image)
                 .cacheInMemory(true)
+                .resetViewBeforeLoading(true)
                 .cacheOnDisc(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .handler(new Handler())
                 .build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+                .imageDownloader(new HttpHelperForImage(context))
                 .threadPoolSize(5)
                 .threadPriority(Thread.MIN_PRIORITY)
                 .denyCacheImageMultipleSizesInMemory()

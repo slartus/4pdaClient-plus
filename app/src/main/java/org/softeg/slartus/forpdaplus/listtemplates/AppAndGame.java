@@ -3,12 +3,12 @@ package org.softeg.slartus.forpdaplus.listtemplates;
 import android.support.v4.app.Fragment;
 
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.listfragments.AppsGamesCatalogFragment;
 
 /**
  * Created by radiationx on 01.12.15.
  */
 public class AppAndGame extends BrickInfo{
+    public static final String NAME = "AppAndGame";
     @Override
     public String getTitle() {
         return "App&Game 4pda";
@@ -21,7 +21,7 @@ public class AppAndGame extends BrickInfo{
 
     @Override
     public String getName() {
-        return "AppAndGame";
+        return NAME;
     }
 
     @Override

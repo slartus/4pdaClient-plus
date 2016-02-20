@@ -3,17 +3,19 @@ package org.softeg.slartus.forpdaplus;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
@@ -37,6 +40,8 @@ public class TabDrawerMenu {
     private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
     private static TabAdapter adapter;
     private ListView mListView;
+    private Button closeAll;
+    private Handler handler = new Handler();
 
 
     public interface SelectItemListener {
@@ -54,6 +59,26 @@ public class TabDrawerMenu {
         mActivity = activity;
         mSelectItemListener = listener;
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        closeAll = (Button) findViewById(R.id.closeAll);
+        closeAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (App.getInstance().getTabItems().size()>1)
+                    closeAllTabs();
+                else {
+                    closeDialog();
+                    toggleOpenState();
+                }
+            }
+        });
+        closeAll.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                toggleOpenState();
+                closeDialog();
+                return false;
+            }
+        });
 
 
         mDrawer = (RelativeLayout) findViewById(R.id.tab_drawer);
@@ -74,15 +99,57 @@ public class TabDrawerMenu {
         adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
         mListView.setAdapter(adapter);
     }
+
+    public void closeAllTabs() {
+        close();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                String lastBrick = Preferences.Lists.getLastSelectedList();
+                List<TabItem> itemsForClose = new ArrayList<>();
+
+                for (TabItem item : App.getInstance().getTabItems())
+                    if (!lastBrick.equals(item.getTag()))
+                        itemsForClose.add(item);
+                ((MainActivity) getContext()).removeTabs(itemsForClose);
+                App.getInstance().setCurrentFragmentTag(lastBrick);
+                if (!App.getInstance().isContainsByTag(lastBrick)) {
+                    ((MainActivity) getContext()).selectItem(ListCore.getRegisteredBrick(lastBrick));
+                } else {
+                    ((MainActivity) getContext()).selectTab(App.getInstance().getTabByTag(lastBrick));
+                }
+                refreshAdapter();
+                notifyDataSetChanged();
+            }
+        }, 300);
+
+    }
+
+    public void toggleOpenState() {
+        if (mDrawerLayout.isDrawerOpen(mDrawer)) {
+            mDrawerLayout.closeDrawer(mDrawer);
+        } else {
+            mDrawerLayout.openDrawer(mDrawer);
+//            ((MainActivity)getContext()).hideKeyboard();
+        }
+    }
+
     private class TabOnClickListener implements ListView.OnItemClickListener{
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
             selectTab((TabItem) adapter.getItem(position));
             close();
         }
     }
-    public static void notifyDataSetChanged(){
-        adapter.notifyDataSetChanged();
+    private Runnable notifyAdapter = new Runnable() {
+        @Override
+        public void run() {
+            adapter.notifyDataSetChanged();
+        }
+    };
+    public void notifyDataSetChanged(){
+        handler.postDelayed(notifyAdapter, 300);
     }
 
     public void refreshAdapter(){
@@ -96,6 +163,8 @@ public class TabDrawerMenu {
         for(int i = 0; i <= App.getInstance().getTabItems().size()-1; i++){
             if(App.getInstance().getTabItems().get(i).getTag().equals(tag)) {
                 final TabItem tabItem = App.getInstance().getTabByTag(tag);
+                Log.e("kek", tabItem.getFragment()+" WTF");
+                tabItem.setFragment(null);
                 App.getInstance().getTabItems().remove(i);
 
                 if(App.getInstance().getTabByTag(tabItem.getParentTag())!=null)
@@ -103,8 +172,9 @@ public class TabDrawerMenu {
                 else if(tag.equals(App.getInstance().getCurrentFragmentTag()))
                     App.getInstance().setCurrentFragmentTag(App.getInstance().getTabItems().get(App.getInstance().getLastTabPosition(i)).getTag());
 
-                ((MainActivity)getContext()).showFragmentByTag(App.getInstance().getCurrentFragmentTag(), true);
+                ((MainActivity)getContext()).showFragment(App.getInstance().getCurrentFragmentTag(), true);
                 ((MainActivity)getContext()).endActionFragment(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
+                ((MainActivity)getContext()).getmMainDrawerMenu().setItemCheckable(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
                 refreshAdapter();
                 return;
             }
@@ -118,10 +188,15 @@ public class TabDrawerMenu {
     public Boolean isOpen() {
         return mDrawerLayout.isDrawerOpen(mDrawer);
     }
-
     public void selectTab(TabItem tabItem) {
         mSelectItemListener.selectTab(tabItem);
-        adapter.notifyDataSetChanged();
+        notifyDataSetChanged();
+        Log.e("kek", "select save");
+        if(ListCore.getRegisteredBrick(tabItem.getTag())!=null){
+            Preferences.Lists.setLastSelectedList(tabItem.getTag());
+            Preferences.Lists.addLastAction(tabItem.getTag());
+        }
+        Log.e("kek", "select save end");
     }
 
     private Context getContext() {
@@ -137,7 +212,7 @@ public class TabDrawerMenu {
         List<TabItem> mObjects = null;
         public TabAdapter(Context context, int item_resource, List<TabItem> objects) {
             super(context, item_resource, objects);
-            mObjects = new ArrayList<TabItem>(objects);
+            mObjects = objects;
             inflater = LayoutInflater.from(context);
         }
         @Override
@@ -164,7 +239,7 @@ public class TabDrawerMenu {
             holder.close.setOnClickListener(new CloseClickListener(item.getTag()));
 
             holder.text.setTextColor(resources.getColor(App.getInstance().getDrawerMenuText()));
-            holder.item.setBackgroundResource(Color.TRANSPARENT);
+            holder.item.setBackgroundResource(android.R.color.transparent);
 
             if(App.getInstance().getCurrentFragmentTag().equals(item.getTag())){
                 holder.text.setTextColor(resources.getColor(R.color.selectedItemText));
@@ -188,27 +263,31 @@ public class TabDrawerMenu {
             if(App.getInstance().getTabItems().size()>1) {
                 MainActivity.log("tabdrawer tryremove tab");
                 ((MainActivity) getContext()).tryRemoveTab(tag);
-            }else {
-                new MaterialDialog.Builder(getContext())
-                        .content("Закрыть приложение?")
-                        .positiveText("Да")
-                        .negativeText("Нет")
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                                android.os.Process.killProcess(android.os.Process.myPid());
-                                System.exit(1);
-                            }
-                        })
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                                close();
-                            }
-                        })
-                        .show();
+            } else {
+                closeDialog();
             }
         }
+    }
+
+    private void closeDialog() {
+        new MaterialDialog.Builder(getContext())
+                .content("Закрыть приложение?")
+                .positiveText("Да")
+                .negativeText("Нет")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                        System.exit(1);
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                        close();
+                    }
+                })
+                .show();
     }
 }
 

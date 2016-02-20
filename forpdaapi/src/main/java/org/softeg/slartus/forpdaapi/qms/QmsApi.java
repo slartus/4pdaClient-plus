@@ -1,6 +1,8 @@
 package org.softeg.slartus.forpdaapi.qms;
 
 import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -62,7 +64,7 @@ public class QmsApi {
     }
 
     private static String matchChatBody(String pageBody) {
-        Matcher m = Pattern.compile("<div class=\"scrollframe-body\">[\\s\\S]*?<div id=\"thread-inside-top\"></div>([\\s\\S]*?)<div id=\"thread-inside-bottom\">").matcher(pageBody);
+        Matcher m = Pattern.compile("<div id=\"thread-inside-top\"><\\/div>([\\s\\S]*)<div id=\"thread-inside-bottom\">").matcher(pageBody);
         if (m.find())
             return "<div id=\"thread_form\"><div id=\"thread-inside-top\"></div>" + m.group(1) + "</div>";
 
@@ -155,28 +157,23 @@ public class QmsApi {
     }
 
     public static ArrayList<QmsUser> getQmsSubscribers(IHttpClient httpClient) throws Throwable {
-        //String pageBody = httpClient.performGet("http://4pda.ru/forum/index.php?&act=qms");
         String pageBody = httpClient.performGet("http://4pda.ru/forum/index.php?&act=qms-xhr&action=userlist");
-
         return parseQmsUsers(pageBody);
     }
 
     public static ArrayList<QmsUser> parseQmsUsers(String pageBody) {
         ArrayList<QmsUser> res = new ArrayList<>();
-        Matcher m = Pattern.compile("<a class=\"list-group-item[^\"]*\"[^>]*?data-member-id=\"(\\d+)\"[^>]*?>([\\s\\S]*?)</a>", Pattern.CASE_INSENSITIVE).matcher(pageBody);
-        Pattern newMessagesCountPattern = Pattern.compile("<div class=\"bage[^\"]*\">\\((\\d+)\\)</div>", Pattern.CASE_INSENSITIVE);
-        Pattern userPattern = Pattern.compile("<img class=\"avatar\" src=\"([^\"]*)\" title=\"([^\"]*)\" alt=\"\" />");
+        Matcher m = Pattern.compile("<a class=\"list-group-item[^>]*=(\\d*)\">[^<]*<div class=\"bage\">([^<]*)[\\s\\S]*?src=\"([^\"]*)\" title=\"([^\"]*)\"", Pattern.CASE_INSENSITIVE).matcher(pageBody);
+        String count;
+        QmsUser qmsUser;
         while (m.find()) {
-            QmsUser qmsUser = new QmsUser();
+            qmsUser = new QmsUser();
             qmsUser.setId(m.group(1));
-            Matcher countMatcher = newMessagesCountPattern.matcher(m.group(2));
-            if (countMatcher.find())
-                qmsUser.setNewMessagesCount(countMatcher.group(1));
-            Matcher userMatcher = userPattern.matcher(m.group(2));
-            if (userMatcher.find()) {
-                qmsUser.setNick(Html.fromHtml(userMatcher.group(2)).toString().trim());
-                qmsUser.setAvatarUrl(userMatcher.group(1));
-            }
+            qmsUser.setAvatarUrl(m.group(3));
+            qmsUser.setNick(Html.fromHtml(m.group(4)).toString().trim());
+            count = m.group(2).trim();
+            if(!count.equals(""))
+                qmsUser.setNewMessagesCount(count.replace("(", "").replace(")", ""));
 
             res.add(qmsUser);
         }
@@ -185,59 +182,57 @@ public class QmsApi {
 
     public static QmsUserThemes getQmsUserThemes(IHttpClient httpClient, String mid,
                                                  ArrayList<QmsUser> outUsers, Boolean parseNick) throws Throwable {
-        String pageBody = httpClient.performGet("http://4pda.ru/forum/index.php?act=qms&mid=" + mid);
-
-        Document doc = Jsoup.parse(pageBody);
-
-        Elements threadElements = doc.select("div.threads-list a.list-group-item");
         QmsUserThemes res = new QmsUserThemes();
-        Pattern idPattern = Pattern.compile("(\\d+)");
+        String pageBody = httpClient.performGet("http://4pda.ru/forum/index.php?act=qms&mid=" + mid);
         Pattern newCountPattern = Pattern.compile("(.*?)\\((\\d+)\\s*/\\s*(\\d+)\\)\\s*$");
         Pattern countPattern = Pattern.compile("(.*?)\\((\\d+)\\)\\s*$");
-        for (Element threadElement : threadElements) {
-            QmsUserTheme item = new QmsUserTheme();
-            item.Id = threadElement.attr("data-thread-id");
-
+        Pattern strongPattern = Pattern.compile("<strong>([\\s\\S]*?)</strong>");
+        Matcher matcher = Pattern.compile("<div class=\"list-group\">([\\s\\S]*)<form [^>]*>([\\s\\S]*?)<\\/form>").matcher(pageBody);
+        if(matcher.find()){
+            outUsers.addAll(parseQmsUsers(matcher.group(1)));
+            matcher = Pattern.compile("<a class=\"list-group-item[^>]*-(\\d*)\">[\\s\\S]*?<div[^>]*>([\\s\\S]*?)<\\/div>([\\s\\S]*?)<\\/a>").matcher(matcher.group(2));
+            QmsUserTheme item;
             Matcher m;
-            Element el = threadElement.select("strong").first();
+            String info;
+            while (matcher.find()){
+                item = new QmsUserTheme();
+                item.Id = matcher.group(1);
+                item.Date = matcher.group(2);
 
-            if (el != null) {
-                String txt = el.text();
-                m = newCountPattern.matcher(txt);
-                if (m.find()) {
-                    item.Title = m.group(1);
-                    item.Count = m.group(2);
-                    item.NewCount = m.group(3);
-                } else
-                    item.Title = txt;
-            }else{
-                String txt = threadElement.ownText();
-                m = countPattern.matcher(txt);
-                if (m.find()) {
-                    item.Title = m.group(1);
-                    item.Count = m.group(2);
-                } else
-                    item.Title = txt;
+                info = matcher.group(3);
+                m = strongPattern.matcher(info);
+                if(m.find()){
+                    m = newCountPattern.matcher(m.group(1));
+                    if (m.find()) {
+                        item.Title = m.group(1).trim();
+                        item.Count = m.group(2);
+                        item.NewCount = m.group(3);
+                    } else
+                        item.Title = m.group(2).trim();
+                }else {
+                    m = countPattern.matcher(info);
+                    if (m.find()) {
+                        item.Title = m.group(1).trim();
+                        item.Count = m.group(2).trim();
+                    } else
+                        item.Title = info.trim();
+                }
+                res.add(item);
             }
-            el = threadElement.select("div.bage").first();
-            if(el!=null)
-                item.Date=el.text();
-            res.add(item);
+            if (parseNick) {
+                matcher = Pattern.compile("<div class=\"nav\">[\\s\\S]*?showuser[^>]*([\\s\\S]*?)<\\/a>[\\s\\S]*?<\\/div>").matcher(pageBody);
+                if(matcher.find()){
+                    res.Nick=matcher.group(1);
+                }
+            }
         }
 
-        outUsers.addAll(parseQmsUsers(pageBody));
-        if (parseNick) {
-            Element el=doc.select("div.navbar>div.nav a[href~=showuser=\\d+]").first();
-            if(el!=null){
-                res.Nick=el.text();
-            }
 
-        }
         return res;
     }
 
     public static int getNewQmsCount(String pageBody) {
-        final Pattern qms_2_0_Pattern = PatternExtensions.compile("id=\"events-count\">Сообщений:\\s+(\\d+)</a>");
+        final Pattern qms_2_0_Pattern = PatternExtensions.compile("id=\"events-count\"[^>]*>[^\\d]*?(\\d+)<");
         Matcher m = qms_2_0_Pattern.matcher(pageBody);
         if (m.find()) {
             return Integer.parseInt(m.group(1));

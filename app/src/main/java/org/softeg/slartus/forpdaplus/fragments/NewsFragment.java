@@ -32,7 +32,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
 
-import org.softeg.slartus.forpdaapi.NewsApi;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.App;
@@ -42,7 +41,6 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.History;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
-import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -68,27 +66,17 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     private int m_ScrollY = 0;
     private int m_ScrollX = 0;
     private String m_NewsUrl;
-    public static String s_NewsUrl = null;
-    private Uri m_Data = null;
     private ArrayList<History> m_History = new ArrayList<>();
     private boolean loadImages;
     private String m_Title = "Новости";
-    private View view;
     private Menu menu;
 
-    public static NewsFragment newInstance(Context context, String url){
+    public static NewsFragment newInstance(String url){
         NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
         args.putString(URL_KEY, url);
         fragment.setArguments(args);
         return fragment;
-    }
-    public View getView(){
-        return view;
-    }
-
-    private View findViewById(int id){
-        return getView().findViewById(id);
     }
 
     @Override
@@ -148,18 +136,14 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         view = inflater.inflate(R.layout.news_fragment, container, false);
-        initSwipeRefreshLayout();
-        if (Preferences.System.isDevSavePage()|
-                Preferences.System.isDevInterface()|
-                Preferences.System.isDevStyle())
-            Toast.makeText(getMainActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
-
         webView = (AdvWebView) findViewById(R.id.wvBody);
+        initSwipeRefreshLayout();
         registerForContextMenu(webView);
         setWebViewSettings();
-        webView.getSettings().setLoadWithOverviewMode(false);
+        webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setDefaultFontSize(Preferences.News.getFontSize());
+        webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         if (Build.VERSION.SDK_INT >= 19) {
             try {
                 webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
@@ -168,14 +152,12 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             }
         }
         loadImages = webView.getSettings().getLoadsImagesAutomatically();
-        //m_WebView.setActionBarheight(getSupportActionBar().getHeight());
-
 
         webView.setWebViewClient(new MyWebViewClient());
         webView.addJavascriptInterface(this, "HTMLOUT");
 
         m_NewsUrl = getArguments().getString(URL_KEY);
-        s_NewsUrl = m_NewsUrl;
+        showNews(m_NewsUrl);
 
 
         FloatingActionButton fabComment = (FloatingActionButton) findViewById(R.id.fab);
@@ -193,18 +175,10 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         else
             fabComment.setVisibility(View.GONE);
 
-        if (s_NewsUrl != null) {
-            s_NewsUrl = null;
-            showNews(m_NewsUrl);
-        }
-
-        if (m_Data != null) {
-            String url = m_Data.toString();
-            m_Data = null;
-            if (IntentActivity.isNews(url)) {
-                showNews(url);
-            }
-        }
+        if (Preferences.System.isDevSavePage()|
+                Preferences.System.isDevInterface()|
+                Preferences.System.isDevStyle())
+            Toast.makeText(getMainActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
         return view;
     }
 
@@ -212,38 +186,34 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuItem item;
         boolean pencil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar", false);
         if(Client.getInstance().getLogined()&pencil){
-            item = menu.add("Комментировать").setIcon(R.drawable.ic_pencil_white_24dp);
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    respond();
-                    return true;
-                }
-            });
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            menu.add("Комментировать").setIcon(R.drawable.ic_pencil_white_24dp)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+                            respond();
+                            return true;
+                        }
+                    })
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
-        item = menu.add(R.string.Refresh).setIcon(R.drawable.ic_refresh_white_24dp);
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                refresh();
-                return true;
-            }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(R.string.Refresh).setIcon(R.drawable.ic_refresh_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        refresh();
+                        return true;
+                    }
+                })
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        item = menu.add(R.string.Like).setIcon(R.drawable.ic_thumb_up_white_24dp
-                //        MyApp.getInstance().isWhiteTheme() ?R.drawable.rating_good_white : R.drawable.rating_good_dark
-        );
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                like();
-                return true;
-            }
-        });
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
+        menu.add(R.string.Like).setIcon(R.drawable.ic_thumb_up_white_24dp)
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        like();
+                        return true;
+                    }
+                })
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
         SubMenu optionsMenu = menu.addSubMenu("Настройки");
         optionsMenu.getItem().setIcon(R.drawable.ic_settings_white_24dp);
@@ -287,7 +257,14 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     }
                 }).setCheckable(true).setChecked(getWebView().getSettings().getLoadsImagesAutomatically());
 
-        ExtUrl.addUrlSubMenu(new Handler(), getMainActivity(), menu, getUrl(), null, null);
+        menu.add("Ссылка")
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", getUrl());
+                        return true;
+                    }
+                });
+        //ExtUrl.addUrlSubMenu(new Handler(), getMainActivity(), menu, getUrl(), null, null);
         this.menu = menu;
     }
 
@@ -433,7 +410,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
     }
 
-    AsyncTask asyncTask = null;
+    private GetNewsTask asyncTask = null;
 
     @Override
     public AsyncTask getAsyncTask() {
@@ -444,16 +421,15 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         webView.setWebViewClient(new MyWebViewClient());
         saveHistory(url);
         m_NewsUrl = url;
-        GetNewsTask getThemeTask = new GetNewsTask(getMainActivity());
-        getThemeTask.execute(url.replace("|", ""));
-        asyncTask = getThemeTask;
+        asyncTask = new GetNewsTask();
+        asyncTask.execute(url.replace("|", ""));
     }
 
     public void showBody(String body) {
         super.showBody();
         try {
-            getMainActivity().setTitle(m_Title);
-            webView.loadDataWithBaseURL("\"file:///android_asset/\"", body, "text/html", "UTF-8", null);
+            setTitle(m_Title);
+            webView.loadDataWithBaseURL("file:///android_asset/", body, "text/html", "UTF-8", null);
         } catch (Exception ex) {
             AppLog.e(getMainActivity(), ex);
         }
@@ -478,8 +454,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         public String Comment = null;
         public String ReplyId;
         public String Dp;
-
-        public GetNewsTask(Context context) {}
 
         private String m_ThemeBody;
 
@@ -509,76 +483,19 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
         private String transformBody(String body) {
             NewsHtmlBuilder builder = new NewsHtmlBuilder();
-            Matcher matcher = PatternExtensions.compile("<h1 itemprop=\"name\">([\\s\\S]*?)<\\/h1>").matcher(body);
-            Matcher matchert = PatternExtensions.compile("<script[\\s\\S]*\\(([\\s\\S]*),[\\s\\S]*<.script>").matcher(body);
             m_Title = "Новости";
-            if (matcher.find()) {
-                m_Title = Html.fromHtml(matcher.group(1)).toString();
-            }
             builder.beginHtml(m_Title);
             builder.beginBody("news", null, loadImages);
-            builder.append("<div style=\"padding-top:" + HtmlBuilder.getMarginTop() + "px\"/>\n");
+            builder.append("<div style=\"padding-top:").append(String.valueOf(HtmlBuilder.getMarginTop())).append("px\"/>\n");
             builder.append("<div id=\"main\">");
-            /*builder.append("<script type=\"text/javascript\" async=\"async\" src=\"file:///android_asset/forum/js/jqp.min.js\"></script>\n");
-            builder.append("<script type=\"text/javascript\" async=\"async\" src=\"file:///android_asset/forum/js/site.min.js\"></script>\n");
-            builder.append("<script type=\"text/javascript\">(function(f,h){var c=\"$4\";if(\"function\"!=typeof f[c]||.3>f[c].lib4PDA){var g={},b=function(){return f[c]||this},k=function(a,d){return function(){\"function\"==typeof d&&(!a||a in b?d(b[a],a):!g[a]&&(g[a]=[d])||g[a].push(d))}};b.fn=b.prototype={lib4PDA:.3,constructor:b,addModule:function(a,d){if(!(a in b)){b[a]=b.fn[a]=d?\"function\"==typeof d?d(b):d:h;for(var c=0,e=g[a];e&&c<e.length;)e[c++](b[a],a);delete g[a]}return b},onInit:function(a,d){for(var c=(a=(a+\"\").split(\" \")).length,e=d;c;)e=new k(a[--c],\n" +
-                    "e);e();return b}};f[c]=f.lib4PDA=b;for(c in b.fn)b[c]=b.fn[c]}})(window);(function(a){var wrsI=0;\n" +
-                    "window.wrs=function(c,f){a.write('<div id=\"wrs-div'+wrsI+'\"></div>');var d=a.getElementById('wrs-div'+wrsI),i=setInterval(function(w){if(!c()){return;}clearInterval(i);w=a.write;a.write=function(t){d.innerHTML+=t};f();a.write=w},500);wrsI++}})(document);</script>");
-*/
             body = body.replaceAll("\"//","\"http://");
+            Matcher matcher = PatternExtensions.compile("ModKarma\\((\\{[\\s\\S]*?\\}\\})").matcher(body);
             builder.append(parseBody(body));
 
-            if (matchert.find()) {
-                builder.append("<script type=\"text/javascript\">function getCommentsData(){return '"+matchert.group(1)+"';}</script>");
-  ;
-                builder.append("<script>\n" +
-                        "    window.onload = function() {\n" +
-                        "        var anchors = document.querySelectorAll('.karma');\n" +
-                        "        var data = JSON.parse(getCommentsData())["+getPostId()+"];\n" +
-                        "        for(var i = 0; i < anchors.length; i++) {\n" +
-                        "            var found = anchors[i].getAttribute(\"data-karma\").match(/([\\d]*)-([\\d]*)/);\n" +
-                        "            anchors[i].innerHTML= '<b class=\"icon-karma-up\" title=\"Мне нравится\" data-karma-act=\"1-264127-2745153\"></b><span class=\"num-wrap\"><span class=\"num\" title=\"Понравилось\"></span></span>';\n" +
-                        "            anchors[i].querySelector(\".num-wrap .num\").innerHTML = data[found[2]][3];\n" +
-                        "            anchors[i].onclick = function () {\n" +
-                        "                found = this.getAttribute(\"data-karma\").match(/([\\d]*)-([\\d]*)/);\n" +
-                        "                this.querySelector(\".num-wrap .num\").innerHTML = data[found[2]][3]+1;\n" +
-                        "                HTMLOUT.likeComment(found[1],found[2]);\n" +
-                        "            };\n" +
-                        "        }\n" +
-                        "    }\n" +
-                        "</script>");
-                if(Client.getInstance().getLogined()){
-                    builder.append("<script>\n" +
-                            "    window.onload = function() {\n" +
-                            "        var anchors = document.querySelectorAll('.karma');\n" +
-                            "        var data = JSON.parse(getCommentsData())["+getPostId()+"];\n" +
-                            "        for(var i = 0; i < anchors.length; i++) {\n" +
-                            "            var found = anchors[i].getAttribute(\"data-karma\").match(/([\\d]*)-([\\d]*)/);\n" +
-                            "            anchors[i].innerHTML= '<b class=\"icon-karma-up\" title=\"Мне нравится\" data-karma-act=\"1-264127-2745153\"></b><span class=\"num-wrap\"><span class=\"num\" title=\"Понравилось\"></span></span>';\n" +
-                            "            anchors[i].querySelector(\".num-wrap .num\").innerHTML = data[found[2]][3];\n" +
-                            "            anchors[i].onclick = function () {\n" +
-                            "                found = this.getAttribute(\"data-karma\").match(/([\\d]*)-([\\d]*)/);\n" +
-                            "                this.querySelector(\".num-wrap .num\").innerHTML = data[found[2]][3]+1;\n" +
-                            "                HTMLOUT.likeComment(found[1],found[2]);\n" +
-                            "            };\n" +
-                            "        }\n" +
-                            "    }\n" +
-                            "</script>");
-                }else {
-                    builder.append("<script>\n" +
-                            "    window.onload = function() {\n" +
-                            "        var anchors = document.querySelectorAll('.karma');\n" +
-                            "        var data = JSON.parse(getCommentsData())["+getPostId()+"];\n" +
-                            "        for(var i = 0; i < anchors.length; i++) {\n" +
-                            "            var found = anchors[i].getAttribute(\"data-karma\").match(/([\\d]*)-([\\d]*)/);\n" +
-                            "            anchors[i].innerHTML= '<b class=\"icon-karma-up\" title=\"Мне нравится\" data-karma-act=\"1-264127-2745153\"></b><span class=\"num-wrap\"><span class=\"num\" title=\"Понравилось\"></span></span>';\n" +
-                            "            anchors[i].querySelector(\".num-wrap .num\").innerHTML = data[found[2]][3];\n" +
-                            "        }\n" +
-                            "    }\n" +
-                            "</script>");
-                }
+            if (matcher.find()) {
+                builder.append("<script type=\"text/javascript\">function getCommentsData(){return '").append(matcher.group(1)).append("';}</script>");
+                builder.append("<script type=\"text/javascript\">kek(").append(getPostId()).append(", ").append(String.valueOf(Client.getInstance().getLogined())).append(");</script>");
             }
-
             builder.append("</div>");
             builder.endBody();
             builder.endHtml();
@@ -586,10 +503,12 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
 
         private String parseBody(String body) {
-            Matcher m = PatternExtensions.compile("<article [\\s\\S]*?>([\\s\\S]*?)<aside [\\s\\S]*?>").matcher(body);
+            Matcher m = PatternExtensions.compile("<article [^>]*>([\\s\\S]*?<span itemprop=\"headline\">([\\s\\S]*?)<\\/span>[\\s\\S]*?)<aside").matcher(body);
 
             if (m.find()) {
-                return normalizeCommentUrls(m.group(1)).replaceAll("<form[\\s\\S]*?/form>", "");
+                m_Title = m.group(2);
+                body = m.group(1);
+                return normalizeCommentUrls(body).replaceAll("<form[\\s\\S]*?/form>", "");
             }
             m = PatternExtensions
                     .compile("<div id=\"main\">([\\s\\S]*?)<form action=\"(http://4pda.ru)?/wp-comments-post.php\" method=\"post\" id=\"commentform\">")
@@ -641,6 +560,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
         @Override
         protected void onPreExecute() {
+            Log.e("kek", "ONPREEXECUTE");
             try {
                 setLoading(true);
             } catch (Exception ex) {
@@ -653,14 +573,13 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         @Override
         protected void onPostExecute(final Boolean success) {
             Comment = null;
-            setLoading(false);
             if (isCancelled()) return;
             if (success) {
                 showBody(m_ThemeBody);
-
+                setLoading(false);
             } else {
-                getMainActivity().setTitle(ex.getMessage());
-                webView.loadDataWithBaseURL("\"file:///android_asset/\"", m_ThemeBody, "text/html", "UTF-8", null);
+                setTitle(ex.getMessage());
+                webView.loadDataWithBaseURL("file:///android_asset/", m_ThemeBody, "text/html", "UTF-8", null);
                 AppLog.e(getMainActivity(), ex);
             }
         }
@@ -692,11 +611,11 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                             return;
                         }
 
-                        GetNewsTask getThemeTask = new GetNewsTask(getMainActivity());
-                        getThemeTask.Comment = message;
-                        getThemeTask.ReplyId = replyId;
-                        getThemeTask.Dp = dp;
-                        getThemeTask.execute(m_NewsUrl);
+                        asyncTask = new GetNewsTask();
+                        asyncTask.Comment = message;
+                        asyncTask.ReplyId = replyId;
+                        asyncTask.Dp = dp;
+                        asyncTask.execute(m_NewsUrl);
                     }
                 })
                 .show();

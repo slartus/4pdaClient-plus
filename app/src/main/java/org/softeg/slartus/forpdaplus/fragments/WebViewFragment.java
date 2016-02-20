@@ -1,16 +1,14 @@
 package org.softeg.slartus.forpdaplus.fragments;
 
-import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -20,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.DecelerateInterpolator;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -42,7 +39,6 @@ import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 
@@ -61,7 +57,6 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     }
 
     public abstract AdvWebView getWebView();
-    public abstract View getView();
     public abstract WebViewClient MyWebViewClient();
     public abstract String getTitle();
     public abstract String getUrl();
@@ -84,6 +79,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
             case WebView.HitTestResult.UNKNOWN_TYPE:
             case WebView.HitTestResult.EDIT_TEXT_TYPE:
                 break;
+            case WebView.HitTestResult.IMAGE_TYPE:
+                ExtUrl.showImageSelectActionDialog(mHandler, getContext(), getWebView().getHitTestResult().getExtra());
             default: {
                 getWebView().requestFocusNodeHref(urlHandler.obtainMessage());
             }
@@ -98,39 +95,14 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         return m_WebViewExternals;
     }
 
-    public void animateHamburger(boolean isArrow){
-        final DrawerLayout drawerLayout = getMainActivity().getmMainDrawerMenu().getmDrawerLayout();
-        final ActionBarDrawerToggle actionBarDrawerToggle = getMainActivity().getmMainDrawerMenu().getmDrawerToggle();
-        float start = 0, end = 1;
-
-        if(isArrow){
-            start = 1; end = 0;
-            drawerLayout.setDrawerListener(actionBarDrawerToggle);
-        }else{
-            drawerLayout.setDrawerListener(null);
-        }
-        ValueAnimator anim = ValueAnimator.ofFloat(start, end);
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                float slideOffset = (Float) valueAnimator.getAnimatedValue();
-                actionBarDrawerToggle.onDrawerSlide(drawerLayout, slideOffset);
-            }
-        });
-        anim.setInterpolator(new DecelerateInterpolator());
-        anim.setDuration(250);
-        anim.start();
+    public void showBody(){
+        getThisTab().setTitle(getTitle()).setUrl(getUrl());
+        getMainActivity().notifyTabAdapter();
     }
 
-    public void showBody(){
-        for(int i = 0; i <= App.getInstance().getTabItems().size()-1; i++){
-            if(App.getInstance().getTabItems().get(i).getTag().equals(getTag())) {
-                App.getInstance().getTabItems().get(i).setTitle(getTitle());
-                App.getInstance().getTabItems().get(i).setUrl(getUrl());
-                TabDrawerMenu.notifyDataSetChanged();
-                return;
-            }
-        }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
     }
 
     @Override
@@ -153,8 +125,10 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("kek", "oncreate start");
         setArrow();
         loadPreferences(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
+        Log.e("kek", "oncreate end");
     }
 
     protected SwipeRefreshLayout mSwipeRefreshLayout;
@@ -207,7 +181,6 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
             getWebView().setWebViewClient(null);
             getWebView().setPictureListener(null);
         }
-        removeArrow();
     }
 
     @Override

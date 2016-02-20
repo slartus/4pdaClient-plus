@@ -8,27 +8,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -36,35 +28,39 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
+import org.softeg.slartus.forpdaplus.listtemplates.AppAndGame;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.DownloadsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
+import org.softeg.slartus.forpdaplus.listtemplates.MarkAllReadBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.PreferencesBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MainDrawerMenu {
+public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedListener{
     private DrawerLayout mDrawerLayout;
-    private RelativeLayout mDrawer;
-    private ExpandableListView mDrawerList;
+    private NavigationView mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
     private Activity mActivity;
     private SelectItemListener mSelectItemListener;
-    private BaseExpandableListAdapter mAdapter;
     private Handler mHandler = new Handler();
     private SharedPreferences prefs;
-    private Resources resources;
+
+    private Menu menu;
+    private int prevSelectedGroup;
+    private int prevSelectedItem;
+    private BrickInfo selectedBrick;
 
 
     public interface SelectItemListener {
         void selectItem(BrickInfo brickInfo);
     }
 
-    public MainDrawerMenu(Activity activity, SelectItemListener listener) {
-        resources = App.getInstance().getResources();
+    public MainDrawerMenu(final Activity activity, SelectItemListener listener) {
         prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-        DisplayMetrics displayMetrics = resources.getDisplayMetrics();
+        DisplayMetrics displayMetrics = App.getInstance().getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels;
         if (dpWidth > displayMetrics.density * 400) {
             dpWidth = displayMetrics.density * 400;
@@ -75,10 +71,8 @@ public class MainDrawerMenu {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 
-        mDrawerList = (ExpandableListView) findViewById(R.id.left_drawer_list);
-        mDrawer = (RelativeLayout) findViewById(R.id.left_drawer);
-
-
+        mDrawer = (NavigationView) findViewById(R.id.left_drawer);
+        mDrawer.setNavigationItemSelectedListener(this);
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mDrawer.getLayoutParams();
         params.width = (int) dpWidth;
         if ("right".equals(Preferences.System.getDrawerMenuPosition())) {
@@ -88,70 +82,56 @@ public class MainDrawerMenu {
             mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_start, GravityCompat.START);
         }
         mDrawer.setLayoutParams(params);
-        mDrawerList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+        setNavigationItems();
+
+        mDrawerToggle = new ActionBarDrawerToggle(mActivity, mDrawerLayout, ((MainActivity)mActivity).toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
-            public void onGroupExpand(int i) {
-                Preferences.Menu.setGroupExpanded(i, true);
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                ((MainActivity)mActivity).hidePopupWindows();
             }
-        });
-
-        mDrawerList.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-            @Override
-            public void onGroupCollapse(int i) {
-                Preferences.Menu.setGroupExpanded(i, false);
-            }
-        });
-
-        setmMenuGroups();
-
-        mAdapter = new MenuBrickAdapter(getContext());
-
-        // set up the drawer's list view with items and click listener
-        mDrawerList.setAdapter(mAdapter);
-        mDrawerList.setOnChildClickListener(new BrickItemClickListener());
-        for (int i = 0; i < mMenuGroups.size(); i++) {
-            if (Preferences.Menu.getGroupExpanded(i))
-                mDrawerList.expandGroup(i);
-        }
-
-        mDrawerToggle = new ActionBarDrawerToggle(
-                mActivity, mDrawerLayout, ((MainActivity)mActivity).toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
     }
-    public void setmMenuGroups(){
-        if(mMenuGroups!=null) mMenuGroups.clear();
-        mMenuGroups = new ArrayList<>();
-        if (prefs.getBoolean("categoryLast", false)) {
-            mMenuGroups.add(new LastActionsGroup());
-        }
-        mMenuGroups.add(new MainListGroup());
-        mMenuGroups.add(new OthersActionsGroup());
-        if(mAdapter!=null) notifyDataSetChanged();
-    }
-    public void notifyDataSetChanged(){
-        mAdapter.notifyDataSetChanged();
-    }
-    public ActionBarDrawerToggle getmDrawerToggle(){
-        return mDrawerToggle;
-    }
-    public DrawerLayout getmDrawerLayout(){
-        return mDrawerLayout;
-    }
-    public void toggleOpenState() {
-        if (mDrawerLayout.isDrawerOpen(mDrawer)) {
-            mDrawerLayout.closeDrawer(mDrawer);
-        } else {
-            mDrawerLayout.openDrawer(mDrawer);
-        }
+
+
+    private void setNavigationItems(){
+        menu = mDrawer.getMenu();
+        menu.clear();
+        int itemId = 0;
+        int i = 0;
+        SubMenu subMenu;
+        List<BrickInfo> list;
+        subMenu = menu.addSubMenu(1, 0, 0,"Все");
+        list = ListCore.getMainMenuBricks();
+        for (i=0; i<list.size(); i++, itemId++)
+            subMenu.add(1, itemId, i, list.get(i).getTitle()).setIcon(list.get(i).getIcon());
+        subMenu = menu.addSubMenu(2, 0, 0, "Разное");
+        list = ListCore.getOthersBricks();
+        for(i = 0; i<list.size();i++, itemId++)
+            subMenu.add(2, itemId, i, list.get(i).getTitle()).setIcon(list.get(i).getIcon());
     }
 
-    public void close() {
-        mDrawerLayout.closeDrawer(mDrawer);
-    }
-
-    public Boolean isOpen() {
-        return mDrawerLayout.isDrawerOpen(mDrawer);
+    public void setItemCheckable(String name){
+        SubMenu subMenu;
+        MenuItem item;
+        for(int i = 0; i<menu.size();i++){
+            subMenu = menu.getItem(i).getSubMenu();
+            for(int j = 0; j<subMenu.size(); j++){
+                item = subMenu.getItem(j);
+                if(item.getTitle().equals(name)){
+                    Log.e("keka", "true");
+                    menu.getItem(prevSelectedGroup).getSubMenu().getItem(prevSelectedItem).setCheckable(false).setChecked(false);
+                    item.setCheckable(true).setChecked(true);
+                    prevSelectedGroup = i;
+                    prevSelectedItem = j;
+                    prefs.edit().putString("navItemTitle", name).apply();
+                    return;
+                }
+            }
+        }
     }
 
     private void selectItem(BrickInfo brickIinfo) {
@@ -159,9 +139,19 @@ public class MainDrawerMenu {
 
         Preferences.Lists.setLastSelectedList(brickIinfo.getName());
         Preferences.Lists.addLastAction(brickIinfo.getName());
-        mAdapter.notifyDataSetChanged();
+
+        setItemCheckable(brickIinfo.getTitle());
     }
 
+    public NavigationView getNavigationView(){
+        return mDrawer;
+    }
+    public ActionBarDrawerToggle getDrawerToggle(){
+        return mDrawerToggle;
+    }
+    public DrawerLayout getDrawerLayout(){
+        return mDrawerLayout;
+    }
     private Context getContext() {
         return mActivity;
     }
@@ -170,385 +160,107 @@ public class MainDrawerMenu {
         return mActivity.findViewById(id);
     }
 
-    private class BrickItemClickListener implements ExpandableListView.OnChildClickListener {
-        @Override
-        public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition,
-                                    long id) {
-
-            Object o = mAdapter.getChild(groupPosition, childPosition);
-            MenuGroup menuGroup = (MenuGroup) mAdapter.getGroup(groupPosition);
-            BrickInfo brickInfo = (BrickInfo) o;
-            assert menuGroup != null;
-            menuGroup.itemAction(brickInfo);
-            int i = 1;
-            if (!prefs.getBoolean("categoryLast", false)) i = 0;
-            if (groupPosition <= i) {
-                prefs.edit().putInt("menuItemGroup", groupPosition).apply();
-                prefs.edit().putString("menuItemChild", brickInfo.getName()).apply();
-            }
-
-            return true;
+    public void toggleOpenState() {
+        if (mDrawerLayout.isDrawerOpen(mDrawer)) {
+            mDrawerLayout.closeDrawer(mDrawer);
+        } else {
+            mDrawerLayout.openDrawer(mDrawer);
         }
     }
-
-    public abstract class MenuGroup {
-        private String mName;
-        private String mTitle;
-
-        public MenuGroup(String name, String title) {
-            mName = name;
-            mTitle = title;
-        }
-
-        public abstract ArrayList<BrickInfo> getChildren();
-
-        public String getTitle() {
-            return mTitle;
-        }
-
-        public abstract void itemAction(BrickInfo item);
+    public void close() {
+        mDrawerLayout.closeDrawer(mDrawer);
+    }
+    public Boolean isOpen() {
+        return mDrawerLayout.isDrawerOpen(mDrawer);
     }
 
-    public class MainListGroup extends MenuGroup {
-        public MainListGroup() {
-            super("MainListGroup", "Все");
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        close();
+
+        switch (item.getGroupId()){
+            case 0:
+                selectedBrick = ListCore.createBricks(Preferences.Lists.getLastActions()).get(item.getOrder());
+                break;
+            case 1:
+                selectedBrick =  ListCore.getMainMenuBricks().get(item.getOrder());
+                break;
+            case 2:
+                selectedBrick = ListCore.getOthersBricks().get(item.getOrder());
+                break;
         }
 
-        @Override
-        public ArrayList<BrickInfo> getChildren() {
-            return ListCore.getMainMenuBricks();
-        }
-
-        @Override
-        public void itemAction(BrickInfo item) {
-            if(item.getName().equals("AppAndGame")){
+        switcha: switch (selectedBrick.getName()){
+            case AppAndGame.NAME:
                 final List<ApplicationInfo> packages = getContext().getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
                 for (ApplicationInfo packageInfo : packages) {
                     if(packageInfo.packageName.equals("ru.freeman42.app4pda")){
                         getContext().startActivity(getContext().getPackageManager().getLaunchIntentForPackage(packageInfo.packageName));
-                        return;
+                        break switcha;
                     }
                 }
                 ThemeFragment.showTopicById("275433");
-            }else {
-                selectItem(item);
-            }
-        }
-    }
-
-    public class LastActionsGroup extends MenuGroup {
-
-        public LastActionsGroup() {
-            super("LastActionsGroup", "Последние");
-        }
-
-        @Override
-        public ArrayList<BrickInfo> getChildren() {
-            return ListCore.createBricks(Preferences.Lists.getLastActions());
-        }
-
-        @Override
-        public void itemAction(BrickInfo item) {
-            selectItem(item);
-        }
-    }
-
-    public class OthersActionsGroup extends MenuGroup {
-        private ArrayList<BrickInfo> children = new ArrayList<>();
-
-        public OthersActionsGroup() {
-            super("OthersActionsGroup", "Разное");
-            // children.add(new SearchBrickInfo());
-            children.add(new PreferencesBrickInfo());
-            children.add(new DownloadsBrickInfo());
-            children.add(new MarkAllReadBrickInfo());
-        }
-
-        @Override
-        public ArrayList<BrickInfo> getChildren() {
-
-            return children;
-        }
-
-        @Override
-        public void itemAction(BrickInfo item) {
-            switch (item.getName()) {
-                case PreferencesBrickInfo.NAME:
-                    Intent settingsActivity = new Intent(
-                            mActivity, PreferencesActivity.class);
-                    mActivity.startActivityForResult(settingsActivity, 0);
+                break;
+            case PreferencesBrickInfo.NAME:
+                mActivity.startActivityForResult(new Intent(mActivity, PreferencesActivity.class), 0);
+                break;
+            case DownloadsBrickInfo.NAME:
+                try {
+                    DownloadFragment.newInstance();
+                } catch (Exception ex) {
+                    AppLog.e(mActivity, ex);
+                }
+                break;
+            case MarkAllReadBrickInfo.NAME:
+                if (!Client.getInstance().getLogined()) {
+                    Toast.makeText(mActivity, "Необходимо залогиниться!", Toast.LENGTH_SHORT).show();
                     break;
-
-                case DownloadsBrickInfo.NAME:
-                    try {
-                        DownloadFragment.newInstance();
-                    } catch (Exception ex) {
-                        AppLog.e(mActivity, ex);
-                    }
-                    break;
-                case MarkAllReadBrickInfo.NAME:
-                    if (!Client.getInstance().getLogined()) {
-                        Toast.makeText(mActivity, "Необходимо залогиниться!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    new MaterialDialog.Builder(mActivity)
-                            .title("Подтвердите действие")
-                            .content("Отметить весь форум прочитанным?")
-                            .positiveText("Да")
-                            .callback(new MaterialDialog.ButtonCallback() {
-                                @Override
-                                public void onPositive(MaterialDialog dialog) {
-                                    Toast.makeText(mActivity, "Запрос отправлен", Toast.LENGTH_SHORT).show();
-                                    new Thread(new Runnable() {
-                                        public void run() {
-                                            Throwable ex = null;
-                                            try {
-                                                Client.getInstance().markAllForumAsRead();
-                                            } catch (Throwable e) {
-                                                ex = e;
-                                            }
-
-                                            final Throwable finalEx = ex;
-
-                                            mHandler.post(new Runnable() {
-                                                public void run() {
-                                                    try {
-                                                        if (finalEx != null) {
-                                                            Toast.makeText(mActivity, "Ошибка", Toast.LENGTH_SHORT).show();
-                                                            AppLog.e(mActivity, finalEx);
-                                                        } else {
-                                                            Toast.makeText(mActivity, "Форум отмечен прочитанным", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    } catch (Exception ex) {
-                                                        AppLog.e(mActivity, ex);
-                                                    }
-
-                                                }
-                                            });
+                }
+                new MaterialDialog.Builder(mActivity)
+                        .title("Подтвердите действие")
+                        .content("Отметить весь форум прочитанным?")
+                        .positiveText("Да")
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                Toast.makeText(mActivity, "Запрос отправлен", Toast.LENGTH_SHORT).show();
+                                new Thread(new Runnable() {
+                                    public void run() {
+                                        Throwable ex = null;
+                                        try {
+                                            Client.getInstance().markAllForumAsRead();
+                                        } catch (Throwable e) {
+                                            ex = e;
                                         }
-                                    }).start();
-                                }
-                            })
-                            .negativeText("Отмена")
-                            .show();
-                    break;
-            }
-            close();
+
+                                        final Throwable finalEx = ex;
+
+                                        mHandler.post(new Runnable() {
+                                            public void run() {
+                                                try {
+                                                    if (finalEx != null) {
+                                                        Toast.makeText(mActivity, "Ошибка", Toast.LENGTH_SHORT).show();
+                                                        AppLog.e(mActivity, finalEx);
+                                                    } else {
+                                                        Toast.makeText(mActivity, "Форум отмечен прочитанным", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                } catch (Exception ex) {
+                                                    AppLog.e(mActivity, ex);
+                                                }
+
+                                            }
+                                        });
+                                    }
+                                }).start();
+                            }
+                        })
+                        .negativeText("Отмена")
+                        .show();
+                break;
+            default:
+                if(item.getGroupId()!=2)
+                    selectItem(selectedBrick);
         }
-
-        private class PreferencesBrickInfo extends BrickInfo {
-            public static final String NAME = "Preferences";
-
-            @Override
-            public String getTitle() {
-                return "Настройки программы";
-            }
-
-            @Override
-            public int getIcon() {
-                return R.drawable.ic_settings_grey600_24dp;
-            }
-
-            @Override
-            public String getName() {
-                return NAME;
-            }
-
-            @Override
-            public Fragment createFragment() {
-                return null;
-            }
-        }
-
-//        private class SearchBrickInfo extends BrickInfo {
-//            public static final String NAME = "Search";
-//
-//            @Override
-//            public String getTitle() {
-//                return "Поиск по форуму";
-//            }
-//
-//            @Override
-//            public int getIcon() {
-//                return R.drawable.ic_close_grey600_24dp;
-//            }
-//
-//            @Override
-//            public String getName() {
-//                return NAME;
-//            }
-//
-//            @Override
-//            public Fragment createFragment() {
-//                return null;
-//            }
-//        }
-
-        private class DownloadsBrickInfo extends BrickInfo {
-            public static final String NAME = "Downloads";
-
-            @Override
-            public String getTitle() {
-                return "Загрузки";
-            }
-
-            @Override
-            public int getIcon() {
-                return R.drawable.ic_download_grey600_24dp;
-            }
-
-            @Override
-            public String getName() {
-                return NAME;
-            }
-
-            @Override
-            public Fragment createFragment() {
-                return null;
-            }
-        }
-
-        private class MarkAllReadBrickInfo extends BrickInfo {
-            public static final String NAME = "MarkAllRead";
-
-            @Override
-            public String getTitle() {
-                return "Отметить весь форум прочитанным";
-            }
-
-            @Override
-            public int getIcon() {
-                return R.drawable.ic_check_all_grey600_24dp;
-            }
-
-            @Override
-            public String getName() {
-                return NAME;
-            }
-
-            @Override
-            public Fragment createFragment() {
-                return null;
-            }
-        }
-    }
-
-    private ArrayList<MenuGroup> mMenuGroups;
-
-    public class MenuBrickAdapter extends BaseExpandableListAdapter {
-        final LayoutInflater inflater;
-
-        public MenuBrickAdapter(Context context) {
-            inflater = LayoutInflater.from(context);
-        }
-
-        @Override
-        public int getGroupCount() {
-            return mMenuGroups.size();
-        }
-
-        @Override
-        public int getChildrenCount(int groupPosition) {
-            return mMenuGroups.get(groupPosition).getChildren().size();
-        }
-
-        @Override
-        public Object getGroup(int groupPosition) {
-            return mMenuGroups.get(groupPosition);
-        }
-
-        @Override
-        public Object getChild(int groupPosition, int childPosition) {
-            return mMenuGroups.get(groupPosition).getChildren().get(childPosition);
-        }
-
-        @Override
-        public long getGroupId(int groupPosition) {
-            return groupPosition * 100;
-        }
-
-        @Override
-        public long getChildId(int groupPosition, int childPosition) {
-            return groupPosition * 100 + childPosition;
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
-
-        @Override
-        public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-            final ViewHolder holder;
-
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.main_drawer_menu_group, parent, false);
-                holder = new ViewHolder();
-                assert convertView != null;
-
-                holder.text = (TextView) convertView.findViewById(R.id.group);
-
-                convertView.setTag(holder);
-
-
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            MenuGroup item = mMenuGroups.get(groupPosition);
-
-            holder.text.setText(item.getTitle());
-
-            return convertView;
-        }
-
-        @Override
-        public View getChildView(int groupPosition, int childPosition, boolean b, View convertView, ViewGroup parent) {
-            final ViewHolder holder;
-
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.main_drawer_menu_row, parent, false);
-                holder = new ViewHolder();
-                assert convertView != null;
-
-                holder.text = (TextView) convertView.findViewById(R.id.row_title);
-                holder.icon = (ImageView) convertView.findViewById(R.id.icon);
-                holder.item = (LinearLayout) convertView.findViewById(R.id.item);
-
-                convertView.setTag(holder);
-
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            BrickInfo item = mMenuGroups.get(groupPosition).getChildren().get(childPosition);
-            holder.text.setText(item.getTitle());
-            holder.icon.setImageDrawable(getContext().getResources().getDrawable(item.getIcon()));
-
-            holder.text.setTextColor(resources.getColor(App.getInstance().getDrawerMenuText()));
-            holder.item.setBackgroundResource(Color.TRANSPARENT);
-            holder.icon.clearColorFilter();
-
-            if (groupPosition == prefs.getInt("menuItemGroup", 0)
-                    &item.getName().equals(App.getInstance().getCurrentFragmentTag())) {
-                holder.text.setTextColor(resources.getColor(R.color.selectedItemText));
-                holder.item.setBackgroundResource(R.color.selectedItem);
-                holder.icon.setColorFilter(resources.getColor(R.color.selectedItemText), PorterDuff.Mode.SRC_ATOP);
-            }
-
-            return convertView;
-        }
-
-        @Override
-        public boolean isChildSelectable(int groupPosition, int childPosition) {
-            return true;
-        }
-
-
-        public class ViewHolder {
-            public TextView text;
-            public ImageView icon;
-            public LinearLayout item;
-        }
+        return true;
     }
 }

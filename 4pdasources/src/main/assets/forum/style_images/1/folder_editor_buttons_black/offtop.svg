@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sb="http://simplector.lyoshka.net/base/2.0"
+   xmlns:sp="http://simplector.lyoshka.net/pro/2.0"
+   width="24.0px"
+   height="24.0px"
+   viewBox="0 0 24.0 24.0"
+   sb:fontSize="Custom"
+   sb:pageOrientation="Portrait"
+   version="1.1"
+   sb:version="2.0.19"
+   >
+   <desc>Created in Simplector Pro</desc>
+   <path
+      id="133"
+      transform="matrix(0.0039501726,0.0,0.0,-0.0041620582,15.713706,19.529753)"
+      fill="rgb(0,0,0)"
+      fill-opacity="1.0"
+      stroke-width="217.5"
+      stroke-linecap="butt"
+      stroke-linejoin="miter"
+      stroke-miterlimit="2.0"
+      stroke="rgb(0,0,0)"
+      stroke-opacity="1.0"
+      d="
+      M 472.10425 586.29395 L 467.03052 -4.569824 L 182.0 0.0 L 182.0 1456.0 L 730.0 1456.0 
+      Q 967.0 1456.0 1093.0 1339.0 T 1220.0 1021.0 Q 1220.0 819.0 1094.0 703.0 T 730.0 586.0 
+      Z M 472.70337 732.3865 L 730.0 735.0 Q 886.0 735.0 960.0 814.0 T 1035.0 1019.0 Q 1035.0 1145.0 961.0 1225.0 
+      T 730.0 1306.0 L 470.1194 1309.1604 Z 
+      "
+
+      sb:layerName="unit-0 (P)"
+      sb:layerVisible="false"
+      sb:layerLocked="false"
+      sb:pathType="path"
+      >
+   </path>
+   <g
+      id="140"
+
+      sb:layerName="TextFigure-139"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+      <path
+         id="141"
+         transform="matrix(0.0037143673,0.0,0.0,-0.0041566133,15.925478,19.528824)"
+         fill="rgb(255,255,255)"
+         fill-opacity="1.0"
+         stroke-width="222.33333"
+         stroke-linecap="butt"
+         stroke-linejoin="miter"
+         stroke-miterlimit="2.0"
+         stroke="rgb(255,255,255)"
+         stroke-opacity="1.0"
+         d="
+         M 428.0 528.0 L 428.0 0.0 L 136.0 0.0 L 136.0 1456.0 L 716.0 1456.0 Q 972.0 1456.0 1113.0 1330.0 
+         T 1255.0 991.0 Q 1255.0 778.0 1114.0 653.0 T 716.0 528.0 L 428.0 528.0 Z M 428.0 753.0 
+         L 716.0 753.0 Q 841.0 753.0 902.0 818.0 T 964.0 989.0 Q 964.0 1096.0 903.0 1163.0 
+         T 716.0 1231.0 L 428.0 1231.0 L 428.0 753.0 Z 
+         "
+
+         sb:layerName="unit-0 (P)"
+         sb:layerVisible="true"
+         sb:layerLocked="false"
+         sb:pathType="path"
+         >
+      </path>
+   </g>
+   <g
+      id="143"
+
+      sb:layerName="TextFigure-142"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+      <path
+         id="144"
+         transform="matrix(0.0041429484,0.0,0.0,-0.0040242774,9.058857,19.441717)"
+         fill="rgb(255,255,255)"
+         fill-opacity="1.0"
+         stroke-width="235.83333"
+         stroke-linecap="butt"
+         stroke-linejoin="miter"
+         stroke-miterlimit="2.0"
+         stroke="rgb(255,255,255)"
+         stroke-opacity="1.0"
+         d="
+         M 1315.0 597.0 Q 1315.0 326.0 1148.0 153.0 T 705.0 -21.0 Q 431.0 -21.0 266.0 152.0 
+         T 100.0 597.0 L 100.0 859.0 Q 100.0 1129.0 265.0 1303.0 T 704.0 1477.0 Q 980.0 1477.0 1147.0 1303.0 
+         T 1315.0 859.0 L 1315.0 597.0 Z M 1023.0 861.0 Q 1023.0 1032.0 939.0 1140.0 T 704.0 1249.0 
+         Q 553.0 1249.0 472.0 1141.0 T 391.0 861.0 L 391.0 597.0 Q 391.0 423.0 472.0 315.0 
+         T 705.0 206.0 Q 857.0 206.0 940.0 314.0 T 1023.0 597.0 L 1023.0 861.0 Z 
+         "
+
+         sb:layerName="unit-0 (O)"
+         sb:layerVisible="true"
+         sb:layerLocked="false"
+         sb:pathType="path"
+         >
+      </path>
+   </g>
+   <g
+      id="146"
+
+      sb:layerName="TextFigure-145"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+      <path
+         id="147"
+         transform="matrix(0.0041003167,0.0,0.0,-0.0041003167,3.309215,19.463022)"
+         fill="rgb(255,255,255)"
+         fill-opacity="1.0"
+         stroke-width="260.0"
+         stroke-linecap="butt"
+         stroke-linejoin="miter"
+         stroke-miterlimit="2.0"
+         stroke="rgb(255,255,255)"
+         stroke-opacity="1.0"
+         d="
+         M 1255.0 1231.0 L 795.0 1231.0 L 795.0 0.0 L 503.0 0.0 L 503.0 1231.0 L 45.0 1231.0 
+         L 45.0 1456.0 L 1255.0 1456.0 L 1255.0 1231.0 Z 
+         "
+
+         sb:layerName="unit-0 (T)"
+         sb:layerVisible="true"
+         sb:layerLocked="false"
+         sb:pathType="path"
+         >
+      </path>
+   </g>
+   <g
+      id="148"
+
+      sb:layerName="copy of TextFigure-142"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+      <path
+         id="149"
+         transform="matrix(0.0041429484,0.0,0.0,-0.0040242774,3.0683928,10.419901)"
+         fill="rgb(255,255,255)"
+         fill-opacity="1.0"
+         stroke-width="235.83333"
+         stroke-linecap="butt"
+         stroke-linejoin="miter"
+         stroke-miterlimit="2.0"
+         stroke="rgb(255,255,255)"
+         stroke-opacity="1.0"
+         d="
+         M 1315.0 597.0 Q 1315.0 326.0 1148.0 153.0 T 705.0 -21.0 Q 431.0 -21.0 266.0 152.0 
+         T 100.0 597.0 L 100.0 859.0 Q 100.0 1129.0 265.0 1303.0 T 704.0 1477.0 Q 980.0 1477.0 1147.0 1303.0 
+         T 1315.0 859.0 L 1315.0 597.0 Z M 1023.0 861.0 Q 1023.0 1032.0 939.0 1140.0 T 704.0 1249.0 
+         Q 553.0 1249.0 472.0 1141.0 T 391.0 861.0 L 391.0 597.0 Q 391.0 423.0 472.0 315.0 
+         T 705.0 206.0 Q 857.0 206.0 940.0 314.0 T 1023.0 597.0 L 1023.0 861.0 Z 
+         "
+
+         sb:layerName="unit-0 (O)"
+         sb:layerVisible="true"
+         sb:layerLocked="false"
+         sb:pathType="path"
+         >
+      </path>
+   </g>
+   <g
+      id="151"
+
+      sb:layerName="TextFigure-150"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+      <path
+         id="152"
+         transform="matrix(0.004058678,0.0,0.0,-0.004140089,9.928013,10.524513)"
+         fill="rgb(255,255,255)"
+         fill-opacity="1.0"
+         stroke-width="235.0"
+         stroke-linecap="butt"
+         stroke-linejoin="miter"
+         stroke-miterlimit="2.0"
+         stroke="rgb(255,255,255)"
+         stroke-opacity="1.0"
+         d="
+         M 1030.0 605.0 L 428.0 605.0 L 428.0 0.0 L 136.0 0.0 L 136.0 1456.0 L 1132.0 1456.0 
+         L 1132.0 1231.0 L 428.0 1231.0 L 428.0 830.0 L 1030.0 830.0 L 1030.0 605.0 Z 
+         "
+
+         sb:layerName="unit-0 (F)"
+         sb:layerVisible="true"
+         sb:layerLocked="false"
+         sb:pathType="path"
+         >
+      </path>
+   </g>
+   <g
+      id="153"
+
+      sb:layerName="copy of TextFigure-150"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+      <path
+         id="154"
+         transform="matrix(0.004058678,0.0,0.0,-0.004140089,15.941836,10.515318)"
+         fill="rgb(255,255,255)"
+         fill-opacity="1.0"
+         stroke-width="235.0"
+         stroke-linecap="butt"
+         stroke-linejoin="miter"
+         stroke-miterlimit="2.0"
+         stroke="rgb(255,255,255)"
+         stroke-opacity="1.0"
+         d="
+         M 1030.0 605.0 L 428.0 605.0 L 428.0 0.0 L 136.0 0.0 L 136.0 1456.0 L 1132.0 1456.0 
+         L 1132.0 1231.0 L 428.0 1231.0 L 428.0 830.0 L 1030.0 830.0 L 1030.0 605.0 Z 
+         "
+
+         sb:layerName="unit-0 (F)"
+         sb:layerVisible="true"
+         sb:layerLocked="false"
+         sb:pathType="path"
+         >
+      </path>
+   </g>
+   <sp:keyframes
+
+      sp:step="100"
+      sp:dur="10000"
+      >
+      <sp:keyframe
+
+         sp:time="0"
+         >
+      </sp:keyframe>
+   </sp:keyframes>
+</svg>

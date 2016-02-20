@@ -14,12 +14,11 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.topic.EditPostFragment;
-import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 public class QuickPostFragment extends Fragment {
 
@@ -129,6 +128,7 @@ public class QuickPostFragment extends Fragment {
                 hideKeyboard();
                 EditPostFragment.newPost(getActivity(), mForumId, mTopicId, mAuthKey,
                         getPostBody(), parentTag);
+                LogUtil.D("QUICK BOOM", "key " + mAuthKey);
                 return true;
             }
         });

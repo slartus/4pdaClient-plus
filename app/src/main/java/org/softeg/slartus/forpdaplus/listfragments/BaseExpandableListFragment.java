@@ -107,13 +107,14 @@ super();
 
     @Override
     public android.view.View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {
-        View v = inflater.inflate(getViewId(), container, false);
-        assert v != null;
-        mListView = (ExpandableListView) v.findViewById(android.R.id.list);
+
+        view = inflater.inflate(getViewId(), container, false);
+        assert view != null;
+        mListView = (ExpandableListView) findViewById(android.R.id.list);
         mListView.setOnChildClickListener(this);
-        mEmptyTextView = (TextView) v.findViewById(android.R.id.empty);
+        mEmptyTextView = (TextView) findViewById(android.R.id.empty);
         mListView.setEmptyView(mEmptyTextView);
-        return v;
+        return view;
     }
 
     @Override
@@ -427,7 +428,6 @@ super();
             else if (!result) {
                 onFailureResult();
             }
-            new CheckTask().execute();
         }
 
         @Override
@@ -441,36 +441,6 @@ super();
             if (onCancelAction != null)
                 onCancelAction.run();
         }
-    }
-
-    public class CheckTask extends AsyncTask<Boolean, Void, Boolean> {
-        private Throwable mEx;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected Boolean doInBackground(Boolean[] p1) {
-            try {
-                Client.getInstance().loadTestPage();
-                return true;
-            } catch (Throwable e) {
-                mEx = e;
-            }
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-
-            if (mEx != null)
-                Toast.makeText(getContext(), AppLog.getLocalizedMessage(mEx, "Ошибка проверки qms"), Toast.LENGTH_SHORT).show();
-        }
-
     }
 
     public class LoadCacheTask extends AsyncTask<Boolean, Void, Boolean> {

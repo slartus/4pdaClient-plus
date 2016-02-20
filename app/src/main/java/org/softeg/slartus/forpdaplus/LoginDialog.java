@@ -6,12 +6,14 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -27,8 +29,8 @@ import org.softeg.slartus.forpdaplus.controls.imageview.MaterialImageLoading;
  * Time: 7:18
  */
 public class LoginDialog {
-    String capD;
-    String capS;
+    String capTime;
+    String capSig;
     String session;
     EditText username_edit;
     final EditText password_edit;
@@ -63,7 +65,7 @@ public class LoginDialog {
                 username_edit.getText().toString(), password_edit.getText().toString(),
                 privacy_checkbox.isChecked(),
                 ((EditText) mView.findViewById(R.id.cap_value_ed)).getText().toString(),
-                capD, capS,session,
+                capTime, capSig,session,
                 onConnectResult);
         loginTask.execute(username_edit.getText().toString(), password_edit.getText().toString(),
                 Boolean.toString(privacy_checkbox.isChecked()));
@@ -87,7 +89,7 @@ public class LoginDialog {
 
     public static void showDialog(final Context context, final Client.OnUserChangedListener onConnectResult) {
         final LoginDialog loginDialog = new LoginDialog(context);
-        new MaterialDialog.Builder(context)
+        MaterialDialog dialog = new MaterialDialog.Builder(context)
                 .title("Вход")
                 .customView(loginDialog.getView(),true)
                 .positiveText("Вход")
@@ -98,7 +100,16 @@ public class LoginDialog {
                         loginDialog.connect(onConnectResult);
                     }
                 })
-                .show();
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                        MainActivity.checkToster(context);
+                        MainActivity.checkUsers(context);
+                    }
+                })
+                .build();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        dialog.show();
     }
 
     public static void logout(Context context) {
@@ -158,8 +169,8 @@ public class LoginDialog {
                     }
                 });
 
-                capD = loginForm.getCapD();
-                capS = loginForm.getCapS();
+                capTime = loginForm.getCapTime();
+                capSig = loginForm.getCapSig();
                 session=loginForm.getSession();
             } else {
 
@@ -177,23 +188,23 @@ public class LoginDialog {
         private String login;
         private String password;
         private Boolean privacy;
-        private String capA;
-        private String capD;
-        private String capS;
+        private String capVal;
+        private String capTime;
+        private String capSig;
         private String session;
         private Client.OnUserChangedListener m_OnConnectResult;
 
         public LoginTask(Context context,
                          String login, String password, Boolean privacy,
-                         String capA, String capD, String capS,String session,
+                         String capVal, String capTime, String capSig,String session,
                          Client.OnUserChangedListener onConnectResult) {
             mContext = context;
             this.login = login;
             this.password = password;
             this.privacy = privacy;
-            this.capA = capA;
-            this.capD = capD;
-            this.capS = capS;
+            this.capVal = capVal;
+            this.capTime = capTime;
+            this.capSig = capSig;
             this.session = session;
             m_OnConnectResult = onConnectResult;
             dialog = new MaterialDialog.Builder(mContext)
@@ -207,7 +218,7 @@ public class LoginDialog {
         protected Boolean doInBackground(String... params) {
             try {
 
-                return Client.getInstance().login(login, password, privacy, capA, capD, capS,session);
+                return Client.getInstance().login(login, password, privacy, capVal, capTime, capSig,session);
             } catch (Exception e) {
 
                 ex = e;
@@ -244,6 +255,8 @@ public class LoginDialog {
             if (success) {
                 Toast.makeText(mContext, "Вход выполнен",
                         Toast.LENGTH_SHORT).show();
+                MainActivity.checkToster(mContext);
+                MainActivity.checkUsers(mContext);
             } else {
                 if (ex != null)
                     AppLog.e(mContext, ex);

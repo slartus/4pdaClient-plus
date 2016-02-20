@@ -11,7 +11,6 @@
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="panelMenuListTheme">@style/bottom_menu_light</item>
         <item name="android:windowBackground">@color/app_background_light</item>
-        <item name="actionOverflowButtonStyle">@style/overflow_button</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowActionModeOverlay">true</item>
         <item name="forum_header_text_color">@color/holo_blue_light</item>
@@ -20,9 +19,6 @@
         <item name="right_separator">@style/right_separator_light</item>
         <item name="news">@style/news_light</item>
         <item name="drawer_menu">@style/drawer_menu_light</item>
-        <item name="drawer_menu_group">@style/drawer_menu_group_light</item>
-        <item name="drawer_menu_text">@style/drawer_menu_text_light</item>
-        <item name="drawer_divider">@style/drawer_divider_light</item>
         <item name="popup_topic">@style/popup_topic_light</item>
         <item name="list_text_general_color">@style/list_text_general_color_light</item>
         <item name="list_text_minor_color">@style/list_text_minor_color_light</item>
@@ -53,7 +49,6 @@
         <item name="colorAccent">@color/accent</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat</item>
         <item name="panelMenuListTheme">@style/bottom_menu_dark</item>
-        <item name="actionOverflowButtonStyle">@style/overflow_button</item>
         <item name="android:windowBackground">@color/app_background_dark</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowActionModeOverlay">true</item>
@@ -63,9 +58,6 @@
         <item name="right_separator">@style/right_separator_dark</item>
         <item name="news">@style/news_dark</item>
         <item name="drawer_menu">@style/drawer_menu_dark</item>
-        <item name="drawer_menu_group">@style/drawer_menu_group_dark</item>
-        <item name="drawer_menu_text">@style/drawer_menu_text_dark</item>
-        <item name="drawer_divider">@style/drawer_divider_dark</item>
         <item name="popup_topic">@style/popup_topic_dark</item>
         <item name="list_text_general_color">@style/list_text_general_color_dark</item>
         <item name="list_text_minor_color">@style/list_text_minor_color_dark</item>
@@ -101,7 +93,6 @@
         <item name="Divider">@style/Divider_black</item>
         <item name="android:listViewStyle">@style/list_divider_style_black</item>
         <item name="right_separator">@style/right_separator_black</item>
-        <item name="drawer_divider">@style/drawer_divider_black</item>
     </style>
 
     <style name="PopupMenuToolbarBlack" parent="ThemeOverlay.AppCompat">
@@ -110,18 +101,16 @@
     </style>
 
     <style name="ImageViewTheme" parent="Theme.AppCompat">
+        <item name="android:windowActionBarOverlay">true</item>
         <item name="android:actionBarStyle">@style/actionbar_trans</item>
         <item name="actionBarStyle">@style/actionbar_trans</item>
         <item name="panelMenuListTheme">@style/bottom_menu_dark</item>
-        <item name="actionOverflowButtonStyle">@style/overflow_button</item>
 
     </style>
 
     <style name="actionbar_trans" parent="@style/Widget.AppCompat.ActionBar">
         <item name="android:background">@color/background_toolbar</item>
         <item name="background">@color/background_toolbar</item>
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="windowActionBarOverlay">true</item>
         <item name="elevation">2dp</item>
         <item name="displayOptions">homeAsUp|showTitle</item>
         <item name="titleTextStyle">@style/actionbar_title</item>
@@ -248,33 +237,18 @@
 
     <style name="drawer_menu_light">
         <item name="android:background">@color/drawer_menu_background_light</item>
+        <item name="itemIconTint">@color/nav_icon_light</item>
+        <item name="itemTextColor">@color/nav_text_light</item>
     </style>
     <style name="drawer_menu_dark">
         <item name="android:background">@color/drawer_menu_background_dark</item>
+        <item name="itemIconTint">@color/nav_icon_dark</item>
+        <item name="itemTextColor">@color/nav_text_dark</item>
     </style>
     <style name="drawer_menu_black">
         <item name="android:background">@color/drawer_menu_background_black</item>
-    </style>
-    <style name="drawer_menu_group_light">
-        <item name="android:textColor">@color/drawer_menu_group_light</item>
-    </style>
-    <style name="drawer_menu_group_dark">
-        <item name="android:textColor">@color/drawer_menu_group_dark</item>
-    </style>
-    <style name="drawer_menu_text_light">
-        <item name="android:textColor">@color/drawer_menu_text_light</item>
-    </style>
-    <style name="drawer_menu_text_dark">
-        <item name="android:textColor">@color/drawer_menu_text_dark</item>
-    </style>
-    <style name="drawer_divider_light">
-        <item name="android:background">@drawable/custom_group_divider_light</item>
-    </style>
-    <style name="drawer_divider_dark">
-        <item name="android:background">@drawable/custom_group_divider_dark</item>
-    </style>
-    <style name="drawer_divider_black">
-        <item name="android:background">@drawable/custom_group_divider_black</item>
+        <item name="itemIconTint">@color/nav_icon_dark</item>
+        <item name="itemTextColor">@color/nav_text_dark</item>
     </style>
 
     <style name="popup_topic_light">

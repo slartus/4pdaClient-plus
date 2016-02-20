@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="12dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="12dp">
+
+    <FrameLayout
+        android:layout_width="120dp"
+        android:layout_height="90dp">
+
+        <ImageView
+            android:id="@+id/devDbReviewsIV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/holo_red_dark"/>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/dev_db_con"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:id="@+id/devDbReviewsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="4"
+            style="?list_text_general_color"
+            android:textSize="16sp"
+            android:lineSpacingExtra="-2dp"
+            android:textStyle="bold"
+            android:text="Устройства от Apple обогнали по популярности специализированную фототехнику"/>
+
+
+        <TextView
+            android:id="@+id/devDbReviewsDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:layout_gravity="bottom"
+            android:paddingTop="4dp"
+            android:textSize="14sp"
+            style="?list_text_second_color"
+            android:text="14.04.2015, 22:00"/>
+
+    </LinearLayout>
+
+</LinearLayout>

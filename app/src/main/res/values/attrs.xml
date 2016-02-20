@@ -3,9 +3,6 @@
     <attr name="right_separator" format="reference" />
     <attr name="news" format="reference" />
     <attr name="drawer_menu" format="reference" />
-    <attr name="drawer_menu_group" format="reference" />
-    <attr name="drawer_menu_text" format="reference" />
-    <attr name="drawer_divider" format="reference" />
     <attr name="popup_topic" format="reference" />
     <attr name="popup_item" format="reference" />
     <attr name="popup_item_text" format="reference" />

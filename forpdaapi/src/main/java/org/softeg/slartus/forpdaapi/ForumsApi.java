@@ -154,7 +154,7 @@ public class ForumsApi extends ArrayList<Forum> {
     }
 
     public static void markAllAsRead(IHttpClient httpClient) throws Throwable {
-        httpClient.performGet("http://4pda.ru/forum/index.php?act=Login&CODE=05");
+        httpClient.performGet("http://4pda.ru/forum/index.php?act=Login&CODE=05", true, false);
     }
 
     public static void markForumAsRead(IHttpClient httpClient, CharSequence forumId) throws Throwable {

@@ -105,6 +105,8 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         searchSettings.load(prefs);
         searchSettings.setQuery("");
         searchSettings.setUserName("");
+        searchSettings.getTopicIds().clear();
+        searchSettings.setSource(SearchSettings.SOURCE_TOPICS);
         return searchSettings;
     }
 
@@ -173,7 +175,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         searchSettings.setSource(SearchSettings.SOURCE_POSTS);
         searchSettings.setUserName(userNick);
         searchSettings.getTopicIds().clear();
-        searchSettings.getTopicIds().add("topic");
+        searchSettings.getTopicIds().add(topic);
         searchSettings.getForumsIds().clear();
         searchSettings.getForumsIds().add("all");
 

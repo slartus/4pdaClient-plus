@@ -1,6 +1,75 @@
-<svg width="36" height="36" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
- <g>
-  <title>Layer 1</title>
-  <text xml:space="preserve" text-anchor="middle" font-family="Sans-serif" font-size="29" id="svg_3" y="34.928574" x="23.928589" stroke-linecap="null" stroke-linejoin="null" stroke-width="0" fill="#000000">K</text>
- </g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sb="http://simplector.lyoshka.net/base/2.0"
+   xmlns:sp="http://simplector.lyoshka.net/pro/2.0"
+   width="24.0px"
+   height="24.0px"
+   viewBox="0 0 24.0 24.0"
+   sb:fontSize="Custom"
+   sb:pageOrientation="Portrait"
+   version="1.1"
+   sb:version="2.0.19"
+   >
+   <desc>Created in Simplector Pro</desc>
+   <g
+      id="58"
+
+      sb:layerName="svg-58"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+      <g
+         id="57"
+
+         sb:layerName="95"
+         sb:layerVisible="true"
+         sb:layerLocked="false"
+         >
+         <g
+            id="56"
+
+            sb:layerName="94"
+            sb:layerVisible="true"
+            sb:layerLocked="false"
+            >
+            <path
+               id="55"
+               transform="matrix(0.010824312,-0.0,0.0,0.009935747,4.527894,4.1017666)"
+               fill="rgb(0,0,0)"
+               fill-opacity="1.0"
+               stroke-width="110.25"
+               stroke-linecap="butt"
+               stroke-linejoin="miter"
+               stroke-miterlimit="2.0"
+               stroke="rgb(0,0,0)"
+               stroke-opacity="0.0"
+               d="
+               M 413.15384 593.6376 L 413.15384 593.6376 L 413.15384 -10.242065 L 136.00003 -10.2421875 
+               L 136.00003 1398.8113 L 413.15384 1398.8114 L 413.15384 794.931 L 967.46155 1398.811 
+               L 1337.0 1398.811 L 690.30774 694.2843 L 1337.0 -10.242462 L 967.46155 -10.242462 
+               
+               "
+
+               sb:layerName="97"
+               sb:layerVisible="true"
+               sb:layerLocked="false"
+               sb:pathType="path"
+               >
+            </path>
+         </g>
+      </g>
+   </g>
+   <sp:keyframes
+
+      sp:step="100"
+      sp:dur="10000"
+      >
+      <sp:keyframe
+
+         sp:time="0"
+         >
+      </sp:keyframe>
+   </sp:keyframes>
 </svg>

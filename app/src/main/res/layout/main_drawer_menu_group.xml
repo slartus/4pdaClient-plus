@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    style="?drawer_divider">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/group"
@@ -13,6 +12,5 @@
         android:textAppearance="@android:style/TextAppearance.Medium"
         android:gravity="center_vertical"
         android:textSize="14sp"
-        android:textStyle="bold"
-        style="?drawer_menu_group" />
+        android:textStyle="bold"/>
 </LinearLayout>

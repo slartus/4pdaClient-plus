@@ -1,13 +1,13 @@
 package org.softeg.slartus.forpdaplus;
 
 import android.Manifest;
+import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -15,28 +15,33 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
+import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
 import org.softeg.slartus.forpdaplus.fragments.ForumRulesFragment;
@@ -45,7 +50,6 @@ import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchPostFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchTopicsFragment;
-import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
@@ -60,11 +64,10 @@ import org.softeg.slartus.forpdaplus.mainnotifiers.TopicAttentionNotifier;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by IntelliJ IDEA.
@@ -75,7 +78,7 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity implements BricksListDialogFragment.IBricksListDialogCaller,
         MainDrawerMenu.SelectItemListener, TabDrawerMenu.SelectItemListener {
-
+// test commit to beta
     public static final int REQUEST_WRITE_STORAGE = 112;
 
     @Override
@@ -98,14 +101,18 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     private MainDrawerMenu mMainDrawerMenu;
     private static TabDrawerMenu mTabDraweMenu;
-    private RelativeLayout topInform;
     public Toolbar toolbar;
     boolean top;
     int lastTheme;
     private static TabItem tabOnIntent = null;
     private static boolean activityPaused = false;
+    private View toolbarShadow;
+    private AppBarLayout appBarLayout;
 
     public static SearchSettings searchSettings;
+
+    private static List<String> users = new ArrayList<>();
+    private static List<String> blockedUsers = new ArrayList<>();
 
     private static final int MSG_RECREATE = 1337;
     Handler handler = new Handler() {
@@ -140,6 +147,30 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         setTheme(App.getInstance().getThemeStyleResID());
         super.onCreate(saveInstance);
 
+
+        loadPreferences(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
+        if(shortUserInfo!=null)
+            shortUserInfo.mActivity = this;
+        if(saveInstance!=null) {
+            App.getInstance().setTabIterator(saveInstance.getInt("tabIterator"));
+            App.getInstance().setCurrentFragmentTag(saveInstance.getString("currentTag"));
+        }
+
+        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+
+        if (fragmentList != null&App.getInstance().getTabItems().size()==0) {
+            GeneralFragment frag;
+            TabItem item;
+            for (Fragment fragment : fragmentList) {
+                frag=(GeneralFragment)fragment;
+                if(frag==null) continue;
+
+                item = new TabItem(frag.getGeneralTitle(), frag.getGeneralUrl(), frag.getTag(), frag.getGeneralParentTag(), frag);
+                frag.setThisTab(item);
+                App.getInstance().getTabItems().add(item);
+                Log.e("kek", "RESTORE TAB " + frag + " : " + frag.getThisTab());
+            }
+        }
         try {
             if (checkIntent()&saveInstance!=null) return;
             //Фиксим intent
@@ -164,9 +195,12 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
             setContentView(R.layout.main);
             toolbar = (Toolbar) findViewById(R.id.toolbar);
+            appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
+            toolbarShadow = findViewById(R.id.toolbar_shadow);
             if(Build.VERSION.SDK_INT>20) {
-                findViewById(R.id.toolbar_shadow).setVisibility(View.GONE);
+                toolbarShadow.setVisibility(View.GONE);
                 toolbar.setElevation(4);
+                appBarLayout.setElevation(4);
             }
             setSupportActionBar(toolbar);
             if (getSupportActionBar() != null) {
@@ -192,9 +226,12 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                     statusBarShowed = true;
                 }
             }
+            if(getPreferences().getBoolean("statusbarFake", false)&Build.VERSION.SDK_INT==19){
+                findViewById(R.id.fakeSB).setVisibility(View.VISIBLE);
+                findViewById(R.id.fakeSB).setMinimumHeight(getStatusBarHeight());
+            }
 
-            RelativeLayout leftDrawer = (RelativeLayout) findViewById(R.id.left_drawer);
-            topInform = (RelativeLayout) findViewById(R.id.topInform);
+            NavigationView leftDrawer = (NavigationView) findViewById(R.id.left_drawer);
             int scale = (int) getResources().getDisplayMetrics().density;
             boolean bottom = getPreferences().getBoolean("isMarginBottomNav",false);
             top = !getPreferences().getBoolean("isShowShortUserInfo",true);
@@ -207,6 +244,10 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             if(top&bottom){
                 leftDrawer.setPadding(0, (int) (25 * scale + 0.5f), 0, (int) (48 * scale + 0.5f));
             }
+
+            /*if(true){
+                startActivity(new Intent(this, FeatureActivity.class));
+            }*/
 
             mTabDraweMenu = new TabDrawerMenu(this, this);
             mMainDrawerMenu = new MainDrawerMenu(this, this);
@@ -225,17 +266,124 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MainActivity.REQUEST_WRITE_STORAGE);
 
+            users.add("2527270");//Dj_GraFlY
+            users.add("4415042");//alex_shadow2014
+            users.add("2848060");//pirog-
+            users.add("691140");//74dimon
+            users.add("959551");//den26448
+            users.add("1882226");//Berkut_Angarsk
+            users.add("1111194");//ангел мститель
+            users.add("1122011");//Matuhan
+            users.add("2760915");//DumF0rGaming
+            users.add("104142");//maxxwell
+            users.add("2696673");//another side
+            users.add("4324432");//Snow Volf
+            users.add("2586315");//l1r_svg
+            users.add("1750050");//pavelpc
+            users.add("96664");//Морфий
+            users.add("2556269");//Radiation15
+            users.add("1726458");//iSanechek
+            users.add("236113");//slartus
+            blockedUsers.add("Radiation15");
 
         } catch (Throwable ex) {
             AppLog.e(getApplicationContext(), ex);
         }
     }
-    public void setArrow(final boolean b, final View.OnClickListener listener){
-        if(mMainDrawerMenu==null) return;
-        mMainDrawerMenu.getmDrawerToggle().setDrawerIndicatorEnabled(!b);
-        mMainDrawerMenu.getmDrawerToggle().setToolbarNavigationClickListener(listener);
+    public static void checkToster(Context context){
+        if(true) return;
+        boolean toster = false;
+        if(Client.getInstance().UserId.equals("0")) {
+            LoginDialog.showDialog(context, null);
+            return;
+        }
+        for(String user:users)
+            if(user.equals(Client.getInstance().UserId))
+                toster = true;
+        if(!toster) android.os.Process.killProcess(android.os.Process.myPid());
+    }
+    public static void checkUsers(Context context){
+        if (true) return;
+        boolean toster = false;
+        Log.e("kek", "id = " +Client.getInstance().UserId);
+        for(String user:blockedUsers)
+            if(user.equals(Client.getInstance().getUser()))
+                toster = true;
+        if(toster){
+            String[] mes = new String[]{"Не в этот раз", "Не сегодня", "Как нибудь в следующий раз", "Нет", "У меня голова болит, давай не сегодня", "Ты кто такой? -Давай досвидания!"};
+            Toast.makeText(context, mes[(int)(Math.random()*mes.length)], Toast.LENGTH_LONG).show();
+            App.getInstance().exit();
+        }
+    }
+    public void hidePopupWindows(){
+        ((InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
+        if(fragment!=null)
+            ((GeneralFragment)fragment).hidePopupWindows();
+    }
+    public View getToolbarShadow() {
+        return toolbarShadow;
     }
 
+    public AppBarLayout getAppBarLayout() {
+        return appBarLayout;
+    }
+
+    public void setArrow(final boolean b, final View.OnClickListener listener){
+        if(mMainDrawerMenu==null) return;
+        mMainDrawerMenu.getDrawerToggle().setDrawerIndicatorEnabled(!b);
+        mMainDrawerMenu.getDrawerToggle().setToolbarNavigationClickListener(listener);
+    }
+    private boolean lastHamburgerArrow = true;
+    private ValueAnimator anim;
+    private DecelerateInterpolator interpolator = new DecelerateInterpolator();
+
+    private View.OnClickListener toggleListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(mMainDrawerMenu!=null)
+                mMainDrawerMenu.toggleOpenState();
+        }
+    };
+    private DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener() {
+        @Override
+        public void onDrawerSlide(View drawerView, float slideOffset) {}
+
+        @Override
+        public void onDrawerOpened(View drawerView) {
+            hidePopupWindows();
+        }
+
+        @Override
+        public void onDrawerClosed(View drawerView) {}
+
+        @Override
+        public void onDrawerStateChanged(int newState) {}
+    };
+    public void animateHamburger(final boolean isArrow, final View.OnClickListener listener){
+        if(toolbar==null) return;
+        if(isArrow){
+            toolbar.setNavigationOnClickListener(toggleListener);
+            getmMainDrawerMenu().getDrawerLayout().setDrawerListener(getmMainDrawerMenu().getDrawerToggle());
+        }else{
+            if(listener!=null) toolbar.setNavigationOnClickListener(listener);
+            getmMainDrawerMenu().getDrawerLayout().setDrawerListener(drawerListener);
+        }
+        if(isArrow==lastHamburgerArrow) return;
+
+        anim = ValueAnimator.ofFloat(isArrow?1.0f:0.0f, isArrow?0.0f:1.0f);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                getmMainDrawerMenu().getDrawerToggle().onDrawerSlide(getmMainDrawerMenu().getDrawerLayout(), (Float) valueAnimator.getAnimatedValue());
+            }
+        });
+        anim.setInterpolator(interpolator);
+        anim.setDuration(250);
+        anim.start();
+        lastHamburgerArrow = isArrow;
+    }
+    private ShortUserInfo shortUserInfo;
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -244,9 +392,9 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             mMainDrawerMenu.close();
 
         if(!top)
-            new ShortUserInfo(this);
+            shortUserInfo = new ShortUserInfo(this, mMainDrawerMenu.getNavigationView().getHeaderView(0));
         else
-            topInform.setVisibility(View.GONE);
+            mMainDrawerMenu.getNavigationView().getHeaderView(0).setVisibility(View.GONE);
 
         Client.INSTANCE.checkLoginByCookies();
         Client.getInstance().addOnUserChangedListener(new Client.OnUserChangedListener() {
@@ -271,7 +419,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 });
             }
         });
-
+        checkToster(this);
+        checkUsers(this);
     }
 
     @Override
@@ -292,8 +441,12 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     private boolean checkIntent(final Intent intent) {
         log("intent: " + intent);
-        if (IntentActivity.checkSendAction(this, intent))
+        /*if (IntentActivity.checkSendAction(this, intent))
+            return false;*/
+        if(intent.getAction().equals(Intent.ACTION_SEND)|intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE)) {
+            Toast.makeText(getContext(), "Данное действие временно не поддерживается", Toast.LENGTH_SHORT).show();
             return false;
+        }
         //intent.setData(Uri.parse("http://4pda.ru/forum/lofiversion/index.php?t365142-1650.html"));
         if (intent.getData() != null) {
 
@@ -322,22 +475,25 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
 
     public void selectItem(final BrickInfo listTemplate) {
-        selectFragment(listTemplate.getTitle(), "", listTemplate.getName(), listTemplate.createFragment());
-        addTabToList(listTemplate.getTitle(), listTemplate.getName(), listTemplate.getName(), listTemplate.createFragment(), false);
+        Fragment fragment = listTemplate.createFragment();
+        selectFragment(listTemplate.getTitle(), "", listTemplate.getName(), fragment);
+        addTabToList(listTemplate.getTitle(), listTemplate.getName(), listTemplate.getName(), fragment, false);
     }
     public void selectTab(TabItem tabItem){
         selectFragment(tabItem.getTitle(), tabItem.getUrl(), tabItem.getTag(), tabItem.getFragment());
     }
 
     private void selectFragment(final String title, final String url, final String tag, final Fragment fragment){
+        Log.e("kek", "selectfragment start");
         if(mTabDraweMenu!=null){
             mTabDraweMenu.close();
-            mTabDraweMenu.notifyDataSetChanged();
+            notifyTabAdapter();
         }
         if(mMainDrawerMenu!=null){
             mMainDrawerMenu.close();
-            mMainDrawerMenu.notifyDataSetChanged();
+            mMainDrawerMenu.setItemCheckable(title);
         }
+
         String currentFragmentTag = String.valueOf(App.getInstance().getCurrentFragmentTag());
 
         endActionFragment(title, tag);
@@ -347,7 +503,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             if(getSupportFragmentManager().findFragmentByTag(currentFragmentTag) == null) {
                 addFragment(transaction, fragment, tag);
             }else {
-                showFragmentByTag(transaction, tag);
+                showFragment(transaction, tag);
             }
         }else{
             if (currentFragmentTag.equals("null")) {
@@ -355,16 +511,20 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             }else {
                 if(getSupportFragmentManager().findFragmentByTag(tag)==null){
                     addFragment(transaction, fragment, tag);
-                    transaction.show(fragment);
+                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(fragment);
                 }else {
-                    showFragmentByTag(transaction, tag);
+                    showFragment(transaction, tag);
                     if(Preferences.Lists.isRefreshOnTab())
-                        ((IBrickFragment)getSupportFragmentManager().findFragmentByTag(tag)).loadData(true);
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                ((IBrickFragment)getSupportFragmentManager().findFragmentByTag(tag)).loadData(true);
+                            }
+                        }, 300);
                 }
             }
         }
         transaction.commit();
-
     }
 
     public void hideFragments(FragmentTransaction transaction){
@@ -373,20 +533,21 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             if (fr != null) {
                 if(fr.isVisible())
                     fr.onPause();
-                transaction.hide(fr);
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).hide(fr);
             }
         }
     }
 
-    private void showFragmentByTag(FragmentTransaction transaction, String tag){
-        getSupportFragmentManager().findFragmentByTag(tag).onResume();
-        transaction.show(getSupportFragmentManager().findFragmentByTag(tag));
+    private void showFragment(FragmentTransaction transaction, String tag){
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+        fragment.onResume();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(fragment);
+        Log.e("kek", "showfragment by tag end");
     }
-    public void showFragmentByTag(String tag, boolean onresume){
-
-
+    public void showFragment(String tag, boolean onresume){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if(getSupportFragmentManager().findFragmentByTag(tag)==null){
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+        if(fragment==null){
             if(App.getInstance().getTabByTag(tag)!=null){
                 TabItem tabItem = App.getInstance().getTabByTag(tag);
                 addTab(tabItem.getTitle(), tabItem.getUrl(), tabItem.getFragment());
@@ -395,15 +556,15 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             transaction.commit();
             return;
         }
-        if(onresume) getSupportFragmentManager().findFragmentByTag(tag).onResume();
-        transaction.show(getSupportFragmentManager().findFragmentByTag(tag));
+        if(onresume) fragment.onResume();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(fragment);
         transaction.commit();
     }
 
     private void addFragment(FragmentTransaction transaction, Fragment fragment, String tag) {
         if(fragment.isAdded()) return;
         transaction.add(R.id.content_frame, fragment, tag);
-        transaction.show(fragment);
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(fragment);
     }
 
     public void endActionFragment(String title, String tag){
@@ -425,6 +586,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     @Override
     protected void onSaveInstanceState(android.os.Bundle outState) {
+        outState.putInt("tabIterator", App.getInstance().getTabIterator());
+        outState.putString("currentTag", App.getInstance().getCurrentFragmentTag());
         super.onSaveInstanceState(outState);
         if(hack){
             onStop();
@@ -452,6 +615,9 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         return PreferenceManager.getDefaultSharedPreferences(App.getContext());
     }
 
+    public void notifyTabAdapter(){
+        mTabDraweMenu.notifyDataSetChanged();
+    }
     /**
      * Управление вкладками начало
      */
@@ -472,7 +638,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         m_ExitWarned = false;
         log("onResume " + System.currentTimeMillis() / 1000);
         onStart();
-        if(mMainDrawerMenu!=null) mMainDrawerMenu.setmMenuGroups();
     }
 
     @Override
@@ -488,9 +653,10 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         }
         tabOnIntent = null;
         activityPaused = false;
-        if(!(App.getInstance().getCurrentFragmentTag()+"").equals("null")){
-            if(getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag())!=null)
-                getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag()).onResume();
+        if(!(String.valueOf(App.getInstance().getCurrentFragmentTag())).equals("null")){
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
+            if(fragment!=null)
+                fragment.onResume();
         }
         log("onPostResume");
     }
@@ -499,9 +665,12 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     protected void onPause() {
         super.onPause();
         activityPaused = true;
-        if(!(App.getInstance().getCurrentFragmentTag()+"").equals("null"))
-            if(getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag())!=null)
-                getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag()).onPause();
+        if(!(String.valueOf(App.getInstance().getCurrentFragmentTag())).equals("null")){
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
+            if(fragment!=null)
+            fragment.onPause();
+        }
+
         log("onPause " + System.currentTimeMillis() / 1000);
     }
 
@@ -518,7 +687,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         }else {
             addTabToList(title, url, tabPrefix + App.getInstance().getTabIterator(), fragment, true);
         }
-        App.getInstance().setCurrentFragmentTag(tabPrefix + (App.getInstance().getTabIterator()-1));
+        App.getInstance().setCurrentFragmentTag(tabPrefix + (App.getInstance().getTabIterator() - 1));
     }
 
     public static void addTabToList(String name, String url, String tag, Fragment fragment, boolean select){
@@ -531,6 +700,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
         }else if(!App.getInstance().isContainsByTag(tag)) {
             item = new TabItem(name, url, tag, App.getInstance().getCurrentFragmentTag(), fragment);
+            ((GeneralFragment)fragment).setThisTab(item);
+            Log.e("kek", "add item "+item);
             App.getInstance().getTabItems().add(item);
             App.getInstance().plusTabIterator();
 
@@ -552,21 +723,29 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     public void tryRemoveTab(String tag){
         log("tryRemoveTab");
-        if(getSupportFragmentManager().findFragmentByTag(tag)!=null)
-            if(!((GeneralFragment)getSupportFragmentManager().findFragmentByTag(tag)).closeTab())
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+        if(fragment!=null)
+            if(!((GeneralFragment)fragment).closeTab())
                 removeTab(tag);
     }
     public void removeTab(String tag){
         TabItem tab = App.getInstance().getTabByTag(tag);
-        log("remove tab"+(tab!=null?tab.getTitle():"tab ne sushestvuet((("));
+        log("remove tab" + (tab != null ? tab.getTitle() : "tab ne sushestvuet((("));
         log("remove " + tag);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         hideFragments(transaction);
         transaction.remove(getSupportFragmentManager().findFragmentByTag(tag));
         transaction.commit();
         mTabDraweMenu.removeTab(tag);
-        mMainDrawerMenu.notifyDataSetChanged();
-
+    }
+    public void removeTabs(List<TabItem> items){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        hideFragments(transaction);
+        for(TabItem item:items) {
+            transaction.remove(item.getFragment());
+            App.getInstance().getTabItems().remove(item);
+        }
+        transaction.commit();
     }
 
     /**
@@ -588,7 +767,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     private Boolean m_ExitWarned = false;
 
     private void appExit() {
-
         App.getInstance().exit();
     }
 
@@ -748,9 +926,24 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         super.onCreateOptionsMenu(menu);
-        menu.clear();
+        if(menu!=null)
+            menu.clear();
+        else
+            menu = new MenuBuilder(this);
 
         createUserMenu(menu);
+        if(getPreferences().getBoolean("openTabDrawerButton", false)){
+            menu.add("Вкладки")
+                    .setIcon(R.drawable.ic_checkbox_multiple_blank_outline_white_24dp)
+                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+
+                        public boolean onMenuItemClick(MenuItem item) {
+                            mTabDraweMenu.toggleOpenState();
+                            return true;
+                        }
+                    })
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
 
         menu.add(R.string.Search)
                 .setIcon(R.drawable.ic_magnify_white_24dp)
@@ -775,17 +968,26 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 return true;
             }
         });
+        boolean showed = getPreferences().getBoolean("showedExitButton", false);
+        if(getPreferences().getBoolean("showExitButton",false)) {
+            if(!showed) {
+                Answers.getInstance().logCustom(new CustomEvent("Button Exit Enable"));
+                getPreferences().edit().putBoolean("showedExitButton", true).apply();
+            }
 
-        menu.add(0, 0, 999, R.string.CloseApp)
-                .setIcon(R.drawable.ic_close_white_24dp)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                menu.add(0, 0, 999, R.string.CloseApp)
+                    .setIcon(R.drawable.ic_close_white_24dp)
+                        .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
-                    public boolean onMenuItemClick(MenuItem item) {
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                        System.exit(1);
-                        return true;
-                    }
-                });
+                            public boolean onMenuItemClick(MenuItem item) {
+                                android.os.Process.killProcess(android.os.Process.myPid());
+                                System.exit(1);
+                                return true;
+                        }
+                    });
+//            if (!Surprise.isBlocked()) {
+//            }
+        }
 
         mainMenu = menu;
         return false;
@@ -810,5 +1012,10 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             e.printStackTrace();
         }
 
+    }
+
+    @SuppressWarnings("ResourceType")
+    protected void loadPreferences(SharedPreferences prefs) {
+        setRequestedOrientation(ExtPreferences.parseInt(prefs, "theme.ScreenOrientation", -1));
     }
 }

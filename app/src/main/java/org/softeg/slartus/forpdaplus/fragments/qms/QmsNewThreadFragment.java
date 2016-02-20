@@ -42,6 +42,12 @@ public class QmsNewThreadFragment extends GeneralFragment {
     private PopupPanelView mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
 
     @Override
+    public void hidePopupWindows() {
+        super.hidePopupWindows();
+        mPopupPanelView.hidePopupWindow();
+    }
+
+    @Override
     public Menu getMenu() {
         return null;
     }
@@ -66,7 +72,6 @@ public class QmsNewThreadFragment extends GeneralFragment {
     @Override
     public void onPause() {
         super.onPause();
-        removeArrow();
         if(mPopupPanelView!=null)
             mPopupPanelView.pause();
     }
@@ -82,21 +87,22 @@ public class QmsNewThreadFragment extends GeneralFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.qms_new_thread, container, false);
+        setArrow();
+        view = inflater.inflate(R.layout.qms_new_thread, container, false);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        username = (EditText) view.findViewById(R.id.username);
-        title = (EditText) view.findViewById(R.id.title);
-        message = (EditText) view.findViewById(R.id.message);
-        view.findViewById(R.id.btnSendPost).setOnClickListener(new View.OnClickListener() {
+        username = (EditText) findViewById(R.id.username);
+        title = (EditText) findViewById(R.id.title);
+        message = (EditText) findViewById(R.id.message);
+        findViewById(R.id.btnSendPost).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 send();
             }
         });
-        mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) view.findViewById(R.id.advanced_button), message);
+        mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), message);
         mPopupPanelView.activityCreated(getMainActivity(), view);
 
         Bundle extras = getArguments();
@@ -107,19 +113,18 @@ public class QmsNewThreadFragment extends GeneralFragment {
         if (!TextUtils.isEmpty(m_Nick)) {
             username.setText(m_Nick);
             username.setVisibility(View.GONE);
-            getMainActivity().setTitle(m_Nick + ":QMS:Новая тема");
+            setTitle(m_Nick + ":QMS:Новая тема");
             App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":QMS:Новая тема");
 
         } else if (!TextUtils.isEmpty(m_Id)) {
-            getMainActivity().setTitle("QMS:Новая тема");
+            setTitle("QMS:Новая тема");
             App.getInstance().getTabByTag(getTag()).setTitle("QMS:Новая тема");
             new GetUserTask(m_Id).execute();
         } else {
-            getMainActivity().setTitle("QMS:Новая тема");
+            setTitle("QMS:Новая тема");
             App.getInstance().getTabByTag(getTag()).setTitle("QMS:Новая тема");
         }
-        TabDrawerMenu.notifyDataSetChanged();
-        setArrow();
+        getMainActivity().notifyTabAdapter();
         return view;
     }
 
@@ -219,9 +224,9 @@ public class QmsNewThreadFragment extends GeneralFragment {
                 Toast.makeText(getContext(), "Ник получен: " + m_Nick, Toast.LENGTH_SHORT).show();
                 username.setText(m_Nick);
                 username.setVisibility(View.GONE);
-                getMainActivity().setTitle(m_Nick + ":QMS:Новая тема");
+                setTitle(m_Nick + ":QMS:Новая тема");
                 App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":QMS:Новая тема");
-                TabDrawerMenu.notifyDataSetChanged();
+                getMainActivity().notifyTabAdapter();
             } else {
                 username.setVisibility(View.VISIBLE);
                 if (ex != null)

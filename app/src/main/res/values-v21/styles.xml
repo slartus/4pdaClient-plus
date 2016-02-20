@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="ImageViewTheme" parent="Theme.AppCompat">
-        <item name="android:fitsSystemWindows">false</item>
-        <item name="windowActionModeOverlay">true</item>
-        <item name="android:statusBarColor">@color/background_toolbar</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:navigationBarColor">@color/background_toolbar</item>
+        <item name="android:actionBarStyle">@style/actionbar_trans</item>
         <item name="actionBarStyle">@style/actionbar_trans</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBarOverlay">true</item>
         <item name="actionOverflowButtonStyle">@style/overflow_button</item>
 
     </style>
 
-    <style name="actionbar_trans" parent="@style/Widget.AppCompat.ActionBar">
+    <style name="actionbar_trans" parent="@style/Widget.AppCompat.ActionBar.Solid">
         <item name="android:background">@color/background_toolbar</item>
         <item name="background">@color/background_toolbar</item>
-        <item name="elevation">0dp</item>
+        <item name="elevation">8dp</item>
+        <item name="android:displayOptions">homeAsUp|showTitle</item>
         <item name="displayOptions">homeAsUp|showTitle</item>
         <item name="titleTextStyle">@style/actionbar_title</item>
         <item name="subtitleTextStyle">@style/actionbar_subtitle</item>

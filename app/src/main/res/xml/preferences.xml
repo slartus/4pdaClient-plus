@@ -24,14 +24,19 @@
                 android:summary="Шрифт в новостях, поиске, теме, профиле, QMS"/>
             <CheckBoxPreference
                 android:defaultValue="false"
+                android:key="isSquareAvarars"
+                android:title="Квадратные аватарки"
+                android:summary="Требуется перезапуск приложения"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
                 android:key="statusbarTransparent"
                 android:title="Не красить Status Bar"
                 android:summary="Включить, если активирован полноэкранный режим. Требуется перезапуск приложения"/>
             <CheckBoxPreference
                 android:defaultValue="false"
-                android:key="isSquareAvarars"
-                android:title="Квадратные аватарки"
-                android:summary="Требуется перезапуск приложения"/>
+                android:key="statusbarFake"
+                android:title="Status Bar как в Android 5+"
+                android:summary="Подходит для прошивок MIUI, Flyme и т.п на Android 4.4"/>
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="oldIndicator"
@@ -47,8 +52,8 @@
                 android:key="pancilInActionBar"
                 android:title="Карандаш в экшнбаре"/>
             <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="showBackArrow"
+                android:defaultValue="true"
+                android:key="showToolbarBackArrow"
                 android:title="Показывать стрелку 'назад'"/>
             <CheckBoxPreference
                 android:defaultValue="false"
@@ -62,11 +67,11 @@
                 android:key="userBackground"
                 android:summary="Требуется перезапуск приложения"
                 android:title="Изображение в боковом меню"/>
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="categoryLast"
-                android:title="Отображать 'Последние'"
-                android:summary="Меню 'Последние' в выезжающем меню"/>
+            <!--<CheckBoxPreference-->
+                <!--android:defaultValue="false"-->
+                <!--android:key="categoryLast"-->
+                <!--android:title="Отображать 'Последние'"-->
+                <!--android:summary="Меню 'Последние' в выезжающем меню"/>-->
             <Preference
                 android:key="visibleMenuItems"
                 android:title="Пункты меню в боковой панели"/>
@@ -84,6 +89,10 @@
                 android:key="isMarginBottomNav"
                 android:title="Нижний отступ в боковом меню"
                 android:summary="Включить, если не видно последнего пункта. Требуется перезапуск приложения"/>
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="openTabDrawerButton"
+                android:title="Отображать кнопку открытия панели вкладок"/>
         </PreferenceCategory>
 
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
@@ -134,11 +143,12 @@
             android:key="theme.SpoilerByButton"
             android:summary="Если не работают спойлеры"
             android:title="Использовать кнопку для спойлеров" />
+
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="theme.BrowserStylePreRemove"
-            android:summary="Загружается страница практически без изменений в разметке"
-            android:title="Вид как в браузере" />
+            android:key="theme.ShowReadersAndWriters"
+            android:summary="Показывать на странице 'Кто читает тему' и 'Кто писал сообщения'"
+            android:title="Дополнительные кнопки" />
 
         <PreferenceScreen android:title="Скачивание файлов">
             <CheckBoxPreference
@@ -368,7 +378,7 @@
 
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="isGpuImg"
+            android:key="isAccelerateGif"
             android:summary="Не рекомендуется для Android версии ниже 4.4 KitKat"
             android:title="Оптимизация GIF анимаций на странице" />
 
@@ -389,6 +399,11 @@
             android:key="notify.beta_version"
             android:summary="Сообщать о версиях для тестирования"
             android:title="Сообщать о бета-версиях" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="showExitButton"
+            android:title="Отображать кнопку 'Закрыть программу'"/>
     </PreferenceScreen>
 
     <PreferenceScreen

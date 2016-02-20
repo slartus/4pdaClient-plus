@@ -1,40 +1,32 @@
 package org.softeg.slartus.forpdaplus.fragments;
 
-import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import org.apache.http.cookie.Cookie;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
+import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.fragments.qms.QmsChatFragment;
-import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-
-import java.io.IOException;
-import java.util.regex.Matcher;
 
 /**
  * Created by radiationx on 06.12.15.
@@ -45,7 +37,7 @@ public class ForumRulesFragment extends WebViewFragment{
     public final static String m_Title = "Правила форума";
     @Override
     public Menu getMenu() {
-        return null;
+        return menu;
     }
 
     @Override
@@ -56,11 +48,6 @@ public class ForumRulesFragment extends WebViewFragment{
     @Override
     public AdvWebView getWebView() {
         return m_WebView;
-    }
-
-    @Override
-    public View getView() {
-        return view;
     }
 
     @Override
@@ -99,31 +86,27 @@ public class ForumRulesFragment extends WebViewFragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setArrow();
+        setHasOptionsMenu(true);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        removeArrow();
     }
 
     public static void showRules() {
         MainActivity.addTab(m_Title, "RULES", new ForumRulesFragment());
     }
 
-    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.webview_fragment, container, false);
-        m_WebView = (AdvWebView) view.findViewById(R.id.wvBody);
-        setHasOptionsMenu(true);
-
+        m_WebView = (AdvWebView) findViewById(R.id.wvBody);
 
         initSwipeRefreshLayout();
-        setHasOptionsMenu(true);
+
         assert view != null;
         registerForContextMenu(m_WebView);
-
         m_WebView.getSettings();
         m_WebView.getSettings().setDomStorageEnabled(true);
         m_WebView.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
@@ -203,7 +186,7 @@ public class ForumRulesFragment extends WebViewFragment{
     }
     private void showThemeBody(String body) {
         try {
-            getMainActivity().setTitle(m_Title);
+            setTitle(m_Title);
             m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
         } catch (Exception ex) {
             AppLog.e(getMainActivity(), ex);
@@ -216,6 +199,22 @@ public class ForumRulesFragment extends WebViewFragment{
             return true;
         }
 
+    }
+
+    Menu menu;
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.add("Cкопировать ссылку")
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        StringUtils.copyToClipboard(getContext(), "http://4pda.ru/forum/index.php?act=boardrules");
+                        Toast.makeText(getActivity(), "Ссылка сопирована", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                });
+        this.menu = menu;
     }
 }
 

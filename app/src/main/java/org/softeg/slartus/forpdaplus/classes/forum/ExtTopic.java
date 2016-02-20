@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaplus.classes.forum;
 
-import android.content.Context;
 import android.text.TextUtils;
 
 import org.softeg.slartus.forpdaapi.Topic;
@@ -118,4 +117,13 @@ if(m_PagesCount==1)
     public void dispose() {
 
     }
+
+    private boolean postVote = true;
+    public void setPostVote(boolean b){
+        postVote = b;
+    }
+    public boolean isPostVote(){
+        return postVote;
+    }
+
 }

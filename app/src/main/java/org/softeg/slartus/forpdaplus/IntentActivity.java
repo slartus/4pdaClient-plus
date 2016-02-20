@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
@@ -25,9 +26,9 @@ import org.softeg.slartus.forpdacommon.UrlExtensions;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.Email;
-import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewActivity;
+import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
+import org.softeg.slartus.forpdaplus.devdb.ParentFragment;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
-import org.softeg.slartus.forpdaplus.fragments.DevDbDeviceFragment;
 import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
 import org.softeg.slartus.forpdaplus.fragments.SpecialView;
 import org.softeg.slartus.forpdaplus.fragments.profile.DeviceDelete;
@@ -60,6 +61,8 @@ import org.softeg.slartus.forpdaplus.video.PlayerActivity;
 import java.io.UnsupportedEncodingException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+//import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 /**
  * Created by IntelliJ IDEA.
@@ -148,7 +151,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
     public static Boolean tryShowNews(Activity context, String url, Boolean finish) {
         if (isNews(url)) {
-            MainActivity.addTab(url, NewsFragment.newInstance(context, url));
+            MainActivity.addTab(url, NewsFragment.newInstance(url));
             return true;
         }
         return false;
@@ -350,13 +353,17 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     public static Boolean tryShowUrl(Activity context, Handler handler, String url, Boolean showInDefaultBrowser,
                                      final Boolean finishActivity, String authKey) {
         url = getRedirect(url).toString();
+        if(url.contains("4pda.ru")&!url.contains("http://"))
+            url = "http://"+url;
         Uri uri = Uri.parse(url.toLowerCase());
+        Log.e("kek", uri.getHost()+" "+url);
 
         if (uri.getHost() != null && (uri.getHost().toLowerCase().contains("4pda.ru")
                 || uri.getHost().toLowerCase().contains("4pda.to")
                 || uri.getHost().toLowerCase().contains("ggpht.com")
                 || uri.getHost().toLowerCase().contains("googleusercontent.com")
                 || uri.getHost().toLowerCase().contains("windowsphone.com")
+                || uri.getHost().toLowerCase().contains("cs3-2.4pda.to")
                 || uri.getHost().toLowerCase().contains("mzstatic.com"))) {
             if (isTheme(uri)) {
                 showTopic(url);
@@ -474,7 +481,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             return true;
         }
         if (NewDevDbApi.isDeviceUrl(url)) {
-            DevDbDeviceFragment.showDevice(url);
+            ParentFragment.showDevice(url);
             return true;
         }
         return false;
@@ -564,6 +571,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 || uri.getHost().toLowerCase().contains("ggpht.com")
                 || uri.getHost().toLowerCase().contains("googleusercontent.com")
                 || uri.getHost().toLowerCase().contains("windowsphone.com")
+                || uri.getHost().toLowerCase().contains("cs3-2.4pda.to")
                 || uri.getHost().toLowerCase().contains("mzstatic.com")))
             return false;
         boolean isFile = PatternExtensions.compile("http://4pda.ru/forum/dl/post/\\d+/[^\"]*")
@@ -580,6 +588,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                     public void onUserChanged(String user, Boolean success) {
                         if (success) {
                             if (imagePattern.matcher(uri.toString()).find()) {
+//                                showImage(activity, uri.toString());
                                 showImage(activity, uri.toString());
                                 if (finish)
                                     activity.finish();
@@ -592,6 +601,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 });
             } else {
                 if (imagePattern.matcher(uri.toString()).find()) {
+//                    showImage(activity, uri.toString());
                     showImage(activity, uri.toString());
                     if (finish)
                         activity.finish();
@@ -605,6 +615,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 ||(uri.getHost().toLowerCase().contains("ggpht.com")
                 || uri.getHost().toLowerCase().contains("googleusercontent.com")
                 || uri.getHost().toLowerCase().contains("windowsphone.com"))) {
+//            showImage(activity, uri.toString());
             showImage(activity, uri.toString());
             if (finish)
                 activity.finish();
@@ -613,8 +624,10 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return false;
     }
 
+
     private static void showImage(Context context, String url) {
-        ImageViewActivity.startActivity(context, url);
+//        ImageViewActivity.startActivity(context, url);
+        ImgViewer.startActivity(context, url);
     }
 
     public static void downloadFileStart(final Activity activity, final String url, final Boolean finish) {

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sb="http://simplector.lyoshka.net/base/2.0"
+   xmlns:sp="http://simplector.lyoshka.net/pro/2.0"
+   width="24.0px"
+   height="24.0px"
+   viewBox="0 0 24.0 24.0"
+   sb:fontSize="Custom"
+   sb:pageOrientation="Portrait"
+   version="1.1"
+   sb:version="2.0.19"
+   >
+   <desc>Created in Simplector Pro</desc>
+   <rect
+      id="15"
+      transform="matrix(1.1698269,0.0,0.0,0.49382764,-0.09014678,2.681015)"
+      fill="rgb(255,255,255)"
+      fill-opacity="1.0"
+      stroke-width="1.0"
+      stroke-linecap="butt"
+      stroke-linejoin="miter"
+      stroke-miterlimit="2.0"
+      stroke="rgb(0,0,0)"
+      stroke-opacity="0.0"
+      x="6.9156795"
+      y="4.6713724"
+      width="11.952614"
+      height="4.0499954"
+      rx="0.0"
+      ry="0.0"
+
+      sb:layerName="RectFigure-15"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+   </rect>
+   <rect
+      id="33"
+      transform="matrix(1.1698269,0.0,0.0,0.49382758,-0.07263565,8.693148)"
+      fill="rgb(255,255,255)"
+      fill-opacity="1.0"
+      stroke-width="1.0"
+      stroke-linecap="butt"
+      stroke-linejoin="miter"
+      stroke-miterlimit="2.0"
+      stroke="rgb(0,0,0)"
+      stroke-opacity="0.0"
+      x="6.9156795"
+      y="4.6713724"
+      width="11.952614"
+      height="4.0499954"
+      rx="0.0"
+      ry="0.0"
+
+      sb:layerName="RectFigure-15"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+   </rect>
+   <rect
+      id="36"
+      transform="matrix(1.1698269,0.0,0.0,0.4938274,-0.07263589,14.693149)"
+      fill="rgb(255,255,255)"
+      fill-opacity="1.0"
+      stroke-width="1.0"
+      stroke-linecap="butt"
+      stroke-linejoin="miter"
+      stroke-miterlimit="2.0"
+      stroke="rgb(0,0,0)"
+      stroke-opacity="0.0"
+      x="6.9156795"
+      y="4.6713724"
+      width="11.952614"
+      height="4.0499954"
+      rx="0.0"
+      ry="0.0"
+
+      sb:layerName="RectFigure-15"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+   </rect>
+   <g
+      id="48"
+
+      sb:layerName="TextFigure-47"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+      <path
+         id="49"
+         transform="matrix(0.0051282053,0.0,0.0,-0.003434066,1.046154,7.0)"
+         fill="rgb(255,255,255)"
+         fill-opacity="1.0"
+         stroke-width="106.818184"
+         stroke-linecap="butt"
+         stroke-linejoin="miter"
+         stroke-miterlimit="2.0"
+         stroke="rgb(0,0,0)"
+         stroke-opacity="0.0"
+         d="
+         M 771.0 0.0 L 480.0 0.0 L 480.0 1148.0 L 186.0 1148.0 L 186.0 1334.0 L 771.0 1456.0 
+         L 771.0 0.0 Z 
+         "
+
+         sb:layerName="unit-0 (1)"
+         sb:layerVisible="true"
+         sb:layerLocked="false"
+         sb:pathType="path"
+         >
+      </path>
+   </g>
+   <g
+      id="51"
+
+      sb:layerName="TextFigure-50"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+      <path
+         id="52"
+         transform="matrix(0.003903157,0.0,0.0,-0.0033852402,1.7267785,14.0)"
+         fill="rgb(255,255,255)"
+         fill-opacity="1.0"
+         stroke-width="106.818184"
+         stroke-linecap="butt"
+         stroke-linejoin="miter"
+         stroke-miterlimit="2.0"
+         stroke="rgb(0,0,0)"
+         stroke-opacity="0.0"
+         d="
+         M 1093.0 0.0 L 99.0 0.0 L 99.0 191.0 L 570.0 696.0 Q 674.0 815.0 716.0 894.0 T 758.0 1043.0 
+         Q 758.0 1137.0 710.0 1194.0 T 568.0 1252.0 Q 465.0 1252.0 414.0 1185.0 T 362.0 1001.0 
+         L 70.0 1001.0 Q 70.0 1206.0 203.0 1341.0 T 568.0 1477.0 Q 797.0 1477.0 923.0 1362.0 
+         T 1050.0 1048.0 Q 1050.0 914.0 980.0 805.0 T 738.0 512.0 L 532.84454 292.72192 L 1094.8115 289.44165 
+         L 1093.0 0.0 Z 
+         "
+
+         sb:layerName="unit-0 (2)"
+         sb:layerVisible="true"
+         sb:layerLocked="false"
+         sb:pathType="path"
+         >
+      </path>
+   </g>
+   <g
+      id="54"
+
+      sb:layerName="TextFigure-53"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      >
+      <path
+         id="55"
+         transform="matrix(0.003944773,0.0,0.0,-0.003989287,1.7514791,21.916225)"
+         fill="rgb(255,255,255)"
+         fill-opacity="1.0"
+         stroke-width="106.818184"
+         stroke-linecap="butt"
+         stroke-linejoin="miter"
+         stroke-miterlimit="2.0"
+         stroke="rgb(0,0,0)"
+         stroke-opacity="0.0"
+         d="
+         M 394.0 852.0 L 558.0 852.0 Q 664.0 852.0 713.0 905.0 T 762.0 1058.0 Q 762.0 1148.0 713.0 1200.0 
+         T 567.0 1252.0 Q 484.0 1252.0 429.0 1205.0 T 373.0 1078.0 L 81.0 1078.0 Q 81.0 1257.0 216.0 1367.0 
+         T 559.0 1477.0 Q 789.0 1477.0 921.0 1371.0 T 1054.0 1061.0 Q 1054.0 964.0 995.0 880.0 
+         T 829.0 747.0 Q 952.0 703.0 1014.0 616.0 T 1077.0 408.0 Q 1077.0 204.0 934.0 92.0 
+         T 559.0 -21.0 Q 352.0 -21.0 208.0 85.0 T 63.0 396.0 L 355.0 396.0 Q 355.0 310.0 414.0 257.0 
+         T 567.0 203.0 Q 670.0 203.0 727.0 258.0 T 785.0 411.0 Q 785.0 528.0 729.0 580.0 T 558.0 633.0 
+         L 394.0 633.0 L 394.0 852.0 Z 
+         "
+
+         sb:layerName="unit-0 (3)"
+         sb:layerVisible="true"
+         sb:layerLocked="false"
+         sb:pathType="path"
+         >
+      </path>
+   </g>
+   <sp:keyframes
+
+      sp:step="100"
+      sp:dur="10000"
+      >
+      <sp:keyframe
+
+         sp:time="0"
+         >
+      </sp:keyframe>
+   </sp:keyframes>
+</svg>

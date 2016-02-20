@@ -35,7 +35,6 @@ public class TopicWritersListFragment extends BaseLoaderListFragment {
     @Override
     public void onPause() {
         super.onPause();
-        removeArrow();
     }
 
     @Override
