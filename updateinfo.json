@@ -1,15 +1,18 @@
 {
-	"version": "3.2.3",
+	"info": 
+	{
+		"version": "3.2.3"
+	},
 	"whatisnew": [
-	  {
-		"item": "item new",
-		"item": "item new",
-		"item": "item new",
-		"item": "item new",
-		"item": "item new",
-		"item": "item new",
-		"item": "item new",
-		"item": "item new"
-	   }
+		{
+			"item": "item new",
+			"item": "item new",
+		        "item": "item new",
+		        "item": "item new",
+		        "item": "item new",
+		        "item": "item new",
+		        "item": "item new",
+		        "item": "item new"
+		}
 	]
 }
