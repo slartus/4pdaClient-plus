@@ -23,7 +23,7 @@ public class HtmlBuilder{
         m_Body.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">\n");
         if (!Preferences.System.isDevStyle())
             addStyleSheetLink(m_Body);
-
+        m_Body.append("<script type=\"text/javascript\" src=\"file://").append(getStyle().replace(".css","")).append(".js\"></script>\n");
         addScripts();
         if (Preferences.System.isDevGrid())
             m_Body.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/grid.css\"/>\n");

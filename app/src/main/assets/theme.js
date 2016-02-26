@@ -1,3 +1,36 @@
+function ready(){
+    var postBlockSpoils = document.body.querySelectorAll('.post-block.spoil.close > .block-body');
+    for (var i = 0; i < postBlockSpoils.length; i++) {
+        var images = postBlockSpoils[i].querySelectorAll('a img');
+        for (var j = 0; j < images.length; j++) {
+            var img = images[j];
+            img.dataset.imageSrc = img.src;
+            img.removeAttribute('src');
+        }
+    }
+    document.body.addEventListener("click", substitutionAttributes);
+    function substitutionAttributes(event) {
+        console.log(event);
+        var event = event || window.event;
+        var target = event.target || event.srcElement;
+        while (target != this) {
+            if (~target.className.indexOf('spoil')) {
+                var images = target.querySelectorAll('a img');
+                for (var i = 0; i < images.length; i++) {
+                    var img = images[i];
+                    img.src = img.dataset.imageSrc;
+                }
+                return;
+            }
+            target = target.parentNode;
+        }
+    }
+}
+document.addEventListener("DOMContentLoaded", ready);
+
+
+
+
 function kek(postId, logined){
     window.onload = function() {
         var anchors = document.querySelectorAll('.karma');
