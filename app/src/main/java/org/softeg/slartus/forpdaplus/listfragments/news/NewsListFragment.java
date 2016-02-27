@@ -150,9 +150,9 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
             mItems.add(new NewsCategoryItem("software/tag/programs-for-windows-phone-7", "Новости/Программы", "   WP"));
             mItems.add(new NewsCategoryItem("software/tag/devstory/", "Новости/Программы", "   DevStory"));
             mItems.add(new NewsCategoryItem("games", "Новости", "Игры"));
-            mItems.add(new NewsCategoryItem("games/tag/programs-for-android", "Новости/Игры", "   Android"));
-            mItems.add(new NewsCategoryItem("games/tag/programs-for-ios", "Новости/Игры", "   iOS"));
-            mItems.add(new NewsCategoryItem("games/tag/programs-for-windows-phone-7", "Новости/Игры", "   WP"));
+            mItems.add(new NewsCategoryItem("games/tag/games-for-android", "Новости/Игры", "   Android"));
+            mItems.add(new NewsCategoryItem("games/tag/games-for-ios", "Новости/Игры", "   iOS"));
+            mItems.add(new NewsCategoryItem("games/tag/games-for-windows-phone-7", "Новости/Игры", "   WP"));
             mItems.add(new NewsCategoryItem("games/tag/devstory/", "Новости/Игры", "   DevStory"));
             mItems.add(new NewsCategoryItem("reviews", "Новости", "Обзоры"));
         }
