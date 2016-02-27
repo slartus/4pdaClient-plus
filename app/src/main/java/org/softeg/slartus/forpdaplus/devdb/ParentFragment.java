@@ -29,6 +29,8 @@ import org.softeg.slartus.forpdaplus.devdb.helpers.ParseHelper;
 import org.softeg.slartus.forpdaplus.devdb.helpers.ParsedModel;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 
+import static android.support.design.widget.TabLayout.*;
+
 public class ParentFragment extends GeneralFragment {
 
     private static final String DEVICE_ID_KEY = "DeviceId";
@@ -42,6 +44,7 @@ public class ParentFragment extends GeneralFragment {
     private ViewPager viewPager;
     private MaterialDialog dialog;
     private DevDbViewPagerAdapter adapter;
+    private TabLayout tabLayout;
 
     public ParentFragment() {
     }
@@ -52,10 +55,10 @@ public class ParentFragment extends GeneralFragment {
         return fragment;
     }
 
-    public static void showDevice(String deviceId, String title, int position) {
+    public static void showDevice(String deviceId, String title) {
         Bundle args = new Bundle();
         args.putString(DEVICE_ID_KEY, deviceId);
-        args.putInt(POSITION_ID, position);
+        args.putInt(POSITION_ID, 0);
         args.putString(TOOLBAR_TITLE, title);
         MainActivity.addTab(title, deviceId + "more", newInstance(args));
     }
@@ -122,6 +125,14 @@ public class ParentFragment extends GeneralFragment {
             getMainActivity().getAppBarLayout().setElevation(0);
             view.findViewById(R.id.dev_toolbar_shadow).setVisibility(View.GONE);
         }
+
+        tabLayout = (TabLayout) findViewById(R.id.devDbTabLayout);
+        tabLayout.addTab(tabLayout.newTab().setText("Характеристики"));
+        tabLayout.addTab(tabLayout.newTab().setText("Отзывы"));
+        tabLayout.addTab(tabLayout.newTab().setText("Обсуждения"));
+        tabLayout.addTab(tabLayout.newTab().setText("Обзор"));
+        tabLayout.addTab(tabLayout.newTab().setText("Прошивки"));
+        tabLayout.addTab(tabLayout.newTab().setText("Цены"));
         return view;
     }
 
@@ -181,7 +192,7 @@ public class ParentFragment extends GeneralFragment {
         viewPager.setAdapter(adapter);
         viewPager.setOnPageChangeListener(mChangeListener);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.devDbTabLayout);
+        tabLayout.removeAllTabs();
         tabLayout.setupWithViewPager(viewPager);
         showTabs(m_Position);
     }

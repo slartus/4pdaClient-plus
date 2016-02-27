@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            Log.e("kek", "HANDLE MESSAGE LEAK MEMORY| ALARMA TUT UTECHKA!!!!");
             if(msg.what==MSG_RECREATE)
                 recreate();
         }

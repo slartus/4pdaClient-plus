@@ -136,7 +136,7 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
     @Override
-    public WebViewClient MyWebViewClient() {
+    public WebViewClient getWebViewClient() {
         return new MyWebViewClient();
     }
 

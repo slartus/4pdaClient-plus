@@ -104,6 +104,7 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
         if (m_ForumId == null) {
             m_ForumId = Preferences.List.getStartForumId();
         }
+        setTitle(m_Title);
         initAdapter();
     }
     private Menu menu;

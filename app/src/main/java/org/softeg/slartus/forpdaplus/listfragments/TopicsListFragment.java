@@ -314,7 +314,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     }
 
     private void showTopicActivity(IListItem topic, String args) {
-        ExtTopic.showActivity(topic.getId(), args);
+        ExtTopic.showActivity(topic.getMain(), topic.getId(), args);
         //topicAfterClick(topic);
 
     }

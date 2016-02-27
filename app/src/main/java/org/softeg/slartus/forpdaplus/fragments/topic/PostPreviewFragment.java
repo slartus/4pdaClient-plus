@@ -46,7 +46,7 @@ public class PostPreviewFragment extends WebViewFragment {
     }
 
     @Override
-    public WebViewClient MyWebViewClient() {
+    public WebViewClient getWebViewClient() {
         return webViewClient;
     }
 

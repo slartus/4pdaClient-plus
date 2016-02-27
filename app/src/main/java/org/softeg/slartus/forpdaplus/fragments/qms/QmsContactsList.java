@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
@@ -24,6 +26,7 @@ import org.softeg.slartus.forpdaapi.classes.ListData;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.qms.QmsUser;
 import org.softeg.slartus.forpdaapi.qms.QmsUsers;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -154,7 +157,6 @@ public class QmsContactsList extends BaseLoaderListFragment {
 
                 holder = new ViewHolder();
                 assert convertView != null;
-                //holder.txtIsNew = (ImageView) convertView.findViewById(R.id.txtIsNew);
                 if(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("isSquareAvarars",false)){
                     holder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatarSquare);
                 }else {
@@ -183,7 +185,6 @@ public class QmsContactsList extends BaseLoaderListFragment {
             holder.txtNick.setText(user.getNick());
 
             if (!TextUtils.isEmpty(user.getNewMessagesCount())) {
-                //holder.txtIsNew.setImageResource(R.drawable.new_flag);
                 holder.txtNick.setTextAppearance(getContext(), R.style.QmsNew);
                 holder.txtCount.setTextAppearance(getContext(), R.style.QmsNew);
                 if (getContext() != null)
@@ -200,36 +201,13 @@ public class QmsContactsList extends BaseLoaderListFragment {
                     }
 
             } else {
-                //holder.txtIsNew.setImageBitmap(null);
-                holder.txtCount.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                holder.txtCount.setBackgroundColor(ContextCompat.getColor(App.getContext(), android.R.color.transparent));
                 holder.txtNick.setTextAppearance(getContext(), R.style.QmsOld);
                 holder.txtCount.setTextAppearance(getContext(), R.style.QmsOld);
             }
 
             if (user.getAvatarUrl() != null && mShowAvatars) {
-                imageLoader.displayImage(user.getAvatarUrl(), holder.imgAvatar, new ImageLoadingListener() {
-
-                    @Override
-                    public void onLoadingStarted(String p1, View p2) {
-                        //holder.mProgressBar.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onLoadingFailed(String p1, View p2, FailReason p3) {
-                        // holder.mProgressBar.setVisibility(View.INVISIBLE);
-                    }
-
-                    @Override
-                    public void onLoadingComplete(String p1, View p2, Bitmap p3) {
-                        MaterialImageLoading.animate((ImageView) p2).setDuration(500).start();
-                        // holder.mProgressBar.setVisibility(View.INVISIBLE);
-                    }
-
-                    @Override
-                    public void onLoadingCancelled(String p1, View p2) {
-
-                    }
-                });
+                imageLoader.displayImage(user.getAvatarUrl(), new ImageViewAware(holder.imgAvatar, false));
             }
             return convertView;
         }
@@ -239,10 +217,8 @@ public class QmsContactsList extends BaseLoaderListFragment {
         }
 
         public class ViewHolder {
-            //ImageView txtIsNew;
             ImageView imgAvatar;
             TextView txtNick;
-
             TextView txtCount;
         }
     }

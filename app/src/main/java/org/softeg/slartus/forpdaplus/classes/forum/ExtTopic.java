@@ -93,6 +93,9 @@ if(m_PagesCount==1)
     public static void showActivity(CharSequence themeId, CharSequence params) {
         ThemeFragment.showTopicById(themeId, params);
     }
+    public static void showActivity(CharSequence title, CharSequence themeId, CharSequence params) {
+        ThemeFragment.showTopicById(title, themeId, params);
+    }
 
     public String getShowBrowserUrl(String params) {
         return getShowBrowserUrl(m_Id, params);

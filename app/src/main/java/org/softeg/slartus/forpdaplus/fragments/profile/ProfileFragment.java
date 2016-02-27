@@ -63,7 +63,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     private Handler mHandler = new Handler();
 
     @Override
-    public WebViewClient MyWebViewClient() {
+    public WebViewClient getWebViewClient() {
         return new MyWebViewClient();
     }
 

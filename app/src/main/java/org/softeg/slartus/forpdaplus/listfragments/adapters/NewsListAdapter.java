@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.listfragments.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import org.softeg.slartus.forpdaapi.News;
@@ -20,6 +23,9 @@ import org.softeg.slartus.forpdaplus.controls.imageview.MaterialImageLoading;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.util.ArrayList;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by slartus on 20.02.14.
@@ -34,7 +40,6 @@ public class NewsListAdapter extends BaseAdapter {
 
     public NewsListAdapter(Context context, ArrayList<News> newsList, ImageLoader imageLoader) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         mNewsListRowId = Preferences.News.List.getNewsListViewId();
         this.imageLoader = imageLoader;
         this.newsList = newsList;
@@ -70,32 +75,18 @@ public class NewsListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        final ViewHolder holder;
-        View rowView = view;
-        if (rowView == null || rowView.getId() != mNewsListRowId) {
-            rowView = inflater.inflate(mNewsListRowId, null);
-            holder = new ViewHolder();
-            assert rowView != null;
-            rowView.setId(mNewsListRowId);
-            holder.image_panel = rowView.findViewById(R.id.image_panel);
+        ViewHolder holder;
+        if (view == null || view.getId() != mNewsListRowId) {
+            Log.e("kek", "new view holder "+view+" : "+mNewsListRowId);
+            view = inflater.inflate(mNewsListRowId, parent, false);
+            holder = new ViewHolder(view);
+            assert view != null;
+            view.setId(mNewsListRowId);
             if (holder.image_panel != null)
                 holder.image_panel.setVisibility(mLoadImages ? View.VISIBLE : View.GONE);
-            holder.imageImage = (ImageView) rowView.findViewById(R.id.imageImage);
-
-            holder.mProgressBar = (LinearLayout) rowView.findViewById(R.id.mProgressBar);
-            holder.textSource = (TextView) rowView.findViewById(R.id.textSource);
-            holder.textComments = (TextView) rowView.findViewById(R.id.textComments);
-            holder.textTag = (TextView) rowView.findViewById(R.id.textTag);
-
-            holder.textAuthor = (TextView) rowView.findViewById(R.id.textAvtor);
-            holder.textDate = (TextView) rowView.findViewById(R.id.textDate);
-            holder.textDescription = (TextView) rowView.findViewById(R.id.textDescription);
-            holder.textTitle = (TextView) rowView.findViewById(R.id.textTitle);
-
-            rowView.setTag(holder);
-
+            view.setTag(holder);
         } else {
-            holder = (ViewHolder) rowView.getTag();
+            holder = (ViewHolder) view.getTag();
             if (holder.image_panel != null)
                 holder.image_panel.setVisibility(mLoadImages ? View.VISIBLE : View.GONE);
         }
@@ -116,30 +107,7 @@ public class NewsListAdapter extends BaseAdapter {
         else
             holder.imageImage.setVisibility(View.VISIBLE);
         if (holder.image_panel != null && data.getImgUrl() != null && mLoadImages) {
-            imageLoader.displayImage(data.getImgUrl().toString(), holder.imageImage, new ImageLoadingListener() {
-
-                @Override
-                public void onLoadingStarted(String p1, View p2) {
-                    //p2.setVisibility(View.INVISIBLE);
-                    //holder.mProgressBar.setVisibility(View.VISIBLE);
-                }
-
-                @Override
-                public void onLoadingFailed(String p1, View p2, FailReason p3) {
-                    //holder.mProgressBar.setVisibility(View.INVISIBLE);
-                }
-
-                @Override
-                public void onLoadingComplete(String p1, View p2, Bitmap p3) {
-                    MaterialImageLoading.animate((ImageView) p2).setDuration(500).start();
-                    //p2.setVisibility(View.VISIBLE);
-                    //holder.mProgressBar.setVisibility(View.INVISIBLE);
-                }
-
-                @Override
-                public void onLoadingCancelled(String p1, View p2) {
-                }
-            });
+            imageLoader.displayImage(data.getImgUrl().toString(), new ImageViewAware(holder.imageImage, false));
         }
         if (data.getTagTitle() != null && holder.textTag != null) {
             if(data.getTagTitle().equals("")){
@@ -152,24 +120,25 @@ public class NewsListAdapter extends BaseAdapter {
         }
         if (data.getSourceTitle() != null && holder.textSource != null) {
             holder.textSource.setVisibility(View.VISIBLE);
-            holder.textSource.setText("Источник: " + data.getSourceTitle());
+            holder.textSource.setText("Источник: ".concat(data.getSourceTitle().toString()));
         }
 
-        return rowView;
+        return view;
     }
+    static class ViewHolder {
+        @Bind(R.id.image_panel) View image_panel;
+        @Bind(R.id.imageImage) ImageView imageImage;
+        @Bind(R.id.textTitle) TextView textTitle;
+        @Bind(R.id.textDate) TextView textDate;
+        @Bind(R.id.textDescription) TextView textDescription;
+        @Bind(R.id.textAvtor) TextView textAuthor;
+        @Bind(R.id.textTag) TextView textTag;
+        @Bind(R.id.textComments) TextView textComments;
+        @Bind(R.id.textSource) TextView textSource;
 
-    public class ViewHolder {
-        public View image_panel;
-        public ImageView imageImage;
-        public TextView textTitle;
-        public TextView textDate;
-        public TextView textDescription;
-        public TextView textAuthor;
-        public TextView textTag;
-        public TextView textComments;
-        public TextView textSource;
-        public LinearLayout mProgressBar;
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
-
 }
 

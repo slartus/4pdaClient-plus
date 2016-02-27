@@ -24,15 +24,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.FileUtils;
@@ -66,6 +69,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     private WebViewExternals m_WebViewExternals;
     private Bundle args;
     private Menu menu;
+    private FrameLayout buttonsPanel;
 
     @Override
     public Menu getMenu() {
@@ -195,6 +199,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         mWvBody.loadDataWithBaseURL("http://4pda.ru/forum/", "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
                 "</head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8", null);
         registerForContextMenu(mWvBody);
+        buttonsPanel = (FrameLayout)findViewById(R.id.buttonsPanel);
         return view;
     }
 
@@ -269,6 +274,11 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         try {
             MainActivity.searchSettings = SearchSettings.parse(getSearchQuery());
             mWvBody.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
+            if(buttonsPanel.getTranslationY()!=0)
+                ViewPropertyAnimator.animate(buttonsPanel)
+                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                        .setDuration(500)
+                        .translationY(0);
         } catch (Exception ex) {
             AppLog.e(getContext(), ex);
         }
@@ -379,7 +389,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     }
 
     @Override
-    public WebViewClient MyWebViewClient() {
+    public WebViewClient getWebViewClient() {
         return new MyWebViewClient();
     }
 

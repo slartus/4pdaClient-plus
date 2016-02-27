@@ -62,7 +62,7 @@ public class ProfileEditFragment extends WebViewFragment {
 
 
     @Override
-    public WebViewClient MyWebViewClient() {
+    public WebViewClient getWebViewClient() {
         return new WebViewClient();
     }
 

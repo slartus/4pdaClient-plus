@@ -20,6 +20,7 @@ import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemor
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import org.acra.ACRA;
 import org.acra.ReportField;
@@ -575,6 +576,7 @@ public class App extends android.app.Application {
                 .cacheOnDisc(true)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .handler(new Handler())
+                .displayer(new FadeInBitmapDisplayer(500, true, true, false))
                 .build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                 .imageDownloader(new HttpHelperForImage(context))

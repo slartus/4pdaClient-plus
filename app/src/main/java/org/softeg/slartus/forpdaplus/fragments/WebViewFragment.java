@@ -32,7 +32,6 @@ import com.melnykov.fab.FloatingActionButton;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
 import org.softeg.slartus.forpdaplus.classes.SaveHtml;
@@ -57,7 +56,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     }
 
     public abstract AdvWebView getWebView();
-    public abstract WebViewClient MyWebViewClient();
+    public abstract WebViewClient getWebViewClient();
     public abstract String getTitle();
     public abstract String getUrl();
     public abstract void reload();
@@ -125,10 +124,12 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("kek", "oncreate start");
         setArrow();
         loadPreferences(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
-        Log.e("kek", "oncreate end");
+        if (Preferences.System.isDevSavePage()|
+                Preferences.System.isDevInterface()|
+                Preferences.System.isDevStyle())
+            Toast.makeText(getMainActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
     }
 
     protected SwipeRefreshLayout mSwipeRefreshLayout;
@@ -156,20 +157,23 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         }
     }
 
+    public void setFabColors(final FloatingActionButton fab){
+        fab.setColorNormal(App.getInstance().getColorAccent("Accent"));
+        fab.setColorPressed(App.getInstance().getColorAccent("Pressed"));
+        fab.setColorRipple(App.getInstance().getColorAccent("Pressed"));
+    }
     @Override
     public void onResume() {
         super.onResume();
         if(getWebView()!=null){
             getWebView().onResume();
-            getWebView().setWebViewClient(MyWebViewClient());
+            getWebView().setWebViewClient(getWebViewClient());
         }
         setArrow();
-        //animateHamburger(false);
     }
 
     @Override
     public void onPause() {
-        //animateHamburger(true);
         super.onPause();
         if (getWebView()!=null) {
             new Handler().postDelayed(new Runnable() {
@@ -203,13 +207,6 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         super.onDestroy();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-
-
     public void setHideArrows(boolean hide) {
         if (getWebView() == null)
             return;
@@ -227,16 +224,9 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         }
 
     }
-    public void setHideFab() {
-        if (getWebView() == null)
-            return;
-        FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.fab);
-        if (fab == null) return;
-        setHideFab(fab);
-    }
     public void setHideFab(final FloatingActionButton fab){
-        if (getWebView() == null)
-            return;
+        if (getWebView() == null)return;
+        if (fab == null) return;
         if(Preferences.isHideFab()) {
             getWebView().setOnScrollChangedCallback(new AdvWebView.OnScrollChangedCallback() {
                 @Override
@@ -262,67 +252,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         }
     }
 
-    public void setHideActionBar() {
-        if (getWebView() == null)
-            return;
-        ActionBar actionBar = getSupportActionBar();
-        FloatingActionButton fab = (FloatingActionButton) getView().findViewById(R.id.fab);
-        Log.e("sethide", "yes");
-        if (actionBar == null) return;
-        Log.e("ab", "yes");
-        if (fab == null) return;
-        Log.e("fb", "yes");
-        setHideActionBar(getWebView(), actionBar, fab);
-    }
-
-    public static void setHideActionBar(AdvWebView advWebView, final ActionBar actionBar, final FloatingActionButton fab) {
-        final Boolean hideAb = Preferences.isHideActionBar();
-        final Boolean hideFab = Preferences.isHideFab();
-
-        if (hideAb|hideFab) {
-            advWebView.setOnScrollChangedCallback(new AdvWebView.OnScrollChangedCallback() {
-                @Override
-                public void onScrollDown(Boolean inTouch) {
-                    if (!inTouch)
-                        return;
-                    if (actionBar.isShowing() & hideAb) {
-                        actionBar.hide();
-                    }
-                    if (fab.isVisible() & hideFab) {
-                        fab.hide();
-                    }
-                }
-
-                @Override
-                public void onScrollUp(Boolean inTouch) {
-                    if (!inTouch)
-                        return;
-                    if (!actionBar.isShowing() & hideAb) {
-                        actionBar.show();
-                    }
-                    if (!fab.isVisible() & hideFab) {
-                        fab.show();
-                    }
-
-                }
-
-                @Override
-                public void onTouch() {
-                    actionBar.show();
-                    fab.show();
-                }
-            });
-        } else {
-            advWebView.setOnScrollChangedCallback(null);
-            actionBar.show();
-            fab.show();
-        }
-    }
-
-
     protected void setWebViewSettings(Boolean loadImagesAutomaticallyAlways) {
         getWebViewExternals().setWebViewSettings(loadImagesAutomaticallyAlways);
-
     }
 
     public void setWebViewSettings() {

@@ -114,7 +114,7 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
         if (TextUtils.isEmpty(topic.getId())) return;
 
         //DevDbDeviceActivity.showDevice(getContext(), topic.getId().toString());
-        ParentFragment.showDevice(topic.getId().toString());
+        ParentFragment.showDevice(topic.getId().toString(), topic.getMain().toString());
     }
 
     @Override

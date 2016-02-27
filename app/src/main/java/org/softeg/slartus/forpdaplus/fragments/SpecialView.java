@@ -48,7 +48,7 @@ public class SpecialView extends WebViewFragment {
     }
 
     @Override
-    public WebViewClient MyWebViewClient() {
+    public WebViewClient getWebViewClient() {
         return new MyWebViewClient();
     }
 

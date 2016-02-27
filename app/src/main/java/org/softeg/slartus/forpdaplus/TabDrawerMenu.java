@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
@@ -238,11 +239,11 @@ public class TabDrawerMenu {
             holder.text.setText(item.getTitle());
             holder.close.setOnClickListener(new CloseClickListener(item.getTag()));
 
-            holder.text.setTextColor(resources.getColor(App.getInstance().getDrawerMenuText()));
+            holder.text.setTextColor(ContextCompat.getColor(App.getContext(),App.getInstance().getDrawerMenuText()));
             holder.item.setBackgroundResource(android.R.color.transparent);
 
             if(App.getInstance().getCurrentFragmentTag().equals(item.getTag())){
-                holder.text.setTextColor(resources.getColor(R.color.selectedItemText));
+                holder.text.setTextColor(ContextCompat.getColor(App.getContext(), R.color.selectedItemText));
                 holder.item.setBackgroundResource(R.color.selectedItem);
             }
 

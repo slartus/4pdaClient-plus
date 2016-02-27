@@ -6,13 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,15 +20,18 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.melnykov.fab.FloatingActionButton;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
@@ -70,6 +71,8 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     private boolean loadImages;
     private String m_Title = "Новости";
     private Menu menu;
+    private FloatingActionButton fab;
+    private FrameLayout buttonsPanel;
 
     public static NewsFragment newInstance(String url){
         NewsFragment fragment = new NewsFragment();
@@ -99,7 +102,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
 
     @Override
-    public WebViewClient MyWebViewClient() {
+    public WebViewClient getWebViewClient() {
         return new MyWebViewClient();
     }
 
@@ -160,25 +163,20 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         showNews(m_NewsUrl);
 
 
-        FloatingActionButton fabComment = (FloatingActionButton) findViewById(R.id.fab);
-        setHideFab(fabComment);
-        fabComment.setColorNormal(App.getInstance().getColorAccent("Accent"));
-        fabComment.setColorPressed(App.getInstance().getColorAccent("Pressed"));
-        fabComment.setColorRipple(App.getInstance().getColorAccent("Pressed"));
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        setHideFab(fab);
+        setFabColors(fab);
         if(Client.getInstance().getLogined()&!PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar", false))
-            fabComment.setOnClickListener(new View.OnClickListener() {
+            fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     respond();
                 }
             });
         else
-            fabComment.setVisibility(View.GONE);
+            fab.setVisibility(View.GONE);
 
-        if (Preferences.System.isDevSavePage()|
-                Preferences.System.isDevInterface()|
-                Preferences.System.isDevStyle())
-            Toast.makeText(getMainActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
+        buttonsPanel = (FrameLayout) findViewById(R.id.buttonsPanel);
         return view;
     }
 
@@ -232,7 +230,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             Preferences.setHideFab(!Preferences.isHideFab());
-                            setHideFab();
+                            setHideFab(fab);
                             menuItem.setChecked(Preferences.isHideFab());
                             return true;
                         }
@@ -430,6 +428,11 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         try {
             setTitle(m_Title);
             webView.loadDataWithBaseURL("file:///android_asset/", body, "text/html", "UTF-8", null);
+            if(buttonsPanel.getTranslationY()!=0)
+                ViewPropertyAnimator.animate(buttonsPanel)
+                        .setInterpolator(new AccelerateDecelerateInterpolator())
+                        .setDuration(500)
+                        .translationY(0);
         } catch (Exception ex) {
             AppLog.e(getMainActivity(), ex);
         }

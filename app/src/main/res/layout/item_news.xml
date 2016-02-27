@@ -62,20 +62,6 @@
                 android:shadowRadius="5"
                 android:text="Наушники JBL Reflect Mini BT работают до 8 часов по Bluetooth"
                 android:textSize="24sp" />
-
-            <LinearLayout
-                android:id="@+id/mProgressBar"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
         </FrameLayout>
 
         <LinearLayout
