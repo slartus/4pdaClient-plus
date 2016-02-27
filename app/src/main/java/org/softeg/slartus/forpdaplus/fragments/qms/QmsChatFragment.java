@@ -129,7 +129,7 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
     public static String getEncoding() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
+        SharedPreferences prefs = App.getInstance().getPreferences();
 
         return prefs.getString("qms.chat.encoding", "UTF-8");
 
@@ -212,7 +212,7 @@ public class QmsChatFragment extends WebViewFragment {
         wvChat.addJavascriptInterface(this, "HTMLOUT");
         wvChat.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
         m_WebViewExternals = new WebViewExternals(this);
-        m_WebViewExternals.loadPreferences(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
+        m_WebViewExternals.loadPreferences(App.getInstance().getPreferences());
 
         m_WebViewExternals.setWebViewSettings(true);
 
@@ -458,9 +458,7 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
     private void loadPrefs() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-        m_UpdateTimeout = ExtPreferences.parseInt(preferences, "qms.chat.update_timer", 15) * 1000;
+        m_UpdateTimeout = ExtPreferences.parseInt(App.getInstance().getPreferences(), "qms.chat.update_timer", 15) * 1000;
     }
 
     private void checkNewQms() {
@@ -609,20 +607,6 @@ public class QmsChatFragment extends WebViewFragment {
 
             }
         }, 0L, m_UpdateTimeout);
-
-    }
-
-    private void saveScale(float scale) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putFloat("qms.ZoomLevel", scale);
-        editor.commit();
-    }
-
-    private float loadScale() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-        return prefs.getFloat("qms.ZoomLevel", wvChat.getScrollY());
 
     }
 

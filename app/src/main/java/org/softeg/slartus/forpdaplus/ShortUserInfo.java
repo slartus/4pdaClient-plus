@@ -76,7 +76,7 @@ public class ShortUserInfo {
     };
 
     public ShortUserInfo(Activity activity, View view) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+        prefs = App.getInstance().getPreferences();
         client = Client.getInstance();
         mActivity = activity;
         this.view = view;

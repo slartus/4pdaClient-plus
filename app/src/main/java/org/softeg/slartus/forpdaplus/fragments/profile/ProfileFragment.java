@@ -356,7 +356,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
             try {
                 Profile profile = ProfileApi.getProfile(Client.getInstance(),
                         args.getString(USER_ID_KEY),
-                        PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isSquareAvarars", false) ? "" : "circle");
+                        App.getInstance().getPreferences().getBoolean("isSquareAvarars", false) ? "" : "circle");
                 ProfileHtmlBuilder builder = new ProfileHtmlBuilder();
                 builder.beginHtml(profile.getNick().toString());
                 builder.beginBody("profile");

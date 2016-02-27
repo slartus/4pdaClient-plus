@@ -319,11 +319,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         });
         hideMessagePanel();
         closeSearch();
-        loadPreferences(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
+        loadPreferences(App.getInstance().getPreferences());
         showTheme(IntentActivity.normalizeThemeUrl(getArguments().getString(TOPIC_URL_KEY)));
 
         setFabColors(fab);
-        if(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false))
+        if(App.getInstance().getPreferences().getBoolean("pancilInActionBar",false))
             fab.setVisibility(View.GONE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -402,7 +402,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             LoadsImagesAutomatically = "null".equals(sLoadsImagesAutomatically) ? null : Boolean.parseBoolean(sLoadsImagesAutomatically);
 
 
-            loadPreferences(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
+            loadPreferences(App.getInstance().getPreferences());
             m_History = (ArrayList<SessionHistory>) outState.getSerializable("History");
             assert m_History != null;
             if (m_History.size() > 0) {
@@ -546,7 +546,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         super.onCreateOptionsMenu(menu, inflater);
 
         try {
-            boolean pancil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false);
+            boolean pancil = App.getInstance().getPreferences().getBoolean("pancilInActionBar",false);
             if(pancil) {
                 menu.add("Написать")
                         .setIcon(R.drawable.ic_pencil_white_24dp)
@@ -604,9 +604,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         }
                     });
 
-
-
-            final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getMainActivity().getApplicationContext());
             mTopicOptionsMenu = addOptionsMenu(getMainActivity(), getHandler(), menu, true, getLastUrl());
 
             menu.add("Ссылка").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -695,7 +692,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
             optionsMenu.add("Стиль").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
-                    showStylesDialog(prefs);
+                    showStylesDialog(App.getInstance().getPreferences());
                     return true;
                 }
             });

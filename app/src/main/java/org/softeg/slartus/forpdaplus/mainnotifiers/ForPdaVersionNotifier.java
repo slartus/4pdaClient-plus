@@ -83,7 +83,7 @@ public class ForPdaVersionNotifier extends MainNotifier {
         Boolean siteVersionsNewer;
 
         final String version = versionObject.getString("ver").trim();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = App.getInstance().getPreferences();
         if (version.equals(prefs.getString("client.version.4pda", "")))
             return;
         prefs.edit().putString("client.version.4pda", version).apply();

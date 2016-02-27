@@ -51,23 +51,19 @@ public class DonateNotifier extends MainNotifier {
     }
 
     protected boolean needShow() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
+        SharedPreferences prefs = App.getInstance().getPreferences();
         if (prefs.getBoolean("donate.DontShow", false)) return false;
-
 
         String appVersion = getAppVersion(App.getContext());
         if (prefs.getString("DonateShowVer", "").equals(appVersion)) {
             if (!isTime()) return false;
         }
-        prefs.edit().putString("DonateShowVer", appVersion).commit();
+        prefs.edit().putString("DonateShowVer", appVersion).apply();
         return true;
     }
 
     protected void saveSettings() {
         saveTime();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("DonateShowVer", getAppVersion(App.getContext()));
-        editor.commit();
+        App.getInstance().getPreferences().edit().putString("DonateShowVer", getAppVersion(App.getContext())).apply();
     }
 }

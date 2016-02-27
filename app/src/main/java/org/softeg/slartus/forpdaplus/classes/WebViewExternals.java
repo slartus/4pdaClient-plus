@@ -103,7 +103,7 @@ public class WebViewExternals {
     public static Boolean isLoadImages(String prefix) {
         if (ThemeFragment.LoadsImagesAutomatically != null)
             return ThemeFragment.LoadsImagesAutomatically;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+        SharedPreferences prefs = App.getInstance().getPreferences();
         return isLoadImages(prefs, prefix);
     }
 
@@ -129,9 +129,9 @@ public class WebViewExternals {
         if (m_UseVolumesScroll) {
             int action = event.getAction();
 
-            String scrollUpKeys = "," + PreferenceManager.getDefaultSharedPreferences(App.getContext())
+            String scrollUpKeys = "," + App.getInstance().getPreferences()
                     .getString("keys.scrollUp", "24").replace(" ", "") + ",";
-            String scrollDownKeys = "," + PreferenceManager.getDefaultSharedPreferences(App.getContext())
+            String scrollDownKeys = "," + App.getInstance().getPreferences()
                     .getString("keys.scrollDown", "25").replace(" ", "") + ",";
 
             int keyCode = event.getKeyCode();
@@ -158,9 +158,9 @@ public class WebViewExternals {
     private boolean pageNavigationsByKeys(KeyEvent event) {
         int action = event.getAction();
         if (action == KeyEvent.ACTION_DOWN) {
-            String prevPageKeys = "," + PreferenceManager.getDefaultSharedPreferences(App.getContext())
+            String prevPageKeys = "," + App.getInstance().getPreferences()
                     .getString("keys.prevPage", "158").replace(" ", "") + ",";
-            String nextPageKeys = "," + PreferenceManager.getDefaultSharedPreferences(App.getContext())
+            String nextPageKeys = "," + App.getInstance().getPreferences()
                     .getString("keys.nextPage", "407").replace(" ", "") + ",";
 
             int keyCode = event.getKeyCode();

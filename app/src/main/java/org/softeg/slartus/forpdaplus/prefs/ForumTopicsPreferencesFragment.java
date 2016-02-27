@@ -22,7 +22,7 @@ public class ForumTopicsPreferencesFragment extends PreferenceFragment {
 
         assert getActivity() != null;
         Bundle args = getArguments();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(App.getContext());
+        SharedPreferences preferences = App.getInstance().getPreferences();
         if (args != null) {
             String listName = args.getString("listname");
             assert listName != null;

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -190,7 +191,7 @@ public class Post {
             final String themeId,
             final String postId) {
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        final SharedPreferences prefs = App.getInstance().getPreferences();
         if(prefs.getBoolean("showClaimWarn",true)){
             new MaterialDialog.Builder(context)
                     .title("Примечание")

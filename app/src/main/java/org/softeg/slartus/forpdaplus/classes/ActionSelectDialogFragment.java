@@ -11,6 +11,8 @@ import android.view.View;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.App;
+
 import java.util.Arrays;
 
 /**
@@ -27,7 +29,7 @@ public class ActionSelectDialogFragment {
                                                     final String preferenceKey,
                                                     final String selectedAction,
                                                     final Runnable showTopicAction) {
-        final String navigateAction = PreferenceManager.getDefaultSharedPreferences(context)
+        final String navigateAction = App.getInstance().getPreferences()
                 .getString(preferenceKey, null);
         if (navigateAction == null || !selectedAction.equals(navigateAction)) {
             showSelectDialog(context, preferenceKey, selectedAction, showTopicAction);
@@ -49,7 +51,7 @@ public class ActionSelectDialogFragment {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
-                        PreferenceManager.getDefaultSharedPreferences(context)
+                        App.getInstance().getPreferences()
                                 .edit().putString(preferenceKey, selectedAction).commit();
 
                         showTopicAction.run();
@@ -64,7 +66,7 @@ public class ActionSelectDialogFragment {
                 .onNeutral(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
-                        PreferenceManager.getDefaultSharedPreferences(context)
+                        App.getInstance().getPreferences()
                                 .edit().putString(preferenceKey, null).commit();
 
                         showTopicAction.run();
@@ -80,8 +82,7 @@ public class ActionSelectDialogFragment {
                                final CharSequence[] values,
                                final OkListener okListener,
                                final String hintForChangeDefault) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        final String value = prefs.getString(preferenceKey, null);
+        final String value = App.getInstance().getPreferences().getString(preferenceKey, null);
 
         if (Arrays.asList(values).contains(value)) {
             okListener.execute(value);
@@ -107,7 +108,7 @@ public class ActionSelectDialogFragment {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
                         final CharSequence newValue = values[selectedValue[0]];
-                        PreferenceManager.getDefaultSharedPreferences(context)
+                        App.getInstance().getPreferences()
                                 .edit()
                                 .putString(preferenceKey, newValue.toString())
                                 .commit();

@@ -103,7 +103,7 @@ public class ForumTopicsListFragment extends TopicsListFragment {
 
     @Override
     protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException, ParseException, URISyntaxException {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+        SharedPreferences prefs = App.getInstance().getPreferences();
         if (mUrl == null) {
             List<NameValuePair> qparams = new ArrayList<NameValuePair>();
             qparams.add(new BasicNameValuePair("showforum", getForumId()));

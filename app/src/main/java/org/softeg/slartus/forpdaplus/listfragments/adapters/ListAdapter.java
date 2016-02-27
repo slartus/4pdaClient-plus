@@ -145,7 +145,7 @@ public class ListAdapter extends BaseAdapter implements Filterable {
 
         switch (topic.getState()) {
             case IListItem.STATE_GREEN:
-                if (PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("oldIndicator", false)) {
+                if (App.getInstance().getPreferences().getBoolean("oldIndicator", false)) {
                     setVisibility(holder.Flag, View.VISIBLE);
                     holder.Flag.setBackgroundColor(App.getContext().getResources().getColor(R.color.new_flag));
                 }

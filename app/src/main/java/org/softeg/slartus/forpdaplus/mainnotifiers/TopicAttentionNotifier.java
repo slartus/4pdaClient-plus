@@ -38,7 +38,7 @@ public class TopicAttentionNotifier extends MainNotifier {
     @Override
     protected boolean isTime() {
         GregorianCalendar lastShowpromoCalendar = new GregorianCalendar();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
+        SharedPreferences prefs = App.getInstance().getPreferences();
         Date lastCheckDate = ExtPreferences.getDateTime(prefs, "notifier." + name, null);
         if (lastCheckDate == null) {
             saveTime();

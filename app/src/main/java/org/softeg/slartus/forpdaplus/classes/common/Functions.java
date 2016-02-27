@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import org.softeg.slartus.forpdaplus.App;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,7 +28,7 @@ public class Functions {
 
 
     public static Boolean isWebviewAllowJavascriptInterface(Context context) {
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        final SharedPreferences prefs = App.getInstance().getPreferences();
         return prefs.getBoolean("system.WebviewAllowJavascriptInterface", true);
 //        return !Build.VERSION.RELEASE.startsWith("2.3")|| Build.VERSION.RELEASE.equals("2.3.7")
 //                || Build.VERSION.RELEASE.equals("2.3.4");

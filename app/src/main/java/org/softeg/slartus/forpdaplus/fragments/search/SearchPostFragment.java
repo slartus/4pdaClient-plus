@@ -181,7 +181,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
             }
         });
         m_WebViewExternals = new WebViewExternals(this);
-        m_WebViewExternals.loadPreferences(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
+        m_WebViewExternals.loadPreferences(App.getInstance().getPreferences());
         configWebView();
         m_WebViewExternals.setWebViewSettings();
 
@@ -246,8 +246,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         mWvBody.getSettings().setDomStorageEnabled(true);
         mWvBody.getSettings().setAllowFileAccess(true);
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-        if (prefs.getBoolean("system.WebViewScroll", true)) {
+        if (App.getInstance().getPreferences().getBoolean("system.WebViewScroll", true)) {
             mWvBody.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
             mWvBody.setScrollbarFadingEnabled(false);
         }

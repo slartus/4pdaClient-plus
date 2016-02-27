@@ -42,11 +42,11 @@ public class TopicUtils {
      * Какой тип навигации юзер выбрал:  getlastpost, getfirstpost и тд
      */
     public static String getTopicNavigateAction(CharSequence template) {
-        return PreferenceManager.getDefaultSharedPreferences(App.getContext()).getString(String.format("%s.navigate_action", template), null);
+        return App.getInstance().getPreferences().getString(String.format("%s.navigate_action", template), null);
     }
 
     public static void saveTopicNavigateAction(CharSequence template, CharSequence navigateAction) {
-        PreferenceManager.getDefaultSharedPreferences(App.getContext())
+        App.getInstance().getPreferences()
                 .edit()
                 .putString(String.format("%s.navigate_action", template), navigateAction.toString())
                 .commit();

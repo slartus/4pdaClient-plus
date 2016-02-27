@@ -42,7 +42,7 @@ public class Smiles extends ArrayList<Smile> {
     }
 
     public void setWeights() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(App.getContext());
+        SharedPreferences preferences = App.getInstance().getPreferences();
         String weights = preferences.getString("smiles.weights", "");
         Matcher m = Pattern.compile("(.*?):(\\d+);").matcher(weights);
         while (m.find()) {
@@ -54,17 +54,16 @@ public class Smiles extends ArrayList<Smile> {
 
     private void saveWeights() {
         normalizeWights();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(App.getContext());
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("smiles.weights", getWeightString());
-        editor.commit();
+        App.getInstance().getPreferences().edit()
+                .putString("smiles.weights", getWeightString())
+                .apply();
 
     }
 
     private String getWeightString() {
         StringBuilder sb = new StringBuilder();
         for (Smile smile : this) {
-            sb.append(smile.FileName + ":" + smile.Weight + ";");
+            sb.append(smile.FileName).append(":").append(smile.Weight).append(";");
         }
         return sb.toString();
     }

@@ -29,7 +29,7 @@ public class BasePreferencesActivity extends PreferenceActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(App.getInstance().getPrefsThemeStyleResID());
         super.onCreate(savedInstanceState);
-        if (PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("coloredNavBar", true) &&
+        if (App.getInstance().getPreferences().getBoolean("coloredNavBar", true) &&
                 android.os.Build.VERSION.SDK_INT >= 21)
             getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(App.getInstance().getNavBarColor()));
     }

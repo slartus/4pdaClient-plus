@@ -206,10 +206,9 @@ public class EditPostFragment extends GeneralFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.edit_post_plus, container, false);
         setHasOptionsMenu(true);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
 
         progress_search = (ProgressBar) findViewById(R.id.progress_search);
-        lastSelectDirPath = prefs.getString("EditPost.AttachDirPath", lastSelectDirPath);
+        lastSelectDirPath = App.getInstance().getPreferences().getString("EditPost.AttachDirPath", lastSelectDirPath);
 
         m_BottomPanel = findViewById(R.id.bottomPanel);
 
@@ -613,10 +612,7 @@ public class EditPostFragment extends GeneralFragment {
 
     private void saveAttachDirPath(String attachFilePath) {
         lastSelectDirPath = FileUtils.getDirPath(attachFilePath);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("EditPost.AttachDirPath", lastSelectDirPath);
-        editor.commit();
+        App.getInstance().getPreferences().edit().putString("EditPost.AttachDirPath", lastSelectDirPath).apply();
     }
 
 

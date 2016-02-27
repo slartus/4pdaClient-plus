@@ -28,6 +28,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.cookie.Cookie;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.HttpHelper;
 import org.softeg.slartus.forpdaplus.R;
@@ -111,8 +112,7 @@ public class DownloadsService extends IntentService {
     }
 
     public static String getDownloadDir(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString("downloads.path", getDefaultDownloadPath());
+        return App.getInstance().getPreferences().getString("downloads.path", getDefaultDownloadPath());
     }
 
     public static String getDefaultDownloadPath() {

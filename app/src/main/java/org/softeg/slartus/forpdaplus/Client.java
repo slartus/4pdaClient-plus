@@ -853,7 +853,6 @@ public class Client implements IHttpClient {
         TopicBodyBuilder topicBodyBuilder = new TopicBodyBuilder(context, logined, topic, urlParams,
                 isWebviewAllowJavascriptInterface);
 
-        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         //Boolean browserStyle = prefs.getBoolean("theme.BrowserStylePreRemove", false);
         topicBodyBuilder.beginTopic();
 

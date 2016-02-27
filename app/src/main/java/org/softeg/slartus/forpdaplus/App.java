@@ -154,26 +154,34 @@ public class App extends android.app.Application {
         return m_AtomicInteger.incrementAndGet();
     }
 
+    private SharedPreferences preferences;
+
+    public SharedPreferences getPreferences(){
+        if(preferences ==null)
+            preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        return preferences;
+    }
+
+
     public String getWebViewFont() {
-        return PreferenceManager.getDefaultSharedPreferences(this).getString("webViewFontName", "");
+        return getPreferences().getString("webViewFontName", "");
     }
 
     public int getColorAccent(String type) {
         int color = 0;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         switch(type) {
             case "Accent":
-                color = prefs.getInt("accentColor", Color.rgb(2, 119, 189));
+                color = getPreferences().getInt("accentColor", Color.rgb(2, 119, 189));
                 break;
             case "Pressed":
-                color = prefs.getInt("accentColorPressed", Color.rgb(0, 89, 159));
+                color = getPreferences().getInt("accentColorPressed", Color.rgb(0, 89, 159));
                 break;
         }
         return color;
     }
     public int getMainAccentColor() {
         int color = R.color.accentPink;
-        switch (PreferenceManager.getDefaultSharedPreferences(this).getString("mainAccentColor", "pink")) {
+        switch (getPreferences().getString("mainAccentColor", "pink")) {
             case "pink":
                 color  = R.color.accentPink;
                 break;
@@ -188,8 +196,7 @@ public class App extends android.app.Application {
     }
     public int getThemeStyleResID() {
         int theme = R.style.ThemeLight;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String color = prefs.getString("mainAccentColor", "pink");
+        String color = getPreferences().getString("mainAccentColor", "pink");
         int themeType = getThemeType();
         if (themeType==THEME_TYPE_LIGHT){
             switch (color) {
@@ -232,8 +239,7 @@ public class App extends android.app.Application {
     }
     public int getPrefsThemeStyleResID() {
         int theme = R.style.ThemePrefsLightPink;
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String color = prefs.getString("mainAccentColor", "pink");
+        String color = getPreferences().getString("mainAccentColor", "pink");
         int themeType = getThemeType();
         if (themeType==THEME_TYPE_LIGHT){
             switch (color) {
@@ -357,8 +363,7 @@ public class App extends android.app.Application {
     }
 
     public String getCurrentTheme() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        return preferences.getString("appstyle", Integer.toString(THEME_LIGHT));
+        return getPreferences().getString("appstyle", Integer.toString(THEME_LIGHT));
     }
 
     public String getCurrentThemeName() {
@@ -401,7 +406,7 @@ public class App extends android.app.Application {
         int theme = Integer.parseInt(themeStr);
         if (theme == -1)
             return themeStr;
-        String color = PreferenceManager.getDefaultSharedPreferences(this).getString("mainAccentColor", "pink");
+        String color = getPreferences().getString("mainAccentColor", "pink");
         switch (theme) {
             case THEME_LIGHT:
                 switch (color) {
@@ -554,12 +559,9 @@ public class App extends android.app.Application {
         try {
             if (!QmsNotifier.isUse(getContext()))
                 return;
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-
             Intent intent = new Intent(INSTANCE, MainService.class);
             intent.putExtra("CookiesPath", PreferencesActivity.getCookieFilePath(INSTANCE));
-            intent.putExtra(QmsNotifier.TIME_OUT_KEY, Math.max(ExtPreferences.parseFloat(sharedPreferences,
+            intent.putExtra(QmsNotifier.TIME_OUT_KEY, Math.max(ExtPreferences.parseFloat(App.getInstance().getPreferences(),
                     QmsNotifier.TIME_OUT_KEY, 5), 1));
 
             QmsNotifier.restartTask(INSTANCE, intent);
@@ -608,11 +610,10 @@ public class App extends android.app.Application {
         m_FavoritesNotifierStarted = true;
         try {
             if (!FavoritesNotifier.isUse(getContext())) return;
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
             Intent intent = new Intent(INSTANCE, MainService.class);
             intent.putExtra("CookiesPath", PreferencesActivity.getCookieFilePath(INSTANCE));
-            intent.putExtra(FavoritesNotifier.TIME_OUT_KEY, Math.max(ExtPreferences.parseFloat(sharedPreferences,
+            intent.putExtra(FavoritesNotifier.TIME_OUT_KEY, Math.max(ExtPreferences.parseFloat(App.getInstance().getPreferences(),
                     FavoritesNotifier.TIME_OUT_KEY, 5), 1));
 
             FavoritesNotifier.restartTask(INSTANCE, intent);

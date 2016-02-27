@@ -166,7 +166,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         fab = (FloatingActionButton) findViewById(R.id.fab);
         setHideFab(fab);
         setFabColors(fab);
-        if(Client.getInstance().getLogined()&!PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar", false))
+        if(Client.getInstance().getLogined()&!App.getInstance().getPreferences().getBoolean("pancilInActionBar", false))
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -184,7 +184,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        boolean pencil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar", false);
+        boolean pencil = App.getInstance().getPreferences().getBoolean("pancilInActionBar", false);
         if(Client.getInstance().getLogined()&pencil){
             menu.add("Комментировать").setIcon(R.drawable.ic_pencil_white_24dp)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -545,7 +545,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
 
         private String normalizeCommentUrls(String body) {
-            if(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("loadNewsComment", false)){
+            if(App.getInstance().getPreferences().getBoolean("loadNewsComment", false)){
                 body = body.replaceAll("(<div class=\"comment-box\" id=\"comments\">[\\s\\S]*?<ul class=\"page-nav box\">[\\s\\S]*?<\\/ul>)", "");
             }
 

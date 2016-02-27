@@ -79,7 +79,7 @@ public class HtmlBuilder{
         m_Body.append("<body id=\"").append(id).append("\" class=\"modification ")
                 .append(isImage ? "" : "noimages ")
                 .append(App.getInstance().isNewYear() ? "newyear " : "")
-                .append(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("isAccelerateGif", false) ? "ongpuimg \" " : "\" ");
+                .append(App.getInstance().getPreferences().getBoolean("isAccelerateGif", false) ? "ongpuimg \" " : "\" ");
         if(App.getInstance().getWebViewFont().equals("")) {
             m_Body.append(" ");
         }else {

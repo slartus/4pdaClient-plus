@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import org.softeg.slartus.forpdacommon.ExtPreferences;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 
@@ -62,7 +63,7 @@ public class SummaryValueListPreference extends ListPreference {
 
     private void setCurrentSummary() {
         try {
-            String value = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(getKey(), null);
+            String value = App.getInstance().getPreferences().getString(getKey(), null);
             if (TextUtils.isEmpty(value)) {
                 Object defValue = ExtPreferences.getPreferenceDefaultValue(this);
                 if (defValue == null)

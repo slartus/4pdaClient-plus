@@ -125,7 +125,7 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     public static void showYoutubeChoiceDialog(final Activity activity, final CharSequence youtubeUrl) {
-        int savedSelectedPlayer = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(App.getContext())
+        int savedSelectedPlayer = Integer.parseInt(App.getInstance().getPreferences()
                 .getString("news.videoplayer", "-1"));
         if (savedSelectedPlayer != -1) {
             startVideo(savedSelectedPlayer, activity, youtubeUrl);
@@ -149,7 +149,7 @@ public class PlayerActivity extends AppCompatActivity {
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
-                        PreferenceManager.getDefaultSharedPreferences(App.getContext())
+                        App.getInstance().getPreferences()
                                 .edit()
                                 .putString("news.videoplayer", Integer.toString(selected_player[0]))
                                 .commit();

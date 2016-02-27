@@ -355,7 +355,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         }
                         @Override
                         public void onNeutral(MaterialDialog dialog) {
-                            PreferenceManager.getDefaultSharedPreferences(App.getContext())
+                            App.getInstance().getPreferences()
                                     .edit()
                                     .putString("userInfoBg", "")
                                     .putBoolean("isUserBackground", false)
@@ -375,7 +375,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     if (null == data) return;
                     Uri selectedImageUri = data.getData();
                     String selectedImagePath = ImageFilePath.getPath(getApplicationContext(), selectedImageUri);
-                    PreferenceManager.getDefaultSharedPreferences(App.getContext())
+                    App.getInstance().getPreferences()
                             .edit()
                             .putString("userInfoBg", selectedImagePath)
                             .putBoolean("isUserBackground", true)
@@ -386,7 +386,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
         public void webViewFontDialog(){
             try{
-                final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                final SharedPreferences prefs = App.getInstance().getPreferences();
                 final int[] selected = {prefs.getInt("webViewFont", 0)};
                 final CharSequence[] name = {""};
                 final boolean[] dialogShowed = {false};
@@ -445,7 +445,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
         }
         private void showMainAccentColorDialog(){
             try{
-                final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                final SharedPreferences prefs = App.getInstance().getPreferences();
                 String string = prefs.getString("mainAccentColor", "pink");
                 int position = -1;
                 switch (string) {
@@ -517,7 +517,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
         private void showAccentColorDialog() {
 
             try {
-                final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                final SharedPreferences prefs = App.getInstance().getPreferences();
 
                 int prefColor = (int) Long.parseLong(String.valueOf(prefs.getInt("accentColor", Color.rgb(2, 119, 189))), 10);
                 //int prefColor = (int) Long.parseLong(String.valueOf(prefs.getInt("accentColor", Color.rgb(96, 125, 139))), 10);
@@ -714,7 +714,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             super.onActivityResult(requestCode, resultCode, data);
             if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
                 Uri uri = data.getData();
-                PreferenceManager.getDefaultSharedPreferences(getActivity())
+                App.getInstance().getPreferences()
                         .edit()
                         .putString("userBackground", uri.toString())
                         .commit();
@@ -753,7 +753,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                     Toast.makeText(getActivity(), getString(R.string.ChooseStyle), Toast.LENGTH_LONG).show();
                                     return;
                                 }
-                                PreferenceManager.getDefaultSharedPreferences(getActivity())
+                                App.getInstance().getPreferences()
                                         .edit()
                                         .putString("appstyle", newstyleValues.get(selected[0]).toString())
                                         .commit();
@@ -987,8 +987,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
     }
 
     public static String getCookieFilePath(Context context) throws IOException {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String res = prefs.getString("cookies.path", "");
+        String res = App.getInstance().getPreferences().getString("cookies.path", "");
 
         if (TextUtils.isEmpty(res))
             res = getAppCookiesPath();

@@ -72,18 +72,15 @@ public class LoginDialog {
     }
 
     protected void saveData() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("LoginPrivacy", privacy_checkbox.isChecked());
-        editor.putString("Login", username_edit.getText().toString());
-        editor.apply();
+        App.getInstance().getPreferences().edit()
+                .putBoolean("LoginPrivacy", privacy_checkbox.isChecked())
+                .putString("Login", username_edit.getText().toString())
+                .apply();
     }
 
     protected void loadData() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-        privacy_checkbox.setChecked(preferences.getBoolean("LoginPrivacy", false));
-        username_edit.setText(preferences.getString("Login", ""));
-
+        privacy_checkbox.setChecked(App.getInstance().getPreferences().getBoolean("LoginPrivacy", false));
+        username_edit.setText(App.getInstance().getPreferences().getString("Login", ""));
     }
 
 
@@ -115,7 +112,7 @@ public class LoginDialog {
     public static void logout(Context context) {
         LogoutTask logoutTask = new LogoutTask(context);
         logoutTask.execute();
-        PreferenceManager.getDefaultSharedPreferences(context).edit()
+        App.getInstance().getPreferences().edit()
                 .putBoolean("isRecdRepImage", false)
                 .putString("repPlusImage", "http://s.4pda.to/ShmfPSURw3VD2aNlTerb3hvYwGCMxd4z0muJ.gif")
                 .apply();
@@ -251,7 +248,7 @@ public class LoginDialog {
             }
             doOnUserChangedListener(login, success);
             Client.getInstance().doOnUserChangedListener(login, success);
-            PreferenceManager.getDefaultSharedPreferences(App.getContext()).edit().putBoolean("needLoadRepImage", success).apply();
+            App.getInstance().getPreferences().edit().putBoolean("needLoadRepImage", success).apply();
             if (success) {
                 Toast.makeText(mContext, "Вход выполнен",
                         Toast.LENGTH_SHORT).show();
@@ -328,7 +325,7 @@ public class LoginDialog {
                 this.dialog.dismiss();
             }
             doOnUserChangedListener(m_Login, success);
-            PreferenceManager.getDefaultSharedPreferences(App.getContext()).edit().putBoolean("needLoadRepImage", !success).apply();
+            App.getInstance().getPreferences().edit().putBoolean("needLoadRepImage", !success).apply();
             if (success) {
                 Toast.makeText(mContext, "Выход выполнен",
                         Toast.LENGTH_SHORT).show();

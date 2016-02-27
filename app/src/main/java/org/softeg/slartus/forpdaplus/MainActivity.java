@@ -26,6 +26,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -35,6 +37,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
@@ -64,6 +67,7 @@ import org.softeg.slartus.forpdaplus.mainnotifiers.TopicAttentionNotifier;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
+import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +99,21 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     }
 
+    public class MyToolbar extends Toolbar{
+
+
+        public MyToolbar(Context context) {
+            super(context);
+        }
+
+        public MyToolbar(Context context, AttributeSet attrs) {
+            super(context, attrs);
+        }
+
+        public MyToolbar(Context context, AttributeSet attrs, int defStyleAttr) {
+            super(context, attrs, defStyleAttr);
+        }
+    }
 
     private final static String tabPrefix = "tab";
     private Handler mHandler = new Handler();
@@ -149,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         super.onCreate(saveInstance);
 
 
-        loadPreferences(PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
+        loadPreferences(App.getInstance().getPreferences());
         if(shortUserInfo!=null)
             shortUserInfo.mActivity = this;
         if(saveInstance!=null) {
@@ -203,14 +222,28 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 toolbar.setElevation(4);
                 appBarLayout.setElevation(4);
             }
+
             setSupportActionBar(toolbar);
+            if(App.getInstance().getPreferences().getBoolean("titleMarquee", false)){
+                Field field = Toolbar.class.getDeclaredField("mTitleTextView");
+                field.setAccessible(true);
+                Object value = field.get(toolbar);
+                if(value!=null){
+                    TextView textView = (TextView)value;
+                    textView.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+                    textView.setHorizontallyScrolling(true);
+                    textView.setMarqueeRepeatLimit(3);
+                    textView.setSelected(true);
+                }
+            }
+
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setHomeButtonEnabled(true);
                 getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_left_white_24dp);
             }
-            if(PreferenceManager.getDefaultSharedPreferences(App.getContext()).getBoolean("statusbarTransparent", false)) {
+            if(App.getInstance().getPreferences().getBoolean("statusbarTransparent", false)) {
                 if (Build.VERSION.SDK_INT >= 21)
                     getWindow().setStatusBarColor(Color.TRANSPARENT);
             }else {
@@ -613,7 +646,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         return result;
     }
     public static SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(App.getContext());
+        return App.getInstance().getPreferences();
     }
 
     public void notifyTabAdapter(){

@@ -32,12 +32,10 @@ public class HtmlPreferences {
     }
 
     public static Boolean isUseLocalEmoticons(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getBoolean("theme.UseLocalEmoticons", true);
+        return App.getInstance().getPreferences().getBoolean("theme.UseLocalEmoticons", true);
     }
     public static Boolean isFullThemeTitle() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
-        return prefs.getBoolean("fullThemeTitle", false);
+        return App.getInstance().getPreferences().getBoolean("fullThemeTitle", false);
     }
 
     private static boolean getDefaultSpoilByButton() {
@@ -45,9 +43,8 @@ public class HtmlPreferences {
     }
 
     public void load(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        m_SpoilerByButton = prefs.getBoolean("theme.SpoilerByButton", getDefaultSpoilByButton());
-        m_UseLocalEmoticons = prefs.getBoolean("theme.UseLocalEmoticons", true);
+        m_SpoilerByButton = App.getInstance().getPreferences().getBoolean("theme.SpoilerByButton", getDefaultSpoilByButton());
+        m_UseLocalEmoticons = App.getInstance().getPreferences().getBoolean("theme.UseLocalEmoticons", true);
     }
 
     public static String modifySpoiler(String postBody) {

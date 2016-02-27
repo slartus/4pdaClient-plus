@@ -59,7 +59,7 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
     }
 
     public MainDrawerMenu(final Activity activity, SelectItemListener listener) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+        prefs = App.getInstance().getPreferences();
         DisplayMetrics displayMetrics = App.getInstance().getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels;
         if (dpWidth > displayMetrics.density * 400) {

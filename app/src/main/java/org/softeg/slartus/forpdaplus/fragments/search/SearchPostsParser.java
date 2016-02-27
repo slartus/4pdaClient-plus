@@ -35,7 +35,7 @@ public class SearchPostsParser extends HtmlBuilder {
     private Hashtable<String, String> m_EmoticsDict;
 
     public SearchPostsParser() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
+        SharedPreferences prefs = App.getInstance().getPreferences();
         m_SpoilerByButton = prefs.getBoolean("theme.SpoilerByButton", false);
         m_EmoticsDict = Smiles.getSmilesDict();
     }

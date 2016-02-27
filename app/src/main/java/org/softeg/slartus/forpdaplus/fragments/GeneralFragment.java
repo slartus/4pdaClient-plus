@@ -90,7 +90,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     }
 
     public static SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(App.getContext());
+        return App.getInstance().getPreferences();
     }
     private View.OnClickListener removeTabListener = new View.OnClickListener() {
         @Override

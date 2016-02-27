@@ -461,7 +461,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
             if (!TextUtils.isEmpty(user.NewCount)) {
                 holder.txtCount.setText(user.NewCount);
                 holder.txtAllCount.setText(user.Count);
-                switch (PreferenceManager.getDefaultSharedPreferences(getContext()).getString("mainAccentColor", "pink")) {
+                switch (App.getInstance().getPreferences().getString("mainAccentColor", "pink")) {
                     case "pink":
                         holder.txtCount.setBackgroundResource(R.drawable.qmsnew);
                         break;

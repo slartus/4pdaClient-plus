@@ -100,9 +100,8 @@ public class SearchSettingsDialogFragment extends DialogFragment {
     }
 
     public static SearchSettings createDefaultSearchSettings() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         SearchSettings searchSettings = new SearchSettings(SearchSettings.SEARCH_TYPE_FORUM);
-        searchSettings.load(prefs);
+        searchSettings.load(App.getInstance().getPreferences());
         searchSettings.setQuery("");
         searchSettings.setUserName("");
         searchSettings.getTopicIds().clear();
@@ -111,9 +110,8 @@ public class SearchSettingsDialogFragment extends DialogFragment {
     }
 
     public static SearchSettings createForumSearchSettings() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         SearchSettings searchSettings = new SearchSettings(SearchSettings.SEARCH_TYPE_FORUM);
-        searchSettings.load(prefs);
+        searchSettings.load(App.getInstance().getPreferences());
         searchSettings.setQuery("");
         searchSettings.setUserName("");
         searchSettings.getForumsIds().clear();
@@ -137,7 +135,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
     }
 
     public static SearchSettings createUserTopicsSearchSettings(String userNick) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+        SharedPreferences prefs = App.getInstance().getPreferences();
         SearchSettings searchSettings = new SearchSettings(SearchSettings.SEARCH_TYPE_USER_TOPICS);
         searchSettings.load(prefs);
         searchSettings.setQuery("");
@@ -151,9 +149,8 @@ public class SearchSettingsDialogFragment extends DialogFragment {
     }
 
     public static SearchSettings createUserPostsSearchSettings(String userNick) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         SearchSettings searchSettings = new SearchSettings(SearchSettings.SEARCH_TYPE_USER_POSTS);
-        searchSettings.load(prefs);
+        searchSettings.load(App.getInstance().getPreferences());
         searchSettings.setSort(SearchSettings.RESULT_SORT_DATE_DESC);
         searchSettings.setQuery("");
         searchSettings.setResultView(SearchSettings.RESULT_VIEW_POSTS);
@@ -166,9 +163,8 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         return searchSettings;
     }
     public static SearchSettings createUserPostsInTopicSearchSettings(String userNick, String topic) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
         SearchSettings searchSettings = new SearchSettings(SearchSettings.SEARCH_TYPE_USER_POSTS);
-        searchSettings.load(prefs);
+        searchSettings.load(App.getInstance().getPreferences());
         searchSettings.setSort(SearchSettings.RESULT_SORT_DATE_DESC);
         searchSettings.setQuery("");
         searchSettings.setResultView(SearchSettings.RESULT_VIEW_POSTS);
@@ -274,7 +270,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
                     SearchSettings searchSettings = createSearchSettings();
                     searchSettings.setQuery("");
                     searchSettings.setUserName("");
-                    searchSettings.save(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).edit()).commit();
+                    searchSettings.save(App.getInstance().getPreferences().edit()).commit();
                 }
             });
         }

@@ -125,7 +125,7 @@ public class CuratorFragment extends WebViewFragment {
         view = inflater.inflate(R.layout.curator_fragment, container, false);
         webView = (AdvWebView) findViewById(R.id.wvBody);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if(PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false)){
+        if(App.getInstance().getPreferences().getBoolean("pancilInActionBar",false)){
             fab.setVisibility(View.GONE);
         }else {
             fab.setColorNormal(App.getInstance().getColorAccent("Accent"));
@@ -301,8 +301,7 @@ public class CuratorFragment extends WebViewFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        boolean pancil = PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("pancilInActionBar",false);
-        if(pancil) {
+        if(App.getInstance().getPreferences().getBoolean("pancilInActionBar",false)) {
             menu.add("Написать")
                     .setIcon(R.drawable.ic_auto_fix_white_24dp)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

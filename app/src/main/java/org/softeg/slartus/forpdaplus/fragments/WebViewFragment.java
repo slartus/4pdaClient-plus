@@ -125,7 +125,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setArrow();
-        loadPreferences(PreferenceManager.getDefaultSharedPreferences(App.getContext()));
+        loadPreferences(App.getInstance().getPreferences());
         if (Preferences.System.isDevSavePage()|
                 Preferences.System.isDevInterface()|
                 Preferences.System.isDevStyle())

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import org.softeg.slartus.forpdacommon.ExtPreferences;
+import org.softeg.slartus.forpdaplus.App;
 
 /**
  * User: slinkin
@@ -19,7 +20,7 @@ public class ListViewMethodsBridge {
 //        if (sdk < 8) {
 //            return getItemIdOld(i, l);
 //        }
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences prefs = App.getInstance().getPreferences();
 
         return getItemId(i, l) + ExtPreferences.parseInt(prefs, "topics.list.offset", 0);
     }

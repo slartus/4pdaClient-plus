@@ -55,7 +55,7 @@ public abstract class MainNotifier {
 
     protected boolean isTime() {
         GregorianCalendar lastShowpromoCalendar = new GregorianCalendar();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
+        SharedPreferences prefs = App.getInstance().getPreferences();
         Date lastCheckDate=ExtPreferences.getDateTime(prefs, "notifier." + name, null);
         if(lastCheckDate==null){
             saveTime();
@@ -71,9 +71,8 @@ public abstract class MainNotifier {
     }
 
     protected void saveTime() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getContext());
-        SharedPreferences.Editor editor = prefs.edit();
+        SharedPreferences.Editor editor = App.getInstance().getPreferences().edit();
         ExtPreferences.putDateTime(editor,  "notifier." + name, new Date());
-        editor.commit();
+        editor.apply();
     }
 }

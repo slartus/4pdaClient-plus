@@ -157,7 +157,7 @@ public class QmsContactsList extends BaseLoaderListFragment {
 
                 holder = new ViewHolder();
                 assert convertView != null;
-                if(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("isSquareAvarars",false)){
+                if(App.getInstance().getPreferences().getBoolean("isSquareAvarars",false)){
                     holder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatarSquare);
                 }else {
                     holder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
@@ -188,7 +188,7 @@ public class QmsContactsList extends BaseLoaderListFragment {
                 holder.txtNick.setTextAppearance(getContext(), R.style.QmsNew);
                 holder.txtCount.setTextAppearance(getContext(), R.style.QmsNew);
                 if (getContext() != null)
-                    switch (PreferenceManager.getDefaultSharedPreferences(getContext()).getString("mainAccentColor", "pink")) {
+                    switch (App.getInstance().getPreferences().getString("mainAccentColor", "pink")) {
                         case "pink":
                             holder.txtCount.setBackgroundResource(R.drawable.qmsnew);
                             break;

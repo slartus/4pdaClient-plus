@@ -85,7 +85,7 @@ public class TabDrawerMenu {
         mDrawer = (RelativeLayout) findViewById(R.id.tab_drawer);
         mListView = (ListView) findViewById(R.id.tab_list);
         mListView.setOnItemClickListener(new TabOnClickListener());
-        mListView.setStackFromBottom(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("tabsBottom", false));
+        mListView.setStackFromBottom(App.getInstance().getPreferences().getBoolean("tabsBottom", false));
 
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mDrawer.getLayoutParams();
         params.width = (int) dpWidth;

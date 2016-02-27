@@ -25,9 +25,7 @@ import java.util.Set;
  */
 public class Preferences {
     public static Boolean isLoadShortUserInfo() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-        boolean isLoadShortUserInfo = (boolean) prefs.getBoolean("isLoadShortUserInfo", false);
-        return isLoadShortUserInfo;
+        return App.getInstance().getPreferences().getBoolean("isLoadShortUserInfo", false);
     }
 
     public static Boolean isLoadImagesFromWeb(String listName) {
@@ -35,9 +33,7 @@ public class Preferences {
     }
 
     public static Boolean isLoadImages(String prefsKey) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-
-        int loadImagesType = ExtPreferences.parseInt(prefs, prefsKey, 1);
+        int loadImagesType = ExtPreferences.parseInt(App.getInstance().getPreferences(), prefsKey, 1);
         if (loadImagesType == 2) {
             return Connectivity.isConnectedWifi(App.getContext());
         }
@@ -46,80 +42,63 @@ public class Preferences {
     }
 
     public static Boolean isHideActionBar() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-        return prefs.getBoolean("actionbar.hide", true);
+        return App.getInstance().getPreferences().getBoolean("actionbar.hide", true);
     }
     public static void setHideActionBar(Boolean hide) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-        prefs.edit().putBoolean("actionbar.hide", hide).apply();
+        App.getInstance().getPreferences().edit().putBoolean("actionbar.hide", hide).apply();
     }
 
     public static Boolean isHideFab() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-        return prefs.getBoolean("fab.hide", true);
+        return App.getInstance().getPreferences().getBoolean("fab.hide", true);
     }
     public static void setHideFab(Boolean hide) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-        prefs.edit().putBoolean("fab.hide", hide).apply();
+        App.getInstance().getPreferences().edit().putBoolean("fab.hide", hide).apply();
     }
 
     public static Boolean isBrowserView() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-        return prefs.getBoolean("theme.BrowserStyle", true);
+        return App.getInstance().getPreferences().getBoolean("theme.BrowserStyle", true);
     }
     public static void setBrowserView(Boolean view) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-        prefs.edit().putBoolean("theme.BrowserStyle", view).apply();
+        App.getInstance().getPreferences().edit().putBoolean("theme.BrowserStyle", view).apply();
     }
 
     public static Boolean notifyBetaVersions() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-
-        return prefs.getBoolean("notify.beta_version", false);
+        return App.getInstance().getPreferences().getBoolean("notify.beta_version", false);
     }
 
     public static void setHideArrows(Boolean hide) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-
-        prefs.edit().putBoolean("hideArrows", hide).apply();
+        App.getInstance().getPreferences().edit().putBoolean("hideArrows", hide).apply();
     }
-    public static Boolean isHideArrows() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
 
-        return prefs.getBoolean("hideArrows", false);
+    public static Boolean isHideArrows() {
+        return App.getInstance().getPreferences().getBoolean("hideArrows", false);
     }
 
     public static int getFontSize(String prefix) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-        int res = ExtPreferences.parseInt(prefs, prefix + ".FontSize", 16);
+        int res = ExtPreferences.parseInt(App.getInstance().getPreferences(), prefix + ".FontSize", 16);
         return Math.max(Math.min(res, 72), 1);
     }
 
     public static void setFontSize(String prefix, int value) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-        prefs.edit().putString(prefix + ".FontSize", Integer.toString(value)).apply();
+        App.getInstance().getPreferences().edit().putString(prefix + ".FontSize", Integer.toString(value)).apply();
     }
 
     public static class Lists {
 
         public static Boolean getScrollByButtons() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("lists.scroll_by_buttons", false);
+            return App.getInstance().getPreferences().getBoolean("lists.scroll_by_buttons", false);
         }
 
         public static void setLastSelectedList(String listName) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putString("list.last_selected_list", listName).apply();
+            App.getInstance().getPreferences().edit().putString("list.last_selected_list", listName).apply();
         }
 
         public static String getLastSelectedList() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getString("list.last_selected_list", new NewsPagerBrickInfo().getName());
+            return App.getInstance().getPreferences().getString("list.last_selected_list", new NewsPagerBrickInfo().getName());
         }
 
         public static void addLastAction(String name) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            String[] lastActions = prefs.getString("lists.last_actions", "").split("\\|");
+            String[] lastActions = App.getInstance().getPreferences().getString("lists.last_actions", "").split("\\|");
 
             String newValue = name + "|";
             int max = 5;
@@ -131,36 +110,31 @@ public class Preferences {
                 max--;
                 if (max == 0) break;
             }
-            prefs.edit().putString("lists.last_actions", newValue).apply();
+            App.getInstance().getPreferences().edit().putString("lists.last_actions", newValue).apply();
         }
 
         public static String[] getLastActions() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getString("lists.last_actions", "").split("\\|");
+            return App.getInstance().getPreferences().getString("lists.last_actions", "").split("\\|");
         }
 
 
         public static boolean isRefresh() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("lists.refresh", true);
+            return App.getInstance().getPreferences().getBoolean("lists.refresh", true);
         }
         public static boolean isRefreshOnTab() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("lists.refresh_on_tab", true);
+            return App.getInstance().getPreferences().getBoolean("lists.refresh_on_tab", true);
         }
     }
 
     public static class List {
         public static class Favorites {
             public static Boolean isLoadFullPagesList() {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-                return prefs.getBoolean("lists.favorites.load_all", false);
+                return App.getInstance().getPreferences().getBoolean("lists.favorites.load_all", false);
             }
         }
 
         public static void setListSort(String listName, String value) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putString(listName + ".list.sort", value).apply();
+            App.getInstance().getPreferences().edit().putString(listName + ".list.sort", value).apply();
         }
 
         public static String defaultListSort() {
@@ -168,64 +142,54 @@ public class Preferences {
         }
 
         public static String getListSort(String listName, String defaultValue) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getString(listName + ".list.sort", defaultValue);
+            return App.getInstance().getPreferences().getString(listName + ".list.sort", defaultValue);
         }
 
         public static String getStartForumId() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getString(ForumBrickInfo.NAME + ".start_forum_id", null);
+            return App.getInstance().getPreferences().getString(ForumBrickInfo.NAME + ".start_forum_id", null);
         }
 
         public static Forum getStartForum() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            String id = prefs.getString(ForumBrickInfo.NAME + ".start_forum_id", null);
+            String id = App.getInstance().getPreferences().getString(ForumBrickInfo.NAME + ".start_forum_id", null);
             if (TextUtils.isEmpty(id))
                 return null;
-            String title = prefs.getString(ForumBrickInfo.NAME + ".start_forum_title", null);
+            String title = App.getInstance().getPreferences().getString(ForumBrickInfo.NAME + ".start_forum_title", null);
             if (TextUtils.isEmpty(title))
                 return null;
             return new Forum(id, title);
         }
 
         public static void setStartForum(String id, String title) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString(ForumBrickInfo.NAME + ".start_forum_id", id);
-            editor.putString(ForumBrickInfo.NAME + ".start_forum_title", title);
-
-            editor.apply();
+            App.getInstance().getPreferences().edit()
+                    .putString(ForumBrickInfo.NAME + ".start_forum_id", id)
+                    .putString(ForumBrickInfo.NAME + ".start_forum_title", title)
+                    .apply();
         }
     }
 
     public static class Forums {
 
         public static Boolean isShowImages() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("forum.list.show_images", true);
+            return App.getInstance().getPreferences().getBoolean("forum.list.show_images", true);
         }
     }
 
     public static class Topic {
 
         public static Boolean getReadersAndWriters() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("theme.ShowReadersAndWriters", false);
+            return App.getInstance().getPreferences().getBoolean("theme.ShowReadersAndWriters", false);
         }
 
         public static Boolean getSpoilFirstPost() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("theme.SpoilFirstPost", true);
+            return App.getInstance().getPreferences().getBoolean("theme.SpoilFirstPost", true);
         }
 
         public static Boolean getConfirmSend() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("theme.ConfirmSend", true);
+            return App.getInstance().getPreferences().getBoolean("theme.ConfirmSend", true);
         }
 
         public static void setConfirmSend(Boolean value) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putBoolean("theme.ConfirmSend", value).apply();
+            App.getInstance().getPreferences().edit().putBoolean("theme.ConfirmSend", value).apply();
         }
 
         public static Boolean isShowAvatars() {
@@ -238,12 +202,11 @@ public class Preferences {
         }
 
         public static int getShowAvatarsOpt() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return ExtPreferences.parseInt(prefs, "topic.show_avatar_opt", 0);
+            return ExtPreferences.parseInt(App.getInstance().getPreferences(), "topic.show_avatar_opt", 0);
         }
 
         public static void setShowAvatarsOpt(int value) {
-            PreferenceManager.getDefaultSharedPreferences(App.getInstance())
+            App.getInstance().getPreferences()
                     .edit().putInt("topic.show_avatar_opt", value).commit();
         }
 
@@ -256,12 +219,11 @@ public class Preferences {
         }
 
         public static int getHistoryLimit() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return ExtPreferences.parseInt(prefs, "topic.history_limit", 5);
+            return ExtPreferences.parseInt(App.getInstance().getPreferences(), "topic.history_limit", 5);
         }
 
         public static void setHistoryLimit(int value) {
-            PreferenceManager.getDefaultSharedPreferences(App.getInstance())
+            App.getInstance().getPreferences()
                     .edit().putInt("topic.history_limit", value).commit();
         }
 
@@ -270,28 +232,24 @@ public class Preferences {
 
 
             public static void setEnableEmotics(Boolean value) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-                prefs.edit().putBoolean("topic.post.enableemotics", value).apply();
+                App.getInstance().getPreferences().edit().putBoolean("topic.post.enableemotics", value).apply();
             }
 
             public static boolean getEnableEmotics() {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-                return prefs.getBoolean("topic.post.enableemotics", true);
+                return App.getInstance().getPreferences().getBoolean("topic.post.enableemotics", true);
             }
 
             public static void setEnableSign(Boolean value) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-                prefs.edit().putBoolean("topic.post.enablesign", value).apply();
+                App.getInstance().getPreferences().edit().putBoolean("topic.post.enablesign", value).apply();
             }
 
             public static boolean getEnableSign() {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-                return prefs.getBoolean("topic.post.enablesign", true);
+                return App.getInstance().getPreferences().getBoolean("topic.post.enablesign", true);
             }
 
             public static void addEmoticToFavorites(String name) {
                 name = name.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("]", "&#93;").replace("[", "&#91;");
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+                
                 Set<String> favoritesEmotics = getEmoticFavorites();
                 HashSet<String> newlist = new HashSet<>();
                 newlist.add(name);
@@ -305,13 +263,13 @@ public class Preferences {
                     max--;
                     if (max == 0) break;
                 }
-                prefs.edit().putStringSet("topic.post.emotics_favorites", newlist).apply();
+                App.getInstance().getPreferences().edit().putStringSet("topic.post.emotics_favorites", newlist).apply();
             }
 
             public static Set<String> getEmoticFavorites() {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
+                
                 try {
-                    return prefs.getStringSet("topic.post.emotics_favorites", new HashSet<String>());
+                    return App.getInstance().getPreferences().getStringSet("topic.post.emotics_favorites", new HashSet<String>());
                 } catch (Throwable ignored) {
                     return new HashSet<>();
                 }
@@ -322,20 +280,19 @@ public class Preferences {
     public static class System {
 
         public static boolean getWebviewCompatMode() {
-            return PreferenceManager.getDefaultSharedPreferences(App.getInstance()).getBoolean("webviewCompatMode", false);
+            return App.getInstance().getPreferences().getBoolean("webviewCompatMode", false);
         }
 
         public static void setSystemDir(String value) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putString("path.system_path", value).apply();
+            App.getInstance().getPreferences().edit().putString("path.system_path", value).apply();
         }
 
         public static String getSystemDir() {
             File dir = App.getInstance().getFilesDir();
             if (dir == null)
                 dir = App.getInstance().getExternalFilesDir(null);
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            String res = prefs.getString("path.system_path", dir.getPath());
+            
+            String res = App.getInstance().getPreferences().getString("path.system_path", dir.getPath());
             if (!res.endsWith(File.separator))
                 res = res.concat(File.separator);
             return res;
@@ -347,8 +304,7 @@ public class Preferences {
          * Снимите галочку, если программа падает при вызове темы. Например, для Nook Simple Touch
          */
         public static Boolean isShowWebViewScroll() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("system.WebViewScroll", true);
+            return App.getInstance().getPreferences().getBoolean("system.WebViewScroll", true);
         }
 
         public static boolean isScrollUpButton(int keyCode) {
@@ -360,49 +316,41 @@ public class Preferences {
         }
 
         public static boolean isPrefsButton(int keyCode, String prefKey, String defaultValue) {
-            String scrollUpKeys = "," + PreferenceManager.getDefaultSharedPreferences(App.getContext())
+            String scrollUpKeys = "," + App.getInstance().getPreferences()
                     .getString(prefKey, defaultValue).replace(" ", "") + ",";
             return (scrollUpKeys.contains("," + Integer.toString(keyCode) + ","));
         }
 
         public static boolean isDevSavePage() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("system.developerSavePage", false);
+            return App.getInstance().getPreferences().getBoolean("system.developerSavePage", false);
         }
 
         public static boolean isDevInterface() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("system.developerInterface", false);
+            return App.getInstance().getPreferences().getBoolean("system.developerInterface", false);
         }
 
         public static boolean isDevStyle() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("system.developerStyle", false);
+            return App.getInstance().getPreferences().getBoolean("system.developerStyle", false);
         }
 
         public static boolean isDevGrid() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("system.developerGrid", false);
+            return App.getInstance().getPreferences().getBoolean("system.developerGrid", false);
         }
 
         public static boolean isDevBounds() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("system.developerBounds", false);
+            return App.getInstance().getPreferences().getBoolean("system.developerBounds", false);
         }
 
         public static boolean isCurator() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("system.curator", false);
+            return App.getInstance().getPreferences().getBoolean("system.curator", false);
         }
 
         public static String getDrawerMenuPosition() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getString("system.drawermenuposition", "left");
+            return App.getInstance().getPreferences().getString("system.drawermenuposition", "left");
         }
 
         public static String getDownloadFilesDir() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            String res = prefs.getString("downloads.path", DownloadsService.getDownloadDir(App.getContext()));
+            String res = App.getInstance().getPreferences().getString("downloads.path", DownloadsService.getDownloadDir(App.getContext()));
             if (TextUtils.isEmpty(res))
                 return res;
             if (!res.endsWith(File.separator))
@@ -411,25 +359,22 @@ public class Preferences {
         }
 
         public static void setEvaluateJavascriptEnabled(boolean value) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putBoolean("system.EvaluateJavascriptEnabled", value).apply();
+            App.getInstance().getPreferences().edit().putBoolean("system.EvaluateJavascriptEnabled", value).apply();
         }
 
         public static boolean isEvaluateJavascriptEnabled() {
-            return PreferenceManager.getDefaultSharedPreferences(App.getInstance())
+            return App.getInstance().getPreferences()
                     .getBoolean("system.EvaluateJavascriptEnabled", true);
         }
     }
 
     public static class News {
         public static int getLastSelectedSection() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getInt("news.lastselectedsection", 0);
+            return App.getInstance().getPreferences().getInt("news.lastselectedsection", 0);
         }
 
         public static void setLastSelectedSection(int section) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putInt("news.lastselectedsection", section).apply();
+            App.getInstance().getPreferences().edit().putInt("news.lastselectedsection", section).apply();
         }
 
         public static int getFontSize() {
@@ -442,8 +387,8 @@ public class Preferences {
             }
 
             public static int getNewsListViewId() {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-                switch (prefs.getString("news.list.view", "full")) {
+                
+                switch (App.getInstance().getPreferences().getString("news.list.view", "full")) {
                     case "medium":
                         return R.layout.item_news_medium;
                     default:
@@ -455,13 +400,11 @@ public class Preferences {
 
     public static class Menu {
         public static boolean getGroupExpanded(int groupIndex) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("menu.GroupExpanded." + groupIndex, true);
+            return App.getInstance().getPreferences().getBoolean("menu.GroupExpanded." + groupIndex, true);
         }
 
         public static void setGroupExpanded(int groupIndex, Boolean expanded) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putBoolean("menu.GroupExpanded." + groupIndex, expanded).apply();
+            App.getInstance().getPreferences().edit().putBoolean("menu.GroupExpanded." + groupIndex, expanded).apply();
         }
     }
 
@@ -470,25 +413,21 @@ public class Preferences {
 
     public static class Attention {
         public static void setAttentionId(String value) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putString("attention.id", value).apply();
+            App.getInstance().getPreferences().edit().putString("attention.id", value).apply();
         }
 
         public static String getAttentionId() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getString("attention.id", null);
+            return App.getInstance().getPreferences().getString("attention.id", null);
         }
     }
 
     public static class Files {
         public static Boolean isConfirmDownload() {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            return prefs.getBoolean("files.ConfirmDownload", true);
+            return App.getInstance().getPreferences().getBoolean("files.ConfirmDownload", true);
         }
 
         public static void setConfirmDownload(boolean b) {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-            prefs.edit().putBoolean("files.ConfirmDownload", b).apply();
+            App.getInstance().getPreferences().edit().putBoolean("files.ConfirmDownload", b).apply();
         }
     }
 
@@ -526,17 +465,13 @@ public class Preferences {
         public static class Qms {
 
             public static void readQmsDone() {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-                prefs.edit().putBoolean("refreshQMSData", true).apply();
+                App.getInstance().getPreferences().edit().putBoolean("refreshQMSData", true).apply();
             }
 
             public static boolean isReadDone() {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(App.getInstance());
-                return prefs.getBoolean("refreshQMSData", false);
+                return App.getInstance().getPreferences().getBoolean("refreshQMSData", false);
             }
 
         }
-
-
     }
 }
