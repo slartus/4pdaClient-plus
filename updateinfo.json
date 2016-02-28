@@ -4,6 +4,8 @@
 	"apk":"link to github",
 	"info":"info text"
   },
-  "notice":"notice text",
-  "warning":"warning text"
+  "notice":false,
+  "notice_text":"notice text",
+  "warning":true,
+  "warning_text":"warning text"
 }
