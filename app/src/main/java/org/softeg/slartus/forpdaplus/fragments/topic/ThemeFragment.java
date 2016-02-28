@@ -47,6 +47,7 @@ import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdacommon.NotReportException;
+import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
@@ -64,6 +65,7 @@ import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.HelpTask;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewDialogFragment;
+import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
@@ -640,16 +642,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                             return true;
                         }
                     });
-
-            /*optionsMenu.add("Скрывать верхнюю панель")
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            Preferences.setHideActionBar(!Preferences.isHideActionBar());
-                            setHideActionBar();
-                            menuItem.setChecked(Preferences.isHideActionBar());
-                            return true;
-                        }
-                    }).setCheckable(true).setChecked(Preferences.isHideActionBar());*/
             if(!pancil) {
                 optionsMenu.add("Скрывать карандаш")
                         .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -696,25 +688,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     return true;
                 }
             });
-            /*optionsMenu.add("Вид как в браузере")
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            Preferences.setBrowserView(!Preferences.isBrowserView());
-                            new MaterialDialog.Builder(getMainActivity())
-                                    .content("Перезагрузить страницу?")
-                                    .positiveText("Ок")
-                                    .negativeText("Отмена")
-                                    .callback(new MaterialDialog.ButtonCallback() {
-                                        @Override
-                                        public void onPositive(MaterialDialog dialog) {
-                                            showTheme(getLastUrl());
-                                        }
-                                    })
-                                    .show();
-                            menuItem.setChecked(Preferences.isBrowserView());
-                            return true;
-                        }
-                    }).setCheckable(true).setChecked(Preferences.isBrowserView());*/
             if (Preferences.System.isCurator()) {
                 menu.add("Мультимодерация").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -1466,6 +1439,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }
     }
 
+    public List<ArrayList<String>> imageAttaches = new ArrayList<>();
     private class MyWebViewClient extends WebViewClient {
         private final long LOADING_ERROR_TIMEOUT = TimeUnit.SECONDS.toMillis(45);
 
@@ -1525,6 +1499,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 onPageStarted(view, url, null);
             }
             m_ScrollY = 0;
+
+            if(checkIsImage(url))
+                return true;
+
             if (checkIsTheme(url))
                 return true;
 
@@ -1593,6 +1571,35 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 }
             }
         };
+
+        private boolean checkIsImage(final String url){
+            final Pattern imagePattern = PatternExtensions.compile("http://.*?\\.(png|jpg|jpeg|gif)$");
+            if(!imagePattern.matcher(url).find()) return false;
+            if (!Client.getInstance().getLogined() && !Client.getInstance().hasLoginCookies()) {
+                Client.getInstance().showLoginForm(getContext(), new Client.OnUserChangedListener() {
+                    public void onUserChanged(String user, Boolean success) {
+                        if (success) {
+                            showImage(url);
+                        }
+                    }
+                });
+            }else {
+                showImage(url);
+            }
+            return true;
+        }
+
+        private void showImage(String url){
+            for(ArrayList<String> list:imageAttaches){
+                for(int i = 0; i<list.size();i++){
+                    if(list.get(i).equals(url)){
+                        ImgViewer.startActivity(getContext(), list, i);
+                        return;
+                    }
+                }
+            }
+            ImgViewer.startActivity(getContext(), url);
+        }
 
         private boolean checkIsPoll(String url) {
             Matcher m = Pattern.compile("4pda.ru.*?addpoll=1").matcher(url);

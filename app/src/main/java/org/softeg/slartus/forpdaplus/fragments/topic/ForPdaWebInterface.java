@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -24,6 +25,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
@@ -40,6 +46,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /*
  * Created by slinkin on 23.06.2015.
@@ -544,6 +551,22 @@ public class ForPdaWebInterface {
                 String url = "http://4pda.ru/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&poll_open=true&st=" +
                         getContext().getTopic().getCurrentPage() * getContext().getTopic().getPostsPerPageCount(getContext().getLastUrl());
                 getContext().showTheme(url);
+            }
+        });
+
+    }
+
+    @JavascriptInterface
+    public void sendPostsAttaches(final String json) {
+        run(new Runnable() {
+            @Override
+            public void run() {
+                for(JsonElement s:new JsonParser().parse(json).getAsJsonArray()){
+                    ArrayList<String> list1 = new ArrayList<>();
+                    for(JsonElement a:s.getAsJsonArray())
+                        list1.add(a.getAsString());
+                    getContext().imageAttaches.add(list1);
+                }
             }
         });
 

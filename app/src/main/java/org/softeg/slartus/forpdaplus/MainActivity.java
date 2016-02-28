@@ -767,14 +767,14 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         log("remove tab" + (tab != null ? tab.getTitle() : "tab ne sushestvuet((("));
         log("remove " + tag);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        hideFragments(transaction);
+        //hideFragments(transaction);
         transaction.remove(getSupportFragmentManager().findFragmentByTag(tag));
         transaction.commit();
         mTabDraweMenu.removeTab(tag);
     }
     public void removeTabs(List<TabItem> items){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        hideFragments(transaction);
+        //hideFragments(transaction);
         for(TabItem item:items) {
             transaction.remove(item.getFragment());
             App.getInstance().getTabItems().remove(item);

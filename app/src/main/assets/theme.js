@@ -28,7 +28,29 @@ function ready(){
 }
 document.addEventListener("DOMContentLoaded", ready);
 
-
+function getAttaches() {
+    var anchorList = document.querySelectorAll('div[id*="entry"]');
+    var jsonArr = [];
+    for (var i = 0; i < anchorList.length; i++) {
+        var post = anchorList[i].nextElementSibling;
+        if (post.className != 'post_container') break;
+        var attachList = post.querySelectorAll("a[rel*='lytebox']");
+        var obj = [];
+        for (var j = 0, count = 0; j < attachList.length; j++) {
+            var att = attachList[j].getAttribute('href');
+            if (att.match(/jpg|png|bmp|gif|jpeg/i)) {
+                obj.push(att);
+                count++;
+            }
+        }
+        if (!obj[0]) continue;
+        jsonArr.push(obj);
+    }
+    return jsonArr;
+}
+window.onload = function(){
+    HTMLOUT.sendPostsAttaches(JSON.stringify(getAttaches()))
+}
 
 
 function kek(postId, logined){
