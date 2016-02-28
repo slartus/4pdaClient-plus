@@ -1,14 +1,9 @@
 {
-	"version": "3.2.3",
-	"info": {
-		"download_url" : "link",
-		"description" : [
-			{
-				"position" : "hello world",
-				"position" : "version",
-				"position" : "test position",
-				"position" : "life is cool"
-			}
-		]
-	}
+  "update":{
+	"ver":"4.0",
+	"apk":"link to github",
+	"info":"info text"
+  },
+  "notice":"notice text",
+  "warning":"warning text"
 }
