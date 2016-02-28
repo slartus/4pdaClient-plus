@@ -474,7 +474,7 @@ public class PlayerActivity extends AppCompatActivity {
                 }
                 subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
-            subMenu = menu.addSubMenu("Ссылка").setIcon(R.drawable.abc_ic_menu_share_mtrl_alpha);
+            subMenu = menu.addSubMenu("Ссылка").setIcon(R.drawable.ic_share_white_24dp);
 
             addUrlMenu(getActivity(), subMenu, getMainActivity().getPlayedRequestUrl());
             subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
