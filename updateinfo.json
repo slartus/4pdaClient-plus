@@ -1,18 +1,14 @@
 {
-	"info": 
-	{
-		"version": "3.2.3"
-	},
-	"whatisnew": [
-		{
-			"item": "item new",
-			"item": "item new",
-		        "item": "item new",
-		        "item": "item new",
-		        "item": "item new",
-		        "item": "item new",
-		        "item": "item new",
-		        "item": "item new"
-		}
-	]
+	"version": "3.2.3",
+	"info": {
+		"download_url" : "link",
+		"description" : [
+			{
+				"position" : "hello world",
+				"position" : "version",
+				"position" : "test position",
+				"position" : "life is cool"
+			}
+		]
+	}
 }
