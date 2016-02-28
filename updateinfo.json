@@ -1,18 +1,9 @@
 {
-	"info": 
-	{
-		"version": "3.2.3"
-	},
-	"whatisnew": [
-		{
-			"item": "item new",
-			"item": "item new",
-		        "item": "item new",
-		        "item": "item new",
-		        "item": "item new",
-		        "item": "item new",
-		        "item": "item new",
-		        "item": "item new"
-		}
-	]
+  "update":{
+	"ver":"4.0",
+	"apk":"link to github",
+	"info":"info text"
+  },
+  "notice":"notice text",
+  "warning":"warning text"
 }
