@@ -7,5 +7,12 @@
   "notice":false,
   "notice_text":"notice text",
   "warning":true,
-  "warning_text":"warning text"
+  "warning_text":"warning text",
+
+  "test":[
+    {"title":"info 0"},
+    {"title":"info 1"},
+    {"title":"info 2"},
+    {"title":"info 3"}
+  ]
 }
