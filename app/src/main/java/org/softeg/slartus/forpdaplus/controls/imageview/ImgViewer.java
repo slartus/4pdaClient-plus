@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,10 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -32,9 +30,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.devdb.helpers.DevDbUtils;
@@ -56,7 +54,6 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     private static final String SELECTED_INDEX_KEY = "SELECTED_INDEX_KEY";
     private ArrayList<String> urls = new ArrayList<>();
     private SystemBarTintManager tintManager;
-    private int selectedIndex = 0;
     private int index = 0;
     private ShareActionProvider shareActionProvider;
 
@@ -135,7 +132,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
 
 
         mVisible = true;
-        initUI();
+
 
         if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(IMAGE_URLS_KEY)) {
             urls = getIntent().getExtras().getStringArrayList(IMAGE_URLS_KEY);
@@ -150,7 +147,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
         else if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(SELECTED_INDEX_KEY)) {
             index = getIntent().getExtras().getInt(SELECTED_INDEX_KEY);
         }
-
+        initUI();
         showImage(urls, index);
     }
 
@@ -176,7 +173,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
         pager.setAdapter(adapter);
         pager.setCurrentItem(index);
         pager.setClipChildren(false);
-        updateSubtitle(selectedIndex);
+        updateSubtitle(index);
     }
 
 
@@ -216,7 +213,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     }
 
     private void updateSubtitle(int selectedPageIndex) {
-        selectedIndex = selectedPageIndex;
+        index = selectedPageIndex;
         if (getSupportActionBar() != null)
             getSupportActionBar().setSubtitle(String.format("%d \\ %d", selectedPageIndex + 1, urls.size()));
         adapter.showImage(selectedPageIndex);
@@ -224,9 +221,9 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
 
     public void showImage(ArrayList<String> urls, int index) {
         this.urls = urls;
-        selectedIndex = index;
+        this.index = index;
         adapter.notifyDataSetChanged();
-        updateSubtitle(selectedIndex);
+        updateSubtitle(this.index);
     }
 
     class ImgAdapter extends PagerAdapter {
@@ -242,14 +239,9 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
             this.inflater = LayoutInflater.from(ImgViewer.this);
             imageLoader = ImageLoader.getInstance();
 
-            options = new DisplayImageOptions.Builder()
-                    .showImageOnFail(R.drawable.no_image)
-                    .resetViewBeforeLoading(true)
-                    .cacheOnDisk(true)
+            options = App.getDefaultOptionsUIL()
                     .imageScaleType(ImageScaleType.EXACTLY)
-                    .bitmapConfig(Bitmap.Config.RGB_565)
                     .considerExifParams(true)
-                    .displayer(new FadeInBitmapDisplayer(300))
                     .build();
         }
 
@@ -263,7 +255,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
             View imageLayout = inflater.inflate(R.layout.img_view_page, container, false);
             assert imageLayout != null;
             views.put(position, imageLayout);
-            if (position == selectedIndex)
+            if (position == index)
                 loadImage(imageLayout);
 
             container.addView(imageLayout, 0);
@@ -301,7 +293,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
             assert imageLayout != null;
             progress = ButterKnife.findById(imageLayout, R.id.progress);
             photoView = ButterKnife.findById(imageLayout, R.id.photo_view);
-            imageLoader.displayImage(urls.get(selectedIndex), photoView, options, new SimpleImageLoadingListener() {
+            imageLoader.displayImage(urls.get(index), photoView, options, new SimpleImageLoadingListener() {
                 @Override
                 public void onLoadingStarted(String imageUri, View view) {
                     super.onLoadingStarted(imageUri, view);
@@ -319,7 +311,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
                     progress.setVisibility(View.INVISIBLE);
                     delayedHide(1000);
                     photoView.setVisibility(View.VISIBLE);
-                    MaterialImageLoading.animate(photoView).setDuration(1000).start();
+                    //MaterialImageLoading.animate(photoView).setDuration(1000).start();
                 }
 
                 @Override
@@ -341,7 +333,13 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        if(adapter.views!=null) {
+            for (int i = 0; i < adapter.views.size(); i++) {
+                if (adapter.views.get(i) == null) continue;
+                ((ImageView) ButterKnife.findById(adapter.views.get(i), R.id.photo_view)).setImageBitmap(null);
+            }
+        }
+        System.gc();
     }
 
     private String getCurrentUrl() {
@@ -379,7 +377,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
                 finish();
                 return true;
             case R.id.share_it:
-                Intent intent = IntentUtils.shareText("Ссылка", urls.get(selectedIndex));
+                Intent intent = IntentUtils.shareText("Ссылка", urls.get(index));
                 if (shareActionProvider != null) {
                     shareActionProvider.setShareIntent(intent);
                 }

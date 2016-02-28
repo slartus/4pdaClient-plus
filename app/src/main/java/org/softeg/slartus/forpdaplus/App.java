@@ -569,17 +569,19 @@ public class App extends android.app.Application {
             e.printStackTrace();
         }
     }
+    private static DisplayImageOptions.Builder options = new DisplayImageOptions.Builder()
+            .showImageForEmptyUri(R.drawable.no_image)
+            .cacheInMemory(true)
+            .resetViewBeforeLoading(true)
+            .cacheOnDisc(true)
+            .bitmapConfig(Bitmap.Config.RGB_565)
+            .handler(new Handler())
+            .displayer(new FadeInBitmapDisplayer(500, true, true, false));
 
+    public static DisplayImageOptions.Builder getDefaultOptionsUIL(){
+        return options;
+    }
     public static void initImageLoader(Context context) {
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageForEmptyUri(R.drawable.no_image)
-                .cacheInMemory(true)
-                .resetViewBeforeLoading(true)
-                .cacheOnDisc(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .handler(new Handler())
-                .displayer(new FadeInBitmapDisplayer(500, true, true, false))
-                .build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                 .imageDownloader(new HttpHelperForImage(context))
                 .threadPoolSize(5)
@@ -587,7 +589,7 @@ public class App extends android.app.Application {
                 .denyCacheImageMultipleSizesInMemory()
                 .memoryCache(new UsingFreqLimitedMemoryCache(5 * 1024 * 1024)) // 2 Mb
                 .discCacheFileNameGenerator(new HashCodeFileNameGenerator())
-                .defaultDisplayImageOptions(options)
+                .defaultDisplayImageOptions(options.build())
                 .build();
 
         ImageLoader.getInstance().init(config);
