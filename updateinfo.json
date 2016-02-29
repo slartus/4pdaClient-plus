@@ -1,15 +1,16 @@
 {
-  "update":{
-	"ver":"4.0",
-	"apk":"link to github",
-	"info":"info text"
-  },
   "notice":false,
   "notice_text":"notice text",
+
   "warning":true,
   "warning_text":"warning text",
 
-  "test":[
+  "show_update_dialog":true,
+  "update":{
+    "ver":"4.0",
+    "apk":"link to github"
+  },
+  "info":[
     {"title":"info 0"},
     {"title":"info 1"},
     {"title":"info 2"},
