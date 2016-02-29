@@ -6,6 +6,7 @@
   "warning_text":"warning text",
 
   "show_update_dialog":true,
+
   "update":{
     "ver":"4.0",
     "apk":"link to github"
