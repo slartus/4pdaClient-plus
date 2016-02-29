@@ -9,7 +9,7 @@
 
   "update":{
     "ver":"4.0",
-    "apk":"link to github"
+    "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/test_app.apk"
   },
   "info":[
     {"title":"info 0"},
