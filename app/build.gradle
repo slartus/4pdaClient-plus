@@ -52,7 +52,7 @@ android {
         rel {
             applicationId 'org.softeg.slartus.forpdaplus'
             versionCode 561
-            versionName "3.2.3 Beta3"
+            versionName "3.2.3 Beta4"
             signingConfig defaultSigningVariable
         }
         beta {
@@ -84,7 +84,7 @@ dependencies {
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
-    compile('com.github.afollestad.material-dialogs:core:0.8.5.5@aar') {
+    compile('com.github.afollestad.material-dialogs:core:0.8.5.6@aar') {
         transitive = true
     }
     compile 'de.hdodenhof:circleimageview:2.0.0'

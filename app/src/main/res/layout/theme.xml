@@ -3,14 +3,12 @@
     xmlns:fab="http://schemas.android.com/tools"
     android:id="@+id/layout_parent"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="fill_parent">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/ptr_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
         <org.softeg.slartus.forpdaplus.classes.AdvWebView
             android:id="@+id/wvBody"
             android:layout_width="fill_parent"
@@ -25,7 +23,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:background="@null"
-        android:fitsSystemWindows="true"
         android:orientation="vertical">
 
 

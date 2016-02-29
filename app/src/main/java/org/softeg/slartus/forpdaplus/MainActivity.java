@@ -532,7 +532,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
         endActionFragment(title, tag);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        hideFragments(transaction);
+        hideFragments(transaction, true);
         if (tag.equals(currentFragmentTag)) {
             if(getSupportFragmentManager().findFragmentByTag(currentFragmentTag) == null) {
                 addFragment(transaction, fragment, tag);
@@ -561,13 +561,15 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         transaction.commit();
     }
 
-    public void hideFragments(FragmentTransaction transaction){
+    public void hideFragments(FragmentTransaction transaction, boolean withAnimation){
         if(getSupportFragmentManager().getFragments()==null) return;
+        if(withAnimation)
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         for (Fragment fr:getSupportFragmentManager().getFragments()) {
             if (fr != null) {
                 if(fr.isVisible())
                     fr.onPause();
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).hide(fr);
+                transaction.hide(fr);
             }
         }
     }
@@ -767,14 +769,14 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         log("remove tab" + (tab != null ? tab.getTitle() : "tab ne sushestvuet((("));
         log("remove " + tag);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        //hideFragments(transaction);
+        hideFragments(transaction, false);
         transaction.remove(getSupportFragmentManager().findFragmentByTag(tag));
         transaction.commit();
         mTabDraweMenu.removeTab(tag);
     }
     public void removeTabs(List<TabItem> items){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        //hideFragments(transaction);
+        hideFragments(transaction, false);
         for(TabItem item:items) {
             transaction.remove(item.getFragment());
             App.getInstance().getTabItems().remove(item);
