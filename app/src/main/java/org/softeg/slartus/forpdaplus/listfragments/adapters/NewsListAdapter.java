@@ -75,18 +75,29 @@ public class NewsListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        ViewHolder holder;
-        if (view == null || view.getId() != mNewsListRowId) {
-            Log.e("kek", "new view holder "+view+" : "+mNewsListRowId);
-            view = inflater.inflate(mNewsListRowId, parent, false);
-            holder = new ViewHolder(view);
-            assert view != null;
-            view.setId(mNewsListRowId);
+        final ViewHolder holder;
+        View rowView = view;
+        if (rowView == null || rowView.getId() != mNewsListRowId) {
+            rowView = inflater.inflate(mNewsListRowId, null);
+            holder = new ViewHolder();
+            assert rowView != null;
+            rowView.setId(mNewsListRowId);
+            holder.image_panel = rowView.findViewById(R.id.image_panel);
             if (holder.image_panel != null)
                 holder.image_panel.setVisibility(mLoadImages ? View.VISIBLE : View.GONE);
-            view.setTag(holder);
+            holder.imageImage = (ImageView) rowView.findViewById(R.id.imageImage);
+
+            holder.textSource = (TextView) rowView.findViewById(R.id.textSource);
+            holder.textComments = (TextView) rowView.findViewById(R.id.textComments);
+            holder.textTag = (TextView) rowView.findViewById(R.id.textTag);
+
+            holder.textAuthor = (TextView) rowView.findViewById(R.id.textAvtor);
+            holder.textDate = (TextView) rowView.findViewById(R.id.textDate);
+            holder.textDescription = (TextView) rowView.findViewById(R.id.textDescription);
+            holder.textTitle = (TextView) rowView.findViewById(R.id.textTitle);
+            rowView.setTag(holder);
         } else {
-            holder = (ViewHolder) view.getTag();
+            holder = (ViewHolder) rowView.getTag();
             if (holder.image_panel != null)
                 holder.image_panel.setVisibility(mLoadImages ? View.VISIBLE : View.GONE);
         }
@@ -123,22 +134,18 @@ public class NewsListAdapter extends BaseAdapter {
             holder.textSource.setText("Источник: ".concat(data.getSourceTitle().toString()));
         }
 
-        return view;
+        return rowView;
     }
-    static class ViewHolder {
-        @Bind(R.id.image_panel) View image_panel;
-        @Bind(R.id.imageImage) ImageView imageImage;
-        @Bind(R.id.textTitle) TextView textTitle;
-        @Bind(R.id.textDate) TextView textDate;
-        @Bind(R.id.textDescription) TextView textDescription;
-        @Bind(R.id.textAvtor) TextView textAuthor;
-        @Bind(R.id.textTag) TextView textTag;
-        @Bind(R.id.textComments) TextView textComments;
-        @Bind(R.id.textSource) TextView textSource;
-
-        public ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
+    public class ViewHolder {
+        public View image_panel;
+        public ImageView imageImage;
+        public TextView textTitle;
+        public TextView textDate;
+        public TextView textDescription;
+        public TextView textAuthor;
+        public TextView textTag;
+        public TextView textComments;
+        public TextView textSource;
     }
 }
 

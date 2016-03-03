@@ -284,9 +284,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
         public void showImage(int position) {
             if (views.size() == 0)
                 return;
-            View imageLayout = views.get(position);
-            loadImage(imageLayout);
-
+            loadImage(views.get(position));
         }
 
         private void loadImage(View imageLayout) {
@@ -310,8 +308,6 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
                     super.onLoadingComplete(imageUri, view, loadedImage);
                     progress.setVisibility(View.INVISIBLE);
                     delayedHide(1000);
-                    photoView.setVisibility(View.VISIBLE);
-                    //MaterialImageLoading.animate(photoView).setDuration(1000).start();
                 }
 
                 @Override
@@ -333,18 +329,13 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     @Override
     public void onDestroy() {
         super.onDestroy();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if(adapter.views!=null) {
-                    for (int i = 0; i < adapter.views.size(); i++) {
-                        if (adapter.views.get(i) == null) continue;
-                        ((ImageView) ButterKnife.findById(adapter.views.get(i), R.id.photo_view)).setImageBitmap(null);
-                    }
-                }
-                System.gc();
+        if(adapter.views!=null) {
+            for (int i = 0; i < adapter.views.size(); i++) {
+                if (adapter.views.get(i) == null) continue;
+                ((ImageView) ButterKnife.findById(adapter.views.get(i), R.id.photo_view)).setImageBitmap(null);
             }
-        });
+        }
+        System.gc();
     }
 
     private String getCurrentUrl() {
