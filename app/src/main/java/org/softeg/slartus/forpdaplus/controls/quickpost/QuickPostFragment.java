@@ -80,6 +80,12 @@ public class QuickPostFragment extends Fragment {
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mPostEditText.getWindowToken(), 0);
     }
+    public void showKeyboard() {
+        if (getActivity() == null) return;
+        mPostEditText.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mPostEditText, InputMethodManager.SHOW_IMPLICIT);
+    }
 
     @Override
     public void onActivityCreated(android.os.Bundle savedInstanceState) {

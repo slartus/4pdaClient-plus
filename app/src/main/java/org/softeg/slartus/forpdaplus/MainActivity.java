@@ -34,9 +34,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -246,23 +248,17 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             if(App.getInstance().getPreferences().getBoolean("statusbarTransparent", false)) {
                 if (Build.VERSION.SDK_INT >= 21)
                     getWindow().setStatusBarColor(Color.TRANSPARENT);
-            }else {
-                if (Build.VERSION.SDK_INT > 18) {
-                    LinearLayout statusBar = (LinearLayout) findViewById(R.id.statusBar);
-                    statusBar.setMinimumHeight(getStatusBarHeight());
-                    int themeType = App.getInstance().getThemeType();
-                    if (themeType==App.THEME_TYPE_LIGHT)
-                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_light));
-                    else if (themeType==App.THEME_TYPE_DARK)
-                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_dark));
-                    else
-                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_black));
-                    statusBarShowed = true;
-                }
             }
+            int height = getStatusBarHeight();
+            appBarLayout.setPadding(0, height, 0, 0);
+            RelativeLayout frame = (RelativeLayout) findViewById(R.id.content_frame);
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) frame.getLayoutParams();
+            lp.setMargins(0, -height, 0, 0);
+            frame.setLayoutParams(lp);
+            frame.requestLayout();
             if(getPreferences().getBoolean("statusbarFake", false)&Build.VERSION.SDK_INT==19){
                 findViewById(R.id.fakeSB).setVisibility(View.VISIBLE);
-                findViewById(R.id.fakeSB).setMinimumHeight(getStatusBarHeight());
+                findViewById(R.id.fakeSB).setMinimumHeight(height);
             }
 
             NavigationView leftDrawer = (NavigationView) findViewById(R.id.left_drawer);

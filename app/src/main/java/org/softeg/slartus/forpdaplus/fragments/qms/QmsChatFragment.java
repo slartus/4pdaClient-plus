@@ -251,10 +251,6 @@ public class QmsChatFragment extends WebViewFragment {
 
         }
         hideKeyboard();
-        if (Preferences.System.isDevSavePage()|
-                Preferences.System.isDevInterface()|
-                Preferences.System.isDevStyle())
-            Toast.makeText(getMainActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
 
         loadPrefs();
         startUpdateTimer();

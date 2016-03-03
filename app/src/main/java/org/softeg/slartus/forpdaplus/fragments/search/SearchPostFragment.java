@@ -80,12 +80,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     public void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        if (Preferences.System.isDevSavePage()|
-                Preferences.System.isDevInterface()|
-                Preferences.System.isDevStyle())
-            Toast.makeText(getContext(), "Режим разработчика", Toast.LENGTH_SHORT).show();
         args = getArguments();
-
     }
 
     public static Fragment newFragment(String searchUrl) {

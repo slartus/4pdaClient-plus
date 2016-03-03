@@ -434,6 +434,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         if (!m_FirstTime)
             onPrepareOptionsMenu();
         m_FirstTime = false;
@@ -441,6 +442,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             configureOptionsMenu(getMainActivity(), getHandler(), mTopicOptionsMenu, true, getLastUrl());
         else if (getTopic() != null)
             mTopicOptionsMenu = addOptionsMenu(getMainActivity(), getHandler(), menu, true, getLastUrl());
+
     }
 
     private SubMenu mTopicOptionsMenu;
@@ -1078,6 +1080,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         pnlSearch.setVisibility(View.GONE);
         mQuickPostPanel.setVisibility(View.VISIBLE);
         mQuickPostPanel.setEnabled(Client.getInstance().getLogined());
+        mQuickPostFragment.showKeyboard();
     }
 
     public void hideMessagePanel() {

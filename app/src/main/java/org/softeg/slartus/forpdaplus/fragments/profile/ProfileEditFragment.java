@@ -78,9 +78,7 @@ public class ProfileEditFragment extends WebViewFragment {
 
     @Override
     public void reload() {
-        getEditProfileTask task = new getEditProfileTask(getMainActivity());
-        task.execute("".replace("|", ""));
-        asyncTask = task;
+        asyncTask = new getEditProfileTask().execute("".replace("|", ""));
     }
     @Override
     public String Prefix() {
@@ -125,14 +123,7 @@ public class ProfileEditFragment extends WebViewFragment {
         m_WebView.addJavascriptInterface(this, "HTMLOUT");
         m_WebView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
 
-        getEditProfileTask task = new getEditProfileTask(getMainActivity());
-        task.execute("".replace("|", ""));
-        asyncTask = task;
-
-        if (Preferences.System.isDevSavePage()|
-                Preferences.System.isDevInterface()|
-                Preferences.System.isDevStyle())
-            Toast.makeText(getMainActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
+        asyncTask  = new getEditProfileTask().execute();
         return view;
     }
 
@@ -224,7 +215,7 @@ public class ProfileEditFragment extends WebViewFragment {
 
     private class getEditProfileTask extends AsyncTask<String, String, Boolean> {
 
-        public getEditProfileTask(Context context) {}
+        public getEditProfileTask() {}
 
         private String m_ThemeBody;
 

@@ -28,8 +28,8 @@ import java.util.regex.Matcher;
  * Created by radiationx on 22.12.15.
  */
 public class SpecialView extends WebViewFragment {
-    AdvWebView m_WebView;
-    AsyncTask asyncTask;
+    private AdvWebView m_WebView;
+    private AsyncTask asyncTask;
     public static String m_Title = "ForPDA";
     public static String m_Url="";
     @Override
@@ -69,9 +69,7 @@ public class SpecialView extends WebViewFragment {
 
     @Override
     public void reload() {
-        LoadRulesTask task = new LoadRulesTask();
-        task.execute("".replace("|", ""));
-        asyncTask = task;
+        asyncTask = new LoadRulesTask().execute();
     }
 
     @Override
@@ -121,14 +119,7 @@ public class SpecialView extends WebViewFragment {
         m_WebView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
         m_WebView.setWebViewClient(new MyWebViewClient());
 
-        LoadRulesTask task = new LoadRulesTask();
-        task.execute("".replace("|", ""));
-        asyncTask = task;
-
-        if (Preferences.System.isDevSavePage()|
-                Preferences.System.isDevInterface()|
-                Preferences.System.isDevStyle())
-            Toast.makeText(getMainActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
+        asyncTask = new LoadRulesTask().execute();
 
         return view;
     }

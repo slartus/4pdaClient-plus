@@ -125,11 +125,6 @@ public class ForumRulesFragment extends WebViewFragment{
         task.execute("".replace("|", ""));
         asyncTask = task;
 
-        if (Preferences.System.isDevSavePage()|
-                Preferences.System.isDevInterface()|
-                Preferences.System.isDevStyle())
-            Toast.makeText(getMainActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
-
         return view;
     }
 

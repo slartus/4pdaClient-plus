@@ -23,7 +23,8 @@
         android:layout_alignTop="@+id/avatarWrapper"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="-12dp"
         android:id="@+id/infoRefresh"/>
     <ImageView
         android:layout_width="48dp"
@@ -33,7 +34,8 @@
         android:layout_alignTop="@+id/avatarWrapper"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="64dp"
+        android:layout_marginRight="52dp"
+        android:layout_marginTop="-12dp"
         android:id="@+id/openLink"/>
     <RelativeLayout
         android:layout_width="wrap_content"

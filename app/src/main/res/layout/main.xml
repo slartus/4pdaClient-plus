@@ -1,68 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <RelativeLayout
+        <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appbarlayout" android:layout_height="wrap_content"
+                android:layout_width="match_parent" android:theme="@style/MainThemeLight.AppBarOverlay">
+
+                <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+                    android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary" app:popupTheme="?attr/actionBarPopupTheme"
+                    app:subtitleTextAppearance="@style/actionbar_subtitle" app:titleTextAppearance="@style/actionbar_title"/>
+
+            </android.support.design.widget.AppBarLayout>
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:fitsSystemWindows="true"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                <android.support.design.widget.AppBarLayout
-                    android:id="@+id/appbarlayout" android:layout_height="wrap_content"
-                    android:layout_width="match_parent" android:theme="@style/MainThemeLight.AppBarOverlay">
-
-                    <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
-                        android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
-                        android:background="?attr/colorPrimary" app:popupTheme="?attr/actionBarPopupTheme"
-                        app:subtitleTextAppearance="@style/actionbar_subtitle" app:titleTextAppearance="@style/actionbar_title"/>
-
-                </android.support.design.widget.AppBarLayout>
-
-                <FrameLayout
+                <RelativeLayout
+                    android:id="@+id/content_frame"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                    android:fitsSystemWindows="true"/>
 
-                    <RelativeLayout
-                        android:id="@+id/content_frame"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="4dp"
-                        android:id="@+id/toolbar_shadow"
-                        android:background="@drawable/toolbar_shadow" />
-                </FrameLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:id="@+id/toolbar_shadow"
+                    android:background="@drawable/toolbar_shadow" />
+            </FrameLayout>
 
 
-            </android.support.design.widget.CoordinatorLayout>
+        </android.support.design.widget.CoordinatorLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/statusBar"
-                android:orientation="horizontal"/>
-        </RelativeLayout>
 
         <android.support.design.widget.NavigationView
             android:id="@+id/left_drawer"
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_main"
             app:itemBackground="@drawable/nav_bg"
             style="?drawer_menu"/>
@@ -103,7 +94,6 @@
                 android:paddingRight="16dp"
                 android:paddingBottom="12dp" />
         </RelativeLayout>
-
     </android.support.v4.widget.DrawerLayout>
     <RelativeLayout
         android:layout_width="match_parent"
