@@ -7,14 +7,14 @@
 
   "show_beta_dialog":true,
   "update_bate":{
-    "ver":"4.0",
+    "ver":"3.2.3",
     "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/test_app.apk",
     "info":" test message\n test message\n test message\n test message\n test message\n test message\n test message\n test message\n test message\n "
   },
 
   "show_release_dialog":true,
   "update_release":{
-    "ver":"4.0",
+    "ver":"3.2.3",
     "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/test_app.apk",
     "info":" test message\n test message\n test message\n test message\n test message\n test message\n test message\n test message\n test message\n "
   }
