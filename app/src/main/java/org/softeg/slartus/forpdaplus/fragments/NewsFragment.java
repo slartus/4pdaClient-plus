@@ -416,11 +416,12 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
 
     private void showNews(String url) {
+        m_NewsUrl = url.trim();
         webView.setWebViewClient(new MyWebViewClient());
-        saveHistory(url);
-        m_NewsUrl = url;
+        saveHistory(m_NewsUrl);
+
         asyncTask = new GetNewsTask();
-        asyncTask.execute(url.replace("|", ""));
+        asyncTask.execute(m_NewsUrl.replace("|", ""));
     }
 
     public void showBody(String body) {
@@ -465,6 +466,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             try {
                 if (isCancelled()) return false;
                 Client client = Client.getInstance();
+                Log.e("kek", "\""+m_NewsUrl+"\"");
                 if (TextUtils.isEmpty(Comment))
                     m_ThemeBody = transformBody(client.performGet(m_NewsUrl));
                 else {

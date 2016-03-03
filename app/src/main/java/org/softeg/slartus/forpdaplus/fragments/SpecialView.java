@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -89,8 +90,9 @@ public class SpecialView extends WebViewFragment {
     }
 
     public static void showSpecial(String url) {
-        MainActivity.addTab(m_Title, url, new SpecialView());
-        m_Url = url;
+        m_Url = url.trim();
+        MainActivity.addTab(m_Title, m_Url, new SpecialView());
+
     }
 
     @Override
@@ -132,6 +134,7 @@ public class SpecialView extends WebViewFragment {
         protected Boolean doInBackground(String... forums) {
             try {
                 if (isCancelled()) return false;
+                Log.d("kek", m_Url+" : "+m_Title);
                 m_ThemeBody = Client.getInstance().performGet(m_Url);
 
                 Matcher matcher = PatternExtensions.compile("<title>([\\S\\s]*?)</title>").matcher(m_ThemeBody);

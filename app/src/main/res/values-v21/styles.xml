@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="ImageViewTheme" parent="Theme.AppCompat">
-        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:navigationBarColor">@color/background_toolbar</item>
         <item name="android:actionBarStyle">@style/actionbar_trans</item>
@@ -9,7 +8,7 @@
         <item name="android:windowActionBarOverlay">true</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="actionOverflowButtonStyle">@style/overflow_button</item>
-
+        <item name="android:statusBarColor">@color/background_toolbar</item>
     </style>
 
     <style name="actionbar_trans" parent="@style/Widget.AppCompat.ActionBar.Solid">

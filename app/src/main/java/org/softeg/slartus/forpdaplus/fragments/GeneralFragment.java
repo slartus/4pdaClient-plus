@@ -86,6 +86,8 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     }
 
     public TabItem getThisTab() {
+        if(thisTab==null)
+            thisTab = App.getInstance().getTabByTag(getTag());
         return thisTab;
     }
 
@@ -115,6 +117,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
             generalTitle = savedInstanceState.getString("generalTitle");
             generalUrl = savedInstanceState.getString("generalUrl");
             generalParentTag = savedInstanceState.getString("generalParentTag");
+            Log.d("kek", getGeneralTitle()+" : "+getGeneralUrl()+" : "+getGeneralParentTag());
             getThisTab().setTitle(generalTitle).setUrl(getGeneralUrl()).setParentTag(generalParentTag);
             getMainActivity().notifyTabAdapter();
         }
@@ -122,10 +125,11 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putString("generalTitle", getThisTab().getTitle());
         outState.putString("generalUrl", getThisTab().getUrl());
         outState.putString("generalParentTag", getThisTab().getParentTag());
-        super.onSaveInstanceState(outState);
+        Log.d("kek", getThisTab().getTitle()+" : "+getThisTab().getUrl()+" : "+getThisTab().getParentTag());
     }
 
     @Override

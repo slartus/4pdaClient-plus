@@ -30,6 +30,7 @@ import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.News;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
@@ -38,6 +39,7 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
+import org.softeg.slartus.forpdaplus.fragments.SpecialView;
 import org.softeg.slartus.forpdaplus.listfragments.BaseTaskListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.NewsListAdapter;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
@@ -344,7 +346,8 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
                 return;
             final News news = (News) o;
             if (TextUtils.isEmpty(news.getId())) return;
-            MainActivity.addTab(news.getTitle().toString(), news.getUrl(), NewsFragment.newInstance(news.getUrl()));
+            if(!IntentActivity.tryShowSpecial(getMainActivity(), news.getUrl(), false))
+                MainActivity.addTab(news.getTitle().toString(), news.getUrl(), NewsFragment.newInstance(news.getUrl()));
             mAdapter.notifyDataSetChanged();
 
         } catch (Throwable ex) {
