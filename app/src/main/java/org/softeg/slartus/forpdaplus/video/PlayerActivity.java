@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -474,7 +473,7 @@ public class PlayerActivity extends AppCompatActivity {
                 }
                 subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
-            subMenu = menu.addSubMenu("Ссылка").setIcon(R.drawable.ic_share_white_24dp);
+            subMenu = menu.addSubMenu("Ссылка").setIcon(R.drawable.ic_share_variant_white_24dp);
 
             addUrlMenu(getActivity(), subMenu, getMainActivity().getPlayedRequestUrl());
             subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
