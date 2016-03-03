@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -76,6 +77,7 @@ public class ParentFragment extends GeneralFragment {
 //        recLifeCycle(getClass(), CALL_TO_SUPER);
         super.onCreate(savedInstanceState);
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
+        setArrow();
 
         setHasOptionsMenu(true);
         Bundle extras = getArguments();
@@ -85,6 +87,7 @@ public class ParentFragment extends GeneralFragment {
         m_Title = extras.getString(TOOLBAR_TITLE);
         setTitle(m_Title);
         loading();
+        Log.e("kek", "DEVICE"+m_DeviceId+" : "+getTag()+" : "+getThisTab().getTag());
     }
 
     @Override
@@ -112,6 +115,7 @@ public class ParentFragment extends GeneralFragment {
         super.onResume();
         if(!DevDbUtils.isAndroid5())
             getMainActivity().getToolbarShadow().setVisibility(View.GONE);
+        setArrow();
     }
 
     @Override

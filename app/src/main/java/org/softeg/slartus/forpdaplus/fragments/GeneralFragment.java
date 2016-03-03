@@ -98,6 +98,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         @Override
         public void onClick(View v) {
             MainActivity.log("fragment tryremove tab");
+            Log.e("kek", getTag()+" : "+getThisTab().getTag());
             getMainActivity().tryRemoveTab(getTag());
         }
     };

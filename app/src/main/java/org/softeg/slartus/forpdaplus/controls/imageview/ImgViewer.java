@@ -99,7 +99,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.activity_slide_up, R.anim.activity_slide_down);
+        overridePendingTransition(R.anim.fade, 0);
         setTheme(R.style.ImageViewTheme);
         setContentView(LAYOUT);
 
@@ -209,7 +209,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     @Override
     public void onPullComplete(@PullBackLayout.Direction int direction) {
         finish();
-        overridePendingTransition(R.anim.activity_slide_up, R.anim.activity_slide_down);
+        overridePendingTransition(R.anim.fade, direction == PullBackLayout.DIRECTION_DOWN ? R.anim.activity_slide_down : R.anim.activity_slide_up);
     }
 
     private void updateSubtitle(int selectedPageIndex) {
@@ -333,13 +333,18 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(adapter.views!=null) {
-            for (int i = 0; i < adapter.views.size(); i++) {
-                if (adapter.views.get(i) == null) continue;
-                ((ImageView) ButterKnife.findById(adapter.views.get(i), R.id.photo_view)).setImageBitmap(null);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(adapter.views!=null) {
+                    for (int i = 0; i < adapter.views.size(); i++) {
+                        if (adapter.views.get(i) == null) continue;
+                        ((ImageView) ButterKnife.findById(adapter.views.get(i), R.id.photo_view)).setImageBitmap(null);
+                    }
+                }
+                System.gc();
             }
-        }
-        System.gc();
+        });
     }
 
     private String getCurrentUrl() {

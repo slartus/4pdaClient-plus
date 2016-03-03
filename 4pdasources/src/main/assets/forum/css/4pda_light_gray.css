@@ -632,24 +632,14 @@ a {
   clear: both;
 }
 .container .content .content-box .btn {
-  padding: 0.5em;
+  padding: 0.75em;
   display: inline-block;
   position: relative;
   -webkit-border-radius: 2px;
   border-radius: 2px;
   color: #ffffff;
-}
-.container .content .content-box .btn.green {
-  background: #390;
-}
-.container .content .content-box .btn.orenge {
-  background: #fec63d;
-}
-.container .content .content-box .btn.gray {
-  background: #999;
-}
-.container .content .content-box .btn.white {
   background: #0277bd;
+  margin: 0.25em 0;
 }
 .container .content .content-box .btn:after {
   content: "";

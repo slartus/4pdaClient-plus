@@ -30,6 +30,8 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
@@ -44,12 +46,14 @@ import org.softeg.slartus.forpdaplus.classes.History;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.video.PlayerActivity;
 
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -318,7 +322,22 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             webView.evalJs("window['HtmlInParseLessContent']('" + cssData + "');");
         }
     }
+    @JavascriptInterface
+    public void sendNewsAttaches(final String json) {
+        getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for (JsonElement s : new JsonParser().parse(json).getAsJsonArray()) {
+                    ArrayList<String> list1 = new ArrayList<>();
+                    for (JsonElement a : s.getAsJsonArray())
+                        list1.add(a.getAsString());
+                    imageAttaches.add(list1);
+                }
+            }
+        });
 
+    }
+    public List<ArrayList<String>> imageAttaches = new ArrayList<>();
     private class MyWebViewClient extends WebViewClient {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -334,6 +353,9 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             m_ScrollY = 0;
             m_ScrollX = 0;
+
+            if(checkIsImage(url))
+                return true;
 
             if (isReplyUrl(url))
                 return true;
@@ -356,6 +378,34 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             IntentActivity.tryShowUrl(getMainActivity(), mHandler, url, true, false);
 
             return true;
+        }
+        private boolean checkIsImage(final String url){
+            final Pattern imagePattern = PatternExtensions.compile("http://.*?\\.(png|jpg|jpeg|gif)$");
+            if(!imagePattern.matcher(url).find()) return false;
+            if (!Client.getInstance().getLogined() && !Client.getInstance().hasLoginCookies()) {
+                Client.getInstance().showLoginForm(getContext(), new Client.OnUserChangedListener() {
+                    public void onUserChanged(String user, Boolean success) {
+                        if (success) {
+                            showImage(url);
+                        }
+                    }
+                });
+            }else {
+                showImage(url);
+            }
+            return true;
+        }
+
+        private void showImage(String url){
+            for(ArrayList<String> list:imageAttaches){
+                for(int i = 0; i<list.size();i++){
+                    if(list.get(i).equals(url)){
+                        ImgViewer.startActivity(getContext(), list, i);
+                        return;
+                    }
+                }
+            }
+            ImgViewer.startActivity(getContext(), url);
         }
     }
 
@@ -398,6 +448,12 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
 
     private class NewsHtmlBuilder extends HtmlBuilder {
+        @Override
+        public HtmlBuilder endBody() {
+            m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/newsAttaches.js\"></script>\n");
+            return super.endBody();
+        }
+
         @Override
         public void addStyleSheetLink(StringBuilder sb) {
             sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file://").append(getStyle()).append("\" />\n");
