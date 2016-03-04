@@ -1,33 +1,48 @@
-function ready(){
-    var postBlockSpoils = document.body.querySelectorAll('.post-block.spoil.close > .block-body');
-    for (var i = 0; i < postBlockSpoils.length; i++) {
-        var images = postBlockSpoils[i].querySelectorAll('img');
-        for (var j = 0; j < images.length; j++) {
-            var img = images[j];
-            if (!img.hasAttribute('src')) continue;
-            img.dataset.imageSrc = img.src;
-            img.removeAttribute('src');
-        }
-    }
-    document.body.addEventListener("click", substitutionAttributes);
-    function substitutionAttributes(event) {
-        var event = event || window.event;
-        var target = event.target || event.srcElement;
-        while (target != this) {
-            if (~target.className.indexOf('spoil')) {
-                var images = target.querySelectorAll('img');
-                for (var i = 0; i < images.length; i++) {
-                    var img = images[i];
-                    if (img.hasAttribute('src') || !img.dataset.imageSrc) continue;
-                    img.src = img.dataset.imageSrc;
-                }
-                return;
-            }
-            target = target.parentNode;
-        }
-    }
+/**
+ *		======================
+ *		HIDE IMAGES IN SPOILER
+ *		======================
+ */
+
+function spoilsImageLoad() {
+	var postBlockSpoils = document.body.querySelectorAll('.post-block.spoil.close > .block-body');
+	for (var i = 0; i < postBlockSpoils.length; i++) {
+		var images = postBlockSpoils[i].querySelectorAll('img');
+		for (var j = 0; j < images.length; j++) {
+			var img = images[j];
+			if (!img.hasAttribute('src') || img.dataset.imageSrc) continue;
+			img.dataset.imageSrc = img.src;
+			img.removeAttribute('src');
+		}
+	}
+	document.body.addEventListener("click", substitutionAttributes);
+
+	function substitutionAttributes(event) {
+		var event = event || window.event;
+		var target = event.target || event.srcElement;
+		while (target != this) {
+			if (~target.className.indexOf('spoil')) {
+				var images = target.querySelectorAll('img');
+				for (var i = 0; i < images.length; i++) {
+					var img = images[i];
+					if (img.hasAttribute('src') || !img.dataset.imageSrc) continue;
+					img.src = img.dataset.imageSrc;
+					img.removeAttribute('data-image-src');
+				}
+				return;
+			}
+			target = target.parentNode;
+		}
+	}
 }
-document.addEventListener("DOMContentLoaded", ready);
+
+/**
+ *		=================
+ *		ALL POST ATTACHES
+ *		=================
+ */
+
+document.addEventListener('DOMContentLoaded', spoilsImageLoad);
 
 function getAttaches() {
     var anchorList = document.querySelectorAll('div[id*="entry"]');
