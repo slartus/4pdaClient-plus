@@ -66,7 +66,6 @@ public class NoteFragment extends GeneralFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.note_view, container, false);
-        setHasOptionsMenu(true);
         //createActionMenu();
 
         infoTable = (TableLayout) findViewById(R.id.infoTable);

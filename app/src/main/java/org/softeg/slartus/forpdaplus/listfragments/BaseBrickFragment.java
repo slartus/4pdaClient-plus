@@ -83,7 +83,6 @@ public abstract class BaseBrickFragment extends GeneralFragment{
             args = savedInstanceState;
         }
 
-        setHasOptionsMenu(true);
         if (savedInstanceState != null) {
             m_Name = savedInstanceState.getString(NAME_KEY, m_Name);
             m_Title = savedInstanceState.getString(TITLE_KEY, m_Title);

@@ -227,7 +227,6 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         removeArrow();
-        setHasOptionsMenu(true);
         if (getArguments() != null) {
             if (getArguments().containsKey(TAG_EXTRA_KEY)) {
                 mTag = getArguments().getString(TAG_EXTRA_KEY);

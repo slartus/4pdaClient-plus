@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 
 import org.softeg.slartus.forpdaplus.App;
@@ -26,7 +27,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
 
     private ActionBar actionBar;
     private MainActivity mainActivity;
-    public View view;
+    protected View view;
     private boolean fragmentPaused = true;
 
     private String generalTitle = "ForPda";
@@ -114,6 +115,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        setHasOptionsMenu(true);
         if(savedInstanceState!=null){
             generalTitle = savedInstanceState.getString("generalTitle");
             generalUrl = savedInstanceState.getString("generalUrl");
@@ -122,6 +124,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
             getThisTab().setTitle(generalTitle).setUrl(getGeneralUrl()).setParentTag(generalParentTag);
             getMainActivity().notifyTabAdapter();
         }
+
     }
 
     @Override
@@ -136,11 +139,9 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mainActivity = (MainActivity)getActivity();
         actionBar = getMainActivity().getSupportActionBar();
         fragmentPaused = false;
-        setHasOptionsMenu(true);
         Log.e("kek", getTag() + " FRAGMENT " + thisTab);
     }
 
@@ -181,14 +182,6 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
             getMenu().clear();
         getMainActivity().onCreateOptionsMenu(MainActivity.mainMenu);
     }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        if(getMenu()==null)
-            onCreateOptionsMenu(menu, null);
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();

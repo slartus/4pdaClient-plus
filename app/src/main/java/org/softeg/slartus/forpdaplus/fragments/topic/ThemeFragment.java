@@ -268,7 +268,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         view = inflater.inflate(R.layout.theme, container, false);
         ButterKnife.bind(this, view);
         initSwipeRefreshLayout();
-        setHasOptionsMenu(true);
         lastStyle = App.getInstance().getThemeCssFileName();
         LoadsImagesAutomatically = null;
 

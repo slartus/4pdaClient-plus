@@ -177,7 +177,6 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         view = inflater.inflate(R.layout.profile_web_view_fragment, container, false);
         initSwipeRefreshLayout();
         // getDialog().setTitle("Профиль");
-        setHasOptionsMenu(true);
         assert view != null;
         m_WebView = (AdvWebView) findViewById(R.id.wvBody);
         registerForContextMenu(m_WebView);

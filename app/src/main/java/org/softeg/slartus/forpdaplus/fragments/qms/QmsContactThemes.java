@@ -93,7 +93,6 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         setArrow();
 
         if(savedInstanceState!=null){

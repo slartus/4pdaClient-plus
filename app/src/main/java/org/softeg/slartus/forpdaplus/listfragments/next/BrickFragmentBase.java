@@ -61,7 +61,6 @@ public abstract class BrickFragmentBase extends GeneralFragment{
             Args = savedInstanceState;
         }
 
-        setHasOptionsMenu(true);
         if (savedInstanceState != null) {
             m_Name = savedInstanceState.getString(NAME_KEY, m_Name);
             m_Title = savedInstanceState.getString(TITLE_KEY, m_Title);
@@ -74,7 +73,6 @@ public abstract class BrickFragmentBase extends GeneralFragment{
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // Indicate that this fragment would like to influence the set of actions in the action bar.
-        setHasOptionsMenu(true);
     }
 
     @Override

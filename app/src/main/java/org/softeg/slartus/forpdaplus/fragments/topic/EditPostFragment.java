@@ -205,7 +205,6 @@ public class EditPostFragment extends GeneralFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.edit_post_plus, container, false);
-        setHasOptionsMenu(true);
 
         progress_search = (ProgressBar) findViewById(R.id.progress_search);
         lastSelectDirPath = App.getInstance().getPreferences().getString("EditPost.AttachDirPath", lastSelectDirPath);

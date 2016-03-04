@@ -98,23 +98,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                     Toast.makeText(this, "PERMISSION DENIED", Toast.LENGTH_LONG).show();
             }
         }
-
-    }
-
-    public class MyToolbar extends Toolbar{
-
-
-        public MyToolbar(Context context) {
-            super(context);
-        }
-
-        public MyToolbar(Context context, AttributeSet attrs) {
-            super(context, attrs);
-        }
-
-        public MyToolbar(Context context, AttributeSet attrs, int defStyleAttr) {
-            super(context, attrs, defStyleAttr);
-        }
     }
 
     private final static String tabPrefix = "tab";
@@ -201,11 +184,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             intent.addCategory(Intent.CATEGORY_HOME);
             setIntent(intent);
             lastTheme = App.getInstance().getThemeStyleResID();
-/*if(android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                getWindow().setFlags(
-                        WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
-                        WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
-            }*/
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                 getWindow().getDecorView()
@@ -274,10 +252,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             if(top&bottom){
                 leftDrawer.setPadding(0, (int) (25 * scale + 0.5f), 0, (int) (48 * scale + 0.5f));
             }
-
-            /*if(true){
-                startActivity(new Intent(this, FeatureActivity.class));
-            }*/
 
             mTabDraweMenu = new TabDrawerMenu(this, this);
             mMainDrawerMenu = new MainDrawerMenu(this, this);

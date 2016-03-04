@@ -179,7 +179,6 @@ public class QmsChatFragment extends WebViewFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.qms_chat, container, false);
-        setHasOptionsMenu(true);
         assert view != null;
 
         m_HtmlPreferences = new HtmlPreferences();

@@ -79,7 +79,6 @@ public class ParentFragment extends GeneralFragment {
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
         setArrow();
 
-        setHasOptionsMenu(true);
         Bundle extras = getArguments();
         assert extras != null;
         m_DeviceId = extras.getString(DEVICE_ID_KEY);

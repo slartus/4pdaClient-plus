@@ -155,7 +155,6 @@ public class CuratorFragment extends WebViewFragment {
         });
         initSwipeRefreshLayout();
         webView.addJavascriptInterface(this, "HTMLOUT");
-        setHasOptionsMenu(true);
         topicId = getArguments().getString("TOPIC_ID");
         url = getArguments().getString("URL");
         load(url, topicId);

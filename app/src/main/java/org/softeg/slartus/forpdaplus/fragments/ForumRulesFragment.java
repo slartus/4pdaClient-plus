@@ -86,7 +86,6 @@ public class ForumRulesFragment extends WebViewFragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setArrow();
-        setHasOptionsMenu(true);
     }
 
     @Override

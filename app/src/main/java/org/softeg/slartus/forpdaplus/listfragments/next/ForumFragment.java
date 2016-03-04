@@ -88,7 +88,6 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         removeArrow();
-        setHasOptionsMenu(true);
         if (getArguments() != null)
             m_ForumId = getArguments().getString(FORUM_ID_KEY, null);
         if (savedInstanceState != null) {

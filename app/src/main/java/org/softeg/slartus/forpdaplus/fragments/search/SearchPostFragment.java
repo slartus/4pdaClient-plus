@@ -79,7 +79,6 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     @Override
     public void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         args = getArguments();
     }
 

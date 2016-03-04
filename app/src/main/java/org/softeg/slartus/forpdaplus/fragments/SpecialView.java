@@ -99,11 +99,9 @@ public class SpecialView extends WebViewFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.webview_fragment, container, false);
         m_WebView = (AdvWebView) findViewById(R.id.wvBody);
-        setHasOptionsMenu(true);
 
 
         initSwipeRefreshLayout();
-        setHasOptionsMenu(true);
         assert view != null;
         registerForContextMenu(m_WebView);
 

@@ -105,7 +105,6 @@ public class ProfileEditFragment extends WebViewFragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.profile_edit_activity, container, false);
         initSwipeRefreshLayout();
-        setHasOptionsMenu(true);
         assert view != null;
         m_WebView = (AdvWebView) findViewById(R.id.wvBody);
         registerForContextMenu(m_WebView);

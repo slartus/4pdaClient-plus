@@ -141,7 +141,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         view = inflater.inflate(R.layout.news_fragment, container, false);
         webView = (AdvWebView) findViewById(R.id.wvBody);
         initSwipeRefreshLayout();
