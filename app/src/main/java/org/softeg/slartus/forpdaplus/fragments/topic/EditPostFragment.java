@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -29,6 +30,8 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
 import android.util.Pair;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -94,6 +97,7 @@ public class EditPostFragment extends GeneralFragment {
     private final int REQUEST_SAVE_IMAGE = 1;
 
     private String parentTag = "";
+    private boolean emptyText = true;
 
     private View m_BottomPanel;
     private PopupPanelView mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
@@ -211,6 +215,14 @@ public class EditPostFragment extends GeneralFragment {
 
         m_BottomPanel = findViewById(R.id.bottomPanel);
 
+        final Button send_button = (Button) view.findViewById(R.id.btnSendPost);
+        send_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendMail();
+            }
+        });
+
         txtPost = (EditText) findViewById(R.id.txtPost);
 
         txtpost_edit_reason = (EditText) findViewById(R.id.txtpost_edit_reason);
@@ -221,14 +233,33 @@ public class EditPostFragment extends GeneralFragment {
                 return false;
             }
         });
-
-
-        findViewById(R.id.btnSendPost).setOnClickListener(new View.OnClickListener() {
+        txtPost.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View view) {
-                sendMail();
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().isEmpty()) {
+                    if (!emptyText) {
+                        send_button.setTextColor(ContextCompat.getColor(App.getContext(), R.color.accentGray));
+                        emptyText = true;
+                    }
+                } else {
+                    if (emptyText) {
+                        send_button.setTextColor(ContextCompat.getColor(App.getContext(), R.color.accent));
+                        emptyText = false;
+                    }
+                }
             }
         });
+
+
+
 
         btnAttachments = (Button) findViewById(R.id.btnAttachments);
         btnAttachments.setOnClickListener(new View.OnClickListener() {
@@ -308,11 +339,14 @@ public class EditPostFragment extends GeneralFragment {
         return false;
     }
 
-    private boolean sendMail() {
+    private void sendMail() {
+        if (emptyText) {
+            Toast toast = Toast.makeText(getContext(), "Введите сообщение", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.TOP, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, App.getInstance().getResources().getDisplayMetrics()));
+            toast.show();
+            return;
+        }
         final String body = getPostText();
-        if (TextUtils.isEmpty(body))
-            return true;
-
         if (Preferences.Topic.getConfirmSend()) {
             new MaterialDialog.Builder(getContext())
                     .title("Уверены?")
@@ -330,7 +364,7 @@ public class EditPostFragment extends GeneralFragment {
             sendPost(body, getEditReasonText());
         }
 
-        return true;
+        return;
     }
 
     @Override

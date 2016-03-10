@@ -33,16 +33,15 @@
         <ImageButton
             android:layout_width="56dp"
             android:layout_height="48dp"
-            android:background="@android:color/transparent"
+            android:background="?attr/selectableItemBackground"
             android:src="@drawable/ic_send_grey600_24dp"
             android:id="@+id/send_button"
             android:layout_gravity="right|bottom" />
 
         <ImageButton
-            android:layout_width="40dp"
+            android:layout_width="48dp"
             android:layout_height="48dp"
-            android:paddingLeft="8dp"
-            android:background="@android:color/transparent"
+            android:background="?attr/selectableItemBackground"
             android:src="@drawable/ic_plus_grey600_24dp"
             android:id="@+id/advanced_button"
             android:layout_gravity="left|bottom" />

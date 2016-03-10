@@ -199,8 +199,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             toolbarShadow = findViewById(R.id.toolbar_shadow);
             if(Build.VERSION.SDK_INT>20) {
                 toolbarShadow.setVisibility(View.GONE);
-                toolbar.setElevation(4);
-                appBarLayout.setElevation(4);
+                toolbar.setElevation(6);
+                appBarLayout.setElevation(6);
             }
 
             setSupportActionBar(toolbar);

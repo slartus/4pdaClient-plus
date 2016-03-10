@@ -70,15 +70,18 @@
 
             <ImageButton
                 android:id="@+id/advanced_button"
-                style="?right_separator"
+                android:background="?attr/selectableItemBackground"
                 android:layout_width="48dp"
-                android:layout_height="32dp"
+                android:layout_height="48dp"
                 android:src="@drawable/ic_plus_grey600_24dp" />
 
             <Button
                 android:id="@+id/btnSendPost"
                 android:layout_width="fill_parent"
                 android:layout_height="48dp"
+                android:background="?attr/selectableItemBackground"
+                android:textColor="@color/accentGray"
+                android:textStyle="bold"
                 android:text="Отправить"
                 android:layout_marginLeft="4dp"/>
         </LinearLayout>

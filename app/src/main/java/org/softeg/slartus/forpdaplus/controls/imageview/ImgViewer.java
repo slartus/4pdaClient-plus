@@ -241,6 +241,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
 
             options = App.getDefaultOptionsUIL()
                     .imageScaleType(ImageScaleType.EXACTLY)
+                    .bitmapConfig(Bitmap.Config.ARGB_8888)
                     .considerExifParams(true)
                     .build();
         }

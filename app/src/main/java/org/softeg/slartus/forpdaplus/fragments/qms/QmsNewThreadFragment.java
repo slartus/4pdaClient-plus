@@ -4,12 +4,18 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -39,6 +45,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
     private EditText username, title, message;
     private String m_Id;
     private String m_Nick;
+    private boolean emptyText = true;
     private PopupPanelView mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
 
     @Override
@@ -96,10 +103,35 @@ public class QmsNewThreadFragment extends GeneralFragment {
         username = (EditText) findViewById(R.id.username);
         title = (EditText) findViewById(R.id.title);
         message = (EditText) findViewById(R.id.message);
-        findViewById(R.id.btnSendPost).setOnClickListener(new View.OnClickListener() {
+        final Button send_button = (Button) view.findViewById(R.id.btnSendPost);
+        send_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 send();
+            }
+        });
+        message.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().isEmpty()) {
+                    if (!emptyText) {
+                        send_button.setTextColor(ContextCompat.getColor(App.getContext(), R.color.accentGray));
+                        emptyText = true;
+                    }
+                } else {
+                    if (emptyText) {
+                        send_button.setTextColor(ContextCompat.getColor(App.getContext(), R.color.accent));
+                        emptyText = false;
+                    }
+                }
             }
         });
         mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), message);
@@ -169,12 +201,16 @@ public class QmsNewThreadFragment extends GeneralFragment {
 
         if (TextUtils.isEmpty(m_Nick)) {
             username.setVisibility(View.VISIBLE);
-            Toast.makeText(getMainActivity(), "Укажите получателя", Toast.LENGTH_SHORT).show();
+            Toast toast = Toast.makeText(getContext(), "Укажите получателя", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.TOP, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, App.getInstance().getResources().getDisplayMetrics()));
+            toast.show();
             return;
         }
 
         if (TextUtils.isEmpty(post)) {
-            Toast.makeText(getMainActivity(), "Введите сообщение", Toast.LENGTH_SHORT).show();
+            Toast toast = Toast.makeText(getContext(), "Введите сообщение", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.TOP, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, App.getInstance().getResources().getDisplayMetrics()));
+            toast.show();
             return;
         }
         new SendTask(getMainActivity(), m_Id, m_Nick, theme, post).execute();

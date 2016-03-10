@@ -1,8 +1,15 @@
 package org.softeg.slartus.forpdaplus.controls.quickpost;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +18,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.topic.EditPostFragment;
@@ -21,6 +30,8 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 public class QuickPostFragment extends Fragment {
+
+    private boolean emptyText = true;
 
     private String mForumId;
     private String mTopicId;
@@ -147,6 +158,27 @@ public class QuickPostFragment extends Fragment {
                 return false;
             }
         });
+        mPostEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().isEmpty()){
+                    if(!emptyText){
+                        send_button.clearColorFilter();
+                        emptyText = true;
+                    }
+                }else {
+                    if(emptyText){
+                        send_button.setColorFilter(ContextCompat.getColor(App.getContext(), R.color.selectedItemText), PorterDuff.Mode.SRC_ATOP);
+                        emptyText = false;
+                    }
+                }
+            }
+        });
 
         ImageButton advanced_button = (ImageButton) v.findViewById(R.id.advanced_button);
         mPopupPanelView.createView(inflater, advanced_button, mPostEditText);
@@ -167,8 +199,12 @@ public class QuickPostFragment extends Fragment {
     }
 
     private void startPost() {
-        if (!checkPostBody())
+        if (emptyText) {
+            Toast toast = Toast.makeText(getContext(), "Введите сообщение", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.TOP, 0, (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, App.getInstance().getResources().getDisplayMetrics()));
+            toast.show();
             return;
+        }
         if (Preferences.Topic.getConfirmSend()) {
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.send_post_confirm_dialog, null);

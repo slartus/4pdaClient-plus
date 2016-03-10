@@ -5,12 +5,18 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -63,7 +69,7 @@ import java.util.regex.Pattern;
  * Created by radiationx on 12.11.15.
  */
 public class QmsChatFragment extends WebViewFragment {
-
+    private boolean emptyText = true;
     private static final String MID_KEY = "mid";
     private static final String TID_KEY = "tid";
     private static final String THEME_TITLE_KEY = "theme_title";
@@ -187,9 +193,37 @@ public class QmsChatFragment extends WebViewFragment {
         edMessage = (EditText) findViewById(R.id.edMessage);
         mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), edMessage);
         mPopupPanelView.activityCreated(getMainActivity(), view);
-        findViewById(R.id.btnSend).setOnClickListener(new View.OnClickListener() {
+
+        final ImageButton send_button = (ImageButton) findViewById(R.id.btnSend);
+
+        send_button.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
                 startSendMessage();
+            }
+        });
+        edMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().isEmpty()) {
+                    if (!emptyText) {
+                        send_button.clearColorFilter();
+                        emptyText = true;
+                    }
+                } else {
+                    if (emptyText) {
+                        send_button.setColorFilter(ContextCompat.getColor(App.getContext(), R.color.selectedItemText), PorterDuff.Mode.SRC_ATOP);
+                        emptyText = false;
+                    }
+                }
             }
         });
 
@@ -606,11 +640,13 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
     private void startSendMessage() {
-        m_MessageText = edMessage.getText().toString();
-        if (TextUtils.isEmpty(m_MessageText)) {
-            Toast.makeText(getMainActivity(), "Введите текст для отправки.", Toast.LENGTH_SHORT).show();
+        if (emptyText) {
+            Toast toast = Toast.makeText(getContext(), "Введите сообщение", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.TOP, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, App.getInstance().getResources().getDisplayMetrics()));
+            toast.show();
             return;
         }
+        m_MessageText = edMessage.getText().toString();
         m_SendTask = new SendTask(getMainActivity());
         m_SendTask.execute();
     }

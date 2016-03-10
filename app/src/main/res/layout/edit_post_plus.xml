@@ -68,20 +68,16 @@
             style="?post_panel">
             <ImageButton
                 android:id="@+id/advanced_button"
-                style="?right_separator"
+                android:background="?attr/selectableItemBackground"
                 android:layout_width="48dp"
-                android:layout_height="32dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_height="48dp"
                 android:src="@drawable/ic_plus_grey600_24dp" />
             <Button
                 android:id="@+id/btnAttachments"
-                style="?right_separator"
+                android:background="?attr/selectableItemBackground"
                 android:layout_width="wrap_content"
                 android:minWidth="56dp"
-                android:layout_height="32dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_height="48dp"
                 android:drawableLeft="@drawable/ic_paperclip_grey600_24dp"
                 android:text="0"
                 android:layout_marginLeft="48dp"
@@ -90,11 +86,9 @@
                 android:textColor="#757575"/>
             <ImageButton
                 android:id="@+id/btnUpload"
-                style="?right_separator"
+                android:background="?attr/selectableItemBackground"
                 android:layout_width="48dp"
-                android:layout_height="32dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_height="48dp"
                 android:layout_marginLeft="104dp"
                 android:src="@drawable/ic_upload_grey600_24dp" />
             <Button
@@ -102,6 +96,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="48dp"
                 android:layout_marginLeft="156dp"
+                android:background="?attr/selectableItemBackground"
+                android:textColor="@color/accentGray"
+                android:textStyle="bold"
                 android:text="Отправить"/>
         </FrameLayout>
 

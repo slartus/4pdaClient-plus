@@ -214,15 +214,15 @@
     </style>
 
     <style name="right_separator_light">
-        <item name="android:background">@drawable/right_separator_light</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
     </style>
 
     <style name="right_separator_dark">
-        <item name="android:background">@drawable/right_separator_dark</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
     </style>
 
     <style name="right_separator_black">
-        <item name="android:background">@drawable/right_separator_black</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
     </style>
 
     <style name="news_light">
