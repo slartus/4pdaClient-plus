@@ -473,7 +473,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         menu.add(getString(R.string.Reputation))
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        CharSequence[] items = {"Поднять", "Понизить", "Посмотреть", "Кому изменял репутацию"};
+                        CharSequence[] items = {"Повысить", "Понизить", "Посмотреть", "Кому изменял репутацию"};
                         new MaterialDialog.Builder(getMainActivity())
                                 .title("Репутация")
                                 .items(items)

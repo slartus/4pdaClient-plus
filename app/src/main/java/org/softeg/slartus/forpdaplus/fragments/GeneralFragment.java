@@ -94,6 +94,9 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
 
     public void setThisTab(TabItem thisTab) {
         this.thisTab = thisTab;
+        generalTitle = thisTab.getTitle();
+        generalSubtitle = thisTab.getSubTitle();
+        generalParentTag = thisTab.getParentTag();
     }
 
     public TabItem getThisTab() {

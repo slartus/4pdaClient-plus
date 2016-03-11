@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 import org.softeg.slartus.forpdaapi.IListItem;
+import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.classes.ListData;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.qms.QmsUser;
@@ -29,13 +32,19 @@ import org.softeg.slartus.forpdaapi.qms.QmsUsers;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
+import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.imageview.MaterialImageLoading;
 import org.softeg.slartus.forpdaplus.listfragments.BaseLoaderListFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by radiationx on 12.11.15.
@@ -46,6 +55,7 @@ public class QmsContactsList extends BaseLoaderListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setArrow();
+
     }
 
     @Override
@@ -56,6 +66,8 @@ public class QmsContactsList extends BaseLoaderListFragment {
             reloadData();
     }
 
+
+
     @Override
     public void onPause() {
         super.onPause();
@@ -65,6 +77,7 @@ public class QmsContactsList extends BaseLoaderListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getListView().setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), false, true));
+        registerForContextMenu(getListView());
     }
 
     @Override
@@ -105,6 +118,41 @@ public class QmsContactsList extends BaseLoaderListFragment {
         } catch (Throwable ex) {
             AppLog.e(getMainActivity(), ex);
         }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        if (info.id == -1) return;
+        Object o = getAdapter().getItem((int) info.id);
+        if (o == null)
+            return;
+        final QmsUser qmsUser = (QmsUser) o;
+        if (TextUtils.isEmpty(qmsUser.getId())) return;
+
+        final List<MenuListDialog> list = new ArrayList<>();
+        list.add(new MenuListDialog("Удалить", new Runnable() {
+            @Override
+            public void run() {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Map<String, String> additionalHeaders = new HashMap<>();
+                            additionalHeaders.put("act", "qms-xhr");
+                            additionalHeaders.put("action", "del-member");
+                            additionalHeaders.put("del-mid", qmsUser.getId());
+                            Client.getInstance().performPost("http://4pda.ru/forum/index.php", additionalHeaders);
+                            reloadData();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            }
+        }));
+
+        ExtUrl.showContextDialog(getContext(), null, list);
     }
 
     public class QmsContactsAdapter extends BaseAdapter {

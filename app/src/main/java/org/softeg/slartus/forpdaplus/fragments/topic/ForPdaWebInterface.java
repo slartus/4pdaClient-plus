@@ -452,7 +452,7 @@ public class ForPdaWebInterface {
         run(new Runnable() {
             @Override
             public void run() {
-                getContext().showChangeRep(postId, userId, userNick, "add", "Поднять репутацию");
+                getContext().showChangeRep(postId, userId, userNick, "add", "Повысить репутацию");
             }
         });
     }
@@ -491,7 +491,7 @@ public class ForPdaWebInterface {
                 int showRepPosition = -1;
                 int minusRepPosition = -1;
                 if ("1".equals(canPlus)) {
-                    items.add("Поднять (+1)");
+                    items.add("Повысить (+1)");
                     plusRepPosition = i; i++;
                 }
 

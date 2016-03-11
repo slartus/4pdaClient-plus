@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,8 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
@@ -34,7 +37,8 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 public class ForumRulesFragment extends WebViewFragment{
     private AdvWebView m_WebView;
     private AsyncTask asyncTask;
-    public final static String m_Title = "Правила форума";
+    public  String m_Title = "Правила форума";
+    private String url = "http://4pda.ru/forum/index.php?act=boardrules";
 
     @Override
     public boolean closeTab() {
@@ -58,7 +62,7 @@ public class ForumRulesFragment extends WebViewFragment{
 
     @Override
     public String getUrl() {
-        return null;
+        return url;
     }
 
     @Override
@@ -89,8 +93,19 @@ public class ForumRulesFragment extends WebViewFragment{
         super.onPause();
     }
 
+    public static ForumRulesFragment newInstance(String url){
+        ForumRulesFragment fragment = new ForumRulesFragment();
+        Bundle args = new Bundle();
+        args.putString("URL", url);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public static void showRules() {
-        MainActivity.addTab(m_Title, "RULES", new ForumRulesFragment());
+        MainActivity.addTab("Правила форума", "RULES", new ForumRulesFragment());
+    }
+    public static void showRules(String url){
+        MainActivity.addTab("Правила форума", url, newInstance(url));
     }
 
     @Override
@@ -115,10 +130,10 @@ public class ForumRulesFragment extends WebViewFragment{
         m_WebView.addJavascriptInterface(this, "HTMLOUT");
         m_WebView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
         m_WebView.setWebViewClient(new MyWebViewClient());
+        if(getArguments()!=null)
+            url = getArguments().getString("URL");
 
-        LoadRulesTask task = new LoadRulesTask();
-        task.execute("".replace("|", ""));
-        asyncTask = task;
+        asyncTask = new LoadRulesTask().execute();
 
         return view;
     }
@@ -132,7 +147,7 @@ public class ForumRulesFragment extends WebViewFragment{
             try {
                 if (isCancelled()) return false;
                 Client client = Client.getInstance();
-                m_ThemeBody = transformBody(client.performGet("http://4pda.ru/forum/index.php?act=boardrules"));
+                m_ThemeBody = transformBody(client.performGet(url));
 
                 return true;
             } catch (Throwable e) {
@@ -146,7 +161,12 @@ public class ForumRulesFragment extends WebViewFragment{
             builder.beginBody("rules");
 
             builder.append("<div class=\"posts_list\"><div class=\"post_container\"><div class=\"post_body \">");
-            builder.append(Jsoup.parse(body).select(".tablepad").first().html());
+            Document doc = Jsoup.parse(body);
+            Element element = doc.select(".tablepad").first();
+            if(element==null)
+                element = doc.select(".postcolor").first();
+            builder.append(element.html());
+            m_Title = doc.select(".maintitle").first().text().trim();
             builder.append("</div></div></div>");
 
             builder.endBody();
@@ -167,6 +187,8 @@ public class ForumRulesFragment extends WebViewFragment{
 
             if (success) {
                 showThemeBody(m_ThemeBody);
+                setTitle(m_Title);
+                showBody();
             } else {
                 getSupportActionBar().setTitle(ex.getMessage());
                 m_WebView.loadDataWithBaseURL("\"file:///android_asset/\"", m_ThemeBody, "text/html", "UTF-8", null);
@@ -199,7 +221,7 @@ public class ForumRulesFragment extends WebViewFragment{
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        StringUtils.copyToClipboard(getContext(), "http://4pda.ru/forum/index.php?act=boardrules");
+                        StringUtils.copyToClipboard(getContext(), url);
                         Toast.makeText(getActivity(), "Ссылка сопирована", Toast.LENGTH_SHORT).show();
                         return true;
                     }

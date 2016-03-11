@@ -29,6 +29,7 @@ import org.softeg.slartus.forpdaplus.common.Email;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.devdb.ParentFragment;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
+import org.softeg.slartus.forpdaplus.fragments.ForumRulesFragment;
 import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
 import org.softeg.slartus.forpdaplus.fragments.SpecialView;
 import org.softeg.slartus.forpdaplus.fragments.profile.DeviceDelete;
@@ -222,7 +223,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                         ForumUser.startChangeRep(context, handler,
                                 uri.getQueryParameter("mid"),
                                 uri.getQueryParameter("mid"),
-                                uri.getQueryParameter("p"), "add", "Поднять репутацию");
+                                uri.getQueryParameter("p"), "add", "Повысить репутацию");
                     } else {
                         UserReputationFragment.plusRep(context, handler, uri.getQueryParameter("mid"), uri.getQueryParameter("mid"));
                     }
@@ -337,6 +338,14 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return tryShowUrl(context, handler, url, showInDefaultBrowser, finishActivity, null);
     }
 
+    public static boolean tryShowRules(Activity context, Uri uri, Boolean finish){
+        if ("announce".equals(uri.getQueryParameter("act")) | "boardrules".equals(uri.getQueryParameter("act"))) {
+            ForumRulesFragment.showRules(uri.toString());
+            return true;
+        }
+        return false;
+    }
+
 
     private static CharSequence getRedirect(CharSequence url) {
         Matcher m = PatternExtensions.compile("4pda\\.ru/pages/go/\\?u=(.*?)$").matcher(url);
@@ -367,6 +376,9 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 || uri.getHost().toLowerCase().contains("mzstatic.com"))) {
             if (isTheme(uri)) {
                 showTopic(url);
+                return true;
+            }
+            if(tryShowRules(context, uri, finishActivity)){
                 return true;
             }
 

@@ -442,7 +442,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
     }
 
     public static void plusRep(Activity activity, Handler handler, String postId, String userId, String userNick) {
-        showChangeRep(activity, handler, postId, userId, userNick, "add", "Поднять репутацию");
+        showChangeRep(activity, handler, postId, userId, userNick, "add", "Повысить репутацию");
     }
 
     public static void minusRep(Activity activity, Handler handler, String postId, String userId, String userNick) {
