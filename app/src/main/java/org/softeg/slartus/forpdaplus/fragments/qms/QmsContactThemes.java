@@ -57,8 +57,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     private String m_Nick = "";
 
     private Boolean DeleteMode = false;
-    public Menu menu;
-    
+
     @Override
     public void onResume() {
         super.onResume();
@@ -70,11 +69,6 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     @Override
     public void onPause() {
         super.onPause();
-    }
-
-    @Override
-    public Menu getMenu(){
-        return menu;
     }
 
     public static void showThemes(String userId, String userNick){
@@ -233,6 +227,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         menu.add("Новая тема")
                 .setIcon(R.drawable.ic_pencil_white_24dp)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -251,7 +246,6 @@ public class QmsContactThemes extends BaseLoaderListFragment {
                 return true;
             }
         }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-        this.menu = menu;
     }
 
     private void startDeleteMode() {

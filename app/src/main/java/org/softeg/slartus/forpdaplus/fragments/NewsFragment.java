@@ -74,7 +74,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     private ArrayList<History> m_History = new ArrayList<>();
     private boolean loadImages;
     private String m_Title = "Новости";
-    private Menu menu;
     private FloatingActionButton fab;
     private FrameLayout buttonsPanel;
 
@@ -114,10 +113,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         showNews(m_NewsUrl);
     }
 
-    @Override
-    public Menu getMenu() {
-        return menu;
-    }
 
     public AdvWebView getWebView() {
         return webView;
@@ -265,8 +260,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                         return true;
                     }
                 });
-        //ExtUrl.addUrlSubMenu(new Handler(), getMainActivity(), menu, getUrl(), null, null);
-        this.menu = menu;
     }
 
 

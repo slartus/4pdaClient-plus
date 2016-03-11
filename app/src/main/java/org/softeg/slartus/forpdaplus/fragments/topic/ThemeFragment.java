@@ -155,7 +155,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     private String lastStyle;
     private ForPdaDeveloperInterface m_ForPdaDeveloperInterface;
-    private Menu menu;
     private GetThemeTask asyncTask;
     private MyWebViewClient webViewClient;
 
@@ -251,11 +250,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             clear();
             return false;
         }
-    }
-
-    @Override
-    public Menu getMenu() {
-        return menu;
     }
 
     @Override
@@ -705,8 +699,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         } catch (Exception ex) {
             AppLog.e(getMainActivity(), ex);
         }
-
-        this.menu = menu;
     }
 
     @Override

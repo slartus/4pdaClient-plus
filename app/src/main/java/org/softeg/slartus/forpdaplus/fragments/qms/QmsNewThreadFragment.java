@@ -55,11 +55,6 @@ public class QmsNewThreadFragment extends GeneralFragment {
     }
 
     @Override
-    public Menu getMenu() {
-        return null;
-    }
-
-    @Override
     public boolean closeTab() {
         return false;
     }

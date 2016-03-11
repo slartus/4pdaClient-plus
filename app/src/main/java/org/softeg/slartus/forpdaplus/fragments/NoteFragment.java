@@ -35,11 +35,6 @@ import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
  */
 public class NoteFragment extends GeneralFragment {
     @Override
-    public Menu getMenu() {
-        return null;
-    }
-
-    @Override
     public boolean closeTab() {
         return false;
     }

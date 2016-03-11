@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -47,17 +48,13 @@ public class UserReputationFragment extends BrickFragmentListBase {
     public static final String USER_NICK_KEY = "USER_NICK_KEY";
     public static final String USER_FROM_KEY = "USER_FROM_KEY";
 
+
     public static void showActivity(Context context, CharSequence userId, Boolean from) {
         Bundle args = new Bundle();
         args.putString(USER_ID_KEY, userId.toString());
         if (from)
             args.putBoolean(USER_FROM_KEY, true);
         MainActivity.showListFragment(userId.toString(), UserReputationBrickInfo.NAME, args);
-    }
-
-    @Override
-    public Menu getMenu() {
-        return null;
     }
 
     @Override
@@ -181,7 +178,6 @@ public class UserReputationFragment extends BrickFragmentListBase {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         try {
-
             MenuItem item;
             if (Client.getInstance().getLogined() && !getUserId().equals(Client.getInstance().UserId)) {
 
@@ -216,8 +212,6 @@ public class UserReputationFragment extends BrickFragmentListBase {
         } finally {
             super.onCreateOptionsMenu(menu, inflater);
         }
-
-
     }
 
     @Override
@@ -452,7 +446,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
     }
 
     public static void minusRep(Activity activity, Handler handler, String postId, String userId, String userNick) {
-        showChangeRep(activity, handler, postId, userId, userNick, "minus", "Опустить репутацию");
+        showChangeRep(activity, handler, postId, userId, userNick, "minus", "Понизить репутацию");
     }
 
     private static void showChangeRep(Activity activity, Handler handler, final String postId, String userId, String userNick, final String type, String title) {

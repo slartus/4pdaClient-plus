@@ -71,11 +71,6 @@ public class PostPreviewFragment extends WebViewFragment {
     }
 
     @Override
-    public Menu getMenu() {
-        return null;
-    }
-
-    @Override
     public boolean closeTab() {
         return false;
     }

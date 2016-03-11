@@ -22,7 +22,6 @@ import org.softeg.slartus.forpdaplus.tabs.TabItem;
  * Created by radiationx on 12.11.15.
  */
 public abstract class GeneralFragment extends Fragment implements IBrickFragment{
-    public abstract Menu getMenu();
     public abstract boolean closeTab();
 
     private ActionBar actionBar;
@@ -34,6 +33,17 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     private String generalSubtitle = null;
     private String generalUrl = "DefaultURL";
     private String generalParentTag = "DefaultParentTag";
+    private Menu menu;
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        this.menu = menu;
+    }
 
     @Nullable
     @Override
@@ -163,6 +173,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         Log.e("kekos", "onresume "+getTag());
         if(actionBar==null)
             actionBar = getMainActivity().getSupportActionBar();
+        Log.d("kek", getMenu()+" : ");
         if(getMenu()!=null)
             onCreateOptionsMenu(getMenu(), null);
         if(getMainActivity()!=null)
@@ -178,8 +189,8 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         Log.e("kekos", "onpause " + getTag());
         if(getSupportActionBar()!=null)
             getSupportActionBar().setSubtitle(null);
-        if(getMenu()!=null)
-            getMenu().clear();
+        /*if(getMenu()!=null)
+            getMenu().clear();*/
         getMainActivity().onCreateOptionsMenu(MainActivity.mainMenu);
     }
     @Override

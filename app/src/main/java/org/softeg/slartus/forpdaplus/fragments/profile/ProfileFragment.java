@@ -58,9 +58,7 @@ import java.util.regex.Matcher;
 public class ProfileFragment extends WebViewFragment implements LoaderManager.LoaderCallbacks<Profile>{
     public static final String USER_ID_KEY = "UserIdKey";
     public static final String USER_NAME_KEY = "UserNameKey";
-    private Menu menu;
     private String title;
-    private Handler mHandler = new Handler();
 
     @Override
     public WebViewClient getWebViewClient() {
@@ -90,11 +88,6 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     @Override
     public boolean closeTab() {
         return false;
-    }
-
-    @Override
-    public Menu getMenu() {
-        return menu;
     }
 
     @Override
@@ -480,7 +473,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         menu.add(getString(R.string.Reputation))
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        CharSequence[] items = {"Поднять", "Опустить", "Посмотреть", "Кому изменял репутацию"};
+                        CharSequence[] items = {"Поднять", "Понизить", "Посмотреть", "Кому изменял репутацию"};
                         new MaterialDialog.Builder(getMainActivity())
                                 .title("Репутация")
                                 .items(items)
@@ -536,7 +529,5 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
                     }
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-
-        this.menu = menu;
     }
 }

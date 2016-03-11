@@ -68,13 +68,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     private static final String SEARCH_URL_KEY = "SEARCH_URL_KEY";
     private WebViewExternals m_WebViewExternals;
     private Bundle args;
-    private Menu menu;
     private FrameLayout buttonsPanel;
-
-    @Override
-    public Menu getMenu() {
-        return menu;
-    }
 
     @Override
     public void onCreate(android.os.Bundle savedInstanceState) {
@@ -475,6 +469,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         menu.add("Ссылка")
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -482,7 +477,6 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
                         return true;
                     }
                 });
-        this.menu = menu;
     }
 
     @Override

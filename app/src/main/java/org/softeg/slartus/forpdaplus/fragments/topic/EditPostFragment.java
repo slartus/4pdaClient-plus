@@ -159,11 +159,6 @@ public class EditPostFragment extends GeneralFragment {
     }
 
     @Override
-    public Menu getMenu() {
-        return menu;
-    }
-
-    @Override
     public boolean closeTab() {
         if (!TextUtils.isEmpty(txtPost.getText())) {
             new MaterialDialog.Builder(getMainActivity())
@@ -425,7 +420,6 @@ public class EditPostFragment extends GeneralFragment {
         }
         txtPost.setSelection(txtPost.getText().length());
     }
-    Menu menu;
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -511,7 +505,6 @@ public class EditPostFragment extends GeneralFragment {
 
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         */
-        this.menu = menu;
     }
 
 

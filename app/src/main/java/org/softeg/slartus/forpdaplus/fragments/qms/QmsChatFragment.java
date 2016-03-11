@@ -78,7 +78,6 @@ public class QmsChatFragment extends WebViewFragment {
     private static final String POST_TEXT_KEY = "PostText";
     private final static int FILECHOOSER_RESULTCODE = 1;
     final Handler uiHandler = new Handler();
-    Menu menu;
     private Handler mHandler = new Handler();
     private AdvWebView wvChat;
     private String m_Id;
@@ -174,11 +173,6 @@ public class QmsChatFragment extends WebViewFragment {
     @Override
     public boolean closeTab() {
         return false;
-    }
-
-    @Override
-    public Menu getMenu() {
-        return menu;
     }
 
     @Override
@@ -741,7 +735,6 @@ public class QmsChatFragment extends WebViewFragment {
                 return true;
             }
         }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-        this.menu = menu;
     }
 
 /*

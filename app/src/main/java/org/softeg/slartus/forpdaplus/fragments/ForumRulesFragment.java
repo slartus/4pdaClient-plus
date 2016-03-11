@@ -32,13 +32,9 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
  * Created by radiationx on 06.12.15.
  */
 public class ForumRulesFragment extends WebViewFragment{
-    AdvWebView m_WebView;
-    AsyncTask asyncTask;
+    private AdvWebView m_WebView;
+    private AsyncTask asyncTask;
     public final static String m_Title = "Правила форума";
-    @Override
-    public Menu getMenu() {
-        return menu;
-    }
 
     @Override
     public boolean closeTab() {
@@ -208,7 +204,6 @@ public class ForumRulesFragment extends WebViewFragment{
                         return true;
                     }
                 });
-        this.menu = menu;
     }
 }
 

@@ -61,7 +61,6 @@ import java.util.regex.Pattern;
  */
 public class CuratorFragment extends WebViewFragment {
     private AdvWebView webView;
-    private Menu menu;
     private String topicId = "";
     private String url = "";
     private String[] idsArray;
@@ -96,11 +95,6 @@ public class CuratorFragment extends WebViewFragment {
     @Override
     public AsyncTask getAsyncTask() {
         return null;
-    }
-
-    @Override
-    public Menu getMenu() {
-        return menu;
     }
 
     @Override
@@ -328,7 +322,6 @@ public class CuratorFragment extends WebViewFragment {
                         return true;
                     }
                 });
-        this.menu = menu;
     }
     @JavascriptInterface
     public void showCuratorDialog(final String ids) {

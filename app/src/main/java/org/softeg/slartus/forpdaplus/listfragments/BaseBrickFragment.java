@@ -26,12 +26,6 @@ public abstract class BaseBrickFragment extends GeneralFragment{
         super();
     }
 
-    private Menu menu;
-    @Override
-    public Menu getMenu(){
-        return menu;
-    }
-
     @Override
     public boolean closeTab() {
         return false;
@@ -101,6 +95,7 @@ public abstract class BaseBrickFragment extends GeneralFragment{
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         menu.add("Обновить")
                 .setIcon(R.drawable.ic_refresh_white_24dp)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -110,8 +105,6 @@ public abstract class BaseBrickFragment extends GeneralFragment{
                         return true;
                     }
                 }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-
-        this.menu = menu;
     }
 
     @Override

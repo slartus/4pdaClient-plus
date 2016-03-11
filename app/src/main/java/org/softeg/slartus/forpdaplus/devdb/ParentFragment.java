@@ -99,7 +99,6 @@ public class ParentFragment extends GeneralFragment {
                         return true;
                     }
                 });
-        this.menu = menu;
     }
 
     @Override
@@ -168,13 +167,6 @@ public class ParentFragment extends GeneralFragment {
     public void onDetach() {
         super.onDetach();
     }
-
-    private Menu menu;
-    @Override
-    public Menu getMenu() {
-        return menu;
-    }
-
 
     @Override
     public boolean closeTab() {

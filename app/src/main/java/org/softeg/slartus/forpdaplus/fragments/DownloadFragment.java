@@ -49,11 +49,6 @@ import java.util.Date;
  */
 public class DownloadFragment extends GeneralFragment implements AdapterView.OnItemClickListener {
     @Override
-    public Menu getMenu() {
-        return null;
-    }
-
-    @Override
     public boolean closeTab() {
         return false;
     }
@@ -324,6 +319,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
         menu.add("Очистить").setIcon(R.drawable.ic_delete_white_24dp)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {

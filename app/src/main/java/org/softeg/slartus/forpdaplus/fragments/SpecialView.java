@@ -33,10 +33,6 @@ public class SpecialView extends WebViewFragment {
     private AsyncTask asyncTask;
     public static String m_Title = "ForPDA";
     public static String m_Url="";
-    @Override
-    public Menu getMenu() {
-        return null;
-    }
 
     @Override
     public boolean closeTab() {

@@ -96,11 +96,6 @@ public class ProfileEditFragment extends WebViewFragment {
         return false;
     }
 
-    @Override
-    public Menu getMenu() {
-        return null;
-    }
-
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.profile_edit_activity, container, false);

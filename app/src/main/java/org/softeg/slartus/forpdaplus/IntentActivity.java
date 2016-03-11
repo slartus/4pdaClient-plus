@@ -233,7 +233,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                         ForumUser.startChangeRep(context, handler,
                                 uri.getQueryParameter("mid"),
                                 uri.getQueryParameter("mid"),
-                                uri.getQueryParameter("p"), "minus", "Опустить репутацию");
+                                uri.getQueryParameter("p"), "minus", "Понизить репутацию");
                     } else {
                         UserReputationFragment.minusRep(context, handler, uri.getQueryParameter("mid"), uri.getQueryParameter("mid"));
                     }

@@ -73,12 +73,6 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
 
     boolean lastImageDownload = MainActivity.getPreferences().getBoolean("forum.list.show_images", true);
 
-
-    @Override
-    public Menu getMenu() {
-        return menu;
-    }
-
     @Override
     public boolean closeTab() {
         return false;
@@ -106,7 +100,6 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
         setTitle(m_Title);
         initAdapter();
     }
-    private Menu menu;
     @Override
     public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -151,7 +144,6 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
                     }
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-        this.menu = menu;
     }
     @Override
     public void onPause() {
