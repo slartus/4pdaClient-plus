@@ -238,53 +238,62 @@ a {
   -webkit-border-radius: 2px;
   border-radius: 2px;
   height: auto!important;
-  font-size: 0.95em;
   border-collapse: collapse;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  border: 1px solid #212121;
-  display: block;
-  overflow: hidden;
+  border-top: 1px solid #212121;
+  border-bottom: 1px solid #212121;
+  overflow-x: auto;
   background: #1a1a1a;
-  margin: 0.5em 0;
+  margin: 0.5em -1em;
   position: relative;
+  display: block;
+  /*tbody {
+                    display: block;
+                    th {
+                        display: block;
+                    }
+                    tr {
+                        .bRad(2px);
+                        display: block;
+                        border: @border1;
+                        margin: 0.5em;
+                        p {
+                            margin: 0;
+                        }
+                        td {
+                            display: block;
+                            width: 100%;
+                            background: @mainBoxBgColor;
+                            padding: 0.2em 0.4em;
+                            padding-left: 0.6em;
+                            color: @textColor;
+                            &:first-child {
+                                .contrast;
+                                .bRad(2px 2px 0 0);
+                                padding: 0 0.4em;
+                                line-height: 1.75em;
+                                background: @tableHeadColor;
+                                //background: @hiddenTitleBg;
+                            }
+                            &:last-child {
+                                .bRad(0 0 2px 2px);
+                            }
+                        }
+                    }
+                }*/
 }
 .container .content .content-box .table4site tbody {
-  display: block;
-}
-.container .content .content-box .table4site tbody th {
-  display: block;
-}
-.container .content .content-box .table4site tbody tr {
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  display: block;
-  border: 1px solid #212121;
-  margin: 0.5em;
-}
-.container .content .content-box .table4site tbody tr p {
-  margin: 0;
+  width: 100%;
+  display: table;
 }
 .container .content .content-box .table4site tbody tr td {
-  display: block;
-  width: 100%;
-  background: #000000;
-  padding: 0.2em 0.4em;
-  padding-left: 0.6em;
-  color: #dedede;
+  text-align: left;
+  padding: 0.75em 0.5em;
 }
-.container .content .content-box .table4site tbody tr td:first-child {
-  color: #ededed;
-  -webkit-border-radius: 2px 2px 0 0;
-  border-radius: 2px 2px 0 0;
-  padding: 0 0.4em;
-  line-height: 1.75em;
-  background: #17415f;
+.container .content .content-box .table4site tbody tr td > p {
+  margin: 0;
 }
-.container .content .content-box .table4site tbody tr td:last-child {
-  -webkit-border-radius: 0 0 2px 2px;
-  border-radius: 0 0 2px 2px;
+.container .content .content-box .table4site tbody tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.05);
 }
 .container .content .content-box .galContainer {
   list-style: none;

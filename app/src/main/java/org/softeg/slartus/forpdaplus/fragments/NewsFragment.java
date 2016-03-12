@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -373,19 +374,25 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
         private boolean checkIsImage(final String url){
             final Pattern imagePattern = PatternExtensions.compile("http://.*?\\.(png|jpg|jpeg|gif)$");
-            if(!imagePattern.matcher(url).find()) return false;
-            if (!Client.getInstance().getLogined() && !Client.getInstance().hasLoginCookies()) {
-                Client.getInstance().showLoginForm(getContext(), new Client.OnUserChangedListener() {
-                    public void onUserChanged(String user, Boolean success) {
-                        if (success) {
-                            showImage(url);
+            Uri uri = Uri.parse(url.toLowerCase());
+            if(imagePattern.matcher(uri.toString()).find()
+                    ||(uri.getHost().toLowerCase().contains("ggpht.com")
+                    || uri.getHost().toLowerCase().contains("googleusercontent.com")
+                    || uri.getHost().toLowerCase().contains("windowsphone.com"))){
+                if (!Client.getInstance().getLogined() && !Client.getInstance().hasLoginCookies()) {
+                    Client.getInstance().showLoginForm(getContext(), new Client.OnUserChangedListener() {
+                        public void onUserChanged(String user, Boolean success) {
+                            if (success) {
+                                showImage(url);
+                            }
                         }
-                    }
-                });
-            }else {
-                showImage(url);
+                    });
+                }else {
+                    showImage(url);
+                }
+                return true;
             }
-            return true;
+            return false;
         }
 
         private void showImage(String url){
@@ -435,7 +442,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         final Pattern pattern = Pattern.compile("http://4pda.ru/\\d{4}/\\d{2}/\\d{2}/\\d+/*#(.*)");
         Matcher m = pattern.matcher(url);
         if (m.find()) {
-            webView.loadUrl("javascript:scrollToElement('" + m.group(1) + "')");
+            webView.evalJs("scrollToElement('" + m.group(1) + "');");
         }
     }
 

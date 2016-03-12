@@ -8,16 +8,25 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.softeg.slartus.forpdacommon.Http;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -42,6 +51,15 @@ public class ForPdaVersionNotifier extends MainNotifier {
         new Thread(new Runnable() {
             public void run() {
                 try {
+                    /*String resp = Client.getInstance().performGet("https://api.github.com/repos/slartus/4pdaClient-plus/contents/updateinfo.json");
+                    JsonObject jsonObject = new JsonParser().parse(resp).getAsJsonObject();
+                    jsonObject = new JsonParser().parse(new String(Base64.decode(jsonObject.get("content").getAsString(), Base64.DEFAULT))).getAsJsonObject();
+                    boolean notice = jsonObject.get("notice").getAsBoolean(),
+                            warning = jsonObject.get("warning").getAsBoolean(),
+                            show_beta_dialog = jsonObject.get("show_beta_dialog").getAsBoolean(),
+                            show_release_dialog = jsonObject.get("show_release_dialog").getAsBoolean();
+                    String notice_text,
+                            warning_text;*/
                     String currentVersion = getAppVersion(App.getContext());
                     currentVersion = currentVersion.trim();
 

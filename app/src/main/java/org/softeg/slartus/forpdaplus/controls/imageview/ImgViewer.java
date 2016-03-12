@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -110,15 +111,15 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
             statusBar = ButterKnife.findById(ImgViewer.this, R.id.img_viewer_statusBar);
             statusBar.setVisibility(View.VISIBLE);
             statusBar.setMinimumHeight(getStatusBarHeight());
-            statusBar.setBackgroundColor(getResources().getColor(R.color.background_toolbar));
+            statusBar.setBackgroundColor(ContextCompat.getColor(App.getContext(), R.color.background_toolbar));
 
             tintManager = new SystemBarTintManager(ImgViewer.this);
             if (tintManager.isNavBarTintEnabled()) {
-                tintManager.setNavigationBarTintColor(getResources().getColor(R.color.background_toolbar));
+                tintManager.setNavigationBarTintColor(ContextCompat.getColor(App.getContext(), R.color.background_toolbar));
             }
 
             if (tintManager.isStatusBarTintEnabled()) {
-                tintManager.setStatusBarTintColor(getResources().getColor(R.color.background_toolbar));
+                tintManager.setStatusBarTintColor(ContextCompat.getColor(App.getContext(), R.color.background_toolbar));
             }
         }
 
@@ -126,7 +127,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.background_toolbar));
+            getWindow().setNavigationBarColor(ContextCompat.getColor(App.getContext(), R.color.background_toolbar));
         }
 
 
@@ -153,7 +154,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
 
     private void initUI() {
         pager = ButterKnife.findById(ImgViewer.this, R.id.img_viewer_pager);
-        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -229,7 +230,6 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     class ImgAdapter extends PagerAdapter {
         SparseArray<View> views = new SparseArray<>();
         private LayoutInflater inflater;
-        private LinearLayout progressBar;
         private PhotoView photoView;
         private ProgressBar progress;
         private ImageLoader imageLoader;
@@ -240,7 +240,6 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
             imageLoader = ImageLoader.getInstance();
 
             options = App.getDefaultOptionsUIL()
-                    .imageScaleType(ImageScaleType.EXACTLY)
                     .bitmapConfig(Bitmap.Config.ARGB_8888)
                     .considerExifParams(true)
                     .build();

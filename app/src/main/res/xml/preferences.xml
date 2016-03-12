@@ -24,6 +24,11 @@
                 android:summary="Шрифт в новостях, поиске, теме, профиле, QMS"/>
             <CheckBoxPreference
                 android:defaultValue="false"
+                android:key="titleMarquee"
+                android:summary="Требуется перезапуск приложения"
+                android:title="Прокрутка длинного текста в тулбаре" />
+            <CheckBoxPreference
+                android:defaultValue="false"
                 android:key="isSquareAvarars"
                 android:title="Квадратные аватарки"
                 android:summary="Требуется перезапуск приложения"/>
@@ -55,11 +60,6 @@
                 android:defaultValue="true"
                 android:key="showToolbarBackArrow"
                 android:title="Показывать стрелку 'назад'"/>
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="showSubMain"
-                android:title="Скрыть описание в пункте списка"
-                android:summary="Требуется перезапуск приложения"/>
         </PreferenceCategory>
 
         <PreferenceCategory android:title="Боковая панель">
@@ -237,6 +237,11 @@
                 android:key="lists.refresh_on_tab"
                 android:summary="Обновлять при выборе вкладки"
                 android:title="Обновлять списки из вкладок" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="showSubMain"
+                android:title="Скрыть описание в пункте списка"
+                android:summary="Требуется перезапуск приложения"/>
         </PreferenceCategory>
 
         <PreferenceCategory android:title="Избранное">
@@ -375,12 +380,6 @@
                 android:key="system.developerBounds"
                 android:title="Границы элементов (outline)" />
         </PreferenceScreen>
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="titleMarquee"
-            android:summary="Требуется перезапуск приложения"
-            android:title="Прокрутка длинного текста в тулбаре" />
 
         <CheckBoxPreference
             android:defaultValue="false"

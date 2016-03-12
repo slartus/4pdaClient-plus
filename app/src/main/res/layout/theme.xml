@@ -123,7 +123,7 @@
 
                 <ImageButton
                     android:id="@+id/btnPrevSearch"
-                    android:background="?attr/selectableItemBackground"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="Предыдущее совпадение"
@@ -131,7 +131,7 @@
 
                 <ImageButton
                     android:id="@+id/btnNextSearch"
-                    android:background="?attr/selectableItemBackground"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="48dp"
@@ -155,7 +155,7 @@
 
                 <ImageButton
                     android:id="@+id/btnCloseSearch"
-                    android:background="?attr/selectableItemBackground"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:src="@drawable/ic_close_grey600_24dp"

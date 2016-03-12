@@ -28,7 +28,7 @@
         android:layout_alignParentEnd="true"
         android:id="@+id/close"
         android:src="@drawable/ic_close_grey600_24dp"
-        android:background="@android:color/transparent"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:layout_alignBottom="@+id/text" />
 </RelativeLayout>

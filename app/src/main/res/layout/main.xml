@@ -87,12 +87,10 @@
                 android:layout_height="wrap_content"
                 android:text="Закрыть все"
                 android:layout_alignParentBottom="true"
-                android:gravity="left"
-                android:background="@android:color/transparent"
+                android:gravity="left|center_vertical"
+                android:background="?attr/selectableItemBackground"
                 android:paddingLeft="16dp"
-                android:paddingTop="12dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="12dp" />
+                android:paddingRight="16dp"/>
         </RelativeLayout>
     </android.support.v4.widget.DrawerLayout>
     <RelativeLayout

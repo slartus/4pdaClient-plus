@@ -100,22 +100,26 @@
 
     </style>
 
-    <style name="ImageViewTheme" parent="Theme.AppCompat">
+    <style name="ImageViewThemeBase" parent="Theme.AppCompat">
         <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBarOverlay">true</item>
         <item name="android:actionBarStyle">@style/actionbar_trans</item>
         <item name="actionBarStyle">@style/actionbar_trans</item>
         <item name="panelMenuListTheme">@style/bottom_menu_dark</item>
-
+        <item name="actionOverflowButtonStyle">@style/overflow_button</item>
+        <item name="android:windowBackground">@color/app_background_black</item>
+    </style>
+    <style name="ImageViewTheme" parent="ImageViewThemeBase">
+        <item name="actionBarStyle">@style/actionbar_trans</item>
     </style>
 
-    <style name="actionbar_trans" parent="@style/Widget.AppCompat.ActionBar">
-        <item name="android:background">@color/background_toolbar</item>
+    <style name="actionbar_trans_base" parent="@style/Widget.AppCompat.ActionBar">
         <item name="background">@color/background_toolbar</item>
-        <item name="elevation">2dp</item>
         <item name="displayOptions">homeAsUp|showTitle</item>
         <item name="titleTextStyle">@style/actionbar_title</item>
         <item name="subtitleTextStyle">@style/actionbar_subtitle</item>
     </style>
+    <style name="actionbar_trans" parent="actionbar_trans_base"/>
 
     <style name="list_divider_style_light" parent="@style/Widget.AppCompat.ListView">
         <item name="android:divider">@color/divider_light</item>
@@ -214,15 +218,15 @@
     </style>
 
     <style name="right_separator_light">
-        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
     </style>
 
     <style name="right_separator_dark">
-        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
     </style>
 
     <style name="right_separator_black">
-        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
     </style>
 
     <style name="news_light">

@@ -12,7 +12,7 @@
         android:id="@+id/btnSpoiler"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@android:color/transparent"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_contrast_grey600_24dp" />
 
     <TextView
@@ -35,7 +35,7 @@
         android:id="@+id/btnDelete"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="#00000000"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_close_grey600_24dp"
         android:layout_alignTop="@+id/btnSpoiler"
         android:layout_alignParentRight="true"

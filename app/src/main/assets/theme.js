@@ -174,7 +174,7 @@ function changeStyle(cssFile) {
 
 function scrollToElement(id) {
 
-    var el = elemByName(id);
+    var el = document.getElementById(id);
     var x = 0;
     var y = 0;
     while (el != null) {

@@ -70,7 +70,7 @@
 
             <ImageButton
                 android:id="@+id/advanced_button"
-                android:background="?attr/selectableItemBackground"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/ic_plus_grey600_24dp" />
@@ -79,7 +79,7 @@
                 android:id="@+id/btnSendPost"
                 android:layout_width="fill_parent"
                 android:layout_height="48dp"
-                android:background="?attr/selectableItemBackground"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:textColor="@color/accentGray"
                 android:textStyle="bold"
                 android:text="Отправить"

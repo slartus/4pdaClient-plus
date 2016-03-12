@@ -68,13 +68,13 @@
             style="?post_panel">
             <ImageButton
                 android:id="@+id/advanced_button"
-                android:background="?attr/selectableItemBackground"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:src="@drawable/ic_plus_grey600_24dp" />
             <Button
                 android:id="@+id/btnAttachments"
-                android:background="?attr/selectableItemBackground"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_width="wrap_content"
                 android:minWidth="56dp"
                 android:layout_height="48dp"
@@ -86,7 +86,7 @@
                 android:textColor="#757575"/>
             <ImageButton
                 android:id="@+id/btnUpload"
-                android:background="?attr/selectableItemBackground"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginLeft="104dp"
@@ -96,7 +96,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="48dp"
                 android:layout_marginLeft="156dp"
-                android:background="?attr/selectableItemBackground"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:textColor="@color/accentGray"
                 android:textStyle="bold"
                 android:text="Отправить"/>
