@@ -6,7 +6,7 @@
   "warning_text":"warning text",
 
   "show_beta_dialog":true,
-  "update_bate":{
+  "update_beta":{
     "ver":"3.2.3",
     "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/test_app.apk",
     "info":" test message\n test message\n test message\n test message\n test message\n test message\n test message\n test message\n test message\n "
@@ -16,6 +16,6 @@
   "update_release":{
     "ver":"3.2.3",
     "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/test_app.apk",
-    "info":" test message\n test message\n test message\n test message\n test message\n test message\n test message\n test message\n test message\n "
+    "info":" Тестовое сообщение\n test message\n test message\n test message\n test message\n test message\n test message\n test message\n test message\n "
   }
 }
