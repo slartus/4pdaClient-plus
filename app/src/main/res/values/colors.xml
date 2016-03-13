@@ -104,6 +104,8 @@
     <color name="dialog_background_dark">#303030</color>
     <color name="dialog_background_black">#1a1a1a</color>
 
-
+    <color name="alert">#CC0000</color>
+    <color name="confirm">#FF8800</color>
+    <color name="info">#669900</color>
 
 </resources>

@@ -58,7 +58,7 @@ android {
         beta {
             applicationId 'org.softeg.slartus.forpdaplus.beta'
             versionCode 562
-            versionName "3.2.4 Beta"
+            versionName "3.2.4beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
             signingConfig defaultSigningVariable
         }
     }
@@ -99,5 +99,5 @@ dependencies {
     compile('com.crashlytics.sdk.android:answers:1.3.6@aar') {
         transitive = true;
     }
-    compile project(':bitmap-cache')
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
 }

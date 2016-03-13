@@ -1,1 +1,1 @@
-include ':app', ':forpdaapi', ':forpdacommon', ':forpdanotifyservice', ':sqliteannotations', ':4pdasources', ':bitmap-cache'
+include ':app', ':forpdaapi', ':forpdacommon', ':forpdanotifyservice', ':sqliteannotations', ':4pdasources'

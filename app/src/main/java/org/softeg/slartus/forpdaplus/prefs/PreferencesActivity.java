@@ -49,6 +49,8 @@ import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
+import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier;
+import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
 import org.softeg.slartus.forpdaplus.styles.CssStyle;
 import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity;
 
@@ -121,6 +123,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             findPreference("About.AddRepTwo").setOnPreferenceClickListener(this);
             findPreference("About.AddRepThree").setOnPreferenceClickListener(this);
             findPreference("About.ShowTheme").setOnPreferenceClickListener(this);
+//            findPreference("About.CheckNewVersion").setOnPreferenceClickListener(this);
 
             Preference preference = findPreference("notifiers.silent_mode.start_time");
             if (preference != null) {
@@ -259,32 +262,21 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         }
                     }, endcalendar.get(Calendar.HOUR_OF_DAY), endcalendar.get(Calendar.MINUTE), true).show();
                     return true;
-                case "":
-                    boom();
-                    return true;
+//                case "About.CheckNewVersion":
+//                    checkUpdates();
+//                    return true;
             }
 
             return false;
         }
 
-        private void boom() {
-            final int[] count = {10};
-//            if (Surprise.isBlocked()) {
-//                boomClick.setDefaultValue(false);
-//                boomClick.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-//                    @Override
-//                    public boolean onPreferenceClick(Preference preference) {
-//                        Toast.makeText(getActivity(), "Осталось " + String.valueOf(count[0] = count[0] - 1), Toast.LENGTH_SHORT).show();
-//                        if (count[0] == 0) {
-//                            Toast.makeText(getActivity(), "Done", Toast.LENGTH_SHORT).show();
-//                            boomClick.setEnabled(true);
-//                            boomClick.setSelectable(true);
-//                        }
-//                        return false;
-//                    }
-//                });
-//            }
+        private void checkUpdates() {
+            NotifiersManager notifiersManager = new NotifiersManager(getActivity());
+            new ForPdaVersionNotifier(notifiersManager, 1).start(getActivity(), true, true);
+            Toast.makeText(getActivity(), "Проверяем ...", Toast.LENGTH_SHORT).show();
+
         }
+
 
         private void setMenuItems(){
             final SharedPreferences preferences = getPreferenceManager().getSharedPreferences();

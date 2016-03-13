@@ -42,6 +42,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     private static boolean activityPaused = false;
     private View toolbarShadow;
     private AppBarLayout appBarLayout;
+    private static MaterialDialog dialog;
 
     public static SearchSettings searchSettings;
 
@@ -263,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             NotifiersManager notifiersManager = new NotifiersManager(this);
             new DonateNotifier(notifiersManager).start(this);
             new TopicAttentionNotifier(notifiersManager).start(this);
-            new ForPdaVersionNotifier(notifiersManager, 1).start(this);
+            new ForPdaVersionNotifier(notifiersManager, 1).start(this, false, false);
             activityPaused = false;
             if(App.getInstance().getCurrentFragmentTag()!=null)
                 if(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag())!=null)
@@ -316,7 +318,11 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             if(user.equals(Client.getInstance().getUser()))
                 toster = true;
         if(toster){
-            String[] mes = new String[]{"Не в этот раз", "Не сегодня", "Как нибудь в следующий раз", "Нет", "У меня голова болит, давай не сегодня", "Ты кто такой? -Давай досвидания!"};
+            String[] mes = new String[]{"Не в этот раз",
+                    "Не сегодня", "Как нибудь в следующий раз",
+                    "Нет",
+                    "У меня голова болит, давай не сегодня",
+                    "Ты кто такой? -Давай досвидания!"};
             Toast.makeText(context, mes[(int)(Math.random()*mes.length)], Toast.LENGTH_LONG).show();
             App.getInstance().exit();
         }
@@ -771,7 +777,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         addTab(listTemplate.getTitle(), prefix + brickName, fragment);
     }
 
-
     private Boolean m_ExitWarned = false;
 
     private void appExit() {
@@ -830,11 +835,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             appExit();
         }
     }
-
-
-
-
-
 
     public static Menu mainMenu;
     private SubMenu mUserMenuItem;
