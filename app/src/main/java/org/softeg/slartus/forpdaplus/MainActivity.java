@@ -223,21 +223,23 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 getSupportActionBar().setHomeButtonEnabled(true);
                 getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_left_white_24dp);
             }
-            if(App.getInstance().getPreferences().getBoolean("statusbarTransparent", false)) {
-                if (Build.VERSION.SDK_INT >= 21)
-                    getWindow().setStatusBarColor(Color.TRANSPARENT);
-            }
             int height = getStatusBarHeight();
-            appBarLayout.setPadding(0, height, 0, 0);
             RelativeLayout frame = (RelativeLayout) findViewById(R.id.content_frame);
-            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) frame.getLayoutParams();
-            lp.setMargins(0, -height, 0, 0);
-            frame.setLayoutParams(lp);
-            frame.requestLayout();
-            if(getPreferences().getBoolean("statusbarFake", false)&Build.VERSION.SDK_INT==19){
-                findViewById(R.id.fakeSB).setVisibility(View.VISIBLE);
-                findViewById(R.id.fakeSB).setMinimumHeight(height);
+            if(getPreferences().getBoolean("indentForStatusBar", true)) {
+                appBarLayout.setPadding(0, height, 0, 0);
+                ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) frame.getLayoutParams();
+                lp.setMargins(0, -height, 0, 0);
+                frame.setLayoutParams(lp);
+                frame.requestLayout();
+                if(getPreferences().getBoolean("statusbarFake", false)&Build.VERSION.SDK_INT==19){
+                    findViewById(R.id.fakeSB).setVisibility(View.VISIBLE);
+                    findViewById(R.id.fakeSB).setMinimumHeight(height);
+                }
+            }else {
+                frame.setFitsSystemWindows(false);
             }
+            if(getPreferences().getBoolean("statusbarTransparent", false)&&Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    getWindow().setStatusBarColor(Color.TRANSPARENT);
 
             NavigationView leftDrawer = (NavigationView) findViewById(R.id.left_drawer);
             int scale = (int) getResources().getDisplayMetrics().density;
