@@ -1,6 +1,6 @@
 {
-  "notice":false,
-  "notice_text":"notice text",
+  "notice":true,
+  "notice_text":"<a href=\"http://4pda.ru/forum/index.php?showtopic=271502&amp;view=findpost&amp;p=32591818\">Почему клиент удалили из Google Play?</a><br><a href=\"http://4pda.ru/forum/index.php?showtopic=271502\">Где брать новые версии?</a>",
 
   "warning":false,
   "warning_text":"warning text",
@@ -9,6 +9,6 @@
   "update_beta":{
     "ver":"3.2.5",
     "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/test_app.apk",
-    "info":" test message\n test message\n test message\n test message\n test message\n test message\n test message\n test message\n test message\n "
+    "info":"[!] Важное замечание\n[+] Нововведение\n[-] Исправлена ошибка\n[*] Изменения\n\n[-] Стрелка назад в DevDB\n[-] Загрузка изображений\n[-] Пропадание меню и title\n[-] Переход к комментариям в новостях\n[-] Обзоры в списке новостей\n[-] Категории новостей\n[-] Невозможность догрузить список новостей\n[+] Загрузка изображений после открытия спойлера\n[+] Подключение своих js файлов\n[+] Прокрутка длинного заголовка\n[+] Перелистывание изображений в новостях и теме\n[+] Поддержка ссылок announce\n[+] Анимация различных частей интерфейса\n[+] Удаление контакта QMS\n[+] При открытии темы из списка, название сразу попадает в toolbar\n[*] Убрана лишняя анимация в списке новостей и контактов QMS\n[*] Более качественное масштабирование изображений\n[*] Более плавный интерфейс\n[*] Обновлены стили\n[*] Обновлена структура форума"
   }
 }
