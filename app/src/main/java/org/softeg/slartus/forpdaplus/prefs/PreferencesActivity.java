@@ -123,7 +123,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             findPreference("About.AddRepTwo").setOnPreferenceClickListener(this);
             findPreference("About.AddRepThree").setOnPreferenceClickListener(this);
             findPreference("About.ShowTheme").setOnPreferenceClickListener(this);
-//            findPreference("About.CheckNewVersion").setOnPreferenceClickListener(this);
+            findPreference("About.CheckNewVersion").setOnPreferenceClickListener(this);
 
             Preference preference = findPreference("notifiers.silent_mode.start_time");
             if (preference != null) {
@@ -262,9 +262,9 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         }
                     }, endcalendar.get(Calendar.HOUR_OF_DAY), endcalendar.get(Calendar.MINUTE), true).show();
                     return true;
-//                case "About.CheckNewVersion":
-//                    checkUpdates();
-//                    return true;
+                case "About.CheckNewVersion":
+                    checkUpdates();
+                    return true;
             }
 
             return false;

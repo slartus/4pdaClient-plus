@@ -264,8 +264,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
             NotifiersManager notifiersManager = new NotifiersManager(this);
             new DonateNotifier(notifiersManager).start(this);
-            new TopicAttentionNotifier(notifiersManager).start(this);
-            new ForPdaVersionNotifier(notifiersManager, 1).start(this, false, false);
+            //new TopicAttentionNotifier(notifiersManager).start(this);
+            new ForPdaVersionNotifier(notifiersManager, 1).start(this, false, true);
             activityPaused = false;
             if(App.getInstance().getCurrentFragmentTag()!=null)
                 if(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag())!=null)

@@ -39,6 +39,10 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         return menu;
     }
 
+    public boolean isFragmentPaused() {
+        return fragmentPaused;
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);

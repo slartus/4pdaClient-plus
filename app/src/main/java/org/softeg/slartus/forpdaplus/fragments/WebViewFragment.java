@@ -179,7 +179,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (getWebView()!=null) getWebView().onPause();
+                    if (getWebView()!=null&&isFragmentPaused())
+                        getWebView().onPause();
                 }
             }, 1500);
             getWebView().setWebViewClient(null);

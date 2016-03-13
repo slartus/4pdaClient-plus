@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -119,16 +120,18 @@ public class ForPdaVersionNotifier extends MainNotifier {
 
                     if (!toast) {
                         // тут показываем весь букет(если есть что показывать)
-                        boolean notif = tJson.getBoolean("notice");
-                        if (notif) {
-                            String notif_text = tJson.getString("notice_text");
-                            showDialog(context, false, notif_text, handler);
+                        boolean notice = tJson.getBoolean("notice");
+                        if (notice) {
+                            String notice_text = tJson.getString("notice_text");
+                            if(!notice_text.equals(Preferences.Notice.getNotice()))
+                                showDialog(context, false, notice_text, handler);
                         }
 
                         boolean warning = tJson.getBoolean("warning");
                         if (warning) {
                             String warning_text = tJson.getString("warning_text");
-                            showDialog(context, true, warning_text, handler);
+                            if(!warning_text.equals(Preferences.Warning.getWarning()))
+                                showDialog(context, true, warning_text, handler);
                         }
                     }
 
@@ -248,12 +251,15 @@ public class ForPdaVersionNotifier extends MainNotifier {
             public void run() {
                 addToStack(new MaterialDialog.Builder(context)
                         .title(warning ? "Предупреждение" : "Уведомление")
-                        .content(msg_text)
+                        .content(Html.fromHtml(msg_text))
                         .positiveText("Я понял")
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
-                                super.onPositive(dialog);
+                                if (warning)
+                                    Preferences.Warning.setWarning(msg_text);
+                                else
+                                    Preferences.Notice.setNotice(msg_text);
                             }
                         }).build());
             }

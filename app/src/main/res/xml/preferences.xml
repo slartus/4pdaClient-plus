@@ -514,9 +514,9 @@
             android:key="About.ShowTheme"
             android:summary="Открыть тему обсуждения программы"
             android:title="Открыть тему" />
-        <!--<Preference-->
-            <!--android:key="About.CheckNewVersion"-->
-            <!--android:title="Проверить наличие новой версии" />-->
+        <Preference
+            android:key="About.CheckNewVersion"
+            android:title="Проверить наличие новой версии" />
     </PreferenceScreen>
 
     <PreferenceScreen

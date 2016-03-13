@@ -421,6 +421,26 @@ public class Preferences {
         }
     }
 
+    public static class Notice {
+        public static void setNotice(String value) {
+            App.getInstance().getPreferences().edit().putString("notice.text", value).apply();
+        }
+
+        public static String getNotice() {
+            return App.getInstance().getPreferences().getString("notice.text", null);
+        }
+    }
+
+    public static class Warning {
+        public static void setWarning(String value) {
+            App.getInstance().getPreferences().edit().putString("warning.text", value).apply();
+        }
+
+        public static String getWarning() {
+            return App.getInstance().getPreferences().getString("warning.text", null);
+        }
+    }
+
     public static class Files {
         public static Boolean isConfirmDownload() {
             return App.getInstance().getPreferences().getBoolean("files.ConfirmDownload", true);
