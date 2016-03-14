@@ -1,4 +1,9 @@
 @charset "utf-8";
+/**
+ * MATERIAL STYLE
+ * Стиль для неофициального клиента 4PDA
+ * Автор: Морфий
+*/
 HTML {
   font-size: 1rem;
   margin: 0;
@@ -8,7 +13,7 @@ HTML body {
   position: relative;
   font-family: 'Roboto';
   margin: 0;
-  padding: 0;
+  padding: 0 0 1rem;
   font-size: 100%;
   line-height: 1.4;
   word-break: break-word;
@@ -115,10 +120,10 @@ HTML body a {
 }
 .post-block.quote {
   position: relative;
-  background: #e8f7fe;
+  background: rgba(219, 244, 255, 0.76);
 }
 .post-block.quote > .block-title {
-  color: #2486b4;
+  color: #3085b3;
 }
 .post-block.quote > .block-title:empty {
   margin-left: 0;
@@ -132,7 +137,7 @@ HTML body a {
   opacity: 0.8;
 }
 .post-block.quote > .block-title a[title="Перейти к сообщению"]:before {
-  background: #2486b4;
+  background: #3085b3;
 }
 .post-block.quote > .block-title a[title="Ссылка "] {
   margin: 0 0.5rem;
@@ -141,11 +146,11 @@ HTML body a {
   border-bottom: 1px solid #99c8e1;
 }
 .post-block.quote > .block-body {
-  color: #0e3648;
+  color: rgba(0, 11, 15, 0.88);
 }
 .post-block.code {
   border-radius: 0;
-  border-left: 0.4rem solid #ffe0b2;
+  border-left: 0.4rem solid rgba(200, 150, 0, 0.5);
 }
 .post-block.code > .block-title:before,
 .post-block.code .block-title:empty:before {
@@ -160,7 +165,7 @@ HTML body a {
 }
 .post-block.code.box > .block-title:before,
 .post-block.code.box .block-title:empty:before {
-  content: 'Код + ';
+  content: 'Расскрыть КОД';
 }
 .post-block.code.box > .block-body {
   max-height: 10rem;
@@ -168,10 +173,10 @@ HTML body a {
 }
 .post-block.code.unbox > .block-title:before,
 .post-block.code.unbox .block-title:empty:before {
-  content: 'Код – ';
+  content: 'Свернуть КОД';
 }
 .post-block.code > .block-title {
-  color: #b67b23;
+  color: rgba(50, 38, 0, 0.75);
 }
 .post-block.code > .block-title:before {
   content: 'Код: ';
@@ -182,13 +187,13 @@ HTML body a {
 .post-block.code > .block-body {
   font-family: Courier, Courier New, Verdana, Arial;
   font-size: 0.9375rem;
-  color: #332d24;
+  color: rgba(15, 12, 0, 0.9);
 }
 .post-block.hidden {
-  background: #f0f0f0;
+  background: rgba(0, 0, 0, 0.05);
 }
 .post-block.hidden > .block-title {
-  color: #3d3d3d;
+  color: rgba(0, 0, 0, 0.715);
 }
 .post-block.hidden > .block-title:before {
   content: 'Скрытый текст: ';
@@ -202,6 +207,8 @@ HTML body a {
 .post-block.spoil {
   padding: 0;
   overflow: hidden;
+  box-sizing: border-box;
+  background: #f2f2f2;
 }
 .post-block.spoil > .block-title {
   padding: 0.5rem 0.7rem;
@@ -231,7 +238,7 @@ HTML body a {
   color: inherit !important;
   font-size: 1rem !important;
 }
-.post-block.spoil.close {
+.post-block.spoil.close > .block-title {
   background: #3490c3;
 }
 .post-block.spoil.close > .block-title:before,
@@ -241,9 +248,12 @@ HTML body a {
   border-top-color: white;
   border-left-color: white;
 }
+.post-block.spoil.open .spoil {
+  border-radius: 0;
+  border-left: 2px solid #3490c3;
+}
 .post-block.spoil.open > .block-title {
   color: #666666;
-  background: #d9d9d9;
   margin: 0;
 }
 .post-block.spoil.open > .block-title:before,
@@ -256,32 +266,25 @@ HTML body a {
 .post-block.spoil > .block-body {
   padding: 0.7rem;
   margin: 0;
-  background: #f7f7f7;
 }
 .post-block.spoil > .block-body .spoil {
   margin-left: 0;
   margin-right: 0;
 }
 .post-block.spoil > .block-body .spoil > .block-body {
-  background: white;
-}
-.post-block.spoil > .block-body .spoil > .block-body .spoil > .block-body {
-  background: #f7f7f7;
-}
-.post-block.spoil > .block-body .spoil > .block-body .spoil > .block-body .spoil > .block-body {
-  background: white;
+  padding-right: 0;
 }
 /*
 *	ADM TAGS
 */
 .cur > .block-title {
-  background: #0a8f08;
+  background: #009600;
 }
 .mod > .block-title {
-  background: #039be5;
+  background: #0096e1;
 }
 .ex > .block-title {
-  background: #e84e40;
+  background: #e14628;
 }
 .cur,
 .mod,
@@ -314,7 +317,7 @@ HTML body a {
   padding: 0.5rem;
   height: 100%;
   margin: 0;
-  background: #f2f2f2;
+  background: #e6e6e6;
 }
 /*
 *	PANEL
@@ -1261,10 +1264,10 @@ div[data-post] > a {
   border-right-color: transparent;
 }
 #thread_form .list-group-item.our-message .msg-content .quote {
-  background: #cce0ea;
+  background: rgba(190, 215, 226, 0.76);
 }
 #thread_form .list-group-item.our-message .msg-content .code {
-  border-left: 0.3rem solid #ccb38e;
+  border-left: 0.3rem solid rgba(114, 86, 0, 0.6);
 }
 #thread_form .list-group-item + .list-group-item {
   margin-top: 0.3rem;
@@ -1565,13 +1568,13 @@ div[data-post] > a {
   overflow: hidden;
   text-align: left !important;
   border-radius: 0.125rem;
-  background: #e8f7fe;
+  background: rgba(230, 248, 255, 0.82);
 }
 #news BLOCKQUOTE:before {
   content: 'Цитата';
   font-weight: bold;
   font-style: italic;
-  color: #2486b4;
+  color: rgba(0, 36, 51, 0.7);
   padding: 0.3rem 0.5rem;
   display: block;
 }
@@ -1582,10 +1585,6 @@ div[data-post] > a {
 #news BLOCKQUOTE H3 {
   text-align: left;
   color: #333333;
-}
-#news .btn.block {
-  display: block;
-  text-align: center;
 }
 #news .btn.iblock {
   display: inline-block;
@@ -2890,10 +2889,6 @@ img[src*="style_emoticons"] {
 }
 .img[style*="av.png"] {
   background-image: url(profile/logo.png), url("file:///android_asset/profile/logo.png") !important;
-}
-#bottomMargin {
-  display: block;
-  height: 100px;
 }
 [class^="icon-"]:before,
 [class*=" icon-"]:before {

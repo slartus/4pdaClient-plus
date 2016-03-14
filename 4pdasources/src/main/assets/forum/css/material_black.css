@@ -1,4 +1,14 @@
 @charset "utf-8";
+/**
+ * MATERIAL STYLE
+ * Стиль для неофициального клиента 4PDA
+ * Автор: Морфий
+*/
+.cur,
+.mod,
+.ex > .block-title {
+  opacity: 0.9;
+}
 /*
  *	DARK-COLOR
 */
@@ -41,11 +51,6 @@
 *[style*="color:#000"] *[style*="background-color:white"] {
   color: white !important;
 }
-.cur,
-.mod,
-.ex > .block-title {
-  opacity: 0.9;
-}
 HTML {
   font-size: 1rem;
   margin: 0;
@@ -55,7 +60,7 @@ HTML body {
   position: relative;
   font-family: 'Roboto';
   margin: 0;
-  padding: 0;
+  padding: 0 0 1rem;
   font-size: 100%;
   line-height: 1.4;
   word-break: break-word;
@@ -162,10 +167,10 @@ HTML body a {
 }
 .post-block.quote {
   position: relative;
-  background: #0f1416;
+  background: rgba(18, 33, 40, 0.8);
 }
 .post-block.quote > .block-title {
-  color: #69b3d5;
+  color: #b5dcf9;
 }
 .post-block.quote > .block-title:empty {
   margin-left: 0;
@@ -179,7 +184,7 @@ HTML body a {
   opacity: 0.8;
 }
 .post-block.quote > .block-title a[title="Перейти к сообщению"]:before {
-  background: #69b3d5;
+  background: #b5dcf9;
 }
 .post-block.quote > .block-title a[title="Ссылка "] {
   margin: 0 0.5rem;
@@ -188,11 +193,11 @@ HTML body a {
   border-bottom: 1px solid #586d7d;
 }
 .post-block.quote > .block-body {
-  color: #c3e0ee;
+  color: rgba(240, 250, 255, 0.9);
 }
 .post-block.code {
   border-radius: 0;
-  border-left: 0.4rem solid #4d4232;
+  border-left: 0.4rem solid rgba(255, 193, 7, 0.45);
 }
 .post-block.code > .block-title:before,
 .post-block.code .block-title:empty:before {
@@ -207,7 +212,7 @@ HTML body a {
 }
 .post-block.code.box > .block-title:before,
 .post-block.code.box .block-title:empty:before {
-  content: 'Код + ';
+  content: 'Расскрыть КОД';
 }
 .post-block.code.box > .block-body {
   max-height: 10rem;
@@ -215,10 +220,10 @@ HTML body a {
 }
 .post-block.code.unbox > .block-title:before,
 .post-block.code.unbox .block-title:empty:before {
-  content: 'Код – ';
+  content: 'Свернуть КОД';
 }
 .post-block.code > .block-title {
-  color: #d6aa69;
+  color: rgba(255, 241, 199, 0.725);
 }
 .post-block.code > .block-title:before {
   content: 'Код: ';
@@ -229,13 +234,13 @@ HTML body a {
 .post-block.code > .block-body {
   font-family: Courier, Courier New, Verdana, Arial;
   font-size: 0.9375rem;
-  color: #dbd9d6;
+  color: rgba(255, 251, 238, 0.89);
 }
 .post-block.hidden {
-  background: #141414;
+  background: rgba(158, 158, 158, 0.15);
 }
 .post-block.hidden > .block-title {
-  color: #c6c6c6;
+  color: rgba(252, 252, 252, 0.745);
 }
 .post-block.hidden > .block-title:before {
   content: 'Скрытый текст: ';
@@ -249,6 +254,8 @@ HTML body a {
 .post-block.spoil {
   padding: 0;
   overflow: hidden;
+  box-sizing: border-box;
+  background: #0d0d0d;
 }
 .post-block.spoil > .block-title {
   padding: 0.5rem 0.7rem;
@@ -278,8 +285,8 @@ HTML body a {
   color: inherit !important;
   font-size: 1rem !important;
 }
-.post-block.spoil.close {
-  background: #212121;
+.post-block.spoil.close > .block-title {
+  background: rgba(158, 158, 158, 0.3);
 }
 .post-block.spoil.close > .block-title:before,
 .poll .hidetop.close B:before {
@@ -288,9 +295,12 @@ HTML body a {
   border-top-color: white;
   border-left-color: white;
 }
+.post-block.spoil.open .spoil {
+  border-radius: 0;
+  border-left: 2px solid rgba(158, 158, 158, 0.3);
+}
 .post-block.spoil.open > .block-title {
   color: #999999;
-  background: #262626;
   margin: 0;
 }
 .post-block.spoil.open > .block-title:before,
@@ -303,32 +313,25 @@ HTML body a {
 .post-block.spoil > .block-body {
   padding: 0.7rem;
   margin: 0;
-  background: #080808;
 }
 .post-block.spoil > .block-body .spoil {
   margin-left: 0;
   margin-right: 0;
 }
 .post-block.spoil > .block-body .spoil > .block-body {
-  background: #000000;
-}
-.post-block.spoil > .block-body .spoil > .block-body .spoil > .block-body {
-  background: #080808;
-}
-.post-block.spoil > .block-body .spoil > .block-body .spoil > .block-body .spoil > .block-body {
-  background: #000000;
+  padding-right: 0;
 }
 /*
 *	ADM TAGS
 */
 .cur > .block-title {
-  background: #0a8f08;
+  background: #009600;
 }
 .mod > .block-title {
-  background: #039be5;
+  background: #0096e1;
 }
 .ex > .block-title {
-  background: #e84e40;
+  background: #e14628;
 }
 .cur,
 .mod,
@@ -361,7 +364,7 @@ HTML body a {
   padding: 0.5rem;
   height: 100%;
   margin: 0;
-  background: #0d0d0d;
+  background: #191919;
 }
 /*
 *	PANEL
@@ -597,7 +600,7 @@ HTML body a {
   display: block;
   height: 1.5rem;
   border-radius: 0.125rem;
-  background: #343434;
+  background: rgba(140, 140, 140, 0.44);
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .range .value {
   position: absolute;
@@ -1308,10 +1311,10 @@ div[data-post] > a {
   border-right-color: transparent;
 }
 #thread_form .list-group-item.our-message .msg-content .quote {
-  background: #252b2e;
+  background: rgba(40, 55, 62, 0.8);
 }
 #thread_form .list-group-item.our-message .msg-content .code {
-  border-left: 0.3rem solid #70685b;
+  border-left: 0.3rem solid rgba(255, 222, 122, 0.56);
 }
 #thread_form .list-group-item + .list-group-item {
   margin-top: 0.3rem;
@@ -1537,7 +1540,7 @@ div[data-post] > a {
   padding: 0 0.5rem;
   text-align: center;
   color: white;
-  background: #212121;
+  background: rgba(158, 158, 158, 0.3);
 }
 @media screen and (min-width: 800px) {
   #news .product-detail .description .info-holder .date {
@@ -1551,7 +1554,7 @@ div[data-post] > a {
   display: inline-block;
   content: '';
   border: 0.6875rem solid transparent;
-  border-right: 0.6875rem solid #212121;
+  border-right: 0.6875rem solid rgba(158, 158, 158, 0.3);
 }
 #news .product-detail .description .info-holder .name {
   position: absolute;
@@ -1585,7 +1588,7 @@ div[data-post] > a {
   font-size: 1.125rem;
   text-decoration: none;
   color: white !important;
-  background: #212121;
+  background: rgba(158, 158, 158, 0.3);
   -webkit-box-shadow: 0 0.125rem 0.3rem rgba(0, 0, 0, 0.25);
   box-shadow: 0 0.125rem 0.3rem rgba(0, 0, 0, 0.25);
 }
@@ -1612,13 +1615,13 @@ div[data-post] > a {
   overflow: hidden;
   text-align: left !important;
   border-radius: 0.125rem;
-  background: #0f1416;
+  background: rgba(13, 23, 28, 0.85);
 }
 #news BLOCKQUOTE:before {
   content: 'Цитата';
   font-weight: bold;
   font-style: italic;
-  color: #69b3d5;
+  color: rgba(208, 239, 255, 0.75);
   padding: 0.3rem 0.5rem;
   display: block;
 }
@@ -1629,10 +1632,6 @@ div[data-post] > a {
 #news BLOCKQUOTE H3 {
   text-align: left;
   color: #cccccc;
-}
-#news .btn.block {
-  display: block;
-  text-align: center;
 }
 #news .btn.iblock {
   display: inline-block;
@@ -2722,7 +2721,7 @@ div[data-post] > a {
   background: #000000;
 }
 #edit_profile form .field .row2 input[type="text"]:focus {
-  border-bottom: 2px solid #212121;
+  border-bottom: 2px solid rgba(158, 158, 158, 0.3);
 }
 #edit_profile form .field .row2 select {
   padding: 0.5rem;
@@ -2737,7 +2736,7 @@ div[data-post] > a {
   background-size: 1.2rem;
 }
 #edit_profile form .field .row2 select:focus {
-  border-bottom: 2px solid #212121;
+  border-bottom: 2px solid rgba(158, 158, 158, 0.3);
 }
 #edit_profile form .field .row2 .editor_button {
   margin-top: 1rem;
@@ -2775,7 +2774,7 @@ div[data-post] > a {
   background: #000000;
 }
 #edit_profile form .field .row2 .editor_button textarea:focus {
-  border: 2px solid #212121;
+  border: 2px solid rgba(158, 158, 158, 0.3);
 }
 @media screen and (min-width: 800px) {
   #edit_profile form .field .formbuttonrow {
@@ -2938,11 +2937,8 @@ img[src*="style_emoticons"] {
 .img[style*="av.png"] {
   background-image: url(profile/logo.png), url("file:///android_asset/profile/logo.png") !important;
 }
-#bottomMargin {
-  display: block;
-  height: 100px;
-}
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
   color: #5b5b5b;
 }
+
