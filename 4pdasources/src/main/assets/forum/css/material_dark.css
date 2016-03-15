@@ -56,7 +56,7 @@ HTML body {
   margin: 0;
   padding: 0 0 64px;
   font-size: 1em;
-  font-weight: 1.4;
+  line-height: 1.4;
   word-break: break-word;
   overflow: auto;
   color: white;
@@ -430,17 +430,21 @@ span[style*="font-size:8pt"] * {
 *	HIDETOP,
 *	HIDEMAIN
 */
-.hat {
-  background: #2d2d2d;
-}
 .hat .hidetop {
   position: relative;
+  margin: 0.5rem;
   padding: 0.375rem;
   text-align: center;
   background: #2d2d2d;
 }
 .hat .hidetop span {
   display: none;
+}
+.hat .hidemain {
+  background: #2d2d2d;
+}
+.post_container .hat .hidetop {
+  margin: 0;
 }
 @media screen and (min-width: 800px) {
   .post_container .hat .hidetop {
@@ -470,9 +474,6 @@ span[style*="font-size:8pt"] * {
 .post_container .hat .hidemain .post-body {
   color: black !important;
 }
-.poll {
-  border-bottom: 1px solid #424242;
-}
 .poll .hidetop.close B:before {
   border-top-color: #ababab;
   border-left-color: #ababab;
@@ -480,9 +481,24 @@ span[style*="font-size:8pt"] * {
 .poll .hidetop B:after {
   content: "ОПРОС";
 }
+.poll .hidemain {
+  margin: 0.5rem;
+}
 /*
 *	POLL
 */
+.poll .hidetop {
+  border-radius: 0.125rem;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
+  background: #2d2d2d;
+}
+.poll .hidemain {
+  border-radius: 0.125rem;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
+  background: #2d2d2d;
+}
 .poll .hidemain FORM {
   overflow: hidden;
 }
@@ -638,13 +654,15 @@ span[style*="font-size:8pt"] * {
 /*
 *	POST LIST
 */
-.post_container {
+.post_container,
+DIV[data-post] {
+  margin: 0.5rem;
+  padding: 0;
   overflow: hidden;
-  border-bottom: 1px solid #424242;
+  border-radius: 0.125rem;
   background: #2d2d2d;
-}
-.post_container:first-child {
-  border-top: 1px solid #424242;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 /*
 *	POST HEADER
@@ -800,7 +818,7 @@ span[style*="font-size:8pt"] * {
 @media screen and (max-width: 799px) {
   .post_header .header_wrapper .menu {
     position: absolute;
-    right: 0.25rem;
+    right: 0;
     top: 0.25rem;
     -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
