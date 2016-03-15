@@ -1,4 +1,3 @@
-@charset "utf-8";
 /**
  * MATERIAL STYLE
  * Стиль для неофициального клиента 4PDA
@@ -60,9 +59,9 @@ HTML body {
   position: relative;
   font-family: 'Roboto';
   margin: 0;
-  padding: 0 0 1rem;
-  font-size: 100%;
-  line-height: 1.4;
+  padding: 0 0 64px;
+  font-size: 1em;
+  font-weight: 1.4;
   word-break: break-word;
   overflow: auto;
   color: white;
@@ -95,46 +94,53 @@ HTML body a {
 /*
 *         FONT_SIZE
 */
-.post_body span[style*="font-size:36pt"] {
+span[style*="font-size:36pt"] {
   font-size: 3.75rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:36pt"] * {
+span[style*="font-size:36pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:24pt"] {
+span[style*="font-size:24pt"] {
   font-size: 2.55rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:24pt"] * {
+span[style*="font-size:24pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:18pt"] {
+span[style*="font-size:18pt"] {
   font-size: 1.95rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:18pt"] * {
+span[style*="font-size:18pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:14pt"] {
+span[style*="font-size:14pt"] {
   font-size: 1.55rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:14pt"] * {
+span[style*="font-size:14pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:12pt"] {
+span[style*="font-size:12pt"] {
   font-size: 1.35rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:12pt"] * {
+span[style*="font-size:12pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:10pt"] {
+span[style*="font-size:10pt"] {
   font-size: 1.15rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:10pt"] * {
+span[style*="font-size:10pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:8pt"] {
+span[style*="font-size:8pt"] {
   font-size: 0.95rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:8pt"] * {
+span[style*="font-size:8pt"] * {
   font-size: inherit !important;
 }
 /*
@@ -148,7 +154,7 @@ HTML body a {
 .post-block.hidden,
 .post-block.spoil {
   display: block;
-  padding: 0.4375rem 0.625rem;
+  padding: 0.5rem 0.625rem;
   margin: 0.5rem 0;
   border-radius: 0.125rem;
 }
@@ -261,11 +267,13 @@ HTML body a {
   padding: 0.5rem 0.7rem;
   font-style: normal;
   color: white;
+  font-size: 1rem;
+  overflow: hidden;
 }
 .post-block.spoil > .block-title:before,
 .poll .hidetop B:before {
   display: inline-block;
-  font-size: 1rem;
+  font-size: 1em;
   content: '';
   height: 0.625em;
   width: 0.625em;
@@ -284,6 +292,8 @@ HTML body a {
 .post-block.spoil > .block-title * {
   color: inherit !important;
   font-size: 1rem !important;
+  line-height: 1.4 !important;
+  font-style: normal !important;
 }
 .post-block.spoil.close > .block-title {
   background: rgba(158, 158, 158, 0.3);
@@ -295,9 +305,9 @@ HTML body a {
   border-top-color: white;
   border-left-color: white;
 }
-.post-block.spoil.open .spoil {
+.post-block.spoil.open .open {
   border-radius: 0;
-  border-left: 2px solid rgba(158, 158, 158, 0.3);
+  border-left: 2px solid #333333;
 }
 .post-block.spoil.open > .block-title {
   color: #999999;
@@ -311,14 +321,13 @@ HTML body a {
   border-left-color: #999999;
 }
 .post-block.spoil > .block-body {
-  padding: 0.7rem;
+  padding: 0.75rem;
   margin: 0;
 }
-.post-block.spoil > .block-body .spoil {
-  margin-left: 0;
-  margin-right: 0;
+.post-block.spoil > .block-body .spoil.open {
+  margin: 0.5rem 0;
 }
-.post-block.spoil > .block-body .spoil > .block-body {
+.post-block.spoil > .block-body .spoil.open > .block-body {
   padding-right: 0;
 }
 /*
@@ -364,7 +373,7 @@ HTML body a {
   padding: 0.5rem;
   height: 100%;
   margin: 0;
-  background: #191919;
+  background: #0d0d0d;
 }
 /*
 *	PANEL
@@ -426,21 +435,17 @@ HTML body a {
 *	HIDETOP,
 *	HIDEMAIN
 */
+.hat {
+  background: #000000;
+}
 .hat .hidetop {
   position: relative;
-  margin: 0.5rem;
   padding: 0.375rem;
   text-align: center;
   background: #000000;
 }
 .hat .hidetop span {
   display: none;
-}
-.hat .hidemain {
-  background: #000000;
-}
-.post_container .hat .hidetop {
-  margin: 0;
 }
 @media screen and (min-width: 800px) {
   .post_container .hat .hidetop {
@@ -470,6 +475,9 @@ HTML body a {
 .post_container .hat .hidemain .post-body {
   color: black !important;
 }
+.poll {
+  border-bottom: 1px solid #191919;
+}
 .poll .hidetop.close B:before {
   border-top-color: #999999;
   border-left-color: #999999;
@@ -477,24 +485,9 @@ HTML body a {
 .poll .hidetop B:after {
   content: "ОПРОС";
 }
-.poll .hidemain {
-  margin: 0.5rem;
-}
 /*
 *	POLL
 */
-.poll .hidetop {
-  border-radius: 0.125rem;
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
-  background: #000000;
-}
-.poll .hidemain {
-  border-radius: 0.125rem;
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
-  background: #000000;
-}
 .poll .hidemain FORM {
   overflow: hidden;
 }
@@ -650,15 +643,13 @@ HTML body a {
 /*
 *	POST LIST
 */
-.post_container,
-DIV[data-post] {
-  margin: 0.5rem;
-  padding: 0;
+.post_container {
   overflow: hidden;
-  border-radius: 0.125rem;
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid #191919;
   background: #000000;
+}
+.post_container:first-child {
+  border-top: 1px solid #191919;
 }
 /*
 *	POST HEADER
@@ -814,7 +805,7 @@ DIV[data-post] {
 @media screen and (max-width: 799px) {
   .post_header .header_wrapper .menu {
     position: absolute;
-    right: 0;
+    right: 0.25rem;
     top: 0.25rem;
     -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
@@ -2941,4 +2932,3 @@ img[src*="style_emoticons"] {
 [class*=" icon-"]:before {
   color: #5b5b5b;
 }
-
