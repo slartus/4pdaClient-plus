@@ -54,13 +54,14 @@ HTML body {
   position: relative;
   font-family: 'Roboto';
   margin: 0;
-  padding: 0 0 64px;
+  padding: 0 0 3rem;
   font-size: 1em;
   font-weight: 1.4;
   word-break: break-word;
   overflow: auto;
   color: white;
   background-color: #1e1e1e;
+  box-sizing: border-box;
 }
 HTML body.ongpuimg img,
 HTML body.ongpuimg .img {
@@ -378,12 +379,16 @@ span[style*="font-size:8pt"] * {
 }
 .panel .navi {
   display: block;
-  margin: 0.7rem 0;
+  margin: 0;
   padding: 0;
+  background: #2d2d2d;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 .panel .navi .button {
   display: inline-block;
-  padding: 0.7rem 5%;
+  padding: 0.75rem 7%;
+  vertical-align: middle;
   text-decoration: none !important;
   color: rgba(225, 225, 225, 0.7);
   font-weight: bold;
@@ -395,8 +400,13 @@ span[style*="font-size:8pt"] * {
 .panel .navi .button.disable {
   color: #343434;
 }
+.panel .navi.bottom {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
 .panel .topic_title_post {
-  margin: 0.7rem 0;
+  margin: 1rem 0;
 }
 .panel .topic_title_post a {
   display: block;
@@ -413,13 +423,12 @@ span[style*="font-size:8pt"] * {
 .panel .topic_title_post a span.comma {
   display: none;
 }
-.panel.bottom .topic_title_post {
-  display: none;
+.panel .who {
+  margin: 1rem 0;
 }
 .panel .who #viewers,
 .panel .who #writers {
   display: inline-block;
-  margin: 0;
   padding: 0.7rem 1rem;
   font-weight: bold;
   text-transform: uppercase;
@@ -437,7 +446,6 @@ span[style*="font-size:8pt"] * {
   position: relative;
   padding: 0.375rem;
   text-align: center;
-  background: #2d2d2d;
 }
 .hat .hidetop span {
   display: none;
@@ -470,8 +478,8 @@ span[style*="font-size:8pt"] * {
 .post_container .hat .hidemain .post-body {
   color: black !important;
 }
-.poll {
-  border-bottom: 1px solid #424242;
+.poll .hidetop {
+  padding: 0.5rem 0;
 }
 .poll .hidetop.close B:before {
   border-top-color: #ababab;
@@ -483,6 +491,13 @@ span[style*="font-size:8pt"] * {
 /*
 *	POLL
 */
+.poll {
+  margin: 1rem 0;
+  box-sizing: border-box;
+  background: #2d2d2d;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
+}
 .poll .hidemain FORM {
   overflow: hidden;
 }
@@ -638,8 +653,14 @@ span[style*="font-size:8pt"] * {
 /*
 *	POST LIST
 */
+.posts_list {
+  margin: 1rem 0;
+  padding: 0 0.5rem;
+  background: #2d2d2d;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
+}
 .post_container {
-  padding: 0.25rem;
   overflow: hidden;
   border-bottom: 1px solid #424242;
   background: #2d2d2d;
@@ -654,14 +675,14 @@ span[style*="font-size:8pt"] * {
   display: block;
   position: relative;
   min-height: 4rem;
-  padding: 0.5rem;
+  padding: 0.5rem 0;
   -webkit-user-select: none;
   user-select: none;
 }
 @media screen and (min-width: 800px) {
   .post_header {
     float: left;
-    padding: 2rem 0.5rem 0;
+    padding: 2rem 0.25rem 0;
     width: 12rem;
     text-align: center;
   }
@@ -717,6 +738,7 @@ span[style*="font-size:8pt"] * {
 }
 .post_header .header_wrapper .inf {
   color: #969696;
+  line-height: 1.375rem;
 }
 .post_header .header_wrapper .nick {
   font-size: 1.1875rem;
@@ -818,7 +840,7 @@ span[style*="font-size:8pt"] * {
   position: relative;
   display: block;
   padding: 0;
-  margin: 0.75rem;
+  margin: 0.75rem 0.25rem;
   text-align: left;
   background-clip: padding-box;
 }
@@ -963,7 +985,7 @@ div[data-post] > a {
   position: relative;
   clear: both;
   font-size: 0.625rem;
-  padding: 0 0.25rem;
+  padding: 0;
   margin: 0;
   text-align: center;
   -webkit-user-select: none;
