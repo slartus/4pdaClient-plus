@@ -1,10 +1,12 @@
-package org.softeg.slartus.forpdaplus;/*
+package org.softeg.slartus.forpdaplus.activity;/*
  * Created by slinkin on 14.05.2014.
  */
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.webkit.WebView;
+
+import org.softeg.slartus.forpdaplus.R;
 
 public class TestActivity extends FragmentActivity {
 

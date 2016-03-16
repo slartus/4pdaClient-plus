@@ -123,7 +123,7 @@
 
         <activity
             android:theme="@style/ThemeLight"
-            android:name=".TestActivity"
+            android:name=".activity.TestActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
 
             android:launchMode="singleTop">
