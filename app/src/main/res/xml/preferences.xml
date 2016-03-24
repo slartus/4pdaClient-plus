@@ -34,16 +34,6 @@
                 android:summary="Требуется перезапуск приложения"/>
             <CheckBoxPreference
                 android:defaultValue="false"
-                android:key="statusbarTransparent"
-                android:title="Не красить Status Bar"
-                android:summary="Включить, если активирован полноэкранный режим. Требуется перезапуск приложения"/>
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="indentForStatusBar"
-                android:title="Отступ для Status Bar"
-                android:summary="Включить, если активирован полноэкранный режим. Требуется перезапуск приложения"/>
-            <CheckBoxPreference
-                android:defaultValue="false"
                 android:key="statusbarFake"
                 android:title="Status Bar как в Android 5+"
                 android:summary="Подходит для прошивок MIUI, Flyme и т.п на Android 4.4"/>

@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -28,6 +31,7 @@ import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -35,6 +39,8 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
@@ -113,7 +119,28 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     private static boolean activityPaused = false;
     private View toolbarShadow;
     private AppBarLayout appBarLayout;
-    private static MaterialDialog dialog;
+    private RelativeLayout statusBar;
+    private RelativeLayout fakeStatusBar;
+    private int statusBarHeight = -1;
+    private Runnable setStatusBarHeight = new Runnable() {
+        @Override
+        public void run() {
+            int[] ints = new int[2];
+            appBarLayout.getLocationOnScreen(ints);
+            statusBarHeight = ints[1];
+
+            if(statusBar!=null)
+                statusBar.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, statusBarHeight));
+
+            if(getPreferences().getBoolean("statusbarFake", false)&Build.VERSION.SDK_INT==Build.VERSION_CODES.KITKAT){
+                if(fakeStatusBar!=null){
+                    fakeStatusBar.setVisibility(View.VISIBLE);
+                    fakeStatusBar.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, statusBarHeight));
+                }
+            }
+        }
+    };
+
 
     public static SearchSettings searchSettings;
 
@@ -163,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             App.getInstance().setCurrentFragmentTag(saveInstance.getString("currentTag"));
         }
 
-        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+        final List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
 
         if (fragmentList != null&App.getInstance().getTabItems().size()==0) {
             GeneralFragment frag;
@@ -225,23 +252,23 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 getSupportActionBar().setHomeButtonEnabled(true);
                 getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_left_white_24dp);
             }
-            int height = getStatusBarHeight();
-            RelativeLayout frame = (RelativeLayout) findViewById(R.id.content_frame);
-            if(getPreferences().getBoolean("indentForStatusBar", true)) {
-                appBarLayout.setPadding(0, height, 0, 0);
-                ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) frame.getLayoutParams();
-                lp.setMargins(0, -height, 0, 0);
-                frame.setLayoutParams(lp);
-                frame.requestLayout();
-                if(getPreferences().getBoolean("statusbarFake", false)&Build.VERSION.SDK_INT==19){
-                    findViewById(R.id.fakeSB).setVisibility(View.VISIBLE);
-                    findViewById(R.id.fakeSB).setMinimumHeight(height);
-                }
-            }else {
-                frame.setFitsSystemWindows(false);
+            statusBar = (RelativeLayout) findViewById(R.id.status_bar);
+            fakeStatusBar = (RelativeLayout) findViewById(R.id.fakeSB);
+
+            switch (App.getInstance().getThemeType()){
+                case App.THEME_TYPE_LIGHT:
+                    statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_light));
+                    break;
+                case App.THEME_TYPE_DARK:
+                    statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_dark));
+                    break;
+                default:
+                    statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_black));
             }
-            if(getPreferences().getBoolean("statusbarTransparent", false)&&Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    getWindow().setStatusBarColor(Color.TRANSPARENT);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                Log.d("kekosa", "call post");
+                getWindow().getDecorView().post(setStatusBarHeight);
+            }
 
             NavigationView leftDrawer = (NavigationView) findViewById(R.id.left_drawer);
             int scale = (int) getResources().getDisplayMetrics().density;
@@ -383,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         }
         if(isArrow==lastHamburgerArrow) return;
 
-        anim = ValueAnimator.ofFloat(isArrow?1.0f:0.0f, isArrow?0.0f:1.0f);
+        anim = ValueAnimator.ofFloat(isArrow ? 1.0f : 0.0f, isArrow ? 0.0f : 1.0f);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -491,7 +518,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         selectFragment(listTemplate.getTitle(), "", listTemplate.getName(), fragment);
         addTabToList(listTemplate.getTitle(), listTemplate.getName(), listTemplate.getName(), fragment, false);
     }
-    public void selectTab(TabItem tabItem){
+
+    public void selectTab(TabItem tabItem) {
         selectFragment(tabItem.getTitle(), tabItem.getUrl(), tabItem.getTag(), tabItem.getFragment());
     }
 
@@ -576,12 +604,12 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
 
     private void addFragment(FragmentTransaction transaction, Fragment fragment, String tag) {
-        if(fragment.isAdded()) return;
+        if (fragment.isAdded()) return;
         transaction.add(R.id.content_frame, fragment, tag);
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(fragment);
     }
 
-    public void endActionFragment(String title, String tag){
+    public void endActionFragment(String title, String tag) {
         App.getInstance().setCurrentFragmentTag(tag);
         endActionFragment(title);
     }
@@ -594,7 +622,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         setTitle(title);
     }
 
-    public static void log(String s){
+    public static void log(String s) {
         Log.e("My log", s + "       ///////// INFO CURRENT TAG: " + App.getInstance().getCurrentFragmentTag());
     }
 
@@ -617,14 +645,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         log("onRestoreInstanceState");
     }
 
-    public int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
     public static SharedPreferences getPreferences() {
         return App.getInstance().getPreferences();
     }
@@ -672,6 +692,10 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             if(fragment!=null)
                 fragment.onResume();
         }
+        int[] ints = new int[2];
+        appBarLayout.getLocationOnScreen(ints);
+        if(statusBarHeight!=ints[1])
+            setStatusBarHeight.run();
         log("onPostResume");
     }
 
