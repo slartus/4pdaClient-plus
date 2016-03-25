@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         @Override
         public void run() {
             int[] ints = new int[2];
-            appBarLayout.getLocationOnScreen(ints);
+            appBarLayout.getLocationInWindow(ints);
             statusBarHeight = ints[1];
 
             if(statusBar!=null)
