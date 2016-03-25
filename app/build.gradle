@@ -51,8 +51,8 @@ android {
         def defaultSigningVariable = signingConfigs.release
         rel {
             applicationId 'org.softeg.slartus.forpdaplus'
-            versionCode 563
-            versionName "3.2.4"
+            versionCode 564
+            versionName "3.2.5"
             signingConfig defaultSigningVariable
         }
         beta {
