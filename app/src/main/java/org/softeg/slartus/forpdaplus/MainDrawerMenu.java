@@ -27,10 +27,13 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
+import org.softeg.slartus.forpdaplus.fragments.ForumRulesFragment;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.AppAndGame;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.DownloadsBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.FaqBrickInfo;
+import org.softeg.slartus.forpdaplus.listtemplates.ForumRulesBrick;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.listtemplates.MarkAllReadBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.PreferencesBrickInfo;
@@ -256,6 +259,12 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
                         })
                         .negativeText("Отмена")
                         .show();
+                break;
+            case FaqBrickInfo.NAME:
+                IntentActivity.showTopic("http://4pda.ru/forum/index.php?s=&showtopic=271502&view=findpost&p=45570566");
+                break;
+            case ForumRulesBrick.NAME:
+                ForumRulesFragment.showRules();
                 break;
             default:
                 if(item.getGroupId()!=2)

@@ -8,17 +8,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -30,25 +25,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 
@@ -56,7 +44,6 @@ import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
-import org.softeg.slartus.forpdaplus.fragments.ForumRulesFragment;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchPostFragment;
@@ -72,7 +59,6 @@ import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.mainnotifiers.DonateNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
-import org.softeg.slartus.forpdaplus.mainnotifiers.TopicAttentionNotifier;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
@@ -80,7 +66,6 @@ import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by IntelliJ IDEA.
@@ -309,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             users.add("1882226");//Berkut_Angarsk
             users.add("1111194");//ангел мститель
             users.add("1122011");//Matuhan
-            users.add("2760915");//DumF0rGaming
+            users.add("2760915");//DumF0rGaming ++
             users.add("104142");//maxxwell
             users.add("2696673");//another side
             users.add("4324432");//Snow Volf
@@ -988,18 +973,19 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-        menu.add(0, 0, 997, "Правила форума").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem item) {
-                ForumRulesFragment.showRules();
-                return true;
-            }
-        });
-        menu.add(0, 0, 998, "Помощь (FAQ)").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem item) {
-                IntentActivity.showTopic("http://4pda.ru/forum/index.php?s=&showtopic=271502&view=findpost&p=45570566");
-                return true;
-            }
-        });
+//        menu.add(0, 0, 997, "Правила форума").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//            public boolean onMenuItemClick(MenuItem item) {
+//                ForumRulesFragment.showRules();
+//                return true;
+//            }
+//        });
+//        menu.add(0, 0, 998, "Помощь (FAQ)").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//            public boolean onMenuItemClick(MenuItem item) {
+//                IntentActivity.showTopic("http://4pda.ru/forum/index.php?s=&showtopic=271502&view=findpost&p=45570566");
+//                return true;
+//            }
+//        });
+
         boolean showed = getPreferences().getBoolean("showedExitButton", false);
         if(getPreferences().getBoolean("showExitButton",false)) {
             if(!showed) {
@@ -1017,8 +1003,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                                 return true;
                         }
                     });
-//            if (!Surprise.isBlocked()) {
-//            }
         }
 
         mainMenu = menu;

@@ -38,6 +38,8 @@ public class ListCore {
         res.add(new PreferencesBrickInfo());
         res.add(new DownloadsBrickInfo());
         res.add(new MarkAllReadBrickInfo());
+        res.add(new FaqBrickInfo());
+        res.add(new ForumRulesBrick());
         return res;
     }
 
