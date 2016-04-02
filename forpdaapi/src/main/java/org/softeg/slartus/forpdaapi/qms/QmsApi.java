@@ -64,13 +64,17 @@ public class QmsApi {
     }
 
     private static String matchChatBody(String pageBody) {
-        Matcher m = Pattern.compile("<div id=\"thread-inside-top\"><\\/div>([\\s\\S]*)<div id=\"thread-inside-bottom\">").matcher(pageBody);
+        String chatInfo = "";
+        Matcher m = Pattern.compile("<span class=\"nav-text\"[\\s\\S]*?<a href=\"[^\"]*showuser[^>]*>([^>]*?)</a>:</b>([^<]*)").matcher(pageBody);
+        if(m.find())
+            chatInfo = "<span id=\"chatInfo\" style=\"display:none;\">"+m.group(1).trim()+"|:|"+m.group(2).trim()+"</span>";
+        m = Pattern.compile("<div id=\"thread-inside-top\"><\\/div>([\\s\\S]*)<div id=\"thread-inside-bottom\">").matcher(pageBody);
         if (m.find())
-            return "<div id=\"thread_form\"><div id=\"thread-inside-top\"></div>" + m.group(1) + "</div>";
+            return chatInfo+"<div id=\"thread_form\"><div id=\"thread-inside-top\"></div>" + m.group(1) + "</div>";
 
         m = Pattern.compile("<div class=\"list_item\" t_id=([\\s\\S]*?)</form>").matcher(pageBody);
         if (m.find())
-            return "<div id=\"thread_form\"><div class=\"list_item\" t_id=" + m.group(1) + "</div>";
+            return chatInfo+"<div id=\"thread_form\"><div class=\"list_item\" t_id=" + m.group(1) + "</div>";
 
         // ни одного сообщения
         m = Pattern.compile("</form>\\s*<div class=\"form\">").matcher(pageBody);

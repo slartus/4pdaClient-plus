@@ -497,6 +497,13 @@ public class QmsChatFragment extends WebViewFragment {
 
     private String transformChatBody(String chatBody) {
         checkNewQms();
+        if(m_ThemeTitle==null|m_Nick==null){
+            Matcher m = Pattern.compile("<span id=\"chatInfo\"[^>]*>([^>]*?)\\|:\\|([^<]*)</span>").matcher(chatBody);
+            if(m.find()){
+                m_Nick = m.group(1);
+                m_ThemeTitle = m.group(2);
+            }
+        }
         HtmlBuilder htmlBuilder = new HtmlBuilder();
         htmlBuilder.beginHtml("QMS");
         htmlBuilder.beginBody("qms","onload=\"scrollToElement('bottom_element')\"",Preferences.Topic.isShowAvatars());

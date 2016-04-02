@@ -75,15 +75,17 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     }
     public void setTitle(String title){
         generalTitle = title;
-        if(generalTitle.equals(getMainActivity().getTitle()))
-            return;
+        if(generalTitle!=null)
+            if(generalTitle.equals(getMainActivity().getTitle()))
+                return;
         if(!fragmentPaused)
             getMainActivity().setTitle(title);
     }
     public void setSubtitle(String subtitle){
         generalSubtitle = subtitle;
-        if(generalSubtitle.equals(getSupportActionBar().getSubtitle()))
-            return;
+        if(generalSubtitle!=null)
+            if(generalSubtitle.equals(getSupportActionBar().getSubtitle()))
+                return;
         if(!fragmentPaused)
             getSupportActionBar().setSubtitle(subtitle);
     }
