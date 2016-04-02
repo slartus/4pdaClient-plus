@@ -63,7 +63,7 @@ public class CuratorFragment extends WebViewFragment {
     private AdvWebView webView;
     private String topicId = "";
     private String url = "";
-    private String[] idsArray;
+    private String ids = "";
     private String postarg = "";
     private String postact = "";
     private String postUrl = "";
@@ -195,12 +195,11 @@ public class CuratorFragment extends WebViewFragment {
                 List<NameValuePair> nvps = new ArrayList<>();
                 nvps.add(new BasicNameValuePair("postact", postact));
                 nvps.add(new BasicNameValuePair("postarg", postarg));
-                for (String anIdsArray : idsArray)
-                    nvps.add(new BasicNameValuePair("postsel[]", anIdsArray));
-                m_ThemeBody = parse(Client.getInstance().performPost("http://4pda.ru/forum/index.php"+postUrl, nvps)).getHtml().toString();
+                nvps.add(new BasicNameValuePair("postsel2", ids));
+                m_ThemeBody = parse(Client.getInstance().performPost(postUrl, nvps)).getHtml().toString();
                 postarg = "";
                 postact = "";
-                idsArray = null;
+                ids = "";
                 return true;
             } catch (Throwable e) {
                 return false;
@@ -227,9 +226,9 @@ public class CuratorFragment extends WebViewFragment {
         builder.beginBody("curator");
 
         String pages = "";
-        Pattern mainPattern = PatternExtensions.compile("<form method=\"post\" action=\"([\\s\\S]*?)\">([\\s\\S]*?)</form>");
+        Pattern mainPattern = PatternExtensions.compile("<form method=\"post\"[\\s\\S]*?action=\"([^\"]*?)\"[^>]*>([\\s\\S]*?)</form>");
         Pattern postsPattern = PatternExtensions.compile("(<input [\\s\\S]*?)<hr>");
-        Pattern postPattern = PatternExtensions.compile("<input type=\"checkbox\" name=\"postsel\\[\\]\" value=\"(\\d*)\"[\\s\\S]*showuser=(\\d*)\"[^>]*>([^<]*)</a>([^$]*)<br>[^<]*<br>([^$]*)");
+        Pattern postPattern = PatternExtensions.compile("<input type=\"checkbox\" name=\"postsel\\[\\]\" value=\"(\\d*?)\"[\\s\\S]*?showuser=(\\d*)\"[^>]*>([^<]*)</a>([^$]*)<br>[^<]*<br>([^$]*)");
 
         Matcher postMatcher;
         Matcher m = Pattern.compile("<br>Страницы:[^<]*([\\s\\S]*?)<br>").matcher(m_ThemeBody);
@@ -328,7 +327,8 @@ public class CuratorFragment extends WebViewFragment {
         run(new Runnable() {
             @Override
             public void run() {
-                idsArray = ids.split(",");
+                CuratorFragment.this.ids = ids;
+                String[] idsArray = ids.split(",");
                 Log.e("kek", idsArray.length+" length");
                 Log.e("kek", "'"+idsArray[0]+"'");
                 if (TextUtils.isEmpty(idsArray[0])) {
@@ -397,7 +397,7 @@ public class CuratorFragment extends WebViewFragment {
     }
     private boolean checkIsTheme(String url) {
 
-        if("mmod".equals(Uri.parse(url).getQueryParameter("autocom"))){
+        if("mmod".equals(Uri.parse(url).getQueryParameter("act"))){
             load(url);
             return true;
         }

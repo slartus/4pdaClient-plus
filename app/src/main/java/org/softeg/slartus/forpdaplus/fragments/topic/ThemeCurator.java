@@ -124,7 +124,7 @@ public class ThemeCurator {
                     public void onPositive(MaterialDialog dialog) {
                         try {
                             String url = String
-                                    .format("http://4pda.ru/forum/index.php?act=idx&autocom=mmod&t=%s&num=%s&rating=%s",
+                                    .format("http://4pda.ru/forum/index.php?act=mmod&t=%s&num=%s&rating=%s",
                                             topicId, mNums, mRating);
                             if(fragment instanceof CuratorFragment)
                                 ((CuratorFragment)fragment).load(url, topicId);
