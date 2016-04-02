@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_parent"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -71,14 +72,13 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/ic_plus_grey600_24dp" />
+                app:srcCompat="@drawable/plus" />
             <Button
                 android:id="@+id/btnAttachments"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_width="wrap_content"
                 android:minWidth="56dp"
                 android:layout_height="48dp"
-                android:drawableLeft="@drawable/ic_paperclip_grey600_24dp"
                 android:text="0"
                 android:layout_marginLeft="48dp"
                 android:paddingLeft="4dp"
@@ -90,7 +90,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginLeft="104dp"
-                android:src="@drawable/ic_upload_grey600_24dp" />
+                app:srcCompat="@drawable/upload" />
             <Button
                 android:id="@+id/btnSendPost"
                 android:layout_width="fill_parent"

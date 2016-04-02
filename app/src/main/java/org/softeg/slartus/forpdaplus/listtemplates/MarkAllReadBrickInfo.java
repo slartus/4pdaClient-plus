@@ -17,7 +17,7 @@ public class MarkAllReadBrickInfo extends BrickInfo {
 
     @Override
     public int getIcon() {
-        return R.drawable.ic_check_all_grey600_24dp;
+        return R.drawable.check_all;
     }
 
     @Override

@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setHomeButtonEnabled(true);
-                getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_left_white_24dp);
+                getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_left);
             }
             statusBar = (RelativeLayout) findViewById(R.id.status_bar);
             fakeStatusBar = (RelativeLayout) findViewById(R.id.fakeSB);
@@ -855,11 +855,11 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         if (logged) {
 
             if (Client.getInstance().getQmsCount() > 0) {
-                return R.drawable.ic_chat_white_24dp;
+                return R.drawable.message_text;
             }
-            return R.drawable.ic_account_white_24dp;
+            return R.drawable.account;
         } else {
-            return R.drawable.ic_account_outline_white_24dp;
+            return R.drawable.account_outline;
         }
     }
 
@@ -951,7 +951,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         createUserMenu(menu);
         if(getPreferences().getBoolean("openTabDrawerButton", false)){
             menu.add("Вкладки")
-                    .setIcon(R.drawable.ic_checkbox_multiple_blank_outline_white_24dp)
+                    .setIcon(R.drawable.checkbox_multiple_blank_outline)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -963,7 +963,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         }
 
         menu.add(R.string.Search)
-                .setIcon(R.drawable.ic_magnify_white_24dp)
+                .setIcon(R.drawable.magnify)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                     public boolean onMenuItemClick(MenuItem item) {
@@ -994,7 +994,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             }
 
                 menu.add(0, 0, 999, R.string.CloseApp)
-                    .setIcon(R.drawable.ic_close_white_24dp)
+                    .setIcon(R.drawable.close_white)
                         .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                             public boolean onMenuItemClick(MenuItem item) {

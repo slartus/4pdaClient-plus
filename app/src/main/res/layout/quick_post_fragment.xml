@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_parent"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -34,7 +35,7 @@
             android:layout_width="56dp"
             android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_send_grey600_24dp"
+            app:srcCompat="@drawable/send"
             android:id="@+id/send_button"
             android:layout_gravity="right|bottom" />
 
@@ -42,7 +43,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_plus_grey600_24dp"
+            app:srcCompat="@drawable/plus"
             android:id="@+id/advanced_button"
             android:layout_gravity="left|bottom" />
     </FrameLayout>

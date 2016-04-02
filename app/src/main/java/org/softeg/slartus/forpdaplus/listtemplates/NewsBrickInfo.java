@@ -16,7 +16,7 @@ public class NewsBrickInfo extends BrickInfo {
 
     @Override
     public int getIcon() {
-        return R.drawable.ic_newspaper_grey600_24dp;
+        return R.drawable.newspaper;
     }
 
     @Override

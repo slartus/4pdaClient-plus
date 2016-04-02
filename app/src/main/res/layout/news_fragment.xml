@@ -31,7 +31,6 @@
             android:layout_gravity="end"
             android:layout_margin="16dp"
             android:clickable="true"
-            android:src="@drawable/ic_pencil_white_24dp"
             fab:fab_colorNormal="?colorAccent"
             fab:fab_colorPressed="#ffd8205d"
             fab:fab_colorRipple="#11000000" />

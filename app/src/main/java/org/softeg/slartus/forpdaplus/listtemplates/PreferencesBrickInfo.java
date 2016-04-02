@@ -17,7 +17,7 @@ public class PreferencesBrickInfo extends BrickInfo {
 
     @Override
     public int getIcon() {
-        return R.drawable.ic_settings_grey600_24dp;
+        return R.drawable.settings_grey;
     }
 
     @Override

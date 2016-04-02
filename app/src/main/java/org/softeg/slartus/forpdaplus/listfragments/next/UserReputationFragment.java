@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -34,7 +33,6 @@ import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
-import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
 import org.softeg.slartus.forpdaplus.listtemplates.UserReputationBrickInfo;
 
 import java.util.ArrayList;
@@ -182,7 +180,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
             if (Client.getInstance().getLogined() && !getUserId().equals(Client.getInstance().UserId)) {
 
 
-                item = menu.add("Повысить репутацию").setIcon(R.drawable.ic_thumb_up_white_24dp);
+                item = menu.add("Повысить репутацию").setIcon(R.drawable.thumb_up);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
 
@@ -192,7 +190,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
                 });
                 item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-                item = menu.add("Понизить репутацию").setIcon(R.drawable.ic_thumb_down_white_24dp);
+                item = menu.add("Понизить репутацию").setIcon(R.drawable.thumb_down);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         minusRep();

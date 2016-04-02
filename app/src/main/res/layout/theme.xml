@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_parent"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -35,7 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_pencil_white_24dp"
             fab:fab_colorNormal="?colorAccent"
             fab:fab_colorPressed="#ffd8205d"
             fab:fab_colorRipple="#11000000" />
@@ -127,7 +127,7 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:contentDescription="Предыдущее совпадение"
-                    android:src="@drawable/ic_menu_left_grey600_24dp" />
+                    app:srcCompat="@drawable/menu_left" />
 
                 <ImageButton
                     android:id="@+id/btnNextSearch"
@@ -135,7 +135,7 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="48dp"
-                    android:src="@drawable/ic_menu_right_grey600_24dp"/>
+                    app:srcCompat="@drawable/menu_right"/>
 
                 <EditText
                     android:id="@+id/txtSearch"
@@ -158,7 +158,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/ic_close_grey600_24dp"
+                    app:srcCompat="@drawable/close_grey"
                     android:layout_gravity="right|bottom" />
             </FrameLayout>
         </LinearLayout>

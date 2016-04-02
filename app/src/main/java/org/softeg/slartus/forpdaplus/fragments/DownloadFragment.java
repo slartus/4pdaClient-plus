@@ -320,7 +320,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add("Очистить").setIcon(R.drawable.ic_delete_white_24dp)
+        menu.add("Очистить").setIcon(R.drawable.delete)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 new MaterialDialog.Builder(getContext())

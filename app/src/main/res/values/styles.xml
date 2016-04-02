@@ -19,7 +19,6 @@
         <item name="right_separator">@style/right_separator_light</item>
         <item name="news">@style/news_light</item>
         <item name="drawer_menu">@style/drawer_menu_light</item>
-        <item name="popup_topic">@style/popup_topic_light</item>
         <item name="list_text_general_color">@style/list_text_general_color_light</item>
         <item name="list_text_minor_color">@style/list_text_minor_color_light</item>
         <item name="list_text_second_color">@style/list_text_second_color_light</item>
@@ -58,7 +57,6 @@
         <item name="right_separator">@style/right_separator_dark</item>
         <item name="news">@style/news_dark</item>
         <item name="drawer_menu">@style/drawer_menu_dark</item>
-        <item name="popup_topic">@style/popup_topic_dark</item>
         <item name="list_text_general_color">@style/list_text_general_color_dark</item>
         <item name="list_text_minor_color">@style/list_text_minor_color_dark</item>
         <item name="list_text_second_color">@style/list_text_second_color_dark</item>
@@ -253,13 +251,6 @@
         <item name="android:background">@color/drawer_menu_background_black</item>
         <item name="itemIconTint">@color/nav_icon_dark</item>
         <item name="itemTextColor">@color/nav_text_dark</item>
-    </style>
-
-    <style name="popup_topic_light">
-        <item name="android:background">@drawable/abc_popup_background_light</item>
-    </style>
-    <style name="popup_topic_dark">
-        <item name="android:background">@drawable/abc_popup_background_dark</item>
     </style>
 
     <style name="list_text_general_color_light">

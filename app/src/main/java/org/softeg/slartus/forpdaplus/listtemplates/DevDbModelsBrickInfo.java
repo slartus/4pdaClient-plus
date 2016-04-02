@@ -15,7 +15,7 @@ public class DevDbModelsBrickInfo extends BrickInfo {
 
     @Override
     public int getIcon() {
-        return R.drawable.ic_cellphone_android_grey600_24dp;
+        return R.drawable.cellphone_android;
     }
 
     @Override

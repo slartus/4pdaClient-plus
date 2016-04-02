@@ -18,7 +18,7 @@ public class FavoritesBrickInfo extends BrickInfo {
 
     @Override
     public int getIcon() {
-        return R.drawable.ic_star_grey600_24dp;
+        return R.drawable.star;
     }
 
     @Override

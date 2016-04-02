@@ -4,12 +4,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.text.BoringLayout;
-import android.text.Html;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,9 +18,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -34,7 +27,6 @@ import com.melnykov.fab.FloatingActionButton;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.softeg.slartus.forpdaapi.post.EditPost;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
@@ -43,16 +35,12 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
-import org.softeg.slartus.forpdaplus.classes.Post;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -119,6 +107,7 @@ public class CuratorFragment extends WebViewFragment {
         view = inflater.inflate(R.layout.curator_fragment, container, false);
         webView = (AdvWebView) findViewById(R.id.wvBody);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.auto_fix);
         if(App.getInstance().getPreferences().getBoolean("pancilInActionBar",false)){
             fab.setVisibility(View.GONE);
         }else {
@@ -295,7 +284,7 @@ public class CuratorFragment extends WebViewFragment {
         super.onCreateOptionsMenu(menu, inflater);
         if(App.getInstance().getPreferences().getBoolean("pancilInActionBar",false)) {
             menu.add("Написать")
-                    .setIcon(R.drawable.ic_auto_fix_white_24dp)
+                    .setIcon(R.drawable.auto_fix)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
                         public boolean onMenuItemClick(MenuItem item) {
@@ -305,7 +294,7 @@ public class CuratorFragment extends WebViewFragment {
                     }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
         menu.add("Настройка")
-                .setIcon(R.drawable.ic_settings_white_24dp)
+                .setIcon(R.drawable.settings_white)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {

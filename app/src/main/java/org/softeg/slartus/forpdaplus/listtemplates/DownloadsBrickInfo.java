@@ -17,7 +17,7 @@ public class DownloadsBrickInfo extends BrickInfo {
 
     @Override
     public int getIcon() {
-        return R.drawable.ic_download_grey600_24dp;
+        return R.drawable.download_grey;
     }
 
     @Override

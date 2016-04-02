@@ -3,6 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:minHeight="48dp"
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
@@ -13,7 +14,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_contrast_grey600_24dp" />
+        app:srcCompat="@drawable/contrast" />
 
     <TextView
         android:id="@+id/txtFile"
@@ -36,7 +37,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_close_grey600_24dp"
+        app:srcCompat="@drawable/close_grey"
         android:layout_alignTop="@+id/btnSpoiler"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

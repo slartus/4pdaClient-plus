@@ -10,7 +10,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -690,7 +689,7 @@ public class QmsChatFragment extends WebViewFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.add("Обновить")
-                .setIcon(R.drawable.ic_refresh_white_24dp)
+                .setIcon(R.drawable.refresh)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 reload();
@@ -699,7 +698,7 @@ public class QmsChatFragment extends WebViewFragment {
         }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         menu.add("Настройки")
-                .setIcon(R.drawable.ic_settings_white_24dp)
+                .setIcon(R.drawable.settings_white)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 Intent intent = new Intent(getMainActivity(), QmsChatPreferencesActivity.class);
@@ -709,7 +708,7 @@ public class QmsChatFragment extends WebViewFragment {
         }).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
         menu.add("Удалить сообщения")
-                .setIcon(R.drawable.ic_delete_white_24dp)
+                .setIcon(R.drawable.delete)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 getWebView().loadUrl("javascript:deleteMessages('thread_form');");
@@ -718,7 +717,7 @@ public class QmsChatFragment extends WebViewFragment {
         }).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
         menu.add("Удалить диалог")
-                .setIcon(R.drawable.ic_delete_white_24dp)
+                .setIcon(R.drawable.delete)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 deleteDialog();

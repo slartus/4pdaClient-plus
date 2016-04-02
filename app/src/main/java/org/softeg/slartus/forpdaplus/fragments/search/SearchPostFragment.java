@@ -4,16 +4,13 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -34,7 +31,6 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
@@ -45,7 +41,6 @@ import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
-import org.softeg.slartus.forpdaplus.classes.BrowserViewsFragmentActivity;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
@@ -128,16 +123,6 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
                         }
                 );
         }
-    }
-
-    public void setHideActionBar() {
-        if (getWebView() == null || !(getWebView() instanceof AdvWebView))
-            return;
-        ActionBar actionBar = ((AppCompatActivity) getMainActivity()).getSupportActionBar();
-        FloatingActionButton fab = (FloatingActionButton) ((AppCompatActivity) getMainActivity()).findViewById(R.id.fab);
-        if (fab == null) return;
-        if (actionBar == null) return;
-        BrowserViewsFragmentActivity.setHideActionBar(mWvBody, actionBar, fab);
     }
 
     @Override

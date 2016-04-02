@@ -4,20 +4,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/share_it"
-        android:icon="@drawable/ic_share_variant_white_24dp"
+        android:icon="@drawable/share_variant"
         android:title="Поделиться"
         app:showAsAction="never"
         android:actionProviderClass=
             "android.widget.ShareActionProvider"/>
     <item
         android:id="@+id/download"
-        android:icon="@drawable/ic_download_white_24dp"
+        android:icon="@drawable/download_white"
         android:title="Скачать"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/close"
-        android:icon="@drawable/ic_close_white_24dp"
+        android:icon="@drawable/close_white"
         android:title="Закрыть"
         app:showAsAction="always" />
 </menu>

@@ -15,7 +15,7 @@ public class AppsGamesCatalogBrickInfo extends BrickInfo {
 
     @Override
     public int getIcon() {
-        return R.drawable.ic_apps_grey600_24dp;
+        return R.drawable.apps;
     }
 
     @Override

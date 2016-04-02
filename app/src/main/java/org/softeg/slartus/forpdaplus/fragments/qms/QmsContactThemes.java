@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaplus.fragments.qms;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.Loader;
 import android.text.Html;
@@ -37,7 +36,6 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseLoaderListFragment;
@@ -229,7 +227,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.add("Новая тема")
-                .setIcon(R.drawable.ic_pencil_white_24dp)
+                .setIcon(R.drawable.pencil)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 QmsNewThreadFragment.showUserNewThread(getMainActivity(), m_Id

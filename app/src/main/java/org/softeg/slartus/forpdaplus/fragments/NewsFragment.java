@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -163,6 +162,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.pencil);
         setHideFab(fab);
         setFabColors(fab);
         if(Client.getInstance().getLogined()&!App.getInstance().getPreferences().getBoolean("pancilInActionBar", false))
@@ -185,7 +185,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         super.onCreateOptionsMenu(menu, inflater);
         boolean pencil = App.getInstance().getPreferences().getBoolean("pancilInActionBar", false);
         if(Client.getInstance().getLogined()&pencil){
-            menu.add("Комментировать").setIcon(R.drawable.ic_pencil_white_24dp)
+            menu.add("Комментировать").setIcon(R.drawable.pencil)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             respond();
@@ -194,7 +194,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     })
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
-        menu.add(R.string.Refresh).setIcon(R.drawable.ic_refresh_white_24dp)
+        menu.add(R.string.Refresh).setIcon(R.drawable.refresh)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         refresh();
@@ -203,7 +203,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        menu.add(R.string.Like).setIcon(R.drawable.ic_thumb_up_white_24dp)
+        menu.add(R.string.Like).setIcon(R.drawable.thumb_up)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         like();
@@ -213,7 +213,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
         SubMenu optionsMenu = menu.addSubMenu("Настройки");
-        optionsMenu.getItem().setIcon(R.drawable.ic_settings_white_24dp);
+        optionsMenu.getItem().setIcon(R.drawable.settings_white);
         optionsMenu.getItem().setTitle(R.string.Settings);
         /*optionsMenu.add("Скрывать верхнюю панель")
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {

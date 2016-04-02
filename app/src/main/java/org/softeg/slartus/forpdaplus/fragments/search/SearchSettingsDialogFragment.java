@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -226,10 +225,10 @@ public class SearchSettingsDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 if(forHide.getVisibility() == View.VISIBLE){
                     forHide.setVisibility(View.GONE);
-                    forHideButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_plus_grey600_24dp));
+                    forHideButton.setImageDrawable(getResources().getDrawable(R.drawable.plus));
                 }else {
                     forHide.setVisibility(View.VISIBLE);
-                    forHideButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_close_grey600_24dp));
+                    forHideButton.setImageDrawable(getResources().getDrawable(R.drawable.close_grey));
                 }
             }
         });

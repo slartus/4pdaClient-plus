@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -460,7 +459,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         super.onCreateOptionsMenu(menu, inflater);
 
         if (Client.getInstance().getLogined() && getUserId() != null && !getUserId().equals(Client.getInstance().UserId)) {
-            menu.add(getString(R.string.MessagesQms)).setIcon(R.drawable.ic_pencil_white_24dp)
+            menu.add(getString(R.string.MessagesQms)).setIcon(R.drawable.pencil)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             QmsContactThemes.showThemes(getUserId(), getUserNick());

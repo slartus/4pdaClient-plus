@@ -15,7 +15,7 @@ public class NotesBrickInfo extends BrickInfo {
 
     @Override
     public int getIcon() {
-        return R.drawable.ic_bookmark_grey600_24dp;
+        return R.drawable.bookmark;
     }
 
     @Override
