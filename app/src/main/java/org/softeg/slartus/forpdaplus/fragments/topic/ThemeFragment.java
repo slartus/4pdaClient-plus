@@ -14,7 +14,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -496,6 +495,25 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             });
 
 
+            // new
+            optionsMenu.add(R.string.FindOnPage).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    onSearchRequested();
+                    return true;
+                }
+            });
+
+            optionsMenu.add(R.string.FindInTopic).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    SearchSettingsDialogFragment.showSearchSettingsDialog(getMainActivity(),
+                            SearchSettingsDialogFragment.createTopicSearchSettings(getTopic().getId()));
+                    return true;
+                }
+            });
+
+
             optionsMenu.add(R.string.OpenTopicForum).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     try {
@@ -535,6 +553,14 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 }
             });
         }
+
+        optionsMenu.add("Ссылка").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", TextUtils.isEmpty(getLastUrl()) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : getLastUrl());
+                return true;
+            }
+        });
     }
 
 
@@ -582,33 +608,33 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         }
                     });
 
-            menu.add(R.string.FindOnPage)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                        public boolean onMenuItemClick(MenuItem item) {
-                            onSearchRequested();
-
-                            return true;
-                        }
-                    });
-            menu.add(R.string.FindInTopic)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                        public boolean onMenuItemClick(MenuItem item) {
-                            SearchSettingsDialogFragment.showSearchSettingsDialog(getMainActivity(),
-                                    SearchSettingsDialogFragment.createTopicSearchSettings(getTopic().getId()));
-                            return true;
-                        }
-                    });
+//            menu.add(R.string.FindOnPage)
+//                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//
+//                        public boolean onMenuItemClick(MenuItem item) {
+//                            onSearchRequested();
+//
+//                            return true;
+//                        }
+//                    });
+//            menu.add(R.string.FindInTopic)
+//                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//
+//                        public boolean onMenuItemClick(MenuItem item) {
+//                            SearchSettingsDialogFragment.showSearchSettingsDialog(getMainActivity(),
+//                                    SearchSettingsDialogFragment.createTopicSearchSettings(getTopic().getId()));
+//                            return true;
+//                        }
+//                    });
 
             mTopicOptionsMenu = addOptionsMenu(getMainActivity(), getHandler(), menu, true, getLastUrl());
 
-            menu.add("Ссылка").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", TextUtils.isEmpty(getLastUrl()) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : getLastUrl());
-                    return true;
-                }
-            });
+//            menu.add("Ссылка").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+//                public boolean onMenuItemClick(MenuItem menuItem) {
+//                    ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", TextUtils.isEmpty(getLastUrl()) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : getLastUrl());
+//                    return true;
+//                }
+//            });
             SubMenu optionsMenu = menu.addSubMenu("Вид");
             optionsMenu.getItem().setTitle("Вид");
 

@@ -273,8 +273,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
         private void checkUpdates() {
             NotifiersManager notifiersManager = new NotifiersManager(getActivity());
             new ForPdaVersionNotifier(notifiersManager, 1).start(getActivity(), true, true);
-            Toast.makeText(getActivity(), "Проверяем ...", Toast.LENGTH_SHORT).show();
-
         }
 
 
