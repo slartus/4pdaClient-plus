@@ -159,14 +159,17 @@ public class TabDrawerMenu {
     }
 
     public void removeTab(String tag){
-        if(App.getInstance().getTabItems().size()<=1) return;
+        if(App.getInstance().getTabItems().size()<=1){
+            ((MainActivity)getContext()).appExit();
+            return;
+        }
 
         for(int i = 0; i <= App.getInstance().getTabItems().size()-1; i++){
             if(App.getInstance().getTabItems().get(i).getTag().equals(tag)) {
                 final TabItem tabItem = App.getInstance().getTabByTag(tag);
                 Log.e("kek", tabItem.getFragment()+" WTF");
                 tabItem.setFragment(null);
-                App.getInstance().getTabItems().remove(i);
+                App.getInstance().getTabItems().remove(tabItem);
 
                 if(App.getInstance().getTabByTag(tabItem.getParentTag())!=null)
                     App.getInstance().setCurrentFragmentTag(tabItem.getParentTag());

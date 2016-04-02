@@ -52,13 +52,13 @@ android {
         rel {
             applicationId 'org.softeg.slartus.forpdaplus'
             versionCode 565
-            versionName "3.2.6"
+            versionName "3.2.7 Beta1"
             signingConfig defaultSigningVariable
         }
         beta {
             applicationId 'org.softeg.slartus.forpdaplus.beta'
-            versionCode 563
-            versionName "3.2.5beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
+            versionCode 565
+            versionName "3.2.7beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
             signingConfig defaultSigningVariable
         }
     }

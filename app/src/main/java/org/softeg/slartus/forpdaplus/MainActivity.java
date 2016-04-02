@@ -803,7 +803,10 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     private Boolean m_ExitWarned = false;
 
-    private void appExit() {
+    public void appExit() {
+        App.getInstance().setCurrentFragmentTag(null);
+        App.getInstance().getTabItems().clear();;
+        App.getInstance().clearTabIterator();
         App.getInstance().exit();
     }
 
@@ -843,9 +846,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                             }
                         }, 3 * 1000);
                     } else {
-                        App.getInstance().setCurrentFragmentTag(null);
-                        App.getInstance().getTabItems().clear();;
-                        App.getInstance().clearTabIterator();
                         appExit();
                     }
                 }else {
