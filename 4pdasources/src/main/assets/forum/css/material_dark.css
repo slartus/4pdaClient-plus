@@ -135,8 +135,8 @@ HTML body a {
 /*
 *         POST_BLOCK
 */
-.post-block.close > .block-body {
-  display: none;
+.post-block {
+  display: block;
 }
 .post-block.quote,
 .post-block.code,
@@ -247,6 +247,7 @@ HTML body a {
   color: #aaddff;
 }
 .post-block.spoil {
+  position: relative;
   padding: 0;
   overflow: hidden;
   box-sizing: border-box;
@@ -284,15 +285,29 @@ HTML body a {
   line-height: 1.4 !important;
   font-style: normal !important;
 }
+.post-block.spoil > .block-body {
+  padding: 0.75rem;
+  margin: 0;
+  box-sizing: border-box;
+}
+.post-block.spoil > .block-body .spoil.open {
+  margin: 0.5rem 0;
+}
+.post-block.spoil > .block-body .spoil.open > .block-body {
+  padding-right: 0;
+}
 .post-block.spoil.close > .block-title {
   background: rgba(158, 158, 158, 0.3);
 }
 .post-block.spoil.close > .block-title:before,
 .poll .hidetop.close B:before {
   -webkit-transform: rotate(-135deg) translate(0.125rem, 0.125rem);
-  transition: 0.3s ease;
+  transform: rotate(-135deg) translate(0.125rem, 0.125rem);
   border-top-color: white;
   border-left-color: white;
+}
+.post-block.spoil.close > .block-body {
+  display: none;
 }
 .post-block.spoil.open .open {
   border-radius: 0;
@@ -308,16 +323,6 @@ HTML body a {
   transform: rotate(45deg) translate(0.125rem, 0.125rem);
   border-top-color: #ababab;
   border-left-color: #ababab;
-}
-.post-block.spoil > .block-body {
-  padding: 0.75rem;
-  margin: 0;
-}
-.post-block.spoil > .block-body .spoil.open {
-  margin: 0.5rem 0;
-}
-.post-block.spoil > .block-body .spoil.open > .block-body {
-  padding-right: 0;
 }
 /*
 *	ADM TAGS
@@ -1204,10 +1209,10 @@ div[data-post] > a {
   display: none;
 }
 #thread_form .list-group-item .time {
+  display: inline-block;
   position: absolute;
   top: -0.125rem;
   left: 3rem;
-  display: inline-block;
   font-size: 0.875rem;
   font-style: italic;
   color: rgba(225, 225, 225, 0.7);
@@ -2343,7 +2348,7 @@ div[data-post] > a {
 }
 #profile .user-profile-list > li {
   display: block;
-  padding: 0.75rem;
+  padding: 1rem;
   margin: 0.5rem;
   border-radius: 0.125rem;
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
@@ -2398,7 +2403,7 @@ div[data-post] > a {
   margin-top: 0.7rem;
 }
 #profile .user-profile-list > li .profile-edit-links {
-  margin-top: 1rem;
+  margin: 1rem -0.5rem -0.5rem;
 }
 #profile .user-profile-list > li .profile-edit-links .col {
   display: inline-block;
@@ -2457,6 +2462,21 @@ div[data-post] > a {
 #profile .user-profile-list .info-list.black-link[id*="device-list"] li:last-child .noico {
   display: inline-block;
   font-weight: bold;
+}
+#profile .user-profile-list .info-list.black-link[id*="device-list"] li:first-of-type {
+  font-weight: bold;
+}
+#profile .user-profile-list .info-list.black-link[id*="device-list"] li:first-of-type:after {
+  content: '';
+  font-size: 1rem;
+  display: inline-block;
+  margin: 0 1rem;
+  height: 0.7rem;
+  width: 0.4rem;
+  border-bottom: 0.1875rem solid grey;
+  border-right: 0.1875rem solid grey;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 #profile .user-profile-list .info-list.black-link[id*="device-list"] li span {
   position: relative;
@@ -2943,4 +2963,7 @@ img[src*="style_emoticons"] {
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
   color: #626262;
+}
+#rules .post_body {
+  margin: 0.5rem;
 }
