@@ -37,9 +37,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
-
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -989,7 +986,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         boolean showed = getPreferences().getBoolean("showedExitButton", false);
         if(getPreferences().getBoolean("showExitButton",false)) {
             if(!showed) {
-                Answers.getInstance().logCustom(new CustomEvent("Button Exit Enable"));
                 getPreferences().edit().putBoolean("showedExitButton", true).apply();
             }
 
