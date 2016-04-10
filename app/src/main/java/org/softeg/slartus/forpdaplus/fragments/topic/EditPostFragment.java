@@ -254,7 +254,6 @@ public class EditPostFragment extends GeneralFragment {
 
 
         btnAttachments = (Button) findViewById(R.id.btnAttachments);
-        btnAttachments.setCompoundDrawablesWithIntrinsicBounds( R.drawable.paperclip, 0, 0, 0);
         btnAttachments.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 showAttachesListDialog();

@@ -10,4 +10,7 @@
     <style name="actionbar_trans" parent="actionbar_trans_base">
         <item name="elevation">0dp</item>
     </style>
+    <style name="floating_action_button">
+        <item name="android:layout_margin">16dp</item>
+    </style>
 </resources>

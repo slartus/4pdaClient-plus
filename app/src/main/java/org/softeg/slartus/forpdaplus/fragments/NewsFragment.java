@@ -5,12 +5,17 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,7 +37,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import org.softeg.slartus.forpdacommon.FileUtils;
@@ -162,7 +166,15 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.pencil);
+        //fab.setImageResource(R.drawable.pencil);
+        /*Drawable drawable = getResources().getDrawable(R.drawable.pencil);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            VectorDrawable vectorDrawable =  (VectorDrawable) drawable;
+            fab.setImageDrawable(vectorDrawable);
+        } else {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            fab.setImageDrawable(bitmapDrawable);
+        }*/
         setHideFab(fab);
         setFabColors(fab);
         if(Client.getInstance().getLogined()&!App.getInstance().getPreferences().getBoolean("pancilInActionBar", false))
@@ -179,6 +191,18 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         return view;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fab.setImageResource(R.drawable.pencil);
+        //fab.setImageDrawable(ContextCompat.getDrawable(App.getContext(), R.drawable.pencil));
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

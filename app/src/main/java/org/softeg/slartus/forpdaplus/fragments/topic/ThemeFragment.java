@@ -14,10 +14,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -41,7 +43,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import org.softeg.slartus.forpdaapi.TopicApi;
@@ -318,7 +319,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         loadPreferences(App.getInstance().getPreferences());
         showTheme(IntentActivity.normalizeThemeUrl(getArguments().getString(TOPIC_URL_KEY)));
 
-        fab.setImageResource(R.drawable.pencil);
         setFabColors(fab);
         if(App.getInstance().getPreferences().getBoolean("pancilInActionBar",false))
             fab.setVisibility(View.GONE);

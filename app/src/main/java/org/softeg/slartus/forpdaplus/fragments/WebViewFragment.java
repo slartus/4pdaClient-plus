@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
@@ -28,7 +29,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.melnykov.fab.FloatingActionButton;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
@@ -158,9 +158,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     }
 
     public void setFabColors(final FloatingActionButton fab){
-        fab.setColorNormal(App.getInstance().getColorAccent("Accent"));
-        fab.setColorPressed(App.getInstance().getColorAccent("Pressed"));
-        fab.setColorRipple(App.getInstance().getColorAccent("Pressed"));
+        fab.setBackgroundColor(App.getInstance().getColorAccent("Accent"));
+        fab.setRippleColor(App.getInstance().getColorAccent("Pressed"));
     }
     @Override
     public void onResume() {
@@ -225,6 +224,20 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         }
 
     }
+    /*private boolean fabIsVisible = false;
+    private FloatingActionButton.OnVisibilityChangedListener fabListener = new FloatingActionButton.OnVisibilityChangedListener(){
+        @Override
+        public void onShown(FloatingActionButton fab) {
+            super.onShown(fab);
+            fabIsVisible = true;
+        }
+
+        @Override
+        public void onHidden(FloatingActionButton fab) {
+            super.onHidden(fab);
+            fabIsVisible = false;
+        }
+    };*/
     public void setHideFab(final FloatingActionButton fab){
         if (getWebView() == null)return;
         if (fab == null) return;
@@ -233,13 +246,13 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
                 @Override
                 public void onScrollDown(Boolean inTouch) {
                     if (!inTouch) return;
-                    if (fab.isVisible()) fab.hide();
+                    fab.hide();
                 }
 
                 @Override
                 public void onScrollUp(Boolean inTouch) {
                     if (!inTouch) return;
-                    if (!fab.isVisible()) fab.show();
+                    fab.show();
                 }
 
                 @Override

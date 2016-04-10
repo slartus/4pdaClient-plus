@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +25,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.melnykov.fab.FloatingActionButton;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -107,13 +108,9 @@ public class CuratorFragment extends WebViewFragment {
         view = inflater.inflate(R.layout.curator_fragment, container, false);
         webView = (AdvWebView) findViewById(R.id.wvBody);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.auto_fix);
         if(App.getInstance().getPreferences().getBoolean("pancilInActionBar",false)){
             fab.setVisibility(View.GONE);
         }else {
-            fab.setColorNormal(App.getInstance().getColorAccent("Accent"));
-            fab.setColorPressed(App.getInstance().getColorAccent("Pressed"));
-            fab.setColorRipple(App.getInstance().getColorAccent("Pressed"));
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -121,6 +118,7 @@ public class CuratorFragment extends WebViewFragment {
                 }
             });
             setHideFab(fab);
+            setFabColors(fab);
         }
         ImageButton up = (ImageButton) findViewById(R.id.btnUp);
         ImageButton down = (ImageButton) findViewById(R.id.btnDown);

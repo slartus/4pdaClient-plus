@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus.classes;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,7 +13,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.melnykov.fab.FloatingActionButton;
 
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -58,93 +58,6 @@ public abstract class BrowserViewsFragmentActivity extends AppCompatActivity imp
             mWebView = null;
         }
         super.onDestroy();
-    }
-
-    public void setHideArrows(boolean hide) {
-        if (getWebView() == null || !(getWebView() instanceof AdvWebView))
-            return;
-
-        LinearLayout arrows = (LinearLayout) findViewById(R.id.arrows);
-        LinearLayout arrowsShadow = (LinearLayout) findViewById(R.id.arrows_shadow);
-
-        if (arrows == null) return;
-        if(hide){
-            arrows.setVisibility(View.GONE);
-            arrowsShadow.setVisibility(View.GONE);
-        }else {
-            arrows.setVisibility(View.VISIBLE);
-            arrowsShadow.setVisibility(View.VISIBLE);
-        }
-
-    }
-
-    public void setHideActionBar() {
-        if (getWebView() == null || !(getWebView() instanceof AdvWebView))
-            return;
-        ActionBar actionBar = getSupportActionBar();
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        Log.e("sethide","yes");
-        if (actionBar == null) return;
-        Log.e("ab","yes");
-        if (fab == null) return;
-        Log.e("fb","yes");
-        setHideActionBar((AdvWebView) getWebView(),actionBar, fab);
-    }
-    public void setHideActionBar(FloatingActionButton fab) {
-        if (getWebView() == null || !(getWebView() instanceof AdvWebView))
-            return;
-        ActionBar actionBar = getSupportActionBar();
-        Log.e("sethide","yes");
-        if (actionBar == null) return;
-        Log.e("ab","yes");
-        if (fab == null) return;
-        Log.e("fb","yes");
-        setHideActionBar((AdvWebView) getWebView(),actionBar, fab);
-    }
-
-    public static void setHideActionBar(AdvWebView advWebView, final ActionBar actionBar, final FloatingActionButton fab) {
-        final Boolean hideAb = Preferences.isHideActionBar();
-        final Boolean hideFab = Preferences.isHideFab();
-
-        if (hideAb|hideFab) {
-
-            advWebView.setOnScrollChangedCallback(new AdvWebView.OnScrollChangedCallback() {
-                @Override
-                public void onScrollDown(Boolean inTouch) {
-                    if (!inTouch)
-                        return;
-                    if (actionBar.isShowing()&hideAb) {
-                        actionBar.hide();
-                    }
-                    if (fab.isVisible()&hideFab){
-                        fab.hide();
-                    }
-                }
-
-                @Override
-                public void onScrollUp(Boolean inTouch) {
-                    if (!inTouch)
-                        return;
-                    if (!actionBar.isShowing()&hideAb) {
-                        actionBar.show();
-                    }
-                    if (!fab.isVisible()&hideFab){
-                        fab.show();
-                    }
-
-                }
-
-                @Override
-                public void onTouch() {
-                    actionBar.show();
-                    fab.show();
-                }
-            });
-        } else {
-            advWebView.setOnScrollChangedCallback(null);
-            actionBar.show();
-            fab.show();
-        }
     }
 
 
