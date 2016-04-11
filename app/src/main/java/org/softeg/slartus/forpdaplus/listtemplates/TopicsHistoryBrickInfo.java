@@ -15,7 +15,7 @@ public class TopicsHistoryBrickInfo extends BrickInfo {
 
     @Override
     public int getIcon() {
-        return R.drawable.comment_check;
+        return R.drawable.forum_checked;
     }
 
     @Override

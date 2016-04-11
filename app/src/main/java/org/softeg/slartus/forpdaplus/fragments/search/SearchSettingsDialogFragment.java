@@ -15,6 +15,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -25,6 +28,7 @@ import android.widget.Spinner;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.Topic;
@@ -220,15 +224,25 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         forHideButton = (ImageButton) view.findViewById(R.id.forHideButton);
         forHide = (LinearLayout) view.findViewById(R.id.forHide);
 
+        final RotateAnimation rotate = new RotateAnimation(180, 0, Animation.RELATIVE_TO_SELF,
+                0.5f,  Animation.RELATIVE_TO_SELF, 0.5f);
+        rotate.setDuration(250);
+        final Runnable hideRunnable = new Runnable() {
+            @Override
+            public void run() {
+                forHide.setVisibility(View.VISIBLE);
+            }
+        };
+
         forHideButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(forHide.getVisibility() == View.VISIBLE){
+                    forHideButton.startAnimation(rotate);
                     forHide.setVisibility(View.GONE);
-                    forHideButton.setImageDrawable(getResources().getDrawable(R.drawable.plus));
                 }else {
-                    forHide.setVisibility(View.VISIBLE);
-                    forHideButton.setImageDrawable(getResources().getDrawable(R.drawable.close_grey));
+                    forHideButton.startAnimation(rotate);
+                    new Handler().postDelayed(hideRunnable, 250);
                 }
             }
         });

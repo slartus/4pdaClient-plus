@@ -31,7 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:clickable="true"
-            app:srcCompat="@drawable/pencil"/>
+            app:srcCompat="@drawable/pencil"
+            style="@style/floating_action_button"/>
     </FrameLayout>
 
 </RelativeLayout>

@@ -30,7 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:clickable="true"
-            app:srcCompat="@drawable/auto_fix"/>
+            app:srcCompat="@drawable/auto_fix"
+            style="@style/floating_action_button"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

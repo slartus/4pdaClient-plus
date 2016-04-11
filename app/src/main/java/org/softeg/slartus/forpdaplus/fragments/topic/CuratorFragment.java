@@ -109,16 +109,16 @@ public class CuratorFragment extends WebViewFragment {
         webView = (AdvWebView) findViewById(R.id.wvBody);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if(App.getInstance().getPreferences().getBoolean("pancilInActionBar",false)){
-            fab.setVisibility(View.GONE);
+            fab.hide();
         }else {
+            setHideFab(fab);
+            setFabColors(fab);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     webView.evalJs("getIds();");
                 }
             });
-            setHideFab(fab);
-            setFabColors(fab);
         }
         ImageButton up = (ImageButton) findViewById(R.id.btnUp);
         ImageButton down = (ImageButton) findViewById(R.id.btnDown);

@@ -14,10 +14,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -166,26 +168,19 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        //fab.setImageResource(R.drawable.pencil);
-        /*Drawable drawable = getResources().getDrawable(R.drawable.pencil);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            VectorDrawable vectorDrawable =  (VectorDrawable) drawable;
-            fab.setImageDrawable(vectorDrawable);
-        } else {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            fab.setImageDrawable(bitmapDrawable);
-        }*/
-        setHideFab(fab);
-        setFabColors(fab);
-        if(Client.getInstance().getLogined()&!App.getInstance().getPreferences().getBoolean("pancilInActionBar", false))
+
+        if(Client.getInstance().getLogined()&!App.getInstance().getPreferences().getBoolean("pancilInActionBar", false)) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     respond();
                 }
             });
-        else
-            fab.setVisibility(View.GONE);
+            setHideFab(fab);
+            setFabColors(fab);
+        }else {
+            fab.hide();
+        }
 
         buttonsPanel = (FrameLayout) findViewById(R.id.buttonsPanel);
         return view;

@@ -86,7 +86,7 @@
     <string name="navigate_getfirstpost">Navigate to first post</string>
     <string name="navigate_getlastpost">Navigate to last post</string>
     <string name="navigate_getnewpost">Navigate to new post</string>
-    <string name="navigate_last_url">navigate to last url</string>
+    <string name="navigate_last_url">Navigate to last url</string>
     <string name="AddToFavorites">Add to favorites</string>
     <string name="DeletingFromFavorites">Deleting theme from favorites</string>
     <string name="DeleteFromFavorites">Delete theme from favorites</string>

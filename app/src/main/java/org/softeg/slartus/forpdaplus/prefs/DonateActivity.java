@@ -137,5 +137,13 @@ public class DonateActivity extends PreferenceActivity {
                 return true;
             }
         });
+
+        fragment.findPreference("Radiation.Yandex.money").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                StringUtils.copyToClipboard(fragment.getActivity(), "410012865124764");
+                Toast.makeText(fragment.getActivity(), fragment.getActivity().getString(R.string.DonateAccountNimberCopied), Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
     }
 }

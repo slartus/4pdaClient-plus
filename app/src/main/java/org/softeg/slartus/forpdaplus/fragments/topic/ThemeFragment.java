@@ -319,17 +319,19 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         loadPreferences(App.getInstance().getPreferences());
         showTheme(IntentActivity.normalizeThemeUrl(getArguments().getString(TOPIC_URL_KEY)));
 
-        setFabColors(fab);
-        if(App.getInstance().getPreferences().getBoolean("pancilInActionBar",false))
-            fab.setVisibility(View.GONE);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggleMessagePanelVisibility();
-            }
-        });
-        setHideFab(fab);
 
+        if(App.getInstance().getPreferences().getBoolean("pancilInActionBar",false)){
+            fab.hide();
+        }else {
+            setHideFab(fab);
+            setFabColors(fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    toggleMessagePanelVisibility();
+                }
+            });
+        }
 
         registerForContextMenu(webView);
         setWebViewSettings();

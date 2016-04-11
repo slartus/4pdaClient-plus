@@ -18,7 +18,7 @@ public class ForumBrickInfo extends BrickInfo {
 
     @Override
     public int getIcon() {
-        return R.drawable.comment;
+        return R.drawable.forum;
     }
 
     @Override

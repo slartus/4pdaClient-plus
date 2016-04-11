@@ -18,7 +18,7 @@
             android:layout_toLeftOf="@+id/forHideButton"
             android:layout_toStartOf="@+id/forHideButton" />
         <ImageButton
-            app:srcCompat="@drawable/plus"
+            app:srcCompat="@drawable/settings_grey"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:id="@+id/forHideButton"
             android:layout_width="44dp"

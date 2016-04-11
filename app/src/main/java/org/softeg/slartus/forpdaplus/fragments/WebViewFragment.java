@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -158,7 +159,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     }
 
     public void setFabColors(final FloatingActionButton fab){
-        fab.setBackgroundColor(App.getInstance().getColorAccent("Accent"));
+        fab.setBackgroundTintList(ColorStateList.valueOf(App.getInstance().getColorAccent("Accent")));
         fab.setRippleColor(App.getInstance().getColorAccent("Pressed"));
     }
     @Override

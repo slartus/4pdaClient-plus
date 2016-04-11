@@ -562,6 +562,10 @@
                 android:summary="Скопировать в буфер: B266066430353"
                 android:title="WebMoney B" />
         </PreferenceScreen>
+        <Preference
+            android:key="Radiation.Yandex.money"
+            android:summary="Скопировать в буфер: 410012865124764"
+            android:title="Яндекс-кошелёк Radiation15" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="donate.DontShow"
