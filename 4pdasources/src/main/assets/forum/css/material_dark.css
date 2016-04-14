@@ -54,7 +54,7 @@ HTML body {
   position: relative;
   font-family: 'Roboto';
   margin: 0;
-  padding: 0 0 3rem;
+  padding: 0 0 100px;
   font-size: 1em;
   font-weight: 1.4;
   word-break: break-word;
@@ -1074,12 +1074,12 @@ div[data-post] > a {
 *	SEARCH
 */
 .search-results .topic_title_post {
-  margin: 0 !important;
+  margin: -0.75rem 0 0 !important;
 }
 .search-results .topic_title_post a {
   display: block;
   position: relative;
-  padding: 0.7rem;
+  padding: 0.75rem;
   text-align: center;
   text-decoration: none;
   font-weight: bold;
@@ -1089,7 +1089,7 @@ div[data-post] > a {
 }
 .search-results .post_header {
   min-height: 2.2rem;
-  padding-top: 0.7rem;
+  padding-top: 0.75rem;
   text-align: center;
 }
 .search-results .post_header .date {
