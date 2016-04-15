@@ -540,7 +540,7 @@ HTML body a {
   height: 1rem;
   width: 1rem;
   margin-right: 1rem;
-  vertical-align: bottom;
+  vertical-align: middle;
   overflow: hidden;
   border: 0.125rem solid #969696;
   background: #2d2d2d;
@@ -554,7 +554,7 @@ HTML body a {
   display: inline-block;
   height: 1rem;
   width: 1rem;
-  border-radius: 1rem;
+  border-radius: 100%;
   background: #aaddff;
   -webkit-transition: -webkit-transform 0.3s;
   transition: transform 0.3s;
@@ -591,6 +591,9 @@ HTML body a {
 .poll .hidemain FORM .poll_body .poll_theme .items .item .checkbox:checked + .icon:before {
   -webkit-transform: rotate(45deg) translate(0.125rem, -0.1875rem) scale(1, 1);
   transform: rotate(45deg) translate(0.125rem, -0.1875rem) scale(1, 1);
+}
+.poll .hidemain FORM .poll_body .poll_theme .items .item .name {
+  vertical-align: middle;
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .num_votes {
   position: absolute;
