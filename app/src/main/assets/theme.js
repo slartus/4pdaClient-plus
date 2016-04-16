@@ -68,7 +68,21 @@ window.onload = function(){
     HTMLOUT.sendPostsAttaches(JSON.stringify(getAttaches()))
 }
 
-
+/**
+ *	===========
+ *	RELOAD PAGE
+ *	===========
+ */
+ 
+document.addEventListener('DOMContentLoaded',locationReload);
+function locationReload() {
+	var pageUrl = document.querySelector(".topic_title_post > A").href;
+	var cutHashUrl = pageUrl.match(/.+st=\d+/g);
+	document.onkeydown = function(e) {
+		if (event.keyCode == 116) window.location.assign(cutHashUrl);
+	};
+}
+ 
 function kek(postId, logined){
     window.onload = function() {
         var anchors = document.querySelectorAll('.karma');
