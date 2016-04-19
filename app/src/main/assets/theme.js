@@ -102,6 +102,66 @@ function kek(postId, logined){
     }
 }
 
+/**
+ *		================================
+ *		MULTIMODERATION NAVIGATION PANEL
+ *		================================
+*/
+
+document.addEventListener('DOMContentLoaded',pagesPanelFoo);
+function pagesPanelFoo() {
+	var panels = document.querySelectorAll('#curator .panel');
+	
+	for (var i = 0; i<panels.length; i++) {
+		var panel = panels[i];
+		var pageList = panel.querySelector('.pages');
+		var pages = panel.querySelectorAll('a, b');
+		var activePage = pageList.querySelector('b');
+		
+		function getPage(el) {
+			if (el.nodeName == "B") return '<b></b>';
+			else return '<a href="'+el.getAttribute("href")+'"></a>';
+		}
+		
+		var firstPage = document.createElement('span');
+		firstPage.innerHTML = getPage(pages[0]);
+		firstPage.className = 'first-page';
+		panel.insertBefore(firstPage, pageList);
+
+		var lastPage = document.createElement('span');
+		lastPage.innerHTML = getPage(pages[pages.length-1]);
+		lastPage.className = 'last-page';
+		panel.insertBefore(lastPage, pageList.nextSibling);
+		
+		pageList.classList.add('close');
+		pageList.addEventListener('click',toggle);
+		function toggle() {
+			if (this.classList.contains('close')) {
+				this.classList.remove('close');
+				this.classList.add('open');
+			}
+			else {
+				this.classList.remove('open');
+				this.classList.add('close');
+			}
+		}
+	}
+}
+
+window.addEventListener("load",function() {
+var panels = document.querySelectorAll('#curator .panel');
+	for (var i = 0; i<panels.length; i++) {
+		var panel = panels[i];
+		var pageList = panel.querySelector('.pages');
+		var activePage = pageList.querySelector('b');
+		
+		pageList.scrollTop = (activePage.offsetTop - activePage.parentNode.offsetTop)
+	}
+});
+
+/**
+ *		END
+*/
 
 function getIds() {
     var p = document.documentElement ? document.documentElement : document.body;
