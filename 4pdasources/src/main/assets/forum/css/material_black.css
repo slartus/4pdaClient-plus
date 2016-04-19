@@ -2848,33 +2848,100 @@ div[data-post] > a {
 /*
 *		MULTIMODERATION
 */
-#curator {
-  padding: 1rem 0;
-}
 #curator .panel {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 1rem 0;
   text-align: center;
 }
+#curator .panel .first-page,
+#curator .panel .last-page {
+  display: inline-block;
+  max-width: 30%;
+  width: 10rem;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+#curator .panel .first-page a,
+#curator .panel .last-page a,
+#curator .panel .first-page b,
+#curator .panel .last-page b {
+  display: block;
+  padding: 0.5rem 0;
+  font-weight: bold;
+}
+#curator .panel .first-page b:before,
+#curator .panel .last-page b:before,
+#curator .panel .first-page a:before,
+#curator .panel .last-page a:before {
+  display: inline-block;
+}
+#curator .panel .first-page b:before,
+#curator .panel .first-page a:before {
+  content: '<<';
+}
+#curator .panel .last-page b:before,
+#curator .panel .last-page a:before {
+  content: '>>';
+}
 #curator .panel .pages {
-  margin: 1rem 0;
-  padding: 1rem 0.5rem;
-  overflow-x: auto;
-  white-space: nowrap;
+  display: inline-block;
+  font-size: 1rem;
+  padding: 0;
+  margin: auto;
+  overflow-y: auto;
+  box-sizing: border-box;
+  width: 10rem;
+  vertical-align: middle;
+  z-index: 999;
 }
 #curator .panel .pages a,
 #curator .panel .pages b {
-  display: inline-block;
+  display: block;
   margin: 0;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 0;
   text-decoration: none !important;
-  color: rgba(225, 225, 225, 0.7);
   font-weight: bold;
 }
-#curator .panel .pages b {
+#curator .panel .pages.close {
+  height: 2.4em;
+  overflow: hidden;
+}
+#curator .panel .pages.close a,
+#curator .panel .pages.close b {
+  pointer-events: none;
+  color: rgba(225, 225, 225, 0.7);
+}
+#curator .panel .pages.open {
+  position: fixed;
+  top: 2rem;
+  bottom: 2rem;
+  padding: 1rem 0;
+  margin-left: -100px;
+  width: 200px;
+  max-width: 80%;
+  border-radius: 0.125rem;
+  background: #000000;
+  -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
+}
+#curator .panel .pages.open a,
+#curator .panel .pages.open b {
+  padding: 1rem;
+  pointer-events: auto;
+}
+#curator .panel a {
+  color: rgba(225, 225, 225, 0.7);
+}
+#curator .panel b {
   color: rgba(58, 58, 58, 0.91);
 }
 #curator .panel .controls {
-  display: inline-block;
-  margin: 1rem 0;
+  margin: 1rem auto;
 }
 #curator .panel .controls button {
   display: inline-block;
