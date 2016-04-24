@@ -2,8 +2,8 @@
   "notice":true,
   "notice_text":"<a href=\"http://4pda.ru/forum/index.php?showtopic=271502&amp;view=findpost&amp;p=32591818\">Почему клиент удалили из Google Play?</a><br><a href=\"http://4pda.ru/forum/index.php?showtopic=271502\">Где брать новые версии?</a>",
 
-  "warning":false,
-  "warning_text":"Команда разработчиков от всей души поздравляет с Днем Рождения нашего друга и коллегу по цеху Алексея(Морфий). Желаем крепкого здоровья, счастья, благополучия  и всего самого наилучшего. С Днем Рождения, Леха!!!   ps. разработчики. :)",
+  "warning":true,
+  "warning_text":"Если у вас тормозит открытие спойлеров, то обновите WebView до последней версии.",
 
   "show_beta_dialog":true,
   "update_beta":{
