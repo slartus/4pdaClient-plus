@@ -54,7 +54,7 @@ HTML body {
   position: relative;
   font-family: 'Roboto';
   margin: 0;
-  padding: 0 0 100px;
+  padding: 0 0 5rem;
   font-size: 1em;
   font-weight: 1.4;
   word-break: break-word;
@@ -90,46 +90,53 @@ HTML body a {
 /*
 *         FONT_SIZE
 */
-.post_body span[style*="font-size:36pt"] {
+span[style*="font-size:36pt"] {
   font-size: 3.75rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:36pt"] * {
+span[style*="font-size:36pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:24pt"] {
+span[style*="font-size:24pt"] {
   font-size: 2.55rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:24pt"] * {
+span[style*="font-size:24pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:18pt"] {
+span[style*="font-size:18pt"] {
   font-size: 1.95rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:18pt"] * {
+span[style*="font-size:18pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:14pt"] {
+span[style*="font-size:14pt"] {
   font-size: 1.55rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:14pt"] * {
+span[style*="font-size:14pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:12pt"] {
+span[style*="font-size:12pt"] {
   font-size: 1.35rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:12pt"] * {
+span[style*="font-size:12pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:10pt"] {
+span[style*="font-size:10pt"] {
   font-size: 1.15rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:10pt"] * {
+span[style*="font-size:10pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:8pt"] {
+span[style*="font-size:8pt"] {
   font-size: 0.95rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:8pt"] * {
+span[style*="font-size:8pt"] * {
   font-size: inherit !important;
 }
 /*
@@ -932,15 +939,15 @@ HTML body a {
   color: #aaddff;
   text-decoration: none;
 }
-.post_body a[attach_id]:not([id*="ipb-attach"]),
-#multimoderation > form a[attach_id]:not([id*="ipb-attach"]),
+.post_body a[rel="lyteframe"],
+#multimoderation > form a[rel="lyteframe"],
 .post_body a.sp_img,
 #multimoderation > form a.sp_img {
   display: inline-block;
-  margin: 0.2rem 0;
+  margin: 0.25rem 0;
 }
-.post_body a[attach_id]:not([id*="ipb-attach"]):before,
-#multimoderation > form a[attach_id]:not([id*="ipb-attach"]):before,
+.post_body a[rel="lyteframe"]:before,
+#multimoderation > form a[rel="lyteframe"]:before,
 .post_body a.sp_img:before,
 #multimoderation > form a.sp_img:before {
   display: inline-block;
