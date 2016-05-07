@@ -252,7 +252,7 @@ public class ForPdaVersionNotifier extends MainNotifier {
                 addToStack(new MaterialDialog.Builder(context)
                         .title(warning ? "Предупреждение" : "Уведомление")
                         .content(Html.fromHtml(msg_text))
-                        .positiveText("Я понял")
+                        .positiveText("Я понял(а)")
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {

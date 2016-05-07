@@ -89,7 +89,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
     public static final int NOTIFIERS_SERVICE_SOUND_REQUEST_CODE = App.getInstance().getUniqueIntValue();
 
 
-    public class PrefsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
+    public static class PrefsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
 
 
        /* @Override
@@ -364,7 +364,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 {
                     if (null == data) return;
                     Uri selectedImageUri = data.getData();
-                    String selectedImagePath = ImageFilePath.getPath(getApplicationContext(), selectedImageUri);
+                    String selectedImagePath = ImageFilePath.getPath(App.getContext(), selectedImageUri);
                     App.getInstance().getPreferences()
                             .edit()
                             .putString("userInfoBg", selectedImagePath)
@@ -781,9 +781,9 @@ public class PreferencesActivity extends BasePreferencesActivity {
             String text = "<b>Неофициальный клиент для сайта <a href=\"http://www.4pda.ru\">4pda.ru</a></b><br/><br/>\n" +
                     "<b>Автор: </b> Артём Слинкин aka slartus<br/>\n" +
                     "<b>E-mail:</b> <a href=\"mailto:slartus+4pda@gmail.com\">slartus+4pda@gmail.com</a><br/><br/>\n" +
-                    "<b>Помощник: </b> Евгений Низамиев aka <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
+                    "<b>Разработчик(v3.x.x): </b> Евгений Низамиев aka <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
                     "<b>E-mail:</b> <a href=\"mailto:radiationx@yandex.ru\">radiationx@yandex.ru</a><br/><br/>\n" +
-                    "<b>Помощник: </b> Aleksandr Tainyuk aka <a href=\"http://4pda.ru/forum/index.php?showuser=1726458\">iSanechek</a><br/>\n" +
+                    "<b>Разработчик(v3.x.x):</b> Александр Тайнюк aka <a href=\"http://4pda.ru/forum/index.php?showuser=1726458\">iSanechek</a><br/>\n" +
                     "<b>E-mail:</b> <a href=\"mailto:devuicore@gmail.com\">devuicore@gmail.com</a><br/><br/>\n" +
                     "<b>Дизайнер стилей: </b> <a href=\"http://4pda.ru/forum/index.php?showuser=96664\">Морфий</a> и <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
                     "<b>Благодарности: </b> <br/>\n" +
@@ -835,7 +835,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
         }
 
         private void showTheme() {
-            finish();
+            getActivity().finish();
             ThemeFragment.showTopicById("271502");
         }
 
