@@ -83,9 +83,10 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     }
     public void setSubtitle(String subtitle){
         generalSubtitle = subtitle;
-        if(generalSubtitle!=null)
-            if(generalSubtitle.equals(getSupportActionBar().getSubtitle()))
-                return;
+        /*Пусть нахрен заменяет! Ибо я хз что это паттерн такой, когда subTitle надо сохранять*/
+//        if(generalSubtitle!=null)
+//            if(generalSubtitle.equals(getSupportActionBar().getSubtitle()))
+//                return;
         if(!fragmentPaused)
             getSupportActionBar().setSubtitle(subtitle);
     }
