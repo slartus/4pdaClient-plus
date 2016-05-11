@@ -2383,6 +2383,9 @@ div[data-post] > a {
   overflow: hidden;
   background: #2d2d2d;
 }
+#profile .user-profile-list > li.hide-on-empty {
+  display: none;
+}
 #profile .user-profile-list > li .user-box {
   display: block;
   text-align: center;
