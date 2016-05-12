@@ -25,12 +25,11 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class BbCodesQuickView extends BaseQuickView {
@@ -172,7 +171,7 @@ public class BbCodesQuickView extends BaseQuickView {
         final int finalSelectionEnd = selectionEnd;
         CharSequence[] items = new CharSequence[]{"1", "2", "3", "4", "5", "6", "7"};
         new MaterialDialog.Builder(getContext())
-                .title("Выберите размер текста")
+                .title(R.string.select_text_size)
                 .items(items)
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
@@ -184,7 +183,7 @@ public class BbCodesQuickView extends BaseQuickView {
                     }
                 })
                 .cancelable(true)
-                .negativeText("Отмена")
+                .negativeText(R.string.cancel)
                 .show();
 
     }
@@ -356,7 +355,7 @@ public class BbCodesQuickView extends BaseQuickView {
         layout.setOrientation(LinearLayout.VERTICAL);
 
         final TextView tx = new TextView(getContext());
-        tx.setText("Название спойлера");
+        tx.setText(R.string.spoiler_title);
         layout.addView(tx);
 
         // Set an EditText view to get user input
@@ -370,8 +369,8 @@ public class BbCodesQuickView extends BaseQuickView {
         new MaterialDialog.Builder(getContext())
                 .customView(layout,true)
                 .cancelable(false)
-                .positiveText("OK")
-                .negativeText("Отмена")
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
@@ -445,7 +444,7 @@ public class BbCodesQuickView extends BaseQuickView {
                     .substring(selectionStart, selectionEnd);
         }
 
-        createUrlDialog(null, urlText, "Пожалуйста, введите полный URL адрес", "");
+        createUrlDialog(null, urlText, getContext().getString(R.string.enter_full_address), "");
 
     }
 
@@ -468,7 +467,7 @@ public class BbCodesQuickView extends BaseQuickView {
         new MaterialDialog.Builder(getContext())
                 .cancelable(false)
                 .customView(layout,true)
-                .positiveText("OK")
+                .positiveText(R.string.ok)
                 .negativeText(android.R.string.cancel)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
@@ -482,7 +481,7 @@ public class BbCodesQuickView extends BaseQuickView {
                         }
 
                         if (TextUtils.isEmpty(tempUrlText)) {
-                            createUrlDialog(input.getText().toString(), null, "Пожалуйста, введите заголовок", "");
+                            createUrlDialog(input.getText().toString(), null, getContext().getString(R.string.enter_title), "");
                             return;
                         }
 
@@ -529,7 +528,7 @@ public class BbCodesQuickView extends BaseQuickView {
         layout.setOrientation(LinearLayout.VERTICAL);
 
         final TextView tx = new TextView(getContext());
-        tx.setText("Введите содержание " + ind + " пункта списка");
+        tx.setText(String.format(getContext().getString(R.string.enter_content_n_item), ind));
         layout.addView(tx);
 
         // Set an EditText view to get user input
@@ -540,7 +539,7 @@ public class BbCodesQuickView extends BaseQuickView {
         new MaterialDialog.Builder(getContext())
                 .cancelable(false)
                 .customView(layout,true)
-                .positiveText("OK")
+                .positiveText(R.string.ok)
                 .negativeText(android.R.string.cancel)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override

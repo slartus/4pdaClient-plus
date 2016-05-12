@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.R;
+
 /**
  * Created by isanechek on 16.12.15.
  */
@@ -14,7 +16,7 @@ public class DialogHelper {
                 .cancelable(true)
                 .title(name)
                 .content(comment)
-                .negativeText("Закрыть")
+                .negativeText(R.string.close)
                 .build();
 
         dialog.show();

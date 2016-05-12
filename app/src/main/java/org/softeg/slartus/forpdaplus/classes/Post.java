@@ -194,9 +194,9 @@ public class Post {
         final SharedPreferences prefs = App.getInstance().getPreferences();
         if(prefs.getBoolean("showClaimWarn",true)){
             new MaterialDialog.Builder(context)
-                    .title("Примечание")
+                    .title(R.string.attention)
                     .content(R.string.ClaimDescription)
-                    .positiveText("Я прочитал")
+                    .positiveText(R.string.understand)
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
@@ -226,13 +226,13 @@ public class Post {
 
 
         new MaterialDialog.Builder(context)
-                .title("Жалоба модератору на сообщение")
+                .title(R.string.claim_title)
                 .customView(layout,true)
-                .positiveText("Отправить")
+                .positiveText(R.string.send)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
-                        Toast.makeText(context, "Жалоба отправлена", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.claim_sent, Toast.LENGTH_SHORT).show();
 
                         new Thread(new Runnable() {
                             public void run() {
@@ -251,7 +251,7 @@ public class Post {
                                     public void run() {
                                         try {
                                             if (finalEx != null) {
-                                                Toast.makeText(context, "Ошибка отправки жалобы", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(context, R.string.error_request, Toast.LENGTH_LONG).show();
                                                 AppLog.e(context, finalEx);
                                             } else {
                                                 Toast.makeText(context, finalRes, Toast.LENGTH_LONG).show();
@@ -266,7 +266,7 @@ public class Post {
                         }).start();
                     }
                 })
-                .negativeText("Отмена")
+                .negativeText(R.string.cancel)
                 .show();
     }
 

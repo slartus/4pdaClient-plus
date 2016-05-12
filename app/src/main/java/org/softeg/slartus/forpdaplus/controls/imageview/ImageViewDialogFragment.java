@@ -70,8 +70,8 @@ public class ImageViewDialogFragment extends DialogFragment {
         MaterialDialog builder= new MaterialDialog.Builder(getActivity())
                 .title(mTitle)
                 .customView(v,false)
-                .negativeText("Закрыть")
-                .positiveText("Полная версия")
+                .negativeText(R.string.close)
+                .positiveText(R.string.full_size)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {

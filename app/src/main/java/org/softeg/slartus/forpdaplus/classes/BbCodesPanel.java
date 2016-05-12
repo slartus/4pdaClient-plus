@@ -267,7 +267,7 @@ public class BbCodesPanel extends BbCodesBasePanel {
         layout.setOrientation(LinearLayout.VERTICAL);
 
         final TextView tx = new TextView(mContext);
-        tx.setText("Название спойлера");
+        tx.setText(org.softeg.slartus.forpdaplus.R.string.spoiler_title);
         layout.addView(tx);
 
         // Set an EditText view to get user input
@@ -281,8 +281,8 @@ public class BbCodesPanel extends BbCodesBasePanel {
         new MaterialDialog.Builder(mContext)
                 .customView(layout,true)
                 .cancelable(false)
-                .positiveText("OK")
-                .negativeText("Отмена")
+                .positiveText(org.softeg.slartus.forpdaplus.R.string.ok)
+                .negativeText(org.softeg.slartus.forpdaplus.R.string.cancel)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
@@ -361,7 +361,7 @@ public class BbCodesPanel extends BbCodesBasePanel {
                     .substring(selectionStart, selectionEnd);
         }
 
-        createUrlDialog(null, urlText, "Пожалуйста, введите полный URL адрес", "http://");
+        createUrlDialog(null, urlText, mContext.getString(org.softeg.slartus.forpdaplus.R.string.enter_full_address), "http://");
 
     }
 
@@ -384,7 +384,7 @@ public class BbCodesPanel extends BbCodesBasePanel {
         new MaterialDialog.Builder(mContext)
                 .cancelable(false)
                 .customView(layout,true)
-                .positiveText("OK")
+                .positiveText(org.softeg.slartus.forpdaplus.R.string.ok)
                 .negativeText(R.string.cancel)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
@@ -398,7 +398,7 @@ public class BbCodesPanel extends BbCodesBasePanel {
                         }
 
                         if (TextUtils.isEmpty(tempUrlText)) {
-                            createUrlDialog(input.getText().toString(), null, "Пожалуйста, введите заголовок", "Посетить мою домашнюю страницу");
+                            createUrlDialog(input.getText().toString(), null, mContext.getString(org.softeg.slartus.forpdaplus.R.string.enter_title), mContext.getString(org.softeg.slartus.forpdaplus.R.string.visit_my_homepage));
                             return;
                         }
 
@@ -454,7 +454,7 @@ public class BbCodesPanel extends BbCodesBasePanel {
         layout.setOrientation(LinearLayout.VERTICAL);
 
         final TextView tx = new TextView(mContext);
-        tx.setText("Введите содержание " + ind + " пункта списка");
+        tx.setText(String.format(mContext.getString(org.softeg.slartus.forpdaplus.R.string.enter_content_n_item), ind));
         layout.addView(tx);
 
         // Set an EditText view to get user input
@@ -465,7 +465,7 @@ public class BbCodesPanel extends BbCodesBasePanel {
         new MaterialDialog.Builder(mContext)
                 .cancelable(false)
                 .customView(layout,true)
-                .positiveText("OK")
+                .positiveText(org.softeg.slartus.forpdaplus.R.string.ok)
                 .negativeText(R.string.cancel)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override

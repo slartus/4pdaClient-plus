@@ -9,6 +9,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -49,7 +50,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
         dialog = new MaterialDialog.Builder(context)
                 .progress(true,0)
                 .cancelable(false)
-                .content("Отправка сообщения...")
+                .content(R.string.sending_message)
                 .build();
     }
 

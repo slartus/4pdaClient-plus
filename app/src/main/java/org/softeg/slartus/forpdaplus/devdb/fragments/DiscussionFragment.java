@@ -40,7 +40,7 @@ public class DiscussionFragment extends BaseDevDbFragment implements FLifecycleU
         args.putString(LIST_ARG, list);
         f.setArguments(args);
         f.setContext(context);
-        f.setTitle("Обсуждения");
+        f.setTitle(context.getString(R.string.discussions));
         return f;
     }
 

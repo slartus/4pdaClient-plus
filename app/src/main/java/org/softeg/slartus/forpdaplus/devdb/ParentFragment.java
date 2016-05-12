@@ -92,10 +92,10 @@ public class ParentFragment extends GeneralFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add("Ссылка")
+        menu.add(R.string.link)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", m_DeviceId);
+                        ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), m_DeviceId);
                         return true;
                     }
                 });
@@ -129,12 +129,12 @@ public class ParentFragment extends GeneralFragment {
         }
 
         tabLayout = (TabLayout) findViewById(R.id.devDbTabLayout);
-        tabLayout.addTab(tabLayout.newTab().setText("Характеристики"));
-        tabLayout.addTab(tabLayout.newTab().setText("Отзывы"));
-        tabLayout.addTab(tabLayout.newTab().setText("Обсуждения"));
-        tabLayout.addTab(tabLayout.newTab().setText("Обзор"));
-        tabLayout.addTab(tabLayout.newTab().setText("Прошивки"));
-        tabLayout.addTab(tabLayout.newTab().setText("Цены"));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.specifications));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.reviews));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.discussions));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.review));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.firmwares));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.prices));
         return view;
     }
 
@@ -238,7 +238,7 @@ public class ParentFragment extends GeneralFragment {
             dialog = new MaterialDialog.Builder(getActivity())
                     .progress(true, 0)
                     .cancelable(false)
-                    .content("Загрузка")
+                    .content(R.string.loading)
                     .build();
             dialog.show();
         }

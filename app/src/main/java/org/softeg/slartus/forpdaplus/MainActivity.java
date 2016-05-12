@@ -82,9 +82,9 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         switch (requestCode) {
             case REQUEST_WRITE_STORAGE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    Toast.makeText(this, "PERMISSION GRANTED", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.permission_grented, Toast.LENGTH_LONG).show();
                 else
-                    Toast.makeText(this, "PERMISSION DENIED", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -476,7 +476,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 return true;
             }
             startNextMatchingActivity(intent);
-            Toast.makeText(this, "Не умею обрабатывать ссылки такого типа\n" + url, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.links_not_supported)+":\n" + url, Toast.LENGTH_LONG).show();
             finish();
             return true;
         }
@@ -819,7 +819,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             if (currentFragment == null || !((IBrickFragment) currentFragment).onBackPressed()) {
                 if(App.getInstance().getTabItems().size()<=1){
                     if (!m_ExitWarned) {
-                        Toast.makeText(this, "Нажмите кнопку НАЗАД снова, чтобы выйти из программы", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.close_program_toasr, Toast.LENGTH_SHORT).show();
                         m_ExitWarned = true;
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -947,7 +947,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
         createUserMenu(menu);
         if(getPreferences().getBoolean("openTabDrawerButton", false)){
-            menu.add("Вкладки")
+            menu.add(R.string.tabs)
                     .setIcon(R.drawable.checkbox_multiple_blank_outline)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
@@ -1007,13 +1007,13 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     public static void startForumSearch(SearchSettings searchSettings){
 
-        String title = "Поиск";
+        String title = App.getContext().getString(R.string.search);
         if(searchSettings.getQuery()!=null){
             if(!searchSettings.getQuery().equals(""))
                 title = searchSettings.getQuery();
         }else if(searchSettings.getUserName()!=null){
             if(!searchSettings.getUserName().equals(""))
-                title = "Поиск: "+searchSettings.getUserName();
+                title = App.getContext().getString(R.string.search)+": "+searchSettings.getUserName();
         }
         try {
             if (SearchSettings.RESULT_VIEW_TOPICS.equals(searchSettings.getResultView()))

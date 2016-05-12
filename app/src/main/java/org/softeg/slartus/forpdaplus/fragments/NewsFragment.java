@@ -5,21 +5,15 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.VectorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -79,7 +73,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     private String m_NewsUrl;
     private ArrayList<History> m_History = new ArrayList<>();
     private boolean loadImages;
-    private String m_Title = "Новости";
+    private String m_Title = getString(R.string.news);
     private FloatingActionButton fab;
     private FrameLayout buttonsPanel;
 
@@ -204,7 +198,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         super.onCreateOptionsMenu(menu, inflater);
         boolean pencil = App.getInstance().getPreferences().getBoolean("pancilInActionBar", false);
         if(Client.getInstance().getLogined()&pencil){
-            menu.add("Комментировать").setIcon(R.drawable.pencil)
+            menu.add(R.string.comment).setIcon(R.drawable.pencil)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             respond();
@@ -231,7 +225,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-        SubMenu optionsMenu = menu.addSubMenu("Настройки");
+        SubMenu optionsMenu = menu.addSubMenu(R.string.setting);
         optionsMenu.getItem().setIcon(R.drawable.settings_white);
         optionsMenu.getItem().setTitle(R.string.Settings);
         /*optionsMenu.add("Скрывать верхнюю панель")
@@ -244,7 +238,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     }
                 }).setCheckable(true).setChecked(Preferences.isHideActionBar());*/
         if(!pencil) {
-            optionsMenu.add("Скрывать карандаш")
+            optionsMenu.add(R.string.hide_pencil)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem menuItem) {
                             Preferences.setHideFab(!Preferences.isHideFab());
@@ -254,7 +248,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                         }
                     }).setCheckable(true).setChecked(Preferences.isHideFab());
         }
-        optionsMenu.add("Размер шрифта")
+        optionsMenu.add(R.string.font_size)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -273,10 +267,10 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     }
                 }).setCheckable(true).setChecked(getWebView().getSettings().getLoadsImagesAutomatically());
 
-        menu.add("Ссылка")
+        menu.add(R.string.link)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", getUrl());
+                        ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), getUrl());
                         return true;
                     }
                 });
@@ -314,7 +308,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     startActivityForResult(intent, FILECHOOSER_RESULTCODE);
 
                 } catch (ActivityNotFoundException ex) {
-                    Toast.makeText(getMainActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getMainActivity(), R.string.no_app_for_get_file, Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {
                     AppLog.e(getMainActivity(), ex);
                 }
@@ -562,7 +556,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
         private String transformBody(String body) {
             NewsHtmlBuilder builder = new NewsHtmlBuilder();
-            m_Title = "Новости";
+            m_Title = getString(R.string.news);
             builder.beginHtml(m_Title);
             builder.beginBody("news", null, loadImages);
             builder.append("<div style=\"padding-top:").append(String.valueOf(HtmlBuilder.getMarginTop())).append("px\"/>\n");
@@ -680,13 +674,13 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 .title(R.string.LeaveComment)
                 .customView(layout,true)
                 .positiveText(R.string.Send)
-                .negativeText("Отмена")
+                .negativeText(R.string.cancel)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         String message = message_edit.getText().toString();
                         if (TextUtils.isEmpty(message.trim())) {
-                            Toast.makeText(getMainActivity(), "Текст не можут быть пустым!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getMainActivity(), R.string.empty_text, Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -701,7 +695,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
 
     private void like() {
-        Toast.makeText(getMainActivity(), "Запрос отправлен", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getMainActivity(), R.string.request_sent, Toast.LENGTH_SHORT).show();
         new Thread(new Runnable() {
             public void run() {
 
@@ -718,10 +712,10 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     public void run() {
                         try {
                             if (finalEx != null) {
-                                Toast.makeText(getMainActivity(), "Ошибка запроса", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getMainActivity(), R.string.error_request, Toast.LENGTH_SHORT).show();
                                 AppLog.e(getMainActivity(), finalEx);
                             } else {
-                                Toast.makeText(getMainActivity(), "Запрос выполнен", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getMainActivity(), R.string.request_performed, Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception ex) {
                             AppLog.e(getMainActivity(), ex);
@@ -741,7 +735,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         });
     }
     private void sendLikeComment(final String id, final String comment) {
-        Toast.makeText(getMainActivity(), "Запрос отправлен", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getMainActivity(), R.string.request_sent, Toast.LENGTH_SHORT).show();
         new Thread(new Runnable() {
             public void run() {
 
@@ -758,10 +752,10 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     public void run() {
                         try {
                             if (finalEx != null) {
-                                Toast.makeText(getMainActivity(), "Ошибка запроса", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getMainActivity(), R.string.error_request, Toast.LENGTH_SHORT).show();
                                 AppLog.e(getMainActivity(), finalEx);
                             } else {
-                                Toast.makeText(getMainActivity(), "Запрос выполнен", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getMainActivity(), R.string.request_performed, Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception ex) {
                             AppLog.e(getMainActivity(), ex);

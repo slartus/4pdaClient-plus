@@ -80,9 +80,9 @@ public class ForumsTreeDialogFragment extends DialogFragment {
         m_Progress = view.findViewById(R.id.progress);
         MaterialDialog dialog =new MaterialDialog.Builder(getActivity())
                 .customView(view,false)
-                .title("Форум")
-                .positiveText("Применить")
-                .negativeText("Отмена")
+                .title(R.string.forum)
+                .positiveText(R.string.accept)
+                .negativeText(R.string.cancel)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {

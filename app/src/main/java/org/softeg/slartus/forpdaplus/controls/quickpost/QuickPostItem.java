@@ -10,7 +10,7 @@ import org.softeg.slartus.forpdaplus.controls.quickpost.items.BaseQuickView;
  * Created by slartus on 23.02.14.
  */
 public abstract class QuickPostItem {
-    public abstract String getTitle();
+    public abstract int getTitle();
 
     public abstract String getName();
 

@@ -107,11 +107,11 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
         int i = 0;
         SubMenu subMenu;
         List<BrickInfo> list;
-        subMenu = menu.addSubMenu(1, 0, 0,"Все");
+        subMenu = menu.addSubMenu(1, 0, 0, R.string.all);
         list = ListCore.getMainMenuBricks();
         for (i=0; i<list.size(); i++, itemId++)
             subMenu.add(1, itemId, i, list.get(i).getTitle()).setIcon(list.get(i).getIcon());
-        subMenu = menu.addSubMenu(2, 0, 0, "Разное");
+        subMenu = menu.addSubMenu(2, 0, 0, R.string.other);
         list = ListCore.getOthersBricks();
         for(i = 0; i<list.size();i++, itemId++)
             subMenu.add(2, itemId, i, list.get(i).getTitle()).setIcon(list.get(i).getIcon());
@@ -216,17 +216,17 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
                 break;
             case MarkAllReadBrickInfo.NAME:
                 if (!Client.getInstance().getLogined()) {
-                    Toast.makeText(mActivity, "Необходимо залогиниться!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, R.string.need_login, Toast.LENGTH_SHORT).show();
                     break;
                 }
                 new MaterialDialog.Builder(mActivity)
-                        .title("Подтвердите действие")
-                        .content("Отметить весь форум прочитанным?")
-                        .positiveText("Да")
+                        .title(R.string.confirm_action)
+                        .content(getContext().getString(R.string.need_login))
+                        .positiveText(R.string.yes)
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
-                                Toast.makeText(mActivity, "Запрос отправлен", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(mActivity, R.string.request_sent, Toast.LENGTH_SHORT).show();
                                 new Thread(new Runnable() {
                                     public void run() {
                                         Throwable ex = null;
@@ -242,10 +242,10 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
                                             public void run() {
                                                 try {
                                                     if (finalEx != null) {
-                                                        Toast.makeText(mActivity, "Ошибка", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(mActivity, R.string.error, Toast.LENGTH_SHORT).show();
                                                         AppLog.e(mActivity, finalEx);
                                                     } else {
-                                                        Toast.makeText(mActivity, "Форум отмечен прочитанным", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(mActivity, R.string.forum_setted_read, Toast.LENGTH_SHORT).show();
                                                     }
                                                 } catch (Exception ex) {
                                                     AppLog.e(mActivity, ex);
@@ -257,7 +257,7 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
                                 }).start();
                             }
                         })
-                        .negativeText("Отмена")
+                        .negativeText(R.string.cancel)
                         .show();
                 break;
             case FaqBrickInfo.NAME:

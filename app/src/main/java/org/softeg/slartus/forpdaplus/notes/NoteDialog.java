@@ -92,7 +92,7 @@ public class NoteDialog {
                         }).start();
                     }
                 })
-                .negativeText("Отмена")
+                .negativeText(R.string.cancel)
                 .cancelable(true)
                 .show();
     }

@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.controls.quickpost.items;
 
 import android.content.Context;
 
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostItem;
 
 /**
@@ -10,8 +11,8 @@ import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostItem;
 public class SettingsItem extends QuickPostItem {
     private SettingsQuickView view;
     @Override
-    public String getTitle() {
-        return "Настройки";
+    public int getTitle() {
+        return R.string.settings;
     }
 
     @Override

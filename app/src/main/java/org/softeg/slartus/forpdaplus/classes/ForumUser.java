@@ -212,7 +212,7 @@ public class ForumUser {
                                                         .title(context.getString(R.string.ChangeReputationError))
                                                         .content(outParams.get("Result"))
                                                         .cancelable(true)
-                                                        .positiveText("OK")
+                                                        .positiveText(R.string.ok)
                                                         .show();
                                             } else {
                                                 Toast.makeText(context, outParams.get("Result"), Toast.LENGTH_SHORT).show();
@@ -227,7 +227,7 @@ public class ForumUser {
                         }).start();
                     }
                 })
-                .negativeText("Отмена")
+                .negativeText(R.string.cancel)
                 .show();
     }
 }

@@ -284,9 +284,9 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
                 }
             });
             if (loading) {
-                setEmptyText("Загрузка...");
+                setEmptyText(getString(R.string.loading));
             } else {
-                setEmptyText("Нет данных");
+                setEmptyText(getString(R.string.no_data));
             }
         } catch (Throwable ignore) {
             android.util.Log.e("TAG", ignore.toString());

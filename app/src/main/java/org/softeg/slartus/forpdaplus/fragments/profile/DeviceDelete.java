@@ -8,6 +8,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
+import org.softeg.slartus.forpdaplus.R;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,9 +29,9 @@ public class DeviceDelete {
         parentTag = tag;
         new getDevice().execute(url);
         dialog = new MaterialDialog.Builder(context)
-                .title("Предупреждение")
-                .positiveText("Удалить")
-                .negativeText("Отмена")
+                .title(R.string.warning)
+                .positiveText(R.string.delete)
+                .negativeText(R.string.cancel)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {

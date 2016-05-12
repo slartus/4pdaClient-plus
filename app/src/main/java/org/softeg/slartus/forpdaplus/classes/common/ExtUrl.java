@@ -6,9 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.Toast;
 
@@ -53,12 +50,12 @@ public class ExtUrl {
 
     public static void openNewTab(Context context, Handler handler, String url) {
         if(!IntentActivity.tryShowUrl((Activity)context, handler, url, false, false))
-            Toast.makeText(context, "Такие ссылки не поддерживаются", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.links_not_supported, Toast.LENGTH_SHORT).show();
     }
 
     public static void showInBrowser(Context context, String url) {
         Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        context.startActivity(Intent.createChooser(marketIntent, "Выберите"));
+        context.startActivity(Intent.createChooser(marketIntent, context.getString(R.string.choose)));
     }
 
     public static void shareIt(Context context, String subject, String text, String url) {
@@ -68,12 +65,12 @@ public class ExtUrl {
         sendMailIntent.setData(Uri.parse(url));
         sendMailIntent.setType("text/plain");
 
-        context.startActivity(Intent.createChooser(sendMailIntent, "Поделиться через..."));
+        context.startActivity(Intent.createChooser(sendMailIntent, context.getString(R.string.chare_via)));
     }
 
     public static void copyLinkToClipboard(Context context, String link) {
         StringUtils.copyToClipboard(context, link);
-        Toast.makeText(context, "Ссылка скопирована в буфер обмена", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, R.string.link_copied_to_buffer, Toast.LENGTH_SHORT).show();
     }
 
     public static void addUrlSubMenu(final android.os.Handler handler, final Context context, List<MenuListDialog> list, final String url
@@ -89,20 +86,20 @@ public class ExtUrl {
                                        final String title, final String url, final String body, final CharSequence topicId, final String topic,
                                        final String postId, final String userId, final String user) {
 
-        list.add(new MenuListDialog("Открыть в браузере", new Runnable() {
+        list.add(new MenuListDialog(context.getString(R.string.open_in_browser), new Runnable() {
             @Override
             public void run() {
                 showInBrowser(context, url);
             }
         }));
 
-        list.add(new MenuListDialog("Поделиться ссылкой", new Runnable() {
+        list.add(new MenuListDialog(context.getString(R.string.share_link), new Runnable() {
             @Override
             public void run() {
                 shareIt(context, title, url, url);
             }
         }));
-        list.add(new MenuListDialog("Скопировать ссылку", new Runnable() {
+        list.add(new MenuListDialog(context.getString(R.string.copy_link), new Runnable() {
             @Override
             public void run() {
                 copyLinkToClipboard(context, url);
@@ -111,7 +108,7 @@ public class ExtUrl {
 
 
         if (!TextUtils.isEmpty(topicId)) {
-            list.add(new MenuListDialog("Создать заметку", new Runnable() {
+            list.add(new MenuListDialog(context.getString(R.string.create_note), new Runnable() {
                 @Override
                 public void run() {
                     NoteDialog.showDialog(handler, context,
@@ -122,38 +119,11 @@ public class ExtUrl {
         }
     }
 
-    public static void addUrlMenu(final Context context, Menu menu,
-                                  final String title,
-                                  final String url) {
-        menu.add("Открыть в браузере")
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        showInBrowser(context, url);
-                        return true;
-                    }
-                });
-
-        menu.add("Поделиться ссылкой").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                shareIt(context, title, url, url);
-                return true;
-            }
-        });
-
-        menu.add("Скопировать ссылку").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                copyLinkToClipboard(context, url);
-                return true;
-            }
-        });
-    }
-
-
     public static void showSelectActionDialog(final Context context,
                                               final String title,
                                               final String url) {
 
-        CharSequence[] titles = {"Открыть в браузере", "Поделиться ссылкой", "Скопировать ссылку"};
+        CharSequence[] titles = {context.getString(R.string.open_in_browser), context.getString(R.string.share_link), context.getString(R.string.copy_link)};
         new MaterialDialog.Builder(context)
                 .title(title)
                 .items(titles)
@@ -188,7 +158,7 @@ public class ExtUrl {
     public static void showSelectActionDialog(final android.os.Handler handler, final Context context,
                                               final String title, final String body, final String url, final String topicId, final String topic,
                                               final String postId, final String userId, final String user) {
-        CharSequence[] titles = new CharSequence[]{"Открыть в новой вкладке","Открыть в...", "Поделиться ссылкой", "Скопировать ссылку", "Создать заметку", "Сохранить"};
+        CharSequence[] titles = new CharSequence[]{context.getString(R.string.open_in_new_tab),context.getString(R.string.open_in), context.getString(R.string.share_link),context.getString(R.string.copy_link), context.getString(R.string.create_note), context.getString(R.string.save)};
         new MaterialDialog.Builder(context)
                 .content(url)
                 .items(titles)
@@ -231,7 +201,7 @@ public class ExtUrl {
 
 
     public static void showImageSelectActionDialog(final android.os.Handler handler, final Context context, final String url) {
-        CharSequence[] titles = new CharSequence[]{"Открыть","Открыть в...", "Скопировать ссылку", "Сохранить"};
+        CharSequence[] titles = new CharSequence[]{context.getString(R.string.open),context.getString(R.string.open_in), context.getString(R.string.copy_link), context.getString(R.string.save)};
         new MaterialDialog.Builder(context)
                 .content(url)
                 .items(titles)

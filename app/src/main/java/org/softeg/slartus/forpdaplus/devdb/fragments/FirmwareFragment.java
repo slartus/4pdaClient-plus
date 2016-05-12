@@ -40,7 +40,7 @@ public class FirmwareFragment extends BaseDevDbFragment implements FLifecycleUti
         args.putString(LIST_ARG, list);
         f.setArguments(args);
         f.setContext(context);
-        f.setTitle("Прошивки");
+        f.setTitle(context.getString(R.string.firmwares));
         return f;
     }
 

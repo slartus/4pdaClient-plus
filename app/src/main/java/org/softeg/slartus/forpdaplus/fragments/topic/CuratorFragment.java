@@ -99,7 +99,7 @@ public class CuratorFragment extends WebViewFragment {
         return fragment;
     }
     public static void showSpecial(String url, String topicId) {
-        MainActivity.addTab("Мультимодерация", url, newInstance(url, topicId));
+        MainActivity.addTab(App.getContext().getString(R.string.multi_moderation), url, newInstance(url, topicId));
     }
 
     @Nullable
@@ -281,7 +281,7 @@ public class CuratorFragment extends WebViewFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         if(App.getInstance().getPreferences().getBoolean("pancilInActionBar",false)) {
-            menu.add("Написать")
+            menu.add(R.string.write)
                     .setIcon(R.drawable.auto_fix)
                     .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 
@@ -291,7 +291,7 @@ public class CuratorFragment extends WebViewFragment {
                         }
                     }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
-        menu.add("Настройка")
+        menu.add(R.string.setting)
                 .setIcon(R.drawable.settings_white)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
@@ -300,11 +300,11 @@ public class CuratorFragment extends WebViewFragment {
                         return true;
                     }
                 }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        menu.add("Ссылка")
+        menu.add(R.string.link)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", url);
+                        ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), url);
                         return true;
                     }
                 });
@@ -319,7 +319,7 @@ public class CuratorFragment extends WebViewFragment {
                 Log.e("kek", idsArray.length+" length");
                 Log.e("kek", "'"+idsArray[0]+"'");
                 if (TextUtils.isEmpty(idsArray[0])) {
-                    Toast.makeText(getContext(), "Не выбрано ни одного сообщения", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.no_selected_posts, Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -344,8 +344,8 @@ public class CuratorFragment extends WebViewFragment {
 
                 new MaterialDialog.Builder(getContext())
                         .customView(view, true)
-                        .positiveText("Выполнить")
-                        .negativeText("Отмена")
+                        .positiveText(R.string.perform)
+                        .negativeText(R.string.cancel)
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(MaterialDialog dialog, DialogAction which) {

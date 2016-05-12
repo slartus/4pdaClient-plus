@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
@@ -101,7 +102,7 @@ public class NoteFragment extends GeneralFragment {
     public static void showNote(String id) {
         Bundle args = new Bundle();
         args.putString(NOTE_ID_KEY, id);
-        MainActivity.addTab("Заметка", NOTE_ID_KEY + id, newInstance(args));
+        MainActivity.addTab(App.getContext().getString(R.string.note), NOTE_ID_KEY + id, newInstance(args));
     }
 
 
@@ -120,20 +121,20 @@ public class NoteFragment extends GeneralFragment {
                     TableRow.LayoutParams.WRAP_CONTENT);
 
             if (!TextUtils.isEmpty(note.Title)) {
-                addRow("Тема", note.Title, null, rowparams, textviewparams);
+                addRow(getString(R.string.theme), note.Title, null, rowparams, textviewparams);
             }
 
 
             if (!TextUtils.isEmpty(note.Topic)) {
-                addRow("Топик", note.getTopicLink(), note.getTopicUrl(), rowparams, textviewparams);
+                addRow(getString(R.string.topic), note.getTopicLink(), note.getTopicUrl(), rowparams, textviewparams);
             }
 
             if (!TextUtils.isEmpty(note.User)) {
-                addRow("Пользователь", note.getUserLink(), note.getUserUrl(), rowparams, textviewparams);
+                addRow(getString(R.string.user), note.getUserLink(), note.getUserUrl(), rowparams, textviewparams);
             }
 
             if (!TextUtils.isEmpty(note.Url)) {
-                addRow("Ссылка", note.getUrlLink(), note.Url, rowparams, textviewparams);
+                addRow(getString(R.string.link), note.getUrlLink(), note.Url, rowparams, textviewparams);
             }
 
             webView.loadDataWithBaseURL("http://4pda.ru/forum/", transformChatBody(note.Body), "text/html", "UTF-8", null);
@@ -183,7 +184,7 @@ public class NoteFragment extends GeneralFragment {
 
     private String transformChatBody(String chatBody) {
         HtmlBuilder htmlBuilder = new HtmlBuilder();
-        htmlBuilder.beginHtml("Заметка");
+        htmlBuilder.beginHtml(getString(R.string.note));
         htmlBuilder.append("<div class=\"emoticons\">");
 
         chatBody = HtmlPreferences.modifyBody(chatBody, Smiles.getSmilesDict(), true);
@@ -213,7 +214,7 @@ public class NoteFragment extends GeneralFragment {
             dialog = new MaterialDialog.Builder(context)
                     .progress(true,0)
                     .cancelable(false)
-                    .content("Загрузка")
+                    .content(getString(R.string.loading))
                     .build();
         }
 

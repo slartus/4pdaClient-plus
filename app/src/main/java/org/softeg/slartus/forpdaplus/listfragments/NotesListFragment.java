@@ -16,6 +16,7 @@ import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -95,15 +96,15 @@ public class NotesListFragment extends TopicsListFragment {
 
         final List<MenuListDialog> list = new ArrayList<>();
         AddLinksSubMenu(list, topic);
-        list.add(new MenuListDialog("Удалить", new Runnable() {
+        list.add(new MenuListDialog(getString(R.string.delete), new Runnable() {
             @Override
             public void run() {
                 new MaterialDialog.Builder(getContext())
-                        .title("Подтвердите действие")
-                        .content("Удалить заметку?")
+                        .title(R.string.confirm_action)
+                        .content(R.string.ask_delete_note)
                         .cancelable(true)
-                        .negativeText("Отмена")
-                        .positiveText("Удалить")
+                        .negativeText(R.string.cancel)
+                        .positiveText(R.string.delete)
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
@@ -129,7 +130,7 @@ public class NotesListFragment extends TopicsListFragment {
             if (note != null) {
                 final ArrayList<Pair> links = note.getLinks();
                 if (links.size() != 0) {
-                    list.add(new MenuListDialog("Ссылки", new Runnable() {
+                    list.add(new MenuListDialog(getString(R.string.links), new Runnable() {
                         @Override
                         public void run() {
                             final List<MenuListDialog> list1 = new ArrayList<>();

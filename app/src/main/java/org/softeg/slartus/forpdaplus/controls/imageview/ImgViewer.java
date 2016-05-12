@@ -371,7 +371,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
                 finish();
                 return true;
             case R.id.share_it:
-                Intent intent = IntentUtils.shareText("Ссылка", urls.get(index));
+                Intent intent = IntentUtils.shareText(getString(R.string.link), urls.get(index));
                 if (shareActionProvider != null) {
                     shareActionProvider.setShareIntent(intent);
                 }

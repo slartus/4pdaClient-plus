@@ -12,6 +12,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.R;
 
 import java.util.Arrays;
 
@@ -44,10 +45,10 @@ public class ActionSelectDialogFragment {
                                         final String selectedAction,
                                         final Runnable showTopicAction) {
         new MaterialDialog.Builder(context)
-                .content("Назначить по умолчанию?")
-                .positiveText("Да")
-                .negativeText("Нет")
-                .neutralText("Спрашивать")
+                .content(R.string.assign_default)
+                .positiveText(R.string.yes)
+                .negativeText(R.string.no)
+                .neutralText(R.string.ask)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
@@ -102,8 +103,8 @@ public class ActionSelectDialogFragment {
                     }
                 })
                 .alwaysCallSingleChoiceCallback()
-                .positiveText("Всегда")
-                .neutralText("Только сейчас")
+                .positiveText(R.string.always)
+                .neutralText(R.string.only_now)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
@@ -115,10 +116,10 @@ public class ActionSelectDialogFragment {
 
                         if (!TextUtils.isEmpty(hintForChangeDefault))
                             new AlertDialog.Builder(context)
-                                    .setTitle("Подсказка")
+                                    .setTitle(R.string.hint)
                                     .setMessage(hintForChangeDefault)
                                     .setCancelable(false)
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             dialogInterface.dismiss();

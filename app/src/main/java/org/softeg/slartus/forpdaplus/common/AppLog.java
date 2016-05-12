@@ -16,6 +16,7 @@ import org.apache.http.conn.HttpHostConnectException;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.ShowInBrowserException;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.Exceptions.MessageInfoException;
 import org.softeg.slartus.forpdaplus.classes.ShowInBrowserDialog;
 
@@ -61,16 +62,16 @@ public final class AppLog {
             ShowInBrowserDialog.showDialog(context, (ShowInBrowserException) ex);
         } else if (ex instanceof NotReportException) {
             new MaterialDialog.Builder(context)
-                    .title("Ошибка")
+                    .title(R.string.error)
                     .content(message)
-                    .positiveText("ОК")
+                    .positiveText(R.string.ok)
                     .show();
         } else if (ex.getClass() == MessageInfoException.class) {
             MessageInfoException messageInfoException = (MessageInfoException) ex;
             new MaterialDialog.Builder(context)
                     .title(messageInfoException.Title)
                     .content(messageInfoException.Text)
-                    .positiveText("ОК")
+                    .positiveText(R.string.ok)
                     .show();
         } else {
             org.acra.ACRA.getErrorReporter().handleException(ex);
@@ -85,13 +86,13 @@ public final class AppLog {
             if (message == null)
                 return false;
             MaterialDialog.Builder builder = new MaterialDialog.Builder(context)
-                    .title("Проверьте соединение")
+                    .title(R.string.check_connection)
                     .content(message)
-                    .positiveText("ОК");
+                    .positiveText(R.string.ok);
 
 
             if (netExceptionAction != null) {
-                builder.negativeText("Повторить")
+                builder.negativeText(R.string.repeat)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onNegative(MaterialDialog dialog) {
