@@ -206,42 +206,30 @@ span[style*="font-size:8pt"] * {
   border-radius: 0;
   border-left: 0.4rem solid rgba(255, 193, 7, 0.45);
 }
-.post-block.code > .block-title:before,
-.post-block.code .block-title:empty:before {
-  content: 'Код';
-}
-.post-block.code.box {
-  position: relative;
-}
-.post-block.code.box > .block-title,
-.post-block.code.box .block-title:empty {
-  position: relative;
-}
-.post-block.code.box > .block-title:before,
-.post-block.code.box .block-title:empty:before {
-  content: 'Раскрыть КОД';
-}
-.post-block.code.box > .block-body {
-  max-height: 10rem;
-  overflow: auto;
-}
-.post-block.code.unbox > .block-title:before,
-.post-block.code.unbox .block-title:empty:before {
-  content: 'Свернуть КОД';
-}
 .post-block.code > .block-title {
   color: rgba(255, 241, 199, 0.725);
 }
 .post-block.code > .block-title:before {
-  content: 'Код: ';
-}
-.post-block.code > .block-title:empty:before {
   content: 'Код';
 }
 .post-block.code > .block-body {
   font-family: Courier, Courier New, Verdana, Arial;
-  font-size: 0.9375rem;
+  font-size: 1rem;
+  line-height: 1.4em;
+  white-space: pre-wrap;
   color: rgba(255, 251, 238, 0.89);
+  background: linear-gradient(transparent 1.4em, rgba(130, 130, 130, 0.1) 1.4em);
+  background-size: 2.8em 2.8em;
+}
+.post-block.code.box > .block-title:before {
+  content: 'Раскрыть КОД';
+}
+.post-block.code.box > .block-body {
+  max-height: 10rem;
+  overflow: hidden;
+}
+.post-block.code.unbox > .block-title:before {
+  content: 'Свернуть КОД';
 }
 .post-block.hidden {
   background: rgba(158, 158, 158, 0.15);
