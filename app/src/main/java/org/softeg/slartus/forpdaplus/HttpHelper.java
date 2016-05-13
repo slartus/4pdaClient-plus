@@ -205,7 +205,7 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
             httppost.setEntity(myEntity);
             String res = client.execute(httppost,responseHandler);
             if (res == null)
-                throw new NotReportException("Сайт не отвечает");
+                throw new NotReportException(App.getContext().getString(R.string.site_not_respond));
             return res;
         }
 

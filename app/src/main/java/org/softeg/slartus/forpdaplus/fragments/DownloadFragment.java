@@ -56,7 +56,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
     ListView m_ListView;
     private static android.os.Handler mHandler = new android.os.Handler();
     public static final String TEMPLATE = "DownloadsTab";
-    public static final String TITLE = "Загрузки";
+    public static final String TITLE = App.getContext().getString(R.string.downloads);
     private View m_ListFooter;
     private TextView txtLoadMoreThemes, txtPullToLoadMore;
     private ImageView imgPullToLoadMore;
@@ -185,7 +185,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
         int loadMoreVisibility = (Client.getInstance().getDownloadTasks().getFullLength() > Client.getInstance().getDownloadTasks().size()) ? View.VISIBLE : View.GONE;
         txtPullToLoadMore.setVisibility(loadMoreVisibility);
         imgPullToLoadMore.setVisibility(loadMoreVisibility);
-        txtLoadMoreThemes.setText("Всего: " + Client.getInstance().getDownloadTasks().getFullLength());
+        txtLoadMoreThemes.setText(getString(R.string.total)+": " + Client.getInstance().getDownloadTasks().getFullLength());
 
         m_ListFooter.setVisibility(Client.getInstance().getDownloadTasks().size() > 0 ? View.VISIBLE : View.GONE);
     }
@@ -205,24 +205,24 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
                 case DownloadTask.STATE_CONNECTING:
                 case DownloadTask.STATE_DOWNLOADING:
                     new MaterialDialog.Builder(getContext())
-                            .title("Действие")
-                            .content("Отменить загрузку?")
+                            .title(R.string.action)
+                            .content(R.string.cancel_download_title)
                             .cancelable(true)
-                            .positiveText("Да")
+                            .positiveText(R.string.yes)
                             .callback(new MaterialDialog.ButtonCallback() {
                                 @Override
                                 public void onPositive(MaterialDialog dialog) {
                                     downloadTask.cancel();
                                 }
                             })
-                            .negativeText("Нет")
+                            .negativeText(R.string.no)
                             .show();
                     break;
                 case DownloadTask.STATE_ERROR:
                 case DownloadTask.STATE_CANCELED:
-                    items = new CharSequence[]{"Повторить загрузку", "Докачать файл"};
+                    items = new CharSequence[]{getString(R.string.retry_loading), getString(R.string.continue_download)};
                     new MaterialDialog.Builder(getContext())
-                            .title("Выберите действие")
+                            .title(R.string.choose_action)
                             .items(items)
                             .itemsCallback(new MaterialDialog.ListCallback() {
                                 @Override
@@ -254,13 +254,13 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
                                 }
                             })
                             .cancelable(true)
-                            .negativeText("Отмена")
+                            .negativeText(R.string.cancel)
                             .show();
                     break;
                 case DownloadTask.STATE_SUCCESSFULL:
-                    items = new CharSequence[]{"Запустить файл", "Повторить загрузку"};
+                    items = new CharSequence[]{getString(R.string.run_file), getString(R.string.retry_loading)};
                     new MaterialDialog.Builder(getContext())
-                            .title("Выберите действие")
+                            .title(R.string.confirm_action)
                             .items(items)
                             .itemsCallback(new MaterialDialog.ListCallback() {
                                 @Override
@@ -283,7 +283,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
                                 }
                             })
                             .cancelable(true)
-                            .negativeText("Отмена")
+                            .negativeText(R.string.cancel)
                             .show();
 
 
@@ -299,7 +299,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
 
             getContext().startActivity(getRunFileIntent(filePath));
         } catch (ActivityNotFoundException e) {
-            AppLog.e(getContext(), new NotReportException("Не найдено сопоставление для типа файла!"));
+            AppLog.e(getContext(), new NotReportException(getContext().getString(R.string.no_app_for_open_file)));
         }
     }
 
@@ -320,14 +320,14 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add("Очистить").setIcon(R.drawable.delete)
+        menu.add(R.string.clean_out).setIcon(R.drawable.delete)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 new MaterialDialog.Builder(getContext())
-                        .title("Подтвердите действие")
-                        .content("Удалить все неактивные загрузки?")
-                        .positiveText("Удалить")
-                        .negativeText("Отмена")
+                        .title(R.string.confirm_action)
+                        .content(R.string.ask_delete_all_nonactive_downloads)
+                        .positiveText(R.string.delete)
+                        .negativeText(R.string.cancel)
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
@@ -440,7 +440,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
                 holder.txtFileName.setText(ex.toString());
             }
 
-            holder.txtDescription.setText("Загружено " + downloadTask.getPercents() + "%("
+            holder.txtDescription.setText(getString(R.string.downloaded)+" " + downloadTask.getPercents() + "%("
                     + Functions.getSizeText(downloadTask.getDownloadedSize()) + "/"
                     + Functions.getSizeText(downloadTask.getM_ContentLength()) + ")");
             int state = downloadTask.getState();

@@ -62,8 +62,8 @@ public class DownloadReceiver extends ResultReceiver {
                         getNotificationIcon(),
                         context.getString(R.string.DownloadAborted),
                         System.currentTimeMillis())
-                        .setContentTitle("Не удалось загрузить")
-                        .setContentText("Нажмите для дальнейших действий")
+                        .setContentTitle(context.getString(R.string.failed_load))
+                        .setContentText(context.getString(R.string.download_reciever_content))
                         .setContentIntent(PendingIntent.getActivity(context, 0, i, 0))
                         .setAutoCancel(true)
                         .createNotification();

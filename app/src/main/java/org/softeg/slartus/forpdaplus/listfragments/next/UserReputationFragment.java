@@ -140,7 +140,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
 
         final List<MenuListDialog> list = new ArrayList<>();
         if (item.getSourceUrl()!=null&&!item.getSourceUrl().contains("forum/index.php?showuser=")) {
-            list.add(new MenuListDialog("Перейти к сообщению", new Runnable() {
+            list.add(new MenuListDialog(getString(R.string.jump_to_page), new Runnable() {
                 @Override
                 public void run() {
                     IntentActivity.tryShowUrl(getActivity(), new Handler(), item.getSourceUrl(), true, false);
@@ -180,7 +180,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
             if (Client.getInstance().getLogined() && !getUserId().equals(Client.getInstance().UserId)) {
 
 
-                item = menu.add("Повысить репутацию").setIcon(R.drawable.thumb_up);
+                item = menu.add(R.string.increase_reputation).setIcon(R.drawable.thumb_up);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
 
@@ -190,7 +190,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
                 });
                 item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-                item = menu.add("Понизить репутацию").setIcon(R.drawable.thumb_down);
+                item = menu.add(R.string.decrease_reputation).setIcon(R.drawable.thumb_down);
                 item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         minusRep();
@@ -199,7 +199,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
                 });
                 item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
-            item = menu.add("Профиль");
+            item = menu.add(R.string.Profile);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     ProfileFragment.showProfile(getUserId(), getUserNick());
@@ -440,11 +440,11 @@ public class UserReputationFragment extends BrickFragmentListBase {
     }
 
     public static void plusRep(Activity activity, Handler handler, String postId, String userId, String userNick) {
-        showChangeRep(activity, handler, postId, userId, userNick, "add", "Повысить репутацию");
+        showChangeRep(activity, handler, postId, userId, userNick, "add", App.getContext().getString(R.string.increase_reputation));
     }
 
     public static void minusRep(Activity activity, Handler handler, String postId, String userId, String userNick) {
-        showChangeRep(activity, handler, postId, userId, userNick, "minus", "Понизить репутацию");
+        showChangeRep(activity, handler, postId, userId, userNick, "minus", App.getContext().getString(R.string.decrease_reputation));
     }
 
     private static void showChangeRep(Activity activity, Handler handler, final String postId, String userId, String userNick, final String type, String title) {

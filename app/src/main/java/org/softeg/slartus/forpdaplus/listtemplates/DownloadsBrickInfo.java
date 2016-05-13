@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.listtemplates;
 
 import android.support.v4.app.Fragment;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 
 /**
@@ -12,7 +13,7 @@ public class DownloadsBrickInfo extends BrickInfo {
 
     @Override
     public String getTitle() {
-        return "Загрузки";
+        return App.getContext().getString(R.string.downloads);
     }
 
     @Override

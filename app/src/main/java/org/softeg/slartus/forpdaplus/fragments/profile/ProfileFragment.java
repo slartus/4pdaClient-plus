@@ -203,7 +203,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
                     startActivityForResult(intent, FILECHOOSER_RESULTCODE);
 
                 } catch (ActivityNotFoundException ex) {
-                    Toast.makeText(getMainActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getMainActivity(), R.string.no_app_for_get_file, Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {
                     AppLog.e(getMainActivity(), ex);
                 }
@@ -472,9 +472,9 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         menu.add(getString(R.string.Reputation))
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        CharSequence[] items = {"Повысить", "Понизить", "Посмотреть", "Кому изменял репутацию"};
+                        CharSequence[] items = {getString(R.string.do_vote_good), getString(R.string.do_vote_good), getString(R.string.look), getString(R.string.change_reputation)};
                         new MaterialDialog.Builder(getMainActivity())
-                                .title("Репутация")
+                                .title(R.string.reputation)
                                 .items(items)
                                 .itemsCallback(new MaterialDialog.ListCallback() {
                                     @Override
@@ -502,7 +502,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
-        menu.add("Темы")
+        menu.add(R.string.topics)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(getUserNick()));
@@ -511,7 +511,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
-        menu.add("Сообщения")
+        menu.add(R.string.posts)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(getUserNick()));
@@ -520,10 +520,10 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
-        menu.add("Ссылка")
+        menu.add(R.string.link)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка на профиль", "http://4pda.ru/forum/index.php?showuser=" + getUserId());
+                        ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link_to_profile), "http://4pda.ru/forum/index.php?showuser=" + getUserId());
                         return true;
                     }
                 })

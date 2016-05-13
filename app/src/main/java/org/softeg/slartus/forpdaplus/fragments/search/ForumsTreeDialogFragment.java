@@ -169,7 +169,7 @@ public class ForumsTreeDialogFragment extends DialogFragment {
                                   int level, Collection<String> checkIds) {
         CheckableForumItem checkableForumItem = null;
         if (parentForum == null) {
-            checkableForumItem = new CheckableForumItem("all", ">> Все форумы");
+            checkableForumItem = new CheckableForumItem("all", ">> "+getString(R.string.all_forums));
         } else if (!parentForum.getId().equals(forum.getId())) {
             checkableForumItem = new CheckableForumItem(forum.getId(), forum.getTitle());
         }
@@ -249,7 +249,7 @@ public class ForumsTreeDialogFragment extends DialogFragment {
         @Override
         public CheckableForumItem getItem(int i) {
             if (i == 0) {
-                return new CheckableForumItem("", "Всего: " + (getCount() - 1));
+                return new CheckableForumItem("", getString(R.string.total)+": " + (getCount() - 1));
             }
             int c = 1;
             for (CheckableForumItem f : mForums) {

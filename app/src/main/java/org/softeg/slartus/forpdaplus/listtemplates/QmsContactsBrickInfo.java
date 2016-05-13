@@ -4,6 +4,7 @@ package org.softeg.slartus.forpdaplus.listtemplates;/*
 
 import android.support.v4.app.Fragment;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactsList;
 
@@ -12,7 +13,7 @@ public class QmsContactsBrickInfo extends BrickInfo {
 
     @Override
     public String getTitle() {
-        return "Контакты";
+        return App.getContext().getString(R.string.contacts);
     }
 
     @Override

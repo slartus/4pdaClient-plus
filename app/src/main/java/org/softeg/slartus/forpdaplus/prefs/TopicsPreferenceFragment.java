@@ -38,25 +38,25 @@ public class TopicsPreferenceFragment extends PreferenceFragment implements Pref
             case "sortorder.desc":
                 asc = false;
             case "sortorder.asc":
-                title = "Как на сайте";
+                title = getString(R.string.sort_how_on_site);
                 break;
             case "date.desc":
                 asc = false;
             case "date.asc":
-                title = "По дате последнего поста";
+                title = getString(R.string.sort_date_last_post);
                 break;
             case "date_and_new.desc":
                 asc = false;
             case "date_and_new.asc":
-                title = "По дате последнего поста и непрочитанности";
+                title = getString(R.string.sort_date_last_post_unview);
                 break;
             case "title.desc":
                 asc = false;
             case "title.asc":
-                title = "По названию топика";
+                title = getString(R.string.sort_topic_name);
                 break;
         }
-        return String.format("%s (%s)", title, (asc ? "По возрастанию" : "По убыванию"));
+        return String.format("%s (%s)", title, (asc ? getString(R.string.sort_ascending) : getString(R.string.sort_descending)));
     }
 
     @Override
@@ -106,10 +106,10 @@ public class TopicsPreferenceFragment extends PreferenceFragment implements Pref
         }
 
         new MaterialDialog.Builder(getActivity())
-                .title("Сортировка")
+                .title(R.string.sort)
                 .customView(v,true)
-                .positiveText("По убыванию")
-                .neutralText("По возрастанию")
+                .positiveText(R.string.sort_descending)
+                .neutralText(R.string.sort_ascending)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
@@ -129,7 +129,7 @@ public class TopicsPreferenceFragment extends PreferenceFragment implements Pref
                                 break;
                         }
                         Preferences.List.setListSort(getListName(), sortValue + ".desc");
-                        Toast.makeText(getActivity(), "Необходимо обновить список для применения сортировки",
+                        Toast.makeText(getActivity(), R.string.need_refresh_list,
                                 Toast.LENGTH_SHORT).show();
                     }
                     @Override
@@ -150,7 +150,7 @@ public class TopicsPreferenceFragment extends PreferenceFragment implements Pref
                                 break;
                         }
                         Preferences.List.setListSort(getListName(), sortValue + ".asc");
-                        Toast.makeText(getActivity(), "Необходимо обновить список для применения сортировки",
+                        Toast.makeText(getActivity(), R.string.need_refresh_list,
                                 Toast.LENGTH_SHORT).show();
                     }
                 })

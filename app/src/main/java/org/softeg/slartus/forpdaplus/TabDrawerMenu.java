@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
+import android.os.Process;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -275,13 +276,13 @@ public class TabDrawerMenu {
 
     private void closeDialog() {
         new MaterialDialog.Builder(getContext())
-                .content("Закрыть приложение?")
-                .positiveText("Да")
-                .negativeText("Нет")
+                .content(R.string.ask_close_app)
+                .positiveText(R.string.yes)
+                .negativeText(R.string.no)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                        android.os.Process.killProcess(android.os.Process.myPid());
+                        Process.killProcess(Process.myPid());
                         System.exit(1);
                     }
                 })

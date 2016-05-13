@@ -87,7 +87,7 @@ public class BbCodesPanel extends BbCodesBasePanel {
         final int finalSelectionEnd = selectionEnd;
         final CharSequence[] items = new CharSequence[]{"1", "2", "3", "4", "5", "6", "7"};
         new MaterialDialog.Builder(mContext)
-                .title("Выберите размер текста")
+                .title(org.softeg.slartus.forpdaplus.R.string.font_size)
                 .items(items)
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
@@ -99,7 +99,7 @@ public class BbCodesPanel extends BbCodesBasePanel {
                     }
                 })
                 .cancelable(true)
-                .negativeText("Отмена")
+                .negativeText(org.softeg.slartus.forpdaplus.R.string.cancel)
                 .show();
     }
 

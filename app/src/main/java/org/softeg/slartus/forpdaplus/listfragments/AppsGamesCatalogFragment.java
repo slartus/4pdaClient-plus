@@ -12,6 +12,7 @@ import org.softeg.slartus.forpdaapi.appsgamescatalog.AppGameCatalog;
 import org.softeg.slartus.forpdaapi.appsgamescatalog.AppsGamesCatalogApi;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.CatalogAdapter;
 import org.softeg.slartus.forpdaplus.listtemplates.AppsGamesTopicsBrickInfo;
 
@@ -31,7 +32,7 @@ public class AppsGamesCatalogFragment extends BaseCatalogFragment {
 
     public AppsGamesCatalogFragment() {
         super();
-        m_CurrentCatalogItem = new AppGameCatalog("-1", "Программы и игры");
+        m_CurrentCatalogItem = new AppGameCatalog("-1", getString(R.string.apps_and_games));
         m_LoadingCatalogItem = m_CurrentCatalogItem;
     }
 

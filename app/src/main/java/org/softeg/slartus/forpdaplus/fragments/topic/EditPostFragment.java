@@ -124,7 +124,7 @@ public class EditPostFragment extends GeneralFragment {
         args.putString("postId", postId);
         args.putString("authKey", authKey);
         args.putString("parentTag", tag);
-        MainActivity.addTab("Ред. сообщения в " + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
+        MainActivity.addTab(context.getString(R.string.edit_post_combined)+context.getString(R.string.combined_in) + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
     }
 
     public static void newPost(Activity context, String forumId, String topicId, String authKey,
@@ -137,7 +137,7 @@ public class EditPostFragment extends GeneralFragment {
         args.putString("body", body);
         args.putString("authKey", authKey);
         args.putString("parentTag", tag);
-        MainActivity.addTab("Ответ в " + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
+        MainActivity.addTab(context.getString(R.string.answer)+context.getString(R.string.combined_in) + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
     }
 
     public static void newPostWithAttach(Context context, String forumId, String topicId, String authKey,
@@ -149,7 +149,7 @@ public class EditPostFragment extends GeneralFragment {
         args.putString("postId", PostApi.NEW_POST_ID);
         args.putBundle("extras", extras);
         args.putString("authKey", authKey);
-        MainActivity.addTab("Ред. сообщения", url, newInstance(context, args));
+        MainActivity.addTab(context.getString(R.string.edit_post_combined), url, newInstance(context, args));
     }
 
     public ActionBar getSupportActionBar() {

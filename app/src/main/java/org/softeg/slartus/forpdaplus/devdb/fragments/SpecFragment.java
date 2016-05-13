@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.jsoup.nodes.Element;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.LazyGallery.LazyAdapter;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
@@ -37,7 +38,7 @@ public class SpecFragment extends BaseDevDbFragment implements FLifecycleUtil {
     public static SpecFragment newInstance(Context context, SpecModel data) {
         SpecFragment f = new SpecFragment();
         f.setContext(context);
-        f.setTitle("Характеристики");
+        f.setTitle(App.getContext().getString(R.string.specifications));
         f.setData(data);
         return f;
     }

@@ -18,6 +18,7 @@ import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import org.softeg.slartus.forpdaapi.News;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.controls.imageview.MaterialImageLoading;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -131,7 +132,7 @@ public class NewsListAdapter extends BaseAdapter {
         }
         if (data.getSourceTitle() != null && holder.textSource != null) {
             holder.textSource.setVisibility(View.VISIBLE);
-            holder.textSource.setText("Источник: ".concat(data.getSourceTitle().toString()));
+            holder.textSource.setText(App.getContext().getString(R.string.source).concat(": ").concat(data.getSourceTitle().toString()));
         }
 
         return rowView;

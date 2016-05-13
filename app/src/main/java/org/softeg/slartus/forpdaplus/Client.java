@@ -224,7 +224,7 @@ public class Client implements IHttpClient {
 
         }
         if (TextUtils.isEmpty(res))
-            throw new NotReportException("Сервер вернул пустую страницу");
+            throw new NotReportException(App.getContext().getString(R.string.server_return_empty_page));
         // m_HttpHelper.close();
         return res;
     }
@@ -245,7 +245,7 @@ public class Client implements IHttpClient {
 
         }
         if (checkEmptyResult && TextUtils.isEmpty(res))
-            throw new NotReportException("Сервер вернул пустую страницу");
+            throw new NotReportException(App.getContext().getString(R.string.server_return_empty_page));
         else if(checkLoginAndMails){
             checkLogin(res);
             if(!s.contains("xhr"))
@@ -838,10 +838,10 @@ public class Client implements IHttpClient {
 
 
             if (TextUtils.isEmpty(topicBody))
-                throw new NotReportException("Сервер вернул пустую страницу");
+                throw new NotReportException(context.getString(R.string.server_return_empty_page));
             if (topicBody.startsWith("<h1>"))
-                throw new NotReportException("Ответ сайта 4pda: " + Html.fromHtml(topicBody).toString());
-            throw new IOException("Ошибка разбора страницы id=" + id);
+                throw new NotReportException(context.getString(R.string.site_response) + Html.fromHtml(topicBody).toString());
+            throw new IOException(context.getString(R.string.error_parsing_page)+" id=" + id);
         }
 
         Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(context);

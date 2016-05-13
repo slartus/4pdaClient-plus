@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.listtemplates;
 
 import android.support.v4.app.Fragment;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.AppsListFragment;
 
@@ -11,7 +12,7 @@ import org.softeg.slartus.forpdaplus.listfragments.AppsListFragment;
 public class AppsBrickInfo extends BrickInfo {
     @Override
     public String getTitle() {
-        return "Мои приложения";
+        return App.getContext().getString(R.string.my_apps);
     }
 
     @Override

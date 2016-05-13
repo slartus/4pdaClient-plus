@@ -102,17 +102,17 @@ public class TopicUtils {
                         return true; // allow selection
                     }
                 })
-                .title("Действие по умолчанию")
-                .positiveText("Всегда")
-                .neutralText("Только сейчас")
+                .title(R.string.default_action)
+                .positiveText(R.string.always)
+                .neutralText(R.string.only_now)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         new MaterialDialog.Builder(activity)
-                                .title("Подсказка")
-                                .content("Вы можете изменить действие по умолчанию долгим тапом по теме")
+                                .title(R.string.hint)
+                                .content(activity.getString(R.string.default_action_notify))
                                 .cancelable(false)
-                                .positiveText("OK")
+                                .positiveText(R.string.ok)
                                 .callback(new MaterialDialog.ButtonCallback() {
                                     @Override
                                     public void onPositive(MaterialDialog dialog) {
@@ -149,7 +149,7 @@ public class TopicUtils {
 
     public static void showSubscribeSelectTypeDialog(final Context context, final android.os.Handler handler,
                                                      final Topic topic, final TopicListItemTask topicListItemTask) {
-        CharSequence[] titles = {"Не уведомлять", "Первый раз", "Каждый раз", "Каждый день", "Каждую неделю"};
+        CharSequence[] titles = {context.getString(R.string.no_notify), context.getString(R.string.first_time), context.getString(R.string.every_time), context.getString(R.string.every_day), context.getString(R.string.every_week)};
         final String[] values = {TopicApi.TRACK_TYPE_NONE, TopicApi.TRACK_TYPE_DELAYED,
                 TopicApi.TRACK_TYPE_IMMEDIATE, TopicApi.TRACK_TYPE_DAILY, TopicApi.TRACK_TYPE_WEEKLY};
         String selectedSubscribe = null;
@@ -158,7 +158,7 @@ public class TopicUtils {
         }
         final int[] selectedId = {ArrayUtils.indexOf(selectedSubscribe, values)};
         new MaterialDialog.Builder(context)
-                .title("Добавление в избранное/подписки")
+                .title(R.string.add_to_favorite)
                 .items(titles)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
@@ -169,7 +169,7 @@ public class TopicUtils {
 
                         String emailtype = values[selectedId[0]];
 
-                        Toast.makeText(context, "Запрос на добавление отправлен", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.request_sent, Toast.LENGTH_SHORT).show();
                         if (topicListItemTask != null) {
                             topicListItemTask.execute(emailtype);
                         } else {
@@ -193,7 +193,7 @@ public class TopicUtils {
                                         public void run() {
                                             try {
                                                 if (finalEx != null) {
-                                                    Toast.makeText(context, "Ошибка добавления в избранное/подписки", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(context, R.string.error_request, Toast.LENGTH_SHORT).show();
                                                     AppLog.e(context, finalEx);
                                                 } else {
                                                     Toast.makeText(context, finalRes, Toast.LENGTH_SHORT).show();

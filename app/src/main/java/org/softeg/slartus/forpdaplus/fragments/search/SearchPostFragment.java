@@ -95,7 +95,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
                     startActivityForResult(intent, FILECHOOSER_RESULTCODE);
 
                 } catch (ActivityNotFoundException ex) {
-                    Toast.makeText(getMainActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getMainActivity(), R.string.no_app_for_get_file, Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {
                     AppLog.e(getMainActivity(), ex);
                 }
@@ -321,13 +321,13 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
                 postsPerPage = m_SearchResult.getPostsPerPageCount(getSearchQuery());
 
-
+                final String page = getContext().getString(R.string.page_short);
                 for (int p = 0; p < m_SearchResult.getPagesCount(); p++) {
-                    pages[p] = "Стр. " + (p + 1) + " (" + ((p * postsPerPage + 1) + "-" + (p + 1) * postsPerPage) + ")";
+                    pages[p] = page + (p + 1) + " (" + ((p * postsPerPage + 1) + "-" + (p + 1) * postsPerPage) + ")";
                 }
 
                 new MaterialDialog.Builder(getContext())
-                        .title("Перейти к странице")
+                        .title(R.string.jump_to_page)
                         .items(pages)
                         .itemsCallbackSingleChoice(m_SearchResult.getCurrentPage() - 1, new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
@@ -367,7 +367,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
     @Override
     public String getTitle() {
-        return "Поиск";
+        return getString(R.string.search);
     }
 
     @Override
@@ -455,10 +455,10 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add("Ссылка")
+        menu.add(R.string.link)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", getSearchQuery());
+                        ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), getSearchQuery());
                         return true;
                     }
                 });

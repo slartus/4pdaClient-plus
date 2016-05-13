@@ -3,6 +3,9 @@ package org.softeg.slartus.forpdaplus.notes;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.R;
+
 import java.util.ArrayList;
 
 /**
@@ -36,7 +39,7 @@ public class Note {
         }
 
         if (!TextUtils.isEmpty(Url)) {
-            links.add(new Pair("Ссылка на сообщение",Url));
+            links.add(new Pair(App.getContext().getString(R.string.link_to_post),Url));
         }
 
         return links;
@@ -59,6 +62,6 @@ public class Note {
     }
 
     public String getUrlLink() {
-        return "<a href='" + Url + "'>Ссылка</a>";
+        return "<a href='" + Url + "'>"+App.getContext().getString(R.string.link)+"</a>";
     }
 }

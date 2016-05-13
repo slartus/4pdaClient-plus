@@ -111,13 +111,13 @@ public final class AppLog {
 
     public static String getLocalizedMessage(Throwable ex, String defaultValue) {
         if (isHostUnavailableException(ex))
-            return "Сервер недоступен или не отвечает";
+            return App.getContext().getString(R.string.server_not_available_or_not_respond);
         if (isTimeOutException(ex))
-            return "Превышен таймаут ожидания";
+            return App.getContext().getString(R.string.exceeded_timeout);
         if (isException(ex, MalformedChunkCodingException.class))
-            return "Целевой сервер не в состоянии ответить";
+            return App.getContext().getString(R.string.server_failed_to_respond);
         if (isException(ex, SocketException.class))
-            return "Соединение разорвано";
+            return App.getContext().getString(R.string.connection_lost);
         return defaultValue;
     }
 

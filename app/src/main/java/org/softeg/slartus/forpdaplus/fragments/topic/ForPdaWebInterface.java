@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -25,16 +24,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
+import org.softeg.slartus.forpdaplus.classes.Post;
 import org.softeg.slartus.forpdaplus.classes.TopicAttaches;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
@@ -46,7 +43,6 @@ import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /*
  * Created by slinkin on 23.06.2015.
@@ -110,12 +106,12 @@ public class ForPdaWebInterface {
                 final TopicAttaches topicAttaches = new TopicAttaches();
                 topicAttaches.parseAttaches(postBody);
                 if (topicAttaches.size() == 0) {
-                    Toast.makeText(getMainActivity(), "Страница не имеет вложений", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getMainActivity(), R.string.no_attachment_on_page, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 final boolean[] selection = new boolean[topicAttaches.size()];
                 new MaterialDialog.Builder(getMainActivity())
-                        .title("Вложения")
+                        .title(R.string.attachments)
                         .items(topicAttaches.getList())
                         .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
                             @Override
@@ -127,15 +123,15 @@ public class ForPdaWebInterface {
                             }
                         })
                         .alwaysCallMultiChoiceCallback()
-                        .positiveText("Скачать")
+                        .positiveText(R.string.do_download)
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
                                 if (!Client.getInstance().getLogined()) {
                                     new MaterialDialog.Builder(getMainActivity())
-                                            .title("Внимание!")
-                                            .content("Для скачивания файлов с сайта необходимо залогиниться!")
-                                            .positiveText("ОК")
+                                            .title(R.string.attention)
+                                            .content(R.string.need_login_for_download)
+                                            .positiveText(R.string.ok)
                                             .show();
                                     return;
                                 }
@@ -146,7 +142,7 @@ public class ForPdaWebInterface {
                                 }
                             }
                         })
-                        .negativeText("Отмена")
+                        .negativeText(R.string.cancel)
                         .show();
             }
         });
@@ -169,14 +165,14 @@ public class ForPdaWebInterface {
             @Override
             public void run() {
                 new MaterialDialog.Builder(getMainActivity())
-                        .title("Подтвердите действие")
-                        .content("Понизить рейтинг сообщения?")
-                        .positiveText("Понизить")
-                        .negativeText("Отмена")
+                        .title(R.string.confirm_action)
+                        .content(R.string.vote_bad)
+                        .positiveText(R.string.do_vote_bad)
+                        .negativeText(R.string.cancel)
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
-                                org.softeg.slartus.forpdaplus.classes.Post.minusOne(getMainActivity(), new Handler(), postId);
+                                Post.minusOne(getMainActivity(), new Handler(), postId);
                             }
                         }).show();
             }
@@ -190,14 +186,14 @@ public class ForPdaWebInterface {
             @Override
             public void run() {
                 new MaterialDialog.Builder(getMainActivity())
-                        .title("Подтвердите действие")
-                        .content("Повысить рейтинг сообщения?")
-                        .positiveText("Повысить")
-                        .negativeText("Отмена")
+                        .title(R.string.confirm_action)
+                        .content(R.string.vote_good)
+                        .positiveText(R.string.do_vote_good)
+                        .negativeText(R.string.cancel)
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
-                                org.softeg.slartus.forpdaplus.classes.Post.plusOne(getMainActivity(), new Handler(), postId);
+                                Post.plusOne(getMainActivity(), new Handler(), postId);
                             }
                         }).show();
             }
@@ -228,7 +224,7 @@ public class ForPdaWebInterface {
             @Override
             public void run() {
                 if (getContext().getTopic() == null) {
-                    Toast.makeText(getMainActivity(), "Что-то пошло не так", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getMainActivity(), R.string.unknown_error, Toast.LENGTH_SHORT).show();
                 } else {
                     Bundle args = new Bundle();
                     args.putString(TopicWritersListFragment.TOPIC_ID_KEY, getContext().getTopic().getId());
@@ -358,8 +354,10 @@ public class ForPdaWebInterface {
 
                     final int postsPerPage = getContext().getTopic().getPostsPerPageCount(getContext().getLastUrl());
 
+                    final String page = activity.getString(R.string.page_short);
+
                     for (int p = 0; p < getContext().getTopic().getPagesCount(); p++) {
-                        pages[p] = "Стр. " + (p + 1) + " (" + ((p * postsPerPage + 1) + "-" + (p + 1) * postsPerPage) + ")";
+                        pages[p] =  page + (p + 1) + " (" + ((p * postsPerPage + 1) + "-" + (p + 1) * postsPerPage) + ")";
                     }
 
                     LayoutInflater inflater = (LayoutInflater) getMainActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -426,16 +424,16 @@ public class ForPdaWebInterface {
                     listView.setSelection(getContext().getTopic().getCurrentPage() - 1);
 
                     MaterialDialog dialog = new MaterialDialog.Builder(getMainActivity())
-                            .title("Перейти к странице")
+                            .title(R.string.jump_to_page)
                             .customView(view, false)
-                            .positiveText("Перейти")
+                            .positiveText(R.string.jump)
                             .callback(new MaterialDialog.ButtonCallback() {
                                 @Override
                                 public void onPositive(MaterialDialog dialog) {
                                     getContext().openFromSt(listView.getCheckedItemPosition() * postsPerPage);
                                 }
                             })
-                            .negativeText("Отмена")
+                            .negativeText(R.string.cancel)
                             .cancelable(true)
                             .show();
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -452,7 +450,7 @@ public class ForPdaWebInterface {
         run(new Runnable() {
             @Override
             public void run() {
-                getContext().showChangeRep(postId, userId, userNick, "add", "Повысить репутацию");
+                getContext().showChangeRep(postId, userId, userNick, "add", getContext().getString(R.string.increase_reputation));
             }
         });
     }
@@ -462,7 +460,7 @@ public class ForPdaWebInterface {
         run(new Runnable() {
             @Override
             public void run() {
-                getContext().showChangeRep(postId, userId, userNick, "minus", "Понизить репутацию");
+                getContext().showChangeRep(postId, userId, userNick, "minus", getContext().getString(R.string.increase_reputation));
             }
         });
     }
@@ -491,15 +489,15 @@ public class ForPdaWebInterface {
                 int showRepPosition = -1;
                 int minusRepPosition = -1;
                 if ("1".equals(canPlus)) {
-                    items.add("Повысить (+1)");
+                    items.add(getContext().getString(R.string.do_vote_good)+" (+1)");
                     plusRepPosition = i; i++;
                 }
 
-                items.add("Посмотреть");
+                items.add(activity.getString(R.string.look));
                 showRepPosition = i; i++;
 
                 if ("1".equals(canMinus)) {
-                    items.add("Понизить (-1)");
+                    items.add(getContext().getString(R.string.do_vote_bad)+" (-1)");
                     minusRepPosition = i; i++;
                 }
 
@@ -509,7 +507,7 @@ public class ForPdaWebInterface {
                 final int finalShowRepPosition = showRepPosition;
                 final int finalPlusRepPosition = plusRepPosition;
                 new MaterialDialog.Builder(getMainActivity())
-                        .title("Репутация "+userNick)
+                        .title(activity.getString(R.string.reputation)+" "+userNick)
                         .items(items.toArray(new CharSequence[items.size()]))
                         .itemsCallback(new MaterialDialog.ListCallback() {
                             @Override

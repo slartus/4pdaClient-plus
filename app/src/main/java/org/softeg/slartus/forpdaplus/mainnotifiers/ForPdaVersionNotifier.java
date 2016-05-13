@@ -194,7 +194,7 @@ public class ForPdaVersionNotifier extends MainNotifier {
                                 .build());
 
                     } catch (Exception ex) {
-                        AppLog.e(context, new NotReportException("Ошибка проверки новой версии", ex));
+                        AppLog.e(context, new NotReportException(context.getString(R.string.error_check_new_version), ex));
                     }
 
                 }

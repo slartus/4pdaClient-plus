@@ -92,14 +92,14 @@ public class ThemeQuoteEditor extends DialogFragment implements View.OnClickList
 
         MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                 .customView(v,false)
-                .positiveText("Вставить")
+                .positiveText(R.string.insert)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         ((ThemeFragment)((MainActivity)getActivity()).getSupportFragmentManager().findFragmentByTag(parentTag)).insertTextToPost(txtBody.getText().toString());
                     }
                 })
-                .negativeText("Отмена")
+                .negativeText(R.string.cancel)
                 .build();
 
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -125,7 +125,7 @@ public class ThemeQuoteEditor extends DialogFragment implements View.OnClickList
             if (m_Text != null)
                 m_Text = m_Text.trim();
         } else {
-            Toast.makeText(getActivity(), "Ошибка разбора цитаты", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.error_parsing_quote, Toast.LENGTH_LONG).show();
         }
     }
 

@@ -11,6 +11,7 @@ import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -44,7 +45,7 @@ public class TopicsHistoryListFragment extends TopicsListFragment {
             final IListItem topic = (IListItem) o;
 
             final List<MenuListDialog> list = new ArrayList<>();
-            list.add(new MenuListDialog("Удалить из посещённых", new Runnable() {
+            list.add(new MenuListDialog(getString(R.string.delete_from_visited), new Runnable() {
                 @Override
                 public void run() {
                     TopicsHistoryTable.delete(topic.getId());

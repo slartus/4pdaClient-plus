@@ -131,7 +131,7 @@ public class QmsContactsList extends BaseLoaderListFragment {
         if (TextUtils.isEmpty(qmsUser.getId())) return;
 
         final List<MenuListDialog> list = new ArrayList<>();
-        list.add(new MenuListDialog("Удалить", new Runnable() {
+        list.add(new MenuListDialog(getString(R.string.delete), new Runnable() {
             @Override
             public void run() {
                 new Thread(new Runnable() {

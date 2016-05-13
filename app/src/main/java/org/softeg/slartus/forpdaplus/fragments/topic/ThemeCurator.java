@@ -42,12 +42,12 @@ public class ThemeCurator {
         View view = inflater.inflate(R.layout.mmod_dialog, null);
 
         Spinner num_spinner = (Spinner) view.findViewById(R.id.num_spinner);
-        String[] data = new String[]{"100", "500", "1000", "5000", "Все"};
+        String[] data = new String[]{"100", "500", "1000", "5000", activity.getString(R.string.all)};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         num_spinner.setAdapter(adapter);
         // заголовок
-        num_spinner.setPrompt("Постов на страницу");
+        num_spinner.setPrompt(activity.getString(R.string.posts_per_page));
         num_spinner.setSelection(1);
         num_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -78,12 +78,12 @@ public class ThemeCurator {
         });
 
         Spinner rating_spinner = (Spinner) view.findViewById(R.id.rating_spinner);
-        data = new String[]{"Неважно", "0", "-1", "-2", "-5"};
+        data = new String[]{activity.getString(R.string.not_important), "0", "-1", "-2", "-5"};
         adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         rating_spinner.setAdapter(adapter);
         // заголовок
-        rating_spinner.setPrompt("Рейтинг ниже");
+        rating_spinner.setPrompt(activity.getString(R.string.rating_less));
         rating_spinner.setSelection(0);
         rating_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -114,11 +114,11 @@ public class ThemeCurator {
         });
 
         new MaterialDialog.Builder(activity)
-                .title("Мультимодерация")
+                .title(R.string.multi_moderation)
                 .customView(view,true)
                 .cancelable(true)
 
-                .positiveText("Открыть")
+                .positiveText(R.string.open)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
@@ -136,7 +136,7 @@ public class ThemeCurator {
                         }
                     }
                 })
-                .negativeText("Отмена").show();
+                .negativeText(R.string.cancel).show();
 
     }
 }

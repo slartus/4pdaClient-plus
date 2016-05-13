@@ -47,7 +47,7 @@ public class ReviewsFragment extends BaseDevDbFragment implements FLifecycleUtil
         args.putString(LIST_ARG, list);
         f.setArguments(args);
         f.setContext(context);
-        f.setTitle("Обзор");
+        f.setTitle(App.getContext().getString(R.string.review));
         f.setData();
         return f;
     }

@@ -109,7 +109,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         if (Preferences.System.isDevSavePage()) {
-            menu.add("Сохранить страницу").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            menu.add(R.string.save_page).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     try {
                         saveHtml();
@@ -130,7 +130,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         if (Preferences.System.isDevSavePage()|
                 Preferences.System.isDevInterface()|
                 Preferences.System.isDevStyle())
-            Toast.makeText(getMainActivity(), "Режим разработчика", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getMainActivity(), R.string.dev_mode, Toast.LENGTH_SHORT).show();
     }
 
     protected SwipeRefreshLayout mSwipeRefreshLayout;
@@ -315,10 +315,10 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
             }
         });
         MaterialDialog dialog = new MaterialDialog.Builder(getMainActivity())
-                .title("Размер шрифта")
+                .title(R.string.font_size)
                 .customView(v, true)
-                .positiveText("OK")
-                .negativeText("Отмена")
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
@@ -332,7 +332,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
                     }
                 })
                 .show();
-        dialog.setActionButton(DialogAction.NEUTRAL, "Сброс");
+        dialog.setActionButton(DialogAction.NEUTRAL, R.string.reset);
         View neutral = dialog.getActionButton(DialogAction.NEUTRAL);
         neutral.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -356,15 +356,15 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
             CharSequence[] styleNames = newStyleNames.toArray(new CharSequence[newStyleNames.size()]);
 
             new MaterialDialog.Builder(getMainActivity())
-                    .title("Стиль")
+                    .title(R.string.theme_style)
                     .cancelable(true)
-                    .positiveText("Применить")
+                    .positiveText(R.string.accept)
                     .items(styleNames)
                     .itemsCallbackSingleChoice(selected[0], new MaterialDialog.ListCallbackSingleChoice() {
                         @Override
                         public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                             if (which == -1) {
-                                Toast.makeText(getMainActivity(), "Выберите стиль", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getMainActivity(), R.string.ChooseStyle, Toast.LENGTH_LONG).show();
                                 return false;
                             }
                             selected[0] = which;
@@ -386,7 +386,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
                                 setStyleSheet();
                         }
                     })
-                    .negativeText("Отмена")
+                    .negativeText(R.string.cancel)
                     .show();
         } catch (Exception ex) {
             AppLog.e(getMainActivity(), ex);
