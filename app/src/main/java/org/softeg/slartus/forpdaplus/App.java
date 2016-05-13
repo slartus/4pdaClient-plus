@@ -20,6 +20,8 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import org.acra.ACRA;
 import org.acra.ReportField;
@@ -473,6 +475,8 @@ public class App extends android.app.Application {
 
     }
 
+    private RefWatcher refWatcher;
+
     private MyActivityLifecycleCallbacks m_MyActivityLifecycleCallbacks;
     private static boolean isNewYear = false;
     @Override
@@ -488,6 +492,12 @@ public class App extends android.app.Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        refWatcher = LeakCanary.install(this);
+    }
+
+    public static RefWatcher getRefWAtcher(Context context) {
+        App app = (App) context.getApplicationContext();
+        return app.refWatcher;
     }
 
 
