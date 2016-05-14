@@ -61,14 +61,14 @@ public class ParentFragment extends GeneralFragment {
         args.putString(DEVICE_ID_KEY, deviceId);
         args.putInt(POSITION_ID, 0);
         args.putString(TOOLBAR_TITLE, title);
-        MainActivity.addTab(title, deviceId + "more", newInstance(args));
+        MainActivity.addTab(title, deviceId + " more", newInstance(args));
     }
     public static void showDevice(String deviceId) {
         Bundle args = new Bundle();
         args.putString(DEVICE_ID_KEY, deviceId);
         args.putInt(POSITION_ID, 0);
         args.putString(TOOLBAR_TITLE, "ForPDA");
-        MainActivity.addTab(deviceId + "more", newInstance(args));
+        MainActivity.addTab(deviceId + " more", newInstance(args));
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -86,7 +86,7 @@ public class ParentFragment extends GeneralFragment {
         m_Title = extras.getString(TOOLBAR_TITLE);
         setTitle(m_Title);
         loading();
-        Log.e("kek", "DEVICE"+m_DeviceId+" : "+getTag()+" : "+getThisTab().getTag());
+        Log.e("kek", "DEVICE"+m_DeviceId);
     }
 
     @Override

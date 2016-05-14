@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import org.softeg.slartus.forpdaapi.ICatalogItem;
 import org.softeg.slartus.forpdaapi.devdb.DevCatalog;
 import org.softeg.slartus.forpdaapi.devdb.NewDevDbApi;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
@@ -29,7 +30,7 @@ public class DevDbCatalogFragment extends BaseCatalogFragment {
 
     public DevDbCatalogFragment() {
         super();
-        m_CurrentCatalogItem = new DevCatalog("-1", getContext().getString(R.string.catalog)).setType(DevCatalog.ROOT);
+        m_CurrentCatalogItem = new DevCatalog("-1", App.getContext().getString(R.string.catalog)).setType(DevCatalog.ROOT);
     }
 
     private String m_Url;

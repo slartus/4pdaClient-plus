@@ -162,12 +162,15 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-
-        if(Client.getInstance().getLogined()&!App.getInstance().getPreferences().getBoolean("pancilInActionBar", false)) {
+        Log.d("kek","logined"+Client.getInstance().getLogined());
+        if(!App.getInstance().getPreferences().getBoolean("pancilInActionBar", false)) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    respond();
+                    if(Client.getInstance().getLogined())
+                        respond();
+                    else
+                        Toast.makeText(getContext(), R.string.need_login, Toast.LENGTH_SHORT).show();
                 }
             });
             setHideFab(fab);
@@ -189,7 +192,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     @Override
     public void onResume() {
         super.onResume();
-        fab.setImageResource(R.drawable.pencil);
+        //fab.setImageResource(R.drawable.pencil);
         //fab.setImageDrawable(ContextCompat.getDrawable(App.getContext(), R.drawable.pencil));
     }
 

@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import org.softeg.slartus.forpdaplus.R;
 
 import java.io.IOException;
@@ -29,7 +32,7 @@ public class LazyAdapter extends BaseAdapter {
         activity = a;
         data=d;
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        imageLoader=new ImageLoader(activity.getApplicationContext());
+        imageLoader = ImageLoader.getInstance();
     }
 
     public int getCount() {
@@ -51,7 +54,7 @@ public class LazyAdapter extends BaseAdapter {
 
         ImageView image=(ImageView)vi.findViewById(R.id.image);
 
-        imageLoader.DisplayImage(data[position], image);
+        imageLoader.displayImage(data[position], image);
         return vi;
     }
 }

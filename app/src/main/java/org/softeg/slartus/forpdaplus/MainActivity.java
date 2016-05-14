@@ -410,8 +410,13 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        if (mMainDrawerMenu != null)
+        if (mMainDrawerMenu == null)
+            mMainDrawerMenu = new MainDrawerMenu(this, this);
+        else
             mMainDrawerMenu.close();
+
+        if(mTabDraweMenu==null)
+            mTabDraweMenu = new TabDrawerMenu(this, this);
 
         if(!top)
             shortUserInfo = new ShortUserInfo(this, mMainDrawerMenu.getNavigationView().getHeaderView(0));

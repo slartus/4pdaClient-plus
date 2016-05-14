@@ -53,7 +53,7 @@ public class DigestTopicsListFragment extends TopicsListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (m_Catalog != null)
-            getActivity().setTitle(m_Catalog.getTitle());
+            setTitle(m_Catalog.getTitle());
     }
 
     @Override

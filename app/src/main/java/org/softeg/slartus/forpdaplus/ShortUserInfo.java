@@ -60,8 +60,12 @@ public class ShortUserInfo {
     private Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            blur(bitmap, userBackground, avatarUrl);
-            prefs.edit().putString("userAvatarUrl",avatarUrl).apply();
+            if(bitmap.getHeight()<1||bitmap.getWidth()<1){
+                Toast.makeText(getContext(),"Ошибка: Размер изображения слишком маленький", Toast.LENGTH_SHORT).show();
+            }else {
+                blur(bitmap, userBackground, avatarUrl);
+                prefs.edit().putString("userAvatarUrl",avatarUrl).apply();
+            }
         }
 
         @Override

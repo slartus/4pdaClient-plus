@@ -32,28 +32,8 @@ public class DevDbModelsAdapter extends BaseAdapter {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mData = data;
         imageLoader=ImageLoader.getInstance();
-        initImageLoader(context);
     }
 
-    private static void initImageLoader(Context context) {
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageForEmptyUri(R.drawable.no_image)
-                .cacheInMemory(true)
-                .cacheOnDisc(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .handler(new Handler())
-                .build();
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                .threadPoolSize(5)
-                .threadPriority(Thread.MIN_PRIORITY + 2)
-                .denyCacheImageMultipleSizesInMemory()
-                .memoryCache(new UsingFreqLimitedMemoryCache(5 * 1024 * 1024)) // 2 Mb
-                .discCacheFileNameGenerator(new HashCodeFileNameGenerator())
-                .defaultDisplayImageOptions(options)
-                .build();
-
-        ImageLoader.getInstance().init(config);
-    }
     public void setData(ArrayList<DevModel> data) {
         mData = data;
     }

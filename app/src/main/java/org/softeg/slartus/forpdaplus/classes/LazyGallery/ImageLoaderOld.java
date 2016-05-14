@@ -30,14 +30,14 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ImageLoader {
+public class ImageLoaderOld {
 
     MemoryCache memoryCache = new MemoryCache();
     FileCache fileCache;
     private Map<ImageView, String> imageViews = Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
     ExecutorService executorService;
 
-    public ImageLoader(Context context) throws IOException {
+    public ImageLoaderOld(Context context) throws IOException {
         fileCache = new FileCache(context);
         executorService = Executors.newFixedThreadPool(5);
     }
