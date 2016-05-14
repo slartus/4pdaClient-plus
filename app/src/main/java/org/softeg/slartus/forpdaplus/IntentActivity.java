@@ -223,7 +223,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                         ForumUser.startChangeRep(context, handler,
                                 uri.getQueryParameter("mid"),
                                 uri.getQueryParameter("mid"),
-                                uri.getQueryParameter("p"), "add", "Повысить репутацию");
+                                uri.getQueryParameter("p"), "add", context.getString(R.string.increase_reputation));
                     } else {
                         UserReputationFragment.plusRep(context, handler, uri.getQueryParameter("mid"), uri.getQueryParameter("mid"));
                     }
@@ -234,7 +234,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                         ForumUser.startChangeRep(context, handler,
                                 uri.getQueryParameter("mid"),
                                 uri.getQueryParameter("mid"),
-                                uri.getQueryParameter("p"), "minus", "Понизить репутацию");
+                                uri.getQueryParameter("p"), "minus", context.getString(R.string.decrease_reputation));
                     } else {
                         UserReputationFragment.minusRep(context, handler, uri.getQueryParameter("mid"), uri.getQueryParameter("mid"));
                     }
@@ -650,13 +650,13 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             assert view != null;
             final CheckBox checkBox = (CheckBox) view.findViewById(R.id.chkConfirmationSend);
             final TextView message = (TextView) view.findViewById(R.id.textView);
-            message.setText("Начать закачку файла?");
-            checkBox.setText("Подтверждать скачивание");
+            message.setText(R.string.ask_start_download_file);
+            checkBox.setText(R.string.confirm_download);
             new MaterialDialog.Builder(activity)
-                    .title("Подтвердите действие")
+                    .title(R.string.confirm_action)
                     .customView(view,true)
-                    .positiveText("ОК")
-                    .negativeText("Отмена")
+                    .positiveText(R.string.ok)
+                    .negativeText(R.string.cancel)
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
@@ -692,11 +692,11 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                     Intent.ACTION_VIEW,
                     Uri.parse(url));
             if (is4pdaUrl(url))
-                context.startActivity(Intent.createChooser(marketIntent, "Открыть с помощью"));
+                context.startActivity(Intent.createChooser(marketIntent, context.getString(R.string.open_in)));
             else
                 context.startActivity(marketIntent);
         } catch (Exception ex) {
-            AppLog.e(context, new NotReportException("Не найдено ни одно приложение для ссылки: " + url));
+            AppLog.e(context, new NotReportException(context.getString(R.string.no_app_for_link)+": " + url));
         }
     }
 }

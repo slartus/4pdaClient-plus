@@ -21,6 +21,7 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
@@ -104,7 +105,7 @@ public class LeadersListFragment extends BaseExpandableListFragment {
             final LeadUser leadUser = ((LeadUser) o);
 
             final List<MenuListDialog> list = new ArrayList<>();
-            list.add(new MenuListDialog("Список форумов", new Runnable() {
+            list.add(new MenuListDialog(getContext().getString(R.string.list_forums), new Runnable() {
                 @Override
                 public void run() {
                     if (leadUser.isAllForumsOwner()) {
@@ -116,7 +117,7 @@ public class LeadersListFragment extends BaseExpandableListFragment {
                             forumTitles[i++] = f.getTitle();
                         }
                         new MaterialDialog.Builder(getContext())
-                                .title("Форумы")
+                                .title(R.string.forums)
                                 .items(forumTitles)
                                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                                     @Override

@@ -2,11 +2,16 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
  * Created by slinkin on 13.03.14.
  */
 
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.devdb.DevModel;
@@ -55,16 +60,21 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
             m_BrandUrl = getArguments().getString(BRAND_URL_KEY, m_BrandUrl);
             m_BrandTitle = getArguments().getString(BRAND_TITLE_KEY, m_BrandTitle);
         }
-        getActivity().setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
-        App.getInstance().getTabByTag(getTag()).setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
-        getMainActivity().notifyTabAdapter();
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
         setArrow();
-        getActivity().setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
+        setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
+        getMainActivity().notifyTabAdapter();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getListView().setOnScrollListener(new PauseOnScrollListener(ImageLoader.getInstance(), false, true));
     }
 
     @Override

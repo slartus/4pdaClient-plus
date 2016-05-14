@@ -37,9 +37,9 @@ public class ActionSelectDialogFragment {
                                          final String selectedAction,
                                          final Runnable showTopicAction) {
         new AlertDialog.Builder(context)
-                .setTitle("Действие по умолчанию")
-                .setMessage("Назначить по умолчанию?")
-                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.default_action)
+                .setMessage(R.string.assign_default)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
@@ -50,7 +50,7 @@ public class ActionSelectDialogFragment {
 
                     }
                 })
-                .setNeutralButton("Спрашивать", new DialogInterface.OnClickListener() {
+                .setNeutralButton(R.string.ask, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
@@ -60,7 +60,7 @@ public class ActionSelectDialogFragment {
                         showTopicAction.run();
                     }
                 })
-                .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
@@ -95,7 +95,7 @@ public class ActionSelectDialogFragment {
                     }
                 })
                 .setTitle(title)
-                .setPositiveButton("Всегда",
+                .setPositiveButton(R.string.always,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dialog.dismiss();
@@ -108,10 +108,10 @@ public class ActionSelectDialogFragment {
 
                                 if (!TextUtils.isEmpty(hintForChangeDefault))
                                     new AlertDialog.Builder(context)
-                                            .setTitle("Подсказка")
+                                            .setTitle(R.string.hint)
                                             .setMessage(hintForChangeDefault)
                                             .setCancelable(false)
-                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialogInterface, int i) {
                                                     dialogInterface.dismiss();
@@ -125,7 +125,7 @@ public class ActionSelectDialogFragment {
                             }
                         }
                 )
-                .setNeutralButton("Только сейчас",
+                .setNeutralButton(R.string.only_now,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dialog.dismiss();

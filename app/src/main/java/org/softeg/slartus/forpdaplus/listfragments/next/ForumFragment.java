@@ -103,7 +103,7 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
     @Override
     public void onCreateOptionsMenu(final Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add("Отметить этот форум прочитанным")
+        menu.add(R.string.mark_forum_as_read)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -112,34 +112,33 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
                     }
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-        menu.add("Задать этот форум стартовым")
+        menu.add(R.string.set_forum_starting)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         Forum f = mData.getCrumbs().get(mData.getCrumbs().size() - 1);
                         Preferences.List.setStartForum(f.getId(),
                                 f.getTitle());
-                        Toast.makeText(getActivity(), "Форум задан стартовым", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.forum_setted_to_start, Toast.LENGTH_SHORT).show();
                         return false;
                     }
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-        menu.add("Обновить структуру форума")
+        menu.add(R.string.refresh_forum_struct)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         new MaterialDialog.Builder(getActivity())
-                                .title("Внимание!")
-                                .content("Обновление структуры форума может занять продолжительное время " +
-                                        "и использует большой объем интернет-траффика")
-                                .positiveText("Обновить")
+                                .title(R.string.attention)
+                                .content(R.string.forum_refresh_content)
+                                .positiveText(R.string.refresh)
                                 .callback(new MaterialDialog.ButtonCallback() {
                                     @Override
                                     public void onPositive(MaterialDialog dialog) {
                                         new UpdateForumStructTask(getActivity()).execute();
                                     }
                                 })
-                                .negativeText("Отмена").show();
+                                .negativeText(R.string.cancel).show();
                         return false;
                     }
                 })
@@ -165,17 +164,17 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
     }
     private void markAsRead() {
         if (!Client.getInstance().getLogined()) {
-            Toast.makeText(getActivity(), "Необходимо залогиниться!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.need_login, Toast.LENGTH_SHORT).show();
             return;
         }
         new MaterialDialog.Builder(getActivity())
-                .title("Подтвердите действие")
-                .content("Отметить этот форум прочитанным?")
-                .positiveText("Да")
+                .title(R.string.confirm_action)
+                .content(getString(R.string.mark_forum_as_read)+"?")
+                .positiveText(R.string.yes)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
-                        Toast.makeText(getActivity(), "Запрос отправлен", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.request_sent, Toast.LENGTH_SHORT).show();
                         new Thread(new Runnable() {
                             public void run() {
                                 Throwable ex = null;
@@ -193,10 +192,10 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
                                     public void run() {
                                         try {
                                             if (finalEx != null) {
-                                                Toast.makeText(getActivity(), "Ошибка", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getActivity(), R.string.error, Toast.LENGTH_SHORT).show();
                                                 AppLog.e(getActivity(), finalEx);
                                             } else {
-                                                Toast.makeText(getActivity(), "Форум отмечен прочитанным", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getActivity(), R.string.forum_setted_read, Toast.LENGTH_SHORT).show();
                                             }
                                         } catch (Exception ex) {
                                             AppLog.e(getActivity(), ex);
@@ -208,7 +207,7 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
                         }).start();
                     }
                 })
-                .negativeText("Отмена")
+                .negativeText(R.string.cancel)
                 .show();
     }
 
@@ -414,7 +413,7 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
 
         }, new ForumsAdapter.OnLongClickListener() {
             private void show(String id){
-                ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", "http://4pda.ru/forum/index.php?showforum="+id);
+                ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), "http://4pda.ru/forum/index.php?showforum="+id);
             }
             @Override
             public void onItemClick(View v) {
@@ -872,12 +871,12 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
                             cancel(true);
                         }
                     })
-                    .content("Обновление структуры форума")
+                    .content(R.string.refreshing_forum_struct)
                     .build();
         }
 
         protected void onCancelled() {
-            Toast.makeText(getActivity(), "Обновление структуры форума отменено", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.canceled_refreshing_forum_struct, Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -893,7 +892,7 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
                         publishProgress(String.format("%s %d", message, percents));
                     }
                 });
-                publishProgress("Обновление базы");
+                publishProgress(getString(R.string.update_base));
                 ForumsTable.updateForums(res.getItems());
                 return res;
             } catch (Throwable e) {

@@ -4,13 +4,14 @@ package org.softeg.slartus.forpdaplus.listtemplates;/*
 
 import android.support.v4.app.Fragment;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.TopicsHistoryListFragment;
 
 public class TopicsHistoryBrickInfo extends BrickInfo {
     @Override
     public String getTitle() {
-        return "Посещенные темы";
+        return App.getContext().getString(R.string.topics_history);
     }
 
     @Override

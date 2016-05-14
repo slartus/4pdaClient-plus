@@ -16,6 +16,7 @@ import org.apache.http.conn.HttpHostConnectException;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.ShowInBrowserException;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.Exceptions.MessageInfoException;
 import org.softeg.slartus.forpdaplus.classes.ShowInBrowserDialog;
 
@@ -61,16 +62,16 @@ public final class AppLog {
             ShowInBrowserDialog.showDialog(context, (ShowInBrowserException) ex);
         } else if (ex instanceof NotReportException) {
             new MaterialDialog.Builder(context)
-                    .title("Ошибка")
+                    .title(R.string.error)
                     .content(message)
-                    .positiveText("ОК")
+                    .positiveText(R.string.ok)
                     .show();
         } else if (ex.getClass() == MessageInfoException.class) {
             MessageInfoException messageInfoException = (MessageInfoException) ex;
             new MaterialDialog.Builder(context)
                     .title(messageInfoException.Title)
                     .content(messageInfoException.Text)
-                    .positiveText("ОК")
+                    .positiveText(R.string.ok)
                     .show();
         } else {
             org.acra.ACRA.getErrorReporter().handleException(ex);
@@ -85,13 +86,13 @@ public final class AppLog {
             if (message == null)
                 return false;
             MaterialDialog.Builder builder = new MaterialDialog.Builder(context)
-                    .title("Проверьте соединение")
+                    .title(R.string.check_connection)
                     .content(message)
-                    .positiveText("ОК");
+                    .positiveText(R.string.ok);
 
 
             if (netExceptionAction != null) {
-                builder.negativeText("Повторить")
+                builder.negativeText(R.string.repeat)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onNegative(MaterialDialog dialog) {
@@ -110,13 +111,13 @@ public final class AppLog {
 
     public static String getLocalizedMessage(Throwable ex, String defaultValue) {
         if (isHostUnavailableException(ex))
-            return "Сервер недоступен или не отвечает";
+            return App.getContext().getString(R.string.server_not_available_or_not_respond);
         if (isTimeOutException(ex))
-            return "Превышен таймаут ожидания";
+            return App.getContext().getString(R.string.exceeded_timeout);
         if (isException(ex, MalformedChunkCodingException.class))
-            return "Целевой сервер не в состоянии ответить";
+            return App.getContext().getString(R.string.server_failed_to_respond);
         if (isException(ex, SocketException.class))
-            return "Соединение разорвано";
+            return App.getContext().getString(R.string.connection_lost);
         return defaultValue;
     }
 

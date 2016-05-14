@@ -20,6 +20,7 @@ import org.softeg.slartus.forpdaapi.TopicsApi;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumTopicsBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
@@ -150,7 +151,7 @@ public class ForumTopicsListFragment extends TopicsListFragment {
         super.onCreateOptionsMenu(menu, inflater);
         menu.removeItem(settingItemId);
 
-        menu.add("Фильтр и сортировка")
+        menu.add(R.string.filter_and_ordering)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {

@@ -24,6 +24,7 @@ import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.PdaApplication;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ApplicationRelationsTable;
@@ -299,10 +300,10 @@ public class AppsListFragment extends TopicsListFragment {
 
             //if (TextUtils.isEmpty(topic.getId())) return;
             final AppItem appItem = (AppItem) o;
-            menu.add("Связать с темой на форуме").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            menu.add(R.string.associate_with_theme).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     MaterialDialog.Builder builder = new MaterialDialog.Builder(getContext());
-                    builder.title("Введите URL темы");
+                    builder.title(R.string.enter_url_theme);
 
                     final EditText input = new EditText(getContext());
 
@@ -317,7 +318,7 @@ public class AppsListFragment extends TopicsListFragment {
                         public void onPositive(MaterialDialog dialog) {
                             String text = input.getText() == null ? "" : input.getText().toString();
                             if (TextUtils.isEmpty(text)) {
-                                Toast.makeText(getContext(), "Пустой урл!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), R.string.empty_url, Toast.LENGTH_SHORT).show();
                                 return;
                             }
                             Matcher m = Pattern.compile("showtopic=(\\d+)").matcher(text.trim());
@@ -325,11 +326,11 @@ public class AppsListFragment extends TopicsListFragment {
                                 m = Pattern.compile("(\\d+)").matcher(text.trim());
                                 if (m.find()) {
                                     if (m.group(1).length() != text.trim().length()) {
-                                        Toast.makeText(getContext(), "Неверный урл!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getContext(), R.string.incorrect_url, Toast.LENGTH_SHORT).show();
                                         return;
                                     }
                                 } else {
-                                    Toast.makeText(getContext(), "Неверный урл!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), R.string.incorrect_url, Toast.LENGTH_SHORT).show();
                                     return;
                                 }
                             }

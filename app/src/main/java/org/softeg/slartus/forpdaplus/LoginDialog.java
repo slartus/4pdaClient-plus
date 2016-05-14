@@ -1,9 +1,7 @@
 package org.softeg.slartus.forpdaplus;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -87,10 +85,10 @@ public class LoginDialog {
     public static void showDialog(final Context context, final Client.OnUserChangedListener onConnectResult) {
         final LoginDialog loginDialog = new LoginDialog(context);
         MaterialDialog dialog = new MaterialDialog.Builder(context)
-                .title("Вход")
+                .title(R.string.login)
                 .customView(loginDialog.getView(),true)
-                .positiveText("Вход")
-                .negativeText("Отмена")
+                .positiveText(R.string.login)
+                .negativeText(R.string.cancel)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
@@ -143,7 +141,7 @@ public class LoginDialog {
         }
 
         protected void onCancelled() {
-            Toast.makeText(mContext, "Отменено",
+            Toast.makeText(mContext, R.string.canceled,
                     Toast.LENGTH_SHORT).show();
         }
 
@@ -161,7 +159,7 @@ public class LoginDialog {
 
                     @Override
                     public void onError() {
-                        Toast.makeText(mContext, "Не удалось загрузить капчу", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, R.string.failed_load_captcha, Toast.LENGTH_SHORT).show();
                         mProgressBar.setVisibility(View.GONE);
                     }
                 });
@@ -207,7 +205,7 @@ public class LoginDialog {
             dialog = new MaterialDialog.Builder(mContext)
                     .progress(true,0)
                     .cancelable(false)
-                    .content("Вход...")
+                    .content(R.string.performing_login)
                     .build();
         }
 
@@ -229,7 +227,7 @@ public class LoginDialog {
         }
 
         protected void onCancelled() {
-            Toast.makeText(mContext, "Отменено",
+            Toast.makeText(mContext, R.string.canceled,
                     Toast.LENGTH_SHORT).show();
         }
 
@@ -250,7 +248,7 @@ public class LoginDialog {
             Client.getInstance().doOnUserChangedListener(login, success);
             App.getInstance().getPreferences().edit().putBoolean("needLoadRepImage", success).apply();
             if (success) {
-                Toast.makeText(mContext, "Вход выполнен",
+                Toast.makeText(mContext, R.string.login_performed,
                         Toast.LENGTH_SHORT).show();
                 MainActivity.checkToster(mContext);
                 MainActivity.checkUsers(mContext);
@@ -259,9 +257,9 @@ public class LoginDialog {
                     AppLog.e(mContext, ex);
                 else
                     new MaterialDialog.Builder(mContext)
-                        .title("Ошибка")
+                        .title(R.string.error)
                         .content(Client.getInstance().getLoginFailedReason())
-                        .positiveText("Ок")
+                        .positiveText(R.string.ok)
                         .show();
             }
         }
@@ -278,7 +276,7 @@ public class LoginDialog {
             dialog = new MaterialDialog.Builder(mContext)
                     .progress(true,0)
                     .cancelable(true)
-                    .content("Выход...")
+                    .content(R.string.performing_logout)
                     .build();
         }
 
@@ -308,7 +306,7 @@ public class LoginDialog {
         }
 
         protected void onCancelled() {
-            Toast.makeText(mContext, "Отменено",
+            Toast.makeText(mContext, R.string.canceled,
                     Toast.LENGTH_SHORT).show();
         }
 
@@ -327,7 +325,7 @@ public class LoginDialog {
             doOnUserChangedListener(m_Login, success);
             App.getInstance().getPreferences().edit().putBoolean("needLoadRepImage", !success).apply();
             if (success) {
-                Toast.makeText(mContext, "Выход выполнен",
+                Toast.makeText(mContext, R.string.logout_performed,
                         Toast.LENGTH_SHORT).show();
             } else {
                 if (ex != null)

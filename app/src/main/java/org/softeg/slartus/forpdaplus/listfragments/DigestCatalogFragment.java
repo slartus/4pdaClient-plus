@@ -12,6 +12,7 @@ import org.softeg.slartus.forpdaapi.digest.DigestApi;
 import org.softeg.slartus.forpdaapi.digest.DigestCatalog;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.CatalogAdapter;
 import org.softeg.slartus.forpdaplus.listtemplates.DigestTopicsListBrickInfo;
 
@@ -66,7 +67,7 @@ public class DigestCatalogFragment extends BaseCatalogFragment {
 
     public DigestCatalogFragment() {
         super();
-        m_CurrentCatalogItem = new DigestCatalog("-1", "Программы и игры");
+        m_CurrentCatalogItem = new DigestCatalog("-1", getString(R.string.apps_and_games));
         m_LoadingCatalogItem = m_CurrentCatalogItem;
     }
 

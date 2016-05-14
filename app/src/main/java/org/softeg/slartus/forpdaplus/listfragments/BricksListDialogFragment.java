@@ -109,7 +109,7 @@ public class BricksListDialogFragment extends DialogFragment implements AdapterV
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getDialog().setTitle("Выберите список");
+        getDialog().setTitle(R.string.select_list);
         View v = inflater.inflate(R.layout.bricks_list_dialog, container, false);
         assert v != null;
         m_ListView = (ListView) v.findViewById(android.R.id.list);

@@ -128,7 +128,7 @@ public class TopicReadersListFragment extends BaseLoaderListFragment {
             try {
                 holder.txtNick.setTextColor(ExtColor.parseColor(correctHtmlColor(user.getHtmlColor())));
             } catch (Exception ex) {
-                AppLog.e(App.getContext(), new Exception("Не умею цвет: " + user.getHtmlColor()));
+                AppLog.e(App.getContext(), new Exception(getContext().getString(R.string.what_is_color) + user.getHtmlColor()));
             }
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override

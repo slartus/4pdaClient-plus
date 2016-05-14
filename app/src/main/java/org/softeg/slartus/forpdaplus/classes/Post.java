@@ -194,9 +194,9 @@ public class Post {
         final SharedPreferences prefs = App.getInstance().getPreferences();
         if(prefs.getBoolean("showClaimWarn",true)){
             new MaterialDialog.Builder(context)
-                    .title("Примечание")
+                    .title(R.string.attention)
                     .content(R.string.ClaimDescription)
-                    .positiveText("Я прочитал")
+                    .positiveText(R.string.understand)
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
@@ -226,13 +226,13 @@ public class Post {
 
 
         new MaterialDialog.Builder(context)
-                .title("Жалоба модератору на сообщение")
+                .title(R.string.claim_title)
                 .customView(layout,true)
-                .positiveText("Отправить")
+                .positiveText(R.string.send)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
-                        Toast.makeText(context, "Жалоба отправлена", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.claim_sent, Toast.LENGTH_SHORT).show();
 
                         new Thread(new Runnable() {
                             public void run() {
@@ -251,7 +251,7 @@ public class Post {
                                     public void run() {
                                         try {
                                             if (finalEx != null) {
-                                                Toast.makeText(context, "Ошибка отправки жалобы", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(context, R.string.error_request, Toast.LENGTH_LONG).show();
                                                 AppLog.e(context, finalEx);
                                             } else {
                                                 Toast.makeText(context, finalRes, Toast.LENGTH_LONG).show();
@@ -266,7 +266,7 @@ public class Post {
                         }).start();
                     }
                 })
-                .negativeText("Отмена")
+                .negativeText(R.string.cancel)
                 .show();
     }
 
@@ -279,7 +279,7 @@ public class Post {
     }
 
     private static void changePostReputation(final Activity themeActivity, final Handler handler, final String postId, final String direction) {
-        Toast.makeText(themeActivity, "Запрос на изменение репутации сообщения отправлен", Toast.LENGTH_SHORT).show();
+        Toast.makeText(themeActivity, R.string.vote_request_sent, Toast.LENGTH_SHORT).show();
         // http://s.4pda.ru/forum/jscripts/karma3.js
         new Thread(new Runnable() {
             public void run() {
@@ -294,19 +294,19 @@ public class Post {
                         int code = Integer.parseInt(m.group(1));
                         switch (code) {
                             case 0:
-                                message = "Ошибка изменения репутации: Вы уже голосовали за этот пост";
+                                message = themeActivity.getString(R.string.vote_error_already_voted);
                                 break;
                             case 1:
-                                message = "Репутация поста увеличена";
+                                message = themeActivity.getString(R.string.vote_post_increased);
                                 break;
                             case -1:
-                                message = "Репутация поста снижена";
+                                message = themeActivity.getString(R.string.vote_post_decreased);
                                 break;
                             default:
-                                message = "Ошибка изменения репутации: " + res;
+                                message = themeActivity.getString(R.string.vote_change_error)+": " + res;
                         }
                     } else
-                        message = "Ошибка изменения репутации: " + res;
+                        message = themeActivity.getString(R.string.vote_change_error)+": " + res;
 
                 } catch (Throwable e) {
                     ex = e;
@@ -319,7 +319,7 @@ public class Post {
                     public void run() {
                         try {
                             if (finalEx != null) {
-                                Toast.makeText(themeActivity, "Ошибка изменения репутации поста", Toast.LENGTH_LONG).show();
+                                Toast.makeText(themeActivity, themeActivity.getString(R.string.vote_change_error) , Toast.LENGTH_LONG).show();
                                 AppLog.e(themeActivity, finalEx);
                             } else {
                                 Toast.makeText(themeActivity, finalMessage, Toast.LENGTH_LONG).show();

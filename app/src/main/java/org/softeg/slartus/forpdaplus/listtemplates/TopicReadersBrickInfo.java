@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.listtemplates;
 
 import android.support.v4.app.Fragment;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.TopicReadersListFragment;
 
@@ -13,7 +14,7 @@ public class TopicReadersBrickInfo  extends BrickInfo {
 
     @Override
     public String getTitle() {
-        return "Кто читает тему";
+        return App.getContext().getString(R.string.who_read_topic);
     }
 
     @Override

@@ -12,6 +12,7 @@ import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.Exceptions.MessageInfoException;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.Post;
@@ -46,7 +47,7 @@ public class SearchPostsParser extends HtmlBuilder {
         int posts = 0;
         Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(App.getInstance());
         searchResult = createSearchResult(body);
-        beginHtml("Результаты поиска");
+        beginHtml(App.getContext().getString(R.string.search_result));
         beginTopic(searchResult);
 
         m_Body.append("<div class=\"posts_list search-results\">");

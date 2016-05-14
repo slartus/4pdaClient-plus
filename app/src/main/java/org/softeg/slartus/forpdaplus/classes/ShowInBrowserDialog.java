@@ -8,6 +8,7 @@ import android.util.Log;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdacommon.ShowInBrowserException;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 
 /**
@@ -36,7 +37,7 @@ public class ShowInBrowserDialog {
                             Intent marketIntent = new Intent(
                                     Intent.ACTION_VIEW,
                                     Uri.parse(url));
-                            context.startActivity(Intent.createChooser(marketIntent, "Выберите"));
+                            context.startActivity(Intent.createChooser(marketIntent, context.getString(R.string.choose)));
                         }
                     })
                     .negativeText(android.R.string.cancel)

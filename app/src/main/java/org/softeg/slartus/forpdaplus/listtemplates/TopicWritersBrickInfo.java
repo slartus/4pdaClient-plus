@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.listtemplates;
 
 import android.support.v4.app.Fragment;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.TopicWritersListFragment;
 
@@ -13,7 +14,7 @@ public class TopicWritersBrickInfo extends BrickInfo {
 
     @Override
     public String getTitle() {
-        return "Кто писал сообщения";
+        return App.getContext().getString(R.string.who_posted_msg);
     }
 
     @Override

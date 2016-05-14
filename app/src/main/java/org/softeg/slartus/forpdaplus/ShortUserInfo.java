@@ -60,8 +60,12 @@ public class ShortUserInfo {
     private Target target = new Target() {
         @Override
         public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            blur(bitmap, userBackground, avatarUrl);
-            prefs.edit().putString("userAvatarUrl",avatarUrl).apply();
+            if(bitmap.getHeight()<1||bitmap.getWidth()<1){
+                Toast.makeText(getContext(),"Ошибка: Размер изображения слишком маленький", Toast.LENGTH_SHORT).show();
+            }else {
+                blur(bitmap, userBackground, avatarUrl);
+                prefs.edit().putString("userAvatarUrl",avatarUrl).apply();
+            }
         }
 
         @Override
@@ -99,21 +103,21 @@ public class ShortUserInfo {
                 url = readFromClipboard(getContext());
                 if(url==null) url = "";
                 new MaterialDialog.Builder(getContext())
-                        .title("Перейти по ссылке")
-                        .input("Вставьте ссылку", isPdaLink(url) ? url : null, new MaterialDialog.InputCallback() {
+                        .title(R.string.go_to_link)
+                        .input(getContext().getString(R.string.insert_link), isPdaLink(url) ? url : null, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(MaterialDialog dialog, CharSequence input) {
 
                             }
                         })
                         .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE)
-                        .positiveText("Открыть")
-                        .negativeText("Отмена")
+                        .positiveText(R.string.open)
+                        .negativeText(R.string.cancel)
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(MaterialDialog dialog, DialogAction which) {
                                 if(!IntentActivity.tryShowUrl((MainActivity)getContext(), ((MainActivity)getContext()).getHandler(), dialog.getInputEditText().getText()+"", false, false)){
-                                    Toast.makeText(getContext(), "Не умею обрабатывать такие ссылки", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), R.string.links_not_supported, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         })
@@ -179,7 +183,7 @@ public class ShortUserInfo {
                 });
             }
         }else {
-            loginButton.setText("Проверьте соединение");
+            loginButton.setText(R.string.check_connection);
         }
         infoRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,9 +206,9 @@ public class ShortUserInfo {
     private void refreshQms() {
         int qmsCount = client.getQmsCount();
         if (qmsCount != 0) {
-            qmsMessages.setText("Новые сообщения QMS: " + qmsCount);
+            qmsMessages.setText(String.format(mActivity.getString(R.string.new_qms_messages), qmsCount));
         } else {
-            qmsMessages.setText("Нет новых сообщений QMS");
+            qmsMessages.setText(R.string.no_new_qms_messages);
         }
     }
 
@@ -230,8 +234,7 @@ public class ShortUserInfo {
         @Override
         protected void onPostExecute(Void result) {
             if(avatarUrl.equals("")|reputation.equals("")){
-                Toast.makeText(getContext(),"Не удалось загрузить данные",Toast.LENGTH_SHORT).show();
-                loginButton.setText("Произошла ошибка");
+                loginButton.setText(R.string.unknown_error);
                 qmsMessages.setVisibility(View.GONE);
             }else if (client.getLogined()) {
                 qmsMessages.setVisibility(View.VISIBLE);
@@ -246,7 +249,7 @@ public class ShortUserInfo {
                 });
                 userNick.setText(client.getUser());
                 userRep.setVisibility(View.VISIBLE);
-                userRep.setText("Репутация: " + reputation);
+                userRep.setText(getContext().getString(R.string.reputation)+": " + reputation);
 
                 refreshQms();
                 //Log.e("kek", avatarUrl+" : "+prefs.getString("userAvatarUrl",""));

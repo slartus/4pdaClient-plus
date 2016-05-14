@@ -140,7 +140,7 @@ public class DownloadsService extends IntentService {
     public static void download(final Activity context1, final String url, final String tempFilePath,
                                 final int notificationId, final Boolean finish) {
         ActionSelectDialogFragment.execute(context1,
-                "Способ скачивания",
+                context1.getString(R.string.download_method),
                 "file.downloaderManagers",
                 context1.getResources().getTextArray(R.array.downloaderManagersArray),
                 context1.getResources().getTextArray(R.array.downloaderManagersValues),
@@ -151,7 +151,7 @@ public class DownloadsService extends IntentService {
                             switch (value.toString()) {
                                 case "0":// клиент
                                     if (ContextCompat.checkSelfPermission(context1, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                                        Toast.makeText(context1, "Нет прав для данного действия", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context1, R.string.no_permission, Toast.LENGTH_SHORT).show();
                                     else
                                         clientDownload(context1, url, tempFilePath, notificationId);
 
@@ -195,7 +195,7 @@ public class DownloadsService extends IntentService {
                             AppLog.e(context1, ex);
                         }
                     }
-                }, "Вы можете изменить способ скачивания в настройках программы: Просмотр темы>>Скачивание файлов>>Скачивать файл при помощи..."
+                }, context1.getString(R.string.download_method_notify)
         );
     }
 
@@ -227,10 +227,10 @@ public class DownloadsService extends IntentService {
             final File file = new File(filePath);
             if (file.exists()) {
                 new MaterialDialog.Builder(context1)
-                        .title("Внимание!")
-                        .content("Имеется недокачанный файл с таким же названием.\nДокачать?")
-                        .positiveText("Докачать")
-                        .negativeText("Перекачать")
+                        .title(R.string.attention)
+                        .content(R.string.ask_file_need_download)
+                        .positiveText(R.string.continue_download)
+                        .negativeText(R.string.re_download)
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
@@ -250,7 +250,7 @@ public class DownloadsService extends IntentService {
 
     private static void startDownload(Context context1, String url, String tempFilePath, int notificationId, String fileName) {
         try {
-            Toast.makeText(context1, "Загрузка начата", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context1, R.string.download_started, Toast.LENGTH_SHORT).show();
             if (notificationId == -1)
                 notificationId = DownloadsTable.getNextId();
 
@@ -355,7 +355,7 @@ public class DownloadsService extends IntentService {
                 File downloadingFile = new File(downloadingFilePath);
                 File downloadedFile = new File(filePath);
                 if (!downloadingFile.renameTo(downloadedFile)) {
-                    throw new NotReportException("Не могу переименовать файл: " + downloadingFilePath + " в " + filePath);
+                    throw new NotReportException(getString(R.string.rename_file_exception) + downloadingFilePath + getString(R.string.combined_in) + filePath);
                 }
                 downloadTask.setState(downloadTask.STATE_SUCCESSFULL);
                 sendDownloadProgressState(receiver, notificationId);
@@ -399,7 +399,7 @@ public class DownloadsService extends IntentService {
 
             dialog = new MaterialDialog.Builder(context)
                     .progress(true,0)
-                    .content("Запрос ссылки")
+                    .content(R.string.request_link)
                     .build();
         }
 
@@ -456,7 +456,7 @@ public class DownloadsService extends IntentService {
                 if (ex != null)
                     AppLog.e(m_Context, ex);
                 else
-                    Toast.makeText(m_Context, "Неизвестная ошибка",
+                    Toast.makeText(m_Context, R.string.unknown_error,
                             Toast.LENGTH_SHORT).show();
             }
         }

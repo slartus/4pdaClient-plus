@@ -187,20 +187,9 @@ public class QuickPostFragment extends Fragment {
         return v;
     }
 
-
-    private Boolean checkPostBody() {
-        if (TextUtils.isEmpty(getPostBody())) {
-            new MaterialDialog.Builder(getActivity())
-                    .content("Введите сообщение!")
-                    .positiveText("ОК").show();
-            return false;
-        }
-        return true;
-    }
-
     private void startPost() {
         if (emptyText) {
-            Toast toast = Toast.makeText(getContext(), "Введите сообщение", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getContext(), R.string.enter_message, Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.TOP, 0, (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, App.getInstance().getResources().getDisplayMetrics()));
             toast.show();
             return;
@@ -211,9 +200,9 @@ public class QuickPostFragment extends Fragment {
             assert view != null;
             final CheckBox checkBox = (CheckBox) view.findViewById(R.id.chkConfirmationSend);
             new MaterialDialog.Builder(getActivity())
-                    .title("Подтвердите действие")
+                    .title(R.string.confirm_action)
                     .customView(view,true)
-                    .positiveText("Отправить")
+                    .positiveText(R.string.send)
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
@@ -222,7 +211,7 @@ public class QuickPostFragment extends Fragment {
                             post();
                         }
                     })
-                    .negativeText("Отмена")
+                    .negativeText(R.string.cancel)
                     .show();
         } else {
             post();

@@ -16,7 +16,6 @@ import android.os.Handler;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
@@ -174,7 +173,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     if (showDownloadsPath(o)) {
                         downloadsPathPreference
                                 .setSummary(o.toString());
-                        Toast.makeText(getActivity(), "Путь успешно изменён", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.path_edited_success, Toast.LENGTH_SHORT).show();
                         return true;
                     }
                     return false;
@@ -295,7 +294,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             finalItems[0]=selectedItems;
 
             new MaterialDialog.Builder(getActivity())
-                    .title("Выберите пункты")
+                    .title(R.string.select_items)
                     .items(namesArray.toArray(new CharSequence[namesArray.size()]))
                     .itemsCallbackMultiChoice(selectedItems, new MaterialDialog.ListCallbackMultiChoice(){
                         @Override
@@ -305,7 +304,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         }
                     })
                     .alwaysCallMultiChoiceCallback()
-                    .positiveText("Применить")
+                    .positiveText(R.string.accept)
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
@@ -313,7 +312,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                             preferences.edit().putString("selectedMenuItems", Arrays.toString(finalItems[0]).replace(" ","").replace("[","").replace("]","")).apply();
                         }
                     })
-                    .neutralText("Сброс")
+                    .neutralText(R.string.reset)
                     .onNeutral(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
@@ -326,10 +325,10 @@ public class PreferencesActivity extends BasePreferencesActivity {
         private static final int MY_INTENT_CLICK=302;
         private void pickUserBackground() {
             new MaterialDialog.Builder(getActivity())
-                    .content("Выберите изображение")
-                    .positiveText("Выбрать")
-                    .negativeText("Отмена")
-                    .neutralText("Сброс")
+                    .content(R.string.pick_image)
+                    .positiveText(R.string.choose)
+                    .negativeText(R.string.cancel)
+                    .neutralText(R.string.reset)
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
@@ -338,7 +337,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                 intent.setType("image/*");
                                 startActivityForResult(intent, MY_INTENT_CLICK);
                             } catch (ActivityNotFoundException ex) {
-                                Toast.makeText(getActivity(), "Ни одно приложение не установлено для выбора изображения!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), R.string.no_app_for_get_image_file, Toast.LENGTH_LONG).show();
                             } catch (Exception ex) {
                                 AppLog.e(getActivity(), ex);
                             }
@@ -381,8 +380,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 final CharSequence[] name = {""};
                 final boolean[] dialogShowed = {false};
                 new MaterialDialog.Builder(getActivity())
-                        .title("Выберите шрифт")
-                        .items(new String[]{"Шрифт из стиля", "Системный шрифт", "Ввести имя шрифта"})
+                        .title(R.string.choose_font)
+                        .items(new String[]{App.getContext().getString(R.string.font_from_style), App.getContext().getString(R.string.system_font), App.getContext().getString(R.string.enter_font_name)})
                         .itemsCallbackSingleChoice(selected[0], new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
@@ -399,13 +398,13 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                         dialogShowed[0] = true;
                                         new MaterialDialog.Builder(getActivity())
                                                 .inputType(InputType.TYPE_CLASS_TEXT)
-                                                .input("Имя шрифта", prefs.getString("webViewFontName", ""), new MaterialDialog.InputCallback() {
+                                                .input(App.getContext().getString(R.string.font_name), prefs.getString("webViewFontName", ""), new MaterialDialog.InputCallback() {
                                                     @Override
                                                     public void onInput(MaterialDialog dialog, CharSequence input) {
                                                         name[0] = input;
                                                     }
                                                 })
-                                                .positiveText("Ок")
+                                                .positiveText(R.string.ok)
                                                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                                                     @Override
                                                     public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
@@ -418,8 +417,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
                             }
                         })
                         .alwaysCallSingleChoiceCallback()
-                        .positiveText("Применить")
-                        .negativeText("Отмена")
+                        .positiveText(R.string.accept)
+                        .negativeText(R.string.cancel)
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
@@ -451,8 +450,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 }
                 final int[] selected = {0};
                 new MaterialDialog.Builder(getActivity())
-                        .title("Выберите цвет акцента")
-                        .items(new String[]{"Синий", "Розовый", "Серый"})
+                        .title(R.string.pick_accent_color)
+                        .items(new String[]{App.getContext().getString(R.string.blue), App.getContext().getString(R.string.pink), App.getContext().getString(R.string.gray)})
                         .itemsCallbackSingleChoice(position, new MaterialDialog.ListCallbackSingleChoice() {
                             @Override
                             public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
@@ -461,8 +460,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
                             }
                         })
                         .alwaysCallSingleChoiceCallback()
-                        .positiveText("Применить")
-                        .negativeText("Отмена")
+                        .positiveText(R.string.accept)
+                        .negativeText(R.string.cancel)
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
@@ -644,11 +643,11 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 });
 
                 new MaterialDialog.Builder(getActivity())
-                        .title("Цвет")
+                        .title(R.string.color)
                         .customView(view,true)
-                        .positiveText("Применить")
-                        .negativeText("Отмена")
-                        .neutralText("Сброс")
+                        .positiveText(R.string.accept)
+                        .negativeText(R.string.cancel)
+                        .neutralText(R.string.reset)
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
@@ -723,7 +722,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
                 final int[] selected = {newstyleValues.indexOf(currentValue)};
                 new MaterialDialog.Builder(getActivity())
-                        .title("Стиль")
+                        .title(R.string.theme_style)
                         .cancelable(true)
                         .items(newStyleNames.toArray(new CharSequence[newStyleNames.size()]))
                         .itemsCallbackSingleChoice(newstyleValues.indexOf(currentValue), new MaterialDialog.ListCallbackSingleChoice() {
@@ -807,7 +806,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
         private void pickRingtone(int requestCode, Uri defaultSound) {
             Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
-            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Выберите звук");
+            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, App.getContext().getString(R.string.pick_audio));
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, defaultSound);
             if (getActivity() != null)
                 getActivity().startActivityForResult(intent, requestCode);
@@ -942,7 +941,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             rbExternal.setOnCheckedChangeListener(checkedChangeListener);
             rbCustom.setOnCheckedChangeListener(checkedChangeListener);
             new MaterialDialog.Builder(getActivity())
-                    .title("Путь к папке с данными")
+                    .title(R.string.path_to_data)
                     .customView(view,true)
                     .cancelable(true)
                     .positiveText(android.R.string.ok)

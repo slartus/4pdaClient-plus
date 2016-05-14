@@ -317,7 +317,8 @@ public class PopupPanelView {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return mItems.get(position).getTitle();
+
+            return mActivity.getString(mItems.get(position).getTitle());
         }
 
         public BaseQuickView[] getViews() {

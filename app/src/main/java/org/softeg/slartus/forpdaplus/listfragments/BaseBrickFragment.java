@@ -96,7 +96,7 @@ public abstract class BaseBrickFragment extends GeneralFragment{
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add("Обновить")
+        menu.add(R.string.refresh)
                 .setIcon(R.drawable.refresh)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override

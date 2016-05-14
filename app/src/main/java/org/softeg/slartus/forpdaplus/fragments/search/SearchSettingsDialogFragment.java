@@ -262,9 +262,9 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         MaterialDialog adb = new MaterialDialog.Builder(getActivity())
                 .customView(view, true)
                 .cancelable(true)
-                .title("Поиск")
-                .positiveText("Найти")
-                .negativeText("Отмена")
+                .title(R.string.search)
+                .positiveText(R.string.find)
+                .negativeText(R.string.cancel)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
@@ -275,7 +275,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
 
         // в поиске по теме не показываем "запомнить настройки"
         if (SearchSettings.SEARCH_TYPE_FORUM.equals(getSearchSettings().getSearchType())) {
-            adb.setActionButton(DialogAction.NEUTRAL, "Запомнить");
+            adb.setActionButton(DialogAction.NEUTRAL, R.string.remember);
             View neutral = adb.getActionButton(DialogAction.NEUTRAL);
             neutral.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -384,8 +384,8 @@ public class SearchSettingsDialogFragment extends DialogFragment {
                 try {
                     final List<String> forums = ForumsTable.loadForumTitlesList(checkedForumIds);
                     if (checkedForumIds.contains("all"))
-                        forums.add(0, "Все форумы");
-                    forums.add(0, "Всего: " + forums.size());
+                        forums.add(0, getString(R.string.all_forums));
+                    forums.add(0, getString(R.string.total)+": " + forums.size());
                     handler.post(new Runnable() {
                         @Override
                         public void run() {

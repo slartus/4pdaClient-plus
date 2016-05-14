@@ -10,6 +10,7 @@ import android.widget.Toast;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -169,7 +170,7 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
         setCount();
         setListShown(true);
         mAdapter.notifyDataSetChanged();
-        setEmptyText("Нет данных");
+        setEmptyText(getString(R.string.no_data));
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -285,7 +286,7 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
             super.onPostExecute(result);
 
             if (mEx != null)
-                Toast.makeText(getContext(), AppLog.getLocalizedMessage(mEx, "Ошибка загрузки кешированного списка"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), AppLog.getLocalizedMessage(mEx, getString(R.string.cache_load_error)), Toast.LENGTH_SHORT).show();
             if (!isCancelled()) {
                 deliveryCache();
                 restoreListViewScrollPosition();

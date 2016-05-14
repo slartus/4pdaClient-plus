@@ -4,13 +4,14 @@ package org.softeg.slartus.forpdaplus.controls.quickpost.items;/*
 
 import android.content.Context;
 
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostItem;
 
 public class BBCodesAndSmilesItem extends QuickPostItem {
     private BBCodesAndSmilesQuickView view;
     @Override
-    public String getTitle() {
-        return "BB-коды и смайлы";
+    public int getTitle() {
+        return R.string.bbcodes_and_smiles;
     }
 
     @Override

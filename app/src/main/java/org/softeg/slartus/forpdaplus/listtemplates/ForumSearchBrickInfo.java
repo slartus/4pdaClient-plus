@@ -4,12 +4,13 @@ package org.softeg.slartus.forpdaplus.listtemplates;/*
 
 import android.support.v4.app.Fragment;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 
 public class ForumSearchBrickInfo extends BrickInfo {
     @Override
     public String getTitle() {
-        return "Поиск по форуму";
+        return App.getContext().getString(R.string.search_in_forum);
     }
 
     @Override

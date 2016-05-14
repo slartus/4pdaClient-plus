@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import org.softeg.slartus.forpdaapi.classes.ListData;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
 
@@ -240,9 +241,9 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
                 }
             });
             if (loading) {
-                setEmptyText("Загрузка...");
+                setEmptyText(getString(R.string.loading));
             } else {
-                setEmptyText("Нет данных");
+                setEmptyText(getString(R.string.no_data));
             }
         } catch (Throwable ignore) {
 

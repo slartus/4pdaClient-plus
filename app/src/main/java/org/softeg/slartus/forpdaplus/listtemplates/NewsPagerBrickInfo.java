@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.listtemplates;
 
 import android.support.v4.app.Fragment;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.news.NewsListFragment;
 
@@ -13,7 +14,7 @@ import java.io.Serializable;
 public class NewsPagerBrickInfo extends BrickInfo implements Serializable{
     @Override
     public String getTitle() {
-        return "Новости";
+        return App.getContext().getString(R.string.news);
     }
 
     @Override

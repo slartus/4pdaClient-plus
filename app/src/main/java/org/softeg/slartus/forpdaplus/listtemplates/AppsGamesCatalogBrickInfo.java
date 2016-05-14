@@ -4,13 +4,14 @@ package org.softeg.slartus.forpdaplus.listtemplates;/*
 
 import android.support.v4.app.Fragment;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.AppsGamesCatalogFragment;
 
 public class AppsGamesCatalogBrickInfo extends BrickInfo {
     @Override
     public String getTitle() {
-        return "Каталог игр и приложений";
+        return App.getContext().getString(R.string.catalog_games_and_apps);
     }
 
     @Override

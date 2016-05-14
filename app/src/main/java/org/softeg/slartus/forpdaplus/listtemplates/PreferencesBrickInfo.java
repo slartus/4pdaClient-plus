@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.listtemplates;
 
 import android.support.v4.app.Fragment;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 
 /**
@@ -12,7 +13,7 @@ public class PreferencesBrickInfo extends BrickInfo {
 
     @Override
     public String getTitle() {
-        return "Настройки программы";
+        return App.getContext().getString(R.string.program_settings);
     }
 
     @Override

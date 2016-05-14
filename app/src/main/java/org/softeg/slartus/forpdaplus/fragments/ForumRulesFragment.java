@@ -21,6 +21,7 @@ import android.widget.Toast;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
@@ -37,7 +38,7 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 public class ForumRulesFragment extends WebViewFragment{
     private AdvWebView m_WebView;
     private AsyncTask asyncTask;
-    public  String m_Title = "Правила форума";
+    public  String m_Title = getString(R.string.forum_rules);
     private String url = "http://4pda.ru/forum/index.php?act=boardrules";
 
     @Override
@@ -102,10 +103,10 @@ public class ForumRulesFragment extends WebViewFragment{
     }
 
     public static void showRules() {
-        MainActivity.addTab("Правила форума", "RULES", new ForumRulesFragment());
+        MainActivity.addTab(App.getContext().getString(R.string.forum_rules), "RULES", new ForumRulesFragment());
     }
     public static void showRules(String url){
-        MainActivity.addTab("Правила форума", url, newInstance(url));
+        MainActivity.addTab(App.getContext().getString(R.string.forum_rules), url, newInstance(url));
     }
 
     @Override
@@ -217,12 +218,12 @@ public class ForumRulesFragment extends WebViewFragment{
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add("Cкопировать ссылку")
+        menu.add(R.string.copy_link)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         StringUtils.copyToClipboard(getContext(), url);
-                        Toast.makeText(getActivity(), "Ссылка сопирована", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.link_copied_to_buffer, Toast.LENGTH_SHORT).show();
                         return true;
                     }
                 });

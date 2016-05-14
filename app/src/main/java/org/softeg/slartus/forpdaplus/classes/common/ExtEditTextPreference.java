@@ -109,7 +109,7 @@ public class ExtEditTextPreference extends EditTextPreference {
             }
             return true;
         } catch (Throwable ex) {
-            Toast.makeText(getContext(), "Неверный формат числа!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.invalid_number_format, Toast.LENGTH_SHORT).show();
         }
         return false;
 

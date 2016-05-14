@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.MainActivity;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.fragments.topic.EditPostFragment;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -49,7 +50,7 @@ public class SettingsQuickView extends BaseQuickView {
 
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         enableEmotics = new AppCompatCheckBox(getContext());
-        enableEmotics.setText("Включить смайлики");
+        enableEmotics.setText(R.string.enable_smiles);
         enableEmotics.setChecked(Preferences.Topic.Post.getEnableEmotics());
         enableEmotics.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -61,7 +62,7 @@ public class SettingsQuickView extends BaseQuickView {
         linearLayout.addView(enableEmotics);
 
         enableSign = new AppCompatCheckBox(getContext());
-        enableSign.setText("Добавить подпись");
+        enableSign.setText(R.string.add_sign);
         enableSign.setChecked(Preferences.Topic.Post.getEnableSign());
         enableSign.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -73,7 +74,7 @@ public class SettingsQuickView extends BaseQuickView {
         linearLayout.addView(enableSign);
 
         extendedFormButton = new AppCompatButton(getContext());
-        extendedFormButton.setText("Расширенная форма");
+        extendedFormButton.setText(R.string.extended_form);
         extendedFormButton.setLayoutParams(params);
         //extendedFormButton.setTextColor(getResources().getColor(R.color.black));
         extendedFormButton.setOnClickListener(new View.OnClickListener() {

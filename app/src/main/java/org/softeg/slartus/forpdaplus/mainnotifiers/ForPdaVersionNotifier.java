@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.BuildConfig;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -167,12 +168,12 @@ public class ForPdaVersionNotifier extends MainNotifier {
                 public void run() {
                     try {
                         addToStack(new MaterialDialog.Builder(context)
-                                .title("Новая версия!")
-                                .content("Обнаружена новая версия: " + version + "\n\n" +
-                                        "Изменения:\n" + info)
-                                .positiveText("Скачать")
-                                .negativeText("Позже")
-                                .neutralText("Забыть")
+                                .title(R.string.update_new_version)
+                                .content(context.getString(R.string.update_detected_update) + version + "\n\n" +
+                                        context.getString(R.string.update_changes) + info)
+                                .positiveText(R.string.update_download)
+                                .negativeText(R.string.update_later)
+                                .neutralText(R.string.update_forget)
                                 .callback(new MaterialDialog.ButtonCallback() {
                                     @Override
                                     public void onPositive(MaterialDialog dialog) {
@@ -193,7 +194,7 @@ public class ForPdaVersionNotifier extends MainNotifier {
                                 .build());
 
                     } catch (Exception ex) {
-                        AppLog.e(context, new NotReportException("Ошибка проверки новой версии", ex));
+                        AppLog.e(context, new NotReportException(context.getString(R.string.error_check_new_version), ex));
                     }
 
                 }
@@ -250,9 +251,9 @@ public class ForPdaVersionNotifier extends MainNotifier {
             @Override
             public void run() {
                 addToStack(new MaterialDialog.Builder(context)
-                        .title(warning ? "Предупреждение" : "Уведомление")
+                        .title(warning ? context.getString(R.string.notifier_warning) : context.getString(R.string.notifier_notification))
                         .content(Html.fromHtml(msg_text))
-                        .positiveText("Я понял(а)")
+                        .positiveText(R.string.notifier_understand)
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
@@ -267,7 +268,7 @@ public class ForPdaVersionNotifier extends MainNotifier {
     }
 
     private void showToast(Context context){
-        Toast.makeText(context, "Нет новой версии", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, R.string.update_no_update, Toast.LENGTH_SHORT).show();
     }
 
     private void msg(String text) {

@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -123,7 +124,7 @@ public class EditPostFragment extends GeneralFragment {
         args.putString("postId", postId);
         args.putString("authKey", authKey);
         args.putString("parentTag", tag);
-        MainActivity.addTab("Ред. сообщения в " + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
+        MainActivity.addTab(context.getString(R.string.edit_post_combined)+context.getString(R.string.combined_in) + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
     }
 
     public static void newPost(Activity context, String forumId, String topicId, String authKey,
@@ -136,7 +137,7 @@ public class EditPostFragment extends GeneralFragment {
         args.putString("body", body);
         args.putString("authKey", authKey);
         args.putString("parentTag", tag);
-        MainActivity.addTab("Ответ в " + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
+        MainActivity.addTab(context.getString(R.string.answer)+context.getString(R.string.combined_in) + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
     }
 
     public static void newPostWithAttach(Context context, String forumId, String topicId, String authKey,
@@ -148,7 +149,7 @@ public class EditPostFragment extends GeneralFragment {
         args.putString("postId", PostApi.NEW_POST_ID);
         args.putBundle("extras", extras);
         args.putString("authKey", authKey);
-        MainActivity.addTab("Ред. сообщения", url, newInstance(context, args));
+        MainActivity.addTab(context.getString(R.string.edit_post_combined), url, newInstance(context, args));
     }
 
     public ActionBar getSupportActionBar() {
@@ -159,16 +160,16 @@ public class EditPostFragment extends GeneralFragment {
     public boolean closeTab() {
         if (!TextUtils.isEmpty(txtPost.getText())) {
             new MaterialDialog.Builder(getMainActivity())
-                    .title("Подтвердите действие")
-                    .content("Имеется введенный текст сообщения! Закрыть?")
-                    .positiveText("Да")
+                    .title(R.string.confirm_action)
+                    .content(R.string.text_not_empty)
+                    .positiveText(R.string.ok)
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
                             getMainActivity().removeTab(getTag());
                         }
                     })
-                    .negativeText("Отмена")
+                    .negativeText(R.string.cancel)
                     .show();
             return true;
         }else{
@@ -309,16 +310,16 @@ public class EditPostFragment extends GeneralFragment {
     public boolean onBackPressed() {
         if (!TextUtils.isEmpty(txtPost.getText())) {
             new MaterialDialog.Builder(getMainActivity())
-                    .title("Подтвердите действие")
-                    .content("Имеется введенный текст сообщения! Закрыть?")
-                    .positiveText("Да")
+                    .title(R.string.confirm_action)
+                    .content(getString(R.string.text_not_empty))
+                    .positiveText(R.string.ok)
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
                             getMainActivity().removeTab(getTag());
                         }
                     })
-                    .negativeText("Отмена")
+                    .negativeText(R.string.cancel)
                     .show();
             return true;
         }else{
@@ -333,7 +334,7 @@ public class EditPostFragment extends GeneralFragment {
 
     private void sendMail() {
         if (emptyText) {
-            Toast toast = Toast.makeText(getContext(), "Введите сообщение", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getContext(), R.string.enter_message, Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.TOP, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, App.getInstance().getResources().getDisplayMetrics()));
             toast.show();
             return;
@@ -341,16 +342,16 @@ public class EditPostFragment extends GeneralFragment {
         final String body = getPostText();
         if (Preferences.Topic.getConfirmSend()) {
             new MaterialDialog.Builder(getContext())
-                    .title("Уверены?")
-                    .content("Подтвердите отправку")
-                    .positiveText("ОК")
+                    .title(R.string.is_sure)
+                    .content(R.string.confirm_sending)
+                    .positiveText(R.string.ok)
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
                             sendPost(body, getEditReasonText());
                         }
                     })
-                    .negativeText("Отмена")
+                    .negativeText(R.string.cancel)
                     .show();
         } else {
             sendPost(body, getEditReasonText());
@@ -423,7 +424,7 @@ public class EditPostFragment extends GeneralFragment {
         MenuItem item;
 
         if (!isNewPost()) {
-            item = menu.add("Причина редактирования").setIcon(R.drawable.pencil);
+            item = menu.add(R.string.reason_for_editing).setIcon(R.drawable.pencil);
             item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     toggleEditReasonDialog();
@@ -432,7 +433,7 @@ public class EditPostFragment extends GeneralFragment {
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
-        menu.add("Препросмотр").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        menu.add(R.string.preview).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 TabItem tabItem = App.getInstance().getTabByUrl("preview_"+getTag());
@@ -446,7 +447,7 @@ public class EditPostFragment extends GeneralFragment {
                 return true;
             }
         });
-        item = menu.add("Поиск по тексту");
+        item = menu.add(R.string.find_in_text);
         item.setActionView(R.layout.action_collapsible_search);
         searchEditText = (EditText) item.getActionView().findViewById(R.id.editText);
         searchEditText.setOnKeyListener(new View.OnKeyListener() {
@@ -514,9 +515,9 @@ public class EditPostFragment extends GeneralFragment {
     private void showAttachesListDialog() {
         if (m_EditPost.getAttaches().size() == 0) {
             new MaterialDialog.Builder(getMainActivity())
-                    .content("Нет ни одного вложения, загрузить?")
-                    .positiveText("Загрузить")
-                    .negativeText("Отмена")
+                    .content(R.string.no_attachments)
+                    .positiveText(R.string.do_download)
+                    .negativeText(R.string.cancel)
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
@@ -528,14 +529,14 @@ public class EditPostFragment extends GeneralFragment {
         AttachesAdapter adapter = new AttachesAdapter(m_EditPost.getAttaches(), getMainActivity());
         mAttachesListDialog = new MaterialDialog.Builder(getMainActivity())
                 .cancelable(true)
-                .title("Вложения")
+                .title(R.string.attachments)
                         //.setSingleChoiceItems(adapter, -1, null)
                 .adapter(adapter, new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
                     }
                 })
-                .neutralText("В спойлер")
+                .neutralText(R.string.in_spoiler)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onNeutral(MaterialDialog dialog) {
@@ -548,9 +549,9 @@ public class EditPostFragment extends GeneralFragment {
                         final CharSequence[] items = listItems.toArray(new CharSequence[listItems.size()]);
                         final StringBuilder str = new StringBuilder();
                         new MaterialDialog.Builder(getContext())
-                                .title("Добавить в спойлер")
-                                .positiveText("Добавить")
-                                .negativeText("Отмена")
+                                .title(R.string.add_in_spoiler)
+                                .positiveText(R.string.add)
+                                .negativeText(R.string.cancel)
                                 .callback(new MaterialDialog.ButtonCallback() {
                                     @Override
                                     public void onPositive(MaterialDialog dialog) {
@@ -578,17 +579,17 @@ public class EditPostFragment extends GeneralFragment {
                                 .show();
                     }
                 })
-                .negativeText("Отмена")
+                .negativeText(R.string.cancel)
                 .build();
         mAttachesListDialog.show();
     }
     private static final int MY_INTENT_CLICK=302;
     private void startAddAttachment() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(getActivity(), "Нет прав для данного действия", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.no_permission, Toast.LENGTH_SHORT).show();
             return;
         }
-        CharSequence[] items = new CharSequence[]{"Файл", "Изображение"};
+        CharSequence[] items = new CharSequence[]{getString(R.string.file), getString(R.string.image)};
         new MaterialDialog.Builder(getContext())
                 .items(items)
                 .itemsCallback(new MaterialDialog.ListCallback() {
@@ -607,7 +608,7 @@ public class EditPostFragment extends GeneralFragment {
                                     startActivityForResult(intent, MY_INTENT_CLICK);
 
                                 } catch (ActivityNotFoundException ex) {
-                                    Toast.makeText(getMainActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getMainActivity(), R.string.no_app_for_get_file, Toast.LENGTH_LONG).show();
                                 } catch (Exception ex) {
                                     AppLog.e(getMainActivity(), ex);
                                 }
@@ -617,12 +618,12 @@ public class EditPostFragment extends GeneralFragment {
 
                                 try {
                                     Intent imageintent = new Intent(
-                                            Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                            Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
                                         imageintent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                                     startActivityForResult(imageintent, MY_INTENT_CLICK);
                                 } catch (ActivityNotFoundException ex) {
-                                    Toast.makeText(getMainActivity(), "Ни одно приложение не установлено для выбора изображения!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getMainActivity(), R.string.no_app_for_get_image_file, Toast.LENGTH_LONG).show();
                                 } catch (Exception ex) {
                                     AppLog.e(getMainActivity(), ex);
                                 }
@@ -713,7 +714,7 @@ public class EditPostFragment extends GeneralFragment {
             this.attachFilePaths = attachFilePaths;
             dialog = new MaterialDialog.Builder(context)
                     .progress(false, 100, false)
-                    .content("Отправка файла")
+                    .content(R.string.sending_file)
                     .show();
         }
 
@@ -735,7 +736,7 @@ public class EditPostFragment extends GeneralFragment {
 
                 int i = 1;
                 for (String newAttachFilePath : attachFilePaths) {
-                    publishProgress(new Pair<>(String.format("Отправка файла %d из %d", i++, attachFilePaths.size()), 0));
+                    publishProgress(new Pair<>(String.format(getString(R.string.format_sending_file), i++, attachFilePaths.size()), 0));
                     editAttach = PostApi.attachFile(Client.getInstance(),
                             m_EditPost.getId(), newAttachFilePath, m_ProgressState);
                 }
@@ -787,7 +788,7 @@ public class EditPostFragment extends GeneralFragment {
                 if (ex != null)
                     AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getMainActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getMainActivity(), R.string.unknown_error, Toast.LENGTH_SHORT).show();
 
             }
         }
@@ -803,7 +804,7 @@ public class EditPostFragment extends GeneralFragment {
                 if (ex != null)
                     AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getMainActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getMainActivity(), R.string.unknown_error, Toast.LENGTH_SHORT).show();
 
             }
         }
@@ -832,7 +833,7 @@ public class EditPostFragment extends GeneralFragment {
 
             dialog = new MaterialDialog.Builder(context)
                     .progress(true,0)
-                    .content("Удаление файла")
+                    .content(R.string.deleting_file)
                     .build();
         }
 
@@ -868,7 +869,7 @@ public class EditPostFragment extends GeneralFragment {
                 if (ex != null)
                     AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getMainActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getMainActivity(), R.string.unknown_error, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -888,7 +889,7 @@ public class EditPostFragment extends GeneralFragment {
             this.enableSign = enableSign;
             dialog = new MaterialDialog.Builder(context)
                     .progress(true,0)
-                    .content("Редактирование сообщения")
+                    .content(R.string.edit_message)
                     .build();
         }
 
@@ -931,7 +932,7 @@ public class EditPostFragment extends GeneralFragment {
                 if (ex != null)
                     AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getMainActivity(), "Неизвестная ошибка",
+                    Toast.makeText(getMainActivity(), R.string.unknown_error,
                             Toast.LENGTH_SHORT).show();
 
             }
@@ -970,7 +971,7 @@ public class EditPostFragment extends GeneralFragment {
                             cancel(true);
                         }
                     })
-                    .content("Загрузка сообщения")
+                    .content(R.string.loading_message)
                     .build();
         }
 
@@ -995,7 +996,7 @@ public class EditPostFragment extends GeneralFragment {
         private Throwable ex;
 
         protected void onCancelled() {
-            Toast.makeText(getMainActivity(), "Отменено", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getMainActivity(), R.string.canceled, Toast.LENGTH_SHORT).show();
             //finish();
         }
 
@@ -1016,7 +1017,7 @@ public class EditPostFragment extends GeneralFragment {
                 if (ex != null)
                     AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getMainActivity(), "Неизвестная ошибка", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getMainActivity(), R.string.unknown_error, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -1038,7 +1039,7 @@ public class EditPostFragment extends GeneralFragment {
             this.enableSign = enableSign;
             dialog = new MaterialDialog.Builder(context)
                     .progress(true,0)
-                    .content("Отправка сообщения")
+                    .content(R.string.sending_message)
                     .build();
         }
 
@@ -1069,7 +1070,7 @@ public class EditPostFragment extends GeneralFragment {
 
             if (success) {
                 if (!TextUtils.isEmpty(mError)) {
-                    Toast.makeText(getMainActivity(), "Ошибка: " + mError, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getMainActivity(), getString(R.string.error)+": " + mError, Toast.LENGTH_LONG).show();
                     return;
                 }
                 if(App.getInstance().isContainsByTag(parentTag)){
@@ -1087,7 +1088,7 @@ public class EditPostFragment extends GeneralFragment {
                 if (ex != null)
                     AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getMainActivity(), "Неизвестная ошибка",
+                    Toast.makeText(getMainActivity(), R.string.unknown_error,
                             Toast.LENGTH_SHORT).show();
 
             }
@@ -1245,7 +1246,7 @@ public class EditPostFragment extends GeneralFragment {
                     @Override
                     public void run() {
                         if (search(searchText, fromSelection) == SEARCH_RESULT_NOTFOUND)
-                            searchEditText.setError("Совпадений не найдено");
+                            searchEditText.setError(getString(R.string.no_matches_found));
                         else
                             searchEditText.setError(null);
 

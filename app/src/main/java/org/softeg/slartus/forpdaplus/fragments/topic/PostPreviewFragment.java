@@ -84,7 +84,7 @@ public class PostPreviewFragment extends WebViewFragment {
         return fragment;
     }
     public static void showSpecial(String body, String tag) {
-        MainActivity.addTab("Предпросмотр " + App.getInstance().getTabByTag(tag).getTitle(), "preview_" + tag, newInstance(body, tag));
+        MainActivity.addTab(App.getContext().getString(R.string.preview)+" " + App.getInstance().getTabByTag(tag).getTitle(), "preview_" + tag, newInstance(body, tag));
     }
     public void load(String body){
         builder = new HtmlBuilder();

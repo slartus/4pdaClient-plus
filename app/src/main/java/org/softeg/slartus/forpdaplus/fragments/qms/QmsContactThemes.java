@@ -119,7 +119,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         }
 
         protected void onPreExecute() {
-            Toast.makeText(getContext(), "Получение ника пользователя...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.getting_user_nick, Toast.LENGTH_SHORT).show();
         }
 
         private Exception ex;
@@ -127,7 +127,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         protected void onPostExecute(final Boolean success) {
             if (success && !TextUtils.isEmpty(userNick)) {
                 m_Nick = userNick;
-                Toast.makeText(getContext(), "Ник получен: " + m_Nick, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.nick_received)+": " + m_Nick, Toast.LENGTH_SHORT).show();
                 setTitle(m_Nick);
                 App.getInstance().getTabByTag(getTag()).setTitle(m_Nick);
                 getMainActivity().notifyTabAdapter();
@@ -140,10 +140,10 @@ public class QmsContactThemes extends BaseLoaderListFragment {
                         }
                     });
                 else if (TextUtils.isEmpty(userNick))
-                    Toast.makeText(getMainActivity(), "Не удалось получить ник пользователя",
+                    Toast.makeText(getMainActivity(), R.string.error_getting_nick,
                             Toast.LENGTH_SHORT).show();
                 else
-                    Toast.makeText(getMainActivity(), "Неизвестная ошибка",
+                    Toast.makeText(getMainActivity(), R.string.unknown_error,
                             Toast.LENGTH_SHORT).show();
             }
         }
@@ -155,9 +155,9 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         super.onLoadFinished(loader, data);
         if(data.getItems().size()<=0&!dialogShowed) {
             new MaterialDialog.Builder(getContext())
-                    .content("С пользователем " + m_Nick + " нет диалогов. Создать?")
-                    .positiveText("Да")
-                    .negativeText("Нет")
+                    .content(String.format(getString(R.string.ask_create_dialog), m_Nick))
+                    .positiveText(R.string.yes)
+                    .negativeText(R.string.no)
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -226,7 +226,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add("Новая тема")
+        menu.add(R.string.new_thread)
                 .setIcon(R.drawable.pencil)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -237,7 +237,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
             }
         }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        menu.add("Профиль собеседника")
+        menu.add(R.string.profile_interlocutor)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 ProfileFragment.showProfile(m_Id, m_Nick);
@@ -279,7 +279,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
             //Used to put dark icons on light action bar
 
 
-            menu.add("Удалить")
+            menu.add(R.string.delete)
 
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
@@ -304,9 +304,9 @@ public class QmsContactThemes extends BaseLoaderListFragment {
             }
             if (anySelected)
                 new MaterialDialog.Builder(getMainActivity())
-                        .title("Подтвердите действие")
-                        .content("Вы действительно хотите удалить выбранные диалоги с пользователем " + m_Nick + "?")
-                        .positiveText("OK")
+                        .title(R.string.confirm_action)
+                        .content(String.format(getString(R.string.ask_deleting_dialogs), m_Nick))
+                        .positiveText(R.string.ok)
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
@@ -314,7 +314,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
                                 deleteSelectedDialogs();
                             }
                         })
-                        .negativeText("Отмена")
+                        .negativeText(R.string.cancel)
                         .show();
 
             return true;
@@ -337,7 +337,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
             m_Ids = ids;
             dialog = new MaterialDialog.Builder(context)
                     .progress(true, 0)
-                    .content("Удаление диалогов")
+                    .content(getString(R.string.deleting_dialogs))
                     .build();
         }
 
@@ -369,7 +369,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
                 if (ex != null)
                     AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getMainActivity(), "Неизвестная ошибка",
+                    Toast.makeText(getMainActivity(), R.string.unknown_error,
                             Toast.LENGTH_SHORT).show();
             }
 

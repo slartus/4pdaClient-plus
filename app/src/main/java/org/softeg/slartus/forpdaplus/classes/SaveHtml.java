@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.io.File;
@@ -21,7 +22,7 @@ public class SaveHtml {
     public SaveHtml(final Activity activity, final String html, final String defaultFileName){
         final String[] fileName = {defaultFileName};
         new MaterialDialog.Builder(activity)
-                .title("Имя файла")
+                .title(R.string.file_name)
                 .input(defaultFileName, defaultFileName, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog materialDialog, CharSequence charSequence) {
@@ -29,15 +30,15 @@ public class SaveHtml {
                     }
                 })
                 .alwaysCallInputCallback()
-                .positiveText("Ок")
-                .negativeText("Отмена")
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
                         try {
                             String state = Environment.getExternalStorageState();
                             if (!Environment.MEDIA_MOUNTED.equals(state)) {
-                                Toast.makeText(activity, "Внешнее хранилище недоступно!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, R.string.error_external_storage, Toast.LENGTH_SHORT).show();
                                 return;
                             }
 

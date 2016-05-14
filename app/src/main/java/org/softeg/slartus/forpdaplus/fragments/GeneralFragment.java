@@ -28,6 +28,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     private MainActivity mainActivity;
     protected View view;
     private boolean fragmentPaused = true;
+    protected boolean activityCreated = false;
 
     private String generalTitle = "ForPda";
     private String generalSubtitle = null;
@@ -141,10 +142,8 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
             generalUrl = savedInstanceState.getString("generalUrl");
             generalParentTag = savedInstanceState.getString("generalParentTag");
             Log.d("kek", getGeneralTitle()+" : "+getGeneralUrl()+" : "+getGeneralParentTag());
-            getThisTab().setTitle(generalTitle).setUrl(getGeneralUrl()).setParentTag(generalParentTag);
-            getMainActivity().notifyTabAdapter();
+            activityCreated = true;
         }
-
     }
 
     @Override
@@ -190,6 +189,11 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
             getMainActivity().setTitle(generalTitle);
         if(getSupportActionBar()!=null)
             getSupportActionBar().setSubtitle(generalSubtitle);
+
+        if(activityCreated){
+            getThisTab().setTitle(generalTitle).setUrl(getGeneralUrl()).setParentTag(generalParentTag);
+            getMainActivity().notifyTabAdapter();
+        }
     }
 
     @Override

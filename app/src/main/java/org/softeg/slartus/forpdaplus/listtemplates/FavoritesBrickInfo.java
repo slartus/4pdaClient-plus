@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.listtemplates;
 
 import android.support.v4.app.Fragment;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.FavoritesListFragment;
 
@@ -13,7 +14,7 @@ public class FavoritesBrickInfo extends BrickInfo {
     public static final String NAME = "Favorites";
     @Override
     public String getTitle() {
-        return "Избранное";
+        return App.getContext().getString(R.string.favorites);
     }
 
     @Override

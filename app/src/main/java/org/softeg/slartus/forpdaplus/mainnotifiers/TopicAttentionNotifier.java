@@ -12,6 +12,7 @@ import org.softeg.slartus.forpdacommon.DateExtensions;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdacommon.Http;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
@@ -80,10 +81,10 @@ public class TopicAttentionNotifier extends MainNotifier {
                         public void run() {
                             MaterialDialog alertDialog =
                                     new MaterialDialog.Builder(context)
-                                            .title("Объявление клиента")
+                                            .title(R.string.notice_client)
                                             .cancelable(false)
                                             .content(Html.fromHtml(topicAttention))
-                                            .positiveText("Ок")
+                                            .positiveText(R.string.ok)
                                             .build();
                             addToStack(alertDialog);
                         }

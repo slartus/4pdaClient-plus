@@ -297,7 +297,7 @@ public class QmsChatFragment extends WebViewFragment {
                     startActivityForResult(intent, FILECHOOSER_RESULTCODE);
 
                 } catch (ActivityNotFoundException ex) {
-                    Toast.makeText(getMainActivity(), "Ни одно приложение не установлено для выбора файла!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getMainActivity(), R.string.no_app_for_get_file, Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {
                     AppLog.e(getMainActivity(), ex);
                 }
@@ -363,7 +363,7 @@ public class QmsChatFragment extends WebViewFragment {
             @Override
             public void run() {
                 if (checkBoxNames == null) {
-                    Toast.makeText(getMainActivity(), "Не выбраны сообщения для удаления!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getMainActivity(), R.string.no_messages_for_delete, Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -376,15 +376,15 @@ public class QmsChatFragment extends WebViewFragment {
                     }
                 }
                 if (ids.size() == 0) {
-                    Toast.makeText(getMainActivity(), "Не выбраны сообщения для удаления!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getMainActivity(), R.string.no_messages_for_delete, Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 new MaterialDialog.Builder(getMainActivity())
-                        .title("Подтвердите действие")
+                        .title(R.string.confirm_action)
                         .cancelable(true)
-                        .content(String.format("Вы действительно хотите удалить выбранные сообщения (%d)?", ids.size()))
-                        .positiveText("Удалить")
+                        .content(String.format(getString(R.string.ask_delete_messages), ids.size()))
+                        .positiveText(R.string.delete)
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
                             public void onPositive(MaterialDialog dialog) {
@@ -392,7 +392,7 @@ public class QmsChatFragment extends WebViewFragment {
                                 m_SendTask.execute(ids);
                             }
                         })
-                        .negativeText("Отмена")
+                        .negativeText(R.string.cancel)
                         .show();
             }
         });
@@ -401,10 +401,10 @@ public class QmsChatFragment extends WebViewFragment {
     public void deleteDialog() {
 
         new MaterialDialog.Builder(getMainActivity())
-                .title("Подтвердите действие")
+                .title(R.string.confirm_action)
                 .cancelable(true)
-                .content("Вы действительно хотите удалить диалог?")
-                .positiveText("Удалить")
+                .content(R.string.ask_delete_dialog)
+                .positiveText(R.string.delete)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
@@ -414,7 +414,7 @@ public class QmsChatFragment extends WebViewFragment {
                         m_SendTask.execute();
                     }
                 })
-                .negativeText("Отмена")
+                .negativeText(R.string.cancel)
                 .show();
 
     }
@@ -524,7 +524,7 @@ public class QmsChatFragment extends WebViewFragment {
         uiHandler.post(new Runnable() {
             public void run() {
 //                setLoading(false);
-                setSubtitle("Обновление");
+                setSubtitle(getString(R.string.refreshing));
             }
         });
 
@@ -573,9 +573,9 @@ public class QmsChatFragment extends WebViewFragment {
                 } else {
                     if ("Такого диалога не существует.".equals(finalEx.getMessage())) {
                         new MaterialDialog.Builder(getMainActivity())
-                                .title("Ошибка")
+                                .title(R.string.error)
                                 .content(finalEx.getMessage())
-                                .positiveText("ОК")
+                                .positiveText(R.string.ok)
                                 .callback(new MaterialDialog.ButtonCallback() {
                                     @Override
                                     public void onPositive(MaterialDialog dialog) {
@@ -614,7 +614,7 @@ public class QmsChatFragment extends WebViewFragment {
                     }
                 });
             else
-                Toast.makeText(getMainActivity(), "Неизвестная ошибка",
+                Toast.makeText(getMainActivity(), R.string.unknown_error,
                         Toast.LENGTH_SHORT).show();
         }
     }
@@ -641,7 +641,7 @@ public class QmsChatFragment extends WebViewFragment {
 
     private void startSendMessage() {
         if (emptyText) {
-            Toast toast = Toast.makeText(getContext(), "Введите сообщение", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getContext(), R.string.EnterMessage_, Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.TOP, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64, App.getInstance().getResources().getDisplayMetrics()));
             toast.show();
             return;
@@ -688,7 +688,7 @@ public class QmsChatFragment extends WebViewFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add("Обновить")
+        menu.add(R.string.refresh)
                 .setIcon(R.drawable.refresh)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -697,7 +697,7 @@ public class QmsChatFragment extends WebViewFragment {
             }
         }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        menu.add("Настройки")
+        menu.add(R.string.setting)
                 .setIcon(R.drawable.settings_white)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -707,7 +707,7 @@ public class QmsChatFragment extends WebViewFragment {
             }
         }).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-        menu.add("Удалить сообщения")
+        menu.add(R.string.delete_messages)
                 .setIcon(R.drawable.delete)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -716,7 +716,7 @@ public class QmsChatFragment extends WebViewFragment {
             }
         }).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-        menu.add("Удалить диалог")
+        menu.add(R.string.delete_dialog)
                 .setIcon(R.drawable.delete)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -725,7 +725,7 @@ public class QmsChatFragment extends WebViewFragment {
             }
         }).setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
-        menu.add("Размер шрифта")
+        menu.add(R.string.font_size)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
@@ -734,7 +734,7 @@ public class QmsChatFragment extends WebViewFragment {
                     }
                 });
 
-        menu.add("Профиль собеседника")
+        menu.add(R.string.profile_interlocutor)
             .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 showCompanionProfile();
@@ -767,7 +767,7 @@ public class QmsChatFragment extends WebViewFragment {
         public SendTask(Context context) {
             dialog = new MaterialDialog.Builder(context)
                     .progress(true, 0)
-                    .content("Отправка сообщения")
+                    .content(getString(R.string.sending_message))
                     .build();
         }
 
@@ -815,7 +815,7 @@ public class QmsChatFragment extends WebViewFragment {
 
             dialog = new MaterialDialog.Builder(context)
                     .progress(true, 0)
-                    .content("Удаление сообщений")
+                    .content(R.string.deleting_messages)
                     .build();
         }
 
@@ -860,7 +860,7 @@ public class QmsChatFragment extends WebViewFragment {
             m_Ids = ids;
             dialog = new MaterialDialog.Builder(context)
                     .progress(true, 0)
-                    .content("Удаление диалогов")
+                    .content(R.string.deleting_dialogs)
                     .build();
         }
 
@@ -892,7 +892,7 @@ public class QmsChatFragment extends WebViewFragment {
                 if (ex != null)
                     AppLog.e(getMainActivity(), ex);
                 else
-                    Toast.makeText(getMainActivity(), "Неизвестная ошибка",
+                    Toast.makeText(getMainActivity(), R.string.unknown_error,
                             Toast.LENGTH_SHORT).show();
             }
 

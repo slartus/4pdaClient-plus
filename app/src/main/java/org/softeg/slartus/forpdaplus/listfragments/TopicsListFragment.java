@@ -190,13 +190,13 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                     MainActivity.showListFragment(topic.getId().toString(), new NotesBrickInfo().getName(), args);
                 }
             }));
-            list.add(new MenuListDialog("Ссылка", new Runnable() {
+            list.add(new MenuListDialog(getString(R.string.link), new Runnable() {
                 @Override
                 public void run() {
                     showLinkMenu(getContext(), topic);
                 }
             }));
-            list.add(new MenuListDialog("Опции", new Runnable() {
+            list.add(new MenuListDialog(getString(R.string.options), new Runnable() {
                 @Override
                 public void run() {
                     showOptionsMenu(getContext(), mHandler, topic, null);
@@ -213,12 +213,12 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
         ExtUrl.addUrlSubMenu(mHandler, context, list,
                 TopicUtils.getTopicUrl(topic.getId().toString(), TopicUtils.getOpenTopicArgs(topic.getId(), getListName())), topic.getId().toString(),
                 topic.getMain().toString());
-        ExtUrl.showContextDialog(context, "Ссылка", list);
+        ExtUrl.showContextDialog(context, getString(R.string.link), list);
     }
     public void showOptionsMenu(final Context context, final Handler mHandler, final IListItem topic, final String shareItUrl){
         final List<MenuListDialog> list = new ArrayList<>();
         configureOptionsMenu(context, mHandler, list, topic, shareItUrl);
-        ExtUrl.showContextDialog(context, "Опции", list);
+        ExtUrl.showContextDialog(context, getString(R.string.options), list);
     }
 
     public void configureOptionsMenu(final Context context, final Handler mHandler, List<MenuListDialog> optionsMenu, final IListItem listItem,
@@ -232,7 +232,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
         if (Client.getInstance().getLogined() && !topic.isInProgress()) {
 
             Boolean isFavotitesList = FavoritesBrickInfo.NAME.equals(getListName());
-            String title = isFavotitesList ? "Изменить подписку" : "Добавить в избранное";
+            String title = isFavotitesList ? context.getString(R.string.change_subscription) : context.getString(R.string.add_to_favorite);
 
             optionsMenu.add(new MenuListDialog(title, new Runnable() {
                 @Override
@@ -257,7 +257,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                 optionsMenu.add(new MenuListDialog(context.getString(R.string.DeleteFromFavorites), new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(context, "Запрос на удаление отправлен", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.request_sent, Toast.LENGTH_SHORT).show();
                         new TopicListItemTask(context, (Topic) topic, mAdapter) {
                             @Override
                             public String doInBackground(Topic topic, String... pars) throws ParseException, IOException, URISyntaxException {
@@ -273,10 +273,10 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                 }));
 
                 final FavTopic favTopic = (FavTopic) topic;
-                optionsMenu.add(new MenuListDialog((favTopic.isPinned()?"Открепить":"Закрепить")+" в избранном", new Runnable() {
+                optionsMenu.add(new MenuListDialog((favTopic.isPinned()?context.getString(R.string.unpin):context.getString(R.string.pin))+context.getString(R.string.in_favorites_combined), new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(context, "Запрос на \"закрепить\" отправлен", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.request_sent, Toast.LENGTH_SHORT).show();
                         new TopicListItemTask(context, topic, mAdapter) {
                             @Override
                             public String doInBackground(Topic topic, String... pars)
@@ -299,7 +299,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                 }
             }));
         }
-        optionsMenu.add(new MenuListDialog("Вложения", new Runnable() {
+        optionsMenu.add(new MenuListDialog(getString(R.string.attachments), new Runnable() {
             @Override
             public void run() {
                 TopicAttachmentListFragment.showActivity(context, listItem.getId());
@@ -359,7 +359,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             if (tryCreatePost(topic))
                 return;
             ActionSelectDialogFragment.execute(getActivity(),
-                    "Действие по умолчанию",
+                    getString(R.string.default_action),
                     String.format("%s.navigate_action", getListName()),
                     new CharSequence[]{getString(R.string.navigate_getfirstpost), getString(R.string.navigate_getlastpost), getString(R.string.navigate_getnewpost), getString(R.string.navigate_last_url)},
                     new CharSequence[]{Topic.NAVIGATE_VIEW_FIRST_POST, Topic.NAVIGATE_VIEW_LAST_POST, Topic.NAVIGATE_VIEW_NEW_POST, Topic.NAVIGATE_VIEW_LAST_URL},
@@ -368,7 +368,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                         public void execute(CharSequence value) {
                             showTopicActivity(topic, TopicUtils.getUrlArgs(topic.getId(), value.toString(), Topic.NAVIGATE_VIEW_FIRST_POST.toString()));
                         }
-                    }, "Вы можете изменить действие по умолчанию долгим тапом по теме"
+                    }, getString(R.string.default_action_notify)
             );
 
 
@@ -480,7 +480,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add(0,settingItemId,0,"Настройки списка")
+        menu.add(0,settingItemId,0, R.string.list_settings)
                 .setIcon(R.drawable.settings_white)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override

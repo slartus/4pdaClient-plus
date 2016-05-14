@@ -130,10 +130,10 @@ public class PlayerActivity extends AppCompatActivity {
             startVideo(savedSelectedPlayer, activity, youtubeUrl);
             return;
         }
-        CharSequence[] items = {"Плеер клиента", "Проигрыватель системы"};
+        CharSequence[] items = {App.getContext().getString(R.string.client_player), App.getContext().getString(R.string.system_player)};
         final int[] selected_player = {0};
         new MaterialDialog.Builder(activity)
-                .title("Выберите проигрыватель")
+                .title(R.string.select_player)
                 .items(items)
                 .itemsCallbackSingleChoice(selected_player[0], new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
@@ -143,8 +143,8 @@ public class PlayerActivity extends AppCompatActivity {
                     }
                 })
                 .alwaysCallSingleChoiceCallback()
-                .positiveText("Всегда")
-                .neutralText("Только сейчас")
+                .positiveText(R.string.always)
+                .neutralText(R.string.only_now)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {
@@ -275,7 +275,7 @@ public class PlayerActivity extends AppCompatActivity {
             titles[i++] = format.getTitle();
         }
         new MaterialDialog.Builder(getContext())
-                .title("Качество видео ")
+                .title(R.string.quality_video)
                 .items(titles)
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
@@ -456,10 +456,10 @@ public class PlayerActivity extends AppCompatActivity {
             SubMenu subMenu;
             if (parseResult!=null&&parseResult.getQualities().size() > 1) {
 
-                subMenu = menu.addSubMenu("Качество");
+                subMenu = menu.addSubMenu(R.string.quality);
 
                 subMenu.getItem().setIcon(R.drawable.settings_white);
-                subMenu.getItem().setTitle("Качество");
+                subMenu.getItem().setTitle(R.string.quality);
 
 
                 for (final Quality format : parseResult.getQualities()) {
@@ -475,28 +475,28 @@ public class PlayerActivity extends AppCompatActivity {
                 }
                 subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
-            subMenu = menu.addSubMenu("Ссылка").setIcon(R.drawable.share_variant);
+            subMenu = menu.addSubMenu(R.string.link).setIcon(R.drawable.share_variant);
 
             addUrlMenu(getActivity(), subMenu, getMainActivity().getPlayedRequestUrl());
             subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
 
         public void addUrlMenu(final Context context, Menu menu, final String url) {
-            menu.add("Открыть в...").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            menu.add(R.string.open_in).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     ExtUrl.showInBrowser(context, url);
                     return true;
                 }
             });
 
-            menu.add("Поделиться ссылкой").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            menu.add(R.string.share_link).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     ExtUrl.shareIt(context, url, url, url);
                     return true;
                 }
             });
 
-            menu.add("Скопировать ссылку").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            menu.add(R.string.copy_link).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     StringUtils.copyToClipboard(context, url);
                     return true;

@@ -39,7 +39,7 @@ public class CommentsFragment extends BaseDevDbFragment implements FLifecycleUti
         args.putString(LIST_ARG, list);
         f.setArguments(args);
         f.setContext(context);
-        f.setTitle("Отзывы");
+        f.setTitle(context.getString(R.string.reviews));
         return f;
     }
 

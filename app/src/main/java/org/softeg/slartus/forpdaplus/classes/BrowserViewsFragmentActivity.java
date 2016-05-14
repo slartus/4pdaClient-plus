@@ -117,10 +117,10 @@ public abstract class BrowserViewsFragmentActivity extends AppCompatActivity imp
             }
         });
         new MaterialDialog.Builder(this)
-                .title("Размер шрифта")
+                .title(R.string.font_size)
                 .customView(v,true)
-                .positiveText("OK")
-                .negativeText("Отмена")
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
                     public void onPositive(MaterialDialog dialog) {

@@ -4,6 +4,8 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdacommon.NotReportException;
+import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.R;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;
@@ -67,18 +69,18 @@ public class CountingMultipartEntity extends MultipartEntity {
         public void write(byte[] b, int off, int len) throws IOException {
             out.write(b, off, len);
             if (listener.isCanceled())
-                throw new NotReportException("Загрузка отменена пользователем");
+                throw new NotReportException(App.getContext().getString(R.string.loading_canceled_by_user));
             this.transferred += len;
 
-            listener.update("Загрузка", (int) (transferred * 100.0 / m_Length));
+            listener.update(App.getContext().getString(R.string.loading), (int) (transferred * 100.0 / m_Length));
         }
 
         public void write(int b) throws IOException {
             out.write(b);
             if (listener.isCanceled())
-                throw new NotReportException("Загрузка отменена пользователем");
+                throw new NotReportException(App.getContext().getString(R.string.loading_canceled_by_user));
             this.transferred++;
-            listener.update("Загрузка", (int) (transferred / m_Length * 100));
+            listener.update(App.getContext().getString(R.string.loading), (int) (transferred / m_Length * 100));
         }
 
         @Override

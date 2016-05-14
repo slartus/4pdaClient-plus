@@ -16,6 +16,7 @@ import org.softeg.slartus.forpdaapi.post.PostAttach;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
+import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
@@ -95,13 +96,13 @@ public class TopicAttachmentListFragment extends BaseTaskListFragment {
         final PostAttach attach=(PostAttach)item;
 
         final List<MenuListDialog> list = new ArrayList<>();
-        list.add(new MenuListDialog("Скачать вложение", new Runnable() {
+        list.add(new MenuListDialog(getString(R.string.do_download), new Runnable() {
             @Override
             public void run() {
                 DownloadsService.download(getActivity(), attach.getUrl().toString(), false);
             }
         }));
-        list.add(new MenuListDialog("Перейти к сообщению", new Runnable() {
+        list.add(new MenuListDialog(getString(R.string.jump_to_page), new Runnable() {
             @Override
             public void run() {
                 IntentActivity.showTopic(attach.getPostUrl());

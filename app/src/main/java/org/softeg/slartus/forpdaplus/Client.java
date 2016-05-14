@@ -150,7 +150,7 @@ public class Client implements IHttpClient {
         String error = PostApi.claim(this, themeId, postId, message);
         if (!TextUtils.isEmpty(error))
             return error;
-        return "Жалоба отправлена";
+        return App.getContext().getString(R.string.complaint_sent);
     }
 
 
@@ -186,10 +186,10 @@ public class Client implements IHttpClient {
 
     public String performGetWithCheckLogin(String url, OnProgressChangedListener beforeGetPage, OnProgressChangedListener afterGetPage) throws IOException {
         if (beforeGetPage != null)
-            beforeGetPage.onProgressChanged("Получение данных...");
+            beforeGetPage.onProgressChanged(App.getContext().getString(R.string.receiving_data));
         String body = performGet(url);
         if (beforeGetPage != null)
-            afterGetPage.onProgressChanged("Получение данных...");
+            afterGetPage.onProgressChanged(App.getContext().getString(R.string.receiving_data));
 
         /*Matcher headerMatcher = PatternExtensions.compile("<body>([\\s\\S]*?)globalmess").matcher(body);
         if (headerMatcher.find()) {
@@ -224,7 +224,7 @@ public class Client implements IHttpClient {
 
         }
         if (TextUtils.isEmpty(res))
-            throw new NotReportException("Сервер вернул пустую страницу");
+            throw new NotReportException(App.getContext().getString(R.string.server_return_empty_page));
         // m_HttpHelper.close();
         return res;
     }
@@ -245,7 +245,7 @@ public class Client implements IHttpClient {
 
         }
         if (checkEmptyResult && TextUtils.isEmpty(res))
-            throw new NotReportException("Сервер вернул пустую страницу");
+            throw new NotReportException(App.getContext().getString(R.string.server_return_empty_page));
         else if(checkLoginAndMails){
             checkLogin(res);
             if(!s.contains("xhr"))
@@ -401,10 +401,10 @@ public class Client implements IHttpClient {
             final LoginDialog loginDialog = new LoginDialog(mContext);
 
             MaterialDialog dialog = new MaterialDialog.Builder(mContext)
-                    .title("Вход")
+                    .title(R.string.login)
                     .customView(loginDialog.getView(), true)
-                    .positiveText("Вход")
-                    .negativeText("Отмена")
+                    .positiveText(R.string.login)
+                    .negativeText(R.string.cancel)
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
@@ -693,7 +693,7 @@ public class Client implements IHttpClient {
 
         checkLogin(res);
         if (m_Logined)
-            m_LoginFailedReason = "Неудачный выход";
+            m_LoginFailedReason = App.getContext().getString(R.string.bad_logout);
 
         return !m_Logined;
     }
@@ -705,9 +705,9 @@ public class Client implements IHttpClient {
 
     public String loadPageAndCheckLogin(String url, OnProgressChangedListener progressChangedListener) throws IOException {
 
-        doOnOnProgressChanged(progressChangedListener, "Получение данных...");
+        doOnOnProgressChanged(progressChangedListener, App.getContext().getString(R.string.receiving_data));
         String body = performGet(url);
-        doOnOnProgressChanged(progressChangedListener, "Обработка данных...");
+        doOnOnProgressChanged(progressChangedListener, App.getContext().getString(R.string.processing_data));
 
         /*Matcher headerMatcher = PatternExtensions.compile("<body>([\\s\\S]*?)globalmess").matcher(body);
         if (headerMatcher.find()) {
@@ -838,10 +838,10 @@ public class Client implements IHttpClient {
 
 
             if (TextUtils.isEmpty(topicBody))
-                throw new NotReportException("Сервер вернул пустую страницу");
+                throw new NotReportException(context.getString(R.string.server_return_empty_page));
             if (topicBody.startsWith("<h1>"))
-                throw new NotReportException("Ответ сайта 4pda: " + Html.fromHtml(topicBody).toString());
-            throw new IOException("Ошибка разбора страницы id=" + id);
+                throw new NotReportException(context.getString(R.string.site_response) + Html.fromHtml(topicBody).toString());
+            throw new IOException(context.getString(R.string.error_parsing_page)+" id=" + id);
         }
 
         Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(context);
