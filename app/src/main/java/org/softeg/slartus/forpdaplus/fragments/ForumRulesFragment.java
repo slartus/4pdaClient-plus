@@ -38,7 +38,7 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 public class ForumRulesFragment extends WebViewFragment{
     private AdvWebView m_WebView;
     private AsyncTask asyncTask;
-    public  String m_Title = getString(R.string.forum_rules);
+    public  String m_Title = App.getContext().getString(R.string.forum_rules);
     private String url = "http://4pda.ru/forum/index.php?act=boardrules";
 
     @Override

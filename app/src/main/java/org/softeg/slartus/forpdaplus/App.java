@@ -492,7 +492,8 @@ public class App extends android.app.Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        refWatcher = LeakCanary.install(this);
+        if(BuildConfig.FLAVOR!="rel")
+            refWatcher = LeakCanary.install(this);
     }
 
     public static RefWatcher getRefWAtcher(Context context) {

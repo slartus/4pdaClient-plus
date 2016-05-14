@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.devdb.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,27 +59,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         });
 
         //Picasso.with(mContext).load(obj.getReviewImgLink()).into(holder.image);
-        imageLoader.displayImage(obj.getReviewImgLink(), holder.image, new ImageLoadingListener() {
-
-            @Override
-            public void onLoadingStarted(String p1, View p2) {
-                p2.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onLoadingFailed(String p1, View p2, FailReason p3) {
-            }
-
-            @Override
-            public void onLoadingComplete(String p1, View p2, Bitmap p3) {
-                p2.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onLoadingCancelled(String p1, View p2) {
-
-            }
-        });
+        imageLoader.displayImage(obj.getReviewImgLink(), holder.image);
     }
 
     @Override

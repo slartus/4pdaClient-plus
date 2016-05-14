@@ -163,7 +163,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         setTheme(App.getInstance().getThemeStyleResID());
         super.onCreate(saveInstance);
 
-        App.getRefWAtcher(this);
+        if(BuildConfig.FLAVOR!="rel")
+            App.getRefWAtcher(this);
 
         loadPreferences(App.getInstance().getPreferences());
         if(shortUserInfo!=null)

@@ -58,7 +58,6 @@ public class ReviewsFragment extends BaseDevDbFragment implements FLifecycleUtil
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initImageLoader(App.getContext());
     }
 
     @Nullable
@@ -93,27 +92,6 @@ public class ReviewsFragment extends BaseDevDbFragment implements FLifecycleUtil
     }
 */
 
-    private static void initImageLoader(Context context) {
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageForEmptyUri(R.drawable.no_image)
-                .delayBeforeLoading(1000)
-                .resetViewBeforeLoading(false)  // default
-                .cacheInMemory(true)
-                .cacheOnDisc(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .handler(new Handler())
-                .build();
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                .threadPoolSize(5)
-                .threadPriority(Thread.MIN_PRIORITY)
-                .denyCacheImageMultipleSizesInMemory()
-                .memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024)) // 2 Mb
-                .discCacheFileNameGenerator(new HashCodeFileNameGenerator())
-                .defaultDisplayImageOptions(options)
-                .build();
-
-        ImageLoader.getInstance().init(config);
-    }
 
     @Override
     public void onPauseFragment() {

@@ -128,7 +128,7 @@ public class ParseHelper {
         String url, imgLink, title, date, description;
         List<ReviewsModel> cache = new ArrayList<>();
         for(Element element:main.select("#reviews .article-list li")){
-            url = "http://4pda.ru" + element.select("a").first().attr("href");
+            url = element.select("a").first().attr("href");
             imgLink = element.select(".article-img img").first().attr("src");
             title = element.select(".title").first().text();
             date = element.select(".upd").first().text();
