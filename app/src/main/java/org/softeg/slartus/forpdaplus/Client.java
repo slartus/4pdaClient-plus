@@ -2,9 +2,7 @@ package org.softeg.slartus.forpdaplus;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,8 +13,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
 import org.softeg.slartus.forpdaapi.ForumsApi;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.LoginResult;
@@ -721,6 +717,49 @@ public class Client implements IHttpClient {
     }
 
 
+    //loadTopic
+    private final static Pattern pollFormPattern = Pattern.compile("<form[^>]*action=\"[^\"]*addpoll=1[^\"]*\"[^>]*>([\\s\\S]*?)</form>", Pattern.CASE_INSENSITIVE);
+    private final static Pattern pollTitlePattern = Pattern.compile("<b>(.*?)</b>");
+    private final static Pattern pollQuestionsPattern = Pattern.compile("strong>(.*?)</strong[\\s\\S]*?table[^>]*?>([\\s\\S]*?)</table>");
+    private final static Pattern pollVotedPattern = Pattern.compile("(<input[^>]*?>)&nbsp;<b>([^>]*)</b>");
+    private final static Pattern pollNotVotedPattern = Pattern.compile("<td[^>]*>([^<]*?)</td><td[^\\[]*\\[ <b>(.*?)</b>[^\\[]*\\[([^\\]]*)");
+    private final static Pattern pollBottomPattern = Pattern.compile("<td class=\"row1\" colspan=\"3\" align=\"center\"><b>([^<]*?)</b>[\\s\\S]*?class=\"formbuttonrow\">([\\s\\S]*?)</td");
+
+
+    private final static Pattern beforePostsPattern = PatternExtensions.compile("^([\\s\\S]*?)<div data-post");
+
+    //1 - id поста
+    //2 - дата
+    //3 - номер поста
+    //4 - ник
+    //5 - урл аватарки
+    //6 - куратор или нет, если нет, то null
+    //7 - группа
+    //8 - online|offline
+    //9 - id юзера
+    //10 - репа
+    //11 - + - репы, действия
+    //12 - класс тела
+    //13 - тело
+    //Да простит меня господь за это. Действие во благо не счетается грехом, ведь верно?
+    private final static Pattern postsPattern = Pattern
+            .compile("<div data-post=\"(\\d+)\"[^>]*>[\\s\\S]*?post_date[^>]*?>(.*?)&nbsp;[^#]*#(\\d+)[\\s\\S]*?\\[B\\](.*?),\\[/B\\]\\s*'\\)\"\\s*data-av=\"([^\"]*)\">[\\s\\S]*?<span class=\"post_user_info[^\"]*\"[^>]*>(<strong[^>]*>.*?<.strong><br .>)?Группа: (.*?)<br..><font color=\"([^\"]*)\">[\\s\\S]*?mid=(\\d+)[\\s\\S]*?<span id=\"ajaxrep-\\d+\">(.\\d+|\\d+)</span>([\\s\\S]*?)<div class=\"post_body([^>]*?)\"[^>]*?\">([\\s\\S]*?)</div></div>(?=<div data-post=\"\\d+\"[^>]*>|<!-- TABLE FOOTER -->)",
+                    Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+    private final static Pattern editPattern = PatternExtensions.compile("do=edit_post[^\"]*\"");
+    private final static Pattern deletePattern = PatternExtensions.compile("onclick=\"[^\"]*seMODdel");
+
+
+    //createTopic
+    private final static Pattern navStripPattern = PatternExtensions.compile("<div id=\"navstrip\">(.*?)</div>");
+    private final static Pattern userPattern =
+            PatternExtensions.compile("act=login&CODE=03&k=([a-z0-9]{32})");
+    private final static Pattern titlePattern = PatternExtensions.compile("<title>(.*?) - 4PDA</title>");
+    private final static Pattern descriptionPattern = PatternExtensions.compile("<div class=\"topic_title_post\">([^<]*)<");
+    private final static Pattern moderatorTitlePattern = PatternExtensions.compile("onclick=\"return setpidchecks\\(this.checked\\);\".*?>&nbsp;(.*?)<");
+    private final static Pattern pagesCountPattern = PatternExtensions.compile("var pages = parseInt\\((\\d+)\\);");
+    private final static Pattern lastPageStartPattern = PatternExtensions.compile("(http://4pda.ru)?/forum/index.php\\?showtopic=\\d+&amp;st=(\\d+)");
+    private final static Pattern currentPagePattern = PatternExtensions.compile("<span class=\"pagecurrent\">(\\d+)</span>");
+
     public TopicBodyBuilder parseTopic(String topicPageBody,
                                        Context context, String themeUrl, Boolean spoilFirstPost) throws IOException {
 
@@ -744,16 +783,6 @@ public class Client implements IHttpClient {
 
 
     public static ExtTopic createTopic(String id, String page) {
-
-        final Pattern navStripPattern = PatternExtensions.compile("<div id=\"navstrip\">(.*?)</div>");
-        final Pattern userPattern =
-                PatternExtensions.compile("act=login&CODE=03&k=([a-z0-9]{32})");
-        final Pattern titlePattern = PatternExtensions.compile("<title>(.*?) - 4PDA</title>");
-        final Pattern descriptionPattern = PatternExtensions.compile("<div class=\"topic_title_post\">([^<]*)<");
-        final Pattern moderatorTitlePattern = PatternExtensions.compile("onclick=\"return setpidchecks\\(this.checked\\);\".*?>&nbsp;(.*?)<");
-        final Pattern pagesCountPattern = PatternExtensions.compile("var pages = parseInt\\((\\d+)\\);");
-        final Pattern lastPageStartPattern = PatternExtensions.compile("(http://4pda.ru)?/forum/index.php\\?showtopic=\\d+&amp;st=(\\d+)");
-        final Pattern currentPagePattern = PatternExtensions.compile("<span class=\"pagecurrent\">(\\d+)</span>");
 
         String title = "";
         Matcher m = titlePattern.matcher(page);
@@ -814,9 +843,9 @@ public class Client implements IHttpClient {
                                        Boolean logined, String urlParams) throws IOException {
 
 
-        Matcher mainMatcher = PatternExtensions
-                .compile("^([\\s\\S]*?)<div data-post")
-                .matcher(topicBody);
+        Log.d("themed1", "start main matcher");
+
+        Matcher mainMatcher = beforePostsPattern.matcher(topicBody);
 
         if (!mainMatcher.find()) {
             Matcher errorMatcher = Pattern.compile("<div class=\"wr va-m text\">([\\s\\S]*?)</div>", Pattern.CASE_INSENSITIVE)
@@ -843,80 +872,84 @@ public class Client implements IHttpClient {
                 throw new NotReportException(context.getString(R.string.site_response) + Html.fromHtml(topicBody).toString());
             throw new IOException(context.getString(R.string.error_parsing_page)+" id=" + id);
         }
-
+        Log.d("themed1", "end main matcher");
         Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(context);
 
+        Log.d("themed1", "start create topic");
         ExtTopic topic = createTopic(id, mainMatcher.group(1));
-
+        Log.d("themed1", "end create topic");
+        Log.d("themed1", "start replace");
         topicBody = topicBody.replace("^[\\s\\S]*?<div data-post", "<div data-post").replace("<div class=\"topic_foot_nav\">[\\s\\S]*", "<div class=\"topic_foot_nav\">");
+        Log.d("themed1", "end replace");
 
         TopicBodyBuilder topicBodyBuilder = new TopicBodyBuilder(context, logined, topic, urlParams,
                 isWebviewAllowJavascriptInterface);
 
         //Boolean browserStyle = prefs.getBoolean("theme.BrowserStylePreRemove", false);
         topicBodyBuilder.beginTopic();
-
+        Log.d("themed1", "start poll matcher");
         //>>ОПРОС
-        Matcher pollMatcher = Pattern.compile("<form[^>]*action=\"[^\"]*addpoll=1[^\"]*\"[^>]*>([\\s\\S]*?)</form>", Pattern.CASE_INSENSITIVE)
-                .matcher(mainMatcher.group(1));
+        Matcher pollMatcher = pollFormPattern.matcher(mainMatcher.group(1));
         if (pollMatcher.find()) {
+            String pollSource = pollMatcher.group(1);
             StringBuilder pollBuilder = new StringBuilder();
+            String percent;
+            Matcher temp;
 
-            Element poll = Jsoup.parse(pollMatcher.group(1)).select(".ipbtable").first();
             pollBuilder.append("<form action=\"modules.php\" method=\"get\">");
-            String poll_title = poll.select("th b").first().text();
-            if(!poll_title.equals("-")) pollBuilder.append("<div class=\"poll_title\"><span>").append(poll_title).append("</span></div>");
+            pollMatcher = pollTitlePattern.matcher(pollSource);
+            if(pollMatcher.find()){
+                if(!pollMatcher.group(1).equals("-"))
+                    pollBuilder.append("<div class=\"poll_title\"><span>").append(pollMatcher.group(1)).append("</span></div>");
+            }
             pollBuilder.append("<div class=\"poll_body\">");
-
             boolean voted = false;
-            for(Element element:poll.select(".borderwrap")){
-                if(!element.select(".ipbtable").first().text().equals("")) {
-                    if (element.select("input").isEmpty()) voted = true;
-                    pollBuilder.append("<div class=\"poll_theme\">");
-                    pollBuilder.append("<div class=\"theme_title\"><span>").append(element.select(".postdetails strong").first().text()).append("</span></div>");
-                    pollBuilder.append("<div class=\"items").append(voted ? " voted" : "").append("\">");
-                    if (voted) {
-                        for (Element item : element.select("tr")) {
-                            pollBuilder.append("<div class=\"item\">");
-                            pollBuilder.append("<span class=\"name\"><span>").append(item.select("td:nth-child(1)").first().text()).append("</span></span>");
-                            pollBuilder.append("<span class=\"num_votes\"><span>").append(item.select("td:nth-child(2) b").first().text()).append("</span></span>");
-                            pollBuilder.append("<div class=\"range\">");
-                            String percent = item.select("td:nth-child(3)").first().text().replace(" ", "").replace("[", "").replace("]", "").replace(",", ".");
-                            pollBuilder.append("<div class=\"range_bar\" style=\"width:").append(percent).append(";\"></div>");
-                            pollBuilder.append("<span class=\"value\"><span>").append(percent).append("</span></span>");
-                            pollBuilder.append("</div>");
-                            pollBuilder.append("</div>");
-                        }
-                    } else {
-                        for (Element item : element.select("tr")) {
-                            pollBuilder.append("<label class=\"item\">");
-                            pollBuilder.append(item.select("input").first().outerHtml());
-                            pollBuilder.append("<span class=\"icon\"></span>");
-                            pollBuilder.append("<span class=\"item_body\"><span class=\"name\">").append(item.select("b").first().text()).append("</span></span>");
-                            pollBuilder.append("</label>");
-                        }
+
+            pollMatcher = pollQuestionsPattern.matcher(pollSource);
+            while (pollMatcher.find()){
+                if(!pollMatcher.group(2).contains("input"))
+                    voted = true;
+                pollBuilder.append("<div class=\"poll_theme\">");
+                pollBuilder.append("<div class=\"theme_title\"><span>").append(pollMatcher.group(1)).append("</span></div>");
+                pollBuilder.append("<div class=\"items").append(voted ? " voted" : "").append("\">");
+                if (voted) {
+                    temp = pollNotVotedPattern.matcher(pollMatcher.group(2));
+                    while (temp.find()){
+                        pollBuilder.append("<div class=\"item\">");
+                        pollBuilder.append("<span class=\"name\"><span>").append(temp.group(1)).append("</span></span>");
+                        pollBuilder.append("<span class=\"num_votes\"><span>").append(temp.group(2)).append("</span></span>");
+                        pollBuilder.append("<div class=\"range\">");
+                        percent = temp.group(3).replace(",", ".");
+                        pollBuilder.append("<div class=\"range_bar\" style=\"width:").append(percent).append(";\"></div>");
+                        pollBuilder.append("<span class=\"value\"><span>").append(percent).append("</span></span>");
+                        pollBuilder.append("</div>");
+                        pollBuilder.append("</div>");
                     }
-                    pollBuilder.append("</div>");
-                    pollBuilder.append("</div>");
+                } else {
+                    temp = pollVotedPattern.matcher(pollMatcher.group(2));
+                    while (temp.find()){
+                        pollBuilder.append("<label class=\"item\">");
+                        pollBuilder.append(temp.group(1));
+                        pollBuilder.append("<span class=\"icon\"></span>");
+                        pollBuilder.append("<span class=\"item_body\"><span class=\"name\">").append(temp.group(2)).append("</span></span>");
+                        pollBuilder.append("</label>");
+                    }
                 }
+                pollBuilder.append("</div>");
+                pollBuilder.append("</div>");
             }
             pollBuilder.append("</div>");
 
 
-            pollBuilder.append("<div class=\"votes_info\"><span>").append(poll.select("tbody tr:nth-last-child(3) b").last().text()).append("</span></div>");
-
-
-            if(logined) {
-                pollBuilder.append("<div class=\"buttons\">").append(poll.select(".formbuttonrow").first().html()).append("</div>");
+            pollMatcher = pollBottomPattern.matcher(pollSource);
+            if(pollMatcher.find()){
+                pollBuilder.append("<div class=\"votes_info\"><span>").append(pollMatcher.group(1)).append("</span></div>");
+                if(logined) {
+                    pollBuilder.append("<div class=\"buttons\">").append(pollMatcher.group(2)).append("</div>");
+                }
             }
-            pollBuilder.append("<input type=\"hidden\" name=\"addpoll\" value=\"1\" /></form>");
-            /*String poll =
-                    "<form action=\"modules.php\" method=\"get\">" +
-                            pollMatcher.group(1).toString()
-                                    .replace("go_gadget_show()", ForPdaWebInterface.NAME + ".go_gadget_show()")
-                                    .replace("go_gadget_vote()", ForPdaWebInterface.NAME + ".go_gadget_vote()")
-                                    .concat("<input type=\"hidden\" name=\"addpoll\" value=\"1\" /></form>");*/
 
+            pollBuilder.append("<input type=\"hidden\" name=\"addpoll\" value=\"1\" /></form>");
             topicBodyBuilder.addPoll(
                     pollBuilder.toString()
                             .replace("go_gadget_show()", ForPdaWebInterface.NAME + ".go_gadget_show()")
@@ -925,77 +958,46 @@ public class Client implements IHttpClient {
         }
         //<<опрос
         topicBodyBuilder.openPostsList();
-        mainMatcher = Pattern
-                .compile("<div data-post=\"(\\d+)\"[^>]*>([\\s\\S]*?)((?=<div class=\"post_body[^>]*?\">)[\\s\\S]*?)(?=<div data-post=\"\\d+\"[^>]*>|<div class=\"topic_foot_nav[^\"]*\">)",
-                        Pattern.MULTILINE | Pattern.CASE_INSENSITIVE)
-                .matcher(topicBody);
+        Log.d("themed1", "end poll matcher");
+        Log.d("themed1", "\nstart main matcher2");
 
-        final Pattern postDateNumPattern = PatternExtensions
-                .compile("<span class=\"post_date[^\"]*\">(.*?)&nbsp;[^#]*#(\\d+)");
-        final Pattern nickPattern = PatternExtensions
-                .compile("insertText\\('[^']*\\[B\\](.*?),\\[/B\\]\\s*'\\)\"\\s*data-av=\"([^\"]*)\">");
-        Pattern userInfoPattern = PatternExtensions
-                .compile("<span class=\"post_user_info[^\"]*\"[^>]*>(<strong[^>]*>.*?<.strong><br .>)?Группа: (.*?)<br..><font color=\"([^\"]*)\">[\\s\\S]*?mid=(\\d+)");
 
-        final Pattern repValuePattern = PatternExtensions
-                .compile("<span id=\"ajaxrep-\\d+\">(.\\d+|\\d+)</span>");
-        final Pattern repEditPattern = PatternExtensions
-                .compile("href=\"[^\"]*act=rep[^\"]*view=(win_minus|win_add)[^\"]*\"");
-        final Pattern editPattern = PatternExtensions.compile("href=\"[^\"]*act=post[^\"]*do=edit_post[^\"]*\"");
-        final Pattern deletePattern = PatternExtensions.compile("onclick=\"[^\"]*seMODdel");
-        final Pattern bodyPattern = PatternExtensions.compile("<div class=\"post_body([^\"]*)?\"[^>]*>([\\s\\S]*)<\\/div>");
+        mainMatcher = postsPattern.matcher(topicBody);
+        Log.d("themed1", "end main matcher2");
+
 
 
         //String today = Functions.getToday();
         //String yesterday = Functions.getYesterToday();
         org.softeg.slartus.forpdaplus.classes.Post post = null;
         Boolean spoil = spoilFirstPost;
-
+        Log.d("themed1", "start while");
+        String str;
+        Matcher m;
         while (mainMatcher.find()) {
+            Log.d("themed2", "start while");
 
-            String postId = mainMatcher.group(1);
-
-            String str = mainMatcher.group(2);
-            Matcher m = postDateNumPattern.matcher(str);
-            if (m.find()) {
-                //post = new org.softeg.slartus.forpdaplus.classes.Post(postId, Functions.getForumDateTime(Functions.parseForumDateTime(m.group(1), today, yesterday)), m.group(2));
-                post = new org.softeg.slartus.forpdaplus.classes.Post(postId, m.group(1), m.group(2));
-            } else
-                continue;
-
-            m = nickPattern.matcher(str);
-            if (m.find()) {
-                post.setAuthor(m.group(1));
-                post.setAvatarFileName(m.group(2));
-            }
-
-            m = userInfoPattern.matcher(str);
-            if (m.find()) {
-                if (m.group(1) != null)
-                    post.setCurator();
-                post.setUserGroup(m.group(2));
-                post.setUserState(m.group(3));
-                post.setUserId(m.group(4));
-            }
-
-            m = repValuePattern.matcher(str);
-            if (m.find()) {
-                post.setUserReputation(m.group(1));
-            }
-
-            m = repEditPattern.matcher(str);
-            while (m.find()) {
-                if ("win_minus".equals(m.group(1)))
-                    post.setCanMinusRep(true);
-                if ("win_add".equals(m.group(1)))
-                        post.setCanPlusRep(true);
-            }
-
+            post = new org.softeg.slartus.forpdaplus.classes.Post(mainMatcher.group(1), mainMatcher.group(2), mainMatcher.group(3));
+            post.setAuthor(mainMatcher.group(4));
+            post.setAvatarFileName(mainMatcher.group(5));
+            if (mainMatcher.group(6) != null)
+                post.setCurator();
+            post.setUserGroup(mainMatcher.group(7));
+            post.setUserState(mainMatcher.group(8));
+            post.setUserId(mainMatcher.group(9));
+            post.setUserReputation(mainMatcher.group(10));
+            Log.d("themed2", "start normd");
+            str = mainMatcher.group(11);
+            if(str.contains("win_minus"))
+                post.setCanMinusRep(true);
+            if(str.contains("win_add"))
+                post.setCanMinusRep(true);
+            Log.d("themed2", "start edit matcher");
             m = editPattern.matcher(str);
             if (m.find()) {
                 post.setCanEdit(true);
             }
-
+            Log.d("themed2", "start delete matcher");
             m = deletePattern.matcher(str);
             if (m.find()) {
                 post.setCanDelete(true);
@@ -1004,22 +1006,15 @@ public class Client implements IHttpClient {
                     topicBodyBuilder.setMMod(true);
                 }
             }
-
-
-            m = bodyPattern.matcher(mainMatcher.group(3));
-            if (m.find()) {
-                String postBody = m.group(2);
-                if (postBody != null)
-                    postBody = postBody.trim();
-                String postClass = "";
-                if (m.group(1) != null)
-                    postClass = m.group(1);
-                post.setBody("<div class=\"post_body" + postClass + "\">" + postBody);
-            }
-
+            Log.d("themed2", "start set body");
+            post.setBody("<div class=\"post_body " + mainMatcher.group(12) + "\">" + mainMatcher.group(13)+"</div>");
+            Log.d("themed2", "start add post");
             topicBodyBuilder.addPost(post, spoil);
             spoil = false;
+            Log.d("themed2", "end whild");
+            Log.d("themed2", ":");
         }
+        Log.d("themed1", "end while");
         topicBodyBuilder.endTopic();
         return topicBodyBuilder;
     }

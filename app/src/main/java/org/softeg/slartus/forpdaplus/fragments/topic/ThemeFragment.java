@@ -332,7 +332,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 }
             });
         }
-
         registerForContextMenu(webView);
         setWebViewSettings();
         webView.getSettings().setDomStorageEnabled(true);
@@ -1677,27 +1676,30 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         protected Boolean doInBackground(String... forums) {
             String pageBody = null;
             try {
-
+                Log.d("themed", "start backround");
                 if (isCancelled()) return false;
 
                 Client client = Client.getInstance();
+
                 m_LastUrl = forums[0];
                 m_LastUrl = "http://4pda.ru/forum/index.php?" + prepareTopicUrl(m_LastUrl);
                 if (forums.length == 1) {
                     pageBody = client.loadPageAndCheckLogin("http://4pda.ru/forum/index.php?" + prepareTopicUrl(m_LastUrl), null);
                 } else
                     pageBody = forums[1];
-
+                Log.d("themed", "end load page "+pageBody.length());
                 m_LastUrl = client.getRedirectUri() == null ? m_LastUrl : client.getRedirectUri().toString();
                 m_SpoilFirstPost = Preferences.Topic.getSpoilFirstPost();
+                Log.d("themed", "start parse");
                 TopicBodyBuilder topicBodyBuilder = client.parseTopic(pageBody, App.getInstance(), m_LastUrl,
                         m_SpoilFirstPost);
-
+                Log.d("themed", "end parse");
                 m_Topic = topicBodyBuilder.getTopic();
 
                 m_ThemeBody = topicBodyBuilder.getBody();
 
                 topicBodyBuilder.clear();
+                Log.d("themed", "end backround");
                 return true;
             } catch (Throwable e) {
                 m_ThemeBody = pageBody;

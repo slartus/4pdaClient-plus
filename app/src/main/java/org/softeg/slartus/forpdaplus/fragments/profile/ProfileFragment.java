@@ -472,7 +472,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         menu.add(getString(R.string.Reputation))
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        CharSequence[] items = {getString(R.string.do_vote_good), getString(R.string.do_vote_good), getString(R.string.look), getString(R.string.change_reputation)};
+                        CharSequence[] items = {getString(R.string.do_vote_good), getString(R.string.do_vote_bad), getString(R.string.look), getString(R.string.change_reputation)};
                         new MaterialDialog.Builder(getMainActivity())
                                 .title(R.string.reputation)
                                 .items(items)
