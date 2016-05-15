@@ -39,46 +39,53 @@ HTML body#profile {
 /*
 *         FONT_SIZE
 */
-.post_body span[style*="font-size:36pt"] {
-  font-size: 3.75em !important;
+span[style*="font-size:36pt"] {
+  font-size: 3.75rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:36pt"] * {
+span[style*="font-size:36pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:24pt"] {
-  font-size: 2.55em !important;
+span[style*="font-size:24pt"] {
+  font-size: 2.55rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:24pt"] * {
+span[style*="font-size:24pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:18pt"] {
-  font-size: 1.95em !important;
+span[style*="font-size:18pt"] {
+  font-size: 1.95rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:18pt"] * {
+span[style*="font-size:18pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:14pt"] {
-  font-size: 1.55em !important;
+span[style*="font-size:14pt"] {
+  font-size: 1.55rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:14pt"] * {
+span[style*="font-size:14pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:12pt"] {
-  font-size: 1.35em !important;
+span[style*="font-size:12pt"] {
+  font-size: 1.35rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:12pt"] * {
+span[style*="font-size:12pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:10pt"] {
-  font-size: 1.15em !important;
+span[style*="font-size:10pt"] {
+  font-size: 1.15rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:10pt"] * {
+span[style*="font-size:10pt"] * {
   font-size: inherit !important;
 }
-.post_body span[style*="font-size:8pt"] {
-  font-size: 0.95em !important;
+span[style*="font-size:8pt"] {
+  font-size: 0.95rem !important;
+  line-heigth: 1.4 !important;
 }
-.post_body span[style*="font-size:8pt"] * {
+span[style*="font-size:8pt"] * {
   font-size: inherit !important;
 }
 /*
@@ -801,6 +808,10 @@ HTML body#profile {
 .post_body ul,
 .post_body ol {
   margin-left: -0.5rem;
+}
+.post_body span[style="font-family:monospace"] {
+  font-family: Courier, Courier New, Verdana, Arial !important;
+  font-size: 1rem;
 }
 /*
 *	SEARCH

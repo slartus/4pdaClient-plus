@@ -401,7 +401,7 @@ span[style*="font-size:8pt"] * {
 .hat .hidetop span {
   display: none;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   .post_container .hat .hidetop {
     margin-left: 12rem;
     line-height: 12rem;
@@ -421,7 +421,7 @@ span[style*="font-size:8pt"] * {
   content: 'СКРЫТЬ';
   margin-right: 0.3125rem;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   .post_container .hat .hidemain .post_body {
     margin-top: 0.75rem;
   }
@@ -473,7 +473,7 @@ span[style*="font-size:8pt"] * {
 .poll .hidemain FORM .poll_body .poll_theme .theme_title span {
   font-weight: bold;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   .poll .hidemain FORM .poll_body .poll_theme .items.voted .item {
     display: table;
     width: 100%;
@@ -580,9 +580,9 @@ span[style*="font-size:8pt"] * {
 .poll .hidemain FORM .poll_body .poll_theme .items .item .range .value {
   position: absolute;
   right: 0.3125rem;
-  margin-top: -1.5rem;
+  margin-top: -1.4rem;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   .poll .hidemain FORM .poll_body .poll_theme .items.voted .item {
     display: table;
     padding: 0.5rem;
@@ -628,19 +628,16 @@ span[style*="font-size:8pt"] * {
 */
 .posts_list {
   margin: 1rem 0;
-  padding: 0 0.5rem;
+  padding: 0;
 }
 .post_container {
-  margin: 0.5rem 0;
+  margin: 0.5rem;
   padding: 0.75rem 0.75rem 0;
   overflow: hidden;
   border-radius: 0.125rem;
   background: white;
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-.post_container:last-child {
-  border: none;
 }
 /*
 *	POST HEADER
@@ -652,7 +649,7 @@ span[style*="font-size:8pt"] * {
   -webkit-user-select: none;
   user-select: none;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   .post_header {
     float: left;
     padding: 1.5rem 0 0;
@@ -668,7 +665,7 @@ span[style*="font-size:8pt"] * {
   float: left;
   margin: 0 0.75rem 0 0;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   .post_header .header_wrapper .avatar {
     float: none;
     margin: 0.5rem 0;
@@ -679,7 +676,7 @@ span[style*="font-size:8pt"] * {
   margin: 0.25rem 0 0;
   overflow: hidden;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 50rem) {
   .post_header .header_wrapper .avatar.disable {
     height: 4rem;
     margin: 0 0.1875rem 0 0;
@@ -704,7 +701,7 @@ span[style*="font-size:8pt"] * {
   background-size: contain;
   background-repeat: no-repeat;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   .post_header .header_wrapper .avatar .img[style*="av.png"] {
     height: 2rem;
   }
@@ -717,7 +714,7 @@ span[style*="font-size:8pt"] * {
   font-size: 1.1875rem;
   color: #404040;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   .post_header .header_wrapper .nick {
     position: absolute;
     top: 0;
@@ -755,7 +752,7 @@ span[style*="font-size:8pt"] * {
   font-size: 0.875rem;
   font-weight: bold;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   .post_header .header_wrapper .reputation {
     display: block;
   }
@@ -765,7 +762,7 @@ span[style*="font-size:8pt"] * {
   margin-left: 0.1875rem;
   display: inline-block;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 50rem) {
   .post_header .header_wrapper .reputation span:after {
     margin-right: 0.1875rem;
   }
@@ -774,7 +771,7 @@ span[style*="font-size:8pt"] * {
   font-size: 0.875rem;
   color: #808080 !important;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 50rem) {
   .post_header .header_wrapper .date-link {
     display: inline-block;
   }
@@ -793,7 +790,7 @@ span[style*="font-size:8pt"] * {
   background-size: 1.625rem;
   cursor: pointer;
 }
-@media screen and (max-width: 799px) {
+@media screen and (max-width: 49rem) {
   .post_header .header_wrapper .menu {
     position: absolute;
     right: -0.375rem;
@@ -811,12 +808,13 @@ span[style*="font-size:8pt"] * {
 .post_body,
 #multimoderation > form {
   position: relative;
+  font-size: 1rem;
   display: block;
   margin: 0.75rem 0;
   text-align: left;
   background-clip: padding-box;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   .post_body,
   #multimoderation > form {
     margin: 0 0 0.75rem 13rem;
@@ -854,7 +852,7 @@ span[style*="font-size:8pt"] * {
   display: inline-block;
   box-sizing: border-box;
   content: '';
-  top: 0.5rem;
+  top: 0.490625rem;
   left: 0.5625rem;
   width: 0.5rem;
   height: 0.5rem;
@@ -938,6 +936,11 @@ span[style*="font-size:8pt"] * {
   color: #808080;
   text-align: left;
 }
+.post_body span[style="font-family:monospace"],
+#multimoderation > form span[style="font-family:monospace"] {
+  font-family: Courier, Courier New, Verdana, Arial !important;
+  font-size: 1rem;
+}
 div[data-post] > a {
   position: absolute;
   left: 0;
@@ -999,7 +1002,7 @@ div[data-post] > a {
 .post_footer .button.delete {
   float: right;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 50rem) {
   .post_footer .button.claim,
   .post_footer .button.edit,
   .post_footer .button.delete {
@@ -1087,7 +1090,7 @@ div[data-post] > a {
   position: relative;
   font-size: 0.875rem;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   .signature {
     margin: -2rem 0 0;
     padding: 0.7rem 0;
@@ -1182,22 +1185,23 @@ div[data-post] > a {
   display: none;
 }
 #thread_form .list-group-item .time {
-  display: inline-block;
-  position: absolute;
-  top: -0.125rem;
-  left: 3rem;
+  display: block;
+  margin: 0 0.5rem 0 3rem;
+  padding: 0.125rem 0;
   font-size: 0.875rem;
   font-style: italic;
   color: gray;
 }
 #thread_form .list-group-item .time .read-status.unread.big-dot {
-  position: relative;
-  margin-top: 0.0625rem;
-  display: inline-block;
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 0.5rem;
-  background: #b53;
+  position: absolute;
+  margin-top: 1rem;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #eeeeee;
+  opacity: 0.5;
+  z-index: 99;
 }
 #thread_form .list-group-item .avatar-wrap {
   position: absolute;
@@ -1222,19 +1226,22 @@ div[data-post] > a {
   overflow: hidden;
   background: #eeeeee;
 }
-#thread_form .list-group-item strong {
+#thread_form .list-group-item strong,
+#thread_form .list-group-item strong + br {
   display: none;
 }
 #thread_form .list-group-item .msg-content {
   position: relative;
   display: inline-block;
+  font-size: 1rem;
   padding: 0.5rem;
   max-width: 26rem;
-  margin: 0 2rem 0 3rem;
+  margin: 0 0.5rem 0 3rem;
   background: white;
   border-radius: 0.5rem;
+  z-index: 98;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   #thread_form .list-group-item .msg-content {
     max-width: 60%;
   }
@@ -1281,7 +1288,7 @@ div[data-post] > a {
   margin: 0;
   margin-left: 3rem;
   margin-right: 0.5rem;
-  color: #191919;
+  color: #424242;
   background: #dddddd;
 }
 #thread_form .list-group-item.our-message .msg-content:before {
@@ -1446,7 +1453,7 @@ div[data-post] > a {
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   #news .product-detail {
     display: table-block;
     margin-bottom: 1rem;
@@ -1458,7 +1465,7 @@ div[data-post] > a {
   text-align: center;
   min-height: 3.5rem;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   #news .product-detail .photo {
     display: table-cell;
     vertical-align: middle;
@@ -1495,7 +1502,7 @@ div[data-post] > a {
   padding: 1px 1rem;
   border-top: 1px solid #eeeeee;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   #news .product-detail .description {
     padding: 0 1rem;
     border: none;
@@ -1523,7 +1530,7 @@ div[data-post] > a {
   color: white;
   background: #3490c3;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   #news .product-detail .description .info-holder .date {
     top: auto;
     bottom: -0.6875rem;
@@ -1546,7 +1553,7 @@ div[data-post] > a {
   text-align: right;
   font-style: italic;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   #news .product-detail .description .info-holder .name {
     right: auto;
     text-align: left;
@@ -1573,7 +1580,7 @@ div[data-post] > a {
   -webkit-box-shadow: 0 0.125rem 0.3rem rgba(0, 0, 0, 0.25);
   box-shadow: 0 0.125rem 0.3rem rgba(0, 0, 0, 0.25);
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   #news .product-detail .description .more-box .number {
     top: auto;
     bottom: -1.5rem;
@@ -1660,7 +1667,7 @@ div[data-post] > a {
   margin: 0.5rem auto;
   background: white;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   #news .review-bottom-informer {
     text-align: center;
   }
@@ -1676,7 +1683,7 @@ div[data-post] > a {
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   #news .review-bottom-informer .item {
     display: inline-block;
     width: 13rem;
@@ -2014,7 +2021,7 @@ div[data-post] > a {
   overflow: hidden;
   vertical-align: top;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 50rem) {
   #news .materials-box .materials-slider .slider-item {
     width: 12.5rem;
   }
@@ -2309,7 +2316,7 @@ div[data-post] > a {
 */
 #profile .user-profile-list {
   display: block;
-  max-width: 800px;
+  max-width: 50rem;
   font-size: 1rem;
   text-align: left;
   list-style-type: none;
@@ -2670,7 +2677,7 @@ div[data-post] > a {
   line-height: 1.2em;
   color: black;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 50rem) {
   #edit_profile form .field table,
   #edit_profile form .field tbody,
   #edit_profile form .field tr,
@@ -2686,7 +2693,7 @@ div[data-post] > a {
   color: #a6a6a6;
   font-size: 1.125rem;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 50rem) {
   #edit_profile form .field .row1 {
     padding: 0.5rem 0.5rem 0!important;
   }
@@ -2699,7 +2706,7 @@ div[data-post] > a {
   padding: 0.5rem !important;
   color: #808080;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 50rem) {
   #edit_profile form .field .row2 {
     padding: 0 0.5rem 0.5rem !important;
   }
@@ -2775,7 +2782,7 @@ div[data-post] > a {
 #edit_profile form .field .row2 .editor_button textarea:focus {
   border: 2px solid #3490c3;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 50rem) {
   #edit_profile form .field .formbuttonrow {
     text-align: right;
   }
@@ -2924,7 +2931,7 @@ div[data-post] > a {
   font-size: 1.125rem;
   color: black;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 50rem) {
   #curator .post_header .nick {
     padding: 0.5rem 0.75rem;
     margin-right: 3rem;
@@ -2934,12 +2941,12 @@ div[data-post] > a {
   padding: 0.5rem 0;
   font-weight: bold;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 50rem) {
   #curator .post_header .link {
     padding: 0.25rem 0.75rem;
   }
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 50rem) {
   #curator .post_header .date-link {
     position: absolute;
     right: 0.75rem;
@@ -2952,7 +2959,7 @@ div[data-post] > a {
   cursor: pointer;
   text-align: center;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 50rem) {
   #curator .post_header .checkbox {
     position: absolute;
     right: 0;
