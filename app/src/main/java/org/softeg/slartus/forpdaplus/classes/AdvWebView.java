@@ -63,7 +63,7 @@ public class AdvWebView extends WebView {
             this.setLayerType(LAYER_TYPE_SOFTWARE, null);
 
         setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());
-        loadData("<html><head></head></html>", "text/html", "UTF-8");
+        //loadData("<html><head></head></html>", "text/html", "UTF-8");
     }
 
     private Point m_LastMotionEvent = null;

@@ -1425,7 +1425,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             m_ScrollThread = new Thread(new Runnable() {
                 public void run() {
                     try {
-                        Thread.sleep(900);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -1447,10 +1447,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 webView.scrollTo(0, m_ScrollY);
                 m_ScrollY = 0;
             } else if (!TextUtils.isEmpty(m_ScrollElement)) {
-                webView.offActionBarOnScrollEvents();
-                webView.scrollTo(0, 100);
-                webView.scrollTo(0, 0);
-                webView.onActionBarOnScrollEvents();
+
                 webView.evalJs("scrollToElement('" + m_ScrollElement + "');");
                 if (getSupportActionBar() != null && Preferences.isHideActionBar()) {
                     //getSupportActionBar().hide();
@@ -1676,7 +1673,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         protected Boolean doInBackground(String... forums) {
             String pageBody = null;
             try {
-                Log.d("themed", "start backround");
                 if (isCancelled()) return false;
 
                 Client client = Client.getInstance();
@@ -1687,19 +1683,15 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     pageBody = client.loadPageAndCheckLogin("http://4pda.ru/forum/index.php?" + prepareTopicUrl(m_LastUrl), null);
                 } else
                     pageBody = forums[1];
-                Log.d("themed", "end load page "+pageBody.length());
                 m_LastUrl = client.getRedirectUri() == null ? m_LastUrl : client.getRedirectUri().toString();
                 m_SpoilFirstPost = Preferences.Topic.getSpoilFirstPost();
-                Log.d("themed", "start parse");
                 TopicBodyBuilder topicBodyBuilder = client.parseTopic(pageBody, App.getInstance(), m_LastUrl,
                         m_SpoilFirstPost);
-                Log.d("themed", "end parse");
                 m_Topic = topicBodyBuilder.getTopic();
 
                 m_ThemeBody = topicBodyBuilder.getBody();
 
                 topicBodyBuilder.clear();
-                Log.d("themed", "end backround");
                 return true;
             } catch (Throwable e) {
                 m_ThemeBody = pageBody;

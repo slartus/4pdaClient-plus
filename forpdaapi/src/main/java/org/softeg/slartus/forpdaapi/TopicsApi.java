@@ -35,6 +35,11 @@ import java.util.regex.Pattern;
  */
 public class TopicsApi {
 
+    final static Pattern countPattern = PatternExtensions.compile("<a href=\"/forum/index.php\\?act=[^\"]*?st=(\\d+)\">&raquo;</a>");
+    final static Pattern mainPattern = PatternExtensions.compile("cat_name[\\s\\S]*?</div>([\\s\\S]*<br />)<div class=\"forum_mod_funcs\">");
+    final static Pattern topicsPattern = PatternExtensions.compile("(<div data-item-fid[\\s\\S]*?</script></div></div>)");
+    final static Pattern topicPattern = PatternExtensions.compile("<div data-item-fid=\"(\\d*)\" data-item-track=\"(\\w*)\" data-item-pin=\"(\\d)\"[\\s\\S]*?<a href=\"([^\"]*?)\"[^>]*>(<strong>|)([\\s\\S]*?)(</strong>|)</a>[\\s\\S]*?<span class=\"topic_desc\">([\\s\\S]*?)(<[\\s\\S]*?showforum=(\\d*?)\"[\\s\\S]*?)<a href=\"[^\"]*view=getlastpost[^\"]*\">Послед.:</a>\\s*<a href=\"/forum/index.php\\?showuser=\\d+\">(.*?)</a>(.*?)<");
+
     public static ArrayList<FavTopic> getFavTopics(IHttpClient client,
                                                    ListInfo listInfo) throws ParseException, IOException, URISyntaxException {
         return getFavTopics(client, null, null, null, null, false, false, listInfo);
@@ -64,83 +69,59 @@ public class TopicsApi {
 
         URI uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
                 URLEncodedUtils.format(qparams, "UTF-8"), null);
+
         String pageBody = client.performGet(uri.toString());
 
-        Document doc = Jsoup.parse(pageBody);
-
-        Matcher m = PatternExtensions.compile("<a href=\"/forum/index.php\\?act=[^\"]*?st=(\\d+)\">&raquo;</a>").matcher(pageBody);
+        Matcher m = countPattern.matcher(pageBody);
         if (m.find()) {
             listInfo.setOutCount(Integer.parseInt(m.group(1)) + 1);
         }
 
-        Pattern lastPostPattern = Pattern.compile("<a href=\"[^\"]*view=getlastpost[^\"]*\">Послед.:</a>\\s*<a href=\"/forum/index.php\\?showuser=\\d+\">(.*?)</a>(.*?)$",
-                Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
-        Pattern trackTypePattern = Pattern.compile("wr_fav_subscribe\\(\\d+,\"(\\w+)\"\\);",
-                Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
-
-        ArrayList<FavTopic> res = new ArrayList<FavTopic>();
+        ArrayList<FavTopic> res = new ArrayList<>();
         String today = Functions.getToday();
         String yesterday = Functions.getYesterToday();
         int sortOrder = 1000 + listInfo.getFrom() + 1;
-        for (Element topicElement : doc.select("div[data-item-fid]")) {
-            Elements elements = topicElement.select("div.topic_title");
-            if (elements.size() == 0) continue;
-            Element topicTitleDivElement = elements.first();
-            elements = topicTitleDivElement.select("a");
-            if (elements.size() == 0) continue;
-            Element element = elements.first();
-            Uri ur = Uri.parse(element.attr("href"));
-            String tId = topicElement.attr("data-item-fid");
-            Boolean pinned = "1".equals(topicElement.attr("data-item-pin"));
-            String trackType = null;
-            elements = topicElement.select("div.topic_body");
-            if (elements.size() > 0) {
-                String html = elements.first().html();
-                m = trackTypePattern.matcher(html);
-                if (m.find())
-                    trackType = m.group(1);
-            }
 
-            if (TextUtils.isEmpty(ur.getQueryParameter("showtopic"))) {
-                FavTopic topic = new FavTopic(null, topicTitleDivElement.text());
-                topic.setTid(tId);
-                topic.setPinned(pinned);
-                topic.setTrackType(trackType);
-                topic.setDescription("Форум");
-                topic.setSortOrder(Integer.toString(sortOrder++));
-                res.add(topic);
-                continue;
-            }
+        m = mainPattern.matcher(pageBody);
+        Matcher tmp;
+        if(m.find()){
+            m = topicsPattern.matcher(m.group(1));
+            while (m.find()){
+                tmp = topicPattern.matcher(m.group(1));
+                if(tmp.find()){
+                    String tId = tmp.group(1);
+                    String trackType = tmp.group(2);
+                    Boolean pinned = "1".equals(tmp.group(3));
+                    Uri ur = Uri.parse(tmp.group(4));
 
-
-            String id = ur.getQueryParameter("showtopic");
-            String title = element.text();
-            FavTopic topic = new FavTopic(id, title);
-            topic.setTid(tId);
-            topic.setPinned(pinned);
-            topic.setTrackType(trackType);
-            elements = topicElement.select("div.topic_body");
-            if (elements.size() > 0) {
-                Element topicBodyDivElement = elements.first();
-                elements = topicBodyDivElement.select("span.topic_desc");
-                if (elements.size() > 0) {
-                    topic.setDescription(elements.first().text());
-                    m = Pattern.compile("showforum=(\\d*)").matcher(elements.first().select("a").last().attr("href"));
-                    if(m.find()) {
-                        topic.setForumId(m.group(1));
+                    if (TextUtils.isEmpty(ur.getQueryParameter("showtopic"))) {
+                        FavTopic topic = new FavTopic(null, tmp.group(6));
+                        topic.setTid(tId);
+                        topic.setPinned(pinned);
+                        topic.setTrackType(trackType);
+                        topic.setDescription("Форум");
+                        topic.setSortOrder(Integer.toString(sortOrder++));
+                        res.add(topic);
+                        continue;
                     }
-                }
-                String text = topicBodyDivElement.html();
-                topic.setIsNew(text.contains("view=getnewpost"));
 
-                m = lastPostPattern.matcher(text);
-                if (m.find()) {
-                    topic.setLastMessageDate(Functions.parseForumDateTime(m.group(2), today, yesterday));
-                    topic.setLastMessageAuthor(m.group(1));
+                    String id = ur.getQueryParameter("showtopic");
+                    String title = tmp.group(6);
+                    FavTopic topic = new FavTopic(id, title);
+                    topic.setTid(tId);
+                    topic.setPinned(pinned);
+                    topic.setTrackType(trackType);
+                    if(TextUtils.isEmpty(tmp.group(8)))
+                        topic.setDescription(tmp.group(9).replaceFirst("<span class=\"topic_desc\"[\\s\\S]*$", "").replaceAll("<a[^>]*?>([\\s\\S]*?)</a>","$1"));
+                    else
+                        topic.setDescription(tmp.group(8));
+                    topic.setIsNew(tmp.group(9).contains("view=getnewpost"));
+                    topic.setForumId(tmp.group(10));
+                    topic.setLastMessageAuthor(tmp.group(11));
+                    topic.setLastMessageDate(Functions.parseForumDateTime(tmp.group(12), today, yesterday));
+                    topic.setSortOrder(Integer.toString(sortOrder++));
+                    res.add(topic);
                 }
-                topic.setSortOrder(Integer.toString(sortOrder++));
-
-                res.add(topic);
             }
         }
 

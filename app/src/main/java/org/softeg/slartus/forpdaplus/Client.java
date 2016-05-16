@@ -843,7 +843,6 @@ public class Client implements IHttpClient {
                                        Boolean logined, String urlParams) throws IOException {
 
 
-        Log.d("themed1", "start main matcher");
 
         Matcher mainMatcher = beforePostsPattern.matcher(topicBody);
 
@@ -872,22 +871,16 @@ public class Client implements IHttpClient {
                 throw new NotReportException(context.getString(R.string.site_response) + Html.fromHtml(topicBody).toString());
             throw new IOException(context.getString(R.string.error_parsing_page)+" id=" + id);
         }
-        Log.d("themed1", "end main matcher");
         Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(context);
 
-        Log.d("themed1", "start create topic");
         ExtTopic topic = createTopic(id, mainMatcher.group(1));
-        Log.d("themed1", "end create topic");
-        Log.d("themed1", "start replace");
         topicBody = topicBody.replace("^[\\s\\S]*?<div data-post", "<div data-post").replace("<div class=\"topic_foot_nav\">[\\s\\S]*", "<div class=\"topic_foot_nav\">");
-        Log.d("themed1", "end replace");
 
         TopicBodyBuilder topicBodyBuilder = new TopicBodyBuilder(context, logined, topic, urlParams,
                 isWebviewAllowJavascriptInterface);
 
         //Boolean browserStyle = prefs.getBoolean("theme.BrowserStylePreRemove", false);
         topicBodyBuilder.beginTopic();
-        Log.d("themed1", "start poll matcher");
         //>>ОПРОС
         Matcher pollMatcher = pollFormPattern.matcher(mainMatcher.group(1));
         if (pollMatcher.find()) {
@@ -958,12 +951,9 @@ public class Client implements IHttpClient {
         }
         //<<опрос
         topicBodyBuilder.openPostsList();
-        Log.d("themed1", "end poll matcher");
-        Log.d("themed1", "\nstart main matcher2");
 
 
         mainMatcher = postsPattern.matcher(topicBody);
-        Log.d("themed1", "end main matcher2");
 
 
 
@@ -971,11 +961,9 @@ public class Client implements IHttpClient {
         //String yesterday = Functions.getYesterToday();
         org.softeg.slartus.forpdaplus.classes.Post post = null;
         Boolean spoil = spoilFirstPost;
-        Log.d("themed1", "start while");
         String str;
         Matcher m;
         while (mainMatcher.find()) {
-            Log.d("themed2", "start while");
 
             post = new org.softeg.slartus.forpdaplus.classes.Post(mainMatcher.group(1), mainMatcher.group(2), mainMatcher.group(3));
             post.setAuthor(mainMatcher.group(4));
@@ -986,18 +974,15 @@ public class Client implements IHttpClient {
             post.setUserState(mainMatcher.group(8));
             post.setUserId(mainMatcher.group(9));
             post.setUserReputation(mainMatcher.group(10));
-            Log.d("themed2", "start normd");
             str = mainMatcher.group(11);
             if(str.contains("win_minus"))
                 post.setCanMinusRep(true);
             if(str.contains("win_add"))
-                post.setCanMinusRep(true);
-            Log.d("themed2", "start edit matcher");
+                post.setCanPlusRep(true);
             m = editPattern.matcher(str);
             if (m.find()) {
                 post.setCanEdit(true);
             }
-            Log.d("themed2", "start delete matcher");
             m = deletePattern.matcher(str);
             if (m.find()) {
                 post.setCanDelete(true);
@@ -1006,15 +991,10 @@ public class Client implements IHttpClient {
                     topicBodyBuilder.setMMod(true);
                 }
             }
-            Log.d("themed2", "start set body");
             post.setBody("<div class=\"post_body " + mainMatcher.group(12) + "\">" + mainMatcher.group(13)+"</div>");
-            Log.d("themed2", "start add post");
             topicBodyBuilder.addPost(post, spoil);
             spoil = false;
-            Log.d("themed2", "end whild");
-            Log.d("themed2", ":");
         }
-        Log.d("themed1", "end while");
         topicBodyBuilder.endTopic();
         return topicBodyBuilder;
     }
