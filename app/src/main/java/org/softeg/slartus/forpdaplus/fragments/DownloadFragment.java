@@ -185,7 +185,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
         int loadMoreVisibility = (Client.getInstance().getDownloadTasks().getFullLength() > Client.getInstance().getDownloadTasks().size()) ? View.VISIBLE : View.GONE;
         txtPullToLoadMore.setVisibility(loadMoreVisibility);
         imgPullToLoadMore.setVisibility(loadMoreVisibility);
-        txtLoadMoreThemes.setText(getString(R.string.total)+": " + Client.getInstance().getDownloadTasks().getFullLength());
+        txtLoadMoreThemes.setText(App.getContext().getString(R.string.total)+": " + Client.getInstance().getDownloadTasks().getFullLength());
 
         m_ListFooter.setVisibility(Client.getInstance().getDownloadTasks().size() > 0 ? View.VISIBLE : View.GONE);
     }
@@ -220,7 +220,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
                     break;
                 case DownloadTask.STATE_ERROR:
                 case DownloadTask.STATE_CANCELED:
-                    items = new CharSequence[]{getString(R.string.retry_loading), getString(R.string.continue_download)};
+                    items = new CharSequence[]{App.getContext().getString(R.string.retry_loading), App.getContext().getString(R.string.continue_download)};
                     new MaterialDialog.Builder(getContext())
                             .title(R.string.choose_action)
                             .items(items)
@@ -258,7 +258,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
                             .show();
                     break;
                 case DownloadTask.STATE_SUCCESSFULL:
-                    items = new CharSequence[]{getString(R.string.run_file), getString(R.string.retry_loading)};
+                    items = new CharSequence[]{App.getContext().getString(R.string.run_file), App.getContext().getString(R.string.retry_loading)};
                     new MaterialDialog.Builder(getContext())
                             .title(R.string.confirm_action)
                             .items(items)
@@ -440,7 +440,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
                 holder.txtFileName.setText(ex.toString());
             }
 
-            holder.txtDescription.setText(getString(R.string.downloaded)+" " + downloadTask.getPercents() + "%("
+            holder.txtDescription.setText(App.getContext().getString(R.string.downloaded)+" " + downloadTask.getPercents() + "%("
                     + Functions.getSizeText(downloadTask.getDownloadedSize()) + "/"
                     + Functions.getSizeText(downloadTask.getM_ContentLength()) + ")");
             int state = downloadTask.getState();

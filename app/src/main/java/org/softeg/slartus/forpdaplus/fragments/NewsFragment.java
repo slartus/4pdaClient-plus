@@ -559,7 +559,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
         private String transformBody(String body) {
             NewsHtmlBuilder builder = new NewsHtmlBuilder();
-            m_Title = getString(R.string.news);
+            m_Title = App.getContext().getString(R.string.news);
             builder.beginHtml(m_Title);
             builder.beginBody("news", null, loadImages);
             builder.append("<div style=\"padding-top:").append(String.valueOf(HtmlBuilder.getMarginTop())).append("px\"/>\n");
@@ -579,7 +579,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
 
         private String parseBody(String body) {
-            Matcher m = PatternExtensions.compile("<article [^>]*>([\\s\\S]*?<span itemprop=\"headline\">([\\s\\S]*?)<\\/span>[\\s\\S]*?)<aside").matcher(body);
+            Matcher m = PatternExtensions.compile("(<div class=\"container\"[\\s\\S]*?<span itemprop=\"headline\">([\\s\\S]*?)<\\/span>[\\s\\S]*?)</article><aside").matcher(body);
 
             if (m.find()) {
                 m_Title = m.group(2);

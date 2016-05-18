@@ -170,7 +170,7 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
         setCount();
         setListShown(true);
         mAdapter.notifyDataSetChanged();
-        setEmptyText(getString(R.string.no_data));
+        setEmptyText(App.getContext().getString(R.string.no_data));
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -286,7 +286,7 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
             super.onPostExecute(result);
 
             if (mEx != null)
-                Toast.makeText(getContext(), AppLog.getLocalizedMessage(mEx, getString(R.string.cache_load_error)), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), AppLog.getLocalizedMessage(mEx, App.getContext().getString(R.string.cache_load_error)), Toast.LENGTH_SHORT).show();
             if (!isCancelled()) {
                 deliveryCache();
                 restoreListViewScrollPosition();

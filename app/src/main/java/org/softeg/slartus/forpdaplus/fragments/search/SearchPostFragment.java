@@ -367,7 +367,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
     @Override
     public String getTitle() {
-        return getString(R.string.search);
+        return App.getContext().getString(R.string.search);
     }
 
     @Override

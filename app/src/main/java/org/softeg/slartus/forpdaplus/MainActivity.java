@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     boolean top;
     int lastTheme;
     private static TabItem tabOnIntent = null;
+    private static String tabTagForRemove = null;
     private static boolean activityPaused = false;
     private View toolbarShadow;
     private AppBarLayout appBarLayout;
@@ -190,7 +191,11 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             }
         }
         try {
-            if (checkIntent()&saveInstance!=null) return;
+            boolean chi = checkIntent();
+            boolean nn = saveInstance!=null;
+            boolean f = chi&nn;
+            log("intent "+chi+" & "+nn+" = "+f);
+            if (f) return;
             //Фиксим intent
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_MAIN);
@@ -471,6 +476,12 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         log("intent: " + intent);
         /*if (IntentActivity.checkSendAction(this, intent))
             return false;*/
+        if(intent.getAction()==null)
+            intent.setAction(Intent.ACTION_MAIN);
+
+        if(intent.getCategories()==null)
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+
         if(intent.getAction().equals(Intent.ACTION_SEND)|intent.getAction().equals(Intent.ACTION_SEND_MULTIPLE)) {
             Toast.makeText(getContext(), "Данное действие временно не поддерживается", Toast.LENGTH_SHORT).show();
             return false;
@@ -666,16 +677,22 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     @Override
     protected void onPostResume() {
         super.onPostResume();
+        activityPaused = false;
         if(App.getInstance().getCurrentFragmentTag()==null){
             BrickInfo brickInfo = ListCore.getRegisteredBrick(Preferences.Lists.getLastSelectedList());
             if (brickInfo == null)
                 brickInfo = new NewsPagerBrickInfo();
             selectItem(brickInfo);
-        } else if(tabOnIntent!=null) {
+        }
+        if(tabOnIntent!=null) {
             addTabToList(tabOnIntent.getTitle(), tabOnIntent.getUrl(), tabOnIntent.getTag(), tabOnIntent.getFragment(), true);
         }
+        if(tabTagForRemove !=null){
+            removeTab(tabTagForRemove);
+        }
+        tabTagForRemove = null;
         tabOnIntent = null;
-        activityPaused = false;
+
         if(!(String.valueOf(App.getInstance().getCurrentFragmentTag())).equals("null")){
             Fragment fragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
             if(fragment!=null)
@@ -756,14 +773,18 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 removeTab(tag);
     }
     public void removeTab(String tag){
-        TabItem tab = App.getInstance().getTabByTag(tag);
-        log("remove tab" + (tab != null ? tab.getTitle() : "tab ne sushestvuet((("));
-        log("remove " + tag);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        hideFragments(transaction, false);
-        transaction.remove(getSupportFragmentManager().findFragmentByTag(tag));
-        transaction.commit();
-        mTabDraweMenu.removeTab(tag);
+        if(activityPaused|mTabDraweMenu==null){
+            tabTagForRemove = tag;
+        }else {
+            TabItem tab = App.getInstance().getTabByTag(tag);
+            log("remove tab" + (tab != null ? tab.getTitle() : "tab ne sushestvuet((("));
+            log("remove " + tag);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            hideFragments(transaction, false);
+            transaction.remove(getSupportFragmentManager().findFragmentByTag(tag));
+            transaction.commit();
+            mTabDraweMenu.removeTab(tag);
+        }
     }
     public void removeTabs(List<TabItem> items){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

@@ -98,7 +98,7 @@ public class EditPostFragment extends GeneralFragment {
     private boolean emptyText = true;
 
     private View m_BottomPanel;
-    private PopupPanelView mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
+    private PopupPanelView mPopupPanelView;
 
 
     public static final String thisFragmentUrl = "EditPostFragment";
@@ -268,6 +268,8 @@ public class EditPostFragment extends GeneralFragment {
             }
         });
 
+        if(mPopupPanelView==null)
+            mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
         mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), txtPost);
         mPopupPanelView.activityCreated(getMainActivity(), view);
 
@@ -736,7 +738,7 @@ public class EditPostFragment extends GeneralFragment {
 
                 int i = 1;
                 for (String newAttachFilePath : attachFilePaths) {
-                    publishProgress(new Pair<>(String.format(getString(R.string.format_sending_file), i++, attachFilePaths.size()), 0));
+                    publishProgress(new Pair<>(String.format(App.getContext().getString(R.string.format_sending_file), i++, attachFilePaths.size()), 0));
                     editAttach = PostApi.attachFile(Client.getInstance(),
                             m_EditPost.getId(), newAttachFilePath, m_ProgressState);
                 }
@@ -922,12 +924,8 @@ public class EditPostFragment extends GeneralFragment {
                 if(App.getInstance().isContainsByTag(parentTag)){
                     ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment())
                             .showTheme(ThemeFragment.getThemeUrl(m_EditPost.getTopicId(), "view=findpost&p=" + m_EditPost.getId()), true);
-                    getMainActivity().removeTab(getTag());
-                    MainActivity.selectTabByTag(parentTag);
-                }else {
-                    getMainActivity().removeTab(getTag());
                 }
-
+                getMainActivity().removeTab(getTag());
             } else {
                 if (ex != null)
                     AppLog.e(getMainActivity(), ex);
@@ -1070,19 +1068,15 @@ public class EditPostFragment extends GeneralFragment {
 
             if (success) {
                 if (!TextUtils.isEmpty(mError)) {
-                    Toast.makeText(getMainActivity(), getString(R.string.error)+": " + mError, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getMainActivity(), App.getContext().getString(R.string.error)+": " + mError, Toast.LENGTH_LONG).show();
                     return;
                 }
                 if(App.getInstance().isContainsByTag(parentTag)){
                     ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment())
                             .showTheme(String.format("http://4pda.ru/forum/index.php?showtopic=%s&%s", m_EditPost.getTopicId(),
                                     isNewPost() ? "view=getlastpost" : "view=findpost&p=" + m_EditPost.getId()), true);
-                    getMainActivity().removeTab(getTag());
-                    MainActivity.selectTabByTag(parentTag);
-                }else {
-                    getMainActivity().removeTab(getTag());
                 }
-
+                getMainActivity().removeTab(getTag());
 
             } else {
                 if (ex != null)

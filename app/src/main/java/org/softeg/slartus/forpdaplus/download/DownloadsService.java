@@ -355,7 +355,7 @@ public class DownloadsService extends IntentService {
                 File downloadingFile = new File(downloadingFilePath);
                 File downloadedFile = new File(filePath);
                 if (!downloadingFile.renameTo(downloadedFile)) {
-                    throw new NotReportException(getString(R.string.rename_file_exception) + downloadingFilePath + getString(R.string.combined_in) + filePath);
+                    throw new NotReportException(App.getContext().getString(R.string.rename_file_exception) + downloadingFilePath +App.getContext().getString(R.string.combined_in) + filePath);
                 }
                 downloadTask.setState(downloadTask.STATE_SUCCESSFULL);
                 sendDownloadProgressState(receiver, notificationId);

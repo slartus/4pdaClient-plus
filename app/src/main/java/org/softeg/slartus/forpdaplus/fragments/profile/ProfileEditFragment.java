@@ -188,13 +188,8 @@ public class ProfileEditFragment extends WebViewFragment {
             Toast.makeText(getContext(),"Данные отправлены",Toast.LENGTH_SHORT).show();
             if(App.getInstance().isContainsByTag(parentTag)){
                 ((ProfileFragment)App.getInstance().getTabByTag(parentTag).getFragment()).startLoadData();
-                getMainActivity().removeTab(getTag());
-                MainActivity.selectTabByTag(parentTag);
-            }else {
-                getMainActivity().removeTab(getTag());
             }
-
-
+            getMainActivity().removeTab(getTag());
         }
     }
 

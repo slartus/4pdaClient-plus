@@ -10,6 +10,7 @@ import com.android.internal.util.Predicate;
 import org.softeg.slartus.forpdaapi.ICatalogItem;
 import org.softeg.slartus.forpdaapi.digest.DigestApi;
 import org.softeg.slartus.forpdaapi.digest.DigestCatalog;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
@@ -67,7 +68,7 @@ public class DigestCatalogFragment extends BaseCatalogFragment {
 
     public DigestCatalogFragment() {
         super();
-        m_CurrentCatalogItem = new DigestCatalog("-1", getString(R.string.apps_and_games));
+        m_CurrentCatalogItem = new DigestCatalog("-1", App.getContext().getString(R.string.apps_and_games));
         m_LoadingCatalogItem = m_CurrentCatalogItem;
     }
 

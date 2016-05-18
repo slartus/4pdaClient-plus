@@ -59,13 +59,14 @@ public class ShortUserInfo {
 
     private Target target = new Target() {
         @Override
-        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-            if(bitmap.getHeight()<1||bitmap.getWidth()<1){
-                Toast.makeText(getContext(),"Ошибка: Размер изображения слишком маленький", Toast.LENGTH_SHORT).show();
-            }else {
-                blur(bitmap, userBackground, avatarUrl);
-                prefs.edit().putString("userAvatarUrl",avatarUrl).apply();
-            }
+        public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+            userBackground.post(new Runnable() {
+                @Override
+                public void run() {
+                    blur(bitmap, userBackground, avatarUrl);
+                    prefs.edit().putString("userAvatarUrl",avatarUrl).apply();
+                }
+            });
         }
 
         @Override
@@ -296,13 +297,13 @@ public class ShortUserInfo {
     }
 
     private void blur(Bitmap bkg, ImageView view, String url) {
-        bkg = Bitmap.createScaledBitmap(bkg, view.getMeasuredWidth(), view.getMeasuredHeight(), false);
+        bkg = Bitmap.createScaledBitmap(bkg, view.getWidth(), view.getHeight(), false);
 
         float scaleFactor = 3;
         int radius = 64;
 
-        Bitmap overlay = Bitmap.createBitmap((int) (view.getMeasuredWidth() / scaleFactor),
-                (int) (view.getMeasuredHeight() / scaleFactor), Bitmap.Config.RGB_565);
+        Bitmap overlay = Bitmap.createBitmap((int) (view.getWidth() / scaleFactor),
+                (int) (view.getHeight() / scaleFactor), Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(overlay);
         canvas.translate(-view.getLeft() / scaleFactor, -view.getTop() / scaleFactor);
         canvas.scale(1 / scaleFactor, 1 / scaleFactor);

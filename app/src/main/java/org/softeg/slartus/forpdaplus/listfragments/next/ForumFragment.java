@@ -892,7 +892,7 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
                         publishProgress(String.format("%s %d", message, percents));
                     }
                 });
-                publishProgress(getString(R.string.update_base));
+                publishProgress(App.getContext().getString(R.string.update_base));
                 ForumsTable.updateForums(res.getItems());
                 return res;
             } catch (Throwable e) {

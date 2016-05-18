@@ -100,7 +100,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     private static final String TAG = "ProfileWebViewFragment";
-    private static AdvWebView m_WebView;
+    private AdvWebView m_WebView;
 
 
     protected Bundle args;

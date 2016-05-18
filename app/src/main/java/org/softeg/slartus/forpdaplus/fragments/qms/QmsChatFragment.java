@@ -89,7 +89,7 @@ public class QmsChatFragment extends WebViewFragment {
     private Timer m_UpdateTimer = new Timer();
     private HtmlPreferences m_HtmlPreferences;
     private WebViewExternals m_WebViewExternals;
-    private PopupPanelView mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
+    private PopupPanelView mPopupPanelView;
     private String m_MessageText = null;
     private AsyncTask<ArrayList<String>, Void, Boolean> m_SendTask = null;
 
@@ -184,6 +184,8 @@ public class QmsChatFragment extends WebViewFragment {
         m_HtmlPreferences.load(getContext());
 
         edMessage = (EditText) findViewById(R.id.edMessage);
+        if(mPopupPanelView==null)
+            mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
         mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), edMessage);
         mPopupPanelView.activityCreated(getMainActivity(), view);
 
@@ -383,7 +385,7 @@ public class QmsChatFragment extends WebViewFragment {
                 new MaterialDialog.Builder(getMainActivity())
                         .title(R.string.confirm_action)
                         .cancelable(true)
-                        .content(String.format(getString(R.string.ask_delete_messages), ids.size()))
+                        .content(String.format(App.getContext().getString(R.string.ask_delete_messages), ids.size()))
                         .positiveText(R.string.delete)
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
@@ -524,7 +526,7 @@ public class QmsChatFragment extends WebViewFragment {
         uiHandler.post(new Runnable() {
             public void run() {
 //                setLoading(false);
-                setSubtitle(getString(R.string.refreshing));
+                setSubtitle(App.getContext().getString(R.string.refreshing));
             }
         });
 

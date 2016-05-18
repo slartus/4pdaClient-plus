@@ -14,6 +14,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.R;
@@ -96,7 +97,7 @@ public class NotesListFragment extends TopicsListFragment {
 
         final List<MenuListDialog> list = new ArrayList<>();
         AddLinksSubMenu(list, topic);
-        list.add(new MenuListDialog(getString(R.string.delete), new Runnable() {
+        list.add(new MenuListDialog(App.getContext().getString(R.string.delete), new Runnable() {
             @Override
             public void run() {
                 new MaterialDialog.Builder(getContext())
@@ -130,7 +131,7 @@ public class NotesListFragment extends TopicsListFragment {
             if (note != null) {
                 final ArrayList<Pair> links = note.getLinks();
                 if (links.size() != 0) {
-                    list.add(new MenuListDialog(getString(R.string.links), new Runnable() {
+                    list.add(new MenuListDialog(App.getContext().getString(R.string.links), new Runnable() {
                         @Override
                         public void run() {
                             final List<MenuListDialog> list1 = new ArrayList<>();

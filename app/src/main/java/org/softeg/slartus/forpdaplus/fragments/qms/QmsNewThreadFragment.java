@@ -46,7 +46,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
     private String m_Id;
     private String m_Nick;
     private boolean emptyText = true;
-    private PopupPanelView mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
+    private PopupPanelView mPopupPanelView;
 
     @Override
     public void hidePopupWindows() {
@@ -129,6 +129,8 @@ public class QmsNewThreadFragment extends GeneralFragment {
                 }
             }
         });
+        if(mPopupPanelView==null)
+            mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
         mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), message);
         mPopupPanelView.activityCreated(getMainActivity(), view);
 
@@ -252,11 +254,11 @@ public class QmsNewThreadFragment extends GeneralFragment {
             //setSupportProgressBarIndeterminateVisibility(false);
             if (success && !TextUtils.isEmpty(userNick)) {
                 m_Nick = userNick;
-                Toast.makeText(getContext(), getString(R.string.nick_received)+": " + m_Nick, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), App.getContext().getString(R.string.nick_received)+": " + m_Nick, Toast.LENGTH_SHORT).show();
                 username.setText(m_Nick);
                 username.setVisibility(View.GONE);
-                setTitle(m_Nick + ":"+getString(R.string.qms_title_new_thread));
-                App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":"+getString(R.string.qms_title_new_thread));
+                setTitle(m_Nick + ":"+App.getContext().getString(R.string.qms_title_new_thread));
+                App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":"+App.getContext().getString(R.string.qms_title_new_thread));
                 getMainActivity().notifyTabAdapter();
             } else {
                 username.setVisibility(View.VISIBLE);
@@ -294,7 +296,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
 
             dialog = new MaterialDialog.Builder(context)
                     .progress(true,0)
-                    .content(getString(R.string.sending_message))
+                    .content(App.getContext().getString(R.string.sending_message))
                     .build();
         }
 

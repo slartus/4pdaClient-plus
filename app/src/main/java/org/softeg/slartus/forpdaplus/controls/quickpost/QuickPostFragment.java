@@ -45,7 +45,7 @@ public class QuickPostFragment extends Fragment {
         parentTag = tag;
     }
 
-    private PopupPanelView mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_ALL);
+    private PopupPanelView mPopupPanelView;
 
     public void hidePopupWindow() {
         if(mPopupPanelView!=null) mPopupPanelView.hidePopupWindow();
@@ -110,7 +110,6 @@ public class QuickPostFragment extends Fragment {
             mAuthKey = savedInstanceState.getString("QuickPostFragment.AuthKey");
         }
 
-        mPopupPanelView.activityCreated(getActivity(), null);
         mPopupPanelView.setTopic(mForumId, mTopicId, mAuthKey);
 
     }
@@ -181,7 +180,9 @@ public class QuickPostFragment extends Fragment {
         });
 
         ImageButton advanced_button = (ImageButton) v.findViewById(R.id.advanced_button);
+        mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_ALL);
         mPopupPanelView.createView(inflater, advanced_button, mPostEditText);
+        mPopupPanelView.activityCreated(getActivity(), v);
 
 
         return v;

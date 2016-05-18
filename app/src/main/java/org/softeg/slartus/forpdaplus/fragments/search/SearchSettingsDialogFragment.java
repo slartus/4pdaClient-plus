@@ -384,8 +384,8 @@ public class SearchSettingsDialogFragment extends DialogFragment {
                 try {
                     final List<String> forums = ForumsTable.loadForumTitlesList(checkedForumIds);
                     if (checkedForumIds.contains("all"))
-                        forums.add(0, getString(R.string.all_forums));
-                    forums.add(0, getString(R.string.total)+": " + forums.size());
+                        forums.add(0, App.getContext().getString(R.string.all_forums));
+                    forums.add(0, App.getContext().getString(R.string.total)+": " + forums.size());
                     handler.post(new Runnable() {
                         @Override
                         public void run() {

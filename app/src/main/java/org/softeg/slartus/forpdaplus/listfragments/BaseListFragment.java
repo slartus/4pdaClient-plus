@@ -203,9 +203,9 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
                 }
             });
             if (loading) {
-                setEmptyText(getString(R.string.loading));
+                setEmptyText(App.getContext().getString(R.string.loading));
             } else {
-                setEmptyText(getString(R.string.no_data));
+                setEmptyText(App.getContext().getString(R.string.no_data));
             }
         } catch (Throwable ignore) {
             android.util.Log.e("TAG", ignore.toString());

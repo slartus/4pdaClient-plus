@@ -246,6 +246,7 @@ public class PopupPanelView {
                 popupWindow.dismiss();
             popupWindow = null;
             for(QuickPostItem item:mQuickPostPagerAdapter.mItems)
+                if(item.getBaseQuickView()!=null)
                     item.getBaseQuickView().onDestroy();
         } catch (Throwable ex) {
             Log.e("PopupPanelView", ex.toString());
@@ -255,7 +256,8 @@ public class PopupPanelView {
         try {
             hidePopupWindow();
             for(QuickPostItem item:mQuickPostPagerAdapter.mItems)
-                item.getBaseQuickView().onPause();
+                if(item.getBaseQuickView()!=null)
+                    item.getBaseQuickView().onPause();
         } catch (Throwable ex) {
             Log.e("PopupPanelView", ex.toString());
         }
@@ -263,7 +265,8 @@ public class PopupPanelView {
     public void resume(){
         try {
             for(QuickPostItem item:mQuickPostPagerAdapter.mItems)
-                item.getBaseQuickView().onPause();
+                if(item.getBaseQuickView()!=null)
+                    item.getBaseQuickView().onResume();
         } catch (Throwable ex) {
             Log.e("PopupPanelView", ex.toString());
         }

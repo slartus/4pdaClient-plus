@@ -127,7 +127,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         protected void onPostExecute(final Boolean success) {
             if (success && !TextUtils.isEmpty(userNick)) {
                 m_Nick = userNick;
-                Toast.makeText(getContext(), getString(R.string.nick_received)+": " + m_Nick, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), App.getContext().getString(R.string.nick_received)+": " + m_Nick, Toast.LENGTH_SHORT).show();
                 setTitle(m_Nick);
                 App.getInstance().getTabByTag(getTag()).setTitle(m_Nick);
                 getMainActivity().notifyTabAdapter();
@@ -155,7 +155,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         super.onLoadFinished(loader, data);
         if(data.getItems().size()<=0&!dialogShowed) {
             new MaterialDialog.Builder(getContext())
-                    .content(String.format(getString(R.string.ask_create_dialog), m_Nick))
+                    .content(String.format(App.getContext().getString(R.string.ask_create_dialog), m_Nick))
                     .positiveText(R.string.yes)
                     .negativeText(R.string.no)
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -337,7 +337,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
             m_Ids = ids;
             dialog = new MaterialDialog.Builder(context)
                     .progress(true, 0)
-                    .content(getString(R.string.deleting_dialogs))
+                    .content(App.getContext().getString(R.string.deleting_dialogs))
                     .build();
         }
 

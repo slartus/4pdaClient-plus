@@ -225,9 +225,9 @@ super();
                 }
             });
             if (loading) {
-                setEmptyText(getString(R.string.loading));
+                setEmptyText(App.getContext().getString(R.string.loading));
             } else {
-                setEmptyText(getString(R.string.no_data));
+                setEmptyText(App.getContext().getString(R.string.no_data));
             }
         } catch (Throwable ignore) {
             android.util.Log.e("TAG", ignore.toString());
@@ -356,7 +356,7 @@ super();
 
         setListShown(true);
         mAdapter.notifyDataSetChanged();
-        setEmptyText(getString(R.string.no_data));
+        setEmptyText(App.getContext().getString(R.string.no_data));
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -472,7 +472,7 @@ super();
             super.onPostExecute(result);
 
             if (mEx != null)
-                Toast.makeText(getContext(), AppLog.getLocalizedMessage(mEx, getString(R.string.cache_load_error)), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), AppLog.getLocalizedMessage(mEx, App.getContext().getString(R.string.cache_load_error)), Toast.LENGTH_SHORT).show();
             if (!isCancelled()) {
                 deliveryCache();
                 restoreListViewScrollPosition();
