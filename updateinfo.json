@@ -3,7 +3,7 @@
   "notice_text":"<a href=\"http://4pda.ru/forum/index.php?showtopic=271502&amp;view=findpost&amp;p=32591818\">Почему клиент удалили из Google Play?</a><br><br><a href=\"http://4pda.ru/forum/index.php?showtopic=271502\">Где брать новые версии?</a>",
 
   "warning":true,
-  "warning_text":"Если у вас тормозит открытие спойлеров, то обновите WebView до последней версии.",
+  "warning_text":"Файл обновления необходимо скачивать через системный менеджер загрузок.<br><br>Если у вас тормозит открытие спойлеров, то обновите WebView до последней версии.",
 
   "show_beta_dialog":true,
   "update_beta":{
