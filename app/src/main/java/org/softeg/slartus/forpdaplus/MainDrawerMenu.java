@@ -221,7 +221,7 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
                 }
                 new MaterialDialog.Builder(mActivity)
                         .title(R.string.confirm_action)
-                        .content(getContext().getString(R.string.need_login))
+                        .content(getContext().getString(R.string.mark_all_forums_read)+"?")
                         .positiveText(R.string.yes)
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override

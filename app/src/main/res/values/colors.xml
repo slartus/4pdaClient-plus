@@ -8,7 +8,7 @@
     <color name="holo_blue_dark">#0099cc</color>
 
     <!-- Mod -->
-    <color name="app_background_light">#eeeeee</color>
+    <color name="app_background_light">#fafafa</color>
     <color name="app_background_dark">#1A1A1A</color>
     <color name="app_background_black">#000</color>
 
@@ -53,9 +53,9 @@
     <color name="drawer_menu_text_light">@color/list_text_special_color_light</color>
     <color name="drawer_menu_text_dark">@color/list_text_special_color_dark</color>
 
-    <color name="divider_light">#dbdbdb</color>
-    <color name="divider_dark">#292929</color>
-    <color name="divider_black">#1A1A1A</color>
+    <color name="divider_light">#15000000</color>
+    <color name="divider_dark">#15ffffff</color>
+    <color name="divider_black">#20ffffff</color>
 
     <color name="list_text_general_color_light">#4D4D4D</color>
     <color name="list_text_minor_color_light">#757575</color>

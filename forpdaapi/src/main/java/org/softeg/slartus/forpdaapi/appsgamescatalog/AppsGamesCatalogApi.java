@@ -64,7 +64,7 @@ public class AppsGamesCatalogApi {
         private static void loadCatalog(IHttpClient client, AppGameCatalog catalog, ArrayList<AppGameCatalog> res) throws IOException {
             String pageBody = client.performGet(APPS_CATALOG_URL);
 
-            Matcher contentMatcher = Pattern.compile("<div class=\"[^\"]*post_body[^\"]*\">([\\s\\S]*?)<a name=\"entry\\d+\"></a>",
+            Matcher contentMatcher = Pattern.compile("<div class=\"[^\"]*post_body[^\"]*\"[^>]*?>([\\s\\S]*?)<a name=\"entry\\d+\"></a>",
                     Pattern.CASE_INSENSITIVE).matcher(pageBody);
             if (!contentMatcher.find()) {
                 throw new IOException("Не найден пост с содержанием каталога приложений");

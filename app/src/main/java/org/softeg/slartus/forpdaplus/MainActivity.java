@@ -181,21 +181,21 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             GeneralFragment frag;
             TabItem item;
             for (Fragment fragment : fragmentList) {
-                frag=(GeneralFragment)fragment;
-                if(frag==null) continue;
+                try {
+                    frag=(GeneralFragment)fragment;
+                    if(frag==null) continue;
 
-                item = new TabItem(frag.getGeneralTitle(), frag.getGeneralUrl(), frag.getTag(), frag.getGeneralParentTag(), frag);
-                frag.setThisTab(item);
-                App.getInstance().getTabItems().add(item);
-                Log.e("kek", "RESTORE TAB " + frag + " : " + frag.getThisTab());
+                    item = new TabItem(frag.getGeneralTitle(), frag.getGeneralUrl(), frag.getTag(), frag.getGeneralParentTag(), frag);
+                    frag.setThisTab(item);
+                    App.getInstance().getTabItems().add(item);
+                    Log.e("kek", "RESTORE TAB " + frag + " : " + frag.getThisTab());
+                }catch (ClassCastException ex){
+                    AppLog.e(ex);
+                }
             }
         }
         try {
-            boolean chi = checkIntent();
-            boolean nn = saveInstance!=null;
-            boolean f = chi&nn;
-            log("intent "+chi+" & "+nn+" = "+f);
-            if (f) return;
+            if (checkIntent()&saveInstance!=null) return;
             //Фиксим intent
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_MAIN);
@@ -418,11 +418,11 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
         if (mMainDrawerMenu == null)
             mMainDrawerMenu = new MainDrawerMenu(this, this);
-        else
-            mMainDrawerMenu.close();
+        mMainDrawerMenu.close();
 
         if(mTabDraweMenu==null)
             mTabDraweMenu = new TabDrawerMenu(this, this);
+        mTabDraweMenu.close();
 
         if(!top)
             shortUserInfo = new ShortUserInfo(this, mMainDrawerMenu.getNavigationView().getHeaderView(0));

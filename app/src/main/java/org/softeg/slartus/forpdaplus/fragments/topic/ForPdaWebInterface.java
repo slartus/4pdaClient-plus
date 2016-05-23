@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -568,6 +569,16 @@ public class ForPdaWebInterface {
             }
         });
 
+    }
+
+    @JavascriptInterface
+    public void setHistoryBody(final String index, final String body){
+        run(new Runnable() {
+            @Override
+            public void run() {
+                getContext().setHistoryBody(Integer.parseInt(index), body.replaceAll("data-block-init=\"1\"",""));
+            }
+        });
     }
 
 

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
@@ -125,7 +126,7 @@ public class ThemeQuoteEditor extends DialogFragment implements View.OnClickList
             if (m_Text != null)
                 m_Text = m_Text.trim();
         } else {
-            Toast.makeText(getActivity(), R.string.error_parsing_quote, Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), App.getContext().getString(R.string.error_parsing_quote), Toast.LENGTH_LONG).show();
         }
     }
 

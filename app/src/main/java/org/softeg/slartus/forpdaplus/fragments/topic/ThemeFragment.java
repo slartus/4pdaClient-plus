@@ -381,27 +381,28 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }
     }
 
-    //@Override
-    protected void onRestoreInstanceState(Bundle outState) {
-        //super.onRestoreInstanceState(outState);
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState == null) return;
         try {
-            m_Topic = (ExtTopic) outState.getSerializable("Topic");
+            m_Topic = (ExtTopic) savedInstanceState.getSerializable("Topic");
             if (m_Topic != null)
                 mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
-            m_LastUrl = outState.getString("LastUrl");
-            m_ScrollElement = outState.getString("ScrollElement");
+            m_LastUrl = savedInstanceState.getString("LastUrl");
+            m_ScrollElement = savedInstanceState.getString("ScrollElement");
 
-            if (m_ScrollElement != null && !TextUtils.isEmpty(m_ScrollElement))
-                webView.setPictureListener(new MyPictureListener());
+            /*if (m_ScrollElement != null && !TextUtils.isEmpty(m_ScrollElement))
+                webView.setPictureListener(new MyPictureListener());*/
 
-            m_FromHistory = outState.getBoolean("FromHistory");
+            m_FromHistory = savedInstanceState.getBoolean("FromHistory");
 
-            String sLoadsImagesAutomatically = outState.getString("LoadsImagesAutomatically");
+            String sLoadsImagesAutomatically = savedInstanceState.getString("LoadsImagesAutomatically");
             LoadsImagesAutomatically = "null".equals(sLoadsImagesAutomatically) ? null : Boolean.parseBoolean(sLoadsImagesAutomatically);
 
 
             loadPreferences(App.getInstance().getPreferences());
-            m_History = (ArrayList<SessionHistory>) outState.getSerializable("History");
+            m_History = (ArrayList<SessionHistory>) savedInstanceState.getSerializable("History");
             assert m_History != null;
             if (m_History.size() > 0) {
                 SessionHistory sessionHistory = m_History.get(m_History.size() - 1);
@@ -413,7 +414,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 if (sessionHistory.getBody() == null) {
                     showTheme(sessionHistory.getUrl());
                 } else {
-                    String body = sessionHistory.getBody().replace(outState.getString("LastStyle"), App.getInstance().getThemeCssFileName());
+                    String body = sessionHistory.getBody().replace(savedInstanceState.getString("LastStyle"), App.getInstance().getThemeCssFileName());
                     showBody(body);
                     sessionHistory.setBody(body);
                 }
@@ -423,7 +424,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         } catch (Throwable ex) {
             AppLog.e(getMainActivity(), ex);
         }
-
     }
 
     private Boolean m_FirstTime = true;
@@ -1270,6 +1270,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             //webView.clearCache(true);
             if (m_History.size() > 0) {
                 m_History.get(m_History.size() - 1).setY(webView.getScrollY());
+                webView.loadUrl("javascript:window.HTMLOUT.setHistoryBody("+(m_History.size() - 1)+",'<!DOCTYPE html><html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
             }
             webView.setWebViewClient(getWebViewClient());
             //webView.getSettings().setLoadsImagesAutomatically(getLoadsImagesAutomatically());
@@ -1279,6 +1280,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         } catch (Throwable ex) {
             AppLog.e(getMainActivity(), ex);
         }
+    }
+
+    public void setHistoryBody(int index, String body){
+        m_History.get(index).setBody(body);
     }
 
     public AdvWebView getWebView() {
@@ -1399,9 +1404,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 m_ScrollElement = m.group(1);
             }
         }
-        if (m_ScrollElement != null) {
+        /*if (m_ScrollElement != null) {
             webView.setPictureListener(new MyPictureListener());
-        }
+        }*/
     }
 
     private void addToHistory(String topicBody) {
@@ -1411,7 +1416,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         m_History.add(new SessionHistory(m_Topic, m_LastUrl, topicBody, 0));
     }
 
-    private class MyPictureListener implements WebView.PictureListener {
+    /*private class MyPictureListener implements WebView.PictureListener {
         Thread m_ScrollThread;
 
         public void onNewPicture(WebView view, Picture arg1) {
@@ -1425,7 +1430,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             m_ScrollThread = new Thread(new Runnable() {
                 public void run() {
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(250);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -1437,28 +1442,23 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     });
                 }
             });
-
-
             m_ScrollThread.start();
         }
-
-        private void tryScrollToElement() {
-            if (m_ScrollY != 0) {
-                webView.scrollTo(0, m_ScrollY);
-                m_ScrollY = 0;
-            } else if (!TextUtils.isEmpty(m_ScrollElement)) {
-
-                webView.evalJs("scrollToElement('" + m_ScrollElement + "');");
-                if (getSupportActionBar() != null && Preferences.isHideActionBar()) {
-                    //getSupportActionBar().hide();
-                }
+    }*/
+    private void tryScrollToElement() {
+        if (m_ScrollY != 0) {
+            webView.scrollTo(0, m_ScrollY);
+            m_ScrollY = 0;
+        } else if (!TextUtils.isEmpty(m_ScrollElement)) {
+            webView.evalJs("scrollToElement('" + m_ScrollElement + "');");
+            if (getSupportActionBar() != null && Preferences.isHideActionBar()) {
+                //getSupportActionBar().hide();
             }
-
-            m_ScrollElement = null;
-            webView.setPictureListener(null);
         }
-    }
 
+        m_ScrollElement = null;
+        webView.setPictureListener(null);
+    }
     public List<ArrayList<String>> imageAttaches = new ArrayList<>();
     private class MyWebViewClient extends WebViewClient {
         private final long LOADING_ERROR_TIMEOUT = TimeUnit.SECONDS.toMillis(45);
@@ -1572,6 +1572,27 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 mLoadingFinished = true;
             }
             view.clearHistory();
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        Thread.sleep(250);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    mHandler.post(new Runnable() {
+                        public void run() {
+                            tryScrollToElement();
+                        }
+                    });
+                }
+            }).start();/*
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            }, 250);*/
         }
 
         private boolean startsWith(String str, String prefix) {
@@ -1724,8 +1745,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 }
             }
 
-            if (scrollY != 0)
-                webView.setPictureListener(new MyPictureListener());
+            /*if (scrollY != 0)
+                webView.setPictureListener(new MyPictureListener());*/
             Log.e("kek", webView.getSettings().getLoadsImagesAutomatically()+" loadimages");
 
             m_ScrollY = scrollY;

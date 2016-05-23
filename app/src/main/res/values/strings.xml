@@ -176,8 +176,8 @@
     <string name="repeat">Повторить</string>
     <string name="associate_with_theme">Связать с темой на форуме</string>
     <string name="enter_url_theme">Введите URL темы</string>
-    <string name="empty_url">Пустой урл!</string>
-    <string name="incorrect_url">Неверный урл!</string>
+    <string name="empty_url">Пустой URL!</string>
+    <string name="incorrect_url">Неверный URL!</string>
     <string name="refresh">Обновить</string>
     <string name="loading">Загрузка</string>
     <string name="no_data">Нет данных</string>
@@ -241,7 +241,7 @@
     <string name="links_not_supported">Такие ссылки не поддерживаются</string>
     <string name="choose">Выберите</string>
     <string name="chare_via">Поделиться через...</string>
-    <string name="link_copied_to_buffer">Ссылка скопирован</string>
+    <string name="link_copied_to_buffer">Ссылка скопирована</string>
     <string name="open_in_browser">Открыть в браузере</string>
     <string name="share_link">Поделиться ссылкой</string>
     <string name="copy_link">Скопировать ссылку</string>
