@@ -159,8 +159,37 @@ var panels = document.querySelectorAll('#curator .panel');
 	}
 });
 
+/**	
+ *		==================
+ *		QMS SELECT MESSAGE
+ *		==================
+*/	
+
+document.addEventListener("click",checkedQmsMessage);
+function checkedQmsMessage() {
+	var event = event || window.event;
+	var target = event.target || event.srcElement;
+	while (target != this) {
+		if (~target.className.indexOf('list-group-item')) {
+			var checkbox = target.getElementsByTagName('input')[0];
+			if (checkbox.checked) {
+				checkbox.checked = false;
+				target.classList.remove('selected');
+			}
+			else {
+				checkbox.checked = true;
+				target.classList.add('selected');
+			}
+			return;
+		}
+		target = target.parentNode;
+	}
+}
+
 /**
+ *		===
  *		END
+ *		===
 */
 
 function getIds() {
