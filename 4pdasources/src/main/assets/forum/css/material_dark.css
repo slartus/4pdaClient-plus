@@ -828,7 +828,7 @@ span[style*="font-size:8pt"] * {
   width: 2rem;
   height: 2rem;
   text-align: center;
-  background: url(material_src/more.png) center no-repeat;
+  background: url(material_src/more.svg) center no-repeat;
   background-size: 1.625rem;
   cursor: pointer;
 }
@@ -941,7 +941,7 @@ span[style*="font-size:8pt"] * {
   height: 1.4rem;
   margin-right: 0.3rem;
   content: '';
-  background-image: url(material_src/attach_icon.png);
+  background-image: url(material_src/attach.svg);
   background-repeat: no-repeat;
   background-size: contain;
   vertical-align: bottom;
@@ -1235,15 +1235,14 @@ div[data-post] > a {
   color: rgba(225, 225, 225, 0.7);
 }
 #thread_form .list-group-item .time .read-status.unread.big-dot {
-  position: absolute;
-  margin-top: 1rem;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #1e1e1e;
-  opacity: 0.5;
-  z-index: 99;
+  position: relative;
+  display: inline-block;
+  margin-top: -0.125em;
+  width: 0.5rem;
+  height: 0.5rem;
+  vertical-align: middle;
+  border-radius: 100%;
+  background: #b53;
 }
 #thread_form .list-group-item .avatar-wrap {
   position: absolute;
@@ -1281,7 +1280,8 @@ div[data-post] > a {
   margin: 0 0.5rem 0 3rem;
   background: #2d2d2d;
   border-radius: 0.5rem;
-  z-index: 98;
+  -webkit-transition: ease 0.3s background;
+  transition: ease 0.3s background;
 }
 @media screen and (min-width: 50rem) {
   #thread_form .list-group-item .msg-content {
@@ -1304,6 +1304,9 @@ div[data-post] > a {
   border-color: #2d2d2d;
   border-bottom-color: transparent;
   border-left-color: transparent;
+  border-right-color: transparent;
+  -webkit-transition: ease 0.3s border-color;
+  transition: ease 0.3s border-color;
 }
 #thread_form .list-group-item.our-message {
   text-align: right;
@@ -1312,15 +1315,6 @@ div[data-post] > a {
 #thread_form .list-group-item.our-message .check-item {
   left: auto;
   right: 0;
-}
-#thread_form .list-group-item.our-message .time {
-  left: auto;
-  right: 0.7rem;
-}
-#thread_form .list-group-item.our-message .time .read-status.unread.big-dot {
-  float: right;
-  top: 0.4rem;
-  margin-left: 0.3rem;
 }
 #thread_form .list-group-item.our-message .avatar-wrap {
   display: none;
@@ -1338,6 +1332,7 @@ div[data-post] > a {
   right: -0.5rem;
   border-color: #2d2d2d;
   border-bottom-color: transparent;
+  border-left-color: transparent;
   border-right-color: transparent;
 }
 #thread_form .list-group-item.our-message .msg-content .quote {
@@ -1345,6 +1340,12 @@ div[data-post] > a {
 }
 #thread_form .list-group-item.our-message .msg-content .code {
   border-left: 0.3rem solid rgba(255, 222, 122, 0.56);
+}
+#thread_form .list-group-item.selected .msg-content {
+  background: #53626c;
+}
+#thread_form .list-group-item.selected .msg-content:before {
+  border-top-color: #53626c;
 }
 #thread_form .list-group-item + .list-group-item {
   margin-top: 0.3rem;
@@ -1380,10 +1381,21 @@ div[data-post] > a {
   display: none !important;
 }
 #qms[class*="noimages"] .msg-content {
-  margin-left: 0.5rem;
+  margin-left: 0.5rem !important;
 }
 #qms[class*="noimages"] .time {
-  left: 0.5rem;
+  margin-left: 0.5rem !important;
+}
+@media screen and (max-width: 14rem) {
+  #qms .avatar-wrap {
+    display: none !important;
+  }
+  #qms .msg-content {
+    margin-left: 0.5rem !important;
+  }
+  #qms .time {
+    margin-left: 0.5rem !important;
+  }
 }
 /*
  *	NEWS
