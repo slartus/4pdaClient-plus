@@ -1352,6 +1352,39 @@ div[data-post] > a {
 #thread_form .list-group-item.selected .msg-content:before {
   border-top-color: #47545e;
 }
+#thread_form .list-group-item.msgbox.info {
+  display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin: -2rem 0 0 -9rem;
+  padding: 1rem;
+  width: 16rem;
+  border-radius: 0.125rem;
+  z-index: 99;
+  background: #002600;
+  -webkit-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+}
+#thread_form .list-group-item.msgbox.info .icon-close {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+}
+#thread_form .list-group-item.msgbox.info .icon-close:before {
+  margin: 0 0.75rem -0.1em 0;
+  font-size: 2rem;
+  color: green;
+}
+@media screen and (max-width: 19rem) {
+  #thread_form .list-group-item.msgbox.info {
+    width: auto;
+    margin: 0;
+    left: 1rem;
+    right: 1rem;
+  }
+}
 #thread_form .list-group-item + .list-group-item {
   margin-top: 0.3rem;
 }
