@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sb="http://simplector.lyoshka.net/base/2.0"
+   xmlns:sp="http://simplector.lyoshka.net/pro/2.0"
+   width="24.0px"
+   height="24.0px"
+   viewBox="0 0 24.0 24.0"
+   sb:fontSize="Custom"
+   sb:pageOrientation="Portrait"
+   version="1.1"
+   sb:version="2.0.19"
+   >
+   <desc>Created in Simplector Pro</desc>
+   <path
+      id="1"
+      fill="rgb(0,0,0)"
+      fill-opacity="0.0"
+      stroke-width="4.0"
+      stroke-linecap="butt"
+      stroke-linejoin="miter"
+      stroke-miterlimit="1.0"
+      stroke="rgb(0,0,0)"
+      stroke-opacity="0.0"
+      d="
+      M 0.0 0.0 L 24.0 0.0 L 24.0 24.0 L 0.0 24.0 Z 
+      "
+
+      sb:layerName="path-1"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      sb:pathType="path"
+      >
+   </path>
+   <path
+      id="2"
+      fill="rgb(138,138,138)"
+      fill-opacity="1.0"
+      stroke-width="4.0"
+      stroke-linecap="butt"
+      stroke-linejoin="miter"
+      stroke-miterlimit="1.0"
+      stroke="rgb(0,0,0)"
+      stroke-opacity="0.0"
+      d="
+      M 6.0 10.0 C 4.9 10.0 4.0 10.9 4.0 12.0 S 4.9 14.0 6.0 14.0 S 8.0 13.1 8.0 12.0 S 7.1 10.0 6.0 10.0 
+      Z M 18.0 10.0 C 16.9 10.0 16.0 10.9 16.0 12.0 S 16.9 14.0 18.0 14.0 S 20.0 13.1 20.0 12.0 
+      S 19.1 10.0 18.0 10.0 Z M 12.0 10.0 C 10.9 10.0 10.0 10.9 10.0 12.0 S 10.9 14.0 12.0 14.0 
+      S 14.0 13.1 14.0 12.0 S 13.1 10.0 12.0 10.0 Z 
+      "
+
+      sb:layerName="path-2"
+      sb:layerVisible="true"
+      sb:layerLocked="false"
+      sb:pathType="path"
+      >
+   </path>
+   <sp:keyframes
+
+      sp:step="100"
+      sp:dur="10000"
+      >
+      <sp:keyframe
+
+         sp:time="0"
+         >
+      </sp:keyframe>
+   </sp:keyframes>
+</svg>

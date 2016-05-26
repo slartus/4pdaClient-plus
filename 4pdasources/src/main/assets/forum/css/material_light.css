@@ -786,7 +786,7 @@ span[style*="font-size:8pt"] * {
   width: 2rem;
   height: 2rem;
   text-align: center;
-  background: url(material_src/more.png) center no-repeat;
+  background: url(material_src/more.svg) center no-repeat;
   background-size: 1.625rem;
   cursor: pointer;
 }
@@ -899,7 +899,7 @@ span[style*="font-size:8pt"] * {
   height: 1.4rem;
   margin-right: 0.3rem;
   content: '';
-  background-image: url(material_src/attach_icon.png);
+  background-image: url(material_src/attach.svg);
   background-repeat: no-repeat;
   background-size: contain;
   vertical-align: bottom;
@@ -920,6 +920,10 @@ span[style*="font-size:8pt"] * {
 .post_body font a[title="Перейти к сообщению"],
 #multimoderation > form font a[title="Перейти к сообщению"] {
   font-size: 0.625rem;
+}
+.post_body font a[title="Ссылка"],
+#multimoderation > form font a[title="Ссылка"] {
+  color: #3490c3;
 }
 .post_body .edit,
 #multimoderation > form .edit {
@@ -1193,15 +1197,14 @@ div[data-post] > a {
   color: gray;
 }
 #thread_form .list-group-item .time .read-status.unread.big-dot {
-  position: absolute;
-  margin-top: 1rem;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #eeeeee;
-  opacity: 0.5;
-  z-index: 99;
+  position: relative;
+  display: inline-block;
+  margin-top: -0.125em;
+  width: 0.5rem;
+  height: 0.5rem;
+  vertical-align: middle;
+  border-radius: 100%;
+  background: #b53;
 }
 #thread_form .list-group-item .avatar-wrap {
   position: absolute;
@@ -1239,7 +1242,8 @@ div[data-post] > a {
   margin: 0 0.5rem 0 3rem;
   background: white;
   border-radius: 0.5rem;
-  z-index: 98;
+  -webkit-transition: ease 0.3s background;
+  transition: ease 0.3s background;
 }
 @media screen and (min-width: 50rem) {
   #thread_form .list-group-item .msg-content {
@@ -1262,6 +1266,9 @@ div[data-post] > a {
   border-color: white;
   border-bottom-color: transparent;
   border-left-color: transparent;
+  border-right-color: transparent;
+  -webkit-transition: ease 0.3s border-color;
+  transition: ease 0.3s border-color;
 }
 #thread_form .list-group-item.our-message {
   text-align: right;
@@ -1270,15 +1277,6 @@ div[data-post] > a {
 #thread_form .list-group-item.our-message .check-item {
   left: auto;
   right: 0;
-}
-#thread_form .list-group-item.our-message .time {
-  left: auto;
-  right: 0.7rem;
-}
-#thread_form .list-group-item.our-message .time .read-status.unread.big-dot {
-  float: right;
-  top: 0.4rem;
-  margin-left: 0.3rem;
 }
 #thread_form .list-group-item.our-message .avatar-wrap {
   display: none;
@@ -1296,6 +1294,7 @@ div[data-post] > a {
   right: -0.5rem;
   border-color: #dddddd;
   border-bottom-color: transparent;
+  border-left-color: transparent;
   border-right-color: transparent;
 }
 #thread_form .list-group-item.our-message .msg-content .quote {
@@ -1303,6 +1302,45 @@ div[data-post] > a {
 }
 #thread_form .list-group-item.our-message .msg-content .code {
   border-left: 0.3rem solid rgba(114, 86, 0, 0.6);
+}
+#thread_form .list-group-item.selected .msg-content {
+  background: #aac6d5;
+}
+#thread_form .list-group-item.selected .msg-content:before {
+  border-top-color: #aac6d5;
+}
+#thread_form .list-group-item.msgbox.info {
+  display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin: -2rem 0 0 -9rem;
+  padding: 1rem;
+  width: 16rem;
+  border-radius: 0.125rem;
+  z-index: 99;
+  background: #b3d9b3;
+  -webkit-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+}
+#thread_form .list-group-item.msgbox.info .icon-close {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+}
+#thread_form .list-group-item.msgbox.info .icon-close:before {
+  margin: 0 0.75rem -0.1em 0;
+  font-size: 2rem;
+  color: green;
+}
+@media screen and (max-width: 19rem) {
+  #thread_form .list-group-item.msgbox.info {
+    width: auto;
+    margin: 0;
+    left: 1rem;
+    right: 1rem;
+  }
 }
 #thread_form .list-group-item + .list-group-item {
   margin-top: 0.3rem;
@@ -1338,10 +1376,21 @@ div[data-post] > a {
   display: none !important;
 }
 #qms[class*="noimages"] .msg-content {
-  margin-left: 0.5rem;
+  margin-left: 0.5rem !important;
 }
 #qms[class*="noimages"] .time {
-  left: 0.5rem;
+  margin-left: 0.5rem !important;
+}
+@media screen and (max-width: 14rem) {
+  #qms .avatar-wrap {
+    display: none !important;
+  }
+  #qms .msg-content {
+    margin-left: 0.5rem !important;
+  }
+  #qms .time {
+    margin-left: 0.5rem !important;
+  }
 }
 /*
  *	NEWS
