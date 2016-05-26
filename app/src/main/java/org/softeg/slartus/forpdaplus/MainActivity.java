@@ -650,7 +650,9 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
 
     public void notifyTabAdapter(){
-        mTabDraweMenu.notifyDataSetChanged();
+        if(mTabDraweMenu!=null)
+            if(mTabDraweMenu.adapter!=null)
+                mTabDraweMenu.notifyDataSetChanged();
     }
     /**
      * Управление вкладками начало

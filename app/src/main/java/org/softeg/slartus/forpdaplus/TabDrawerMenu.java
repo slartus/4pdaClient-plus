@@ -40,7 +40,7 @@ public class TabDrawerMenu {
     private SelectItemListener mSelectItemListener;
     private Resources resources;
     private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
-    private static TabAdapter adapter;
+    public static TabAdapter adapter;
     private ListView mListView;
     private Button closeAll;
     private Handler handler = new Handler();

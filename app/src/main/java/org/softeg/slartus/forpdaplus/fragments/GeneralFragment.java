@@ -142,6 +142,8 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
             generalUrl = savedInstanceState.getString("generalUrl");
             generalParentTag = savedInstanceState.getString("generalParentTag");
             Log.d("kek", getGeneralTitle()+" : "+getGeneralUrl()+" : "+getGeneralParentTag());
+            getThisTab().setTitle(generalTitle).setUrl(getGeneralUrl()).setParentTag(generalParentTag);
+            getMainActivity().notifyTabAdapter();
             activityCreated = true;
         }
     }
@@ -191,7 +193,6 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
             getSupportActionBar().setSubtitle(generalSubtitle);
 
         if(activityCreated){
-            getThisTab().setTitle(generalTitle).setUrl(getGeneralUrl()).setParentTag(generalParentTag);
             getMainActivity().notifyTabAdapter();
         }
     }
