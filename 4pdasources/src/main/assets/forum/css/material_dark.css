@@ -963,6 +963,10 @@ span[style*="font-size:8pt"] * {
 #multimoderation > form font a[title="Перейти к сообщению"] {
   font-size: 0.625rem;
 }
+.post_body font a[title="Ссылка"],
+#multimoderation > form font a[title="Ссылка"] {
+  color: #aaddff;
+}
 .post_body .edit,
 #multimoderation > form .edit {
   display: block;
