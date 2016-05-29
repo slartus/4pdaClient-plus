@@ -182,7 +182,7 @@ span[style*="font-size:8pt"] * {
 }
 .post-block.quote > .block-title a[title="Перейти к сообщению"] {
   float: left;
-  margin: -0.5rem 0.25rem 0 -0.25rem;
+  margin: -0.5rem 0.25rem 0 -0.25rem !important;
   opacity: 0.8;
 }
 .post-block.quote > .block-title a[title="Перейти к сообщению"]:before {
@@ -862,47 +862,6 @@ span[style*="font-size:8pt"] * {
     margin: 0 0 0.75rem 13rem;
   }
 }
-.post_body a[title="Перейти к сообщению"],
-#multimoderation > form a[title="Перейти к сообщению"] {
-  position: relative;
-  display: inline-block;
-  margin: 0 -0.1875rem 0 0;
-  top: 0.375rem;
-  width: 1.5rem;
-  height: 1.5rem;
-}
-.post_body a[title="Перейти к сообщению"] img,
-#multimoderation > form a[title="Перейти к сообщению"] img {
-  display: none;
-}
-.post_body a[title="Перейти к сообщению"]:before,
-#multimoderation > form a[title="Перейти к сообщению"]:before {
-  position: absolute;
-  content: '';
-  display: inline-block;
-  top: 0.25rem;
-  left: 0.25rem;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 1rem;
-  background: #9ecbea;
-  overflow: visible;
-}
-.post_body a[title="Перейти к сообщению"]:after,
-#multimoderation > form a[title="Перейти к сообщению"]:after {
-  position: absolute;
-  display: inline-block;
-  box-sizing: border-box;
-  content: '';
-  top: 0.490625rem;
-  left: 0.5625rem;
-  width: 0.5rem;
-  height: 0.5rem;
-  border-top: 0.1875rem solid #2d2d2d;
-  border-left: 0.1875rem solid #2d2d2d;
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-}
 .post_body table[id*="ipb-attach"] *,
 #multimoderation > form table[id*="ipb-attach"] * {
   display: inline-block;
@@ -986,6 +945,51 @@ span[style*="font-size:8pt"] * {
 #multimoderation > form span[style="font-family:monospace"] {
   font-family: Courier, Courier New, Verdana, Arial !important;
   font-size: 1rem;
+}
+#topic .post_body a[title="Перейти к сообщению"],
+#multimoderation > form a[title="Перейти к сообщению"],
+#thread_form .msg-content a[title="Перейти к сообщению"] {
+  position: relative;
+  display: inline-block;
+  margin: 0 -0.1875rem 0 0;
+  top: 0.375rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+#topic .post_body a[title="Перейти к сообщению"] img,
+#multimoderation > form a[title="Перейти к сообщению"] img,
+#thread_form .msg-content a[title="Перейти к сообщению"] img {
+  display: none;
+}
+#topic .post_body a[title="Перейти к сообщению"]:before,
+#multimoderation > form a[title="Перейти к сообщению"]:before,
+#thread_form .msg-content a[title="Перейти к сообщению"]:before {
+  position: absolute;
+  content: '';
+  display: inline-block;
+  top: 0.25rem;
+  left: 0.25rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 1rem;
+  background: #9ecbea;
+  overflow: visible;
+}
+#topic .post_body a[title="Перейти к сообщению"]:after,
+#multimoderation > form a[title="Перейти к сообщению"]:after,
+#thread_form .msg-content a[title="Перейти к сообщению"]:after {
+  position: absolute;
+  display: inline-block;
+  box-sizing: border-box;
+  content: '';
+  top: 0.490625rem;
+  left: 0.5625rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-top: 0.1875rem solid #2d2d2d;
+  border-left: 0.1875rem solid #2d2d2d;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
 }
 div[data-post] > a {
   position: absolute;
