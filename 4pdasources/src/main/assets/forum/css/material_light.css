@@ -1248,24 +1248,6 @@ div[data-post] > a {
   border-radius: 0.5rem;
   -webkit-transition: ease 0.3s background;
   transition: ease 0.3s background;
-  /*			&:before {
-				content:'';
-				display: inline-block;
-				width: 0.5rem;
-				height: 0.5rem;
-				position: absolute;
-				top: 0;
-				left: -0.5rem;
-				box-sizing: border-box;
-				border: 0.5rem solid;
-				border-color: @bgColor;
-				border-bottom-color: transparent;
-				border-left-color: transparent;
-				border-right-color: transparent;
-				-webkit-transition: ease 0.3s border-color;
-				transition: ease 0.3s border-color;
-			}
-*/
 }
 @media screen and (min-width: 50rem) {
   #thread_form .list-group-item .msg-content {
@@ -1274,6 +1256,23 @@ div[data-post] > a {
 }
 #thread_form .list-group-item .msg-content font {
   font-size: 0.75rem !important;
+}
+#thread_form .list-group-item .msg-content:before {
+  content: '';
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  position: absolute;
+  top: 0;
+  left: -0.5rem;
+  box-sizing: border-box;
+  border: 0.5rem solid;
+  border-color: white;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  -webkit-transition: ease 0.3s border-color;
+  transition: ease 0.3s border-color;
 }
 #thread_form .list-group-item.our-message {
   text-align: right;
