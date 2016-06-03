@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             }
         }
         try {
-            if (checkIntent()&saveInstance!=null) return;
+            if (!checkIntent()&saveInstance!=null) return;
             //Фиксим intent
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_MAIN);
@@ -416,8 +416,10 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        if (mMainDrawerMenu == null)
+        if (mMainDrawerMenu == null){
             mMainDrawerMenu = new MainDrawerMenu(this, this);
+        }
+
         mMainDrawerMenu.close();
 
         if(mTabDraweMenu==null)
@@ -493,9 +495,9 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             if (IntentActivity.tryShowUrl(this, mHandler, url, false, true)) {
                 return true;
             }
-            startNextMatchingActivity(intent);
+            //startNextMatchingActivity(intent);
             Toast.makeText(this, getString(R.string.links_not_supported)+":\n" + url, Toast.LENGTH_LONG).show();
-            finish();
+            //finish();
             return true;
         }
         return false;

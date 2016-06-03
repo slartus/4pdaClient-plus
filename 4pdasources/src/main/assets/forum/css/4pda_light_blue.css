@@ -919,72 +919,31 @@ a {
   margin-left: 1em;
   clear: both;
 }
+.list-group-item.selected .msg-content:after,
+.our-message.selected .msg-content:after {
+  opacity: 0.2;
+}
+.list-group-item.selected .check-item,
+.our-message.selected .check-item {
+  opacity: 0.2;
+}
 .list-group-item .check-item,
 .our-message .check-item {
-  float: right;
-  height: 2em;
-  width: 2em;
-  line-height: 2em;
-  display: block;
-  padding: 0.4em;
-  display: none;
-}
-.list-group-item .check-item input,
-.our-message .check-item input {
-  display: none;
-}
-.list-group-item .check-item .checkbox,
-.our-message .check-item .checkbox {
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  width: 1.125em;
-  height: 1.125em;
-  display: block;
-  border: 0.125em solid #737373;
-  -webkit-transition: 0.25s;
-  transition: 0.25s;
-}
-.list-group-item .check-item .checkbox .icon-check:before,
-.our-message .check-item .checkbox .icon-check:before {
-  display: none;
-}
-.list-group-item .check-item .checkbox .icon-uncheck,
-.our-message .check-item .checkbox .icon-uncheck {
-  display: block;
-  width: 0.4375em;
   height: 0.75em;
-  right: 0.8125em;
-  top: 0.4375em;
+  width: 0.75em;
+  background: #7f7f7f;
+  opacity: 0;
   position: absolute;
-  border: 0.125em solid #737373;
-  border-color: white;
-  border-left: none;
-  border-top: none;
-  -webkit-transform: rotate(45deg) scale(0);
-  transform: rotate(45deg) scale(0);
-  -webkit-transition: 0.25s;
-  transition: 0.25s;
+  bottom: 0.25em;
+  left: -0.25em;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  z-index: 20;
+  transition: opacity 0.25s;
 }
-.list-group-item .check-item .checkbox .icon-uncheck:before,
-.our-message .check-item .checkbox .icon-uncheck:before {
+.list-group-item .check-item > *,
+.our-message .check-item > * {
   display: none;
-}
-.list-group-item .check-item input:checked + .checkbox,
-.our-message .check-item input:checked + .checkbox {
-  border-color: #0277bd;
-  background: #0277bd;
-}
-.list-group-item .check-item input:checked + .checkbox .icon-uncheck,
-.our-message .check-item input:checked + .checkbox .icon-uncheck {
-  -webkit-transform: rotate(45deg) scale(1);
-  transform: rotate(45deg) scale(1);
-  opacity: 1;
-}
-.list-group-item .check-item:after,
-.our-message .check-item:after {
-  clear: both;
-  content: "";
-  display: table;
 }
 .list-group-item .time,
 .our-message .time {
@@ -1064,6 +1023,26 @@ a {
   margin: 0;
   overflow: hidden;
 }
+.list-group-item .msg-content .post-block,
+.our-message .msg-content .post-block {
+  margin-left: -0.75em;
+  margin-right: -0.75em;
+}
+.list-group-item .msg-content:after,
+.our-message .msg-content:after {
+  content: "";
+  background: #7f7f7f;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.25s;
+  pointer-events: none;
+}
 .list-group-item:before,
 .our-message:before {
   position: relative;
@@ -1094,11 +1073,8 @@ a {
   margin-right: 1em;
 }
 .our-message .check-item {
-  float: left;
-}
-.our-message .check-item .checkbox .icon-uncheck {
-  right: auto;
-  left: 0.75em;
+  left: auto;
+  right: -0.25em;
 }
 .our-message .time {
   right: auto;
@@ -1544,6 +1520,49 @@ a {
   display: table;
   clear: both;
 }
+a[href*=findpost][title="Перейти к сообщению"] {
+  color: #ffffff;
+  background: #0277bd;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  background: #0c6296;
+  width: 1.25em;
+  height: 1.25em;
+  display: inline-block;
+  text-align: center;
+  vertical-align: text-bottom;
+  position: relative;
+  margin: 0 0.1875em;
+}
+a[href*=findpost][title="Перейти к сообщению"] img {
+  display: none;
+}
+a[href*=findpost][title="Перейти к сообщению"]:before {
+  content: "";
+  display: block;
+  height: 0.4375em;
+  width: 0.4375em;
+  box-sizing: border-box;
+  border: 0.125em solid #737373;
+  border-color: white;
+  border-top: none;
+  border-right: none;
+  top: 50%;
+  margin-top: -0.1875em;
+  left: 50%;
+  margin-left: -0.125em;
+  position: absolute;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+a[href*=findpost][title="Перейти к сообщению"]:after {
+  content: "";
+  position: absolute;
+  height: 2.25em;
+  width: 2.25em;
+  top: -0.5em;
+  left: -0.5em;
+}
 .post_body {
   padding: 1em;
   position: relative;
@@ -1628,49 +1647,6 @@ a {
 .post_body [attach_id][title*="Скачать"]:not(.linked-image)[href*=".txt"][title*=".txt"]:before {
   content: "\e00b";
 }
-.post_body a[href*=findpost][title="Перейти к сообщению"] {
-  color: #ffffff;
-  background: #0277bd;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  background: #0c6296;
-  width: 1.25em;
-  height: 1.25em;
-  display: inline-block;
-  text-align: center;
-  vertical-align: text-bottom;
-  position: relative;
-  margin: 0 0.1875em;
-}
-.post_body a[href*=findpost][title="Перейти к сообщению"] img {
-  display: none;
-}
-.post_body a[href*=findpost][title="Перейти к сообщению"]:before {
-  content: "";
-  display: block;
-  height: 0.4375em;
-  width: 0.4375em;
-  box-sizing: border-box;
-  border: 0.125em solid #737373;
-  border-color: white;
-  border-top: none;
-  border-right: none;
-  top: 50%;
-  margin-top: -0.1875em;
-  left: 50%;
-  margin-left: -0.125em;
-  position: absolute;
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-}
-.post_body a[href*=findpost][title="Перейти к сообщению"]:after {
-  content: "";
-  position: absolute;
-  height: 2.25em;
-  width: 2.25em;
-  top: -0.5em;
-  left: -0.5em;
-}
 .post_container {
   background: #ffffff;
   margin: 0.5em 0;
@@ -1750,7 +1726,7 @@ a {
   top: -1em;
   height: 3em;
   width: 2.5em;
-  background-image: url(file:///android_asset/forum/style_images/ic_dots_vertical_grey600_24dp.png), url(../../forum/style_images/ic_dots_vertical_grey600_24dp.png);
+  background-image: url(file:///android_asset/forum/style_images/dots-vertical.svg), url(../../forum/style_images/dots-vertical.svg);
   background-size: 1.5em;
   background-position: 0.375em center;
   background-repeat: no-repeat;
@@ -2348,7 +2324,7 @@ li .post-block {
 .post-block.quote > .block-title:empty:before {
   content: "Цитата";
 }
-.post-block.quote > .block-title a[href*=findpost][title="Перейти к сообщению"] {
+.post-block.quote > .block-title a[href*=findpost] {
   background: none;
   position: absolute;
   left: 0;
@@ -2357,14 +2333,14 @@ li .post-block {
   height: 100%;
   margin: 0;
 }
-.post-block.quote > .block-title a[href*=findpost][title="Перейти к сообщению"]:before {
+.post-block.quote > .block-title a[href*=findpost]:before {
   border-color: #0277bd;
   left: 1.5em;
   width: 0.5625em;
   height: 0.5625em;
   margin-top: -0.25em;
 }
-.post-block.quote > .block-title a[href*=findpost][title="Перейти к сообщению"]:after {
+.post-block.quote > .block-title a[href*=findpost]:after {
   display: none;
 }
 .post-block.quote > .block-body {

@@ -46,7 +46,7 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
     private DrawerLayout mDrawerLayout;
     private NavigationView mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
-    private Activity mActivity;
+    private MainActivity mActivity;
     private SelectItemListener mSelectItemListener;
     private Handler mHandler = new Handler();
     private SharedPreferences prefs;
@@ -61,7 +61,7 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
         void selectItem(BrickInfo brickInfo);
     }
 
-    public MainDrawerMenu(final Activity activity, SelectItemListener listener) {
+    public MainDrawerMenu(MainActivity activity, SelectItemListener listener) {
         prefs = App.getInstance().getPreferences();
         DisplayMetrics displayMetrics = App.getInstance().getResources().getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels;
@@ -88,11 +88,11 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
 
         setNavigationItems();
 
-        mDrawerToggle = new ActionBarDrawerToggle(mActivity, mDrawerLayout, ((MainActivity)mActivity).toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+        mDrawerToggle = new ActionBarDrawerToggle(mActivity, mDrawerLayout, mActivity.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                ((MainActivity)mActivity).hidePopupWindows();
+                mActivity.hidePopupWindows();
             }
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -156,7 +156,7 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
         return mDrawerLayout;
     }
     private Context getContext() {
-        return mActivity;
+        return mActivity.getContext();
     }
 
     private View findViewById(int id) {

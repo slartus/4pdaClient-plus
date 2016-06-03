@@ -166,6 +166,7 @@ var panels = document.querySelectorAll('#curator .panel');
 */	
 
 document.addEventListener("click",checkedQmsMessage);
+var messForDeleteCount = 0;
 function checkedQmsMessage() {
 	var event = event || window.event;
 	var target = event.target || event.srcElement;
@@ -175,10 +176,17 @@ function checkedQmsMessage() {
 			if (checkbox.checked) {
 				checkbox.checked = false;
 				target.classList.remove('selected');
+				messForDeleteCount--;
 			}
 			else {
 				checkbox.checked = true;
 				target.classList.add('selected');
+				messForDeleteCount++;
+			}
+			if(messForDeleteCount>0){
+			    HTMLOUT.startDeleteModeJs(messForDeleteCount);
+			}else{
+			    HTMLOUT.stopDeleteModeJs();
 			}
 			return;
 		}
@@ -244,8 +252,8 @@ function copySelection(){
 
 function deleteMessages(formId){
     try{
-        var f=elem(formId);
-        var checkboxes = f.getElementsByTagName('input');
+        //var f=elem(formId);
+        var checkboxes = document.body.getElementsByTagName('input');
 
         var checkboxesChecked = [];
          // loop over them all

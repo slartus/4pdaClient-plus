@@ -12,6 +12,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -108,7 +109,6 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         searchSettings.setQuery("");
         searchSettings.setUserName("");
         searchSettings.getTopicIds().clear();
-        searchSettings.setSource(SearchSettings.SOURCE_TOPICS);
         return searchSettings;
     }
 
@@ -283,7 +283,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
                     SearchSettings searchSettings = createSearchSettings();
                     searchSettings.setQuery("");
                     searchSettings.setUserName("");
-                    searchSettings.save(App.getInstance().getPreferences().edit()).commit();
+                    searchSettings.save(App.getInstance().getPreferences().edit()).apply();
                 }
             });
         }
@@ -296,7 +296,6 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         SearchSettings searchSettings = getSearchSettings();
         searchSettings.setQuery(query_edit.getText().toString());
         searchSettings.setUserName(username_edit.getText().toString());
-
         searchSettings.setSearchInSubForums(subforums_check.isChecked());
         searchSettings.setSource(getResources().getStringArray(R.array.SearchSourceValues)[(int) source_spinner.getSelectedItemId()]);
         searchSettings.setSort(getResources().getStringArray(R.array.SearchSortValues)[(int) sort_spinner.getSelectedItemId()]);

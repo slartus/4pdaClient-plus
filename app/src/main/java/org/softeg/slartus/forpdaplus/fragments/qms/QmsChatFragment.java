@@ -10,11 +10,14 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,13 +31,17 @@ import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AbsListView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
+import org.softeg.slartus.forpdaapi.qms.QmsUserTheme;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdaplus.App;
@@ -399,6 +406,71 @@ public class QmsChatFragment extends WebViewFragment {
             }
         });
     }
+    @JavascriptInterface
+    public void startDeleteModeJs(final String count){
+        getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                startDeleteMode(count);
+            }
+        });
+
+    }
+
+    @JavascriptInterface
+    public void stopDeleteModeJs(){
+        Log.d("kek", "STOP");
+        if(!DeleteMode)
+            return;
+        getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                stopDeleteMode(true);
+            }
+        });
+    }
+
+    private final class AnActionModeOfEpicProportions implements ActionMode.Callback {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            menu.add(R.string.delete)
+                    .setIcon(R.drawable.delete)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
+            getWebView().loadUrl("javascript:deleteMessages('thread_form');");
+            return true;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            stopDeleteMode(false);
+        }
+    }
+    ActionMode mMode;
+    private Boolean DeleteMode = false;
+    private void startDeleteMode(String count) {
+        if(!DeleteMode)
+            mMode = getMainActivity().startActionMode(new AnActionModeOfEpicProportions());
+        if(mMode!=null)
+            mMode.setTitle("Сообщений:"+count);
+
+        DeleteMode = true;
+    }
+
+    private void stopDeleteMode(Boolean finishActionMode) {
+        if (finishActionMode && mMode != null)
+            mMode.finish();
+        DeleteMode = false;
+    }
 
     public void deleteDialog() {
 
@@ -709,15 +781,6 @@ public class QmsChatFragment extends WebViewFragment {
             }
         }).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
-        menu.add(R.string.delete_messages)
-                .setIcon(R.drawable.delete)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                getWebView().loadUrl("javascript:deleteMessages('thread_form');");
-                return true;
-            }
-        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
         menu.add(R.string.delete_dialog)
                 .setIcon(R.drawable.delete)
                 .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -847,6 +910,7 @@ public class QmsChatFragment extends WebViewFragment {
             }
 
             onPostChat(m_ChatBody, success, ex);
+            stopDeleteMode(true);
         }
     }
 
@@ -897,7 +961,7 @@ public class QmsChatFragment extends WebViewFragment {
                     Toast.makeText(getMainActivity(), R.string.unknown_error,
                             Toast.LENGTH_SHORT).show();
             }
-
+            stopDeleteMode(true);
             //showThread();
 
         }
