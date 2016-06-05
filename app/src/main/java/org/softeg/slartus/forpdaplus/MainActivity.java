@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             }
         }
         try {
-            if (!checkIntent()&saveInstance!=null) return;
+            if (checkIntent()&saveInstance!=null) return;
             //Фиксим intent
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_MAIN);
