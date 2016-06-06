@@ -452,8 +452,8 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             showInDefaultBrowser(context, url);
 
 
-        if (finishActivity)
-            context.finish();
+        /*if (finishActivity)
+            context.finish();*/
         return false;
     }
 

@@ -606,7 +606,8 @@ public class EditPostFragment extends GeneralFragment {
                                     intent.setType("file/*");
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
                                         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                                    intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
+                                    intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "*/*");
+                                    intent.addCategory(Intent.CATEGORY_OPENABLE);
                                     startActivityForResult(intent, MY_INTENT_CLICK);
 
                                 } catch (ActivityNotFoundException ex) {
@@ -765,7 +766,8 @@ public class EditPostFragment extends GeneralFragment {
             this.dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialogInterface) {
-                    m_ProgressState.cancel();
+                    if(m_ProgressState!=null)
+                        m_ProgressState.cancel();
                     cancel(false);
                 }
             });

@@ -280,7 +280,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
 
 
             menu.add(R.string.delete)
-
+                    .setIcon(R.drawable.delete)
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 
