@@ -36,13 +36,13 @@ function spoilsImageLoad() {
 	}
 }
 
+document.addEventListener('DOMContentLoaded', spoilsImageLoad);
+
 /**
  *		=================
  *		ALL POST ATTACHES
  *		=================
  */
-
-document.addEventListener('DOMContentLoaded', spoilsImageLoad);
 
 function getAttaches() {
     var anchorList = document.querySelectorAll('div[id*="entry"]');
@@ -193,6 +193,26 @@ function checkedQmsMessage() {
 		}
 		target = target.parentNode;
 	}
+}
+
+
+/**
+ *				=====================
+ *				HIGHLIGHT ACTIVE POST
+ *				=====================
+*/
+
+document.addEventListener("DOMContentLoaded",hightlightActivePost);
+function hightlightActivePost() {
+	var postContainerActiveAll = document.querySelectorAll('.post_container.active');
+	for (var i = 0; i < postContainerActiveAll.length; i++) {
+		postContainerActiveAll[i].classList.remove('active');
+	}
+	
+	var postLink = document.querySelector(".topic_title_post > A").href;9
+	var hashLink = postLink.match(/entry(\d)+/g);
+	var post = document.querySelector('DIV[name="'+hashLink+'"] + .post_container');
+	post.classList.add('active');
 }
 
 /**
