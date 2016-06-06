@@ -170,6 +170,7 @@ function checkedQmsMessage() {
 	var event = event || window.event;
 	var target = event.target || event.srcElement;
 	while (target != this) {
+		if (target.nodeName == 'A') return;
 		if (~target.className.indexOf('list-group-item')) {
 			var checkbox = target.getElementsByTagName('input')[0];
 			if (checkbox.checked) {
