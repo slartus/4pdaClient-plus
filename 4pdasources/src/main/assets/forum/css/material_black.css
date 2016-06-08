@@ -65,8 +65,8 @@ HTML body {
   word-break: break-word;
   overflow: auto;
   color: white;
-  background-color: #141414;
   box-sizing: border-box;
+  background-color: #141414;
 }
 HTML body.ongpuimg img,
 HTML body.ongpuimg .img {
@@ -686,6 +686,20 @@ span[style*="font-size:8pt"] * {
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
 }
+.post_container.active {
+  -webkit-animation: highlight 0.5s;
+}
+@-webkit-keyframes highlight {
+  0% {
+    -webkit-transform: scale(1.5, 1.5) translateY(1rem);
+  }
+  50% {
+    -webkit-transform: scale(1.5, 1.5) translateY(1rem);
+  }
+  100% {
+    -webkit-transform: scale(1, 1) translateY(0);
+  }
+}
 /*
 *	POST HEADER
 */
@@ -855,9 +869,9 @@ span[style*="font-size:8pt"] * {
 .post_body,
 #multimoderation > form {
   position: relative;
-  font-size: 1rem;
   display: block;
   margin: 0.75rem 0;
+  font-size: 1rem;
   text-align: left;
   background-clip: padding-box;
 }
@@ -977,7 +991,7 @@ span[style*="font-size:8pt"] * {
   width: 1rem;
   height: 1rem;
   border-radius: 1rem;
-  background: #9ec3e0;
+  background: #afd9f9;
   overflow: visible;
 }
 #topic .post_body a[title="Перейти к сообщению"]:after,
@@ -1245,14 +1259,14 @@ div[data-post] > a {
   padding: 0.125rem 0;
   font-size: 0.875rem;
   font-style: italic;
-  color: rgba(225, 225, 225, 0.7);
+  color: gray;
 }
 #thread_form .list-group-item .time .read-status.unread.big-dot {
   position: relative;
   display: inline-block;
-  margin-top: -0.125em;
   width: 0.5rem;
   height: 0.5rem;
+  margin-top: -0.125em;
   vertical-align: middle;
   border-radius: 100%;
   background: #b53;
@@ -1287,10 +1301,10 @@ div[data-post] > a {
 #thread_form .list-group-item .msg-content {
   position: relative;
   display: inline-block;
-  font-size: 1rem;
   padding: 0.5rem;
   max-width: 26rem;
   margin: 0 0.5rem 0 3rem;
+  font-size: 1rem;
   background: #000000;
   border-radius: 0.5rem;
   -webkit-transition: ease 0.3s background;
@@ -1337,7 +1351,7 @@ div[data-post] > a {
   margin: 0;
   margin-left: 3rem;
   margin-right: 0.5rem;
-  color: #bbbbbb;
+  color: #b3b3b3;
   background: #1b1b1b;
 }
 #thread_form .list-group-item.our-message .msg-content:before {
@@ -1345,8 +1359,8 @@ div[data-post] > a {
   right: -0.5rem;
   border-color: #1b1b1b;
   border-bottom-color: transparent;
-  border-left-color: transparent;
   border-right-color: transparent;
+  border-left-color: transparent;
 }
 #thread_form .list-group-item.our-message .msg-content .quote {
   background: rgba(40, 55, 62, 0.8);
@@ -1355,10 +1369,10 @@ div[data-post] > a {
   border-left: 0.3rem solid rgba(255, 222, 122, 0.56);
 }
 #thread_form .list-group-item.selected .msg-content {
-  background: #47545e;
+  background: #35414b;
 }
 #thread_form .list-group-item.selected .msg-content:before {
-  border-top-color: #47545e;
+  border-top-color: #35414b;
 }
 #thread_form .list-group-item.msgbox.info {
   display: block;
@@ -1370,7 +1384,7 @@ div[data-post] > a {
   width: 16rem;
   border-radius: 0.125rem;
   z-index: 99;
-  background: #002600;
+  background: #000d00;
   -webkit-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
 }
