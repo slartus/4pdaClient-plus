@@ -11,8 +11,8 @@ HTML {
 HTML body {
   position: relative;
   font-family: 'Roboto';
-  margin: 0;
-  padding: 0 0 5rem;
+  margin: 0.5rem 0 0;
+  padding: 0.5rem 0 5rem;
   font-size: 1em;
   font-weight: 1.4;
   word-break: break-word;
@@ -631,6 +631,7 @@ span[style*="font-size:8pt"] * {
   padding: 0;
 }
 .post_container {
+  position: relative;
   margin: 0.5rem;
   padding: 0.75rem 0.75rem 0;
   overflow: hidden;
@@ -638,19 +639,42 @@ span[style*="font-size:8pt"] * {
   background: white;
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
+  z-index: 98;
 }
-.post_container.active {
-  -webkit-animation: highlight 0.5s;
+.post_container.active:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 99;
+  pointer-events: none;
+  -webkit-animation: highlight 1s;
 }
+/*
+@-webkit-keyframes highlight {
+	0% {
+		-webkit-transform: scale(1.5, 1.5) translateY(1rem);
+	}
+	50% {
+		-webkit-transform: scale(1.5, 1.5) translateY(1rem);
+	}
+	100% {
+		-webkit-transform: scale(1, 1) translateY(0);
+	}
+}
+*/
 @-webkit-keyframes highlight {
   0% {
-    -webkit-transform: scale(1.5, 1.5) translateY(1rem);
+    opacity: 0;
+    background: #03A9F4;
   }
-  50% {
-    -webkit-transform: scale(1.5, 1.5) translateY(1rem);
+  10% {
+    opacity: 0.2;
   }
   100% {
-    -webkit-transform: scale(1, 1) translateY(0);
+    opacity: 0;
   }
 }
 /*
