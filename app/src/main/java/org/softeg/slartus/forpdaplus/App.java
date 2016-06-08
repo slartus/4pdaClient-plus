@@ -483,6 +483,7 @@ public class App extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         ACRA.init(this);
+        ACRA.getErrorReporter().putCustomData("USER_NICK", getPreferences().getString("Login", "empty"));
         initImageLoader(this);
         m_MyActivityLifecycleCallbacks = new MyActivityLifecycleCallbacks();
         registerActivityLifecycleCallbacks(m_MyActivityLifecycleCallbacks);

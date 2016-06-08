@@ -651,6 +651,8 @@ span[style*="font-size:8pt"] * {
   z-index: 99;
   pointer-events: none;
   -webkit-animation: highlight 1s;
+  background: #03A9F4;
+  opacity:0;
 }
 /*
 @-webkit-keyframes highlight {
@@ -667,11 +669,8 @@ span[style*="font-size:8pt"] * {
 */
 @-webkit-keyframes highlight {
   0% {
-    opacity: 0;
-    background: #03A9F4;
-  }
-  10% {
     opacity: 0.2;
+
   }
   100% {
     opacity: 0;

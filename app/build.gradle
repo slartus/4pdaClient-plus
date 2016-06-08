@@ -47,7 +47,7 @@ android {
         beta {
             applicationId 'org.softeg.slartus.forpdaplus.beta'
             versionCode 573
-            versionName "3.3.4eta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
+            versionName "3.3.4beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
             signingConfig defaultSigningVariable
         }
     }
