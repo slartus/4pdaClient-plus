@@ -283,9 +283,14 @@ function changeStyle(cssFile) {
     newlink.setAttribute("href", cssFile);
     document.getElementsByTagName("head").item(0).replaceChild(newlink, document.getElementsByTagName("link").item(0));
 }
-
+var lastId;
+var scrolled = false;
 function scrollToElement(id) {
-
+    console.log("call scroll to element");
+    if(lastId==id)
+        return;
+    else
+        scrolled = false;
     var el = document.getElementById(id);
     var x = 0;
     var y = 0;
@@ -295,12 +300,15 @@ function scrollToElement(id) {
         el = el.parent;
     }
     window.scrollTo(0, y);
+    lastId = id;
+    scrolled = true;
+    console.log("scrolled");
     /**
      *				=====================
      *				HIGHLIGHT ACTIVE POST
      *				=====================
     */
-    document.querySelector('DIV[name="'+id+'"] + .post_container').classList.add('active');
+    document.querySelector('DIV[name="'+document.querySelector(".topic_title_post > A").href.match(/entry(\d)+/g)+'"] + .post_container').classList.add('active');
 };
 
 function areaPlus(){

@@ -762,7 +762,7 @@ public class Client implements IHttpClient {
 
     public TopicBodyBuilder parseTopic(String topicPageBody,
                                        Context context, String themeUrl, Boolean spoilFirstPost) throws IOException {
-
+        Log.d("kek", "redirected final theme url = "+themeUrl);
         checkLogin(topicPageBody);
 
         Pattern pattern = PatternExtensions.compile("showtopic=(\\d+)(&(.*))?");

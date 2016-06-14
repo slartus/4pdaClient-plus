@@ -176,13 +176,6 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         m_WebView.getSettings().setUseWideViewPort(true);
         m_WebView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
         m_WebView.addJavascriptInterface(this, "HTMLOUT");
-        if (Build.VERSION.SDK_INT >= 19) {
-            try {
-                m_WebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-            } catch (Throwable e) {
-                android.util.Log.e(TAG, e.getMessage());
-            }
-        }
         m_WebView.setWebViewClient(new MyWebViewClient());
         return view;
     }

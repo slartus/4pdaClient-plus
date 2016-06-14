@@ -11,7 +11,6 @@ import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,6 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
@@ -328,7 +326,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
             }
 
             if (success) {
-                getMainActivity().removeTab(getTag());
+                getMainActivity().tryRemoveTab(getTag());
                 QmsChatFragment.openChat(outParams.get("mid"), outParams.get("user"),
                         outParams.get("t"), outParams.get("title"), m_ChatBody);
             } else {

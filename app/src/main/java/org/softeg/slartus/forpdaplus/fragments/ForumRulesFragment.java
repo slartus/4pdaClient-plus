@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -113,7 +114,6 @@ public class ForumRulesFragment extends WebViewFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.webview_fragment, container, false);
         m_WebView = (AdvWebView) findViewById(R.id.wvBody);
-
         initSwipeRefreshLayout();
 
         assert view != null;

@@ -63,6 +63,8 @@ public class ShortUserInfo {
             userBackground.post(new Runnable() {
                 @Override
                 public void run() {
+                    if(bitmap.getWidth()==0||bitmap.getHeight()==0)
+                        return;
                     blur(bitmap, userBackground, avatarUrl);
                     prefs.edit().putString("userAvatarUrl",avatarUrl).apply();
                 }

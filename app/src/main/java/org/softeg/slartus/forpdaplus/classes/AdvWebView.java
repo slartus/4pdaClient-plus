@@ -61,7 +61,11 @@ public class AdvWebView extends WebView {
         }
         if(Preferences.System.getWebviewCompatMode())
             this.setLayerType(LAYER_TYPE_SOFTWARE, null);
-
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            try {
+                getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+            } catch (Throwable ignore) {}
+        }*/
         setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());
         //loadData("<html><head></head></html>", "text/html", "UTF-8");
     }

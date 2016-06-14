@@ -166,7 +166,7 @@ public class EditPostFragment extends GeneralFragment {
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
-                            getMainActivity().removeTab(getTag());
+                            getMainActivity().tryRemoveTab(getTag());
                         }
                     })
                     .negativeText(R.string.cancel)
@@ -301,7 +301,7 @@ public class EditPostFragment extends GeneralFragment {
             startLoadPost(forumId, topicId, postId, authKey);
         } catch (Throwable ex) {
             AppLog.e(getMainActivity(), ex);
-            getMainActivity().removeTab(getTag());
+            getMainActivity().tryRemoveTab(getTag());
         }
         //createActionMenu();
         return view;
@@ -318,7 +318,7 @@ public class EditPostFragment extends GeneralFragment {
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
-                            getMainActivity().removeTab(getTag());
+                            getMainActivity().tryRemoveTab(getTag());
                         }
                     })
                     .negativeText(R.string.cancel)
@@ -822,7 +822,7 @@ public class EditPostFragment extends GeneralFragment {
             mPopupPanelView = null;
         }
         TabItem tabItem = App.getInstance().getTabByUrl("preview_"+getTag());
-        if(tabItem!=null) getMainActivity().removeTab(tabItem.getTag());
+        if(tabItem!=null) getMainActivity().tryRemoveTab(tabItem.getTag());
         super.onDestroy();
     }
 
@@ -927,7 +927,7 @@ public class EditPostFragment extends GeneralFragment {
                     ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment())
                             .showTheme(ThemeFragment.getThemeUrl(m_EditPost.getTopicId(), "view=findpost&p=" + m_EditPost.getId()), true);
                 }
-                getMainActivity().removeTab(getTag());
+                getMainActivity().tryRemoveTab(getTag());
             } else {
                 if (ex != null)
                     AppLog.e(getMainActivity(), ex);
@@ -1078,7 +1078,7 @@ public class EditPostFragment extends GeneralFragment {
                             .showTheme(String.format("http://4pda.ru/forum/index.php?showtopic=%s&%s", m_EditPost.getTopicId(),
                                     isNewPost() ? "view=getlastpost" : "view=findpost&p=" + m_EditPost.getId()), true);
                 }
-                getMainActivity().removeTab(getTag());
+                getMainActivity().tryRemoveTab(getTag());
 
             } else {
                 if (ex != null)

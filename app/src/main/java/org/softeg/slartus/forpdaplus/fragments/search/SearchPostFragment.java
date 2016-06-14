@@ -161,13 +161,6 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         mWvBody.getSettings().setLoadWithOverviewMode(false);
         mWvBody.getSettings().setUseWideViewPort(true);
         mWvBody.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
-        if (Build.VERSION.SDK_INT >= 19) {
-            try {
-                mWvBody.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-            } catch (Throwable ignore) {
-
-            }
-        }
         mWvBody.addJavascriptInterface(this, "HTMLOUT");
         mWvBody.loadDataWithBaseURL("http://4pda.ru/forum/", "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
                 "</head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8", null);

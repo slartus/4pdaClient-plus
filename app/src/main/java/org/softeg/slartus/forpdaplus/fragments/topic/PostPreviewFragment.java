@@ -130,13 +130,6 @@ public class PostPreviewFragment extends WebViewFragment {
         webView.getSettings().setUseWideViewPort(true);
         webView.addJavascriptInterface(this, "HTMLOUT");
         webView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
-        if (Build.VERSION.SDK_INT >= 19) {
-            try {
-                webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-            } catch (Throwable e) {
-                android.util.Log.e("kuk", e.getMessage());
-            }
-        }
         load(getArguments().getString("BB_CODES_BODY"));
         return view;
     }

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
@@ -189,7 +188,7 @@ public class ProfileEditFragment extends WebViewFragment {
             if(App.getInstance().isContainsByTag(parentTag)){
                 ((ProfileFragment)App.getInstance().getTabByTag(parentTag).getFragment()).startLoadData();
             }
-            getMainActivity().removeTab(getTag());
+            getMainActivity().tryRemoveTab(getTag());
         }
     }
 

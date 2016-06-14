@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.Picture;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -19,7 +18,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -242,7 +240,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         @Override
                         public void onPositive(MaterialDialog dialog) {
                             clear();
-                            getMainActivity().removeTab(getTag());
+                            getMainActivity().tryRemoveTab(getTag());
                         }
                     })
                     .negativeText(R.string.apply_cancel)
@@ -342,19 +340,12 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         webView.getSettings().setAppCacheEnabled(true);
         webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        webView.getSettings().setLoadWithOverviewMode(false);
-        webView.getSettings().setUseWideViewPort(true);
+        //webView.getSettings().setLoadWithOverviewMode(false);
+        //webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
         webView.setWebChromeClient(new MyChromeClient());
-        if (Build.VERSION.SDK_INT >= 19) {
-            try {
-                webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-            } catch (Throwable e) {
-                android.util.Log.e(TAG, e.getMessage());
-            }
-        }
-        if (getSupportActionBar() != null)
-            webView.setActionBarheight(getSupportActionBar().getHeight());
+        /*if (getSupportActionBar() != null)
+            webView.setActionBarheight(getSupportActionBar().getHeight());*/
 
         setHideArrows(Preferences.isHideArrows());
         webView.addJavascriptInterface(new ForPdaWebInterface(this), ForPdaWebInterface.NAME);
@@ -906,7 +897,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         @Override
                         public void onPositive(MaterialDialog dialog) {
                             clear();
-                            getMainActivity().removeTab(getTag());
+                            getMainActivity().tryRemoveTab(getTag());
                         }
                     })
                     .negativeText(R.string.apply_cancel)
@@ -1692,24 +1683,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             Log.e("kek", webView.getSettings().getLoadsImagesAutomatically()+" loadimages");
 
             m_ScrollY = scrollY;
-            if (m_Topic == null){
-                Toast.makeText(getMainActivity(), "Ошибка загрузки страницы", Toast.LENGTH_SHORT).show();
-                if(m_History.size()==0) {
-                    getMainActivity().removeTab(getTag());
-                }else {
-                    SessionHistory sessionHistory = m_History.get(m_History.size() - 1);
-                    m_ScrollY = sessionHistory.getY();
-                    m_LastUrl = sessionHistory.getUrl();
-                    m_Topic = sessionHistory.getTopic();
-                    if (m_Topic != null)
-                        mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
-                    showBody(sessionHistory.getBody());
-                    return;
-                }
-            }else {
+            if (m_Topic != null)
                 mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
-            }
-
             if (isCancelled()) return;
 
             if (success) {

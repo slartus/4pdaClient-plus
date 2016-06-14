@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -115,19 +116,18 @@ public class ActionSelectDialogFragment {
                                 .commit();
 
                         if (!TextUtils.isEmpty(hintForChangeDefault))
-                            new AlertDialog.Builder(context)
-                                    .setTitle(R.string.hint)
-                                    .setMessage(hintForChangeDefault)
-                                    .setCancelable(false)
-                                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            new MaterialDialog.Builder(context)
+                                    .title(R.string.hint)
+                                    .content(hintForChangeDefault)
+                                    .cancelable(false)
+                                    .positiveText(R.string.ok)
+                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
                                         @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-
+                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                             okListener.execute(newValue);
                                         }
                                     })
-                                    .create().show();
+                                    .show();
                         else
                             okListener.execute(newValue);
                     }
