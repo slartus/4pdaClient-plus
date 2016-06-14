@@ -2,14 +2,12 @@ package org.softeg.slartus.forpdaplus;/*
  * Created by slinkin on 07.04.2014.
  */
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -42,7 +40,7 @@ import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 
 import java.util.List;
 
-public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedListener{
+public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout mDrawerLayout;
     private NavigationView mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -81,7 +79,7 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
         if ("right".equals(Preferences.System.getDrawerMenuPosition())) {
             params.gravity = Gravity.RIGHT;
             mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_end, GravityCompat.END);
-        }else {
+        } else {
             mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_start, GravityCompat.START);
         }
         mDrawer.setLayoutParams(params);
@@ -100,7 +98,7 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
     }
 
 
-    private void setNavigationItems(){
+    private void setNavigationItems() {
         menu = mDrawer.getMenu();
         menu.clear();
         int itemId = 0;
@@ -109,22 +107,22 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
         List<BrickInfo> list;
         subMenu = menu.addSubMenu(1, 0, 0, R.string.all);
         list = ListCore.getMainMenuBricks();
-        for (i=0; i<list.size(); i++, itemId++)
+        for (i = 0; i < list.size(); i++, itemId++)
             subMenu.add(1, itemId, i, list.get(i).getTitle()).setIcon(list.get(i).getIcon());
         subMenu = menu.addSubMenu(2, 0, 0, R.string.other);
         list = ListCore.getOthersBricks();
-        for(i = 0; i<list.size();i++, itemId++)
+        for (i = 0; i < list.size(); i++, itemId++)
             subMenu.add(2, itemId, i, list.get(i).getTitle()).setIcon(list.get(i).getIcon());
     }
 
-    public void setItemCheckable(String name){
+    public void setItemCheckable(String name) {
         SubMenu subMenu;
         MenuItem item;
-        for(int i = 0; i<menu.size();i++){
+        for (int i = 0; i < menu.size(); i++) {
             subMenu = menu.getItem(i).getSubMenu();
-            for(int j = 0; j<subMenu.size(); j++){
+            for (int j = 0; j < subMenu.size(); j++) {
                 item = subMenu.getItem(j);
-                if(item.getTitle().equals(name)){
+                if (item.getTitle().equals(name)) {
                     Log.e("keka", "true");
                     menu.getItem(prevSelectedGroup).getSubMenu().getItem(prevSelectedItem).setCheckable(false).setChecked(false);
                     item.setCheckable(true).setChecked(true);
@@ -146,15 +144,18 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
         setItemCheckable(brickIinfo.getTitle());
     }
 
-    public NavigationView getNavigationView(){
+    public NavigationView getNavigationView() {
         return mDrawer;
     }
-    public ActionBarDrawerToggle getDrawerToggle(){
+
+    public ActionBarDrawerToggle getDrawerToggle() {
         return mDrawerToggle;
     }
-    public DrawerLayout getDrawerLayout(){
+
+    public DrawerLayout getDrawerLayout() {
         return mDrawerLayout;
     }
+
     private Context getContext() {
         return mActivity.getContext();
     }
@@ -170,9 +171,11 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
             mDrawerLayout.openDrawer(mDrawer);
         }
     }
+
     public void close() {
         mDrawerLayout.closeDrawer(mDrawer);
     }
+
     public Boolean isOpen() {
         return mDrawerLayout.isDrawerOpen(mDrawer);
     }
@@ -181,23 +184,24 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
     public boolean onNavigationItemSelected(MenuItem item) {
         close();
 
-        switch (item.getGroupId()){
+        switch (item.getGroupId()) {
             case 0:
                 selectedBrick = ListCore.createBricks(Preferences.Lists.getLastActions()).get(item.getOrder());
                 break;
             case 1:
-                selectedBrick =  ListCore.getMainMenuBricks().get(item.getOrder());
+                selectedBrick = ListCore.getMainMenuBricks().get(item.getOrder());
                 break;
             case 2:
                 selectedBrick = ListCore.getOthersBricks().get(item.getOrder());
                 break;
         }
 
-        switcha: switch (selectedBrick.getName()){
+        switcha:
+        switch (selectedBrick.getName()) {
             case AppAndGame.NAME:
                 final List<ApplicationInfo> packages = getContext().getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
                 for (ApplicationInfo packageInfo : packages) {
-                    if(packageInfo.packageName.equals("ru.freeman42.app4pda")){
+                    if (packageInfo.packageName.equals("ru.freeman42.app4pda")) {
                         getContext().startActivity(getContext().getPackageManager().getLaunchIntentForPackage(packageInfo.packageName));
                         break switcha;
                     }
@@ -221,7 +225,7 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
                 }
                 new MaterialDialog.Builder(mActivity)
                         .title(R.string.confirm_action)
-                        .content(getContext().getString(R.string.mark_all_forums_read)+"?")
+                        .content(getContext().getString(R.string.mark_all_forums_read) + "?")
                         .positiveText(R.string.yes)
                         .callback(new MaterialDialog.ButtonCallback() {
                             @Override
@@ -267,7 +271,7 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
                 ForumRulesFragment.showRules();
                 break;
             default:
-                if(item.getGroupId()!=2)
+                if (item.getGroupId() != 2)
                     selectItem(selectedBrick);
         }
         return true;

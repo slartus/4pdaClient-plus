@@ -12,7 +12,9 @@
         android:layout_above="@+id/txtpost_edit_reason"
         android:layout_centerInParent="true"
         android:visibility="gone" />
-    <ScrollView android:id="@+id/textAreaScroller"
+
+    <ScrollView
+        android:id="@+id/textAreaScroller"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:scrollbars="vertical"
@@ -20,6 +22,7 @@
         style="?edit_text"
         android:gravity="top"
         android:fillViewport="true">
+
         <EditText
             android:id="@+id/txtPost"
             android:background="@android:color/transparent"
@@ -46,6 +49,7 @@
         android:scrollHorizontally="false"
         android:singleLine="true"
         android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="6dp"
@@ -53,6 +57,7 @@
         android:id="@+id/shadow"
         android:background="@drawable/shadow_to_top"
         android:layout_above="@+id/bottomPanel" />
+
     <LinearLayout
         android:id="@+id/bottomPanel"
         android:layout_width="fill_parent"
@@ -67,12 +72,14 @@
             android:minHeight="48dp"
             android:gravity="center_vertical"
             style="?post_panel">
+
             <ImageButton
                 android:id="@+id/advanced_button"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 app:srcCompat="@drawable/plus" />
+
             <Button
                 android:id="@+id/btnAttachments"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -84,7 +91,8 @@
                 android:layout_marginLeft="48dp"
                 android:paddingLeft="4dp"
                 android:textSize="14sp"
-                android:textColor="#757575"/>
+                android:textColor="#757575" />
+
             <ImageButton
                 android:id="@+id/btnUpload"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -92,6 +100,7 @@
                 android:layout_height="48dp"
                 android:layout_marginLeft="104dp"
                 app:srcCompat="@drawable/upload" />
+
             <Button
                 android:id="@+id/btnSendPost"
                 android:layout_width="fill_parent"
@@ -100,7 +109,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:textColor="@color/accentGray"
                 android:textStyle="bold"
-                android:text="Отправить"/>
+                android:text="Отправить" />
         </FrameLayout>
 
         <LinearLayout

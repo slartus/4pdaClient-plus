@@ -10,12 +10,12 @@ import java.util.ArrayList;
 public class Comments extends ArrayList<Comment> {
     private int fullLength;
 
-    public Boolean needLoadMore(){
-        return getFullLength()>size();
+    public Boolean needLoadMore() {
+        return getFullLength() > size();
     }
 
     public int getFullLength() {
-        return Math.max(fullLength+1, size());
+        return Math.max(fullLength + 1, size());
     }
 
     public void setFullLength(int fullLength) {

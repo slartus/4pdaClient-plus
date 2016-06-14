@@ -1,10 +1,13 @@
 <resources>
+
     <style name="ThemeLight" parent="MainThemeLight">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+
     <style name="ThemeDark" parent="MainThemeDark">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+
     <style name="ThemeBlack" parent="MainThemeBlack">
         <item name="android:windowTranslucentStatus">true</item>
     </style>
@@ -14,11 +17,13 @@
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+
     <style name="ThemePrefsLightGray" parent="ThemePrefsLightGrayBase">
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height_kk</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+
     <style name="ThemePrefsLightBlue" parent="ThemePrefsLightBlueBase">
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height_kk</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
@@ -30,11 +35,13 @@
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+
     <style name="ThemePrefsDarkGray" parent="ThemePrefsDarkGrayBase">
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height_kk</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+
     <style name="ThemePrefsDarkBlue" parent="ThemePrefsDarkBlueBase">
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height_kk</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
@@ -46,11 +53,13 @@
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+
     <style name="ThemePrefsBlackGray" parent="ThemePrefsBlackGrayBase">
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height_kk</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
+
     <style name="ThemePrefsBlackBlue" parent="ThemePrefsBlackBlueBase">
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height_kk</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style_kitkat</item>

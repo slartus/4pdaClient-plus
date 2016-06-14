@@ -39,7 +39,7 @@ public class BaseDao<T> {
         mContext = context;
 
         mDB = db;
-        mTableName = tableName.replaceAll("[-/]","_");
+        mTableName = tableName.replaceAll("[-/]", "_");
 
         this.tClass = tClass;
     }
@@ -121,7 +121,7 @@ public class BaseDao<T> {
                     T newTObject;
 
                     newTObject = tClass.newInstance();
-                    bindObject(newTObject, cursor,fields);
+                    bindObject(newTObject, cursor, fields);
                     items.add(newTObject);
 
                 }
@@ -134,8 +134,8 @@ public class BaseDao<T> {
     }
 
     private HashMap<Field, Integer> getFieldColumIndexMap(Cursor cursor) {
-        HashMap<Field,Integer> fields=new HashMap<>();
-        for (Field field :getDeclaredFields(tClass)) {
+        HashMap<Field, Integer> fields = new HashMap<>();
+        for (Field field : getDeclaredFields(tClass)) {
             if (!field.isAccessible())
                 field.setAccessible(true); // for private variables
             Column fieldEntityAnnotation = field.getAnnotation(Column.class);
@@ -242,8 +242,8 @@ public class BaseDao<T> {
             try {
                 ContentValues value = getFilledContentValues(item);
                 return mDB.insertOrThrow(getTableName(), null, value);
-            } catch (IllegalAccessException e){
-                Log.e("insert",e.getMessage());
+            } catch (IllegalAccessException e) {
+                Log.e("insert", e.getMessage());
             }
         }
         return -1;
@@ -280,7 +280,7 @@ public class BaseDao<T> {
             T newTObject = null;
             try {
                 newTObject = tClass.newInstance();
-                bindObject(newTObject, cursor,getFieldColumIndexMap(cursor));
+                bindObject(newTObject, cursor, getFieldColumIndexMap(cursor));
             } catch (InstantiationException | IllegalAccessException | NoSuchFieldException ignored) {
             }
             cursor.close();
@@ -289,10 +289,10 @@ public class BaseDao<T> {
         return null;
     }
 
-    private void bindObject(T newTObject, Cursor cursor, HashMap <Field,Integer> fieldColumnInds)
+    private void bindObject(T newTObject, Cursor cursor, HashMap<Field, Integer> fieldColumnInds)
             throws NoSuchFieldException, IllegalAccessException {
-        for (Map.Entry<Field,Integer> entry :fieldColumnInds.entrySet()) {
-            Field field=entry.getKey();
+        for (Map.Entry<Field, Integer> entry : fieldColumnInds.entrySet()) {
+            Field field = entry.getKey();
             field.set(newTObject, getValueFromCursor(cursor, field, entry.getValue()));
         }
     }

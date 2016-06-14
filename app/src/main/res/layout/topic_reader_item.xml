@@ -6,6 +6,7 @@
     android:orientation="horizontal"
     android:paddingLeft="16dp"
     android:paddingRight="16dp">
+
     <TextView
         android:id="@+id/txtNick"
         android:textSize="18sp"
@@ -13,6 +14,6 @@
         android:layout_height="wrap_content"
         android:text="RadiationX"
         style="?list_text_special_color"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical" />
 
 </LinearLayout>

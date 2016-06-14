@@ -31,11 +31,10 @@ public class SearchApi {
         String body = client.performGet(searchUrl.replaceAll("st=\\d+", "") + "&st=" + st);
 
 
-
-        return parse(body,listInfo);
+        return parse(body, listInfo);
     }
 
-    public static  ArrayList<Topic> parse(String body, ListInfo listInfo){
+    public static ArrayList<Topic> parse(String body, ListInfo listInfo) {
         Matcher m = Pattern.compile("<table class=\"ipbtable\" cellspacing=\"1\">([\\s\\S]*?)</table>",
                 Pattern.CASE_INSENSITIVE | Pattern.MULTILINE).matcher(body);
         if (!m.find()) {
@@ -98,7 +97,7 @@ public class SearchApi {
             topic = null;
         }
 
-        Pattern pagesCountPattern = Pattern.compile("<a href=\"/forum/index.php[^\"]*st=(\\d+)\">",Pattern.CASE_INSENSITIVE);
+        Pattern pagesCountPattern = Pattern.compile("<a href=\"/forum/index.php[^\"]*st=(\\d+)\">", Pattern.CASE_INSENSITIVE);
         m = pagesCountPattern.matcher(body);
         while (m.find()) {
             listInfo.setOutCount(Math.max(Integer.parseInt(m.group(1)) + 1, listInfo.getOutCount()));

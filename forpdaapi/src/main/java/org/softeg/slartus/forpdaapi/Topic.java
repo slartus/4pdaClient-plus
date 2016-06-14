@@ -15,7 +15,7 @@ import java.util.Date;
  * Time: 12:06
  */
 
-public class Topic implements IListItem,Serializable {
+public class Topic implements IListItem, Serializable {
     /**
      * Параметр для перехода в топике к первому непрочитанному сообщению
      */

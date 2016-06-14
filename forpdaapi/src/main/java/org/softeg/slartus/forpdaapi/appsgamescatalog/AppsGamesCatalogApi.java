@@ -4,7 +4,6 @@ package org.softeg.slartus.forpdaapi.appsgamescatalog;/*
 
 import android.net.Uri;
 import android.text.Html;
-import android.text.TextUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

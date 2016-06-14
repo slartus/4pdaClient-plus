@@ -5,5 +5,5 @@
     android:layout_height="wrap_content"
     android:textSize="14sp"
     android:paddingBottom="4dp"
-    style="?list_text_second_color"/>
+    style="?list_text_second_color" />
 

@@ -5,7 +5,6 @@ package org.softeg.slartus.forpdaapi.search;/*
 import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIUtils;
@@ -81,7 +80,7 @@ public class SearchSettings implements Parcelable {
     protected String m_Source = SOURCE_ALL;
     protected Set<String> m_ForumsIds = new HashSet<>();
 
-    public SearchSettings(){
+    public SearchSettings() {
 
     }
 
@@ -104,7 +103,6 @@ public class SearchSettings implements Parcelable {
     public String getSort() {
         return m_Sort;
     }
-
 
 
     public void setSearchInSubForums(Boolean value) {

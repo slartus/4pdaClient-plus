@@ -52,11 +52,11 @@ public class DevCatalog implements ICatalogItem, Parcelable {
 
     @Override
     public ICatalogItem clone() {
-        DevCatalog clone=new DevCatalog(mId,mTitle);
+        DevCatalog clone = new DevCatalog(mId, mTitle);
         clone.setType(type);
         clone.setDescription(description);
         clone.setImageUrl(mImageUrl);
-        clone.setParent(parent==null?null:parent.clone());
+        clone.setParent(parent == null ? null : parent.clone());
         return clone;
     }
 
@@ -99,7 +99,7 @@ public class DevCatalog implements ICatalogItem, Parcelable {
         mTitle = parcel.readString();
         description = parcel.readString();
         mImageUrl = parcel.readString();
-        type=parcel.readInt();
+        type = parcel.readInt();
         Boolean hasParent = parcel.readByte() == 1;
         if (hasParent)
             parent = new DevCatalog(parcel);
@@ -117,11 +117,11 @@ public class DevCatalog implements ICatalogItem, Parcelable {
         parcel.writeString(description);
         parcel.writeString(mImageUrl);
         parcel.writeInt(type);
-        if(parent==null){
+        if (parent == null) {
             parcel.writeByte((byte) 0);
-        }else{
+        } else {
             parcel.writeByte((byte) 1);
-            ((DevCatalog)parent).writeToParcel(parcel,i);
+            ((DevCatalog) parent).writeToParcel(parcel, i);
         }
     }
 }

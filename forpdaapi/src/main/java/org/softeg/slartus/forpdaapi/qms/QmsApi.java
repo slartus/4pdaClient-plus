@@ -1,13 +1,7 @@
 package org.softeg.slartus.forpdaapi.qms;
 
 import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
@@ -66,15 +60,15 @@ public class QmsApi {
     private static String matchChatBody(String pageBody) {
         String chatInfo = "";
         Matcher m = Pattern.compile("<span class=\"nav-text\"[\\s\\S]*?<a href=\"[^\"]*showuser[^>]*>([^>]*?)</a>:</b>([^<]*)").matcher(pageBody);
-        if(m.find())
-            chatInfo = "<span id=\"chatInfo\" style=\"display:none;\">"+m.group(1).trim()+"|:|"+m.group(2).trim()+"</span>";
+        if (m.find())
+            chatInfo = "<span id=\"chatInfo\" style=\"display:none;\">" + m.group(1).trim() + "|:|" + m.group(2).trim() + "</span>";
         m = Pattern.compile("<div id=\"thread-inside-top\"><\\/div>([\\s\\S]*)<div id=\"thread-inside-bottom\">").matcher(pageBody);
         if (m.find())
-            return chatInfo+"<div id=\"thread_form\"><div id=\"thread-inside-top\"></div>" + m.group(1) + "</div>";
+            return chatInfo + "<div id=\"thread_form\"><div id=\"thread-inside-top\"></div>" + m.group(1) + "</div>";
 
         m = Pattern.compile("<div class=\"list_item\" t_id=([\\s\\S]*?)</form>").matcher(pageBody);
         if (m.find())
-            return chatInfo+"<div id=\"thread_form\"><div class=\"list_item\" t_id=" + m.group(1) + "</div>";
+            return chatInfo + "<div id=\"thread_form\"><div class=\"list_item\" t_id=" + m.group(1) + "</div>";
 
         // ни одного сообщения
         m = Pattern.compile("</form>\\s*<div class=\"form\">").matcher(pageBody);
@@ -176,7 +170,7 @@ public class QmsApi {
             qmsUser.setAvatarUrl(m.group(3));
             qmsUser.setNick(Html.fromHtml(m.group(4)).toString().trim());
             count = m.group(2).trim();
-            if(!count.equals(""))
+            if (!count.equals(""))
                 qmsUser.setNewMessagesCount(count.replace("(", "").replace(")", ""));
 
             res.add(qmsUser);
@@ -192,20 +186,20 @@ public class QmsApi {
         Pattern countPattern = Pattern.compile("(.*?)\\((\\d+)\\)\\s*$");
         Pattern strongPattern = Pattern.compile("<strong>([\\s\\S]*?)</strong>");
         Matcher matcher = Pattern.compile("<div class=\"list-group\">([\\s\\S]*)<form [^>]*>([\\s\\S]*?)<\\/form>").matcher(pageBody);
-        if(matcher.find()){
+        if (matcher.find()) {
             outUsers.addAll(parseQmsUsers(matcher.group(1)));
             matcher = Pattern.compile("<a class=\"list-group-item[^>]*-(\\d*)\">[\\s\\S]*?<div[^>]*>([\\s\\S]*?)<\\/div>([\\s\\S]*?)<\\/a>").matcher(matcher.group(2));
             QmsUserTheme item;
             Matcher m;
             String info;
-            while (matcher.find()){
+            while (matcher.find()) {
                 item = new QmsUserTheme();
                 item.Id = matcher.group(1);
                 item.Date = matcher.group(2);
 
                 info = matcher.group(3);
                 m = strongPattern.matcher(info);
-                if(m.find()){
+                if (m.find()) {
                     m = newCountPattern.matcher(m.group(1));
                     if (m.find()) {
                         item.Title = m.group(1).trim();
@@ -213,7 +207,7 @@ public class QmsApi {
                         item.NewCount = m.group(3);
                     } else
                         item.Title = m.group(2).trim();
-                }else {
+                } else {
                     m = countPattern.matcher(info);
                     if (m.find()) {
                         item.Title = m.group(1).trim();
@@ -225,8 +219,8 @@ public class QmsApi {
             }
             if (parseNick) {
                 matcher = Pattern.compile("<div class=\"nav\">[\\s\\S]*?showuser[^>]*([\\s\\S]*?)<\\/a>[\\s\\S]*?<\\/div>").matcher(pageBody);
-                if(matcher.find()){
-                    res.Nick=matcher.group(1);
+                if (matcher.find()) {
+                    res.Nick = matcher.group(1);
                 }
             }
         }

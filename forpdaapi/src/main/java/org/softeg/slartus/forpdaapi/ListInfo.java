@@ -11,12 +11,14 @@ public class ListInfo {
 
     private int outCount;// тут возвращается сколько всего в листе элементов (сколько всего тем)
     private String title;// заголовок страницы
+
     public int getFrom() {
         return from;
     }
 
-    private Map<String,String> m_Params=new HashMap<>();
-    public Map<String,String> getParams(){
+    private Map<String, String> m_Params = new HashMap<>();
+
+    public Map<String, String> getParams() {
         return m_Params;
     }
 

@@ -46,7 +46,7 @@ public class FileUtils {
         return text.toString();
     }
 
-    public static Uri saveFile(Context context, String dirPath,String fileName,String content) throws IOException {
+    public static Uri saveFile(Context context, String dirPath, String fileName, String content) throws IOException {
         String state = Environment.getExternalStorageState();
         if (!Environment.MEDIA_MOUNTED.equals(state)) {
             Toast.makeText(context, "Внешнее хранилище недоступно!", Toast.LENGTH_SHORT).show();
@@ -159,7 +159,7 @@ public class FileUtils {
     }
 
     private static final char[] ILLEGAL_CHARACTERS = {'/', '\n', '\r', '\t', '\0', '\f', '`', '?',
-            '*', '\\', '<', '>', '|', '\"', ':','%'};
+            '*', '\\', '<', '>', '|', '\"', ':', '%'};
 
     /*
     * Нормализует(уберает иллегальные символы)

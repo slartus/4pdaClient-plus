@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdacommon;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -12,7 +11,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.net.URI;
 
 /**
@@ -24,10 +22,10 @@ public class Http {
         httpMethod.setURI(new URI(url));
         HttpResponse response = new DefaultHttpClient().execute(httpMethod);
         String infoStr = null;
-        switch(response.getStatusLine().getStatusCode()){
+        switch (response.getStatusLine().getStatusCode()) {
             case 200:
                 HttpEntity entity = response.getEntity();
-                if(entity != null)
+                if (entity != null)
                     infoStr = EntityUtils.toString(entity);
                 break;
         }

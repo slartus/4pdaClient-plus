@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:layout_weight="1" />
+
     <LinearLayout
         android:id="@+id/second_frame_layout"
         android:layout_width="match_parent"

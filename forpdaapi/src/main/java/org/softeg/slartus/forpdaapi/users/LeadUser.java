@@ -26,11 +26,11 @@ public class LeadUser extends User {
         String[] fIds = forumIds.split("¶");
         String[] fTitles = forumTitles.split("¶");
 
-        for(int i=0;i<fIds.length;i++){
-            if(TextUtils.isEmpty(fIds[i])||TextUtils.isEmpty(fTitles[i]))
+        for (int i = 0; i < fIds.length; i++) {
+            if (TextUtils.isEmpty(fIds[i]) || TextUtils.isEmpty(fTitles[i]))
                 continue;
 
-            forums.add(new Forum(fIds[i],fTitles[i]));
+            forums.add(new Forum(fIds[i], fTitles[i]));
         }
     }
 

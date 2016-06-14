@@ -35,7 +35,7 @@ public class PostApi {
      * @throws IOException
      */
     public static boolean delete(IHttpClient httpClient, String forumId, String topicId, String postId, CharSequence authKey) throws IOException {
-        httpClient.performGet("http://4pda.ru/forum/index.php?act=zmod&auth_key="+authKey+"&code=postchoice&tact=delete&selectedpids="+postId);
+        httpClient.performGet("http://4pda.ru/forum/index.php?act=zmod&auth_key=" + authKey + "&code=postchoice&tact=delete&selectedpids=" + postId);
         return true;// !TODO: проверка ответа
     }
 
@@ -423,7 +423,7 @@ public class PostApi {
                                   String postBody, String postEditReason,
                                   Boolean enablesig, Boolean enableemo) throws IOException {
 
-        List<NameValuePair> nameValuePairs=params.getListParams();
+        List<NameValuePair> nameValuePairs = params.getListParams();
         nameValuePairs.add(new BasicNameValuePair("Post", postBody));
         if (postEditReason != null)
             nameValuePairs.add(new BasicNameValuePair("post_edit_reason", postEditReason));

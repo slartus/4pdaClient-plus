@@ -18,63 +18,63 @@ public abstract class NotificationBridge {
     protected Context mContext;
 
 
-    protected NotificationBridge(Context context){
+    protected NotificationBridge(Context context) {
         mContext = context;
     }
 
-    public static NotificationBridge createBridge(Context context,int icon, CharSequence tickerText,
-                                     long when){
+    public static NotificationBridge createBridge(Context context, int icon, CharSequence tickerText,
+                                                  long when) {
         int sdk = Build.VERSION.SDK_INT;
 
-        if(sdk<16)
-            return new Notification11_15(context,icon,tickerText,when);
-        if(sdk<21)
-            return new Notification16_20(context,icon,tickerText,when);
+        if (sdk < 16)
+            return new Notification11_15(context, icon, tickerText, when);
+        if (sdk < 21)
+            return new Notification16_20(context, icon, tickerText, when);
 
-        return new Notification21_x(context,icon,tickerText,when);
+        return new Notification21_x(context, icon, tickerText, when);
     }
 
-    public  NotificationBridge setSmallIcon(int smallIcon){
+    public NotificationBridge setSmallIcon(int smallIcon) {
         return this;
     }
 
-    public  NotificationBridge setTicker(CharSequence tickerText){
+    public NotificationBridge setTicker(CharSequence tickerText) {
         return this;
     }
 
-    public  NotificationBridge setWhen(long when){
+    public NotificationBridge setWhen(long when) {
         return this;
     }
 
-    public  NotificationBridge setContentTitle(CharSequence contentTitle){
+    public NotificationBridge setContentTitle(CharSequence contentTitle) {
         return this;
     }
 
-    public  NotificationBridge setContentText(CharSequence contentText){
+    public NotificationBridge setContentText(CharSequence contentText) {
         return this;
     }
 
-    public  NotificationBridge setContentIntent(PendingIntent pendingIntent){
+    public NotificationBridge setContentIntent(PendingIntent pendingIntent) {
         return this;
     }
 
-    public  NotificationBridge setDefaults(int defaults){
+    public NotificationBridge setDefaults(int defaults) {
         return this;
     }
 
-    public  NotificationBridge setAutoCancel(boolean autoCancel){
+    public NotificationBridge setAutoCancel(boolean autoCancel) {
         return this;
     }
 
-    public NotificationBridge setProgress(int max, int progress, boolean indeterminate){
+    public NotificationBridge setProgress(int max, int progress, boolean indeterminate) {
         return this;
     }
 
-    public NotificationBridge setSound(Uri sound){
+    public NotificationBridge setSound(Uri sound) {
         return this;
     }
 
-    public NotificationBridge setSound(Uri sound, int streamType){
+    public NotificationBridge setSound(Uri sound, int streamType) {
         return this;
     }
 

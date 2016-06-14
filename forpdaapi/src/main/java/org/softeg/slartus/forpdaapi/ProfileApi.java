@@ -2,11 +2,9 @@ package org.softeg.slartus.forpdaapi;
 
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 
 import org.apache.http.cookie.Cookie;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.softeg.slartus.forpdaapi.classes.LoginForm;
 import org.softeg.slartus.forpdacommon.NotReportException;
 
@@ -66,7 +64,7 @@ public class ProfileApi {
         additionalHeaders.put("login", login);
         additionalHeaders.put("password", password);
         //additionalHeaders.put("CookieDate", "1");
-        if(privacy)
+        if (privacy)
             additionalHeaders.put("hidden", "1");
         additionalHeaders.put("act", "auth");
         //additionalHeaders.put("CODE", "01");
@@ -76,7 +74,6 @@ public class ProfileApi {
         additionalHeaders.put("captcha-time", capTime);
         additionalHeaders.put("captcha-sig", capSig);
         additionalHeaders.put("return", "http://4pda.ru/forum/index.php");
-
 
 
         String res = httpClient.performPost("http://4pda.ru/forum/index.php?act=auth", additionalHeaders);
@@ -143,14 +140,14 @@ public class ProfileApi {
         String page = httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID);
 
         Matcher matcher = Pattern.compile("<form action=\"http:\\/\\/4pda\\.ru\\/forum\\/index\\.php\\?showuser[^>]*>[\\s\\S]*?<ul[^>]*>([\\s\\S]*)<\\/ul>[\\s\\S]*?<\\/form>").matcher(page);
-        if(matcher.find()){
+        if (matcher.find()) {
             page = matcher.group(1).replaceFirst("<div class=\"photo\">[^<]*<img src=\"([^\"]*)\"[^<]*</div>",
                     "<div class=\"photo\"><div class=\"img " + avType + "\" style=\"background-image: url($1);\"></div></div>");
             matcher = Pattern.compile("<div class=\"user-box\">[\\s\\S]*?<h1>([\\s\\S]*?)</h1>").matcher(page);
             if (matcher.find())
                 profile.setNick(matcher.group(1));
             page = page.replaceAll("<div class=\"profile-edit-links\">", "<div class=\"profile-edit-links\" style=\"display:none;\">");
-            profile.setHtmlBody("<div class=\"user-profile-list\">"+page+"</div>");
+            profile.setHtmlBody("<div class=\"user-profile-list\">" + page + "</div>");
         }
         return profile;
     }
@@ -171,29 +168,29 @@ public class ProfileApi {
         m = Pattern
                 .compile("<img[^>]*?src=\"([^\"]*?turing.gerkon.eu/captcha[^\"]*)\"")
                 .matcher(formText);
-        if(!m.find())
+        if (!m.find())
             throw new NotReportException("Капча не найдена");
 
-        LoginForm loginForm=new LoginForm();
+        LoginForm loginForm = new LoginForm();
         loginForm.setCapPath(m.group(1));
 
         m = Pattern
                 .compile("name=\"captcha-time\"[^>]*?value=\"([^\"]*)\"")
                 .matcher(formText);
-        if(!m.find())
+        if (!m.find())
             throw new NotReportException("cap_time не найден");
         loginForm.setCapTime(m.group(1));
         m = Pattern
                 .compile("name=\"captcha-sig\"[^>]*?value=\"([^\"]*)\"")
                 .matcher(formText);
-        if(!m.find())
+        if (!m.find())
             throw new NotReportException("cap_sig не найден");
         loginForm.setCapSig(m.group(1));
 
         m = Pattern
                 .compile("name=\"s\"[^>]*?value=\"([^\"]*)\"")
                 .matcher(formText);
-        if(m.find())
+        if (m.find())
             loginForm.setSession(m.group(1));
 
         return loginForm;

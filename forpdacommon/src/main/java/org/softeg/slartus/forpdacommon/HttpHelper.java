@@ -374,7 +374,7 @@ public class HttpHelper {
     /**
      * Perform a simplified HTTP POST operation.
      */
-    public String performPost(final String url, final List<NameValuePair>  params) throws IOException {
+    public String performPost(final String url, final List<NameValuePair> params) throws IOException {
         return performRequest(HttpHelper.MIME_FORM_ENCODED, url, null, null, null, params, HttpHelper.POST_TYPE, HTTP_CONTENT_CHARSET);
     }
 
@@ -404,8 +404,9 @@ public class HttpHelper {
                 nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
             }
         }
-        return performRequest(contentType,url,user,pass,headers,nvps, requestType,encoding);
+        return performRequest(contentType, url, user, pass, headers, nvps, requestType, encoding);
     }
+
     //
     // private methods
     //

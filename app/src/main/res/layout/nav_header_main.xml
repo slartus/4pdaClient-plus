@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:layout_width="fill_parent"
+<RelativeLayout android:layout_width="fill_parent"
     android:layout_height="169dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/topInform"
     android:clickable="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/userBackground"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop" />
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#33000000"/>
+        android:background="#33000000" />
+
     <ImageView
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -26,7 +28,8 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="4dp"
         android:layout_marginTop="-12dp"
-        android:id="@+id/infoRefresh"/>
+        android:id="@+id/infoRefresh" />
+
     <ImageView
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -38,25 +41,28 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="52dp"
         android:layout_marginTop="-12dp"
-        android:id="@+id/openLink"/>
+        android:id="@+id/openLink" />
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="40dp"
         android:id="@+id/avatarWrapper">
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgAvatar"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:scaleType="centerCrop"
             app:civ_border_width="0dp"
-            app:civ_border_color="@android:color/transparent"/>
+            app:civ_border_color="@android:color/transparent" />
+
         <ImageView
             android:id="@+id/imgAvatarSquare"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -68,13 +74,15 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:textSize="14sp"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:id="@+id/userNick"/>
+            android:id="@+id/userNick" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="20dp"
@@ -82,7 +90,8 @@
             android:textColor="@color/white"
             android:id="@+id/userRep"
             android:layout_toRightOf="@+id/userNick"
-            android:paddingLeft="8dp"/>
+            android:paddingLeft="8dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="20dp"
@@ -92,6 +101,7 @@
             android:layout_below="@+id/userNick"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
+
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="56dp"
@@ -100,6 +110,6 @@
             android:gravity="center_vertical"
             android:textSize="18sp"
             android:paddingBottom="8dp"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
     </RelativeLayout>
 </RelativeLayout>

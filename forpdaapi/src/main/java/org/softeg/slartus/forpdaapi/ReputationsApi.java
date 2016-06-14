@@ -4,14 +4,11 @@ package org.softeg.slartus.forpdaapi;/*
 
 
 import android.net.Uri;
-import android.text.Html;
-import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

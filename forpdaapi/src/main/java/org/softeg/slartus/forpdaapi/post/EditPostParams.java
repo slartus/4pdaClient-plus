@@ -22,17 +22,17 @@ public class EditPostParams implements Serializable {
 
     public void put(String key, String value) {
         orderedNames.add(key);
-        params.put(key,value);
+        params.put(key, value);
     }
 
-    public String get(String key){
+    public String get(String key) {
         return params.get(key);
     }
 
-    public List<NameValuePair> getListParams(){
-        List<NameValuePair> res=new ArrayList<>();
-        for (String key:orderedNames) {
-            res.add(new BasicNameValuePair(key,params.get(key)));
+    public List<NameValuePair> getListParams() {
+        List<NameValuePair> res = new ArrayList<>();
+        for (String key : orderedNames) {
+            res.add(new BasicNameValuePair(key, params.get(key)));
         }
         return res;
     }

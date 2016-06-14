@@ -11,12 +11,12 @@ import java.io.Serializable;
  * Time: 15:19
  * To change this template use File | Settings | File Templates.
  */
-public class QmsUserTheme implements IListItem,Serializable {
-    public String Id="";
-    public String Title="";
-    public String NewCount="";
-    public String Count="";
-    public String Date="";
+public class QmsUserTheme implements IListItem, Serializable {
+    public String Id = "";
+    public String Title = "";
+    public String NewCount = "";
+    public String Count = "";
+    public String Date = "";
     private boolean selected;
 
     public void setSelected(boolean selected) {

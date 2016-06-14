@@ -1,8 +1,6 @@
 package org.softeg.slartus.forpdaapi.devdb;
 
 import android.net.Uri;
-import android.text.Html;
-import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

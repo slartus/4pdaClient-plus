@@ -13,7 +13,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -63,10 +62,10 @@ public class ShortUserInfo {
             userBackground.post(new Runnable() {
                 @Override
                 public void run() {
-                    if(bitmap.getWidth()==0||bitmap.getHeight()==0)
+                    if (bitmap.getWidth() == 0 || bitmap.getHeight() == 0)
                         return;
                     blur(bitmap, userBackground, avatarUrl);
-                    prefs.edit().putString("userAvatarUrl",avatarUrl).apply();
+                    prefs.edit().putString("userAvatarUrl", avatarUrl).apply();
                 }
             });
         }
@@ -97,14 +96,14 @@ public class ShortUserInfo {
         infoRefresh = (ImageView) findViewById(R.id.infoRefresh);
         openLink = (ImageView) findViewById(R.id.openLink);
         userBackground = (ImageView) findViewById(R.id.userBackground);
-        isSquare = prefs.getBoolean("isSquareAvarars",false);
+        isSquare = prefs.getBoolean("isSquareAvarars", false);
 
         openLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String url;
                 url = readFromClipboard(getContext());
-                if(url==null) url = "";
+                if (url == null) url = "";
                 new MaterialDialog.Builder(getContext())
                         .title(R.string.go_to_link)
                         .input(getContext().getString(R.string.insert_link), isPdaLink(url) ? url : null, new MaterialDialog.InputCallback() {
@@ -119,7 +118,7 @@ public class ShortUserInfo {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(MaterialDialog dialog, DialogAction which) {
-                                if(!IntentActivity.tryShowUrl((MainActivity)getContext(), ((MainActivity)getContext()).getHandler(), dialog.getInputEditText().getText()+"", false, false)){
+                                if (!IntentActivity.tryShowUrl((MainActivity) getContext(), ((MainActivity) getContext()).getHandler(), dialog.getInputEditText().getText() + "", false, false)) {
                                     Toast.makeText(getContext(), R.string.links_not_supported, Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -129,22 +128,22 @@ public class ShortUserInfo {
         });
 
 
-        File imgFile = new File(prefs.getString("userInfoBg",""));
-        if(imgFile.exists()){
+        File imgFile = new File(prefs.getString("userInfoBg", ""));
+        if (imgFile.exists()) {
             Picasso.with(activity).load(imgFile).into(userBackground);
         }
         client.checkLoginByCookies();
-        if(isOnline()){
-            if(client.getLogined()) {
+        if (isOnline()) {
+            if (client.getLogined()) {
                 new updateAsyncTask().execute();
-                if(isSquare){
+                if (isSquare) {
                     imgAvatarSquare.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             ProfileFragment.showProfile(client.UserId, client.getUser());
                         }
                     });
-                }else {
+                } else {
                     imgAvatar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -176,7 +175,7 @@ public class ShortUserInfo {
                         });
                     }
                 });
-            }else {
+            } else {
                 loginButton.setVisibility(View.VISIBLE);
                 loginButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -185,13 +184,13 @@ public class ShortUserInfo {
                     }
                 });
             }
-        }else {
+        } else {
             loginButton.setText(R.string.check_connection);
         }
         infoRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isOnline() & client.getLogined()){
+                if (isOnline() & client.getLogined()) {
                     new updateAsyncTask().execute();
                 }
             }
@@ -222,10 +221,10 @@ public class ShortUserInfo {
         protected Void doInBackground(String... urls) {
             try {
                 Document doc = Jsoup.parse(client.performGet("http://4pda.ru/forum/index.php?showuser=" + client.UserId));
-                if(doc.select("div.user-box > div.photo > img").first()!=null){
+                if (doc.select("div.user-box > div.photo > img").first() != null) {
                     avatarUrl = doc.select("div.user-box > div.photo > img").first().absUrl("src");
                 }
-                if(doc.select("div.statistic-box span[id*=\"ajaxrep\"]").first()!=null){
+                if (doc.select("div.statistic-box span[id*=\"ajaxrep\"]").first() != null) {
                     reputation = doc.select("div.statistic-box span[id*=\"ajaxrep\"]").first().text();
                 }
             } catch (IOException e) {
@@ -236,10 +235,10 @@ public class ShortUserInfo {
 
         @Override
         protected void onPostExecute(Void result) {
-            if(avatarUrl.equals("")|reputation.equals("")){
+            if (avatarUrl.equals("") | reputation.equals("")) {
                 loginButton.setText(R.string.unknown_error);
                 qmsMessages.setVisibility(View.GONE);
-            }else if (client.getLogined()) {
+            } else if (client.getLogined()) {
                 qmsMessages.setVisibility(View.VISIBLE);
                 loginButton.setVisibility(View.GONE);
                 textWrapper.setOnClickListener(new View.OnClickListener() {
@@ -252,31 +251,31 @@ public class ShortUserInfo {
                 });
                 userNick.setText(client.getUser());
                 userRep.setVisibility(View.VISIBLE);
-                userRep.setText(getContext().getString(R.string.reputation)+": " + reputation);
+                userRep.setText(getContext().getString(R.string.reputation) + ": " + reputation);
 
                 refreshQms();
                 //Log.e("kek", avatarUrl+" : "+prefs.getString("userAvatarUrl",""));
-                if(prefs.getBoolean("isUserBackground", false)){
-                    File imgFile = new File(prefs.getString("userInfoBg",""));
-                    if(imgFile.exists()){
+                if (prefs.getBoolean("isUserBackground", false)) {
+                    File imgFile = new File(prefs.getString("userInfoBg", ""));
+                    if (imgFile.exists()) {
                         Picasso.with(getContext()).load(imgFile).into(userBackground);
                     }
-                }else {
-                    if(!avatarUrl.equals(prefs.getString("userAvatarUrl",""))|prefs.getString("userInfoBg","").equals("")){
+                } else {
+                    if (!avatarUrl.equals(prefs.getString("userAvatarUrl", "")) | prefs.getString("userInfoBg", "").equals("")) {
                         //Log.e("kek", "true");
                         Picasso.with(App.getContext()).load(avatarUrl).into(target);
-                    }else {
-                        File imgFile = new File(prefs.getString("userInfoBg",""));
-                        if(imgFile.exists()){
+                    } else {
+                        File imgFile = new File(prefs.getString("userInfoBg", ""));
+                        if (imgFile.exists()) {
                             Picasso.with(getContext()).load(imgFile).into(userBackground);
                         }
                     }
                 }
 
 
-                if(isSquare){
+                if (isSquare) {
                     Picasso.with(App.getContext()).load(avatarUrl).into(imgAvatarSquare);
-                }else {
+                } else {
                     Picasso.with(App.getContext()).load(avatarUrl).into(imgAvatar);
                 }
                 prefs.edit()
@@ -284,12 +283,13 @@ public class ShortUserInfo {
                         .apply();
                 //prefs.edit().putBoolean("isLoadShortUserInfo", true).apply();
                 //prefs.edit().putString("shortAvatarUrl", avatarUrl).apply();
-            }else {
+            } else {
                 userRep.setVisibility(View.GONE);
                 loginButton.setVisibility(View.VISIBLE);
             }
         }
     }
+
     public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) mActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -317,6 +317,7 @@ public class ShortUserInfo {
         view.setImageBitmap(overlay);
         storeImage(overlay, url);
     }
+
     private void storeImage(Bitmap image, String url) {
         File pictureFile = getOutputMediaFile(url);
         if (pictureFile == null) {
@@ -333,7 +334,8 @@ public class ShortUserInfo {
             Log.d("kek", "Error accessing file: " + e.getMessage());
         }
     }
-    private  File getOutputMediaFile(String url){
+
+    private File getOutputMediaFile(String url) {
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
         File mediaStorageDir = new File(Preferences.System.getSystemDir());
@@ -342,16 +344,16 @@ public class ShortUserInfo {
         // between applications and persist after your app has been uninstalled.
 
         // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
                 return null;
             }
         }
         // Create a media file name
-        Long tsLong = System.currentTimeMillis()/1000;
+        Long tsLong = System.currentTimeMillis() / 1000;
         String name = tsLong.toString();
         Matcher m = Pattern.compile("http:\\/\\/s.4pda.to\\/(.*?)\\.").matcher(url);
-        if(m.find()){
+        if (m.find()) {
             name = m.group(1);
         }
         String file = mediaStorageDir.getPath() + File.separator + name + ".png";

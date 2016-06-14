@@ -2,15 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:id="@+id/content"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <AutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -20,6 +23,7 @@
                 android:hint="Устройство"
                 android:id="@+id/autoComplete"
                 android:layout_gravity="center_horizontal" />
+
             <ProgressBar
                 android:id="@+id/loadingResult"
                 android:layout_width="36dp"
@@ -45,6 +49,7 @@
             android:layout_marginTop="8dp"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
+
     <ProgressBar
         android:id="@+id/loadingContent"
         android:layout_width="56dp"

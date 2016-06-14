@@ -4,14 +4,12 @@ package org.softeg.slartus.forpdaapi.post;/*
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class EditPost implements Serializable {
     private String error;
     private String body;
-    private EditPostParams params =new EditPostParams();
+    private EditPostParams params = new EditPostParams();
     private List<EditAttach> attaches = new ArrayList<>();
     private String postEditReason;
     private boolean enableEmo;
@@ -121,16 +119,15 @@ public class EditPost implements Serializable {
     }
 
     public void deleteAttach(String attachId) {
-        for (EditAttach editAttach:attaches){
-            if(attachId.equals(editAttach.getId()))
-            {
+        for (EditAttach editAttach : attaches) {
+            if (attachId.equals(editAttach.getId())) {
                 attaches.remove(editAttach);
                 break;
             }
         }
-        StringBuilder fileList =new StringBuilder();
-        for (EditAttach editAttach:attaches){
-            if(fileList.length()>0)
+        StringBuilder fileList = new StringBuilder();
+        for (EditAttach editAttach : attaches) {
+            if (fileList.length() > 0)
                 fileList.append(",");
             fileList.append(editAttach.getId());
         }

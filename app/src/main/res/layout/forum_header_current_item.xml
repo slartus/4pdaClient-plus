@@ -16,13 +16,14 @@
         android:textSize="16sp"
         android:textColor="?colorAccent"
         android:textStyle="bold" />
+
     <ImageView
         android:layout_width="24dp"
         android:layout_height="36dp"
         android:id="@+id/imageView2"
         app:srcCompat="@drawable/chevron_right"
         android:padding="1dp"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical" />
 
 
 </LinearLayout>

@@ -1,18 +1,23 @@
 <resources>
-    <style name="ThemeLight" parent="MainThemeLight"/>
-    <style name="ThemeDark" parent="MainThemeDark"/>
-    <style name="ThemeBlack" parent="MainThemeBlack"/>
+
+    <style name="ThemeLight" parent="MainThemeLight" />
+
+    <style name="ThemeDark" parent="MainThemeDark" />
+
+    <style name="ThemeBlack" parent="MainThemeBlack" />
 
     <style name="MainPinkLightBase" parent="ThemeLight">
         <item name="colorAccent">@color/accentPink</item>
         <item name="arrow_up">@drawable/arrowup</item>
         <item name="arrow_down">@drawable/arrowdown</item>
     </style>
+
     <style name="MainBlueLightBase" parent="ThemeLight">
         <item name="colorAccent">@color/accentBlue</item>
         <item name="arrow_up">@drawable/arrowup_blue</item>
         <item name="arrow_down">@drawable/arrowdown_blue</item>
     </style>
+
     <style name="MainGrayLightBase" parent="ThemeLight">
         <item name="colorAccent">@color/accentGray</item>
         <item name="arrow_up">@drawable/arrowup_gray</item>
@@ -24,11 +29,13 @@
         <item name="arrow_up">@drawable/arrowup</item>
         <item name="arrow_down">@drawable/arrowdown</item>
     </style>
+
     <style name="MainBlueDarkBase" parent="ThemeDark">
         <item name="colorAccent">@color/accentBlue</item>
         <item name="arrow_up">@drawable/arrowup_blue</item>
         <item name="arrow_down">@drawable/arrowdown_blue</item>
     </style>
+
     <style name="MainGrayDarkBase" parent="ThemeDark">
         <item name="colorAccent">@color/accentGray</item>
         <item name="arrow_up">@drawable/arrowup_gray</item>
@@ -40,28 +47,36 @@
         <item name="arrow_up">@drawable/arrowup</item>
         <item name="arrow_down">@drawable/arrowdown</item>
     </style>
+
     <style name="MainBlueBlackBase" parent="ThemeBlack">
         <item name="colorAccent">@color/accentBlue</item>
         <item name="arrow_up">@drawable/arrowup_blue</item>
         <item name="arrow_down">@drawable/arrowdown_blue</item>
     </style>
+
     <style name="MainGrayBlackBase" parent="ThemeBlack">
         <item name="colorAccent">@color/accentGray</item>
         <item name="arrow_up">@drawable/arrowup_gray</item>
         <item name="arrow_down">@drawable/arrowdown_gray</item>
     </style>
 
-    <style name="MainPinkLight" parent="MainPinkLightBase"/>
-    <style name="MainBlueLight" parent="MainBlueLightBase"/>
-    <style name="MainGrayLight" parent="MainGrayLightBase"/>
+    <style name="MainPinkLight" parent="MainPinkLightBase" />
 
-    <style name="MainPinkDark" parent="MainPinkDarkBase"/>
-    <style name="MainBlueDark" parent="MainBlueDarkBase"/>
-    <style name="MainGrayDark" parent="MainGrayDarkBase"/>
+    <style name="MainBlueLight" parent="MainBlueLightBase" />
 
-    <style name="MainPinkBlack" parent="MainPinkBlackBase"/>
-    <style name="MainBlueBlack" parent="MainBlueBlackBase"/>
-    <style name="MainGrayBlack" parent="MainGrayBlackBase"/>
+    <style name="MainGrayLight" parent="MainGrayLightBase" />
+
+    <style name="MainPinkDark" parent="MainPinkDarkBase" />
+
+    <style name="MainBlueDark" parent="MainBlueDarkBase" />
+
+    <style name="MainGrayDark" parent="MainGrayDarkBase" />
+
+    <style name="MainPinkBlack" parent="MainPinkBlackBase" />
+
+    <style name="MainBlueBlack" parent="MainBlueBlackBase" />
+
+    <style name="MainGrayBlack" parent="MainGrayBlackBase" />
 
 
     <style name="ThemePrefsLightPinkBase" parent="MainPinkLight">
@@ -70,12 +85,14 @@
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_light</item>
     </style>
+
     <style name="ThemePrefsLightGrayBase" parent="MainGrayLight">
         <item name="android:textColor">@color/list_text_special_color_light</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_light</item>
     </style>
+
     <style name="ThemePrefsLightBlueBase" parent="MainBlueLight">
         <item name="android:textColor">@color/list_text_special_color_light</item>
         <item name="android:windowNoTitle">false</item>
@@ -89,12 +106,14 @@
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
     </style>
+
     <style name="ThemePrefsDarkGrayBase" parent="MainGrayDark">
         <item name="android:textColor">@color/list_text_special_color_dark</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_dark</item>
     </style>
+
     <style name="ThemePrefsDarkBlueBase" parent="MainBlueDark">
         <item name="android:textColor">@color/list_text_special_color_dark</item>
         <item name="android:windowNoTitle">false</item>
@@ -108,12 +127,14 @@
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_black</item>
     </style>
+
     <style name="ThemePrefsBlackGrayBase" parent="MainGrayBlack">
         <item name="android:textColor">@color/list_text_special_color_dark</item>
         <item name="android:windowNoTitle">false</item>
         <item name="android:windowTitleSize">@dimen/actionbar_prefs_height</item>
         <item name="android:windowTitleBackgroundStyle">@style/prefs_title_background_black</item>
     </style>
+
     <style name="ThemePrefsBlackBlueBase" parent="MainBlueBlack">
         <item name="android:textColor">@color/list_text_special_color_dark</item>
         <item name="android:windowNoTitle">false</item>
@@ -124,9 +145,11 @@
     <style name="ThemePrefsLightPink" parent="ThemePrefsLightPinkBase">
         <item name="android:windowTitleStyle">@style/prefs_title_style_prekitkat</item>
     </style>
+
     <style name="ThemePrefsLightGray" parent="ThemePrefsLightGrayBase">
         <item name="android:windowTitleStyle">@style/prefs_title_style_prekitkat</item>
     </style>
+
     <style name="ThemePrefsLightBlue" parent="ThemePrefsLightBlueBase">
         <item name="android:windowTitleStyle">@style/prefs_title_style_prekitkat</item>
     </style>
@@ -134,9 +157,11 @@
     <style name="ThemePrefsDarkPink" parent="ThemePrefsDarkPinkBase">
         <item name="android:windowTitleStyle">@style/prefs_title_style_prekitkat</item>
     </style>
+
     <style name="ThemePrefsDarkGray" parent="ThemePrefsDarkGrayBase">
         <item name="android:windowTitleStyle">@style/prefs_title_style_prekitkat</item>
     </style>
+
     <style name="ThemePrefsDarkBlue" parent="ThemePrefsDarkBlueBase">
         <item name="android:windowTitleStyle">@style/prefs_title_style_prekitkat</item>
     </style>
@@ -144,9 +169,11 @@
     <style name="ThemePrefsBlackPink" parent="ThemePrefsBlackPinkBase">
         <item name="android:windowTitleStyle">@style/prefs_title_style_prekitkat</item>
     </style>
+
     <style name="ThemePrefsBlackGray" parent="ThemePrefsBlackGrayBase">
         <item name="android:windowTitleStyle">@style/prefs_title_style_prekitkat</item>
     </style>
+
     <style name="ThemePrefsBlackBlue" parent="ThemePrefsBlackBlueBase">
         <item name="android:windowTitleStyle">@style/prefs_title_style_prekitkat</item>
     </style>

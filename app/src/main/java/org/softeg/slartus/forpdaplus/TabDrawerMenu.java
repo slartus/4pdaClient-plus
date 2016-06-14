@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Process;
-import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -65,7 +64,7 @@ public class TabDrawerMenu {
         closeAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (App.getInstance().getTabItems().size()>1)
+                if (App.getInstance().getTabItems().size() > 1)
                     closeAllTabs();
                 else {
                     closeDialog();
@@ -93,7 +92,7 @@ public class TabDrawerMenu {
         if ("right".equals(Preferences.System.getDrawerMenuPosition())) {
             params.gravity = Gravity.LEFT;
             mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_start, GravityCompat.START);
-        }else {
+        } else {
             mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_end, GravityCompat.END);
         }
         mDrawer.setLayoutParams(params);
@@ -136,7 +135,7 @@ public class TabDrawerMenu {
         }
     }
 
-    private class TabOnClickListener implements ListView.OnItemClickListener{
+    private class TabOnClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -144,42 +143,44 @@ public class TabDrawerMenu {
             close();
         }
     }
+
     private Runnable notifyAdapter = new Runnable() {
         @Override
         public void run() {
             adapter.notifyDataSetChanged();
         }
     };
-    public void notifyDataSetChanged(){
+
+    public void notifyDataSetChanged() {
         handler.postDelayed(notifyAdapter, 300);
     }
 
-    public void refreshAdapter(){
+    public void refreshAdapter() {
         adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
         mListView.setAdapter(adapter);
     }
 
-    public void removeTab(String tag){
-        if(App.getInstance().getTabItems().size()<=1){
-            ((MainActivity)getContext()).appExit();
+    public void removeTab(String tag) {
+        if (App.getInstance().getTabItems().size() <= 1) {
+            ((MainActivity) getContext()).appExit();
             return;
         }
 
-        for(int i = 0; i <= App.getInstance().getTabItems().size()-1; i++){
-            if(App.getInstance().getTabItems().get(i).getTag().equals(tag)) {
+        for (int i = 0; i <= App.getInstance().getTabItems().size() - 1; i++) {
+            if (App.getInstance().getTabItems().get(i).getTag().equals(tag)) {
                 final TabItem tabItem = App.getInstance().getTabByTag(tag);
-                Log.e("kek", tabItem.getFragment()+" WTF");
+                Log.e("kek", tabItem.getFragment() + " WTF");
                 tabItem.setFragment(null);
                 App.getInstance().getTabItems().remove(tabItem);
 
-                if(App.getInstance().getTabByTag(tabItem.getParentTag())!=null)
+                if (App.getInstance().getTabByTag(tabItem.getParentTag()) != null)
                     App.getInstance().setCurrentFragmentTag(tabItem.getParentTag());
-                else if(tag.equals(App.getInstance().getCurrentFragmentTag()))
+                else if (tag.equals(App.getInstance().getCurrentFragmentTag()))
                     App.getInstance().setCurrentFragmentTag(App.getInstance().getTabItems().get(App.getInstance().getLastTabPosition(i)).getTag());
 
-                ((MainActivity)getContext()).showFragment(App.getInstance().getCurrentFragmentTag(), true);
-                ((MainActivity)getContext()).endActionFragment(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
-                ((MainActivity)getContext()).getmMainDrawerMenu().setItemCheckable(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
+                ((MainActivity) getContext()).showFragment(App.getInstance().getCurrentFragmentTag(), true);
+                ((MainActivity) getContext()).endActionFragment(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
+                ((MainActivity) getContext()).getmMainDrawerMenu().setItemCheckable(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
                 refreshAdapter();
                 return;
             }
@@ -193,11 +194,12 @@ public class TabDrawerMenu {
     public Boolean isOpen() {
         return mDrawerLayout.isDrawerOpen(mDrawer);
     }
+
     public void selectTab(TabItem tabItem) {
         mSelectItemListener.selectTab(tabItem);
         notifyDataSetChanged();
         Log.e("kek", "select save");
-        if(ListCore.getRegisteredBrick(tabItem.getTag())!=null){
+        if (ListCore.getRegisteredBrick(tabItem.getTag()) != null) {
             Preferences.Lists.setLastSelectedList(tabItem.getTag());
             Preferences.Lists.addLastAction(tabItem.getTag());
         }
@@ -212,14 +214,16 @@ public class TabDrawerMenu {
         return mActivity.findViewById(id);
     }
 
-    public class TabAdapter extends ArrayAdapter{
+    public class TabAdapter extends ArrayAdapter {
         final LayoutInflater inflater;
         List<TabItem> mObjects = null;
+
         public TabAdapter(Context context, int item_resource, List<TabItem> objects) {
             super(context, item_resource, objects);
             mObjects = objects;
             inflater = LayoutInflater.from(context);
         }
+
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             final ViewHolder holder;
@@ -243,29 +247,33 @@ public class TabDrawerMenu {
             holder.text.setText(item.getTitle());
             holder.close.setOnClickListener(new CloseClickListener(item.getTag()));
 
-            holder.text.setTextColor(ContextCompat.getColor(App.getContext(),App.getInstance().getDrawerMenuText()));
+            holder.text.setTextColor(ContextCompat.getColor(App.getContext(), App.getInstance().getDrawerMenuText()));
             holder.item.setBackgroundResource(android.R.color.transparent);
 
-            if(App.getInstance().getCurrentFragmentTag().equals(item.getTag())){
+            if (App.getInstance().getCurrentFragmentTag().equals(item.getTag())) {
                 holder.text.setTextColor(ContextCompat.getColor(App.getContext(), R.color.selectedItemText));
                 holder.item.setBackgroundResource(R.color.selectedItem);
             }
 
             return convertView;
         }
+
         public class ViewHolder {
             public TextView text;
             public ImageView close;
             public RelativeLayout item;
         }
     }
+
     public class CloseClickListener implements View.OnClickListener {
         String tag;
-        public CloseClickListener(String tag){
+
+        public CloseClickListener(String tag) {
             this.tag = tag;
         }
+
         public void onClick(View v) {
-            if(App.getInstance().getTabItems().size()>1) {
+            if (App.getInstance().getTabItems().size() > 1) {
                 MainActivity.log("tabdrawer tryremove tab");
                 ((MainActivity) getContext()).tryRemoveTab(tag);
             } else {

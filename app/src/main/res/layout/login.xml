@@ -12,12 +12,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/login_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:foreground="?android:attr/selectableItemBackground">
+
                 <EditText
                     android:id="@+id/username_edit"
                     android:singleLine="true"
@@ -27,9 +29,10 @@
                     android:scrollHorizontally="true"
                     android:capitalize="none"
                     android:autoText="false"
-                    android:hint="@string/UserNameLogin"/>
+                    android:hint="@string/UserNameLogin" />
 
             </android.support.design.widget.TextInputLayout>
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/password_layout"
                 android:layout_width="match_parent"
@@ -49,7 +52,7 @@
                     android:password="true"
                     android:inputType="textPassword"
                     android:hint="@string/Password"
-                    android:layout_marginTop="4dp"/>
+                    android:layout_marginTop="4dp" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -77,7 +80,7 @@
                     android:scrollHorizontally="true"
                     android:capitalize="none"
                     android:autoText="false"
-                    android:hint="Число с картинки"/>
+                    android:hint="Число с картинки" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -88,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:checked="false"
                 android:text="@string/Stealth"
-                android:layout_marginTop="4dp"/>
+                android:layout_marginTop="4dp" />
         </LinearLayout>
     </ScrollView>
 

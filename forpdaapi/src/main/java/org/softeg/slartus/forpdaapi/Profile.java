@@ -6,7 +6,7 @@ public class Profile {
     private CharSequence id;
     private CharSequence nick;
     private String htmlBody;
-private Throwable error;
+    private Throwable error;
 
     public CharSequence getId() {
         return id;

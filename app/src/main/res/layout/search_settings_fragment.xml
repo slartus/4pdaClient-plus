@@ -17,6 +17,7 @@
             android:hint="Ключевые слова"
             android:layout_toLeftOf="@+id/forHideButton"
             android:layout_toStartOf="@+id/forHideButton" />
+
         <ImageButton
             app:srcCompat="@drawable/settings_grey"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -28,6 +29,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,13 +37,14 @@
             android:id="@+id/forHide"
             android:visibility="gone"
             android:layout_below="@+id/forHideButton">
+
             <EditText
                 android:id="@+id/username_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:inputType="textAutoComplete"
-                android:hint="Логин автора"/>
+                android:hint="Логин автора" />
 
             <RelativeLayout
                 android:id="@+id/topics_group"
@@ -77,6 +80,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <Button
                         android:id="@+id/forums_button"
                         android:layout_width="wrap_content"
@@ -113,6 +117,7 @@
                 android:layout_height="match_parent"
                 android:stretchColumns="1"
                 android:layout_marginTop="4dp">
+
                 <TableRow
                     android:id="@+id/result_group"
                     android:layout_width="fill_parent"
@@ -134,6 +139,7 @@
                         android:entryValues="@array/SearchResultValues" />
 
                 </TableRow>
+
                 <TableRow
                     android:id="@+id/source_group"
                     android:layout_width="fill_parent"
@@ -177,13 +183,14 @@
                         android:entryValues="@array/SearchSortValues" />
                 </TableRow>
             </TableLayout>
+
             <CheckBox
                 android:id="@+id/subforums_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="@string/Subforums"
-                android:layout_marginTop="4dp"/>
+                android:layout_marginTop="4dp" />
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>

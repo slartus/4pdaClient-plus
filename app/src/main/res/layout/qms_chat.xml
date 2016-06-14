@@ -66,17 +66,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/message_panel">
+
         <org.softeg.slartus.forpdaplus.classes.AdvWebView
             android:id="@+id/wvChat"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
     </LinearLayout>
     <!--<android.support.v4.widget.SwipeRefreshLayout-->
-        <!--android:id="@+id/ptr_layout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:fitsSystemWindows="true"-->
-        <!--android:layout_above="@+id/message_panel">-->
+    <!--android:id="@+id/ptr_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:fitsSystemWindows="true"-->
+    <!--android:layout_above="@+id/message_panel">-->
     <!--</android.support.v4.widget.SwipeRefreshLayout>-->
     <LinearLayout
         android:layout_width="fill_parent"
@@ -84,5 +85,5 @@
         android:orientation="vertical"
         android:id="@+id/shadow"
         android:background="@drawable/shadow_to_top"
-        android:layout_above="@id/message_panel"/>
+        android:layout_above="@id/message_panel" />
 </RelativeLayout>

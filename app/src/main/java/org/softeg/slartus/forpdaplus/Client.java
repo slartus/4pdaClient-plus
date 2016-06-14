@@ -242,9 +242,9 @@ public class Client implements IHttpClient {
         }
         if (checkEmptyResult && TextUtils.isEmpty(res))
             throw new NotReportException(App.getContext().getString(R.string.server_return_empty_page));
-        else if(checkLoginAndMails){
+        else if (checkLoginAndMails) {
             checkLogin(res);
-            if(!s.contains("xhr"))
+            if (!s.contains("xhr"))
                 checkMails(res);
         }
         // m_HttpHelper.close();
@@ -341,6 +341,7 @@ public class Client implements IHttpClient {
     public Boolean likeNews(String postId) throws IOException {
         return NewsApi.like(this, postId);
     }
+
     public Boolean likeComment(final String id, final String comment) throws IOException {
         return NewsApi.likeComment(this, id, comment);
     }
@@ -762,7 +763,7 @@ public class Client implements IHttpClient {
 
     public TopicBodyBuilder parseTopic(String topicPageBody,
                                        Context context, String themeUrl, Boolean spoilFirstPost) throws IOException {
-        Log.d("kek", "redirected final theme url = "+themeUrl);
+        Log.d("kek", "redirected final theme url = " + themeUrl);
         checkLogin(topicPageBody);
 
         Pattern pattern = PatternExtensions.compile("showtopic=(\\d+)(&(.*))?");
@@ -806,7 +807,7 @@ public class Client implements IHttpClient {
             final Pattern forumPatter = PatternExtensions.compile("<a href=\"(http://4pda.ru)?/forum/index.php\\?.*?showforum=(\\d+).*?\">(.*?)</a>");
             Matcher forumMatcher = forumPatter.matcher(m.group(1));
             while (forumMatcher.find()) {
-                if(forumMatcher.group(2).equals("10"))
+                if (forumMatcher.group(2).equals("10"))
                     topic.setPostVote(false);
                 topic.setForumId(forumMatcher.group(2));
                 topic.setForumTitle(forumMatcher.group(3));
@@ -843,7 +844,6 @@ public class Client implements IHttpClient {
                                        Boolean logined, String urlParams) throws IOException {
 
 
-
         Matcher mainMatcher = beforePostsPattern.matcher(topicBody);
 
         if (!mainMatcher.find()) {
@@ -869,7 +869,7 @@ public class Client implements IHttpClient {
                 throw new NotReportException(context.getString(R.string.server_return_empty_page));
             if (topicBody.startsWith("<h1>"))
                 throw new NotReportException(context.getString(R.string.site_response) + Html.fromHtml(topicBody).toString());
-            throw new IOException(context.getString(R.string.error_parsing_page)+" id=" + id);
+            throw new IOException(context.getString(R.string.error_parsing_page) + " id=" + id);
         }
         Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(context);
 
@@ -891,23 +891,23 @@ public class Client implements IHttpClient {
 
             pollBuilder.append("<form action=\"modules.php\" method=\"get\">");
             pollMatcher = pollTitlePattern.matcher(pollSource);
-            if(pollMatcher.find()){
-                if(!pollMatcher.group(1).equals("-"))
+            if (pollMatcher.find()) {
+                if (!pollMatcher.group(1).equals("-"))
                     pollBuilder.append("<div class=\"poll_title\"><span>").append(pollMatcher.group(1)).append("</span></div>");
             }
             pollBuilder.append("<div class=\"poll_body\">");
             boolean voted = false;
 
             pollMatcher = pollQuestionsPattern.matcher(pollSource);
-            while (pollMatcher.find()){
-                if(!pollMatcher.group(2).contains("input"))
+            while (pollMatcher.find()) {
+                if (!pollMatcher.group(2).contains("input"))
                     voted = true;
                 pollBuilder.append("<div class=\"poll_theme\">");
                 pollBuilder.append("<div class=\"theme_title\"><span>").append(pollMatcher.group(1)).append("</span></div>");
                 pollBuilder.append("<div class=\"items").append(voted ? " voted" : "").append("\">");
                 if (voted) {
                     temp = pollNotVotedPattern.matcher(pollMatcher.group(2));
-                    while (temp.find()){
+                    while (temp.find()) {
                         pollBuilder.append("<div class=\"item\">");
                         pollBuilder.append("<span class=\"name\"><span>").append(temp.group(1)).append("</span></span>");
                         pollBuilder.append("<span class=\"num_votes\"><span>").append(temp.group(2)).append("</span></span>");
@@ -920,7 +920,7 @@ public class Client implements IHttpClient {
                     }
                 } else {
                     temp = pollVotedPattern.matcher(pollMatcher.group(2));
-                    while (temp.find()){
+                    while (temp.find()) {
                         pollBuilder.append("<label class=\"item\">");
                         pollBuilder.append(temp.group(1));
                         pollBuilder.append("<span class=\"icon\"></span>");
@@ -935,9 +935,9 @@ public class Client implements IHttpClient {
 
 
             pollMatcher = pollBottomPattern.matcher(pollSource);
-            if(pollMatcher.find()){
+            if (pollMatcher.find()) {
                 pollBuilder.append("<div class=\"votes_info\"><span>").append(pollMatcher.group(1)).append("</span></div>");
-                if(logined) {
+                if (logined) {
                     pollBuilder.append("<div class=\"buttons\">").append(pollMatcher.group(2)).append("</div>");
                 }
             }
@@ -954,7 +954,6 @@ public class Client implements IHttpClient {
 
 
         mainMatcher = postsPattern.matcher(topicBody);
-
 
 
         //String today = Functions.getToday();
@@ -975,9 +974,9 @@ public class Client implements IHttpClient {
             post.setUserId(mainMatcher.group(9));
             post.setUserReputation(mainMatcher.group(10));
             str = mainMatcher.group(11);
-            if(str.contains("win_minus"))
+            if (str.contains("win_minus"))
                 post.setCanMinusRep(true);
-            if(str.contains("win_add"))
+            if (str.contains("win_add"))
                 post.setCanPlusRep(true);
             m = editPattern.matcher(str);
             if (m.find()) {
@@ -991,7 +990,7 @@ public class Client implements IHttpClient {
                     topicBodyBuilder.setMMod(true);
                 }
             }
-            post.setBody("<div class=\"post_body " + mainMatcher.group(12) + "\">" + mainMatcher.group(13)+"</div>");
+            post.setBody("<div class=\"post_body " + mainMatcher.group(12) + "\">" + mainMatcher.group(13) + "</div>");
             topicBodyBuilder.addPost(post, spoil);
             spoil = false;
         }

@@ -33,12 +33,13 @@
             style="?list_text_special_color"
             android:textSize="16sp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/textDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="?list_text_second_color"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/textDescription"
@@ -46,6 +47,6 @@
             android:layout_height="wrap_content"
             android:maxLines="3"
             style="?list_text_second_color"
-            android:textSize="14sp"/>
+            android:textSize="14sp" />
     </LinearLayout>
 </RelativeLayout>

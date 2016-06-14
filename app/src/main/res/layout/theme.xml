@@ -11,12 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_panel">
+
         <org.softeg.slartus.forpdaplus.classes.AdvWebView
             android:id="@+id/wvBody"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
     </android.support.v4.widget.SwipeRefreshLayout>
-
 
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -37,7 +37,7 @@
             android:layout_gravity="end"
             android:clickable="true"
             app:srcCompat="@drawable/pencil"
-            style="@style/floating_action_button"/>
+            style="@style/floating_action_button" />
 
 
         <LinearLayout
@@ -46,26 +46,30 @@
             android:orientation="horizontal"
             android:layout_gravity="center_vertical"
             android:id="@+id/arrows_shadow">
+
             <ImageButton
                 android:layout_width="48dp"
                 android:layout_height="56dp"
                 android:background="@null"
                 android:layout_marginRight="4dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_btn_up"/>
+                android:src="@drawable/ic_btn_up" />
+
             <ImageButton
                 android:layout_width="48dp"
                 android:layout_height="56dp"
                 android:layout_gravity="center"
                 android:background="@null"
-                android:src="@drawable/ic_btn_down"/>
+                android:src="@drawable/ic_btn_down" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center_vertical"
             android:id="@+id/arrows">
+
             <ImageButton
                 android:id="@+id/btnUp"
                 android:layout_width="48dp"
@@ -73,14 +77,15 @@
                 android:background="@null"
                 android:layout_marginRight="4dp"
                 android:layout_gravity="center"
-                android:src="?arrow_up"/>
+                android:src="?arrow_up" />
+
             <ImageButton
                 android:id="@+id/btnDown"
                 android:layout_width="48dp"
                 android:layout_height="56dp"
                 android:layout_gravity="center"
                 android:background="@null"
-                android:src="?arrow_down"/>
+                android:src="?arrow_down" />
         </LinearLayout>
     </FrameLayout>
 
@@ -100,6 +105,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:orientation="vertical">
+
             <fragment
                 android:id="@+id/quick_post_fragment"
                 class="org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment"
@@ -113,6 +119,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/pnlSearch">
+
             <FrameLayout
                 style="?post_panel"
                 android:layout_width="fill_parent"
@@ -134,7 +141,7 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginLeft="48dp"
-                    app:srcCompat="@drawable/menu_right"/>
+                    app:srcCompat="@drawable/menu_right" />
 
                 <EditText
                     android:id="@+id/txtSearch"
@@ -150,7 +157,7 @@
                     android:paddingRight="16dp"
                     android:paddingBottom="8dp"
                     android:layout_marginRight="48dp"
-                    android:layout_marginLeft="96dp"/>
+                    android:layout_marginLeft="96dp" />
 
                 <ImageButton
                     android:id="@+id/btnCloseSearch"
@@ -162,10 +169,11 @@
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="6dp"
         android:orientation="vertical"
         android:background="@drawable/shadow_to_top"
-        android:layout_above="@+id/bottom_panel"/>
+        android:layout_above="@+id/bottom_panel" />
 </RelativeLayout>

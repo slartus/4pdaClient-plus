@@ -2,13 +2,8 @@ package org.softeg.slartus.forpdaapi.digest;/*
  * Created by slinkin on 18.03.14.
  */
 
-import android.net.Uri;
 import android.text.Html;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.Topic;
 
@@ -146,8 +141,8 @@ public class DigestApi {
             if (!mtchr.find())
                 return res;
 
-            Matcher topicmatcher=Pattern.compile("<a[^>]*href=\"[^\"]*showtopic=(\\d+)[^\"]*\"[^>]*>(.*?)</a>\\s*<span[^>]*>(.*?)</span>(.*?)<br").matcher(mtchr.group(1));
-            while (topicmatcher.find()){
+            Matcher topicmatcher = Pattern.compile("<a[^>]*href=\"[^\"]*showtopic=(\\d+)[^\"]*\"[^>]*>(.*?)</a>\\s*<span[^>]*>(.*?)</span>(.*?)<br").matcher(mtchr.group(1));
+            while (topicmatcher.find()) {
                 Topic topic = new Topic(topicmatcher.group(1), Html.fromHtml(topicmatcher.group(2)).toString());
                 topic.setForumTitle(category.getTitle().toString());
                 topic.setLastMessageAuthor(topicmatcher.group(3));
@@ -169,8 +164,8 @@ public class DigestApi {
             ArrayList<Topic> res = new ArrayList<>();
             if (!mtchr.find()) return res;
 
-            Matcher topicmatcher=Pattern.compile("<a[^>]*href=\"[^\"]*showtopic=(\\d+)[^\"]*\"[^>]*>(.*?)</a>\\s*<span[^>]*>(.*?)</span>(.*?)<br").matcher(mtchr.group(1));
-            while (topicmatcher.find()){
+            Matcher topicmatcher = Pattern.compile("<a[^>]*href=\"[^\"]*showtopic=(\\d+)[^\"]*\"[^>]*>(.*?)</a>\\s*<span[^>]*>(.*?)</span>(.*?)<br").matcher(mtchr.group(1));
+            while (topicmatcher.find()) {
                 Topic topic = new Topic(topicmatcher.group(1), Html.fromHtml(topicmatcher.group(2)).toString());
                 topic.setForumTitle(category.getTitle().toString());
                 topic.setLastMessageAuthor(topicmatcher.group(3));
@@ -178,7 +173,7 @@ public class DigestApi {
                 topic.setDescription(Html.fromHtml(topicmatcher.group(4)).toString());
                 res.add(topic);
             }
-           return res;
+            return res;
 
 
         }
@@ -188,13 +183,13 @@ public class DigestApi {
 
     public static class Games {
 
-        public static ArrayList< Topic> loadTopics(IHttpClient client, DigestCatalog catalog) throws IOException {
+        public static ArrayList<Topic> loadTopics(IHttpClient client, DigestCatalog catalog) throws IOException {
             String body = client.performGet("http://4pda.ru/forum/index.php?showtopic=" + GAME_DIGEST_ID + "&view=getlastpost");
             Matcher mtchr = Pattern.compile(catalog.getParent().getTitle() + "[\\s\\S]*?"
                     + Pattern.quote(catalog.getTitle().toString()) + "([\\s\\S]*?)" +
                     "(?:<!--Begin Msg Number|<!-- TABLE FOOTER -->|Обновление ранее опубликованных на форуме игр)").matcher(body);
 
-            ArrayList<Topic> res=new ArrayList<>();
+            ArrayList<Topic> res = new ArrayList<>();
             if (!mtchr.find())
                 return res;
 
@@ -218,7 +213,7 @@ public class DigestApi {
             final String[] messages = body.split("<!--Begin Msg Number");
 
             final int[] msgId = {messages.length};
-            final int[] fId = {Integer.MIN_VALUE/2};
+            final int[] fId = {Integer.MIN_VALUE / 2};
             final Pattern postPattern = Pattern.compile("(\\d\\d? \\w+ \\d{4} - \\d\\d? \\w+ \\d{4})[\\s\\S]*?" +
                     "Новые игры, ранее не публиковавшиеся на форуме[\\s\\S]*?" +
                     "Обновление ранее опубликованных на форуме игр[\\s\\S]*?$");

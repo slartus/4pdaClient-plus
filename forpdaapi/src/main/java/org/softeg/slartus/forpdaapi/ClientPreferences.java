@@ -65,7 +65,7 @@ public class ClientPreferences {
                 Date date = new Date(prefs.getLong(key, 0));
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(date);
-                cal.set(Calendar.SECOND,0);
+                cal.set(Calendar.SECOND, 0);
                 return cal;
             }
 

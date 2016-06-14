@@ -16,7 +16,6 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:fab="http://schemas.android.com/apk/res-auto"
         android:id="@+id/buttonsPanel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -32,7 +31,7 @@
             android:layout_gravity="end"
             android:clickable="true"
             app:srcCompat="@drawable/pencil"
-            style="@style/floating_action_button"/>
+            style="@style/floating_action_button" />
     </FrameLayout>
 
 </RelativeLayout>

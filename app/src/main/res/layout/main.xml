@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
+
+    <android.support.v4.widget.DrawerLayout android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,6 +12,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
@@ -24,6 +24,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:theme="@style/MainThemeLight.AppBarOverlay">
+
                     <android.support.v7.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
@@ -31,7 +32,7 @@
                         android:background="?attr/colorPrimary"
                         app:popupTheme="?attr/actionBarPopupTheme"
                         app:subtitleTextAppearance="@style/actionbar_subtitle"
-                        app:titleTextAppearance="@style/actionbar_title"/>
+                        app:titleTextAppearance="@style/actionbar_title" />
                 </android.support.design.widget.AppBarLayout>
 
                 <FrameLayout
@@ -42,20 +43,21 @@
                     <RelativeLayout
                         android:id="@+id/content_frame"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent" />
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="4dp"
                         android:id="@+id/toolbar_shadow"
                         android:background="@drawable/toolbar_shadow"
-                        android:fitsSystemWindows="true"/>
+                        android:fitsSystemWindows="true" />
                 </FrameLayout>
             </android.support.design.widget.CoordinatorLayout>
+
             <RelativeLayout
                 android:id="@+id/status_bar"
                 android:layout_width="match_parent"
-                android:layout_height="25dp"/>
+                android:layout_height="25dp" />
         </RelativeLayout>
 
         <android.support.design.widget.NavigationView
@@ -65,7 +67,7 @@
             android:layout_gravity="start"
             app:headerLayout="@layout/nav_header_main"
             app:itemBackground="@drawable/nav_bg"
-            style="?drawer_menu"/>
+            style="?drawer_menu" />
 
         <RelativeLayout
             android:id="@+id/tab_drawer"
@@ -73,8 +75,7 @@
             android:layout_height="match_parent"
             android:paddingTop="25dp"
             android:layout_gravity="end"
-            style="?drawer_menu"
-            >
+            style="?drawer_menu">
 
             <LinearLayout
                 android:id="@+id/tab_list_wrapper"
@@ -82,13 +83,15 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:layout_above="@+id/closeAll">
+
                 <ListView
                     android:id="@+id/tab_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:divider="#00000000"
-                    android:dividerHeight="0dp"/>
+                    android:dividerHeight="0dp" />
             </LinearLayout>
+
             <Button
                 android:id="@+id/closeAll"
                 android:layout_width="match_parent"
@@ -98,15 +101,16 @@
                 android:gravity="left|center_vertical"
                 android:background="?attr/selectableItemBackground"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp"/>
+                android:paddingRight="16dp" />
         </RelativeLayout>
     </android.support.v4.widget.DrawerLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/fakeSB"
         android:background="@color/statusBar_translucent_light"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </RelativeLayout>
 
 

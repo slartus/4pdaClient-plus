@@ -10,18 +10,18 @@
             <Preference
                 android:key="appstyle"
                 android:summary="Выберите стиль программы"
-                android:title="Стиль"/>
+                android:title="Стиль" />
             <Preference
                 android:key="accentColor"
                 android:summary="Цвет кнопки в теме и новостях"
-                android:title="Цвет кнопки с карандашом"/>
+                android:title="Цвет кнопки с карандашом" />
             <Preference
                 android:key="mainAccentColor"
-                android:title="Цвет акцента"/>
+                android:title="Цвет акцента" />
             <Preference
                 android:key="webViewFont"
                 android:title="Шрифт WebView"
-                android:summary="Шрифт в новостях, поиске, теме, профиле, QMS"/>
+                android:summary="Шрифт в новостях, поиске, теме, профиле, QMS" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="titleMarquee"
@@ -31,63 +31,63 @@
                 android:defaultValue="false"
                 android:key="isSquareAvarars"
                 android:title="Квадратные аватарки"
-                android:summary="Требуется перезапуск приложения"/>
+                android:summary="Требуется перезапуск приложения" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="statusbarFake"
                 android:title="Status Bar как в Android 5+"
-                android:summary="Подходит для прошивок MIUI, Flyme и т.п на Android 4.4"/>
+                android:summary="Подходит для прошивок MIUI, Flyme и т.п на Android 4.4" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="oldIndicator"
                 android:title="Полоса у новых сообщений"
-                android:summary="Требуется перезапуск приложения"/>
+                android:summary="Требуется перезапуск приложения" />
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="coloredNavBar"
                 android:title="Красить Navigation Bar"
-                android:summary="Для Android 5 и выше. Требуется перезапуск приложения"/>
+                android:summary="Для Android 5 и выше. Требуется перезапуск приложения" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="pancilInActionBar"
-                android:title="Карандаш в экшнбаре"/>
+                android:title="Карандаш в экшнбаре" />
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="showToolbarBackArrow"
-                android:title="Показывать стрелку 'назад'"/>
+                android:title="Показывать стрелку 'назад'" />
         </PreferenceCategory>
 
         <PreferenceCategory android:title="Боковая панель">
             <Preference
                 android:key="userBackground"
                 android:summary="Требуется перезапуск приложения"
-                android:title="Изображение в боковом меню"/>
+                android:title="Изображение в боковом меню" />
             <!--<CheckBoxPreference-->
-                <!--android:defaultValue="false"-->
-                <!--android:key="categoryLast"-->
-                <!--android:title="Отображать 'Последние'"-->
-                <!--android:summary="Меню 'Последние' в выезжающем меню"/>-->
+            <!--android:defaultValue="false"-->
+            <!--android:key="categoryLast"-->
+            <!--android:title="Отображать 'Последние'"-->
+            <!--android:summary="Меню 'Последние' в выезжающем меню"/>-->
             <Preference
                 android:key="visibleMenuItems"
-                android:title="Пункты меню в боковой панели"/>
+                android:title="Пункты меню в боковой панели" />
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="isShowShortUserInfo"
                 android:title="Информация о пользователе"
-                android:summary="Отображать информацию о пользователе в боковом меню. Требуется перезапуск приложения"/>
+                android:summary="Отображать информацию о пользователе в боковом меню. Требуется перезапуск приложения" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="tabsBottom"
-                android:title="Список вкладок внизу"/>
+                android:title="Список вкладок внизу" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="isMarginBottomNav"
                 android:title="Нижний отступ в боковом меню"
-                android:summary="Включить, если не видно последнего пункта. Требуется перезапуск приложения"/>
+                android:summary="Включить, если не видно последнего пункта. Требуется перезапуск приложения" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="openTabDrawerButton"
-                android:title="Отображать кнопку открытия панели вкладок"/>
+                android:title="Отображать кнопку открытия панели вкладок" />
         </PreferenceCategory>
 
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
@@ -169,10 +169,10 @@
             android:summary="Вместе с названием отображать описание темы на странице"
             android:title="Полное название темы" />
         <!--<CheckBoxPreference-->
-            <!--android:defaultValue="false"-->
-            <!--android:key="theme.Fullscreen"-->
-            <!--android:summary="Если не работают спойлеры"-->
-            <!--android:title="Fullscreen" />-->
+        <!--android:defaultValue="false"-->
+        <!--android:key="theme.Fullscreen"-->
+        <!--android:summary="Если не работают спойлеры"-->
+        <!--android:title="Fullscreen" />-->
     </PreferenceScreen>
 
     <PreferenceScreen android:title="Новости">
@@ -211,7 +211,7 @@
             android:defaultValue="false"
             android:key="loadNewsComment"
             android:title="Не загружать комментарии"
-            android:summary="Ускорит отображение страницы"/>
+            android:summary="Ускорит отображение страницы" />
     </PreferenceScreen>
 
 
@@ -236,7 +236,7 @@
                 android:defaultValue="false"
                 android:key="showSubMain"
                 android:title="Скрыть описание в пункте списка"
-                android:summary="Требуется перезапуск приложения"/>
+                android:summary="Требуется перезапуск приложения" />
         </PreferenceCategory>
 
         <PreferenceCategory android:title="Избранное">
@@ -251,8 +251,7 @@
             <CheckBoxPreference
                 android:title="Отображать картинки"
                 android:key="forum.list.show_images"
-                android:defaultValue="true"
-                />
+                android:defaultValue="true" />
         </PreferenceCategory>
 
         <PreferenceCategory android:title="Новости">
@@ -272,8 +271,7 @@
         </PreferenceCategory>
     </PreferenceScreen>
 
-    <PreferenceScreen
-        android:title="Системное">
+    <PreferenceScreen android:title="Системное">
         <Preference
             android:key="path.system_path"
             android:title="Путь к папке с данными" />
@@ -403,7 +401,7 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="showExitButton"
-            android:title="Отображать кнопку 'Закрыть программу'"/>
+            android:title="Отображать кнопку 'Закрыть программу'" />
     </PreferenceScreen>
 
     <PreferenceScreen
@@ -509,8 +507,7 @@
             android:title="Проверить наличие новой версии" />
     </PreferenceScreen>
 
-    <PreferenceScreen
-        android:title="Помочь проекту">
+    <PreferenceScreen android:title="Помочь проекту">
         <Preference
             android:key="Qiwi"
             android:summary="Перейти на форму выставления счета"

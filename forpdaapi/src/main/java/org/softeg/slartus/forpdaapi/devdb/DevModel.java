@@ -7,14 +7,14 @@ import org.softeg.slartus.forpdaapi.IListItem;
  * Date: 25.09.12
  * Time: 9:05
  */
-public class DevModel implements IListItem{
+public class DevModel implements IListItem {
     public String name;
     private String id;
     private CharSequence description;
     private String imgUrl;
     private String rate;
 
-    public DevModel(String id, String name){
+    public DevModel(String id, String name) {
         this.id = id;
         this.name = name;
     }

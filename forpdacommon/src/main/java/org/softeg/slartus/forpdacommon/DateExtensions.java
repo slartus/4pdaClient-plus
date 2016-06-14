@@ -15,7 +15,7 @@ public class DateExtensions {
 
     public static int getHoursBetween(Date date1, Date date2) {
         return (int) ((date1.getTime() - date2.getTime())
-                / (1000 * 60 * 60 ));
+                / (1000 * 60 * 60));
     }
 
     public static long getTimeOutForNextMinute() {

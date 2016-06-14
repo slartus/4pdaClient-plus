@@ -1,17 +1,13 @@
 package org.softeg.slartus.forpdanotifyservice;
 
-import android.app.*;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import org.softeg.slartus.forpdaapi.qms.QmsUsers;
-import org.softeg.slartus.forpdacommon.NotificationBridge;
 import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
 
@@ -27,8 +23,8 @@ import java.util.ArrayList;
  */
 public class MainService extends Service {
 
-    private static ArrayList<NotifierBase> getNotifiers(Context context){
-        ArrayList<NotifierBase> res=new ArrayList<NotifierBase>();
+    private static ArrayList<NotifierBase> getNotifiers(Context context) {
+        ArrayList<NotifierBase> res = new ArrayList<NotifierBase>();
         res.add(new QmsNotifier(context));
         res.add(new FavoritesNotifier(context));
         return res;
@@ -37,7 +33,7 @@ public class MainService extends Service {
 
     private static final String LOG_TAG = "Notifier.MainService";
 
-    public static void readCookiesPath(Context context, Intent intent){
+    public static void readCookiesPath(Context context, Intent intent) {
         try {
             // Log.d(LOG_TAG, "intent" + intent);
             if (intent != null && intent.getExtras() != null && intent.getExtras().containsKey("CookiesPath")) {
@@ -56,10 +52,10 @@ public class MainService extends Service {
 
         try {
             // Log.d(LOG_TAG, "intent" + intent);
-            readCookiesPath(context,intent);
+            readCookiesPath(context, intent);
 
-            for (NotifierBase notifier: getNotifiers(context)){
-                notifier.readSettings(context,intent);
+            for (NotifierBase notifier : getNotifiers(context)) {
+                notifier.readSettings(context, intent);
             }
         } catch (Throwable ex) {
             Log.e(LOG_TAG, ex.toString());
@@ -83,7 +79,7 @@ public class MainService extends Service {
 
     public static void cancelAlarm(Context context) {
         try {
-            for (NotifierBase notifier: getNotifiers(context)){
+            for (NotifierBase notifier : getNotifiers(context)) {
                 notifier.cancel(context);
             }
         } catch (Throwable ex) {
@@ -99,17 +95,13 @@ public class MainService extends Service {
 
     public static void restartTask(final Context context) {
         try {
-            for (NotifierBase notifier: getNotifiers(context)){
+            for (NotifierBase notifier : getNotifiers(context)) {
                 notifier.restartTask(context);
             }
         } catch (Throwable ex) {
             Log.e(LOG_TAG, ex.toString());
         }
     }
-
-
-
-
 
 
     private static void saveCookiesPath(Context context, String cookiesPath) {

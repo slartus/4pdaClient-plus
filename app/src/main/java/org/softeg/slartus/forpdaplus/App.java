@@ -88,24 +88,27 @@ public class App extends android.app.Application {
 
     private int tabIterator = 0;
 
-    public int getTabIterator(){
+    public int getTabIterator() {
         return tabIterator;
     }
 
     public void setTabIterator(int tabIterator) {
         this.tabIterator = tabIterator;
     }
-    public void clearTabIterator(){
+
+    public void clearTabIterator() {
         tabIterator = 0;
     }
+
     public void plusTabIterator() {
         tabIterator++;
     }
 
-    public String getCurrentFragmentTag(){
+    public String getCurrentFragmentTag() {
         return currentFragmentTag;
     }
-    public void setCurrentFragmentTag(String s){
+
+    public void setCurrentFragmentTag(String s) {
         currentFragmentTag = s;
     }
 
@@ -114,45 +117,50 @@ public class App extends android.app.Application {
     public void setmTabItems(List<TabItem> mTabItems) {
         this.mTabItems = mTabItems;
     }
-    public List<TabItem> getTabItems(){
+
+    public List<TabItem> getTabItems() {
         return mTabItems;
     }
-    public int getLastTabPosition(int delPos){
-        if((mTabItems.size()-1)<delPos) delPos--;
+
+    public int getLastTabPosition(int delPos) {
+        if ((mTabItems.size() - 1) < delPos) delPos--;
         return delPos;
     }
 
-    public boolean isContainsByTag(String tag){
-        for(TabItem item:getTabItems())
-            if(item.getTag().equals(tag)) return true;
-        return false;
-    }
-    public boolean isContainsByUrl(String url){
-        for(TabItem item:getTabItems())
-            if(item.getUrl().equals(url)) return true;
+    public boolean isContainsByTag(String tag) {
+        for (TabItem item : getTabItems())
+            if (item.getTag().equals(tag)) return true;
         return false;
     }
 
-    public TabItem getTabByTag(String tag){
-        for(TabItem item:getTabItems())
-            if(item.getTag().equals(tag)) return item;
-        return null;
+    public boolean isContainsByUrl(String url) {
+        for (TabItem item : getTabItems())
+            if (item.getUrl().equals(url)) return true;
+        return false;
     }
-    public TabItem getTabByUrl(String url){
-        for(TabItem item:getTabItems())
-            if(item.getUrl().equals(url)) return item;
+
+    public TabItem getTabByTag(String tag) {
+        for (TabItem item : getTabItems())
+            if (item.getTag().equals(tag)) return item;
         return null;
     }
 
-    private AtomicInteger m_AtomicInteger=new AtomicInteger();
-    public int getUniqueIntValue(){
+    public TabItem getTabByUrl(String url) {
+        for (TabItem item : getTabItems())
+            if (item.getUrl().equals(url)) return item;
+        return null;
+    }
+
+    private AtomicInteger m_AtomicInteger = new AtomicInteger();
+
+    public int getUniqueIntValue() {
         return m_AtomicInteger.incrementAndGet();
     }
 
     private SharedPreferences preferences;
 
-    public SharedPreferences getPreferences(){
-        if(preferences ==null)
+    public SharedPreferences getPreferences() {
+        if (preferences == null)
             preferences = PreferenceManager.getDefaultSharedPreferences(this);
         return preferences;
     }
@@ -164,7 +172,7 @@ public class App extends android.app.Application {
 
     public int getColorAccent(String type) {
         int color = 0;
-        switch(type) {
+        switch (type) {
             case "Accent":
                 color = getPreferences().getInt("accentColor", Color.rgb(2, 119, 189));
                 break;
@@ -174,11 +182,12 @@ public class App extends android.app.Application {
         }
         return color;
     }
+
     public int getMainAccentColor() {
         int color = R.color.accentPink;
         switch (getPreferences().getString("mainAccentColor", "pink")) {
             case "pink":
-                color  = R.color.accentPink;
+                color = R.color.accentPink;
                 break;
             case "blue":
                 color = R.color.accentBlue;
@@ -189,11 +198,12 @@ public class App extends android.app.Application {
         }
         return color;
     }
+
     public int getThemeStyleResID() {
         int theme = R.style.ThemeLight;
         String color = getPreferences().getString("mainAccentColor", "pink");
         int themeType = getThemeType();
-        if (themeType==THEME_TYPE_LIGHT){
+        if (themeType == THEME_TYPE_LIGHT) {
             switch (color) {
                 case "pink":
                     theme = R.style.MainPinkLight;
@@ -205,7 +215,7 @@ public class App extends android.app.Application {
                     theme = R.style.MainGrayLight;
                     break;
             }
-        }else if(themeType==THEME_TYPE_DARK){
+        } else if (themeType == THEME_TYPE_DARK) {
             switch (color) {
                 case "pink":
                     theme = R.style.MainPinkDark;
@@ -217,7 +227,7 @@ public class App extends android.app.Application {
                     theme = R.style.MainGrayDark;
                     break;
             }
-        }else {
+        } else {
             switch (color) {
                 case "pink":
                     theme = R.style.MainPinkBlack;
@@ -232,11 +242,12 @@ public class App extends android.app.Application {
         }
         return theme;
     }
+
     public int getPrefsThemeStyleResID() {
         int theme = R.style.ThemePrefsLightPink;
         String color = getPreferences().getString("mainAccentColor", "pink");
         int themeType = getThemeType();
-        if (themeType==THEME_TYPE_LIGHT){
+        if (themeType == THEME_TYPE_LIGHT) {
             switch (color) {
                 case "pink":
                     theme = R.style.ThemePrefsLightPink;
@@ -248,7 +259,7 @@ public class App extends android.app.Application {
                     theme = R.style.ThemePrefsLightGray;
                     break;
             }
-        }else if(themeType==THEME_TYPE_DARK){
+        } else if (themeType == THEME_TYPE_DARK) {
             switch (color) {
                 case "pink":
                     theme = R.style.ThemePrefsDarkPink;
@@ -260,7 +271,7 @@ public class App extends android.app.Application {
                     theme = R.style.ThemePrefsDarkGray;
                     break;
             }
-        }else {
+        } else {
             switch (color) {
                 case "pink":
                     theme = R.style.ThemePrefsBlackPink;
@@ -276,23 +287,23 @@ public class App extends android.app.Application {
         return theme;
     }
 
-    public int getThemeType(){
+    public int getThemeType() {
         int themeType = 0;
         String themeStr = getCurrentTheme();
-        if(themeStr.length()<3){
+        if (themeStr.length() < 3) {
             int theme = Integer.parseInt(themeStr);
-            if(ArrayUtils.indexOf(theme, LIGHT_THEMES)!=-1)
-                themeType =  THEME_TYPE_LIGHT;
-            else if(ArrayUtils.indexOf(theme, DARK_THEMES)!=-1)
+            if (ArrayUtils.indexOf(theme, LIGHT_THEMES) != -1)
+                themeType = THEME_TYPE_LIGHT;
+            else if (ArrayUtils.indexOf(theme, DARK_THEMES) != -1)
                 themeType = THEME_TYPE_DARK;
             else
                 themeType = THEME_TYPE_BLACK;
-        }else {
-            if(themeStr.contains("/light/"))
+        } else {
+            if (themeStr.contains("/light/"))
                 themeType = THEME_TYPE_LIGHT;
-            else if(themeStr.contains("/dark/"))
+            else if (themeStr.contains("/dark/"))
                 themeType = THEME_TYPE_DARK;
-            else if(themeStr.contains("/black/"))
+            else if (themeStr.contains("/black/"))
                 themeType = THEME_TYPE_BLACK;
         }
         return themeType;
@@ -300,37 +311,39 @@ public class App extends android.app.Application {
 
     public int getThemeBackgroundColorRes() {
         int themeType = getThemeType();
-        if (themeType==THEME_TYPE_LIGHT)
+        if (themeType == THEME_TYPE_LIGHT)
             return R.color.app_background_light;
-        else if(themeType==THEME_TYPE_DARK)
+        else if (themeType == THEME_TYPE_DARK)
             return R.color.app_background_dark;
         else
             return R.color.app_background_black;
     }
+
     public int getSwipeRefreshBackground() {
         int themeType = getThemeType();
-        if (themeType==THEME_TYPE_LIGHT)
+        if (themeType == THEME_TYPE_LIGHT)
             return R.color.swipe_background_light;
-        else if(themeType==THEME_TYPE_DARK)
+        else if (themeType == THEME_TYPE_DARK)
             return R.color.swipe_background_dark;
         else
             return R.color.swipe_background_black;
     }
 
-    public int getNavBarColor(){
+    public int getNavBarColor() {
         int themeType = getThemeType();
-        if (themeType==THEME_TYPE_LIGHT)
+        if (themeType == THEME_TYPE_LIGHT)
             return R.color.navBar_light;
-        else if(themeType==THEME_TYPE_DARK)
+        else if (themeType == THEME_TYPE_DARK)
             return R.color.navBar_dark;
         else
             return R.color.navBar_black;
     }
-    public int getDrawerMenuText(){
+
+    public int getDrawerMenuText() {
         int themeType = getThemeType();
-        if (themeType==THEME_TYPE_LIGHT)
+        if (themeType == THEME_TYPE_LIGHT)
             return R.color.drawer_menu_text_light;
-        else if(themeType==THEME_TYPE_DARK)
+        else if (themeType == THEME_TYPE_DARK)
             return R.color.drawer_menu_text_dark;
         else
             return R.color.drawer_menu_text_dark;
@@ -339,9 +352,9 @@ public class App extends android.app.Application {
 
     public int getThemeStyleWebViewBackground() {
         int themeType = getThemeType();
-        if (themeType==THEME_TYPE_LIGHT)
+        if (themeType == THEME_TYPE_LIGHT)
             return Color.parseColor("#eeeeee");
-        else if(themeType==THEME_TYPE_DARK)
+        else if (themeType == THEME_TYPE_DARK)
             return Color.parseColor("#1a1a1a");
         else
             return Color.parseColor("#000000");
@@ -349,9 +362,9 @@ public class App extends android.app.Application {
 
     public String getCurrentBackgroundColorHtml() {
         int themeType = getThemeType();
-        if (themeType==THEME_TYPE_LIGHT)
+        if (themeType == THEME_TYPE_LIGHT)
             return "#eeeeee";
-        else if(themeType==THEME_TYPE_DARK)
+        else if (themeType == THEME_TYPE_DARK)
             return "#1a1a1a";
         else
             return "#000000";
@@ -363,9 +376,9 @@ public class App extends android.app.Application {
 
     public String getCurrentThemeName() {
         int themeType = getThemeType();
-        if (themeType==THEME_TYPE_LIGHT)
+        if (themeType == THEME_TYPE_LIGHT)
             return "white";
-        else if(themeType==THEME_TYPE_DARK)
+        else if (themeType == THEME_TYPE_DARK)
             return "dark";
         else
             return "black";
@@ -479,6 +492,7 @@ public class App extends android.app.Application {
 
     private MyActivityLifecycleCallbacks m_MyActivityLifecycleCallbacks;
     private static boolean isNewYear = false;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -493,7 +507,7 @@ public class App extends android.app.Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(BuildConfig.FLAVOR!="rel")
+        if (BuildConfig.FLAVOR != "rel")
             refWatcher = LeakCanary.install(this);
     }
 
@@ -503,7 +517,7 @@ public class App extends android.app.Application {
     }
 
 
-    public boolean isNewYear(){
+    public boolean isNewYear() {
         return isNewYear;
     }
 
@@ -562,6 +576,7 @@ public class App extends android.app.Application {
             e.printStackTrace();
         }
     }
+
     private static DisplayImageOptions.Builder options = new DisplayImageOptions.Builder()
             .showImageForEmptyUri(R.drawable.no_image)
             .cacheInMemory(true)
@@ -571,9 +586,10 @@ public class App extends android.app.Application {
             .handler(new Handler())
             .displayer(new FadeInBitmapDisplayer(500, true, true, false));
 
-    public static DisplayImageOptions.Builder getDefaultOptionsUIL(){
+    public static DisplayImageOptions.Builder getDefaultOptionsUIL() {
         return options;
     }
+
     public static void initImageLoader(Context context) {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                 .imageDownloader(new HttpHelperForImage(context))
@@ -622,7 +638,7 @@ public class App extends android.app.Application {
     }
 
     public static SwipeRefreshLayout createSwipeRefreshLayout(Activity activity, View view,
-                                                                final Runnable refreshAction) {
+                                                              final Runnable refreshAction) {
         SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.ptr_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -634,8 +650,6 @@ public class App extends android.app.Application {
         swipeRefreshLayout.setProgressBackgroundColorSchemeResource(App.getInstance().getSwipeRefreshBackground());
         return swipeRefreshLayout;
     }
-
-
 
 
     private static final class MyActivityLifecycleCallbacks implements ActivityLifecycleCallbacks {

@@ -48,11 +48,11 @@ public class ForumsApi extends ArrayList<Forum> {
 
             forum.setDescription(null);
             res.getItems().add(forum);
-            int c=res.getItems().size();
+            int c = res.getItems().size();
 
             loadCategoryForums(httpClient, catElement.select("table.ipbtable>tbody").first(), forum,
                     res, progressState);
-            if(res.getItems().size()>c)
+            if (res.getItems().size() > c)
                 forum.setIconUrl(res.getItems().get(c).getIconUrl());
         }
 
@@ -79,9 +79,9 @@ public class ForumsApi extends ArrayList<Forum> {
 
             Element tdElement = tdElements.get(0);
             Element el = tdElement.select("img").first();
-            String iconUrl=null;
-            if(el!=null)
-                iconUrl=el.attr("src");
+            String iconUrl = null;
+            if (el != null)
+                iconUrl = el.attr("src");
 
             tdElement = tdElements.get(1);
 
@@ -126,9 +126,9 @@ public class ForumsApi extends ArrayList<Forum> {
 
             Element tdElement = tdElements.get(0);
             Element el = tdElement.select("img").first();
-            String iconUrl=null;
-            if(el!=null)
-                iconUrl=el.attr("src");
+            String iconUrl = null;
+            if (el != null)
+                iconUrl = el.attr("src");
 
             tdElement = tdElements.get(1);
 

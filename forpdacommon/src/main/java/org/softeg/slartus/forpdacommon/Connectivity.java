@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdacommon;
 /**
  * Created by slinkin on 27.12.13.
  */
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -10,15 +11,15 @@ import android.telephony.TelephonyManager;
 
 /**
  * Check device's network connectivity and speed
- * @author emil http://stackoverflow.com/users/220710/emil
  *
+ * @author emil http://stackoverflow.com/users/220710/emil
  */
 public class Connectivity {
 
     /**
      * Get the network info
      */
-    public static NetworkInfo getNetworkInfo(Context context){
+    public static NetworkInfo getNetworkInfo(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo();
     }
@@ -26,17 +27,17 @@ public class Connectivity {
     /**
      * Check if there is any connectivity
      */
-    public static boolean isConnected(Context context){
+    public static boolean isConnected(Context context) {
         NetworkInfo info = Connectivity.getNetworkInfo(context);
         return (info != null && info.isConnected());
     }
 
-    public static boolean isConnectedWifi(Context context){
+    public static boolean isConnectedWifi(Context context) {
         NetworkInfo info = Connectivity.getNetworkInfo(context);
         return (info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_WIFI);
     }
 
-    public static boolean isConnectedMobile(Context context){
+    public static boolean isConnectedMobile(Context context) {
         NetworkInfo info = Connectivity.getNetworkInfo(context);
         return (info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_MOBILE);
     }
@@ -44,19 +45,19 @@ public class Connectivity {
     /**
      * Check if there is fast connectivity
      */
-    public static boolean isConnectedFast(Context context){
+    public static boolean isConnectedFast(Context context) {
         NetworkInfo info = Connectivity.getNetworkInfo(context);
-        return (info != null && info.isConnected() && Connectivity.isConnectionFast(info.getType(),info.getSubtype()));
+        return (info != null && info.isConnected() && Connectivity.isConnectionFast(info.getType(), info.getSubtype()));
     }
 
     /**
      * Check if the connection is fast
      */
-    public static boolean isConnectionFast(int type, int subType){
-        if(type==ConnectivityManager.TYPE_WIFI){
+    public static boolean isConnectionFast(int type, int subType) {
+        if (type == ConnectivityManager.TYPE_WIFI) {
             return true;
-        }else if(type==ConnectivityManager.TYPE_MOBILE){
-            switch(subType){
+        } else if (type == ConnectivityManager.TYPE_MOBILE) {
+            switch (subType) {
                 case TelephonyManager.NETWORK_TYPE_1xRTT:
                     return false; // ~ 50-100 kbps
                 case TelephonyManager.NETWORK_TYPE_CDMA:
@@ -77,7 +78,7 @@ public class Connectivity {
                     return true; // ~ 1-23 Mbps
                 case TelephonyManager.NETWORK_TYPE_UMTS:
                     return true; // ~ 400-7000 kbps
-			/*
+            /*
 			 * Above API level 7, make sure to set android:targetSdkVersion
 			 * to appropriate level to use these
 			 */
@@ -96,7 +97,7 @@ public class Connectivity {
                 default:
                     return false;
             }
-        }else{
+        } else {
             return false;
         }
     }

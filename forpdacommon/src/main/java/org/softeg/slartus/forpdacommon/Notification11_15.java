@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdacommon;
 
 import android.annotation.TargetApi;
-
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;

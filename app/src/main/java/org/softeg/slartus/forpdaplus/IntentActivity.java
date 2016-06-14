@@ -305,10 +305,10 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
             return false;
         if ("profile-xhr".equals(uri.getQueryParameter("act"))) {
-            if("device".equals(uri.getQueryParameter("action")))
+            if ("device".equals(uri.getQueryParameter("action")))
                 new DeviceEdit(context, uri.toString(), !TextUtils.isEmpty(uri.getQueryParameter("md_id")), App.getInstance().getCurrentFragmentTag());
 
-            if("dev-del".equals(uri.getQueryParameter("action")))
+            if ("dev-del".equals(uri.getQueryParameter("action")))
                 new DeviceDelete(context, uri.toString(), App.getInstance().getCurrentFragmentTag());
             return true;
         }
@@ -338,7 +338,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return tryShowUrl(context, handler, url, showInDefaultBrowser, finishActivity, null);
     }
 
-    public static boolean tryShowRules(Activity context, Uri uri, Boolean finish){
+    public static boolean tryShowRules(Activity context, Uri uri, Boolean finish) {
         if ("announce".equals(uri.getQueryParameter("act")) | "boardrules".equals(uri.getQueryParameter("act"))) {
             ForumRulesFragment.showRules(uri.toString());
             return true;
@@ -364,11 +364,11 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         url = url.replace("&amp;", "&").replace("\"", "").trim();
         url = getRedirect(url).toString();
         url = url.trim();
-        Log.d("kek", "fixed url = "+ url);
-        if(url.contains("4pda.ru")&!url.contains("http://"))
-            url = "http://"+url;
+        Log.d("kek", "fixed url = " + url);
+        if (url.contains("4pda.ru") & !url.contains("http://"))
+            url = "http://" + url;
         Uri uri = Uri.parse(url.toLowerCase());
-        Log.e("kek", uri.getHost()+" "+url);
+        Log.e("kek", uri.getHost() + " " + url);
 
         if (uri.getHost() != null && (uri.getHost().toLowerCase().contains("4pda.ru")
                 || uri.getHost().toLowerCase().contains("4pda.to")
@@ -381,7 +381,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 showTopic(url);
                 return true;
             }
-            if(tryShowRules(context, uri, finishActivity)){
+            if (tryShowRules(context, uri, finishActivity)) {
                 return true;
             }
 
@@ -423,7 +423,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             if (tryShowClaim(context, handler, uri, finishActivity))
                 return true;
 
-            if (tryShowQms(context, uri,finishActivity))
+            if (tryShowQms(context, uri, finishActivity))
                 return true;
 
             if (tryFav(context, url, finishActivity))
@@ -547,7 +547,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         if (!TextUtils.isEmpty(mid)) {
             if (!TextUtils.isEmpty(tid)) {
                 //QmsChatActivity.openChat(context, mid, null, tid, null);
-                QmsChatFragment.openChat( mid, null, tid, null);
+                QmsChatFragment.openChat(mid, null, tid, null);
             } else {
                 //QmsContactThemesActivity.showThemes(context, mid, "");
                 QmsContactThemes.showThemes(mid, "");
@@ -574,7 +574,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             return false;
 
 
-        Bundle args=new Bundle();
+        Bundle args = new Bundle();
         args.putString(TopicWritersListFragment.TOPIC_ID_KEY, tid);
         MainActivity.showListFragment(TopicWritersBrickInfo.NAME, args);
         return true;
@@ -627,7 +627,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             return true;
         }
         if (imagePattern.matcher(uri.toString()).find()
-                ||(uri.getHost().toLowerCase().contains("ggpht.com")
+                || (uri.getHost().toLowerCase().contains("ggpht.com")
                 || uri.getHost().toLowerCase().contains("googleusercontent.com")
                 || uri.getHost().toLowerCase().contains("windowsphone.com"))) {
 //            showImage(activity, uri.toString());
@@ -657,7 +657,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             checkBox.setText(R.string.confirm_download);
             new MaterialDialog.Builder(activity)
                     .title(R.string.confirm_action)
-                    .customView(view,true)
+                    .customView(view, true)
                     .positiveText(R.string.ok)
                     .negativeText(R.string.cancel)
                     .callback(new MaterialDialog.ButtonCallback() {
@@ -666,8 +666,9 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                             //dialogInterface.dismiss();
                             if (!checkBox.isChecked())
                                 Preferences.Files.setConfirmDownload(false);
-                            DownloadsService.download(activity, url,finish);
+                            DownloadsService.download(activity, url, finish);
                         }
+
                         @Override
                         public void onNegative(MaterialDialog dialog) {
                             if (finish)
@@ -677,7 +678,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                     .show();
 
         } else {
-            DownloadsService.download(activity, url,finish);
+            DownloadsService.download(activity, url, finish);
             if (finish)
                 activity.finish();
         }
@@ -699,7 +700,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             else
                 context.startActivity(marketIntent);
         } catch (Exception ex) {
-            AppLog.e(context, new NotReportException(context.getString(R.string.no_app_for_link)+": " + url));
+            AppLog.e(context, new NotReportException(context.getString(R.string.no_app_for_link) + ": " + url));
         }
     }
 }

@@ -28,7 +28,7 @@ public class AppItem implements IListItem {
     @Column(name = "packageName")
     private CharSequence packageName;
 
-    @Column(name = "state", type="INTEGER")
+    @Column(name = "state", type = "INTEGER")
     private int state = STATE_UNFINDED;
 
     public ArrayList<CharSequence> Ids = new ArrayList<>();
@@ -37,7 +37,7 @@ public class AppItem implements IListItem {
     private CharSequence type;
 
     public AppItem() {
-        Uid= UUID.randomUUID().toString();
+        Uid = UUID.randomUUID().toString();
     }
 
     public AppItem(CharSequence id, CharSequence title) {
@@ -122,7 +122,6 @@ public class AppItem implements IListItem {
     public void setDescription(CharSequence description) {
         this.description = description;
     }
-
 
 
     public CharSequence getType() {

@@ -24,7 +24,7 @@ public class News implements IListItem {
     @Column(name = "imgUrl")
     private CharSequence imgUrl;
 
-    @Column(name = "page",type = "INTEGER")
+    @Column(name = "page", type = "INTEGER")
     private int page;
 
     @Column(name = "tagLink")
@@ -42,7 +42,7 @@ public class News implements IListItem {
     @Column(name = "sourceUrl")
     private CharSequence sourceUrl;
 
-    @Column(name = "commentsCount",type = "INTEGER")
+    @Column(name = "commentsCount", type = "INTEGER")
     private int commentsCount;
 
     public News() {
@@ -210,7 +210,7 @@ public class News implements IListItem {
     }
 
 	/*
-	 * Текст источника
+     * Текст источника
 	 */
 
 
@@ -223,7 +223,7 @@ public class News implements IListItem {
     }
 
 
-    public String getUrl(){
+    public String getUrl() {
         return ("http://4pda.ru/" + getId()).replaceAll("([^:])//", "$1/");
     }
 }

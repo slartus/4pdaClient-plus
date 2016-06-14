@@ -5,9 +5,6 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.softeg.slartus.forpdacommon.DateTimeExternals;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.UrlExtensions;
@@ -17,7 +14,6 @@ import org.xml.sax.InputSource;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -78,63 +74,63 @@ public class NewsApi {
 
         ArrayList<News> res = new ArrayList<>();
         String dailyNewsPage = httpClient.performGet(UrlExtensions.removeDoubleSplitters(requestUrl));
-        
+
         Pattern articlesPattern = Pattern.compile("(<article class=\"post\"[^>]*>[\\s\\S]*?href=\"([^\"]*)\" title[\\s\\S]*?src=\"([^\"]*)\" alt=\"([^\"]*?)\"[\\s\\S]*?<\\/article>)|(<li itemscope[^>]*>[\\s\\S]*?itemprop=\"url\" href=\"([^\"]*?)\"[\\s\\S]*?src=\"([^\"]*?)\" alt=\"([^\"]*?)\"[\\s\\S]*?<\\/div>[^<]*<\\/li>)");
         Pattern descriptionPattern = Pattern.compile("(<div itemprop=\"description\"><p [^>]*>([\\s\\S]*)<\\/p>[^<]*)|(<div itemprop=\"description\">([\\s\\S]*?)<\\/div>)");
         Pattern labelPattern = Pattern.compile("<a href=\"([^\"]*)\" class=\"label[^>]*>([\\s\\S]*?)<\\/a>");
         Pattern countPattern = Pattern.compile("class=\"v-count\"[^>]*>(\\d*)</a>");
         Pattern datePattern = Pattern.compile("<meta itemprop=\"datePublished\" content=\"(\\d+-\\d+-\\d+)[\\s\\S]*?\"\\/>");
         Pattern authorPattern = Pattern.compile("(<span class=\"autor\"><a [^>]*>([^<]*)</a>)|(<meta itemprop=\"author\" content=\"([^\"]*)\"/>)");
-        
+
         m = articlesPattern.matcher(dailyNewsPage);
         Matcher matcher = null;
 
         //SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
         News news;
         int group, childGroup;
-        while (m.find()){
+        while (m.find()) {
             news = new News();
             group = 0;
             childGroup = 0;
-            if(m.group(1)==null) group = 4;
+            if (m.group(1) == null) group = 4;
 
-            news.setId(m.group(group+2).replace("http://4pda.ru", ""));
-            news.setTitle(Html.fromHtml(m.group(group+4)).toString());
-            news.setImgUrl(m.group(group+3));
+            news.setId(m.group(group + 2).replace("http://4pda.ru", ""));
+            news.setTitle(Html.fromHtml(m.group(group + 4)).toString());
+            news.setImgUrl(m.group(group + 3));
 
 
-            if(matcher==null)
-                matcher = descriptionPattern.matcher(m.group(group+1));
+            if (matcher == null)
+                matcher = descriptionPattern.matcher(m.group(group + 1));
             else
-                matcher.usePattern(descriptionPattern).reset(m.group(group+1));
-            if(matcher.find()){
-                if(matcher.group(1)==null) childGroup = 2;
-                news.setDescription(Html.fromHtml(matcher.group(childGroup+2).replaceAll("<a [^>]*>([^<]*)</a>", "$1")).toString().trim());
+                matcher.usePattern(descriptionPattern).reset(m.group(group + 1));
+            if (matcher.find()) {
+                if (matcher.group(1) == null) childGroup = 2;
+                news.setDescription(Html.fromHtml(matcher.group(childGroup + 2).replaceAll("<a [^>]*>([^<]*)</a>", "$1")).toString().trim());
             }
             childGroup = 0;
 
-            matcher.usePattern(labelPattern).reset(m.group(group+1));
-            if (matcher.find()){
+            matcher.usePattern(labelPattern).reset(m.group(group + 1));
+            if (matcher.find()) {
                 news.setTagLink(matcher.group(1));
                 news.setTagTitle(Html.fromHtml(matcher.group(2).trim()));
-            }else {
+            } else {
                 news.setTagTitle("");
             }
 
-            matcher.usePattern(countPattern).reset(m.group(group+1));
-            if(matcher.find()){
+            matcher.usePattern(countPattern).reset(m.group(group + 1));
+            if (matcher.find()) {
                 news.setCommentsCount(Integer.parseInt(matcher.group(1)));
             }
 
-            matcher.usePattern(datePattern).reset(m.group(group+1));
-            if(matcher.find()){
+            matcher.usePattern(datePattern).reset(m.group(group + 1));
+            if (matcher.find()) {
                 news.setNewsDate(matcher.group(1));
             }
 
-            matcher.usePattern(authorPattern).reset(m.group(group+1));
-            if(matcher.find()){
-                if(matcher.group(1)==null) childGroup = 2;
-                news.setAuthor(matcher.group(childGroup+2));
+            matcher.usePattern(authorPattern).reset(m.group(group + 1));
+            if (matcher.find()) {
+                if (matcher.group(1) == null) childGroup = 2;
+                news.setAuthor(matcher.group(childGroup + 2));
             }
             res.add(news);
         }

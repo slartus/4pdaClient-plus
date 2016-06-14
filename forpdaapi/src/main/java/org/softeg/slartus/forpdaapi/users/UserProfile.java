@@ -149,7 +149,6 @@ public class UserProfile {
     }
 
 
-
     private static void parseLeftTable(UserProfile res, String table) {
         Matcher groupMatcher = Pattern.compile("<!--(.*?)-->([\\s\\S]*?)<!--\\s*/\\s*(\\1)-->").matcher(table);
         Matcher m;
@@ -233,7 +232,7 @@ public class UserProfile {
 
     private static void parseDevice(UserProfile profile, String text) {
         Matcher m = Pattern.compile("Устройство:[\\s\\n]*<a[^>]*href=\"([^\"]*)\"[^>]*>(.*?)</a>",
-                Pattern.CASE_INSENSITIVE|Pattern.MULTILINE).matcher(text);
+                Pattern.CASE_INSENSITIVE | Pattern.MULTILINE).matcher(text);
         if (m.find()) {
             profile.device = new DevModel(m.group(1), Html.fromHtml(m.group(2)).toString());
             return;

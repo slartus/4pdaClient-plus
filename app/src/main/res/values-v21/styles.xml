@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="ImageViewTheme" parent="ImageViewThemeBase">
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:navigationBarColor">@color/background_toolbar</item>
@@ -10,6 +11,7 @@
     <style name="actionbar_trans" parent="actionbar_trans_base">
         <item name="elevation">0dp</item>
     </style>
+
     <style name="floating_action_button">
         <item name="android:layout_margin">16dp</item>
     </style>

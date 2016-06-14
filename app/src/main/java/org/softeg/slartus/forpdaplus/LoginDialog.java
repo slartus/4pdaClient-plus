@@ -63,7 +63,7 @@ public class LoginDialog {
                 username_edit.getText().toString(), password_edit.getText().toString(),
                 privacy_checkbox.isChecked(),
                 ((EditText) mView.findViewById(R.id.cap_value_ed)).getText().toString(),
-                capTime, capSig,session,
+                capTime, capSig, session,
                 onConnectResult);
         loginTask.execute(username_edit.getText().toString(), password_edit.getText().toString(),
                 Boolean.toString(privacy_checkbox.isChecked()));
@@ -86,7 +86,7 @@ public class LoginDialog {
         final LoginDialog loginDialog = new LoginDialog(context);
         MaterialDialog dialog = new MaterialDialog.Builder(context)
                 .title(R.string.login)
-                .customView(loginDialog.getView(),true)
+                .customView(loginDialog.getView(), true)
                 .positiveText(R.string.login)
                 .negativeText(R.string.cancel)
                 .callback(new MaterialDialog.ButtonCallback() {
@@ -166,7 +166,7 @@ public class LoginDialog {
 
                 capTime = loginForm.getCapTime();
                 capSig = loginForm.getCapSig();
-                session=loginForm.getSession();
+                session = loginForm.getSession();
             } else {
 
                 AppLog.e(mContext, loginForm.getError());
@@ -191,7 +191,7 @@ public class LoginDialog {
 
         public LoginTask(Context context,
                          String login, String password, Boolean privacy,
-                         String capVal, String capTime, String capSig,String session,
+                         String capVal, String capTime, String capSig, String session,
                          Client.OnUserChangedListener onConnectResult) {
             mContext = context;
             this.login = login;
@@ -203,7 +203,7 @@ public class LoginDialog {
             this.session = session;
             m_OnConnectResult = onConnectResult;
             dialog = new MaterialDialog.Builder(mContext)
-                    .progress(true,0)
+                    .progress(true, 0)
                     .cancelable(false)
                     .content(R.string.performing_login)
                     .build();
@@ -213,7 +213,7 @@ public class LoginDialog {
         protected Boolean doInBackground(String... params) {
             try {
 
-                return Client.getInstance().login(login, password, privacy, capVal, capTime, capSig,session);
+                return Client.getInstance().login(login, password, privacy, capVal, capTime, capSig, session);
             } catch (Exception e) {
 
                 ex = e;
@@ -236,7 +236,7 @@ public class LoginDialog {
 
         private void doOnUserChangedListener(String user, Boolean success) {
             if (m_OnConnectResult != null)
-                m_OnConnectResult.onUserChanged(user,success);
+                m_OnConnectResult.onUserChanged(user, success);
         }
 
         // can use UI thread here
@@ -257,10 +257,10 @@ public class LoginDialog {
                     AppLog.e(mContext, ex);
                 else
                     new MaterialDialog.Builder(mContext)
-                        .title(R.string.error)
-                        .content(Client.getInstance().getLoginFailedReason())
-                        .positiveText(R.string.ok)
-                        .show();
+                            .title(R.string.error)
+                            .content(Client.getInstance().getLoginFailedReason())
+                            .positiveText(R.string.ok)
+                            .show();
             }
         }
 
@@ -274,7 +274,7 @@ public class LoginDialog {
         public LogoutTask(Context context) {
             mContext = context;
             dialog = new MaterialDialog.Builder(mContext)
-                    .progress(true,0)
+                    .progress(true, 0)
                     .cancelable(true)
                     .content(R.string.performing_logout)
                     .build();

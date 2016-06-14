@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaapi;
 import android.net.Uri;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIUtils;
@@ -84,11 +83,11 @@ public class TopicsApi {
 
         m = mainPattern.matcher(pageBody);
         Matcher tmp;
-        if(m.find()){
+        if (m.find()) {
             m = topicsPattern.matcher(m.group(1));
-            while (m.find()){
+            while (m.find()) {
                 tmp = topicPattern.matcher(m.group(1));
-                if(tmp.find()){
+                if (tmp.find()) {
                     String tId = tmp.group(1);
                     String trackType = tmp.group(2);
                     Boolean pinned = "1".equals(tmp.group(3));
@@ -111,8 +110,8 @@ public class TopicsApi {
                     topic.setTid(tId);
                     topic.setPinned(pinned);
                     topic.setTrackType(trackType);
-                    if(TextUtils.isEmpty(tmp.group(8)))
-                        topic.setDescription(tmp.group(9).replaceFirst("<span class=\"topic_desc\"[\\s\\S]*$", "").replaceAll("<a[^>]*?>([\\s\\S]*?)</a>","$1"));
+                    if (TextUtils.isEmpty(tmp.group(8)))
+                        topic.setDescription(tmp.group(9).replaceFirst("<span class=\"topic_desc\"[\\s\\S]*$", "").replaceAll("<a[^>]*?>([\\s\\S]*?)</a>", "$1"));
                     else
                         topic.setDescription(tmp.group(8));
                     topic.setIsNew(tmp.group(9).contains("view=getnewpost"));

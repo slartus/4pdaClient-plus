@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
-
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,10 +18,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-         Log.i(DEBUG_TAG, DEBUG_TAG + ".onReceive");
+        Log.i(DEBUG_TAG, DEBUG_TAG + ".onReceive");
         // start the download
 
-        Thread thread=new Thread(new Runnable() {
+        Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 QmsNotifier checker = new QmsNotifier(context);

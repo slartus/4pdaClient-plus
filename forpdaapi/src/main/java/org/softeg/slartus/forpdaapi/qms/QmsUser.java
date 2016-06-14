@@ -10,7 +10,7 @@ import java.io.Serializable;
  * Date: 15.06.12
  * Time: 11:06
  */
-public class QmsUser implements IListItem,Serializable {
+public class QmsUser implements IListItem, Serializable {
     @Column(name = "_id", isPrimaryKey = true)
     private CharSequence id;
     @Column(name = "nick")
@@ -98,7 +98,7 @@ public class QmsUser implements IListItem,Serializable {
     }
 
     public String getAvatarUrl() {
-        return avatarUrl==null?null:avatarUrl.toString();
+        return avatarUrl == null ? null : avatarUrl.toString();
     }
 
     public void setAvatarUrl(CharSequence avatarUrl) {
@@ -106,7 +106,7 @@ public class QmsUser implements IListItem,Serializable {
     }
 
     public String getLastThemeId() {
-        return lastThemeId==null?null:lastThemeId.toString();
+        return lastThemeId == null ? null : lastThemeId.toString();
     }
 
     public void setLastThemeId(CharSequence lastThemeId) {

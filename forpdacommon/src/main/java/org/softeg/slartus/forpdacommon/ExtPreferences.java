@@ -17,7 +17,7 @@ import java.util.Date;
  */
 public class ExtPreferences {
 
-    public static Object getPreferenceDefaultValue(Preference preference){
+    public static Object getPreferenceDefaultValue(Preference preference) {
         try {
             Field defaultField = Preference.class.getDeclaredField("mDefaultValue");
             if (defaultField == null)
@@ -37,7 +37,7 @@ public class ExtPreferences {
 
     public static Date getDateTime(SharedPreferences prefs, String key, Date defValue) {
         try {
-            String res = prefs.getString(key, defValue == null ? null :s_DateTimeFormat.format(defValue));
+            String res = prefs.getString(key, defValue == null ? null : s_DateTimeFormat.format(defValue));
             if (TextUtils.isEmpty(res)) return defValue;
 
             return s_DateTimeFormat.parse(res);

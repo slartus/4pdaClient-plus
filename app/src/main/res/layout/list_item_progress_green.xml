@@ -19,14 +19,14 @@
             app:srcCompat="@drawable/pin"
             android:layout_gravity="right"
             android:layout_marginRight="14dp"
-            android:layout_marginTop="14dp"/>
+            android:layout_marginTop="14dp" />
 
         <LinearLayout
             android:id="@+id/imgFlag"
             android:layout_width="10dp"
             android:layout_height="fill_parent"
             android:contentDescription="flag"
-            android:orientation="horizontal"/>
+            android:orientation="horizontal" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -95,6 +95,7 @@
                     android:textAppearance="?android:textAppearanceSmall" />
             </RelativeLayout>
         </LinearLayout>
+
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="match_parent"
@@ -106,6 +107,6 @@
             android:layout_alignParentTop="true"
             android:indeterminateOnly="true"
             android:paddingTop="8dp"
-            android:paddingBottom="8dp"/>
+            android:paddingBottom="8dp" />
     </FrameLayout>
 </RelativeLayout>

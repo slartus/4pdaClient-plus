@@ -4,14 +4,13 @@
     android:gravity="center"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/keyboard_height"
-    >
+    android:layout_height="@dimen/keyboard_height">
+
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/pager1"
-        >
+        android:id="@+id/pager1">
 
         <android.support.v4.view.PagerTitleStrip
             android:id="@+id/pager_title_strip1"
@@ -21,7 +20,6 @@
             android:background="?actbar"
             android:paddingTop="4dp"
             android:paddingBottom="4dp"
-            android:textColor="#fff"
-            />
+            android:textColor="#fff" />
     </android.support.v4.view.ViewPager>
 </LinearLayout>

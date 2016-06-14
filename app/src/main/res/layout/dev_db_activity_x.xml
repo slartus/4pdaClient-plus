@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,18 +22,19 @@
                 android:paddingTop="16dp"
                 android:paddingRight="8dp"
                 android:paddingLeft="8dp"
-                android:paddingBottom="16dp"/>
+                android:paddingBottom="16dp" />
 
             <!--<android.support.v7.widget.RecyclerView-->
-                <!--android:id="@+id/gallery"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="192dp"-->
-                <!--android:paddingTop="16dp"-->
-                <!--android:paddingRight="8dp"-->
-                <!--android:paddingLeft="8dp"-->
-                <!--android:paddingBottom="16dp" />-->
+            <!--android:id="@+id/gallery"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="192dp"-->
+            <!--android:paddingTop="16dp"-->
+            <!--android:paddingRight="8dp"-->
+            <!--android:paddingLeft="8dp"-->
+            <!--android:paddingBottom="16dp" />-->
 
-            <TextView android:id="@+id/price"
+            <TextView
+                android:id="@+id/price"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -42,8 +44,9 @@
                 android:paddingBottom="16dp"
                 android:layout_below="@+id/gallery"
                 android:textStyle="bold"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </RelativeLayout>
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="6dp"
@@ -51,14 +54,14 @@
             android:id="@+id/shadow"
             android:background="@drawable/shadow_to_bottom"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="2dp"/>
+            android:layout_marginBottom="2dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:id="@+id/spec_list"
-            style="?post_panel"/>
+            style="?post_panel" />
 
 
     </LinearLayout>

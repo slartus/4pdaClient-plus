@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         style="?list_text_special_color"
-        android:text="text1"/>
+        android:text="text1" />
 
     <TextView
         android:id="@+id/text2"
@@ -20,6 +20,6 @@
         android:layout_height="wrap_content"
         style="?list_text_second_color"
         android:text="text2"
-        android:textAppearance="?android:attr/textAppearanceSmall"/>
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>

@@ -172,7 +172,7 @@ public class DigestCatalog implements ICatalogItem, Parcelable {
         parcel.writeInt(level);
         parcel.writeInt(type);
 
-        if (parent == null || cnt==2) {
+        if (parent == null || cnt == 2) {
             parcel.writeByte((byte) 0);
             return;
         }

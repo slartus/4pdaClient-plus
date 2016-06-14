@@ -10,8 +10,7 @@
         android:id="@+id/image_panel"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_gravity="center_horizontal"
-        >
+        android:layout_gravity="center_horizontal">
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -49,6 +48,7 @@
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textSize="16dp"
                     android:layout_centerVertical="true" />
+
                 <TextView
                     android:id="@+id/txtAllMessagesCount"
                     style="?list_text_second_color"
@@ -60,7 +60,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/txtNick"
                     android:layout_toEndOf="@+id/txtNick"
-                    android:paddingLeft="8dp"/>
+                    android:paddingLeft="8dp" />
 
                 <TextView
                     android:id="@+id/txtDateTime"
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:text="ррр"
                     android:textAppearance="?android:textAppearanceSmall"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/txtMessagesCount"

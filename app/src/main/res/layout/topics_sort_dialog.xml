@@ -9,31 +9,33 @@
     <RadioGroup
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rgSortType" >
+        android:id="@+id/rgSortType">
+
         <RadioButton
             android:id="@+id/rbSortBySortOrder"
             android:text="Как на сайте"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"/>
+            android:checked="true" />
+
         <RadioButton
             android:id="@+id/rbSortByDate"
             android:text="По дате последнего поста"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content" />
+
         <RadioButton
             android:id="@+id/rbSortByDateAndNew"
             android:text="По дате последнего поста и непрочитанности"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
         <RadioButton
             android:id="@+id/rbSortByTitle"
             android:text="По названию топика"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RadioGroup>
-
 
 
 </RelativeLayout>

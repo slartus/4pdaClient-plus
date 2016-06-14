@@ -11,9 +11,9 @@ import java.util.ArrayList;
 public class ForumsData implements Serializable {
     private int pagesCount = 1;
     private int currentPage = 1;
-    private Throwable error=null;
+    private Throwable error = null;
 
-    private ArrayList<Forum> items=new ArrayList<Forum>();
+    private ArrayList<Forum> items = new ArrayList<Forum>();
 
     public ArrayList<Forum> getItems() {
         return items;

@@ -44,10 +44,6 @@ public class OldUser implements IListItem, Serializable {
     }
 
 
-
-
-
-
     public void setTag(String tag) {
         this.tag = tag;
     }

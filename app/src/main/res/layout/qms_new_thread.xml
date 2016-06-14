@@ -4,11 +4,13 @@
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:layout_above="@+id/bottomPanel">
+
         <EditText
             android:id="@+id/username"
             style="?edit_text"
@@ -36,7 +38,12 @@
 
             <requestFocus />
         </EditText>
-        <View style="?Divider" android:layout_width="fill_parent" android:layout_height="1dp"/>
+
+        <View
+            style="?Divider"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp" />
+
         <EditText
             android:id="@+id/message"
             style="?edit_text"
@@ -84,7 +91,7 @@
                 android:textColor="@color/accentGray"
                 android:textStyle="bold"
                 android:text="Отправить"
-                android:layout_marginLeft="4dp"/>
+                android:layout_marginLeft="4dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -94,11 +101,12 @@
             android:orientation="vertical"
             android:visibility="gone" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="6dp"
         android:orientation="vertical"
         android:id="@+id/shadow"
         android:background="@drawable/shadow_to_top"
-        android:layout_above="@+id/bottomPanel"/>
+        android:layout_above="@+id/bottomPanel" />
 </RelativeLayout>

@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaapi.qms;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.ArrayList;
 

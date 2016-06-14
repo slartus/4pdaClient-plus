@@ -4,8 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    >
+    android:padding="16dp">
 
     <TextView
         android:id="@+id/txtFileName"
@@ -28,7 +27,7 @@
         style="?list_text_second_color"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progress"

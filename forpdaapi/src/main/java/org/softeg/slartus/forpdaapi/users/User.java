@@ -11,7 +11,7 @@ public class User implements IListItem {
     @Column(name = "nick")
     protected CharSequence nick;
 
-    public User(CharSequence id, CharSequence nick){
+    public User(CharSequence id, CharSequence nick) {
 
         this.id = id;
         this.nick = nick;

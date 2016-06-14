@@ -9,6 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
+
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="match_parent"
@@ -21,7 +22,7 @@
             android:indeterminateOnly="true"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:visibility="invisible"/>
+            android:visibility="invisible" />
 
 
         <LinearLayout
@@ -38,6 +39,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/txtMain"
                     style="?list_text_special_color"
@@ -51,6 +53,7 @@
                     android:singleLine="false"
                     android:layout_toLeftOf="@+id/imgFlag"
                     android:layout_toStartOf="@+id/imgFlag" />
+
                 <TextView
                     android:id="@+id/imgFlag"
                     android:textColor="@color/white"

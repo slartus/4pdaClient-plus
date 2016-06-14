@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -8,7 +9,7 @@
         android:id="@+id/preview"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#ff0000"/>
+        android:background="#ff0000" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -26,6 +27,7 @@
             android:id="@+id/textView1"
             android:layout_alignBottom="@+id/red"
             android:layout_alignParentTop="true" />
+
         <SeekBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,6 +37,7 @@
             android:layout_toRightOf="@+id/textView1"
             android:layout_toEndOf="@+id/textView1"
             android:max="255" />
+
         <EditText
             android:layout_width="48dp"
             android:layout_height="wrap_content"
@@ -48,6 +51,7 @@
             android:layout_alignBottom="@+id/textView1"
             android:gravity="center_horizontal" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -63,6 +67,7 @@
             android:id="@+id/textView2"
             android:layout_alignBottom="@+id/green"
             android:layout_alignParentTop="true" />
+
         <SeekBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,7 +76,8 @@
             android:layout_toRightOf="@+id/textView2"
             android:layout_toLeftOf="@+id/greenText"
             android:layout_toStartOf="@+id/greenText"
-            android:max="255"/>
+            android:max="255" />
+
         <EditText
             android:layout_width="48dp"
             android:layout_height="wrap_content"
@@ -85,6 +91,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignBottom="@+id/textView2" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -100,6 +107,7 @@
             android:id="@+id/textView4"
             android:layout_alignBottom="@+id/blue"
             android:layout_alignParentTop="true" />
+
         <SeekBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -108,7 +116,8 @@
             android:layout_toRightOf="@+id/textView4"
             android:layout_toLeftOf="@+id/blueText"
             android:layout_toStartOf="@+id/blueText"
-            android:max="255"/>
+            android:max="255" />
+
         <EditText
             android:layout_width="48dp"
             android:layout_height="wrap_content"

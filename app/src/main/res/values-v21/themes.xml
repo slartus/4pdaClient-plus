@@ -1,10 +1,13 @@
 <resources>
+
     <style name="ThemeLight" parent="MainThemeLight">
         <item name="android:statusBarColor">@color/statusBar_translucent_light</item>
     </style>
+
     <style name="ThemeDark" parent="MainThemeDark">
         <item name="android:statusBarColor">@color/statusBar_translucent_dark</item>
     </style>
+
     <style name="ThemeBlack" parent="MainThemeBlack">
         <item name="android:statusBarColor">@color/statusBar_translucent_black</item>
     </style>
@@ -13,10 +16,12 @@
         <item name="android:statusBarColor">@color/statusBarPrefs_light</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style</item>
     </style>
+
     <style name="ThemePrefsLightGray" parent="ThemePrefsLightGrayBase">
         <item name="android:statusBarColor">@color/statusBarPrefs_light</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style</item>
     </style>
+
     <style name="ThemePrefsLightBlue" parent="ThemePrefsLightBlueBase">
         <item name="android:statusBarColor">@color/statusBarPrefs_light</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style</item>
@@ -26,10 +31,12 @@
         <item name="android:statusBarColor">@color/statusBarPrefs_dark</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style</item>
     </style>
+
     <style name="ThemePrefsDarkGray" parent="ThemePrefsDarkGrayBase">
         <item name="android:statusBarColor">@color/statusBarPrefs_dark</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style</item>
     </style>
+
     <style name="ThemePrefsDarkBlue" parent="ThemePrefsDarkBlueBase">
         <item name="android:statusBarColor">@color/statusBarPrefs_dark</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style</item>
@@ -39,10 +46,12 @@
         <item name="android:statusBarColor">@color/statusBarPrefs_black</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style</item>
     </style>
+
     <style name="ThemePrefsBlackGray" parent="ThemePrefsBlackGrayBase">
         <item name="android:statusBarColor">@color/statusBarPrefs_black</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style</item>
     </style>
+
     <style name="ThemePrefsBlackBlue" parent="ThemePrefsBlackBlueBase">
         <item name="android:statusBarColor">@color/statusBarPrefs_black</item>
         <item name="android:windowTitleStyle">@style/prefs_title_style</item>
@@ -52,9 +61,11 @@
     <style name="MainPinkLight" parent="MainPinkLightBase">
         <item name="android:alertDialogTheme">@style/DialogPinkLight</item>
     </style>
+
     <style name="MainBlueLight" parent="MainBlueLightBase">
         <item name="android:alertDialogTheme">@style/DialogBlueLight</item>
     </style>
+
     <style name="MainGrayLight" parent="MainGrayLightBase">
         <item name="android:alertDialogTheme">@style/DialogGrayLight</item>
     </style>
@@ -62,9 +73,11 @@
     <style name="MainPinkDark" parent="MainPinkDarkBase">
         <item name="android:alertDialogTheme">@style/DialogPinkDark</item>
     </style>
+
     <style name="MainBlueDark" parent="MainBlueDarkBase">
         <item name="android:alertDialogTheme">@style/DialogBlueDark</item>
     </style>
+
     <style name="MainGrayDark" parent="MainGrayDarkBase">
         <item name="android:alertDialogTheme">@style/DialogGrayDark</item>
     </style>
@@ -72,9 +85,11 @@
     <style name="MainPinkBlack" parent="MainPinkBlackBase">
         <item name="android:alertDialogTheme">@style/DialogPinkBlack</item>
     </style>
+
     <style name="MainBlueBlack" parent="MainBlueBlackBase">
         <item name="android:alertDialogTheme">@style/DialogBlueBlack</item>
     </style>
+
     <style name="MainGrayBlack" parent="MainGrayBlackBase">
         <item name="android:alertDialogTheme">@style/DialogGrayBlack</item>
     </style>
@@ -84,10 +99,12 @@
         <item name="colorAccent">@color/accentPink</item>
         <item name="android:background">@color/dialog_background_light</item>
     </style>
+
     <style name="DialogBlueLight" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/accentBlue</item>
         <item name="android:background">@color/dialog_background_light</item>
     </style>
+
     <style name="DialogGrayLight" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/accentGray</item>
         <item name="android:background">@color/dialog_background_light</item>
@@ -97,10 +114,12 @@
         <item name="colorAccent">@color/accentPink</item>
         <item name="android:background">@color/dialog_background_dark</item>
     </style>
+
     <style name="DialogBlueDark" parent="Theme.AppCompat.Dialog">
         <item name="colorAccent">@color/accentBlue</item>
         <item name="android:background">@color/dialog_background_dark</item>
     </style>
+
     <style name="DialogGrayDark" parent="Theme.AppCompat.Dialog">
         <item name="colorAccent">@color/accentGray</item>
         <item name="android:background">@color/dialog_background_dark</item>
@@ -110,10 +129,12 @@
         <item name="colorAccent">@color/accentPink</item>
         <item name="android:background">@color/dialog_background_black</item>
     </style>
+
     <style name="DialogBlueBlack" parent="Theme.AppCompat.Dialog">
         <item name="colorAccent">@color/accentBlue</item>
         <item name="android:background">@color/dialog_background_black</item>
     </style>
+
     <style name="DialogGrayBlack" parent="Theme.AppCompat.Dialog">
         <item name="colorAccent">@color/accentGray</item>
         <item name="android:background">@color/dialog_background_black</item>

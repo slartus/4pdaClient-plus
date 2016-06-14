@@ -4,5 +4,5 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:textSize="16sp"
-    style="?list_text_special_color"/>
+    style="?list_text_special_color" />
 
