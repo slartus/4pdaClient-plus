@@ -1423,38 +1423,38 @@ div[data-post] > a {
 /*
  *	NEWS
 */
-#main {
+#news {
   font-size: 1rem;
   margin: 0;
-  padding: 0;
+  padding: 0.5rem 0;
 }
-#main iframe {
+#news iframe {
   max-width: 100%;
   width: 480px;
   heigt: 360px;
 }
 @media screen and (max-width: 360px) {
-  #main iframe {
+  #news iframe {
     width: 240px;
     height: 160px;
   }
 }
 @media screen and (max-width: 480px) {
-  #main iframe {
+  #news iframe {
     width: 360px;
     height: 240px;
   }
 }
-#main .wp-caption {
+#news .wp-caption {
   display: inline-block;
   vertical-align: top;
   margin: 0.5rem;
   max-width: 100%;
 }
-#main .wp-caption .wp-caption-dt {
+#news .wp-caption .wp-caption-dt {
   display: block;
 }
-#main .wp-caption .wp-caption-dd {
+#news .wp-caption .wp-caption-dd {
   display: block;
   color: #808080;
   font-size: 0.875rem;
@@ -1764,7 +1764,7 @@ div[data-post] > a {
   #news .review-bottom-informer .item {
     display: inline-block;
     width: 13rem;
-    height: 5rem;
+    height: 6.5rem;
     vertical-align: top;
   }
 }
@@ -2089,6 +2089,7 @@ div[data-post] > a {
 }
 #news .materials-box .materials-slider .slider-item {
   display: inline-block;
+  margin: 0 -0.2rem;
   padding: 0;
   width: 24.5%;
   max-height: 100%;
@@ -2109,9 +2110,10 @@ div[data-post] > a {
   width: 100%;
 }
 #news .materials-box .materials-slider .slider-item > a img {
-  display: inline-block;
+  display: block;
   width: 100%;
   height: auto;
+  margin: auto;
 }
 #news .materials-box .materials-slider .slider-item h3 {
   margin: 0;
@@ -2268,23 +2270,25 @@ div[data-post] > a {
 }
 #news .comment-box li .heading {
   display: block;
-  margin: 0 0.3rem;
-  padding: 0.2rem;
+  margin: 0 0.25rem;
+  padding: 0.25rem;
   border-bottom: 1px solid #e6e6e6;
 }
 #news .comment-box li .heading .nickname {
-  margin-right: 0.3rem;
+  margin-right: 0.25rem;
   text-decoration: none;
   font-style: normal !important;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: bold;
   color: black;
 }
 #news .comment-box li .heading .karma {
   float: right;
+  cursor: pointer;
+  padding: 0 0.25rem;
 }
 #news .comment-box li .heading .karma .icon-karma-up {
-  padding: 0 0.3rem;
+  padding: 0 0.25rem;
 }
 #news .comment-box li .heading .karma .icon-karma-up:before {
   color: #999999;
@@ -2293,50 +2297,46 @@ div[data-post] > a {
   display: none;
 }
 #news .comment-box li .heading .karma .num-wrap .num {
-  padding: 0 0.3rem;
+  padding: 0 0.25rem;
   color: #808080;
 }
 #news .comment-box li .heading .h-meta {
   display: inline-block;
   position: absolute;
   left: 0.5rem;
-  bottom: 0.3rem;
-  right: 5.2rem;
+  bottom: 0.25rem;
+  margin-top: 0;
+  margin-right: 0.25em;
+  height: 1.25rem;
+  line-height: 1.25rem;
   text-align: left;
   text-decoration: none;
   font-weight: normal;
   font-size: 0.625rem;
   color: #808080;
-  margin-top: 0;
-  margin-right: 0.2em;
-  height: 1.2rem;
-  line-height: 1.2rem;
 }
 #news .comment-box li .heading .h-meta a {
   position: absolute;
   display: inline-block;
   top: 0;
+  right: -1.5rem;
+  padding: 0 0.5rem;
   margin: 0;
-  padding: 0 0.3rem;
-  height: 1.2rem;
-  line-height: 1.2rem;
+  height: 1.25rem;
+  line-height: 1.25rem;
 }
 #news .comment-box li .heading .h-meta a .icon-link {
-  position: absolute;
-  top: 0;
-  height: 1.2rem;
-  line-height: 1.2rem;
-  margin: 0;
-  padding: 0;
-  vertical-align: middle;
+  display: block;
+  height: 1.25rem;
+  line-height: 1.25rem;
 }
 #news .comment-box li .heading .h-meta a .icon-link:before {
   display: inline-block;
   margin: 0;
   padding: 0;
   opacity: 0.5;
-  height: 1.2rem;
-  line-height: 1.2rem;
+  height: 1.25rem;
+  line-height: 1.25rem;
   color: #3490c3;
 }
 #news .comment-box li .content {
@@ -2346,20 +2346,24 @@ div[data-post] > a {
 }
 #news .comment-box li DIV[id*="comment-form-reply"] {
   position: absolute;
-  right: 4.5rem;
-  top: 0.3rem;
+  right: 3.75rem;
+  top: 0.25rem;
   display: block;
   text-align: right;
   margin: 0;
 }
 #news .comment-box li DIV[id*="comment-form-reply"] a {
-  display: inline-block;
-  color: #3490c3;
+  display: block;
+  color: transparent;
+  overflow: hidden;
+  width: 2.5rem;
+  height: 1.25rem;
   text-decoration: none;
-  font-size: 0.875rem;
-  font-weight: bold;
-  padding: 0 0.5rem;
-  height: 1.4em;
+  font-size: 1rem;
+  background: url(material_src/reply.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 1.5rem;
 }
 .video-thumb-wrapper {
   display: block;

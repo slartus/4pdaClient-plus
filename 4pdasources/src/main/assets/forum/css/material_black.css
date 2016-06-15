@@ -697,13 +697,27 @@ span[style*="font-size:8pt"] * {
   bottom: 0;
   z-index: 99;
   pointer-events: none;
-  opacity: 0;
-  background: #03A9F4;
-  -webkit-animation: highlight 2s;
-  animation: highlight 2s;
+  -webkit-animation: highlight 1s;
 }
+/*
+@-webkit-keyframes highlight {
+	0% {
+		-webkit-transform: scale(1.5, 1.5) translateY(1rem);
+	}
+	50% {
+		-webkit-transform: scale(1.5, 1.5) translateY(1rem);
+	}
+	100% {
+		-webkit-transform: scale(1, 1) translateY(0);
+	}
+}
+*/
 @-webkit-keyframes highlight {
   0% {
+    opacity: 0;
+    background: #03A9F4;
+  }
+  10% {
     opacity: 0.2;
   }
   100% {

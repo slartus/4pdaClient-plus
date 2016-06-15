@@ -241,7 +241,7 @@
     <string name="links_not_supported">Такие ссылки не поддерживаются</string>
     <string name="choose">Выберите</string>
     <string name="chare_via">Поделиться через...</string>
-    <string name="link_copied_to_buffer">Ссылка скопированаа</string>
+    <string name="link_copied_to_buffer">Ссылка скопирована</string>
     <string name="open_in_browser">Открыть в браузере</string>
     <string name="share_link">Поделиться ссылкой</string>
     <string name="copy_link">Скопировать ссылку</string>

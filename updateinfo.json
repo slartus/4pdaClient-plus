@@ -7,9 +7,9 @@
 
   "show_beta_dialog":true,
   "update_beta":{
-    "ver":"3.3.3",
-    "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/ForPDA_3.3.3.apk",
-    "info":"[!] Важное замечание\n[+] Нововведение\n[-] Исправлена ошибка\n[*] Изменения\n\n[-] Повышена стабильность"
+    "ver":"3.3.4",
+    "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/ForPDA_3.3.4.apk",
+    "info":"[!] Важное замечание\n[+] Нововведение\n[-] Исправлена ошибка\n[*] Изменения\n\n[-] Мерцание статус бара при запуске\n[+] При переходе к сообщению, оно подсвечивается\n[*] Оптимизация стилей под большой размер шрифта\n[*] Исправления в стилях\n[*] Улучшена стабильность приложения"
   },
 
   "toster_update":{

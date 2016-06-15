@@ -1649,6 +1649,9 @@ a[href*=findpost][title="Перейти к сообщению"]:after {
 }
 @-webkit-keyframes highlight {
   0% {
+    opacity: 0;
+  }
+  20% {
     opacity: 0.25;
   }
   100% {
@@ -1669,7 +1672,7 @@ a[href*=findpost][title="Перейти к сообщению"]:after {
   top: 0;
   height: 100%;
   width: 100%;
-  background: #0277bd;
+  background: #757575;
   z-index: 10;
   opacity: 0;
   pointer-events: none;
@@ -1677,7 +1680,7 @@ a[href*=findpost][title="Перейти к сообщению"]:after {
 .post_container.active:before {
   /*transform: scale(1);
             opacity: 0.25;*/
-  -webkit-animation: highlight 0.5s;
+  -webkit-animation: highlight 1s;
 }
 .post_container .post_header {
   padding: 1em;
@@ -1953,6 +1956,7 @@ a[href*=findpost][title="Перейти к сообщению"]:after {
 .user-profile-list > li .info-list > li {
   padding: 0;
   line-height: 1.5em;
+  overflow: hidden;
 }
 .user-profile-list > li .info-list > li:after {
   content: "";
@@ -1962,6 +1966,8 @@ a[href*=findpost][title="Перейти к сообщению"]:after {
 .user-profile-list > li .info-list > li .title {
   float: left;
   padding-right: 0.5em;
+  max-width: 100%;
+  overflow: hidden;
 }
 .user-profile-list > li .info-list > li .area {
   float: left;
@@ -1977,6 +1983,7 @@ a[href*=findpost][title="Перейти к сообщению"]:after {
 }
 .user-profile-list > li textarea {
   display: block;
+  width: 100%;
 }
 .user-profile-list > li.hide-on-empty {
   display: none;
@@ -2628,6 +2635,84 @@ li .post-block {
     margin-right: 0!important;
     border-left: 1px solid #e9e9e9;
     border-right: 1px solid #e9e9e9;
+  }
+}
+@media screen and (max-width: 18em) {
+  .container .product-detail {
+    position: relative;
+    background: #f4f4f4;
+  }
+  .container .product-detail .photo {
+    position: relative;
+    padding-bottom: 75%;
+    height: 0;
+  }
+  .container .product-detail .photo img {
+    width: 100%;
+  }
+  .container .product-detail .photo .label {
+    color: #ffffff;
+    background: #0277bd;
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    line-height: 2.25em;
+    position: absolute;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    top: 0;
+    height: 2.25em;
+    width: 100%;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.3) !important;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0.3)), color-stop(100%, rgba(0, 0, 0, 0))) !important;
+    background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 100%) !important;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 100%) !important;
+  }
+  .container .product-detail .description h1 {
+    position: relative;
+    padding-top: 0.66666667em;
+    background: none;
+    text-shadow: none;
+    color: #212121;
+    border-bottom: 1px solid #e9e9e9;
+  }
+  .container .product-detail .description .info-holder {
+    padding: 0 1em;
+    position: absolute;
+    bottom: -2.25em;
+    width: 100%;
+    box-sizing: border-box;
+    line-height: 2.25em;
+    height: 2.25em;
+    color: #757575;
+  }
+  .container .product-detail .description .info-holder .date {
+    font-style: normal;
+    font-size: 0.875em;
+  }
+  .container .product-detail .description .info-holder .name {
+    font-size: 0.875em;
+  }
+  .container .product-detail .description .info-holder .name a {
+    color: #757575;
+  }
+  .container .product-detail .description .more-box {
+    position: absolute;
+    bottom: -2.25em;
+    right: 0;
+    line-height: 2.25em;
+    height: 2.25em;
+    min-width: 2.25em;
+    text-align: center;
+  }
+  .container .product-detail .description .more-box .number {
+    font-size: 0.875em;
+    color: #757575;
+  }
+  .container .product-detail .description .more-box .meta {
+    display: none;
   }
 }
 @media screen and (max-width: 16rem) {
