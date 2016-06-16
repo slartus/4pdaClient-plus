@@ -36,7 +36,9 @@ function spoilsImageLoad() {
 	}
 }
 
-document.addEventListener('DOMContentLoaded', spoilsImageLoad);
+document.addEventListener('DOMContentLoaded', function() {
+	if (!document.body.classList.contains("noimages")) return spoilsImageLoad;
+});
 
 /**
  *		=================
