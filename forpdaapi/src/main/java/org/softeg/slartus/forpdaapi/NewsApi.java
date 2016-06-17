@@ -76,7 +76,7 @@ public class NewsApi {
         String dailyNewsPage = httpClient.performGet(UrlExtensions.removeDoubleSplitters(requestUrl));
 
         Pattern articlesPattern = Pattern.compile("(<article class=\"post\"[^>]*>[\\s\\S]*?href=\"([^\"]*)\" title[\\s\\S]*?src=\"([^\"]*)\" alt=\"([^\"]*?)\"[\\s\\S]*?<\\/article>)|(<li itemscope[^>]*>[\\s\\S]*?itemprop=\"url\" href=\"([^\"]*?)\"[\\s\\S]*?src=\"([^\"]*?)\" alt=\"([^\"]*?)\"[\\s\\S]*?<\\/div>[^<]*<\\/li>)");
-        Pattern descriptionPattern = Pattern.compile("(<div itemprop=\"description\"><p [^>]*>([\\s\\S]*)<\\/p>[^<]*)|(<div itemprop=\"description\">([\\s\\S]*?)<\\/div>)");
+        Pattern descriptionPattern = Pattern.compile("(<div itemprop=\"description\">[\\s\\S]*?<p [^>]*>([\\s\\S]*)<\\/p>[^<]*)|(<div itemprop=\"description\">([\\s\\S]*?)<\\/div>)");
         Pattern labelPattern = Pattern.compile("<a href=\"([^\"]*)\" class=\"label[^>]*>([\\s\\S]*?)<\\/a>");
         Pattern countPattern = Pattern.compile("class=\"v-count\"[^>]*>(\\d*)</a>");
         Pattern datePattern = Pattern.compile("<meta itemprop=\"datePublished\" content=\"(\\d+-\\d+-\\d+)[\\s\\S]*?\"\\/>");
