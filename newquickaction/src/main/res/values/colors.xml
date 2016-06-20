@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="popup_item_pressed_background_wh">#16000000</color>
-    <color name="popup_item_pressed_background_bl">#40ffffff</color>
-    <color name="action_popup_item_text_wh">#ff000000</color>
-    <color name="action_popup_item_text_bl">#ffffffff</color>
-</resources>
