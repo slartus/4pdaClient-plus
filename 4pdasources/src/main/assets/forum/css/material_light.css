@@ -2925,6 +2925,7 @@ div[data-post] > a {
   margin: auto;
   overflow-y: auto;
   box-sizing: border-box;
+  max-width: 33%;
   width: 10rem;
   vertical-align: middle;
   z-index: 999;
@@ -3005,8 +3006,9 @@ div[data-post] > a {
 }
 @media screen and (max-width: 50rem) {
   #curator .post_header .nick {
-    padding: 0.5rem 0.75rem;
     margin-right: 3rem;
+    padding: 0;
+    margin-bottom: 1rem;
   }
 }
 #curator .post_header .link {
@@ -3015,13 +3017,14 @@ div[data-post] > a {
 }
 @media screen and (max-width: 50rem) {
   #curator .post_header .link {
-    padding: 0.25rem 0.75rem;
+    display: inline-block;
+    padding: 0.25rem 0;
   }
 }
 @media screen and (max-width: 50rem) {
   #curator .post_header .date-link {
     position: absolute;
-    right: 0.75rem;
+    right: 0;
     bottom: 0.75rem;
   }
 }
@@ -3036,7 +3039,7 @@ div[data-post] > a {
     position: absolute;
     right: 0;
     top: 0;
-    padding: 0.75rem 0.75rem;
+    padding: 0.25rem 0.25rem;
   }
 }
 #curator .post_header .checkbox .icon {
@@ -3075,6 +3078,9 @@ div[data-post] > a {
 #curator .post_header .checkbox input:checked + .icon:before {
   -webkit-transform: rotate(45deg) translate(-0.25rem, 0.125rem) scale(1, 1);
   transform: rotate(45deg) translate(-0.25rem, 0.125rem) scale(1, 1);
+}
+#curator .post_body {
+  padding-bottom: 0.75rem;
 }
 /*
 *	OTHER
