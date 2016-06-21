@@ -127,7 +127,7 @@ span[style*="font-size:8pt"] * {
 }
 .post-block.quote {
   position: relative;
-  background: rgba(219, 244, 255, 0.76);
+  background: rgba(218, 241, 255, 0.8);
 }
 .post-block.quote > .block-title {
   color: #3085b3;
@@ -153,7 +153,7 @@ span[style*="font-size:8pt"] * {
   border-bottom: 1px solid #99c8e1;
 }
 .post-block.quote > .block-body {
-  color: rgba(0, 11, 15, 0.88);
+  color: rgba(0, 15, 23, 0.9);
 }
 .post-block.code {
   border-radius: 0;
@@ -817,7 +817,7 @@ span[style*="font-size:8pt"] * {
   background-size: 1.625rem;
   cursor: pointer;
 }
-@media screen and (max-width: 49rem) {
+@media screen and (max-width: 50rem) {
   .post_header .header_wrapper .menu {
     position: absolute;
     right: -0.375rem;
@@ -1321,7 +1321,7 @@ div[data-post] > a {
   border-left-color: transparent;
 }
 #thread_form .list-group-item.our-message .msg-content .quote {
-  background: rgba(190, 215, 226, 0.76);
+  background: rgba(190, 214, 227, 0.8);
 }
 #thread_form .list-group-item.our-message .msg-content .code {
   border-left: 0.3rem solid rgba(114, 86, 0, 0.6);
@@ -1675,13 +1675,13 @@ div[data-post] > a {
   overflow: hidden;
   text-align: left !important;
   border-radius: 0.125rem;
-  background: rgba(230, 248, 255, 0.82);
+  background: rgba(229, 246, 255, 0.85);
 }
 #news BLOCKQUOTE:before {
   content: 'Цитата';
   font-weight: bold;
   font-style: italic;
-  color: rgba(0, 36, 51, 0.7);
+  color: rgba(0, 48, 76, 0.75);
   padding: 0.3rem 0.5rem;
   display: block;
 }
