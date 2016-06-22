@@ -1660,17 +1660,6 @@ a[href*=findpost][title="Перейти к сообщению"]:after {
 .post_body [attach_id][title*="Скачать"]:not(.linked-image)[href*=".txt"][title*=".txt"]:before {
   content: "\e00b";
 }
-@-webkit-keyframes highlight {
-  0% {
-    opacity: 0;
-  }
-  20% {
-    opacity: 0.25;
-  }
-  100% {
-    opacity: 0;
-  }
-}
 .post_container {
   background: #2b2b2b;
   margin: 0.5em 0;
@@ -1685,15 +1674,25 @@ a[href*=findpost][title="Перейти к сообщению"]:after {
   top: 0;
   height: 100%;
   width: 100%;
-  background: #0277bd;
   z-index: 10;
   opacity: 0;
   pointer-events: none;
 }
 .post_container.active:before {
-  /*transform: scale(1);
-            opacity: 0.25;*/
-  -webkit-animation: highlight 1s;
+  background: #0277bd;
+  -webkit-animation: highlight 1.5s;
+  animation-timing-function: ease-out;
+}
+@-webkit-keyframes highlight {
+  0% {
+    opacity: 0;
+  }
+  33% {
+    opacity: 0.15;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 .post_container .post_header {
   padding: 1em;

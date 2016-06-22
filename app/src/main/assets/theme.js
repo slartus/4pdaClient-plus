@@ -37,7 +37,7 @@ function spoilsImageLoad() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-	if (!document.body.classList.contains("noimages")) return spoilsImageLoad;
+	if (!document.body.classList.contains("noimages")) return spoilsImageLoad();
 });
 
 /**
@@ -47,12 +47,11 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 
 function getAttaches() {
-    var anchorList = document.querySelectorAll('div[id*="entry"]');
+    var anchorList = document.querySelectorAll('.post_container');
     var jsonArr = [];
     for (var i = 0; i < anchorList.length; i++) {
-        var post = anchorList[i].nextElementSibling;
-        if (post.className != 'post_container') break;
-        var attachList = post.querySelectorAll("a[rel*='lytebox']");
+        var post = anchorList[i];
+        var attachList = post.querySelectorAll("a[data-rel*='lytebox']");
         var obj = [];
         for (var j = 0, count = 0; j < attachList.length; j++) {
             var att = attachList[j].getAttribute('href');
@@ -67,7 +66,7 @@ function getAttaches() {
     return jsonArr;
 }
 window.onload = function(){
-    HTMLOUT.sendPostsAttaches(JSON.stringify(getAttaches()))
+    HTMLOUT.sendPostsAttaches(JSON.stringify(getAttaches()));
 }
 
 /**

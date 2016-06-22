@@ -32,7 +32,7 @@
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="8dp"
-                android:layout_marginLeft="48dp"
+                android:layout_marginLeft="104dp"
                 android:layout_marginRight="56dp"
                 android:maxLines="5" />
 
@@ -51,6 +51,18 @@
                 app:srcCompat="@drawable/plus"
                 android:id="@+id/advanced_button"
                 android:layout_gravity="left|bottom" />
+            <Button
+                android:id="@+id/btnAttachments"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_width="wrap_content"
+                android:minWidth="56dp"
+                android:layout_height="48dp"
+                android:drawableLeft="@drawable/ic_paperclip_grey600_24dp"
+                android:text="0"
+                android:layout_marginLeft="48dp"
+                android:paddingLeft="4dp"
+                android:textSize="14sp"
+                android:textColor="#757575" />
         </FrameLayout>
 
         <LinearLayout

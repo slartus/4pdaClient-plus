@@ -105,7 +105,7 @@ public class HtmlPreferences {
     public static String modifyAttachedImagesBody(Boolean webViewAllowJs, String value) {
         Log.e("kek", "modify images");
         return value
-                .replaceAll("<a id=\"ipb-attach-url-\\d+-bb\"[^>]*?href=\"([^\"]*)\"[^>]*?title=\"([^\"]*)\"[^>]*?><img src=\"([^\"]*)\"[^>]*id=\"ipb-attach-img-\\d+-bb\".*?</a>",
+                .replaceAll("<a [^>]*? id=\"ipb-attach-url-\\d+-bb\"[^>]*?href=\"([^\"]*)\"[^>]*?title=\"([^\"]*)\"[^>]*?><img src=\"([^\"]*)\"[^>]*id=\"ipb-attach-img-\\d+-bb\".*?</a>",
                         "<img src=\"file:///android_asset/forum/style_images/1/folder_mime_types/gif.gif\"><a class=\"sp_img\" "
                                 + TopicBodyBuilder.getHtmlout(webViewAllowJs, "showImgPreview",
                                 new String[]{"Прикрепленное изображение", "$3", "$1"}, false) + ">$2</a>")

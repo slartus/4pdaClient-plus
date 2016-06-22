@@ -22,7 +22,7 @@
             android:paddingRight="16dp">
 
             <CheckBox
-                android:id="@+android:id/text1"
+                android:id="@id/text1"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:checkMark="?android:listChoiceIndicatorMultiple"

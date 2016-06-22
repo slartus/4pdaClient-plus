@@ -1,8 +1,14 @@
 package org.softeg.slartus.forpdaapi.qms;
 
 import android.text.Html;
+import android.util.Log;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 
+import org.apache.http.cookie.Cookie;
 import org.softeg.slartus.forpdaapi.IHttpClient;
+import org.softeg.slartus.forpdaapi.ProgressState;
+import org.softeg.slartus.forpdaapi.post.EditAttach;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 
@@ -241,5 +247,48 @@ public class QmsApi {
     public static int getNewQmsCount(IHttpClient client) throws IOException {
         String body = client.performGet("http://4pda.ru/forum/index.php?showforum=200");
         return getNewQmsCount(body);
+    }
+
+
+    //Upload file to savepic.ru
+    public static String attachFile(IHttpClient httpClient,
+                                        String newFilePath,
+                                        ProgressState progress) throws Exception {
+
+        Map<String, String> additionalHeaders = new HashMap<>();
+        /*additionalHeaders.put("note","");
+        additionalHeaders.put("font1","decor");
+        additionalHeaders.put("font2","20");
+        additionalHeaders.put("orient","h");
+        additionalHeaders.put("size2","1024x768");
+        additionalHeaders.put("size1","1");
+        additionalHeaders.put("rotate","00");
+        additionalHeaders.put("flip","0");
+        additionalHeaders.put("mini","300x225");
+        additionalHeaders.put("opt3[]","zoom");
+        additionalHeaders.put("email","");*/
+        additionalHeaders.put("img", "file");
+        additionalHeaders.put("url", "");
+        additionalHeaders.put("selected_input", "file");
+        additionalHeaders.put("size", "640");
+        additionalHeaders.put("preview_size", "180");
+        additionalHeaders.put("rotation_type", "0");
+        Log.d("save", "file "+newFilePath);
+        for(Cookie cookie:httpClient.getCookieStore().getCookies()){
+            Log.d("save", "Cookie name: "+cookie.getName()+"; value: "+cookie.getValue());
+        }
+        String res = httpClient.uploadFile("http://savepice.ru/upload", newFilePath, additionalHeaders, progress);
+        for(Cookie cookie:httpClient.getCookieStore().getCookies()){
+            Log.d("save", "Cookie name: "+cookie.getName()+"; value: "+cookie.getValue());
+        }
+
+        Log.d("save", "result "+res);
+        Matcher m = Pattern
+                .compile("\"redirect_path\":\"([^\"]*).html\"", Pattern.CASE_INSENSITIVE)
+                .matcher(res);
+        if (m.find()) {
+            return m.group(1).replaceAll("\\\\","").replace("uploaded","uploads");
+        }
+        return null;
     }
 }

@@ -30,9 +30,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         android:background="?attr/colorPrimary"
+                        app:contentInsetStartWithNavigation="0dp"
+                        app:contentInsetEndWithActions="0dp"
                         app:popupTheme="?attr/actionBarPopupTheme"
-                        app:subtitleTextAppearance="@style/actionbar_subtitle"
-                        app:titleTextAppearance="@style/actionbar_title" />
+                        app:subtitleTextAppearance="@style/actionbar_subtitle" />
                 </android.support.design.widget.AppBarLayout>
 
                 <FrameLayout
