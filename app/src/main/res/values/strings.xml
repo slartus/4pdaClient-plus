@@ -350,7 +350,7 @@
     <string name="edit_post_combined">Ред. сообщения</string>
     <string name="answer">Ответ</string>
     <string name="no_attachment_on_page">Страница не имеет вложений</string>
-    <string name="need_login_for_download">Для скачивания файлов с сайта необходима авторизация на сайте!</string>
+    <string name="need_login_for_download">Для скачивания файлов с сайта необходима авторизация!</string>
     <string name="vote_bad">Понизить рейтинг сообщения?</string>
     <string name="do_vote_bad">Понизить</string>
     <string name="vote_good">Повысить рейтинг сообщения?</string>
