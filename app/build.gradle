@@ -6,7 +6,7 @@ repositories {
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "23.0.3"
+    buildToolsVersion "24.0.0"
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId 'org.softeg.slartus.forpdaplus'
@@ -41,7 +41,7 @@ android {
         rel {
             applicationId 'org.softeg.slartus.forpdaplus'
             versionCode 573
-            versionName "3.3.4"
+            versionName "3.3.5beta1"
             signingConfig defaultSigningVariable
         }
         beta {
@@ -77,7 +77,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.dmitriy-tarasov:android-intents:1.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'ch.acra:acra:4.6.2'
+    compile 'ch.acra:acra:4.9.0'
     compile project(':forpdacommon')
     compile project(':forpdanotifyservice')
     compile project(':4pdasources')

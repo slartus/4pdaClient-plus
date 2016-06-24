@@ -17,4 +17,8 @@ public abstract class BrickInfo {
     }
 
     public abstract Fragment createFragment();
+
+    public String toString(){
+        return "{BrickInfo, Name="+getName()+", Title="+getTitle()+"}";
+    }
 }

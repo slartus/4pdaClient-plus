@@ -1,21 +1,30 @@
 package org.softeg.slartus.forpdaplus.fragments.qms;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.ActionMode;
 import android.view.Gravity;
@@ -26,31 +35,53 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AbsListView;
+import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 import org.softeg.slartus.forpdaapi.IListItem;
+import org.softeg.slartus.forpdaapi.ProgressState;
+import org.softeg.slartus.forpdaapi.post.EditAttach;
+import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.qms.QmsUserTheme;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdacommon.FileUtils;
+import org.softeg.slartus.forpdacommon.SimpleCookie;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.HttpHelper;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
+import org.softeg.slartus.forpdaplus.classes.ImageFilePath;
 import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
@@ -64,7 +95,9 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -99,6 +132,7 @@ public class QmsChatFragment extends WebViewFragment {
     private PopupPanelView mPopupPanelView;
     private String m_MessageText = null;
     private AsyncTask<ArrayList<String>, Void, Boolean> m_SendTask = null;
+    private Button btnAttachments;
 
     @Override
     public void hidePopupWindows() {
@@ -289,6 +323,12 @@ public class QmsChatFragment extends WebViewFragment {
 
         loadPrefs();
         startUpdateTimer();
+        btnAttachments = (Button) findViewById(R.id.btnAttachments);
+        btnAttachments.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                showAttachesListDialog();
+            }
+        });
         return view;
     }
 
@@ -317,23 +357,37 @@ public class QmsChatFragment extends WebViewFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode,
                                  Intent data) {
-        if (resultCode == Activity.RESULT_OK && requestCode == FILECHOOSER_RESULTCODE) {
-            String attachFilePath = FileUtils.getRealPathFromURI(getContext(), data.getData());
-            String cssData = FileUtils.readFileText(attachFilePath)
-                    .replace("\\", "\\\\")
-                    .replace("'", "\\'").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
-            if (Build.VERSION.SDK_INT < 19)
-                wvChat.loadUrl("javascript:window['HtmlInParseLessContent']('" + cssData + "');");
-            else
-                wvChat.evaluateJavascript("window['HtmlInParseLessContent']('" + cssData + "')",
-                        new ValueCallback<String>() {
-                            @Override
-                            public void onReceiveValue(String s) {
+        if (resultCode == Activity.RESULT_OK){
+            if (requestCode == MY_INTENT_CLICK) {
+                if (null == data) return;
+                Uri selectedImageUri = data.getData();
+                String selectedImagePath = ImageFilePath.getPath(getMainActivity().getApplicationContext(), selectedImageUri);
+                if(selectedImagePath!=null&&selectedImagePath.matches("(?i)(.*)(jpg|png|gif)$")){
+                    saveAttachDirPath(selectedImagePath);
+                    new UpdateTask(getMainActivity(), selectedImagePath).execute();
+                }else {
+                    Toast.makeText(getContext(),"Данный формат файла не поддерживается", Toast.LENGTH_SHORT).show();
+                }
 
+            }else if(requestCode == FILECHOOSER_RESULTCODE) {
+                String attachFilePath = FileUtils.getRealPathFromURI(getContext(), data.getData());
+                String cssData = FileUtils.readFileText(attachFilePath)
+                        .replace("\\", "\\\\")
+                        .replace("'", "\\'").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
+                if (Build.VERSION.SDK_INT < 19)
+                    wvChat.loadUrl("javascript:window['HtmlInParseLessContent']('" + cssData + "');");
+                else
+                    wvChat.evaluateJavascript("window['HtmlInParseLessContent']('" + cssData + "')",
+                            new ValueCallback<String>() {
+                                @Override
+                                public void onReceiveValue(String s) {
+
+                                }
                             }
-                        }
-                );
+                    );
+            }
         }
+
     }
 
     private void hideKeyboard() {
@@ -586,6 +640,7 @@ public class QmsChatFragment extends WebViewFragment {
         if (m_HtmlPreferences.isSpoilerByButton())
             chatBody = HtmlPreferences.modifySpoiler(chatBody);
         chatBody = HtmlPreferences.modifyBody(chatBody, Smiles.getSmilesDict(), m_HtmlPreferences.isUseLocalEmoticons());
+        chatBody = chatBody.replaceAll("(<a[^>]*?href=\"([^\"]*?savepice[^\"]*-)[\\w]*(\\.[^\"]*)\"[^>]*?>)[^<]*?(</a>)", "$1<img src=\"$2prev$3\">$4");
         htmlBuilder.append(chatBody);
         htmlBuilder.append("<div id=\"bottom_element\" name=\"bottom_element\"></div>");
         htmlBuilder.endBody();
@@ -721,6 +776,11 @@ public class QmsChatFragment extends WebViewFragment {
             return;
         }
         m_MessageText = edMessage.getText().toString();
+        for(EditAttach attach:attachList){
+            if(!m_MessageText.contains(attach.getId())){
+                m_MessageText+="\n"+"[url="+attach.getId()+"]"+attach.getId()+"[/url]";
+            }
+        }
         m_SendTask = new SendTask(getMainActivity());
         m_SendTask.execute();
     }
@@ -864,6 +924,8 @@ public class QmsChatFragment extends WebViewFragment {
 //            setLoading(false);
 
             onPostChat(m_ChatBody, success, ex);
+            attachList.clear();
+            refreshAttachmentsInfo();
         }
 
 
@@ -983,4 +1045,210 @@ public class QmsChatFragment extends WebViewFragment {
             return true;
         }
     }
+
+
+    //Upload file to savepic.ru
+    private List<EditAttach> attachList = new ArrayList<>();
+    private String lastSelectDirPath = Environment.getExternalStorageDirectory().getPath();
+    private static final int MY_INTENT_CLICK=302;
+
+    private void showAttachesListDialog() {
+        if (attachList.size() == 0) {
+            startAddAttachment();
+            return;
+        }
+        List<String> listItems = new ArrayList<>();
+        for(EditAttach attach:attachList)
+            listItems.add(attach.getName());
+        CharSequence[] items = listItems.toArray(new CharSequence[listItems.size()]);
+        new MaterialDialog.Builder(getMainActivity())
+                .cancelable(true)
+                .title(R.string.attachments)
+                .items(items)
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                        edMessage.append("[url="+attachList.get(which).getId()+"]"+attachList.get(which).getId()+"[/url]");
+                    }
+                })
+                .positiveText(R.string.do_download)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        startAddAttachment();
+                    }
+                })
+                .negativeText(R.string.ok)
+                .show();
+    }
+
+
+    private void startAddAttachment() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getActivity(), R.string.no_permission, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            Intent imageintent = new Intent(
+                    Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                imageintent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            startActivityForResult(imageintent, MY_INTENT_CLICK);
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(getMainActivity(), R.string.no_app_for_get_image_file, Toast.LENGTH_LONG).show();
+        } catch (Exception ex) {
+            AppLog.e(getMainActivity(), ex);
+        }
+    }
+
+    private void saveAttachDirPath(String attachFilePath) {
+        lastSelectDirPath = FileUtils.getDirPath(attachFilePath);
+        App.getInstance().getPreferences().edit().putString("EditPost.AttachDirPath", lastSelectDirPath).apply();
+    }
+
+
+
+    private class UpdateTask extends AsyncTask<String, Pair<String, Integer>, Boolean> {
+        private final MaterialDialog dialog;
+        private ProgressState m_ProgressState;
+
+        private List<String> attachFilePaths;
+
+        public UpdateTask(Context context, List<String> attachFilePaths) {
+
+            this.attachFilePaths = attachFilePaths;
+            dialog = new MaterialDialog.Builder(context)
+                    .progress(false, 100, false)
+                    .content(R.string.sending_file)
+                    .show();
+        }
+
+        public UpdateTask(Context context, String newAttachFilePath) {
+            this(context, new ArrayList<>(Arrays.asList(new String[]{newAttachFilePath})));
+        }
+
+        private EditAttach editAttach;
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try {
+                m_ProgressState = new ProgressState() {
+                    @Override
+                    public void update(String message, int percents) {
+                        publishProgress(new Pair<>("", percents));
+                    }
+                };
+
+                int i = 1;
+                for (String newAttachFilePath : attachFilePaths) {
+                    publishProgress(new Pair<>(String.format(App.getContext().getString(R.string.format_sending_file), i++, attachFilePaths.size()), 0));
+
+                    boolean found = false;
+                    for(Cookie cookie1:Client.getInstance().getCookies()){
+                        if(cookie1.getName().equals("PHPSESSID")){
+                            found = true;
+                            break;
+                        }
+                    }
+                    if(!found){
+                        CookieStore cookieStore = new BasicCookieStore();
+                        HttpContext context = new BasicHttpContext();
+                        context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+                        new DefaultHttpClient().execute(new HttpPost("http://savepice.ru/"), context);
+
+                        for(Cookie cookie:cookieStore.getCookies()){
+                            Log.d("save", "coolie name"+cookie.getName());
+                            if(cookie.getName().equals("PHPSESSID")){
+                                Log.d("save", "try save cookie");
+                                HttpHelper helper = new HttpHelper();
+                                try {
+                                    helper.getCookieStore().getCookies();
+                                    helper.getCookieStore().addCookie(new SimpleCookie(cookie.getName(), cookie.getValue()));
+                                    helper.writeExternalCookies();
+                                }finally {
+                                    helper.close();
+                                }
+                            }
+                        }
+                    }
+                    String res = QmsApi.attachFile(Client.getInstance(), newAttachFilePath, m_ProgressState);
+
+
+                    editAttach = new EditAttach("http://cdn1.savepice.ru"+res, "Изображение №"+attachList.size(), null, null);
+                }
+
+                return true;
+            } catch (Throwable e) {
+                ex = e;
+                return false;
+            }
+        }
+
+        @Override
+        protected void onProgressUpdate(Pair<String, Integer>... values) {
+            super.onProgressUpdate(values);
+            if (!TextUtils.isEmpty(values[0].first))
+                dialog.setContent(values[0].first);
+            dialog.setProgress(values[0].second);
+        }
+
+        // can use UI thread here
+        protected void onPreExecute() {
+            this.dialog.setCancelable(true);
+            this.dialog.setCanceledOnTouchOutside(false);
+            this.dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    if(m_ProgressState!=null)
+                        m_ProgressState.cancel();
+                    cancel(false);
+                }
+            });
+            this.dialog.setProgress(0);
+
+            this.dialog.show();
+        }
+
+        private Throwable ex;
+
+        // can use UI thread here
+        protected void onPostExecute(final Boolean success) {
+            if (this.dialog.isShowing()) {
+                this.dialog.dismiss();
+            }
+
+            if (success || (isCancelled() && editAttach != null)) {
+                attachList.add(editAttach);
+                refreshAttachmentsInfo();
+            } else {
+
+                if (ex != null)
+                    AppLog.e(getMainActivity(), ex);
+                else
+                    Toast.makeText(getMainActivity(), R.string.unknown_error, Toast.LENGTH_SHORT).show();
+
+            }
+        }
+
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+        @Override
+        protected void onCancelled(Boolean success) {
+            super.onCancelled(success);
+            if (success || (isCancelled() && editAttach != null)) {
+                attachList.add(editAttach);
+                refreshAttachmentsInfo();
+            } else {
+                if (ex != null)
+                    AppLog.e(getMainActivity(), ex);
+                else
+                    Toast.makeText(getMainActivity(), R.string.unknown_error, Toast.LENGTH_SHORT).show();
+
+            }
+        }
+
+    }
+    private void refreshAttachmentsInfo() {
+        btnAttachments.setText(attachList.size() + "");
+    }
+
 }

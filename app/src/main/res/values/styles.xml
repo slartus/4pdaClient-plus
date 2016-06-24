@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Crash_Dialog" parent="android:Theme.Holo.Dialog"/>
+
     <style name="MainThemeLight.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="MainThemeLight" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -117,8 +119,9 @@
     <style name="actionbar_trans_base" parent="@style/Widget.AppCompat.ActionBar">
         <item name="background">@color/background_toolbar</item>
         <item name="displayOptions">homeAsUp|showTitle</item>
-        <item name="titleTextStyle">@style/actionbar_title</item>
         <item name="subtitleTextStyle">@style/actionbar_subtitle</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+        <item name="contentInsetEndWithActions">0dp</item>
     </style>
 
     <style name="actionbar_trans" parent="actionbar_trans_base" />
@@ -162,13 +165,7 @@
         <item name="height">@dimen/ptr_height_bug</item>
     </style>
 
-    <style name="actionbar_title">
-        <item name="android:textColor">#ffffffff</item>
-        <item name="android:textSize">@dimen/actionbar_title_size</item>
-    </style>
-
-    <style name="actionbar_subtitle">
-        <item name="android:textColor">#ccffffff</item>
+    <style name="actionbar_subtitle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
         <item name="android:textSize">12sp</item>
     </style>
 

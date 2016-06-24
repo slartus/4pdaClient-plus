@@ -422,7 +422,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
 
                 holder.txtDateTime = (TextView) convertView.findViewById(R.id.txtDateTime);
 
-                holder.checkbox = (CheckBox) convertView.findViewById(android.R.id.text1);
+                holder.checkbox = (CheckBox) convertView.findViewById(R.id.text1);
                 holder.checkbox
                         .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                             @Override

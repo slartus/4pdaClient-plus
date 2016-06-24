@@ -1,5 +1,9 @@
 package org.softeg.slartus.forpdaplus;
 
+import android.util.Log;
+
+import com.android.internal.http.multipart.MultipartEntity;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
@@ -9,6 +13,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -61,8 +66,8 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
         }
     }
 
-    public String uploadFile(String url, String filePath, Map<String, String> additionalHeaders
-            , final ProgressState progress) throws Exception {
+    public String uploadFile(final String url, String filePath, Map<String, String> additionalHeaders,
+                  final ProgressState progress) throws Exception {
 
         // process headers using request interceptor
         final Map<String, String> sendHeaders = new HashMap<String, String>();
@@ -81,6 +86,23 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
                             request.addHeader(key, sendHeaders.get(key));
                         }
                     }
+                    if(url.contains("savepice")){
+                        for(Cookie cookie: getCookieStore().getCookies()){
+                            if(cookie.getName().equals("PHPSESSID")){
+                                request.addHeader("Cookie", cookie.getName()+"="+cookie.getValue());
+                            }
+                        }request.removeHeaders("User-Agent");
+                        request.addHeader("Cache-Control", "max-age=0");
+                        request.addHeader("Upgrade-Insecure-Reaquest", "1");
+                        request.addHeader("Accept", "text-/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+                        request.addHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36 OPR/38.0.2220.31");
+                        request.addHeader("Accept-Language", "ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4");
+                        request.addHeader("Referer", "http://savepice.ru/");
+                        request.addHeader("Origin", "http://savepice.ru");
+                        request.addHeader("X-Requested-With", "XMLHttpRequest");
+
+                    }
+
                 }
             });
         }
@@ -89,9 +111,9 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
         multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
         multipartEntity.setCharset(Charset.forName("windows-1251"));
         File uploadFile = new File(filePath);
-        multipartEntity.addBinaryBody("FILE_UPLOAD", uploadFile, ContentType.create("image/png"),
+        Log.d("save", "url: "+url+"; result: "+(url.contains("savepic")?"file":"FILE_UPLOAD"));
+        multipartEntity.addBinaryBody(url.contains("savepice")?"file":"FILE_UPLOAD", uploadFile, ContentType.create("image/png"),
                 FileUtils.getFileNameFromUrl(filePath));
-
 
         m_RedirectUri = null;
 
@@ -100,7 +122,6 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
             for (Map.Entry<String, String> entry : additionalHeaders.entrySet()) {
                 multipartEntity.addPart(entry.getKey(), new StringBody(entry.getValue()));
             }
-
         final HttpEntity yourEntity = multipartEntity.build();
 
         final long totalSize = uploadFile.length();
@@ -201,6 +222,7 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
         ProgressiveEntity myEntity = new ProgressiveEntity();
 
         httppost.setEntity(myEntity);
+
         String res = client.execute(httppost, responseHandler);
         if (res == null)
             throw new NotReportException(App.getContext().getString(R.string.site_not_respond));

@@ -376,7 +376,8 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 || uri.getHost().toLowerCase().contains("googleusercontent.com")
                 || uri.getHost().toLowerCase().contains("windowsphone.com")
                 || uri.getHost().toLowerCase().contains("cs3-2.4pda.to")
-                || uri.getHost().toLowerCase().contains("mzstatic.com"))) {
+                || uri.getHost().toLowerCase().contains("mzstatic.com")
+                || uri.getHost().toLowerCase().contains("savepice.ru"))) {
             if (isTheme(uri)) {
                 showTopic(url);
                 return true;
@@ -587,7 +588,8 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 || uri.getHost().toLowerCase().contains("googleusercontent.com")
                 || uri.getHost().toLowerCase().contains("windowsphone.com")
                 || uri.getHost().toLowerCase().contains("cs3-2.4pda.to")
-                || uri.getHost().toLowerCase().contains("mzstatic.com")))
+                || uri.getHost().toLowerCase().contains("mzstatic.com")
+                || uri.getHost().toLowerCase().contains("savepice.ru")))
             return false;
         boolean isFile = PatternExtensions.compile("http://4pda.ru/forum/dl/post/\\d+/[^\"]*")
                 .matcher(uri.toString()).find() ||
@@ -629,7 +631,8 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         if (imagePattern.matcher(uri.toString()).find()
                 || (uri.getHost().toLowerCase().contains("ggpht.com")
                 || uri.getHost().toLowerCase().contains("googleusercontent.com")
-                || uri.getHost().toLowerCase().contains("windowsphone.com"))) {
+                || uri.getHost().toLowerCase().contains("windowsphone.com")
+                || uri.getHost().toLowerCase().contains("savepice.ru"))) {
 //            showImage(activity, uri.toString());
             showImage(activity, uri.toString());
             if (finish)

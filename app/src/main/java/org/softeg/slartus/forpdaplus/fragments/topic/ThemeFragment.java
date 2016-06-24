@@ -1253,7 +1253,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             url = lofiversionToNormal(url);
             if (m_History.size() > 0) {
                 m_History.get(m_History.size() - 1).setY(webView.getScrollY());
-                webView.loadUrl("javascript:window.HTMLOUT.setHistoryBody("+(m_History.size() - 1)+",'<!DOCTYPE html><html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+                webView.evalJs("window.HTMLOUT.setHistoryBody("+(m_History.size() - 1)+",'<!DOCTYPE html><html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
             }
             webView.setWebViewClient(getWebViewClient());
 
@@ -1687,10 +1687,13 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
             if (isCancelled()) return;
 
-            if (success) {
+            if (success&&m_Topic!=null) {
                 addToHistory(m_ThemeBody);
                 showBody(m_ThemeBody);
             } else {
+                if(m_Topic==null){
+                    return;
+                }
                 if (ex.getClass() != NotReportException.class) {
                     setTitle(ex.getMessage());
                     webView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);

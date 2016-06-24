@@ -114,7 +114,7 @@
 
 
     <string name="crash_toast_text">>Ooooops! Ошибка приложения!</string>
-    <string name="crash_dialog_text">Произошла непредвиденная ошибка, остановившая приложение. Пожалуйста помогите исправить её, отправив данные об ошибке</string>
+    <string name="crash_dialog_text">Произошла непредвиденная ошибка, остановившая приложение. Пожалуйста помогите исправить её, отправив данные об ошибке (необходимо приложение для отправки e-mail)</string>
     <string name="crash_dialog_title">Приложение остановлено</string>
     <string name="crash_dialog_comment_prompt">Вы можете добавить свой комментарий:</string>
     <string name="crash_dialog_ok_toast">Спасибо!</string>
