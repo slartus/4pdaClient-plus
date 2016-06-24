@@ -75,7 +75,7 @@
     <string name="RecommendText">Привет, я использую 4pda, это первый android-клиент для лучшего
         сайта о мобильных устройствах 4PDA 4pda.ru
     </string>
-    <string name="NeedToLogin">Необходимо залогиниться!</string>
+    <string name="NeedToLogin">Необходимо авторизироваться!</string>
     <string name="RaiseReputation">Поднять репутацию</string>
     <string name="FailedToCreateFolderInPath">Не удалось создать папку по указанному пути</string>
     <string name="FailedToCreateFileInPath">Не удалось создать файл по указанному пути</string>
@@ -300,7 +300,7 @@
     <string name="mark_all_forums_read">Отметить весь форум прочитанным</string>
     <string name="news">Новости</string>
     <string name="comment">Комментировать</string>
-    <string name="empty_text">Текст не можут быть пустым!</string>
+    <string name="empty_text">Текст не может быть пустым!</string>
     <string name="error_request">Ошибка запроса</string>
     <string name="request_performed">Запрос выполнен</string>
     <string name="note">Заметка</string>
@@ -350,7 +350,7 @@
     <string name="edit_post_combined">Ред. сообщения</string>
     <string name="answer">Ответ</string>
     <string name="no_attachment_on_page">Страница не имеет вложений</string>
-    <string name="need_login_for_download">Для скачивания файлов с сайта необходимо залогиниться!</string>
+    <string name="need_login_for_download">Для скачивания файлов с сайта необходима авторизация на сайте!</string>
     <string name="vote_bad">Понизить рейтинг сообщения?</string>
     <string name="do_vote_bad">Понизить</string>
     <string name="vote_good">Повысить рейтинг сообщения?</string>
@@ -369,8 +369,8 @@
     <string name="quality">Качество</string>
     <string name="vote_request_sent">Запрос на изменение репутации сообщения отправлен</string>
     <string name="vote_error_already_voted">Ошибка изменения репутации: Вы уже голосовали за этот пост</string>
-    <string name="vote_post_increased">Репутация поста увеличена</string>
-    <string name="vote_post_decreased">Репутация поста снижена</string>
+    <string name="vote_post_increased">Репутация поста повышена</string>
+    <string name="vote_post_decreased">Репутация поста понижена</string>
     <string name="vote_change_error">Ошибка изменения репутации</string>
     <string name="change_reputation">Кому изменял репутацию</string>
     <string name="topics">Темы</string>
