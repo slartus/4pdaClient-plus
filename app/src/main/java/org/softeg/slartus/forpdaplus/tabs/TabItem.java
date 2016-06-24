@@ -60,4 +60,8 @@ public class TabItem{
     public void setFragment(Fragment fragment) {
         this.fragment = fragment;
     }
+
+    public String toString(){
+        return "{T="+title+", U="+url+", TT="+tag+", PT="+parentTag+", F="+fragment+"}";
+    }
 }

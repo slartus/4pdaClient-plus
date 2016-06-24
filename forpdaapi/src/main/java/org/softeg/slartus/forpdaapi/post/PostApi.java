@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaapi.post;
 
-import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.TextUtils;
 
@@ -540,7 +539,7 @@ public class PostApi {
         }
     }
 
-    @NonNull
+
     private static String getChoicesText(String editPage) {
         String choicesText = "";
         Matcher choicesMatcher = Pattern.compile("poll_choices\\s*=\\s*\\{(.*)?'\\}", Pattern.CASE_INSENSITIVE)
@@ -551,7 +550,7 @@ public class PostApi {
         return choicesText;
     }
 
-    @NonNull
+
     private static String getMultiText(String editPage) {
         Matcher m = Pattern.compile("poll_multi\\s*=\\s*\\{(.*)?'\\}", Pattern.CASE_INSENSITIVE)
                 .matcher(editPage);

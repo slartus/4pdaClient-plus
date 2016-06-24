@@ -254,7 +254,6 @@ public class ShortUserInfo {
                 userRep.setText(getContext().getString(R.string.reputation) + ": " + reputation);
 
                 refreshQms();
-                //Log.e("kek", avatarUrl+" : "+prefs.getString("userAvatarUrl",""));
                 if (prefs.getBoolean("isUserBackground", false)) {
                     File imgFile = new File(prefs.getString("userInfoBg", ""));
                     if (imgFile.exists()) {
@@ -262,7 +261,6 @@ public class ShortUserInfo {
                     }
                 } else {
                     if (!avatarUrl.equals(prefs.getString("userAvatarUrl", "")) | prefs.getString("userInfoBg", "").equals("")) {
-                        //Log.e("kek", "true");
                         Picasso.with(App.getContext()).load(avatarUrl).into(target);
                     } else {
                         File imgFile = new File(prefs.getString("userInfoBg", ""));

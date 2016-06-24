@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     private Runnable setStatusBarHeight = new Runnable() {
         @Override
         public void run() {
-            Log.d("SU4KA", "BLYA");
             int[] ints = new int[2];
             appBarLayout.getLocationInWindow(ints);
             statusBarHeight = ints[1];
@@ -180,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         if (saveInstance != null) {
             App.getInstance().setTabIterator(saveInstance.getInt("tabIterator"));
             App.getInstance().setCurrentFragmentTag(saveInstance.getString("currentTag"));
+            tabLog("RestoreInstance [Iterator: "+saveInstance.getInt("tabIterator")+", CurrentTag: "+saveInstance.getString("currentTag")+"]");
         }
 
         final List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
@@ -191,12 +191,10 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 try {
                     if (fragment instanceof GeneralFragment) {
                         frag = (GeneralFragment) fragment;
-                        /*if(frag==null) continue;*/
-
                         item = new TabItem(frag.getGeneralTitle(), frag.getGeneralUrl(), frag.getTag(), frag.getGeneralParentTag(), frag);
                         frag.setThisTab(item);
                         App.getInstance().getTabItems().add(item);
-                        Log.e("kek", "RESTORE TAB " + frag + " : " + frag.getThisTab());
+                        tabLog("Restore [Fragment: "+frag+", ThisTab: "+frag.getThisTab()+"]");
                     }
                 } catch (ClassCastException ex) {
                     AppLog.e(ex);
@@ -256,19 +254,17 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             }
             statusBar = (RelativeLayout) findViewById(R.id.status_bar);
             fakeStatusBar = (RelativeLayout) findViewById(R.id.fakeSB);
-
-            switch (App.getInstance().getThemeType()) {
-                case App.THEME_TYPE_LIGHT:
-                    statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_light));
-                    break;
-                case App.THEME_TYPE_DARK:
-                    statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_dark));
-                    break;
-                default:
-                    statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_black));
-            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                Log.d("kekosa", "call post");
+                switch (App.getInstance().getThemeType()) {
+                    case App.THEME_TYPE_LIGHT:
+                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_light));
+                        break;
+                    case App.THEME_TYPE_DARK:
+                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_dark));
+                        break;
+                    default:
+                        statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_black));
+                }
                 getWindow().getDecorView().post(setStatusBarHeight);
             }
 
@@ -297,8 +293,10 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             new ForPdaVersionNotifier(notifiersManager, 1).start(this, false, true);
             activityPaused = false;
             if (App.getInstance().getCurrentFragmentTag() != null)
-                if (App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()) != null)
+                if (App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()) != null){
+                    tabLog("Main SelectTab ByTag: "+App.getInstance().getCurrentFragmentTag());
                     selectTab(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()));
+                }
 
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MainActivity.REQUEST_WRITE_STORAGE);
@@ -490,7 +488,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 return;
             }
         }
-
         checkIntent(intent);
     }
 
@@ -550,7 +547,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
 
     private void selectFragment(final String title, final String url, final String tag, final Fragment fragment) {
-        Log.e("kek", "selectfragment start");
+        tabLog("selectFragment start");
         if (mTabDraweMenu != null) {
             mTabDraweMenu.close();
             notifyTabAdapter();
@@ -591,6 +588,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             }
         }
         transaction.commit();
+        tabLog("selectFragment end");
     }
 
     public void hideFragments(FragmentTransaction transaction, boolean withAnimation) {
@@ -609,13 +607,14 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
 
     private void showFragment(FragmentTransaction transaction, String tag) {
+        tabLog("showFragmentSimple by tag "+tag);
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
         fragment.onResume();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(fragment);
-        Log.e("kek", "showfragment by tag end");
     }
 
     public void showFragment(String tag, boolean onresume) {
+        tabLog("showFragment by tag "+tag);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null) {
@@ -633,6 +632,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
 
     private void addFragment(FragmentTransaction transaction, Fragment fragment, String tag) {
+        tabLog("addFragment [Fragment: "+fragment+", Tag: "+tag+"]");
         if (fragment.isAdded()) return;
         transaction.add(R.id.content_frame, fragment, tag);
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(fragment);
@@ -655,9 +655,13 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     public static void log(String s) {
         Log.e("My log", s + "       ///////// INFO CURRENT TAG: " + App.getInstance().getCurrentFragmentTag());
     }
+    public static void tabLog(String s){
+        Log.e("TabLog",s+"\t\t[Current Tag: "+App.getInstance().getCurrentFragmentTag()+"]");
+    }
 
     @Override
     protected void onSaveInstanceState(android.os.Bundle outState) {
+        tabLog("saveInstance [Iterator: "+App.getInstance().getTabIterator()+", CurrentTag"+App.getInstance().getCurrentFragmentTag()+"]");
         outState.putInt("tabIterator", App.getInstance().getTabIterator());
         outState.putString("currentTag", App.getInstance().getCurrentFragmentTag());
         super.onSaveInstanceState(outState);
@@ -690,7 +694,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
      */
     @Override
     protected void onResumeFragments() {
-        //super.onResumeFragments();
         log("onResumeFragments");
     }
 
@@ -703,7 +706,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             handler.sendMessage(msg);
         }
         m_ExitWarned = false;
-        log("onResume " + System.currentTimeMillis() / 1000);
         onStart();
     }
 
@@ -715,6 +717,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             BrickInfo brickInfo = ListCore.getRegisteredBrick(Preferences.Lists.getLastSelectedList());
             if (brickInfo == null)
                 brickInfo = new NewsPagerBrickInfo();
+            tabLog("selectItem BrickInfo: "+brickInfo);
             selectItem(brickInfo);
         }
         if (tabOnIntent != null) {
@@ -728,13 +731,17 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
         if (!(String.valueOf(App.getInstance().getCurrentFragmentTag())).equals("null")) {
             Fragment fragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
-            if (fragment != null)
+            if (fragment != null){
+                tabLog("resume fragment: "+fragment);
                 fragment.onResume();
+            }
         }
-        int[] ints = new int[2];
-        appBarLayout.getLocationOnScreen(ints);
-        if (statusBarHeight != ints[1] && ints[1] != 0)
-            setStatusBarHeight.run();
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
+            int[] ints = new int[2];
+            appBarLayout.getLocationOnScreen(ints);
+            if (statusBarHeight != ints[1] && ints[1] != 0)
+                setStatusBarHeight.run();
+        }
         log("onPostResume");
     }
 
@@ -744,11 +751,11 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         activityPaused = true;
         if (!(String.valueOf(App.getInstance().getCurrentFragmentTag())).equals("null")) {
             Fragment fragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
-            if (fragment != null)
+            if (fragment != null){
+                tabLog("pause fragment: "+fragment);
                 fragment.onPause();
+            }
         }
-
-        log("onPause " + System.currentTimeMillis() / 1000);
     }
 
 
@@ -757,47 +764,42 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
 
     public static void addTab(String title, String url, Fragment fragment) {
-
-
+        tabLog("addTab [Title: "+title+", Url: "+url+", Fragment: "+fragment+"]");
         if (activityPaused | mTabDraweMenu == null) {
+            tabLog("create tabOnIntent");
             tabOnIntent = new TabItem(title, url, tabPrefix + App.getInstance().getTabIterator(), App.getInstance().getCurrentFragmentTag(), fragment);
         } else {
             addTabToList(title, url, tabPrefix + App.getInstance().getTabIterator(), fragment, true);
         }
-        if (!App.getInstance().isContainsByUrl(url))
-            App.getInstance().setCurrentFragmentTag(tabPrefix + (App.getInstance().getTabIterator() - 1));
+        if (!App.getInstance().isContainsByUrl(url)){
+            String newTag = tabPrefix + (App.getInstance().getTabIterator() - 1);
+            tabLog("new currentTag: "+newTag);
+            App.getInstance().setCurrentFragmentTag(newTag);
+        }
     }
 
     public static void addTabToList(String name, String url, String tag, Fragment fragment, boolean select) {
-        log("addtabtolist select: " + select);
-        log("start addtabtolist");
+        tabLog("start addTabToList[Name: "+name+", Url: "+url+", Tag: "+tag+", Fragment: "+fragment+", Select: "+select+"]");
         TabItem item = null;
         if (App.getInstance().isContainsByUrl(url)) {
             if (select) item = App.getInstance().getTabByUrl(url);
-            log("addtabtolist 1");
-
+            tabLog("choose 1");
         } else if (!App.getInstance().isContainsByTag(tag)) {
             item = new TabItem(name, url, tag, App.getInstance().getCurrentFragmentTag(), fragment);
+            tabLog("addTab Item: "+item);
             ((GeneralFragment) fragment).setThisTab(item);
-            Log.e("kek", "add item " + item);
             App.getInstance().getTabItems().add(item);
             App.getInstance().plusTabIterator();
-
             mTabDraweMenu.refreshAdapter();
-            log("addtabtolist 2");
+            tabLog("choose 2");
         } else {
             if (select) item = App.getInstance().getTabByTag(tag);
-            log("addtabtolist 3");
+            tabLog("choose 3");
         }
-        log("addtabtolist 4");
+        tabLog("choose 4");
 
         if (select) mTabDraweMenu.selectTab(item);
-    }
-
-    public static void selectTabByTag(String tag) {
-        log("selectTabByTag");
-        mTabDraweMenu.selectTab(App.getInstance().getTabByTag(tag));
-        ;
+        tabLog("end addTabToList[Item: "+item+"]");
     }
 
     public void tryRemoveTab(String tag) {
@@ -805,7 +807,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
 
     public void tryRemoveTab(String tag, boolean tryClose) {
-        log("tryRemoveTab");
+        tabLog("tryRemoveTab [Tag: "+tag+", Close: "+tryClose+"]");
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment != null && App.getInstance().getTabByTag(tag) != null)
             if (tryClose) {
@@ -817,11 +819,12 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
 
     public void removeTab(String tag) {
+        tabLog("removeTab tag: "+tag);
         if (activityPaused | mTabDraweMenu == null) {
             tabTagForRemove = tag;
+            tabLog("tabTagForRemove");
         } else {
-            log("remove tab" + App.getInstance().getTabByTag(tag));
-            log("remove " + tag);
+            tabLog("found tab for remove: "+App.getInstance().getTabByTag(tag));
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             hideFragments(transaction, false);
             transaction.remove(getSupportFragmentManager().findFragmentByTag(tag));
@@ -861,7 +864,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     public void appExit() {
         App.getInstance().setCurrentFragmentTag(null);
         App.getInstance().getTabItems().clear();
-        ;
         App.getInstance().clearTabIterator();
         App.getInstance().exit();
     }
@@ -1042,19 +1044,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                     }
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
-//        menu.add(0, 0, 997, "Правила форума").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//            public boolean onMenuItemClick(MenuItem item) {
-//                ForumRulesFragment.showRules();
-//                return true;
-//            }
-//        });
-//        menu.add(0, 0, 998, "Помощь (FAQ)").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//            public boolean onMenuItemClick(MenuItem item) {
-//                IntentActivity.showTopic("http://4pda.ru/forum/index.php?s=&showtopic=271502&view=findpost&p=45570566");
-//                return true;
-//            }
-//        });
 
         boolean showed = getPreferences().getBoolean("showedExitButton", false);
         if (getPreferences().getBoolean("showExitButton", false)) {
