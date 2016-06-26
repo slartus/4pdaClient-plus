@@ -128,7 +128,6 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         setArrow();
         loadPreferences(App.getInstance().getPreferences());
         if (Preferences.System.isDevSavePage()|
-                Preferences.System.isDevInterface()|
                 Preferences.System.isDevStyle())
             Toast.makeText(getMainActivity(), R.string.dev_mode, Toast.LENGTH_SHORT).show();
     }

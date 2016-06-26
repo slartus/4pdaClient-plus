@@ -124,12 +124,10 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         }
     };
     public void setArrow(){
-        if(getPreferences().getBoolean("showToolbarBackArrow", true))
-            getMainActivity().animateHamburger(false, removeTabListener);
+        getMainActivity().animateHamburger(false, removeTabListener);
     }
     public void removeArrow(){
-        if(getPreferences().getBoolean("showToolbarBackArrow", true))
-            getMainActivity().animateHamburger(true, null);
+        getMainActivity().animateHamburger(true, null);
     }
 
     @Override

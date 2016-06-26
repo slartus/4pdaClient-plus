@@ -127,12 +127,8 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
     public String getBody() {
         String res;
-        if (m_HtmlPreferences.isUseLocalEmoticons()) {
-            res = HtmlPreferences.modifyStyleImagesBody(m_Body.toString());
-            res = HtmlPreferences.modifyEmoticons(res, m_EmoticsDict, true);
-        } else {
-            res = HtmlPreferences.modifyEmoticons(m_Body.toString(), m_EmoticsDict, false);
-        }
+        res = HtmlPreferences.modifyStyleImagesBody(m_Body.toString());
+        res = HtmlPreferences.modifyEmoticons(res, m_EmoticsDict);
         if (!m_IsLoadImages)
             res = HtmlPreferences.modifyAttachedImagesBody(m_IsWebviewAllowJavascriptInterface, res);
         return res;

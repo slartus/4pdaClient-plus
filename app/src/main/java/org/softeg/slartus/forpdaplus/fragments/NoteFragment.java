@@ -187,7 +187,7 @@ public class NoteFragment extends GeneralFragment {
         htmlBuilder.beginHtml(getString(R.string.note));
         htmlBuilder.append("<div class=\"emoticons\">");
 
-        chatBody = HtmlPreferences.modifyBody(chatBody, Smiles.getSmilesDict(), true);
+        chatBody = HtmlPreferences.modifyBody(chatBody, Smiles.getSmilesDict());
         htmlBuilder.append(chatBody);
         htmlBuilder.append("</div>");
 

@@ -51,7 +51,6 @@ public class HtmlBuilder{
     public void addScripts() {
         m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/forum/js/z_forum_helpers.js\"></script>\n");
         m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/theme.js\"></script>\n");
-        m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/blockeditor.js\"></script>\n");
         m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/z_emoticons.js\"></script>\n");
     }
 
@@ -87,28 +86,10 @@ public class HtmlBuilder{
         }
         m_Body.append(bodyScript == null || TextUtils.isEmpty(bodyScript) ? "" : bodyScript)
                 .append(">\n");
-        /*if (bodyScript == null || TextUtils.isEmpty(bodyScript)) {
-            if(font==0){
-                m_Body.append("<body id=\""+id+"\" class=\"modification ").append(isImage ? "" : "noimages ").append(isGpuImg?"ongpuimg ":"").append("\">\n");
-            }else {
-                m_Body.append("<body id=\""+id+"\" class=\"modification ").append(isImage ? "" : "noimages").append(isGpuImg?"ongpuimg ":"").append("\" style=\"font-family:inherit;\">\n");
-            }
-        }else {
-            if(font==0){
-                m_Body.append("<body id=\""+id+"\" class=\"modification ").append(isImage ? "" : "noimages").append(isGpuImg?"ongpuimg ":"").append("\" " + bodyScript + ">\n");
-            }else {
-                m_Body.append("<body id=\""+id+"\"class=\"modification ").append(isImage ? "" : "noimages").append(isGpuImg?"ongpuimg ":"").append("\" style=\"font-family:inherit;\" " + bodyScript + ">\n");
-            }
-        }*/
-        if(Preferences.System.isDevInterface())
-            m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/forum/js/less-dev.js\"></script> <!-- DEVELOPER -->\n");
     }
 
     public HtmlBuilder endBody() {
-        String emoPath = HtmlPreferences.isUseLocalEmoticons(App.getContext()) ?
-                "file:///android_asset/forum/style_emoticons/default/" : "http://s.4pda.to/img/emot/";
-        m_Body.append("<script>jsEmoticons.parseAll('").append(emoPath).append("');initPostBlock();</script>");
-        //m_Body.append("<style>body:after {content: \"\";position: fixed;width: 100%;height: 100%;top:0;left: 0;z-index: 1000000;background-image:-webkit-linear-gradient(rgba(0, 128, 0, 0.3) 1px, transparent 1px),-webkit-linear-gradient(left, rgba(0, 128, 0, 0.3) 1px, transparent 1px);background-image:-o-linear-gradient(rgba(0, 128, 0, 0.3) 1px, transparent 1px),-o-linear-gradient(left, rgba(0, 128, 0, 0.3) 1px, transparent 1px);background-image:linear-gradient(rgba(0, 128, 0, 0.3) 1px, transparent 1px),linear-gradient(to right, rgba(0, 128, 0, 0.3) 1px, transparent 1px);background-size:0.5em 0.5em, 0.5em 0.5em;background-position:-1px -1px, -1px -1px;}</style>");
+        m_Body.append("<script>jsEmoticons.parseAll('").append("file:///android_asset/forum/style_emoticons/default/").append("');initPostBlock();</script>");
         m_Body.append("</body>\n");
         return this;
     }

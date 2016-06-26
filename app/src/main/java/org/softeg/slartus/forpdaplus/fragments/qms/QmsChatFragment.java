@@ -639,7 +639,7 @@ public class QmsChatFragment extends WebViewFragment {
             chatBody = chatBody.replaceAll("<img[^>]*?class=\"avatar\"[^>]*>", "");
         if (m_HtmlPreferences.isSpoilerByButton())
             chatBody = HtmlPreferences.modifySpoiler(chatBody);
-        chatBody = HtmlPreferences.modifyBody(chatBody, Smiles.getSmilesDict(), m_HtmlPreferences.isUseLocalEmoticons());
+        chatBody = HtmlPreferences.modifyBody(chatBody, Smiles.getSmilesDict());
         chatBody = chatBody.replaceAll("(<a[^>]*?href=\"([^\"]*?savepice[^\"]*-)[\\w]*(\\.[^\"]*)\"[^>]*?>)[^<]*?(</a>)", "$1<img src=\"$2prev$3\">$4");
         htmlBuilder.append(chatBody);
         htmlBuilder.append("<div id=\"bottom_element\" name=\"bottom_element\"></div>");

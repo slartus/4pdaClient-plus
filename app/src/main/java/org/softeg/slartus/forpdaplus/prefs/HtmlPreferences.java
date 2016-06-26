@@ -21,19 +21,11 @@ import java.util.Hashtable;
 public class HtmlPreferences {
 
     private Boolean m_SpoilerByButton = false;
-    private Boolean m_UseLocalEmoticons = true;
 
     public Boolean isSpoilerByButton() {
         return m_SpoilerByButton;
     }
 
-    public Boolean isUseLocalEmoticons() {
-        return m_UseLocalEmoticons;
-    }
-
-    public static Boolean isUseLocalEmoticons(Context context) {
-        return App.getInstance().getPreferences().getBoolean("theme.UseLocalEmoticons", true);
-    }
     public static Boolean isFullThemeTitle() {
         return App.getInstance().getPreferences().getBoolean("fullThemeTitle", false);
     }
@@ -44,7 +36,6 @@ public class HtmlPreferences {
 
     public void load(Context context) {
         m_SpoilerByButton = App.getInstance().getPreferences().getBoolean("theme.SpoilerByButton", getDefaultSpoilByButton());
-        m_UseLocalEmoticons = App.getInstance().getPreferences().getBoolean("theme.UseLocalEmoticons", true);
     }
 
     public static String modifySpoiler(String postBody) {
@@ -57,10 +48,10 @@ public class HtmlPreferences {
     }
 
 
-    public static String modifyBody(String value, Hashtable<String, String> emoticsDict, boolean localEmotics) {
+    public static String modifyBody(String value, Hashtable<String, String> emoticsDict) {
         value = modifyStyleImagesBody(value);
         value = modifyLinksBody(value);
-        value = modifyEmoticons(value, emoticsDict, localEmotics);
+        value = modifyEmoticons(value, emoticsDict);
         // value=value.replaceAll("<TABLE(.*?)><TD","<TABLE$1><TR><TD").replace("</TD></TABLE>","</TD></TR></TABLE>");
         return value;
     }
@@ -89,9 +80,8 @@ public class HtmlPreferences {
 //        return value;
     }
 
-    public static String modifyEmoticons(String value, Hashtable<String, String> emoticsDict, boolean localEmotics) {
-
-        return localEmotics ? modifyEmoticonsToLocal(value, emoticsDict) : modifyEmoticonsToServer(value, emoticsDict);
+    public static String modifyEmoticons(String value, Hashtable<String, String> emoticsDict) {
+        return modifyEmoticonsToLocal(value, emoticsDict);
     }
 
     public static String modifyEmoticonsToLocal(String value, Hashtable<String, String> emoticsDict) {

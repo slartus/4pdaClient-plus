@@ -113,14 +113,14 @@ public class SearchPostsParser extends HtmlBuilder {
                             "(Спойлер \\(\\+/-\\).*?</div>)" +
                             "(\\s*<div class='hidemain' style=\"display:none\">)";
                     String replace = "$1>$3<input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility\\(this\\)\"/>$4";
-                    m_Body.append("<div class=\"post_body emoticons\">").append(Post.modifyBody(postsMatcher.group(2), m_EmoticsDict, true).replaceAll(find, replace)).append("</div>");
+                    m_Body.append("<div class=\"post_body emoticons\">").append(Post.modifyBody(postsMatcher.group(2), m_EmoticsDict).replaceAll(find, replace)).append("</div>");
                 } else {
-                    m_Body.append("<div class=\"post_body emoticons\">").append(Post.modifyBody(postsMatcher.group(2), m_EmoticsDict, true)).append("</div>");
+                    m_Body.append("<div class=\"post_body emoticons\">").append(Post.modifyBody(postsMatcher.group(2), m_EmoticsDict)).append("</div>");
                 }
 
                 matcher.usePattern(footerPattern).reset(postMatcher.group(1));
                 if (matcher.find())
-                    m_Body.append("<div class=\"s_post_footer\"><table width=\"100%%\"><tr><td>").append(Post.modifyBody(matcher.group(1), m_EmoticsDict, true)).append("</td></tr></table></div>");
+                    m_Body.append("<div class=\"s_post_footer\"><table width=\"100%%\"><tr><td>").append(Post.modifyBody(matcher.group(1), m_EmoticsDict)).append("</td></tr></table></div>");
                 m_Body.append("</div><div class=\"between_messages\"></div>");
             }
             posts++;

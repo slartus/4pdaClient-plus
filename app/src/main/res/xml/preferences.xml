@@ -51,10 +51,6 @@
                 android:defaultValue="false"
                 android:key="pancilInActionBar"
                 android:title="Карандаш в экшнбаре" />
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="showToolbarBackArrow"
-                android:title="Показывать стрелку 'назад'" />
         </PreferenceCategory>
 
         <PreferenceCategory android:title="Боковая панель">
@@ -117,11 +113,6 @@
             android:entryValues="@array/ConnectTypeValues"
             android:key="theme.LoadsImages"
             android:title="Загружать картинки" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="theme.UseLocalEmoticons"
-            android:summary="Локальные: высокая скорость, меньше траффик; Интернет: низкая скорость, больше траффик"
-            android:title="Использовать локальные картинки" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="theme.UseVolumesScroll"
@@ -356,10 +347,6 @@
                 android:key="system.developerSavePage"
                 android:summary="Возможность сохранения страницы"
                 android:title="Сохранить страницу" />
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="system.developerInterface"
-                android:title="Интерфейс для разработки" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="system.developerStyle"

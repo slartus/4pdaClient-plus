@@ -70,8 +70,8 @@ public class Post {
         m_UserNick = author;
     }
 
-    public static String modifyBody(String value, Hashtable<String, String> emoticsDict, Boolean useLocalEmoticons) {
-        return HtmlPreferences.modifyBody(value, emoticsDict, useLocalEmoticons);
+    public static String modifyBody(String value, Hashtable<String, String> emoticsDict) {
+        return HtmlPreferences.modifyBody(value, emoticsDict);
     }
 
     public void setBody(String value) {

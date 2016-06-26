@@ -154,7 +154,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     private QuickPostFragment mQuickPostFragment;
 
     private String lastStyle;
-    private ForPdaDeveloperInterface m_ForPdaDeveloperInterface;
     private GetThemeTask asyncTask;
     private MyWebViewClient webViewClient;
 
@@ -349,8 +348,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         setHideArrows(Preferences.isHideArrows());
         webView.addJavascriptInterface(new ForPdaWebInterface(this), ForPdaWebInterface.NAME);
-        m_ForPdaDeveloperInterface = new ForPdaDeveloperInterface(this);
-        webView.addJavascriptInterface(m_ForPdaDeveloperInterface, ForPdaDeveloperInterface.NAME);
         return view;
     }
 
@@ -770,14 +767,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         quoteEditorDialogFragment.show(getChildFragmentManager(), "dialog");
     }
 
-    public void saveHtml() {
-        try {
-            webView.evalJs("window." + ForPdaDeveloperInterface.NAME + ".saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
-        } catch (Throwable ex) {
-            AppLog.e(getMainActivity(), ex);
-        }
-    }
-
     public void checkBodyAndReload(String body) {
         if (TextUtils.isEmpty(body)) {
             reloadTopic();
@@ -1140,9 +1129,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == ForPdaDeveloperInterface.FILECHOOSER_RESULTCODE) {
-            m_ForPdaDeveloperInterface.onActivityResult(requestCode, resultCode, data);
-        } else if (requestCode == EditPostFragment.NEW_EDIT_POST_REQUEST_CODE) {
+        if (requestCode == EditPostFragment.NEW_EDIT_POST_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 String url = data.getStringExtra(EditPostFragment.POST_URL_KEY);
                 assert url != null;

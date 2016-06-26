@@ -325,10 +325,6 @@ public class Preferences {
             return App.getInstance().getPreferences().getBoolean("system.developerSavePage", false);
         }
 
-        public static boolean isDevInterface() {
-            return App.getInstance().getPreferences().getBoolean("system.developerInterface", false);
-        }
-
         public static boolean isDevStyle() {
             return App.getInstance().getPreferences().getBoolean("system.developerStyle", false);
         }

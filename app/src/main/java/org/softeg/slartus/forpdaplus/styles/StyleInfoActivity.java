@@ -96,7 +96,6 @@ public class StyleInfoActivity extends BrowserViewsFragmentActivity {
         sb.append("<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\" />\n");
         sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file://").append(stylePath).append("\" />\n");
         sb.append("<script type=\"text/javascript\" src=\"file:///android_asset/theme.js\"></script>\n");
-        sb.append("<script type=\"text/javascript\" src=\"file:///android_asset/blockeditor.js\"></script>\n");
 
         sb.append("</head>\n");
         sb.append("<body><div class=\"post_body\">\n");
@@ -120,12 +119,10 @@ public class StyleInfoActivity extends BrowserViewsFragmentActivity {
         HtmlPreferences htmlPreferences = new HtmlPreferences();
         htmlPreferences.load(this);
         if (htmlPreferences.isSpoilerByButton()) {
-
             res = HtmlPreferences.modifySpoiler(res);
         }
-        if (htmlPreferences.isUseLocalEmoticons()) {
-            res = HtmlPreferences.modifyStyleImagesBody(res);
-        }
+
+        res = HtmlPreferences.modifyStyleImagesBody(res);
 
         if (!WebViewExternals.isLoadImages("theme"))
             res = HtmlPreferences.modifyAttachedImagesBody(Functions.isWebviewAllowJavascriptInterface(this), res);
