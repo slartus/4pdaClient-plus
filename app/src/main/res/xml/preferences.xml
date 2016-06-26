@@ -549,15 +549,31 @@
         <!--android:title="Перейти на страницу помощи проекту" />-->
         <PreferenceScreen
             android:summary="Спасибо за стили"
-            android:title="Благодарности создателю стилей Морфию">
-            <Preference
-                android:key="Morfiy.Yandex.money"
-                android:summary="Скопировать в буфер: 410012338466153"
-                android:title="Яндекс-кошелёк" />
+            android:title="Благодарности Морфию">
             <Preference
                 android:key="Morfiy.WebMoney.moneyB"
                 android:summary="Скопировать в буфер: B266066430353"
                 android:title="WebMoney B" />
+
+            <Preference
+                android:key="Morfiy.WebMoney.moneyU"
+                android:summary="Скопировать в буфер: U376942372846"
+                android:title="WebMoney U" />
+
+            <Preference
+                android:key="Morfiy.WebMoney.moneyE"
+                android:summary="Скопировать в буфер: E300106725068"
+                android:title="WebMoney E" />
+
+            <Preference
+                android:key="Morfiy.WebMoney.moneyR"
+                android:summary="Скопировать в буфер: R343791846131"
+                android:title="WebMoney R" />
+
+            <Preference
+                android:key="Morfiy.WebMoney.moneyZ"
+                android:summary="Скопировать в буфер: Z349073483817"
+                android:title="WebMoney Z" />
         </PreferenceScreen>
         <Preference
             android:key="Radiation.Yandex.money"

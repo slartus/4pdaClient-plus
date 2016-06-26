@@ -122,17 +122,41 @@ public class DonateActivity extends PreferenceActivity {
 //        });
 
 
-        fragment.findPreference("Morfiy.Yandex.money").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        fragment.findPreference("Morfiy.WebMoney.moneyB").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                StringUtils.copyToClipboard(fragment.getActivity(), "410012338466153");
-                Toast.makeText(fragment.getActivity(), fragment.getActivity().getString(R.string.DonateAccountNimberCopied), Toast.LENGTH_SHORT).show();
+                StringUtils.copyToClipboard(fragment.getActivity(), "B266066430353");
+                Toast.makeText(fragment.getActivity(), fragment.getActivity().getString(R.string.DonatePurseCopied), Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
 
-        fragment.findPreference("Morfiy.WebMoney.moneyB").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        fragment.findPreference("Morfiy.WebMoney.moneyU").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
-                StringUtils.copyToClipboard(fragment.getActivity(), "B266066430353");
+                StringUtils.copyToClipboard(fragment.getActivity(), "U376942372846");
+                Toast.makeText(fragment.getActivity(), fragment.getActivity().getString(R.string.DonatePurseCopied), Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        fragment.findPreference("Morfiy.WebMoney.moneyE").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                StringUtils.copyToClipboard(fragment.getActivity(), "E300106725068");
+                Toast.makeText(fragment.getActivity(), fragment.getActivity().getString(R.string.DonatePurseCopied), Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        fragment.findPreference("Morfiy.WebMoney.moneyR").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                StringUtils.copyToClipboard(fragment.getActivity(), "R343791846131");
+                Toast.makeText(fragment.getActivity(), fragment.getActivity().getString(R.string.DonatePurseCopied), Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        fragment.findPreference("Morfiy.WebMoney.moneyZ").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                StringUtils.copyToClipboard(fragment.getActivity(), "Z349073483817");
                 Toast.makeText(fragment.getActivity(), fragment.getActivity().getString(R.string.DonatePurseCopied), Toast.LENGTH_SHORT).show();
                 return true;
             }
