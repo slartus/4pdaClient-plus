@@ -446,15 +446,17 @@ span[style*="font-size:8pt"] * {
   text-align: center;
 }
 .hat .hidetop > input {
-  display: block;
   position: absolute;
-  left: 0;
-  right: 0;
   top: 0;
-  bottom: 0;
+  left: 0;
   opacity: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
 }
-.hat .hidetop b {
+.hat .hidetop b,
+.hat .hidetop b:before,
+.hat .hidetop b:after {
   pointer-events: none;
 }
 .hat .hidetop span {
@@ -1661,6 +1663,7 @@ div[data-post] > a {
   height: 1.375rem;
   padding: 0 0.5rem;
   text-align: center;
+  box-sizing: border-box;
   color: white;
   background: rgba(158, 158, 158, 0.3);
 }
@@ -1672,7 +1675,7 @@ div[data-post] > a {
 }
 #news .product-detail .description .info-holder .date:before {
   position: absolute;
-  left: -1.365rem;
+  left: -1.328125rem;
   display: inline-block;
   content: '';
   border: 0.6875rem solid transparent;
