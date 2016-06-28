@@ -85,20 +85,18 @@ import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
-import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 import static org.softeg.slartus.forpdaplus.utils.Utils.getS;
 
@@ -106,12 +104,12 @@ import static org.softeg.slartus.forpdaplus.utils.Utils.getS;
  * Created by radiationx on 28.10.15.
  */
 public class ThemeFragment extends WebViewFragment implements BricksListDialogFragment.IBricksListDialogCaller {
-    @Bind(R.id.quick_post_panel) LinearLayout mQuickPostPanel;
-    @Bind(R.id.fab) FloatingActionButton fab;
-    @Bind(R.id.wvBody) AdvWebView webView;
-    @Bind(R.id.txtSearch) EditText txtSearch;
-    @Bind(R.id.pnlSearch) LinearLayout pnlSearch;
-    @Bind(R.id.buttonsPanel) FrameLayout buttonsPanel;
+    @BindView(R.id.quick_post_panel) LinearLayout mQuickPostPanel;
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.wvBody) AdvWebView webView;
+    @BindView(R.id.txtSearch) EditText txtSearch;
+    @BindView(R.id.pnlSearch) LinearLayout pnlSearch;
+    @BindView(R.id.buttonsPanel) FrameLayout buttonsPanel;
 
     @OnClick(R.id.btnPrevSearch)
     public void btnPrevSearch(){
@@ -133,6 +131,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public void btnDown(){
         webView.pageDown(true);
     }
+
+    private Unbinder unbinder;
 
     private static final String TAG = "ThemeActivity";
     private static final String TOPIC_URL_KEY = "ThemeActivity.TOPIC_URL_KEY";
@@ -260,7 +260,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.theme, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         initSwipeRefreshLayout();
         lastStyle = App.getInstance().getThemeCssFileName();
         LoadsImagesAutomatically = null;
@@ -269,35 +269,27 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         mQuickPostFragment = (QuickPostFragment) getChildFragmentManager().findFragmentById(R.id.quick_post_fragment);
         mQuickPostFragment.setParentTag(getTag());
-        mQuickPostFragment.setOnPostSendListener(new QuickPostFragment.PostSendListener() {
-            @Override
-            public void onPostExecute(org.softeg.slartus.forpdaplus.controls.quickpost.PostTask.PostResult postResult) {
-                if (postResult.Success) {
-                    hideMessagePanel();
-                    if (Client.getInstance().getRedirectUri() == null)
-                        android.util.Log.e("ThemeActivity", "redirect is null");
-                    m_LastUrl = Client.getInstance().getRedirectUri() == null ? Client.getInstance().getLastUrl() : Client.getInstance().getRedirectUri().toString();
-                    m_Topic = postResult.ExtTopic;
+        mQuickPostFragment.setOnPostSendListener(postResult -> {
+            if (postResult.Success) {
+                hideMessagePanel();
+                if (Client.getInstance().getRedirectUri() == null)
+                    Log.e("ThemeActivity", "redirect is null");
+                m_LastUrl = Client.getInstance().getRedirectUri() == null ? Client.getInstance().getLastUrl() : Client.getInstance().getRedirectUri().toString();
+                m_Topic = postResult.ExtTopic;
 
-                    if (postResult.TopicBody == null)
-                        android.util.Log.e("ThemeActivity", "TopicBody is null");
-                    addToHistory(postResult.TopicBody);
-                    showBody(postResult.TopicBody);
+                if (postResult.TopicBody == null)
+                    Log.e("ThemeActivity", "TopicBody is null");
+                addToHistory(postResult.TopicBody);
+                showBody(postResult.TopicBody);
 
-                } else {
-                    if (postResult.Exception != null)
-                        AppLog.e(getMainActivity(), postResult.Exception, new Runnable() {
-                            @Override
-                            public void run() {
-                                mQuickPostFragment.post();
-                            }
-                        });
-                    else if (!TextUtils.isEmpty(postResult.ForumErrorMessage))
-                        new MaterialDialog.Builder(getContext())
-                                .title(R.string.forum_msg)
-                                .content(postResult.ForumErrorMessage)
-                                .show();
-                }
+            } else {
+                if (postResult.Exception != null)
+                    AppLog.e(getMainActivity(), postResult.Exception, () -> mQuickPostFragment.post());
+                else if (!TextUtils.isEmpty(postResult.ForumErrorMessage))
+                    new MaterialDialog.Builder(getContext())
+                            .title(R.string.forum_msg)
+                            .content(postResult.ForumErrorMessage)
+                            .show();
             }
         });
 
@@ -323,12 +315,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }else {
             setHideFab(fab);
             setFabColors(fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    toggleMessagePanelVisibility();
-                }
-            });
+            fab.setOnClickListener(view1 -> toggleMessagePanelVisibility());
         }
         registerForContextMenu(webView);
         setWebViewSettings();
@@ -439,50 +426,48 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         return optionsMenu;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
+    }
+
     private void configureOptionsMenu(final Context context, final Handler mHandler, SubMenu optionsMenu,
-                                             Boolean addFavorites, final String shareItUrl) {
+                                      Boolean addFavorites, final String shareItUrl) {
 
         optionsMenu.clear();
 
 
         if (addFavorites) {
-            optionsMenu.add(R.string.AddToFavorites).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    try {
-                        TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, getTopic());
-                    } catch (Exception ex) {
-                        AppLog.e(context, ex);
-                    }
-
-                    return true;
+            optionsMenu.add(R.string.AddToFavorites).setOnMenuItemClickListener(menuItem -> {
+                try {
+                    TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, getTopic());
+                } catch (Exception ex) {
+                    AppLog.e(context, ex);
                 }
+
+                return true;
             });
 
-            optionsMenu.add(R.string.DeleteFromFavorites).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    try {
-                        final HelpTask helpTask = new HelpTask(context, context.getString(R.string.DeletingFromFavorites));
-                        helpTask.setOnPostMethod(new HelpTask.OnMethodListener() {
-                            public Object onMethod(Object param) {
-                                if (helpTask.Success)
-                                    Toast.makeText(context, (String) param, Toast.LENGTH_SHORT).show();
-                                else
-                                    AppLog.e(context, helpTask.ex);
-                                return null;
-                            }
-                        });
-                        helpTask.execute(new HelpTask.OnMethodListener() {
-                                             public Object onMethod(Object param) throws IOException, ParseException, URISyntaxException {
-                                                 return TopicApi.deleteFromFavorites(Client.getInstance(),
-                                                         getTopic().getId());
-                                             }
-                                         }
-                        );
-                    } catch (Exception ex) {
-                        AppLog.e(context, ex);
+            optionsMenu.add(R.string.DeleteFromFavorites).setOnMenuItemClickListener(menuItem -> {
+                try {
+                    final HelpTask helpTask = new HelpTask(context, context.getString(R.string.DeletingFromFavorites));
+                    helpTask.setOnPostMethod(param -> {
+                        if (helpTask.Success)
+                            Toast.makeText(context, (String) param, Toast.LENGTH_SHORT).show();
+                        else
+                            AppLog.e(context, helpTask.ex);
+                        return null;
+                    });
+                    helpTask.execute((HelpTask.OnMethodListener) param -> {
+                        return TopicApi.deleteFromFavorites(Client.getInstance(),
+                                getTopic().getId());
                     }
-                    return true;
+                    );
+                } catch (Exception ex) {
+                    AppLog.e(context, ex);
                 }
+                return true;
             });
 
 
@@ -505,43 +490,35 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             });*/
 
 
-            optionsMenu.add(R.string.OpenTopicForum).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    try {
-                        ForumFragment.showActivity(context, getTopic().getForumId(), getTopic().getId());
-                    } catch (Exception ex) {
-                        AppLog.e(context, ex);
-                    }
-                    return true;
+            optionsMenu.add(R.string.OpenTopicForum).setOnMenuItemClickListener(menuItem -> {
+                try {
+                    ForumFragment.showActivity(context, getTopic().getForumId(), getTopic().getId());
+                } catch (Exception ex) {
+                    AppLog.e(context, ex);
                 }
+                return true;
             });
         }
 
 
-        optionsMenu.add(R.string.NotesByTopic).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                Bundle args = new Bundle();
-                args.putString(NotesListFragment.TOPIC_ID_KEY, getTopic().getId());
-                MainActivity.showListFragment(new NotesBrickInfo().getName(), args);
-                return true;
-            }
+        optionsMenu.add(R.string.NotesByTopic).setOnMenuItemClickListener(menuItem -> {
+            Bundle args = new Bundle();
+            args.putString(NotesListFragment.TOPIC_ID_KEY, getTopic().getId());
+            MainActivity.showListFragment(new NotesBrickInfo().getName(), args);
+            return true;
         });
         if(!Preferences.Topic.getReadersAndWriters()) {
-            optionsMenu.add(R.string.who_read_topic).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    Bundle args = new Bundle();
-                    args.putString(TopicReadersListFragment.TOPIC_ID_KEY, getTopic().getId());
-                    MainActivity.showListFragment(getTopic().getId(), TopicReadersBrickInfo.NAME, args);
-                    return true;
-                }
+            optionsMenu.add(R.string.who_read_topic).setOnMenuItemClickListener(menuItem -> {
+                Bundle args = new Bundle();
+                args.putString(TopicReadersListFragment.TOPIC_ID_KEY, getTopic().getId());
+                MainActivity.showListFragment(getTopic().getId(), TopicReadersBrickInfo.NAME, args);
+                return true;
             });
-            optionsMenu.add(R.string.who_posted_msg).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    Bundle args = new Bundle();
-                    args.putString(TopicWritersListFragment.TOPIC_ID_KEY, getTopic().getId());
-                    MainActivity.showListFragment(getTopic().getId(), TopicWritersBrickInfo.NAME, args);
-                    return true;
-                }
+            optionsMenu.add(R.string.who_posted_msg).setOnMenuItemClickListener(menuItem -> {
+                Bundle args = new Bundle();
+                args.putString(TopicWritersListFragment.TOPIC_ID_KEY, getTopic().getId());
+                MainActivity.showListFragment(getTopic().getId(), TopicWritersBrickInfo.NAME, args);
+                return true;
             });
         }
 
@@ -564,67 +541,49 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             if(pancil) {
                 menu.add(R.string.new_post)
                         .setIcon(R.drawable.pencil)
-                        .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                            public boolean onMenuItemClick(MenuItem item) {
-                                toggleMessagePanelVisibility();
-                                return true;
-                            }
+                        .setOnMenuItemClickListener(item -> {
+                            toggleMessagePanelVisibility();
+                            return true;
                         }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
             menu.add(R.string.Refresh)
                     .setIcon(R.drawable.refresh)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                        public boolean onMenuItemClick(MenuItem item) {
-                            reloadTopic();
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(item -> {
+                        reloadTopic();
+                        return true;
                     }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             SubMenu subMenu = menu.addSubMenu(R.string.Attaches)
                     .setIcon(R.drawable.download_white);
 
             subMenu.add(R.string.attachments_page)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem item) {
-                            showPageAttaches();
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(item -> {
+                        showPageAttaches();
+                        return true;
                     });
             subMenu.add(R.string.all_attachments_topic)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem item) {
-                            showTopicAttaches();
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(item -> {
+                        showTopicAttaches();
+                        return true;
                     });
 
             menu.add(R.string.FindOnPage)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    .setOnMenuItemClickListener(item -> {
+                        onSearchRequested();
 
-                        public boolean onMenuItemClick(MenuItem item) {
-                            onSearchRequested();
-
-                            return true;
-                        }
+                        return true;
                     });
             menu.add(R.string.FindInTopic)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                        public boolean onMenuItemClick(MenuItem item) {
-                            SearchSettingsDialogFragment.showSearchSettingsDialog(getMainActivity(),
-                                    SearchSettingsDialogFragment.createTopicSearchSettings(getTopic().getId()));
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(item -> {
+                        SearchSettingsDialogFragment.showSearchSettingsDialog(getMainActivity(),
+                                SearchSettingsDialogFragment.createTopicSearchSettings(getTopic().getId()));
+                        return true;
                     });
 
             mTopicOptionsMenu = addOptionsMenu(getMainActivity(), getHandler(), menu, true, getLastUrl());
 
-            menu.add(R.string.link).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    ExtUrl.showSelectActionDialog(getMainActivity(), getS(R.string.link), TextUtils.isEmpty(getLastUrl()) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : getLastUrl());
-                    return true;
-                }
+            menu.add(R.string.link).setOnMenuItemClickListener(menuItem -> {
+                ExtUrl.showSelectActionDialog(getMainActivity(), getS(R.string.link), TextUtils.isEmpty(getLastUrl()) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : getLastUrl());
+                return true;
             });
             SubMenu optionsMenu = menu.addSubMenu(R.string.theme_view);
             optionsMenu.getItem().setTitle(R.string.theme_view);
@@ -632,84 +591,66 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
             optionsMenu.add(String.format(getS(R.string.avatars),
                     App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]))
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(final MenuItem menuItem) {
-                            String[] avatars = App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles);
-                            new MaterialDialog.Builder(getMainActivity())
-                                    .title(R.string.show_avatars)
-                                    .cancelable(true)
-                                    .items(avatars)
-                                    .itemsCallbackSingleChoice(Preferences.Topic.getShowAvatarsOpt(), new MaterialDialog.ListCallbackSingleChoice() {
-                                        @Override
-                                        public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence avatars) {
-                                            //if(i==-1) return false;
+                    .setOnMenuItemClickListener(menuItem -> {
+                        String[] avatars = App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles);
+                        new MaterialDialog.Builder(getMainActivity())
+                                .title(R.string.show_avatars)
+                                .cancelable(true)
+                                .items(avatars)
+                                .itemsCallbackSingleChoice(Preferences.Topic.getShowAvatarsOpt(), (dialog, view1, i, avatars1) -> {
+                                    //if(i==-1) return false;
 
-                                            Preferences.Topic.setShowAvatarsOpt(i);
-                                            menuItem.setTitle(String.format(getS(R.string.show_avatars_a),
-                                                    App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]));
-                                            return true; // allow selection
-                                        }
-                                    })
-                                    .show();
-                            return true;
-                        }
+                                    Preferences.Topic.setShowAvatarsOpt(i);
+                                    menuItem.setTitle(String.format(getS(R.string.show_avatars_a),
+                                            App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]));
+                                    return true; // allow selection
+                                })
+                                .show();
+                        return true;
                     });
             if(!pancil) {
                 optionsMenu.add(R.string.hide_pencil)
-                        .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                            public boolean onMenuItemClick(MenuItem menuItem) {
-                                Preferences.setHideFab(!Preferences.isHideFab());
-                                setHideFab(fab);
-                                menuItem.setChecked(Preferences.isHideFab());
-                                return true;
-                            }
+                        .setOnMenuItemClickListener(menuItem -> {
+                            Preferences.setHideFab(!Preferences.isHideFab());
+                            setHideFab(fab);
+                            menuItem.setChecked(Preferences.isHideFab());
+                            return true;
                         }).setCheckable(true).setChecked(Preferences.isHideFab());
             }
 
             optionsMenu.add(R.string.hide_arrows)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            Preferences.setHideArrows(!Preferences.isHideArrows());
-                            setHideArrows(Preferences.isHideArrows());
-                            menuItem.setChecked(Preferences.isHideArrows());
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(menuItem -> {
+                        Preferences.setHideArrows(!Preferences.isHideArrows());
+                        setHideArrows(Preferences.isHideArrows());
+                        menuItem.setChecked(Preferences.isHideArrows());
+                        return true;
                     }).setCheckable(true).setChecked(Preferences.isHideArrows());
 
             optionsMenu.add(R.string.loading_img_for_session)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            Boolean loadImagesAutomatically1 = getLoadsImagesAutomatically();
-                            setLoadsImagesAutomatically(!loadImagesAutomatically1);
-                            menuItem.setChecked(!loadImagesAutomatically1);
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(menuItem -> {
+                        Boolean loadImagesAutomatically1 = getLoadsImagesAutomatically();
+                        setLoadsImagesAutomatically(!loadImagesAutomatically1);
+                        menuItem.setChecked(!loadImagesAutomatically1);
+                        return true;
                     }).setCheckable(true).setChecked(getLoadsImagesAutomatically());
             optionsMenu.add(R.string.font_size)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            showFontSizeDialog();
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(menuItem -> {
+                        showFontSizeDialog();
+                        return true;
                     });
 
-            optionsMenu.add(R.string.theme_style).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    showStylesDialog(App.getInstance().getPreferences());
-                    return true;
-                }
+            optionsMenu.add(R.string.theme_style).setOnMenuItemClickListener(menuItem -> {
+                showStylesDialog(App.getInstance().getPreferences());
+                return true;
             });
             if (Preferences.System.isCurator()) {
-                menu.add(R.string.multi_moderation).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        try {
-                            ThemeCurator.showMmodDialog(getActivity(), ThemeFragment.this, getTopic().getId());
-                        } catch (Exception ex) {
-                            return false;
-                        }
-                        return true;
+                menu.add(R.string.multi_moderation).setOnMenuItemClickListener(menuItem -> {
+                    try {
+                        ThemeCurator.showMmodDialog(getActivity(), ThemeFragment.this, getTopic().getId());
+                    } catch (Exception ex) {
+                        return false;
                     }
+                    return true;
                 });
             }
 
@@ -822,24 +763,22 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     private void closeSearch() {
-        mHandler.post(new Runnable() {
-            public void run() {
-                if (Build.VERSION.SDK_INT >= 16) {
-                    webView.findAllAsync("");
-                } else {
-                    webView.findAll("");
-                }
-
-                try {
-                    Method m = WebView.class.getMethod("setFindIsUp", Boolean.TYPE);
-                    m.invoke(webView, false);
-                } catch (Throwable ignored) {
-                }
-
-                pnlSearch.setVisibility(View.GONE);
-                InputMethodManager imm = (InputMethodManager) getMainActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(pnlSearch.getWindowToken(), 0);
+        mHandler.post(() -> {
+            if (Build.VERSION.SDK_INT >= 16) {
+                webView.findAllAsync("");
+            } else {
+                webView.findAll("");
             }
+
+            try {
+                Method m = WebView.class.getMethod("setFindIsUp", Boolean.TYPE);
+                m.invoke(webView, false);
+            } catch (Throwable ignored) {
+            }
+
+            pnlSearch.setVisibility(View.GONE);
+            InputMethodManager imm = (InputMethodManager) getMainActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(pnlSearch.getWindowToken(), 0);
         });
     }
 
@@ -964,38 +903,17 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 .title(R.string.quote)
                 .cancelable(true)
                 .items(titles)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View view, int i, CharSequence titles) {
-                        switch (i) {
-                            case 0:
-                                showQuoteEditor("http://4pda.ru/forum/index.php?act=Post&CODE=02&f=" + forumId + "&t=" + topicId + "&qpid=" + postId);
-                                break;
-                            case 1:
-                                getMainActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        new Handler().post(new Runnable() {
-                                            public void run() {
-                                                insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n\n[/quote]");
-                                            }
-                                        });
-                                    }
-                                });
-                                break;
-                            case 2:
-                                getMainActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        new Handler().post(new Runnable() {
-                                            public void run() {
-                                                insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n" + finalClipboardText + "\n[/quote]");
-                                            }
-                                        });
-                                    }
-                                });
-                                break;
-                        }
+                .itemsCallback((dialog, view1, i, titles1) -> {
+                    switch (i) {
+                        case 0:
+                            showQuoteEditor("http://4pda.ru/forum/index.php?act=Post&CODE=02&f=" + forumId + "&t=" + topicId + "&qpid=" + postId);
+                            break;
+                        case 1:
+                            getMainActivity().runOnUiThread(() -> new Handler().post(() -> insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n\n[/quote]")));
+                            break;
+                        case 2:
+                            getMainActivity().runOnUiThread(() -> new Handler().post(() -> insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n" + finalClipboardText + "\n[/quote]")));
+                            break;
                     }
                 })
                 .show();
@@ -1008,49 +926,19 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             final List<MenuListDialog> list = new ArrayList<>();
 
             if (Client.getInstance().getLogined()){
-                list.add(new MenuListDialog(getS(R.string.url_post), new Runnable() {
-                    @Override
-                    public void run() {
-                        showLinkMenu(Post.getLink(m_Topic.getId(), postId), postId);
-                    }
-                }));
-                list.add(new MenuListDialog(getS(R.string.report_msg), new Runnable() {
-                    @Override
-                    public void run() {
-                        Post.claim(getMainActivity(), mHandler, m_Topic.getId(), postId);
-                    }
-                }));
+                list.add(new MenuListDialog(getS(R.string.url_post), () -> showLinkMenu(Post.getLink(m_Topic.getId(), postId), postId)));
+                list.add(new MenuListDialog(getS(R.string.report_msg), () -> Post.claim(getMainActivity(), mHandler, m_Topic.getId(), postId)));
                 if (canEdit) {
-                    list.add(new MenuListDialog(getS(R.string.edit_post), new Runnable() {
-                        @Override
-                        public void run() {
-                            EditPostFragment.editPost(getMainActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, m_Topic.getAuthKey(), getTag());
-                        }
-                    }));
+                    list.add(new MenuListDialog(getS(R.string.edit_post), () -> EditPostFragment.editPost(getMainActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, m_Topic.getAuthKey(), getTag())));
                 }
                 if (canDelete) {
-                    list.add(new MenuListDialog(getS(R.string.delete_post), new Runnable() {
-                        @Override
-                        public void run() {
-                            prepareDeleteMessage(postId);
-                        }
-                    }));
+                    list.add(new MenuListDialog(getS(R.string.delete_post), () -> prepareDeleteMessage(postId)));
                 }
-                list.add(new MenuListDialog(getS(R.string.quote_post), new Runnable() {
-                    @Override
-                    public void run() {
-                        quote(m_Topic.getForumId(), m_Topic.getId(), postId, postDate, userId, userNick);
-                    }
-                }));
+                list.add(new MenuListDialog(getS(R.string.quote_post), () -> quote(m_Topic.getForumId(), m_Topic.getId(), postId, postDate, userId, userNick)));
             }
-            list.add(new MenuListDialog(getS(R.string.create_note), new Runnable() {
-                @Override
-                public void run() {
-                    NoteDialog.showDialog(mHandler, getMainActivity(), m_Topic.getTitle(), null,
-                            "http://4pda.ru/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
-                            m_Topic.getId(), m_Topic.getTitle(), postId, null, null);
-                }
-            }));
+            list.add(new MenuListDialog(getS(R.string.create_note), () -> NoteDialog.showDialog(mHandler, getMainActivity(), m_Topic.getTitle(), null,
+                    "http://4pda.ru/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
+                    m_Topic.getId(), m_Topic.getTitle(), postId, null, null)));
 
             ExtUrl.showContextDialog(getContext(), null, list);
         } catch (Throwable ex) {
@@ -1293,35 +1181,31 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 .cancelable(false)
                 .content(R.string.deleting_msg)
                 .show();
-        new Thread(new Runnable() {
-            public void run() {
-                Throwable ex = null;
+        new Thread(() -> {
+            Throwable ex = null;
 
-                try {
-                    org.softeg.slartus.forpdaplus.classes.Post.delete(postId, m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
-                } catch (Throwable e) {
-                    ex = e;
-                }
-
-                final Throwable finalEx = ex;
-                mHandler.post(new Runnable() {
-                    public void run() {
-                        try {
-                            if (dialog.isShowing()) {
-                                dialog.dismiss();
-                            }
-                        } catch (Throwable ignored) {
-
-                        }
-                        if (finalEx != null)
-                            AppLog.e(getMainActivity(), finalEx);
-
-                        m_ScrollY = 0;
-                        //showTheme(getLastUrl());
-                        getWebView().evalJs("document.querySelector('div[name*=del"+postId+"]').remove();");
-                    }
-                });
+            try {
+                Post.delete(postId, m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
+            } catch (Throwable e) {
+                ex = e;
             }
+
+            final Throwable finalEx = ex;
+            mHandler.post(() -> {
+                try {
+                    if (dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
+                } catch (Throwable ignored) {
+
+                }
+                if (finalEx != null)
+                    AppLog.e(getMainActivity(), finalEx);
+
+                m_ScrollY = 0;
+                //showTheme(getLastUrl());
+                getWebView().evalJs("document.querySelector('div[name*=del"+postId+"]').remove();");
+            });
         }).start();
 
     }
@@ -1393,15 +1277,13 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             return;
 
         calledScroll = true;
-        mHandler.postDelayed(new Runnable() {
-            public void run() {
-                if (m_ScrollY != 0) {
-                    webView.setScrollY(m_ScrollY);
-                } else if (!TextUtils.isEmpty(m_ScrollElement)) {
-                    webView.evalJs("scrollToElement('" + m_ScrollElement + "');");
-                }
-                calledScroll = false;
+        mHandler.postDelayed(() -> {
+            if (m_ScrollY != 0) {
+                webView.setScrollY(m_ScrollY);
+            } else if (!TextUtils.isEmpty(m_ScrollElement)) {
+                webView.evalJs("scrollToElement('" + m_ScrollElement + "');");
             }
+            calledScroll = false;
         }, 250);
     }
 
@@ -1553,11 +1435,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             final Pattern imagePattern = PatternExtensions.compile("http://.*?\\.(png|jpg|jpeg|gif)$");
             if(!imagePattern.matcher(url).find()) return false;
             if (!Client.getInstance().getLogined() && !Client.getInstance().hasLoginCookies()) {
-                Client.getInstance().showLoginForm(getContext(), new Client.OnUserChangedListener() {
-                    public void onUserChanged(String user, Boolean success) {
-                        if (success) {
-                            showImage(url);
-                        }
+                Client.getInstance().showLoginForm(getContext(), (user, success) -> {
+                    if (success) {
+                        showImage(url);
                     }
                 });
             }else {
@@ -1699,12 +1579,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     webView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
                     addToHistory(m_ThemeBody);
                 }
-                AppLog.e(getMainActivity(), ex, new Runnable() {
-                    @Override
-                    public void run() {
-                        showTheme(getLastUrl());
-                    }
-                });
+                AppLog.e(getMainActivity(), ex, () -> showTheme(getLastUrl()));
             }
         }
     }

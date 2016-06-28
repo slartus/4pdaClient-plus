@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+//apply plugin: 'realm-android'
+apply plugin: 'android-apt'
 
 repositories {
     maven { url "https://jitpack.io" }
@@ -16,6 +19,9 @@ android {
         versionCode 545
         versionName "3.1.4b6"
         vectorDrawables.useSupportLibrary = true
+    }
+    dexOptions {
+        incremental true
     }
     buildTypes {
         release {
@@ -51,6 +57,10 @@ android {
             signingConfig defaultSigningVariable
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES.txt'
         exclude 'META-INF/LICENSE.txt'
@@ -81,9 +91,18 @@ dependencies {
     compile project(':forpdacommon')
     compile project(':forpdanotifyservice')
     compile project(':4pdasources')
-    compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.google.code.gson:gson:2.5'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
+
+    compile 'com.jakewharton:butterknife:8.1.0'
+    apt 'com.jakewharton:butterknife-compiler:8.1.0'
+    /*для красоты душевной*/
+//    compile 'com.annimon:stream:1.0.9'
+    /*для девдб*/
+//    compile 'io.realm:android-adapters:1.2.1'
+    /*вместо тасков*/
+//    compile 'io.reactivex:rxandroid:1.2.1'
+//    compile 'io.reactivex:rxjava:1.1.6'
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
 }

@@ -1,9 +1,7 @@
 package org.softeg.slartus.forpdaplus.devdb.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.devdb.adapters.base.BaseRecyclerViewHolder;
@@ -21,7 +17,7 @@ import org.softeg.slartus.forpdaplus.devdb.model.ReviewsModel;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHolder> {
 
@@ -51,12 +47,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         holder.textBody.setText(obj.getReviewTitle());
         holder.date.setText(obj.getReviewDate());
 
-        holder.textBody.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DevDbUtils.showUrl(mContext, obj.getReviewLink());
-            }
-        });
+        holder.textBody.setOnClickListener(v -> DevDbUtils.showUrl(mContext, obj.getReviewLink()));
 
         //Picasso.with(mContext).load(obj.getReviewImgLink()).into(holder.image);
         imageLoader.displayImage(obj.getReviewImgLink(), holder.image);
@@ -69,11 +60,11 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
 
     public static class ViewHolder extends BaseRecyclerViewHolder {
 
-        @Bind(R.id.devDbReviewsText)
+        @BindView(R.id.devDbReviewsText)
         TextView textBody;
-        @Bind(R.id.devDbReviewsDate)
+        @BindView(R.id.devDbReviewsDate)
         TextView date;
-        @Bind(R.id.devDbReviewsIV)
+        @BindView(R.id.devDbReviewsIV)
         ImageView image;
 
         public ViewHolder(View itemView) {

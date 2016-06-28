@@ -14,7 +14,7 @@ import org.softeg.slartus.forpdaplus.devdb.model.DiscussionModel;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by isanechek on 19.12.15.
@@ -46,12 +46,7 @@ public class DiscussionAdapter  extends RecyclerView.Adapter<DiscussionAdapter.V
         holder.date.setText(obj.getDiscussionDate());
         holder.description.setText(obj.getDiscussionDescription());
 
-        holder.textBody.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DevDbUtils.showUrl(mContext, obj.getDiscussionLink());
-            }
-        });
+        holder.textBody.setOnClickListener(v -> DevDbUtils.showUrl(mContext, obj.getDiscussionLink()));
 
     }
 
@@ -62,11 +57,11 @@ public class DiscussionAdapter  extends RecyclerView.Adapter<DiscussionAdapter.V
 
     public static class ViewHolder extends BaseRecyclerViewHolder {
 
-        @Bind(R.id.devDbDiscussionText)
+        @BindView(R.id.devDbDiscussionText)
         TextView textBody;
-        @Bind(R.id.devDbDiscussionDate)
+        @BindView(R.id.devDbDiscussionDate)
         TextView date;
-        @Bind(R.id.devDbDiscussionDescription)
+        @BindView(R.id.devDbDiscussionDescription)
         TextView description;
 
         public ViewHolder(View itemView) {
