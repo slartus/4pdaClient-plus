@@ -63,27 +63,14 @@ public class PopupPanelView {
 
         this.advanced_button = advanced_button;
         mPostEditText = editText;
-        mPostEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b)
-                    hidePopupWindow();
-            }
-        });
-
-        mPostEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        mPostEditText.setOnFocusChangeListener((view, b) -> {
+            if (b)
                 hidePopupWindow();
-            }
         });
 
-        advanced_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggleAdvPanelVisibility();
-            }
-        });
+        mPostEditText.setOnClickListener(view -> hidePopupWindow());
+
+        advanced_button.setOnClickListener(view -> toggleAdvPanelVisibility());
     }
     public void activityCreated(Activity activity){
         activityCreated(activity, null);
@@ -197,26 +184,23 @@ public class PopupPanelView {
     @SuppressWarnings("ConstantConditions")
     private void checkKeyboardHeight(final View parentLayout) {
         parentLayout.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        r = new Rect();
-                        parentLayout.getWindowVisibleDisplayFrame(r);
+                () -> {
+                    r = new Rect();
+                    parentLayout.getWindowVisibleDisplayFrame(r);
 
-                        screenHeight = parentLayout.getRootView().getHeight();
-                        if (k == -1)
-                            k = screenHeight - r.bottom;
-                        heightDifference = screenHeight - r.bottom - k;
+                    screenHeight = parentLayout.getRootView().getHeight();
+                    if (k == -1)
+                        k = screenHeight - r.bottom;
+                    heightDifference = screenHeight - r.bottom - k;
 
-                        if (previousHeightDiffrence - heightDifference > 50) {
-                            hidePopupWindow();
-                        }
-
-                        isKeyBoardVisible = heightDifference > 100;
-                        if (previousHeightDiffrence != heightDifference)
-                            changeKeyboardHeight(heightDifference);
-                        previousHeightDiffrence = heightDifference;
+                    if (previousHeightDiffrence - heightDifference > 50) {
+                        hidePopupWindow();
                     }
+
+                    isKeyBoardVisible = heightDifference > 100;
+                    if (previousHeightDiffrence != heightDifference)
+                        changeKeyboardHeight(heightDifference);
+                    previousHeightDiffrence = heightDifference;
                 }
         );
     }
@@ -231,13 +215,7 @@ public class PopupPanelView {
                 keyboardHeight, false);
 
 
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-
-            @Override
-            public void onDismiss() {
-                emoticonsCover.setVisibility(LinearLayout.GONE);
-            }
-        });
+        popupWindow.setOnDismissListener(() -> emoticonsCover.setVisibility(LinearLayout.GONE));
     }
 
     public void destroy() {

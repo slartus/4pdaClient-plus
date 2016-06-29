@@ -97,12 +97,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
         title = (EditText) findViewById(R.id.title);
         message = (EditText) findViewById(R.id.message);
         final Button send_button = (Button) view.findViewById(R.id.btnSendPost);
-        send_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                send();
-            }
-        });
+        send_button.setOnClickListener(view1 -> send());
         message.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -261,12 +256,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
             } else {
                 username.setVisibility(View.VISIBLE);
                 if (ex != null)
-                    AppLog.e(getMainActivity(), ex, new Runnable() {
-                        @Override
-                        public void run() {
-                            new GetUserTask(userId).execute();
-                        }
-                    });
+                    AppLog.e(getMainActivity(), ex, () -> new GetUserTask(userId).execute());
                 else if (TextUtils.isEmpty(userNick))
                     Toast.makeText(getMainActivity(), R.string.error_getting_nick,
                             Toast.LENGTH_SHORT).show();

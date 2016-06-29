@@ -24,6 +24,7 @@ public class NewDevDbApi {
         res.add(new DevCatalog("http://4pda.ru/devdb/phones/", "Телефоны").setType(DevCatalog.DEVICE_TYPE));
         res.add(new DevCatalog("http://4pda.ru/devdb/pad/", "Планшеты").setType(DevCatalog.DEVICE_TYPE));
         res.add(new DevCatalog("http://4pda.ru/devdb/ebook/", "Электронные книги").setType(DevCatalog.DEVICE_TYPE));
+        res.add(new DevCatalog("http://4pda.ru/devdb/smartwatch/", "Смарт часы").setType(DevCatalog.DEVICE_TYPE));
         return res;
     }
 
@@ -67,13 +68,13 @@ public class NewDevDbApi {
 
     public static Boolean isCatalogUrl(String url) {
         return Pattern
-                .compile("4pda.ru/devdb(?:(?:/|$)(?:phones|ebook|pad)?(?:/$|$))", Pattern.CASE_INSENSITIVE)
+                .compile("4pda.ru/devdb(?:(?:/|$)(?:phones|ebook|pad|smartwatch)?(?:/$|$))", Pattern.CASE_INSENSITIVE)
                 .matcher(url).find();
     }
 
     public static Boolean isDevicesListUrl(String url) {
         return Pattern
-                .compile("4pda.ru/devdb(?:phones|ebook|pad)/([^/$]+)", Pattern.CASE_INSENSITIVE)
+                .compile("4pda.ru/devdb(?:phones|ebook|pad|smartwatch)/([^/$]+)", Pattern.CASE_INSENSITIVE)
                 .matcher(url).find();
     }
 
@@ -104,6 +105,8 @@ public class NewDevDbApi {
             case "pad":
                 title = "Планшеты";
                 break;
+            case "smartwatch":
+                title = "Смарт часы";
             default:
                 return root;
         }

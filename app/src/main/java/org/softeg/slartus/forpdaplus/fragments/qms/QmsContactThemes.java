@@ -133,12 +133,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
                 getMainActivity().notifyTabAdapter();
             } else {
                 if (ex != null)
-                    AppLog.e(getMainActivity(), ex, new Runnable() {
-                        @Override
-                        public void run() {
-                            new GetUserTask(userId).execute();
-                        }
-                    });
+                    AppLog.e(getMainActivity(), ex, () -> new GetUserTask(userId).execute());
                 else if (TextUtils.isEmpty(userNick))
                     Toast.makeText(getMainActivity(), R.string.error_getting_nick,
                             Toast.LENGTH_SHORT).show();
@@ -158,12 +153,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
                     .content(String.format(App.getContext().getString(R.string.ask_create_dialog), m_Nick))
                     .positiveText(R.string.yes)
                     .negativeText(R.string.no)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            QmsNewThreadFragment.showUserNewThread(getMainActivity(), m_Id, m_Nick);
-                        }
-                    })
+                    .onPositive((dialog, which) -> QmsNewThreadFragment.showUserNewThread(getMainActivity(), m_Id, m_Nick))
                     .show();
             dialogShowed = true;
         }
@@ -228,22 +218,16 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         super.onCreateOptionsMenu(menu, inflater);
         menu.add(R.string.new_thread)
                 .setIcon(R.drawable.pencil)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                QmsNewThreadFragment.showUserNewThread(getMainActivity(), m_Id
-                        , m_Nick);
-
-                return true;
-            }
-        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                .setOnMenuItemClickListener(menuItem -> {
+                    QmsNewThreadFragment.showUserNewThread(getMainActivity(), m_Id, m_Nick);
+                    return true;
+                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         menu.add(R.string.profile_interlocutor)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                ProfileFragment.showProfile(m_Id, m_Nick);
-                return true;
-            }
-        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                .setOnMenuItemClickListener(menuItem -> {
+                    ProfileFragment.showProfile(m_Id, m_Nick);
+                    return true;
+                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
     private void startDeleteMode() {
@@ -307,12 +291,9 @@ public class QmsContactThemes extends BaseLoaderListFragment {
                         .title(R.string.confirm_action)
                         .content(String.format(getString(R.string.ask_deleting_dialogs), m_Nick))
                         .positiveText(R.string.ok)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                                mode.finish();
-                                deleteSelectedDialogs();
-                            }
+                        .onPositive((materialDialog, dialogAction) -> {
+                            mode.finish();
+                            deleteSelectedDialogs();
                         })
                         .negativeText(R.string.cancel)
                         .show();
@@ -424,15 +405,12 @@ public class QmsContactThemes extends BaseLoaderListFragment {
 
                 holder.checkbox = (CheckBox) convertView.findViewById(R.id.text1);
                 holder.checkbox
-                        .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                QmsUserTheme theme = (QmsUserTheme) holder.checkbox
-                                        .getTag();
-                                theme.setSelected(buttonView.isChecked());
+                        .setOnCheckedChangeListener((buttonView, isChecked) -> {
+                            QmsUserTheme theme = (QmsUserTheme) holder.checkbox
+                                    .getTag();
+                            theme.setSelected(buttonView.isChecked());
 
 
-                            }
                         });
                 convertView.setTag(holder);
 

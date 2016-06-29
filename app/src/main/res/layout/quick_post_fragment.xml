@@ -37,7 +37,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/send"
             android:id="@+id/send_button"
-            android:layout_gravity="right|bottom" />
+            android:layout_gravity="end|bottom" />
 
         <ImageButton
             android:layout_width="48dp"
@@ -45,7 +45,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/plus"
             android:id="@+id/advanced_button"
-            android:layout_gravity="left|bottom" />
+            android:layout_gravity="start|bottom" />
     </FrameLayout>
 
     <LinearLayout
