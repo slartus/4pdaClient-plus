@@ -127,7 +127,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         protected void onPostExecute(final Boolean success) {
             if (success && !TextUtils.isEmpty(userNick)) {
                 m_Nick = userNick;
-                Toast.makeText(getContext(), App.getContext().getString(R.string.nick_received)+": " + m_Nick, Toast.LENGTH_SHORT).show();
+                Toast.makeText(App.getContext(), App.getContext().getString(R.string.nick_received)+": " + m_Nick, Toast.LENGTH_SHORT).show();
                 setTitle(m_Nick);
                 App.getInstance().getTabByTag(getTag()).setTitle(m_Nick);
                 getMainActivity().notifyTabAdapter();

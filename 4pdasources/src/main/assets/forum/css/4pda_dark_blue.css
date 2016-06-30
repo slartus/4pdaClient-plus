@@ -1033,6 +1033,10 @@ a {
   margin: 0;
   overflow: hidden;
 }
+.list-group-item .msg-content a[href*="savepic"],
+.our-message .msg-content a[href*="savepic"] {
+  display: block;
+}
 .list-group-item .msg-content .post-block,
 .our-message .msg-content .post-block {
   margin-left: -0.75em;
@@ -1103,6 +1107,9 @@ a {
 }
 .our-message .msg-content {
   background: #2e393e;
+}
+.our-message .msg-content a[href*="savepic"] {
+  text-align: right;
 }
 .our-message:before {
   float: left;
@@ -1666,32 +1673,58 @@ a[href*=findpost][title="Перейти к сообщению"]:after {
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   position: relative;
+  /*&.active{
+        background: rgba(255, 0, 0, 0.5);
+    }*/
 }
 .post_container:before {
   content: "";
   position: absolute;
   left: 0;
   top: 0;
+  right: 0;
+  bottom: 0;
   height: 100%;
   width: 100%;
   z-index: 10;
-  opacity: 0;
+  opacity: 0.01;
   pointer-events: none;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 .post_container.active:before {
   background: #0277bd;
   -webkit-animation: highlight 1.5s;
+  animation: highlight 1.5s;
+  -webkit-animation-timing-function: ease-out;
   animation-timing-function: ease-out;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
 }
 @-webkit-keyframes highlight {
-  0% {
-    opacity: 0;
+  from {
+    opacity: 0.01;
   }
   33% {
     opacity: 0.15;
   }
-  100% {
-    opacity: 0;
+  to {
+    opacity: 0.01;
+  }
+}
+@keyframes highlight {
+  from {
+    opacity: 0.01;
+  }
+  33% {
+    opacity: 0.15;
+  }
+  to {
+    opacity: 0.01;
   }
 }
 .post_container .post_header {
