@@ -14,7 +14,7 @@ import org.softeg.slartus.forpdaplus.devdb.model.PricesModel;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by isanechek on 19.12.15.
@@ -50,12 +50,7 @@ public class PricesAdapter extends RecyclerView.Adapter<PricesAdapter.ViewHolder
         // И пальцы рук хотелось себе ломать.
         // Но жизнь печальна, много боли.
         // И лучше для этой сутиэйшен решения не сыскать. (c) iSanechek
-        holder.textBody.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DevDbUtils.showUrl(mContext, obj.getPricesLink());
-            }
-        });
+        holder.textBody.setOnClickListener(v -> DevDbUtils.showUrl(mContext, obj.getPricesLink()));
     }
 
     @Override
@@ -65,11 +60,11 @@ public class PricesAdapter extends RecyclerView.Adapter<PricesAdapter.ViewHolder
 
     public static class ViewHolder extends BaseRecyclerViewHolder {
 
-        @Bind(R.id.devDbPricesText)
+        @BindView(R.id.devDbPricesText)
         TextView textBody;
-        @Bind(R.id.devDbPricesDate)
+        @BindView(R.id.devDbPricesDate)
         TextView date;
-        @Bind(R.id.devDbPricesDescription)
+        @BindView(R.id.devDbPricesDescription)
         TextView description;
 
         public ViewHolder(View itemView) {

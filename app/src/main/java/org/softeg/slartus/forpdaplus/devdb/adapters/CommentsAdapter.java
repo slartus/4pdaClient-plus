@@ -16,7 +16,7 @@ import org.softeg.slartus.forpdaplus.devdb.model.CommentsModel;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by isanechek on 18.11.15.
@@ -52,25 +52,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         holder.devDbCommentsBodeText.setText(obj.getCommentText());
 
         // пока так, как нибудь потом перенесу во фрагмент
-        holder.devDbCommentsBodeText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogHelper.showCommentDialog(mContext, obj.getCommentText(), obj.getCommentUserName());
-            }
-        });
+        holder.devDbCommentsBodeText.setOnClickListener(v -> DialogHelper.showCommentDialog(mContext, obj.getCommentText(), obj.getCommentUserName()));
 
-        holder.mFrameLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.mFrameLayout.setOnClickListener(v -> {
 //                DialogHelper.showRatingDialog(mContext, obj.getRatingList());
-            }
         });
-        holder.devDbCommentsUserName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DevDbUtils.showUrl(mContext, obj.getCommentUserLink());
-            }
-        });
+        holder.devDbCommentsUserName.setOnClickListener(v -> DevDbUtils.showUrl(mContext, obj.getCommentUserLink()));
 
     }
 
@@ -81,19 +68,19 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
     public static class ViewHolder extends BaseRecyclerViewHolder {
 
-        @Bind(R.id.devDbCommentsRatingNum)
+        @BindView(R.id.devDbCommentsRatingNum)
         TextView devDbCommentsRatingNum;
         //        @Bind(R.id.devDbCommentsRatingText)
 //        TextView devDbCommentsRatingText;
-        @Bind(R.id.devDbCommentsUserName)
+        @BindView(R.id.devDbCommentsUserName)
         TextView devDbCommentsUserName;
-        @Bind(R.id.devDbCommentsDatePost)
+        @BindView(R.id.devDbCommentsDatePost)
         TextView devDbCommentsDatePost;
         //        @Bind(R.id.devDbCommentsRating)
 //        TextView devDbCommentsRating;
-        @Bind(R.id.devDbCommentsBodeText)
+        @BindView(R.id.devDbCommentsBodeText)
         TextView devDbCommentsBodeText;
-        @Bind(R.id.devDbRatingCon)
+        @BindView(R.id.devDbRatingCon)
         FrameLayout mFrameLayout;
 
 

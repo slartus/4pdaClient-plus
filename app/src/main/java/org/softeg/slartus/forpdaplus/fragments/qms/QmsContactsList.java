@@ -131,26 +131,18 @@ public class QmsContactsList extends BaseLoaderListFragment {
         if (TextUtils.isEmpty(qmsUser.getId())) return;
 
         final List<MenuListDialog> list = new ArrayList<>();
-        list.add(new MenuListDialog(getString(R.string.delete), new Runnable() {
-            @Override
-            public void run() {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Map<String, String> additionalHeaders = new HashMap<>();
-                            additionalHeaders.put("act", "qms-xhr");
-                            additionalHeaders.put("action", "del-member");
-                            additionalHeaders.put("del-mid", qmsUser.getId());
-                            Client.getInstance().performPost("http://4pda.ru/forum/index.php", additionalHeaders);
-                            reloadData();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+        list.add(new MenuListDialog(getString(R.string.delete), () -> new Thread(() -> {
+            try {
+                Map<String, String> additionalHeaders = new HashMap<>();
+                additionalHeaders.put("act", "qms-xhr");
+                additionalHeaders.put("action", "del-member");
+                additionalHeaders.put("del-mid", qmsUser.getId());
+                Client.getInstance().performPost("http://4pda.ru/forum/index.php", additionalHeaders);
+                reloadData();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }));
+        }).start()));
 
         ExtUrl.showContextDialog(getContext(), null, list);
     }
@@ -211,10 +203,7 @@ public class QmsContactsList extends BaseLoaderListFragment {
                     holder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
                 }
 
-                if (!mShowAvatars)
-                    holder.imgAvatar.setVisibility(View.GONE);
-                else
-                    holder.imgAvatar.setVisibility(View.VISIBLE);
+                holder.imgAvatar.setVisibility(mShowAvatars ? View.VISIBLE : View.GONE);
 
                 holder.txtCount = (TextView) convertView.findViewById(R.id.txtMessagesCount);
                 holder.txtNick = (TextView) convertView.findViewById(R.id.txtNick);

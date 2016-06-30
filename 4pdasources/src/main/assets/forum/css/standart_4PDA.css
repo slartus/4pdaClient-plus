@@ -699,6 +699,7 @@ span[style*="font-size:8pt"] * {
 .post_container .hidetop B {
   display: block;
   color: transparent;
+  pointer-events: none;
 }
 .post_container .hidetop B:before {
   content: '';
@@ -732,6 +733,23 @@ span[style*="font-size:8pt"] * {
 }
 .poll .hidetop.open b span:before {
   content: 'Скрыть ';
+}
+.hidetop {
+  position: relative;
+}
+.hidetop > input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+.hidetop b,
+.hidetop b:before,
+.hidetop b:after {
+  pointer-events: none;
 }
 /*
 *	POST_BODY
@@ -1171,6 +1189,9 @@ img[src*="style_emoticons"] {
   border-radius: 0.15rem;
   background: white;
   border: 1px solid #cccccc;
+}
+#thread_form .list-group-item .msg-content a[href*="savepice.ru"] {
+  display: block;
 }
 #thread_form .list-group-item.our-message {
   text-align: right;

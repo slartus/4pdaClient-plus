@@ -14,7 +14,7 @@ import org.softeg.slartus.forpdaplus.devdb.model.FirmwareModel;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by isanechek on 19.12.15.
@@ -47,12 +47,7 @@ public class FirmwareAdapter extends RecyclerView.Adapter<FirmwareAdapter.ViewHo
         holder.description.setText(obj.getFirmwareDescription());
 
         // это временно!!!
-        holder.textBody.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DevDbUtils.showUrl(mContext, obj.getFirmwareLink());
-            }
-        });
+        holder.textBody.setOnClickListener(v -> DevDbUtils.showUrl(mContext, obj.getFirmwareLink()));
     }
 
     @Override
@@ -62,11 +57,11 @@ public class FirmwareAdapter extends RecyclerView.Adapter<FirmwareAdapter.ViewHo
 
     public static class ViewHolder extends BaseRecyclerViewHolder {
 
-        @Bind(R.id.devDbFirmwareTitle)
+        @BindView(R.id.devDbFirmwareTitle)
         TextView textBody;
-        @Bind(R.id.devDbFirmwareDate)
+        @BindView(R.id.devDbFirmwareDate)
         TextView date;
-        @Bind(R.id.devDbFirmwareDescription)
+        @BindView(R.id.devDbFirmwareDescription)
         TextView description;
 
         public ViewHolder(View itemView) {
