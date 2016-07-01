@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Translate Helper</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <script src="scripts/main.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="block">
+            <div class="title">Init info</div>
+            <div class="desc">version\n apk_forum\n text</div>
+            <textarea id="input" rows="10">3.3.2
+http://4pda.ru/forum/dl/post/8324046/ForPDA_3.3.5.apk
+[-] Выбор файла в стандартном менеджере
+[-] Станадртные параметры поиска
+[-] Невеорное отображение цитаты в QMS
+[-] Выделение сообщений QMS для удаления
+[+] Сохранение состояния страницы в истории
+[*] Иконки в стилях в заменены на векторные
+[*] Увеличена скорость перехода к сообщению в теме
+[*] Улучшена стабильность приложения
+
+Изменения в Material стилях:
+[-] Была не различима ссылка в теге offtop
+[-] Отображение snapback в qms
+[+] Сообщение об удалении в QMS
+[*] При большом шрифте или малой ширине убирается автарка собеседника и на её место сдвигается сообщение
+[*] Вернул точку не прочитанного сообщения в qms и поменял местами с датой</textarea>
+            <input type="button" value="Преобразовать" onclick="run_trans();">
+        </div>
+        <div class="block">
+            <div class="title">Обнова</div>
+            <div class="desc">Пост обнова в теме:</div>
+            <textarea id="post_upd" rows="10"></textarea>
+            <div class="desc">UpdateInfo:</div>
+            <textarea id="upd" rows="10"></textarea>
+            <div class="desc">UpdateInfoOld:</div>
+            <textarea id="upd_old" rows="10"></textarea>
+        </div>
+    </div>
+    <div class="footer">Created by <a href="https://github.com/RadiationX">radiationx</a> / <a href="http://4pda.ru/forum/index.php?showuser=2556269">radiation15</a></div>
+</body>
+
+</html>
