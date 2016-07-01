@@ -96,7 +96,7 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
+
 
 import static org.softeg.slartus.forpdaplus.utils.Utils.getS;
 
@@ -132,7 +132,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         webView.pageDown(true);
     }
 
-    private Unbinder unbinder;
 
     private static final String TAG = "ThemeActivity";
     private static final String TOPIC_URL_KEY = "ThemeActivity.TOPIC_URL_KEY";
@@ -259,7 +258,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.theme, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        ButterKnife.bind(this, view);
         initSwipeRefreshLayout();
         lastStyle = App.getInstance().getThemeCssFileName();
         LoadsImagesAutomatically = null;
@@ -426,7 +425,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
     }
 
     private void configureOptionsMenu(final Context context, final Handler mHandler, SubMenu optionsMenu,

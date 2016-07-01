@@ -401,7 +401,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
 
     public void saveHtml() {
         try {
-            getWebView().loadUrl("javascript:window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+            getWebView().evalJs("window.HTMLOUT.saveHtml('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
         } catch (Throwable ex) {
             AppLog.e(getMainActivity(), ex);
         }

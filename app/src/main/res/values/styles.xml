@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Crash_Dialog" parent="android:Theme.Holo.Dialog"/>
+    <style name="Crash_Dialog" parent="android:Theme.DeviceDefault.Dialog"/>
 
     <style name="MainThemeLight.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

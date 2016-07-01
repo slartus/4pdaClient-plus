@@ -104,14 +104,21 @@ public class ParentFragment extends GeneralFragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(!DevDbUtils.isAndroid5())
+
+
+        if (DevDbUtils.isAndroid5()) {
+            getMainActivity().getAppBarLayout().setElevation(6);
+        }else {
             getMainActivity().getToolbarShadow().setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(!DevDbUtils.isAndroid5())
+        if(DevDbUtils.isAndroid5())
+            getMainActivity().getAppBarLayout().setElevation(0);
+        else
             getMainActivity().getToolbarShadow().setVisibility(View.GONE);
         setArrow();
     }

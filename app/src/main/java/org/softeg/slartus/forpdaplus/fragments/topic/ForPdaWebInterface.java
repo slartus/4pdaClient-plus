@@ -34,6 +34,7 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.Post;
+import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.TopicAttaches;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
@@ -581,7 +582,15 @@ public class ForPdaWebInterface {
             }
         });
     }
-
+    @JavascriptInterface
+    public void saveHtml(final String html) {
+        getMainActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new SaveHtml(getMainActivity(), html, "Topic");
+            }
+        });
+    }
 
     public void run(final Runnable runnable) {
         //Почему-то перестало работать как раньше
