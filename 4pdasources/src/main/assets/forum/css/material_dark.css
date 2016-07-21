@@ -784,10 +784,10 @@ span[style*="font-size:8pt"] * {
   background-size: contain;
   background-repeat: no-repeat;
 }
-@media screen and (min-width: 50rem) {
-  .post_header .header_wrapper .avatar .img[style*="av.png"] {
-    height: 2rem;
-  }
+.post_header .header_wrapper .avatar .img[style*="av.png"] {
+  opacity: 0.8;
+  background-size: 3rem;
+  background-color: rgba(138, 138, 138, 0.3);
 }
 .post_header .header_wrapper .inf {
   color: #969696;
@@ -3151,7 +3151,7 @@ img[src*="style_emoticons"] {
   vertical-align: middle;
 }
 .img[style*="av.png"] {
-  background-image: url(profile/logo.png), url("file:///android_asset/profile/logo.png") !important;
+  background-image: url(material_src/person.svg) !important;
 }
 [class^="icon-"]:before,
 [class*=" icon-"]:before {
