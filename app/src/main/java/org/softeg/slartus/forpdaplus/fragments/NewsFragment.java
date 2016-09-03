@@ -576,7 +576,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
             if (m.find()) {
                 m_Title = m.group(2);
-                body = m.group(1);
+                body = m.group(1).replaceAll("<script[\\s\\S]*?/script>", "");
                 return normalizeCommentUrls(body).replaceAll("<form[\\s\\S]*?/form>", "");
             }
             m = PatternExtensions

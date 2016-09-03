@@ -482,6 +482,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     @Override
     protected void onNewIntent(Intent intent) {
+        Log.d("kek", "onnewintent "+intent);
         if (intent.getStringExtra("template") != null) {
             if (intent.getStringExtra("template").equals(DownloadFragment.TEMPLATE)) {
                 DownloadFragment.newInstance();
