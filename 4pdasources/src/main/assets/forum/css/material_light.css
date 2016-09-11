@@ -19,7 +19,7 @@ HTML body {
   overflow: auto;
   color: black;
   box-sizing: border-box;
-  background-color: #eeeeee;
+  background-color: #eee;
 }
 HTML body.ongpuimg img,
 HTML body.ongpuimg .img {
@@ -156,8 +156,28 @@ span[style*="font-size:8pt"] * {
   color: rgba(0, 15, 23, 0.9);
 }
 .post-block.code {
+  position: relative;
   border-radius: 0;
-  border-left: 0.4rem solid rgba(200, 150, 0, 0.5);
+  overflow: hidden;
+}
+.post-block.code .numbering {
+  display: block !important;
+  position: absolute;
+  top: 2.25rem;
+  bottom: 0.5rem;
+  left: 0;
+  width: 1.5rem;
+  overflow: hidden;
+  padding: 0 0.5rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+  white-space: pre;
+  text-align: right;
+  color: #808080;
+  border-right: 0.25rem solid rgba(200, 150, 0, 0.5);
+}
+.post-block.code .numbering .selector {
+  font-weight: bold;
 }
 .post-block.code > .block-title {
   color: rgba(50, 38, 0, 0.75);
@@ -166,19 +186,22 @@ span[style*="font-size:8pt"] * {
   content: 'Код';
 }
 .post-block.code > .block-body {
-  font-family: Courier, Courier New, Verdana, Arial;
+  margin-left: 2.25rem;
+  overflow-x: auto;
+  font-family: 'roboto mono';
   font-size: 1rem;
-  line-height: 1.4em;
-  white-space: pre-wrap;
+  line-height: 1.375rem;
+  white-space: pre;
+  word-break: normal;
   color: rgba(15, 12, 0, 0.9);
-  background: linear-gradient(transparent 1.4em, rgba(130, 130, 130, 0.1) 1.4em);
-  background-size: 2.8em 2.8em;
+  background: linear-gradient(transparent 1.375rem, rgba(130, 130, 130, 0.1) 1.375rem);
+  background-size: 2.75rem 2.75rem;
 }
 .post-block.code.box > .block-title:before {
   content: 'Раскрыть КОД';
 }
 .post-block.code.box > .block-body {
-  max-height: 10rem;
+  max-height: 9.625rem;
   overflow: hidden;
 }
 .post-block.code.unbox > .block-title:before {
@@ -669,7 +692,7 @@ span[style*="font-size:8pt"] * {
   display: block;
   text-align: center;
   color: #838383;
-  background-color: #eeeeee;
+  background-color: #eee;
 }
 .post_container.active:before {
   content: '';
@@ -747,6 +770,8 @@ span[style*="font-size:8pt"] * {
   background-size: 3rem;
   background-color: rgba(138, 138, 138, 0.3);
 }
+@media screen and (min-width: 50rem) {
+}
 .post_header .header_wrapper .inf {
   color: #808080;
   line-height: 1.375rem;
@@ -783,9 +808,10 @@ span[style*="font-size:8pt"] * {
   background: rgba(0, 130, 0, 0.8);
 }
 .post_header .header_wrapper .group {
+  position: relative;
   font-size: 0.875rem;
 }
-.post_header .header_wrapper .group * {
+.post_header .header_wrapper .group span {
   color: #808080 !important;
   font-weight: normal !important;
 }
@@ -944,6 +970,10 @@ span[style*="font-size:8pt"] * {
 #multimoderation > form span[style="font-family:monospace"] {
   font-family: Courier, Courier New, Verdana, Arial !important;
   font-size: 1rem;
+}
+.post_body .post-block.code > .block-body:before,
+#multimoderation > form .post-block.code > .block-body:before {
+  content: '';
 }
 a[title="Перейти к сообщению"] {
   position: relative;
@@ -1130,15 +1160,15 @@ div[data-post] > a {
 .signature {
   position: relative;
   font-size: 0.875rem;
+  margin: -2rem 0 0;
+  background: white;
 }
 @media screen and (min-width: 50rem) {
   .signature {
-    margin: -2rem 0 0;
     padding: 0.7rem 0;
     border-radius: 0;
     -webkit-box-shadow: none;
     box-shadow: none;
-    background: white;
   }
 }
 .signature:before {
@@ -1264,7 +1294,7 @@ div[data-post] > a {
   margin: auto;
   border-radius: 0.125rem;
   overflow: hidden;
-  background: #eeeeee;
+  background: #eee;
 }
 #thread_form .list-group-item strong,
 #thread_form .list-group-item strong + br {
@@ -1589,7 +1619,7 @@ div[data-post] > a {
   display: block;
   margin: 0;
   padding: 1px 1rem;
-  border-top: 1px solid #eeeeee;
+  border-top: 1px solid #eee;
 }
 @media screen and (min-width: 50rem) {
   #news .product-detail .description {

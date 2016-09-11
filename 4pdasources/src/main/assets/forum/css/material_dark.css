@@ -75,7 +75,7 @@ HTML body ol {
 HTML body a {
   cursor: pointer;
   text-decoration: none;
-  color: #aaddff;
+  color: #adf;
 }
 /*
 *	PICTURES SIZE
@@ -191,15 +191,35 @@ span[style*="font-size:8pt"] * {
 .post-block.quote > .block-title a[title="Ссылка "] {
   margin: 0 0.5rem;
   box-sizing: border-box;
-  color: #aaddff;
+  color: #adf;
   border-bottom: 1px solid #6c8596;
 }
 .post-block.quote > .block-body {
   color: rgba(240, 250, 255, 0.9);
 }
 .post-block.code {
+  position: relative;
   border-radius: 0;
-  border-left: 0.4rem solid rgba(255, 193, 7, 0.45);
+  overflow: hidden;
+}
+.post-block.code .numbering {
+  display: block !important;
+  position: absolute;
+  top: 2.25rem;
+  bottom: 0.5rem;
+  left: 0;
+  width: 1.5rem;
+  overflow: hidden;
+  padding: 0 0.5rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+  white-space: pre;
+  text-align: right;
+  color: #969696;
+  border-right: 0.25rem solid rgba(255, 193, 7, 0.45);
+}
+.post-block.code .numbering .selector {
+  font-weight: bold;
 }
 .post-block.code > .block-title {
   color: rgba(255, 241, 199, 0.725);
@@ -208,19 +228,22 @@ span[style*="font-size:8pt"] * {
   content: 'Код';
 }
 .post-block.code > .block-body {
-  font-family: Courier, Courier New, Verdana, Arial;
+  margin-left: 2.25rem;
+  overflow-x: auto;
+  font-family: 'roboto mono';
   font-size: 1rem;
-  line-height: 1.4em;
-  white-space: pre-wrap;
+  line-height: 1.375rem;
+  white-space: pre;
+  word-break: normal;
   color: rgba(255, 251, 238, 0.89);
-  background: linear-gradient(transparent 1.4em, rgba(130, 130, 130, 0.1) 1.4em);
-  background-size: 2.8em 2.8em;
+  background: linear-gradient(transparent 1.375rem, rgba(130, 130, 130, 0.1) 1.375rem);
+  background-size: 2.75rem 2.75rem;
 }
 .post-block.code.box > .block-title:before {
   content: 'Раскрыть КОД';
 }
 .post-block.code.box > .block-body {
-  max-height: 10rem;
+  max-height: 9.625rem;
   overflow: hidden;
 }
 .post-block.code.unbox > .block-title:before {
@@ -239,7 +262,7 @@ span[style*="font-size:8pt"] * {
   content: 'Скрытый текст';
 }
 .post-block.hidden > .block-body a {
-  color: #aaddff;
+  color: #adf;
 }
 .post-block.spoil {
   position: relative;
@@ -564,14 +587,14 @@ span[style*="font-size:8pt"] * {
   height: 1rem;
   width: 1rem;
   border-radius: 100%;
-  background: #aaddff;
+  background: #adf;
   -webkit-transition: -webkit-transform 0.3s;
   transition: transform 0.3s;
   -webkit-transform: scale(0, 0);
   transform: scale(0, 0);
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .radiobutton:checked + .icon {
-  border-color: #aaddff;
+  border-color: #adf;
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .radiobutton:checked + .icon:before {
   -webkit-transform: scale(0.65, 0.65);
@@ -594,8 +617,8 @@ span[style*="font-size:8pt"] * {
   transform: rotate(45deg) translate(0.125rem, -0.1875rem) scale(0, 0);
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .checkbox:checked + .icon {
-  background: #aaddff;
-  border-color: #aaddff;
+  background: #adf;
+  border-color: #adf;
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .checkbox:checked + .icon:before {
   -webkit-transform: rotate(45deg) translate(0.125rem, -0.1875rem) scale(1, 1);
@@ -674,7 +697,7 @@ span[style*="font-size:8pt"] * {
   font-size: 1rem;
   font-weight: bold;
   text-transform: uppercase;
-  color: #aaddff;
+  color: #adf;
   border: none;
   outline: none;
   background: none;
@@ -789,6 +812,8 @@ span[style*="font-size:8pt"] * {
   background-size: 3rem;
   background-color: rgba(138, 138, 138, 0.3);
 }
+@media screen and (min-width: 50rem) {
+}
 .post_header .header_wrapper .inf {
   color: #969696;
   line-height: 1.375rem;
@@ -825,9 +850,10 @@ span[style*="font-size:8pt"] * {
   background: #50b432;
 }
 .post_header .header_wrapper .group {
+  position: relative;
   font-size: 0.875rem;
 }
-.post_header .header_wrapper .group * {
+.post_header .header_wrapper .group span {
   color: #969696 !important;
   font-weight: normal !important;
 }
@@ -922,7 +948,7 @@ span[style*="font-size:8pt"] * {
 }
 .post_body a,
 #multimoderation > form a {
-  color: #aaddff;
+  color: #adf;
   text-decoration: none;
 }
 .post_body a[data-rel="lyteframe"],
@@ -965,7 +991,7 @@ span[style*="font-size:8pt"] * {
 }
 .post_body font a[title="Ссылка"],
 #multimoderation > form font a[title="Ссылка"] {
-  color: #aaddff;
+  color: #adf;
 }
 .post_body .edit,
 #multimoderation > form .edit {
@@ -987,6 +1013,10 @@ span[style*="font-size:8pt"] * {
   font-family: Courier, Courier New, Verdana, Arial !important;
   font-size: 1rem;
 }
+.post_body .post-block.code > .block-body:before,
+#multimoderation > form .post-block.code > .block-body:before {
+  content: '';
+}
 a[title="Перейти к сообщению"] {
   position: relative;
   display: inline-block;
@@ -1007,7 +1037,7 @@ a[title="Перейти к сообщению"]:before {
   width: 1rem;
   height: 1rem;
   border-radius: 1rem;
-  background: #aaddff;
+  background: #adf;
   overflow: visible;
 }
 a[title="Перейти к сообщению"]:after {
@@ -1172,15 +1202,15 @@ div[data-post] > a {
 .signature {
   position: relative;
   font-size: 0.875rem;
+  margin: -2rem 0 0;
+  background: #2d2d2d;
 }
 @media screen and (min-width: 50rem) {
   .signature {
-    margin: -2rem 0 0;
     padding: 0.7rem 0;
     border-radius: 0;
     -webkit-box-shadow: none;
     box-shadow: none;
-    background: #2d2d2d;
   }
 }
 .signature:before {
@@ -1198,7 +1228,7 @@ div[data-post] > a {
   border-top: 1px solid #424242;
 }
 .s_post_footer a {
-  color: #aaddff;
+  color: #adf;
   text-decoration: none;
 }
 .s_post_footer ~ .between_messages ~ .topic_title_post ~ .post_header {
@@ -1237,7 +1267,7 @@ div[data-post] > a {
   font-size: 1rem;
 }
 #thread_form a {
-  color: #aaddff;
+  color: #adf;
 }
 #thread_form .date {
   display: block;
@@ -1536,7 +1566,7 @@ div[data-post] > a {
   padding: 0.5rem 0.7rem 0.7rem;
 }
 #news .container .content a {
-  color: #aaddff;
+  color: #adf;
 }
 #news .container .content .content-box P[style="text-align: justify;"] {
   text-align: left !important;
@@ -1725,7 +1755,7 @@ div[data-post] > a {
   font-size: 0.75rem;
 }
 #news .product-detail .description .more-box .meta a {
-  color: #aaddff !important;
+  color: #adf !important;
   text-decoration: none;
 }
 #news BLOCKQUOTE {
@@ -1763,7 +1793,7 @@ div[data-post] > a {
   border-radius: 0.125rem;
   outline: 0;
   color: #2d2d2d !important;
-  background: #aaddff;
+  background: #adf;
 }
 #news .btn.nomargin {
   margin: 0;
@@ -1955,7 +1985,7 @@ div[data-post] > a {
 #news .mlinks .mlhead .do-vam > div .mltbl.platforms .mlrow .mlcell a,
 #news .mlinks.desc .mlright .do-vam > div .mltbl.platforms .mlrow .mlcell a {
   text-decoration: none;
-  color: #aaddff !important;
+  color: #adf !important;
 }
 #news .mlinks .mlhead .do-vam > div .mldl,
 #news .mlinks.desc .mlright .do-vam > div .mldl {
@@ -2178,7 +2208,7 @@ div[data-post] > a {
 }
 #news .materials-box .materials-slider .slider-item h3 a {
   font-size: 1rem;
-  color: #aaddff;
+  color: #adf;
 }
 #news .page-nav.box {
   display: block;
@@ -2391,7 +2421,7 @@ div[data-post] > a {
   opacity: 0.5;
   height: 1.25rem;
   line-height: 1.25rem;
-  color: #aaddff;
+  color: #adf;
 }
 #news .comment-box li .content {
   padding: 0.5rem 0.5rem 1.5rem;
@@ -2535,7 +2565,7 @@ div[data-post] > a {
   font-weight: bold;
   text-align: center;
   text-transform: uppercase;
-  color: #aaddff;
+  color: #adf;
 }
 #profile .user-profile-list .info-list.black-link {
   list-style-type: none;
@@ -2643,8 +2673,8 @@ div[data-post] > a {
   box-shadow: inset 0 0 0 1rem #2d2d2d;
 }
 #profile .user-profile-list .info-list.black-link[id*="device-list"] li span label input[type="radio"]:checked + i {
-  background: #aaddff;
-  border: 0.125rem solid #aaddff;
+  background: #adf;
+  border: 0.125rem solid #adf;
   -webkit-box-shadow: inset 0 0 0 0.2rem #2d2d2d;
   box-shadow: inset 0 0 0 0.2rem #2d2d2d;
 }
@@ -2740,7 +2770,7 @@ div[data-post] > a {
   background: #2d2d2d;
 }
 #profile .user-profile-list li .profile-textarea:focus {
-  outline: 1px solid #aaddff;
+  outline: 1px solid #adf;
 }
 #profile .user-profile-list .no-min-size .alert-log-list {
   list-style-type: none;
@@ -2924,7 +2954,7 @@ div[data-post] > a {
   padding: 0.7rem;
   font-size: 1rem;
   margin: 0;
-  color: #aaddff;
+  color: #adf;
   -webkit-appearance: none;
   appearance: none;
   text-transform: uppercase;
@@ -3132,8 +3162,8 @@ div[data-post] > a {
   transform: rotate(45deg) translate(-0.25rem, 0.125rem) scale(0, 0);
 }
 #curator .post_header .checkbox input:checked + .icon {
-  background: #aaddff;
-  border-color: #aaddff;
+  background: #adf;
+  border-color: #adf;
 }
 #curator .post_header .checkbox input:checked + .icon:before {
   -webkit-transform: rotate(45deg) translate(-0.25rem, 0.125rem) scale(1, 1);

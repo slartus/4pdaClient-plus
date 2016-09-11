@@ -1,4 +1,27 @@
 /**
+ *		====================
+ *		code lines numbering
+ *		====================
+ */
+ 
+function numberingCodeLines() {
+	var codeBlockAll = document.querySelectorAll('.code > .block-body');
+	for (var i = 0; i < codeBlockAll.length; i++) {
+		var codeBlock = codeBlockAll[i];
+		var breaks = codeBlock.querySelectorAll('br');
+		var numBlock = document.createElement('div');
+		numBlock.className = "numbering";
+		numBlock.style.display = "none";
+		for (var j = 1; j < breaks.length + 2; j++) {
+			var txt = document.createTextNode(j + "\n");
+			numBlock.appendChild(txt);
+		}
+		codeBlock.parentNode.appendChild(numBlock);
+	}
+}
+document.addEventListener('DOMContentLoaded', numberingCodeLines, false);
+
+/**
  *		======================
  *		HIDE IMAGES IN SPOILER
  *		======================
