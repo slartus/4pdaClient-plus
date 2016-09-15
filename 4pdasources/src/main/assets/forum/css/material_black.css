@@ -240,6 +240,8 @@ span[style*="font-size:8pt"] * {
   line-height: 1.375rem;
   white-space: pre;
   word-break: normal;
+  -webkit-tab-size: 4;
+  tab-size: 4;
   color: rgba(255, 251, 238, 0.89);
   background: linear-gradient(transparent 1.375rem, rgba(130, 130, 130, 0.1) 1.375rem);
   background-size: 2.75rem 2.75rem;
@@ -1326,8 +1328,10 @@ div[data-post] > a {
   left: 0;
   display: inline-block;
   width: 2rem;
-  line-height: 2rem;
+  max-width: 20vw;
   height: 2rem;
+  max-height: 20vw;
+  line-height: 2rem;
   text-align: center;
 }
 #thread_form .list-group-item .avatar-wrap.circle {
@@ -1351,7 +1355,7 @@ div[data-post] > a {
   position: relative;
   display: inline-block;
   padding: 0.5rem;
-  max-width: 26rem;
+  max-width: 75vw;
   margin: 0 0.5rem 0 3rem;
   font-size: 1rem;
   background: #000000;
@@ -1361,7 +1365,7 @@ div[data-post] > a {
 }
 @media screen and (min-width: 50rem) {
   #thread_form .list-group-item .msg-content {
-    max-width: 60%;
+    max-width: 60vw;
   }
 }
 #thread_form .list-group-item .msg-content a[href*="savepice.ru"] {
@@ -1416,9 +1420,6 @@ div[data-post] > a {
 }
 #thread_form .list-group-item.our-message .msg-content .quote {
   background: rgba(45, 63, 78, 0.84);
-}
-#thread_form .list-group-item.our-message .msg-content .code {
-  border-left: 0.3rem solid rgba(255, 222, 122, 0.56);
 }
 #thread_form .list-group-item.selected .msg-content {
   background: #35414b;
