@@ -6,6 +6,7 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
 import org.apache.http.cookie.Cookie;
+import org.json.JSONObject;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdaapi.post.EditAttach;
@@ -283,12 +284,10 @@ public class QmsApi {
         }
 
         Log.d("save", "result "+res);
-        Matcher m = Pattern
-                .compile("\"redirect_path\":\"([^\"]*).html\"", Pattern.CASE_INSENSITIVE)
-                .matcher(res);
-        if (m.find()) {
-            return m.group(1).replaceAll("\\\\","").replace("uploaded","uploads");
+        JSONObject jsonObject = new JSONObject(res);
+        if (jsonObject.optBoolean("error", false)) {
+            throw new NotReportException(jsonObject.optString("text"));
         }
-        return null;
+        return jsonObject.optString("redirect_path").replace("/uploaded/", "/uploads/");
     }
 }
