@@ -214,7 +214,7 @@
     <string name="is_sure">Уверены?</string>
     <string name="confirm_sending">Подтвердите отправку</string>
     <string name="reason_for_editing">Причина редактирования</string>
-    <string name="preview">Препросмотр</string>
+    <string name="preview">Предпросмотр</string>
     <string name="find_in_text">Поиск по тексту</string>
     <string name="no_attachments">Нет ни одного вложения, загрузить?</string>
     <string name="do_download">Загрузить</string>
