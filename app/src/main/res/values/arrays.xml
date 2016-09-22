@@ -42,9 +42,9 @@
     </string-array>
 
     <string-array name="SearchSortArray">
-        <item>Соответствие запросу</item>
-        <item>Дата (от новых к старым)</item>
-        <item>Дата (от старых к новым)</item>
+        <item>По релевантности</item>
+        <item>От новых к старым</item>
+        <item>От старых к новым</item>
     </string-array>
 
     <string-array name="SearchSortValues">

@@ -778,16 +778,16 @@ public class PreferencesActivity extends BasePreferencesActivity {
         private void showAbout() {
 
             String text = "<b>Неофициальный клиент для сайта <a href=\"http://www.4pda.ru\">4pda.ru</a></b><br/><br/>\n" +
-                    "<b>Автор: </b> Артём Слинкин aka slartus<br/>\n" +
+                    "<b>Автор: </b> Артём Слинкин aka <a href=\"http://4pda.ru/forum/index.php?showuser=236113\">slartus</a><br/>\n" +
                     "<b>E-mail:</b> <a href=\"mailto:slartus+4pda@gmail.com\">slartus+4pda@gmail.com</a><br/><br/>\n" +
-                    "<b>Разработчик(v3.x.x): </b> Евгений Низамиев aka <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
+                    "<b>Разработчик(v3.x): </b> Евгений Низамиев aka <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
                     "<b>E-mail:</b> <a href=\"mailto:radiationx@yandex.ru\">radiationx@yandex.ru</a><br/><br/>\n" +
-                    "<b>Разработчик(v3.x.x):</b> Александр Тайнюк aka <a href=\"http://4pda.ru/forum/index.php?showuser=1726458\">iSanechek</a><br/>\n" +
+                    "<b>Разработчик(v3.x):</b> Александр Тайнюк aka <a href=\"http://4pda.ru/forum/index.php?showuser=1726458\">iSanechek</a><br/>\n" +
                     "<b>E-mail:</b> <a href=\"mailto:devuicore@gmail.com\">devuicore@gmail.com</a><br/><br/>\n" +
-                    "<b>Дизайнер стилей: </b> <a href=\"http://4pda.ru/forum/index.php?showuser=96664\">Морфий</a> и <a href=\"http://4pda.ru/forum/index.php?showuser=2556269\">Radiation15</a><br/>\n" +
+                    "<b>Помощник разработчиков: </b> Алексей Шолохов aka <a href=\"http://4pda.ru/forum/index.php?showuser=96664\">Морфий</a>\n" +
+					"<b>E-mail:</b> <a href=\"mailto:asolohov@gmail.com\">asolohov@gmail.com</a><br/><br/>\n" +
                     "<b>Благодарности: </b> <br/>\n" +
                     "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=1657987\">__KoSyAk__</a></b> Иконка программы<br/>\n" +
-                    "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=96664\">Морфий</a></b> Material стили<br/>\n" +
                     "* <b>Пользователям 4pda</b> (тестирование, идеи, поддержка)\n" +
                     "<br/><br/>" +
                     "Copyright 2011-2016 Artem Slinkin <slartus@gmail.com>";
