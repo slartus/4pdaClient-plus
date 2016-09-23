@@ -356,7 +356,7 @@
     <string name="vote_good">Повысить рейтинг сообщения?</string>
     <string name="do_vote_good">Повысить</string>
     <string name="page_short">"Стр. "</string>
-    <string name="jump_to_page">Перейти к странице</string>
+    <string name="jump_to_page">Перейти к сообщению</string>
     <string name="jump">Перейти</string>
     <string name="look">Посмотреть</string>
     <string name="reputation">Репутация</string>
