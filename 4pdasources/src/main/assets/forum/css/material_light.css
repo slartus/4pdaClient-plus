@@ -157,57 +157,82 @@ span[style*="font-size:8pt"] * {
 }
 .post-block.code {
   position: relative;
-  border-radius: 0;
+  padding: 0;
+  margin: 0;
   overflow: hidden;
+  background: rgba(255, 247, 220, 0.8);
 }
-.post-block.code .numbering {
-  display: block !important;
+.post-block.code .num-wrap,
+.post-block.code .num-pre {
   position: absolute;
-  top: 2.25rem;
-  bottom: 0.5rem;
-  left: 0;
-  width: 1.5rem;
-  overflow: hidden;
+  display: block;
+  width: 2rem;
   padding: 0 0.5rem 0 0;
+  text-align: right;
   font-size: 0.875rem;
   line-height: 1.375rem;
   white-space: pre;
-  text-align: right;
-  color: #808080;
-  border-right: 0.25rem solid rgba(200, 150, 0, 0.5);
+  color: rgba(132, 103, 6, 0.65);
+  -webkit-user-select: none;
 }
-.post-block.code .numbering .selector {
+.post-block.code .num-wrap {
+  left: 0;
+}
+.post-block.code .num-pre {
+  left: 0;
+  top: 2.4375rem;
+  bottom: 0;
+}
+.post-block.code .toggle-btn {
+  position: absolute;
+  padding: 0.5rem;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+}
+.post-block.code .toggle-btn span {
+  display: none;
   font-weight: bold;
+  color: rgba(79, 61, 0, 0.75);
+}
+.post-block.code .toggle-btn:before {
+  content: '';
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+  background: url(material_src/wrap_text.svg), url(../material_src/wrap_text.svg) center no-repeat;
+  background-size: 1.5rem;
 }
 .post-block.code > .block-title {
-  color: rgba(50, 38, 0, 0.75);
+  margin: 0 3rem 0 0;
+  padding: 0.5rem 0.5rem 0.75rem 0.625rem;
+  color: rgba(79, 61, 0, 0.75);
 }
 .post-block.code > .block-title:before {
   content: 'Код';
 }
 .post-block.code > .block-body {
-  margin-left: 2.25rem;
+  padding: 0;
+  margin: 0 0.5rem 0.5rem 2.5rem;
   overflow-x: auto;
   font-family: 'roboto mono';
   font-size: 1rem;
   line-height: 1.375rem;
-  white-space: pre;
-  word-break: normal;
   -webkit-tab-size: 4;
   tab-size: 4;
-  color: rgba(15, 12, 0, 0.9);
-  background: linear-gradient(transparent 1.375rem, rgba(130, 130, 130, 0.1) 1.375rem);
+  color: rgba(20, 16, 5, 0.9);
+  background: linear-gradient(rgba(244, 236, 210, 0.806) 1.375rem, transparent 1.375rem);
   background-size: 2.75rem 2.75rem;
 }
 .post-block.code.box > .block-title:before {
-  content: 'Раскрыть КОД';
+  content: 'Развернуть Код';
 }
 .post-block.code.box > .block-body {
-  max-height: 9.625rem;
+  max-height: 9.5rem;
   overflow: hidden;
 }
 .post-block.code.unbox > .block-title:before {
-  content: 'Свернуть КОД';
+  content: 'Свернуть Код';
 }
 .post-block.hidden {
   background: rgba(0, 0, 0, 0.05);
@@ -927,7 +952,7 @@ span[style*="font-size:8pt"] * {
   height: 1.5rem;
   margin-right: 0.3rem;
   content: '';
-  background-image: url(material_src/attach.svg);
+  background-image: url(material_src/attach.svg), url(../material_src/attach.svg);
   background-repeat: no-repeat;
   background-size: 1.5rem;
   vertical-align: middle;
@@ -970,7 +995,7 @@ span[style*="font-size:8pt"] * {
 }
 .post_body span[style="font-family:monospace"],
 #multimoderation > form span[style="font-family:monospace"] {
-  font-family: Courier, Courier New, Verdana, Arial !important;
+  font-family: 'roboto mono', monospace !important;
   font-size: 1rem;
 }
 .post_body .post-block.code > .block-body:before,
@@ -3130,6 +3155,11 @@ div[data-post] > a {
 }
 #curator .post_body {
   padding-bottom: 0.75rem;
+}
+@media screen and (min-width: 50rem) {
+  #curator .post_body {
+    min-height: 9rem;
+  }
 }
 /*
 *	OTHER

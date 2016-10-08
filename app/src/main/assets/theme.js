@@ -3,23 +3,53 @@
  *		code lines numbering
  *		====================
  */
- 
-function numberingCodeLines() {
-	var codeBlockAll = document.querySelectorAll('.code > .block-body');
+
+function numberingCodeLines(ws) {
+	var codeBlockAll = document.querySelectorAll('.post-block.code');
 	for (var i = 0; i < codeBlockAll.length; i++) {
 		var codeBlock = codeBlockAll[i];
-		var breaks = codeBlock.querySelectorAll('br');
-		var numBlock = document.createElement('div');
-		numBlock.className = "numbering";
-		numBlock.style.display = "none";
-		for (var j = 1; j < breaks.length + 2; j++) {
-			var txt = document.createTextNode(j + "\n");
-			numBlock.appendChild(txt);
+		var codeTitle = codeBlock.querySelector('.block-title');
+		var codeBody = codeBlock.querySelector('.block-body');
+		function wrap() {
+			if (codeBlock.querySelector('.num-wrap')) return;
+			codeBody.style.cssText = 'word-break:break-word;white-space:pre-wrap';
+			var newCode = codeBody.innerHTML.split('<br>');
+			while (~newCode[newCode.length-1].search( /^\s*$/gi ) ) newCode.pop();
+			codeBody.innerHTML = '';
+			for (var j = 0; j < newCode.length; j++) {
+				var codeLine = document.createElement('div');
+				codeLine.className = 'line';
+				codeLine.innerHTML = newCode[j];
+				codeBody.appendChild(codeLine);
+				codeLine.insertAdjacentHTML("afterBegin", '<span class="num-wrap">' + (j + 1) + '</span>');
+			}
 		}
-		codeBlock.parentNode.appendChild(numBlock);
+		function pre() {
+			if (codeBlock.querySelector('.num-pre')) return;
+			codeBody.style.cssText = 'word-break:normal;white-space:pre';
+			var numWrapAll = codeBody.querySelectorAll('.num-wrap');
+			var numBlock = document.createElement('div');
+			numBlock.className = "num-pre";
+			for (var j = 1; j < numWrapAll.length + 1; j++) {
+				var txt = document.createTextNode(j + "\n");
+				numBlock.appendChild(txt);
+				numWrapAll[j - 1].remove();
+			}
+			codeBlock.appendChild(numBlock);
+		}
+		switch (ws) {
+			case 'wrap': wrap(); break;
+			case 'pre' : pre();
+		}
+		if (!codeBlock.querySelector('.toggle-btn')) codeTitle.insertAdjacentHTML("afterEnd", '<span class="toggle-btn"><span>PRE</span></span>');			
+		codeBlock.querySelector('.toggle-btn').addEventListener('click', function() { numberingCodeLines('pre'); });
 	}
 }
-document.addEventListener('DOMContentLoaded', numberingCodeLines, false);
+
+document.addEventListener('DOMContentLoaded', numberingCodeLinesFoo);
+function numberingCodeLinesFoo() {
+	numberingCodeLines('wrap');
+}
 
 /**
  *		======================
