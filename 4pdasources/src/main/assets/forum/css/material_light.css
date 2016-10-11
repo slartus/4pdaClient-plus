@@ -158,7 +158,6 @@ span[style*="font-size:8pt"] * {
 .post-block.code {
   position: relative;
   padding: 0;
-  margin: 0;
   overflow: hidden;
   background: rgba(252, 245, 220, 0.8);
 }

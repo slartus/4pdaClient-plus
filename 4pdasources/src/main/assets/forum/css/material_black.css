@@ -205,9 +205,8 @@ span[style*="font-size:8pt"] * {
 .post-block.code {
   position: relative;
   padding: 0;
-  margin: 0;
   overflow: hidden;
-  background: rgba(57, 47, 18, 0.84);
+  background: rgba(53, 44, 13, 0.84);
 }
 .post-block.code .num-wrap,
 .post-block.code .num-pre {
@@ -219,7 +218,7 @@ span[style*="font-size:8pt"] * {
   font-size: 0.875rem;
   line-height: 1.375rem;
   white-space: pre;
-  color: rgba(255, 234, 167, 0.72);
+  color: rgba(248, 228, 158, 0.72);
   -webkit-user-select: none;
 }
 .post-block.code .num-wrap {
@@ -240,7 +239,7 @@ span[style*="font-size:8pt"] * {
 .post-block.code .toggle-btn span {
   display: none;
   font-weight: bold;
-  color: rgba(255, 242, 202, 0.8);
+  color: rgba(255, 241, 192, 0.8);
 }
 .post-block.code .toggle-btn:before {
   content: '';
@@ -253,7 +252,7 @@ span[style*="font-size:8pt"] * {
 .post-block.code > .block-title {
   margin: 0 3rem 0 0;
   padding: 0.5rem 0.5rem 0.75rem 0.625rem;
-  color: rgba(255, 242, 202, 0.8);
+  color: rgba(255, 241, 192, 0.8);
 }
 .post-block.code > .block-title:before {
   content: 'Код';
@@ -267,8 +266,8 @@ span[style*="font-size:8pt"] * {
   line-height: 1.375rem;
   -webkit-tab-size: 4;
   tab-size: 4;
-  color: rgba(255, 251, 238, 0.92);
-  background: linear-gradient(rgba(65, 56, 27, 0.8448) 1.375rem, transparent 1.375rem);
+  color: rgba(255, 248, 222, 0.88);
+  background: linear-gradient(rgba(62, 53, 23, 0.8448) 1.375rem, transparent 1.375rem);
   background-size: 2.75rem 2.75rem;
 }
 .post-block.code.box > .block-title:before {
