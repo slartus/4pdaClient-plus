@@ -1020,10 +1020,6 @@ a {
   margin: 0;
   overflow: hidden;
 }
-.list-group-item .msg-content a[href*="savepic"],
-.our-message .msg-content a[href*="savepic"] {
-  display: block;
-}
 .list-group-item .msg-content .post-block,
 .our-message .msg-content .post-block {
   margin-left: -0.75em;
@@ -1094,9 +1090,6 @@ a {
 }
 .our-message .msg-content {
   background: #c6e2f4;
-}
-.our-message .msg-content a[href*="savepic"] {
-  text-align: right;
 }
 .our-message:before {
   float: left;
@@ -1654,65 +1647,40 @@ a[href*=findpost][title="Перейти к сообщению"]:after {
 .post_body [attach_id][title*="Скачать"]:not(.linked-image)[href*=".txt"][title*=".txt"]:before {
   content: "\e00b";
 }
+@-webkit-keyframes highlight {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 .post_container {
   background: #ffffff;
   margin: 0.5em 0;
   box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.15);
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.15);
   position: relative;
-  /*&.active{
-        background: rgba(255, 0, 0, 0.5);
-    }*/
 }
 .post_container:before {
   content: "";
   position: absolute;
   left: 0;
   top: 0;
-  right: 0;
-  bottom: 0;
   height: 100%;
   width: 100%;
+  background: #0277bd;
   z-index: 10;
-  opacity: 0.01;
+  opacity: 0;
   pointer-events: none;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-perspective: 1000;
-  perspective: 1000;
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
 }
 .post_container.active:before {
-  background: #0277bd;
-  -webkit-animation: highlight 1.5s;
-  animation: highlight 1.5s;
-  -webkit-animation-timing-function: ease-out;
-  animation-timing-function: ease-out;
-  -webkit-animation-fill-mode: forwards;
-  animation-fill-mode: forwards;
-}
-@-webkit-keyframes highlight {
-  from {
-    opacity: 0.01;
-  }
-  33% {
-    opacity: 0.15;
-  }
-  to {
-    opacity: 0.01;
-  }
-}
-@keyframes highlight {
-  from {
-    opacity: 0.01;
-  }
-  33% {
-    opacity: 0.15;
-  }
-  to {
-    opacity: 0.01;
-  }
+  /*transform: scale(1);
+            opacity: 0.25;*/
+  -webkit-animation: highlight 1s;
 }
 .post_container .post_header {
   padding: 1em;
@@ -2422,9 +2390,11 @@ li .post-block {
 .post-block.code {
   border-color: rgba(18, 181, 87, 0.1);
   background: rgba(18, 181, 87, 0.1);
+  overflow: hidden;
 }
 .post-block.code > .block-title {
   color: #2abc68;
+  width: 100%;
 }
 .post-block.code > .block-title:after {
   content: "";
@@ -2440,19 +2410,85 @@ li .post-block {
 .post-block.code > .block-title:before {
   content: "Показать код";
 }
+.post-block.code .toggle-btn {
+  height: 2.25em;
+  width: 2.25em;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  background-image: url(../style_images/wrap_text.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 1.5em 1.5em;
+  margin: 0.375em;
+  border: 1px solid #e9e9e9;
+  border-color: rgba(18, 181, 87, 0.1);
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+}
+.post-block.code .toggle-btn span {
+  display: none;
+}
 .post-block.code > .block-body {
   font-family: Courier, Courier New, Verdana, Arial;
   font-size: 0.875em;
-  white-space: pre-wrap;
   background: linear-gradient(transparent 1.42857143em, rgba(130, 130, 130, 0.1) 1.42857143em);
-  background-size: 2.85714286em 2.85714286em;
+  background-size: 100% 2.85714286em;
+  background-position: 28px 0;
+  background-repeat: repeat-y;
   padding-top: 0;
   padding-bottom: 0;
   margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  counter-reset: count;
+  overflow-x: auto;
+  padding-left: 32px;
+  position: static;
+  white-space: pre;
+  word-break: normal;
+  word-wrap: normal;
+}
+.post-block.code > .block-body div {
+  position: relative;
+}
+.post-block.code > .block-body div:before {
+  text-align: center;
+  counter-increment: count;
+  content: counter(count);
+  position: absolute;
+  width: 28px;
+  left: -32px;
+  opacity: 0;
+  pointer-events: none;
+  font-family: "roboto", sans-serif;
+  color: #757575;
+}
+.post-block.code:before {
+  content: "";
+  position: absolute;
+  width: 1.75em;
+  top: 3em;
+  bottom: 0;
+  background: rgba(18, 181, 87, 0.1);
+  border: 1px solid #e9e9e9;
+  border-color: rgba(18, 181, 87, 0.1);
+  border-left: none;
+  box-sizing: content-box;
+}
+.post-block.code .num-pre {
+  position: absolute;
+  width: 2em;
+  white-space: pre-line;
+  text-align: center;
+  top: 3.42857143em;
+  font-size: 0.875em;
+  margin-top: 0.5em;
   margin-bottom: 1em;
+  color: #757575;
 }
 .post-block.code.box > .block-body {
-  max-height: 11em;
+  max-height: 11.5em;
   overflow: hidden;
   position: relative;
 }
@@ -2468,6 +2504,22 @@ li .post-block {
 }
 .post-block.code.unbox > .block-title:before {
   content: "Скрыть код";
+}
+.post-block.code.break .toggle-btn {
+  background-color: rgba(18, 181, 87, 0.1);
+}
+.post-block.code.break .block-body {
+  white-space: pre-wrap;
+  word-break: break-word;
+  word-wrap: normal;
+}
+.post-block.code.break .block-body div:before {
+  opacity: 1;
+  pointer-events: auto;
+}
+.post-block.code.break .num-pre {
+  opacity: 0;
+  pointer-events: none;
 }
 .post-block.hidden {
   background: rgba(70, 70, 70, 0.05);
