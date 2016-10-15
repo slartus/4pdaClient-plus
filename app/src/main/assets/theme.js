@@ -4,54 +4,39 @@
  *		====================
  */
 
-function numberingCodeLines(ws) {
-    var codeBlockAll = document.querySelectorAll('.post-block.code');
-    for (var i = 0; i < codeBlockAll.length; i++) {
-        var codeBlock = codeBlockAll[i];
-        var codeTitle = codeBlock.querySelector('.block-title');
-        var codeBody = codeBlock.querySelector('.block-body');
-
-        function wrap() {
-            if (codeBlock.querySelector('.num-wrap')) return;
-            codeBody.style.cssText = 'word-break:break-word;white-space:pre-wrap';
-            var newCode = codeBody.innerHTML.split('<br>');
-            while (~newCode[newCode.length - 1].search(/^\s*$/gi)) newCode.pop();
-            codeBody.innerHTML = '';
-            for (var j = 0; j < newCode.length; j++) {
-                var codeLine = document.createElement('div');
-                codeLine.className = 'line';
-                codeLine.innerHTML = newCode[j];
-                codeBody.appendChild(codeLine);
-                codeLine.insertAdjacentHTML("afterBegin", '<span class="num-wrap">' + (j + 1) + '</span>');
-            }
-        }
-
-        function pre() {
-            if (codeBlock.querySelector('.num-pre')) return;
-            codeBody.style.cssText = 'word-break:normal;white-space:pre';
-            var numWrapAll = codeBody.querySelectorAll('.num-wrap');
-            var numBlock = document.createElement('div');
-            numBlock.className = "num-pre";
-            for (var j = 1; j < numWrapAll.length + 1; j++) {
-                var txt = document.createTextNode(j + "\n");
-                numBlock.appendChild(txt);
-                numWrapAll[j - 1].remove();
-            }
-            codeBlock.appendChild(numBlock);
-        }
-        switch (ws) {
-            case 'wrap':
-                wrap();
-                break;
-            case 'pre':
-                pre();
-        }
-        if (!codeBlock.querySelector('.toggle-btn')) codeTitle.insertAdjacentHTML("afterEnd", '<span class="toggle-btn"><span>PRE</span></span>');
-        codeBlock.querySelector('.toggle-btn').addEventListener('click', function () {
-            numberingCodeLines('pre');
-        });
-    }
+function numberingCodeLinesFoo() {
+	var codeBlockAll = document.querySelectorAll('.post-block.code');
+	for (var i = 0; i < codeBlockAll.length; i++) {
+		var codeBlock = codeBlockAll[i],
+		    codeTitle = codeBlock.querySelector('.block-title'),
+		    codeBody = codeBlock.querySelector('.block-body'),
+			newCode = codeBody.innerHTML.split('<br>'),
+			count = '';
+		codeBlock.setAttribute('wraptext', 'wrap');
+		while (~newCode[newCode.length - 1].search(/^\s*$/gi)) newCode.pop();
+		codeTitle.insertAdjacentHTML("afterEnd", '<span class="toggle-btn"><span>PRE</span></span>');
+		codeBody.innerHTML = '';
+		for (var j = 0; j < newCode.length; j++) {
+			var wrapLines = '<div class="line"><span class="num-wrap">' + (j + 1) + '</span>' + newCode[j] + '</div>';
+			codeBody.insertAdjacentHTML("beforeEnd", wrapLines);
+			count += (j + 1) + '\n';
+		}
+		codeBlock.insertAdjacentHTML("beforeEnd", '<div class="num-pre">' + count + '</div>');
+		codeBlock.querySelector('.toggle-btn').addEventListener('click', onClickToggleButton);
+	}
+	function onClickToggleButton() {
+		for (var i = 0; i < codeBlockAll.length; i++) {
+			if (codeBlockAll[i].getAttribute('wraptext') == 'wrap') {
+				codeBlockAll[i].setAttribute('wraptext', 'pre');
+			} else codeBlockAll[i].setAttribute('wraptext', 'wrap');
+		}
+	}
 }
+
+document.addEventListener('DOMContentLoaded', numberingCodeLinesFoo);
+
+/* ------------ */
+
 var codeBlocks;
 var initCodeType = true; //true - break, false - wrap;
 var breakClass = "break";
@@ -98,12 +83,6 @@ function onClickToggleBreak() {
     }
 }
 //document.addEventListener('DOMContentLoaded', numberingCodeLinesFoo2);
-document.addEventListener('DOMContentLoaded', numberingCodeLinesFoo);
-
-
-function numberingCodeLinesFoo() {
-    numberingCodeLines('wrap');
-}
 
 /**
  *		======================

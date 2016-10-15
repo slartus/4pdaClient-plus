@@ -15,7 +15,9 @@ HTML body {
   padding: 0.5rem 0 5rem;
   font-size: 1em;
   font-weight: 1.4;
+  overflow-wrap: break-word;
   word-break: break-word;
+  white-space: normal;
   overflow: auto;
   color: black;
   box-sizing: border-box;
@@ -164,10 +166,10 @@ span[style*="font-size:8pt"] * {
 .post-block.code .num-wrap,
 .post-block.code .num-pre {
   position: absolute;
-  display: block;
   width: 2rem;
   padding: 0 0.5rem 0 0;
   text-align: right;
+  font-family: 'roboto mono';
   font-size: 0.875rem;
   line-height: 1.375rem;
   white-space: pre;
@@ -179,8 +181,25 @@ span[style*="font-size:8pt"] * {
 }
 .post-block.code .num-pre {
   left: 0;
-  top: 2.4375rem;
+  top: 2.5rem;
   bottom: 0;
+}
+.post-block.code[wraptext="wrap"] .num-wrap {
+  dispaly: inline-block;
+}
+.post-block.code[wraptext="wrap"] .num-pre {
+  display: none;
+}
+.post-block.code[wraptext="pre"] > .block-body {
+  overflow-wrap: normal;
+  word-break: normal;
+  white-space: pre;
+}
+.post-block.code[wraptext="pre"] .num-wrap {
+  display: none;
+}
+.post-block.code[wraptext="pre"] .num-pre {
+  display: block;
 }
 .post-block.code .toggle-btn {
   position: absolute;
@@ -214,7 +233,7 @@ span[style*="font-size:8pt"] * {
   padding: 0;
   margin: 0 0.5rem 0.5rem 2.5rem;
   overflow-x: auto;
-  font-family: 'roboto mono';
+  white-space: pre-wrap;
   font-size: 1rem;
   line-height: 1.375rem;
   -webkit-tab-size: 4;
@@ -253,18 +272,13 @@ span[style*="font-size:8pt"] * {
   padding: 0;
   overflow: hidden;
   box-sizing: border-box;
-  background: #f2f2f2;
+  background: rgba(128, 128, 128, 0.1);
 }
-.post-block.spoil > .block-title {
-  padding: 0.5rem 0.7rem;
-  font-style: normal;
-  color: white;
-  font-size: 1rem;
-  overflow: hidden;
-}
-.post-block.spoil > .block-title:before,
+.post-block.spoil:before,
 .poll .hidetop B:before {
-  display: inline-block;
+  position: absolute;
+  left: 0.625rem;
+  top: 0.875rem;
   font-size: 1em;
   content: '';
   height: 0.625em;
@@ -275,6 +289,13 @@ span[style*="font-size:8pt"] * {
   border-left: 0.125em solid;
   -webkit-transition: 0.3s ease;
   transition: 0.3s ease;
+}
+.post-block.spoil > .block-title {
+  padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+  font-style: normal;
+  color: white;
+  font-size: 1rem;
+  overflow: hidden;
 }
 .post-block.spoil > .block-title:empty:after {
   position: relative;
@@ -298,33 +319,50 @@ span[style*="font-size:8pt"] * {
 .post-block.spoil > .block-body .spoil.open > .block-body {
   padding-right: 0;
 }
-.post-block.spoil.close > .block-title {
-  background: #3490c3;
-}
-.post-block.spoil.close > .block-title:before,
+.post-block.spoil.close:before,
 .poll .hidetop.close B:before {
   -webkit-transform: rotate(-135deg) translate(0.125rem, 0.125rem);
   transform: rotate(-135deg) translate(0.125rem, 0.125rem);
   border-top-color: white;
   border-left-color: white;
 }
+.post-block.spoil.close > .block-title {
+  background: #3490c3;
+}
 .post-block.spoil.close > .block-body {
   display: none;
 }
-.post-block.spoil.open .open {
-  border-radius: 0;
-  border-left: 2px solid #cccccc;
-}
-.post-block.spoil.open > .block-title {
-  color: #666666;
-  margin: 0;
-}
-.post-block.spoil.open > .block-title:before,
+.post-block.spoil.open:before,
 .poll .hidetop.open B:before {
   -webkit-transform: rotate(45deg) translate(0.125rem, 0.125rem);
   transform: rotate(45deg) translate(0.125rem, 0.125rem);
   border-top-color: #666666;
   border-left-color: #666666;
+}
+.post-block.spoil.open .open {
+  background: white;
+}
+.post-block.spoil.open .open .open {
+  background: rgba(128, 128, 128, 0.1);
+}
+.post-block.spoil.open .open .open .open {
+  background: white;
+}
+.post-block.spoil.open .open .open .open .open {
+  background: rgba(128, 128, 128, 0.1);
+}
+.post-block.spoil.open .open .open .open .open .open {
+  background: white;
+}
+.post-block.spoil.open .open .open .open .open .open .open {
+  background: rgba(128, 128, 128, 0.1);
+}
+.post-block.spoil.open .open .open .open .open .open .open .open {
+  background: white;
+}
+.post-block.spoil.open > .block-title {
+  color: #666666;
+  margin: 0;
 }
 /*
 *	ADM TAGS
@@ -370,6 +408,7 @@ span[style*="font-size:8pt"] * {
   height: 100%;
   margin: 0;
   background: #f2f2f2;
+  background: rgba(128, 128, 128, 0.1);
 }
 /*
 *	PANEL
