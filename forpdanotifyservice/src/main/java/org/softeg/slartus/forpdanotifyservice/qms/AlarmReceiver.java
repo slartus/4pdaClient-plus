@@ -14,7 +14,7 @@ import android.util.Log;
  * To change this template use File | Settings | File Templates.
  */
 public class AlarmReceiver extends BroadcastReceiver {
-    private static final String DEBUG_TAG = "QmsMainService.AlarmReceiver";
+    private static final String DEBUG_TAG = AlarmReceiver.class.getSimpleName();
 
     @Override
     public void onReceive(final Context context, Intent intent) {

@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class MainService extends Service {
 
     private static ArrayList<NotifierBase> getNotifiers(Context context) {
-        ArrayList<NotifierBase> res = new ArrayList<NotifierBase>();
+        ArrayList<NotifierBase> res = new ArrayList<>();
         res.add(new QmsNotifier(context));
         res.add(new FavoritesNotifier(context));
         return res;
@@ -109,7 +109,7 @@ public class MainService extends Service {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("CookiesPath", cookiesPath);
-        editor.commit();
+        editor.apply();
     }
 
 }

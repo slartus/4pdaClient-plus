@@ -16,10 +16,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
-/**
- * Created by slinkin on 05.06.13.
+/*
+ * Created by slartus on 05.06.13.
  */
 public abstract class NotifierBase {
     private Context mContext;
@@ -45,7 +46,7 @@ public abstract class NotifierBase {
         return preferences.getString("CookiesPath", null);
     }
 
-    private SimpleDateFormat m_DateTimeFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+    private SimpleDateFormat m_DateTimeFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.getDefault());
 
     protected GregorianCalendar loadLastDate(String lastDateTimeKey) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -53,7 +54,7 @@ public abstract class NotifierBase {
         // Log.d(LOG_TAG, "lastDateTimeStr=" + lastDateTimeStr);
         if (lastDateTimeStr == null) return null;
 
-        Map<String, Date> additionalHeaders = new HashMap<String, Date>();
+        Map<String, Date> additionalHeaders = new HashMap<>();
 
         if (ExtDateFormat.tryParse(m_DateTimeFormat, lastDateTimeStr, additionalHeaders)) {
 
@@ -69,14 +70,14 @@ public abstract class NotifierBase {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(lastDateTimeKey, m_DateTimeFormat.format(calendar.getTime()));
-        editor.commit();
+        editor.apply();
     }
 
     protected static void saveTimeOut(Context context, float timeOut, String timeOutKey) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putFloat(timeOutKey, timeOut);
-        editor.commit();
+        editor.apply();
     }
 
     protected static float loadTimeOut(Context context, String timeOutKey) {
@@ -84,7 +85,7 @@ public abstract class NotifierBase {
         return ExtPreferences.parseFloat(preferences, timeOutKey, 5);
     }
 
-    public static Uri getSound(Context context) {
+    protected static Uri getSound(Context context) {
         if (!ClientPreferences.Notifications.useSound(context))
             return null;
         if (ClientPreferences.Notifications.SilentMode.isEnabled(context)) {

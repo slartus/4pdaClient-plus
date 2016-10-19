@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,10 +13,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -35,7 +32,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -44,7 +40,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.apache.http.client.CookieStore;
@@ -61,6 +56,7 @@ import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.SimpleCookie;
+import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.HttpHelper;
@@ -92,7 +88,7 @@ import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
+/*
  * Created by radiationx on 12.11.15.
  */
 public class QmsChatFragment extends WebViewFragment {
@@ -116,7 +112,6 @@ public class QmsChatFragment extends WebViewFragment {
     private long m_UpdateTimeout = 15000;
     private Timer m_UpdateTimer = new Timer();
     private HtmlPreferences m_HtmlPreferences;
-    private WebViewExternals m_WebViewExternals;
     private PopupPanelView mPopupPanelView;
     private String m_MessageText = null;
     private AsyncTask<ArrayList<String>, Void, Boolean> m_SendTask = null;
@@ -128,11 +123,11 @@ public class QmsChatFragment extends WebViewFragment {
         mPopupPanelView.hidePopupWindow();
     }
 
-    public static void openChat(String userId, String userNick, String tid, String themeTitle, String pageBody){
+    public static void openChat(String userId, String userNick, String tid, String themeTitle, String pageBody) {
         MainActivity.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle, pageBody));
     }
 
-    public static void openChat(String userId, String userNick, String tid, String themeTitle){
+    public static void openChat(String userId, String userNick, String tid, String themeTitle) {
         MainActivity.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle));
     }
 
@@ -185,11 +180,7 @@ public class QmsChatFragment extends WebViewFragment {
 
     @Override
     public void reload() {
-        new Thread(new Runnable() {
-            public void run() {
-                reLoadChatSafe();
-            }
-        }).start();
+        new Thread(this::reLoadChatSafe).start();
 
     }
 
@@ -213,19 +204,14 @@ public class QmsChatFragment extends WebViewFragment {
         m_HtmlPreferences.load(getContext());
 
         edMessage = (EditText) findViewById(R.id.edMessage);
-        if(mPopupPanelView==null)
+        if (mPopupPanelView == null)
             mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
         mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), edMessage);
         mPopupPanelView.activityCreated(getMainActivity(), view);
 
         final ImageButton send_button = (ImageButton) findViewById(R.id.btnSend);
 
-        send_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startSendMessage();
-            }
-        });
+        send_button.setOnClickListener(view12 -> startSendMessage());
         edMessage.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -268,7 +254,7 @@ public class QmsChatFragment extends WebViewFragment {
 
         wvChat.addJavascriptInterface(this, "HTMLOUT");
         wvChat.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
-        m_WebViewExternals = new WebViewExternals(this);
+        WebViewExternals m_WebViewExternals = new WebViewExternals(this);
         m_WebViewExternals.loadPreferences(App.getInstance().getPreferences());
 
         m_WebViewExternals.setWebViewSettings(true);
@@ -291,18 +277,10 @@ public class QmsChatFragment extends WebViewFragment {
             setSubtitle(m_Nick);
         if (!TextUtils.isEmpty(m_PageBody[0])) {
             m_LastBodyLength = m_PageBody[0].length();
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    final String body = transformChatBody(m_PageBody[0]);
+            new Thread(() -> {
+                final String body = transformChatBody(m_PageBody[0]);
 
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            wvChat.loadDataWithBaseURL("file:///android_asset/", body, "text/html", "UTF-8", null);
-                        }
-                    });
-                }
+                mHandler.post(() -> wvChat.loadDataWithBaseURL("file:///android_asset/", body, "text/html", "UTF-8", null));
             }).start();
 
 
@@ -312,32 +290,25 @@ public class QmsChatFragment extends WebViewFragment {
         loadPrefs();
         startUpdateTimer();
         btnAttachments = (Button) findViewById(R.id.btnAttachments);
-        btnAttachments.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                showAttachesListDialog();
-            }
-        });
+        btnAttachments.setOnClickListener(view1 -> showAttachesListDialog());
         return view;
     }
 
     @JavascriptInterface
     public void showChooseCssDialog() {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    intent.setType("file/*");
+        getMainActivity().runOnUiThread(() -> {
+            try {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setType("file/*");
 
-                    // intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
-                    startActivityForResult(intent, FILECHOOSER_RESULTCODE);
+                // intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
+                startActivityForResult(intent, FILECHOOSER_RESULTCODE);
 
-                } catch (ActivityNotFoundException ex) {
-                    Toast.makeText(getMainActivity(), R.string.no_app_for_get_file, Toast.LENGTH_LONG).show();
-                } catch (Exception ex) {
-                    AppLog.e(getMainActivity(), ex);
-                }
+            } catch (ActivityNotFoundException ex) {
+                Toast.makeText(getMainActivity(), R.string.no_app_for_get_file, Toast.LENGTH_LONG).show();
+            } catch (Exception ex) {
+                AppLog.e(getMainActivity(), ex);
             }
         });
     }
@@ -345,19 +316,19 @@ public class QmsChatFragment extends WebViewFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode,
                                  Intent data) {
-        if (resultCode == Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == MY_INTENT_CLICK) {
                 if (null == data) return;
                 Uri selectedImageUri = data.getData();
                 String selectedImagePath = ImageFilePath.getPath(getMainActivity().getApplicationContext(), selectedImageUri);
-                if(selectedImagePath!=null&&selectedImagePath.matches("(?i)(.*)(jpg|png|gif)$")){
+                if (selectedImagePath != null && selectedImagePath.matches("(?i)(.*)(jpg|png|gif)$")) {
                     saveAttachDirPath(selectedImagePath);
                     new UpdateTask(getMainActivity(), selectedImagePath).execute();
-                }else {
-                    Toast.makeText(getContext(),"Данный формат файла не поддерживается", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Данный формат файла не поддерживается", Toast.LENGTH_SHORT).show();
                 }
 
-            }else if(requestCode == FILECHOOSER_RESULTCODE) {
+            } else if (requestCode == FILECHOOSER_RESULTCODE) {
                 String attachFilePath = FileUtils.getRealPathFromURI(getContext(), data.getData());
                 String cssData = FileUtils.readFileText(attachFilePath)
                         .replace("\\", "\\\\")
@@ -366,11 +337,8 @@ public class QmsChatFragment extends WebViewFragment {
                     wvChat.loadUrl("javascript:window['HtmlInParseLessContent']('" + cssData + "');");
                 else
                     wvChat.evaluateJavascript("window['HtmlInParseLessContent']('" + cssData + "')",
-                            new ValueCallback<String>() {
-                                @Override
-                                public void onReceiveValue(String s) {
+                            s -> {
 
-                                }
                             }
                     );
             }
@@ -400,76 +368,59 @@ public class QmsChatFragment extends WebViewFragment {
 
     @JavascriptInterface
     public void showMessage(final String message) {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(getMainActivity(), message, Toast.LENGTH_LONG).show();
-            }
-        });
+        getMainActivity().runOnUiThread(() -> Toast.makeText(getMainActivity(), message, Toast.LENGTH_LONG).show());
     }
 
     @JavascriptInterface
     public void deleteMessages(final String[] checkBoxNames) {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (checkBoxNames == null) {
-                    Toast.makeText(getMainActivity(), R.string.no_messages_for_delete, Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                final ArrayList<String> ids = new ArrayList<>();
-                Pattern p = Pattern.compile("message-id\\[(\\d+)\\]", Pattern.CASE_INSENSITIVE);
-                for (String checkBoxName : checkBoxNames) {
-                    Matcher m = p.matcher(checkBoxName);
-                    if (m.find()) {
-                        ids.add(m.group(1));
-                    }
-                }
-                if (ids.size() == 0) {
-                    Toast.makeText(getMainActivity(), R.string.no_messages_for_delete, Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                new MaterialDialog.Builder(getMainActivity())
-                        .title(R.string.confirm_action)
-                        .cancelable(true)
-                        .content(String.format(App.getContext().getString(R.string.ask_delete_messages), ids.size()))
-                        .positiveText(R.string.delete)
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                m_SendTask = new DeleteTask(getMainActivity());
-                                m_SendTask.execute(ids);
-                            }
-                        })
-                        .negativeText(R.string.cancel)
-                        .show();
+        getMainActivity().runOnUiThread(() -> {
+            if (checkBoxNames == null) {
+                Toast.makeText(getMainActivity(), R.string.no_messages_for_delete, Toast.LENGTH_LONG).show();
+                return;
             }
+
+            final ArrayList<String> ids = new ArrayList<>();
+            Pattern p = Pattern.compile("message-id\\[(\\d+)\\]", Pattern.CASE_INSENSITIVE);
+            for (String checkBoxName : checkBoxNames) {
+                Matcher m = p.matcher(checkBoxName);
+                if (m.find()) {
+                    ids.add(m.group(1));
+                }
+            }
+            if (ids.size() == 0) {
+                Toast.makeText(getMainActivity(), R.string.no_messages_for_delete, Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            new MaterialDialog.Builder(getMainActivity())
+                    .title(R.string.confirm_action)
+                    .cancelable(true)
+                    .content(String.format(App.getContext().getString(R.string.ask_delete_messages), ids.size()))
+                    .positiveText(R.string.delete)
+                    .callback(new MaterialDialog.ButtonCallback() {
+                        @Override
+                        public void onPositive(MaterialDialog dialog) {
+                            m_SendTask = new DeleteTask(getMainActivity());
+                            m_SendTask.execute(ids);
+                        }
+                    })
+                    .negativeText(R.string.cancel)
+                    .show();
         });
     }
+
     @JavascriptInterface
-    public void startDeleteModeJs(final String count){
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                startDeleteMode(count);
-            }
-        });
+    public void startDeleteModeJs(final String count) {
+        getMainActivity().runOnUiThread(() -> startDeleteMode(count));
 
     }
 
     @JavascriptInterface
-    public void stopDeleteModeJs(){
+    public void stopDeleteModeJs() {
         Log.d("kek", "STOP");
-        if(!DeleteMode)
+        if (!DeleteMode)
             return;
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                stopDeleteMode(true);
-            }
-        });
+        getMainActivity().runOnUiThread(() -> stopDeleteMode(true));
     }
 
     private final class AnActionModeOfEpicProportions implements ActionMode.Callback {
@@ -497,13 +448,15 @@ public class QmsChatFragment extends WebViewFragment {
             stopDeleteMode(false);
         }
     }
+
     ActionMode mMode;
     private Boolean DeleteMode = false;
+
     private void startDeleteMode(String count) {
-        if(!DeleteMode)
+        if (!DeleteMode)
             mMode = getMainActivity().startActionMode(new AnActionModeOfEpicProportions());
-        if(mMode!=null)
-            mMode.setTitle("Сообщений:"+count);
+        if (mMode != null)
+            mMode.setTitle("Сообщений:" + count);
 
         DeleteMode = true;
     }
@@ -553,16 +506,25 @@ public class QmsChatFragment extends WebViewFragment {
         super.onResume();
         loadPrefs();
         startUpdateTimer();
-        if(mPopupPanelView!=null)
+        if (mPopupPanelView != null)
             mPopupPanelView.resume();
+    }
+
+    private void startAdaptiveTimeOutService() {
+        if (!QmsNotifier.isUse(getContext()))
+            return;
+
+        App.reStartQmsService(true);
     }
 
     @Override
     public void onPause() {
         super.onPause();
+
+        startAdaptiveTimeOutService();
         m_UpdateTimer.cancel();
         m_UpdateTimer.purge();
-        if(mPopupPanelView!=null)
+        if (mPopupPanelView != null)
             mPopupPanelView.pause();
     }
 
@@ -612,16 +574,16 @@ public class QmsChatFragment extends WebViewFragment {
 
     private String transformChatBody(String chatBody) {
         checkNewQms();
-        if(m_ThemeTitle==null|m_Nick==null){
+        if (m_ThemeTitle == null | m_Nick == null) {
             Matcher m = Pattern.compile("<span id=\"chatInfo\"[^>]*>([^>]*?)\\|:\\|([^<]*)</span>").matcher(chatBody);
-            if(m.find()){
+            if (m.find()) {
                 m_Nick = m.group(1);
                 m_ThemeTitle = m.group(2);
             }
         }
         HtmlBuilder htmlBuilder = new HtmlBuilder();
         htmlBuilder.beginHtml("QMS");
-        htmlBuilder.beginBody("qms","onload=\"scrollToElement('bottom_element')\"",Preferences.Topic.isShowAvatars());
+        htmlBuilder.beginBody("qms", "onload=\"scrollToElement('bottom_element')\"", Preferences.Topic.isShowAvatars());
 
         if (!Preferences.Topic.isShowAvatars())
             chatBody = chatBody.replaceAll("<img[^>]*?class=\"avatar\"[^>]*>", "");
@@ -638,11 +600,9 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
     private void reLoadChatSafe() {
-        uiHandler.post(new Runnable() {
-            public void run() {
+        uiHandler.post(() -> {
 //                setLoading(false);
-                setSubtitle(App.getContext().getString(R.string.refreshing));
-            }
+            setSubtitle(App.getContext().getString(R.string.refreshing));
         });
 
         String chatBody = null;
@@ -653,7 +613,7 @@ public class QmsChatFragment extends WebViewFragment {
 
             if (TextUtils.isEmpty(m_Nick)) {
                 updateTitle = true;
-                Map<String, String> additionalHeaders = new HashMap<String, String>();
+                Map<String, String> additionalHeaders = new HashMap<>();
                 body = QmsApi.getChat(Client.getInstance(), m_Id, m_TId, additionalHeaders);
                 if (additionalHeaders.containsKey("Nick"))
                     m_Nick = additionalHeaders.get("Nick");
@@ -664,11 +624,9 @@ public class QmsChatFragment extends WebViewFragment {
             }
             if (body.length() == m_LastBodyLength) {
                 checkNewQms();
-                uiHandler.post(new Runnable() {
-                    public void run() {
+                uiHandler.post(() -> {
 //                        setLoading(false);
-                        setSubtitle("");
-                    }
+                    setSubtitle("");
                 });
                 return;
             }
@@ -680,38 +638,36 @@ public class QmsChatFragment extends WebViewFragment {
         final Throwable finalEx = ex;
         final String finalChatBody = chatBody;
         final Boolean finalUpdateTitle = updateTitle;
-        uiHandler.post(new Runnable() {
-            public void run() {
-                if (finalEx == null) {
-                    if (finalUpdateTitle)
-                        setTitle(m_ThemeTitle);
-                    setSubtitle(m_Nick);
-                    wvChat.loadDataWithBaseURL("file:///android_asset/", finalChatBody, "text/html", "UTF-8", null);
+        uiHandler.post(() -> {
+            if (finalEx == null) {
+                if (finalUpdateTitle)
+                    setTitle(m_ThemeTitle);
+                setSubtitle(m_Nick);
+                wvChat.loadDataWithBaseURL("file:///android_asset/", finalChatBody, "text/html", "UTF-8", null);
+            } else {
+                if ("Такого диалога не существует.".equals(finalEx.getMessage())) {
+                    new MaterialDialog.Builder(getMainActivity())
+                            .title(R.string.error)
+                            .content(finalEx.getMessage())
+                            .positiveText(R.string.ok)
+                            .callback(new MaterialDialog.ButtonCallback() {
+                                @Override
+                                public void onPositive(MaterialDialog dialog) {
+                                    //showThread();
+                                }
+                            })
+                            .show();
+                    m_UpdateTimer.cancel();
+                    m_UpdateTimer.purge();
+
                 } else {
-                    if ("Такого диалога не существует.".equals(finalEx.getMessage())) {
-                        new MaterialDialog.Builder(getMainActivity())
-                                .title(R.string.error)
-                                .content(finalEx.getMessage())
-                                .positiveText(R.string.ok)
-                                .callback(new MaterialDialog.ButtonCallback() {
-                                    @Override
-                                    public void onPositive(MaterialDialog dialog) {
-                                        //showThread();
-                                    }
-                                })
-                                .show();
-                        m_UpdateTimer.cancel();
-                        m_UpdateTimer.purge();
-
-                    } else {
-                        Toast.makeText(getMainActivity(), AppLog.getLocalizedMessage(finalEx, finalEx.getLocalizedMessage()),
-                                Toast.LENGTH_SHORT).show();
-                    }
-
+                    Toast.makeText(getMainActivity(), AppLog.getLocalizedMessage(finalEx, finalEx.getLocalizedMessage()),
+                            Toast.LENGTH_SHORT).show();
                 }
-//                setLoading(false);
-                setSubtitle("");
+
             }
+//                setLoading(false);
+            setSubtitle("");
         });
 
     }
@@ -723,12 +679,9 @@ public class QmsChatFragment extends WebViewFragment {
             wvChat.loadDataWithBaseURL("file:///android_asset/", chatBody, "text/html", "UTF-8", null);
         } else {
             if (ex != null)
-                AppLog.e(getMainActivity(), ex, new Runnable() {
-                    @Override
-                    public void run() {
-                        m_SendTask = new SendTask(getMainActivity());
-                        m_SendTask.execute();
-                    }
+                AppLog.e(getMainActivity(), ex, () -> {
+                    m_SendTask = new SendTask(getMainActivity());
+                    m_SendTask.execute();
                 });
             else
                 Toast.makeText(getMainActivity(), R.string.unknown_error,
@@ -764,9 +717,9 @@ public class QmsChatFragment extends WebViewFragment {
             return;
         }
         m_MessageText = edMessage.getText().toString();
-        for(EditAttach attach:attachList){
-            if(!m_MessageText.contains(attach.getId())){
-                m_MessageText+="\n"+"[url="+attach.getId()+"]"+attach.getId()+"[/url]";
+        for (EditAttach attach : attachList) {
+            if (!m_MessageText.contains(attach.getId())) {
+                m_MessageText += "\n" + "[url=" + attach.getId() + "]" + attach.getId() + "[/url]";
             }
         }
         m_SendTask = new SendTask(getMainActivity());
@@ -781,12 +734,7 @@ public class QmsChatFragment extends WebViewFragment {
     @Override
     @JavascriptInterface
     public void saveHtml(final String html) {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new SaveHtml(getMainActivity(), html, "qms");
-            }
-        });
+        getMainActivity().runOnUiThread(() -> new SaveHtml(getMainActivity(), html, "qms"));
     }
 
     @Override
@@ -812,48 +760,37 @@ public class QmsChatFragment extends WebViewFragment {
         super.onCreateOptionsMenu(menu, inflater);
         menu.add(R.string.refresh)
                 .setIcon(R.drawable.refresh)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                reload();
-                return true;
-            }
-        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                .setOnMenuItemClickListener(menuItem -> {
+                    reload();
+                    return true;
+                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         menu.add(R.string.setting)
                 .setIcon(R.drawable.settings_white)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                Intent intent = new Intent(getMainActivity(), QmsChatPreferencesActivity.class);
-                getMainActivity().startActivity(intent);
-                return true;
-            }
-        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                .setOnMenuItemClickListener(menuItem -> {
+                    Intent intent = new Intent(getMainActivity(), QmsChatPreferencesActivity.class);
+                    getMainActivity().startActivity(intent);
+                    return true;
+                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
         menu.add(R.string.delete_dialog)
                 .setIcon(R.drawable.delete)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                deleteDialog();
-                return true;
-            }
-        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+                .setOnMenuItemClickListener(menuItem -> {
+                    deleteDialog();
+                    return true;
+                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
         menu.add(R.string.font_size)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        showFontSizeDialog();
-                        return true;
-                    }
+                .setOnMenuItemClickListener(menuItem -> {
+                    showFontSizeDialog();
+                    return true;
                 });
 
         menu.add(R.string.profile_interlocutor)
-            .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                showCompanionProfile();
-                return true;
-            }
-        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                .setOnMenuItemClickListener(menuItem -> {
+                    showCompanionProfile();
+                    return true;
+                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
 /*
@@ -874,10 +811,10 @@ public class QmsChatFragment extends WebViewFragment {
 
 
         private final MaterialDialog dialog;
-        public String m_ChatBody;
+        String m_ChatBody;
         private Throwable ex;
 
-        public SendTask(Context context) {
+        SendTask(Context context) {
             dialog = new MaterialDialog.Builder(context)
                     .progress(true, 0)
                     .content(getString(R.string.sending_message))
@@ -923,10 +860,10 @@ public class QmsChatFragment extends WebViewFragment {
 
 
         private final MaterialDialog dialog;
-        public String m_ChatBody;
+        String m_ChatBody;
         private Throwable ex;
 
-        public DeleteTask(Context context) {
+        DeleteTask(Context context) {
 
             dialog = new MaterialDialog.Builder(context)
                     .progress(true, 0)
@@ -972,7 +909,7 @@ public class QmsChatFragment extends WebViewFragment {
         ArrayList<String> m_Ids;
         private Throwable ex;
 
-        public DeleteDialogTask(Context context, ArrayList<String> ids) {
+        DeleteDialogTask(Context context, ArrayList<String> ids) {
             m_Ids = ids;
             dialog = new MaterialDialog.Builder(context)
                     .progress(true, 0)
@@ -1037,8 +974,7 @@ public class QmsChatFragment extends WebViewFragment {
 
     //Upload file to savepic.ru
     private List<EditAttach> attachList = new ArrayList<>();
-    private String lastSelectDirPath = Environment.getExternalStorageDirectory().getPath();
-    private static final int MY_INTENT_CLICK=302;
+    private static final int MY_INTENT_CLICK = 302;
 
     private void showAttachesListDialog() {
         if (attachList.size() == 0) {
@@ -1046,26 +982,16 @@ public class QmsChatFragment extends WebViewFragment {
             return;
         }
         List<String> listItems = new ArrayList<>();
-        for(EditAttach attach:attachList)
+        for (EditAttach attach : attachList)
             listItems.add(attach.getName());
         CharSequence[] items = listItems.toArray(new CharSequence[listItems.size()]);
         new MaterialDialog.Builder(getMainActivity())
                 .cancelable(true)
                 .title(R.string.attachments)
                 .items(items)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                        edMessage.append("[url="+attachList.get(which).getId()+"]"+attachList.get(which).getId()+"[/url]");
-                    }
-                })
+                .itemsCallback((dialog, itemView, which, text) -> edMessage.append("[url=" + attachList.get(which).getId() + "]" + attachList.get(which).getId() + "[/url]"))
                 .positiveText(R.string.do_download)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        startAddAttachment();
-                    }
-                })
+                .onPositive((dialog, which) -> startAddAttachment())
                 .negativeText(R.string.ok)
                 .show();
     }
@@ -1090,10 +1016,9 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
     private void saveAttachDirPath(String attachFilePath) {
-        lastSelectDirPath = FileUtils.getDirPath(attachFilePath);
+        String lastSelectDirPath = FileUtils.getDirPath(attachFilePath);
         App.getInstance().getPreferences().edit().putString("EditPost.AttachDirPath", lastSelectDirPath).apply();
     }
-
 
 
     private class UpdateTask extends AsyncTask<String, Pair<String, Integer>, Boolean> {
@@ -1102,7 +1027,7 @@ public class QmsChatFragment extends WebViewFragment {
 
         private List<String> attachFilePaths;
 
-        public UpdateTask(Context context, List<String> attachFilePaths) {
+        UpdateTask(Context context, List<String> attachFilePaths) {
 
             this.attachFilePaths = attachFilePaths;
             dialog = new MaterialDialog.Builder(context)
@@ -1111,7 +1036,7 @@ public class QmsChatFragment extends WebViewFragment {
                     .show();
         }
 
-        public UpdateTask(Context context, String newAttachFilePath) {
+        UpdateTask(Context context, String newAttachFilePath) {
             this(context, new ArrayList<>(Arrays.asList(new String[]{newAttachFilePath})));
         }
 
@@ -1132,28 +1057,28 @@ public class QmsChatFragment extends WebViewFragment {
                     publishProgress(new Pair<>(String.format(App.getContext().getString(R.string.format_sending_file), i++, attachFilePaths.size()), 0));
 
                     boolean found = false;
-                    for(Cookie cookie1:Client.getInstance().getCookies()){
-                        if(cookie1.getName().equals("PHPSESSID")){
+                    for (Cookie cookie1 : Client.getInstance().getCookies()) {
+                        if (cookie1.getName().equals("PHPSESSID")) {
                             found = true;
                             break;
                         }
                     }
-                    if(!found){
+                    if (!found) {
                         CookieStore cookieStore = new BasicCookieStore();
                         HttpContext context = new BasicHttpContext();
                         context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
                         new DefaultHttpClient().execute(new HttpPost("http://savepice.ru/"), context);
 
-                        for(Cookie cookie:cookieStore.getCookies()){
-                            Log.d("save", "coolie name"+cookie.getName());
-                            if(cookie.getName().equals("PHPSESSID")){
+                        for (Cookie cookie : cookieStore.getCookies()) {
+                            Log.d("save", "coolie name" + cookie.getName());
+                            if (cookie.getName().equals("PHPSESSID")) {
                                 Log.d("save", "try save cookie");
                                 HttpHelper helper = new HttpHelper();
                                 try {
                                     helper.getCookieStore().getCookies();
                                     helper.getCookieStore().addCookie(new SimpleCookie(cookie.getName(), cookie.getValue()));
                                     helper.writeExternalCookies();
-                                }finally {
+                                } finally {
                                     helper.close();
                                 }
                             }
@@ -1162,7 +1087,7 @@ public class QmsChatFragment extends WebViewFragment {
                     String res = QmsApi.attachFile(Client.getInstance(), newAttachFilePath, m_ProgressState);
 
 
-                    editAttach = new EditAttach("http://cdn1.savepice.ru"+res, "Изображение №"+attachList.size(), null, null);
+                    editAttach = new EditAttach("http://cdn1.savepice.ru" + res, "Изображение №" + attachList.size(), null, null);
                 }
 
                 return true;
@@ -1184,13 +1109,10 @@ public class QmsChatFragment extends WebViewFragment {
         protected void onPreExecute() {
             this.dialog.setCancelable(true);
             this.dialog.setCanceledOnTouchOutside(false);
-            this.dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialogInterface) {
-                    if(m_ProgressState!=null)
-                        m_ProgressState.cancel();
-                    cancel(false);
-                }
+            this.dialog.setOnCancelListener(dialogInterface -> {
+                if (m_ProgressState != null)
+                    m_ProgressState.cancel();
+                cancel(false);
             });
             this.dialog.setProgress(0);
 
@@ -1235,6 +1157,7 @@ public class QmsChatFragment extends WebViewFragment {
         }
 
     }
+
     private void refreshAttachmentsInfo() {
         btnAttachments.setText(attachList.size() + "");
     }

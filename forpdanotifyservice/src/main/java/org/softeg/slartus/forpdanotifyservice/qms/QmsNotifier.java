@@ -29,22 +29,24 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
- * User: slinkin
+ * User: slartus
  * Date: 31.05.13
  * Time: 8:20
  * To change this template use File | Settings | File Templates.
  */
 public class QmsNotifier extends NotifierBase {
-    private static final String LOG_TAG = "QmsMainService.QmsNotifier";
-    public static final String NEW_ACTION = "org.softeg.slartus.forpdanotifyservice.newqms";
+    private static final String LOG_TAG = QmsNotifier.class.getSimpleName();
+    private static final String NEW_ACTION = "org.softeg.slartus.forpdanotifyservice.newqms";
     public static final String TIME_OUT_KEY = "qms.service.timeout";
-    public static final String LAST_DATETIME_KEY = "qms.service.lastdatetime";
+    public static final String ADAPTIVE_TIME_OUT_KEY = "qms.service.adaptive_timeout";
+    private static final String LAST_DATETIME_KEY = "qms.service.lastdatetime";
     public static final String UNREAD_MESSAGE_USERS_COUNT_KEY = "UnreadMessageUsersCount";
-    public static final String HAS_UNREAD_MESSAGE_KEY = "HasUnreadMessage";
+    private static final String HAS_UNREAD_MESSAGE_KEY = "HasUnreadMessage";
 
     public QmsNotifier(Context context) {
         super(context);
@@ -97,12 +99,14 @@ public class QmsNotifier extends NotifierBase {
 
         } catch (Throwable throwable) {
             Log.e(LOG_TAG, throwable.toString());
+        } finally {
+            restartTaskStatic(getContext());
         }
     }
 
-    private SimpleDateFormat m_DateFormat = new SimpleDateFormat("dd MMM");
-    private SimpleDateFormat m_TimeFormat = new SimpleDateFormat("HH:mm");
-    private SimpleDateFormat m_TodayTimeFormat = new SimpleDateFormat("Сегодня HH:mm");
+    private SimpleDateFormat m_DateFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
+    private SimpleDateFormat m_TimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private SimpleDateFormat m_TodayTimeFormat = new SimpleDateFormat("Сегодня HH:mm", Locale.getDefault());
 
 
     private boolean checkUser(Client client, ArrayList<QmsUser> qmsUsers, QmsUser user) throws Throwable {
@@ -140,7 +144,7 @@ public class QmsNotifier extends NotifierBase {
         String strDate = qmsUserThemes.get(0).Date;
 
 
-        Map<String, Date> additionalHeaders = new HashMap<String, Date>();
+        Map<String, Date> additionalHeaders = new HashMap<>();
         if ("Вчера".equals(strDate)) {
             calendar.add(GregorianCalendar.DAY_OF_YEAR, -1);
 
@@ -220,14 +224,18 @@ public class QmsNotifier extends NotifierBase {
 
     @Override
     public void readSettings(Context context, Intent intent) {
-        if (intent != null && intent.getExtras() != null && intent.getExtras().containsKey(QmsNotifier.TIME_OUT_KEY)) {
+        if (intent != null && intent.getExtras() != null) {
             float timeOut = intent.getExtras().getFloat(QmsNotifier.TIME_OUT_KEY, 5);
+
             // Log.d(LOG_TAG, "timeOutExtras " + timeOut);
             saveTimeOut(context, timeOut, TIME_OUT_KEY);
+
+            float adaptiveTimeOut = intent.getExtras().getFloat(ADAPTIVE_TIME_OUT_KEY, timeOut);
+            saveTimeOut(context, adaptiveTimeOut, ADAPTIVE_TIME_OUT_KEY);
         }
     }
 
-    public static int REQUEST_CODE_START = 839264710;
+    private static int REQUEST_CODE_START = 839264710;
 
     private static PendingIntent getAlarmPendingIntent(Context context) {
         Intent downloader = new Intent(context, AlarmReceiver.class);
@@ -238,13 +246,29 @@ public class QmsNotifier extends NotifierBase {
 
     private static void restartTaskStatic(Context context) {
         float timeOut = loadTimeOut(context, TIME_OUT_KEY);
+        float adaptiveTimeOut = loadTimeOut(context, ADAPTIVE_TIME_OUT_KEY);
+
+        if (adaptiveTimeOut < timeOut) {
+            float[] steps = {1.0f, 5.0f, 10.0f, 20.0f, 30.0f};
+            float newAdaptiveTimeout=adaptiveTimeOut;
+            for (int i = 0; i < steps.length - 1; i++) {
+                if (adaptiveTimeOut - steps[i] < 0.1) {
+                    newAdaptiveTimeout = steps[i + 1];
+                    break;
+                }
+            }
+            saveTimeOut(context, newAdaptiveTimeout, ADAPTIVE_TIME_OUT_KEY);
+        }
+
+        timeOut = Math.min(timeOut, adaptiveTimeOut);
         Log.i(LOG_TAG, "checkQms.TimeOut: " + timeOut);
+
 
         PendingIntent pendingIntent = getAlarmPendingIntent(context);
 
         AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        alarm.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), (long) (timeOut * 60000), pendingIntent);
+        alarm.cancel(pendingIntent);
+        alarm.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + (long) (timeOut * 60000), pendingIntent);
     }
 
 

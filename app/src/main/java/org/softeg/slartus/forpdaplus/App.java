@@ -547,19 +547,27 @@ public class App extends android.app.Application {
     }
 
     public static void reStartQmsService() {
-        stopQmsService();
-        startQmsService();
+        reStartQmsService(false);
     }
 
-    private static void startQmsService() {
+    public static void reStartQmsService(Boolean adaptive) {
+        stopQmsService();
+        startQmsService(adaptive);
+    }
+
+    private static void startQmsService(Boolean adaptive) {
         m_QmsStarted = true;
         try {
             if (!QmsNotifier.isUse(getContext()))
                 return;
             Intent intent = new Intent(INSTANCE, MainService.class);
             intent.putExtra("CookiesPath", PreferencesActivity.getCookieFilePath(INSTANCE));
-            intent.putExtra(QmsNotifier.TIME_OUT_KEY, Math.max(ExtPreferences.parseFloat(App.getInstance().getPreferences(),
-                    QmsNotifier.TIME_OUT_KEY, 5), 1));
+            float timeout = Math.max(ExtPreferences.parseFloat(App.getInstance().getPreferences(),
+                    QmsNotifier.TIME_OUT_KEY, 5), 1);
+            intent.putExtra(QmsNotifier.TIME_OUT_KEY, timeout);
+
+            if(adaptive)
+                intent.putExtra(QmsNotifier.ADAPTIVE_TIME_OUT_KEY, 1.0f);
 
             QmsNotifier.restartTask(INSTANCE, intent);
         } catch (Throwable e) {
