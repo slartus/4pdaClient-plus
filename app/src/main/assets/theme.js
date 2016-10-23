@@ -1,28 +1,54 @@
 /**
+ *		================
+ *		scroll to anchor
+ *		================
+ */
+
+function scrollToAnchor() {
+	var link = document.querySelector('.topic_title_post a');
+	var anchor = document.querySelector('a[name="' + link.hash.match(/[^#].*/) + '"]');
+	var p = anchor;
+	if (anchor) {
+		while (!p.classList.contains('post_body')) {
+			if (p.classList.contains('spoil')) {
+				p.classList.remove('close');
+				p.classList.add('open');
+			}
+			p = p.parentNode;
+		}
+	}
+	anchor.scrollIntoView();
+}
+document.addEventListener('DOMContentLoaded', scrollToAnchor);
+
+/**
  *		====================
  *		code lines numbering
  *		====================
  */
 
+
 function numberingCodeLinesFoo() {
 	var codeBlockAll = document.querySelectorAll('.post-block.code');
 	for (var i = 0; i < codeBlockAll.length; i++) {
 		var codeBlock = codeBlockAll[i],
-		    codeTitle = codeBlock.querySelector('.block-title'),
-		    codeBody = codeBlock.querySelector('.block-body'),
+			codeTitle = codeBlock.querySelector('.block-title'),
+			codeBody = codeBlock.querySelector('.block-body'),
 			newCode = codeBody.innerHTML.split('<br>'),
-			count = '';
-		codeBlock.setAttribute('wraptext', 'wrap');
+			count = '',
+			lines = '';
+
 		while (~newCode[newCode.length - 1].search(/^\s*$/gi)) newCode.pop();
-		codeTitle.insertAdjacentHTML("afterEnd", '<span class="toggle-btn"><span>PRE</span></span>');
-		codeBody.innerHTML = '';
+
 		for (var j = 0; j < newCode.length; j++) {
-			var wrapLines = '<div class="line"><span class="num-wrap">' + (j + 1) + '</span>' + newCode[j] + '</div>';
-			codeBody.insertAdjacentHTML("beforeEnd", wrapLines);
+			lines += '<div class="line"><span class="num-wrap">' + (j + 1) + '</span>' + newCode[j] + '</div>';
 			count += (j + 1) + '\n';
 		}
-		codeBlock.insertAdjacentHTML("beforeEnd", '<div class="num-pre">' + count + '</div>');
-		codeBlock.querySelector('.toggle-btn').addEventListener('click', onClickToggleButton);
+
+		codeBlock.setAttribute('wraptext', 'wrap');
+		codeTitle.insertAdjacentHTML("afterEnd", '<span class="toggle-btn"><span>PRE</span></span><div class="num-pre">' + count + '</div>');
+		codeBlock.querySelector('.toggle-btn').addEventListener('click', onClickToggleButton, false);
+		codeBody.innerHTML = lines;
 	}
 	function onClickToggleButton() {
 		for (var i = 0; i < codeBlockAll.length; i++) {
@@ -156,9 +182,9 @@ window.onload = function () {
 }
 
 /**
- *	===========
- *	RELOAD PAGE
- *	===========
+ *		===========
+ *		RELOAD PAGE
+ *		===========
  */
 
 document.addEventListener('DOMContentLoaded', locationReload);
@@ -169,25 +195,6 @@ function locationReload() {
     document.onkeydown = function (e) {
         if (event.keyCode == 116) window.location.assign(cutHashUrl);
     };
-}
-
-function kek(postId, logined) {
-    window.onload = function () {
-        var anchors = document.querySelectorAll('.karma');
-        var data = JSON.parse(getCommentsData())[postId];
-        for (var i = 0; i < anchors.length; i++) {
-            var found = anchors[i].getAttribute("data-karma").match(/([\d]*)-([\d]*)/);
-            anchors[i].innerHTML = '<b class="icon-karma-up" title="Мне нравится" data-karma-act="1-264127-2745153"></b><span class="num-wrap"><span class="num" title="Понравилось"></span></span>';
-            anchors[i].querySelector(".num-wrap .num").innerHTML = data[found[2]][3];
-            if (logined) {
-                anchors[i].onclick = function () {
-                    found = this.getAttribute("data-karma").match(/([\d]*)-([\d]*)/);
-                    this.querySelector(".num-wrap .num").innerHTML = data[found[2]][3] + 1;
-                    HTMLOUT.likeComment(found[1], found[2]);
-                };
-            }
-        }
-    }
 }
 
 /**
@@ -237,7 +244,7 @@ function pagesPanelFoo() {
     }
 }
 
-window.addEventListener("load", function () {
+window.addEventListener("DOMContentLoaded", function () {
     var panels = document.querySelectorAll('#curator .panel');
     for (var i = 0; i < panels.length; i++) {
         var panel = panels[i];
@@ -289,6 +296,25 @@ function checkedQmsMessage() {
  *		END
  *		===
  */
+ 
+ function kek(postId, logined) {
+    window.onload = function () {
+        var anchors = document.querySelectorAll('.karma');
+        var data = JSON.parse(getCommentsData())[postId];
+        for (var i = 0; i < anchors.length; i++) {
+            var found = anchors[i].getAttribute("data-karma").match(/([\d]*)-([\d]*)/);
+            anchors[i].innerHTML = '<b class="icon-karma-up" title="Мне нравится" data-karma-act="1-264127-2745153"></b><span class="num-wrap"><span class="num" title="Понравилось"></span></span>';
+            anchors[i].querySelector(".num-wrap .num").innerHTML = data[found[2]][3];
+            if (logined) {
+                anchors[i].onclick = function () {
+                    found = this.getAttribute("data-karma").match(/([\d]*)-([\d]*)/);
+                    this.querySelector(".num-wrap .num").innerHTML = data[found[2]][3] + 1;
+                    HTMLOUT.likeComment(found[1], found[2]);
+                };
+            }
+        }
+    }
+}
 
 function getIds() {
     var p = document.documentElement ? document.documentElement : document.body;
