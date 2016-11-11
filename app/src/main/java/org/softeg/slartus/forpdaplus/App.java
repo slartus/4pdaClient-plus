@@ -538,7 +538,7 @@ public class App extends android.app.Application {
         reStartFavoritesNotifierService();
     }
 
-    private static void stopQmsService() {
+    public static void stopQmsService() {
         try {
             QmsNotifier.cancelAlarm(INSTANCE);
         } catch (Throwable e) {

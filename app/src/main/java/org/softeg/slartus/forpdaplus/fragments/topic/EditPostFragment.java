@@ -20,6 +20,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -37,7 +39,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -528,16 +529,12 @@ public class EditPostFragment extends GeneralFragment {
                     }).show();
             return;
         }
-        AttachesAdapter adapter = new AttachesAdapter(m_EditPost.getAttaches(), getMainActivity());
+        AttachesAdapter adapter = new AttachesAdapter(m_EditPost.getAttaches());
         mAttachesListDialog = new MaterialDialog.Builder(getMainActivity())
                 .cancelable(true)
                 .title(R.string.attachments)
                         //.setSingleChoiceItems(adapter, -1, null)
-                .adapter(adapter, new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                    }
-                })
+                .adapter(adapter, new LinearLayoutManager(getActivity()))
                 .neutralText(R.string.in_spoiler)
                 .callback(new MaterialDialog.ButtonCallback() {
                     @Override
@@ -659,19 +656,6 @@ public class EditPostFragment extends GeneralFragment {
             }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     private void startLoadPost(String forumId, String topicId, String postId, String authKey) {
         new LoadTask(getMainActivity(), forumId, topicId, postId, authKey).execute();
@@ -1092,103 +1076,79 @@ public class EditPostFragment extends GeneralFragment {
 
     }
 
-    public class AttachesAdapter extends BaseAdapter {
-        private Activity activity;
+    public class AttachesAdapter extends RecyclerView.Adapter<AttachesAdapter.AttachViewHolder> {
         private final List<EditAttach> content;
 
-        public AttachesAdapter(List<EditAttach> content, Activity activity) {
+        public AttachesAdapter(List<EditAttach> content) {
             super();
             this.content = content;
-            this.activity = activity;
-        }
-
-        public int getCount() {
-            return content.size();
         }
 
         public EditAttach getItem(int i) {
             return content.get(i);
         }
 
-        public long getItemId(int i) {
-            return i;
+        @Override
+        public AttachViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            ViewGroup group = (ViewGroup) LayoutInflater.from(parent.getContext()).inflate(R.layout.attachment_spinner_item, parent, false);
+            return new AttachViewHolder(group);
         }
 
-        public View getView(final int position, View convertView, ViewGroup parent) {
-            final ViewHolder holder;
-
-            if (convertView == null) {
-                final LayoutInflater inflater = activity.getLayoutInflater();
-
-                convertView = inflater.inflate(R.layout.attachment_spinner_item, parent, false);
-
-
-                holder = new ViewHolder();
-
-
-                assert convertView != null;
-                holder.btnDelete = (ImageButton) convertView
-                        .findViewById(R.id.btnDelete);
-                holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        mAttachesListDialog.dismiss();
-
-                        EditAttach attach = (EditAttach) view.getTag();
-
-                        new DeleteAttachTask(getMainActivity(),
-                                attach.getId())
-                                .execute();
-                    }
-                });
-
-                holder.btnSpoiler = (ImageButton) convertView
-                        .findViewById(R.id.btnSpoiler);
-                holder.btnSpoiler.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        mAttachesListDialog.dismiss();
-
-                        int selectionStart = txtPost.getSelectionStart();
-                        if (selectionStart == -1)
-                            selectionStart = 0;
-                        EditAttach attach = (EditAttach) view.getTag();
-                        if (txtPost.getText() != null)
-                            txtPost.getText().insert(selectionStart, "[spoiler][attachment=" + attach.getId() + ":" + attach.getName() + "][/spoiler]");
-                    }
-                });
-
-                holder.txtFile = (TextView) convertView
-                        .findViewById(R.id.txtFile);
-                holder.txtFile.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View view) {
-                        mAttachesListDialog.dismiss();
-                        int selectionStart = txtPost.getSelectionStart();
-                        if (selectionStart == -1)
-                            selectionStart = 0;
-                        EditAttach attach = (EditAttach) view.getTag();
-                        if (txtPost.getText() != null)
-                            txtPost.getText().insert(selectionStart, "[attachment=" + attach.getId() + ":" + attach.getName() + "]");
-                    }
-                });
-
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            EditAttach attach = this.getItem(position);
-            holder.btnDelete.setTag(attach);
+        @Override
+        public void onBindViewHolder(AttachViewHolder holder, int position) {
+            EditAttach attach = content.get(position);
             holder.btnSpoiler.setTag(attach);
             holder.txtFile.setText(attach.getName());
             holder.txtFile.setTag(attach);
 
-            return convertView;
+            holder.btnDelete.setOnClickListener(view13 -> {
+                mAttachesListDialog.dismiss();
+                new DeleteAttachTask(getMainActivity(),
+                        attach.getId())
+                        .execute();
+            });
+
+            holder.btnSpoiler.setOnClickListener(view12 -> {
+                mAttachesListDialog.dismiss();
+
+                int selectionStart = txtPost.getSelectionStart();
+                if (selectionStart == -1)
+                    selectionStart = 0;
+                if (txtPost.getText() != null)
+                    txtPost.getText().insert(selectionStart, "[spoiler][attachment=" + attach.getId() + ":" + attach.getName() + "][/spoiler]");
+            });
+
+            holder.txtFile.setOnClickListener(view1 -> {
+                mAttachesListDialog.dismiss();
+                int selectionStart = txtPost.getSelectionStart();
+                if (selectionStart == -1)
+                    selectionStart = 0;
+                if (txtPost.getText() != null)
+                    txtPost.getText().insert(selectionStart, "[attachment=" + attach.getId() + ":" + attach.getName() + "]");
+            });
         }
 
-        public class ViewHolder {
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public int getItemCount() {
+            return content.size();
+        }
+
+        class AttachViewHolder extends RecyclerView.ViewHolder {
 
             ImageButton btnSpoiler;
             ImageButton btnDelete;
             TextView txtFile;
+
+            public AttachViewHolder(View convertView) {
+                super(convertView);
+                btnDelete = (ImageButton) convertView.findViewById(R.id.btnDelete);
+                btnSpoiler = (ImageButton) convertView.findViewById(R.id.btnSpoiler);
+                txtFile = (TextView) convertView.findViewById(R.id.txtFile);
+            }
         }
     }
 

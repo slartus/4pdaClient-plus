@@ -12,6 +12,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -227,33 +228,22 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         final RotateAnimation rotate = new RotateAnimation(180, 0, Animation.RELATIVE_TO_SELF,
                 0.5f,  Animation.RELATIVE_TO_SELF, 0.5f);
         rotate.setDuration(250);
-        final Runnable hideRunnable = new Runnable() {
-            @Override
-            public void run() {
-                forHide.setVisibility(View.VISIBLE);
-            }
-        };
+        final Runnable hideRunnable = () -> forHide.setVisibility(View.VISIBLE);
 
-        forHideButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(forHide.getVisibility() == View.VISIBLE){
-                    forHideButton.startAnimation(rotate);
-                    forHide.setVisibility(View.GONE);
-                }else {
-                    forHideButton.startAnimation(rotate);
-                    new Handler().postDelayed(hideRunnable, 250);
-                }
+        forHideButton.setOnClickListener(v -> {
+            if(forHide.getVisibility() == View.VISIBLE){
+                forHideButton.startAnimation(rotate);
+                forHide.setVisibility(View.GONE);
+            }else {
+                forHideButton.startAnimation(rotate);
+                new Handler().postDelayed(hideRunnable, 250);
             }
         });
         if (view.findViewById(R.id.forums_button) != null) {
-            view.findViewById(R.id.forums_button).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    DialogFragment newFragment = ForumsTreeDialogFragment.newInstance(true, getSearchSettings().getForumsIds());
-                    newFragment.setTargetFragment(SearchSettingsDialogFragment.this, FORUMS_DIALOG_REQUEST);
-                    newFragment.show(getActivity().getSupportFragmentManager(), "dialog");
-                }
+            view.findViewById(R.id.forums_button).setOnClickListener(view1 -> {
+                DialogFragment newFragment = ForumsTreeDialogFragment.newInstance(true, getSearchSettings().getForumsIds());
+                newFragment.setTargetFragment(SearchSettingsDialogFragment.this, FORUMS_DIALOG_REQUEST);
+                newFragment.show(getActivity().getSupportFragmentManager(), "dialog");
             });
         }
         if (view.findViewById(R.id.forums_spinner) != null) {
@@ -265,26 +255,18 @@ public class SearchSettingsDialogFragment extends DialogFragment {
                 .title(R.string.search)
                 .positiveText(R.string.find)
                 .negativeText(R.string.cancel)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog materialDialog, @NonNull DialogAction dialogAction) {
-                        MainActivity.startForumSearch(createSearchSettings());
-                    }
-                })
+                .onPositive((materialDialog, dialogAction) -> MainActivity.startForumSearch(createSearchSettings()))
                 .build();
 
         // в поиске по теме не показываем "запомнить настройки"
         if (SearchSettings.SEARCH_TYPE_FORUM.equals(getSearchSettings().getSearchType())) {
             adb.setActionButton(DialogAction.NEUTRAL, R.string.remember);
             View neutral = adb.getActionButton(DialogAction.NEUTRAL);
-            neutral.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SearchSettings searchSettings = createSearchSettings();
-                    searchSettings.setQuery("");
-                    searchSettings.setUserName("");
-                    searchSettings.save(App.getInstance().getPreferences().edit()).apply();
-                }
+            neutral.setOnClickListener(v -> {
+                SearchSettings searchSettings = createSearchSettings();
+                searchSettings.setQuery("");
+                searchSettings.setUserName("");
+                searchSettings.save(App.getInstance().getPreferences().edit()).apply();
             });
         }
         adb.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -324,8 +306,16 @@ public class SearchSettingsDialogFragment extends DialogFragment {
     private void loadPreferences() {
         SearchSettings searchSettings = getSearchSettings();
         assert searchSettings != null;
-        query_edit.setText(searchSettings.getQuery());
-        username_edit.setText(searchSettings.getUserName());
+        String query = searchSettings.getQuery();
+        query_edit.setText(query);
+        if (query.length() >= 0) {
+            query_edit.setSelection(query.length());
+        }
+        String username = searchSettings.getUserName();
+        username_edit.setText(username);
+        if (username.length() >= 0) {
+            username_edit.setSelection(username.length());
+        }
         subforums_check.setChecked(searchSettings.getIsSubForums());
 
         source_spinner.setSelection(ArrayUtils.indexOf(searchSettings.getSource(), getResources().getStringArray(R.array.SearchSourceValues)));

@@ -35,6 +35,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Adapter;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -454,10 +456,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                             AppLog.e(context, helpTask.ex);
                         return null;
                     });
-                    helpTask.execute((HelpTask.OnMethodListener) param -> {
-                        return TopicApi.deleteFromFavorites(Client.getInstance(),
-                                getTopic().getId());
-                    }
+                    helpTask.execute((HelpTask.OnMethodListener) param -> TopicApi.deleteFromFavorites(Client.getInstance(),
+                            getTopic().getId())
                     );
                 } catch (Exception ex) {
                     AppLog.e(context, ex);
@@ -547,6 +547,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         reloadTopic();
                         return true;
                     }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+
             SubMenu subMenu = menu.addSubMenu(R.string.Attaches)
                     .setIcon(R.drawable.download_white);
 
@@ -580,9 +582,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 ExtUrl.showSelectActionDialog(getMainActivity(), getS(R.string.link), TextUtils.isEmpty(getLastUrl()) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : getLastUrl());
                 return true;
             });
+
             SubMenu optionsMenu = menu.addSubMenu(R.string.theme_view);
             optionsMenu.getItem().setTitle(R.string.theme_view);
-
 
             optionsMenu.add(String.format(getS(R.string.avatars),
                     App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]))

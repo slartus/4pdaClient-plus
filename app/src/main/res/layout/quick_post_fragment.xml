@@ -22,7 +22,6 @@
             android:hint="Сообщение"
             android:inputType="textCapSentences|textMultiLine"
             android:minLines="1"
-            android:singleLine="false"
             android:paddingLeft="8dp"
             android:paddingTop="8dp"
             android:paddingRight="16dp"

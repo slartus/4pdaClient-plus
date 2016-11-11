@@ -85,6 +85,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
     @Override
     public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
+        clearNotification(2);
         mCacheList.clear();
         CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
         SQLiteDatabase db = null;

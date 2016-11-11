@@ -235,8 +235,7 @@ public class QmsNotifier extends NotifierBase {
         }
     }
 
-    private static int REQUEST_CODE_START = 839264710;
-
+    public static int REQUEST_CODE_START = 839264710;
     private static PendingIntent getAlarmPendingIntent(Context context) {
         Intent downloader = new Intent(context, AlarmReceiver.class);
         return PendingIntent.getBroadcast(context,

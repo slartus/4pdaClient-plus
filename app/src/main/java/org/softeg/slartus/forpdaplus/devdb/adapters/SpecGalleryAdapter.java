@@ -20,7 +20,7 @@
 ///**
 // * Created by isanechek on 17.01.16.
 // */
-//public class SpecGalleryAdapter extends RecyclerView.Adapter<SpecGalleryAdapter.ViewHolder> {
+//public class SpecGalleryAdapter extends RecyclerView.Adapter<SpecGalleryAdapter.AttachViewHolder> {
 ////    private static final int LAYOUT = R.layout.image_viewer_item;
 //
 //    private Context context;
@@ -32,13 +32,13 @@
 //    }
 //
 //    @Override
-//    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//    public AttachViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 ////        View view = LayoutInflater.from(parent.getContext()).inflate(LAYOUT, null);
-//        return new ViewHolder(view);
+//        return new AttachViewHolder(view);
 //    }
 //
 //    @Override
-//    public void onBindViewHolder(ViewHolder holder, int position) {
+//    public void onBindViewHolder(AttachViewHolder holder, int position) {
 //        String link = urls.get(position);
 //        Picasso.with(context)
 //                .load(link)
@@ -51,12 +51,12 @@
 //        return (null != urls ? urls.size() : 0);
 //    }
 //
-//    public static class ViewHolder extends BaseRecyclerViewHolder {
+//    public static class AttachViewHolder extends BaseRecyclerViewHolder {
 //
 ////        @Bind(R.id.spec_gallery_item)
 ////        SquareImageView imageView;
 //
-//        public ViewHolder(View view) {
+//        public AttachViewHolder(View view) {
 //            super(view);
 ////            imageView = ButterKnife.findById(view, R.id.spec_gallery_item);
 //        }

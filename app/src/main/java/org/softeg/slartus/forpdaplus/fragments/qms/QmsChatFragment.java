@@ -3,6 +3,8 @@ package org.softeg.slartus.forpdaplus.fragments.qms;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +16,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.service.notification.StatusBarNotification;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -277,21 +283,38 @@ public class QmsChatFragment extends WebViewFragment {
             setSubtitle(m_Nick);
         if (!TextUtils.isEmpty(m_PageBody[0])) {
             m_LastBodyLength = m_PageBody[0].length();
-            new Thread(() -> {
-                final String body = transformChatBody(m_PageBody[0]);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    final String body = transformChatBody(m_PageBody[0]);
 
-                mHandler.post(() -> wvChat.loadDataWithBaseURL("file:///android_asset/", body, "text/html", "UTF-8", null));
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            wvChat.loadDataWithBaseURL("file:///android_asset/", body, "text/html", "UTF-8", null);
+                        }
+                    });
+                }
             }).start();
 
 
         }
         hideKeyboard();
 
-        loadPrefs();
-        startUpdateTimer();
         btnAttachments = (Button) findViewById(R.id.btnAttachments);
         btnAttachments.setOnClickListener(view1 -> showAttachesListDialog());
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        App.stopQmsService();
+        clearNotification(1);
+
+        loadPrefs();
+        startUpdateTimer();
+
     }
 
     @JavascriptInterface
@@ -491,14 +514,11 @@ public class QmsChatFragment extends WebViewFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-
         outState.putString(MID_KEY, m_Id);
         outState.putString(NICK_KEY, m_Nick);
         outState.putString(TID_KEY, m_TId);
         outState.putString(THEME_TITLE_KEY, m_ThemeTitle);
         outState.putString(POST_TEXT_KEY, edMessage.getText().toString());
-
     }
 
     @Override
@@ -522,6 +542,7 @@ public class QmsChatFragment extends WebViewFragment {
         super.onPause();
 
         startAdaptiveTimeOutService();
+        clearNotifTimer();
         m_UpdateTimer.cancel();
         m_UpdateTimer.purge();
         if (mPopupPanelView != null)
@@ -555,6 +576,13 @@ public class QmsChatFragment extends WebViewFragment {
         }
 
         return true;
+    }
+
+    private void clearNotifTimer() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getMainActivity());
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putFloat("qms.service.timeout.restart", 1);
+        editor.apply();
     }
 
     private void loadPrefs() {
@@ -600,10 +628,7 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
     private void reLoadChatSafe() {
-        uiHandler.post(() -> {
-//                setLoading(false);
-            setSubtitle(App.getContext().getString(R.string.refreshing));
-        });
+        uiHandler.post(() -> setSubtitle(App.getContext().getString(R.string.refreshing)));
 
         String chatBody = null;
         Throwable ex = null;

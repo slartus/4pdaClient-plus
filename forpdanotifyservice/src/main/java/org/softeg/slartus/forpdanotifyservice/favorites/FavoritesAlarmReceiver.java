@@ -9,7 +9,7 @@ import android.util.Log;
  * Created by slinkin on 26.08.13.
  */
 public class FavoritesAlarmReceiver extends BroadcastReceiver {
-    private static final String DEBUG_TAG = "QmsMainService.FavoritesAlarmReceiver";
+    private static final String DEBUG_TAG = "FavoritesAlarmReceiver";
 
     @Override
     public void onReceive(final Context context, Intent intent) {

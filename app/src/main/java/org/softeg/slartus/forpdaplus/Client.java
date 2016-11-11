@@ -743,6 +743,7 @@ public class Client implements IHttpClient {
     //12 - класс тела
     //13 - тело
     //Да простит меня господь за это. Действие во благо не счетается грехом, ведь верно?
+    //А разве может быть иначе?
     private final static Pattern postsPattern = Pattern
 	.compile("<div data-post=\"(\\d+)\"[^>]*>[\\s\\S]*?post_date[^>]*?>(.*?)&nbsp;[^#]*#(\\d+)[\\s\\S]*?\\[B\\](.*?),\\[/B\\]\\s*'\\)\"\\s*data-av=\"([^\"]*)\">[\\s\\S]*?<span class=\"post_user_info[^\"]*\"[^>]*>(<strong[^>]*>.*?<.strong><br .>)?Группа: (.*?)(?:  \\|[\\s\\S]*?)?<br..><font color=\"([^\"]*)\">[\\s\\S]*?mid=(\\d+)[\\s\\S]*?<span id=\"ajaxrep-\\d+\">(.\\d+|\\d+)</span>([\\s\\S]*?)<div class=\"post_body([^>]*?)\"[^>]*?\">([\\s\\S]*?)</div></div>(?=<div data-post=\"\\d+\"[^>]*>|<!-- TABLE FOOTER -->)",
                     Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);

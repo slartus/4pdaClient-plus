@@ -417,12 +417,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         if (isArrow == lastHamburgerArrow) return;
 
         anim = ValueAnimator.ofFloat(isArrow ? 1.0f : 0.0f, isArrow ? 0.0f : 1.0f);
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                getmMainDrawerMenu().getDrawerToggle().onDrawerSlide(getmMainDrawerMenu().getDrawerLayout(), (Float) valueAnimator.getAnimatedValue());
-            }
-        });
+        anim.addUpdateListener(valueAnimator -> getmMainDrawerMenu().getDrawerToggle().onDrawerSlide(getmMainDrawerMenu().getDrawerLayout(), (Float) valueAnimator.getAnimatedValue()));
         anim.setInterpolator(interpolator);
         anim.setDuration(250);
         anim.start();
@@ -473,7 +468,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 });
             }
         });
-        checkToster(this);
+//        checkToster(this);
         checkUsers(this);
     }
 

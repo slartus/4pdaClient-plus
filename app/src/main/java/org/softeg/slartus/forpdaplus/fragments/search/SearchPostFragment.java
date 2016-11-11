@@ -83,22 +83,19 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
     @JavascriptInterface
     public void showChooseCssDialog() {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    intent.setType("file/*");
+        getMainActivity().runOnUiThread(() -> {
+            try {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setType("file/*");
 
-                    // intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
-                    startActivityForResult(intent, FILECHOOSER_RESULTCODE);
+                // intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
+                startActivityForResult(intent, FILECHOOSER_RESULTCODE);
 
-                } catch (ActivityNotFoundException ex) {
-                    Toast.makeText(getMainActivity(), R.string.no_app_for_get_file, Toast.LENGTH_LONG).show();
-                } catch (Exception ex) {
-                    AppLog.e(getMainActivity(), ex);
-                }
+            } catch (ActivityNotFoundException ex) {
+                Toast.makeText(getMainActivity(), R.string.no_app_for_get_file, Toast.LENGTH_LONG).show();
+            } catch (Exception ex) {
+                AppLog.e(getMainActivity(), ex);
             }
         });
     }
@@ -141,18 +138,8 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         initSwipeRefreshLayout();
         assert view != null;
         mWvBody = (AdvWebView) findViewById(R.id.body_webview);
-        findViewById(R.id.btnUp).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBtnUpClick(view);
-            }
-        });
-        findViewById(R.id.btnDown).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBtnDownClick(view);
-            }
-        });
+        findViewById(R.id.btnUp).setOnClickListener(this::onBtnUpClick);
+        findViewById(R.id.btnDown).setOnClickListener(this::onBtnDownClick);
         m_WebViewExternals = new WebViewExternals(this);
         m_WebViewExternals.loadPreferences(App.getInstance().getPreferences());
         configWebView();
@@ -185,13 +172,10 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     LoadResultTask mTask;
 
     public void search(final int startNum) {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
+        Runnable runnable = () -> {
 
-                mTask = new LoadResultTask(startNum);
-                mTask.execute();
-            }
+            mTask = new LoadResultTask(startNum);
+            mTask.execute();
         };
         if (mTask != null && mTask.getStatus() != AsyncTask.Status.FINISHED)
             mTask.cancel(false);
@@ -251,22 +235,12 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
     @JavascriptInterface
     public void showUserMenu(final String userId, final String userNick) {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ForumUser.showUserQuickAction(getMainActivity(), getWebView(), userId, userNick);
-            }
-        });
+        getMainActivity().runOnUiThread(() -> ForumUser.showUserQuickAction(getMainActivity(), getWebView(), userId, userNick));
     }
 
     @JavascriptInterface
     public void nextPage() {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                search(m_SearchResult.getCurrentPage() * m_SearchResult.getPostsPerPageCount(getSearchQuery()));
-            }
-        });
+        getMainActivity().runOnUiThread(() -> search(m_SearchResult.getCurrentPage() * m_SearchResult.getPostsPerPageCount(getSearchQuery())));
     }
 
     private String getSearchQuery() {
@@ -275,62 +249,44 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
     @JavascriptInterface
     public void prevPage() {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                search((m_SearchResult.getCurrentPage() - 2) * m_SearchResult.getPostsPerPageCount(getSearchQuery()));
-            }
-        });
+        getMainActivity().runOnUiThread(() -> search((m_SearchResult.getCurrentPage() - 2) * m_SearchResult.getPostsPerPageCount(getSearchQuery())));
     }
 
     @JavascriptInterface
     public void firstPage() {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                search(0);
-            }
-        });
+        getMainActivity().runOnUiThread(() -> search(0));
     }
 
     @JavascriptInterface
     public void lastPage() {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                search((m_SearchResult.getPagesCount() - 1) * m_SearchResult.getPostsPerPageCount(getSearchQuery()));
-            }
-        });
+        getMainActivity().runOnUiThread(() -> search((m_SearchResult.getPagesCount() - 1) * m_SearchResult.getPostsPerPageCount(getSearchQuery())));
     }
 
     @JavascriptInterface
     public void jumpToPage() {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                CharSequence[] pages = new CharSequence[m_SearchResult.getPagesCount()];
+        getMainActivity().runOnUiThread(() -> {
+            CharSequence[] pages = new CharSequence[m_SearchResult.getPagesCount()];
 
-                final int postsPerPage;
+            final int postsPerPage;
 
-                postsPerPage = m_SearchResult.getPostsPerPageCount(getSearchQuery());
+            postsPerPage = m_SearchResult.getPostsPerPageCount(getSearchQuery());
 
-                final String page = getContext().getString(R.string.page_short);
-                for (int p = 0; p < m_SearchResult.getPagesCount(); p++) {
-                    pages[p] = page + (p + 1) + " (" + ((p * postsPerPage + 1) + "-" + (p + 1) * postsPerPage) + ")";
-                }
-
-                new MaterialDialog.Builder(getContext())
-                        .title(R.string.jump_to_page)
-                        .items(pages)
-                        .itemsCallbackSingleChoice(m_SearchResult.getCurrentPage() - 1, new MaterialDialog.ListCallbackSingleChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence pages) {
-                                search(i * postsPerPage);
-                                return true; // allow selection
-                            }
-                        })
-                        .show();
+            final String page = getContext().getString(R.string.page_short);
+            for (int p = 0; p < m_SearchResult.getPagesCount(); p++) {
+                pages[p] = page + (p + 1) + " (" + ((p * postsPerPage + 1) + "-" + (p + 1) * postsPerPage) + ")";
             }
+
+            new MaterialDialog.Builder(getContext())
+                    .title(R.string.jump_to_page)
+                    .items(pages)
+                    .itemsCallbackSingleChoice(m_SearchResult.getCurrentPage() - 1, new MaterialDialog.ListCallbackSingleChoice() {
+                        @Override
+                        public boolean onSelection(MaterialDialog dialog, View view1, int i, CharSequence pages) {
+                            search(i * postsPerPage);
+                            return true; // allow selection
+                        }
+                    })
+                    .show();
         });
     }
 
@@ -341,12 +297,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     @Override
     @JavascriptInterface
     public void saveHtml(final String html) {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new SaveHtml(getMainActivity(), html, "search");
-            }
-        });
+        getMainActivity().runOnUiThread(() -> new SaveHtml(getMainActivity(), html, "search"));
     }
 
     public AdvWebView getWebView() {
@@ -449,11 +400,9 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.add(R.string.link)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), getSearchQuery());
-                        return true;
-                    }
+                .setOnMenuItemClickListener(menuItem -> {
+                    ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), getSearchQuery());
+                    return true;
                 });
     }
 

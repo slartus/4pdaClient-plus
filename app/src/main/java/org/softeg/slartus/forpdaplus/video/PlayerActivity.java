@@ -135,12 +135,9 @@ public class PlayerActivity extends AppCompatActivity {
         new MaterialDialog.Builder(activity)
                 .title(R.string.select_player)
                 .items(items)
-                .itemsCallbackSingleChoice(selected_player[0], new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence text) {
-                        selected_player[0] = i;
-                        return true; // allow selection
-                    }
+                .itemsCallbackSingleChoice(selected_player[0], (dialog, view, i, text) -> {
+                    selected_player[0] = i;
+                    return true; // allow selection
                 })
                 .alwaysCallSingleChoiceCallback()
                 .positiveText(R.string.always)
@@ -151,7 +148,7 @@ public class PlayerActivity extends AppCompatActivity {
                         App.getInstance().getPreferences()
                                 .edit()
                                 .putString("news.videoplayer", Integer.toString(selected_player[0]))
-                                .commit();
+                                .apply();
 
                         startVideo(selected_player[0], activity, youtubeUrl);
                     }
@@ -175,7 +172,6 @@ public class PlayerActivity extends AppCompatActivity {
                 break;
         }
     }
-
 
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -216,29 +212,19 @@ public class PlayerActivity extends AppCompatActivity {
         mVideoView = (VideoView) findViewById(R.id.videoView);
         pb = (ProgressBar) findViewById(R.id.progressBar);
 
-        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer pMp) {
-                if (mSeekTo > 0)
-                    mVideoView.seekTo(mSeekTo);
-                if (mQueryFormatsYouTubeTask != null && mQueryFormatsYouTubeTask.isCancelled())
-                    return;
-                Handler handler = new Handler();
-                handler.post(new Runnable() {
-                    public void run() {
-                        PlayerActivity.this.pb.setVisibility(View.GONE);
-                    }
-                });
-            }
+        mVideoView.setOnPreparedListener(pMp -> {
+            if (mSeekTo > 0)
+                mVideoView.seekTo(mSeekTo);
+            if (mQueryFormatsYouTubeTask != null && mQueryFormatsYouTubeTask.isCancelled())
+                return;
+            Handler handler = new Handler();
+            handler.post(() -> PlayerActivity.this.pb.setVisibility(View.GONE));
         });
 
         // add listeners for finish of video
-        mVideoView.setOnCompletionListener(new OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer pMp) {
-                if (mQueryFormatsYouTubeTask != null && mQueryFormatsYouTubeTask.isCancelled())
-                    return;
-            }
+        mVideoView.setOnCompletionListener(pMp -> {
+            if (mQueryFormatsYouTubeTask != null && mQueryFormatsYouTubeTask.isCancelled())
+                return;
         });
     }
 
@@ -277,20 +263,14 @@ public class PlayerActivity extends AppCompatActivity {
         new MaterialDialog.Builder(getContext())
                 .title(R.string.quality_video)
                 .items(titles)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View view, int i, CharSequence text) {
-                        String path = videoItem.getFilePath(videoItem.getQualities().get(i).getFileName());
-                        //createActionMenu(apiId, parseResult);
-                        playVideo(videoItem, path);
-                    }
+                .itemsCallback((dialog, view, i1, text) -> {
+                    String path = videoItem.getFilePath(videoItem.getQualities().get(i1).getFileName());
+                    //createActionMenu(apiId, parseResult);
+                    playVideo(videoItem, path);
                 })
-                .cancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        dialog.dismiss();
-                        finish();
-                    }
+                .cancelListener(dialog -> {
+                    dialog.dismiss();
+                    finish();
                 })
                 .show();
     }
@@ -463,14 +443,11 @@ public class PlayerActivity extends AppCompatActivity {
 
 
                 for (final Quality format : parseResult.getQualities()) {
-                    subMenu.add(format.getTitle()).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            String path = parseResult.getFilePath(format.getFileName());
+                    subMenu.add(format.getTitle()).setOnMenuItemClickListener(menuItem -> {
+                        String path = parseResult.getFilePath(format.getFileName());
 
-                            getMainActivity().playVideo(parseResult, path);
-                            return true;
-                        }
+                        getMainActivity().playVideo(parseResult, path);
+                        return true;
                     });
                 }
                 subMenu.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -482,25 +459,19 @@ public class PlayerActivity extends AppCompatActivity {
         }
 
         public void addUrlMenu(final Context context, Menu menu, final String url) {
-            menu.add(R.string.open_in).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    ExtUrl.showInBrowser(context, url);
-                    return true;
-                }
+            menu.add(R.string.open_in).setOnMenuItemClickListener(menuItem -> {
+                ExtUrl.showInBrowser(context, url);
+                return true;
             });
 
-            menu.add(R.string.share_link).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    ExtUrl.shareIt(context, url, url, url);
-                    return true;
-                }
+            menu.add(R.string.share_link).setOnMenuItemClickListener(menuItem -> {
+                ExtUrl.shareIt(context, url, url, url);
+                return true;
             });
 
-            menu.add(R.string.copy_link).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    StringUtils.copyToClipboard(context, url);
-                    return true;
-                }
+            menu.add(R.string.copy_link).setOnMenuItemClickListener(menuItem -> {
+                StringUtils.copyToClipboard(context, url);
+                return true;
             });
         }
 

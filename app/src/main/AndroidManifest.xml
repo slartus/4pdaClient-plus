@@ -5,7 +5,6 @@
     android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
@@ -15,28 +14,27 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:label="@string/app_name"
-        android:description="@string/app_description"
-        tools:replace="android:icon"
-        android:icon="@drawable/icon_mat"
-        android:hardwareAccelerated="true"
         android:name=".App"
+        android:allowBackup="true"
+        android:description="@string/app_description"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/icon_mat"
+        android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@style/MainPinkBlack"
-        android:allowBackup="true">
+        tools:replace="android:icon">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="adjustResize"
-            android:launchMode="singleTask">
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -49,7 +47,6 @@
                 <data
                     android:host="www.4pda.ru"
                     android:scheme="http" />
-
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -87,13 +84,11 @@
 
                 <data android:mimeType="application/4pda" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
 
                 <data
                     android:host="devdb.ru"
@@ -108,7 +103,6 @@
                     android:host="www.devdb.ru"
                     android:scheme="https" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.SEND_MULTIPLE" />
                 <action android:name="android.intent.action.SEND" />
@@ -127,7 +121,6 @@
         <activity
             android:name=".FeatureActivity"
             android:label="kekos" />
-
         <activity
             android:name="org.acra.CrashReportDialog"
             android:excludeFromRecents="true"
@@ -145,65 +138,56 @@
         </receiver>
 
         <activity
-            android:theme="@style/ThemeLight"
             android:name=".activity.TestActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-
-            android:launchMode="singleTop">
-
-        </activity>
-
+            android:launchMode="singleTop"
+            android:theme="@style/ThemeLight"></activity>
         <activity
-            android:name="org.softeg.slartus.forpdaplus.prefs.PreferencesActivity"
-            android:label="Настройки"
+            android:name=".prefs.PreferencesActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="Настройки"
             android:launchMode="singleTop" />
         <activity
-            android:name="org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity"
-            android:label="Фильтр и сортировка"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
-
+            android:name=".prefs.ForumTopicsPreferencesActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="Фильтр и сортировка" />
         <activity
-            android:name="org.softeg.slartus.forpdaplus.prefs.TopicsListPreferencesActivity"
-            android:label="Настройки списка"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:name=".prefs.TopicsListPreferencesActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="Настройки списка" />
         <activity
-            android:name="org.softeg.slartus.forpdaplus.prefs.DonateActivity"
+            android:name=".prefs.DonateActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Помощь проекту"
-            android:launchMode="singleTop"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:launchMode="singleTop" />
         <activity
             android:name=".fragments.qms.QmsChatPreferencesActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Настройки чата QMS"
-            android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop" />
         <activity
-            android:name="org.softeg.slartus.forpdaplus.styles.StyleInfoActivity"
+            android:name=".styles.StyleInfoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Информация о стиле"
-            android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop" />
         <activity
-            android:name="org.softeg.slartus.forpdaplus.classes.TestActivity"
-            android:label="Тестовая"
+            android:name=".classes.TestActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="Тестовая"
             android:launchMode="singleTop" />
-
         <activity
             android:name=".video.PlayerActivity"
-            android:label="Проигрыватель"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="Проигрыватель"
             android:launchMode="singleTop" />
-
         <activity
             android:name=".controls.imageview.ImgViewer"
-            android:launchMode="singleTask"
-            android:label="Изображения" />
-
+            android:label="Изображения"
+            android:launchMode="singleTask" />
 
         <service
-            android:enabled="true"
-            android:name=".download.DownloadsService" />
-
+            android:name=".download.DownloadsService"
+            android:enabled="true" />
         <service android:name="org.softeg.slartus.forpdanotifyservice.MainService" />
 
         <receiver android:name="org.softeg.slartus.forpdanotifyservice.qms.AlarmReceiver" />
@@ -224,11 +208,10 @@
         <meta-data
             android:name="com.sec.android.multiwindow.MINIMUM_SIZE_H"
             android:value="598.0dip" />
-
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="2bfc2256dc145a09ab99f0a0d9bc1bc938bdeb2d" />
-    </application>
 
+    </application>
 
 </manifest>

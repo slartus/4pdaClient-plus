@@ -394,6 +394,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     public void setStyleSheet() {
         try {
             getWebView().loadUrl("javascript:changeStyle('file://"+App.getInstance().getThemeCssFileName()+"');");
+            Log.e("Test", "setStyleSheet: " + "file://"+App.getInstance().getThemeCssFileName());
         } catch (Throwable ex) {
             AppLog.e(getMainActivity(), ex);
         }

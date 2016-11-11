@@ -1,8 +1,9 @@
 package org.softeg.slartus.forpdaplus.fragments;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -14,7 +15,6 @@ import android.view.View;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.MainActivity;
-import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
@@ -116,12 +116,9 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     public static SharedPreferences getPreferences() {
         return App.getInstance().getPreferences();
     }
-    private View.OnClickListener removeTabListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            MainActivity.tabLog("Remove tab from fragment [ThisTag: "+getTag()+"]");
-            getMainActivity().tryRemoveTab(getTag(), true);
-        }
+    private View.OnClickListener removeTabListener = v -> {
+        MainActivity.tabLog("Remove tab from fragment [ThisTag: "+getTag()+"]");
+        getMainActivity().tryRemoveTab(getTag(), true);
     };
     public void setArrow(){
         getMainActivity().animateHamburger(false, removeTabListener);
@@ -246,4 +243,10 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     }
 
     public void hidePopupWindows(){}
+
+    public void clearNotification(int notifId) {
+        Log.i("Clear Notification", "Notification Id: " + notifId);
+        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(notifId);
+    }
 }
