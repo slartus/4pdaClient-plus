@@ -210,6 +210,10 @@ span[style*="font-size:8pt"] * {
   overflow: hidden;
   background: rgba(53, 44, 13, 0.84);
 }
+.post-block.code .line {
+  display: block;
+  min-height: 1.375rem;
+}
 .post-block.code .num-wrap,
 .post-block.code .num-pre {
   position: absolute;
@@ -343,6 +347,11 @@ span[style*="font-size:8pt"] * {
   color: white;
   font-size: 1rem;
   overflow: hidden;
+}
+.post-block.spoil > .block-title .anchor {
+  float: right;
+  margin: -0.5rem -0.75rem -0.5rem 0.25rem;
+  padding: 0.5rem 0.75rem;
 }
 .post-block.spoil > .block-title:empty:after {
   position: relative;
@@ -1067,6 +1076,7 @@ span[style*="font-size:8pt"] * {
 #multimoderation > form .edit {
   display: block;
   font-size: 0.875rem !important;
+  font-style: italic;
   color: #808080;
 }
 .post_body .post-edit-reason,

@@ -13,11 +13,10 @@ HTML body {
   line-height: 1.4em;
   margin: 0 auto;
   padding: 0.4rem;
+  overflow-wrap: break-word;
   word-break: break-word;
+  white-space: normal;
   background-color: white;
-}
-HTML body * {
-  word-break: break-word;
 }
 HTML body a {
   cursor: pointer;
@@ -97,101 +96,6 @@ span[style*="font-size:8pt"] * {
   font-size: 1rem;
   border: 1px dotted #aaa;
 }
-.post-block.close > .block-body {
-  display: none;
-}
-.post-block.box > .block-body {
-  max-height: 10rem;
-  overflow: auto;
-}
-.post-block.quote {
-  border-left: 4px solid #4373C3;
-}
-.post-block.quote > .block-title {
-  background: #ddecff;
-  background-repeat: no-repeat;
-  background-position: right;
-  background-image: url(file:///android_asset/forum/style_images/1/css_img_quote.gif), url(forum/style_images/1/css_img_quote.gif);
-}
-.post-block.quote > .block-title:before {
-  content: 'Цитата ( ';
-}
-.post-block.quote > .block-title:empty:before {
-  content: 'Цитата';
-}
-.post-block.quote > .block-title:empty:after {
-  content: '';
-}
-.post-block.quote > .block-title:after {
-  content: ' )';
-}
-.post-block.quote > .block-body {
-  color: #465584;
-  background: #4FAFCFE;
-}
-.post-block.code {
-  border-left: 4px solid #ff6921;
-}
-.post-block.code > .block-title {
-  background: #FDDBCC;
-  background-repeat: no-repeat;
-  background-position: right;
-  background-image: url(file:///android_asset/forum/style_images/1/css_img_code.gif), url(forum/style_images/1/css_img_code.gif);
-}
-.post-block.code > .block-body {
-  font-family: Courier, "Courier New", Verdana, Arial;
-  color: #465584;
-  background: #FAFCFE;
-}
-.post-block.hidden {
-  border-left: 4px solid #777;
-}
-.post-block.hidden > .block-title {
-  background: #ddd;
-}
-.post-block.hidden > .block-title:before {
-  content: 'Скрытый текст: ';
-}
-.post-block.hidden > .block-title:empty:before {
-  content: 'Скрытый текст';
-}
-.post-block.hidden > .block-body {
-  color: #465584;
-  background: #FAFCFE;
-}
-.post-block.spoil {
-  border-left: 4px solid #8394B2;
-}
-.post-block.spoil > .block-title {
-  background: #E4EAF2;
-}
-.post-block.spoil > .block-body {
-  background: #FAFCFE;
-}
-.post-block.spoil.open > .block-title:before {
-  content: 'Спойлер (–) ( ';
-}
-.post-block.spoil.open > .block-title:empty:before {
-  content: 'Спойлер (–)';
-}
-.post-block.spoil.open > .block-title:empty:after {
-  content: '';
-}
-.post-block.spoil.open > .block-title:after {
-  content: ' )';
-}
-.post-block.spoil.close > .block-title:before {
-  content: 'Спойлер (+) ( ';
-}
-.post-block.spoil.close > .block-title:empty:before {
-  content: 'Спойлер (+)';
-}
-.post-block.spoil.close > .block-title:empty:after {
-  content: '';
-}
-.post-block.spoil.close > .block-title:after {
-  content: ' )';
-}
 .post-block.quote > .block-title,
 .post-block.code > .block-title,
 .post-block.hidden > .block-title,
@@ -231,6 +135,173 @@ span[style*="font-size:8pt"] * {
 .post-block.code.unbox > .block-title:before,
 .post-block.code.unbox .block-title:empty:before {
   content: 'Код (–)';
+}
+.post-block.close > .block-body {
+  display: none;
+}
+.post-block.box > .block-body {
+  max-height: 10rem;
+  overflow: auto;
+}
+.post-block.quote {
+  border-left: 4px solid #4373C3;
+}
+.post-block.quote > .block-title {
+  background: #ddecff;
+  background-repeat: no-repeat;
+  background-position: right;
+  background-image: url(file:///android_asset/forum/style_images/1/css_img_quote.gif), url(forum/style_images/1/css_img_quote.gif);
+}
+.post-block.quote > .block-title:before {
+  content: 'Цитата ( ';
+}
+.post-block.quote > .block-title:empty:before {
+  content: 'Цитата';
+}
+.post-block.quote > .block-title:empty:after {
+  content: '';
+}
+.post-block.quote > .block-title:after {
+  content: ' )';
+}
+.post-block.quote > .block-body {
+  color: #465584;
+  background: #4FAFCFE;
+}
+.post-block.code {
+  position: relative;
+  border-left: 4px solid #ff6921;
+  background-color: #FAFCFE;
+}
+.post-block.code .line {
+  display: block;
+  min-height: 1.375rem;
+}
+.post-block.code .num-wrap,
+.post-block.code .num-pre {
+  position: absolute;
+  width: 2rem;
+  padding: 0 0.5rem 0 0;
+  text-align: right;
+  font-family: 'roboto mono';
+  font-size: 0.875rem;
+  line-height: 1.375rem;
+  white-space: pre;
+  color: rgba(0, 0, 0, 0.5);
+  -webkit-user-select: none;
+}
+.post-block.code .num-wrap {
+  left: 0;
+}
+.post-block.code .num-pre {
+  left: 0;
+  top: 2.5rem;
+  bottom: 0;
+}
+.post-block.code[wraptext="wrap"] .num-wrap {
+  dispaly: inline-block;
+}
+.post-block.code[wraptext="wrap"] .num-pre {
+  display: none;
+}
+.post-block.code[wraptext="pre"] > .block-body {
+  overflow-wrap: normal;
+  word-break: normal;
+  white-space: pre;
+}
+.post-block.code[wraptext="pre"] .num-wrap {
+  display: none;
+}
+.post-block.code[wraptext="pre"] .num-pre {
+  display: block;
+}
+.post-block.code .toggle-btn {
+  position: absolute;
+  padding: 0.25rem 0.5rem;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+}
+.post-block.code .toggle-btn span {
+  font-family: 'roboto mono', Courier, "Courier New", Verdana, Arial;
+  font-weight: bold;
+  color: #ff6921;
+}
+.post-block.code > .block-title {
+  background: #FDDBCC;
+  background-repeat: no-repeat;
+  background-position: right;
+}
+.post-block.code > .block-body {
+  padding: 0;
+  margin: 0.5625rem 0.5rem 0.5rem 2.5rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  font-size: 1rem;
+  line-height: 1.375rem;
+  -webkit-tab-size: 4;
+  tab-size: 4;
+  font-family: Courier, "Courier New", Verdana, Arial;
+  color: #465584;
+  background: linear-gradient(#f5f7f9 1.375rem, transparent 1.375rem);
+  background-size: 2.75rem 2.75rem;
+}
+.post-block.hidden {
+  border-left: 4px solid #777;
+}
+.post-block.hidden > .block-title {
+  background: #ddd;
+}
+.post-block.hidden > .block-title:before {
+  content: 'Скрытый текст: ';
+}
+.post-block.hidden > .block-title:empty:before {
+  content: 'Скрытый текст';
+}
+.post-block.hidden > .block-body {
+  color: #465584;
+  background: #FAFCFE;
+}
+.post-block.spoil {
+  border-left: 4px solid #8394B2;
+}
+.post-block.spoil > .block-title {
+  background: #E4EAF2;
+}
+.post-block.spoil > .block-title .anchor {
+  color: Black;
+  text-decoration: none;
+  font-weight: bold;
+  float: right;
+  margin: -0.5rem -0.75rem -0.5rem 0.25rem;
+  padding: 0.5rem 0.75rem;
+}
+.post-block.spoil > .block-body {
+  background: #FAFCFE;
+}
+.post-block.spoil.open > .block-title:before {
+  content: 'Спойлер (–) ( ';
+}
+.post-block.spoil.open > .block-title:empty:before {
+  content: 'Спойлер (–)';
+}
+.post-block.spoil.open > .block-title:empty:after {
+  content: '';
+}
+.post-block.spoil.open > .block-title:after {
+  content: ' )';
+}
+.post-block.spoil.close > .block-title:before {
+  content: 'Спойлер (+) ( ';
+}
+.post-block.spoil.close > .block-title:empty:before {
+  content: 'Спойлер (+)';
+}
+.post-block.spoil.close > .block-title:empty:after {
+  content: '';
+}
+.post-block.spoil.close > .block-title:after {
+  content: ' )';
 }
 .post-block.cur > .block-title {
   background: #00943b;
@@ -319,7 +390,7 @@ span[style*="font-size:8pt"] * {
   display: block;
   margin: 0 0 1px;
   padding: 0.15rem 0.3rem;
-  border: 0.1em solid #2982cb;
+  border: 0.1em solid #2982CB;
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #51aaf3), color-stop(80%, #3891da));
   -webkit-box-shadow: inset 0 -0.1em 0.41em rgba(255, 255, 255, 0.2);
 }
@@ -373,7 +444,7 @@ span[style*="font-size:8pt"] * {
 }
 .poll .hidemain FORM .poll_title {
   padding: 0.25rem 0.5rem;
-  background-image: -webkit-linear-gradient(top, #e0effd 0%, #95cbf4 100%);
+  background-image: -webkit-linear-gradient(top, #e0effd 0%, #95CBF4 100%);
 }
 .poll .hidemain FORM .poll_title span {
   font-weight: bold;
@@ -388,14 +459,14 @@ span[style*="font-size:8pt"] * {
 }
 .poll .hidemain FORM .poll_body .poll_theme .theme_title {
   padding: 0.25rem;
-  border: 1px solid #2982cb;
+  border: 1px solid #2982CB;
   border-bottom: none;
 }
 .poll .hidemain FORM .poll_body .poll_theme .theme_title span {
   font-weight: bold;
 }
 .poll .hidemain FORM .poll_body .poll_theme .items {
-  border: 1px solid #2982cb;
+  border: 1px solid #2982CB;
   border-top: none;
   background: #f2f8ff;
 }
@@ -436,7 +507,7 @@ span[style*="font-size:8pt"] * {
   height: 1.5rem;
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid #2982cb;
+  border: 1px solid #2982CB;
   background: rgba(130, 130, 130, 0.1);
 }
 .poll .hidemain FORM .poll_body .poll_theme .items .item .range .range_bar {
@@ -484,14 +555,14 @@ span[style*="font-size:8pt"] * {
   text-align: center;
   padding: 0.5rem;
   color: #808080;
-  border-top: 1px solid #2982cb;
+  border-top: 1px solid #2982CB;
 }
 .poll .hidemain FORM .buttons .button {
   cursor: pointer;
   padding: 0.25rem;
   font-size: 1rem;
   outline: none;
-  border: 0.1rem solid #2982cb;
+  border: 0.1rem solid #2982CB;
   background: rgba(230, 230, 230, 0.5);
 }
 /*
@@ -514,8 +585,8 @@ span[style*="font-size:8pt"] * {
 .post_container {
   position: relative;
   padding: 1px 0;
-  border-bottom: 0.8rem solid #2982cb;
-  border-top: 0.8rem solid #2982cb;
+  border-bottom: 0.8rem solid #2982CB;
+  border-top: 0.8rem solid #2982CB;
 }
 .post_container ~ .post_container {
   border-top: none;
@@ -669,10 +740,10 @@ span[style*="font-size:8pt"] * {
 *	HIDEMAIN
 */
 .post_container .hidetop {
-  background: #E4EAF2;
   display: block;
   padding: 0.3rem 0.4rem;
   font-weight: bold;
+  background: #E4EAF2;
   position: relative;
   top: 0;
   margin: 0;
@@ -682,6 +753,14 @@ span[style*="font-size:8pt"] * {
   font-size: 1.1rem;
   border-bottom: 1px solid white;
   border-left: 1px solid white;
+}
+.post_container .hidetop .anchor {
+  color: Black;
+  text-decoration: none;
+  font-weight: bold;
+  float: right;
+  margin: -0.5rem -0.75rem -0.5rem 0.25rem;
+  padding: 0.5rem 0.75rem;
 }
 @media screen and (min-width: 800px) {
   .post_container .hidetop {
@@ -839,7 +918,7 @@ span[style*="font-size:8pt"] * {
   display: block;
   margin: 0 0 1px;
   padding: 0.15rem 0.3rem;
-  border: 0.1em solid #2982cb;
+  border: 0.1em solid #2982CB;
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #51aaf3), color-stop(80%, #3891da));
   -webkit-box-shadow: inset 0 -0.1em 0.41em rgba(255, 255, 255, 0.2);
   margin: 0 !important;
@@ -949,7 +1028,7 @@ img[src*="style_emoticons"] {
   text-align: center;
   clear: both;
   background: #d9eaff;
-  border-top: 1px #2982cb solid;
+  border-top: 1px #2982CB solid;
 }
 @media screen and (min-width: 800px) {
   .post_footer,
@@ -2046,7 +2125,7 @@ h3 a {
   padding: 0 0.3rem;
 }
 .comment-box li .heading .karma .icon-karma-up:before {
-  color: #2982cb;
+  color: #2982CB;
 }
 .comment-box li .heading .karma .icon-hide-comment {
   display: none;
@@ -2115,7 +2194,7 @@ h3 a {
 }
 .comment-box li DIV[id*="comment-form-reply"] a {
   display: inline-block;
-  color: #2982cb;
+  color: #2982CB;
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: bold;

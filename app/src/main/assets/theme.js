@@ -1,4 +1,24 @@
 /**
+ *		========================
+ *		add anchor link to spoil
+ *		========================
+ */
+
+document.addEventListener('DOMContentLoaded', getAllSpoilerToCreateAnchorLink);
+function getAllSpoilerToCreateAnchorLink() {
+	if (document.body.id != 'topic') return;
+	var link = document.querySelector('.topic_title_post a');
+	var postAll = document.querySelectorAll('.post_container');
+	for (var i = 0; i < postAll.length; i++) {
+		var postId = postAll[i].getAttribute('name').match(/\d+/);
+		var spoilerAll = postAll[i].querySelectorAll('.post-block.spoil > .block-title');
+		for (var j=0; j < spoilerAll.length; j++) {
+			spoilerAll[j].insertAdjacentHTML("beforeEnd", '<a class="anchor" onclick="event.preventDefault();" href="http://4pda.ru/forum/index.php?act=findpost&pid='+postId+'&anchor=Spoil-' + postId + '-' + (j + 1) + '" name="Spoil-' + postId + '-' + (j + 1) + '" title="Spoil-' + postId + '-' + (j + 1) + '"><span>#</span></a>');
+		}
+	}
+}
+
+/**
  *		================
  *		scroll to anchor
  *		================
@@ -9,11 +29,12 @@ function scrollToAnchor() {
 	var anchor = document.querySelector('a[name="' + link.hash.match(/[^#].*/) + '"]');
 	var p = anchor;
 	if (anchor) {
-		while (!p.classList.contains('post_body')) {
+		while (!p.classList.contains('post_container')) {
 			if (p.classList.contains('spoil')) {
 				p.classList.remove('close');
 				p.classList.add('open');
 			}
+			else if (p.classList.contains('hat')) toggleSpoilerVisibility(p.querySelector('.hidetop input'));
 			p = p.parentNode;
 		}
 	}
@@ -26,7 +47,6 @@ document.addEventListener('DOMContentLoaded', scrollToAnchor);
  *		code lines numbering
  *		====================
  */
-
 
 function numberingCodeLinesFoo() {
 	var codeBlockAll = document.querySelectorAll('.post-block.code');
