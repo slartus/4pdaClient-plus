@@ -166,6 +166,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
 
         return searchSettings;
     }
+
     public static SearchSettings createUserPostsInTopicSearchSettings(String userNick, String topic) {
         SearchSettings searchSettings = new SearchSettings(SearchSettings.SEARCH_TYPE_USER_POSTS);
         searchSettings.load(App.getInstance().getPreferences());
@@ -226,15 +227,15 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         forHide = (LinearLayout) view.findViewById(R.id.forHide);
 
         final RotateAnimation rotate = new RotateAnimation(180, 0, Animation.RELATIVE_TO_SELF,
-                0.5f,  Animation.RELATIVE_TO_SELF, 0.5f);
+                0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         rotate.setDuration(250);
         final Runnable hideRunnable = () -> forHide.setVisibility(View.VISIBLE);
 
         forHideButton.setOnClickListener(v -> {
-            if(forHide.getVisibility() == View.VISIBLE){
+            if (forHide.getVisibility() == View.VISIBLE) {
                 forHideButton.startAnimation(rotate);
                 forHide.setVisibility(View.GONE);
-            }else {
+            } else {
                 forHideButton.startAnimation(rotate);
                 new Handler().postDelayed(hideRunnable, 250);
             }
@@ -307,14 +308,18 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         SearchSettings searchSettings = getSearchSettings();
         assert searchSettings != null;
         String query = searchSettings.getQuery();
-        query_edit.setText(query);
-        if (query.length() >= 0) {
-            query_edit.setSelection(query.length());
+        if (query != null) {
+            query_edit.setText(query);
+            if (query.length() >= 0) {
+                query_edit.setSelection(query.length());
+            }
         }
         String username = searchSettings.getUserName();
-        username_edit.setText(username);
-        if (username.length() >= 0) {
-            username_edit.setSelection(username.length());
+        if (username != null) {
+            username_edit.setText(username);
+            if (username.length() >= 0) {
+                username_edit.setSelection(username.length());
+            }
         }
         subforums_check.setChecked(searchSettings.getIsSubForums());
 
@@ -374,7 +379,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
                     final List<String> forums = ForumsTable.loadForumTitlesList(checkedForumIds);
                     if (checkedForumIds.contains("all"))
                         forums.add(0, App.getContext().getString(R.string.all_forums));
-                    forums.add(0, App.getContext().getString(R.string.total)+": " + forums.size());
+                    forums.add(0, App.getContext().getString(R.string.total) + ": " + forums.size());
                     handler.post(new Runnable() {
                         @Override
                         public void run() {

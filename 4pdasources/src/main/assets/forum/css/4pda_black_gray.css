@@ -2293,7 +2293,7 @@ li .post-block {
   padding-right: 3em;
   color: #757575;
 }
-.post-block.spoil > .block-title * {
+.post-block.spoil > .block-title *:not(.anchor):not(.anchor span) {
   color: #757575 !important;
 }
 .post-block.spoil > .block-title:before {
@@ -2305,6 +2305,7 @@ li .post-block {
   left: 0;
   padding: 0.875em;
   box-sizing: border-box;
+  pointer-events: none;
 }
 .post-block.spoil > .block-title:active:before {
   background: rgba(255, 255, 255, 0.1);
@@ -2329,6 +2330,33 @@ li .post-block {
   transition: 0.25s;
   -webkit-transform-origin: center;
   transform-origin: center;
+  pointer-events: none;
+}
+.post-block.spoil > .block-title .anchor {
+  display: inline-block;
+  height: 1.25em;
+  width: 1.25em;
+  text-align: center;
+  background: #17415f;
+  color: white;
+  margin-left: 0.5em;
+  vertical-align: bottom;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  /*position: absolute;
+                top:0;
+                left:0;
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                background: none;*/
+}
+.post-block.spoil > .block-title .anchor span {
+  line-height: 1.42857143em !important;
+  vertical-align: middle;
+  font-size: 0.875em !important;
+  color: white!important;
 }
 .post-block.spoil > .block-body > .post-block.spoil {
   background: rgba(255, 255, 255, 0.03);
@@ -2449,7 +2477,7 @@ li .post-block {
   font-size: 0.875em;
   background: linear-gradient(transparent 1.42857143em, rgba(130, 130, 130, 0.1) 1.42857143em);
   background-size: 100% 2.85714286em;
-  background-position: 28px 0;
+  background-position: 2em 0;
   background-repeat: repeat-y;
   padding-top: 0;
   padding-bottom: 0;
@@ -2457,7 +2485,7 @@ li .post-block {
   margin-bottom: 0.5em;
   counter-reset: count;
   overflow-x: auto;
-  padding-left: 32px;
+  padding-left: 2.28571429em;
   position: static;
   white-space: pre;
   word-break: normal;
@@ -2465,14 +2493,13 @@ li .post-block {
 }
 .post-block.code > .block-body div {
   position: relative;
+  min-height: 1.42857143em;
 }
-.post-block.code > .block-body div:before {
+.post-block.code > .block-body div .num-wrap {
   text-align: center;
-  counter-increment: count;
-  content: counter(count);
   position: absolute;
-  width: 28px;
-  left: -32px;
+  width: 2em;
+  left: -2.28571429em;
   opacity: 0;
   pointer-events: none;
   font-family: "roboto";
@@ -2519,21 +2546,26 @@ li .post-block {
 .post-block.code.unbox > .block-title:before {
   content: "Скрыть код";
 }
-.post-block.code.break .toggle-btn {
+.post-block.code[wraptext="wrap"] .toggle-btn {
   background-color: rgba(18, 181, 87, 0.08);
 }
-.post-block.code.break .block-body {
+.post-block.code[wraptext="wrap"] .block-body {
   white-space: pre-wrap;
   word-break: break-word;
   word-wrap: normal;
 }
-.post-block.code.break .block-body div:before {
+.post-block.code[wraptext="wrap"] .block-body div .num-wrap {
   opacity: 1;
   pointer-events: auto;
 }
-.post-block.code.break .num-pre {
+.post-block.code[wraptext="wrap"] .num-pre {
   opacity: 0;
   pointer-events: none;
+}
+.post-block.code[wraptext="pre"] .block-body {
+  margin-left: 2em;
+  padding-left: 0.28571429em;
+  background-position: 0 0;
 }
 .post-block.hidden {
   background: rgba(70, 70, 70, 0.2);
