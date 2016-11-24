@@ -2342,16 +2342,18 @@ li .post-block {
   vertical-align: bottom;
   -webkit-border-radius: 2px;
   border-radius: 2px;
-  /*position: absolute;
-                top:0;
-                left:0;
-                height: 100%;
-                width: 100%;
-                margin: 0;
-                padding: 0;
-                background: none;*/
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 .post-block.spoil > .block-title .anchor span {
+  display: none;
   line-height: 1.42857143em !important;
   vertical-align: middle;
   font-size: 0.875em !important;
@@ -2537,7 +2539,7 @@ li .post-block {
 }
 .post-block.code.box > .block-body {
   max-height: 11.5em;
-  overflow: hidden;
+  overflow-y: hidden;
   position: relative;
 }
 .post-block.code.box > .block-body:after {
