@@ -6,7 +6,7 @@
 
 document.addEventListener('DOMContentLoaded', getAllSpoilerToCreateAnchorLink);
 function getAllSpoilerToCreateAnchorLink() {
-	if (document.body.id != 'topic') return;
+	if (document.body.id != 'topic' || document.body.querySelector('.block-title .anchor')) return;
 	var link = document.querySelector('.topic_title_post a');
 	var postAll = document.querySelectorAll('.post_container');
 	for (var i = 0; i < postAll.length; i++) {
@@ -34,7 +34,7 @@ function scrollToAnchor() {
 				p.classList.remove('close');
 				p.classList.add('open');
 			}
-			else if (p.classList.contains('hat')) toggleSpoilerVisibility(p.querySelector('.hidetop input'));
+			if (p.classList.contains('hat')) toggleSpoilerVisibility(p.querySelector('.hidetop input'));
 			p = p.parentNode;
 		}
 	}
@@ -61,7 +61,7 @@ function numberingCodeLinesFoo() {
 		while (~newCode[newCode.length - 1].search(/^\s*$/gi)) newCode.pop();
 
 		for (var j = 0; j < newCode.length; j++) {
-			lines += '<div class="line"><span class="num-wrap">' + (j + 1) + '</span>' + newCode[j] + '</div>';
+			lines += '<div class="line">' + newCode[j] + '</div>';
 			count += (j + 1) + '\n';
 		}
 

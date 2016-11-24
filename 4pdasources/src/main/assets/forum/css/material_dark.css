@@ -200,6 +200,7 @@ span[style*="font-size:8pt"] * {
   color: rgba(240, 250, 255, 0.9);
 }
 .post-block.code {
+  counter-reset: num-line;
   position: relative;
   padding: 0;
   overflow: hidden;
@@ -209,8 +210,10 @@ span[style*="font-size:8pt"] * {
   display: block;
   min-height: 1.375rem;
 }
-.post-block.code .num-wrap,
+.post-block.code .line:before,
 .post-block.code .num-pre {
+  counter-increment: num-line;
+  content: counter(num-line);
   position: absolute;
   width: 2rem;
   padding: 0 0.5rem 0 0;
@@ -222,7 +225,7 @@ span[style*="font-size:8pt"] * {
   color: rgba(248, 231, 170, 0.65);
   -webkit-user-select: none;
 }
-.post-block.code .num-wrap {
+.post-block.code .line:before {
   left: 0;
 }
 .post-block.code .num-pre {
@@ -230,18 +233,21 @@ span[style*="font-size:8pt"] * {
   top: 2.5rem;
   bottom: 0;
 }
-.post-block.code[wraptext="wrap"] .num-wrap {
+.post-block.code[wraptext="wrap"] .line:before {
   dispaly: inline-block;
 }
 .post-block.code[wraptext="wrap"] .num-pre {
   display: none;
+}
+.post-block.code[wraptext="pre"] .toggle-btn {
+  opacity: 0.5;
 }
 .post-block.code[wraptext="pre"] > .block-body {
   overflow-wrap: normal;
   word-break: normal;
   white-space: pre;
 }
-.post-block.code[wraptext="pre"] .num-wrap {
+.post-block.code[wraptext="pre"] .line:before {
   display: none;
 }
 .post-block.code[wraptext="pre"] .num-pre {
@@ -293,7 +299,7 @@ span[style*="font-size:8pt"] * {
 }
 .post-block.code.box > .block-body {
   max-height: 9.5rem;
-  overflow: hidden;
+  overflow-y: hidden;
 }
 .post-block.code.unbox > .block-title:before {
   content: 'Свернуть Код';
@@ -337,16 +343,17 @@ span[style*="font-size:8pt"] * {
   transition: 0.3s ease;
 }
 .post-block.spoil > .block-title {
-  padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+  padding: 0.5rem 2.25rem 0.5rem;
   font-style: normal;
   color: white;
   font-size: 1rem;
   overflow: hidden;
 }
 .post-block.spoil > .block-title .anchor {
-  float: right;
-  margin: -0.5rem -0.75rem -0.5rem 0.25rem;
-  padding: 0.5rem 0.75rem;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 0.375rem 0.75rem;
 }
 .post-block.spoil > .block-title:empty:after {
   position: relative;
@@ -365,10 +372,10 @@ span[style*="font-size:8pt"] * {
   box-sizing: border-box;
 }
 .post-block.spoil > .block-body .spoil.open {
-  margin: 0.5rem 0;
+  margin: 0.5rem -0.5rem;
 }
 .post-block.spoil > .block-body .spoil.open > .block-body {
-  padding-right: 0;
+  padding: 0.75rem;
 }
 .post-block.spoil.close:before,
 .poll .hidetop.close B:before {
