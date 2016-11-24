@@ -360,6 +360,7 @@ span[style*="font-size:8pt"] * {
   top: 0;
   padding: 0.375rem 0.75rem;
 }
+.post-block.spoil > .block-title.empty:after,
 .post-block.spoil > .block-title:empty:after {
   position: relative;
   display: inline;
