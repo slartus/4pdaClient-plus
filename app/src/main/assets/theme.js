@@ -13,7 +13,14 @@ function getAllSpoilerToCreateAnchorLink() {
 		var postId = postAll[i].getAttribute('name').match(/\d+/);
 		var spoilerAll = postAll[i].querySelectorAll('.post-block.spoil > .block-title');
 		for (var j=0; j < spoilerAll.length; j++) {
-			spoilerAll[j].insertAdjacentHTML("beforeEnd", '<a class="anchor" onclick="event.preventDefault();" href="http://4pda.ru/forum/index.php?act=findpost&pid='+postId+'&anchor=Spoil-' + postId + '-' + (j + 1) + '" name="Spoil-' + postId + '-' + (j + 1) + '" title="Spoil-' + postId + '-' + (j + 1) + '"><span>#</span></a>');
+            var titleElem = spoilerAll[j];
+            if(titleElem.innerHTML.length==0){
+                titleElem.classList.add("empty");
+            }
+            var anchor = titleElem.querySelector(".anchor");
+            if(anchor)
+                titleElem.removeChild(anchor);
+			titleElem.insertAdjacentHTML("beforeEnd", '<a class="anchor" onclick="event.preventDefault();" href="http://4pda.ru/forum/index.php?act=findpost&pid='+postId+'&anchor=Spoil-' + postId + '-' + (j + 1) + '" name="Spoil-' + postId + '-' + (j + 1) + '" title="Spoil-' + postId + '-' + (j + 1) + '"><span>#</span></a>');
 		}
 	}
 }
@@ -47,21 +54,20 @@ document.addEventListener('DOMContentLoaded', scrollToAnchor);
  *		code lines numbering
  *		====================
  */
-
 function numberingCodeLinesFoo() {
 	var codeBlockAll = document.querySelectorAll('.post-block.code');
 	for (var i = 0; i < codeBlockAll.length; i++) {
 		var codeBlock = codeBlockAll[i],
 			codeTitle = codeBlock.querySelector('.block-title'),
 			codeBody = codeBlock.querySelector('.block-body'),
-			newCode = codeBody.innerHTML.split('<br>'),
+			newCode = codeBody.innerHTML.split(/<br[^>]*?>/),
 			count = '',
 			lines = '';
 
 		while (~newCode[newCode.length - 1].search(/^\s*$/gi)) newCode.pop();
 
 		for (var j = 0; j < newCode.length; j++) {
-			lines += '<div class="line"><span class="num-wrap">' + (j + 1) + '</span>' + newCode[j] + '</div>';
+			lines += '<div>' + newCode[j] + '</div>';
 			count += (j + 1) + '\n';
 		}
 

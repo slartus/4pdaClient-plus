@@ -2278,25 +2278,25 @@ li .post-block {
 .post-block.spoil > .block-title {
   padding-right: 3em;
   color: #0277bd;
+  /*&:before {
+                content: "";
+                height: 100%;
+                width: 100%;
+                top: 0;
+                left: 0;
+                padding: 0.875em;
+                box-sizing: border-box;
+                pointer-events: none;
+            }*/
 }
-.post-block.spoil > .block-title *:not(.anchor):not(.anchor span) {
+.post-block.spoil > .block-title *:not(.anchor) {
   color: #0277bd !important;
 }
-.post-block.spoil > .block-title:before {
-  content: "";
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  padding: 0.875em;
-  box-sizing: border-box;
-  pointer-events: none;
-}
-.post-block.spoil > .block-title:active:before {
+.post-block.spoil > .block-title:active {
   background: rgba(0, 0, 0, 0.1);
 }
-.post-block.spoil > .block-title:empty:before {
+.post-block.spoil > .block-title:empty:before,
+.post-block.spoil > .block-title.empty:before {
   content: "Спойлер";
 }
 .post-block.spoil > .block-title:after {
@@ -2476,20 +2476,25 @@ li .post-block {
   white-space: pre;
   word-break: normal;
   word-wrap: normal;
+  counter-reset: item;
 }
 .post-block.code > .block-body div {
   position: relative;
   min-height: 1.42857143em;
 }
-.post-block.code > .block-body div .num-wrap {
+.post-block.code > .block-body div:before {
+  content: counter(item);
+  counter-increment: item;
   text-align: center;
   position: absolute;
   width: 2em;
   left: -2.28571429em;
   opacity: 0;
-  pointer-events: none;
   font-family: "roboto", sans-serif;
   color: #757575;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .post-block.code:before {
   content: "";
@@ -2513,6 +2518,9 @@ li .post-block {
   margin-top: 0.5em;
   margin-bottom: 1em;
   color: #757575;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .post-block.code.box > .block-body {
   max-height: 11.5em;
@@ -2540,13 +2548,11 @@ li .post-block {
   word-break: break-word;
   word-wrap: normal;
 }
-.post-block.code[wraptext="wrap"] .block-body div .num-wrap {
+.post-block.code[wraptext="wrap"] .block-body div:before {
   opacity: 1;
-  pointer-events: auto;
 }
 .post-block.code[wraptext="wrap"] .num-pre {
   opacity: 0;
-  pointer-events: none;
 }
 .post-block.code[wraptext="pre"] .block-body {
   margin-left: 2em;

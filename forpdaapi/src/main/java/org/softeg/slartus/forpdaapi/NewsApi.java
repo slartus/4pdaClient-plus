@@ -95,7 +95,7 @@ public class NewsApi {
             if (m.group(1) == null) group = 4;
 
             news.setId(m.group(group + 2).replace("http://4pda.ru", ""));
-            news.setTitle(Html.fromHtml(m.group(group + 4)).toString());
+            news.setTitle(Html.fromHtml(m.group(group + 4).replaceAll("&amp;","&")).toString());
             news.setImgUrl(m.group(group + 3));
 
 
