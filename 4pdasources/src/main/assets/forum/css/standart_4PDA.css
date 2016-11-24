@@ -169,6 +169,7 @@ span[style*="font-size:8pt"] * {
   background: #4FAFCFE;
 }
 .post-block.code {
+  counter-reset: num-line;
   position: relative;
   border-left: 4px solid #ff6921;
   background-color: #FAFCFE;
@@ -177,8 +178,10 @@ span[style*="font-size:8pt"] * {
   display: block;
   min-height: 1.375rem;
 }
-.post-block.code .num-wrap,
+.post-block.code .line:before,
 .post-block.code .num-pre {
+  counter-increment: num-line;
+  content: counter(num-line);
   position: absolute;
   width: 2rem;
   padding: 0 0.5rem 0 0;
@@ -190,7 +193,7 @@ span[style*="font-size:8pt"] * {
   color: rgba(0, 0, 0, 0.5);
   -webkit-user-select: none;
 }
-.post-block.code .num-wrap {
+.post-block.code .line:before {
   left: 0;
 }
 .post-block.code .num-pre {
@@ -198,7 +201,7 @@ span[style*="font-size:8pt"] * {
   top: 2.5rem;
   bottom: 0;
 }
-.post-block.code[wraptext="wrap"] .num-wrap {
+.post-block.code[wraptext="wrap"] .line:before {
   dispaly: inline-block;
 }
 .post-block.code[wraptext="wrap"] .num-pre {
@@ -209,7 +212,7 @@ span[style*="font-size:8pt"] * {
   word-break: normal;
   white-space: pre;
 }
-.post-block.code[wraptext="pre"] .num-wrap {
+.post-block.code[wraptext="pre"] .line:before {
   display: none;
 }
 .post-block.code[wraptext="pre"] .num-pre {
@@ -266,15 +269,19 @@ span[style*="font-size:8pt"] * {
   border-left: 4px solid #8394B2;
 }
 .post-block.spoil > .block-title {
+  position: relative;
+  padding-right: 1.75rem;
   background: #E4EAF2;
 }
 .post-block.spoil > .block-title .anchor {
+  position: absolute;
+  right: 0;
+  top: 0;
   color: Black;
   text-decoration: none;
   font-weight: bold;
   float: right;
-  margin: -0.5rem -0.75rem -0.5rem 0.25rem;
-  padding: 0.5rem 0.75rem;
+  padding: 0.25rem 0.5rem;
 }
 .post-block.spoil > .block-body {
   background: #FAFCFE;
@@ -282,9 +289,11 @@ span[style*="font-size:8pt"] * {
 .post-block.spoil.open > .block-title:before {
   content: 'Спойлер (–) ( ';
 }
+.post-block.spoil.open > .block-title.empty:before,
 .post-block.spoil.open > .block-title:empty:before {
   content: 'Спойлер (–)';
 }
+.post-block.spoil.open > .block-title.empty:after,
 .post-block.spoil.open > .block-title:empty:after {
   content: '';
 }
@@ -294,9 +303,11 @@ span[style*="font-size:8pt"] * {
 .post-block.spoil.close > .block-title:before {
   content: 'Спойлер (+) ( ';
 }
+.post-block.spoil.close > .block-title.empty:before,
 .post-block.spoil.close > .block-title:empty:before {
   content: 'Спойлер (+)';
 }
+.post-block.spoil.close > .block-title.empty:after,
 .post-block.spoil.close > .block-title:empty:after {
   content: '';
 }
@@ -743,6 +754,7 @@ span[style*="font-size:8pt"] * {
   display: block;
   padding: 0.3rem 0.4rem;
   font-weight: bold;
+  padding-right: 1.75rem;
   background: #E4EAF2;
   position: relative;
   top: 0;
@@ -755,12 +767,14 @@ span[style*="font-size:8pt"] * {
   border-left: 1px solid white;
 }
 .post_container .hidetop .anchor {
+  position: absolute;
+  right: 0;
+  top: 0;
   color: Black;
   text-decoration: none;
   font-weight: bold;
   float: right;
-  margin: -0.5rem -0.75rem -0.5rem 0.25rem;
-  padding: 0.5rem 0.75rem;
+  padding: 0.25rem 0.5rem;
 }
 @media screen and (min-width: 800px) {
   .post_container .hidetop {
@@ -2130,7 +2144,7 @@ h3 a {
 .comment-box li .heading .karma .icon-hide-comment {
   display: none;
 }
-.comment-box li .heading .karma .num-wrap .num {
+.comment-box li .heading .karma .line:before .num {
   position: relative;
   top: 1px;
   padding: 0.2rem 0.5rem;

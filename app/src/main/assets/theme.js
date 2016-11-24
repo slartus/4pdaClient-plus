@@ -6,7 +6,7 @@
 
 document.addEventListener('DOMContentLoaded', getAllSpoilerToCreateAnchorLink);
 function getAllSpoilerToCreateAnchorLink() {
-	if (document.body.id != 'topic') return;
+	if (document.body.id != 'topic' || document.body.querySelector('.block-title .anchor')) return;
 	var link = document.querySelector('.topic_title_post a');
 	var postAll = document.querySelectorAll('.post_container');
 	for (var i = 0; i < postAll.length; i++) {
@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', scrollToAnchor);
  *		code lines numbering
  *		====================
  */
+
 function numberingCodeLinesFoo() {
 	var codeBlockAll = document.querySelectorAll('.post-block.code');
 	for (var i = 0; i < codeBlockAll.length; i++) {
@@ -67,7 +68,7 @@ function numberingCodeLinesFoo() {
 		while (~newCode[newCode.length - 1].search(/^\s*$/gi)) newCode.pop();
 
 		for (var j = 0; j < newCode.length; j++) {
-			lines += '<div>' + newCode[j] + '</div>';
+			lines += '<div class="line">' + newCode[j] + '</div>';
 			count += (j + 1) + '\n';
 		}
 
