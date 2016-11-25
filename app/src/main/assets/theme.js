@@ -14,12 +14,7 @@ function getAllSpoilerToCreateAnchorLink() {
 		var spoilerAll = postAll[i].querySelectorAll('.post-block.spoil > .block-title');
 		for (var j=0; j < spoilerAll.length; j++) {
             var titleElem = spoilerAll[j];
-            if(titleElem.innerHTML.length==0){
-                titleElem.classList.add("empty");
-            }
-            var anchor = titleElem.querySelector(".anchor");
-            if(anchor)
-                titleElem.removeChild(anchor);
+            if (titleElem.innerHTML.length == 0) titleElem.classList.add("empty");
 			titleElem.insertAdjacentHTML("beforeEnd", '<a class="anchor" onclick="event.preventDefault();" href="http://4pda.ru/forum/index.php?act=findpost&pid='+postId+'&anchor=Spoil-' + postId + '-' + (j + 1) + '" name="Spoil-' + postId + '-' + (j + 1) + '" title="Spoil-' + postId + '-' + (j + 1) + '"><span>#</span></a>');
 		}
 	}
@@ -41,7 +36,11 @@ function scrollToAnchor() {
 				p.classList.remove('close');
 				p.classList.add('open');
 			}
-			else if (p.classList.contains('hat')) toggleSpoilerVisibility(p.querySelector('.hidetop input'));
+			if (p.classList.contains('hat')) {
+				p.children[0].classList.remove('close');
+				p.children[0].classList.add('open');
+				p.children[1].removeAttribute('style');
+			}
 			p = p.parentNode;
 		}
 	}
@@ -68,7 +67,7 @@ function numberingCodeLinesFoo() {
 		while (~newCode[newCode.length - 1].search(/^\s*$/gi)) newCode.pop();
 
 		for (var j = 0; j < newCode.length; j++) {
-			lines += '<div class="line">' + newCode[j] + '</div>';
+			lines += '<span class="line">' + newCode[j] + '</span><br>';
 			count += (j + 1) + '\n';
 		}
 

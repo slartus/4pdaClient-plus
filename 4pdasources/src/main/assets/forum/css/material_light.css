@@ -165,7 +165,6 @@ span[style*="font-size:8pt"] * {
   background: rgba(252, 245, 220, 0.8);
 }
 .post-block.code .line {
-  display: block;
   min-height: 1.375rem;
 }
 .post-block.code .line:before,
@@ -176,7 +175,7 @@ span[style*="font-size:8pt"] * {
   width: 2rem;
   padding: 0 0.5rem 0 0;
   text-align: right;
-  font-family: 'roboto mono';
+  font-family: 'Roboto Mono';
   font-size: 0.875rem;
   line-height: 1.375rem;
   white-space: pre;
@@ -240,6 +239,7 @@ span[style*="font-size:8pt"] * {
   content: 'Код';
 }
 .post-block.code > .block-body {
+  font-family: 'Roboto Mono';
   padding: 0;
   margin: 0 0.5rem 0.5rem 2.5rem;
   overflow-x: auto;

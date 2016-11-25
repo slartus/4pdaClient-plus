@@ -140,8 +140,8 @@ span[style*="font-size:8pt"] * {
   display: none;
 }
 .post-block.box > .block-body {
-  max-height: 10rem;
-  overflow: auto;
+  max-height: 9.5rem;
+  overflow-y: hidden;
 }
 .post-block.quote {
   border-left: 4px solid #4373C3;
@@ -171,11 +171,11 @@ span[style*="font-size:8pt"] * {
 .post-block.code {
   counter-reset: num-line;
   position: relative;
+  overflow: hidden;
   border-left: 4px solid #ff6921;
   background-color: #FAFCFE;
 }
 .post-block.code .line {
-  display: block;
   min-height: 1.375rem;
 }
 .post-block.code .line:before,
@@ -186,7 +186,7 @@ span[style*="font-size:8pt"] * {
   width: 2rem;
   padding: 0 0.5rem 0 0;
   text-align: right;
-  font-family: 'roboto mono';
+  font-family: 'Roboto Mono';
   font-size: 0.875rem;
   line-height: 1.375rem;
   white-space: pre;
@@ -226,9 +226,9 @@ span[style*="font-size:8pt"] * {
   cursor: pointer;
 }
 .post-block.code .toggle-btn span {
-  font-family: 'roboto mono', Courier, "Courier New", Verdana, Arial;
+  font-family: 'Roboto Mono', Courier, "Courier New", Verdana, Arial;
   font-weight: bold;
-  color: #ff6921;
+  color: #F87655;
 }
 .post-block.code > .block-title {
   background: #FDDBCC;
@@ -236,6 +236,7 @@ span[style*="font-size:8pt"] * {
   background-position: right;
 }
 .post-block.code > .block-body {
+  font-family: 'Roboto Mono', Courier, "Courier New", Verdana, Arial;
   padding: 0;
   margin: 0.5625rem 0.5rem 0.5rem 2.5rem;
   overflow-x: auto;
@@ -244,9 +245,8 @@ span[style*="font-size:8pt"] * {
   line-height: 1.375rem;
   -webkit-tab-size: 4;
   tab-size: 4;
-  font-family: Courier, "Courier New", Verdana, Arial;
   color: #465584;
-  background: linear-gradient(#f5f7f9 1.375rem, transparent 1.375rem);
+  background: linear-gradient(#f2f4f6 1.375rem, transparent 1.375rem);
   background-size: 2.75rem 2.75rem;
 }
 .post-block.hidden {
