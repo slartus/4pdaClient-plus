@@ -4,6 +4,7 @@
  *		===================
  */
 
+document.addEventListener('DOMContentLoaded', blocksOpenClose);
 function blocksOpenClose() {
 	var blockTitleAll = document.querySelectorAll('.post-block.spoil>.block-title,.post-block.code>.block-title');
 
@@ -15,33 +16,38 @@ function blocksOpenClose() {
 		if (bb.parentElement.classList.contains('code') && bb.scrollHeight <= bb.offsetHeight) {
 			bb.parentElement.classList.remove('box');
 		}
-		bt.addEventListener('click', clickOnElement);
-	}
-	function clickOnElement(event) {
-		var e = event || window.event;
-		var t = e.target || e.srcElement;
-		e.preventDefault();
-		e.stopPropagation();
-		while (t.className != 'post_body') {
-			if (t.classList.contains('spoil')) toggler("close", "open");
-			if (t.classList.contains('code')) toggler("unbox", "box");
-			function toggler(c, o) {
-				if (t.classList.contains(c)) {
-					t.classList.remove(c);
-					t.classList.add(o);
-				}
-				else if (t.classList.contains(o)) {
-					t.classList.remove(o);
-					t.classList.add(c);
-				}
-				return;
-			}
-			t = t.parentElement;
-		}
+		bt.addEventListener('click', clickOnElement, false);
 	}
 }
 
-window.addEventListener('DOMContentLoaded', blocksOpenClose);
+function clickOnElement(event) {
+	var e = event || window.event;
+	var t = e.target || e.srcElement;
+	e.preventDefault();
+	while (t != document.body) {
+		if (t.classList.contains('spoil')) {
+			e.stopPropagation();
+			toggler("close", "open");
+			return;
+		}
+		if (t.classList.contains('code')) {
+			e.stopPropagation();
+			toggler("unbox", "box");
+			return;
+		}
+		t = t.parentElement;
+	}
+	function toggler(c, o) {
+		if (t.classList.contains(c)) {
+			t.classList.remove(c);
+			t.classList.add(o);
+		}
+		else if (t.classList.contains(o)) {
+			t.classList.remove(o);
+			t.classList.add(c);
+		}
+	}
+}
 
 /**
  *		========================
