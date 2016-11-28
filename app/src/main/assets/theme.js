@@ -21,7 +21,6 @@ function blocksOpenClose() {
 	function clickOnElement(event) {
 		var e = event || window.event;
 		var t = e.target || e.srcElement;
-		e.preventDefault();
 		while (t != document.body) {
 			if (t.classList.contains('spoil')) {
 				e.stopPropagation();
