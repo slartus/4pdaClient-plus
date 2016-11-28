@@ -18,33 +18,32 @@ function blocksOpenClose() {
 		}
 		bt.addEventListener('click', clickOnElement, false);
 	}
-}
-
-function clickOnElement(event) {
-	var e = event || window.event;
-	var t = e.target || e.srcElement;
-	e.preventDefault();
-	while (t != document.body) {
-		if (t.classList.contains('spoil')) {
-			e.stopPropagation();
-			toggler("close", "open");
-			return;
+	function clickOnElement(event) {
+		var e = event || window.event;
+		var t = e.target || e.srcElement;
+		e.preventDefault();
+		while (t != document.body) {
+			if (t.classList.contains('spoil')) {
+				e.stopPropagation();
+				toggler("close", "open");
+				return;
+			}
+			if (t.classList.contains('code')) {
+				e.stopPropagation();
+				toggler("unbox", "box");
+				return;
+			}
+			t = t.parentElement;
 		}
-		if (t.classList.contains('code')) {
-			e.stopPropagation();
-			toggler("unbox", "box");
-			return;
-		}
-		t = t.parentElement;
-	}
-	function toggler(c, o) {
-		if (t.classList.contains(c)) {
-			t.classList.remove(c);
-			t.classList.add(o);
-		}
-		else if (t.classList.contains(o)) {
-			t.classList.remove(o);
-			t.classList.add(c);
+		function toggler(c, o) {
+			if (t.classList.contains(c)) {
+				t.classList.remove(c);
+				t.classList.add(o);
+			}
+			else if (t.classList.contains(o)) {
+				t.classList.remove(o);
+				t.classList.add(c);
+			}
 		}
 	}
 }
