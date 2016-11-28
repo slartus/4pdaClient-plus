@@ -1,4 +1,49 @@
 /**
+ *		===================
+ *		blocks close & open
+ *		===================
+ */
+
+function blocksOpenClose() {
+	var blockTitleAll = document.querySelectorAll('.post-block.spoil>.block-title,.post-block.code>.block-title');
+
+	if (!blockTitleAll[0]) return;
+
+	for (var i = 0; i < blockTitleAll.length; i++) {
+		var bt = blockTitleAll[i];
+		var bb = bt.parentElement.querySelector('.block-body');
+		if (bb.parentElement.classList.contains('code') && bb.scrollHeight <= bb.offsetHeight) {
+			bb.parentElement.classList.remove('box');
+		}
+		bt.addEventListener('click', clickOnElement);
+	}
+	function clickOnElement(event) {
+		var e = event || window.event;
+		var t = e.target || e.srcElement;
+		e.preventDefault();
+		e.stopPropagation();
+		while (t.className != 'post_body') {
+			if (t.classList.contains('spoil')) toggler("close", "open");
+			if (t.classList.contains('code')) toggler("unbox", "box");
+			function toggler(c, o) {
+				if (t.classList.contains(c)) {
+					t.classList.remove(c);
+					t.classList.add(o);
+				}
+				else if (t.classList.contains(o)) {
+					t.classList.remove(o);
+					t.classList.add(c);
+				}
+				return;
+			}
+			t = t.parentElement;
+		}
+	}
+}
+
+window.addEventListener('DOMContentLoaded', blocksOpenClose);
+
+/**
  *		========================
  *		add anchor link to spoil
  *		========================
@@ -19,34 +64,6 @@ function getAllSpoilerToCreateAnchorLink() {
 		}
 	}
 }
-
-/**
- *		================
- *		scroll to anchor
- *		================
- */
-
-function scrollToAnchor() {
-	var link = document.querySelector('.topic_title_post a');
-	var anchor = document.querySelector('a[name="' + link.hash.match(/[^#].*/) + '"]');
-	var p = anchor;
-	if (anchor) {
-		while (!p.classList.contains('post_container')) {
-			if (p.classList.contains('spoil')) {
-				p.classList.remove('close');
-				p.classList.add('open');
-			}
-			if (p.classList.contains('hat')) {
-				p.children[0].classList.remove('close');
-				p.children[0].classList.add('open');
-				p.children[1].removeAttribute('style');
-			}
-			p = p.parentNode;
-		}
-	}
-	anchor.scrollIntoView();
-}
-document.addEventListener('DOMContentLoaded', scrollToAnchor);
 
 /**
  *		====================
@@ -76,7 +93,8 @@ function numberingCodeLinesFoo() {
 		codeBlock.querySelector('.toggle-btn').addEventListener('click', onClickToggleButton, false);
 		codeBody.innerHTML = lines;
 	}
-	function onClickToggleButton() {
+	function onClickToggleButton(e) {
+		e.stopPropagation();
 		for (var i = 0; i < codeBlockAll.length; i++) {
 			if (codeBlockAll[i].getAttribute('wraptext') == 'wrap') {
 				codeBlockAll[i].setAttribute('wraptext', 'pre');
@@ -86,6 +104,34 @@ function numberingCodeLinesFoo() {
 }
 
 document.addEventListener('DOMContentLoaded', numberingCodeLinesFoo);
+
+/**
+ *		================
+ *		scroll to anchor
+ *		================
+ */
+
+function scrollToAnchor() {
+	var link = document.querySelector('.topic_title_post a');
+	var anchor = document.querySelector('a[name="' + link.hash.match(/[^#].*/) + '"]');
+	var p = anchor;
+	if (anchor) {
+		while (!p.classList.contains('post_container')) {
+			if (p.classList.contains('spoil')) {
+				p.classList.remove('close');
+				p.classList.add('open');
+			}
+			if (p.classList.contains('hat')) {
+				p.children[0].classList.remove('close');
+				p.children[0].classList.add('open');
+				p.children[1].removeAttribute('style');
+			}
+			p = p.parentNode;
+		}
+	}
+	anchor.scrollIntoView();
+}
+document.addEventListener('DOMContentLoaded', scrollToAnchor);
 
 /* ------------ */
 
