@@ -3,8 +3,8 @@
  *		blocks close & open
  *		===================
  */
-
-document.addEventListener('DOMContentLoaded', blocksOpenClose);
+ 
+document.addEventListener('DOMContentLoaded',blocksOpenClose);
 function blocksOpenClose() {
 	var blockTitleAll = document.querySelectorAll('.post-block.spoil>.block-title,.post-block.code>.block-title');
 
@@ -19,17 +19,16 @@ function blocksOpenClose() {
 		bt.addEventListener('click', clickOnElement, false);
 	}
 	function clickOnElement(event) {
-		var e = event || window.event;
-		var t = e.target || e.srcElement;
-		while (t != document.body) {
+		var t = event.target;
+		while (t.classList.contains('post_body') || t.classList.contains('msg-content') || t != document.body) {
 			if (t.classList.contains('spoil')) {
-				e.stopPropagation();
 				toggler("close", "open");
+				event.stopPropagation();
 				return;
 			}
 			if (t.classList.contains('code')) {
-				e.stopPropagation();
 				toggler("unbox", "box");
+				event.stopPropagation();
 				return;
 			}
 			t = t.parentElement;
@@ -38,12 +37,52 @@ function blocksOpenClose() {
 			if (t.classList.contains(c)) {
 				t.classList.remove(c);
 				t.classList.add(o);
+				substitutionAttributes(event);
 			}
 			else if (t.classList.contains(o)) {
 				t.classList.remove(o);
 				t.classList.add(c);
 			}
 		}
+	}
+}
+
+/**
+ *		======================
+ *		HIDE IMAGES IN SPOILER
+ *		======================
+ */
+
+document.addEventListener('DOMContentLoaded', spoilsImageLoad);
+function spoilsImageLoad() {
+	if (document.body.classList.contains("noimages")) return;
+	var postBlockSpoils = document.body.querySelectorAll('.post-block.spoil.close > .block-body');
+	for (var i = 0; i < postBlockSpoils.length; i++) {
+		var images = postBlockSpoils[i].querySelectorAll('img');
+		for (var j = 0; j < images.length; j++) {
+			var img = images[j];
+			if (!img.hasAttribute('src') || img.dataset.imageSrc) continue;
+			img.dataset.imageSrc = img.src;
+			img.removeAttribute('src');
+		}
+	}
+}
+
+// document.addEventListener("click", substitutionAttributes);
+function substitutionAttributes(event) {
+	var target = event.target;
+	while (target != this) {
+		if (target.classList.contains('spoil')) {
+			var images = target.querySelectorAll('img');
+			for (var i = 0; i < images.length; i++) {
+				var img = images[i];
+				if (img.hasAttribute('src') || !img.dataset.imageSrc) continue;
+				img.src = img.dataset.imageSrc;
+				img.removeAttribute('data-image-src');
+			}
+			return;
+		}
+		target = target.parentNode;
 	}
 }
 
@@ -185,48 +224,6 @@ function onClickToggleBreak() {
     }
 }
 //document.addEventListener('DOMContentLoaded', numberingCodeLinesFoo2);
-
-/**
- *		======================
- *		HIDE IMAGES IN SPOILER
- *		======================
- */
-
-function spoilsImageLoad() {
-    var postBlockSpoils = document.body.querySelectorAll('.post-block.spoil.close > .block-body');
-    for (var i = 0; i < postBlockSpoils.length; i++) {
-        var images = postBlockSpoils[i].querySelectorAll('img');
-        for (var j = 0; j < images.length; j++) {
-            var img = images[j];
-            if (!img.hasAttribute('src') || img.dataset.imageSrc) continue;
-            img.dataset.imageSrc = img.src;
-            img.removeAttribute('src');
-        }
-    }
-    document.body.addEventListener("click", substitutionAttributes);
-
-    function substitutionAttributes(event) {
-        var event = event || window.event;
-        var target = event.target || event.srcElement;
-        while (target != this) {
-            if (~target.className.indexOf('spoil')) {
-                var images = target.querySelectorAll('img');
-                for (var i = 0; i < images.length; i++) {
-                    var img = images[i];
-                    if (img.hasAttribute('src') || !img.dataset.imageSrc) continue;
-                    img.src = img.dataset.imageSrc;
-                    img.removeAttribute('data-image-src');
-                }
-                return;
-            }
-            target = target.parentNode;
-        }
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    if (!document.body.classList.contains("noimages")) return spoilsImageLoad();
-});
 
 /**
  *		=================
