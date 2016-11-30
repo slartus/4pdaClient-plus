@@ -67,7 +67,8 @@ function spoilsImageLoad() {
 }
 
 function substitutionAttributes(event) {
-	var target = event.target;
+	var target;
+	(event.target) ? target = event.target : target = event;
 	while (target != this) {
 		if (target.classList.contains('spoil')) {
 			var images = target.querySelectorAll('img');
@@ -115,14 +116,16 @@ function scrollToAnchor() {
 	var anchor = document.querySelector('a[name="' + link.hash.match(/[^#].*/) + '"]');
 	var p = anchor;
 	if (anchor) {
-		while (!t.classList.contains('post_container')) {
-			if (t.classList.contains('spoil')) {
-				t.classList.remove('close');
-				t.classList.add('open');
+		while (!p.classList.contains('post_container')) {
+			if (p.classList.contains('spoil')) {
+				p.classList.remove('close');
+				p.classList.add('open');
+				substitutionAttributes(p);
 			}
-			if (t.classList.contains('hat')) {
-				toggleSpoilerVisibility(p.querySelector('.hidetop input'));
-				openHat(p.querySelector('.hidetop'));
+			if (p.classList.contains('hat')) {
+				p.children[0].classList.remove('close');
+				p.children[0].classList.add('open');
+				p.children[1].removeAttribute('style');
 			}
 			p = p.parentNode;
 		}
