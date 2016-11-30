@@ -1407,17 +1407,13 @@ div[data-post] > a {
   margin-top: 0 !important;
 }
 .bad-search-result {
-  font-size: 1rem;
   position: fixed;
-  top: 40%;
-  left: 50%;
-  width: 19rem;
-  margin: 0.5rem;
-  margin-left: -9.5rem;
-  margin-top: -4rem;
+  top: 30%;
+  margin: 0 1rem;
+  font-size: 1rem;
   border-radius: 0.125rem;
-  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
   background: #000000;
 }
 .bad-search-result h3 {
@@ -1429,6 +1425,23 @@ div[data-post] > a {
   display: block;
   margin: 1.5rem;
   color: #808080;
+}
+@media screen and (max-width: 11.9375rem) {
+  .bad-search-result {
+    top: 0;
+    margin: 0.75rem;
+  }
+  .bad-search-result h3,
+  .bad-search-result span {
+    margin: 13%;
+  }
+}
+@media screen and (min-width: 28rem) {
+  .bad-search-result {
+    left: 50%;
+    width: 26rem;
+    margin: 0 0 0 -13rem;
+  }
 }
 /*
 *	QMS
@@ -1603,7 +1616,7 @@ div[data-post] > a {
   border-radius: 0.125rem;
   z-index: 99;
   background: #000d00;
-  -webkit-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
+  -webkit-box-oshadow: 0 14px 28px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2), 0 10px 10px rgba(0, 0, 0, 0.2);
 }
 #thread_form .list-group-item.msgbox.info .icon-close {

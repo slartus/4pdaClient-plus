@@ -22,12 +22,12 @@ function blocksOpenClose() {
 		var t = event.target;
 		while (!t.classList.contains('post_body') || !t.classList.contains('msg-content') || t != document.body) {
 			if (t.classList.contains('spoil')) {
-				toggler("close", "open");
 				event.stopPropagation();
+				toggler("close", "open");
 				return;
 			} else if (t.classList.contains('code')) {
-				toggler("unbox", "box");
 				event.stopPropagation();
+				toggler("unbox", "box");
 				return;
 			}
 			t = t.parentElement;
@@ -46,9 +46,9 @@ function blocksOpenClose() {
 }
 
 /**
- *		======================
- *		HIDE IMAGES IN SPOILER
- *		======================
+ *		===============================
+ *		HIDE AND SHOW IMAGES IN SPOILER
+ *		===============================
  */
 
 document.addEventListener('DOMContentLoaded', spoilsImageLoad);
@@ -66,7 +66,6 @@ function spoilsImageLoad() {
 	}
 }
 
-//document.addEventListener("click", substitutionAttributes);
 function substitutionAttributes(event) {
 	var target = event.target;
 	while (target != this) {
