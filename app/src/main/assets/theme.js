@@ -23,23 +23,34 @@ function blocksOpenClose() {
 		while (!t.classList.contains('post_body') || !t.classList.contains('msg-content') || t != document.body) {
 			if (t.classList.contains('spoil')) {
 				event.stopPropagation();
-				toggler("close", "open");
+				toggler("close", "open", t);
+				createSpoilCliseButton();
 				return;
 			} else if (t.classList.contains('code')) {
 				event.stopPropagation();
-				toggler("unbox", "box");
+				toggler("unbox", "box", t);
 				return;
 			}
 			t = t.parentElement;
 		}
-		function toggler(c, o) {
-			if (t.classList.contains(c)) {
-				t.classList.remove(c);
-				t.classList.add(o);
-				substitutionAttributes(event);
-			} else if (t.classList.contains(o)) {
-				t.classList.remove(o);
-				t.classList.add(c);
+	}
+	function toggler(c, o, t) {
+		if (t.classList.contains(c)) {
+			t.classList.remove(c);
+			t.classList.add(o);
+			substitutionAttributes(event);
+		} else if (t.classList.contains(o)) {
+			t.classList.remove(o);
+			t.classList.add(c);
+		}
+	}
+	function createSpoilCliseButton() {
+		for (var i = 0; i < blockTitleAll.length; i++) {
+			var t = blockTitleAll[i].parentElement;
+			var img = t.querySelectorAll('table[id*="ipb-attach-table"] img');
+			if (t.clientHeight > document.documentElement.clientHeight && !t.querySelector('.spoil_close')) {
+				var bb = t.querySelector('.block-body');
+				bb.insertAdjacentHTML("beforeEnd", '<button class="spoil_close" onclick="var t = this.parentElement.previousElementSibling; t.click(); t.scrollIntoView();">Закрыть спойлер</button>');
 			}
 		}
 	}
