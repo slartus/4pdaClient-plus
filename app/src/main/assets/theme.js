@@ -24,7 +24,7 @@ function blocksOpenClose() {
 			if (t.classList.contains('spoil')) {
 				event.stopPropagation();
 				toggler("close", "open", t);
-				createSpoilCliseButton();
+				createSpoilCloseButton();
 				return;
 			} else if (t.classList.contains('code')) {
 				event.stopPropagation();
@@ -44,10 +44,9 @@ function blocksOpenClose() {
 			t.classList.add(c);
 		}
 	}
-	function createSpoilCliseButton() {
+	function createSpoilCloseButton() {
 		for (var i = 0; i < blockTitleAll.length; i++) {
 			var t = blockTitleAll[i].parentElement;
-			var img = t.querySelectorAll('table[id*="ipb-attach-table"] img');
 			if (t.clientHeight > document.documentElement.clientHeight && !t.querySelector('.spoil_close')) {
 				var bb = t.querySelector('.block-body');
 				bb.insertAdjacentHTML("beforeEnd", '<button class="spoil_close" onclick="var t = this.parentElement.previousElementSibling; t.click(); t.scrollIntoView();">Закрыть спойлер</button>');
@@ -73,6 +72,7 @@ function spoilsImageLoad() {
 			if (!img.hasAttribute('src') || img.dataset.imageSrc) continue;
 			img.dataset.imageSrc = img.src;
 			img.removeAttribute('src');
+			img.addEventListener('load', function() { spoilCloseButton(img);});
 		}
 	}
 }
@@ -85,6 +85,7 @@ function substitutionAttributes(event) {
 			var images = target.querySelectorAll('img');
 			for (var i = 0; i < images.length; i++) {
 				var img = images[i];
+				img.addEventListener('load', function() { spoilCloseButton(img);});
 				if (img.hasAttribute('src') || !img.dataset.imageSrc) continue;
 				img.src = img.dataset.imageSrc;
 				img.removeAttribute('data-image-src');
@@ -92,6 +93,16 @@ function substitutionAttributes(event) {
 			return;
 		}
 		target = target.parentNode;
+	}
+}
+
+function spoilCloseButton(img) {
+	var spoilBody = img;
+	while (spoilBody && spoilBody.classList && !spoilBody.classList.contains('block-body')) {
+		spoilBody = spoilBody.parentNode;
+	}
+	if (spoilBody.offsetHeight > document.documentElement.clientHeight && !spoilBody.querySelector('.spoil_close')) {
+		spoilBody.insertAdjacentHTML("beforeEnd", '<button class="spoil_close" onclick="var t = this.parentElement.previousElementSibling; t.click(); t.scrollIntoView();">Закрыть спойлер</button>');
 	}
 }
 

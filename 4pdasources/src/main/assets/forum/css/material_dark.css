@@ -396,6 +396,7 @@ span[style*="font-size:8pt"] * {
   margin: 1rem 0 0;
   width: 100%;
   text-transform: uppercase;
+  font-size: 0.875rem;
   font-weight: bold;
   color: #adf;
   outline: none;
@@ -3385,3 +3386,4 @@ img[src*="style_emoticons"] {
 #rules .post_body {
   margin: 0.5rem;
 }
+
