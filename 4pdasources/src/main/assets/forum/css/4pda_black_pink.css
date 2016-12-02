@@ -2511,11 +2511,11 @@ li .post-block {
   word-wrap: normal;
   counter-reset: item;
 }
-.post-block.code > .block-body div {
+.post-block.code > .block-body .line {
   position: relative;
   min-height: 1.42857143em;
 }
-.post-block.code > .block-body div:before {
+.post-block.code > .block-body .line:before {
   content: counter(item);
   counter-increment: item;
   text-align: center;
@@ -2581,7 +2581,7 @@ li .post-block {
   word-break: break-word;
   word-wrap: normal;
 }
-.post-block.code[wraptext="wrap"] .block-body div:before {
+.post-block.code[wraptext="wrap"] .block-body .line:before {
   opacity: 1;
 }
 .post-block.code[wraptext="wrap"] .num-pre {
