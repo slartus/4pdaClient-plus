@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.listfragments.adapters;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.BaseAdapter;
@@ -133,15 +134,17 @@ public class ListAdapter extends BaseAdapter implements Filterable {
         holder.TopRight.setText(topic.getTopRight());
         holder.Main.setText(topic.getMain());
 
-        if(topic.getSubMain().equals("")|showSubMain){
+        if (topic.getSubMain().equals("") | showSubMain) {
             holder.SubMain.setVisibility(View.GONE);
-        }else {
+        } else {
+            holder.SubMain.setVisibility(View.VISIBLE);
             holder.SubMain.setText(topic.getSubMain());
         }
         setVisibility(holder.progress, topic.isInProgress() ? View.VISIBLE : View.INVISIBLE);
         try {
             setVisibility(holder.isPinned, ((FavTopic) topic).isPinned() ? View.VISIBLE : View.GONE);
-        } catch (ClassCastException ex) {}
+        } catch (ClassCastException ex) {
+        }
 
         switch (topic.getState()) {
             case IListItem.STATE_GREEN:

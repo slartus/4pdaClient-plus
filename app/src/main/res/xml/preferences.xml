@@ -359,6 +359,10 @@
                 android:defaultValue="false"
                 android:key="system.developerBounds"
                 android:title="Границы элементов (outline)" />
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:key="only_custom_script"
+                android:title="Только свои скрипты" />
         </PreferenceScreen>
 
         <CheckBoxPreference

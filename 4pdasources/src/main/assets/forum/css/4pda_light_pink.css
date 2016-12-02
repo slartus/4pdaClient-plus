@@ -2352,6 +2352,23 @@ li .post-block {
 .post-block.spoil > .block-body > .post-block.spoil:last-child {
   margin-bottom: 0;
 }
+.post-block.spoil > .block-body > .spoil_close {
+  display: block;
+  width: 100%;
+  font-size: 0.875em;
+  text-transform: uppercase;
+  font-weight: bold;
+  background: none;
+  border: none;
+  color: #e91e63;
+  padding: 0;
+  text-align: left;
+  margin: 1em 0 -1em -1em;
+  padding: 1em;
+  outline: none;
+  border-top: 1px solid #e9e9e9;
+  box-sizing: content-box;
+}
 .post-block.spoil.close > .block-title {
   border-radius: 2px;
 }

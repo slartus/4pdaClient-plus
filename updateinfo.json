@@ -7,9 +7,9 @@
 
   "show_beta_dialog":true,
   "update_beta":{
-    "ver":"3.3.8",
-    "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/ForPDA_3.3.8.apk",
-    "info":"[!] Важное замечание\n[+] Нововведение\n[-] Исправлена ошибка\n[*] Изменения\n\n[-] Загрузка изображений в чате\n[-] Кол-во кнопок якорей в спойлере\n[-] Спецсимволы в ленте новостей\n[-] Проблемы с блоком кода\n[-] Название пустого блока спойлера\n\nИзменения в Стандартных стилях:\n[-] Цвет названия блока спойлера"
+    "ver":"3.3.9",
+    "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/ForPDA_3.3.9.apk",
+    "info":"[!] Важное замечание\n[+] Нововведение\n[-] Исправлена ошибка\n[*] Изменения\n\n"
   },
 
   "toster_update":{

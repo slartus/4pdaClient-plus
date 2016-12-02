@@ -49,9 +49,13 @@ public class HtmlBuilder{
     }
 
     public void addScripts() {
-        m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/forum/js/z_forum_helpers.js\"></script>\n");
-        m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/theme.js\"></script>\n");
-        m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/z_emoticons.js\"></script>\n");
+        if(App.getInstance().getPreferences().getBoolean("only_custom_script", false)){
+            m_Body.append("<script type=\"text/javascript\" src=\"file://").append(getStyle().replaceFirst("\\/[\\S\\s][^\\/]*?\\.css","/base_script.js")).append("\"></script>\n");
+        }else {
+            //m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/forum/js/z_forum_helpers.js\"></script>\n");
+            m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/theme.js\"></script>\n");
+            m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/z_emoticons.js\"></script>\n");
+        }
     }
 
     public void addStyleSheetLink(StringBuilder sb) {

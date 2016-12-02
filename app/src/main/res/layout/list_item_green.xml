@@ -46,7 +46,6 @@
                 android:layout_height="wrap_content"
                 android:minHeight="22dp"
                 android:paddingRight="20dp"
-                android:maxLines="2"
                 android:text="Main Text Most looonges"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textSize="16sp"

@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaapi;
 import android.net.Uri;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIUtils;
@@ -176,7 +177,7 @@ public class TopicsApi {
             Pattern lastPageStartPattern = Pattern.compile("<a href=\"(http://4pda.ru)?/forum/index.php\\?showforum=\\d+&amp;[^\"]*?st=(\\d+)\">",
                     Pattern.CASE_INSENSITIVE);
 
-            Pattern themesPattern = Pattern.compile("<div class=\"topic_title\">.*?<a href=\"/forum/index.php\\?showtopic=(\\d+)\">([^<]*)</a>.*?</div><div class=\"topic_body\"><span class=\"topic_desc\">([^<]*)<br /></span><span class=\"topic_desc\">автор: <a href=\"/forum/index.php\\?showuser=\\d+\">[^<]*</a></span><br />(<a href=\"/forum/index.php\\?showtopic=\\d+&amp;view=getnewpost\">Новые</a>)?\\s*<a href=\"/forum/index.php\\?showtopic=\\d+&amp;view=getlastpost\">Послед.:</a> <a href=\"/forum/index.php\\?showuser=(\\d+)\">([^<]*)</a>(.*?)<.*?/div>", Pattern.CASE_INSENSITIVE);
+            Pattern themesPattern = Pattern.compile("<div class=\"topic_title\">.*?<a href=\"/forum/index.php\\?showtopic=(\\d+)\">([^<]*)</a>.*?</div><div class=\"topic_body\">(?:<span class=\"topic_desc\">([^<]*)<br /></span>|)<span class=\"topic_desc\">автор: <a href=\"/forum/index.php\\?showuser=\\d+\">[^<]*</a></span><br />(<a href=\"/forum/index.php\\?showtopic=\\d+&amp;view=getnewpost\">Новые</a>)?\\s*<a href=\"/forum/index.php\\?showtopic=\\d+&amp;view=getlastpost\">Послед.:</a> <a href=\"/forum/index.php\\?showuser=(\\d+)\">([^<]*)</a>(.*?)<.*?/div>", Pattern.CASE_INSENSITIVE);
 
             String today = Functions.getToday();
             String yesterday = Functions.getYesterToday();
@@ -224,7 +225,7 @@ public class TopicsApi {
             int sortOrder = 1000 + start + 1;
             while (m.find()) {
                 Topic theme = new Topic(m.group(1), m.group(2));
-                theme.setDescription(m.group(3));
+                theme.setDescription(m.group(3) == null ? "" : m.group(3));
                 // theme.setLastMessageAuthorId(m.group(5));
                 theme.setLastMessageAuthor(m.group(6));
                 theme.setIsNew(m.group(4) != null);
