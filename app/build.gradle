@@ -46,14 +46,14 @@ android {
         def defaultSigningVariable = signingConfigs.release
         rel {
             applicationId 'org.softeg.slartus.forpdaplus'
-            versionCode 577
-            versionName "3.3.8"
+            versionCode 578
+            versionName "3.3.9.1"
             signingConfig defaultSigningVariable
         }
         beta {
             applicationId 'org.softeg.slartus.forpdaplus.beta'
-            versionCode 578
-            versionName "3.3.9beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
+            versionCode 579
+            versionName "3.4.0beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
             signingConfig defaultSigningVariable
         }
     }
