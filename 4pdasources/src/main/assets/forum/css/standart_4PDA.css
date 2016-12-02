@@ -286,6 +286,17 @@ span[style*="font-size:8pt"] * {
 .post-block.spoil > .block-body {
   background: #FAFCFE;
 }
+.post-block.spoil > .block-body .spoil_close {
+  display: block;
+  margin: 1rem 0 0;
+  width: 100%;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #004fb3;
+  outline: none;
+  border: none;
+  background: none;
+}
 .post-block.spoil.open > .block-title:before {
   content: 'Спойлер (–) ( ';
 }
@@ -2717,4 +2728,3 @@ h3 a {
 [class*=" icon-"]:before {
   color: #1d5b8e;
 }
-

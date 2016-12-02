@@ -386,10 +386,21 @@ span[style*="font-size:8pt"] * {
   box-sizing: border-box;
 }
 .post-block.spoil > .block-body .spoil.open {
-  margin: 0.5rem -0.5rem;
+  margin: 0.5rem -0.25rem;
 }
 .post-block.spoil > .block-body .spoil.open > .block-body {
   padding: 0.75rem;
+}
+.post-block.spoil > .block-body .spoil_close {
+  display: block;
+  margin: 1rem 0 0;
+  width: 100%;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #adf;
+  outline: none;
+  border: none;
+  background: none;
 }
 .post-block.spoil.close:before,
 .poll .hidetop.close B:before {
@@ -402,7 +413,7 @@ span[style*="font-size:8pt"] * {
   background: rgba(158, 158, 158, 0.3);
 }
 .post-block.spoil.close > .block-title .anchor:before {
-  background-image: url(material_src/link_white.svg);
+  background-image: url(material_src/link_white.svg), url(../material_src/link_white.svg);
 }
 .post-block.spoil.close > .block-body {
   display: none;
@@ -440,7 +451,7 @@ span[style*="font-size:8pt"] * {
   margin: 0;
 }
 .post-block.spoil.open > .block-title .anchor:before {
-  background-image: url(material_src/link_grey.svg);
+  background-image: url(material_src/link_grey.svg), url(../material_src/link_grey.svg);
 }
 @media screen and (max-width: 15rem) {
   .post-block.spoil:before,
