@@ -1044,13 +1044,13 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 "(https?:/+4pda.ru/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)"
         };
 
-        for (String pattern : patterns) {
-            Matcher m = Pattern.compile(pattern).matcher(url);
-            if (m.find()) {
-                goToAnchorOrLoadTopic(m.group(1));
-                return true;
-            }
-        }
+//        for (String pattern : patterns) {
+//            Matcher m = Pattern.compile(pattern).matcher(url);
+//            if (m.find()) {
+//                goToAnchorOrLoadTopic(m.group(1));
+//                return true;
+//            }
+//        }
 
         return false;
     }
@@ -1060,47 +1060,47 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         showTheme(getLastUrl());
     }
 
-    public void goToAnchorOrLoadTopic(final String topicUrl) {
-        try {
-            if (getTopic() == null || m_History.size() == 0) {
-                showTheme(topicUrl);
-                return;
-            }
-
-
-            Uri uri = Uri.parse(topicUrl.toLowerCase());
-            String postId = null;
-            if (!TextUtils.isEmpty(getTopic().getId()) && getTopic().getId().equals(uri.getQueryParameter("showtopic")))
-                postId = uri.getQueryParameter("p");
-            if (TextUtils.isEmpty(postId) && "findpost".equals(uri.getQueryParameter("act")))
-                postId = uri.getQueryParameter("pid");
-            String anchor = "entry" + postId;
-            if (!TextUtils.isEmpty(postId)) {
-                anchor = "entry" + postId;
-            } else {
-                Pattern p = Pattern.compile("#(\\w+\\d+)");
-                Matcher m = p.matcher(topicUrl);
-                if (m.find()) {
-                    anchor = m.group(1);
-                }
-            }
-            if (anchor == null) {
-                showTheme(topicUrl);
-                return;
-            }
-            String fragment = anchor;
-            String currentBody = m_History.get(m_History.size() - 1).getBody();
-            if (currentBody.contains("name=\"" + fragment + "\"")) {
-                webView.scrollTo(fragment);
-                return;
-            }
-
-            showTheme(topicUrl);
-        } catch (Throwable ex) {
-            AppLog.e(getMainActivity(), ex);
-        }
-
-    }
+//    public void goToAnchorOrLoadTopic(final String topicUrl) {
+//        try {
+//            if (getTopic() == null || m_History.size() == 0) {
+//                showTheme(topicUrl);
+//                return;
+//            }
+//
+//
+//            Uri uri = Uri.parse(topicUrl.toLowerCase());
+//            String postId = null;
+//            if (!TextUtils.isEmpty(getTopic().getId()) && getTopic().getId().equals(uri.getQueryParameter("showtopic")))
+//                postId = uri.getQueryParameter("p");
+//            if (TextUtils.isEmpty(postId) && "findpost".equals(uri.getQueryParameter("act")))
+//                postId = uri.getQueryParameter("pid");
+//            String anchor = "entry" + postId;
+//            if (!TextUtils.isEmpty(postId)) {
+//                anchor = "entry" + postId;
+//            } else {
+//                Pattern p = Pattern.compile("#(\\w+\\d+)");
+//                Matcher m = p.matcher(topicUrl);
+//                if (m.find()) {
+//                    anchor = m.group(1);
+//                }
+//            }
+//            if (anchor == null) {
+//                showTheme(topicUrl);
+//                return;
+//            }
+//            String fragment = anchor;
+//            String currentBody = m_History.get(m_History.size() - 1).getBody();
+//            if (currentBody.contains("name=\"" + fragment + "\"")) {
+//                webView.scrollTo(fragment);
+//                return;
+//            }
+//
+//            showTheme(topicUrl);
+//        } catch (Throwable ex) {
+//            AppLog.e(getMainActivity(), ex);
+//        }
+//
+//    }
 
     private String lofiversionToNormal(String url) {
         if (url == null)
