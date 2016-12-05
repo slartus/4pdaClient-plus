@@ -146,21 +146,18 @@ function scrollToAnchor() {
 				p.classList.remove('close');
 				p.classList.add('open');
 				substitutionAttributes(p);
-				return;
 			}
 			if (p.classList.contains('hat')) {
 				p.children[0].classList.remove('close');
 				p.children[0].classList.add('open');
 				p.children[1].removeAttribute('style');
-				return;
 			}
 			p = p.parentNode;
 		}
 	}
-	// highlight "new message"
-	if (anchor.nodeName == 'DIV') anchor.classList.add('active');
-	
 	anchor.scrollIntoView();
+	// highlight "new message"
+	if (anchor.nodeName == 'DIV') anchor.nextElementSibling.classList.add('active');
 }
 document.addEventListener('DOMContentLoaded', scrollToAnchor);
 
