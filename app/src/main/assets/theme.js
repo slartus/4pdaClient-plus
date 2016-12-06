@@ -159,7 +159,7 @@ function scrollToAnchor() {
 	// highlight "new message"
 	if (anchor.nodeName == 'DIV') anchor.nextElementSibling.classList.add('active');
 }
-window.addEventListener('load', scrollToAnchor);
+document.addEventListener('DOMContentLoaded', scrollToAnchor);
 
 function jumpToAnchorOnPage() {
 	var snapAll = document.body.querySelectorAll('a[title="Перейти к сообщению"]');
