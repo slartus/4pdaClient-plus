@@ -1,3 +1,19 @@
+//  get height images when DOM content loaded
+//  and remove when all resources loaded
+
+
+document.addEventListener('DOMContentLoaded', function() {
+	document.body.innerHTML = document.body.innerHTML.replace(/style="width:(\d+);height:(\d+)"/gi,'style="width:$1px;height:$2px"');
+});
+window.addEventListener('load', function() {
+	var imgAll = document.querySelectorAll('img');
+	if (!imgAll[0]) return;
+	for (var i = 0; i < imgAll.length; i++) {
+		var img = imgAll[i];
+		img.removeAttribute('style');
+	}
+});
+
 /**
  *		===================
  *		blocks close & open
