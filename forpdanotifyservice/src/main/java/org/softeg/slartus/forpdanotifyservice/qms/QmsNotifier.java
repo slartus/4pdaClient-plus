@@ -248,7 +248,8 @@ public class QmsNotifier extends NotifierBase {
         float adaptiveTimeOut = loadTimeOut(context, ADAPTIVE_TIME_OUT_KEY);
 
         if (adaptiveTimeOut < timeOut) {
-            float[] steps = {1.0f, 5.0f, 10.0f, 20.0f, 30.0f};
+            // адаптивный таймаут проверки новых ЛС.
+            float[] steps = {1.0f, 2.5f, 5.0f, 10.0f, 20.0f, 30.0f};
             float newAdaptiveTimeout=adaptiveTimeOut;
             for (int i = 0; i < steps.length - 1; i++) {
                 if (adaptiveTimeOut - steps[i] < 0.1) {
