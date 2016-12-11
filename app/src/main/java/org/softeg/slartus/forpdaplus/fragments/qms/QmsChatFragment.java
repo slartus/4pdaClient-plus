@@ -611,7 +611,8 @@ public class QmsChatFragment extends WebViewFragment {
         }
         HtmlBuilder htmlBuilder = new HtmlBuilder();
         htmlBuilder.beginHtml("QMS");
-        htmlBuilder.beginBody("qms", "onload=\"scrollToElement('bottom_element')\"", Preferences.Topic.isShowAvatars());
+        htmlBuilder.beginBody("qms", "", Preferences.Topic.isShowAvatars());
+//        htmlBuilder.beginBody("qms", "onload=\"scrollToElement('bottom_element')\"", Preferences.Topic.isShowAvatars());
 
         if (!Preferences.Topic.isShowAvatars())
             chatBody = chatBody.replaceAll("<img[^>]*?class=\"avatar\"[^>]*>", "");

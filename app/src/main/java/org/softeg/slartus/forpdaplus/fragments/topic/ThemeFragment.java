@@ -943,7 +943,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             if(getSupportActionBar()!=null)
                 setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
 
-            webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
+            webView.loadDataWithBaseURL(m_LastUrl, body, "text/html", "UTF-8", null);
+            //webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
 
             TopicsHistoryTable.addHistory(m_Topic, m_LastUrl);
             if(buttonsPanel.getTranslationY()!=0)
@@ -1563,7 +1564,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 }
                 if (ex.getClass() != NotReportException.class) {
                     setTitle(ex.getMessage());
-                    webView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
+                    webView.loadDataWithBaseURL(m_LastUrl, m_ThemeBody, "text/html", "UTF-8", null);
+                    //webView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
                     addToHistory(m_ThemeBody);
                 }
                 AppLog.e(getMainActivity(), ex, () -> showTheme(getLastUrl()));
