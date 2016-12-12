@@ -6,7 +6,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:2.3.0-alpha2'
         classpath 'me.tatarka:gradle-retrolambda:3.3.1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
 
@@ -20,4 +20,10 @@ allprojects {
         jcenter()
         mavenCentral()
     }
+}
+
+// Так жить станет легче
+ext {
+    buildToolsVersion = '25.0.1'
+    supportLibraryVersion = '25.0.1'
 }

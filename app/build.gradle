@@ -8,15 +8,16 @@ repositories {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "24.0.2"
+    buildToolsVersion "25.0.1"
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId 'org.softeg.slartus.forpdaplus'
         minSdkVersion 15
 
+        //noinspection OldTargetApi
         targetSdkVersion 23
         versionCode 545
-        versionName "3.1.4b6"
+        versionName "3.3.9.3b0"
         vectorDrawables.useSupportLibrary = true
     }
     dexOptions {
@@ -53,7 +54,7 @@ android {
         beta {
             applicationId 'org.softeg.slartus.forpdaplus.beta'
             versionCode 579
-            versionName "3.4.0beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
+            versionName "3.3.9.3beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
             signingConfig defaultSigningVariable
         }
     }
@@ -75,10 +76,10 @@ android {
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:design:25.0.0'
-    compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.android.support:cardview-v7:25.0.0'
-    compile 'com.android.support:recyclerview-v7:25.0.0'
+    compile "com.android.support:design:$rootProject.supportLibraryVersion"
+    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
@@ -91,7 +92,7 @@ dependencies {
     compile project(':forpdacommon')
     compile project(':forpdanotifyservice')
     compile project(':4pdasources')
-    compile 'com.google.code.gson:gson:2.5'
+    compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
 
     compile 'com.jakewharton:butterknife:8.1.0'
