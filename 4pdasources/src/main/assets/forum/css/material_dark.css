@@ -323,7 +323,10 @@ span[style*="font-size:8pt"] * {
   padding: 0;
   overflow: hidden;
   box-sizing: border-box;
-  background: rgba(128, 128, 128, 0.1);
+  background: rgba(150, 150, 150, 0.1);
+}
+.post-block.spoil .spoil {
+  margin: 0.5rem -0.375rem;
 }
 .post-block.spoil:before,
 .poll .hidetop B:before {
@@ -385,12 +388,6 @@ span[style*="font-size:8pt"] * {
   margin: 0;
   box-sizing: border-box;
 }
-.post-block.spoil > .block-body .spoil.open {
-  margin: 0.5rem -0.25rem;
-}
-.post-block.spoil > .block-body .spoil.open > .block-body {
-  padding: 0.75rem;
-}
 .post-block.spoil > .block-body .spoil_close {
   display: block;
   margin: 1rem 0 0;
@@ -430,19 +427,19 @@ span[style*="font-size:8pt"] * {
   background: #2d2d2d;
 }
 .post-block.spoil.open .open .open {
-  background: rgba(128, 128, 128, 0.1);
+  background: rgba(150, 150, 150, 0.1);
 }
 .post-block.spoil.open .open .open .open {
   background: #2d2d2d;
 }
 .post-block.spoil.open .open .open .open .open {
-  background: rgba(128, 128, 128, 0.1);
+  background: rgba(150, 150, 150, 0.1);
 }
 .post-block.spoil.open .open .open .open .open .open {
   background: #2d2d2d;
 }
 .post-block.spoil.open .open .open .open .open .open .open {
-  background: rgba(128, 128, 128, 0.1);
+  background: rgba(150, 150, 150, 0.1);
 }
 .post-block.spoil.open .open .open .open .open .open .open .open {
   background: #2d2d2d;
@@ -3159,98 +3156,26 @@ div[data-post] > a {
 /*
 *		MULTIMODERATION
 */
-#curator .panel {
-  position: relative;
-  display: block;
-  margin: 0;
-  padding: 1rem 0;
-  text-align: center;
-}
-#curator .panel .first-page,
-#curator .panel .last-page {
-  display: inline-block;
-  max-width: 30%;
-  width: 10rem;
-  margin: 0 -0.2rem;
-  padding: 0;
-  overflow: hidden;
-  box-sizing: border-box;
-  vertical-align: middle;
-}
-#curator .panel .first-page a,
-#curator .panel .last-page a,
-#curator .panel .first-page b,
-#curator .panel .last-page b {
-  display: block;
-  padding: 0.5rem 0;
-  font-weight: bold;
-}
-#curator .panel .first-page b:before,
-#curator .panel .last-page b:before,
-#curator .panel .first-page a:before,
-#curator .panel .last-page a:before {
-  display: inline-block;
-}
-#curator .panel .first-page b:before,
-#curator .panel .first-page a:before {
-  content: '<<';
-}
-#curator .panel .last-page b:before,
-#curator .panel .last-page a:before {
-  content: '>>';
-}
 #curator .panel .pages {
-  display: inline-block;
-  font-size: 1rem;
-  padding: 0;
-  margin: auto;
-  overflow-y: auto;
-  box-sizing: border-box;
-  max-width: 33%;
-  width: 10rem;
-  vertical-align: middle;
-  z-index: 999;
+  margin: 0.5rem 0;
 }
-#curator .panel .pages a,
+#curator .panel .pages a:not(.button),
 #curator .panel .pages b {
-  display: block;
-  margin: 0;
-  padding: 0.5rem 0;
-  text-decoration: none !important;
+  display: none;
+}
+#curator .panel .pages select {
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+#curator .panel .pages .button {
+  padding: 0.75rem 7.5%;
+  max-height: 30%;
   font-weight: bold;
-}
-#curator .panel .pages.close {
-  height: 2.4em;
-  overflow: hidden;
-}
-#curator .panel .pages.close a,
-#curator .panel .pages.close b {
-  pointer-events: none;
-  color: rgba(225, 225, 225, 0.7);
-}
-#curator .panel .pages.open {
-  position: fixed;
-  top: 2rem;
-  bottom: 2rem;
-  padding: 1rem 0;
-  margin-left: -100px;
-  width: 200px;
-  max-width: 80%;
-  border-radius: 0.125rem;
-  background: #2d2d2d;
-  -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
-}
-#curator .panel .pages.open a,
-#curator .panel .pages.open b {
-  padding: 1rem;
-  pointer-events: auto;
-}
-#curator .panel a {
-  color: rgba(225, 225, 225, 0.7);
-}
-#curator .panel b {
-  color: rgba(67, 67, 67, 0.91);
+  color: grey;
 }
 #curator .panel .controls {
   margin: 1rem auto;
@@ -3386,4 +3311,3 @@ img[src*="style_emoticons"] {
 #rules .post_body {
   margin: 0.5rem;
 }
-

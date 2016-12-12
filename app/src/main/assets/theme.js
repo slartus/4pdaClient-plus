@@ -80,8 +80,8 @@ function spoilsImageLoad() {
             img.dataset.imageSrc = img.src;
             img.removeAttribute('src');
             img.addEventListener('load', function() {
-                spoilCloseButton(img);
-            });
+				spoilCloseButton(img);
+			});
         }
     }
 }
@@ -95,8 +95,8 @@ function substitutionAttributes(event) {
             for (var i = 0; i < images.length; i++) {
                 var img = images[i];
                 img.addEventListener('load', function() {
-                    onLoadSpoilCloseButton(img);
-                });
+					onLoadSpoilCloseButton(img);
+				});
                 if (img.hasAttribute('src') || !img.dataset.imageSrc) continue;
                 img.src = img.dataset.imageSrc;
                 img.removeAttribute('data-image-src');
@@ -125,7 +125,6 @@ document.addEventListener('DOMContentLoaded', createAnchorSpoilerLink);
 
 function createAnchorSpoilerLink() {
     if (document.body.id != 'topic' || document.body.querySelector('.block-title .anchor')) return;
-    var link = document.querySelector('.topic_title_post a');
     var postAll = document.querySelectorAll('.post_container');
     for (var i = 0; i < postAll.length; i++) {
         var postId = postAll[i].getAttribute('name').match(/\d+/);
@@ -145,11 +144,10 @@ function createAnchorSpoilerLink() {
 
 function scrollToAnchor() {
     // scroll to the end of the page QMS
-    if (document.body.id == "qms") document.body.lastChild.scrollIntoView();
+    if (document.body.id == "qms") window.scrollTo(0, document.body.scrollHeight);
 
     // scroll to anchor in the topic
-    var link = document.querySelector('.topic_title_post a');
-    var anchor = document.querySelector('[name="' + link.hash.match(/[^#].*/) + '"]');
+    var anchor = document.querySelector('[name="' + location.hash.match(/[^#].*/) + '"]');
     var p = anchor;
     if (!anchor) return;
     if (anchor.nodeName == 'A') {
@@ -171,9 +169,10 @@ function scrollToAnchor() {
     // highlight "new message"
     if (anchor.nodeName == 'DIV') anchor.nextElementSibling.classList.add('active');
 
-    anchor.scrollIntoView();
+	// jump to the anchor
+	window.addEventListener('load', function() {anchor.scrollIntoView();});
 }
-window.addEventListener('load', scrollToAnchor);
+document.addEventListener('DOMContentLoaded', scrollToAnchor);
 
 function jumpToAnchorOnPage() {
     var snapAll = document.body.querySelectorAll('a[title="Перейти к сообщению"]');
@@ -279,7 +278,7 @@ function getAttaches() {
     return jsonArr;
 }
 window.addEventListener('load', function() {
-    HTMLOUT.sendPostsAttaches(JSON.stringify(getAttaches()));
+	HTMLOUT.sendPostsAttaches(JSON.stringify(getAttaches()));
 });
 
 /**
@@ -288,15 +287,9 @@ window.addEventListener('load', function() {
  *	===========
  */
 
-document.addEventListener('DOMContentLoaded', locationReload);
-
-function locationReload() {
-    var pageUrl = document.querySelector(".topic_title_post > A").href;
-    var cutHashUrl = pageUrl.match(/.+st=\d+/g);
-    window.onkeydown = function(e) {
-        if (event.keyCode == 116) window.location.assign(cutHashUrl);
-    };
-}
+window.onkeydown = function(e) {
+	if (event.keyCode == 116) location.assign(locatio.href.match(/.+st=\d+/g));
+};
 
 /**
  *		================================
@@ -304,59 +297,23 @@ function locationReload() {
  *		================================
  */
 
-function pagesPanelFoo() {
-    var panels = document.querySelectorAll('#curator .panel');
-
-    for (var i = 0; i < panels.length; i++) {
-        var panel = panels[i];
-        var pageList = panel.querySelector('.pages');
-        var pages = panel.querySelectorAll('a, b');
-        var activePage = pageList.querySelector('b');
-
-        function getPage(el) {
-            if (el.nodeName == "B") return '<b></b>';
-            else return '<a href="' + el.getAttribute("href") + '"></a>';
-        }
-
-        var firstPage = document.createElement('span');
-        firstPage.innerHTML = getPage(pages[0]);
-        firstPage.className = 'first-page';
-        panel.insertBefore(firstPage, pageList);
-
-        var lastPage = document.createElement('span');
-        lastPage.innerHTML = getPage(pages[pages.length - 1]);
-        lastPage.className = 'last-page';
-        panel.insertBefore(lastPage, pageList.nextSibling);
-
-        pageList.classList.add('close');
-        pageList.addEventListener('click', toggle);
-
-        function toggle() {
-            if (this.classList.contains('close')) {
-                this.classList.remove('close');
-                this.classList.add('open');
-            } else {
-                this.classList.remove('open');
-                this.classList.add('close');
-            }
-        }
-    }
+function moderNavPanel() {
+	var pagesContainer = document.querySelectorAll('.pages');
+	for (var i = 0; i < pagesContainer.length; i++) {
+		var pagesAll = pagesContainer[i].querySelectorAll('a,b');
+		var selectElem = document.createElement('select');
+		selectElem.className = "button page";
+		for (var j = 0; j < pagesAll.length; j++) {
+			var page = pagesAll[j];
+			selectElem.insertAdjacentHTML("beforeEnd", '<option value="' + page + '"' + ((page.nodeName == 'B') ?' selected': '') + '>' + page.innerText + '</option>');
+		}
+		pagesContainer[i].appendChild(selectElem);
+		selectElem.addEventListener('change', function() {location.assign(selectElem.value);});
+		selectElem.insertAdjacentHTML("beforeBegin", '<a href="' + pagesAll[0] + '" class="button first"><span>&lt;&lt;</span></a>');
+		selectElem.insertAdjacentHTML("afterEnd", '<a href="' + pagesAll[(pagesAll.length - 1)] + '" class="button last"><span>&gt;&gt;</span></a>');
+	}
 }
-
-document.addEventListener('DOMContentLoaded', pagesPanelFoo);
-
-window.addEventListener("load", onLoadCuratorPanel);
-
-function onLoadCuratorPanel() {
-    var panels = document.querySelectorAll('#curator .panel');
-    for (var i = 0; i < panels.length; i++) {
-        var panel = panels[i];
-        var pageList = panel.querySelector('.pages');
-        var activePage = pageList.querySelector('b');
-
-        pageList.scrollTop = (activePage.offsetTop - activePage.parentNode.offsetTop);
-    }
-}
+document.addEventListener('DOMContentLoaded', moderNavPanel);
 
 /**	
  *		==================
@@ -367,11 +324,10 @@ function onLoadCuratorPanel() {
 document.addEventListener("click", checkedQmsMessage);
 
 function checkedQmsMessage() {
-    var event = event || window.event;
-    var target = event.target || event.srcElement;
+    var target = event.target;
     var messForDeleteCount = 0;
     while (target != this) {
-        if (~target.className.indexOf('list-group-item')) {
+        if (target.classList.contains('list-group-item') && !target.nodeName = 'A') {
             var checkbox = target.getElementsByTagName('input')[0];
             if (checkbox.checked) {
                 checkbox.checked = false;
@@ -514,7 +470,7 @@ function changeStyle(cssFile) {
  elem = elem.parent;
  }
  window.HTMLOUT.getSctollPosition(y);
- 
+
  function scrollToElement(id) {
 
  var el = document.getElementById(id);
