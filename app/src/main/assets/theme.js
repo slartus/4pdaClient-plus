@@ -147,10 +147,6 @@ function createAnchorSpoilerLink() {
  */
 
 function scrollToAnchor() {
-    // scroll to the end of the page QMS
-    if (document.body.id == "qms") window.scrollTo(0, document.body.scrollHeight);
-
-    // scroll to anchor in the topic
     var anchor = document.querySelector('[name="' + location.hash.match(/[^#].*/) + '"]');
     var p = anchor;
     if (!anchor) return;
@@ -194,6 +190,11 @@ function jumpToAnchorOnPage() {
     }
 }
 document.addEventListener('DOMContentLoaded', jumpToAnchorOnPage);
+
+window.addEventListener('load', scrollPageQMS);
+function scrollPageQMS(){
+    if (document.body.id == "qms") window.scrollTo(0, document.body.scrollHeight);
+}
 
 /**
  *		=============
