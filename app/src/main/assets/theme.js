@@ -179,11 +179,10 @@ function jumpToAnchorOnPage() {
     if (!snapAll[0]) return;
     for (var i = 0; i < snapAll.length; i++) {
         snapAll[i].addEventListener('click', onClickAnchor);
-
         function onClickAnchor(e) {
             var anchor = document.querySelector('[name="entry' + e.target.href.match(/findpost&pid=([\s\S]*)/)[1] + '"]');
             if (anchor) {
-                e.preventDefault();
+				e.preventDefault();
                 anchor.scrollIntoView();
             }
         }
@@ -321,15 +320,15 @@ document.addEventListener('DOMContentLoaded', moderNavPanel);
  *		QMS SELECT MESSAGE
  *		==================
  */
-
+ 
 document.addEventListener("click", checkedQmsMessage);
 
 function checkedQmsMessage() {
     var target = event.target;
     var messForDeleteCount = 0;
     while (target != this) {
-        if (target.classList.contains('list-group-item') && target.nodeName != 'A') {
-
+		if (target.nodeName == 'A') return;
+        if (target.classList.contains('list-group-item')) {
             var checkbox = target.getElementsByTagName('input')[0];
             if (checkbox.checked) {
                 checkbox.checked = false;
