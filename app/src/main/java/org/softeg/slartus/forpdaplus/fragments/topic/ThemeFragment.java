@@ -954,8 +954,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             if (getSupportActionBar() != null)
                 setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
 
-            webView.loadDataWithBaseURL(m_LastUrl, body, "text/html", "UTF-8", null);
-            //webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
+            //webView.loadDataWithBaseURL(m_LastUrl, body, "text/html", "UTF-8", null);
+            webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
 
             TopicsHistoryTable.addHistory(m_Topic, m_LastUrl);
             if (buttonsPanel.getTranslationY() != 0)
@@ -1052,9 +1052,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         String[] patterns = {
                 "(https?:/+4pda.ru/+forum/+index.php\\?.*?showtopic=[^\"]*)",
-                "(https?:/+4pda.ru/+forum/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)",
-                "(https?:/+4pda.ru/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)"
+                "(https?:/+4pda.ru/+forum/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)$",
+                "(https?:/+4pda.ru/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)$"
         };
+
 
         for (String pattern : patterns) {
             Matcher m = Pattern.compile(pattern).matcher(url);
@@ -1382,6 +1383,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+
             if (startsWith(url, mOnErrorUrl)) {
                 mUrl = url;
                 mLoadingError = true;
@@ -1529,7 +1531,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 m_Topic = topicBodyBuilder.getTopic();
 
                 m_ThemeBody = topicBodyBuilder.getBody();
-
                 topicBodyBuilder.clear();
                 return true;
             } catch (Throwable e) {
