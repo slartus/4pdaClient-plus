@@ -745,8 +745,9 @@ public class Client implements IHttpClient {
     //Да простит меня господь за это. Действие во благо не счетается грехом, ведь верно?
     //А разве может быть иначе?
     private final static Pattern postsPattern = Pattern
-	.compile("<div data-post=\"(\\d+)\"[^>]*>[\\s\\S]*?post_date[^>]*?>(.*?)&nbsp;[^#]*#(\\d+)[\\s\\S]*?\\[B\\](.*?),\\[/B\\]\\s*'\\)\"\\s*data-av=\"([^\"]*)\">[\\s\\S]*?<span class=\"post_user_info[^\"]*\"[^>]*>(<strong[^>]*>.*?<.strong><br .>)?Группа: (.*?)(?:  \\|[\\s\\S]*?)?<br..><font color=\"([^\"]*)\">[\\s\\S]*?mid=(\\d+)[\\s\\S]*?<span id=\"ajaxrep-\\d+\">(.\\d+|\\d+)</span>([\\s\\S]*?)<div class=\"post_body([^>]*?)\"[^>]*?\">([\\s\\S]*?)</div></div>(?=<div data-post=\"\\d+\"[^>]*>|<!-- TABLE FOOTER -->)",
+            .compile("<div data-post=\"(\\d+)\"[^>]*>[\\s\\S]*?post_date[^>]*?>(.*?)&nbsp;[^#]*#(\\d+)[\\s\\S]*?font color=\"([^\"]*?)\"[\\s\\S]*?\\[B\\](.*?),\\[\\/B\\]\\s*'\\)\"\\s*data-av=\"([^\"]*)\">[\\s\\S]*?<a href=\"[^\"]*?showuser=(\\d+)\"[\\s\\S]*?<span class=\"post_user_info[^\"]*\"[^>]*>(<strong[\\s\\S]*?<\\/strong><br[^>]*>)?(<span[^>]*?>[^<]*?<\\/span>)[\\s\\S]*?<br[^>]*?>([\\s\\S]*?<span[^>]*?ajaxrep[^>]*?>(\\d+)<\\/span>[\\s\\S]*?)<div class=\"post_body([^\"]*?)\"[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div data-post=\"\\d+\"[^>]*>|<!-- TABLE FOOTER -->)",
                     Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+    String np = "<div data-post=\"(\\d+)\"[^>]*>[\\s\\S]*?post_date[^>]*?>(.*?)&nbsp;[^#]*#(\\d+)[\\s\\S]*?font color=\"([^\"]*?)\"[\\s\\S]*?\\[B\\](.*?),\\[\\/B\\]\\s*'\\)\"\\s*data-av=\"([^\"]*)\">[\\s\\S]*?<a href=\"[^\"]*?showuser=(\\d+)\"[\\s\\S]*?<span class=\"post_user_info[^\"]*\"[^>]*>(<strong[\\s\\S]*?<\\/strong><br[^>]*>)?(<span[^>]*?>[^<]*?<\\/span>)[\\s\\S]*?<br[^>]*?>([\\s\\S]*?<span[^>]*?ajaxrep[^>]*?>(\\d+)<\\/span>[\\s\\S]*?)<div class=\"post_body([^\"]*?)\"[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div data-post=\"\\d+\"[^>]*>|<!-- TABLE FOOTER -->)";
     private final static Pattern editPattern = PatternExtensions.compile("do=edit_post[^\"]*\"");
     private final static Pattern deletePattern = PatternExtensions.compile("onclick=\"[^\"]*seMODdel");
 
@@ -815,10 +816,9 @@ public class Client implements IHttpClient {
             }
         }
 
-        m = userPattern.matcher(page);
-        if (m.find()) {
-            topic.setAuthKey(m.group(1));
-        }
+        if (Client.getInstance().getAuthKey() != null && !Client.getInstance().getAuthKey().isEmpty())
+            topic.setAuthKey(Client.getInstance().getAuthKey());
+
 
         m = pagesCountPattern.matcher(page);
         if (m.find()) {
@@ -966,19 +966,21 @@ public class Client implements IHttpClient {
         while (mainMatcher.find()) {
 
             post = new org.softeg.slartus.forpdaplus.classes.Post(mainMatcher.group(1), mainMatcher.group(2), mainMatcher.group(3));
-            post.setAuthor(mainMatcher.group(4));
-            post.setAvatarFileName(mainMatcher.group(5));
-            if (mainMatcher.group(6) != null)
+            post.setUserState(mainMatcher.group(4));
+            post.setAuthor(mainMatcher.group(5));
+            post.setAvatarFileName(mainMatcher.group(6));
+            post.setUserId(mainMatcher.group(7));
+            if (mainMatcher.group(8) != null) {
                 post.setCurator();
-            post.setUserGroup(mainMatcher.group(7));
-            post.setUserState(mainMatcher.group(8));
-            post.setUserId(mainMatcher.group(9));
-            post.setUserReputation(mainMatcher.group(10));
-            str = mainMatcher.group(11);
-            if (str.contains("win_minus"))
+            }
+            post.setUserGroup(mainMatcher.group(9));
+            str = mainMatcher.group(10);
+            if (str.contains("win_minus")) {
                 post.setCanMinusRep(true);
-            if (str.contains("win_add"))
+            }
+            if (str.contains("win_add")) {
                 post.setCanPlusRep(true);
+            }
             m = editPattern.matcher(str);
             if (m.find()) {
                 post.setCanEdit(true);
@@ -991,6 +993,7 @@ public class Client implements IHttpClient {
                     topicBodyBuilder.setMMod(true);
                 }
             }
+            post.setUserReputation(mainMatcher.group(11));
             post.setBody("<div class=\"post_body " + mainMatcher.group(12) + "\">" + mainMatcher.group(13) + "</div>");
             topicBodyBuilder.addPost(post, spoil);
             spoil = false;

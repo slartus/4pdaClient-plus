@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.ContextMenu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -22,7 +21,6 @@ import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.NotesTable;
-import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
 import org.softeg.slartus.forpdaplus.fragments.NoteFragment;
 import org.softeg.slartus.forpdaplus.notes.Note;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;

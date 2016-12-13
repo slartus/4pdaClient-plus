@@ -1,8 +1,6 @@
 package org.softeg.slartus.forpdaplus.prefs;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.softeg.slartus.forpdaplus.App;

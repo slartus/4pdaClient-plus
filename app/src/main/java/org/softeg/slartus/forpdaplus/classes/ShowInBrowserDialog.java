@@ -8,7 +8,6 @@ import android.util.Log;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdacommon.ShowInBrowserException;
-import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 
 /**

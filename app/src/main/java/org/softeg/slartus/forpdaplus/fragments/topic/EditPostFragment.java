@@ -389,7 +389,7 @@ public class EditPostFragment extends GeneralFragment {
 
         txtPost.setText(savedInstanceState.getString("postText"));
         txtpost_edit_reason.setText(savedInstanceState.getString("txtpost_edit_reason"));
-        mPopupPanelView.setTopic(m_EditPost.getForumId(), m_EditPost.getTopicId(), m_EditPost.getAuthKey());
+        mPopupPanelView.setTopic(m_EditPost.getForumId(), m_EditPost.getTopicId(), Client.getInstance().getAuthKey());
 
     }
 
