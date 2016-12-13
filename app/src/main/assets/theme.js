@@ -328,7 +328,8 @@ function checkedQmsMessage() {
     var target = event.target;
     var messForDeleteCount = 0;
     while (target != this) {
-        if (target.classList.contains('list-group-item') && !target.nodeName = 'A') {
+        if (target.classList.contains('list-group-item') && target.nodeName != 'A') {
+
             var checkbox = target.getElementsByTagName('input')[0];
             if (checkbox.checked) {
                 checkbox.checked = false;
