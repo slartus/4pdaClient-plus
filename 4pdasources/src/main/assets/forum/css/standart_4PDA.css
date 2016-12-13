@@ -2601,22 +2601,30 @@ h3 a {
   text-align: center;
 }
 #curator .panel .pages {
-  margin: 1rem 0;
-  padding: 1rem 0.5rem;
-  overflow-x: auto;
-  white-space: nowrap;
+  margin: 0.5rem 0;
 }
-#curator .panel .pages a,
+#curator .panel .pages a:not(.button),
 #curator .panel .pages b {
-  display: inline-block;
-  padding: 0.5rem 0.75rem;
-  text-decoration: none !important;
-  color: #004fb3;
+  display: none;
+}
+#curator .panel .pages select {
+  border: none;
+  outline: none;
+  background: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+#curator .panel .pages .button {
+  padding: 0.75rem 7.5%;
+  max-height: 30%;
   font-weight: bold;
+  color: #004fb3;
+  text-decoration: none;
 }
-#curator .panel .pages b {
-  background: #cccccc;
-  color: white;
+#curator .panel .pages .button.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 #curator .panel .controls {
   display: inline-block;
@@ -2717,6 +2725,11 @@ h3 a {
   border-right: 0.15625rem solid white;
   -webkit-transform: rotate(45deg) translate(-0.1875rem, 0.125rem);
 }
+@media screen and (min-width: 800px) {
+  #curator .post_body {
+    min-height: 9rem;
+  }
+}
 /*
 * OTHER
 */
@@ -2728,3 +2741,4 @@ h3 a {
 [class*=" icon-"]:before {
   color: #1d5b8e;
 }
+

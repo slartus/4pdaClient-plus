@@ -25,7 +25,7 @@ function blocksOpenClose() {
             if (t.classList.contains('spoil')) {
                 event.stopPropagation();
                 toggler("close", "open", t);
-                createSpoilCloseButton(t);
+                spoilCloseButton(t);
                 return;
             } else if (t.classList.contains('code')) {
                 event.stopPropagation();
@@ -54,10 +54,19 @@ function blocksOpenClose() {
  *		==================
  */
 
-function createSpoilCloseButton(t) {
+function spoilCloseButton(t) {
     if (t.clientHeight > document.documentElement.clientHeight && !t.querySelector('.spoil_close')) {
         var bb = t.querySelector('.block-body');
-        bb.insertAdjacentHTML("beforeEnd", '<button class="spoil_close" onclick="var t = this.parentElement.previousElementSibling; t.click(); t.scrollIntoView();">Закрыть спойлер</button>');
+		var btn = document.createElement('button');
+		btn.innerHTML = 'Закрыть спойлер';
+		btn.className = "spoil_close";
+		btn.addEventListener('click', clickBtn);
+		function clickBtn(e) {
+			t.classList.remove('open');
+			t.classList.add('close');
+			t.scrollIntoView();
+		}
+		bb.appendChild(btn);
     }
 }
 
@@ -79,9 +88,7 @@ function spoilsImageLoad() {
             if (!img.hasAttribute('src') || img.dataset.imageSrc) continue;
             img.dataset.imageSrc = img.src;
             img.removeAttribute('src');
-            img.addEventListener('load', function() {
-				spoilCloseButton(img);
-			});
+            img.addEventListener('load', function() {spoilCloseButton(img);});
         }
     }
 }
@@ -94,9 +101,6 @@ function substitutionAttributes(event) {
             var images = target.querySelectorAll('img');
             for (var i = 0; i < images.length; i++) {
                 var img = images[i];
-                img.addEventListener('load', function() {
-					onLoadSpoilCloseButton(img);
-				});
                 if (img.hasAttribute('src') || !img.dataset.imageSrc) continue;
                 img.src = img.dataset.imageSrc;
                 img.removeAttribute('data-image-src');
@@ -112,7 +116,7 @@ function onLoadSpoilCloseButton(img) {
     while (spoilBody && spoilBody.classList && !spoilBody.classList.contains('block-body')) {
         spoilBody = spoilBody.parentNode;
     }
-    createSpoilCloseButton(spoilBody);
+    spoilCloseButton(spoilBody);
 }
 
 /**
@@ -277,9 +281,7 @@ function getAttaches() {
     }
     return jsonArr;
 }
-window.addEventListener('load', function() {
-	HTMLOUT.sendPostsAttaches(JSON.stringify(getAttaches()));
-});
+window.addEventListener('load', function() {HTMLOUT.sendPostsAttaches(JSON.stringify(getAttaches()));});
 
 /**
  *	===========
@@ -287,9 +289,7 @@ window.addEventListener('load', function() {
  *	===========
  */
 
-window.onkeydown = function(e) {
-	if (event.keyCode == 116) location.assign(locatio.href.match(/.+st=\d+/g));
-};
+window.addEventListener('keydown', function(e) {if (event.keyCode == 116) location.assign(locatio.href.match(/.+st=\d+/g));});
 
 /**
  *		================================
@@ -309,8 +309,8 @@ function moderNavPanel() {
 		}
 		pagesContainer[i].appendChild(selectElem);
 		selectElem.addEventListener('change', function() {location.assign(selectElem.value);});
-		selectElem.insertAdjacentHTML("beforeBegin", '<a href="' + pagesAll[0] + '" class="button first"><span>&lt;&lt;</span></a>');
-		selectElem.insertAdjacentHTML("afterEnd", '<a href="' + pagesAll[(pagesAll.length - 1)] + '" class="button last"><span>&gt;&gt;</span></a>');
+		selectElem.insertAdjacentHTML("beforeBegin", '<a href="' + pagesAll[0] + '" class="button first' + ((pagesAll[0].nodeName == 'B') ?' disabled': '') + '"><span>&lt;&lt;</span></a>');
+		selectElem.insertAdjacentHTML("afterEnd", '<a href="' + pagesAll[(pagesAll.length - 1)] + '" class="button last' + ((pagesAll[(pagesAll.length - 1)].nodeName == 'B') ?' disabled': '') + '"><span>&gt;&gt;</span></a>');
 	}
 }
 document.addEventListener('DOMContentLoaded', moderNavPanel);

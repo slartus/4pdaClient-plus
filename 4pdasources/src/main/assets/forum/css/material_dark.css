@@ -463,18 +463,27 @@ span[style*="font-size:8pt"] * {
 /*
 *	ADM TAGS
 */
-.cur > .block-title {
+.post-block.cur > .block-title {
   background: #009600;
 }
-.mod > .block-title {
+.post-block.cur > .block-body {
+  background: rgba(0, 150, 0, 0.07);
+}
+.post-block.mod > .block-title {
   background: #0096e1;
 }
-.ex > .block-title {
+.post-block.mod > .block-body {
+  background: rgba(0, 150, 225, 0.07);
+}
+.post-block.ex > .block-title {
   background: #e14628;
 }
-.cur,
-.mod,
-.ex {
+.post-block.ex > .block-body {
+  background: rgba(225, 70, 40, 0.07);
+}
+.post-block.cur,
+.post-block.mod,
+.post-block.ex {
   margin: 1rem 0;
   display: table;
   width: 100%;
@@ -482,9 +491,9 @@ span[style*="font-size:8pt"] * {
   overflow: hidden;
   border-radius: 0.125rem;
 }
-.cur > .block-title,
-.mod > .block-title,
-.ex > .block-title {
+.post-block.cur > .block-title,
+.post-block.mod > .block-title,
+.post-block.ex > .block-title {
   display: table-cell;
   vertical-align: middle;
   color: #2d2d2d;
@@ -494,22 +503,20 @@ span[style*="font-size:8pt"] * {
   font-size: 3rem;
   border-radius: 0;
 }
-.cur > .block-body,
-.mod > .block-body,
-.ex > .block-body {
+.post-block.cur > .block-body,
+.post-block.mod > .block-body,
+.post-block.ex > .block-body {
   display: table-cell;
   vertical-align: middle;
   text-align: left;
   padding: 0.5rem;
   height: 100%;
   margin: 0;
-  background: #383838;
-  background: rgba(128, 128, 128, 0.1);
 }
 @media screen and (max-width: 15rem) {
-  .cur > .block-title,
-  .mod > .block-title,
-  .ex > .block-title {
+  .post-block.cur > .block-title,
+  .post-block.mod > .block-title,
+  .post-block.ex > .block-title {
     font-size: 1.5rem;
     font-weight: bold;
     width: 20%;
@@ -3177,6 +3184,10 @@ div[data-post] > a {
   font-weight: bold;
   color: grey;
 }
+#curator .panel .pages .button.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
 #curator .panel .controls {
   margin: 1rem auto;
 }
@@ -3311,3 +3322,4 @@ img[src*="style_emoticons"] {
 #rules .post_body {
   margin: 0.5rem;
 }
+
