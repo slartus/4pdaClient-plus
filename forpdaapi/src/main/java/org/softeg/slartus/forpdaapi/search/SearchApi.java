@@ -35,72 +35,37 @@ public class SearchApi {
     }
 
     public static ArrayList<Topic> parse(String body, ListInfo listInfo) {
-        Matcher m = Pattern.compile("<table class=\"ipbtable\" cellspacing=\"1\">([\\s\\S]*?)</table>",
-                Pattern.CASE_INSENSITIVE | Pattern.MULTILINE).matcher(body);
-        if (!m.find()) {
-            return new ArrayList<Topic>();
-        }
-
-        ArrayList<Topic> res = new ArrayList<Topic>();
-        Matcher trMatcher = Pattern.compile("<tr>([\\s\\S]*?)</tr>", Pattern.CASE_INSENSITIVE)
-                .matcher(m.group(1));
+        ArrayList<Topic> res = new ArrayList<>();
         String today = Functions.getToday();
         String yesterday = Functions.getYesterToday();
-        while (trMatcher.find()) {
-            Matcher tdMatcher = Pattern.compile("<td[^>]*>([\\s\\S]*?)</td>", Pattern.CASE_INSENSITIVE)
-                    .matcher(trMatcher.group(1));
-            int trInd = 0;
-            Topic topic = null;
-            while (tdMatcher.find()) {
-                String tdBody = tdMatcher.group(1);
+        Matcher matcher = Pattern.compile("<div data-topic=\"([^\"]*?)\"[\\s\\S]*?<a[^>]*?>([\\s\\S]*?)<\\/a>[\\s\\S]*?<div class=\"topic_body\"><span class=\"topic_desc\">(?:([^<]*?)<br[^>]*?>|)форум[^<]*?<a href=\"[^\"]*?showforum=(\\d+)\">([\\s\\S]*?)<\\/a><br[^>]*?><\\/span>[\\s\\S]*?showuser=(\\d+)\">([\\s\\S]*?)<\\/a><\\/span><br[^>]*?>(<a href=\"[^\"]*?getnewpost[\\s\\S]*?<\\/a>)?[\\s\\S]*?<a href=\"[^\"]*?showuser[^>]*?>([\\s\\S]*?)<\\/a> ([\\s\\S]*?)<\\/div><\\/div>").matcher(body);
+        String desc;
+        Topic topic;
+        while (matcher.find()) {
+            topic = new Topic();
+            topic.setId(matcher.group(1));
+            topic.setTitle(matcher.group(2), true);
 
-                switch (trInd++) {
-                    case 2:
-                        m = Pattern.compile("<a href=\"[^\"]*/forum/index.php\\?showtopic=(\\d+)\">(.*?)</a>", Pattern.CASE_INSENSITIVE)
-                                .matcher(tdBody);
-                        if (!m.find()) break;
-                        topic = new Topic();
-                        topic.setId(m.group(1));
-                        topic.setTitle(m.group(2));
-                        topic.setIsNew(tdBody.contains("view=getnewpost"));
-                        m = Pattern.compile("<span class=\"desc\">(.*?)</span>", Pattern.CASE_INSENSITIVE)
-                                .matcher(tdBody);
-                        if (m.find())
-                            topic.setDescription(m.group(1));
-                        break;
-                    case 3:
-                        if (topic == null)
-                            break;
-                        m = Pattern.compile("<a href=\"[^\"]*/forum/index.php\\?showforum=(\\d+)\"[^>]*>(.*?)</a>", Pattern.CASE_INSENSITIVE)
-                                .matcher(tdBody);
-                        if (m.find()) {
-                            topic.setForumId(m.group(1));
-                            topic.setForumTitle(Html.fromHtml(m.group(1)).toString());
-                        }
-                        break;
-                    case 7:
-                        if (topic == null)
-                            break;
-                        m = Pattern.compile("<span class=\"desc\">(.*?)<br /><a href=\"[^\"]*/forum/index.php\\?showtopic=\\d+&amp;view=getlastpost\">Послед.:</a> <b><a href=\"[^\"]*/forum/index.php\\?showuser=(\\d+)\">(.*?)</a>", Pattern.CASE_INSENSITIVE)
-                                .matcher(tdBody);
-                        if (m.find()) {
-                            topic.setLastMessageDate(Functions.parseForumDateTime(m.group(1), today, yesterday));
-                            topic.setLastMessageAuthor(m.group(3));
-                        }
-                        break;
-                }
-                if (trInd > 2 && topic == null)
-                    break;
-            }
-            if (topic != null)
-                res.add(topic);
-            topic = null;
+            //Check!
+            desc = matcher.group(3);
+            topic.setDescription(desc == null ? "" : desc, true);
+
+            topic.setForumId(matcher.group(4));
+            topic.setForumTitle(matcher.group(5));
+
+            topic.setIsNew(matcher.group(8) != null);
+            topic.setLastMessageAuthor(matcher.group(9));
+            topic.setLastMessageDate(Functions.parseForumDateTime(matcher.group(10), today, yesterday));
+            topic.setId(matcher.group(1));
+            topic.setId(matcher.group(1));
+            topic.setId(matcher.group(1));
+            res.add(topic);
         }
 
         Pattern pagesCountPattern = Pattern.compile("<a href=\"/forum/index.php[^\"]*st=(\\d+)\">", Pattern.CASE_INSENSITIVE);
-        m = pagesCountPattern.matcher(body);
-        while (m.find()) {
-            listInfo.setOutCount(Math.max(Integer.parseInt(m.group(1)) + 1, listInfo.getOutCount()));
+        matcher = pagesCountPattern.matcher(body);
+        while (matcher.find()) {
+            listInfo.setOutCount(Math.max(Integer.parseInt(matcher.group(1)) + 1, listInfo.getOutCount()));
         }
 
         return res;

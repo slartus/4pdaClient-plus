@@ -147,7 +147,7 @@ function createAnchorSpoilerLink() {
  */
 
 function scrollToAnchor() {
-    var anchor = document.querySelector('[name="' + location.hash.match(/[^#].*/) + '"]');
+    var anchor = document.querySelector('[name="' + window.FORPDA_POST.match(/[^#].*/) + '"]');
     var p = anchor;
     if (!anchor) return;
     if (anchor.nodeName == 'A') {
@@ -288,7 +288,7 @@ window.addEventListener('load', function() {HTMLOUT.sendPostsAttaches(JSON.strin
  *	RELOAD PAGE
  *	===========
  */
-
+//todo  сделать assign
 window.addEventListener('keydown', function(e) {if (event.keyCode == 116) location.assign(locatio.href.match(/.+st=\d+/g));});
 
 /**
@@ -308,6 +308,8 @@ function moderNavPanel() {
 			selectElem.insertAdjacentHTML("beforeEnd", '<option value="' + page + '"' + ((page.nodeName == 'B') ?' selected': '') + '>' + page.innerText + '</option>');
 		}
 		pagesContainer[i].appendChild(selectElem);
+
+//todo  сделать assign
 		selectElem.addEventListener('change', function() {location.assign(selectElem.value);});
 		selectElem.insertAdjacentHTML("beforeBegin", '<a href="' + pagesAll[0] + '" class="button first' + ((pagesAll[0].nodeName == 'B') ?' disabled': '') + '"><span>&lt;&lt;</span></a>');
 		selectElem.insertAdjacentHTML("afterEnd", '<a href="' + pagesAll[(pagesAll.length - 1)] + '" class="button last' + ((pagesAll[(pagesAll.length - 1)].nodeName == 'B') ?' disabled': '') + '"><span>&gt;&gt;</span></a>');

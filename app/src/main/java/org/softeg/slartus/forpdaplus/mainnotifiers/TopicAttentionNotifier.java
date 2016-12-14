@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaplus.mainnotifiers;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.text.Html;
 
 import com.afollestad.materialdialogs.MaterialDialog;

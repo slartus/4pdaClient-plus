@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.classes;
 
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
 import android.view.Window;

@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.softeg.slartus.forpdaplus.R;

@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.classes;
 
 import android.content.Context;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -48,10 +47,18 @@ public class TopicBodyBuilder extends HtmlBuilder {
         m_IsShowAvatars = Preferences.Topic.isShowAvatars();
     }
 
+    @Override
+    public void addScripts() {
+        if (m_UrlParams != null)
+            m_Body.append("<script type=\"text/javascript\">window.FORPDA_POST = \"").append(m_UrlParams.replaceFirst("(?:^|\\n)[\\s\\S]*?(#.*|anchor=.*)", "$1")).append("\";</script>\n");
+        super.addScripts();
+
+    }
+
     public void beginTopic() {
         String desc = TextUtils.isEmpty(m_Topic.getDescription()) ? "" : (", " + m_Topic.getDescription());
         super.beginHtml(m_Topic.getTitle() + desc);
-        super.beginBody("topic",null,m_IsLoadImages);
+        super.beginBody("topic", null, m_IsLoadImages);
 
         m_Body.append("<div id=\"topMargin\" style=\"height:").append(ACTIONBAR_TOP_MARGIN).append(";\"></div>");
 
@@ -75,7 +82,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
             addButtons(m_Body, m_Topic.getCurrentPage(), m_Topic.getPagesCount(),
                     m_IsWebviewAllowJavascriptInterface, false, false);
         }
-        if(Preferences.Topic.getReadersAndWriters()){
+        if (Preferences.Topic.getReadersAndWriters()) {
             m_Body.append("<div class=\"who\"><a id=\"viewers\" ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showReadingUsers"))
                     .append("><span>Кто читает тему</span></a>\n");
             m_Body.append("<a id=\"writers\" ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showWriters"))
@@ -94,12 +101,12 @@ public class TopicBodyBuilder extends HtmlBuilder {
         return
                 (
                         m_HtmlPreferences.isSpoilerByButton() ?
-                                "<div class=\"hat\"><div class='hidetop ".concat(opened?"open ":"close").concat("' style='cursor:pointer;' ><input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility(this)\"/>")
+                                "<div class=\"hat\"><div class='hidetop ".concat(opened ? "open " : "close").concat("' style='cursor:pointer;' ><input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility(this)\"/>")
                                         .concat(title)
                                 :
-                                "<div class=\"hat\"><div class='hidetop ".concat(opened?"open ":"close").concat("' style='cursor:pointer;' onclick=\"openHat(this);\">")
-                                                .concat(title)
-                ).concat("</div><div class='hidemain'").concat(opened?" ":" style=\"display:none\"").concat(">").concat(body).concat("</div></div>");
+                                "<div class=\"hat\"><div class='hidetop ".concat(opened ? "open " : "close").concat("' style='cursor:pointer;' onclick=\"openHat(this);\">")
+                                        .concat(title)
+                ).concat("</div><div class='hidemain'").concat(opened ? " " : " style=\"display:none\"").concat(">").concat(body).concat("</div></div>");
     }
 
     public void addPost(Post post, Boolean spoil) {
@@ -115,7 +122,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
             postBody = HtmlPreferences.modifySpoiler(postBody);
 
         if (spoil)
-            m_Body.append(getSpoiler("<b><span>Показать шапку</span></b>", postBody,false));
+            m_Body.append(getSpoiler("<b><span>Показать шапку</span></b>", postBody, false));
         else
             m_Body.append(postBody);
         //m_Body.append("</div>\n\n");
@@ -139,7 +146,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
     }
 
     public void addPoll(String value, boolean openSpoil) {
-        m_Body.append("<div class=\"poll\">").append(getSpoiler("<b><span>Опрос</span></b>", value,openSpoil)).append("</div>");
+        m_Body.append("<div class=\"poll\">").append(getSpoiler("<b><span>Опрос</span></b>", value, openSpoil)).append("</div>");
     }
 
     public void clear() {
@@ -152,8 +159,8 @@ public class TopicBodyBuilder extends HtmlBuilder {
         return "<div class=\"topic_title_post\"><a href=\"http://4pda.ru/forum/index.php?showtopic="
                 + m_Topic.getId()
                 + (TextUtils.isEmpty(m_UrlParams) ? "" : ("&" + m_UrlParams)) + "\">"
-                + "<span class=\"name\">"+m_Topic.getTitle()+"</span>"
-                + (HtmlPreferences.isFullThemeTitle()? "<span class=\"description\">"+desc+"</span>" : "") +"</a></div>\n";
+                + "<span class=\"name\">" + m_Topic.getTitle() + "</span>"
+                + (HtmlPreferences.isFullThemeTitle() ? "<span class=\"description\">" + desc + "</span>" : "") + "</a></div>\n";
     }
 
     public static void addButtons(StringBuilder sb, int currentPage, int pagesCount, Boolean isUseJs,
@@ -224,10 +231,10 @@ public class TopicBodyBuilder extends HtmlBuilder {
         sb.append("<div class=\"post_header\"><div class=\"header_wrapper\">\n");
 
         //Аватарка
-        sb.append("<div class=\"avatar ").append(App.getInstance().getPreferences().getBoolean("isSquareAvarars",false)?"":"circle ").append(m_IsShowAvatars ? "\"" : "disable\"")
+        sb.append("<div class=\"avatar ").append(App.getInstance().getPreferences().getBoolean("isSquareAvarars", false) ? "" : "circle ").append(m_IsShowAvatars ? "\"" : "disable\"")
                 .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showUserMenu", new String[]{msg.getId(), msg.getUserId(), nickParam}));
         String avatar = msg.getAvatarFileName();
-        if (TextUtils.isEmpty(avatar)){
+        if (TextUtils.isEmpty(avatar)) {
             avatar = "file:///android_asset/profile/av.png";
         }
         sb.append("><div class=\"img\" style=\"background-image:url(").append((m_IsShowAvatars ? avatar : "file:///android_asset/profile/av.png")).append(");\"></div></div>");
@@ -243,7 +250,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
         sb.append("<div class=\"inf group\">").append(msg.getUserGroup() == null ? "" : msg.getUserGroup()).append("</div>");
 
         //Репутация
-        if(!TextUtils.isEmpty(msg.getUserId())) {
+        if (!TextUtils.isEmpty(msg.getUserId())) {
             sb.append("<a class=\"inf reputation\" ")
                     .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showRepMenu", new String[]{msg.getId(), msg.getUserId(), msg.getNickParam(), msg.getCanPlusRep() ? "1" : "0", msg.getCanMinusRep() ? "1" : "0"}))
                     .append("><span>").append(msg.getUserReputation()).append("</span></a>");
@@ -278,20 +285,21 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
             try {
                 postNumber = Integer.toString(Integer.parseInt(post.getNumber()) - 1);
-            } catch (Throwable ignored) {}
+            } catch (Throwable ignored) {
+            }
 
             sb.append(String.format("<a class=\"link button claim\" href=\"/forum/index.php?act=report&t=%s&p=%s&st=%s\"><span>Жалоба</span></a>",
                     m_Topic.getId(), post.getId(), postNumber));
 
             sb.append("<a class=\"button nick\" ")
-                    .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "insertTextToPost", String.format("[SNAPBACK]%s[/SNAPBACK] [B]%s,[/B] \\n",post.getId(), nickParam)))
+                    .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "insertTextToPost", String.format("[SNAPBACK]%s[/SNAPBACK] [B]%s,[/B] \\n", post.getId(), nickParam)))
                     .append("><span>Ник</span></a>");
 
             sb.append("<a class=\"button quote\" ")
                     .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "quote", new String[]{m_Topic.getForumId(), m_Topic.getId(), post.getId(), post.getDate(), post.getUserId(), nickParam}))
                     .append("><span>Цитата</span></a>");
 
-            if (!Client.getInstance().UserId.equals(post.getUserId())&getTopic().isPostVote()) {
+            if (!Client.getInstance().UserId.equals(post.getUserId()) & getTopic().isPostVote()) {
                 sb.append("<a class=\"button vote bad\" ")
                         .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "postVoteBad", post.getId()))
                         .append("><span>Плохо</span></a>");

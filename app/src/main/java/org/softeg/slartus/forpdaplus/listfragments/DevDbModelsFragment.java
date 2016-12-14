@@ -4,7 +4,6 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,9 +15,7 @@ import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.devdb.DevModel;
 import org.softeg.slartus.forpdaapi.devdb.NewDevDbApi;
-import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.devdb.ParentFragment;

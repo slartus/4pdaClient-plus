@@ -26,13 +26,12 @@ public class ProfileApi {
      */
     public static void checkLogin(String pageBody, LoginResult loginResult) {
 
-        Matcher m = Pattern.compile("showuser=(\\d+)\">([^<]*)</a></b>.*?k=([a-z0-9]{32})", Pattern.CASE_INSENSITIVE)
+        Matcher m = Pattern.compile("<i class=\"icon-profile\">[\\s\\S]*?<ul class=\"dropdown-menu\">[\\s\\S]*?showuser=(\\d+)\"[\\s\\S]*?action=logout[^\"]*?k=([a-z0-9]{32})", Pattern.CASE_INSENSITIVE)
                 .matcher(pageBody);
 
         if (m.find()) {
             loginResult.setUserId(m.group(1));
-            loginResult.setUserLogin(m.group(2));
-            loginResult.setK(m.group(3));
+            loginResult.setK(m.group(2));
             loginResult.setSuccess(true);
 
             String[] avatarPatterns = {"(?:'|\")([^'\"]*4pda.(?:to|ru)/*?forum/*?uploads/*?av-[^?'\"]*)",
@@ -97,6 +96,7 @@ public class ProfileApi {
         }
 
         checkLogin(res, loginResult);
+        loginResult.setUserLogin(login);
 
         if (!loginResult.isSuccess()) {
             loginResult.setLoginError("Неизвестная ошибка");

@@ -1,26 +1,12 @@
 package org.softeg.slartus.forpdaplus.devdb.helpers;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
-import android.preference.PreferenceManager;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
-import org.softeg.slartus.forpdaplus.devdb.model.CommentsModel;
-import org.softeg.slartus.forpdaplus.devdb.model.DiscussionModel;
-import org.softeg.slartus.forpdaplus.devdb.model.FirmwareModel;
-import org.softeg.slartus.forpdaplus.devdb.model.PricesModel;
-import org.softeg.slartus.forpdaplus.devdb.model.ReviewsModel;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by isanechek on 19.12.15.

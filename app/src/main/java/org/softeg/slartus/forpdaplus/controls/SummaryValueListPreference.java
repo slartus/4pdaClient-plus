@@ -5,7 +5,6 @@ package org.softeg.slartus.forpdaplus.controls;/*
 import android.content.Context;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 

@@ -2,8 +2,6 @@ package org.softeg.slartus.forpdaplus;
 
 import android.util.Log;
 
-import com.android.internal.http.multipart.MultipartEntity;
-
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;

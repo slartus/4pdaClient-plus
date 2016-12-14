@@ -35,8 +35,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Adapter;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -99,38 +97,47 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-
 import static org.softeg.slartus.forpdaplus.utils.Utils.getS;
 
 /**
  * Created by radiationx on 28.10.15.
  */
 public class ThemeFragment extends WebViewFragment implements BricksListDialogFragment.IBricksListDialogCaller {
-    @BindView(R.id.quick_post_panel) LinearLayout mQuickPostPanel;
-    @BindView(R.id.fab) FloatingActionButton fab;
-    @BindView(R.id.wvBody) AdvWebView webView;
-    @BindView(R.id.txtSearch) EditText txtSearch;
-    @BindView(R.id.pnlSearch) LinearLayout pnlSearch;
-    @BindView(R.id.buttonsPanel) FrameLayout buttonsPanel;
+    @BindView(R.id.quick_post_panel)
+    LinearLayout mQuickPostPanel;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.wvBody)
+    AdvWebView webView;
+    @BindView(R.id.txtSearch)
+    EditText txtSearch;
+    @BindView(R.id.pnlSearch)
+    LinearLayout pnlSearch;
+    @BindView(R.id.buttonsPanel)
+    FrameLayout buttonsPanel;
 
     @OnClick(R.id.btnPrevSearch)
-    public void btnPrevSearch(){
+    public void btnPrevSearch() {
         webView.findNext(false);
     }
+
     @OnClick(R.id.btnNextSearch)
-    public void btnNextSearch(){
+    public void btnNextSearch() {
         webView.findNext(true);
     }
+
     @OnClick(R.id.btnCloseSearch)
-    public void btnCloseSearch(){
+    public void btnCloseSearch() {
         closeSearch();
     }
+
     @OnClick(R.id.btnUp)
-    public void btnUp(){
+    public void btnUp() {
         webView.pageUp(true);
     }
+
     @OnClick(R.id.btnDown)
-    public void btnDown(){
+    public void btnDown() {
         webView.pageDown(true);
     }
 
@@ -158,7 +165,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     private GetThemeTask asyncTask;
     private MyWebViewClient webViewClient;
 
-    public static ThemeFragment newInstance(String url){
+    public static ThemeFragment newInstance(String url) {
         ThemeFragment fragment = new ThemeFragment();
         Bundle args = new Bundle();
         args.putString(TOPIC_URL_KEY, url);
@@ -166,10 +173,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         return fragment;
     }
 
-    public static String getThemeUrl(CharSequence topicId){
+    public static String getThemeUrl(CharSequence topicId) {
         return "http://4pda.ru/forum/index.php?showtopic=" + topicId;
     }
-    public static String getThemeUrl(CharSequence topicId, CharSequence urlParams){
+
+    public static String getThemeUrl(CharSequence topicId, CharSequence urlParams) {
         return String.format("http://4pda.ru/forum/index.php?showtopic=%s%s", topicId, TextUtils.isEmpty(urlParams) ? "" : ("&" + urlParams));
     }
 
@@ -177,10 +185,12 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         String url = getThemeUrl(topicId, urlParams);
         MainActivity.addTab(getS(R.string.theme), url, newInstance(url));
     }
+
     public static void showTopicById(CharSequence title, CharSequence topicId, CharSequence urlParams) {
         String url = getThemeUrl(topicId, urlParams);
         MainActivity.addTab(title.toString(), url, newInstance(url));
     }
+
     public static void showTopicById(CharSequence topicId) {
         String url = getThemeUrl(topicId);
         MainActivity.addTab(getS(R.string.theme), url, newInstance(url));
@@ -202,7 +212,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     @Override
     public WebViewClient getWebViewClient() {
-        if(webViewClient==null)
+        if (webViewClient == null)
             webViewClient = new MyWebViewClient();
         return webViewClient;
     }
@@ -256,6 +266,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public String Prefix() {
         return "theme";
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -310,9 +321,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         showTheme(IntentActivity.normalizeThemeUrl(getArguments().getString(TOPIC_URL_KEY)));
 
 
-        if(App.getInstance().getPreferences().getBoolean("pancilInActionBar",false)){
+        if (App.getInstance().getPreferences().getBoolean("pancilInActionBar", false)) {
             fab.hide();
-        }else {
+        } else {
             setHideFab(fab);
             setFabColors(fab);
             fab.setOnClickListener(view1 -> toggleMessagePanelVisibility());
@@ -360,11 +371,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(savedInstanceState == null) return;
+        if (savedInstanceState == null) return;
         try {
             m_Topic = (ExtTopic) savedInstanceState.getSerializable("Topic");
             if (m_Topic != null)
-                mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
+                mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), Client.getInstance().getAuthKey());
             m_LastUrl = savedInstanceState.getString("LastUrl");
             m_ScrollElement = savedInstanceState.getString("ScrollElement");
 
@@ -383,7 +394,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 m_LastUrl = sessionHistory.getUrl();
                 m_Topic = sessionHistory.getTopic();
                 if (m_Topic != null)
-                    mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
+                    mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), Client.getInstance().getAuthKey());
                 if (sessionHistory.getBody() == null) {
                     showTheme(sessionHistory.getUrl());
                 } else {
@@ -417,7 +428,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     private SubMenu mTopicOptionsMenu;
 
     private SubMenu addOptionsMenu(final Context context, final Handler mHandler,
-                                          Menu menu, Boolean addFavorites, final String shareItUrl) {
+                                   Menu menu, Boolean addFavorites, final String shareItUrl) {
         SubMenu optionsMenu = menu.addSubMenu(getS(R.string.theme_option));
 
         configureOptionsMenu(context, mHandler, optionsMenu, addFavorites, shareItUrl);
@@ -502,7 +513,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             MainActivity.showListFragment(new NotesBrickInfo().getName(), args);
             return true;
         });
-        if(!Preferences.Topic.getReadersAndWriters()) {
+        if (!Preferences.Topic.getReadersAndWriters()) {
             optionsMenu.add(R.string.who_read_topic).setOnMenuItemClickListener(menuItem -> {
                 Bundle args = new Bundle();
                 args.putString(TopicReadersListFragment.TOPIC_ID_KEY, getTopic().getId());
@@ -532,8 +543,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         super.onCreateOptionsMenu(menu, inflater);
 
         try {
-            boolean pancil = App.getInstance().getPreferences().getBoolean("pancilInActionBar",false);
-            if(pancil) {
+            boolean pancil = App.getInstance().getPreferences().getBoolean("pancilInActionBar", false);
+            if (pancil) {
                 menu.add(R.string.new_post)
                         .setIcon(R.drawable.pencil)
                         .setOnMenuItemClickListener(item -> {
@@ -605,7 +616,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                 .show();
                         return true;
                     });
-            if(!pancil) {
+            if (!pancil) {
                 optionsMenu.add(R.string.hide_pencil)
                         .setOnMenuItemClickListener(menuItem -> {
                             Preferences.setHideFab(!Preferences.isHideFab());
@@ -659,17 +670,17 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     @Override
     public void onResume() {
         super.onResume();
-        if(m_Topic!=null) {
+        if (m_Topic != null) {
             setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
         }
-        if(mQuickPostFragment!=null)
+        if (mQuickPostFragment != null)
             mQuickPostFragment.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if(mQuickPostFragment!=null)
+        if (mQuickPostFragment != null)
             mQuickPostFragment.onPause();
     }
 
@@ -809,7 +820,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 m_LastUrl = sessionHistory.getUrl();
                 m_Topic = sessionHistory.getTopic();
                 if (m_Topic != null)
-                    mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
+                    mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), Client.getInstance().getAuthKey());
                 showBody(sessionHistory.getBody());
             }
             return true;
@@ -862,7 +873,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     public void quote(final String forumId, final String topicId, final String postId, final String postDate, String userId, String userNick) {
         final String finalPostDate = Functions.getForumDateTime(Functions.parseForumDateTime(postDate, Functions.getToday(), Functions.getYesterToday()));
-        final String mUserNick = userNick.replace("\"","\\\"");
+        final String mUserNick = userNick.replace("\"", "\\\"");
         CharSequence clipboardText = null;
         try {
             ClipboardManager clipboardManager = (android.content.ClipboardManager) App.getInstance().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -914,11 +925,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         try {
             final List<MenuListDialog> list = new ArrayList<>();
 
-            if (Client.getInstance().getLogined()){
+            if (Client.getInstance().getLogined()) {
                 list.add(new MenuListDialog(getS(R.string.url_post), () -> showLinkMenu(Post.getLink(m_Topic.getId(), postId), postId)));
                 list.add(new MenuListDialog(getS(R.string.report_msg), () -> Post.claim(getMainActivity(), mHandler, m_Topic.getId(), postId)));
                 if (canEdit) {
-                    list.add(new MenuListDialog(getS(R.string.edit_post), () -> EditPostFragment.editPost(getMainActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, m_Topic.getAuthKey(), getTag())));
+                    list.add(new MenuListDialog(getS(R.string.edit_post), () -> EditPostFragment.editPost(getMainActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, Client.getInstance().getAuthKey(), getTag())));
                 }
                 if (canDelete) {
                     list.add(new MenuListDialog(getS(R.string.delete_post), () -> prepareDeleteMessage(postId)));
@@ -940,14 +951,14 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         try {
             setScrollElement();
             setTitle(m_Topic.getTitle());
-            if(getSupportActionBar()!=null)
+            if (getSupportActionBar() != null)
                 setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
 
-            webView.loadDataWithBaseURL(m_LastUrl, body, "text/html", "UTF-8", null);
-            //webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
+            //webView.loadDataWithBaseURL(m_LastUrl, body, "text/html", "UTF-8", null);
+            webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
 
             TopicsHistoryTable.addHistory(m_Topic, m_LastUrl);
-            if(buttonsPanel.getTranslationY()!=0)
+            if (buttonsPanel.getTranslationY() != 0)
                 ViewPropertyAnimator.animate(buttonsPanel)
                         .setInterpolator(new AccelerateDecelerateInterpolator())
                         .setDuration(500)
@@ -1041,17 +1052,18 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         String[] patterns = {
                 "(https?:/+4pda.ru/+forum/+index.php\\?.*?showtopic=[^\"]*)",
-                "(https?:/+4pda.ru/+forum/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)",
-                "(https?:/+4pda.ru/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)"
+                "(https?:/+4pda.ru/+forum/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)$",
+                "(https?:/+4pda.ru/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)$"
         };
 
-//        for (String pattern : patterns) {
-//            Matcher m = Pattern.compile(pattern).matcher(url);
-//            if (m.find()) {
-//                goToAnchorOrLoadTopic(m.group(1));
-//                return true;
-//            }
-//        }
+
+        for (String pattern : patterns) {
+            Matcher m = Pattern.compile(pattern).matcher(url);
+            if (m.find()) {
+                goToAnchorOrLoadTopic(m.group(1));
+                return true;
+            }
+        }
 
         return false;
     }
@@ -1061,47 +1073,47 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         showTheme(getLastUrl());
     }
 
-//    public void goToAnchorOrLoadTopic(final String topicUrl) {
-//        try {
-//            if (getTopic() == null || m_History.size() == 0) {
-//                showTheme(topicUrl);
-//                return;
-//            }
-//
-//
-//            Uri uri = Uri.parse(topicUrl.toLowerCase());
-//            String postId = null;
-//            if (!TextUtils.isEmpty(getTopic().getId()) && getTopic().getId().equals(uri.getQueryParameter("showtopic")))
-//                postId = uri.getQueryParameter("p");
-//            if (TextUtils.isEmpty(postId) && "findpost".equals(uri.getQueryParameter("act")))
-//                postId = uri.getQueryParameter("pid");
-//            String anchor = "entry" + postId;
-//            if (!TextUtils.isEmpty(postId)) {
-//                anchor = "entry" + postId;
-//            } else {
-//                Pattern p = Pattern.compile("#(\\w+\\d+)");
-//                Matcher m = p.matcher(topicUrl);
-//                if (m.find()) {
-//                    anchor = m.group(1);
-//                }
-//            }
-//            if (anchor == null) {
-//                showTheme(topicUrl);
-//                return;
-//            }
-//            String fragment = anchor;
-//            String currentBody = m_History.get(m_History.size() - 1).getBody();
-//            if (currentBody.contains("name=\"" + fragment + "\"")) {
-//                webView.scrollTo(fragment);
-//                return;
-//            }
-//
-//            showTheme(topicUrl);
-//        } catch (Throwable ex) {
-//            AppLog.e(getMainActivity(), ex);
-//        }
-//
-//    }
+    public void goToAnchorOrLoadTopic(final String topicUrl) {
+        try {
+            if (getTopic() == null || m_History.size() == 0) {
+                showTheme(topicUrl);
+                return;
+            }
+
+
+            /*Uri uri = Uri.parse(topicUrl.toLowerCase());
+            String postId = null;
+            if (!TextUtils.isEmpty(getTopic().getId()) && getTopic().getId().equals(uri.getQueryParameter("showtopic")))
+                postId = uri.getQueryParameter("p");
+            if (TextUtils.isEmpty(postId) && "findpost".equals(uri.getQueryParameter("act")))
+                postId = uri.getQueryParameter("pid");
+            String anchor = "entry" + postId;
+            if (!TextUtils.isEmpty(postId)) {
+                anchor = "entry" + postId;
+            } else {
+                Pattern p = Pattern.compile("#(\\w+\\d+)");
+                Matcher m = p.matcher(topicUrl);
+                if (m.find()) {
+                    anchor = m.group(1);
+                }
+            }
+            if (anchor == null) {
+                showTheme(topicUrl);
+                return;
+            }
+            String fragment = anchor;
+            String currentBody = m_History.get(m_History.size() - 1).getBody();
+            if (currentBody.contains("name=\"" + fragment + "\"")) {
+                webView.scrollTo(fragment);
+                return;
+            }*/
+
+            showTheme(topicUrl);
+        } catch (Throwable ex) {
+            AppLog.e(getMainActivity(), ex);
+        }
+
+    }
 
     private String lofiversionToNormal(String url) {
         if (url == null)
@@ -1115,7 +1127,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public void showTheme(String url, boolean clearText) {
-        if(clearText) mQuickPostFragment.clearPostBody();
+        if (clearText) mQuickPostFragment.clearPostBody();
         showTheme(url);
     }
 
@@ -1129,7 +1141,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             url = lofiversionToNormal(url);
             if (m_History.size() > 0) {
                 m_History.get(m_History.size() - 1).setY(webView.getScrollY());
-                webView.evalJs("window.HTMLOUT.setHistoryBody("+(m_History.size() - 1)+",'<!DOCTYPE html><html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
+                webView.evalJs("window.HTMLOUT.setHistoryBody(" + (m_History.size() - 1) + ",'<!DOCTYPE html><html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
             }
             webView.setWebViewClient(getWebViewClient());
 
@@ -1140,7 +1152,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }
     }
 
-    public void setHistoryBody(int index, String body){
+    public void setHistoryBody(int index, String body) {
         m_History.get(index).setBody(body);
     }
 
@@ -1165,7 +1177,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     private void deleteMessage(final String postId) {
         final MaterialDialog dialog = new MaterialDialog.Builder(getMainActivity())
-                .progress(true,0)
+                .progress(true, 0)
                 .cancelable(false)
                 .content(R.string.deleting_msg)
                 .show();
@@ -1173,7 +1185,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             Throwable ex = null;
 
             try {
-                Post.delete(postId, m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
+                Post.delete(postId, m_Topic.getForumId(), m_Topic.getId(), Client.getInstance().getAuthKey());
             } catch (Throwable e) {
                 ex = e;
             }
@@ -1192,7 +1204,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
                 m_ScrollY = 0;
                 //showTheme(getLastUrl());
-                getWebView().evalJs("document.querySelector('div[name*=del"+postId+"]').remove();");
+                getWebView().evalJs("document.querySelector('div[name*=del" + postId + "]').remove();");
             });
         }).start();
 
@@ -1260,8 +1272,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     private boolean calledScroll = false;
+
     private void tryScrollToElement() {
-        if(calledScroll)
+        if (calledScroll)
             return;
 
         calledScroll = true;
@@ -1275,17 +1288,18 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }, 250);
     }
 
-    private class MyChromeClient extends WebChromeClient{
+    private class MyChromeClient extends WebChromeClient {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            if(newProgress>=10&&m_ScrollElement!=null&&m_ScrollY==0)
+            if (newProgress >= 10 && m_ScrollElement != null && m_ScrollY == 0)
                 tryScrollToElement();
-            Log.e("kekp", newProgress+" %");
+            Log.e("kekp", newProgress + " %");
         }
     }
 
     public List<ArrayList<String>> imageAttaches = new ArrayList<>();
+
     private class MyWebViewClient extends WebViewClient {
         private final long LOADING_ERROR_TIMEOUT = TimeUnit.SECONDS.toMillis(45);
 
@@ -1346,7 +1360,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             }
             m_ScrollY = 0;
 
-            if(checkIsImage(url))
+            if (checkIsImage(url))
                 return true;
 
             if (checkIsTheme(url))
@@ -1362,13 +1376,14 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 return true;
 
             IntentActivity.tryShowUrl(getMainActivity(), mHandler, url, true, false,
-                    m_Topic == null ? null : m_Topic.getAuthKey());
+                    m_Topic == null ? null : Client.getInstance().getAuthKey());
             return true;
         }
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
+
             if (startsWith(url, mOnErrorUrl)) {
                 mUrl = url;
                 mLoadingError = true;
@@ -1419,25 +1434,25 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             }
         };
 
-        private boolean checkIsImage(final String url){
+        private boolean checkIsImage(final String url) {
             final Pattern imagePattern = PatternExtensions.compile("http://.*?\\.(png|jpg|jpeg|gif)$");
-            if(!imagePattern.matcher(url).find()) return false;
+            if (!imagePattern.matcher(url).find()) return false;
             if (!Client.getInstance().getLogined() && !Client.getInstance().hasLoginCookies()) {
                 Client.getInstance().showLoginForm(getContext(), (user, success) -> {
                     if (success) {
                         showImage(url);
                     }
                 });
-            }else {
+            } else {
                 showImage(url);
             }
             return true;
         }
 
-        private void showImage(String url){
-            for(ArrayList<String> list:imageAttaches){
-                for(int i = 0; i<list.size();i++){
-                    if(list.get(i).equals(url)){
+        private void showImage(String url) {
+            for (ArrayList<String> list : imageAttaches) {
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.get(i).equals(url)) {
                         ImgViewer.startActivity(getContext(), list, i);
                         return;
                     }
@@ -1487,7 +1502,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         private String m_ThemeBody;
         private Throwable ex;
 
-        public GetThemeTask() {}
+        public GetThemeTask() {
+        }
 
         private CharSequence prepareTopicUrl(CharSequence url) {
             final Uri uri = Uri.parse(url.toString());
@@ -1515,7 +1531,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 m_Topic = topicBodyBuilder.getTopic();
 
                 m_ThemeBody = topicBodyBuilder.getBody();
-
                 topicBodyBuilder.clear();
                 return true;
             } catch (Throwable e) {
@@ -1540,26 +1555,26 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         protected void onPostExecute(final Boolean success) {
             setLoading(false);
             TabItem item = App.getInstance().getTabByTag(getTag());
-            if(item!=null){
+            if (item != null) {
                 TabItem tabItem = App.getInstance().getTabByTag(item.getParentTag());
-                if(tabItem!=null&&!tabItem.getTag().contains("tag")){
+                if (tabItem != null && !tabItem.getTag().contains("tag")) {
                     Fragment fragment = getMainActivity().getSupportFragmentManager().findFragmentByTag(item.getParentTag());
-                    if(fragment instanceof TopicsListFragment&&getTopic()!=null&&getTopic().getId()!=null)
+                    if (fragment instanceof TopicsListFragment && getTopic() != null && getTopic().getId() != null)
                         ((TopicsListFragment) fragment).topicAfterClick(getTopic().getId());
                 }
             }
-            Log.e("kek", webView.getSettings().getLoadsImagesAutomatically()+" loadimages");
+            Log.e("kek", webView.getSettings().getLoadsImagesAutomatically() + " loadimages");
 
             m_ScrollY = scrollY;
             if (m_Topic != null)
-                mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), m_Topic.getAuthKey());
+                mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), Client.getInstance().getAuthKey());
             if (isCancelled()) return;
 
-            if (success&&m_Topic!=null) {
+            if (success && m_Topic != null) {
                 addToHistory(m_ThemeBody);
                 showBody(m_ThemeBody);
             } else {
-                if(m_Topic==null){
+                if (m_Topic == null) {
                     return;
                 }
                 if (ex.getClass() != NotReportException.class) {

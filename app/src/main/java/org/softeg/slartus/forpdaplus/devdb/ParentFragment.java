@@ -21,7 +21,6 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.TabDrawerMenu;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.devdb.helpers.DevDbUtils;
@@ -29,8 +28,6 @@ import org.softeg.slartus.forpdaplus.devdb.helpers.FLifecycleUtil;
 import org.softeg.slartus.forpdaplus.devdb.helpers.ParseHelper;
 import org.softeg.slartus.forpdaplus.devdb.helpers.ParsedModel;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
-
-import static android.support.design.widget.TabLayout.*;
 
 public class ParentFragment extends GeneralFragment {
 
