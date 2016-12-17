@@ -53,9 +53,9 @@ public class SearchPostsParser extends HtmlBuilder {
             m_Body.append("<div class=\"post_container\">");
             m_Body.append("<div class=\"topic_title_post\">").append(matcher.group(1)).append("</div>\n");
             dateTime = matcher.group(2);
-            userId = matcher.group(3);
-            userName = matcher.group(4);
-            userState = matcher.group(5).equals("red") ? "" : "online";
+            userState = matcher.group(3).equals("red") ? "" : "online";
+            userId = matcher.group(4);
+            userName = matcher.group(5);
             user = "<a class=\"s_inf nick " + userState + "\" " + TopicBodyBuilder.getHtmlout(isWebviewAllowJavascriptInterface, "showUserMenu", userId, userName) + "><span>" + userName + "</span></a>";
             m_Body.append("<div class=\"post_header\">").append(user).append("<div class=\"s_inf date\"><span>").append(dateTime).append("</span></div></div>");
             m_Body.append("<div class=\"post_body emoticons\">");

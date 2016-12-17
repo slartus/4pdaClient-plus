@@ -1678,27 +1678,19 @@ a[href*=findpost][title="Перейти к сообщению"]:after {
   -webkit-box-shadow: 0 3px 10px -3px rgba(0, 0, 0, 0.25);
   position: relative;
 }
-.post_container:before {
+.post_container.active:before {
   content: "";
   position: absolute;
   left: 0;
   top: 0;
-  height: 100%;
   width: 100%;
+  height: 100%;
   background: #0277bd;
   z-index: 10;
   opacity: 0;
-  visibility: hidden;
-  -webkit-transition: 1s 0s visibility linear;
-  transition: 1s 0s visibility linear;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
   pointer-events: none;
-}
-.post_container.active:before {
-  /*transform: scale(1);
-            opacity: 0.25;*/
-  -webkit-transition: 1s 0s visibility linear;
-  transition: 1s 0s visibility linear;
-  visibility: visible;
   -webkit-animation: highlight 1s;
 }
 .post_container .post_header {

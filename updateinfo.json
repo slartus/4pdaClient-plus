@@ -7,8 +7,8 @@
 
   "show_beta_dialog":true,
   "update_beta":{
-    "ver":"3.4.2",
-    "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/ForPDA_3.4.2.apk",
+    "ver":"3.4.2.1",
+    "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/ForPDA_3.4.2.1.apk",
     "info":"[!] Важное замечание\n[+] Нововведение\n[-] Исправлена ошибка\n[*] Изменения\n\n[-] Кол-во результатов поиска\n[-] Сообщения в темах\n[-] Синие квадраты в стандартных темах\n[-] Отображение в поиске в Material стилях\n[+] Переход к комментариям в новостях по клику на кол-ве комментариев"
   },
 
