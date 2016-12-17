@@ -1317,6 +1317,9 @@ div[data-post] > a {
   background: white;
   border-bottom: 1px solid #e6e6e6;
 }
+.search-results .post_container {
+  overflow: hidden;
+}
 .search-results .post_header {
   min-height: 2.2rem;
   padding-top: 0.75rem;
@@ -1330,6 +1333,15 @@ div[data-post] > a {
 .search-results .post_header .nick span {
   font-weight: bold;
   font-size: 1.125rem;
+}
+.search-results .post_body {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+@media screen and (max-width: 50rem) {
+  .search-results .post_body {
+    margin-bottom: 1rem;
+  }
 }
 .searchlite {
   color: #FF6A00;
@@ -3280,4 +3292,3 @@ img[src*="style_emoticons"] {
 #rules .post_body {
   margin: 0.5rem;
 }
-
