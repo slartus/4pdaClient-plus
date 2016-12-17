@@ -48,7 +48,7 @@ public class SearchPostsParser extends HtmlBuilder {
         String userId, userName, user, dateTime, userState;
 
         Log.e("kek", "start matcher");
-        Matcher matcher = Pattern.compile("<div class=\"cat_name\" style=\"margin-bottom:0\">([\\s\\S]*?)<\\/div>[\\s\\S]*?post_date\">([^\\|&]*)[\\s\\S]*?showuser=(\\d+)\"[^>]*?>([\\s\\S]*?)<\\/a>[\\s\\S]*?<font color=\"([^\"]*?)\"[\\s\\S]*?<div class=\"post_body[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div class=\"cat_name\"|<div><div class=\"pagination\">)").matcher(body);
+        Matcher matcher = Pattern.compile("<div class=\"cat_name\" style=\"margin-bottom:0\">([\\s\\S]*?)<\\/div>[\\s\\S]*?post_date\">([^\\|&]*)[\\s\\S]*?<font color=\"([^\"]*?)\"[\\s\\S]*?showuser=(\\d+)\"[^>]*?>([\\s\\S]*?)<\\/a>[\\s\\S]*?<div class=\"post_body[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div class=\"cat_name\"|<div><div class=\"pagination\">)").matcher(body);
         while (matcher.find()) {
             m_Body.append("<div class=\"post_container\">");
             m_Body.append("<div class=\"topic_title_post\">").append(matcher.group(1)).append("</div>\n");

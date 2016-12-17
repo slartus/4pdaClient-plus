@@ -38,7 +38,7 @@ public class SearchApi {
         ArrayList<Topic> res = new ArrayList<>();
         String today = Functions.getToday();
         String yesterday = Functions.getYesterToday();
-        Matcher matcher = Pattern.compile("<div data-topic=\"([^\"]*?)\"[\\s\\S]*?<a[^>]*?>([\\s\\S]*?)<\\/a>[\\s\\S]*?<div class=\"topic_body\"><span class=\"topic_desc\">(?:([^<]*?)<br[^>]*?>|)форум[^<]*?<a href=\"[^\"]*?showforum=(\\d+)\">([\\s\\S]*?)<\\/a><br[^>]*?><\\/span>[\\s\\S]*?showuser=(\\d+)\">([\\s\\S]*?)<\\/a><\\/span><br[^>]*?>(<a href=\"[^\"]*?getnewpost[\\s\\S]*?<\\/a>)?[\\s\\S]*?<a href=\"[^\"]*?showuser[^>]*?>([\\s\\S]*?)<\\/a> ([\\s\\S]*?)<\\/div><\\/div>").matcher(body);
+        Matcher matcher = Pattern.compile("<div data-topic=\"([^\"]*?)\"[\\s\\S]*?<a[^>]*?>([\\s\\S]*?)<\\/a>[\\s\\S]*?<div class=\"topic_body\"><span class=\"topic_desc\">(?:([\\s\\S]*?)(?:<br[^>]*?>)?)?форум[^<]*?<a href=\"[^\"]*?showforum=(\\d+)\">([\\s\\S]*?)<\\/a><br[^>]*?><\\/span>[\\s\\S]*?showuser=(\\d+)\">([\\s\\S]*?)<\\/a><\\/span><br[^>]*?>(<a href=\"[^\"]*?getnewpost[\\s\\S]*?<\\/a>)?[\\s\\S]*?<a href=\"[^\"]*?showuser[^>]*?>([\\s\\S]*?)<\\/a> ([\\s\\S]*?)<\\/div><\\/div>").matcher(body);
         String desc;
         Topic topic;
         while (matcher.find()) {

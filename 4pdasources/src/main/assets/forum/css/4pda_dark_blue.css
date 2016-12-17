@@ -1688,11 +1688,17 @@ a[href*=findpost][title="Перейти к сообщению"]:after {
   background: #0277bd;
   z-index: 10;
   opacity: 0;
+  visibility: hidden;
+  -webkit-transition: 1s 0s visibility linear;
+  transition: 1s 0s visibility linear;
   pointer-events: none;
 }
 .post_container.active:before {
   /*transform: scale(1);
             opacity: 0.25;*/
+  -webkit-transition: 1s 0s visibility linear;
+  transition: 1s 0s visibility linear;
+  visibility: visible;
   -webkit-animation: highlight 1s;
 }
 .post_container .post_header {
