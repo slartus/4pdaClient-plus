@@ -64,7 +64,6 @@ HTML body {
   overflow-wrap: break-word;
   word-break: break-word;
   white-space: normal;
-  overflow: auto;
   color: white;
   box-sizing: border-box;
   background-color: #141414;
@@ -863,6 +862,31 @@ span[style*="font-size:8pt"] * {
   margin: 1rem 0;
   padding: 0;
 }
+.posts_list .new_message {
+  position: relative;
+  margin: 0.5rem 0;
+  padding: 0 0.5rem;
+  height: 2.5rem;
+  box-sizing: border-box;
+  line-height: 2.5rem;
+  text-align: center;
+}
+.posts_list .new_message:before {
+  content: 'Новые сообщения';
+  font-weight: bold;
+  display: inline-block;
+  padding: 0 0.5rem;
+  white-space: nowrap;
+  color: #7e7e7e;
+  background-color: #141414;
+}
+.posts_list .new_message:after {
+  content: '';
+  display: block;
+  height: 1px;
+  margin-top: -1.25rem;
+  background: #3c3c3c;
+}
 .post_container {
   position: relative;
   clear: both;
@@ -881,34 +905,6 @@ span[style*="font-size:8pt"] * {
     -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.2);
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.2);
   }
-}
-.post_container.active {
-  margin-top: 3rem;
-}
-.post_container.active:after {
-  content: 'Новые сообщения';
-  font-weight: bold;
-  position: absolute;
-  top: -2.125rem;
-  left: 50%;
-  width: 10rem;
-  max-width: 100%;
-  margin-left: -5rem;
-  display: block;
-  white-space: nowrap;
-  overflow-x: hidden;
-  text-align: center;
-  color: #7e7e7e;
-  background-color: #141414;
-}
-.post_container.active:before {
-  content: '';
-  position: absolute;
-  top: -1.5rem;
-  left: 0;
-  right: 0;
-  display: block;
-  border-top: 1px solid #3c3c3c;
 }
 /*
 *	POST HEADER
@@ -1254,8 +1250,7 @@ div[data-post] > a {
 /*
  *	POST_FOOTER
 */
-.post_footer,
-.s_post_footer {
+.post_footer {
   display: block;
   overflow: hidden;
   position: relative;
@@ -1392,47 +1387,6 @@ div[data-post] > a {
 }
 .searchlite {
   color: #FF6A00;
-}
-.postcolor {
-  height: auto !important;
-  padding: 0.5rem;
-  margin: 0 -0.5rem;
-  max-height: 18rem;
-}
-.signature {
-  position: relative;
-  font-size: 0.875rem;
-  margin: -2rem 0 0;
-  background: #000000;
-}
-@media screen and (min-width: 50rem) {
-  .signature {
-    padding: 0.7rem 0;
-    border-radius: 0;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-  }
-}
-.signature:before {
-  display: block;
-  content: 'Подпись:';
-  font-weight: bold;
-  color: #808080;
-  padding: 0.5rem 0;
-}
-.s_post_footer {
-  padding: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: normal;
-  color: #808080;
-  border-top: 1px solid #191919;
-}
-.s_post_footer a {
-  color: #afd9f9;
-  text-decoration: none;
-}
-.s_post_footer ~ .between_messages ~ .topic_title_post ~ .post_header {
-  margin-top: 0 !important;
 }
 .bad-search-result {
   position: fixed;
@@ -3339,3 +3293,4 @@ img[src*="style_emoticons"] {
 #rules .post_body {
   margin: 0.5rem;
 }
+
