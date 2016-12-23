@@ -168,9 +168,9 @@ function scrollToAnchor() {
 		}
 	}
 
-	// highlight "new message"
+	// highlight "target post"
 	if (anchor.nodeName == 'DIV') {
-		anchor.insertAdjacentHTML("beforeBegin", '<div class="new_message"></div>');
+		anchor.insertAdjacentHTML("beforeBegin", '<div class="target_post"></div>');
 		anchor.nextElementSibling.classList.add('active');
 	}
 

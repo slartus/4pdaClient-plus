@@ -815,29 +815,32 @@ span[style*="font-size:8pt"] * {
   margin: 1rem 0;
   padding: 0;
 }
-.posts_list .new_message {
+.posts_list .target_post {
   position: relative;
   margin: 0.5rem 0;
   padding: 0 0.5rem;
-  height: 2.5rem;
+  height: 1.5rem;
   box-sizing: border-box;
-  line-height: 2.5rem;
+  line-height: 1.5rem;
   text-align: center;
 }
-.posts_list .new_message:before {
-  content: 'Новые сообщения';
+.posts_list .target_post:after {
+  content: 'целевое сообщение';
   font-weight: bold;
   display: inline-block;
+  position: relative;
+  top: 0.125rem ;
   padding: 0 0.5rem;
   white-space: nowrap;
-  color: #838383;
+  color: #8f8f8f;
   background-color: #eee;
 }
-.posts_list .new_message:after {
+.posts_list .target_post:before {
   content: '';
   display: block;
   height: 1px;
-  margin-top: -1.25rem;
+  position: relative;
+  bottom: -1rem;
   background: #c6c6c6;
 }
 .post_container {
@@ -850,6 +853,9 @@ span[style*="font-size:8pt"] * {
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
   z-index: 98;
+}
+.post_container.active {
+  margin-top: 1rem;
 }
 @media screen and (max-width: 15rem) {
   .post_container {
@@ -1028,7 +1034,7 @@ span[style*="font-size:8pt"] * {
 @media screen and (max-width: 50rem) {
   .post_header .header_wrapper .menu {
     position: absolute;
-    right: -0.375rem;
+    right: -0.625rem;
     top: -0.375rem;
     -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
