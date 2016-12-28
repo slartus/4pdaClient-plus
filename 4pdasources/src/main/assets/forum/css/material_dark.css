@@ -450,7 +450,7 @@ span[style*="font-size:8pt"] * {
 .post-block.spoil.open > .block-title .anchor:before {
   background-image: url(material_src/link_grey.svg), url(../material_src/link_grey.svg);
 }
-@media screen and (max-width: 15rem) {
+@media screen and (max-width: 15em) {
   .post-block.spoil:before,
   .poll .hidetop B:before {
     display: none;
@@ -512,7 +512,7 @@ span[style*="font-size:8pt"] * {
   height: 100%;
   margin: 0;
 }
-@media screen and (max-width: 15rem) {
+@media screen and (max-width: 15em) {
   .post-block.cur > .block-title,
   .post-block.mod > .block-title,
   .post-block.ex > .block-title {
@@ -548,7 +548,7 @@ span[style*="font-size:8pt"] * {
 .panel .navi .button.disable {
   color: #343434;
 }
-@media screen and (max-width: 15rem) {
+@media screen and (max-width: 15em) {
   .panel .navi .button.page {
     display: block;
     margin: 0;
@@ -620,7 +620,7 @@ span[style*="font-size:8pt"] * {
 .hat .hidetop span {
   display: none;
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   .post_container .hat .hidetop {
     margin-left: 12rem;
     line-height: 12rem;
@@ -640,7 +640,7 @@ span[style*="font-size:8pt"] * {
   content: 'СКРЫТЬ';
   margin-right: 0.3125rem;
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   .post_container .hat .hidemain .post_body {
     margin-top: 0.75rem;
   }
@@ -669,7 +669,7 @@ span[style*="font-size:8pt"] * {
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
 }
-@media screen and (max-width: 15rem) {
+@media screen and (max-width: 15em) {
   .poll {
     margin: 0.5rem 0;
     border-radius: 0;
@@ -700,7 +700,7 @@ span[style*="font-size:8pt"] * {
 .poll .hidemain FORM .poll_body .poll_theme .theme_title span {
   font-weight: bold;
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   .poll .hidemain FORM .poll_body .poll_theme .items.voted .item {
     display: table;
     width: 100%;
@@ -809,7 +809,7 @@ span[style*="font-size:8pt"] * {
   right: 0.3125rem;
   margin-top: -1.4rem;
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   .poll .hidemain FORM .poll_body .poll_theme .items.voted .item {
     display: table;
     padding: 0.5rem;
@@ -899,7 +899,7 @@ span[style*="font-size:8pt"] * {
 .post_container.active {
   margin-top: 1rem;
 }
-@media screen and (max-width: 15rem) {
+@media screen and (max-width: 15em) {
   .post_container {
     margin: 0.5rem 0;
     border-radius: 0;
@@ -917,7 +917,7 @@ span[style*="font-size:8pt"] * {
   -webkit-user-select: none;
   user-select: none;
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   .post_header {
     float: left;
     padding: 1.5rem 0 0;
@@ -925,7 +925,7 @@ span[style*="font-size:8pt"] * {
     text-align: center;
   }
 }
-@media screen and (max-width: 15rem) {
+@media screen and (max-width: 15em) {
   .post_header {
     padding: 0;
     text-align: center;
@@ -939,14 +939,14 @@ span[style*="font-size:8pt"] * {
   float: left;
   margin: 0 0.75rem 0 0;
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   .post_header .header_wrapper .avatar {
     float: none;
     margin: 0.5rem 0;
     padding: 0;
   }
 }
-@media screen and (max-width: 15rem) {
+@media screen and (max-width: 15em) {
   .post_header .header_wrapper .avatar {
     float: none;
     margin: 0 0 0.5rem;
@@ -956,7 +956,7 @@ span[style*="font-size:8pt"] * {
   margin: 0.25rem 0 0;
   overflow: hidden;
 }
-@media screen and (max-width: 50rem) not (max-width: 15rem) {
+@media screen and (max-width: 50em) not (max-width: 15em) {
   .post_header .header_wrapper .avatar.disable {
     height: 4rem;
     margin: 0 0.1875rem 0 0;
@@ -986,7 +986,7 @@ span[style*="font-size:8pt"] * {
   background-size: 3rem;
   background-color: rgba(138, 138, 138, 0.3);
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
 }
 .post_header .header_wrapper .inf {
   color: #969696;
@@ -996,7 +996,7 @@ span[style*="font-size:8pt"] * {
   font-size: 1.1875rem;
   color: #cbcbcb;
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   .post_header .header_wrapper .nick {
     position: absolute;
     top: 0;
@@ -1035,7 +1035,7 @@ span[style*="font-size:8pt"] * {
   font-size: 0.875rem;
   font-weight: bold;
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   .post_header .header_wrapper .reputation {
     display: block;
   }
@@ -1045,7 +1045,7 @@ span[style*="font-size:8pt"] * {
   margin-left: 0.1875rem;
   display: inline-block;
 }
-@media screen and (max-width: 50rem) not (max-width: 15rem) {
+@media screen and (max-width: 50em) not (max-width: 15em) {
   .post_header .header_wrapper .reputation span:after {
     margin-right: 0.1875rem;
   }
@@ -1054,7 +1054,7 @@ span[style*="font-size:8pt"] * {
   font-size: 0.875rem;
   color: #969696 !important;
 }
-@media screen and (max-width: 50rem) {
+@media screen and (max-width: 50em) {
   .post_header .header_wrapper .date-link {
     display: inline-block;
   }
@@ -1073,7 +1073,7 @@ span[style*="font-size:8pt"] * {
   background-size: 1.625rem;
   cursor: pointer;
 }
-@media screen and (max-width: 50rem) {
+@media screen and (max-width: 50em) {
   .post_header .header_wrapper .menu {
     position: absolute;
     right: -0.625rem;
@@ -1082,7 +1082,7 @@ span[style*="font-size:8pt"] * {
     transform: rotate(90deg);
   }
 }
-@media screen and (max-width: 15rem) {
+@media screen and (max-width: 15em) {
   .post_header .header_wrapper .menu {
     position: relative;
     margin: 0 auto;
@@ -1107,7 +1107,7 @@ span[style*="font-size:8pt"] * {
   text-align: left;
   background-clip: padding-box;
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   .post_body,
   #multimoderation > form {
     margin: 0 0 0.75rem 13rem;
@@ -1299,7 +1299,7 @@ div[data-post] > a {
 .post_footer .button.delete {
   float: right;
 }
-@media screen and (max-width: 50rem) {
+@media screen and (max-width: 50em) {
   .post_footer .button.claim,
   .post_footer .button.edit,
   .post_footer .button.delete {
@@ -1309,7 +1309,7 @@ div[data-post] > a {
     float: right;
   }
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 24.9375em) {
   .post_footer .button {
     min-width: 2rem;
   }
@@ -1333,7 +1333,7 @@ div[data-post] > a {
     font-size: 1.2rem;
   }
 }
-@media screen and (min-width: 401px) {
+@media screen and (min-width: 25em) {
   .post_footer .button.bad {
     padding-left: 0.7rem;
     padding-right: 0.7rem;
@@ -1381,7 +1381,7 @@ div[data-post] > a {
   margin-top: 1rem;
   margin-bottom: 1.5rem;
 }
-@media screen and (max-width: 50rem) {
+@media screen and (max-width: 50em) {
   .search-results .post_body {
     margin-bottom: 1rem;
   }
@@ -1409,7 +1409,7 @@ div[data-post] > a {
   margin: 1.5rem;
   color: #969696;
 }
-@media screen and (max-width: 11.9375rem) {
+@media screen and (max-width: 11.9375em) {
   .bad-search-result {
     top: 0;
     margin: 0.75rem;
@@ -1419,7 +1419,7 @@ div[data-post] > a {
     margin: 13%;
   }
 }
-@media screen and (min-width: 28rem) {
+@media screen and (min-width: 28em) {
   .bad-search-result {
     left: 50%;
     width: 26rem;
@@ -1524,7 +1524,7 @@ div[data-post] > a {
   -webkit-transition: ease 0.3s background;
   transition: ease 0.3s background;
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   #thread_form .list-group-item .msg-content {
     max-width: 60vw;
   }
@@ -1613,7 +1613,7 @@ div[data-post] > a {
   font-size: 2rem;
   color: green;
 }
-@media screen and (max-width: 19rem) {
+@media screen and (max-width: 19em) {
   #thread_form .list-group-item.msgbox.info {
     width: auto;
     margin: 0;
@@ -1660,7 +1660,7 @@ div[data-post] > a {
 #qms[class*="noimages"] .time {
   margin-left: 0.5rem !important;
 }
-@media screen and (max-width: 14rem) {
+@media screen and (max-width: 14em) {
   #qms .avatar-wrap {
     display: none !important;
   }
@@ -1781,7 +1781,7 @@ div[data-post] > a {
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   #news .product-detail {
     display: table-block;
     margin-bottom: 1rem;
@@ -1793,7 +1793,7 @@ div[data-post] > a {
   text-align: center;
   min-height: 3.5rem;
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   #news .product-detail .photo {
     display: table-cell;
     vertical-align: middle;
@@ -1830,7 +1830,7 @@ div[data-post] > a {
   padding: 1px 1rem;
   border-top: 1px solid #1e1e1e;
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   #news .product-detail .description {
     padding: 0 1rem;
     border: none;
@@ -1859,7 +1859,7 @@ div[data-post] > a {
   color: white;
   background: rgba(158, 158, 158, 0.3);
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   #news .product-detail .description .info-holder .date {
     top: auto;
     bottom: -0.6875rem;
@@ -1882,7 +1882,7 @@ div[data-post] > a {
   text-align: right;
   font-style: italic;
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   #news .product-detail .description .info-holder .name {
     right: auto;
     text-align: left;
@@ -1909,7 +1909,7 @@ div[data-post] > a {
   -webkit-box-shadow: 0 0.125rem 0.3rem rgba(0, 0, 0, 0.25);
   box-shadow: 0 0.125rem 0.3rem rgba(0, 0, 0, 0.25);
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   #news .product-detail .description .more-box .number {
     top: auto;
     bottom: -1.5rem;
@@ -1996,7 +1996,7 @@ div[data-post] > a {
   margin: 0.5rem auto;
   background: #2d2d2d;
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   #news .review-bottom-informer {
     text-align: center;
   }
@@ -2012,7 +2012,7 @@ div[data-post] > a {
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   #news .review-bottom-informer .item {
     display: inline-block;
     width: 13rem;
@@ -2351,7 +2351,7 @@ div[data-post] > a {
   overflow: hidden;
   vertical-align: top;
 }
-@media screen and (max-width: 50rem) {
+@media screen and (max-width: 50em) {
   #news .materials-box .materials-slider .slider-item {
     width: 12.5rem;
   }
@@ -2468,22 +2468,22 @@ div[data-post] > a {
 #news .comment-box .comment-list .comment-list {
   padding-left: 0.2rem;
 }
-@media screen and (min-width: 320px) {
+@media screen and (min-width: 20em) {
   #news .comment-box .comment-list .comment-list {
     padding-left: 0.5rem;
   }
 }
-@media screen and (min-width: 480px) {
+@media screen and (min-width: 30em) {
   #news .comment-box .comment-list .comment-list {
     padding-left: 0.7rem;
   }
 }
-@media screen and (min-width: 640px) {
+@media screen and (min-width: 40em) {
   #news .comment-box .comment-list .comment-list {
     padding-left: 1rem;
   }
 }
-@media screen and (min-width: 720px) {
+@media screen and (min-width: 50em) {
   #news .comment-box .comment-list .comment-list {
     padding-left: 1.2rem;
   }
@@ -2645,7 +2645,7 @@ div[data-post] > a {
 */
 #profile .user-profile-list {
   display: block;
-  max-width: 50rem;
+  max-width: 50em;
   font-size: 1rem;
   text-align: left;
   list-style-type: none;
@@ -3006,7 +3006,7 @@ div[data-post] > a {
   line-height: 1.2em;
   color: white;
 }
-@media screen and (max-width: 50rem) {
+@media screen and (max-width: 50em) {
   #edit_profile form .field table,
   #edit_profile form .field tbody,
   #edit_profile form .field tr,
@@ -3022,7 +3022,7 @@ div[data-post] > a {
   color: #777777;
   font-size: 1.125rem;
 }
-@media screen and (max-width: 50rem) {
+@media screen and (max-width: 50em) {
   #edit_profile form .field .row1 {
     padding: 0.5rem 0.5rem 0!important;
   }
@@ -3035,7 +3035,7 @@ div[data-post] > a {
   padding: 0.5rem !important;
   color: #969696;
 }
-@media screen and (max-width: 50rem) {
+@media screen and (max-width: 50em) {
   #edit_profile form .field .row2 {
     padding: 0 0.5rem 0.5rem !important;
   }
@@ -3111,7 +3111,7 @@ div[data-post] > a {
 #edit_profile form .field .row2 .editor_button textarea:focus {
   border: 2px solid rgba(158, 158, 158, 0.3);
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   #edit_profile form .field .formbuttonrow {
     text-align: right;
   }
@@ -3193,7 +3193,7 @@ div[data-post] > a {
   font-size: 1.125rem;
   color: white;
 }
-@media screen and (max-width: 50rem) {
+@media screen and (max-width: 50em) {
   #curator .post_header .nick {
     margin-right: 3rem;
     padding: 0;
@@ -3204,13 +3204,13 @@ div[data-post] > a {
   padding: 0.5rem 0;
   font-weight: bold;
 }
-@media screen and (max-width: 50rem) {
+@media screen and (max-width: 50em) {
   #curator .post_header .link {
     display: inline-block;
     padding: 0.25rem 0;
   }
 }
-@media screen and (max-width: 50rem) {
+@media screen and (max-width: 50em) {
   #curator .post_header .date-link {
     position: absolute;
     right: 0;
@@ -3223,7 +3223,7 @@ div[data-post] > a {
   cursor: pointer;
   text-align: center;
 }
-@media screen and (max-width: 50rem) {
+@media screen and (max-width: 50em) {
   #curator .post_header .checkbox {
     position: absolute;
     right: 0;
@@ -3271,7 +3271,7 @@ div[data-post] > a {
 #curator .post_body {
   padding-bottom: 0.75rem;
 }
-@media screen and (min-width: 50rem) {
+@media screen and (min-width: 50em) {
   #curator .post_body {
     min-height: 9rem;
   }
@@ -3294,4 +3294,3 @@ img[src*="style_emoticons"] {
 #rules .post_body {
   margin: 0.5rem;
 }
-
