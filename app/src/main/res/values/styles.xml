@@ -361,4 +361,13 @@
 
     <style name="NotificationTitle" parent="android:TextAppearance.StatusBar.EventContent.Title" />
 
+
+    <style name="AppTheme.FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
 </resources>

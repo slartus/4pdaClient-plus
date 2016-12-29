@@ -8,7 +8,7 @@ repositories {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion "25.0.2"
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId 'org.softeg.slartus.forpdaplus'
@@ -84,7 +84,7 @@ dependencies {
     compile 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
     compile 'com.nineoldandroids:library:2.4.0'
-    compile('com.afollestad.material-dialogs:core:0.9.0.2')
+    compile 'com.afollestad.material-dialogs:core:0.9.0.2'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.dmitriy-tarasov:android-intents:1.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
@@ -94,7 +94,8 @@ dependencies {
     compile project(':4pdasources')
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
-
     compile 'com.jakewharton:butterknife:8.1.0'
     apt 'com.jakewharton:butterknife-compiler:8.1.0'
+    compile 'com.plattysoft.leonids:LeonidsLib:1.3.2'
+
 }

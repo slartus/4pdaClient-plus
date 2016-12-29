@@ -39,6 +39,7 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
+import org.softeg.slartus.forpdaplus.activity.NewYear;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
@@ -265,6 +266,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 getWindow().getDecorView().post(setStatusBarHeight);
             }
 
+            NewYear.check(this);
             NavigationView leftDrawer = (NavigationView) findViewById(R.id.left_drawer);
             int scale = (int) getResources().getDisplayMetrics().density;
             boolean bottom = getPreferences().getBoolean("isMarginBottomNav", false);
@@ -298,20 +300,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MainActivity.REQUEST_WRITE_STORAGE);
 
-            users.add("2527270");//Dj_GraFlY
-            users.add("4415042");//alex_shadow2014
-            users.add("2848060");//pirog-
-            users.add("691140");//74dimon
-            users.add("959551");//den26448
-            users.add("1882226");//Berkut_Angarsk
-            users.add("1111194");//ангел мститель
-            users.add("1122011");//Matuhan
             users.add("2760915");//DumF0rGaming ++
-            users.add("104142");//maxxwell
-            users.add("2696673");//another side
             users.add("4324432");//Snow Volf
-            users.add("2586315");//l1r_svg
-            users.add("1750050");//pavelpc
             users.add("96664");//Морфий
             users.add("2556269");//Radiation15
             users.add("1726458");//iSanechek
@@ -470,6 +460,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         });
 //        checkToster(this);
         checkUsers(this);
+
     }
 
     @Override
