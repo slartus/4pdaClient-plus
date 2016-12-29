@@ -1,18 +1,19 @@
 package org.softeg.slartus.forpdaplus.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.view.animation.AccelerateInterpolator;
 
 import com.plattysoft.leonids.ParticleSystem;
 
 import org.softeg.slartus.forpdaplus.R;
 
-import java.util.Locale;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by isanechek on 28.12.16.
@@ -21,9 +22,14 @@ import java.util.Locale;
 public class NewYear extends Activity {
 
     public static void check(Context ctx) {
-        Intent intent = new Intent(ctx, NewYear.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        ctx.startActivity(intent);
+
+        if (checkDate()) {
+            Intent intent = new Intent(ctx, NewYear.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            ctx.startActivity(intent);
+        }
+
+
 
     }
 
@@ -62,6 +68,25 @@ public class NewYear extends Activity {
     }
 
 
+    private static boolean checkDate() {
+
+        // Надо тестить
+
+        String startDate = "1/1/2017";
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date strDate = null;
+        try {
+            strDate = sdf.parse(startDate);
+            if (System.currentTimeMillis() >= strDate.getTime()) {
+                return true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return false;
+    }
 
     @Override
     protected void onDestroy() {
