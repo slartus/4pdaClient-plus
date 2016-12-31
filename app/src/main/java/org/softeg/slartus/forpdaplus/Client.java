@@ -60,7 +60,6 @@ import java.util.regex.Pattern;
 public class Client implements IHttpClient {
 
     public static final String SITE = "4pda.ru";
-
     public String UserId = "0";
     private String m_User = App.getContext().getString(R.string.guest);
 
