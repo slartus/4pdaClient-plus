@@ -169,7 +169,7 @@ function scrollToAnchor() {
 	}
 
 	// highlight "target post"
-	if (anchor.nodeName == 'DIV') {
+	if (anchor.nodeName == 'DIV' && !anchor.nextElementSibling.classList.contains('active')) {
 		anchor.insertAdjacentHTML("beforeBegin", '<div class="target_post"></div>');
 		anchor.nextElementSibling.classList.add('active');
 	}
