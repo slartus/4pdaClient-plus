@@ -168,7 +168,7 @@ public class TopicApi {
     public static Users getWriters(IHttpClient httpClient, String topicId) throws IOException {
         String body = httpClient.performGet("http://4pda.ru/forum/index.php?s=&act=Stats&CODE=who&t=" + topicId);
 
-        Matcher m = Pattern.compile("<div[^>]*?>[^<]*<span[^>]*?><a[^>]*?showuser=(\\d+)[^>]*?>([\\s\\S]*?)<\\/a><\\/span>[^<]*?(\\d+)<\\/div>", Pattern.CASE_INSENSITIVE).matcher(body);
+        Matcher m = Pattern.compile("<div[^>]*?>[^<]*<span[^>]*?><a[^>]*?showuser=(\\d+)[^>]*?>([\\s\\S]*?)<\\/a><\\/span>[^<]*?(\\d+)<\\/div>", Pattern.CASE_INSENSITIVE).matcher(body);
         Users res = new Users();
         while (m.find()) {
             OldUser user = new OldUser();

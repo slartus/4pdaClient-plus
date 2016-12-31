@@ -488,4 +488,12 @@ public class Preferences {
 
         }
     }
+
+    public static void NYDone() {
+        App.getInstance().getPreferences().edit().putBoolean("NYDone", true).apply();
+    }
+
+    public static boolean isNYDone() {
+        return App.getInstance().getPreferences().getBoolean("NYDone", false);
+    }
 }
