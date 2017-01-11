@@ -176,7 +176,7 @@ function scrollToAnchor() {
 
 	// jump to the anchor
 	window.addEventListener('load', function() {anchor.scrollIntoView();});
-	anchor.scrollIntoView();
+//	anchor.scrollIntoView();
 }
 document.addEventListener('DOMContentLoaded', scrollToAnchor);
 
