@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -62,6 +63,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
     private View forumsProgress, topicsProgress;
     private View topics_group, forums_group, result_group, sort_group, source_group;
     private ImageButton forHideButton;
+    private Button rememberButton;
     private LinearLayout forHide;
     public static final int FORUMS_DIALOG_REQUEST = 1;
 
@@ -220,6 +222,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         result_group = view.findViewById(R.id.result_group);
         forHideButton = (ImageButton) view.findViewById(R.id.forHideButton);
         forHide = (LinearLayout) view.findViewById(R.id.forHide);
+        rememberButton = (Button) view.findViewById(R.id.remember);
 
         final RotateAnimation rotate = new RotateAnimation(180, 0, Animation.RELATIVE_TO_SELF,
                 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -250,19 +253,21 @@ public class SearchSettingsDialogFragment extends DialogFragment {
                 .cancelable(true)
                 .title(R.string.search)
                 .positiveText(R.string.find)
-                .negativeText(R.string.cancel)
+                //.negativeText(R.string.cancel)
                 .onPositive((materialDialog, dialogAction) -> MainActivity.startForumSearch(createSearchSettings()))
                 .build();
 
         // в поиске по теме не показываем "запомнить настройки"
         if (SearchSettings.SEARCH_TYPE_FORUM.equals(getSearchSettings().getSearchType())) {
-            adb.setActionButton(DialogAction.NEUTRAL, R.string.remember);
-            View neutral = adb.getActionButton(DialogAction.NEUTRAL);
-            neutral.setOnClickListener(v -> {
-                SearchSettings searchSettings = createSearchSettings();
-                searchSettings.setQuery("");
-                searchSettings.setUserName("");
-                searchSettings.save(App.getInstance().getPreferences().edit()).apply();
+            rememberButton.setVisibility(View.VISIBLE);
+            rememberButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SearchSettings searchSettings = createSearchSettings();
+                    searchSettings.setQuery("");
+                    searchSettings.setUserName("");
+                    searchSettings.save(App.getInstance().getPreferences().edit()).apply();
+                }
             });
         }
         adb.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);

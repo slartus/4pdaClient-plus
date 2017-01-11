@@ -743,7 +743,7 @@ public class Client implements IHttpClient {
     //13 - тело
     //Да простит меня господь за это. Действие во благо не счетается грехом, ведь верно?
     //А разве может быть иначе?
-    private final static Pattern postsPattern = Pattern.compile("<div data-post=\"(\\d+)\"[^>]*>[\\s\\S]*?post_date[^>]*?>(.*?)&nbsp;[^#]*#(\\d+)[\\s\\S]*?font color=\"([^\"]*?)\"[\\s\\S]*?\\[B\\](.*?),\\[\\/B\\]\\s*'\\)\"\\s*data-av=\"([^\"]*)\">[\\s\\S]*?<a href=\"[^\"]*?showuser=(\\d+)\"[\\s\\S]*?<span class=\"post_user_info[^\"]*\"[^>]*>(<strong[\\s\\S]*?<\\/strong><br[^>]*>)?([\\s\\S]*?)(?:\\n)[\\s\\S]*?<\\/span><br[^>]*?>([\\s\\S]*?<span[^>]*?ajaxrep[^>]*?>([^<]*?)<\\/span>[\\s\\S]*?)<div class=\"post_body([^\"]*?)\"[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div data-post=\"\\d+\"[^>]*>|<!-- TABLE FOOTER -->)",
+    private final static Pattern postsPattern = Pattern.compile("<div data-post=\"(\\d+)\"[^>]*>[\\s\\S]*?post_date[^>]*?>(.*?)&nbsp;[^#]*#(\\d+)[\\s\\S]*?font color=\"([^\"]*?)\"[\\s\\S]*?data-av=\"([^\"]*)\"[^>]*?>([^>]*?)<[\\s\\S]*?<a href=\"[^\"]*?showuser=(\\d+)\"[\\s\\S]*?<span[^>]*?post_user_info[^>]*?>(<strong[\\s\\S]*?<\\/strong>(?:<br[^>]*?>))?(?:<span[^<]*?color:[^;']*[^>]*?>)?([\\s\\S]*?)(?:<\\/span>|)(?:  \\| [^<]*?)?<\\/span>([\\s\\S]*?<span[^>]*?ajaxrep[^>]*?>([^<]*?)<\\/span>[\\s\\S]*?)<div class=\"post_body([^\"]*?)\"[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div data-post=\"\\d+\"[^>]*>|<!-- TABLE FOOTER -->)",
                     Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
     String np = "<div data-post=\"(\\d+)\"[^>]*>[\\s\\S]*?post_date[^>]*?>(.*?)&nbsp;[^#]*#(\\d+)[\\s\\S]*?font color=\"([^\"]*?)\"[\\s\\S]*?\\[B\\](.*?),\\[\\/B\\]\\s*'\\)\"\\s*data-av=\"([^\"]*)\">[\\s\\S]*?<a href=\"[^\"]*?showuser=(\\d+)\"[\\s\\S]*?<span class=\"post_user_info[^\"]*\"[^>]*>(<strong[\\s\\S]*?<\\/strong><br[^>]*>)?(<span[^>]*?>[^<]*?<\\/span>)[\\s\\S]*?<br[^>]*?>([\\s\\S]*?<span[^>]*?ajaxrep[^>]*?>(\\d+)<\\/span>[\\s\\S]*?)<div class=\"post_body([^\"]*?)\"[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div data-post=\"\\d+\"[^>]*>|<!-- TABLE FOOTER -->)";
     private final static Pattern editPattern = PatternExtensions.compile("do=edit_post[^\"]*\"");
@@ -965,8 +965,8 @@ public class Client implements IHttpClient {
 
             post = new org.softeg.slartus.forpdaplus.classes.Post(mainMatcher.group(1), mainMatcher.group(2), mainMatcher.group(3));
             post.setUserState(mainMatcher.group(4));
-            post.setAuthor(mainMatcher.group(5));
-            post.setAvatarFileName(mainMatcher.group(6));
+            post.setAvatarFileName(mainMatcher.group(5));
+            post.setAuthor(mainMatcher.group(6));
             post.setUserId(mainMatcher.group(7));
             if (mainMatcher.group(8) != null) {
                 post.setCurator();

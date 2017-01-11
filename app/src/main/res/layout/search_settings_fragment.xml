@@ -191,6 +191,14 @@
                 android:checked="true"
                 android:text="@string/Subforums"
                 android:layout_marginTop="4dp" />
+
+            <Button
+                android:id="@+id/remember"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/remember"
+                android:visibility="gone"/>
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>
