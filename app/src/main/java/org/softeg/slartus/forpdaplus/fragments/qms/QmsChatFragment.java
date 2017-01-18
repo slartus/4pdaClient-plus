@@ -1025,11 +1025,29 @@ public class QmsChatFragment extends WebViewFragment {
             return;
         }
         try {
-            Intent imageintent = new Intent(
+
+            Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            getIntent.setType("image/*");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                getIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+
+            Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            pickIntent.setType("image/*");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                pickIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+
+            Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                chooserIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+
+            startActivityForResult(chooserIntent, MY_INTENT_CLICK);
+
+            /*Intent imageintent = new Intent(
                     Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
                 imageintent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            startActivityForResult(imageintent, MY_INTENT_CLICK);
+            startActivityForResult(imageintent, MY_INTENT_CLICK);*/
         } catch (ActivityNotFoundException ex) {
             Toast.makeText(getMainActivity(), R.string.no_app_for_get_image_file, Toast.LENGTH_LONG).show();
         } catch (Exception ex) {
