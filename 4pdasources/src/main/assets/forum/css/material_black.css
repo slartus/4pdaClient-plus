@@ -2461,77 +2461,52 @@ div[data-post] > a {
 #news .comment-box > .heading a {
   display: none;
 }
-#news .comment-box .comment-list,
-#news .comment-box li {
+#news .comment-box ul.comment-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
-#news .comment-box .comment-list {
-  display: block;
-}
-#news .comment-box .comment-list .comment-list {
-  padding-left: 0.2rem;
-}
-@media screen and (min-width: 20em) {
-  #news .comment-box .comment-list .comment-list {
-    padding-left: 0.5rem;
-  }
-}
-@media screen and (min-width: 30em) {
-  #news .comment-box .comment-list .comment-list {
-    padding-left: 0.7rem;
-  }
-}
-@media screen and (min-width: 40em) {
-  #news .comment-box .comment-list .comment-list {
-    padding-left: 1rem;
-  }
-}
-@media screen and (min-width: 50em) {
-  #news .comment-box .comment-list .comment-list {
-    padding-left: 1.2rem;
-  }
-}
-#news .comment-box li {
+#news .comment-box ul.comment-list li {
   display: block;
   text-align: left;
   margin: 0.5rem;
-  padding: 0 0 1px;
+  padding: 0;
   word-break: break-word;
   background: #000000;
   border-radius: 0.125rem;
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
 }
-#news .comment-box li li {
-  margin: 0 0 0.5rem;
-  padding: 0;
+#news .comment-box ul.comment-list li li {
+  margin: 0;
+  padding: 0 0 0 5%;
   -webkit-box-shadow: none;
   box-shadow: none;
   border-radius: none;
 }
-#news .comment-box li > div {
+@media screen and (min-width: 50em) {
+  #news .comment-box ul.comment-list li li {
+    padding-left: 2rem;
+  }
+}
+#news .comment-box ul.comment-list li > div {
   position: relative;
   margin: 0;
-  padding-bottom: 0.5rem;
-}
-#news .comment-box li .deleted {
   padding: 0;
-  margin: 0;
 }
-#news .comment-box li .deleted .content {
-  padding: 0.2rem 0.5rem 0.2rem;
-  margin: 0;
-  color: #808080;
+#news .comment-box ul.comment-list li .deleted {
+  display: none;
 }
-#news .comment-box li .heading {
+#news .comment-box ul.comment-list li .deleted + ul > li {
+  padding-left: 0;
+}
+#news .comment-box ul.comment-list li .heading {
   display: block;
   margin: 0 0.25rem;
   padding: 0.25rem;
   border-bottom: 1px solid #191919;
 }
-#news .comment-box li .heading .nickname {
+#news .comment-box ul.comment-list li .heading .nickname {
   margin-right: 0.25rem;
   text-decoration: none;
   font-style: normal !important;
@@ -2539,74 +2514,77 @@ div[data-post] > a {
   font-weight: bold;
   color: white;
 }
-#news .comment-box li .heading .karma {
-  float: right;
+#news .comment-box ul.comment-list li .heading .karma {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 8.25rem;
   cursor: pointer;
   padding: 0 0.25rem;
 }
-#news .comment-box li .heading .karma .icon-karma-up {
-  padding: 0 0.25rem;
-}
-#news .comment-box li .heading .karma .icon-karma-up:before {
-  color: #808080;
-}
-#news .comment-box li .heading .karma .icon-hide-comment {
-  display: none;
-}
-#news .comment-box li .heading .karma .num-wrap .num {
-  padding: 0 0.25rem;
-  color: #808080;
-}
-#news .comment-box li .heading .h-meta {
+#news .comment-box ul.comment-list li .heading .karma .icon-karma-up b {
   display: inline-block;
-  position: absolute;
-  left: 0.5rem;
-  bottom: 0.25rem;
-  margin-top: 0 0.25em 0 0;
   height: 1.25rem;
   line-height: 1.25rem;
-  text-align: left;
-  text-decoration: none;
-  font-weight: normal;
-  font-size: 0.625rem;
+  vertical-align: middle;
+}
+#news .comment-box ul.comment-list li .heading .karma .icon-karma-up b:before {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  height: 1.25rem;
+  line-height: 1.25rem;
+}
+#news .comment-box ul.comment-list li .heading .karma .icon-hide-comment {
+  display: none;
+}
+#news .comment-box ul.comment-list li .heading .karma .num-wrap .num {
+  padding: 0 0.5rem;
   color: #808080;
 }
-#news .comment-box li .heading .h-meta a {
+#news .comment-box ul.comment-list li .heading .h-meta {
+  float: right;
+  font-size: 0.875rem;
+  font-weight: normal;
+  height: 1.25rem;
+  line-height: 1.25rem;
+  color: #808080;
+}
+#news .comment-box ul.comment-list li .heading .h-meta .more-meta {
   position: absolute;
+  bottom: 0.5rem;
+  left: 2.5rem;
+  color: transparent;
+}
+#news .comment-box ul.comment-list li .heading .h-meta .more-meta a {
   display: inline-block;
-  top: 0;
-  right: -1.5rem;
   padding: 0 0.5rem;
   margin: 0;
   height: 1.25rem;
   line-height: 1.25rem;
 }
-#news .comment-box li .heading .h-meta a .icon-link {
-  display: block;
+#news .comment-box ul.comment-list li .heading .h-meta .more-meta a i {
   height: 1.25rem;
   line-height: 1.25rem;
 }
-#news .comment-box li .heading .h-meta a .icon-link:before {
+#news .comment-box ul.comment-list li .heading .h-meta .more-meta a i:before {
   display: inline-block;
   margin: 0;
   padding: 0;
-  opacity: 0.5;
   height: 1.25rem;
   line-height: 1.25rem;
-  color: #afd9f9;
 }
-#news .comment-box li .content {
-  padding: 0.5rem 0.5rem 1.5rem;
+#news .comment-box ul.comment-list li .content {
+  padding: 0.5rem 0.5rem 2.25rem;
   margin: 0;
   color: white;
 }
-#news .comment-box li DIV[id*="comment-form-reply"] {
+#news .comment-box ul.comment-list li DIV[id*="comment-form-reply"] {
   position: absolute;
-  right: 3.75rem;
-  top: 0.25rem;
+  left: 0;
+  bottom: 0.5rem;
   display: block;
 }
-#news .comment-box li DIV[id*="comment-form-reply"] a {
+#news .comment-box ul.comment-list li DIV[id*="comment-form-reply"] a {
   display: block;
   color: transparent;
   overflow: hidden;
@@ -2617,6 +2595,7 @@ div[data-post] > a {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 1.5rem;
+  opacity: 0.8;
 }
 .video-thumb-wrapper {
   display: block;
