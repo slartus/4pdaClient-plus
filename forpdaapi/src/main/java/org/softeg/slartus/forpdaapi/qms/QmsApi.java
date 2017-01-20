@@ -189,8 +189,8 @@ public class QmsApi {
                                                  ArrayList<QmsUser> outUsers, Boolean parseNick) throws Throwable {
         QmsUserThemes res = new QmsUserThemes();
         String pageBody = httpClient.performGet("http://4pda.ru/forum/index.php?act=qms&mid=" + mid);
-        Pattern newCountPattern = Pattern.compile("(.*?)\\((\\d+)\\s*/\\s*(\\d+)\\)\\s*$");
-        Pattern countPattern = Pattern.compile("(.*?)\\((\\d+)\\)\\s*$");
+        Pattern newCountPattern = Pattern.compile("([\\s\\S]*?)\\((\\d+)\\s*\\/\\s*(\\d+)\\)\\s*$");
+        Pattern countPattern = Pattern.compile("([\\s\\S]*?)\\((\\d+)\\)\\s*$");
         Pattern strongPattern = Pattern.compile("<strong>([\\s\\S]*?)</strong>");
         Matcher matcher = Pattern.compile("<div class=\"list-group\">([\\s\\S]*)<form [^>]*>([\\s\\S]*?)<\\/form>").matcher(pageBody);
         if (matcher.find()) {
@@ -225,7 +225,7 @@ public class QmsApi {
                 res.add(item);
             }
             if (parseNick) {
-                matcher = Pattern.compile("<div class=\"nav\">[\\s\\S]*?showuser[^>]*([\\s\\S]*?)<\\/a>[\\s\\S]*?<\\/div>").matcher(pageBody);
+                matcher = Pattern.compile("<div class=\"nav\">[\\s\\S]*?showuser[^>]*>([\\s\\S]*?)<\\/a>[\\s\\S]*?<\\/div>").matcher(pageBody);
                 if (matcher.find()) {
                     res.Nick = matcher.group(1);
                 }

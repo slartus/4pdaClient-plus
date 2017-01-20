@@ -152,7 +152,7 @@ public class SpecialView extends WebViewFragment {
             if (success) {
                 showThemeBody(m_ThemeBody);
             } else {
-                m_WebView.loadDataWithBaseURL("\"file:///android_asset/\"", m_ThemeBody, "text/html", "UTF-8", null);
+                m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
             }
         }
     }

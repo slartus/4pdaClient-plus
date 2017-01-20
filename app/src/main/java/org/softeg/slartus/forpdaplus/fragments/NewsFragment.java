@@ -491,7 +491,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         super.showBody();
         try {
             setTitle(m_Title);
-            webView.loadDataWithBaseURL("file:///android_asset/", body, "text/html", "UTF-8", null);
+            webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
             if(buttonsPanel.getTranslationY()!=0)
                 ViewPropertyAnimator.animate(buttonsPanel)
                         .setInterpolator(new AccelerateDecelerateInterpolator())
@@ -647,7 +647,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 setLoading(false);
             } else {
                 setTitle(ex.getMessage());
-                webView.loadDataWithBaseURL("file:///android_asset/", m_ThemeBody, "text/html", "UTF-8", null);
+                webView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
                 AppLog.e(getMainActivity(), ex);
             }
         }

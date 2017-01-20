@@ -187,7 +187,7 @@ public class ForumRulesFragment extends WebViewFragment{
                 showBody();
             } else {
                 getSupportActionBar().setTitle(ex.getMessage());
-                m_WebView.loadDataWithBaseURL("\"file:///android_asset/\"", m_ThemeBody, "text/html", "UTF-8", null);
+                m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
                 AppLog.e(getMainActivity(), ex);
             }
         }

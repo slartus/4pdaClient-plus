@@ -361,6 +361,9 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
     public static Boolean tryShowUrl(Activity context, Handler handler, String url, Boolean showInDefaultBrowser,
                                      final Boolean finishActivity, String authKey) {
+        if(url.substring(0, 2).equals("//")){
+            url = "http:".concat(url);
+        }
         url = url.replace("&amp;", "&").replace("\"", "").trim();
         url = getRedirect(url).toString();
         url = url.trim();

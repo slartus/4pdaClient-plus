@@ -145,7 +145,7 @@ public class ProfileApi {
                     "<div class=\"photo\"><div class=\"img " + avType + "\" style=\"background-image: url($1);\"></div></div>");
             matcher = Pattern.compile("<div class=\"user-box\">[\\s\\S]*?<h1>([\\s\\S]*?)</h1>").matcher(page);
             if (matcher.find())
-                profile.setNick(matcher.group(1));
+                profile.setNick(Html.fromHtml(matcher.group(1)));
             page = page.replaceAll("<div class=\"profile-edit-links\">", "<div class=\"profile-edit-links\" style=\"display:none;\">");
             profile.setHtmlBody("<div class=\"user-profile-list\">" + page + "</div>");
         }

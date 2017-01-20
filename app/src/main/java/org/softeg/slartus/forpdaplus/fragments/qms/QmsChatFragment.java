@@ -287,7 +287,7 @@ public class QmsChatFragment extends WebViewFragment {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            wvChat.loadDataWithBaseURL("file:///android_asset/", body, "text/html", "UTF-8", null);
+                            wvChat.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
                         }
                     });
                 }
@@ -665,7 +665,7 @@ public class QmsChatFragment extends WebViewFragment {
                 if (finalUpdateTitle)
                     setTitle(m_ThemeTitle);
                 setSubtitle(m_Nick);
-                wvChat.loadDataWithBaseURL("file:///android_asset/", finalChatBody, "text/html", "UTF-8", null);
+                wvChat.loadDataWithBaseURL("http://4pda.ru/forum/", finalChatBody, "text/html", "UTF-8", null);
             } else {
                 if ("Такого диалога не существует.".equals(finalEx.getMessage())) {
                     new MaterialDialog.Builder(getMainActivity())
@@ -698,7 +698,7 @@ public class QmsChatFragment extends WebViewFragment {
         if (success) {
             edMessage.getText().clear();
 
-            wvChat.loadDataWithBaseURL("file:///android_asset/", chatBody, "text/html", "UTF-8", null);
+            wvChat.loadDataWithBaseURL("http://4pda.ru/forum/", chatBody, "text/html", "UTF-8", null);
         } else {
             if (ex != null)
                 AppLog.e(getMainActivity(), ex, () -> {
@@ -1037,7 +1037,7 @@ public class QmsChatFragment extends WebViewFragment {
                 pickIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 
             Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
-            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
                 chooserIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 

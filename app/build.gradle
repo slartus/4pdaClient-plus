@@ -10,14 +10,19 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     useLibrary 'org.apache.http.legacy'
+
+    def appVersionCode = 588
+    def appVersionName = "3.4.5"
+
+
     defaultConfig {
         applicationId 'org.softeg.slartus.forpdaplus'
         minSdkVersion 15
 
         //noinspection OldTargetApi
         targetSdkVersion 23
-        versionCode 545
-        versionName "3.3.9.3b0"
+        versionCode appVersionCode
+        versionName appVersionName
         vectorDrawables.useSupportLibrary = true
     }
     dexOptions {
@@ -47,15 +52,24 @@ android {
         def defaultSigningVariable = signingConfigs.release
         rel {
             applicationId 'org.softeg.slartus.forpdaplus'
-            versionCode 587
-            versionName "3.4.4"
+            versionCode appVersionCode
+            versionName appVersionName
             signingConfig defaultSigningVariable
         }
         beta {
             applicationId 'org.softeg.slartus.forpdaplus.beta'
-            versionCode 588
-            versionName "3.4.5beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
+            versionCode appVersionCode
+            versionName "${appVersionName}beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
             signingConfig defaultSigningVariable
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def fileNaming = "ForPDA"
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                output.outputFile = new File(getProject().getRootDir(), "${fileNaming}_${appVersionName}-${variant.buildType.name}.apk")
+            }
         }
     }
     compileOptions {

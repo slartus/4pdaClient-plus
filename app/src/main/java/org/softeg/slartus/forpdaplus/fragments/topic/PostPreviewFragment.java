@@ -93,7 +93,7 @@ public class PostPreviewFragment extends WebViewFragment {
 
         builder.endBody();
         builder.endHtml();
-        webView.loadDataWithBaseURL("http://4pda.ru/", builder.getHtml().toString(), "text/html", "UTF-8", null);
+        webView.loadDataWithBaseURL("http://4pda.ru/forum/", builder.getHtml().toString(), "text/html", "UTF-8", null);
         webViewClient = new MyWebViewClient();
     }
     @Nullable

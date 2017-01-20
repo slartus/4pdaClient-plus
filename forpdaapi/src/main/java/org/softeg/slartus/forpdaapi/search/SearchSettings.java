@@ -5,6 +5,8 @@ package org.softeg.slartus.forpdaapi.search;/*
 import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.Html;
+import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIUtils;
@@ -139,7 +141,10 @@ public class SearchSettings implements Parcelable {
     }
 
     public Boolean tryParse(String url) {
+        Log.d("SUKA", "TRYPARSE "+url);
         url = tryUrlDecode(url);
+        url = Html.fromHtml(url).toString();
+        Log.d("SUKA", "TRYPARSE DECODE "+url);
         Matcher m = Pattern.compile("(?:([\\w\\[\\]]+)=(.*?))(?:\\&|$)").matcher(url);
         m_ForumsIds = new HashSet<>();
         m_TopicsIds = new HashSet<>();
