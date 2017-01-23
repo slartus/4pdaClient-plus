@@ -174,7 +174,11 @@ public class QmsApi {
         while (m.find()) {
             qmsUser = new QmsUser();
             qmsUser.setId(m.group(1));
-            qmsUser.setAvatarUrl(m.group(3));
+            String avatar = m.group(3);
+            if (avatar.substring(0, 2).equals("//")) {
+                avatar = "http:".concat(avatar);
+            }
+            qmsUser.setAvatarUrl(avatar);
             qmsUser.setNick(Html.fromHtml(m.group(4)).toString().trim());
             count = m.group(2).trim();
             if (!count.equals(""))
@@ -253,8 +257,8 @@ public class QmsApi {
 
     //Upload file to savepic.ru
     public static String attachFile(IHttpClient httpClient,
-                                        String newFilePath,
-                                        ProgressState progress) throws Exception {
+                                    String newFilePath,
+                                    ProgressState progress) throws Exception {
 
         Map<String, String> additionalHeaders = new HashMap<>();
         /*additionalHeaders.put("note","");
@@ -274,20 +278,20 @@ public class QmsApi {
         additionalHeaders.put("size", "640");
         additionalHeaders.put("preview_size", "180");
         additionalHeaders.put("rotation_type", "0");
-        Log.d("save", "file "+newFilePath);
-        for(Cookie cookie:httpClient.getCookieStore().getCookies()){
-            Log.d("save", "Cookie name: "+cookie.getName()+"; value: "+cookie.getValue());
+        Log.d("save", "file " + newFilePath);
+        for (Cookie cookie : httpClient.getCookieStore().getCookies()) {
+            Log.d("save", "Cookie name: " + cookie.getName() + "; value: " + cookie.getValue());
         }
         String res = httpClient.uploadFile("http://savepice.ru/upload", newFilePath, additionalHeaders, progress);
-        for(Cookie cookie:httpClient.getCookieStore().getCookies()){
-            Log.d("save", "Cookie name: "+cookie.getName()+"; value: "+cookie.getValue());
+        for (Cookie cookie : httpClient.getCookieStore().getCookies()) {
+            Log.d("save", "Cookie name: " + cookie.getName() + "; value: " + cookie.getValue());
         }
 
-        Log.d("save", "result "+res);
+        Log.d("save", "result " + res);
         JSONObject jsonObject = new JSONObject(res);
         if (jsonObject.optBoolean("error", false)) {
             throw new NotReportException(jsonObject.optString("text"));
         }
-        return jsonObject.optString("redirect_path").replace("/uploaded/", "/uploads/").replace(".html","");
+        return jsonObject.optString("redirect_path").replace("/uploaded/", "/uploads/").replace(".html", "");
     }
 }

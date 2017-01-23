@@ -75,7 +75,7 @@ public class ProfileApi {
         additionalHeaders.put("return", "http://4pda.ru/forum/index.php");
 
 
-        String res = httpClient.performPost("http://4pda.ru/forum/index.php?act=auth", additionalHeaders);
+        String res = httpClient.performPost("https://4pda.ru/forum/index.php?act=auth", additionalHeaders);
 
         if (TextUtils.isEmpty(res)) {
             loginResult.setLoginError("Сервер вернул пустую страницу");
