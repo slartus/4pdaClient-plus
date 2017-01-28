@@ -96,8 +96,7 @@ public class NewsApi {
 
             news.setId(m.group(group + 2).replace("http://4pda.ru", ""));
             news.setTitle(Html.fromHtml(m.group(group + 4).replaceAll("&amp;","&")).toString());
-            news.setImgUrl(m.group(group + 3));
-
+            news.setImgUrl("http:" + m.group(group + 3));
 
             if (matcher == null)
                 matcher = descriptionPattern.matcher(m.group(group + 1));
