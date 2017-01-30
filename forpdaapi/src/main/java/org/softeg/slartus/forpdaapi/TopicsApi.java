@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaapi;
 import android.net.Uri;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIUtils;

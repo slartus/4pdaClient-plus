@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.classes;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;

@@ -2,8 +2,6 @@ package org.softeg.slartus.forpdaapi.search;/*
  * Created by slinkin on 29.04.2014.
  */
 
-import android.text.Html;
-
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.Topic;

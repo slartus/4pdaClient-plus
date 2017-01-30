@@ -17,13 +17,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import org.softeg.slartus.forpdaapi.ProfileApi;
 import org.softeg.slartus.forpdaapi.classes.LoginForm;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.controls.imageview.MaterialImageLoading;
 
 /**
  * User: slinkin

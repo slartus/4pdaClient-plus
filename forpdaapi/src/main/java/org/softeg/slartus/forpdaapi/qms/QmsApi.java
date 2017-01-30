@@ -2,14 +2,11 @@ package org.softeg.slartus.forpdaapi.qms;
 
 import android.text.Html;
 import android.util.Log;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 
 import org.apache.http.cookie.Cookie;
 import org.json.JSONObject;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.ProgressState;
-import org.softeg.slartus.forpdaapi.post.EditAttach;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 

@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaplus.classes;
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
