@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus.controls.imageview;
 
 import android.app.Dialog;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -9,6 +10,9 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Downloader;
 import com.squareup.picasso.MemoryPolicy;
@@ -99,48 +103,23 @@ public class ImageViewDialogFragment extends DialogFragment {
         super.onActivityCreated(savedInstanceState);
 
         try{
-            PicassoTools.clearCache(Picasso.with(App.getInstance()));
             m_ProgressView.setVisibility(View.VISIBLE);
-
-            Picasso.Builder builder = new Picasso.Builder(App.getInstance());
-            builder.listener(new Picasso.Listener() {
+            ImageLoader.getInstance().displayImage(mPreviewUrl, m_PhotoView, new SimpleImageLoadingListener(){
                 @Override
-                public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
                     m_ProgressView.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), exception.getMessage(), Toast.LENGTH_SHORT).show();
-
-                }
-            });
-            builder.downloader(new Downloader() {
-                @Override
-                public Response load(Uri uri, int networkPolicy) throws IOException {
-                    HttpResponse httpResponse = new HttpHelper().getDownloadResponse(uri.toString(), 0);
-
-
-                    return new Response(httpResponse.getEntity().getContent(), false, httpResponse.getEntity().getContentLength());
                 }
 
                 @Override
-                public void shutdown() {
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    m_ProgressView.setVisibility(View.GONE);
+                }
 
+                @Override
+                public void onLoadingCancelled(String imageUri, View view) {
+                    m_ProgressView.setVisibility(View.GONE);
                 }
             });
-            builder.build()
-                    .load(mPreviewUrl)
-                    .error(R.drawable.no_image)
-                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                    .into(m_PhotoView, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            m_ProgressView.setVisibility(View.GONE);
-                        }
-
-                        @Override
-                        public void onError() {
-                            m_ProgressView.setVisibility(View.GONE);
-                        }
-                    });
-
         }catch (Throwable ex){
             AppLog.e(getActivity(),ex);
         }

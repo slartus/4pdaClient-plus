@@ -418,13 +418,13 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
 
     private Boolean isReplyUrl(String url) {
-        Matcher m = Pattern.compile("http://4pdaservice.org/(\\d+)/(\\d+)").matcher(url);
+        Matcher m = Pattern.compile("4pdaservice.org/(\\d+)/(\\d+)").matcher(url);
         if (m.find()) {
             respond(m.group(1), m.group(2), null);
             return true;
         }
 
-        if (Pattern.compile("http://4pdaservice.org/#commentform").matcher(url).find()) {
+        if (Pattern.compile("4pdaservice.org/#commentform").matcher(url).find()) {
             respond();
             return true;
         }
@@ -433,7 +433,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
 
     private String getPostId() {
-        final Pattern pattern = Pattern.compile("http://4pda.ru/\\d{4}/\\d{2}/\\d{2}/(\\d+)");
+        final Pattern pattern = Pattern.compile("4pda.ru/\\d{4}/\\d{2}/\\d{2}/(\\d+)");
         Matcher m = pattern.matcher(m_NewsUrl);
         if (m.find()) {
             return m.group(1);
@@ -442,12 +442,12 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
 
     public static Boolean isAnchor(String url) {
-        final Pattern pattern = Pattern.compile("http://4pda.ru/\\d{4}/\\d{2}/\\d{2}/\\d+/*#.*");
+        final Pattern pattern = Pattern.compile("4pda.ru/\\d{4}/\\d{2}/\\d{2}/\\d+/*#.*");
         return pattern.matcher(url).find();
     }
 
     private void showAnchor(String url) {
-        final Pattern pattern = Pattern.compile("http://4pda.ru/\\d{4}/\\d{2}/\\d{2}/\\d+/*#(.*)");
+        final Pattern pattern = Pattern.compile("4pda.ru/\\d{4}/\\d{2}/\\d{2}/\\d+/*#(.*)");
         Matcher m = pattern.matcher(url);
         if (m.find()) {
             webView.evalJs("scrollToElement('" + m.group(1) + "');");
@@ -557,7 +557,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             builder.append("<div style=\"padding-top:").append(String.valueOf(HtmlBuilder.getMarginTop())).append("px\"/>\n");
             builder.append("<div id=\"main\">");
             body = body.replaceAll("\"//","\"http://");
-            Matcher matcher = PatternExtensions.compile("ModKarma\\((\\{[\\s\\S]*?\\}\\})").matcher(body);
+            Matcher matcher = PatternExtensions.compile("ModKarma\\((\\{?[\\s\\S]*?\\}?)(?:,\\s?\\d+)?\\)").matcher(body);
             builder.append(parseBody(body));
 
             if (matcher.find()) {

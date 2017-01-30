@@ -7,9 +7,9 @@
 
   "show_beta_dialog":true,
   "update_beta":{
-    "ver":"3.4.5.6",
-    "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/ForPDA_3.4.5.6-release.apk",
-    "info":"[!] Важное замечание\n[+] Нововведение\n[-] Исправлена ошибка\n[*] Изменения\n\n[-] Авторизация\n[-] Аватарки в списке контактов QMS\n[*] Спрятаны комментарии в новостях в Material стилях"
+    "ver":"3.4.6",
+    "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/ForPDA_3.4.6-release.apk",
+    "info":"[!] Важное замечание\n[+] Нововведение\n[-] Исправлена ошибка\n[*] Изменения\n\n[-] Авторизация\n[-] Новости\n[-] Профиль\n[-] Переход по ссылкам"
   },
 
   "toster_update":{

@@ -1,5 +1,7 @@
 package org.softeg.slartus.forpdacommon;
 
+import android.util.Log;
+
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
@@ -413,6 +415,11 @@ public class HttpHelper {
     private String performRequest(final String contentType, String url, final String user, final String pass,
                                   final Map<String, String> headers, final List<NameValuePair> nvps, final int requestType,
                                   String encoding) throws IOException {
+        Log.d("kek", "request url " + url);
+        if (url.substring(0, 2).equals("//")) {
+            url = "http:".concat(url);
+            Log.d("kek", "fixed request url " + url);
+        }
         url = url.replace("\"", "").replace("'", "");
         m_LastUrl = url;
         android.util.Log.i("HttpHelper", url);

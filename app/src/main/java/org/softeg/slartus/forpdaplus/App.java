@@ -20,11 +20,13 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
 import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
+import org.apache.http.HttpResponse;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdanotifyservice.MainService;
 import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
@@ -37,6 +39,7 @@ import org.softeg.slartus.forpdaplus.utils.HttpHelperForImage;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -566,7 +569,7 @@ public class App extends android.app.Application {
                     QmsNotifier.TIME_OUT_KEY, 5), 1);
             intent.putExtra(QmsNotifier.TIME_OUT_KEY, timeout);
 
-            if(adaptive)
+            if (adaptive)
                 intent.putExtra(QmsNotifier.ADAPTIVE_TIME_OUT_KEY, 1.0f);
 
             QmsNotifier.restartTask(INSTANCE, intent);
@@ -590,7 +593,21 @@ public class App extends android.app.Application {
 
     public static void initImageLoader(Context context) {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                .imageDownloader(new HttpHelperForImage(context))
+                //.imageDownloader(new HttpHelperForImage(context))
+                .imageDownloader(new BaseImageDownloader(context) {
+                    @Override
+                    public InputStream getStream(String imageUri, Object extra) throws IOException {
+                        if (imageUri.substring(0, 2).equals("//"))
+                            imageUri = "http:".concat(imageUri);
+                        return super.getStream(imageUri, extra);
+                    }
+
+                    @Override
+                    protected InputStream getStreamFromNetwork(String imageUri, Object extra) throws IOException {
+                        HttpResponse httpResponse = new HttpHelper().getDownloadResponse(imageUri, 0);
+                        return httpResponse.getEntity().getContent();
+                    }
+                })
                 .threadPoolSize(5)
                 .threadPriority(Thread.MIN_PRIORITY)
                 .denyCacheImageMultipleSizesInMemory()

@@ -139,7 +139,7 @@ public class ProfileApi {
         profile.setId(userID);
         String page = httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID);
 
-        Matcher matcher = Pattern.compile("<form action=\"http:\\/\\/4pda\\.ru\\/forum\\/index\\.php\\?showuser[^>]*>[\\s\\S]*?<ul[^>]*>([\\s\\S]*)<\\/ul>[\\s\\S]*?<\\/form>").matcher(page);
+        Matcher matcher = Pattern.compile("<form action=\"[^\"]*?4pda\\.ru\\/forum\\/index\\.php\\?showuser[^>]*>[\\s\\S]*?<ul[^>]*>([\\s\\S]*)<\\/ul>[\\s\\S]*?<\\/form>").matcher(page);
         if (matcher.find()) {
             page = matcher.group(1).replaceFirst("<div class=\"photo\">[^<]*<img src=\"([^\"]*)\"[^<]*</div>",
                     "<div class=\"photo\"><div class=\"img " + avType + "\" style=\"background-image: url($1);\"></div></div>");

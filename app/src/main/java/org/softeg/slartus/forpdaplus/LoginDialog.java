@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,9 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -150,20 +154,18 @@ public class LoginDialog {
         protected void onPostExecute(final LoginForm loginForm) {
 
             if (loginForm.getError() == null) {
-                Picasso.with(mContext).load(loginForm.getCapPath()).into(mImageView, new Callback() {
+                ImageLoader.getInstance().displayImage(loginForm.getCapPath(), mImageView, new SimpleImageLoadingListener(){
                     @Override
-                    public void onSuccess() {
-                        MaterialImageLoading.animate(mImageView).setDuration(2000).start();
-                        mProgressBar.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onError() {
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
                         Toast.makeText(mContext, R.string.failed_load_captcha, Toast.LENGTH_SHORT).show();
                         mProgressBar.setVisibility(View.GONE);
                     }
-                });
 
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                });
                 capTime = loginForm.getCapTime();
                 capSig = loginForm.getCapSig();
                 session = loginForm.getSession();

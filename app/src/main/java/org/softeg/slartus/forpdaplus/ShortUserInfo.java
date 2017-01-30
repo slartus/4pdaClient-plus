@@ -23,8 +23,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -38,6 +38,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,30 +57,6 @@ public class ShortUserInfo {
     public String avatarUrl = "";
     private View view;
 
-    private Target target = new Target() {
-        @Override
-        public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-            userBackground.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (bitmap.getWidth() == 0 || bitmap.getHeight() == 0)
-                        return;
-                    blur(bitmap, userBackground, avatarUrl);
-                    prefs.edit().putString("userAvatarUrl", avatarUrl).apply();
-                }
-            });
-        }
-
-        @Override
-        public void onBitmapFailed(Drawable errorDrawable) {
-
-        }
-
-        @Override
-        public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-        }
-    };
 
     public ShortUserInfo(Activity activity, View view) {
         prefs = App.getInstance().getPreferences();
@@ -130,7 +107,7 @@ public class ShortUserInfo {
 
         File imgFile = new File(prefs.getString("userInfoBg", ""));
         if (imgFile.exists()) {
-            Picasso.with(activity).load(imgFile).into(userBackground);
+            ImageLoader.getInstance().displayImage("file://"+imgFile.getPath(), userBackground);
         }
         client.checkLoginByCookies();
         if (isOnline()) {
@@ -222,7 +199,7 @@ public class ShortUserInfo {
             try {
                 Document doc = Jsoup.parse(client.performGet("http://4pda.ru/forum/index.php?showuser=" + client.UserId));
                 if (doc.select("div.user-box > div.photo > img").first() != null) {
-                    avatarUrl = doc.select("div.user-box > div.photo > img").first().absUrl("src");
+                    avatarUrl = doc.select("div.user-box > div.photo > img").first().attr("src");
                 }
                 if (doc.select("div.statistic-box span[id*=\"ajaxrep\"]").first() != null) {
                     reputation = doc.select("div.statistic-box span[id*=\"ajaxrep\"]").first().text();
@@ -257,25 +234,35 @@ public class ShortUserInfo {
                 if (prefs.getBoolean("isUserBackground", false)) {
                     File imgFile = new File(prefs.getString("userInfoBg", ""));
                     if (imgFile.exists()) {
-                        Picasso.with(getContext()).load(imgFile).into(userBackground);
+                        ImageLoader.getInstance().displayImage("file:///"+imgFile.getPath(), userBackground);
                     }
                 } else {
                     if (!avatarUrl.equals(prefs.getString("userAvatarUrl", "")) | prefs.getString("userInfoBg", "").equals("")) {
-                        Picasso.with(App.getContext()).load(avatarUrl).into(target);
+                        ImageLoader.getInstance().loadImage(avatarUrl, new SimpleImageLoadingListener() {
+                            @Override
+                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                                userBackground.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (loadedImage == null) return;
+                                        if (loadedImage.getWidth() == 0 || loadedImage.getHeight() == 0)
+                                            return;
+                                        blur(loadedImage, userBackground, avatarUrl);
+                                        prefs.edit().putString("userAvatarUrl", avatarUrl).apply();
+                                    }
+                                });
+                            }
+                        });
                     } else {
                         File imgFile = new File(prefs.getString("userInfoBg", ""));
                         if (imgFile.exists()) {
-                            Picasso.with(getContext()).load(imgFile).into(userBackground);
+                            ImageLoader.getInstance().displayImage("file:///"+imgFile.getPath(), userBackground);
                         }
                     }
                 }
 
 
-                if (isSquare) {
-                    Picasso.with(App.getContext()).load(avatarUrl).into(imgAvatarSquare);
-                } else {
-                    Picasso.with(App.getContext()).load(avatarUrl).into(imgAvatar);
-                }
+                ImageLoader.getInstance().displayImage(avatarUrl, isSquare ? imgAvatarSquare : imgAvatar);
                 prefs.edit()
                         .putString("shortUserInfoRep", reputation)
                         .apply();
