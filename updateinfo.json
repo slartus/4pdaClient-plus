@@ -7,9 +7,9 @@
 
   "show_beta_dialog":true,
   "update_beta":{
-    "ver":"3.4.6",
-    "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/ForPDA_3.4.6-release.apk",
-    "info":"[!] Важное замечание\n[+] Нововведение\n[-] Исправлена ошибка\n[*] Изменения\n\n[-] Авторизация\n[-] Новости\n[-] Профиль\n[-] Переход по ссылкам"
+    "ver":"3.4.6.1",
+    "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/ForPDA_3.4.6.1-release.apk",
+    "info":"[!] Важное замечание\n[+] Нововведение\n[-] Исправлена ошибка\n[*] Изменения\n\n[-] Избранное\n[-] Переход к сообщениям в теме\n[-] Просмотр изображений в теме\n[-] Другие ошибки"
   },
 
   "toster_update":{

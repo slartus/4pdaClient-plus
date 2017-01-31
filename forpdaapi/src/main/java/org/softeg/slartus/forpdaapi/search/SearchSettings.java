@@ -141,10 +141,8 @@ public class SearchSettings implements Parcelable {
     }
 
     public Boolean tryParse(String url) {
-        Log.d("SUKA", "TRYPARSE "+url);
         url = tryUrlDecode(url);
         url = Html.fromHtml(url).toString();
-        Log.d("SUKA", "TRYPARSE DECODE "+url);
         Matcher m = Pattern.compile("(?:([\\w\\[\\]]+)=(.*?))(?:\\&|$)").matcher(url);
         m_ForumsIds = new HashSet<>();
         m_TopicsIds = new HashSet<>();
