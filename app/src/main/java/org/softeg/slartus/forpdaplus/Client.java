@@ -758,7 +758,7 @@ public class Client implements IHttpClient {
     private final static Pattern descriptionPattern = PatternExtensions.compile("<div class=\"topic_title_post\">([^<]*)<");
     private final static Pattern moderatorTitlePattern = PatternExtensions.compile("onclick=\"return setpidchecks\\(this.checked\\);\".*?>&nbsp;(.*?)<");
     private final static Pattern pagesCountPattern = PatternExtensions.compile("var pages = parseInt\\((\\d+)\\);");
-    private final static Pattern lastPageStartPattern = PatternExtensions.compile("<a href=\"(http://4pda.ru)?/forum/index.php\\?showtopic=\\d+&amp;st=(\\d+)\"");
+    private final static Pattern lastPageStartPattern = PatternExtensions.compile("<a href=\"([^\"]*?4pda.ru)?\\/forum\\/index.php\\?showtopic=\\d+&amp;st=(\\d+)\"");
     private final static Pattern currentPagePattern = PatternExtensions.compile("<span class=\"pagecurrent\">(\\d+)</span>");
 
     public TopicBodyBuilder parseTopic(String topicPageBody,
@@ -804,7 +804,7 @@ public class Client implements IHttpClient {
         }
         m = navStripPattern.matcher(page);
         if (m.find()) {
-            final Pattern forumPatter = PatternExtensions.compile("<a href=\"(http://4pda.ru)?/forum/index.php\\?.*?showforum=(\\d+).*?\">(.*?)</a>");
+            final Pattern forumPatter = PatternExtensions.compile("<a href=\"([^\"]*?4pda.ru)?\\/forum\\/index.php\\?.*?showforum=(\\d+).*?\">(.*?)<\\/a>");
             Matcher forumMatcher = forumPatter.matcher(m.group(1));
             while (forumMatcher.find()) {
                 if (forumMatcher.group(2).equals("10"))

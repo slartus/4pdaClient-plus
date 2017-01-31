@@ -37,7 +37,7 @@ public class TopicsApi {
     final static Pattern countPattern = PatternExtensions.compile("<a href=\"/forum/index.php\\?act=[^\"]*?st=(\\d+)\">&raquo;</a>");
     final static Pattern mainPattern = PatternExtensions.compile("cat_name[\\s\\S]*?</div>([\\s\\S]*<br />)<div class=\"forum_mod_funcs\">");
     final static Pattern topicsPattern = PatternExtensions.compile("(<div data-item-fid[\\s\\S]*?</script></div></div>)");
-    final static Pattern topicPattern = PatternExtensions.compile("<div data-item-fid=\"(\\d*)\" data-item-track=\"(\\w*)\" data-item-pin=\"(\\d)\"[\\s\\S]*?<a href=\"([^\"]*?)\"[^>]*>(<strong>|)([\\s\\S]*?)(</strong>|)</a>[\\s\\S]*?<span class=\"topic_desc\">([\\s\\S]*?)(<[\\s\\S]*?showforum=(\\d*?)\"[\\s\\S]*?)<a href=\"[^\"]*view=getlastpost[^\"]*\">Послед.:</a>\\s*<a href=\"/forum/index.php\\?showuser=\\d+\">(.*?)</a>(.*?)<");
+    final static Pattern topicPattern = PatternExtensions.compile("<div data-item-fid=\"(\\d*)\" data-item-track=\"(\\w*)\" data-item-pin=\"(\\d)\"[\\s\\S]*?<a href=\"([^\"]*?)\"[^>]*>(<strong>|)([\\s\\S]*?)(<\\/strong>|)<\\/a>[\\s\\S]*?<span class=\"topic_desc\">([\\s\\S]*?)(<[\\s\\S]*?showforum=(\\d*?)\"[\\s\\S]*?)<a href=\"[^\"]*view=getlastpost[^\"]*\">Послед.:<\\/a>\\s*<a href=\"[^\"]*?\\/forum\\/index.php\\?showuser=\\d+\">(.*?)<\\/a>(.*?)<");
 
     public static ArrayList<FavTopic> getFavTopics(IHttpClient client,
                                                    ListInfo listInfo) throws ParseException, IOException, URISyntaxException {
@@ -176,7 +176,7 @@ public class TopicsApi {
             Pattern lastPageStartPattern = Pattern.compile("<a href=\"(http://4pda.ru)?/forum/index.php\\?showforum=\\d+&amp;[^\"]*?st=(\\d+)\">",
                     Pattern.CASE_INSENSITIVE);
 
-            Pattern themesPattern = Pattern.compile("<div class=\"topic_title\">.*?<a href=\"/forum/index.php\\?showtopic=(\\d+)\">([^<]*)</a>.*?</div><div class=\"topic_body\">(?:<span class=\"topic_desc\">([^<]*)<br /></span>|)<span class=\"topic_desc\">автор: <a href=\"/forum/index.php\\?showuser=\\d+\">[^<]*</a></span><br />(<a href=\"/forum/index.php\\?showtopic=\\d+&amp;view=getnewpost\">Новые</a>)?\\s*<a href=\"/forum/index.php\\?showtopic=\\d+&amp;view=getlastpost\">Послед.:</a> <a href=\"/forum/index.php\\?showuser=(\\d+)\">([^<]*)</a>(.*?)<.*?/div>", Pattern.CASE_INSENSITIVE);
+            Pattern themesPattern = Pattern.compile("<div class=\"topic_title\">.*?<a href=\"[^\"]*?/forum/index.php\\?showtopic=(\\d+)\">([^<]*)</a>.*?</div><div class=\"topic_body\">(?:<span class=\"topic_desc\">([^<]*)<br /></span>|)<span class=\"topic_desc\">автор: <a href=\"[^\"]*?/forum/index.php\\?showuser=\\d+\">[^<]*</a></span><br />(<a href=\"[^\"]*?/forum/index.php\\?showtopic=\\d+&amp;view=getnewpost\">Новые</a>)?\\s*<a href=\"[^\"]*?/forum/index.php\\?showtopic=\\d+&amp;view=getlastpost\">Послед.:</a> <a href=\"[^\"]*?/forum/index.php\\?showuser=(\\d+)\">([^<]*)</a>(.*?)<.*?/div>", Pattern.CASE_INSENSITIVE);
 
             String today = Functions.getToday();
             String yesterday = Functions.getYesterToday();

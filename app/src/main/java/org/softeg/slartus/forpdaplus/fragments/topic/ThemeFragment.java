@@ -1051,9 +1051,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         url = IntentActivity.normalizeThemeUrl(url);
 
         String[] patterns = {
-                "(https?:/+4pda.ru/+forum/+index.php\\?.*?showtopic=[^\"]*)",
-                "(https?:/+4pda.ru/+forum/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)$",
-                "(https?:/+4pda.ru/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)$"
+                "(/+4pda.ru/+forum/+index.php\\?.*?showtopic=[^\"]*)",
+                "(/+4pda.ru/+forum/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)$",
+                "(/+4pda.ru/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)$"
         };
 
 
@@ -1435,7 +1435,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         };
 
         private boolean checkIsImage(final String url) {
-            final Pattern imagePattern = PatternExtensions.compile("http://.*?\\.(png|jpg|jpeg|gif)$");
+            final Pattern imagePattern = PatternExtensions.compile("\\.(png|jpg|jpeg|gif)$");
             if (!imagePattern.matcher(url).find()) return false;
             if (!Client.getInstance().getLogined() && !Client.getInstance().hasLoginCookies()) {
                 Client.getInstance().showLoginForm(getContext(), (user, success) -> {
@@ -1450,15 +1450,26 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }
 
         private void showImage(String url) {
-            for (ArrayList<String> list : imageAttaches) {
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).equals(url)) {
-                        ImgViewer.startActivity(getContext(), list, i);
-                        return;
+            Pattern tPattern = Pattern.compile("(post\\/\\d*?\\/[\\s\\S]*?\\.png)");
+            Matcher target = tPattern.matcher(url);
+            Matcher temp;
+            String id;
+            if (target.find()) {
+                id = target.group(1);
+                for (ArrayList<String> list : imageAttaches) {
+                    for (int i = 0; i < list.size(); i++) {
+                        temp = tPattern.matcher(list.get(i));
+                        if (temp.find()) {
+                            if (temp.group(1).equals(id)) {
+                                ImgViewer.startActivity(getContext(), list, i);
+                                return;
+                            }
+                        }
                     }
                 }
+                ImgViewer.startActivity(getContext(), url);
             }
-            ImgViewer.startActivity(getContext(), url);
+
         }
 
         private boolean checkIsPoll(String url) {
@@ -1477,7 +1488,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         private boolean tryDeletePost(String url) {
 
-            Matcher m = Pattern.compile("http://4pda.ru/forum/index.php\\?act=Mod&CODE=04&f=(\\d+)&t=(\\d+)&p=(\\d+)&st=(\\d+)&auth_key=(.*?)").matcher(url);
+            Matcher m = Pattern.compile("4pda.ru/forum/index.php\\?act=Mod&CODE=04&f=(\\d+)&t=(\\d+)&p=(\\d+)&st=(\\d+)&auth_key=(.*?)").matcher(url);
             if (m.find()) {
 
                 prepareDeleteMessage(m.group(3));
