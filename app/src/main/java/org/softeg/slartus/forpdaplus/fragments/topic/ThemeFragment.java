@@ -1450,7 +1450,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }
 
         private void showImage(String url) {
-            Pattern tPattern = Pattern.compile("(post\\/\\d*?\\/[\\s\\S]*?\\.png)");
+            Pattern tPattern = Pattern.compile("(post\\/\\d*?\\/[\\s\\S]*?\\.(?:png|jpg|jpeg|gif))");
             Matcher target = tPattern.matcher(url);
             Matcher temp;
             String id;

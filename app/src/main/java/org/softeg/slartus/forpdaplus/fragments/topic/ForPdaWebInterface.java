@@ -61,7 +61,8 @@ public class ForPdaWebInterface {
     private ThemeFragment getContext() {
         return context;
     }
-    private FragmentActivity getMainActivity(){
+
+    private FragmentActivity getMainActivity() {
         return activity;
     }
 
@@ -138,7 +139,7 @@ public class ForPdaWebInterface {
                                 }
                                 for (int j = 0; j < selection.length; j++) {
                                     if (!selection[j]) continue;
-                                    DownloadsService.download(((Activity)getMainActivity()), topicAttaches.get(j).getUri(), false);
+                                    DownloadsService.download(((Activity) getMainActivity()), topicAttaches.get(j).getUri(), false);
                                     selection[j] = false;
                                 }
                             }
@@ -255,7 +256,7 @@ public class ForPdaWebInterface {
 
     @JavascriptInterface
     public void insertTextToPost(final String text) {
-        if(android.os.Build.VERSION.SDK_INT >= 16){
+        if (android.os.Build.VERSION.SDK_INT >= 16) {
             run(new Runnable() {
                 @Override
                 public void run() {
@@ -266,7 +267,7 @@ public class ForPdaWebInterface {
                     });
                 }
             });
-        }else {
+        } else {
             getMainActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -358,7 +359,7 @@ public class ForPdaWebInterface {
                     final String page = activity.getString(R.string.page_short);
 
                     for (int p = 0; p < getContext().getTopic().getPagesCount(); p++) {
-                        pages[p] =  page + (p + 1) + " (" + ((p * postsPerPage + 1) + "-" + (p + 1) * postsPerPage) + ")";
+                        pages[p] = page + (p + 1) + " (" + ((p * postsPerPage + 1) + "-" + (p + 1) * postsPerPage) + ")";
                     }
 
                     LayoutInflater inflater = (LayoutInflater) getMainActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -490,16 +491,19 @@ public class ForPdaWebInterface {
                 int showRepPosition = -1;
                 int minusRepPosition = -1;
                 if ("1".equals(canPlus)) {
-                    items.add(getContext().getString(R.string.do_vote_good)+" (+1)");
-                    plusRepPosition = i; i++;
+                    items.add(getContext().getString(R.string.do_vote_good) + " (+1)");
+                    plusRepPosition = i;
+                    i++;
                 }
 
                 items.add(activity.getString(R.string.look));
-                showRepPosition = i; i++;
+                showRepPosition = i;
+                i++;
 
                 if ("1".equals(canMinus)) {
-                    items.add(getContext().getString(R.string.do_vote_bad)+" (-1)");
-                    minusRepPosition = i; i++;
+                    items.add(getContext().getString(R.string.do_vote_bad) + " (-1)");
+                    minusRepPosition = i;
+                    i++;
                 }
 
                 if (items.size() == 0) return;
@@ -508,7 +512,7 @@ public class ForPdaWebInterface {
                 final int finalShowRepPosition = showRepPosition;
                 final int finalPlusRepPosition = plusRepPosition;
                 new MaterialDialog.Builder(getMainActivity())
-                        .title(activity.getString(R.string.reputation)+" "+userNick)
+                        .title(activity.getString(R.string.reputation) + " " + userNick)
                         .items(items.toArray(new CharSequence[items.size()]))
                         .itemsCallback(new MaterialDialog.ListCallback() {
                             @Override
@@ -560,10 +564,15 @@ public class ForPdaWebInterface {
         run(new Runnable() {
             @Override
             public void run() {
-                for(JsonElement s:new JsonParser().parse(json).getAsJsonArray()){
+                for (JsonElement s : new JsonParser().parse(json).getAsJsonArray()) {
                     ArrayList<String> list1 = new ArrayList<>();
-                    for(JsonElement a:s.getAsJsonArray())
-                        list1.add(a.getAsString());
+                    for (JsonElement a : s.getAsJsonArray()) {
+                        String url = a.getAsString();
+                        if (!url.contains("http")) {
+                            url = "http:".concat(url);
+                        }
+                        list1.add(url);
+                    }
                     getContext().imageAttaches.add(list1);
                 }
             }
@@ -572,14 +581,15 @@ public class ForPdaWebInterface {
     }
 
     @JavascriptInterface
-    public void setHistoryBody(final String index, final String body){
+    public void setHistoryBody(final String index, final String body) {
         run(new Runnable() {
             @Override
             public void run() {
-                getContext().setHistoryBody(Integer.parseInt(index), body.replaceAll("data-block-init=\"1\"",""));
+                getContext().setHistoryBody(Integer.parseInt(index), body.replaceAll("data-block-init=\"1\"", ""));
             }
         });
     }
+
     @JavascriptInterface
     public void saveHtml(final String html) {
         getMainActivity().runOnUiThread(new Runnable() {
