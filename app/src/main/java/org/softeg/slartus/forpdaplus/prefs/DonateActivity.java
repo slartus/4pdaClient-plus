@@ -60,7 +60,7 @@ public class DonateActivity extends PreferenceActivity {
             public boolean onPreferenceClick(Preference preference) {
                 Intent marketIntent = new Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("http://www.softeg.org/qiwi"));
+                        Uri.parse("https://qiwi.me/aae4cc12-6926-4c0e-a171-bb98e2eb5cc0"));
                 fragment.startActivity(Intent.createChooser(marketIntent, fragment.getString(R.string.Choice)));
                 return true;
             }
