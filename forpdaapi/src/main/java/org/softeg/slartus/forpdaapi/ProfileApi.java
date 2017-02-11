@@ -25,7 +25,6 @@ public class ProfileApi {
      * @return если залогинен - true
      */
     public static void checkLogin(String pageBody, LoginResult loginResult) {
-
         Matcher m = Pattern.compile("<i class=\"icon-profile\">[\\s\\S]*?<ul class=\"dropdown-menu\">[\\s\\S]*?showuser=(\\d+)\"[\\s\\S]*?action=logout[^\"]*?k=([a-z0-9]{32})", Pattern.CASE_INSENSITIVE)
                 .matcher(pageBody);
 
@@ -82,17 +81,26 @@ public class ProfileApi {
             return loginResult;
         }
 
+        String errorMsg = null;
         for (Cookie cookie : httpClient.getCookieStore().getCookies()) {
-            if ("member_id".equals(cookie.getName())) {
+            if (!"deleted".equals(cookie.getValue()) && "member_id".equals(cookie.getName())) {
                 // id пользователя. если он есть - логин успешный
                 loginResult.setUserId(cookie.getValue());
                 loginResult.setUserLogin(cookie.getValue());
                 loginResult.setSuccess(true);
+
+            } else if ("deleted".equals(cookie.getValue())) {
+                errorMsg = "Неправильный логин, пароль или капча!";
             } else if ("pass_hash".equals(cookie.getName())) {
                 // хэш пароля
             } else if ("session_id".equals(cookie.getName())) {
                 // id сессии
             }
+        }
+
+        if (errorMsg != null) {
+            loginResult.setLoginError(errorMsg);
+            return loginResult;
         }
 
         checkLogin(res, loginResult);
