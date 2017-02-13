@@ -100,7 +100,9 @@ function removeImgesSrc() {
 			if (!img.hasAttribute('src') || img.dataset.imageSrc) continue;
 			img.dataset.imageSrc = img.src;
 			img.removeAttribute('src');
-			img.addEventListener('load', function() {onLoadSpoilCloseButton(img);});
+			images[images.length].addEventListener('load', function() {
+				onLoadSpoilCloseButton(img);
+			});
 		}
 	}
 }
