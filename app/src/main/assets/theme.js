@@ -55,31 +55,32 @@ function blocksOpenClose() {
  */
 
 function spoilCloseButton(t) {
+	var el = t;
 	while (!t.classList.contains('.post-body')) {
-		if (t.classList.contains('spoil') && !t.querySelector('.spoil_close') && t.clientHeight > document.documentElement.clientHeight) {
-			var bb = t.querySelector('.block-body');
-			var btn = document.createElement('button');
-			btn.innerHTML = 'Закрыть спойлер';
-			btn.className = "spoil_close";
-			btn.addEventListener('click', clickBtn);
-
-			function clickBtn() {
-				t.classList.remove('open');
-				t.classList.add('close');
-				t.scrollIntoView();
+		if (t.classList.contains('spoil') && !t.querySelector('.spoil_close')) {
+			if (t.querySelector('img[src]')) {
+				var images = t.querySelectorAll('img[src]');
+				images[images.length - 1].addEventListener("load",function(){
+					spoilCloseButton(el);
+				});
 			}
-			bb.appendChild(btn);
-			return;
+			if (t.clientHeight > document.documentElement.clientHeight) {
+				var bb = t.querySelector('.block-body');
+				var btn = document.createElement('button');
+				btn.innerHTML = 'Закрыть спойлер';
+				btn.className = "spoil_close";
+				btn.addEventListener('click', clickBtn);
+				function clickBtn() {
+					t.classList.remove('open');
+					t.classList.add('close');
+					t.scrollIntoView();
+				}
+				bb.appendChild(btn);
+				return;
+			}
 		}
 		t = t.parentElement;
 	}
-}
-
-function onLoadSpoilCloseButton(img) {
-	while (!img.classList.contains('spoil')) {
-		img = img.parentNode;
-	}
-	spoilCloseButton(img);
 }
 
 /**
@@ -100,9 +101,6 @@ function removeImgesSrc() {
 			if (!img.hasAttribute('src') || img.dataset.imageSrc) continue;
 			img.dataset.imageSrc = img.src;
 			img.removeAttribute('src');
-			images[images.length].addEventListener('load', function() {
-				onLoadSpoilCloseButton(img);
-			});
 		}
 	}
 }
