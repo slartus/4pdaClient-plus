@@ -397,7 +397,7 @@
 
     <PreferenceScreen
         android:key="notifiers.service"
-        android:title="Уведомления">
+        android:title="Notifications">
 
         <PreferenceScreen
             android:summary="Notifications on new Private Message"
