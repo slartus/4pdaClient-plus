@@ -5,59 +5,59 @@
 
     <PreferenceScreen
         android:key="common"
-        android:title="Внешний вид">
-        <PreferenceCategory android:title="Общее">
+        android:title="Appearance">
+        <PreferenceCategory android:title="overall">
             <Preference
                 android:key="appstyle"
-                android:summary="Выберите стиль программы"
-                android:title="Стиль" />
+                android:summary="Choose the theme"
+                android:title="Theme"/>
             <Preference
                 android:key="accentColor"
-                android:summary="Цвет кнопки в теме и новостях"
-                android:title="Цвет кнопки с карандашом" />
+                android:summary="Pick side color"
+                android:title="Pick color with pencil" />
             <Preference
                 android:key="mainAccentColor"
-                android:title="Цвет акцента" />
+                android:title="@string/pick_accent_color" />
             <Preference
                 android:key="webViewFont"
-                android:title="Шрифт WebView"
-                android:summary="Шрифт в новостях, поиске, теме, профиле, QMS" />
+                android:title="WebView font"
+                android:summary="The font in the news, search, topic, profile, the QMS" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="titleMarquee"
-                android:summary="Требуется перезапуск приложения"
-                android:title="Прокрутка длинного текста в тулбаре" />
+                android:summary="Requires application restart"
+                android:title="Scrolling a long text in the toolbar" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="isSquareAvarars"
-                android:title="Квадратные аватарки"
-                android:summary="Требуется перезапуск приложения" />
+                android:title="Square avatars"
+                android:summary="Requires application restart" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="statusbarFake"
-                android:title="Status Bar как в Android 5+"
-                android:summary="Подходит для прошивок MIUI, Flyme и т.п на Android 4.4" />
+                android:title="Status Bar in Android 5+"
+                android:summary="Suitable for MIUI firmware, Flyme etc on Android 4.4" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="oldIndicator"
-                android:title="Полоса у новых сообщений"
-                android:summary="Требуется перезапуск приложения" />
+                android:title="New posts"
+                android:summary="Requires application restart" />
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="coloredNavBar"
-                android:title="Красить Navigation Bar"
-                android:summary="Для Android 5 и выше. Требуется перезапуск приложения" />
+                android:title="Color navigation bar"
+                android:summary="For android 5+. Requires application restart" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="pancilInActionBar"
-                android:title="Карандаш в экшнбаре" />
+                android:title="Pencil in the action bar" />
         </PreferenceCategory>
 
-        <PreferenceCategory android:title="Боковая панель">
+        <PreferenceCategory android:title="Side panel">
             <Preference
                 android:key="userBackground"
-                android:summary="Требуется перезапуск приложения"
-                android:title="Изображение в боковом меню" />
+                android:summary="Requires application restart"
+                android:title="Image of the sidebar" />
             <!--<CheckBoxPreference-->
             <!--android:defaultValue="false"-->
             <!--android:key="categoryLast"-->
@@ -65,25 +65,25 @@
             <!--android:summary="Меню 'Последние' в выезжающем меню"/>-->
             <Preference
                 android:key="visibleMenuItems"
-                android:title="Пункты меню в боковой панели" />
+                android:title="Image of the sidebar" />
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="isShowShortUserInfo"
-                android:title="Информация о пользователе"
-                android:summary="Отображать информацию о пользователе в боковом меню. Требуется перезапуск приложения" />
+                android:title="User information"
+                android:summary="Display information about the user in the sidebar. Requires application restart" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="tabsBottom"
-                android:title="Список вкладок внизу" />
+                android:title="The list of tabs at the bottom" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="isMarginBottomNav"
-                android:title="Нижний отступ в боковом меню"
-                android:summary="Включить, если не видно последнего пункта. Требуется перезапуск приложения" />
+                android:title="Lower indentation in the side menu"
+                android:summary="Include, if you do not see the last paragraph. Requires application restart" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="openTabDrawerButton"
-                android:title="Отображать кнопку открытия панели вкладок" />
+                android:title="Display button opening the tab bar" />
         </PreferenceCategory>
 
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
@@ -91,74 +91,74 @@
             android:entries="@array/screenOrienationArray"
             android:entryValues="@array/screenOrienationValues"
             android:key="theme.ScreenOrientation"
-            android:title="Ориентация экрана" />
+            android:title="Screen orientation" />
 
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="Просмотр темы">
+    <PreferenceScreen android:title="View topic">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="theme.SpoilFirstPost"
-            android:summary="Прятать первый пост страницы в спойлер"
-            android:title="Прятать первый пост" />
+            android:summary="Hide first post pages spoiler"
+            android:title="Hide the first post" />
 
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="theme.ConfirmSend"
-            android:summary="Подтверждать отправку сообщения"
-            android:title="Подтверждать отправку" />
+            android:summary="Confirm sending a message"
+            android:title="Confirm sending" />
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
             android:defaultValue="1"
             android:entries="@array/ConnectTypeArray"
             android:entryValues="@array/ConnectTypeValues"
             android:key="theme.LoadsImages"
-            android:title="Загружать картинки" />
+            android:title="Upload pictures" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="theme.UseVolumesScroll"
-            android:summary="Скроллить страницу кнопками громкости"
-            android:title="Скролл громкостью" />
+            android:summary="Volume buttons to scroll the page"
+            android:title="Scroll volume" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="theme.KeepScreenOn"
-            android:title="Не выключать экран" />
+            android:title="Do not turn off the screen" />
 
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="theme.SpoilerByButton"
-            android:summary="Если не работают спойлеры"
-            android:title="Использовать кнопку для спойлеров" />
+            android:summary="If the spoilers dont work"
+            android:title="Use the button for spoilers" />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="theme.ShowReadersAndWriters"
-            android:summary="Показывать на странице 'Кто читает тему' и 'Кто писал сообщения'"
-            android:title="Дополнительные кнопки" />
+            android:summary="Show on the 'Who reads the topic' and 'Who posted messages'"
+            android:title="Additional buttons" />
 
-        <PreferenceScreen android:title="Скачивание файлов">
+        <PreferenceScreen android:title="Download file">
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="files.ConfirmDownload"
-                android:summary="Подтверждение загрузки файла при выборе ссылки"
-                android:title="Подтверждать загрузку файла" />
+                android:summary="Confirm file upload when you select"
+                android:title="Confirm file upload" />
             <EditTextPreference
                 android:key="downloads.path"
-                android:summary="При скачивании менеджером клиента!"
-                android:title="Путь к папке загрузки файлов" />
+                android:summary="When downloading with a client manager!"
+                android:title="The path to the download folder file" />
             <ListPreference
                 android:entries="@array/downloaderManagersArray"
                 android:entryValues="@array/downloaderManagersValues"
                 android:key="file.downloaderManagers"
-                android:summary="Использовать для скачивания файлов выбранный менеджер"
-                android:title="Скачивать файл при помощи..." />
+                android:summary="Use download manager files selected"
+                android:title="Download a file using the..." />
         </PreferenceScreen>
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="fullThemeTitle"
-            android:summary="Вместе с названием отображать описание темы на странице"
-            android:title="Полное название темы" />
+            android:summary="However, the name display description of the topic on the page"
+            android:title="Full title of the topic" />
         <!--<CheckBoxPreference-->
         <!--android:defaultValue="false"-->
         <!--android:key="theme.Fullscreen"-->
@@ -166,128 +166,128 @@
         <!--android:title="Fullscreen" />-->
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="Новости">
+    <PreferenceScreen android:title="News">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="news.ConfirmSend"
-            android:summary="Подтверждать отправку сообщения"
-            android:title="Подтверждать отправку" />
+            android:summary="Confirm sending a message"
+            android:title="confirm sending" />
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
             android:defaultValue="1"
             android:entries="@array/ConnectTypeArray"
             android:entryValues="@array/ConnectTypeValues"
             android:key="news.LoadsImages"
-            android:title="Загружать картинки" />
+            android:title="Upload pictures" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="news.UseVolumesScroll"
-            android:summary="Скроллить страницу кнопками громкости"
-            android:title="Скролл громкостью" />
+            android:summary="Volume buttons to scroll the page"
+            android:title="scroll volume" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="news.KeepScreenOn"
-            android:title="Не выключать экран" />
+            android:title="Do not turn off the screen" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="news.FullScreen"
-            android:summary="Просмотр новости во весь экран"
-            android:title="Во весь экран" />
+            android:summary="News view in full screen"
+            android:title="Full screen" />
         <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
             android:defaultValue="-1"
             android:entries="@array/video_player_types_titles"
             android:entryValues="@array/video_player_types_values"
             android:key="news.videoplayer"
-            android:title="Проигрыватель видео" />
+            android:title="Video player" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="loadNewsComment"
-            android:title="Не загружать комментарии"
-            android:summary="Ускорит отображение страницы" />
+            android:title="Do not load comments"
+            android:summary="Speed up page display" />
     </PreferenceScreen>
 
 
-    <PreferenceScreen android:title="Списки">
-        <PreferenceCategory android:title="Общее">
+    <PreferenceScreen android:title="Lists">
+        <PreferenceCategory android:title="overall">
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="lists.scroll_by_buttons"
-                android:summary="Использовать кнопки для скролла списка"
-                android:title="Скролл кнопками" />
+                android:summary="Use the buttons to scroll the list"
+                android:title="scroll buttons" />
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="lists.refresh"
-                android:summary="Обновлять при первом открытии"
-                android:title="Обновлять список" />
+                android:summary="Update when you first open"
+                android:title="update list" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="lists.refresh_on_tab"
-                android:summary="Обновлять при выборе вкладки"
-                android:title="Обновлять списки из вкладок" />
+                android:summary="Update when selecting tab"
+                android:title="Update the list of tabs" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="showSubMain"
-                android:title="Скрыть описание в пункте списка"
-                android:summary="Требуется перезапуск приложения" />
+                android:title="Hide the description in paragraph list"
+                android:summary="Requires application restart" />
         </PreferenceCategory>
 
-        <PreferenceCategory android:title="Избранное">
+        <PreferenceCategory android:title="Favorites">
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="lists.favorites.load_all"
-                android:summary="Загружать сразу все страницы"
-                android:title="Загружать все" />
+                android:summary="Download all the pages at once"
+                android:title="Download all" />
         </PreferenceCategory>
 
-        <PreferenceCategory android:title="Форум">
+        <PreferenceCategory android:title="Forum">
             <CheckBoxPreference
-                android:title="Отображать картинки"
+                android:title="Display pictures"
                 android:key="forum.list.show_images"
                 android:defaultValue="true" />
         </PreferenceCategory>
 
-        <PreferenceCategory android:title="Новости">
+        <PreferenceCategory android:title="News">
             <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
                 android:defaultValue="1"
                 android:entries="@array/ConnectTypeArray"
                 android:entryValues="@array/ConnectTypeValues"
                 android:key="news.list.loadimages"
-                android:title="Загружать изображения" />
+                android:title="Load images" />
 
             <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
                 android:defaultValue="full"
                 android:entries="@array/NewsListViewTitles"
                 android:entryValues="@array/NewsListViewValues"
                 android:key="news.list.view"
-                android:title="Вид списка" />
+                android:title="View the list" />
         </PreferenceCategory>
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="Системное">
+    <PreferenceScreen android:title="System">
         <Preference
             android:key="path.system_path"
-            android:title="Путь к папке с данными" />
+            android:title="The path to the data folder" />
 
         <PreferenceScreen android:title="Cookies">
 
             <EditTextPreference
                 android:key="cookies.path"
-                android:summary="По умолчанию - пусто"
-                android:title="Путь к файлу cookies" />
+                android:summary="Default - empty"
+                android:title="The path to your cookies" />
 
             <Preference
                 android:key="cookies.path.SetSystemPath"
-                android:summary="Задать системный путь"
-                android:title="Системный" />
+                android:summary="Ask the system path"
+                android:title="system" />
 
             <Preference
                 android:key="cookies.path.SetAppPath"
-                android:summary="Задать путь к общей папке программы на карте памяти"
-                android:title="Общая папка" />
+                android:summary="Set path to the shared folder of the program on the memory card"
+                android:title="a shared folder" />
 
             <Preference
                 android:key="cookies.delete"
-                android:summary="Удалить файл cookies по текущему пути"
-                android:title="Удалить файл cookies" />
+                android:summary="Remove cookies image for the current path"
+                android:title="Remove cookies file" />
 
 
         </PreferenceScreen>
@@ -297,18 +297,18 @@
             android:entries="@array/listOffsetsArray"
             android:entryValues="@array/listOffsetsValues"
             android:key="topics.list.offset"
-            android:summary="При неверном открытии тем выберите какую тему открывать"
-            android:title="Смещение в списке тем" />
+            android:summary="When you open the wrong select which topic to open"
+            android:title="The shift to the topic list" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="system.WebviewAllowJavascriptInterface"
-            android:summary="Снимите галочку, если программа падает при вызове меню в просмотре темы"
-            android:title="Использовать скрипты в просмотре темы" />
+            android:summary="Uncheck if the program crashes when calling the menu in viewing a topic"
+            android:title="Use scripts in viewing a topic" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="system.WebViewScroll"
-            android:summary="Снимите галочку, если программа падает при вызове темы. Например, для Nook Simple Touch"
-            android:title="Показывать скролл в браузере" />
+            android:summary="Uncheck if the program crashes when calling threads. For example, for, для Nook Simple Touch"
+            android:title="Display scrolling in the browser" />
 
 
         <ListPreference
@@ -316,83 +316,83 @@
             android:entries="@array/drawermenupositions_titles"
             android:entryValues="@array/drawermenupositions_values"
             android:key="system.drawermenuposition"
-            android:summary="С какой стороны удобно вытаскивать меню (требуется перезапуск)"
-            android:title="Выезжающее меню" />
+            android:summary="Which side is convenient to pull out the menu (requires restart)"
+            android:title="Merge menu" />
 
-        <PreferenceScreen android:title="Настройка клавиш">
+        <PreferenceScreen android:title="Setting keys">
             <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
                 android:defaultValue="158"
                 android:key="keys.prevPage"
-                android:summary="Можно указать несколько через запятую"
-                android:title="Код кнопки для перехода на предыдущую страницу" />
+                android:summary="You can specify multiple comma-separated"
+                android:title="Button code to go to the previous page" />
             <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
                 android:defaultValue="407"
                 android:key="keys.nextPage"
-                android:summary="Можно указать несколько через запятую"
-                android:title="Код кнопки для перехода на следующую страницу" />
+                android:summary="You can specify multiple comma-separated"
+                android:title="Button code to go to the next page" />
             <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
                 android:defaultValue="24"
                 android:key="keys.scrollUp"
-                android:summary="Можно указать несколько через запятую"
-                android:title="Код кнопки для прокрутки вверх" />
+                android:summary="You can specify multiple comma-separated"
+                android:title="Button code to scroll up" />
             <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
                 android:defaultValue="25"
                 android:key="keys.scrollDown"
-                android:summary="Можно указать несколько через запятую"
-                android:title="Код кнопки для прокрутки вниз" />
+                android:summary="You can specify multiple comma-separated"
+                android:title="Button code to scroll up button code to scroll down" />
         </PreferenceScreen>
-        <PreferenceScreen android:title="Для разработчика стилей">
+        <PreferenceScreen android:title="For Developer styles">
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="system.developerSavePage"
-                android:summary="Возможность сохранения страницы"
-                android:title="Сохранить страницу" />
+                android:summary="The ability to save pages"
+                android:title="Save page" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="system.developerStyle"
-                android:title="Отключить стили" />
+                android:title="Disable styles" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="system.developerGrid"
-                android:title="Сетка 8dp (8px)" />
+                android:title="Grid 8dp (8px)" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="system.developerBounds"
-                android:title="Границы элементов (outline)" />
+                android:title="The boundaries of the elements (outline)" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="only_custom_script"
-                android:title="Только свои скрипты" />
+                android:title="Only the scripts" />
         </PreferenceScreen>
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="isAccelerateGif"
-            android:summary="Не рекомендуется для Android версии ниже 4.4 KitKat"
-            android:title="Оптимизация GIF анимаций на странице" />
+            android:summary="Not recommended for Android versions below 4.4 KitKat"
+            android:title="Optimize GIF animations on the page" />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="webviewCompatMode"
-            android:summary="Убирает падения приложения, снижает производительность. Рекомендуется для Android 4.1"
-            android:title="Режим совместимости" />
+            android:summary="Removes drop attachments, reduces productivity. It is recommended for Android 4.1"
+            android:title="Compatibility Mode" />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="system.curator"
-            android:summary="Функции курирования"
-            android:title="Я куратор" />
+            android:summary="Functions curation"
+            android:title="curation" />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="notify.beta_version"
-            android:summary="Сообщать о версиях для тестирования"
-            android:title="Сообщать о бета-версиях" />
+            android:summary="Report on versions for testing"
+            android:title="Report on beta versions" />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="showExitButton"
-            android:title="Отображать кнопку 'Закрыть программу'" />
+            android:title="Display button 'Close program'" />
     </PreferenceScreen>
 
     <PreferenceScreen
@@ -400,133 +400,133 @@
         android:title="Уведомления">
 
         <PreferenceScreen
-            android:summary="Уведомления о новых личных сообщениях"
+            android:summary="Notifications on new Private Message"
             android:title="QMS">
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="qms.service.use"
-                android:summary="Сервис проверки новых сообщений"
-                android:text="Сервис проверки новых сообщений"
-                android:title="Использовать сервис" />
+                android:summary="Service check for new messages"
+                android:text="Service check for new messages"
+                android:title="Use service" />
             <org.softeg.slartus.forpdaplus.classes.common.ExtEditTextPreference
                 android:inputType="numberDecimal"
                 android:key="qms.service.timeout"
-                android:summary="Таймаут проверки новых сообщений, мин"
-                android:title="Таймаут проверки"
+                android:summary="Timeout check for new messages, min"
+                android:title="Timeout check "
                 project:defaultValue="5"
                 project:myInputType="numberDecimal" />
         </PreferenceScreen>
 
         <PreferenceScreen
-            android:summary="Уведомления о новых постах в избранных темах"
-            android:title="Избранное">
+            android:summary="Notifications of new posts in the selected topics"
+            android:title="Favorites">
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="FavoritesNotifier.service.use"
-                android:summary="Сервис проверки новых сообщений"
-                android:text="textСервис проверки новых сообщений"
-                android:title="Использовать сервис" />
+                android:summary="Service check for new messages"
+                android:text="text service check new posts"
+                android:title="Use service" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="FavoritesNotifier.service.pinned_only"
-                android:summary="Уведомлять о новых сообщениях только в важных темах"
-                android:title="Только важные" />
+                android:summary="Notify me of new messages only important topics"
+                android:title="only important" />
             <org.softeg.slartus.forpdaplus.classes.common.ExtEditTextPreference
                 android:inputType="numberDecimal"
                 android:key="FavoritesNotifier.service.timeout"
-                android:summary="Таймаут проверки новых постов, мин"
-                android:title="Таймаут проверки"
+                android:summary="Timeout check for new posts"
+                android:title="Timeout check"
                 project:defaultValue="5"
                 project:myInputType="numberDecimal" />
         </PreferenceScreen>
 
-        <PreferenceScreen android:title="Настроить уведомления">
+        <PreferenceScreen android:title="Customize notifications">
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="notifiers.service.use_sound"
-                android:title="Мелодия" />
+                android:title="sound" />
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="notifiers.service.is_default_sound"
-                android:title="Мелодия по умолчанию" />
+                android:title="default sound" />
             <Preference
                 android:enabled="false"
                 android:key="notifiers.service.sound"
-                android:title="Выбор мелодии" />
+                android:title="Select ringtone" />
         </PreferenceScreen>
 
-        <PreferenceScreen android:title="Настроить тихий режим">
+        <PreferenceScreen android:title="Set up silent mode">
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="notifiers.silent_mode.enabled"
-                android:title="Тихий режим" />
+                android:title="Quiet mode" />
 
             <Preference
                 android:key="notifiers.silent_mode.start_time"
-                android:title="Начало" />
+                android:title="begining" />
             <Preference
                 android:key="notifiers.silent_mode.end_time"
-                android:title="Конец" />
+                android:title="end" />
         </PreferenceScreen>
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="О программе">
+    <PreferenceScreen android:title="About">
         <Preference
             android:key="About.AppVersion"
-            android:title="О программе" />
+            android:title="About app" />
         <Preference
             android:key="About.History"
-            android:title="История изменений" />
+            android:title="About history" />
         <Preference
             android:key="About.ShareIt"
-            android:title="Рассказать друзьям" />
+            android:title="share to friends" />
         <Preference
             android:key="About.AddRep"
-            android:title="Поднять репутацию Slartus'y" />
+            android:title="Raise reputation for Slartus" />
         <Preference
             android:key="About.AddRepTwo"
-            android:title="Поднять репутацию Radiation15" />
+            android:title="Raise reputation for Radiation15" />
         <Preference
             android:key="About.AddRepThree"
-            android:title="Поднять репутацию iSanechek'y" />
+            android:title="Raise reputation for iSanechek'y" />
         <Preference
             android:key="About.ShowTheme"
-            android:summary="Открыть тему обсуждения программы"
-            android:title="Открыть тему" />
+            android:summary="Open discussion of the topic of the program"
+            android:title="Open Thread" />
         <Preference
             android:key="About.CheckNewVersion"
-            android:title="Проверить наличие новой версии" />
+            android:title="Check for new version" />
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="Помочь проекту">
+    <PreferenceScreen android:title="Donate">
         <Preference
             android:key="Qiwi"
-            android:summary="Перейти на форму выставления счета"
+            android:summary="Go to the form of the invoice"
             android:title="QIWI" />
 
         <Preference
             android:key="Yandex.money"
-            android:summary="Скопировать в буфер: 41001491859942"
+            android:summary="Copied to clipboard: 41001491859942"
             android:title="Яндекс-кошелёк" />
 
         <Preference
             android:key="WebMoney.moneyZ"
-            android:summary="Скопировать в буфер: Z188582160272"
+            android:summary="Copied to clipboard: Z188582160272"
             android:title="WebMoney Z" />
 
         <Preference
             android:key="WebMoney.moneyR"
-            android:summary="Скопировать в буфер: R391199896701"
+            android:summary="Copied to clipboard: R391199896701"
             android:title="WebMoney R" />
 
         <Preference
             android:key="WebMoney.moneyU"
-            android:summary="Скопировать в буфер: U177333629317"
+            android:summary="Copied to clipboard: U177333629317"
             android:title="WebMoney U" />
 
         <Preference
             android:key="Paypal.money"
-            android:summary="Перейти на форму выставления счета"
+            android:summary="Go to the form of the invoice"
             android:title="Paypal" />
 
         <!--<Preference-->
@@ -539,42 +539,42 @@
         <!--android:summary="Другие способы"-->
         <!--android:title="Перейти на страницу помощи проекту" />-->
         <PreferenceScreen
-            android:summary="Спасибо за стили"
-            android:title="Благодарности Морфию">
+            android:summary="Thank you for themes"
+            android:title="Thanks Morphy">
             <Preference
                 android:key="Morfiy.WebMoney.moneyB"
-                android:summary="Скопировать в буфер: B266066430353"
+                android:summary="Copied to clipboard: B266066430353"
                 android:title="WebMoney B" />
 
             <Preference
                 android:key="Morfiy.WebMoney.moneyU"
-                android:summary="Скопировать в буфер: U376942372846"
+                android:summary="Copied to clipboard: U376942372846"
                 android:title="WebMoney U" />
 
             <Preference
                 android:key="Morfiy.WebMoney.moneyE"
-                android:summary="Скопировать в буфер: E300106725068"
+                android:summary="Copied to clipboard: E300106725068"
                 android:title="WebMoney E" />
 
             <Preference
                 android:key="Morfiy.WebMoney.moneyR"
-                android:summary="Скопировать в буфер: R343791846131"
+                android:summary="Copied to clipboard: R343791846131"
                 android:title="WebMoney R" />
 
             <Preference
                 android:key="Morfiy.WebMoney.moneyZ"
-                android:summary="Скопировать в буфер: Z349073483817"
+                android:summary="Copied to clipboard: Z349073483817"
                 android:title="WebMoney Z" />
         </PreferenceScreen>
         <Preference
             android:key="Radiation.Yandex.money"
-            android:summary="Скопировать в буфер: 410012865124764"
-            android:title="Яндекс-кошелёк Radiation15" />
+            android:summary="Copied to clipboard: 410012865124764"
+            android:title="Yandex-purse Radiation15" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="donate.DontShow"
-            android:summary="Не показывать для каждой новой версии сообщение о донейте"
-            android:title="Не показывать сообщение" />
+            android:summary="Do not show the donate popup"
+            android:title="Do not show message" />
 
     </PreferenceScreen>
 </PreferenceScreen>
