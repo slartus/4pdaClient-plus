@@ -19,8 +19,8 @@
     <string name="Password">Пароль</string>
     <string name="Stealth">Скрытность</string>
     <string name="Comment_">Комментарий</string>
-    <string name="EnterSubject_">Введите тему...</string>
-    <string name="EnterMessage_">Введите сообщение...</string>
+    <string name="EnterSubject_">Введите тему…</string>
+    <string name="EnterMessage_">Введите сообщение…</string>
     <string name="Whom">Кому</string>
     <string name="User__">Пользователь: </string>
     <string name="EditReason__">Причина изменения</string>
@@ -53,8 +53,8 @@
     <string name="Logout">Выход</string>
     <string name="Login">Вход</string>
     <string name="Registration">Регистрация</string>
-    <string name="SendBy_">Отправить через...</string>
-    <string name="Loading_">Загрузка...</string>
+    <string name="SendBy_">Отправить через…</string>
+    <string name="Loading_">Загрузка…</string>
     <string name="Canceled">Отменено</string>
     <string name="Error">Ошибка</string>
     <string name="DownloadComplete">Загрузка завершена</string>
@@ -159,7 +159,7 @@
     <string name="blank_url">Пустой url</string>
     <string name="want_to_delete_msg">Вы действительно хотите удалить это сообщение?</string>
     <string name="delete_m">Удалить</string>
-    <string name="deleting_msg">Удаление сообщения...</string>
+    <string name="deleting_msg">Удаление сообщения…</string>
     <string name="theme_option">Опции темы</string>
 
 
@@ -193,10 +193,10 @@
     <string name="select_text_size">Выберите размер текста</string>
     <string name="select_list">Выберите список</string>
     <string name="complaint_sent">Жалоба отправлена</string>
-    <string name="receiving_data">Получение данных...</string>
+    <string name="receiving_data">Получение данных…</string>
     <string name="login">Вход</string>
     <string name="bad_logout">Неудачный выход</string>
-    <string name="processing_data">Обработка данных...</string>
+    <string name="processing_data">Обработка данных…</string>
     <string name="reviews">Отзывы</string>
     <string name="loading_canceled_by_user">Загрузка отменена пользователем</string>
     <string name="write">Написать</string>
@@ -240,13 +240,13 @@
     <string name="invalid_number_format">Неверный формат числа!</string>
     <string name="links_not_supported">Такие ссылки не поддерживаются</string>
     <string name="choose">Выберите</string>
-    <string name="chare_via">Поделиться через...</string>
+    <string name="chare_via">Поделиться через…</string>
     <string name="link_copied_to_buffer">Ссылка скопирована</string>
     <string name="open_in_browser">Открыть в браузере</string>
     <string name="share_link">Поделиться ссылкой</string>
     <string name="copy_link">Скопировать ссылку</string>
     <string name="open_in_new_tab">Открыть в новой вкладке</string>
-    <string name="open_in">Открыть в...</string>
+    <string name="open_in">Открыть в…</string>
     <string name="save">Сохранить</string>
     <string name="open">Открыть</string>
     <string name="favorites">Избранное</string>
@@ -286,9 +286,9 @@
     <string name="list_forums">Список форумов</string>
     <string name="administration">Администрация</string>
     <string name="failed_load_captcha">Не удалось загрузить капчу</string>
-    <string name="performing_login">Вход...</string>
+    <string name="performing_login">Вход…</string>
     <string name="login_performed">Вход выполнен</string>
-    <string name="performing_logout">Выход...</string>
+    <string name="performing_logout">Выход…</string>
     <string name="logout_performed">Выход выполнен</string>
     <string name="permission_grented">PERMISSION GRANTED</string>
     <string name="permission_denied">PERMISSION DENIED</string>
@@ -341,7 +341,7 @@
     <string name="failed_load">Не удалось загрузить</string>
     <string name="download_reciever_content">Нажмите для дальнейших действий</string>
     <string name="download_method">Способ скачивания</string>
-    <string name="download_method_notify"><![CDATA[Вы можете изменить способ скачивания в настройках программы: Просмотр темы>>Скачивание файлов>>Скачивать файл при помощи...]]></string>
+    <string name="download_method_notify"><![CDATA[Вы можете изменить способ скачивания в настройках программы: Просмотр темы>>Скачивание файлов>>Скачивать файл при помощи…]]></string>
     <string name="ask_file_need_download">Имеется недокачанный файл с таким же названием.\nДокачать?</string>
     <string name="re_download">Перекачать</string>
     <string name="download_started">Загрузка начата</string>
@@ -386,7 +386,7 @@
     <string name="deleting_messages">Удаление сообщений</string>
     <string name="deleting_dialogs">Удаление диалогов</string>
     <string name="contacts">Контакты</string>
-    <string name="getting_user_nick">Получение ника пользователя...</string>
+    <string name="getting_user_nick">Получение ника пользователя…</string>
     <string name="nick_received">Ник получен</string>
     <string name="error_getting_nick">Не удалось получить ник пользователя</string>
     <string name="ask_create_dialog" formatted="false">С пользователем %s нет диалогов. Создать?</string>

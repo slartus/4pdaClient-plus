@@ -17,7 +17,7 @@
                 android:title="Цвет кнопки с карандашом" />
             <Preference
                 android:key="mainAccentColor"
-                android:title="Цвет акцента" />
+                android:title="@string/pick_accent_color" />
             <Preference
                 android:key="webViewFont"
                 android:title="Шрифт WebView"
