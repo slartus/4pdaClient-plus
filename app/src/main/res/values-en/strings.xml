@@ -461,4 +461,7 @@
     <string name="color">Colour</string>
     <string name="combined_in">\" and \"</string>
 
+    <string name="lang_pref_title">Language</string>
+    <string name="lang_pref_summary">Need restart application</string>
+    <string name="lang_changed">The application language has been changed, restart the application?</string>
 </resources>

@@ -20,8 +20,8 @@
                 android:title="@string/pick_accent_color" />
             <Preference
                 android:key="webViewFont"
-                android:title="Шрифт WebView"
-                android:summary="Шрифт в новостях, поиске, теме, профиле, QMS" />
+                android:summary="Шрифт в новостях, поиске, теме, профиле, QMS"
+                android:title="Шрифт WebView" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="titleMarquee"
@@ -30,23 +30,23 @@
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="isSquareAvarars"
-                android:title="Квадратные аватарки"
-                android:summary="Требуется перезапуск приложения" />
+                android:summary="Требуется перезапуск приложения"
+                android:title="Квадратные аватарки" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="statusbarFake"
-                android:title="Status Bar как в Android 5+"
-                android:summary="Подходит для прошивок MIUI, Flyme и т.п на Android 4.4" />
+                android:summary="Подходит для прошивок MIUI, Flyme и т.п на Android 4.4"
+                android:title="Status Bar как в Android 5+" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="oldIndicator"
-                android:title="Полоса у новых сообщений"
-                android:summary="Требуется перезапуск приложения" />
+                android:summary="Требуется перезапуск приложения"
+                android:title="Полоса у новых сообщений" />
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="coloredNavBar"
-                android:title="Красить Navigation Bar"
-                android:summary="Для Android 5 и выше. Требуется перезапуск приложения" />
+                android:summary="Для Android 5 и выше. Требуется перезапуск приложения"
+                android:title="Красить Navigation Bar" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="pancilInActionBar"
@@ -69,8 +69,8 @@
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="isShowShortUserInfo"
-                android:title="Информация о пользователе"
-                android:summary="Отображать информацию о пользователе в боковом меню. Требуется перезапуск приложения" />
+                android:summary="Отображать информацию о пользователе в боковом меню. Требуется перезапуск приложения"
+                android:title="Информация о пользователе" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="tabsBottom"
@@ -78,8 +78,8 @@
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="isMarginBottomNav"
-                android:title="Нижний отступ в боковом меню"
-                android:summary="Включить, если не видно последнего пункта. Требуется перезапуск приложения" />
+                android:summary="Включить, если не видно последнего пункта. Требуется перезапуск приложения"
+                android:title="Нижний отступ в боковом меню" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="openTabDrawerButton"
@@ -201,8 +201,8 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="loadNewsComment"
-            android:title="Не загружать комментарии"
-            android:summary="Ускорит отображение страницы" />
+            android:summary="Ускорит отображение страницы"
+            android:title="Не загружать комментарии" />
     </PreferenceScreen>
 
 
@@ -226,8 +226,8 @@
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="showSubMain"
-                android:title="Скрыть описание в пункте списка"
-                android:summary="Требуется перезапуск приложения" />
+                android:summary="Требуется перезапуск приложения"
+                android:title="Скрыть описание в пункте списка" />
         </PreferenceCategory>
 
         <PreferenceCategory android:title="Избранное">
@@ -240,9 +240,9 @@
 
         <PreferenceCategory android:title="Форум">
             <CheckBoxPreference
-                android:title="Отображать картинки"
+                android:defaultValue="true"
                 android:key="forum.list.show_images"
-                android:defaultValue="true" />
+                android:title="Отображать картинки" />
         </PreferenceCategory>
 
         <PreferenceCategory android:title="Новости">
@@ -291,7 +291,13 @@
 
 
         </PreferenceScreen>
-
+        <ListPreference
+            android:dialogTitle="@string/lang_pref_title"
+            android:entries="@array/entries_lang"
+            android:entryValues="@array/entry_values_lang"
+            android:key="lang"
+            android:summary="@string/lang_pref_summary"
+            android:title="@string/lang_pref_title" />
         <ListPreference
             android:defaultValue="0"
             android:entries="@array/listOffsetsArray"

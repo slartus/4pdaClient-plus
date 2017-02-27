@@ -368,7 +368,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         url = getRedirect(url).toString();
         url = url.trim();
         Log.d("kek", "fixed url = " + url);
-        if (url.contains("4pda.ru") & !url.contains("http://"))
+        if (url.contains("4pda.ru") & !url.contains("http://")&!url.contains("https://"))
             url = "http://" + url;
         Uri uri = Uri.parse(url.toLowerCase());
         Log.e("kek", uri.getHost() + " " + url);
@@ -594,14 +594,14 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 || uri.getHost().toLowerCase().contains("mzstatic.com")
                 || uri.getHost().toLowerCase().contains("savepice.ru")))
             return false;
-        boolean isFile = PatternExtensions.compile("http://4pda.ru/forum/dl/post/\\d+/[^\"]*")
+        boolean isFile = PatternExtensions.compile("https?://4pda.ru/forum/dl/post/\\d+/[^\"]*")
                 .matcher(uri.toString()).find() ||
-                PatternExtensions.compile("http://st.4pda.ru/wp-content/uploads/[^\"]*")
+                PatternExtensions.compile("https?://st.4pda.ru/wp-content/uploads/[^\"]*")
                         .matcher(uri.toString()).find()
                 ||
                 ("attach".equals(uri.getQueryParameter("act")) && !TextUtils.isEmpty(uri.getQueryParameter("id")));
 
-        final Pattern imagePattern = PatternExtensions.compile("http://.*?\\.(png|jpg|jpeg|gif)$");
+        final Pattern imagePattern = PatternExtensions.compile("https?://.*?\\.(png|jpg|jpeg|gif)$");
         if (isFile) {
             if (!Client.getInstance().getLogined() && !Client.getInstance().hasLoginCookies()) {
                 Client.getInstance().showLoginForm(activity, new Client.OnUserChangedListener() {

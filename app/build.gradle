@@ -11,8 +11,8 @@ android {
     buildToolsVersion "25.0.2"
     useLibrary 'org.apache.http.legacy'
 
-    def appVersionCode = 593
-    def appVersionName = "3.4.7"
+    def appVersionCode = 594
+    def appVersionName = "3.4.8"
 
 
     defaultConfig {

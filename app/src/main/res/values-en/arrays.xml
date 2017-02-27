@@ -227,4 +227,15 @@
         <item>istarted</item>
         <item>ireplied</item>
     </string-array>
+
+    <string-array name="entries_lang">
+        <item>Default</item>
+        <item>English</item>
+        <item>Russia</item>
+    </string-array>
+    <string-array name="entry_values_lang">
+        <item>default</item>
+        <item>en</item>
+        <item>ru</item>
+    </string-array>
 </resources>

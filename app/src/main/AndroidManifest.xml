@@ -25,7 +25,7 @@
         tools:replace="android:icon">
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:configChanges="orientation|keyboardHidden|screenSize|locale"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize">
@@ -47,6 +47,13 @@
                 <data
                     android:host="www.4pda.ru"
                     android:scheme="http" />
+
+                <data
+                    android:host="4pda.ru"
+                    android:scheme="https" />
+                <data
+                    android:host="www.4pda.ru"
+                    android:scheme="https" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -60,20 +67,15 @@
                 <data
                     android:host="www.4pda.to"
                     android:scheme="http" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
-                    android:host="4pda.ru"
-                    android:scheme="4pda" />
+                    android:host="4pda.to"
+                    android:scheme="https" />
                 <data
-                    android:host="www.4pda.ru"
-                    android:scheme="4pda" />
+                    android:host="www.4pda.to"
+                    android:scheme="https" />
+
             </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.EDIT" />
@@ -185,7 +187,8 @@
             android:label="Изображения"
             android:launchMode="singleTask" />
 
-        <activity android:name=".activity.NewYear"
+        <activity
+            android:name=".activity.NewYear"
             android:theme="@style/AppTheme.FullScreen" />
 
         <service

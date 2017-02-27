@@ -7,9 +7,9 @@
 
   "show_beta_dialog":true,
   "update_beta":{
-    "ver":"3.4.7",
-    "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/ForPDA_3.4.7-release.apk",
-    "info":"[!] Важное замечание\n[+] Нововведение\n[-] Исправлена ошибка\n[*] Изменения\n\n[+] Добавлен английский язык\n[-] Ошибка авторизации\n[-] Кнопка \"Закрыть спойлер\""
+    "ver":"3.4.8",
+    "apk":"https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/ForPDA_3.4.8-release.apk",
+    "info":"[!] Важное замечание\n[+] Нововведение\n[-] Исправлена ошибка\n[*] Изменения\n\n[+] Выбор языка в настройках приложения\n[-] Переход по сслыкам с https"
   },
 
   "toster_update":{

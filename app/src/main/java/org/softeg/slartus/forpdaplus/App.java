@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
@@ -42,6 +43,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -84,6 +86,9 @@ public class App extends android.app.Application {
     public static final int THEME_TYPE_LIGHT = 0;
     public static final int THEME_TYPE_DARK = 2;
     public static final int THEME_TYPE_BLACK = 3;
+
+    private Locale locale;
+    private String lang;
 
     private String currentFragmentTag;
 
@@ -495,6 +500,17 @@ public class App extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        lang = getPreferences().getString("lang", "default");
+        if (lang.equals("default")) {
+            lang = getResources().getConfiguration().locale.getLanguage();
+        }
+        locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration(getResources().getConfiguration());
+        config.locale = locale;
+        getResources().updateConfiguration(config, null);
+
         ACRA.init(this);
         ACRA.getErrorReporter().putCustomData("USER_NICK", getPreferences().getString("Login", "empty"));
         initImageLoader(this);
@@ -506,6 +522,17 @@ public class App extends android.app.Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.d("SUKA", "CHANGE CONFIG " + locale.getCountry() + " : " + newConfig.locale.getCountry());
+        locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(config, null);
     }
 
 

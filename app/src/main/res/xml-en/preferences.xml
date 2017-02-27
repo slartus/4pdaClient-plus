@@ -10,7 +10,7 @@
             <Preference
                 android:key="appstyle"
                 android:summary="Choose the theme"
-                android:title="Theme"/>
+                android:title="Theme" />
             <Preference
                 android:key="accentColor"
                 android:summary="Pick side color"
@@ -20,8 +20,8 @@
                 android:title="@string/pick_accent_color" />
             <Preference
                 android:key="webViewFont"
-                android:title="WebView font"
-                android:summary="The font in the news, search, topic, profile, the QMS" />
+                android:summary="The font in the news, search, topic, profile, the QMS"
+                android:title="WebView font" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="titleMarquee"
@@ -30,23 +30,23 @@
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="isSquareAvarars"
-                android:title="Square avatars"
-                android:summary="Requires application restart" />
+                android:summary="Requires application restart"
+                android:title="Square avatars" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="statusbarFake"
-                android:title="Status Bar in Android 5+"
-                android:summary="Suitable for MIUI firmware, Flyme etc on Android 4.4" />
+                android:summary="Suitable for MIUI firmware, Flyme etc on Android 4.4"
+                android:title="Status Bar in Android 5+" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="oldIndicator"
-                android:title="New posts"
-                android:summary="Requires application restart" />
+                android:summary="Requires application restart"
+                android:title="New posts" />
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="coloredNavBar"
-                android:title="Color navigation bar"
-                android:summary="For android 5+. Requires application restart" />
+                android:summary="For android 5+. Requires application restart"
+                android:title="Color navigation bar" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="pancilInActionBar"
@@ -69,8 +69,8 @@
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="isShowShortUserInfo"
-                android:title="User information"
-                android:summary="Display information about the user in the sidebar. Requires application restart" />
+                android:summary="Display information about the user in the sidebar. Requires application restart"
+                android:title="User information" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="tabsBottom"
@@ -78,8 +78,8 @@
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="isMarginBottomNav"
-                android:title="Lower indentation in the side menu"
-                android:summary="Include, if you do not see the last paragraph. Requires application restart" />
+                android:summary="Include, if you do not see the last paragraph. Requires application restart"
+                android:title="Lower indentation in the side menu" />
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="openTabDrawerButton"
@@ -201,8 +201,8 @@
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="loadNewsComment"
-            android:title="Do not load comments"
-            android:summary="Speed up page display" />
+            android:summary="Speed up page display"
+            android:title="Do not load comments" />
     </PreferenceScreen>
 
 
@@ -226,8 +226,8 @@
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="showSubMain"
-                android:title="Hide the description in paragraph list"
-                android:summary="Requires application restart" />
+                android:summary="Requires application restart"
+                android:title="Hide the description in paragraph list" />
         </PreferenceCategory>
 
         <PreferenceCategory android:title="Favorites">
@@ -240,9 +240,9 @@
 
         <PreferenceCategory android:title="Forum">
             <CheckBoxPreference
-                android:title="Display pictures"
+                android:defaultValue="true"
                 android:key="forum.list.show_images"
-                android:defaultValue="true" />
+                android:title="Display pictures" />
         </PreferenceCategory>
 
         <PreferenceCategory android:title="News">
@@ -291,7 +291,13 @@
 
 
         </PreferenceScreen>
-
+        <ListPreference
+            android:dialogTitle="@string/lang_pref_title"
+            android:entries="@array/entries_lang"
+            android:entryValues="@array/entry_values_lang"
+            android:key="lang"
+            android:summary="@string/lang_pref_summary"
+            android:title="@string/lang_pref_title" />
         <ListPreference
             android:defaultValue="0"
             android:entries="@array/listOffsetsArray"

@@ -468,4 +468,8 @@
     <string name="id_exeption">Не могу получить идентификатор</string>
     <string name="list_id_exception">Не могу получить идентификатор списка</string>
 
+    <string name="lang_pref_title">Язык</string>
+    <string name="lang_pref_summary">Необходимо перезапустить приложение</string>
+    <string name="lang_changed">Язык приложения был изменен, перезапустить приложение?</string>
+
 </resources>
