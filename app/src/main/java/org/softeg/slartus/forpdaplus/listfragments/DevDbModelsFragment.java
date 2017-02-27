@@ -38,7 +38,8 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
 
         super();
     }
-//    public static DevDbModelsFragment newInstance(String brandUrl) {
+
+    //    public static DevDbModelsFragment newInstance(String brandUrl) {
 //        DevDbModelsFragment fragment = new DevDbModelsFragment();
 //        Bundle args = new Bundle();
 //        args.putString(BRAND_URL_KEY, brandUrl);
@@ -64,7 +65,8 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
     public void onResume() {
         super.onResume();
         setArrow();
-        setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
+        if (!TextUtils.isEmpty(m_BrandTitle))
+            setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
         getMainActivity().notifyTabAdapter();
     }
 

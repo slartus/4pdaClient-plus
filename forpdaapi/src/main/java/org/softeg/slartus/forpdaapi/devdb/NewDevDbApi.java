@@ -68,19 +68,19 @@ public class NewDevDbApi {
 
     public static Boolean isCatalogUrl(String url) {
         return Pattern
-                .compile("4pda.ru/devdb(?:(?:/|$)(?:phones|ebook|pad|smartwatch)?(?:/$|$))", Pattern.CASE_INSENSITIVE)
+                .compile("4pda\\.ru\\/devdb\\/(?:phones|ebook|pad|smartwatch)?(?:\\/all\\/?|\\/?$)", Pattern.CASE_INSENSITIVE)
                 .matcher(url).find();
     }
 
     public static Boolean isDevicesListUrl(String url) {
         return Pattern
-                .compile("4pda.ru/devdb(?:phones|ebook|pad|smartwatch)/([^/$]+)", Pattern.CASE_INSENSITIVE)
+                .compile("4pda\\.ru\\/devdb\\/(?:phones|ebook|pad|smartwatch)\\/(?!all)", Pattern.CASE_INSENSITIVE)
                 .matcher(url).find();
     }
 
     public static Boolean isDeviceUrl(String url) {
         return Pattern
-                .compile("4pda.ru/devdb/([^/$?&]+)", Pattern.CASE_INSENSITIVE)
+                .compile("4pda\\.ru\\/devdb\\/(?!phones|ebook|pad|smartwatch)[^$]+", Pattern.CASE_INSENSITIVE)
                 .matcher(url).find();
     }
 
