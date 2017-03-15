@@ -11,8 +11,8 @@ android {
     buildToolsVersion "25.0.2"
     useLibrary 'org.apache.http.legacy'
 
-    def appVersionCode = 594
-    def appVersionName = "3.4.8"
+    def appVersionCode = 595
+    def appVersionName = "3.4.8.1"
 
 
     defaultConfig {
@@ -78,6 +78,7 @@ android {
     }
     lintOptions {
         disable 'RestrictedApi'
+        checkReleaseBuilds false
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES.txt'

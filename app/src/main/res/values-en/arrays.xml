@@ -231,7 +231,7 @@
     <string-array name="entries_lang">
         <item>Default</item>
         <item>English</item>
-        <item>Russia</item>
+        <item>Russian</item>
     </string-array>
     <string-array name="entry_values_lang">
         <item>default</item>

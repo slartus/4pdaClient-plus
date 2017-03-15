@@ -2,14 +2,17 @@ package org.softeg.slartus.forpdaplus;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -500,14 +503,13 @@ public class App extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        Configuration config = getResources().getConfiguration();
         lang = getPreferences().getString("lang", "default");
         if (lang.equals("default")) {
-            lang = getResources().getConfiguration().locale.getLanguage();
+            lang = config.locale.getLanguage();
         }
         locale = new Locale(lang);
         Locale.setDefault(locale);
-        Configuration config = new Configuration(getResources().getConfiguration());
         config.locale = locale;
         getResources().updateConfiguration(config, null);
 
@@ -527,10 +529,10 @@ public class App extends android.app.Application {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Log.d("SUKA", "CHANGE CONFIG " + locale.getCountry() + " : " + newConfig.locale.getCountry());
+        Log.d("KEK", "CHANGE CONFIG " + locale.getCountry() + " : " + newConfig.locale.getCountry());
+        Configuration config = getResources().getConfiguration();
         locale = new Locale(lang);
         Locale.setDefault(locale);
-        Configuration config = new Configuration();
         config.locale = locale;
         getResources().updateConfiguration(config, null);
     }
