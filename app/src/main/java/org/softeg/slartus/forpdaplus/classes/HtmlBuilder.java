@@ -19,15 +19,16 @@ public class HtmlBuilder{
         m_Body.append("<head>\n");
         m_Body.append("<meta http-equiv=\"content-type\" content=\"text/html; charset=windows-1251\" />\n");
         m_Body.append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">\n");
-        if (!Preferences.System.isDevStyle())
+        if (!Preferences.System.isDevStyle()) {
             addStyleSheetLink(m_Body);
+        }
         m_Body.append("<script type=\"text/javascript\" src=\"file://").append(getStyle().replace(".css","")).append(".js\"></script>\n");
         m_Body.append("<script type=\"text/javascript\" src=\"file://").append(Preferences.System.getSystemDir()).append("custom_scripts.js\"></script>\n");
-        addScripts();
         if (Preferences.System.isDevGrid())
             m_Body.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/grid.css\"/>\n");
         if (Preferences.System.isDevBounds())
             m_Body.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/bounds.css\"/>\n");
+        addScripts();
         m_Body.append("<title>").append(title).append("</title>\n");
         m_Body.append("</head>\n");
     }
@@ -92,7 +93,8 @@ public class HtmlBuilder{
     }
 
     public HtmlBuilder endBody() {
-        m_Body.append("<script>jsEmoticons.parseAll('").append("file:///android_asset/forum/style_emoticons/default/").append("');initPostBlock();</script>");
+        //m_Body.append("<script>jsEmoticons.parseAll('").append("file:///android_asset/forum/style_emoticons/default/").append("');initPostBlock();</script>");
+        m_Body.append("<script>jsEmoticons.parseAll('").append("file:///android_asset/forum/style_emoticons/default/").append("');</script>");
         m_Body.append("</body>\n");
         return this;
     }

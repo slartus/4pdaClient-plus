@@ -1293,7 +1293,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
             if (newProgress >= 10 && m_ScrollElement != null && m_ScrollY == 0)
-                tryScrollToElement();
+                //tryScrollToElement();
             Log.e("kekp", newProgress + " %");
         }
     }
@@ -1413,7 +1413,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 mLoadingFinished = true;
             }
             view.clearHistory();
-            tryScrollToElement();
+            //tryScrollToElement();
         }
 
         private boolean startsWith(String str, String prefix) {
