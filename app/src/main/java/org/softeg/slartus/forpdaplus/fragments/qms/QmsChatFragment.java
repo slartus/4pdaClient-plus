@@ -1106,7 +1106,7 @@ public class QmsChatFragment extends WebViewFragment {
                         CookieStore cookieStore = new BasicCookieStore();
                         HttpContext context = new BasicHttpContext();
                         context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
-                        new DefaultHttpClient().execute(new HttpPost("http://savepice.ru/"), context);
+                        new DefaultHttpClient().execute(new HttpPost("https://savepice.ru/"), context);
 
                         for (Cookie cookie : cookieStore.getCookies()) {
                             Log.d("save", "coolie name" + cookie.getName());
@@ -1126,7 +1126,7 @@ public class QmsChatFragment extends WebViewFragment {
                     String res = QmsApi.attachFile(Client.getInstance(), newAttachFilePath, m_ProgressState);
 
 
-                    editAttach = new EditAttach("http://cdn1.savepice.ru" + res, "Изображение №" + attachList.size(), null, null);
+                    editAttach = new EditAttach("https://cdn1.savepice.ru" + res, "Изображение №" + attachList.size(), null, null);
                 }
 
                 return true;

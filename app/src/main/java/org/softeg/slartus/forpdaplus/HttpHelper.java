@@ -95,8 +95,8 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
                         request.addHeader("Accept", "text-/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
                         request.addHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36 OPR/38.0.2220.31");
                         request.addHeader("Accept-Language", "ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4");
-                        request.addHeader("Referer", "http://savepice.ru/");
-                        request.addHeader("Origin", "http://savepice.ru");
+                        request.addHeader("Referer", "https://savepice.ru/");
+                        request.addHeader("Origin", "https://savepice.ru");
                         request.addHeader("X-Requested-With", "XMLHttpRequest");
 
                     }

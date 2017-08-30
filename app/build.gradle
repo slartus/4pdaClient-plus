@@ -8,11 +8,11 @@ repositories {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
     useLibrary 'org.apache.http.legacy'
 
-    def appVersionCode = 596
-    def appVersionName = "3.4.8.2"
+    def appVersionCode = 597
+    def appVersionName = "3.4.9"
 
 
     defaultConfig {

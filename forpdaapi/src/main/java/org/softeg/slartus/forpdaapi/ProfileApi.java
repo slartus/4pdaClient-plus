@@ -165,7 +165,7 @@ public class ProfileApi {
     }
 
     public static LoginForm getLoginForm(IHttpClient httpClient) throws IOException {
-        String page = httpClient.performGet("http://4pda.ru/forum/index.php?act=login&CODE=00");
+        String page = httpClient.performGet("http://4pda.ru/forum/index.php?act=auth");
 
         Matcher m = Pattern
                 .compile("<form[^>]*?>([\\s\\S]*?)</form>")

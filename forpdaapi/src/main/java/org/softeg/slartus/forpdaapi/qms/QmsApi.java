@@ -279,7 +279,7 @@ public class QmsApi {
         for (Cookie cookie : httpClient.getCookieStore().getCookies()) {
             Log.d("save", "Cookie name: " + cookie.getName() + "; value: " + cookie.getValue());
         }
-        String res = httpClient.uploadFile("http://savepice.ru/upload", newFilePath, additionalHeaders, progress);
+        String res = httpClient.uploadFile("https://savepice.ru/upload", newFilePath, additionalHeaders, progress);
         for (Cookie cookie : httpClient.getCookieStore().getCookies()) {
             Log.d("save", "Cookie name: " + cookie.getName() + "; value: " + cookie.getValue());
         }
