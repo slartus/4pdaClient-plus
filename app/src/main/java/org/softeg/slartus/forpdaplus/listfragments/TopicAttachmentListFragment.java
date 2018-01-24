@@ -5,6 +5,7 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -98,7 +99,7 @@ public class TopicAttachmentListFragment extends BaseTaskListFragment {
         list.add(new MenuListDialog(getString(R.string.do_download), new Runnable() {
             @Override
             public void run() {
-                DownloadsService.download(getActivity(), attach.getUrl().toString(), false);
+                DownloadsService.download(getActivity(), attach.getUrl().toString().replaceFirst("//4pda.ru", "").trim(), false);
             }
         }));
         list.add(new MenuListDialog(getString(R.string.jump_to_page), new Runnable() {
