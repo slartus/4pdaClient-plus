@@ -27,12 +27,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 public class NewsApi {
     public static Boolean like(IHttpClient httpClient, String newsId) throws IOException {
-        String res = httpClient.performGet("http://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=0&v=1", false, false);
+        String res = httpClient.performGet("https://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=0&v=1", false, false);
         return res != null;
     }
 
     public static Boolean likeComment(IHttpClient httpClient, String newsId, String postId) throws IOException {
-        String res = httpClient.performGet("http://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=" + postId + "&v=1", false, false);
+        String res = httpClient.performGet("https://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=" + postId + "&v=1", false, false);
         return res != null;
     }
 
@@ -47,7 +47,7 @@ public class NewsApi {
         //http://4pda.ru/?s=%EF%EB%E0%ED%F8%E5%F2
         //http://4pda.ru/page/6/?s=%EF%EB%E0%ED%F8%E5%F2
 
-        final int NEWS_PER_PAGE = 30;// 30 новостей на страницу выводит форум
+        final int NEWS_PER_PAGE = 29;// 30 новостей на страницу выводит форум
         int pageNum = 1;
         String justUrl = url;// урл без страницы и параметров
         String params = "";// параметры, например, s=%EF%EB%E0%ED%F8%E5%F2
@@ -69,7 +69,9 @@ public class NewsApi {
                     pageNum = Integer.parseInt(m.group(2));
             }
         }
-        pageNum = (int) Math.ceil(listInfo.getFrom() / NEWS_PER_PAGE) + pageNum;
+        Double p = Math.ceil(listInfo.getFrom() / NEWS_PER_PAGE);
+        pageNum = p.intValue() + pageNum;
+//        pageNum = (int) Math.ceil(listInfo.getFrom() / NEWS_PER_PAGE) + pageNum;
         String requestUrl = justUrl + "/page/" + pageNum + "/" + params;
 
         ArrayList<News> res = new ArrayList<>();

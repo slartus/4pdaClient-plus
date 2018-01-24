@@ -464,4 +464,5 @@
     <string name="lang_pref_title">Language</string>
     <string name="lang_pref_summary">Need restart application</string>
     <string name="lang_changed">The application language has been changed, restart the application?</string>
+    <string name="file_not_support_forum">This file type is not supported by forum.</string>
 </resources>

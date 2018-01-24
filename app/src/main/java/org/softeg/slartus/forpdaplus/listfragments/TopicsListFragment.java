@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -105,6 +106,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     public boolean inBackground(boolean isRefresh) throws IOException, ParseException, URISyntaxException {
         mListInfo = new ListInfo();
         mListInfo.setFrom(isRefresh ? 0 : mData.size());
+        Log.e("TEST", "Data size " + mData.size());
         mLoadResultList = loadTopics(Client.getInstance(), mListInfo);
         return true;
     }

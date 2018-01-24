@@ -418,11 +418,9 @@ public class HttpHelper {
         Log.d("kek", "request url " + url);
         if (url.substring(0, 2).equals("//")) {
             url = "http:".concat(url);
-            Log.d("kek", "fixed request url " + url);
         }
         url = url.replace("\"", "").replace("'", "");
         m_LastUrl = url;
-        android.util.Log.i("HttpHelper", url);
         // add user and pass to client credentials if present
         if ((user != null) && (pass != null)) {
             client.getCredentialsProvider().setCredentials(AuthScope.ANY,

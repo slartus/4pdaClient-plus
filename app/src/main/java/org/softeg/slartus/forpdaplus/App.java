@@ -2,17 +2,14 @@ package org.softeg.slartus.forpdaplus;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.LocaleList;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -633,7 +630,11 @@ public class App extends android.app.Application {
                     @Override
                     protected InputStream getStreamFromNetwork(String imageUri, Object extra) throws IOException {
                         HttpResponse httpResponse = new HttpHelper().getDownloadResponse(imageUri, 0);
+
+//                        Response response = new HttpHelper().getDownloadResponse(imageUri, 0);
                         return httpResponse.getEntity().getContent();
+
+//                        return response.body().byteStream();
                     }
                 })
                 .threadPoolSize(5)
@@ -642,6 +643,7 @@ public class App extends android.app.Application {
                 .memoryCache(new UsingFreqLimitedMemoryCache(5 * 1024 * 1024)) // 2 Mb
                 .discCacheFileNameGenerator(new HashCodeFileNameGenerator())
                 .defaultDisplayImageOptions(options.build())
+                .writeDebugLogs()
                 .build();
 
         ImageLoader.getInstance().init(config);

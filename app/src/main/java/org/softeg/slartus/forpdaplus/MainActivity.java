@@ -224,8 +224,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
 
             setContentView(R.layout.main);
-            toolbar = (Toolbar) findViewById(R.id.toolbar);
-            appBarLayout = (AppBarLayout) findViewById(R.id.appbarlayout);
+            toolbar = findViewById(R.id.toolbar);
+            appBarLayout = findViewById(R.id.appbarlayout);
             toolbarShadow = findViewById(R.id.toolbar_shadow);
             if (Build.VERSION.SDK_INT > 20) {
                 toolbarShadow.setVisibility(View.GONE);
@@ -253,8 +253,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 getSupportActionBar().setHomeButtonEnabled(true);
                 getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_left);
             }
-            statusBar = (RelativeLayout) findViewById(R.id.status_bar);
-            fakeStatusBar = (RelativeLayout) findViewById(R.id.fakeSB);
+            statusBar = findViewById(R.id.status_bar);
+            fakeStatusBar = findViewById(R.id.fakeSB);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 switch (App.getInstance().getThemeType()) {
                     case App.THEME_TYPE_LIGHT:
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             }
 
             NewYear.check(this);
-            NavigationView leftDrawer = (NavigationView) findViewById(R.id.left_drawer);
+            NavigationView leftDrawer = findViewById(R.id.left_drawer);
             int scale = (int) getResources().getDisplayMetrics().density;
             boolean bottom = getPreferences().getBoolean("isMarginBottomNav", false);
             top = !getPreferences().getBoolean("isShowShortUserInfo", true);
@@ -674,7 +674,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     public void notifyTabAdapter() {
         if (mTabDraweMenu != null)
-            if (mTabDraweMenu.adapter != null)
+            if (TabDrawerMenu.adapter != null)
                 mTabDraweMenu.notifyDataSetChanged();
     }
 

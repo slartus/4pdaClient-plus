@@ -183,7 +183,7 @@ public class ProfileApi {
         loginForm.setCapPath(m.group(1));
 
         m = Pattern
-                .compile("name=\"captcha-time\"[^>]*?value=\"([^\"]*)\"")
+                .compile("captcha-time\" value=\"([^\"]*?)\"[\\s\\S]*?captcha-sig\" value=\"([^\"]*?)\"[\\s\\S]*?src=\"([^\"]*?)\"")
                 .matcher(formText);
         if (!m.find())
             throw new NotReportException("cap_time не найден");

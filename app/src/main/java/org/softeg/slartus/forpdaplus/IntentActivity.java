@@ -57,7 +57,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.video.PlayerActivity;
+import org.softeg.slartus.forpdaplus.video.youtube.YoutubeActivity;
 
 import java.io.UnsupportedEncodingException;
 import java.util.regex.Matcher;
@@ -119,13 +119,12 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
     public static Boolean isYoutube(String url) {
-        return PlayerActivity.isYoutube(url);
+        return PatternExtensions.compile("youtube.com/(?:watch|v|e|embed)|youtu.be").matcher(url).find();
     }
 
     public static Boolean tryShowYoutube(Activity context, String url, Boolean finish) {
         if (!isYoutube(url)) return false;
-        PlayerActivity.showYoutubeChoiceDialog(context, url);
-
+        YoutubeActivity.showYoutubeChoiceDialog(context, url);
         return true;
     }
 

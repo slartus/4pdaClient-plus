@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -40,6 +41,7 @@ import org.softeg.slartus.forpdaplus.video.api.exceptions.ApiException;
 import org.softeg.slartus.forpdaplus.video.api.exceptions.IdException;
 import org.softeg.slartus.forpdaplus.video.api.exceptions.ListIdException;
 
+@Deprecated
 public class PlayerActivity extends AppCompatActivity {
 
     VideoView mVideoView;
@@ -292,6 +294,7 @@ public class PlayerActivity extends AppCompatActivity {
         try {
             createActionMenu(parseResult);
             mSeekTo = mVideoView.getCurrentPosition();
+            Log.e("TEST", "URI " + pResult);
             mVideoView.setVideoURI(pResult);
 
             mVideoView.setMediaController(new MediaController(this));
@@ -357,17 +360,20 @@ public class PlayerActivity extends AppCompatActivity {
                 if (mEx.getClass() == ApiException.class ||
                         mEx.getClass() == IdException.class ||
                         mEx.getClass() == ListIdException.class) {
-                    if (!tryPlayInYoutubePlayer())
+                    if (!tryPlayInYoutubePlayer()) {
                         AppLog.e(getContext(), mEx);
+                        Log.e("TEST", "PostExecute Error " + mEx);
+                    }
 
                 } else {
                     AppLog.e(getContext(), mEx);
+                    Log.e("TEST", "PostExecute Error 2 " + mEx);
                 }
 
                 return;
             }
 
-            getSupportActionBar().setTitle(pResult.getTitle());
+//            getSupportActionBar().setTitle(pResult.getTitle()); Я хз зачем это тут.
 
             try {
 

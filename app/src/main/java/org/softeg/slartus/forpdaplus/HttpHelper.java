@@ -64,6 +64,13 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
         }
     }
 
+//    public String uploadFile2(final String url, String filePath, Map<String, String> additionalHeaders,
+//                             final ProgressState progress) throws Exception {
+//        RequestBody requestBody = new MultipartBody.Builder()
+//                .setType(MultipartBody.FORM)
+//                .build();
+//    }
+
     public String uploadFile(final String url, String filePath, Map<String, String> additionalHeaders,
                   final ProgressState progress) throws Exception {
 
@@ -253,6 +260,23 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
 
         return response;
     }
+//
+//    public Response getDownloadResponse(String url, long range) throws IOException {
+//        // process headers using request interceptor
+//        final Map<String, String> sendHeaders = new HashMap<String, String>();
+//        sendHeaders.put(HttpHelper.ACCEPT_ENCODING, HttpHelper.GZIP);
+//        if (range != 0)
+//            sendHeaders.put("Range", "bytes=" + range + "-");
+//
+//        OkHttpClient okHttpClient= new OkHttpClient();
+//        Headers headers = Headers.of(sendHeaders);
+//        Request request = new Request.Builder()
+//                .headers(headers)
+//                .url(url)
+//                .build();
+//
+//        return okHttpClient.newCall(request).execute();
+//    }
 
     public HttpEntity getDownloadEntity(String url, long range) throws Exception {
         return getDownloadResponse(url, range).getEntity();

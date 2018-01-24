@@ -59,8 +59,7 @@ public class YouTubeAPI {
             if (fmtList != null && url_encoded_fmt_stream_map != null
                     && title != null && error != null)
                 break;
-        }
-        if (!TextUtils.isEmpty(error)) {
+        }        if (!TextUtils.isEmpty(error)) {
             videoItem.setDefaultBitrate("http://www.youtube.com/watch?v=" + id);
             return;
         }

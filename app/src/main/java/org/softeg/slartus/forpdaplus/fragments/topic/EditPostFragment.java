@@ -19,7 +19,6 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -29,6 +28,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
+import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -65,6 +65,7 @@ import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -78,10 +79,9 @@ public class EditPostFragment extends GeneralFragment {
 
     public static final int NEW_EDIT_POST_REQUEST_CODE = App.getInstance().getUniqueIntValue();
     public static final String TOPIC_BODY_KEY = "EditPostActivity.TOPIC_BODY_KEY";
-
     public static final String POST_URL_KEY = "EditPostActivity.POST_URL_KEY";
     private EditText txtPost, txtpost_edit_reason;
-
+    private static final int FILE_PICKER_RESULT = 33;
     private Button btnAttachments;
     private ImageButton btnUpload;
     private ProgressBar progress_search;
@@ -103,6 +103,8 @@ public class EditPostFragment extends GeneralFragment {
 
 
     public static final String thisFragmentUrl = "EditPostFragment";
+
+    private String pathToFile;
 
     @Override
     public void hidePopupWindows() {
@@ -154,7 +156,7 @@ public class EditPostFragment extends GeneralFragment {
     }
 
     public ActionBar getSupportActionBar() {
-        return ((AppCompatActivity)getMainActivity()).getSupportActionBar();
+        return getMainActivity().getSupportActionBar();
     }
 
     @Override
@@ -209,24 +211,13 @@ public class EditPostFragment extends GeneralFragment {
 
         m_BottomPanel = findViewById(R.id.bottomPanel);
 
-        final Button send_button = (Button) view.findViewById(R.id.btnSendPost);
-        send_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendMail();
-            }
-        });
+        final Button send_button = view.findViewById(R.id.btnSendPost);
+        send_button.setOnClickListener(view -> sendMail());
 
         txtPost = (EditText) findViewById(R.id.txtPost);
 
         txtpost_edit_reason = (EditText) findViewById(R.id.txtpost_edit_reason);
-        txtPost.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return false;
-            }
-        });
+        txtPost.setOnEditorActionListener((v, actionId, event) -> false);
         txtPost.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -256,18 +247,10 @@ public class EditPostFragment extends GeneralFragment {
 
 
         btnAttachments = (Button) findViewById(R.id.btnAttachments);
-        btnAttachments.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                showAttachesListDialog();
-            }
-        });
+        btnAttachments.setOnClickListener(view -> showAttachesListDialog());
 
         btnUpload = (ImageButton) findViewById(R.id.btnUpload);
-        btnUpload.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                startAddAttachment();
-            }
-        });
+        btnUpload.setOnClickListener(view -> startAddAttachment());
 
         if(mPopupPanelView==null)
             mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
@@ -400,7 +383,7 @@ public class EditPostFragment extends GeneralFragment {
             Object attachesObject = extras.get(Intent.EXTRA_STREAM);
             if (attachesObject instanceof Uri) {
                 Uri uri = (Uri) extras.get(Intent.EXTRA_STREAM);
-                m_AttachFilePaths = new ArrayList<>(Arrays.asList(new String[]{ImageFilePath.getPath(getMainActivity().getApplicationContext(), uri)}));
+                m_AttachFilePaths = new ArrayList<>(Arrays.asList(ImageFilePath.getPath(getMainActivity().getApplicationContext(), uri)));
             } else if (attachesObject instanceof ArrayList<?>) {
                 m_AttachFilePaths = new ArrayList<>();
                 ArrayList<?> list = (ArrayList<?>) attachesObject;
@@ -436,23 +419,20 @@ public class EditPostFragment extends GeneralFragment {
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
-        menu.add(R.string.preview).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                TabItem tabItem = App.getInstance().getTabByUrl("preview_"+getTag());
-                if(tabItem==null) {
-                    PostPreviewFragment.showSpecial(getPostText(), getTag());
-                }else {
-                    ((PostPreviewFragment) tabItem.getFragment()).load(getPostText());
-                    getMainActivity().selectTab(tabItem);
-                    getMainActivity().hidePopupWindows();
-                }
-                return true;
+        menu.add(R.string.preview).setOnMenuItemClickListener(item1 -> {
+            TabItem tabItem = App.getInstance().getTabByUrl("preview_"+getTag());
+            if(tabItem==null) {
+                PostPreviewFragment.showSpecial(getPostText(), getTag());
+            }else {
+                ((PostPreviewFragment) tabItem.getFragment()).load(getPostText());
+                getMainActivity().selectTab(tabItem);
+                getMainActivity().hidePopupWindows();
             }
+            return true;
         });
         item = menu.add(R.string.find_in_text);
         item.setActionView(R.layout.action_collapsible_search);
-        searchEditText = (EditText) item.getActionView().findViewById(R.id.editText);
+        searchEditText = item.getActionView().findViewById(R.id.editText);
         searchEditText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
@@ -582,7 +562,8 @@ public class EditPostFragment extends GeneralFragment {
                 .build();
         mAttachesListDialog.show();
     }
-    private static final int MY_INTENT_CLICK=302;
+    private static final int MY_INTENT_CLICK_I = 302;
+    private static final int MY_INTENT_CLICK_F = 303;
     private void startAddAttachment() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getActivity(), R.string.no_permission, Toast.LENGTH_SHORT).show();
@@ -591,44 +572,40 @@ public class EditPostFragment extends GeneralFragment {
         CharSequence[] items = new CharSequence[]{getString(R.string.file), getString(R.string.image)};
         new MaterialDialog.Builder(getContext())
                 .items(items)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View view, int i, CharSequence items) {
-                        switch (i) {
-                            case 0://файл
-
-                                try {
-                                    Intent intent = new Intent();
-                                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                .itemsCallback((dialog, view, i, items1) -> {
+                    switch (i) {
+                        case 0://файл
+                            try {
+                                    Intent intent;
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                                        intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                                    } else intent = new Intent(Intent.ACTION_GET_CONTENT);
                                     intent.setType("file/*");
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                                     intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "*/*");
                                     intent.addCategory(Intent.CATEGORY_OPENABLE);
-                                    startActivityForResult(intent, MY_INTENT_CLICK);
+                                    startActivityForResult(intent, MY_INTENT_CLICK_F);
 
-                                } catch (ActivityNotFoundException ex) {
-                                    Toast.makeText(getMainActivity(), R.string.no_app_for_get_file, Toast.LENGTH_LONG).show();
-                                } catch (Exception ex) {
-                                    AppLog.e(getMainActivity(), ex);
-                                }
+                            } catch (ActivityNotFoundException ex) {
+                                Toast.makeText(getMainActivity(), R.string.no_app_for_get_file, Toast.LENGTH_LONG).show();
+                            } catch (Exception ex) {
+                                AppLog.e(getMainActivity(), ex);
+                            }
 
-                                break;
-                            case 1:// Изображение
+                            break;
+                        case 1:// Изображение
 
-                                try {
-                                    Intent imageintent = new Intent(
-                                            Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                                        imageintent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                                    startActivityForResult(imageintent, MY_INTENT_CLICK);
-                                } catch (ActivityNotFoundException ex) {
-                                    Toast.makeText(getMainActivity(), R.string.no_app_for_get_image_file, Toast.LENGTH_LONG).show();
-                                } catch (Exception ex) {
-                                    AppLog.e(getMainActivity(), ex);
-                                }
-                                break;
-                        }
+                            try {
+                                Intent imageintent = new Intent(
+                                        Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+                                    imageintent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                                startActivityForResult(imageintent, MY_INTENT_CLICK_I);
+                            } catch (ActivityNotFoundException ex) {
+                                Toast.makeText(getMainActivity(), R.string.no_app_for_get_image_file, Toast.LENGTH_LONG).show();
+                            } catch (Exception ex) {
+                                AppLog.e(getMainActivity(), ex);
+                            }
+                            break;
                     }
                 })
                 .show();
@@ -639,22 +616,67 @@ public class EditPostFragment extends GeneralFragment {
         App.getInstance().getPreferences().edit().putString("EditPost.AttachDirPath", lastSelectDirPath).apply();
     }
 
+    private void helperTask(String path) {
+        saveAttachDirPath(path);
+        new UpdateTask(getMainActivity(), path).execute();
+    }
+
+    // for test
+    private void msg(String message) {
+        Log.e("kek", message);
+    }
+
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         if (resultCode == Activity.RESULT_OK)
         {
-            if (requestCode == MY_INTENT_CLICK)
+            if (requestCode == MY_INTENT_CLICK_I)
             {
                 if (null == data) return;
                 Uri selectedImageUri = data.getData();
                 String selectedImagePath = ImageFilePath.getPath(getMainActivity().getApplicationContext(), selectedImageUri);
-                saveAttachDirPath(selectedImagePath);
-                new UpdateTask(getMainActivity(), selectedImagePath).execute();
+                helperTask(selectedImagePath);
 
+            } else if (requestCode == MY_INTENT_CLICK_F) {
+                if (null == data) return;
+                List<File> files = ImageFilePath.onActivityResult(getMainActivity(), data);
+                if (files.size() > 0) {
+                    File file = files.get(0);
+                    if (checkType(file.getPath())) {
+                        pathToFile = file.getPath(); // FIX ME
+                        helperTask(file.getPath());
+                    } else {
+                        Toast.makeText(getMainActivity(), R.string.file_not_support_forum, Toast.LENGTH_SHORT).show();
+                    }
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                        Uri uri = FileProvider.getUriForFile(getMainActivity(), BuildConfig.APPLICATION_ID + ".fileprovider", file);
+//                        helperTask(uri.getPath());
+//                    } else {
+//                        Uri uri = Uri.fromFile(file);
+//                        helperTask(uri.getPath());
+//                    }
+
+                }
             }
         }
+    }
+
+    private boolean checkType(String path) {
+        boolean t = false;
+        String[] types = {
+                ".7z", ".zip", ".rar", ".tar.gz", ".exe", ".cab",
+                ".xap", ".txt", ".log", ".jpeg", ".jpg", ".png",
+                ".gif", ".mp3", ".mp4",".apk", ".ipa", ".img"};
+
+        for (String type: types) {
+            if (path.toLowerCase().endsWith(type)) {
+                t = true;
+            }
+        }
+
+        return t;
     }
 
     private void startLoadPost(String forumId, String topicId, String postId, String authKey) {
@@ -694,6 +716,7 @@ public class EditPostFragment extends GeneralFragment {
         private final MaterialDialog dialog;
         private ProgressState m_ProgressState;
 
+
         private List<String> attachFilePaths;
 
         public UpdateTask(Context context, List<String> attachFilePaths) {
@@ -706,7 +729,7 @@ public class EditPostFragment extends GeneralFragment {
         }
 
         public UpdateTask(Context context, String newAttachFilePath) {
-            this(context, new ArrayList<>(Arrays.asList(new String[]{newAttachFilePath})));
+            this(context, new ArrayList<>(Arrays.asList(newAttachFilePath)));
         }
 
         private EditAttach editAttach;
@@ -771,6 +794,11 @@ public class EditPostFragment extends GeneralFragment {
             if (success || (isCancelled() && editAttach != null)) {
                 m_EditPost.addAttach(editAttach);
                 refreshAttachmentsInfo();
+                File deleteFile = new File(pathToFile);
+                if (deleteFile.exists()) {
+                    deleteFile.delete();
+                }
+
             } else {
 
                 if (ex != null)
@@ -1145,9 +1173,9 @@ public class EditPostFragment extends GeneralFragment {
 
             public AttachViewHolder(View convertView) {
                 super(convertView);
-                btnDelete = (ImageButton) convertView.findViewById(R.id.btnDelete);
-                btnSpoiler = (ImageButton) convertView.findViewById(R.id.btnSpoiler);
-                txtFile = (TextView) convertView.findViewById(R.id.txtFile);
+                btnDelete = convertView.findViewById(R.id.btnDelete);
+                btnSpoiler = convertView.findViewById(R.id.btnSpoiler);
+                txtFile = convertView.findViewById(R.id.txtFile);
             }
         }
     }
@@ -1278,6 +1306,4 @@ public class EditPostFragment extends GeneralFragment {
     public void startLoad() {
 
     }
-
-
 }

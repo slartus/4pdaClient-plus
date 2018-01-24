@@ -471,5 +471,6 @@
     <string name="lang_pref_title">Язык</string>
     <string name="lang_pref_summary">Необходимо перезапустить приложение</string>
     <string name="lang_changed">Язык приложения был изменен, перезапустить приложение?</string>
+    <string name="file_not_support_forum">Данный тип файлов не поддерживается форумом.</string>
 
 </resources>

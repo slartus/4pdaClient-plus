@@ -1,18 +1,17 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'android-apt'
+//apply plugin: 'me.tatarka.retrolambda'
 
 repositories {
     maven { url "https://jitpack.io" }
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
     useLibrary 'org.apache.http.legacy'
 
-    def appVersionCode = 597
-    def appVersionName = "3.4.9"
+    def appVersionCode = 599
+    def appVersionName = "3.5.0"
 
 
     defaultConfig {
@@ -48,6 +47,7 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    flavorDimensions "wtf"
     productFlavors {
         def defaultSigningVariable = signingConfigs.release
         rel {
@@ -55,21 +55,29 @@ android {
             versionCode appVersionCode
             versionName appVersionName
             signingConfig defaultSigningVariable
+            dimension "wtf"
         }
         beta {
             applicationId 'org.softeg.slartus.forpdaplus.beta'
             versionCode appVersionCode
             versionName "${appVersionName}beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
             signingConfig defaultSigningVariable
+            dimension "wtf"
         }
     }
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
+//    applicationVariants.all { variant ->
+//        variant.outputs.each { output ->
+//            def fileNaming = "ForPDA"
+//            def outputFile = output.outputFile
+//            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//                output.outputFile = new File(getProject().getRootDir(), "${fileNaming}_${appVersionName}-${variant.buildType.name}.apk")
+//            }
+//        }
+//    }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
             def fileNaming = "ForPDA"
-            def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                output.outputFile = new File(getProject().getRootDir(), "${fileNaming}_${appVersionName}-${variant.buildType.name}.apk")
-            }
+            outputFileName = "${fileNaming}_${appVersionName}-${variant.buildType.name}.apk"
         }
     }
     compileOptions {
@@ -113,6 +121,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.jakewharton:butterknife:8.1.0'
-    apt 'com.jakewharton:butterknife-compiler:8.1.0'
-
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.1.0'
+    compile project(':YouTubeAndroidPlayerApi')
 }

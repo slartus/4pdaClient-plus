@@ -2,12 +2,24 @@ package org.softeg.slartus.forpdaplus.classes;
 
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
+
+import org.acra.ACRA;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ImageFilePath
 {
@@ -108,8 +120,9 @@ public class ImageFilePath
         };
 
         try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+            cursor = context.getContentResolver().query(uri,projection, selection, selectionArgs,
                     null);
+
             if (cursor != null && cursor.moveToFirst()) {
                 final int index = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(index);
@@ -151,5 +164,76 @@ public class ImageFilePath
      */
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
+
+    public static List<File> onActivityResult(Context context, Intent data) {
+        List<File> files = new ArrayList<>();
+        File tempFile;
+        tempFile = createFile(context, data.getData());
+        if (tempFile != null) files.add(tempFile);
+        return files;
+    }
+
+    private static File createFile(Context context, Uri uri) {
+        File requestFile = null;
+        OutputStream outputStream = null;
+        InputStream inputStream = null;
+        try {
+            String name = getFileName(context, uri);
+            if (uri.getScheme().equals("content")) {
+                inputStream = context.getContentResolver().openInputStream(uri);
+                File nf = new File(context.getCacheDir(), name);
+                outputStream = new FileOutputStream(nf);
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = inputStream.read(buffer)) > 0) {
+                    outputStream.write(buffer, 0, len);
+                }
+                requestFile = nf;
+            } else if (uri.getScheme().equals("file")) {
+                requestFile = new File(uri.getPath());
+            }
+
+
+        } catch (Exception e) {
+            ACRA.getErrorReporter().handleException(e);
+        } finally {
+            try {
+                inputStream.close();
+                outputStream.close();
+                outputStream.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return requestFile;
+    }
+
+    private static String getFileName(Context context, Uri uri) {
+        String result = null;
+        if (uri.getScheme().equals("content")) {
+            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+            try {
+                if (cursor != null && cursor.moveToFirst()) {
+                    int index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                    if (index >= 0) {
+                        result = cursor.getString(index);
+                    }
+                }
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        }
+        if (result == null) {
+            result = uri.getPath();
+            int cut = result.lastIndexOf('/');
+            if (cut != -1) {
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
     }
 }

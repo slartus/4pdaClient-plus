@@ -34,8 +34,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
+import org.apache.http.client.HttpResponseException;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
+import org.softeg.slartus.forpdacommon.ShowInBrowserException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
@@ -47,7 +49,7 @@ import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.video.PlayerActivity;
+import org.softeg.slartus.forpdaplus.video.youtube.YoutubeActivity;
 
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -372,7 +374,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             }
 
             if (IntentActivity.isYoutube(url)) {
-                PlayerActivity.showYoutubeChoiceDialog(getMainActivity(), url);
+                YoutubeActivity.showYoutubeChoiceDialog(getActivity(), url);
                 return true;
             }
 
@@ -380,6 +382,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
             return true;
         }
+
         private boolean checkIsImage(final String url){
             final Pattern imagePattern = PatternExtensions.compile("http://.*?\\.(png|jpg|jpeg|gif)$");
             Uri uri = Uri.parse(url.toLowerCase());
@@ -739,7 +742,9 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 try {
                     Client.getInstance().likeComment(id, comment);
                 } catch (Exception e) {
-                    ex = e;
+                    if (e instanceof ShowInBrowserException) {
+                        // huyak
+                    } else ex = e;
                 }
 
                 final Exception finalEx = ex;
