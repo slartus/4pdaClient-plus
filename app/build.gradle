@@ -10,8 +10,8 @@ android {
     buildToolsVersion "26.0.2"
     useLibrary 'org.apache.http.legacy'
 
-    def appVersionCode = 600
-    def appVersionName = "3.5.1"
+    def appVersionCode = 601
+    def appVersionName = "3.5.1.1"
 
 
     defaultConfig {
@@ -119,7 +119,8 @@ dependencies {
     compile project(':forpdanotifyservice')
     compile project(':4pdasources')
     compile 'com.google.code.gson:gson:2.7'
-    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.squareup.okhttp3:okhttp:3.9.1'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.9.1'
     compile 'com.jakewharton:butterknife:8.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.1.0'
     compile project(':YouTubeAndroidPlayerApi')

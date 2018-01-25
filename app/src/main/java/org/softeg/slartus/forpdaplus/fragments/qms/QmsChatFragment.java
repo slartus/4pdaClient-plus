@@ -51,11 +51,13 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
+import org.json.JSONObject;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdaapi.post.EditAttach;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdacommon.FileUtils;
+import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.SimpleCookie;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
 import org.softeg.slartus.forpdaplus.App;
@@ -79,6 +81,8 @@ import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.io.IOException;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -88,6 +92,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import okhttp3.JavaNetCookieJar;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /*
  * Created by radiationx on 12.11.15.
@@ -297,6 +308,10 @@ public class QmsChatFragment extends WebViewFragment {
         hideKeyboard();
 
         btnAttachments = (Button) findViewById(R.id.btnAttachments);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+            btnAttachments.setVisibility(View.GONE);
+        }
+
         btnAttachments.setOnClickListener(view1 -> showAttachesListDialog());
         return view;
     }
@@ -340,6 +355,7 @@ public class QmsChatFragment extends WebViewFragment {
                 Uri selectedImageUri = data.getData();
                 String selectedImagePath = ImageFilePath.getPath(getMainActivity().getApplicationContext(), selectedImageUri);
                 if (selectedImagePath != null && selectedImagePath.matches("(?i)(.*)(jpg|png|gif)$")) {
+                    Log.e("TEST", "Path " + selectedImagePath);
                     saveAttachDirPath(selectedImagePath);
                     new UpdateTask(getMainActivity(), selectedImagePath).execute();
                 } else {
@@ -1030,17 +1046,17 @@ public class QmsChatFragment extends WebViewFragment {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
                 getIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 
-            Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            pickIntent.setType("image/*");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                pickIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//            Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//            pickIntent.setType("image/*");
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+//                pickIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//
+//            Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+//            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
+//                chooserIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 
-            Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
-            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                chooserIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-
-            startActivityForResult(chooserIntent, MY_INTENT_CLICK);
+            startActivityForResult(Intent.createChooser(getIntent, "Test"), MY_INTENT_CLICK);
 
             /*Intent imageintent = new Intent(
                     Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -1077,6 +1093,7 @@ public class QmsChatFragment extends WebViewFragment {
 
         UpdateTask(Context context, String newAttachFilePath) {
             this(context, new ArrayList<>(Arrays.asList(new String[]{newAttachFilePath})));
+            Log.e("TEST", "PATH " + newAttachFilePath);
         }
 
         private EditAttach editAttach;
@@ -1108,6 +1125,7 @@ public class QmsChatFragment extends WebViewFragment {
                         context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
                         new DefaultHttpClient().execute(new HttpPost("https://savepice.ru/"), context);
 
+
                         for (Cookie cookie : cookieStore.getCookies()) {
                             Log.d("save", "coolie name" + cookie.getName());
                             if (cookie.getName().equals("PHPSESSID")) {
@@ -1122,9 +1140,9 @@ public class QmsChatFragment extends WebViewFragment {
                                 }
                             }
                         }
+
                     }
                     String res = QmsApi.attachFile(Client.getInstance(), newAttachFilePath, m_ProgressState);
-
 
                     editAttach = new EditAttach("https://cdn1.savepice.ru" + res, "Изображение №" + attachList.size(), null, null);
                 }
@@ -1171,9 +1189,11 @@ public class QmsChatFragment extends WebViewFragment {
                 refreshAttachmentsInfo();
             } else {
 
-                if (ex != null)
+                if (ex != null) {
+                    ex.printStackTrace();
+                    Log.e("TEST", "Error " + ex.getMessage());
                     AppLog.e(getMainActivity(), ex);
-                else
+                } else
                     Toast.makeText(getMainActivity(), R.string.unknown_error, Toast.LENGTH_SHORT).show();
 
             }

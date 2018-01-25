@@ -104,7 +104,7 @@ public class EditPostFragment extends GeneralFragment {
 
     public static final String thisFragmentUrl = "EditPostFragment";
 
-    private String pathToFile;
+    private String pathToFile = "";
 
     @Override
     public void hidePopupWindows() {
@@ -576,12 +576,12 @@ public class EditPostFragment extends GeneralFragment {
                     switch (i) {
                         case 0://файл
                             try {
-                                    Intent intent;
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                                        intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                                    } else intent = new Intent(Intent.ACTION_GET_CONTENT);
-                                    intent.setType("file/*");
-                                    intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "*/*");
+                                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//                                        intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+//                                    } else intent = new Intent(Intent.ACTION_GET_CONTENT);
+//                                    intent.setType("file/*");
+                                    intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "application/*|text/*");
                                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                                     startActivityForResult(intent, MY_INTENT_CLICK_F);
 
@@ -794,9 +794,12 @@ public class EditPostFragment extends GeneralFragment {
             if (success || (isCancelled() && editAttach != null)) {
                 m_EditPost.addAttach(editAttach);
                 refreshAttachmentsInfo();
-                File deleteFile = new File(pathToFile);
-                if (deleteFile.exists()) {
-                    deleteFile.delete();
+
+                if (!pathToFile.isEmpty()) {
+                    File deleteFile = new File(pathToFile);
+                    if (deleteFile.exists()) {
+                        deleteFile.delete();
+                    }
                 }
 
             } else {

@@ -291,4 +291,5 @@ public class QmsApi {
         }
         return jsonObject.optString("redirect_path").replace("/uploaded/", "/uploads/").replace(".html", "");
     }
+
 }
