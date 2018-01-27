@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -55,6 +56,7 @@ import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.BuildConfig;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
@@ -577,11 +579,8 @@ public class EditPostFragment extends GeneralFragment {
                         case 0://файл
                             try {
                                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//                                        intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-//                                    } else intent = new Intent(Intent.ACTION_GET_CONTENT);
-//                                    intent.setType("file/*");
-                                    intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "application/*|text/*");
+//                                    intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
+                                    intent.setType("file/*");
                                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                                     startActivityForResult(intent, MY_INTENT_CLICK_F);
 
@@ -641,42 +640,31 @@ public class EditPostFragment extends GeneralFragment {
 
             } else if (requestCode == MY_INTENT_CLICK_F) {
                 if (null == data) return;
-                List<File> files = ImageFilePath.onActivityResult(getMainActivity(), data);
-                if (files.size() > 0) {
-                    File file = files.get(0);
-                    if (checkType(file.getPath())) {
-                        pathToFile = file.getPath(); // FIX ME
-                        helperTask(file.getPath());
-                    } else {
-                        Toast.makeText(getMainActivity(), R.string.file_not_support_forum, Toast.LENGTH_SHORT).show();
-                    }
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                        Uri uri = FileProvider.getUriForFile(getMainActivity(), BuildConfig.APPLICATION_ID + ".fileprovider", file);
-//                        helperTask(uri.getPath());
-//                    } else {
-//                        Uri uri = Uri.fromFile(file);
-//                        helperTask(uri.getPath());
-//                    }
-
+                String path = data.getData().getPath();
+                if (path.matches("(?i)(.*)(7z|zip|rar|tar.gz|exe|cab|xap|txt|log|jpeg|jpg|png|gif|mp3|mp4|apk|ipa|img)$")) {
+                    helperTask(path);
+                } else {
+                    Toast.makeText(getMainActivity(), R.string.file_not_support_forum, Toast.LENGTH_SHORT).show();
                 }
+
+//                List<File> files = ImageFilePath.onActivityResult(getMainActivity(), data);
+//                if (files.size() > 0) {
+//                    File file = files.get(0);
+//                    if (file.getPath().matches("(?i)(.*)(7z|zip|rar|tar.gz|exe|cab|xap|txt|log|jpeg|jpg|png|gif|mp3|mp4|apk|ipa|img)$")) {
+////                        pathToFile = file.getPath(); // FIX ME
+////                        Uri uri;
+////                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+////                            uri = FileProvider.getUriForFile(getMainActivity(), BuildConfig.APPLICATION_ID + ".provider", file);
+////                        } else {
+////                            uri = Uri.fromFile(file);
+////                        }
+//                        helperTask(data.getData().getPath());
+//                    } else {
+//                        Toast.makeText(getMainActivity(), R.string.file_not_support_forum, Toast.LENGTH_SHORT).show();
+//                    }
+//                }
             }
         }
-    }
-
-    private boolean checkType(String path) {
-        boolean t = false;
-        String[] types = {
-                ".7z", ".zip", ".rar", ".tar.gz", ".exe", ".cab",
-                ".xap", ".txt", ".log", ".jpeg", ".jpg", ".png",
-                ".gif", ".mp3", ".mp4",".apk", ".ipa", ".img"};
-
-        for (String type: types) {
-            if (path.toLowerCase().endsWith(type)) {
-                t = true;
-            }
-        }
-
-        return t;
     }
 
     private void startLoadPost(String forumId, String topicId, String postId, String authKey) {
@@ -795,12 +783,12 @@ public class EditPostFragment extends GeneralFragment {
                 m_EditPost.addAttach(editAttach);
                 refreshAttachmentsInfo();
 
-                if (!pathToFile.isEmpty()) {
-                    File deleteFile = new File(pathToFile);
-                    if (deleteFile.exists()) {
-                        deleteFile.delete();
-                    }
-                }
+//                if (!pathToFile.isEmpty()) {
+//                    File deleteFile = new File(pathToFile);
+//                    if (deleteFile.exists()) {
+//                        deleteFile.delete();
+//                    }
+//                }
 
             } else {
 

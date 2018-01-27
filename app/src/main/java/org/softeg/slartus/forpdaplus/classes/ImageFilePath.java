@@ -166,6 +166,8 @@ public class ImageFilePath
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
+
+    // Может потом надо будет
     public static List<File> onActivityResult(Context context, Intent data) {
         List<File> files = new ArrayList<>();
         File tempFile;
@@ -182,7 +184,7 @@ public class ImageFilePath
             String name = getFileName(context, uri);
             if (uri.getScheme().equals("content")) {
                 inputStream = context.getContentResolver().openInputStream(uri);
-                File nf = new File(context.getCacheDir(), name);
+                File nf = new File(context.getExternalCacheDir(), name);
                 outputStream = new FileOutputStream(nf);
                 byte[] buffer = new byte[1024];
                 int len;

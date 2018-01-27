@@ -275,21 +275,25 @@ public class QmsApi {
         additionalHeaders.put("size", "640");
         additionalHeaders.put("preview_size", "180");
         additionalHeaders.put("rotation_type", "0");
-        Log.d("save", "file " + newFilePath);
-        for (Cookie cookie : httpClient.getCookieStore().getCookies()) {
-            Log.d("save", "Cookie name: " + cookie.getName() + "; value: " + cookie.getValue());
-        }
+//        Log.d("save", "file " + newFilePath);
+//        for (Cookie cookie : httpClient.getCookieStore().getCookies()) {
+//            Log.d("save", "Cookie name: " + cookie.getName() + "; value: " + cookie.getValue());
+//        }
         String res = httpClient.uploadFile("https://savepice.ru/upload", newFilePath, additionalHeaders, progress);
-        for (Cookie cookie : httpClient.getCookieStore().getCookies()) {
-            Log.d("save", "Cookie name: " + cookie.getName() + "; value: " + cookie.getValue());
-        }
+//        for (Cookie cookie : httpClient.getCookieStore().getCookies()) {
+//            Log.d("save", "Cookie name: " + cookie.getName() + "; value: " + cookie.getValue());
+//        }
 
-        Log.d("save", "result " + res);
+
+
+//        Log.d("save", "result " + res);
         JSONObject jsonObject = new JSONObject(res);
         if (jsonObject.optBoolean("error", false)) {
             throw new NotReportException(jsonObject.optString("text"));
         }
         return jsonObject.optString("redirect_path").replace("/uploaded/", "/uploads/").replace(".html", "");
     }
+
+
 
 }

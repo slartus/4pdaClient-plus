@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -79,6 +80,7 @@ import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.utils.UploadUtils;
 
 import java.io.IOException;
 import java.net.CookieManager;
@@ -308,10 +310,6 @@ public class QmsChatFragment extends WebViewFragment {
         hideKeyboard();
 
         btnAttachments = (Button) findViewById(R.id.btnAttachments);
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
-            btnAttachments.setVisibility(View.GONE);
-        }
-
         btnAttachments.setOnClickListener(view1 -> showAttachesListDialog());
         return view;
     }
@@ -331,11 +329,9 @@ public class QmsChatFragment extends WebViewFragment {
     public void showChooseCssDialog() {
         getMainActivity().runOnUiThread(() -> {
             try {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_GET_CONTENT);
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                 intent.setType("file/*");
-
-                // intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent, FILECHOOSER_RESULTCODE);
 
             } catch (ActivityNotFoundException ex) {
@@ -1041,7 +1037,7 @@ public class QmsChatFragment extends WebViewFragment {
         }
         try {
 
-            Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            Intent getIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             getIntent.setType("image/*");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
                 getIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
@@ -1057,12 +1053,6 @@ public class QmsChatFragment extends WebViewFragment {
 //                chooserIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 
             startActivityForResult(Intent.createChooser(getIntent, "Test"), MY_INTENT_CLICK);
-
-            /*Intent imageintent = new Intent(
-                    Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2)
-                imageintent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            startActivityForResult(imageintent, MY_INTENT_CLICK);*/
         } catch (ActivityNotFoundException ex) {
             Toast.makeText(getMainActivity(), R.string.no_app_for_get_image_file, Toast.LENGTH_LONG).show();
         } catch (Exception ex) {
@@ -1086,7 +1076,8 @@ public class QmsChatFragment extends WebViewFragment {
 
             this.attachFilePaths = attachFilePaths;
             dialog = new MaterialDialog.Builder(context)
-                    .progress(false, 100, false)
+//                    .progress(false, 100, false)
+                    .progress(true,  0)
                     .content(R.string.sending_file)
                     .show();
         }
@@ -1110,39 +1101,42 @@ public class QmsChatFragment extends WebViewFragment {
 
                 int i = 1;
                 for (String newAttachFilePath : attachFilePaths) {
-                    publishProgress(new Pair<>(String.format(App.getContext().getString(R.string.format_sending_file), i++, attachFilePaths.size()), 0));
+//                    publishProgress(new Pair<>(String.format(App.getContext().getString(R.string.format_sending_file), i++, attachFilePaths.size()), 0));
+//
+//                    boolean found = false;
+//                    for (Cookie cookie1 : Client.getInstance().getCookies()) {
+//                        if (cookie1.getName().equals("PHPSESSID")) {
+//                            found = true;
+//                            break;
+//                        }
+//                    }
+//                    if (!found) {
+//                        CookieStore cookieStore = new BasicCookieStore();
+//                        HttpContext context = new BasicHttpContext();
+//                        context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+//                        new DefaultHttpClient().execute(new HttpPost("https://savepice.ru/"), context);
+//
+//
+//                        for (Cookie cookie : cookieStore.getCookies()) {
+//                            Log.d("save", "coolie name" + cookie.getName());
+//                            if (cookie.getName().equals("PHPSESSID")) {
+//                                Log.d("save", "try save cookie");
+//                                HttpHelper helper = new HttpHelper();
+//                                try {
+//                                    helper.getCookieStore().getCookies();
+//                                    helper.getCookieStore().addCookie(new SimpleCookie(cookie.getName(), cookie.getValue()));
+//                                    helper.writeExternalCookies();
+//                                } finally {
+//                                    helper.close();
+//                                }
+//                            }
+//                        }
+//
+//                    }
+//                    String res = QmsApi.attachFile(Client.getInstance(), newAttachFilePath, m_ProgressState);
+                    String res = UploadUtils.attachFile(newAttachFilePath);
 
-                    boolean found = false;
-                    for (Cookie cookie1 : Client.getInstance().getCookies()) {
-                        if (cookie1.getName().equals("PHPSESSID")) {
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        CookieStore cookieStore = new BasicCookieStore();
-                        HttpContext context = new BasicHttpContext();
-                        context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
-                        new DefaultHttpClient().execute(new HttpPost("https://savepice.ru/"), context);
 
-
-                        for (Cookie cookie : cookieStore.getCookies()) {
-                            Log.d("save", "coolie name" + cookie.getName());
-                            if (cookie.getName().equals("PHPSESSID")) {
-                                Log.d("save", "try save cookie");
-                                HttpHelper helper = new HttpHelper();
-                                try {
-                                    helper.getCookieStore().getCookies();
-                                    helper.getCookieStore().addCookie(new SimpleCookie(cookie.getName(), cookie.getValue()));
-                                    helper.writeExternalCookies();
-                                } finally {
-                                    helper.close();
-                                }
-                            }
-                        }
-
-                    }
-                    String res = QmsApi.attachFile(Client.getInstance(), newAttachFilePath, m_ProgressState);
 
                     editAttach = new EditAttach("https://cdn1.savepice.ru" + res, "Изображение №" + attachList.size(), null, null);
                 }
@@ -1154,24 +1148,25 @@ public class QmsChatFragment extends WebViewFragment {
             }
         }
 
-        @Override
-        protected void onProgressUpdate(Pair<String, Integer>... values) {
-            super.onProgressUpdate(values);
-            if (!TextUtils.isEmpty(values[0].first))
-                dialog.setContent(values[0].first);
-            dialog.setProgress(values[0].second);
-        }
+//        @Override
+//        protected void onProgressUpdate(Pair<String, Integer>... values) {
+//            super.onProgressUpdate(values);
+//            if (!TextUtils.isEmpty(values[0].first))
+//                dialog.setContent(values[0].first);
+//            dialog.setProgress(values[0].second);
+//        }
 
         // can use UI thread here
         protected void onPreExecute() {
             this.dialog.setCancelable(true);
             this.dialog.setCanceledOnTouchOutside(false);
-            this.dialog.setOnCancelListener(dialogInterface -> {
-                if (m_ProgressState != null)
-                    m_ProgressState.cancel();
-                cancel(false);
-            });
-            this.dialog.setProgress(0);
+//            this.dialog.setOnCancelListener(dialogInterface -> {
+//                if (m_ProgressState != null)
+//                    m_ProgressState.cancel();
+//                cancel(false);
+//            });
+//            this.dialog.setProgress(0);
+            this.dialog.isIndeterminateProgress();
 
             this.dialog.show();
         }
