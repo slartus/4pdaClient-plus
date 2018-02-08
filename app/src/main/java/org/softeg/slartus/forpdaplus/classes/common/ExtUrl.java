@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -54,6 +55,9 @@ public class ExtUrl {
     }
 
     public static void showInBrowser(Context context, String url) {
+        if (!url.startsWith("http:") && !url.startsWith("https:")) {
+            url = "https:" + url;
+        }
         Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         context.startActivity(Intent.createChooser(marketIntent, context.getString(R.string.choose)));
     }

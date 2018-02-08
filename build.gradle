@@ -7,9 +7,10 @@ buildscript {
         maven {
             url 'https://maven.google.com'
         }
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.0-beta1'
 //        classpath 'me.tatarka:gradle-retrolambda:3.3.1'
 //        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
 
@@ -29,5 +30,5 @@ allprojects {
 
 // Так жить станет легче
 ext {
-    supportLibraryVersion = '26.1.0'
+    supportLibraryVersion = '27.0.2'
 }

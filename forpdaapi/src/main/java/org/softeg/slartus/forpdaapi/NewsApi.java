@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaapi;
 
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.text.Html;
 import android.text.TextUtils;
@@ -36,8 +37,11 @@ public class NewsApi {
         return res != null;
     }
 
+    private static void msg(String message) {
+        Log.e("TEST", message);
+    }
 
-    public static ArrayList<News> getNews(IHttpClient httpClient, String url, ListInfo listInfo) throws Exception {
+    public static ArrayList<News> getNews(IHttpClient httpClient, String url, ListInfo listInfo, SharedPreferences preferences) throws Exception {
         //http://4pda.ru/2013/page/7/
         //http://4pda.ru/2013/2/page/7/
         //http://4pda.ru/2013/2/2/page/7/
@@ -47,7 +51,7 @@ public class NewsApi {
         //http://4pda.ru/?s=%EF%EB%E0%ED%F8%E5%F2
         //http://4pda.ru/page/6/?s=%EF%EB%E0%ED%F8%E5%F2
 
-        final int NEWS_PER_PAGE = 29;// 30 новостей на страницу выводит форум
+        final int NEWS_PER_PAGE = 28;// 30 новостей на страницу выводит форум
         int pageNum = 1;
         String justUrl = url;// урл без страницы и параметров
         String params = "";// параметры, например, s=%EF%EB%E0%ED%F8%E5%F2
@@ -69,9 +73,15 @@ public class NewsApi {
                     pageNum = Integer.parseInt(m.group(2));
             }
         }
-        Double p = Math.ceil(listInfo.getFrom() / NEWS_PER_PAGE);
-        pageNum = p.intValue() + pageNum;
-//        pageNum = (int) Math.ceil(listInfo.getFrom() / NEWS_PER_PAGE) + pageNum;
+
+
+        int page;
+        if (listInfo.getFrom() == 0) {
+            page = NEWS_PER_PAGE;
+        } else {
+            page = preferences.getInt("lm", NEWS_PER_PAGE);
+        }
+        pageNum = (int) Math.ceil(listInfo.getFrom() / page) + pageNum;
         String requestUrl = justUrl + "/page/" + pageNum + "/" + params;
 
         ArrayList<News> res = new ArrayList<>();
@@ -139,6 +149,9 @@ public class NewsApi {
             return getNewsFromRss(httpClient, UrlExtensions.removeDoubleSplitters(url + "/feed/"));
         int lastPageNum = lastPageNum(dailyNewsPage);
         listInfo.setOutCount(res.size() * lastPageNum);
+        if (listInfo.getFrom() == 0 && res.size() > 0) {
+            preferences.edit().putInt("lm", res.size()).apply();
+        }
         return res;
     }
 

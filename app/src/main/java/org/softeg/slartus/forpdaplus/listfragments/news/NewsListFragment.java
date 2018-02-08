@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.News;
+import org.softeg.slartus.forpdaapi.NewsPair;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
@@ -103,7 +105,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
                 holder = new ViewHolder();
 
                 assert view != null;
-                holder.text1 = (TextView) view.findViewById(R.id.text1);
+                holder.text1 = view.findViewById(R.id.text1);
 
 
                 view.setTag(holder);
@@ -298,7 +300,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
     public boolean inBackground(boolean isRefresh) throws Exception {
         mListInfo = new ListInfo();
         mListInfo.setFrom(isRefresh ? 0 : mData.size());
-        mLoadResultList = org.softeg.slartus.forpdaapi.NewsApi.getNews(Client.getInstance(), mUrl + mTag, mListInfo);
+        mLoadResultList = org.softeg.slartus.forpdaapi.NewsApi.getNews(Client.getInstance(), mUrl + mTag, mListInfo, App.getInstance().getPreferences());
         return true;
     }
 

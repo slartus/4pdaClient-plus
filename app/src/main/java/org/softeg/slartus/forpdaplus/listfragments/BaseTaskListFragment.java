@@ -47,12 +47,7 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
 
     protected <T> void updateItemCache(final T item, final Class<T> tClass, Boolean newThread) {
         if (newThread) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    updateItemCache(item, tClass);
-                }
-            }).start();
+            new Thread(() -> updateItemCache(item, tClass)).start();
         } else {
             updateItemCache(item, tClass);
         }
@@ -133,22 +128,15 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
     public void loadData(final boolean isRefresh) {
 
         saveListViewScrollPosition();
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (needLogin()) {
-                    Client.getInstance().checkLoginByCookies();
-                    if (!Client.getInstance().getLogined())
-                        Client.getInstance().showLoginForm(getContext(), new Client.OnUserChangedListener() {
-                            public void onUserChanged(String user, Boolean success) {
-                                loadData(isRefresh);
-                            }
-                        });
-                }
-
-                mTask = createTask(isRefresh);
-                mTask.execute();
+        Runnable runnable = () -> {
+            if (needLogin()) {
+                Client.getInstance().checkLoginByCookies();
+                if (!Client.getInstance().getLogined())
+                    Client.getInstance().showLoginForm(getContext(), (user, success) -> loadData(isRefresh));
             }
+
+            mTask = createTask(isRefresh);
+            mTask.execute();
         };
         if (mTask != null && mTask.getStatus() != AsyncTask.Status.FINISHED)
             mTask.cancel(runnable);
@@ -171,12 +159,7 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
         setListShown(true);
         mAdapter.notifyDataSetChanged();
         setEmptyText(App.getContext().getString(R.string.no_data));
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                trySaveCache();
-            }
-        }).start();
+        new Thread(this::trySaveCache).start();
 
         restoreListViewScrollPosition();
     }
@@ -233,12 +216,7 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
             if (!isCancelled())
                 setLoading(false);
             if (mEx != null)
-                AppLog.e(getActivity(), mEx, new Runnable() {
-                    @Override
-                    public void run() {
-                        loadData(mRefresh);
-                    }
-                });
+                AppLog.e(getActivity(), mEx, () -> loadData(mRefresh));
             else if (!result) {
                 onFailureResult();
             }

@@ -381,7 +381,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
                     }
                     Method method = this.getClass().getMethod(function, parameterTypes);
 
-                    method.invoke(getMainActivity(), parameterValues);
+                    method.invoke(getMainActivity(), (Object[]) parameterValues);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -78,16 +78,16 @@ public class NewsListAdapter extends BaseAdapter {
             holder.image_panel = rowView.findViewById(R.id.image_panel);
             if (holder.image_panel != null)
                 holder.image_panel.setVisibility(mLoadImages ? View.VISIBLE : View.GONE);
-            holder.imageImage = (ImageView) rowView.findViewById(R.id.imageImage);
+            holder.imageImage = rowView.findViewById(R.id.imageImage);
 
-            holder.textSource = (TextView) rowView.findViewById(R.id.textSource);
-            holder.textComments = (TextView) rowView.findViewById(R.id.textComments);
-            holder.textTag = (TextView) rowView.findViewById(R.id.textTag);
+            holder.textSource = rowView.findViewById(R.id.textSource);
+            holder.textComments = rowView.findViewById(R.id.textComments);
+            holder.textTag = rowView.findViewById(R.id.textTag);
 
-            holder.textAuthor = (TextView) rowView.findViewById(R.id.textAvtor);
-            holder.textDate = (TextView) rowView.findViewById(R.id.textDate);
-            holder.textDescription = (TextView) rowView.findViewById(R.id.textDescription);
-            holder.textTitle = (TextView) rowView.findViewById(R.id.textTitle);
+            holder.textAuthor = rowView.findViewById(R.id.textAvtor);
+            holder.textDate = rowView.findViewById(R.id.textDate);
+            holder.textDescription = rowView.findViewById(R.id.textDescription);
+            holder.textTitle = rowView.findViewById(R.id.textTitle);
             rowView.setTag(holder);
         } else {
             holder = (ViewHolder) rowView.getTag();

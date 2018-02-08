@@ -123,12 +123,9 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
         super.onViewCreated(view, savedInstanceState);
 
         mListViewLoadMoreFooter = new ListViewLoadMoreFooter(view.getContext(), getListView());
-        mListViewLoadMoreFooter.setOnLoadMoreClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListViewLoadMoreFooter.setState(ListViewLoadMoreFooter.STATE_LOADING);
-                loadData(false);
-            }
+        mListViewLoadMoreFooter.setOnLoadMoreClickListener(view1 -> {
+            mListViewLoadMoreFooter.setState(ListViewLoadMoreFooter.STATE_LOADING);
+            loadData(false);
         });
 
 
@@ -136,13 +133,8 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
     }
 
     protected SwipeRefreshLayout createSwipeRefreshLayout(View view) {
-        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.ptr_layout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
-            @Override
-            public void onRefresh() {
-                loadData(true);
-            }
-        });
+        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.ptr_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> loadData(true));
         swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
         swipeRefreshLayout.setProgressBackgroundColorSchemeResource(App.getInstance().getSwipeRefreshBackground());
         return swipeRefreshLayout;
@@ -196,12 +188,7 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
         try {
             if (getActivity() == null) return;
             //mSwipeRefreshLayout.setRefreshing(loading);
-            mSwipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    mSwipeRefreshLayout.setRefreshing(loading);
-                }
-            });
+            mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(loading));
             if (loading) {
                 setEmptyText(App.getContext().getString(R.string.loading));
             } else {
@@ -249,12 +236,7 @@ public abstract class BaseListFragment extends BaseBrickFragment implements
 
     protected <T> void updateItemCache(final T item, final Class<T> tClass, Boolean newThread) {
         if (newThread) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    updateItemCache(item, tClass);
-                }
-            }).start();
+            new Thread(() -> updateItemCache(item, tClass)).start();
         } else {
             updateItemCache(item, tClass);
         }

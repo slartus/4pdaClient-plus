@@ -1349,7 +1349,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                 parameterValues[i] = objs.get(i);
                             }
                         }
-                        ThemeFragment.class.getMethod(function, parameterTypes).invoke(getMainActivity(), parameterValues);
+                        ThemeFragment.class.getMethod(function, parameterTypes).invoke(getMainActivity(), (Object[]) parameterValues);
                     } catch (Exception e) {
                         AppLog.eToast(getMainActivity(), e);
                     }
