@@ -579,8 +579,11 @@ public class EditPostFragment extends GeneralFragment {
                         case 0://файл
                             try {
                                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//                                    intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
-                                    intent.setType("file/*");
+                                    intent.setType("*/*");
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                    }
                                     intent.addCategory(Intent.CATEGORY_OPENABLE);
                                     startActivityForResult(intent, MY_INTENT_CLICK_F);
 
@@ -640,29 +643,12 @@ public class EditPostFragment extends GeneralFragment {
 
             } else if (requestCode == MY_INTENT_CLICK_F) {
                 if (null == data) return;
-                String path = data.getData().getPath();
-                if (path.matches("(?i)(.*)(7z|zip|rar|tar.gz|exe|cab|xap|txt|log|jpeg|jpg|png|gif|mp3|mp4|apk|ipa|img)$")) {
+                String path = ImageFilePath.getPath(getMainActivity().getApplicationContext(), data.getData());
+                if (path.matches("(?i)(.*)(7z|zip|rar|tar.gz|exe|cab|xap|txt|log|jpeg|jpg|png|gif|mp3|mp4|apk|ipa|img|.mtz)$")) {
                     helperTask(path);
                 } else {
                     Toast.makeText(getMainActivity(), R.string.file_not_support_forum, Toast.LENGTH_SHORT).show();
                 }
-
-//                List<File> files = ImageFilePath.onActivityResult(getMainActivity(), data);
-//                if (files.size() > 0) {
-//                    File file = files.get(0);
-//                    if (file.getPath().matches("(?i)(.*)(7z|zip|rar|tar.gz|exe|cab|xap|txt|log|jpeg|jpg|png|gif|mp3|mp4|apk|ipa|img)$")) {
-////                        pathToFile = file.getPath(); // FIX ME
-////                        Uri uri;
-////                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-////                            uri = FileProvider.getUriForFile(getMainActivity(), BuildConfig.APPLICATION_ID + ".provider", file);
-////                        } else {
-////                            uri = Uri.fromFile(file);
-////                        }
-//                        helperTask(data.getData().getPath());
-//                    } else {
-//                        Toast.makeText(getMainActivity(), R.string.file_not_support_forum, Toast.LENGTH_SHORT).show();
-//                    }
-//                }
             }
         }
     }

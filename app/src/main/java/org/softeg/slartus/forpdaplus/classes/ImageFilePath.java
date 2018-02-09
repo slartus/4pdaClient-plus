@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.classes;
 
+import android.annotation.TargetApi;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +33,7 @@ public class ImageFilePath
      * @param uri
      * @return path of the selected image file from gallery
      */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     public static String getPath(final Context context, final Uri uri)
     {
 
@@ -40,9 +42,11 @@ public class ImageFilePath
 
         // DocumentProvider
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-
+            if (isLocalStorageDocument(uri)) {
+                return DocumentsContract.getDocumentId(uri);
+            }
             // ExternalStorageProvider
-            if (isExternalStorageDocument(uri)) {
+            else if (isExternalStorageDocument(uri)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
                 final String type = split[0];
@@ -55,8 +59,9 @@ public class ImageFilePath
             else if (isDownloadsDocument(uri)) {
 
                 final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://<span id=\"IL_AD2\" class=\"IL_AD\">downloads</span>/public_downloads"), Long.valueOf(id));
+//                final Uri contentUri = ContentUris.withAppendedId(
+//                        Uri.parse("content://<span id=\"IL_AD2\" class=\"IL_AD\">downloads</span>/public_downloads"), Long.valueOf(id));
+                final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
 
                 return getDataColumn(context, contentUri, null, null);
             }
@@ -166,76 +171,11 @@ public class ImageFilePath
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
 
-
-    // Может потом надо будет
-    public static List<File> onActivityResult(Context context, Intent data) {
-        List<File> files = new ArrayList<>();
-        File tempFile;
-        tempFile = createFile(context, data.getData());
-        if (tempFile != null) files.add(tempFile);
-        return files;
+    public static boolean isLocalStorageDocument(Uri uri) {
+        return LocalStorageProvider.AUTHORITY.equals(uri.getAuthority());
     }
 
-    private static File createFile(Context context, Uri uri) {
-        File requestFile = null;
-        OutputStream outputStream = null;
-        InputStream inputStream = null;
-        try {
-            String name = getFileName(context, uri);
-            if (uri.getScheme().equals("content")) {
-                inputStream = context.getContentResolver().openInputStream(uri);
-                File nf = new File(context.getExternalCacheDir(), name);
-                outputStream = new FileOutputStream(nf);
-                byte[] buffer = new byte[1024];
-                int len;
-                while ((len = inputStream.read(buffer)) > 0) {
-                    outputStream.write(buffer, 0, len);
-                }
-                requestFile = nf;
-            } else if (uri.getScheme().equals("file")) {
-                requestFile = new File(uri.getPath());
-            }
-
-
-        } catch (Exception e) {
-            ACRA.getErrorReporter().handleException(e);
-        } finally {
-            try {
-                inputStream.close();
-                outputStream.close();
-                outputStream.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-        return requestFile;
-    }
-
-    private static String getFileName(Context context, Uri uri) {
-        String result = null;
-        if (uri.getScheme().equals("content")) {
-            Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
-            try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    int index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                    if (index >= 0) {
-                        result = cursor.getString(index);
-                    }
-                }
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
-            }
-        }
-        if (result == null) {
-            result = uri.getPath();
-            int cut = result.lastIndexOf('/');
-            if (cut != -1) {
-                result = result.substring(cut + 1);
-            }
-        }
-        return result;
+    class LocalStorageProvider {
+        public static final String AUTHORITY = "org.softeg.slartus.forpdaplus.localstorage.documents";
     }
 }
