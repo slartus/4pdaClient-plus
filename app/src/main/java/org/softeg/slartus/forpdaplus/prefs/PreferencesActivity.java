@@ -278,7 +278,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
         private void setMenuItems(){
             final SharedPreferences preferences = getPreferenceManager().getSharedPreferences();
 
-            String[] items = preferences.getString("selectedMenuItems", "0,1,2,3,4,5,9,10").split(",");
+            String[] items = preferences.getString("selectedMenuItems", "0,1,2,3,4,7,8").split(",");
             Integer[] selectedItems = new Integer[items.length];
 
             for (int i = 0; i < items.length; i++)
@@ -316,7 +316,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     .onNeutral(new MaterialDialog.SingleButtonCallback() {
                         @Override
                         public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                            preferences.edit().putString("selectedMenuItems", "0,1,2,3,4,5,9,10").apply();
+                            preferences.edit().putString("selectedMenuItems", "0,1,2,3,4,5,8,9").apply();
                         }
                     })
                     .show();

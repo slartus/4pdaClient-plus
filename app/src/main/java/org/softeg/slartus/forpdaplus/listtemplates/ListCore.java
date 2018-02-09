@@ -13,7 +13,7 @@ public class ListCore {
     public static ArrayList<BrickInfo> getMainMenuBricks() {
         ArrayList<BrickInfo> res = new ArrayList<BrickInfo>();
         ArrayList<BrickInfo> allItems = getAllMenuBricks();
-        for (String item : MainActivity.getPreferences().getString("selectedMenuItems", "0,1,2,3,4,5,9,10").split(","))
+        for (String item : MainActivity.getPreferences().getString("selectedMenuItems", "0,1,2,3,4,7,8").split(","))
             if(!item.equals("")&!item.equals("null")) res.add(allItems.get(Integer.parseInt(item)));
         return res;
     }
@@ -25,11 +25,11 @@ public class ListCore {
         allItems.add(new TopicsHistoryBrickInfo());//3
         allItems.add(new NotesBrickInfo());//4
         allItems.add(new AppAndGame());//5
-        allItems.add(new AppsBrickInfo());//6
-        allItems.add(new AppsGamesCatalogBrickInfo());//7
-        allItems.add(new DigestCatalogBrickInfo());//8
-        allItems.add(new DevDbCatalogBrickInfo());//9
-        allItems.add(new LeadsBrickInfo());//10
+//        allItems.add(new AppsBrickInfo());//6
+//        allItems.add(new AppsGamesCatalogBrickInfo());//7
+        allItems.add(new DigestCatalogBrickInfo());//8 6
+        allItems.add(new DevDbCatalogBrickInfo());//9 7
+        allItems.add(new LeadsBrickInfo());//10 8
         return allItems;
     }
 
