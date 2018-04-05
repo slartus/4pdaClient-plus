@@ -50,18 +50,21 @@ public class NewDevDbApi {
         String pageBody = client.performGet(brandUrl + "/all");
 
         Document doc = Jsoup.parse(pageBody);
-        Elements con = doc.select("div.box-holder");
+        Elements con = doc.selectFirst("div.device-frame").getElementById("device-brand-items-list").children();
 
         for (int i = 0; i < con.size(); i++) {
-            String link = con.get(i).select(".visual a").first().attr("href");
-            String title = con.get(i).select(".visual a").first().attr("title");
-            String image = con.get(i).select(".visual img").first().attr("src");
+            Element box = con.get(i).selectFirst("div.box-holder");
+            if (box != null) {
+                String link = box.selectFirst("a").attr("href");
+                String title = box.selectFirst("a").attr("title");
+                String image = box.selectFirst("img").attr("src");
 
-            DevModel model = new DevModel(link, title);
-            model.setImgUrl(image);
-            model.setDescription(con.get(i).select(".frame .specifications-list").first().text());
+                DevModel model = new DevModel(link, title);
+                model.setImgUrl(image);
+                model.setDescription(box.select(".frame .specifications-list").first().text());
 
-            res.add(model);
+                res.add(model);
+            }
         }
         return res;
     }
