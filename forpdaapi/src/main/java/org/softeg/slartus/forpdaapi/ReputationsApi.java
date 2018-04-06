@@ -4,6 +4,7 @@ package org.softeg.slartus.forpdaapi;/*
 
 
 import android.net.Uri;
+import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URIUtils;
@@ -81,14 +82,13 @@ public class ReputationsApi {
             }
         }
 
-
-        for (Element trElement : doc.select("table.ipbtable").first().select("tr")) {
+        for (Element trElement : doc.selectFirst("div.borderwrap table.ipbtable tbody").select("tr")) {
             Elements tdElements = trElement.select("td");
-            if (tdElements.size() != 5) continue;
+            if (tdElements.size() != 6 && tdElements.size() != 5) continue;
             ReputationEvent rep = new ReputationEvent();
 
             Element tdElement = tdElements.get(0);
-            Element l = tdElement.select("a").first();
+            Element l = tdElement.selectFirst("a");
             if (l != null) {
                 Uri ur = Uri.parse(l.attr("href"));
                 rep.setUserId(ur.getQueryParameter("showuser"));
@@ -96,7 +96,7 @@ public class ReputationsApi {
             }
 
             tdElement = tdElements.get(1);
-            l = tdElement.select("a").first();
+            l = tdElement.selectFirst("a");
             if (l != null) {
                 rep.setSourceUrl(l.attr("href"));
                 rep.setSource(l.text());
