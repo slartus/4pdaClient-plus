@@ -46,11 +46,11 @@ public class LoginDialog {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mView = inflater.inflate(R.layout.login, null);
 
-        mImageView = (ImageView) mView.findViewById(R.id.cap_img);
-        mProgressBar = (ProgressBar) mView.findViewById(R.id.progressBar2);
-        username_edit = (EditText) mView.findViewById(R.id.username_edit);
-        password_edit = (EditText) mView.findViewById(R.id.password_edit);
-        privacy_checkbox = (CheckBox) mView.findViewById(R.id.privacy_checkbox);
+        mImageView = mView.findViewById(R.id.cap_img);
+        mProgressBar = mView.findViewById(R.id.progressBar2);
+        username_edit = mView.findViewById(R.id.username_edit);
+        password_edit = mView.findViewById(R.id.password_edit);
+        privacy_checkbox = mView.findViewById(R.id.privacy_checkbox);
         new CapTask().execute();
         loadData();
     }

@@ -462,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             }
         });
 //        checkToster(this);
-        checkUsers(this);
+//        checkUsers(this);
 
     }
 
