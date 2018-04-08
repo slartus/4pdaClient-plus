@@ -450,8 +450,8 @@ public class Client implements IHttpClient {
 
         HttpHelper httpHelper = new HttpHelper();
         try {
-//            httpHelper.clearCookies();
-//            httpHelper.writeExternalCookies();
+            httpHelper.clearCookies();
+            httpHelper.writeExternalCookies();
 
 
             final HttpHelper finalHttpHelper = httpHelper;

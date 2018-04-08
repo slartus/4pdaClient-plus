@@ -106,7 +106,6 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     public boolean inBackground(boolean isRefresh) throws IOException, ParseException, URISyntaxException {
         mListInfo = new ListInfo();
         mListInfo.setFrom(isRefresh ? 0 : mData.size());
-        Log.e("TEST", "Data size " + mData.size());
         mLoadResultList = loadTopics(Client.getInstance(), mListInfo);
         return true;
     }

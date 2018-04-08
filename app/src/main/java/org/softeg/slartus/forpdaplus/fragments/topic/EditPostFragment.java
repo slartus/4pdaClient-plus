@@ -623,12 +623,6 @@ public class EditPostFragment extends GeneralFragment {
         new UpdateTask(getMainActivity(), path).execute();
     }
 
-    // for test
-    private void msg(String message) {
-        Log.e("kek", message);
-    }
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
