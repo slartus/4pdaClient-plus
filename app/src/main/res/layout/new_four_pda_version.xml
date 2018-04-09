@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ImageButton
+            android:id="@+id/new_app_close_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top"
+            android:padding="16dp"
+            android:background="@null"
+            android:src="@drawable/ic_close_black_24dp"
+            tools:ignore="HardcodedText"
+            android:contentDescription="close_btn" />
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="bottom|center"
+            android:contentDescription="logo"
+            app:srcCompat="@drawable/l_logo"
+            android:layout_marginBottom="16dp"
+            tools:ignore="HardcodedText" />
+
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.73">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:text="Доступна новая версия"
+            android:textColor="#000000"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText,RtlCompat"/>
+
+        <TextView
+            android:id="@+id/new_app_content_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="4dp"
+            android:text="Полностью новая."
+            android:padding="4dp"
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:id="@+id/new_app_open_theme_btn"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="32dp"
+            android:textSize="16sp"
+            android:background="@drawable/btn_border"
+            android:text="Тема на 4pda"
+            android:textColor="#000000"
+            android:padding="8dp"
+            tools:ignore="HardcodedText,RtlCompat" />
+        <Button
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:id="@+id/new_app_open_gp_btn"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:text="Google Play"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_background"
+            android:textColor="#fff"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            tools:ignore="HardcodedText,RtlCompat" />
+
+    </FrameLayout>
+</LinearLayout>

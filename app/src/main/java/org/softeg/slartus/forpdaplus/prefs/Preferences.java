@@ -496,4 +496,12 @@ public class Preferences {
     public static boolean isNYDone() {
         return App.getInstance().getPreferences().getBoolean("NYDone", false);
     }
+
+    public static void newForPdaShowDone() {
+        App.getInstance().getPreferences().edit().putBoolean("newforpda", true).apply();
+    }
+
+    public static boolean isNewForPdaShow() {
+        return App.getInstance().getPreferences().getBoolean("newforpda", false);
+    }
 }

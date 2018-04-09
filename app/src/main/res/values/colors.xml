@@ -107,4 +107,7 @@
     <color name="confirm">#FF8800</color>
     <color name="info">#669900</color>
 
+    <!--ADS NEW VERSION COLOR-->
+    <color name="white_theme_title_color">#000000</color>
+
 </resources>

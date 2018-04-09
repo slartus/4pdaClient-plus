@@ -502,6 +502,9 @@
         <Preference
             android:key="About.CheckNewVersion"
             android:title="Проверить наличие новой версии" />
+        <Preference android:title="Новая версия ForPDA"
+            android:summary="Открыть тему"
+            android:key="About.OpenThemeForPda"/>
     </PreferenceScreen>
 
     <PreferenceScreen android:title="Помочь проекту">

@@ -123,6 +123,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             findPreference("About.AddRepThree").setOnPreferenceClickListener(this);
             findPreference("About.ShowTheme").setOnPreferenceClickListener(this);
             findPreference("About.CheckNewVersion").setOnPreferenceClickListener(this);
+            findPreference("About.OpenThemeForPda").setOnPreferenceClickListener(this);
 
             Preference preference = findPreference("notifiers.silent_mode.start_time");
             if (preference != null) {
@@ -218,7 +219,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     if (showAddRep("1726458", "iSanechek")) return true;
                     return true;
                 case "About.ShowTheme":
-                    showTheme();
+                    showTheme("271502");
                     return true;
                 case "appstyle":
                     showStylesDialog();
@@ -263,6 +264,9 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     return true;
                 case "About.CheckNewVersion":
                     checkUpdates();
+                    return true;
+                case "About.OpenThemeForPda":
+                    showTheme("820313");
                     return true;
             }
 
@@ -833,9 +837,9 @@ public class PreferencesActivity extends BasePreferencesActivity {
             return false;
         }
 
-        private void showTheme() {
+        private void showTheme(String themeId) {
             getActivity().finish();
-            ThemeFragment.showTopicById("271502");
+            ThemeFragment.showTopicById(themeId);
         }
 
         private boolean showAddRep(String id, String nick) {

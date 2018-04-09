@@ -1,1 +1,1 @@
-include ':app', ':forpdaapi', ':forpdacommon', ':forpdanotifyservice', ':sqliteannotations', ':4pdasources', ':YouTubeAndroidPlayerApi'
+include ':app', ':forpdaapi', ':forpdacommon', ':forpdanotifyservice', ':sqliteannotations', ':4pdasources'

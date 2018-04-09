@@ -6,12 +6,12 @@ repositories {
 }
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion "27.0.3"
     useLibrary 'org.apache.http.legacy'
 
-    def appVersionCode = 606
-    def appVersionName = "3.5.2"
+    def appVersionCode = 610
+    def appVersionName = "3.5.2.3"
 
 
     defaultConfig {
@@ -102,6 +102,9 @@ android {
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':forpdacommon')
+    compile project(':forpdanotifyservice')
+    compile project(':4pdasources')
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
@@ -115,13 +118,11 @@ dependencies {
     compile 'com.dmitriy-tarasov:android-intents:1.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'ch.acra:acra:4.9.0'
-    compile project(':forpdacommon')
-    compile project(':forpdanotifyservice')
-    compile project(':4pdasources')
     compile 'com.google.code.gson:gson:2.7'
-    compile 'com.squareup.okhttp3:okhttp:3.9.1'
-    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.9.1'
-    compile 'com.jakewharton:butterknife:8.1.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.1.0'
-    compile project(':YouTubeAndroidPlayerApi')
+    compile 'com.squareup.okhttp3:okhttp:3.10.0'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.10.0'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile 'com.github.armcha:Vertical-Intro:2.0.0'
+    implementation files('YouTubeAndroidPlayerApi.jar')
 }

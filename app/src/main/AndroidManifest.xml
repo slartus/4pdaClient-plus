@@ -77,7 +77,8 @@
 
             </intent-filter>
 
-            <intent-filter>
+            <intent-filter android:scheme="http"
+                tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.EDIT" />
                 <action android:name="android.intent.action.PICK" />
@@ -197,6 +198,9 @@
         <activity
             android:name=".activity.NewYear"
             android:theme="@style/AppTheme.FullScreen" />
+
+        <activity android:name=".activity.NewVersionApp"
+            android:theme="@style/ThemeLight"/>
 
         <service
             android:name=".download.DownloadsService"

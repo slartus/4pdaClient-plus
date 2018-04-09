@@ -657,8 +657,15 @@ public class Client implements IHttpClient {
         } finally {
             doOnUserChangedListener(m_User, m_Logined);
         }
+    }
 
-
+    public boolean isUserLogin() {
+        try {
+            return checkLogin(getCookieStore());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private int m_QmsCount = 0;
