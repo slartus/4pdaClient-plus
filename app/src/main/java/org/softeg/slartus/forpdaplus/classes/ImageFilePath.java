@@ -11,16 +11,19 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.widget.Toast;
 
 import org.acra.ACRA;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class ImageFilePath
 {
@@ -33,6 +36,11 @@ public class ImageFilePath
      * @param uri
      * @return path of the selected image file from gallery
      */
+
+    private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
+    private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
+    private static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static String getPath(final Context context, final Uri uri)
     {
@@ -42,6 +50,13 @@ public class ImageFilePath
 
         // DocumentProvider
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+
+            // не тестировал
+            if (isMiui(context)) {
+//                Toast.makeText(context, ">>>MIUI<<<", Toast.LENGTH_SHORT).show();
+                return getPathForMiui(context, uri);
+            }
+
             if (isLocalStorageDocument(uri)) {
                 return DocumentsContract.getDocumentId(uri);
             }
@@ -103,6 +118,27 @@ public class ImageFilePath
         }
 
         return null;
+    }
+
+    private static boolean isMiui(Context context) {
+        Properties properties = new Properties();
+        boolean isMiui;
+        try {
+            properties.load(new FileInputStream(new File(Environment.getRootDirectory(), "build.prop")));
+        } catch (IOException e) {
+            Toast.makeText(context, "Ooppss\n" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        isMiui = properties.getProperty(KEY_MIUI_VERSION_CODE, null) != null
+                || properties.getProperty(KEY_MIUI_VERSION_NAME,  null) != null
+                || properties.getProperty(KEY_MIUI_INTERNAL_STORAGE, null) != null;
+        return isMiui;
+    }
+
+    private static String getPathForMiui(final Context context, final Uri uri) {
+        if (isGooglePhotosUri(uri))
+            return uri.getLastPathSegment();
+        return getDataColumn(context, uri, null, null);
     }
 
     /**

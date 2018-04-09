@@ -11,6 +11,9 @@ import android.widget.AdapterView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaplus.App;
@@ -149,5 +152,24 @@ public class NotesListFragment extends TopicsListFragment {
         } catch (Throwable e) {
             AppLog.e(getContext(), e);
         }
+    }
+
+    private void exportForNewVersion() {
+        ArrayList<ListInfo> infos = new ArrayList<>();
+
+        final JSONArray root = new JSONArray();
+        for (ListInfo info : infos) {
+//            try {
+//                JSONObject jsonObject = new JSONObject();
+////                jsonObject.put("id", );
+////                jsonObject.put("title", info.getTitle());
+////                jsonObject.put("link", );
+////                jsonObject.put("content", );
+//                root.put(jsonObject);
+//            } catch (JSONException ignored) {
+//
+//            }
+        }
+
     }
 }
