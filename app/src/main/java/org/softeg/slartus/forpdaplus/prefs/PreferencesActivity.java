@@ -22,6 +22,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -282,13 +283,18 @@ public class PreferencesActivity extends BasePreferencesActivity {
         private void setMenuItems(){
             final SharedPreferences preferences = getPreferenceManager().getSharedPreferences();
 
-            String[] items = preferences.getString("selectedMenuItems", "0,1,2,3,4,7,8").split(",");
+            String[] items = preferences.getString("selectedMenuItems", ListCore.DEFAULT_MENU_ITEMS).split(",");
+            ArrayList<BrickInfo> allItems = ListCore.getAllMenuBricks();
+
+            if (ListCore.checkIndex(items, allItems.size())) {
+                items = ListCore.DEFAULT_MENU_ITEMS.split(",");
+            }
+
             Integer[] selectedItems = new Integer[items.length];
 
             for (int i = 0; i < items.length; i++)
                 selectedItems[i] = Integer.parseInt(items[i]);
 
-            ArrayList<BrickInfo> allItems = ListCore.getAllMenuBricks();
 
             ArrayList<String> namesArray = new ArrayList<>();
             for(BrickInfo item:allItems)
@@ -300,28 +306,19 @@ public class PreferencesActivity extends BasePreferencesActivity {
             new MaterialDialog.Builder(getActivity())
                     .title(R.string.select_items)
                     .items(namesArray.toArray(new CharSequence[namesArray.size()]))
-                    .itemsCallbackMultiChoice(selectedItems, new MaterialDialog.ListCallbackMultiChoice(){
-                        @Override
-                        public boolean onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
-                            finalItems[0] = integers;
-                            return true;
-                        }
+                    .itemsCallbackMultiChoice(selectedItems, (materialDialog, integers, charSequences) -> {
+                        finalItems[0] = integers;
+                        return true;
                     })
                     .alwaysCallMultiChoiceCallback()
                     .positiveText(R.string.accept)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                            if(finalItems[0]==null||finalItems[0].length==0) return;
-                            preferences.edit().putString("selectedMenuItems", Arrays.toString(finalItems[0]).replace(" ","").replace("[","").replace("]","")).apply();
-                        }
+                    .onPositive((materialDialog, dialogAction) -> {
+                        if(finalItems[0]==null||finalItems[0].length==0) return;
+                        preferences.edit().putString("selectedMenuItems", Arrays.toString(finalItems[0]).replace(" ","").replace("[","").replace("]","")).apply();
                     })
                     .neutralText(R.string.reset)
-                    .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                            preferences.edit().putString("selectedMenuItems", "0,1,2,3,4,5,8,9").apply();
-                        }
+                    .onNeutral((materialDialog, dialogAction) -> {
+                        preferences.edit().putString("selectedMenuItems", ListCore.DEFAULT_MENU_ITEMS).apply();
                     })
                     .show();
         }

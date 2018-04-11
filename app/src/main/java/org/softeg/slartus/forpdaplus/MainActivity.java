@@ -333,7 +333,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     public static void checkUsers(Context context) {
         if (true) return;
         boolean toster = false;
-        Log.e("kek", "id = " + Client.getInstance().UserId);
+//        Log.e("kek", "id = " + Client.getInstance().UserId);
         for (String user : blockedUsers)
             if (user.equals(Client.getInstance().getUser()))
                 toster = true;

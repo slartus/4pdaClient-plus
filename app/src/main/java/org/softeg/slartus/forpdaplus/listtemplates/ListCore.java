@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus.listtemplates;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.softeg.slartus.forpdaplus.MainActivity;
 
@@ -10,13 +11,37 @@ import java.util.ArrayList;
  * Created by slinkin on 20.02.14.
  */
 public class ListCore {
+
+    public static final String DEFAULT_MENU_ITEMS = "0,1,2,3,4,7,8";
+
     public static ArrayList<BrickInfo> getMainMenuBricks() {
+
         ArrayList<BrickInfo> res = new ArrayList<BrickInfo>();
         ArrayList<BrickInfo> allItems = getAllMenuBricks();
-        for (String item : MainActivity.getPreferences().getString("selectedMenuItems", "0,1,2,3,4,7,8").split(","))
-            if(!item.equals("")&!item.equals("null")) res.add(allItems.get(Integer.parseInt(item)));
+        String[] items = MainActivity.getPreferences().getString("selectedMenuItems", DEFAULT_MENU_ITEMS).split(",");
+        if (checkIndex(items, allItems.size())) {
+            items = DEFAULT_MENU_ITEMS.split(",");
+        }
+
+        for (String item : items) {
+            if(!item.equals("")&!item.equals("null")) {
+                res.add(allItems.get(Integer.parseInt(item)));
+            }
+        }
         return res;
     }
+
+    public static boolean checkIndex(String[] items, int size) {
+        boolean state = false;
+        for (String item : items) {
+            if (Integer.parseInt(item) > size) {
+                state = true;
+                break;
+            }
+        }
+        return state;
+    }
+
     public static ArrayList<BrickInfo> getAllMenuBricks() {
         ArrayList<BrickInfo> allItems = new ArrayList<>();
         allItems.add(new NewsPagerBrickInfo());//0
