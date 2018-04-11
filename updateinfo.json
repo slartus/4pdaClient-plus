@@ -7,7 +7,7 @@
 
   "show_beta_dialog":true,
   "update_beta":{
-    "ver":"3.5.2.3",
+    "ver":"3.5.2.4",
     "apk":"https://github.com/slartus/4pdaClient-plus/releases/download/3.5.2.4/ForPDA_3.5.2.4-release.apk",
     "info":"[!] Важное замечание\n[+] Нововведение\n[-] Исправлена ошибка\n[*] Изменения\n\n[-] Падение на старте\n"
   },
