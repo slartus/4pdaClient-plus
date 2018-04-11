@@ -196,12 +196,15 @@ public class ShortUserInfo {
         protected Void doInBackground(String... urls) {
             try {
                 Document doc = Jsoup.parse(client.performGet("http://4pda.ru/forum/index.php?showuser=" + client.UserId));
-                if (doc.select("div.user-box > div.photo > img").first() != null) {
+                if (doc.selectFirst("div.user-box > div.photo > img") != null) {
                     avatarUrl = doc.select("div.user-box > div.photo > img").first().attr("src");
                 }
-                if (doc.select("div.statistic-box span[id*=\"ajaxrep\"]").first() != null) {
-                    reputation = doc.select("div.statistic-box span[id*=\"ajaxrep\"]").first().text();
+
+                String repa = doc.selectFirst("div.statistic-box").child(1).selectFirst("ul > li > div.area").text();
+                if (repa != null) {
+                    reputation = repa;
                 }
+
             } catch (IOException e) {
                 AppLog.e(getContext(), e);
             }
