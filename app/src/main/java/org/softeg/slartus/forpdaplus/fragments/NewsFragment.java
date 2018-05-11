@@ -574,13 +574,14 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
 
         private String parseBody(String body) {
-            Matcher m = PatternExtensions.compile("(<div class=\"container\"[\\s\\S]*?<span itemprop=\"headline\">([\\s\\S]*?)<\\/span>[\\s\\S]*?)</main>").matcher(body);
+            Matcher m = PatternExtensions.compile("(<div class=\"container\"[\\s\\S]*?<span itemprop=\"headline\">([\\s\\S]*?)<\\/span>[\\s\\S]*?)</section>").matcher(body);
 
             if (m.find()) {
+                Log.e("TEST", "Find");
                 m_Title = m.group(2);
                 body = m.group(1).replaceAll("<script[\\s\\S]*?/script>", "");
                 return normalizeCommentUrls(body).replaceAll("<form[\\s\\S]*?/form>", "");
-            }
+            } else Log.e("TEST", "Not Find");
             m = PatternExtensions
                     .compile("<div id=\"main\">([\\s\\S]*?)<form action=\"(http://4pda.ru)?/wp-comments-post.php\" method=\"post\" id=\"commentform\">")
                     .matcher(body);
