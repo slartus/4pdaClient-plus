@@ -50,7 +50,7 @@ public class ActionSelectDialogFragment {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
                         App.getInstance().getPreferences()
-                                .edit().putString(preferenceKey, selectedAction).commit();
+                                .edit().putString(preferenceKey, selectedAction).apply();
 
                         showTopicAction.run();
                     }
@@ -65,7 +65,7 @@ public class ActionSelectDialogFragment {
                     @Override
                     public void onClick(MaterialDialog dialog, DialogAction which) {
                         App.getInstance().getPreferences()
-                                .edit().putString(preferenceKey, null).commit();
+                                .edit().putString(preferenceKey, null).apply();
 
                         showTopicAction.run();
                     }
@@ -109,7 +109,7 @@ public class ActionSelectDialogFragment {
                         App.getInstance().getPreferences()
                                 .edit()
                                 .putString(preferenceKey, newValue.toString())
-                                .commit();
+                                .apply();
 
                         if (!TextUtils.isEmpty(hintForChangeDefault))
                             new MaterialDialog.Builder(context)
