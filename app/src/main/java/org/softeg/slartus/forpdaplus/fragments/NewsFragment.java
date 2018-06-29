@@ -574,7 +574,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
 
         private String parseBody(String body) {
-            Matcher m = PatternExtensions.compile("(<div class=\"container\"[\\s\\S]*?<span itemprop=\"headline\">([\\s\\S]*?)<\\/span>[\\s\\S]*?)</section>").matcher(body);
+            Matcher m = PatternExtensions.compile("(<div class=\"container\"[\\s\\S]*?<span itemprop=\"headline\">([\\s\\S]*?)<\\/span>[\\s\\S]*?)<\\/body>").matcher(body);
 
             if (m.find()) {
                 Log.e("TEST", "Find");
