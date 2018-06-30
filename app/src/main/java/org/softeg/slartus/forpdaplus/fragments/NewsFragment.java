@@ -575,15 +575,15 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
         private String parseBody(String body) {
             /*
-            * Надо выпилить блок article id и блок с рекламой
+            * Все равно надо переписать регулярку, работает долго.
             */
-            Matcher m = PatternExtensions.compile("(<div class=\"container\"[\\s\\S]*?<span itemprop=\"headline\">([\\s\\S]*?)<\\/span>[\\s\\S]*?)<\\/body>").matcher(body);
+            Matcher m = PatternExtensions.compile("(<div class=\"container\"[\\s\\S]*?<span itemprop=\"headline\">([\\s\\S]*?)<\\/span>[\\s\\S]*?)<article id=[^>]*?>([\\s\\S]*?)").matcher(body);
 
             if (m.find()) {
                 m_Title = m.group(2);
                 body = m.group(1)
                         .replaceAll("<script[\\s\\S]*?/script>", "")
-                        .replaceAll("<article[\\s\\S]*?/article>", "");
+                        .replaceAll("<article id=[^>]*?>([\\s\\S]*?)", "");
                 return normalizeCommentUrls(body).replaceAll("<form[\\s\\S]*?/form>", "");
             }
             m = PatternExtensions
@@ -626,11 +626,10 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     .matcher(body)
                     .replaceAll("<a class=\"video-thumb-wrapper\" href=\"http://www.youtube.com/watch?v=$1\"><img class=\"video-thumb\" width=\"480\" height=\"320\" src=\"http://img.youtube.com/vi/$1/0.jpg\"/></a>");
             return body
-                    .replaceAll("<div id=\"comment-form-reply-\\d+\"><a href=\"#\" data-callfn=\"commentform_move\" data-comment=\"(\\d+)\">ответить</a></div></div><ul class=\"comment-list level-(\\d+)\">"
-                            , "<div id=\"comment-form-reply-$1\"><a href=\"http://4pdaservice.org/$1/$2\">ответить</a></div></div><ul class=\"comment-list level-$2\">")
+                    .replaceAll("<div id=\"comment-form-reply-\\d+\"><a href=\"#\" data-callfn=\"commentform_move\" data-comment=\"(\\d+)\">ответить</a></div></div><ul class=\"comment-list level-(\\d+)\">",
+                            "<div id=\"comment-form-reply-$1\"><a href=\"http://4pdaservice.org/$1/$2\">ответить</a></div></div><ul class=\"comment-list level-$2\">")
                     .replace("href=\"/", "href=\"http://4pda.ru/")
-                    .replace("href=\"#commentform\"", "href=\"http://4pdaservice.org/#commentform")
-                    ;
+                    .replace("href=\"#commentform\"", "href=\"http://4pdaservice.org/#commentform");
         }
 
 
