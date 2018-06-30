@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -41,7 +42,6 @@ import org.softeg.slartus.forpdaplus.video.api.exceptions.ApiException;
 import org.softeg.slartus.forpdaplus.video.api.exceptions.IdException;
 import org.softeg.slartus.forpdaplus.video.api.exceptions.ListIdException;
 
-@Deprecated
 public class PlayerActivity extends AppCompatActivity {
 
     VideoView mVideoView;
@@ -189,13 +189,17 @@ public class PlayerActivity extends AppCompatActivity {
             getSupportActionBar().show();
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            }
         }
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             getSupportActionBar().hide();
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            }
         }
     }
 
@@ -208,8 +212,8 @@ public class PlayerActivity extends AppCompatActivity {
     protected void initView() {
         setContentView(R.layout.player);
 
-        mVideoView = (VideoView) findViewById(R.id.videoView);
-        pb = (ProgressBar) findViewById(R.id.progressBar);
+        mVideoView = findViewById(R.id.videoView);
+        pb = findViewById(R.id.progressBar);
 
         mVideoView.setOnPreparedListener(pMp -> {
             if (mSeekTo > 0)
@@ -263,7 +267,7 @@ public class PlayerActivity extends AppCompatActivity {
                 .title(R.string.quality_video)
                 .items(titles)
                 .itemsCallback((dialog, view, i1, text) -> {
-                    String path = videoItem.getFilePath(videoItem.getQualities().get(i1).getFileName());
+                    String path = VideoItem.getFilePath(videoItem.getQualities().get(i1).getFileName());
                     //createActionMenu(apiId, parseResult);
                     playVideo(videoItem, path);
                 })
@@ -447,7 +451,7 @@ public class PlayerActivity extends AppCompatActivity {
 
                 for (final Quality format : parseResult.getQualities()) {
                     subMenu.add(format.getTitle()).setOnMenuItemClickListener(menuItem -> {
-                        String path = parseResult.getFilePath(format.getFileName());
+                        String path = VideoItem.getFilePath(format.getFileName());
 
                         getMainActivity().playVideo(parseResult, path);
                         return true;

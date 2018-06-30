@@ -124,5 +124,4 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     compile 'com.github.armcha:Vertical-Intro:2.0.0'
-    implementation files('YouTubeAndroidPlayerApi.jar')
 }

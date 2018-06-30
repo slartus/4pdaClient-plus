@@ -179,16 +179,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="Тестовая"
             android:launchMode="singleTop" />
-        <!--<activity-->
-            <!--android:name=".video.PlayerActivity"-->
-            <!--android:configChanges="orientation|keyboardHidden|screenSize"-->
-            <!--android:label="Проигрыватель"-->
-            <!--android:launchMode="singleTop" />-->
-
-        <activity android:name=".video.youtube.YoutubeActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="sensor"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name=".video.PlayerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="Проигрыватель"
+            android:launchMode="singleTop" />
 
         <activity
             android:name=".controls.imageview.ImgViewer"

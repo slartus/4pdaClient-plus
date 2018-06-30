@@ -49,7 +49,7 @@ import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.video.youtube.YoutubeActivity;
+import org.softeg.slartus.forpdaplus.video.PlayerActivity;
 
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -374,7 +374,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             }
 
             if (IntentActivity.isYoutube(url)) {
-                YoutubeActivity.showYoutubeChoiceDialog(getActivity(), url);
+                PlayerActivity.showYoutubeChoiceDialog(getActivity(), url);
                 return true;
             }
 
@@ -574,14 +574,18 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
 
         private String parseBody(String body) {
+            /*
+            * Надо выпилить блок article id и блок с рекламой
+            */
             Matcher m = PatternExtensions.compile("(<div class=\"container\"[\\s\\S]*?<span itemprop=\"headline\">([\\s\\S]*?)<\\/span>[\\s\\S]*?)<\\/body>").matcher(body);
 
             if (m.find()) {
-                Log.e("TEST", "Find");
                 m_Title = m.group(2);
-                body = m.group(1).replaceAll("<script[\\s\\S]*?/script>", "");
+                body = m.group(1)
+                        .replaceAll("<script[\\s\\S]*?/script>", "")
+                        .replaceAll("<article[\\s\\S]*?/article>", "");
                 return normalizeCommentUrls(body).replaceAll("<form[\\s\\S]*?/form>", "");
-            } else Log.e("TEST", "Not Find");
+            }
             m = PatternExtensions
                     .compile("<div id=\"main\">([\\s\\S]*?)<form action=\"(http://4pda.ru)?/wp-comments-post.php\" method=\"post\" id=\"commentform\">")
                     .matcher(body);
@@ -632,7 +636,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
         @Override
         protected void onPreExecute() {
-            Log.e("kek", "ONPREEXECUTE");
             try {
                 setLoading(true);
             } catch (Exception ex) {
