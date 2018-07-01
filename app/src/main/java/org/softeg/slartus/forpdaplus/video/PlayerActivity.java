@@ -15,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -298,7 +297,6 @@ public class PlayerActivity extends AppCompatActivity {
         try {
             createActionMenu(parseResult);
             mSeekTo = mVideoView.getCurrentPosition();
-            Log.e("TEST", "URI " + pResult);
             mVideoView.setVideoURI(pResult);
 
             mVideoView.setMediaController(new MediaController(this));
@@ -366,18 +364,15 @@ public class PlayerActivity extends AppCompatActivity {
                         mEx.getClass() == ListIdException.class) {
                     if (!tryPlayInYoutubePlayer()) {
                         AppLog.e(getContext(), mEx);
-                        Log.e("TEST", "PostExecute Error " + mEx);
                     }
 
                 } else {
                     AppLog.e(getContext(), mEx);
-                    Log.e("TEST", "PostExecute Error 2 " + mEx);
                 }
 
                 return;
             }
 
-//            getSupportActionBar().setTitle(pResult.getTitle()); Я хз зачем это тут.
 
             try {
 

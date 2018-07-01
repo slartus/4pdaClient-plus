@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.video.api;
 
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -66,7 +67,7 @@ public class YouTubeAPI {
         videoItem.setTitle(title);
 
         if (fmtList != null && url_encoded_fmt_stream_map != null) {
-            Matcher fmtMatcher = Pattern.compile("(\\d+)/(\\d+x\\d+)/\\d+/\\d+/\\d+").matcher(fmtList);
+            Matcher fmtMatcher = Pattern.compile("(\\d+)\\/(\\d+x\\d+)").matcher(fmtList);
             String streamStrs[] = url_encoded_fmt_stream_map.split(",");
             int fmtInd = 0;
             while (fmtMatcher.find()) {
@@ -115,11 +116,7 @@ public class YouTubeAPI {
                     break;
                 }
             }
-            if (url == null)
-                return false;
-
-
-            return true;
+            return url != null;
         } catch (Throwable ex) {
             return false;
         }
@@ -127,7 +124,7 @@ public class YouTubeAPI {
     }
 
 
-    private static String getUrlFromParams(CharSequence params) throws UnsupportedEncodingException {
+    private static String getUrlFromParams(CharSequence params) {
 
         Matcher m = Pattern.compile("(\\w+)=([^&]*)").matcher(params);
         String sig = null;
