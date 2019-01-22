@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -35,6 +36,8 @@ import com.google.gson.JsonParser;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import org.apache.http.client.HttpResponseException;
+import org.softeg.slartus.forpdaapi.NewsApi;
+import org.softeg.slartus.forpdacommon.AdBlocker;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdacommon.ShowInBrowserException;
@@ -342,6 +345,23 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
     public List<ArrayList<String>> imageAttaches = new ArrayList<>();
     private class MyWebViewClient extends WebViewClient {
+
+        private Map<String, Boolean> loadedUrls = new HashMap<>();
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+            boolean ad;
+            if (!loadedUrls.containsKey(url)) {
+                ad = AdBlocker.isAd(url);
+                loadedUrls.put(url, ad);
+            } else {
+                ad = loadedUrls.get(url);
+            }
+            return ad ? AdBlocker.createEmptyResource() :
+                    super.shouldInterceptRequest(view, url);
+        }
+
+
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
@@ -354,6 +374,16 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            boolean ad;
+            if (!loadedUrls.containsKey(url)) {
+                ad = AdBlocker.isAd(url);
+                loadedUrls.put(url, ad);
+            } else {
+                ad = loadedUrls.get(url);
+            }
+            if(ad)
+                return false;
+
             m_ScrollY = 0;
             m_ScrollX = 0;
 
@@ -552,6 +582,9 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             }
         }
 
+
+
+
         private String transformBody(String body) {
             NewsHtmlBuilder builder = new NewsHtmlBuilder();
             m_Title = App.getContext().getString(R.string.news);
@@ -560,6 +593,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             builder.append("<div style=\"padding-top:").append(String.valueOf(HtmlBuilder.getMarginTop())).append("px\"/>\n");
             builder.append("<div id=\"main\">");
             body = body.replaceAll("\"//","\"http://");
+
             Matcher matcher = PatternExtensions.compile("ModKarma\\((\\{?[\\s\\S]*?\\}?)(?:,\\s?\\d+)?\\)").matcher(body);
             builder.append(parseBody(body));
 
@@ -578,7 +612,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             * Все равно надо переписать регулярку, работает долго.
             */
             Matcher m = PatternExtensions.compile("(<div class=\"container\"[\\s\\S]*?<span itemprop=\"headline\">([\\s\\S]*?)<\\/span>[\\s\\S]*?)<article id=[^>]*?>([\\s\\S]*?)").matcher(body);
-
+//body=NewsApi.parseNewsBody(body);
             if (m.find()) {
                 m_Title = m.group(2);
                 body = m.group(1)

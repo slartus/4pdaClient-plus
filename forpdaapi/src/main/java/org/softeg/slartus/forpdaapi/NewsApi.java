@@ -6,8 +6,11 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.softeg.slartus.forpdacommon.DateTimeExternals;
 import org.softeg.slartus.forpdacommon.NotReportException;
+import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdacommon.UrlExtensions;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -35,6 +38,26 @@ public class NewsApi {
     public static Boolean likeComment(IHttpClient httpClient, String newsId, String postId) throws IOException {
         String res = httpClient.performGet("https://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=" + postId + "&v=1", false, false);
         return res != null;
+    }
+
+    public static String parseNewsBody(String newsPageBody) {
+        Document doc = Jsoup.parse(newsPageBody, "http://4pda.ru");
+        org.jsoup.nodes.Element bodyElement = doc.select("div.article").first();
+        if(bodyElement!=null)
+            return  bodyElement.html();
+
+        Matcher m = PatternExtensions.compile("<article[^>]*>([\\s\\S]*?)</article>").matcher(newsPageBody);
+        if (m.find())
+            newsPageBody = m.group(1);
+        else {
+            m = PatternExtensions.compile("<body[^>]*>([\\s\\S]*?)</body>").matcher(newsPageBody);
+            if (m.find())
+                newsPageBody = m.group(1);
+            else {
+                newsPageBody = newsPageBody.replaceAll("[\\s\\S]*?<body[^>]*>", "<body><div id=\"main\">");
+            }
+        }
+        return  newsPageBody;
     }
 
     private static void msg(String message) {
