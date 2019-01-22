@@ -76,7 +76,14 @@ android {
     android.applicationVariants.all { variant ->
         variant.outputs.all {
             def fileNaming = "ForPDA"
-            outputFileName = "${fileNaming}_${appVersionName}-${variant.buildType.name}.apk"
+            def vCode = variant.versionCode
+            if (vCode < 10)
+                vCode = "0" + vCode
+            def flavor = variant.productFlavors[0]
+            if (flavor.name == "beta")
+                outputFileName = "${fileNaming}_${appVersionName}_c${vCode}-${flavor.name}.apk"
+            else
+                outputFileName = "${fileNaming}_${appVersionName}-${variant.buildType.name}.apk"
         }
     }
     compileOptions {
