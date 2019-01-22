@@ -58,10 +58,14 @@ import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.video.PlayerActivity;
+import org.w3c.dom.Text;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import okhttp3.HttpUrl;
 
 //import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
@@ -84,6 +88,19 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         MainActivity.showListFragment(brickInfo.getName(), args);
     }
 
+    public static String getRedirectUrl(String url) {
+        try {
+            Uri uri = Uri.parse(url);
+            String u = uri.getQueryParameter("u");
+
+            if (url.contains("4pda.ru/pages/go") && !TextUtils.isEmpty(u))
+                return URLDecoder.decode(u, "UTF-8");
+        } catch (Throwable ignore) {
+
+        }
+
+        return url;
+    }
 
     public static boolean checkSendAction(BricksListDialogFragment.IBricksListDialogCaller activity, final Intent intent) {
         String action = intent.getAction();
@@ -112,6 +129,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
     public static Boolean isNews(String url) {
 
+        url = IntentActivity.getRedirectUrl(url);
         final Pattern pattern = PatternExtensions.compile("4pda.ru/\\d{4}/\\d{2}/\\d{2}/\\d+");
         final Pattern pattern1 = PatternExtensions.compile("4pda.ru/\\w+/(?:older|newer)/\\d+");
 
@@ -119,16 +137,19 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
     public static Boolean isYoutube(String url) {
+        url = IntentActivity.getRedirectUrl(url);
         return PatternExtensions.compile("youtube.com/(?:watch|v|e|embed)|youtu.be").matcher(url).find();
     }
 
     public static Boolean tryShowYoutube(Activity context, String url, Boolean finish) {
+        url = IntentActivity.getRedirectUrl(url);
         if (!isYoutube(url)) return false;
         PlayerActivity.showYoutubeChoiceDialog(context, url);
         return true;
     }
 
     public static Boolean isNewsList(String url) {
+        url = IntentActivity.getRedirectUrl(url);
         String[] patterns = {"4pda.ru/tag/.*", "4pda.ru/page/(\\d+)/", "4pda.ru/?$",
                 "4pda.ru/news", "4pda.ru/articles", "4pda.ru/software", "4pda.ru/games", "4pda.ru/reviews"};
         for (String pattern : patterns) {
@@ -360,14 +381,14 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
     public static Boolean tryShowUrl(Activity context, Handler handler, String url, Boolean showInDefaultBrowser,
                                      final Boolean finishActivity, String authKey) {
-        if(url.substring(0, 2).equals("//")){
+        if (url.substring(0, 2).equals("//")) {
             url = "http:".concat(url);
         }
         url = url.replace("&amp;", "&").replace("\"", "").trim();
         url = getRedirect(url).toString();
         url = url.trim();
         Log.d("kek", "fixed url = " + url);
-        if (url.contains("4pda.ru") & !url.contains("http://")&!url.contains("https://"))
+        if (url.contains("4pda.ru") & !url.contains("http://") & !url.contains("https://"))
             url = "http://" + url;
         Uri uri = Uri.parse(url.toLowerCase());
         Log.e("kek", uri.getHost() + " " + url);

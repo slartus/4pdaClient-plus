@@ -351,6 +351,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
             boolean ad;
+            url=IntentActivity.getRedirectUrl(url);
             if (!loadedUrls.containsKey(url)) {
                 ad = AdBlocker.isAd(url);
                 loadedUrls.put(url, ad);
@@ -375,6 +376,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             boolean ad;
+            url=IntentActivity.getRedirectUrl(url);
             if (!loadedUrls.containsKey(url)) {
                 ad = AdBlocker.isAd(url);
                 loadedUrls.put(url, ad);
