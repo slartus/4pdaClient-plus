@@ -131,8 +131,10 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
         Runnable runnable = () -> {
             if (needLogin()) {
                 Client.getInstance().checkLoginByCookies();
-                if (!Client.getInstance().getLogined())
+                if (!Client.getInstance().getLogined()) {
                     Client.getInstance().showLoginForm(getContext(), (user, success) -> loadData(isRefresh));
+                    return;
+                }
             }
 
             mTask = createTask(isRefresh);
