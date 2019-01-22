@@ -21,7 +21,6 @@ import org.softeg.slartus.forpdacommon.PatternExtensions;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,13 +33,13 @@ import java.util.regex.Pattern;
  */
 public class TopicsApi {
 
-    final static Pattern countPattern = PatternExtensions.compile("<a href=\"/forum/index.php\\?act=[^\"]*?st=(\\d+)\">&raquo;</a>");
-    final static Pattern mainPattern = PatternExtensions.compile("cat_name[\\s\\S]*?</div>([\\s\\S]*<br />)<div class=\"forum_mod_funcs\">");
-    final static Pattern topicsPattern = PatternExtensions.compile("(<div data-item-fid[\\s\\S]*?</script></div></div>)");
-    final static Pattern topicPattern = PatternExtensions.compile("<div data-item-fid=\"(\\d*)\" data-item-track=\"(\\w*)\" data-item-pin=\"(\\d)\"[\\s\\S]*?<a href=\"([^\"]*?)\"[^>]*>(<strong>|)([\\s\\S]*?)(<\\/strong>|)<\\/a>[\\s\\S]*?<span class=\"topic_desc\">([\\s\\S]*?)(<[\\s\\S]*?showforum=(\\d*?)\"[\\s\\S]*?)<a href=\"[^\"]*view=getlastpost[^\"]*\">Послед.:<\\/a>\\s*<a href=\"[^\"]*?\\/forum\\/index.php\\?showuser=\\d+\">(.*?)<\\/a>(.*?)<");
+    private final static Pattern countPattern = PatternExtensions.compile("<a href=\"/forum/index.php\\?act=[^\"]*?st=(\\d+)\">&raquo;</a>");
+    private final static Pattern mainPattern = PatternExtensions.compile("cat_name[\\s\\S]*?</div>([\\s\\S]*<br />)<div class=\"forum_mod_funcs\">");
+    private final static Pattern topicsPattern = PatternExtensions.compile("(<div data-item-fid[\\s\\S]*?</script></div></div>)");
+    private final static Pattern topicPattern = PatternExtensions.compile("<div data-item-fid=\"(\\d*)\" data-item-track=\"(\\w*)\" data-item-pin=\"(\\d)\"[\\s\\S]*?<a href=\"([^\"]*?)\"[^>]*>(<strong>|)([\\s\\S]*?)(<\\/strong>|)<\\/a>[\\s\\S]*?<span class=\"topic_desc\">([\\s\\S]*?)(<[\\s\\S]*?showforum=(\\d*?)\"[\\s\\S]*?)<a href=\"[^\"]*view=getlastpost[^\"]*\">Послед.:<\\/a>\\s*<a href=\"[^\"]*?\\/forum\\/index.php\\?showuser=\\d+\">(.*?)<\\/a>(.*?)<");
 
     public static ArrayList<FavTopic> getFavTopics(IHttpClient client,
-                                                   ListInfo listInfo) throws ParseException, IOException, URISyntaxException {
+                                                   ListInfo listInfo) throws IOException, URISyntaxException {
         return getFavTopics(client, null, null, null, null, false, false, listInfo);
     }
 
@@ -51,8 +50,8 @@ public class TopicsApi {
                                                    String topicFilter,
                                                    Boolean unreadInTop,
                                                    Boolean fullPagesList,
-                                                   ListInfo listInfo) throws ParseException, IOException, URISyntaxException {
-        List<NameValuePair> qparams = new ArrayList<NameValuePair>();
+                                                   ListInfo listInfo) throws IOException, URISyntaxException {
+        List<NameValuePair> qparams = new ArrayList<>();
         qparams.add(new BasicNameValuePair("act", "fav"));
         qparams.add(new BasicNameValuePair("type", "topics"));
         if (sortKey != null)
@@ -162,18 +161,18 @@ public class TopicsApi {
                                                   String forumId,
 
                                                   Boolean unreadInTop,
-                                                  ListInfo listInfo) throws ParseException, IOException, URISyntaxException {
+                                                  ListInfo listInfo) throws IOException {
 
         String pageBody = client.performGet(url);
 
-        ArrayList<Topic> res = new ArrayList<Topic>();
+        ArrayList<Topic> res = new ArrayList<>();
 
         if ((HttpHelper.getRedirectUri() != null && HttpHelper.getRedirectUri().toString().toLowerCase().contains("act=search"))
                 || url.toLowerCase().contains("act=search")) {
             res = SearchApi.parse(pageBody, listInfo);
         } else {
             int start = listInfo.getFrom();
-            Pattern lastPageStartPattern = Pattern.compile("<a href=\"(http://4pda.ru)?/forum/index.php\\?showforum=\\d+&amp;[^\"]*?st=(\\d+)\">",
+            Pattern lastPageStartPattern = Pattern.compile("<a href=\"(http://4pda.ru)?/forum/index.php\\?showforum=\\d[^\"]*?st=(\\d+)",
                     Pattern.CASE_INSENSITIVE);
 
             Pattern themesPattern = Pattern.compile("<div class=\"topic_title\">.*?<a href=\"[^\"]*?/forum/index.php\\?showtopic=(\\d+)\">([^<]*)</a>.*?</div><div class=\"topic_body\">(?:<span class=\"topic_desc\">([^<]*)<br /></span>|)<span class=\"topic_desc\">автор: <a href=\"[^\"]*?/forum/index.php\\?showuser=\\d+\">[^<]*</a></span><br />(<a href=\"[^\"]*?/forum/index.php\\?showtopic=\\d+&amp;view=getnewpost\">Новые</a>)?\\s*<a href=\"[^\"]*?/forum/index.php\\?showtopic=\\d+&amp;view=getlastpost\">Послед.:</a> <a href=\"[^\"]*?/forum/index.php\\?showuser=(\\d+)\">([^<]*)</a>(.*?)<.*?/div>", Pattern.CASE_INSENSITIVE);
