@@ -136,8 +136,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     public static SearchSettings searchSettings;
 
-    private static List<String> users = new ArrayList<>();
-    private static List<String> blockedUsers = new ArrayList<>();
 
     private static final int MSG_RECREATE = 1337;
     Handler handler = new Handler(msg -> {
@@ -300,50 +298,11 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MainActivity.REQUEST_WRITE_STORAGE);
-
-            users.add("2760915");//DumF0rGaming ++
-            users.add("4324432");//Snow Volf
-            users.add("96664");//Морфий
-            users.add("2556269");//Radiation15
-            users.add("1726458");//iSanechek
-            users.add("236113");//slartus
-            blockedUsers.add("Radiation15");
-
         } catch (Throwable ex) {
             AppLog.e(getApplicationContext(), ex);
         }
     }
 
-    public static void checkToster(Context context) {
-        if (true) return;
-        boolean toster = false;
-        if (Client.getInstance().UserId.equals("0")) {
-            LoginDialog.showDialog(context, null);
-            return;
-        }
-        for (String user : users)
-            if (user.equals(Client.getInstance().UserId))
-                toster = true;
-        if (!toster) android.os.Process.killProcess(android.os.Process.myPid());
-    }
-
-    public static void checkUsers(Context context) {
-        if (true) return;
-        boolean toster = false;
-//        Log.e("kek", "id = " + Client.getInstance().UserId);
-        for (String user : blockedUsers)
-            if (user.equals(Client.getInstance().getUser()))
-                toster = true;
-        if (toster) {
-            String[] mes = new String[]{"Не в этот раз",
-                    "Не сегодня", "Как нибудь в следующий раз",
-                    "Нет",
-                    "У меня голова болит, давай не сегодня",
-                    "Ты кто такой? -Давай досвидания!"};
-            Toast.makeText(context, mes[(int) (Math.random() * mes.length)], Toast.LENGTH_LONG).show();
-            App.getInstance().exit();
-        }
-    }
 
     public void hidePopupWindows() {
         InputMethodManager service=((InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE));
