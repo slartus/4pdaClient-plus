@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     public static final int REQUEST_WRITE_STORAGE = 112;
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_WRITE_STORAGE: {
@@ -139,14 +140,11 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     private static List<String> blockedUsers = new ArrayList<>();
 
     private static final int MSG_RECREATE = 1337;
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            Log.e("kek", "HANDLE MESSAGE LEAK MEMORY| ALARMA TUT UTECHKA!!!!");
-            if (msg.what == MSG_RECREATE)
-                recreate();
-        }
-    };
+    Handler handler = new Handler(msg -> {
+        if (msg.what == MSG_RECREATE)
+            recreate();
+        return true;
+    });
 
     public Handler getHandler() {
         return mHandler;
@@ -156,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         return mMainDrawerMenu;
     }
 
-    public boolean statusBarShowed = false;
     public boolean hack = false;
 
     public Context getContext() {
@@ -349,7 +346,11 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
 
     public void hidePopupWindows() {
-        ((InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        InputMethodManager service=((InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE));
+        assert service != null;
+        View currentFocus=this.getCurrentFocus();
+        assert currentFocus != null;
+        service.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
         if (fragment != null)
             ((GeneralFragment) fragment).hidePopupWindows();
@@ -370,7 +371,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
 
     private boolean lastHamburgerArrow = true;
-    private ValueAnimator anim;
     private DecelerateInterpolator interpolator = new DecelerateInterpolator();
 
     private View.OnClickListener toggleListener = new View.OnClickListener() {
@@ -382,16 +382,16 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     };
     private DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener() {
         @Override
-        public void onDrawerSlide(View drawerView, float slideOffset) {
+        public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
         }
 
         @Override
-        public void onDrawerOpened(View drawerView) {
+        public void onDrawerOpened(@NonNull View drawerView) {
             hidePopupWindows();
         }
 
         @Override
-        public void onDrawerClosed(View drawerView) {
+        public void onDrawerClosed(@NonNull View drawerView) {
         }
 
         @Override
@@ -401,16 +401,17 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     public void animateHamburger(final boolean isArrow, final View.OnClickListener listener) {
         if (toolbar == null) return;
+        DrawerLayout drawerLayout=getmMainDrawerMenu().getDrawerLayout();
         if (isArrow) {
             toolbar.setNavigationOnClickListener(toggleListener);
-            getmMainDrawerMenu().getDrawerLayout().setDrawerListener(getmMainDrawerMenu().getDrawerToggle());
+            drawerLayout.setDrawerListener(getmMainDrawerMenu().getDrawerToggle());
         } else {
             if (listener != null) toolbar.setNavigationOnClickListener(listener);
-            getmMainDrawerMenu().getDrawerLayout().setDrawerListener(drawerListener);
+            drawerLayout.setDrawerListener(drawerListener);
         }
         if (isArrow == lastHamburgerArrow) return;
 
-        anim = ValueAnimator.ofFloat(isArrow ? 1.0f : 0.0f, isArrow ? 0.0f : 1.0f);
+        ValueAnimator anim = ValueAnimator.ofFloat(isArrow ? 1.0f : 0.0f, isArrow ? 0.0f : 1.0f);
         anim.addUpdateListener(valueAnimator -> getmMainDrawerMenu().getDrawerToggle().onDrawerSlide(getmMainDrawerMenu().getDrawerLayout(), (Float) valueAnimator.getAnimatedValue()));
         anim.setInterpolator(interpolator);
         anim.setDuration(250);
@@ -440,28 +441,8 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             mMainDrawerMenu.getNavigationView().getHeaderView(0).setVisibility(View.GONE);
 
         Client.INSTANCE.checkLoginByCookies();
-        Client.getInstance().addOnUserChangedListener(new Client.OnUserChangedListener() {
-            @Override
-            public void onUserChanged(String user, Boolean success) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        setUserMenu();
-                    }
-                });
-            }
-        });
-        Client.getInstance().addOnMailListener(new Client.OnMailListener() {
-            @Override
-            public void onMail(int count) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        setUserMenu();
-                    }
-                });
-            }
-        });
+        Client.getInstance().addOnUserChangedListener((user, success) -> mHandler.post(this::setUserMenu));
+        Client.getInstance().addOnMailListener(count -> mHandler.post(this::setUserMenu));
 //        checkToster(this);
 //        checkUsers(this);
 
@@ -527,15 +508,15 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     public void selectItem(final BrickInfo listTemplate) {
         Fragment fragment = listTemplate.createFragment();
-        selectFragment(listTemplate.getTitle(), "", listTemplate.getName(), fragment);
+        selectFragment(listTemplate.getTitle(), listTemplate.getName(), fragment);
         addTabToList(listTemplate.getTitle(), listTemplate.getName(), listTemplate.getName(), fragment, false);
     }
 
     public void selectTab(TabItem tabItem) {
-        selectFragment(tabItem.getTitle(), tabItem.getUrl(), tabItem.getTag(), tabItem.getFragment());
+        selectFragment(tabItem.getTitle(), tabItem.getTag(), tabItem.getFragment());
     }
 
-    private void selectFragment(final String title, final String url, final String tag, final Fragment fragment) {
+    private void selectFragment(final String title, final String tag, final Fragment fragment) {
         tabLog("selectFragment start");
         if (mTabDraweMenu != null) {
             mTabDraweMenu.close();
@@ -567,12 +548,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                 } else {
                     showFragment(transaction, tag);
                     if (Preferences.Lists.isRefreshOnTab())
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                ((IBrickFragment) getSupportFragmentManager().findFragmentByTag(tag)).loadData(true);
-                            }
-                        }, 300);
+                        handler.postDelayed(() -> ((IBrickFragment) getSupportFragmentManager().findFragmentByTag(tag)).loadData(true), 300);
                 }
             }
         }
@@ -698,17 +674,15 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         if (!getPreferences().getString("lang", "default").equals(lang)) {
             new AlertDialog.Builder(getContext())
                     .setMessage(R.string.lang_changed)
-                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent mStartActivity = new Intent(MainActivity.this, MainActivity.class);
-                            int mPendingIntentId = 123456;
-                            PendingIntent mPendingIntent = PendingIntent.getActivity(MainActivity.this, mPendingIntentId, mStartActivity,
-                                    PendingIntent.FLAG_CANCEL_CURRENT);
-                            AlarmManager mgr = (AlarmManager) MainActivity.this.getSystemService(Context.ALARM_SERVICE);
-                            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
-                            System.exit(0);
-                        }
+                    .setPositiveButton(R.string.yes, (dialog, which) -> {
+                        Intent mStartActivity = new Intent(MainActivity.this, MainActivity.class);
+                        int mPendingIntentId = 123456;
+                        PendingIntent mPendingIntent = PendingIntent.getActivity(MainActivity.this, mPendingIntentId, mStartActivity,
+                                PendingIntent.FLAG_CANCEL_CURRENT);
+                        AlarmManager mgr = (AlarmManager) MainActivity.this.getSystemService(Context.ALARM_SERVICE);
+                        assert mgr != null;
+                        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+                        System.exit(0);
                     })
                     .setNegativeButton(R.string.cancel, null)
                     .show();
@@ -874,6 +848,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     public static void showListFragment(String prefix, String brickName, Bundle extras) {
         final BrickInfo listTemplate = ListCore.getRegisteredBrick(brickName);
+        assert listTemplate != null;
         Fragment fragment = listTemplate.createFragment();
         fragment.setArguments(extras);
         addTab(listTemplate.getTitle(), prefix + brickName, fragment);
@@ -917,12 +892,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                     if (!m_ExitWarned) {
                         Toast.makeText(this, R.string.close_program_toasr, Toast.LENGTH_SHORT).show();
                         m_ExitWarned = true;
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                m_ExitWarned = false;
-                            }
-                        }, 3 * 1000);
+                        new Handler().postDelayed(() -> m_ExitWarned = false, 3 * 1000);
                     } else {
                         appExit();
                     }
@@ -965,62 +935,44 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         if (logged) {
             String text = Client.getInstance().getQmsCount() > 0 ? ("QMS (" + Client.getInstance().getQmsCount() + ")") : "QMS";
             mUserMenuItem.add(text)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                        public boolean onMenuItemClick(MenuItem item) {
-                            //ListFragmentActivity.showListFragment(MainActivity.this, QmsContactsBrickInfo.NAME, null);
-                            QmsContactsBrickInfo brickInfo = new QmsContactsBrickInfo();
-                            MainActivity.addTab(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(item -> {
+                        //ListFragmentActivity.showListFragment(MainActivity.this, QmsContactsBrickInfo.NAME, null);
+                        QmsContactsBrickInfo brickInfo = new QmsContactsBrickInfo();
+                        MainActivity.addTab(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
+                        return true;
                     });
 
             mUserMenuItem.add(R.string.Profile)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                        public boolean onMenuItemClick(MenuItem item) {
-                            ProfileFragment.showProfile(Client.getInstance().UserId, Client.getInstance().getUser());
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(item -> {
+                        ProfileFragment.showProfile(Client.getInstance().UserId, Client.getInstance().getUser());
+                        return true;
                     });
 
 
             mUserMenuItem.add(R.string.Reputation)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                        public boolean onMenuItemClick(MenuItem item) {
-                            UserReputationFragment.showActivity(MainActivity.this, Client.getInstance().UserId, false);
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(item -> {
+                        UserReputationFragment.showActivity(MainActivity.this, Client.getInstance().UserId, false);
+                        return true;
                     });
 
             mUserMenuItem.add(R.string.Logout)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                        public boolean onMenuItemClick(MenuItem item) {
-                            LoginDialog.logout(MainActivity.this);
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(item -> {
+                        LoginDialog.logout(MainActivity.this);
+                        return true;
                     });
         } else {
-            mUserMenuItem.add(R.string.Login).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                public boolean onMenuItemClick(MenuItem item) {
-                    LoginDialog.showDialog(MainActivity.this, null);
-                    return true;
-                }
+            mUserMenuItem.add(R.string.Login).setOnMenuItemClickListener(item -> {
+                LoginDialog.showDialog(MainActivity.this, null);
+                return true;
             });
 
-            mUserMenuItem.add(R.string.Registration).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                public boolean onMenuItemClick(MenuItem item) {
-                    Intent marketIntent = new Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("http://4pda.ru/forum/index.php?act=Reg&CODE=00"));
-                    MainActivity.this.startActivity(marketIntent);
-                    //
-                    return true;
-                }
+            mUserMenuItem.add(R.string.Registration).setOnMenuItemClickListener(item -> {
+                Intent marketIntent = new Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("http://4pda.ru/forum/index.php?act=Reg&CODE=00"));
+                MainActivity.this.startActivity(marketIntent);
+                //
+                return true;
             });
         }
     }
@@ -1044,24 +996,18 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         if (getPreferences().getBoolean("openTabDrawerButton", false)) {
             menu.add(R.string.tabs)
                     .setIcon(R.drawable.checkbox_multiple_blank_outline)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                        public boolean onMenuItemClick(MenuItem item) {
-                            mTabDraweMenu.toggleOpenState();
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(item -> {
+                        mTabDraweMenu.toggleOpenState();
+                        return true;
                     })
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
 
         menu.add(R.string.Search)
                 .setIcon(R.drawable.magnify)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                    public boolean onMenuItemClick(MenuItem item) {
-                        SearchSettingsDialogFragment.showSearchSettingsDialog(MainActivity.this, searchSettings);
-                        return true;
-                    }
+                .setOnMenuItemClickListener(item -> {
+                    SearchSettingsDialogFragment.showSearchSettingsDialog(MainActivity.this, searchSettings);
+                    return true;
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
@@ -1073,13 +1019,10 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
             menu.add(0, 0, 999, R.string.CloseApp)
                     .setIcon(R.drawable.close_white)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                        public boolean onMenuItemClick(MenuItem item) {
-                            android.os.Process.killProcess(android.os.Process.myPid());
-                            System.exit(1);
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(item -> {
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                        System.exit(1);
+                        return true;
                     });
         }
 
