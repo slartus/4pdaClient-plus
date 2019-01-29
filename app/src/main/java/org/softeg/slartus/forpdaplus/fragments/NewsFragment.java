@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.util.Log;
@@ -35,8 +37,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
-import org.apache.http.client.HttpResponseException;
-import org.softeg.slartus.forpdaapi.NewsApi;
 import org.softeg.slartus.forpdacommon.AdBlocker;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
@@ -67,7 +67,7 @@ import java.util.regex.Pattern;
  */
 public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
     private static final String URL_KEY = "Url";
-    private static final String TAG = "NewsActivity";
+
     private Handler mHandler = new Handler();
     private AdvWebView webView;
 
@@ -81,7 +81,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     private FloatingActionButton fab;
     private FrameLayout buttonsPanel;
 
-    public static NewsFragment newInstance(String url){
+    public static NewsFragment newInstance(String url) {
         NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
         args.putString(URL_KEY, url);
@@ -137,8 +137,9 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         return false;
     }
 
+    @SuppressLint("AddJavascriptInterface")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.news_fragment, container, false);
         webView = (AdvWebView) findViewById(R.id.wvBody);
@@ -154,25 +155,24 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         webView.setWebViewClient(new MyWebViewClient());
         webView.addJavascriptInterface(this, "HTMLOUT");
 
+        assert getArguments() != null;
         m_NewsUrl = getArguments().getString(URL_KEY);
+        assert m_NewsUrl != null;
         showNews(m_NewsUrl);
 
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        Log.d("kek","logined"+Client.getInstance().getLogined());
-        if(!App.getInstance().getPreferences().getBoolean("pancilInActionBar", false)) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(Client.getInstance().getLogined())
-                        respond();
-                    else
-                        Toast.makeText(getContext(), R.string.need_login, Toast.LENGTH_SHORT).show();
-                }
+        Log.d("kek", "logined" + Client.getInstance().getLogined());
+        if (!App.getInstance().getPreferences().getBoolean("pancilInActionBar", false)) {
+            fab.setOnClickListener(view -> {
+                if (Client.getInstance().getLogined())
+                    respond();
+                else
+                    Toast.makeText(getContext(), R.string.need_login, Toast.LENGTH_SHORT).show();
             });
             setHideFab(fab);
             setFabColors(fab);
-        }else {
+        } else {
             fab.hide();
         }
 
@@ -197,31 +197,25 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         boolean pencil = App.getInstance().getPreferences().getBoolean("pancilInActionBar", false);
-        if(Client.getInstance().getLogined()&pencil){
+        if (Client.getInstance().getLogined() & pencil) {
             menu.add(R.string.comment).setIcon(R.drawable.pencil)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            respond();
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(menuItem -> {
+                        respond();
+                        return true;
                     })
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
         menu.add(R.string.Refresh).setIcon(R.drawable.refresh)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        refresh();
-                        return true;
-                    }
+                .setOnMenuItemClickListener(menuItem -> {
+                    refresh();
+                    return true;
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         menu.add(R.string.Like).setIcon(R.drawable.thumb_up)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        like();
-                        return true;
-                    }
+                .setOnMenuItemClickListener(menuItem -> {
+                    like();
+                    return true;
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
@@ -237,45 +231,35 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                         return true;
                     }
                 }).setCheckable(true).setChecked(Preferences.isHideActionBar());*/
-        if(!pencil) {
+        if (!pencil) {
             optionsMenu.add(R.string.hide_pencil)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            Preferences.setHideFab(!Preferences.isHideFab());
-                            setHideFab(fab);
-                            menuItem.setChecked(Preferences.isHideFab());
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(menuItem -> {
+                        Preferences.setHideFab(!Preferences.isHideFab());
+                        setHideFab(fab);
+                        menuItem.setChecked(Preferences.isHideFab());
+                        return true;
                     }).setCheckable(true).setChecked(Preferences.isHideFab());
         }
         optionsMenu.add(R.string.font_size)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        showFontSizeDialog();
-                        return true;
-                    }
+                .setOnMenuItemClickListener(menuItem -> {
+                    showFontSizeDialog();
+                    return true;
                 });
 
         optionsMenu.add(R.string.LoadImages)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        Boolean loadImagesAutomatically1 = getWebView().getSettings().getLoadsImagesAutomatically();
-                        getWebView().getSettings().setLoadsImagesAutomatically(!loadImagesAutomatically1);
-                        menuItem.setChecked(!loadImagesAutomatically1);
-                        return true;
-                    }
+                .setOnMenuItemClickListener(menuItem -> {
+                    boolean loadImagesAutomatically1 = getWebView().getSettings().getLoadsImagesAutomatically();
+                    getWebView().getSettings().setLoadsImagesAutomatically(!loadImagesAutomatically1);
+                    menuItem.setChecked(!loadImagesAutomatically1);
+                    return true;
                 }).setCheckable(true).setChecked(getWebView().getSettings().getLoadsImagesAutomatically());
 
         menu.add(R.string.link)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), getUrl());
-                        return true;
-                    }
+                .setOnMenuItemClickListener(menuItem -> {
+                    ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), getUrl());
+                    return true;
                 });
     }
-
 
 
     @Override
@@ -294,24 +278,23 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
 
     private final static int FILECHOOSER_RESULTCODE = 1;
+
+    @SuppressWarnings("unused")
     @JavascriptInterface
     public void showChooseCssDialog() {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    intent.setType("file/*");
+        getMainActivity().runOnUiThread(() -> {
+            try {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setType("file/*");
 
-                    // intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
-                    startActivityForResult(intent, FILECHOOSER_RESULTCODE);
+                // intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
+                startActivityForResult(intent, FILECHOOSER_RESULTCODE);
 
-                } catch (ActivityNotFoundException ex) {
-                    Toast.makeText(getMainActivity(), R.string.no_app_for_get_file, Toast.LENGTH_LONG).show();
-                } catch (Exception ex) {
-                    AppLog.e(getMainActivity(), ex);
-                }
+            } catch (ActivityNotFoundException ex) {
+                Toast.makeText(getMainActivity(), R.string.no_app_for_get_file, Toast.LENGTH_LONG).show();
+            } catch (Exception ex) {
+                AppLog.e(getMainActivity(), ex);
             }
         });
     }
@@ -321,29 +304,32 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                                  Intent data) {
         getMainActivity();
         if (resultCode == Activity.RESULT_OK && requestCode == FILECHOOSER_RESULTCODE) {
-            String attachFilePath = FileUtils.getRealPathFromURI(getMainActivity(), data.getData());
+            Uri uri = data.getData();
+            assert uri != null;
+            String attachFilePath = FileUtils.getRealPathFromURI(getMainActivity(), uri);
             String cssData = FileUtils.readFileText(attachFilePath)
                     .replace("\\", "\\\\")
                     .replace("'", "\\'").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
             webView.evalJs("window['HtmlInParseLessContent']('" + cssData + "');");
         }
     }
+
+    @SuppressWarnings("unused")
     @JavascriptInterface
     public void sendNewsAttaches(final String json) {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                for (JsonElement s : new JsonParser().parse(json).getAsJsonArray()) {
-                    ArrayList<String> list1 = new ArrayList<>();
-                    for (JsonElement a : s.getAsJsonArray())
-                        list1.add(a.getAsString());
-                    imageAttaches.add(list1);
-                }
+        getMainActivity().runOnUiThread(() -> {
+            for (JsonElement s : new JsonParser().parse(json).getAsJsonArray()) {
+                ArrayList<String> list1 = new ArrayList<>();
+                for (JsonElement a : s.getAsJsonArray())
+                    list1.add(a.getAsString());
+                imageAttaches.add(list1);
             }
         });
 
     }
+
     public List<ArrayList<String>> imageAttaches = new ArrayList<>();
+
     private class MyWebViewClient extends WebViewClient {
 
         private Map<String, Boolean> loadedUrls = new HashMap<>();
@@ -351,7 +337,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
             boolean ad;
-            url=IntentActivity.getRedirectUrl(url);
+            url = IntentActivity.getRedirectUrl(url);
             if (!loadedUrls.containsKey(url)) {
                 ad = AdBlocker.isAd(url);
                 loadedUrls.put(url, ad);
@@ -376,20 +362,20 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             boolean ad;
-            url=IntentActivity.getRedirectUrl(url);
+            url = IntentActivity.getRedirectUrl(url);
             if (!loadedUrls.containsKey(url)) {
                 ad = AdBlocker.isAd(url);
                 loadedUrls.put(url, ad);
             } else {
                 ad = loadedUrls.get(url);
             }
-            if(ad)
+            if (ad)
                 return false;
 
             m_ScrollY = 0;
             m_ScrollX = 0;
 
-            if(checkIsImage(url))
+            if (checkIsImage(url))
                 return true;
 
             if (isReplyUrl(url))
@@ -415,22 +401,21 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             return true;
         }
 
-        private boolean checkIsImage(final String url){
+        private boolean checkIsImage(final String url) {
             final Pattern imagePattern = PatternExtensions.compile("http://.*?\\.(png|jpg|jpeg|gif)$");
             Uri uri = Uri.parse(url.toLowerCase());
-            if(imagePattern.matcher(uri.toString()).find()
-                    ||(uri.getHost().toLowerCase().contains("ggpht.com")
-                    || uri.getHost().toLowerCase().contains("googleusercontent.com")
-                    || uri.getHost().toLowerCase().contains("windowsphone.com"))){
+            String host = uri.getHost();
+            if (imagePattern.matcher(uri.toString()).find()
+                    || (host != null && (host.toLowerCase().contains("ggpht.com")
+                    || host.toLowerCase().contains("googleusercontent.com")
+                    || host.toLowerCase().contains("windowsphone.com")))) {
                 if (!Client.getInstance().getLogined() && !Client.getInstance().hasLoginCookies()) {
-                    Client.getInstance().showLoginForm(getContext(), new Client.OnUserChangedListener() {
-                        public void onUserChanged(String user, Boolean success) {
-                            if (success) {
-                                showImage(url);
-                            }
+                    Client.getInstance().showLoginForm(getContext(), (user, success) -> {
+                        if (success) {
+                            showImage(url);
                         }
                     });
-                }else {
+                } else {
                     showImage(url);
                 }
                 return true;
@@ -438,10 +423,10 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             return false;
         }
 
-        private void showImage(String url){
-            for(ArrayList<String> list:imageAttaches){
-                for(int i = 0; i<list.size();i++){
-                    if(list.get(i).equals(url)){
+        private void showImage(String url) {
+            for (ArrayList<String> list : imageAttaches) {
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.get(i).equals(url)) {
                         ImgViewer.startActivity(getContext(), list, i);
                         return;
                     }
@@ -527,7 +512,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         try {
             setTitle(m_Title);
             webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
-            if(buttonsPanel.getTranslationY()!=0)
+            if (buttonsPanel.getTranslationY() != 0)
                 ViewPropertyAnimator.animate(buttonsPanel)
                         .setInterpolator(new AccelerateDecelerateInterpolator())
                         .setDuration(500)
@@ -553,9 +538,9 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
     private class GetNewsTask extends AsyncTask<String, String, Boolean> {
 
-        public String Comment = null;
-        public String ReplyId;
-        public String Dp;
+        String Comment = null;
+        String ReplyId;
+        String Dp;
 
         private String m_ThemeBody;
 
@@ -564,7 +549,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             try {
                 if (isCancelled()) return false;
                 Client client = Client.getInstance();
-                Log.e("kek", "\""+m_NewsUrl+"\"");
+                Log.e("kek", "\"" + m_NewsUrl + "\"");
                 if (TextUtils.isEmpty(Comment))
                     m_ThemeBody = transformBody(client.performGet(m_NewsUrl));
                 else {
@@ -585,8 +570,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
 
 
-
-
         private String transformBody(String body) {
             NewsHtmlBuilder builder = new NewsHtmlBuilder();
             m_Title = App.getContext().getString(R.string.news);
@@ -594,7 +577,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             builder.beginBody("news", null, loadImages);
             builder.append("<div style=\"padding-top:").append(String.valueOf(HtmlBuilder.getMarginTop())).append("px\"/>\n");
             builder.append("<div id=\"main\">");
-            body = body.replaceAll("\"//","\"http://");
+            body = body.replaceAll("\"//", "\"http://");
 
             Matcher matcher = PatternExtensions.compile("ModKarma\\((\\{?[\\s\\S]*?\\}?)(?:,\\s?\\d+)?\\)").matcher(body);
             builder.append(parseBody(body));
@@ -611,8 +594,8 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
         private String parseBody(String body) {
             /*
-            * Все равно надо переписать регулярку, работает долго.
-            */
+             * Все равно надо переписать регулярку, работает долго.
+             */
             Matcher m = PatternExtensions.compile("(<div class=\"container\"[\\s\\S]*?<span itemprop=\"headline\">([\\s\\S]*?)<\\/span>[\\s\\S]*?)<article id=[^>]*?>([\\s\\S]*?)").matcher(body);
 //body=NewsApi.parseNewsBody(body);
             if (m.find()) {
@@ -654,7 +637,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
 
         private String normalizeCommentUrls(String body) {
-            if(App.getInstance().getPreferences().getBoolean("loadNewsComment", false)){
+            if (App.getInstance().getPreferences().getBoolean("loadNewsComment", false)) {
                 body = body.replaceAll("(<div class=\"comment-box\" id=\"comments\">[\\s\\S]*?<ul class=\"page-nav box\">[\\s\\S]*?<\\/ul>)", "");
             }
 
@@ -701,107 +684,95 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
     public void respond(final String replyId, final String dp, String user) {
         LayoutInflater inflater = (LayoutInflater) getMainActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
         View layout = inflater.inflate(R.layout.news_comment_edit, null);
 
         assert layout != null;
-        final EditText message_edit = (EditText) layout.findViewById(R.id.comment);
+        final EditText message_edit = layout.findViewById(R.id.comment);
         if (user != null)
-            message_edit.setText("<b>" + URLDecoder.decode(user) + ",</b>");
+            message_edit.setText(String.format("<b>%s,</b>", URLDecoder.decode(user)));
         new MaterialDialog.Builder(getMainActivity())
                 .title(R.string.LeaveComment)
-                .customView(layout,true)
+                .customView(layout, true)
                 .positiveText(R.string.Send)
                 .negativeText(R.string.cancel)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        String message = message_edit.getText().toString();
-                        if (TextUtils.isEmpty(message.trim())) {
-                            Toast.makeText(getMainActivity(), R.string.empty_text, Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
-                        asyncTask = new GetNewsTask();
-                        asyncTask.Comment = message;
-                        asyncTask.ReplyId = replyId;
-                        asyncTask.Dp = dp;
-                        asyncTask.execute(m_NewsUrl);
+                .onPositive((dialog, which) -> {
+                    String message = message_edit.getText().toString();
+                    if (TextUtils.isEmpty(message.trim())) {
+                        Toast.makeText(getMainActivity(), R.string.empty_text, Toast.LENGTH_SHORT).show();
+                        return;
                     }
+
+                    asyncTask = new GetNewsTask();
+                    asyncTask.Comment = message;
+                    asyncTask.ReplyId = replyId;
+                    asyncTask.Dp = dp;
+                    asyncTask.execute(m_NewsUrl);
                 })
                 .show();
     }
 
     private void like() {
         Toast.makeText(getMainActivity(), R.string.request_sent, Toast.LENGTH_SHORT).show();
-        new Thread(new Runnable() {
-            public void run() {
+        new Thread(() -> {
 
-                Exception ex = null;
+            Exception ex = null;
 
-                try {
-                    Client.getInstance().likeNews(getPostId());
-                } catch (Exception e) {
-                    ex = e;
-                }
-
-                final Exception finalEx = ex;
-                mHandler.post(new Runnable() {
-                    public void run() {
-                        try {
-                            if (finalEx != null) {
-                                Toast.makeText(getMainActivity(), R.string.error_request, Toast.LENGTH_SHORT).show();
-                                AppLog.e(getMainActivity(), finalEx);
-                            } else {
-                                Toast.makeText(getMainActivity(), R.string.request_performed, Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (Exception ex) {
-                            AppLog.e(getMainActivity(), ex);
-                        }
-                    }
-                });
+            try {
+                Client.getInstance().likeNews(getPostId());
+            } catch (Exception e) {
+                ex = e;
             }
+
+            final Exception finalEx = ex;
+            mHandler.post(() -> {
+                try {
+                    if (finalEx != null) {
+                        Toast.makeText(getMainActivity(), R.string.error_request, Toast.LENGTH_SHORT).show();
+                        AppLog.e(getMainActivity(), finalEx);
+                    } else {
+                        Toast.makeText(getMainActivity(), R.string.request_performed, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception ex1) {
+                    AppLog.e(getMainActivity(), ex1);
+                }
+            });
         }).start();
     }
+
+    @SuppressWarnings("unused")
     @JavascriptInterface
     public void likeComment(final String id, final String comment) {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                sendLikeComment(id, comment);
-            }
-        });
+        getMainActivity().runOnUiThread(() -> sendLikeComment(id, comment));
     }
+
     private void sendLikeComment(final String id, final String comment) {
         Toast.makeText(getMainActivity(), R.string.request_sent, Toast.LENGTH_SHORT).show();
-        new Thread(new Runnable() {
-            public void run() {
+        new Thread(() -> {
 
-                Exception ex = null;
+            Exception ex = null;
 
-                try {
-                    Client.getInstance().likeComment(id, comment);
-                } catch (Exception e) {
-                    if (e instanceof ShowInBrowserException) {
-                        // huyak
-                    } else ex = e;
+            try {
+                Client.getInstance().likeComment(id, comment);
+            } catch (Exception e) {
+                if (!(e instanceof ShowInBrowserException)) {
+                    ex = e;
                 }
-
-                final Exception finalEx = ex;
-                mHandler.post(new Runnable() {
-                    public void run() {
-                        try {
-                            if (finalEx != null) {
-                                Toast.makeText(getMainActivity(), R.string.error_request, Toast.LENGTH_SHORT).show();
-                                AppLog.e(getMainActivity(), finalEx);
-                            } else {
-                                Toast.makeText(getMainActivity(), R.string.request_performed, Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (Exception ex) {
-                            AppLog.e(getMainActivity(), ex);
-                        }
-                    }
-                });
             }
+
+            final Exception finalEx = ex;
+            mHandler.post(() -> {
+                try {
+                    if (finalEx != null) {
+                        Toast.makeText(getMainActivity(), R.string.error_request, Toast.LENGTH_SHORT).show();
+                        AppLog.e(getMainActivity(), finalEx);
+                    } else {
+                        Toast.makeText(getMainActivity(), R.string.request_performed, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception ex1) {
+                    AppLog.e(getMainActivity(), ex1);
+                }
+            });
         }).start();
     }
 }
