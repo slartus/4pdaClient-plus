@@ -42,9 +42,9 @@ public class NewsApi {
 
     public static String parseNewsBody(String newsPageBody) {
         Document doc = Jsoup.parse(newsPageBody, "http://4pda.ru");
-        org.jsoup.nodes.Element bodyElement = doc.select("div.article").first();
+        org.jsoup.nodes.Element bodyElement = doc.select("div.container").first();
         if(bodyElement!=null)
-            return  bodyElement.html();
+            return  bodyElement.parent().html();
 
         Matcher m = PatternExtensions.compile("<article[^>]*>([\\s\\S]*?)</article>").matcher(newsPageBody);
         if (m.find())

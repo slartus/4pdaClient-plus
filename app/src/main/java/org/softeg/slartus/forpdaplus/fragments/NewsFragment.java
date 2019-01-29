@@ -37,6 +37,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
+import org.softeg.slartus.forpdaapi.NewsApi;
 import org.softeg.slartus.forpdacommon.AdBlocker;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
@@ -593,29 +594,29 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
 
         private String parseBody(String body) {
-            /*
-             * Все равно надо переписать регулярку, работает долго.
-             */
-            Matcher m = PatternExtensions.compile("(<div class=\"container\"[\\s\\S]*?<span itemprop=\"headline\">([\\s\\S]*?)<\\/span>[\\s\\S]*?)<article id=[^>]*?>([\\s\\S]*?)").matcher(body);
-//body=NewsApi.parseNewsBody(body);
-            if (m.find()) {
-                m_Title = m.group(2);
-                body = m.group(1)
-                        .replaceAll("<script[\\s\\S]*?/script>", "")
-                        .replaceAll("<article id=[^>]*?>([\\s\\S]*?)", "");
-                return normalizeCommentUrls(body).replaceAll("<form[\\s\\S]*?/form>", "");
-            }
-            m = PatternExtensions
-                    .compile("<div id=\"main\">([\\s\\S]*?)<form action=\"(http://4pda.ru)?/wp-comments-post.php\" method=\"post\" id=\"commentform\">")
-                    .matcher(body);
-            if (m.find()) {
-                return normalizeCommentUrls(m.group(1)) + getNavi(body);
-            }
-            m = PatternExtensions.compile("<div id=\"main\">([\\s\\S]*?)<div id=\"categories\">").matcher(body);
-            if (m.find()) {
-                return normalizeCommentUrls(m.group(1)) + getNavi(body);
-            }
-
+//            /*
+//             * Все равно надо переписать регулярку, работает долго.
+//             */
+//            Matcher m = PatternExtensions.compile("(<div class=\"container\"[\\s\\S]*?<span itemprop=\"headline\">([\\s\\S]*?)<\\/span>[\\s\\S]*?)<article id=[^>]*?>([\\s\\S]*?)").matcher(body);
+////body=NewsApi.parseNewsBody(body);
+//            if (m.find()) {
+//                m_Title = m.group(2);
+//                body = m.group(1)
+//                        .replaceAll("<script[\\s\\S]*?/script>", "")
+//                        .replaceAll("<article id=[^>]*?>([\\s\\S]*?)", "");
+//                return normalizeCommentUrls(body).replaceAll("<form[\\s\\S]*?/form>", "");
+//            }
+//            m = PatternExtensions
+//                    .compile("<div id=\"main\">([\\s\\S]*?)<form action=\"(http://4pda.ru)?/wp-comments-post.php\" method=\"post\" id=\"commentform\">")
+//                    .matcher(body);
+//            if (m.find()) {
+//                return normalizeCommentUrls(m.group(1)) + getNavi(body);
+//            }
+//            m = PatternExtensions.compile("<div id=\"main\">([\\s\\S]*?)<div id=\"categories\">").matcher(body);
+//            if (m.find()) {
+//                return normalizeCommentUrls(m.group(1)) + getNavi(body);
+//            }
+            body = NewsApi.parseNewsBody(body);
             return normalizeCommentUrls(body);
         }
 
