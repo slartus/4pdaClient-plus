@@ -13,7 +13,10 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  * Created by isanechek on 28.12.16.
@@ -31,11 +34,13 @@ public class NewYear extends Activity {
 
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_yaer);
-        WebView webView = (WebView) findViewById(R.id.ny_webview);
+        WebView webView = findViewById(R.id.ny_webview);
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("file:///android_asset/newyear/index.html");
         Preferences.NYDone();
 
@@ -43,23 +48,12 @@ public class NewYear extends Activity {
 
 
     private static boolean checkDate() {
+        int year = GregorianCalendar.getInstance().get(Calendar.YEAR);
 
-        String startDate = "1/1/2017";
-        String endDate = "8/1/2017";
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date strDate, enDate = null;
-        try {
-            strDate = sdf.parse(startDate);
-            enDate = sdf.parse(endDate);
-            long time = System.currentTimeMillis();
-            if (time >= strDate.getTime() & time < enDate.getTime()) {
-                return true;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return false;
-        }
+        Calendar startDate = new GregorianCalendar(year, Calendar.JANUARY, 1);
+        Calendar endDate = new GregorianCalendar(year, Calendar.JANUARY, 7);
 
-        return false;
+        Calendar currentDate = GregorianCalendar.getInstance();
+        return (startDate.compareTo(currentDate) * currentDate.compareTo(endDate)) >= 0;
     }
 }

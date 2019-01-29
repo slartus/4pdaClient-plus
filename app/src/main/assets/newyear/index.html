@@ -18,6 +18,17 @@
       z-index: 900;
     }
     </style>
+    <script language="JavaScript">
+    window.onload = function()
+{
+var year=new Date().getFullYear();
+document.getElementById("yearValue").innerHTML = year;
+}
+
+        function getYear(){
+          return new Date().getFullYear();
+        }
+    </script>
   </head>
   <body>
     <div class="root-layout mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
@@ -37,7 +48,7 @@
               <img class="article-image" src="images/image2.png" border="0" alt="">
             </div>
             <div class="mdl-card__supporting-text">
-                        <p>От всей команды поздравляем вас с наступившим 2017 годом!
+              <p  style="display: inline-block;">От всей команды поздравляем вас с наступившим&nbsp;<div id="yearValue" style="display: inline-block;"></div> годом!
                         Желаем всех благ земных, больше добра, здоровья Вам и вашим семьям.
                         Стабильного конекта, последнего андроида с крайними патчами безопастности.
                         И конечно же, всегда использовать актуальную версию <b>WebView</b></p>
