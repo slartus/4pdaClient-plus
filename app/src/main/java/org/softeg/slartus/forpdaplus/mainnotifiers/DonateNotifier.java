@@ -26,7 +26,7 @@ public class DonateNotifier extends MainNotifier {
         saveSettings();
     }
 
-    public void showNotify(final FragmentActivity fragmentActivity) {
+    private void showNotify(final FragmentActivity fragmentActivity) {
         try {
             addToStack(new MaterialDialog.Builder(fragmentActivity)
                     .title("Неофициальный 4pda клиент")
@@ -34,13 +34,10 @@ public class DonateNotifier extends MainNotifier {
                             "\n" +
                             "Вы можете сделать это позже через меню>>настройки>>Помочь проекту")
                     .positiveText("Помочь проекту")
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            Intent settingsActivity = new Intent(
-                                    fragmentActivity, DonateActivity.class);
-                            fragmentActivity.startActivity(settingsActivity);
-                        }
+                    .onPositive((dialog, which) -> {
+                        Intent settingsActivity = new Intent(
+                                fragmentActivity, DonateActivity.class);
+                        fragmentActivity.startActivity(settingsActivity);
                     })
                     .negativeText("Позже").build());
         } catch (Throwable ex) {
@@ -49,7 +46,7 @@ public class DonateNotifier extends MainNotifier {
 
     }
 
-    protected boolean needShow() {
+    private boolean needShow() {
         SharedPreferences prefs = App.getInstance().getPreferences();
         if (prefs.getBoolean("donate.DontShow", false)) return false;
 
@@ -61,7 +58,7 @@ public class DonateNotifier extends MainNotifier {
         return true;
     }
 
-    protected void saveSettings() {
+    private void saveSettings() {
         saveTime();
         App.getInstance().getPreferences().edit().putString("DonateShowVer", getAppVersion(App.getContext())).apply();
     }
