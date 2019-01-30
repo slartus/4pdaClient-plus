@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+                      android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/login_layout"
@@ -22,14 +22,13 @@
 
                 <EditText
                     android:id="@+id/username_edit"
-                    android:singleLine="true"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/UserNameLogin"
+                    android:inputType="textPersonName"
                     android:minWidth="250dp"
                     android:scrollHorizontally="true"
-                    android:capitalize="none"
-                    android:autoText="false"
-                    android:hint="@string/UserNameLogin" />
+                    android:singleLine="true"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -42,17 +41,14 @@
 
                 <EditText
                     android:id="@+id/password_edit"
-                    android:singleLine="true"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:hint="@string/Password"
+                    android:inputType="textPassword"
                     android:minWidth="250dp"
                     android:scrollHorizontally="true"
-                    android:capitalize="none"
-                    android:autoText="false"
-                    android:password="true"
-                    android:inputType="textPassword"
-                    android:hint="@string/Password"
-                    android:layout_marginTop="4dp" />
+                    android:singleLine="true"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -62,7 +58,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:minHeight="150dp" />
+                android:contentDescription="капча"
+                android:minHeight="150dp"/>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/cap_layout"
@@ -73,14 +70,13 @@
 
                 <EditText
                     android:id="@+id/cap_value_ed"
-                    android:singleLine="true"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:hint="Число с картинки"
+                    android:inputType="number"
                     android:minWidth="250dp"
                     android:scrollHorizontally="true"
-                    android:capitalize="none"
-                    android:autoText="false"
-                    android:hint="Число с картинки" />
+                    android:singleLine="true"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -89,17 +85,17 @@
                 android:id="@+id/privacy_checkbox"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:checked="false"
-                android:text="@string/Stealth"
-                android:layout_marginTop="4dp" />
+                android:text="@string/Stealth"/>
         </LinearLayout>
     </ScrollView>
 
     <ProgressBar
+        android:id="@+id/progressBar2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar2"
-        android:layout_gravity="center_horizontal"
         android:layout_centerInParent="true"
-        android:visibility="gone" />
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"/>
 </RelativeLayout>
