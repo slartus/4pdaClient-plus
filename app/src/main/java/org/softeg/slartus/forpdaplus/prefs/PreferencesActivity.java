@@ -406,12 +406,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                                     }
                                                 })
                                                 .positiveText(R.string.ok)
-                                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                                    @Override
-                                                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                                                        prefs.edit().putString("webViewFontName", name[0].toString()).apply();
-                                                    }
-                                                })
+                                                .onPositive((materialDialog, dialogAction) -> prefs.edit().putString("webViewFontName", name[0].toString()).apply())
                                                 .show();
                                 }
                                 return true;
@@ -420,13 +415,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         .alwaysCallSingleChoiceCallback()
                         .positiveText(R.string.accept)
                         .negativeText(R.string.cancel)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                                prefs.edit().putString("webViewFontName", name[0].toString())
-                                        .putInt("webViewFont", selected[0]).apply();
-                            }
-                        })
+                        .onPositive((materialDialog, dialogAction) -> prefs.edit().putString("webViewFontName", name[0].toString())
+                                .putInt("webViewFont", selected[0]).apply())
                         .show();
 
             }catch (Exception ex) {

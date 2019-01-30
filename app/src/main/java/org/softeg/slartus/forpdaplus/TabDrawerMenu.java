@@ -287,19 +287,11 @@ public class TabDrawerMenu {
                 .content(R.string.ask_close_app)
                 .positiveText(R.string.yes)
                 .negativeText(R.string.no)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                        Process.killProcess(Process.myPid());
-                        System.exit(1);
-                    }
+                .onPositive((materialDialog, dialogAction) -> {
+                    Process.killProcess(Process.myPid());
+                    System.exit(1);
                 })
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
-                        close();
-                    }
-                })
+                .onNegative((materialDialog, dialogAction) -> close())
                 .show();
     }
 }

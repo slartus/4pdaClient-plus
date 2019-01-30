@@ -46,29 +46,18 @@ public class ActionSelectDialogFragment {
                 .positiveText(R.string.yes)
                 .negativeText(R.string.no)
                 .neutralText(R.string.ask)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                        App.getInstance().getPreferences()
-                                .edit().putString(preferenceKey, selectedAction).apply();
+                .onPositive((dialog, which) -> {
+                    App.getInstance().getPreferences()
+                            .edit().putString(preferenceKey, selectedAction).apply();
 
-                        showTopicAction.run();
-                    }
+                    showTopicAction.run();
                 })
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                        showTopicAction.run();
-                    }
-                })
-                .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                        App.getInstance().getPreferences()
-                                .edit().putString(preferenceKey, null).apply();
+                .onNegative((dialog, which) -> showTopicAction.run())
+                .onNeutral((dialog, which) -> {
+                    App.getInstance().getPreferences()
+                            .edit().putString(preferenceKey, null).apply();
 
-                        showTopicAction.run();
-                    }
+                    showTopicAction.run();
                 })
                 .show();
     }
@@ -102,38 +91,25 @@ public class ActionSelectDialogFragment {
                 .alwaysCallSingleChoiceCallback()
                 .positiveText(R.string.always)
                 .neutralText(R.string.only_now)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                        final CharSequence newValue = values[selectedValue[0]];
-                        App.getInstance().getPreferences()
-                                .edit()
-                                .putString(preferenceKey, newValue.toString())
-                                .apply();
+                .onPositive((dialog, which) -> {
+                    final CharSequence newValue = values[selectedValue[0]];
+                    App.getInstance().getPreferences()
+                            .edit()
+                            .putString(preferenceKey, newValue.toString())
+                            .apply();
 
-                        if (!TextUtils.isEmpty(hintForChangeDefault))
-                            new MaterialDialog.Builder(context)
-                                    .title(R.string.hint)
-                                    .content(hintForChangeDefault)
-                                    .cancelable(false)
-                                    .positiveText(R.string.ok)
-                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                        @Override
-                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                            okListener.execute(newValue);
-                                        }
-                                    })
-                                    .show();
-                        else
-                            okListener.execute(newValue);
-                    }
+                    if (!TextUtils.isEmpty(hintForChangeDefault))
+                        new MaterialDialog.Builder(context)
+                                .title(R.string.hint)
+                                .content(hintForChangeDefault)
+                                .cancelable(false)
+                                .positiveText(R.string.ok)
+                                .onPositive((dialog1, which1) -> okListener.execute(newValue))
+                                .show();
+                    else
+                        okListener.execute(newValue);
                 })
-                .onNeutral(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                        okListener.execute(values[selectedValue[0]]);
-                    }
-                })
+                .onNeutral((dialog, which) -> okListener.execute(values[selectedValue[0]]))
                 .show();
     }
 }

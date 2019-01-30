@@ -345,21 +345,18 @@ public class CuratorFragment extends WebViewFragment {
                         .customView(view, true)
                         .positiveText(R.string.perform)
                         .negativeText(R.string.cancel)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog dialog, DialogAction which) {
-                                switch (group.getCheckedRadioButtonId()) {
-                                    case R.id.radioButton:
-                                        postact = "del";
-                                        break;
-                                    case R.id.radioButton2:
-                                        postact = "mov";
-                                        postarg = editText.getText().toString();
-                                        break;
-                                }
-                                new PostTask().execute();
-
+                        .onPositive((dialog, which) -> {
+                            switch (group.getCheckedRadioButtonId()) {
+                                case R.id.radioButton:
+                                    postact = "del";
+                                    break;
+                                case R.id.radioButton2:
+                                    postact = "mov";
+                                    postarg = editText.getText().toString();
+                                    break;
                             }
+                            new PostTask().execute();
+
                         })
                         .show();
             }

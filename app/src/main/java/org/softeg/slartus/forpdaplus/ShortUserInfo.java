@@ -90,12 +90,9 @@ public class ShortUserInfo {
                         .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE)
                         .positiveText(R.string.open)
                         .negativeText(R.string.cancel)
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(MaterialDialog dialog, DialogAction which) {
-                                if (!IntentActivity.tryShowUrl((MainActivity) getContext(), ((MainActivity) getContext()).getHandler(), dialog.getInputEditText().getText() + "", false, false)) {
-                                    Toast.makeText(getContext(), R.string.links_not_supported, Toast.LENGTH_SHORT).show();
-                                }
+                        .onPositive((dialog, which) -> {
+                            if (!IntentActivity.tryShowUrl((MainActivity) getContext(), ((MainActivity) getContext()).getHandler(), dialog.getInputEditText().getText() + "", false, false)) {
+                                Toast.makeText(getContext(), R.string.links_not_supported, Toast.LENGTH_SHORT).show();
                             }
                         })
                         .show();

@@ -316,18 +316,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
                 .customView(v, true)
                 .positiveText(R.string.ok)
                 .negativeText(R.string.cancel)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                        Preferences.setFontSize(Prefix(), seekBar.getProgress() + 1);
-                    }
-                })
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(MaterialDialog dialog, DialogAction which) {
-                        getWebView().getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
-                    }
-                })
+                .onPositive((dialog1, which) -> Preferences.setFontSize(Prefix(), seekBar.getProgress() + 1))
+                .onNegative((dialog12, which) -> getWebView().getSettings().setDefaultFontSize(Preferences.Topic.getFontSize()))
                 .show();
         dialog.setActionButton(DialogAction.NEUTRAL, R.string.reset);
         View neutral = dialog.getActionButton(DialogAction.NEUTRAL);

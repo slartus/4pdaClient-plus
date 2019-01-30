@@ -44,7 +44,7 @@ public final class AppLog {
         android.util.Log.e(TAG, ex.toString());
         try {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-        } catch (Throwable ignoredEx) {
+        } catch (Throwable ignored) {
 
         }
     }
@@ -61,6 +61,7 @@ public final class AppLog {
         if (ex.getClass() == ShowInBrowserException.class) {
             ShowInBrowserDialog.showDialog(context, (ShowInBrowserException) ex);
         } else if (ex instanceof NotReportException) {
+            assert context != null;
             new MaterialDialog.Builder(context)
                     .title(R.string.error)
                     .content(message)
@@ -68,6 +69,7 @@ public final class AppLog {
                     .show();
         } else if (ex.getClass() == MessageInfoException.class) {
             MessageInfoException messageInfoException = (MessageInfoException) ex;
+            assert context != null;
             new MaterialDialog.Builder(context)
                     .title(messageInfoException.Title)
                     .content(messageInfoException.Text)
@@ -79,7 +81,7 @@ public final class AppLog {
         }
     }
 
-    public static boolean tryShowNetException(Context context, Throwable ex, final Runnable netExceptionAction) {
+    private static boolean tryShowNetException(Context context, Throwable ex, final Runnable netExceptionAction) {
         try {
 
             String message = getLocalizedMessage(ex, null);
@@ -93,12 +95,9 @@ public final class AppLog {
 
             if (netExceptionAction != null) {
                 builder.negativeText(R.string.repeat)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
-                        netExceptionAction.run();
-                    }
-                });
+                        .onNegative((dialog, which) ->
+                                netExceptionAction.run());
+
             }
             builder.show();
             return true;
@@ -137,6 +136,7 @@ public final class AppLog {
 
         if (ex == null) return false;
         Class clazz = ex.getClass();
+        //noinspection ConstantConditions
         return clazz == java.net.UnknownHostException.class ||
                 clazz == HttpHostConnectException.class ||
                 clazz == ClientProtocolException.class ||
@@ -157,7 +157,7 @@ public final class AppLog {
                 (!isCause && isTimeOutException(ex.getCause(), true));
     }
 
-    public static void i(Context mContext, Throwable ex) {
+    public static void i(@SuppressWarnings("unused") Context mContext, Throwable ex) {
         Log.i(TAG, ex.toString());
     }
 
@@ -171,9 +171,7 @@ public final class AppLog {
                 .getStackTrace();
         boolean found = false;
 
-        for (int i = 0; i < traces.length; i++) {
-            StackTraceElement trace = traces[i];
-
+        for (StackTraceElement trace : traces) {
             try {
                 if (found) {
                     if (!trace.getClassName().startsWith(className)) {
@@ -184,9 +182,8 @@ public final class AppLog {
                     }
                 } else if (trace.getClassName().startsWith(className)) {
                     found = true;
-                    continue;
                 }
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException ignored) {
             }
         }
 
