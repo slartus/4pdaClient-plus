@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 26
@@ -34,4 +36,8 @@ dependencies {
     api project(':forpdacommon')
     api project(':sqliteannotations')
     api 'org.jsoup:jsoup:1.11.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

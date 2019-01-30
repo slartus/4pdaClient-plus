@@ -1,8 +1,11 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 //apply plugin: 'me.tatarka.retrolambda'
 
 repositories {
     maven { url "https://jitpack.io" }
+    mavenCentral()
 }
 
 android {
@@ -130,4 +133,5 @@ dependencies {
     api 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     api 'com.github.armcha:Vertical-Intro:2.0.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

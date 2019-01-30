@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 26
@@ -38,4 +40,8 @@ dependencies {
     }
 //    compile 'org.apache.httpcomponents:httpcore:4.3.3'
     api 'org.apache.httpcomponents:httpclient-android:4.3.5'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
