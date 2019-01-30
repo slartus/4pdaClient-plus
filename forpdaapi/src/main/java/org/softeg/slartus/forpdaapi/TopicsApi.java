@@ -175,64 +175,45 @@ public class TopicsApi {
             Pattern lastPageStartPattern = Pattern.compile("<a href=\"(http://4pda.ru)?/forum/index.php\\?showforum=\\d[^\"]*?st=(\\d+)",
                     Pattern.CASE_INSENSITIVE);
 
-            Pattern themesPattern = Pattern.compile("<div class=\"topic_title\">.*?<a href=\"[^\"]*?/forum/index.php\\?showtopic=(\\d+)\">([^<]*)</a>.*?</div><div class=\"topic_body\">(?:<span class=\"topic_desc\">([^<]*)<br /></span>|)<span class=\"topic_desc\">автор: <a href=\"[^\"]*?/forum/index.php\\?showuser=\\d+\">[^<]*</a></span><br />(<a href=\"[^\"]*?/forum/index.php\\?showtopic=\\d+&amp;view=getnewpost\">Новые</a>)?\\s*<a href=\"[^\"]*?/forum/index.php\\?showtopic=\\d+&amp;view=getlastpost\">Послед.:</a> <a href=\"[^\"]*?/forum/index.php\\?showuser=(\\d+)\">([^<]*)</a>(.*?)<.*?/div>", Pattern.CASE_INSENSITIVE);
-
             String today = Functions.getToday();
             String yesterday = Functions.getYesterToday();
             Pattern idPattern = Pattern.compile("showtopic=(\\d+)", Pattern.CASE_INSENSITIVE);
-            Pattern forumIdPattern = Pattern.compile("showforum=(\\d+)", Pattern.CASE_INSENSITIVE);
+
             Document doc = Jsoup.parse(pageBody);
             Elements trElements = doc.select("table:has(th:contains(Название темы)) tr");
+            int sortOrder = 1000 + start + 1;
             for (Element trElement : trElements) {
-                if (trElement.children().size() < 3)
+                if (trElement.children().size() < 7)
                     continue;
                 Element tdElement = trElement.child(2);
-                Element el = tdElement.select("a[href~=showtopic]").last();
+                Element el = tdElement.select("a[id~=tid-link]").last();
                 if (el == null)
                     continue;
                 Matcher m = idPattern.matcher(el.attr("href"));
                 if (!m.find())
                     continue;
                 Topic theme = new Topic(m.group(1), el.text());
-                el = tdElement.select("span.desc").first();
+                el = tdElement.select("span[id~=tid-desc]").first();
                 if (el != null)
                     theme.setDescription(el.text());
                 theme.setIsNew(tdElement.select("a[href*=view=getnewpost]").first() != null);
 
-                tdElement = trElement.child(3);
-                el = tdElement.select("a[href~=showforum=\\d+]").first();
-                if (el != null) {
-                    m = forumIdPattern.matcher(el.attr("href"));
-                    if (m.find())
-                        theme.setForumId(m.group(1));
-                }
+                theme.setForumId(forumId);
 
-                tdElement = trElement.child(7);
-                el = tdElement.select("span.desc]").first();
+
+                el = trElement.select("span.lastaction").first();
                 if (el != null) {
                     theme.setLastMessageDate(Functions.parseForumDateTime(el.ownText(), today, yesterday));
                 }
-                el = tdElement.select("span.desc>b>a[href~=showuser=\\D+]").first();
+                el = trElement.select("span.lastaction a[href*=showuser=]").first();
                 if (el != null) {
                     theme.setLastMessageAuthor(el.text());
                 }
-            }
-
-
-            Matcher m = themesPattern.matcher(pageBody);
-            int sortOrder = 1000 + start + 1;
-            while (m.find()) {
-                Topic theme = new Topic(m.group(1), m.group(2));
-                theme.setDescription(m.group(3) == null ? "" : m.group(3));
-                // theme.setLastMessageAuthorId(m.group(5));
-                theme.setLastMessageAuthor(m.group(6));
-                theme.setIsNew(m.group(4) != null);
-                theme.setLastMessageDate(Functions.parseForumDateTime(m.group(7), today, yesterday));
-                theme.setForumId(forumId);
                 theme.setSortOrder(Integer.toString(sortOrder++));
                 res.add(theme);
             }
-            m = lastPageStartPattern.matcher(pageBody);
+
+            Matcher m = lastPageStartPattern.matcher(pageBody);
             while (m.find()) {
                 listInfo.setOutCount(Math.max(Integer.parseInt(m.group(2)), listInfo.getFrom()));
             }

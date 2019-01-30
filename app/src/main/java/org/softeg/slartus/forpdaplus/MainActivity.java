@@ -43,7 +43,7 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
-import org.softeg.slartus.forpdaplus.activity.NewVersionApp;
+
 import org.softeg.slartus.forpdaplus.activity.NewYear;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
@@ -654,12 +654,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         m_ExitWarned = false;
         onStart();
 
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-                && !Preferences.isNewForPdaShow()
-                && Client.getInstance().isUserLogin()) {
-            NewVersionApp.startActivity(this);
-        }
     }
 
     @Override
