@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -68,9 +67,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     @Override
     public void saveCache() throws Exception {
         CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
-        SQLiteDatabase db = null;
-        try {
-            db = cacheDbHelper.getWritableDatabase();
+        try (SQLiteDatabase db = cacheDbHelper.getWritableDatabase()) {
             BaseDao<Topic> baseDao = new BaseDao<>(App.getContext(), db, getListName(), Topic.class);
             baseDao.createTable(db);
             for (IListItem item : mData) {
@@ -78,9 +75,6 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                 baseDao.insert(topic);
             }
 
-        } finally {
-            if (db != null)
-                db.close();
         }
     }
 
@@ -89,15 +83,10 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
         clearNotification(2);
         mCacheList.clear();
         CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
-        SQLiteDatabase db = null;
-        try {
-            db = cacheDbHelper.getReadableDatabase();
+        try (SQLiteDatabase db = cacheDbHelper.getReadableDatabase()) {
             BaseDao<Topic> baseDao = new BaseDao<>(App.getContext(), db, getListName(), Topic.class);
             if (baseDao.isTableExists())
                 mCacheList.addAll(baseDao.getAll());
-        } finally {
-            if (db != null)
-                db.close();
         }
         sort();
     }
@@ -159,51 +148,18 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
             final List<MenuListDialog> list = new ArrayList<>();
 
-            list.add(new MenuListDialog(getContext().getString(R.string.navigate_getfirstpost), new Runnable() {
-                @Override
-                public void run() {
-                    showSaveNavigateActionDialog(topic, Topic.NAVIGATE_VIEW_FIRST_POST, "");
-                }
+            list.add(new MenuListDialog(getContext().getString(R.string.navigate_getfirstpost), () -> showSaveNavigateActionDialog(topic, Topic.NAVIGATE_VIEW_FIRST_POST, "")));
+            list.add(new MenuListDialog(getContext().getString(R.string.navigate_getlastpost), () -> showSaveNavigateActionDialog(topic, Topic.NAVIGATE_VIEW_LAST_POST, "view=getlastpost")));
+            list.add(new MenuListDialog(getContext().getString(R.string.navigate_getnewpost), () -> showSaveNavigateActionDialog(topic, Topic.NAVIGATE_VIEW_NEW_POST, "view=getnewpost")));
+            list.add(new MenuListDialog(getContext().getString(R.string.navigate_last_url), () -> showSaveNavigateActionDialog(topic, Topic.NAVIGATE_VIEW_LAST_URL,
+                    TopicUtils.getUrlArgs(topic.getId(), Topic.NAVIGATE_VIEW_LAST_URL.toString(), ""))));
+            list.add(new MenuListDialog(getContext().getString(R.string.NotesByTopic), () -> {
+                Bundle args = new Bundle();
+                args.putString(NotesListFragment.TOPIC_ID_KEY, topic.getId().toString());
+                MainActivity.showListFragment(topic.getId().toString(), new NotesBrickInfo().getName(), args);
             }));
-            list.add(new MenuListDialog(getContext().getString(R.string.navigate_getlastpost), new Runnable() {
-                @Override
-                public void run() {
-                    showSaveNavigateActionDialog(topic, Topic.NAVIGATE_VIEW_LAST_POST, "view=getlastpost");
-                }
-            }));
-            list.add(new MenuListDialog(getContext().getString(R.string.navigate_getnewpost), new Runnable() {
-                @Override
-                public void run() {
-                    showSaveNavigateActionDialog(topic, Topic.NAVIGATE_VIEW_NEW_POST, "view=getnewpost");
-                }
-            }));
-            list.add(new MenuListDialog(getContext().getString(R.string.navigate_last_url), new Runnable() {
-                @Override
-                public void run() {
-                    showSaveNavigateActionDialog(topic, Topic.NAVIGATE_VIEW_LAST_URL,
-                            TopicUtils.getUrlArgs(topic.getId(), Topic.NAVIGATE_VIEW_LAST_URL.toString(), ""));
-                }
-            }));
-            list.add(new MenuListDialog(getContext().getString(R.string.NotesByTopic), new Runnable() {
-                @Override
-                public void run() {
-                    Bundle args = new Bundle();
-                    args.putString(NotesListFragment.TOPIC_ID_KEY, topic.getId().toString());
-                    MainActivity.showListFragment(topic.getId().toString(), new NotesBrickInfo().getName(), args);
-                }
-            }));
-            list.add(new MenuListDialog(getString(R.string.link), new Runnable() {
-                @Override
-                public void run() {
-                    showLinkMenu(getContext(), topic);
-                }
-            }));
-            list.add(new MenuListDialog(getString(R.string.options), new Runnable() {
-                @Override
-                public void run() {
-                    showOptionsMenu(getContext(), mHandler, topic, null);
-                }
-            }));
+            list.add(new MenuListDialog(getString(R.string.link), () -> showLinkMenu(getContext(), topic)));
+            list.add(new MenuListDialog(getString(R.string.options), () -> showOptionsMenu(getContext(), mHandler, topic, null)));
 
             ExtUrl.showContextDialog(getContext(), null, list);
         } catch (Exception ex) {
@@ -236,77 +192,56 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             Boolean isFavotitesList = FavoritesBrickInfo.NAME.equals(getListName());
             String title = isFavotitesList ? context.getString(R.string.change_subscription) : context.getString(R.string.add_to_favorite);
 
-            optionsMenu.add(new MenuListDialog(title, new Runnable() {
-                @Override
-                public void run() {
-                    TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, topic,
-                            new TopicListItemTask(context, (Topic) topic, mAdapter) {
-                                @Override
-                                public String doInBackground(Topic topic, String... pars) throws Throwable {
-                                    return TopicApi.changeFavorite(Client.getInstance(), topic.getId(), pars[0]);
-                                }
+            optionsMenu.add(new MenuListDialog(title, () -> TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, topic,
+                    new TopicListItemTask(context, (Topic) topic, mAdapter) {
+                        @Override
+                        public String doInBackground(Topic topic1, String... pars) throws Throwable {
+                            return TopicApi.changeFavorite(Client.getInstance(), topic1.getId(), pars[0]);
+                        }
 
-                                @Override
-                                public void onPostExecute(Topic topic) {
+                        @Override
+                        public void onPostExecute(Topic topic1) {
 
-                                }
-                            }
-                    );
-                }
-            }));
+                        }
+                    }
+            )));
 
             if (isFavotitesList) {
-                optionsMenu.add(new MenuListDialog(context.getString(R.string.DeleteFromFavorites), new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, R.string.request_sent, Toast.LENGTH_SHORT).show();
-                        new TopicListItemTask(context, (Topic) topic, mAdapter) {
-                            @Override
-                            public String doInBackground(Topic topic, String... pars) throws ParseException, IOException, URISyntaxException {
-                                return TopicApi.deleteFromFavorites(Client.getInstance(), topic.getId());
-                            }
+                optionsMenu.add(new MenuListDialog(context.getString(R.string.DeleteFromFavorites), () -> {
+                    Toast.makeText(context, R.string.request_sent, Toast.LENGTH_SHORT).show();
+                    new TopicListItemTask(context, (Topic) topic, mAdapter) {
+                        @Override
+                        public String doInBackground(Topic topic12, String... pars) throws ParseException, IOException, URISyntaxException {
+                            return TopicApi.deleteFromFavorites(Client.getInstance(), topic12.getId());
+                        }
 
-                            @Override
-                            public void onPostExecute(Topic topic) {
-                                mData.remove(topic);
-                            }
-                        }.execute();
-                    }
+                        @Override
+                        public void onPostExecute(Topic topic12) {
+                            mData.remove(topic12);
+                        }
+                    }.execute();
                 }));
 
                 final FavTopic favTopic = (FavTopic) topic;
-                optionsMenu.add(new MenuListDialog((favTopic.isPinned()?context.getString(R.string.unpin):context.getString(R.string.pin))+context.getString(R.string.in_favorites_combined), new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, R.string.request_sent, Toast.LENGTH_SHORT).show();
-                        new TopicListItemTask(context, topic, mAdapter) {
-                            @Override
-                            public String doInBackground(Topic topic, String... pars)
-                                    throws ParseException, IOException, URISyntaxException {
-                                return TopicApi.pinFavorite(Client.getInstance(), topic.getId(), favTopic.isPinned()?TopicApi.TRACK_TYPE_UNPIN:TopicApi.TRACK_TYPE_PIN);
-                            }
+                optionsMenu.add(new MenuListDialog((favTopic.isPinned()?context.getString(R.string.unpin):context.getString(R.string.pin))+context.getString(R.string.in_favorites_combined), () -> {
+                    Toast.makeText(context, R.string.request_sent, Toast.LENGTH_SHORT).show();
+                    new TopicListItemTask(context, topic, mAdapter) {
+                        @Override
+                        public String doInBackground(Topic topic13, String... pars)
+                                throws ParseException, IOException, URISyntaxException {
+                            return TopicApi.pinFavorite(Client.getInstance(), topic13.getId(), favTopic.isPinned()?TopicApi.TRACK_TYPE_UNPIN:TopicApi.TRACK_TYPE_PIN);
+                        }
 
-                            @Override
-                            public void onPostExecute(Topic topic) {
-                                ((FavTopic) topic).setPinned(!favTopic.isPinned());
-                            }
-                        }.execute();
-                    }
+                        @Override
+                        public void onPostExecute(Topic topic13) {
+                            ((FavTopic) topic13).setPinned(!favTopic.isPinned());
+                        }
+                    }.execute();
                 }));
             }
-            optionsMenu.add(new MenuListDialog(context.getString(R.string.OpenTopicForum), new Runnable() {
-                @Override
-                public void run() {
-                    ForumFragment.showActivity(context, topic.getForumId(), topic.getId());
-                }
-            }));
+            optionsMenu.add(new MenuListDialog(context.getString(R.string.OpenTopicForum), () -> ForumFragment.showActivity(context, topic.getForumId(), topic.getId())));
         }
-        optionsMenu.add(new MenuListDialog(getString(R.string.attachments), new Runnable() {
-            @Override
-            public void run() {
-                TopicAttachmentListFragment.showActivity(context, listItem.getId());
-            }
-        }));
+        optionsMenu.add(new MenuListDialog(getString(R.string.attachments), () -> TopicAttachmentListFragment.showActivity(context, listItem.getId())));
     }
 
     private void showTopicActivity(IListItem topic, String args) {
@@ -319,12 +254,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
         ActionSelectDialogFragment.showSaveNavigateActionDialog(getContext(),
                 String.format("%s.navigate_action", getListName()),
                 selectedAction.toString(),
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        showTopicActivity(topic, params);
-                    }
-                }
+                () -> showTopicActivity(topic, params)
         );
     }
 
@@ -360,17 +290,15 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             if (TextUtils.isEmpty(topic.getId())) return;
             if (tryCreatePost(topic))
                 return;
+            if(!Client.getInstance().isUserLogin()){
+                Toast.makeText(getContext(),"Залогиньтесь для просмотра тем форума!",Toast.LENGTH_LONG).show();
+            }
             ActionSelectDialogFragment.execute(getActivity(),
                     getString(R.string.default_action),
                     String.format("%s.navigate_action", getListName()),
                     new CharSequence[]{getString(R.string.navigate_getfirstpost), getString(R.string.navigate_getlastpost), getString(R.string.navigate_getnewpost), getString(R.string.navigate_last_url)},
                     new CharSequence[]{Topic.NAVIGATE_VIEW_FIRST_POST, Topic.NAVIGATE_VIEW_LAST_POST, Topic.NAVIGATE_VIEW_NEW_POST, Topic.NAVIGATE_VIEW_LAST_URL},
-                    new ActionSelectDialogFragment.OkListener() {
-                        @Override
-                        public void execute(CharSequence value) {
-                            showTopicActivity(topic, TopicUtils.getUrlArgs(topic.getId(), value.toString(), Topic.NAVIGATE_VIEW_FIRST_POST.toString()));
-                        }
-                    }, getString(R.string.default_action_notify)
+                    value -> showTopicActivity(topic, TopicUtils.getUrlArgs(topic.getId(), value.toString(), Topic.NAVIGATE_VIEW_FIRST_POST.toString())), getString(R.string.default_action_notify)
             );
 
 
@@ -401,35 +329,32 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     }
 
     private Comparator<? super IListItem> getComparator() {
-        return new Comparator<IListItem>() {
-            @Override
-            public int compare(IListItem listItem1, IListItem listItem2) {
-                if (!(listItem1 instanceof Topic))
-                    return 0;
-                int i;
-                switch (Preferences.List.getListSort(getListName(), Preferences.List.defaultListSort())) {
-                    case "sortorder.desc":
-                        return compareBySortOrder((Topic) listItem1, (Topic) listItem2, -1);
-                    case "sortorder.asc":
-                        return compareBySortOrder((Topic) listItem1, (Topic) listItem2, 1);
-                    case "date.desc":
-                        return compareByDate((Topic) listItem1, (Topic) listItem2, -1);
-                    case "date_and_new.desc":
-                        i = compareByNew((Topic) listItem1, (Topic) listItem2, -1);
-                        return i == 0 ? compareByDate((Topic) listItem1, (Topic) listItem2, -1) : i;
-                    case "title.desc":
-                        return compareByTitle((Topic) listItem1, (Topic) listItem2, -1);
-                    case "date.asc":
-                        return compareByDate((Topic) listItem1, (Topic) listItem2, 1);
-                    case "date_and_new.asc":
-                        i = compareByNew((Topic) listItem1, (Topic) listItem2, 1);
-                        return i == 0 ? compareByDate((Topic) listItem1, (Topic) listItem2, 1) : i;
-                    case "title.asc":
-                        return compareByTitle((Topic) listItem1, (Topic) listItem2, 1);
+        return (Comparator<IListItem>) (listItem1, listItem2) -> {
+            if (!(listItem1 instanceof Topic))
+                return 0;
+            int i;
+            switch (Preferences.List.getListSort(getListName(), Preferences.List.defaultListSort())) {
+                case "sortorder.desc":
+                    return compareBySortOrder((Topic) listItem1, (Topic) listItem2, -1);
+                case "sortorder.asc":
+                    return compareBySortOrder((Topic) listItem1, (Topic) listItem2, 1);
+                case "date.desc":
+                    return compareByDate((Topic) listItem1, (Topic) listItem2, -1);
+                case "date_and_new.desc":
+                    i = compareByNew((Topic) listItem1, (Topic) listItem2, -1);
+                    return i == 0 ? compareByDate((Topic) listItem1, (Topic) listItem2, -1) : i;
+                case "title.desc":
+                    return compareByTitle((Topic) listItem1, (Topic) listItem2, -1);
+                case "date.asc":
+                    return compareByDate((Topic) listItem1, (Topic) listItem2, 1);
+                case "date_and_new.asc":
+                    i = compareByNew((Topic) listItem1, (Topic) listItem2, 1);
+                    return i == 0 ? compareByDate((Topic) listItem1, (Topic) listItem2, 1) : i;
+                case "title.asc":
+                    return compareByTitle((Topic) listItem1, (Topic) listItem2, 1);
 
-                    default:
-                        return compareByDate((Topic) listItem1, (Topic) listItem2, -1);
-                }
+                default:
+                    return compareByDate((Topic) listItem1, (Topic) listItem2, -1);
             }
         };
     }
@@ -484,12 +409,9 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
         super.onCreateOptionsMenu(menu, inflater);
         menu.add(0,settingItemId,0, R.string.list_settings)
                 .setIcon(R.drawable.settings_white)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        showSettings();
-                        return true;
-                    }
+                .setOnMenuItemClickListener(menuItem -> {
+                    showSettings();
+                    return true;
                 }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
 

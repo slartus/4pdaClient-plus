@@ -29,7 +29,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,7 +42,6 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
-
 import org.softeg.slartus.forpdaplus.activity.NewYear;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
@@ -67,7 +65,6 @@ import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -409,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     @Override
     protected void onNewIntent(Intent intent) {
-        Log.d("kek", "onnewintent " + intent);
+
         if (intent.getStringExtra("template") != null) {
             if (intent.getStringExtra("template").equals(DownloadFragment.TEMPLATE)) {
                 DownloadFragment.newInstance();
@@ -441,7 +438,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         if (intent.getData() != null) {
 
             final String url = intent.getData().toString();
-            Log.d("SUKA", "URL "+url);
+
             if (IntentActivity.tryShowUrl(this, mHandler, url, false, true)) {
                 return true;
             }
@@ -577,11 +574,11 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     }
 
     public static void log(String s) {
-        Log.e("My log", s + "       ///////// INFO CURRENT TAG: " + App.getInstance().getCurrentFragmentTag());
+        //Log.d("My log", s + "       ///////// INFO CURRENT TAG: " + App.getInstance().getCurrentFragmentTag());
     }
 
     public static void tabLog(String s) {
-        Log.e("TabLog", s + "\t\t[Current Tag: " + App.getInstance().getCurrentFragmentTag() + "]");
+        //Log.d("TabLog", s + "\t\t[Current Tag: " + App.getInstance().getCurrentFragmentTag() + "]");
     }
 
     @Override

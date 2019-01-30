@@ -482,7 +482,6 @@ public class ForumFragment extends GeneralFragment implements LoaderManager.Load
             args.putString(ForumFragment.FORUM_ID_KEY, forumId);
         if (!TextUtils.isEmpty(topicId))
             args.putString(TopicsListFragment.KEY_TOPIC_ID, topicId);
-        Log.e("kek", forumId+" : "+topicId);
         MainActivity.showListFragment(forumId+topicId, new ForumBrickInfo().getName(), args);
     }
 

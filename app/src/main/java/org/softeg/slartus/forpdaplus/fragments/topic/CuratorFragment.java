@@ -315,8 +315,6 @@ public class CuratorFragment extends WebViewFragment {
             public void run() {
                 CuratorFragment.this.ids = ids;
                 String[] idsArray = ids.split(",");
-                Log.e("kek", idsArray.length+" length");
-                Log.e("kek", "'"+idsArray[0]+"'");
                 if (TextUtils.isEmpty(idsArray[0])) {
                     Toast.makeText(getContext(), R.string.no_selected_posts, Toast.LENGTH_SHORT).show();
                     return;

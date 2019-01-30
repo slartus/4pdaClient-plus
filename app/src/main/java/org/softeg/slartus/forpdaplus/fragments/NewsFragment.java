@@ -163,7 +163,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        Log.d("kek", "logined" + Client.getInstance().getLogined());
+
         if (!App.getInstance().getPreferences().getBoolean("pancilInActionBar", false)) {
             fab.setOnClickListener(view -> {
                 if (Client.getInstance().getLogined())
@@ -550,7 +550,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             try {
                 if (isCancelled()) return false;
                 Client client = Client.getInstance();
-                Log.e("kek", "\"" + m_NewsUrl + "\"");
+
                 if (TextUtils.isEmpty(Comment))
                     m_ThemeBody = transformBody(client.performGet(m_NewsUrl));
                 else {

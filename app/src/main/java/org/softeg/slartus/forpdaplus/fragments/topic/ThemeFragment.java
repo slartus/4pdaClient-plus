@@ -1292,9 +1292,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            if (newProgress >= 10 && m_ScrollElement != null && m_ScrollY == 0)
+            if (newProgress >= 10 && m_ScrollElement != null && m_ScrollY == 0);
                 //tryScrollToElement();
-            Log.e("kekp", newProgress + " %");
         }
     }
 
@@ -1574,7 +1573,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         ((TopicsListFragment) fragment).topicAfterClick(getTopic().getId());
                 }
             }
-            Log.e("kek", webView.getSettings().getLoadsImagesAutomatically() + " loadimages");
 
             m_ScrollY = scrollY;
             if (m_Topic != null)

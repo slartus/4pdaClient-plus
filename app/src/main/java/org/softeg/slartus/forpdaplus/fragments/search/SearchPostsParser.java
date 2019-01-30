@@ -47,7 +47,6 @@ public class SearchPostsParser extends HtmlBuilder {
 
         String userId, userName, user, dateTime, userState;
 
-        Log.e("kek", "start matcher");
         Matcher matcher = Pattern.compile("<div class=\"cat_name\" style=\"margin-bottom:0\">([\\s\\S]*?)<\\/div>[\\s\\S]*?post_date\">([^\\|&]*)[\\s\\S]*?<font color=\"([^\"]*?)\"[\\s\\S]*?showuser=(\\d+)\"[^>]*?>([\\s\\S]*?)(?:<i[\\s\\S]*?\\/i>)?<\\/a>[\\s\\S]*?<div class=\"post_body[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div class=\"cat_name\"|<div><div class=\"pagination\">)").matcher(body);
         while (matcher.find()) {
             m_Body.append("<div class=\"post_container\">");
@@ -72,7 +71,6 @@ public class SearchPostsParser extends HtmlBuilder {
             m_Body.append("</div>").append("</div><div class=\"between_messages\"></div>");
             posts++;
         }
-        Log.e("kek", "start matcher");
         if (posts == 0) {
             m_Body.append("<div class=\"bad-search-result\">\n" +
                     "\t<h3>Поиск не дал результатов</h3>\n" +

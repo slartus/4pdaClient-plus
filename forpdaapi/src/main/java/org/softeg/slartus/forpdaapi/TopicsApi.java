@@ -163,7 +163,7 @@ public class TopicsApi {
                                                   Boolean unreadInTop,
                                                   ListInfo listInfo) throws IOException {
 
-        String pageBody = client.performGet(url);
+        String pageBody = client.performGetFullVersion(url);
 
         ArrayList<Topic> res = new ArrayList<>();
 
@@ -183,7 +183,7 @@ public class TopicsApi {
             Elements trElements = doc.select("table:has(th:contains(Название темы)) tr");
             int sortOrder = 1000 + start + 1;
             for (Element trElement : trElements) {
-                if (trElement.children().size() < 7)
+                if (trElement.children().size() < 3)
                     continue;
                 Element tdElement = trElement.child(2);
                 Element el = tdElement.select("a[id~=tid-link]").last();

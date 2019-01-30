@@ -126,7 +126,7 @@ public class SpecialView extends WebViewFragment {
         protected Boolean doInBackground(String... forums) {
             try {
                 if (isCancelled()) return false;
-                Log.d("kek", m_Url+" : "+m_Title);
+
                 m_ThemeBody = Client.getInstance().performGet(m_Url);
 
                 Matcher matcher = PatternExtensions.compile("<title>([\\S\\s]*?)</title>").matcher(m_ThemeBody);

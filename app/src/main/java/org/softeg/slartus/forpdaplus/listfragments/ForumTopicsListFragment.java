@@ -27,7 +27,6 @@ import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,10 +101,10 @@ public class ForumTopicsListFragment extends TopicsListFragment {
     private String mUrl = null;
 
     @Override
-    protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException, ParseException, URISyntaxException {
+    protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException, URISyntaxException {
         SharedPreferences prefs = App.getInstance().getPreferences();
         if (mUrl == null) {
-            List<NameValuePair> qparams = new ArrayList<NameValuePair>();
+            List<NameValuePair> qparams = new ArrayList<>();
             qparams.add(new BasicNameValuePair("showforum", getForumId()));
             qparams.add(new BasicNameValuePair("sort_key", prefs.getString(getListName() + ".sort_key", "last_post")));
             qparams.add(new BasicNameValuePair("sort_by", prefs.getString(getListName() + ".sort_by", "Z-A")));
@@ -151,15 +150,12 @@ public class ForumTopicsListFragment extends TopicsListFragment {
         menu.removeItem(settingItemId);
 
         menu.add(R.string.filter_and_ordering)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        Intent settingsActivity = new Intent(
-                                getContext(), ForumTopicsPreferencesActivity.class);
-                        settingsActivity.putExtra("listname", getListName());
-                        startActivityForResult(settingsActivity, FILTER_SORT_REQUEST);
-                        return true;
-                    }
+                .setOnMenuItemClickListener(menuItem -> {
+                    Intent settingsActivity = new Intent(
+                            getContext(), ForumTopicsPreferencesActivity.class);
+                    settingsActivity.putExtra("listname", getListName());
+                    startActivityForResult(settingsActivity, FILTER_SORT_REQUEST);
+                    return true;
                 }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
 }

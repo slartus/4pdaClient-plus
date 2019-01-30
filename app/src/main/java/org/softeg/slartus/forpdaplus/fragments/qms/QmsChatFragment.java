@@ -447,7 +447,7 @@ public class QmsChatFragment extends WebViewFragment {
 
     @JavascriptInterface
     public void stopDeleteModeJs() {
-        Log.d("kek", "STOP");
+
         if (!DeleteMode)
             return;
         getMainActivity().runOnUiThread(() -> stopDeleteMode(true));
