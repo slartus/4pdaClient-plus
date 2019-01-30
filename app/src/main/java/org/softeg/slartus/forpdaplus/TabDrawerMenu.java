@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Process;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,7 +23,6 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
@@ -37,11 +37,8 @@ public class TabDrawerMenu {
     private RelativeLayout mDrawer;
     private Activity mActivity;
     private SelectItemListener mSelectItemListener;
-    private Resources resources;
-    private android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
     public static TabAdapter adapter;
     private ListView mListView;
-    private Button closeAll;
     private Handler handler = new Handler();
 
 
@@ -49,8 +46,8 @@ public class TabDrawerMenu {
         void selectTab(TabItem tabItem);
     }
 
-    public TabDrawerMenu(Activity activity, SelectItemListener listener) {
-        resources = App.getInstance().getResources();
+    TabDrawerMenu(Activity activity, SelectItemListener listener) {
+        Resources resources = App.getInstance().getResources();
         DisplayMetrics displayMetrics = resources.getDisplayMetrics();
         float dpWidth = displayMetrics.widthPixels;
         if (dpWidth > displayMetrics.density * 400) {
@@ -60,25 +57,19 @@ public class TabDrawerMenu {
         mActivity = activity;
         mSelectItemListener = listener;
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        closeAll = (Button) findViewById(R.id.closeAll);
-        closeAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (App.getInstance().getTabItems().size() > 1)
-                    closeAllTabs();
-                else {
-                    closeDialog();
-                    toggleOpenState();
-                }
+        Button closeAll = (Button) findViewById(R.id.closeAll);
+        closeAll.setOnClickListener(v -> {
+            if (App.getInstance().getTabItems().size() > 1)
+                closeAllTabs();
+            else {
+                closeDialog();
+                toggleOpenState();
             }
         });
-        closeAll.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                toggleOpenState();
-                closeDialog();
-                return false;
-            }
+        closeAll.setOnLongClickListener(v -> {
+            toggleOpenState();
+            closeDialog();
+            return false;
         });
 
 
@@ -90,7 +81,7 @@ public class TabDrawerMenu {
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) mDrawer.getLayoutParams();
         params.width = (int) dpWidth;
         if ("right".equals(Preferences.System.getDrawerMenuPosition())) {
-            params.gravity = Gravity.LEFT;
+            params.gravity = Gravity.START;
             mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_start, GravityCompat.START);
         } else {
             mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow_end, GravityCompat.END);
@@ -101,32 +92,29 @@ public class TabDrawerMenu {
         mListView.setAdapter(adapter);
     }
 
-    public void closeAllTabs() {
+    private void closeAllTabs() {
         close();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                String lastBrick = Preferences.Lists.getLastSelectedList();
-                List<TabItem> itemsForClose = new ArrayList<>();
+        new Handler().postDelayed(() -> {
+            String lastBrick = Preferences.Lists.getLastSelectedList();
+            List<TabItem> itemsForClose = new ArrayList<>();
 
-                for (TabItem item : App.getInstance().getTabItems())
-                    if (!lastBrick.equals(item.getTag()))
-                        itemsForClose.add(item);
-                ((MainActivity) getContext()).removeTabs(itemsForClose);
-                App.getInstance().setCurrentFragmentTag(lastBrick);
-                if (!App.getInstance().isContainsByTag(lastBrick)) {
-                    ((MainActivity) getContext()).selectItem(ListCore.getRegisteredBrick(lastBrick));
-                } else {
-                    ((MainActivity) getContext()).selectTab(App.getInstance().getTabByTag(lastBrick));
-                }
-                refreshAdapter();
-                notifyDataSetChanged();
+            for (TabItem item : App.getInstance().getTabItems())
+                if (!lastBrick.equals(item.getTag()))
+                    itemsForClose.add(item);
+            ((MainActivity) getContext()).removeTabs(itemsForClose);
+            App.getInstance().setCurrentFragmentTag(lastBrick);
+            if (!App.getInstance().isContainsByTag(lastBrick)) {
+                ((MainActivity) getContext()).selectItem(ListCore.getRegisteredBrick(lastBrick));
+            } else {
+                ((MainActivity) getContext()).selectTab(App.getInstance().getTabByTag(lastBrick));
             }
+            refreshAdapter();
+            notifyDataSetChanged();
         }, 300);
 
     }
 
-    public void toggleOpenState() {
+    void toggleOpenState() {
         if (mDrawerLayout.isDrawerOpen(mDrawer)) {
             mDrawerLayout.closeDrawer(mDrawer);
         } else {
@@ -155,12 +143,12 @@ public class TabDrawerMenu {
         handler.postDelayed(notifyAdapter, 300);
     }
 
-    public void refreshAdapter() {
+    void refreshAdapter() {
         adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
         mListView.setAdapter(adapter);
     }
 
-    public void removeTab(String tag) {
+    void removeTab(String tag) {
         if (App.getInstance().getTabItems().size() <= 1) {
             ((MainActivity) getContext()).appExit();
             return;
@@ -191,11 +179,11 @@ public class TabDrawerMenu {
         mDrawerLayout.closeDrawer(mDrawer);
     }
 
-    public Boolean isOpen() {
+    Boolean isOpen() {
         return mDrawerLayout.isDrawerOpen(mDrawer);
     }
 
-    public void selectTab(TabItem tabItem) {
+    void selectTab(TabItem tabItem) {
         mSelectItemListener.selectTab(tabItem);
         notifyDataSetChanged();
         Log.e("kek", "select save");
@@ -216,16 +204,18 @@ public class TabDrawerMenu {
 
     public class TabAdapter extends ArrayAdapter {
         final LayoutInflater inflater;
-        List<TabItem> mObjects = null;
+        List<TabItem> mObjects;
 
-        public TabAdapter(Context context, int item_resource, List<TabItem> objects) {
+        TabAdapter(Context context, int item_resource, List<TabItem> objects) {
+            //noinspection unchecked
             super(context, item_resource, objects);
             mObjects = objects;
             inflater = LayoutInflater.from(context);
         }
 
+        @NonNull
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
             final ViewHolder holder;
 
             if (convertView == null) {
@@ -233,9 +223,9 @@ public class TabDrawerMenu {
                 holder = new ViewHolder();
                 assert convertView != null;
 
-                holder.text = (TextView) convertView.findViewById(R.id.text);
-                holder.close = (ImageView) convertView.findViewById(R.id.close);
-                holder.item = (RelativeLayout) convertView.findViewById(R.id.item);
+                holder.text = convertView.findViewById(R.id.text);
+                holder.close = convertView.findViewById(R.id.close);
+                holder.item = convertView.findViewById(R.id.item);
 
                 convertView.setTag(holder);
 
@@ -268,7 +258,7 @@ public class TabDrawerMenu {
     public class CloseClickListener implements View.OnClickListener {
         String tag;
 
-        public CloseClickListener(String tag) {
+        CloseClickListener(String tag) {
             this.tag = tag;
         }
 
