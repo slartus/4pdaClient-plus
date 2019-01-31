@@ -26,24 +26,24 @@
     <string name="Send">Send</string>
     <string name="Connecting">Connecting</string>
     <string name="Downloading">Downloading</string>
-    <string name="DownloadingComplete">Downloading Complete</string>
-    <string name="DownloadingCanceled">Downloading Canceled</string>
+    <string name="DownloadingComplete">Download Completed</string>
+    <string name="DownloadingCanceled">Download Canceled</string>
     <string name="UnknownError">UnknownErr</string>
     <string name="DownloadError">Download Error</string>
     <string name="Unknown">Unknown</string>
     <string name="InsertNick">Insert Nick</string>
-    <string name="MessagesQms">MessagesQms</string>
+    <string name="MessagesQms">QMS Messages</string>
     <string name="Profile">Profile</string>
-    <string name="FindUserTopics">Find User Topics</string>
-    <string name="FindUserPosts">Find User Posts</string>
-    <string name="FindUserPostsInTopic">Find User Posts In Topic</string>
-    <string name="SelectAnAction">Select a Action</string>
+    <string name="FindUserTopics">Find User\'s Topics</string>
+    <string name="FindUserPosts">Find User\'s Posts</string>
+    <string name="FindUserPostsInTopic">Find User\'s Posts In Topic</string>
+    <string name="SelectAnAction">Select an Action</string>
     <string name="OpenWith">Open With</string>
     <string name="NewDialog">New Dialog</string>
     <string name="AllDialogs">All Dialogs</string>
     <string name="Change">Change</string>
-    <string name="ChangeReputationRequest">Reputation request</string>
-    <string name="ChangeReputationError">Reputation error</string>
+    <string name="ChangeReputationRequest">Reputation request sent</string>
+    <string name="ChangeReputationError">Reputation changing error</string>
     <string name="Reputation">Reputation</string>
     <string name="Logout">Logout</string>
     <string name="Login">Login</string>
@@ -61,7 +61,7 @@
     <string name="DonatePurseCopied">Donate Purse Copied</string>
     <string name="ConfirmTheAction">Confirm</string>
     <string name="Delete">Delete</string>
-    <string name="SureDeleteFile">Confirm delete?</string>
+    <string name="SureDeleteFile">Confirm deletion?</string>
     <string name="CookiesFileNotFound">Cookies File Not Found</string>
     <string name="CookiesFileDeleted">Cookies File Deleted</string>
     <string name="FailedDeleteCookies">Failed Delete Cookies</string>
@@ -72,7 +72,7 @@
     <string name="RaiseReputation">Raise Reputation</string>
     <string name="FailedToCreateFolderInPath">Failed To Create Folder In Path</string>
     <string name="FailedToCreateFileInPath">Failed To Create File In Path</string>
-    <string name="AcceptStyle">AcceptStyle</string>
+    <string name="AcceptStyle">Apply style</string>
     <string name="ChooseStyle">Choose Style</string>
     <string name="Information">Information</string>
     <string name="StyleDoesNotContainDesc">Can\'t sort descending</string>
@@ -113,12 +113,12 @@
     <string name="crash_dialog_ok_toast">Thank you!</string>
 
     <!--Theme-->
-    <string name="theme">Theme</string>
-    <string name="entered_text">There are entered text messages! Close topic?</string>
+    <string name="theme">Topic</string>
+    <string name="entered_text">Text field is not empty! Close topic?</string>
     <string name="apply_yes">Yes</string>
     <string name="apply_no">No</string>
     <string name="forum_msg">Forum message</string>
-    <string name="who_read_topic">Who read the thread</string>
+    <string name="who_read_topic">Who is reading the topic</string>
     <string name="who_posted_msg">Who posted messages</string>
     <string name="link">Link</string>
     <string name="new_post">New post</string>
@@ -131,7 +131,7 @@
     <string name="show_avatars_a">Show avatars (%s)</string>
     <string name="hide_pencil">Hide pencil</string>
     <string name="hide_arrows">Hide arrows</string>
-    <string name="loading_img_for_session">Loading image (for session)</string>
+    <string name="loading_img_for_session">Loading images (for session)</string>
     <string name="font_size">Font size</string>
     <string name="theme_style">Theme style</string>
     <string name="multi_moderation">Multimoderation</string>
@@ -158,7 +158,7 @@
     <string name="no">No</string>
     <string name="ask">Ask</string>
     <string name="default_action">Default action</string>
-    <string name="assign_default">Assign a default?</string>
+    <string name="assign_default">Assign as default?</string>
     <string name="yes">Yes</string>
     <string name="only_now">Only now</string>
     <string name="hint">Hint</string>
@@ -166,8 +166,8 @@
     <string name="error">Error</string>
     <string name="check_connection">"Check the connection "</string>
     <string name="repeat">Repeat</string>
-    <string name="associate_with_theme">Associate with theme</string>
-    <string name="enter_url_theme">Enter theme URL</string>
+    <string name="associate_with_theme">Associate with topic</string>
+    <string name="enter_url_theme">Enter topic URL</string>
     <string name="empty_url">Empty URL!</string>
     <string name="incorrect_url">Incorrect URL!</string>
     <string name="refresh">Refresh</string>
@@ -201,7 +201,7 @@
     <string name="close">Close</string>
     <string name="discussions">Discussions</string>
     <string name="confirm_action">Are you sure?</string>
-    <string name="text_not_empty">There are entered text messages, close?</string>
+    <string name="text_not_empty">Text field is not empty! Close topic?</string>
     <string name="enter_message">Enter message</string>
     <string name="is_sure">Are you sure?</string>
     <string name="confirm_sending">Confirm sending</string>
@@ -306,7 +306,7 @@
     <string name="understand">I understand</string>
     <string name="claim_title">Abuse Report to Moderator</string>
     <string name="send">Send</string>
-    <string name="claim_sent">Claim_sent</string>
+    <string name="claim_sent">Claim has been sent</string>
     <string name="program_settings">Program settings</string>
     <string name="settings">Settings</string>
     <string name="server_not_available_or_not_respond">Server not available or did not respond</string>
@@ -332,7 +332,7 @@
     <string name="failed_load">Could not load</string>
     <string name="download_reciever_content">Click for further action</string>
     <string name="download_method">Download method</string>
-    <string name="download_method_notify"><![CDATA[You can change the way downloads in the program settings: View topic >> Files >> Download a file using the…]]></string>
+    <string name="download_method_notify"><![CDATA[You can change the way it will download in the program settings: View topic >> Files >> Download a file using the…]]></string>
     <string name="ask_file_need_download">This file already exists, download again?</string>
     <string name="re_download">Redownload</string>
     <string name="download_started">Download started</string>
@@ -381,7 +381,7 @@
     <string name="error_getting_nick">Error getting username</string>
     <string name="new_thread">New thread</string>
     <string name="ask_deleting_dialogs" formatted="false">Are you sure you want to remove the selected dialogues with the user %s?</string>
-    <string name="qms_title_new_thread">QMS: New thread</string>
+    <string name="qms_title_new_thread">QMS: New topic</string>
     <string name="enter_nick">Enter nick</string>
     <string name="file_name">File name</string>
     <string name="error_external_storage">Remote storage not available!</string>
@@ -393,15 +393,15 @@
     <string name="extended_form">Extended form</string>
     <string name="go_to_link">Goto link</string>
     <string name="insert_link">Insert link</string>
-    <string name="new_qms_messages">New post QMS: %d</string>
-    <string name="no_new_qms_messages">No new posts: QMS</string>
+    <string name="new_qms_messages">New QMS messages: %d</string>
+    <string name="no_new_qms_messages">No new messages: QMS</string>
     <string name="ask_close_app">Close app?</string>
     <string name="posts_per_page">Posts per page</string>
     <string name="not_important">Not important</string>
     <string name="rating_less">Rating less</string>
     <string name="insert">Insert</string>
     <string name="error_parsing_quote">Error parsing quotes</string>
-    <string name="notice_client">Notice client</string>
+    <string name="notice_client">Client announcement</string>
     <string name="topics_history">Topics history</string>
     <string name="delete_from_visited">Remove from visited</string>
     <string name="options">Options</string>
@@ -455,14 +455,14 @@
     <string name="list_id_exception">Could not read list ID</string>
     <string name="all_forums">All forums</string>
     <string name="apply_cancel">Cancel</string>
-    <string name="ask_create_dialog">With user %s no dialogue. Create?</string>
+    <string name="ask_create_dialog">There is no dialogue with user %s. Create one?</string>
     <string name="blue">Blue</string>
     <string name="choose">Select</string>
     <string name="color">Colour</string>
     <string name="combined_in">\" and \"</string>
 
     <string name="lang_pref_title">Language</string>
-    <string name="lang_pref_summary">Need restart application</string>
-    <string name="lang_changed">The application language has been changed, restart the application?</string>
+    <string name="lang_pref_summary">Need to restart application</string>
+    <string name="lang_changed">The application language has been changed, restart the application now?</string>
     <string name="file_not_support_forum">This file type is not supported by forum.</string>
 </resources>
