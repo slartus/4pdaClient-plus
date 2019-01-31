@@ -22,7 +22,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -30,10 +29,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdacommon.FileUtils;
@@ -141,25 +138,19 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
             preference = findPreference("notifiers.service.use_sound");
             if (preference != null) {
-                preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object o) {
-                        Boolean useSound = (Boolean) o;
-                        findPreference("notifiers.service.is_default_sound").setEnabled(useSound);
-                        findPreference("notifiers.service.sound").setEnabled(useSound);
-                        return true;
-                    }
+                preference.setOnPreferenceChangeListener((preference1, o) -> {
+                    Boolean useSound = (Boolean) o;
+                    findPreference("notifiers.service.is_default_sound").setEnabled(useSound);
+                    findPreference("notifiers.service.sound").setEnabled(useSound);
+                    return true;
                 });
             }
             preference = findPreference("notifiers.service.is_default_sound");
             if (preference != null) {
-                preference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                    @Override
-                    public boolean onPreferenceChange(Preference preference, Object o) {
-                        Boolean isDefault = (Boolean) o;
-                        findPreference("notifiers.service.sound").setEnabled(!isDefault);
-                        return true;
-                    }
+                preference.setOnPreferenceChangeListener((preference12, o) -> {
+                    Boolean isDefault = (Boolean) o;
+                    findPreference("notifiers.service.sound").setEnabled(!isDefault);
+                    return true;
                 });
             }
             findPreference("notifiers.service.sound").setOnPreferenceClickListener(this);
@@ -169,18 +160,16 @@ public class PreferencesActivity extends BasePreferencesActivity {
             downloadsPathPreference.setSummary(DownloadsService.getDownloadDir(App.getInstance()));
             ((EditTextPreference) downloadsPathPreference)
                     .setText(DownloadsService.getDownloadDir(App.getInstance()));
-            downloadsPathPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object o) {
+            downloadsPathPreference.setOnPreferenceChangeListener((preference13, o) -> {
 
-                    if (showDownloadsPath(o)) {
-                        downloadsPathPreference
-                                .setSummary(o.toString());
-                        Toast.makeText(getActivity(), R.string.path_edited_success, Toast.LENGTH_SHORT).show();
-                        return true;
-                    }
-                    return false;
-
+                if (showDownloadsPath(o)) {
+                    downloadsPathPreference
+                            .setSummary(o.toString());
+                    Toast.makeText(getActivity(), R.string.path_edited_success, Toast.LENGTH_SHORT).show();
+                    return true;
                 }
+                return false;
+
             });
 
 
@@ -245,22 +234,16 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     return true;
                 case "notifiers.silent_mode.start_time":
                     Calendar calendar = Preferences.Notifications.SilentMode.getStartTime();
-                    new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
-                            Preferences.Notifications.SilentMode.setStartTime(hourOfDay, minute);
-                            findPreference(key).setSummary(String.format("%02d:%02d", hourOfDay, minute));
-                        }
+                    new TimePickerDialog(getActivity(), (timePicker, hourOfDay, minute) -> {
+                        Preferences.Notifications.SilentMode.setStartTime(hourOfDay, minute);
+                        findPreference(key).setSummary(String.format("%02d:%02d", hourOfDay, minute));
                     }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
                     return true;
                 case "notifiers.silent_mode.end_time":
                     Calendar endcalendar = Preferences.Notifications.SilentMode.getEndTime();
-                    new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
-                            Preferences.Notifications.SilentMode.setEndTime(hourOfDay, minute);
-                            findPreference(key).setSummary(String.format("%02d:%02d", hourOfDay, minute));
-                        }
+                    new TimePickerDialog(getActivity(), (timePicker, hourOfDay, minute) -> {
+                        Preferences.Notifications.SilentMode.setEndTime(hourOfDay, minute);
+                        findPreference(key).setSummary(String.format("%02d:%02d", hourOfDay, minute));
                     }, endcalendar.get(Calendar.HOUR_OF_DAY), endcalendar.get(Calendar.MINUTE), true).show();
                     return true;
                 case "About.CheckNewVersion":
@@ -317,9 +300,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         preferences.edit().putString("selectedMenuItems", Arrays.toString(finalItems[0]).replace(" ","").replace("[","").replace("]","")).apply();
                     })
                     .neutralText(R.string.reset)
-                    .onNeutral((materialDialog, dialogAction) -> {
-                        preferences.edit().putString("selectedMenuItems", ListCore.DEFAULT_MENU_ITEMS).apply();
-                    })
+                    .onNeutral((materialDialog, dialogAction) -> preferences.edit().putString("selectedMenuItems", ListCore.DEFAULT_MENU_ITEMS).apply())
                     .show();
         }
 
@@ -330,28 +311,22 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     .positiveText(R.string.choose)
                     .negativeText(R.string.cancel)
                     .neutralText(R.string.reset)
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            try {
-                                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                                intent.setType("image/*");
-                                startActivityForResult(intent, MY_INTENT_CLICK);
-                            } catch (ActivityNotFoundException ex) {
-                                Toast.makeText(getActivity(), R.string.no_app_for_get_image_file, Toast.LENGTH_LONG).show();
-                            } catch (Exception ex) {
-                                AppLog.e(getActivity(), ex);
-                            }
-                        }
-                        @Override
-                        public void onNeutral(MaterialDialog dialog) {
-                            App.getInstance().getPreferences()
-                                    .edit()
-                                    .putString("userInfoBg", "")
-                                    .putBoolean("isUserBackground", false)
-                                    .apply();
+                    .onPositive((dialog, which) -> {
+                        try {
+                            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                            intent.setType("image/*");
+                            startActivityForResult(intent, MY_INTENT_CLICK);
+                        } catch (ActivityNotFoundException ex) {
+                            Toast.makeText(getActivity(), R.string.no_app_for_get_image_file, Toast.LENGTH_LONG).show();
+                        } catch (Exception ex) {
+                            AppLog.e(getActivity(), ex);
                         }
                     })
+                    .onNeutral((dialog, which) -> App.getInstance().getPreferences()
+                            .edit()
+                            .putString("userInfoBg", "")
+                            .putBoolean("isUserBackground", false)
+                            .apply())
                     .show();
         }
 
@@ -383,34 +358,26 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 new MaterialDialog.Builder(getActivity())
                         .title(R.string.choose_font)
                         .items(new String[]{App.getContext().getString(R.string.font_from_style), App.getContext().getString(R.string.system_font), App.getContext().getString(R.string.enter_font_name)})
-                        .itemsCallbackSingleChoice(selected[0], new MaterialDialog.ListCallbackSingleChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                selected[0] = which;
-                                switch (which) {
-                                    case 0:
-                                        name[0] = "";
-                                        break;
-                                    case 1:
-                                        name[0] = "inherit";
-                                        break;
-                                    case 2:
-                                        if(dialogShowed[0]) return true;
-                                        dialogShowed[0] = true;
-                                        new MaterialDialog.Builder(getActivity())
-                                                .inputType(InputType.TYPE_CLASS_TEXT)
-                                                .input(App.getContext().getString(R.string.font_name), prefs.getString("webViewFontName", ""), new MaterialDialog.InputCallback() {
-                                                    @Override
-                                                    public void onInput(MaterialDialog dialog, CharSequence input) {
-                                                        name[0] = input;
-                                                    }
-                                                })
-                                                .positiveText(R.string.ok)
-                                                .onPositive((materialDialog, dialogAction) -> prefs.edit().putString("webViewFontName", name[0].toString()).apply())
-                                                .show();
-                                }
-                                return true;
+                        .itemsCallbackSingleChoice(selected[0], (dialog, view, which, text) -> {
+                            selected[0] = which;
+                            switch (which) {
+                                case 0:
+                                    name[0] = "";
+                                    break;
+                                case 1:
+                                    name[0] = "inherit";
+                                    break;
+                                case 2:
+                                    if(dialogShowed[0]) return true;
+                                    dialogShowed[0] = true;
+                                    new MaterialDialog.Builder(getActivity())
+                                            .inputType(InputType.TYPE_CLASS_TEXT)
+                                            .input(App.getContext().getString(R.string.font_name), prefs.getString("webViewFontName", ""), (dialog1, input) -> name[0] = input)
+                                            .positiveText(R.string.ok)
+                                            .onPositive((materialDialog, dialogAction) -> prefs.edit().putString("webViewFontName", name[0].toString()).apply())
+                                            .show();
                             }
+                            return true;
                         })
                         .alwaysCallSingleChoiceCallback()
                         .positiveText(R.string.accept)
@@ -443,48 +410,42 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 new MaterialDialog.Builder(getActivity())
                         .title(R.string.pick_accent_color)
                         .items(new String[]{App.getContext().getString(R.string.blue), App.getContext().getString(R.string.pink), App.getContext().getString(R.string.gray)})
-                        .itemsCallbackSingleChoice(position, new MaterialDialog.ListCallbackSingleChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                selected[0] = which;
-                                return true;
-                            }
+                        .itemsCallbackSingleChoice(position, (dialog, view, which, text) -> {
+                            selected[0] = which;
+                            return true;
                         })
                         .alwaysCallSingleChoiceCallback()
                         .positiveText(R.string.accept)
                         .negativeText(R.string.cancel)
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                switch (selected[0]) {
-                                    case 0:
-                                        prefs.edit().putString("mainAccentColor", "pink").apply();
-                                        if(!prefs.getBoolean("accentColorEdited",false)){
-                                            prefs.edit()
-                                                    .putInt("accentColor", Color.rgb(2, 119, 189))
-                                                    .putInt("accentColorPressed", Color.rgb(0, 89, 159))
-                                                    .apply();
-                                        }
-                                        break;
-                                    case 1:
-                                        prefs.edit().putString("mainAccentColor", "blue").apply();
-                                        if(!prefs.getBoolean("accentColorEdited",false)){
-                                            prefs.edit()
-                                                    .putInt("accentColor", Color.rgb(233, 30, 99))
-                                                    .putInt("accentColorPressed", Color.rgb(203, 0, 69))
-                                                    .apply();
-                                        }
-                                        break;
-                                    case 2:
-                                        prefs.edit().putString("mainAccentColor", "gray").apply();
-                                        if(!prefs.getBoolean("accentColorEdited",false)){
-                                            prefs.edit()
-                                                    .putInt("accentColor", Color.rgb(117, 117, 117))
-                                                    .putInt("accentColorPressed", Color.rgb(87, 87, 87))
-                                                    .apply();
-                                        }
-                                        break;
-                                }
+                        .onPositive((dialog, which) -> {
+                            switch (selected[0]) {
+                                case 0:
+                                    prefs.edit().putString("mainAccentColor", "pink").apply();
+                                    if(!prefs.getBoolean("accentColorEdited",false)){
+                                        prefs.edit()
+                                                .putInt("accentColor", Color.rgb(2, 119, 189))
+                                                .putInt("accentColorPressed", Color.rgb(0, 89, 159))
+                                                .apply();
+                                    }
+                                    break;
+                                case 1:
+                                    prefs.edit().putString("mainAccentColor", "blue").apply();
+                                    if(!prefs.getBoolean("accentColorEdited",false)){
+                                        prefs.edit()
+                                                .putInt("accentColor", Color.rgb(233, 30, 99))
+                                                .putInt("accentColorPressed", Color.rgb(203, 0, 69))
+                                                .apply();
+                                    }
+                                    break;
+                                case 2:
+                                    prefs.edit().putString("mainAccentColor", "gray").apply();
+                                    if(!prefs.getBoolean("accentColorEdited",false)){
+                                        prefs.edit()
+                                                .putInt("accentColor", Color.rgb(117, 117, 117))
+                                                .putInt("accentColorPressed", Color.rgb(87, 87, 87))
+                                                .apply();
+                                    }
+                                    break;
                             }
                         })
                         .show();
@@ -501,19 +462,20 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
                 int prefColor = (int) Long.parseLong(String.valueOf(prefs.getInt("accentColor", Color.rgb(2, 119, 189))), 10);
                 //int prefColor = (int) Long.parseLong(String.valueOf(prefs.getInt("accentColor", Color.rgb(96, 125, 139))), 10);
-                final int[] colors = {(prefColor >> 16) & 0xFF, (prefColor >> 8) & 0xFF, (prefColor >> 0) & 0xFF};
+                final int[] colors = {(prefColor >> 16) & 0xFF, (prefColor >> 8) & 0xFF, (prefColor) & 0xFF};
 
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                assert inflater != null;
                 View view = inflater.inflate(R.layout.color_editor, null);
-                final EditText redTxt = (EditText) view.findViewById(R.id.redText);
-                final EditText greenTxt = (EditText) view.findViewById(R.id.greenText);
-                final EditText blueTxt = (EditText) view.findViewById(R.id.blueText);
+                final EditText redTxt = view.findViewById(R.id.redText);
+                final EditText greenTxt = view.findViewById(R.id.greenText);
+                final EditText blueTxt = view.findViewById(R.id.blueText);
 
-                final LinearLayout preview = (LinearLayout) view.findViewById(R.id.preview);
+                final LinearLayout preview = view.findViewById(R.id.preview);
 
-                final SeekBar red = (SeekBar) view.findViewById(R.id.red);
-                final SeekBar green = (SeekBar) view.findViewById(R.id.green);
-                final SeekBar blue = (SeekBar) view.findViewById(R.id.blue);
+                final SeekBar red = view.findViewById(R.id.red);
+                final SeekBar green = view.findViewById(R.id.green);
+                final SeekBar blue = view.findViewById(R.id.blue);
 
                 redTxt.setFilters(new InputFilter[]{new InputFilterMinMax("0", "255")});
                 greenTxt.setFilters(new InputFilter[]{new InputFilterMinMax("0", "255")});
@@ -639,33 +601,26 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         .positiveText(R.string.accept)
                         .negativeText(R.string.cancel)
                         .neutralText(R.string.reset)
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                int[] colorPressed = {colors[0] - 30, colors[1] - 30, colors[2] - 30};
-                                if (colorPressed[0] < 0) colorPressed[0] = 0;
-                                if (colorPressed[1] < 0) colorPressed[1] = 0;
-                                if (colorPressed[2] < 0) colorPressed[2] = 0;
-                                if(Color.rgb(colors[0], colors[1], colors[2])!=prefs.getInt("accentColor", Color.rgb(2, 119, 189))){
-                                    prefs.edit().putBoolean("accentColorEdited",true).apply();
-                                }
-                                prefs.edit()
-                                        .putInt("accentColor", Color.rgb(colors[0], colors[1], colors[2]))
-                                        .putInt("accentColorPressed", Color.rgb(colorPressed[0], colorPressed[1], colorPressed[2]))
-                                        .apply();
+                        .onPositive((dialog, which) -> {
+                            int[] colorPressed = {colors[0] - 30, colors[1] - 30, colors[2] - 30};
+                            if (colorPressed[0] < 0) colorPressed[0] = 0;
+                            if (colorPressed[1] < 0) colorPressed[1] = 0;
+                            if (colorPressed[2] < 0) colorPressed[2] = 0;
+                            if(Color.rgb(colors[0], colors[1], colors[2])!=prefs.getInt("accentColor", Color.rgb(2, 119, 189))){
+                                prefs.edit().putBoolean("accentColorEdited",true).apply();
                             }
-
-                            @Override
-                            public void onNeutral(MaterialDialog dialog) {
-                                prefs.edit()
-                                        .putInt("accentColor", Color.rgb(2, 119, 189))
-                                        .putInt("accentColorPressed", Color.rgb(0, 89, 159))
-                                        .putBoolean("accentColorEdited",false)
-                                        //.putInt("accentColor", Color.rgb(96, 125, 139))
-                                        //.putInt("accentColorPressed", Color.rgb(76, 95, 109))
-                                        .apply();
-                            }
+                            prefs.edit()
+                                    .putInt("accentColor", Color.rgb(colors[0], colors[1], colors[2]))
+                                    .putInt("accentColorPressed", Color.rgb(colorPressed[0], colorPressed[1], colorPressed[2]))
+                                    .apply();
                         })
+                        .onNeutral((dialog, which) -> prefs.edit()
+                                .putInt("accentColor", Color.rgb(2, 119, 189))
+                                .putInt("accentColorPressed", Color.rgb(0, 89, 159))
+                                .putBoolean("accentColorEdited",false)
+                                //.putInt("accentColor", Color.rgb(96, 125, 139))
+                                //.putInt("accentColorPressed", Color.rgb(76, 95, 109))
+                                .apply())
                         .show();
             } catch (Exception ex) {
                 AppLog.e(getActivity(), ex);
@@ -716,48 +671,40 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         .title(R.string.theme_style)
                         .cancelable(true)
                         .items(newStyleNames.toArray(new CharSequence[newStyleNames.size()]))
-                        .itemsCallbackSingleChoice(newstyleValues.indexOf(currentValue), new MaterialDialog.ListCallbackSingleChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence text) {
-                                selected[0] = i;
-                                return true; // allow selection
-                            }
+                        .itemsCallbackSingleChoice(newstyleValues.indexOf(currentValue), (dialog, view, i, text) -> {
+                            selected[0] = i;
+                            return true; // allow selection
                         })
                         .alwaysCallSingleChoiceCallback()
                         .positiveText(getString(R.string.AcceptStyle))
                         .neutralText(getString(R.string.Information))
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                if (selected[0] == -1) {
-                                    Toast.makeText(getActivity(), getString(R.string.ChooseStyle), Toast.LENGTH_LONG).show();
-                                    return;
-                                }
-                                App.getInstance().getPreferences()
-                                        .edit()
-                                        .putString("appstyle", newstyleValues.get(selected[0]).toString())
-                                        .commit();
+                        .onPositive((dialog, which) -> {
+                            if (selected[0] == -1) {
+                                Toast.makeText(getActivity(), getString(R.string.ChooseStyle), Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            App.getInstance().getPreferences()
+                                    .edit()
+                                    .putString("appstyle", newstyleValues.get(selected[0]).toString())
+                                    .apply();
+                        })
+                        .onNeutral((dialog, which) -> {
+                            if (selected[0] == -1) {
+                                Toast.makeText(getActivity(), getString(R.string.ChooseStyle), Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            String stylePath = newstyleValues.get(selected[0]).toString();
+                            stylePath = App.getInstance().getThemeCssFileName(stylePath);
+                            String xmlPath = stylePath.replace(".css", ".xml");
+                            CssStyle cssStyle = CssStyle.parseStyle(getActivity(), xmlPath);
+                            if (!cssStyle.ExistsInfo) {
+                                Toast.makeText(getActivity(), getString(R.string.StyleDoesNotContainDesc), Toast.LENGTH_SHORT).show();
+
+                                return;
                             }
 
-                            @Override
-                            public void onNeutral(MaterialDialog dialog) {
-                                if (selected[0] == -1) {
-                                    Toast.makeText(getActivity(), getString(R.string.ChooseStyle), Toast.LENGTH_LONG).show();
-                                    return;
-                                }
-                                String stylePath = newstyleValues.get(selected[0]).toString();
-                                stylePath = App.getInstance().getThemeCssFileName(stylePath);
-                                String xmlPath = stylePath.replace(".css", ".xml");
-                                CssStyle cssStyle = CssStyle.parseStyle(getActivity(), xmlPath);
-                                if (!cssStyle.ExistsInfo) {
-                                    Toast.makeText(getActivity(), getString(R.string.StyleDoesNotContainDesc), Toast.LENGTH_SHORT).show();
-
-                                    return;
-                                }
-
-                                //dialogInterface.dismiss();
-                                StyleInfoActivity.showStyleInfo(getActivity(), newstyleValues.get(selected[0]).toString());
-                            }
+                            //dialogInterface.dismiss();
+                            StyleInfoActivity.showStyleInfo(getActivity(), newstyleValues.get(selected[0]).toString());
                         })
                         .show();
             } catch (Exception ex) {
@@ -861,7 +808,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             } catch (IOException e) {
                 AppLog.e(getActivity(), e);
             }
-            MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+            new MaterialDialog.Builder(getActivity())
                     .title(getString(R.string.ChangesHistory))
                     .content(sb)
                     .positiveText(android.R.string.ok)
@@ -877,53 +824,49 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     .cancelable(true)
                     .positiveText(getString(R.string.Delete))
                     .negativeText(getString(android.R.string.no))
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            try {
-                                File f = new File(getCookieFilePath(getActivity()));
-                                if (!f.exists()) {
-                                    Toast.makeText(getActivity(), getString(R.string.CookiesFileNotFound) +
-                                            ": " + getCookieFilePath(App.getInstance()), Toast.LENGTH_LONG).show();
-                                }
-                                if (f.delete())
-                                    Toast.makeText(getActivity(), getString(R.string.CookiesFileDeleted) +
-                                            ": " + getCookieFilePath(App.getInstance()), Toast.LENGTH_LONG).show();
-                                else
-                                    Toast.makeText(getActivity(), getString(R.string.FailedDeleteCookies) +
-                                            ": " + getCookieFilePath(App.getInstance()), Toast.LENGTH_LONG).show();
-                            } catch (Exception ex) {
-                                AppLog.e(getActivity(), ex);
+                    .onPositive((dialog, which) -> {
+                        try {
+                            File f = new File(getCookieFilePath());
+                            if (!f.exists()) {
+                                Toast.makeText(getActivity(), getString(R.string.CookiesFileNotFound) +
+                                        ": " + getCookieFilePath(), Toast.LENGTH_LONG).show();
                             }
+                            if (f.delete())
+                                Toast.makeText(getActivity(), getString(R.string.CookiesFileDeleted) +
+                                        ": " + getCookieFilePath(), Toast.LENGTH_LONG).show();
+                            else
+                                Toast.makeText(getActivity(), getString(R.string.FailedDeleteCookies) +
+                                        ": " + getCookieFilePath(), Toast.LENGTH_LONG).show();
+                        } catch (Exception ex) {
+                            AppLog.e(getActivity(), ex);
                         }
-                    }).show();
+                    })
+                    .show();
         }
 
         private void showSelectDirDialog() {
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            assert inflater != null;
             View view = inflater.inflate(R.layout.dir_select_dialog, null);
-            final RadioButton rbInternal = (RadioButton) view.findViewById(R.id.rbInternal);
-            final RadioButton rbExternal = (RadioButton) view.findViewById(R.id.rbExternal);
-            final RadioButton rbCustom = (RadioButton) view.findViewById(R.id.rbCustom);
-            final EditText txtPath = (EditText) view.findViewById(R.id.txtPath);
+            final RadioButton rbInternal = view.findViewById(R.id.rbInternal);
+            final RadioButton rbExternal = view.findViewById(R.id.rbExternal);
+            final RadioButton rbCustom = view.findViewById(R.id.rbCustom);
+            final EditText txtPath = view.findViewById(R.id.txtPath);
             txtPath.setText(Preferences.System.getSystemDir());
-            CompoundButton.OnCheckedChangeListener checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if (b) {
-                        if (compoundButton.getId() == rbInternal.getId()) {
-                            txtPath.setText(App.getInstance().getFilesDir().getPath());
+            CompoundButton.OnCheckedChangeListener checkedChangeListener = (compoundButton, b) -> {
+                if (b) {
+                    if (compoundButton.getId() == rbInternal.getId()) {
+                        txtPath.setText(App.getInstance().getFilesDir().getPath());
+                        txtPath.setEnabled(false);
+                    } else if (compoundButton.getId() == rbExternal.getId()) {
+                        try {
+                            txtPath.setText(App.getInstance().getExternalFilesDir(null).getPath());
                             txtPath.setEnabled(false);
-                        } else if (compoundButton.getId() == rbExternal.getId()) {
-                            try {
-                                txtPath.setText(App.getInstance().getExternalFilesDir(null).getPath());
-                                txtPath.setEnabled(false);
-                            } catch (Throwable ex) {
-                                AppLog.e(getActivity(), ex);
-                            }
-                        } else if (compoundButton.getId() == rbCustom.getId()) {
-                            txtPath.setEnabled(true);
+                        } catch (Throwable ex) {
+                            AppLog.e(getActivity(), ex);
                         }
+                    } else if (compoundButton.getId() == rbCustom.getId()) {
+                        txtPath.setEnabled(true);
                     }
                 }
             };
@@ -937,17 +880,14 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     .cancelable(true)
                     .positiveText(android.R.string.ok)
                     .negativeText(android.R.string.cancel)
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            try {
-                                String dir = txtPath.getText().toString();
-                                dir = dir.replace("/", File.separator);
-                                FileUtils.checkDirPath(dir);
-                                Preferences.System.setSystemDir(dir);
-                            } catch (Throwable ex) {
-                                AppLog.e(getActivity(), ex);
-                            }
+                    .onPositive((dialog, which) -> {
+                        try {
+                            String dir = txtPath.getText().toString();
+                            dir = dir.replace("/", File.separator);
+                            FileUtils.checkDirPath(dir);
+                            Preferences.System.setSystemDir(dir);
+                        } catch (Throwable ex) {
+                            AppLog.e(getActivity(), ex);
                         }
                     })
                     .show();
@@ -956,17 +896,12 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
     }
 
-    private Context getContext() {
-        return this;
-    }
-
-
-    private static String getAppCookiesPath() throws IOException {
+    private static String getAppCookiesPath() {
 
         return Preferences.System.getSystemDir() + "4pda_cookies";
     }
 
-    public static String getCookieFilePath(Context context) throws IOException {
+    public static String getCookieFilePath() {
         String res = App.getInstance().getPreferences().getString("cookies.path", "");
 
         if (TextUtils.isEmpty(res))
@@ -976,7 +911,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
     }
 
 
-    public static void getStylesList(Context context, ArrayList<CharSequence> newStyleNames, ArrayList<CharSequence> newstyleValues) throws IOException {
+    public static void getStylesList(Context context, ArrayList<CharSequence> newStyleNames, ArrayList<CharSequence> newstyleValues) {
         String xmlPath;
         CssStyle cssStyle;
 

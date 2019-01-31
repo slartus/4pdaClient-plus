@@ -593,7 +593,7 @@ public class App extends android.app.Application {
             if (!QmsNotifier.isUse(getContext()))
                 return;
             Intent intent = new Intent(INSTANCE, MainService.class);
-            intent.putExtra("CookiesPath", PreferencesActivity.getCookieFilePath(INSTANCE));
+            intent.putExtra("CookiesPath", PreferencesActivity.getCookieFilePath());
             float timeout = Math.max(ExtPreferences.parseFloat(App.getInstance().getPreferences(),
                     QmsNotifier.TIME_OUT_KEY, 5), 1);
             intent.putExtra(QmsNotifier.TIME_OUT_KEY, timeout);
@@ -672,7 +672,7 @@ public class App extends android.app.Application {
             if (!FavoritesNotifier.isUse(getContext())) return;
 
             Intent intent = new Intent(INSTANCE, MainService.class);
-            intent.putExtra("CookiesPath", PreferencesActivity.getCookieFilePath(INSTANCE));
+            intent.putExtra("CookiesPath", PreferencesActivity.getCookieFilePath());
             intent.putExtra(FavoritesNotifier.TIME_OUT_KEY, Math.max(ExtPreferences.parseFloat(App.getInstance().getPreferences(),
                     FavoritesNotifier.TIME_OUT_KEY, 5), 1));
 

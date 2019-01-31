@@ -46,11 +46,11 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
     }
 
     public HttpHelper(String userAgent) throws IOException {
-        super(userAgent, PreferencesActivity.getCookieFilePath(App.getContext()));
+        super(userAgent, PreferencesActivity.getCookieFilePath());
     }
 
     public void writeExternalCookies() throws Exception {
-        String cookiesFile = PreferencesActivity.getCookieFilePath(App.getContext());
+        String cookiesFile = PreferencesActivity.getCookieFilePath();
         writeExternalCookies(cookiesFile);
     }
 
