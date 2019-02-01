@@ -12,7 +12,7 @@ android {
     compileSdkVersion 27
     useLibrary 'org.apache.http.legacy'
 
-    def appVersionCode = 615
+    def appVersionCode = 616
     def appVersionName = "3.5.2.8"
 
 
@@ -61,7 +61,7 @@ android {
         }
         beta {
             applicationId 'org.softeg.slartus.forpdaplus.beta'
-            versionCode 620// у беты свой номер, чтобы не инкрементить релизный
+            versionCode 621// у беты свой номер, чтобы не инкрементить релизный
             versionName "${appVersionName}beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
             signingConfig defaultSigningVariable
             dimension "wtf"
