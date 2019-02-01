@@ -28,6 +28,7 @@ import java.io.IOException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class ForPdaVersionNotifier extends MainNotifier {
     public ForPdaVersionNotifier(NotifiersManager notifiersManager, int period) {
@@ -88,61 +89,60 @@ public class ForPdaVersionNotifier extends MainNotifier {
 
     private void checkVersionFromGithub(final Context context, final boolean toast) {
         final Handler handler = new Handler();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String currentVersion = getAppVersion(App.getContext());
-                currentVersion = currentVersion.trim();
-                String link = "https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/updateinfo.json";
-                try {
+        new Thread(() -> {
+            String currentVersion = getAppVersion(App.getContext());
+            currentVersion = currentVersion.trim();
+            String link = "https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/updateinfo.json";
+            try {
 
-                    OkHttpClient client = new OkHttpClient();
-                    Request request = new Request.Builder().url(link).build();
-                    Response response = client.newCall(request).execute();
-                    String jo = response.body().string();
+                OkHttpClient client = new OkHttpClient();
+                Request request = new Request.Builder().url(link).build();
+                Response response = client.newCall(request).execute();
+                ResponseBody responseBody=response.body();
+                assert responseBody != null;
+                String jo = responseBody.string();
 
 
-                    JSONObject tJson = new JSONObject(jo);
-                    boolean object = tJson.getBoolean("show_beta_dialog");
-                    if (object) {
-                        JSONObject obj = tJson.getJSONObject("update_beta");
-                        if (Preferences.notifyBetaVersions() && obj.has("beta")) {
-                            JSONObject betaObject = obj.getJSONObject("beta");
-                            if (betaObject != null) {
-                                String releaseVersion = obj.getString("ver").trim();
-                                String betaVersion = betaObject.getString("ver").trim();
-                                if (isFirstArgVersionsNewer(betaVersion, releaseVersion)) {
-                                    obj = betaObject;
-                                }
+                JSONObject tJson = new JSONObject(jo);
+                boolean object = tJson.getBoolean("show_beta_dialog");
+                if (object) {
+                    JSONObject obj = tJson.getJSONObject("update_beta");
+                    if (Preferences.notifyBetaVersions() && obj.has("beta")) {
+                        JSONObject betaObject = obj.getJSONObject("beta");
+                        if (betaObject != null) {
+                            String releaseVersion = obj.getString("ver").trim();
+                            String betaVersion = betaObject.getString("ver").trim();
+                            if (isFirstArgVersionsNewer(betaVersion, releaseVersion)) {
+                                obj = betaObject;
                             }
                         }
-                        checkVersion(currentVersion, obj, handler, context, toast);
                     }
-
-                    if (!toast) {
-                        // тут показываем весь букет(если есть что показывать)
-                        boolean notice = tJson.getBoolean("notice");
-                        if (notice) {
-                            String notice_text = tJson.getString("notice_text");
-                            if(!notice_text.equals(Preferences.Notice.getNotice()))
-                                showDialog(context, false, notice_text, handler);
-                        }
-
-                        boolean warning = tJson.getBoolean("warning");
-                        if (warning) {
-                            String warning_text = tJson.getString("warning_text");
-                            if(!warning_text.equals(Preferences.Warning.getWarning()))
-                                showDialog(context, true, warning_text, handler);
-                        }
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    msge("error json: " + e.getMessage());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    msge("error IOE: " + e.getMessage());
+                    checkVersion(currentVersion, obj, handler, context, toast);
                 }
+
+                if (!toast) {
+                    // тут показываем весь букет(если есть что показывать)
+                    boolean notice = tJson.getBoolean("notice");
+                    if (notice) {
+                        String notice_text = tJson.getString("notice_text");
+                        if(!notice_text.equals(Preferences.Notice.getNotice()))
+                            showDialog(context, false, notice_text, handler);
+                    }
+
+                    boolean warning = tJson.getBoolean("warning");
+                    if (warning) {
+                        String warning_text = tJson.getString("warning_text");
+                        if(!warning_text.equals(Preferences.Warning.getWarning()))
+                            showDialog(context, true, warning_text, handler);
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                msge("error json: " + e.getMessage());
+            } catch (IOException e) {
+                e.printStackTrace();
+                msge("error IOE: " + e.getMessage());
             }
         }).start();
     }
@@ -150,7 +150,7 @@ public class ForPdaVersionNotifier extends MainNotifier {
     private void checkVersion(String currentVersion, JSONObject versionObject, Handler handler,
                               final Context context, boolean toast) throws JSONException {
         String releaseVer;
-        Boolean siteVersionsNewer;
+        boolean siteVersionsNewer;
 
         final String version = versionObject.getString("ver").trim();
         final SharedPreferences prefs = App.getInstance().getPreferences();
@@ -164,51 +164,35 @@ public class ForPdaVersionNotifier extends MainNotifier {
         releaseVer = version.trim();
         siteVersionsNewer = isFirstArgVersionsNewer(releaseVer, currentVersion);
         if (siteVersionsNewer) {
-            handler.post(new Runnable() {
-                public void run() {
-                    try {
-                        addToStack(new MaterialDialog.Builder(context)
-                                .title(R.string.update_new_version)
-                                .content(context.getString(R.string.update_detected_update) + version + "\n\n" +
-                                        context.getString(R.string.update_changes) + info)
-                                .positiveText(R.string.update_download)
-                                .negativeText(R.string.update_later)
-                                .neutralText(R.string.update_forget)
-                                .callback(new MaterialDialog.ButtonCallback() {
-                                    @Override
-                                    public void onPositive(MaterialDialog dialog) {
-                                        try {
+            handler.post(() -> {
+                try {
+                    addToStack(new MaterialDialog.Builder(context)
+                            .title(R.string.update_new_version)
+                            .content(context.getString(R.string.update_detected_update) + version + "\n\n" +
+                                    context.getString(R.string.update_changes) + info)
+                            .positiveText(R.string.update_download)
+                            .negativeText(R.string.update_later)
+                            .neutralText(R.string.update_forget)
+                            .onPositive((dialog, which) -> {
+                                try {
 //                                            IntentActivity.tryShowFile((Activity) context, Uri.parse(apk), false);
-                                            DownloadsService.download((Activity) context, apk, false);
-                                        } catch (Throwable ex) {
-                                            AppLog.e(context, ex);
-                                        }
-                                    }
+                                    DownloadsService.download((Activity) context, apk, false);
+                                } catch (Throwable ex) {
+                                    AppLog.e(context, ex);
+                                }
+                            })
+                            .onNeutral((dialog, which) -> prefs.edit().putString("client.version.4pda", version).apply())
+                            .build());
 
-                                    @Override
-                                    public void onNeutral(MaterialDialog dialog) {
-                                        super.onNeutral(dialog);
-                                        prefs.edit().putString("client.version.4pda", version).apply();
-                                    }
-                                })
-                                .build());
-
-                    } catch (Exception ex) {
-                        AppLog.e(context, new NotReportException(context.getString(R.string.error_check_new_version), ex));
-                    }
-
+                } catch (Exception ex) {
+                    AppLog.e(context, new NotReportException(context.getString(R.string.error_check_new_version), ex));
                 }
+
             });
 
         } else {
             if (toast) {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        showToast(context);
-
-                    }
-                });
+                handler.post(() -> showToast(context));
             }
         }
     }
@@ -247,34 +231,24 @@ public class ForPdaVersionNotifier extends MainNotifier {
     }
 
     private void showDialog(final Context context, final boolean warning, final String msg_text, Handler handler) {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                addToStack(new MaterialDialog.Builder(context)
-                        .title(warning ? context.getString(R.string.notifier_warning) : context.getString(R.string.notifier_notification))
-                        .content(Html.fromHtml(msg_text))
-                        .positiveText(R.string.notifier_understand)
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                if (warning)
-                                    Preferences.Warning.setWarning(msg_text);
-                                else
-                                    Preferences.Notice.setNotice(msg_text);
-                            }
-                        }).build());
-            }
-        });
+        handler.post(() -> addToStack(new MaterialDialog.Builder(context)
+                .title(warning ? context.getString(R.string.notifier_warning) : context.getString(R.string.notifier_notification))
+                .content(Html.fromHtml(msg_text))
+                .positiveText(R.string.notifier_understand)
+                .onPositive((dialog, which) -> {
+                    if (warning)
+                        Preferences.Warning.setWarning(msg_text);
+                    else
+                        Preferences.Notice.setNotice(msg_text);
+                })
+                .build()));
     }
 
     private void showToast(Context context){
         Toast.makeText(context, R.string.update_no_update, Toast.LENGTH_SHORT).show();
     }
 
-    private void msg(String text) {
-        if (BuildConfig.DEBUG)
-            Log.d("JSON TEST", text);
-    }
+
 
     private void msge(String text) {
         if (BuildConfig.DEBUG)
