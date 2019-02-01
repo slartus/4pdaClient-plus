@@ -1,138 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:id="@+id/preview"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="#ff0000" />
+        android:background="#ff0000"
+        android:orientation="horizontal"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="48dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:minHeight="48dp">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:text="Red"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+        <SeekBar
+            android:id="@+id/red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/redText"
+            android:layout_toEndOf="@+id/textView1"
+            android:layout_toRightOf="@+id/textView1"
+            android:max="255"
+            android:layout_toStartOf="@+id/redText"/>
+
+        <EditText
+            android:id="@+id/redText"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+            android:inputType="number"
+            android:paddingTop="0dp"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center_vertical"
-        android:layout_marginTop="16dp">
+        android:minHeight="48dp">
 
         <TextView
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Red"
-            android:gravity="center_vertical"
-            android:id="@+id/textView1"
-            android:layout_alignBottom="@+id/red"
-            android:layout_alignParentTop="true" />
-
-        <SeekBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/red"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/redText"
-            android:layout_toRightOf="@+id/textView1"
-            android:layout_toEndOf="@+id/textView1"
-            android:max="255" />
-
-        <EditText
-            android:layout_width="48dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/redText"
-            android:textSize="14sp"
-            android:paddingTop="0dp"
-            android:inputType="number"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignBottom="@+id/textView1"
-            android:gravity="center_horizontal" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="56dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Green"
-            android:gravity="center_vertical"
             android:id="@+id/textView2"
-            android:layout_alignBottom="@+id/green"
-            android:layout_alignParentTop="true" />
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:text="Green"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <SeekBar
+            android:id="@+id/green"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/green"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/textView2"
-            android:layout_toLeftOf="@+id/greenText"
+            android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/greenText"
-            android:max="255" />
+            android:layout_toLeftOf="@+id/greenText"
+            android:layout_toRightOf="@+id/textView2"
+            android:max="255"
+            android:layout_toEndOf="@+id/textView2"/>
 
         <EditText
+            android:id="@+id/greenText"
             android:layout_width="48dp"
             android:layout_height="wrap_content"
-            android:id="@+id/greenText"
-            android:textSize="14sp"
-            android:paddingTop="0dp"
-            android:inputType="number"
-            android:gravity="center_horizontal"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignBottom="@+id/textView2" />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+
+            android:inputType="number"
+            android:paddingTop="0dp"
+            android:textSize="14sp"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="48dp"
         android:layout_gravity="center_horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:minHeight="48dp">
 
         <TextView
+            android:id="@+id/textView4"
             android:layout_width="56dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Blue"
+            android:layout_centerVertical="true"
             android:gravity="center_vertical"
-            android:id="@+id/textView4"
-            android:layout_alignBottom="@+id/blue"
-            android:layout_alignParentTop="true" />
+            android:text="Blue"
+            android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <SeekBar
+            android:id="@+id/blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/blue"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/textView4"
-            android:layout_toLeftOf="@+id/blueText"
+            android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/blueText"
-            android:max="255" />
+            android:layout_toLeftOf="@+id/blueText"
+            android:layout_toRightOf="@+id/textView4"
+            android:max="255"
+            android:layout_toEndOf="@+id/textView4"/>
 
         <EditText
+            android:id="@+id/blueText"
             android:layout_width="48dp"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            android:id="@+id/blueText"
-            android:textSize="14sp"
-            android:paddingTop="0dp"
-            android:gravity="center_horizontal"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignBottom="@+id/textView4" />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+            android:inputType="number"
+            android:paddingTop="0dp"
+            android:textSize="14sp"/>
     </RelativeLayout>
 
 
