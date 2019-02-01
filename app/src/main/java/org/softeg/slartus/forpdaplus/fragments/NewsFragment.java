@@ -617,6 +617,9 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 //                return normalizeCommentUrls(m.group(1)) + getNavi(body);
 //            }
             body = NewsApi.parseNewsBody(body);
+
+            // удалим все стили
+            body = body.replaceAll("<link rel=\"stylesheet\"[^>]*>", "");
             return normalizeCommentUrls(body);
         }
 
