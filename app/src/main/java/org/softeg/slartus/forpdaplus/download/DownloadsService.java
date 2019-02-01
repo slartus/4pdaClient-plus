@@ -137,7 +137,7 @@ public class DownloadsService extends IntentService {
 
     public static void download(final Activity context1, final String url, final String tempFilePath,
                                 final int notificationId, final Boolean finish) {
-        ActionSelectDialogFragment.execute(context1,
+        ActionSelectDialogFragment.INSTANCE.execute(context1,
                 context1.getString(R.string.download_method),
                 "file.downloaderManagers",
                 context1.getResources().getTextArray(R.array.downloaderManagersArray),

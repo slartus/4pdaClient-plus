@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
-import org.softeg.slartus.forpdaplus.common.HtmlUtils;
 import org.softeg.slartus.forpdaplus.emotic.Smiles;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -21,15 +20,15 @@ import java.util.Hashtable;
  */
 public class TopicBodyBuilder extends HtmlBuilder {
 
-    public static final String NICK_SNAPBACK_TEMPLATE = "[SNAPBACK]%s[/SNAPBACK] [B]%s,[/B] \n";
+    static final String NICK_SNAPBACK_TEMPLATE = "[SNAPBACK]%s[/SNAPBACK] [B]%s,[/B] \n";
     private Boolean m_Logined, m_IsWebviewAllowJavascriptInterface;
     private ExtTopic m_Topic;
     private String m_UrlParams;
     private HtmlPreferences m_HtmlPreferences;
     private Hashtable<String, String> m_EmoticsDict;
     private boolean m_MMod = false;
-    private Boolean m_IsLoadImages = true;
-    private Boolean m_IsShowAvatars = true;
+    private Boolean m_IsLoadImages;
+    private Boolean m_IsShowAvatars;
 
     public TopicBodyBuilder(Context context, Boolean logined, ExtTopic topic, String urlParams,
                             Boolean isWebviewAllowJavascriptInterface) {
@@ -140,10 +139,6 @@ public class TopicBodyBuilder extends HtmlBuilder {
         return res;
     }
 
-    public void addBody(String value) {
-        m_Body.append(value);
-    }
-
     public void addPoll(String value, boolean openSpoil) {
         m_Body.append("<div class=\"poll\">").append(getSpoiler("<b><span>Опрос</span></b>", value, openSpoil)).append("</div>");
     }
@@ -164,8 +159,8 @@ public class TopicBodyBuilder extends HtmlBuilder {
 
     public static void addButtons(StringBuilder sb, int currentPage, int pagesCount, Boolean isUseJs,
                                   Boolean useSelectTextAsNumbers, Boolean top) {
-        Boolean prevDisabled = currentPage == 1;
-        Boolean nextDisabled = currentPage == pagesCount;
+        boolean prevDisabled = currentPage == 1;
+        boolean nextDisabled = currentPage == pagesCount;
         sb.append("\n<div class=\"navi ").append(top ? "top" : "bottom").append("\">\n");
         sb.append("<a class=\"button first").append(prevDisabled ? " disable\"" : "\"" + getHtmlout(isUseJs, "firstPage")).append("><span>&lt;&lt;</span></a>\n");
         sb.append("<a class=\"button prev").append(prevDisabled ? " disable\"" : "\"" + getHtmlout(isUseJs, "prevPage")).append("><span>&lt;</span></a>\n");
@@ -173,10 +168,6 @@ public class TopicBodyBuilder extends HtmlBuilder {
         sb.append("<a class=\"button next").append(nextDisabled ? " disable\"" : "\"" + getHtmlout(isUseJs, "nextPage")).append("><span>&gt;</span></a>\n");
         sb.append("<a class=\"button last").append(nextDisabled ? " disable\"" : "\"" + getHtmlout(isUseJs, "lastPage")).append("><span>&gt;&gt;</span></a>\n");
         sb.append("</div>\n");
-    }
-
-    private String normParam(String paramName) {
-        return HtmlUtils.modifyHtmlQuote(paramName).replace("'", "\\'").replace("\"", "&quot;");
     }
 
     public static String getHtmlout(Boolean webViewAllowJs, String methodName, String val1, String val2) {
@@ -187,12 +178,12 @@ public class TopicBodyBuilder extends HtmlBuilder {
         return getHtmlout(webViewAllowJs, methodName, new String[]{val1});
     }
 
-    public static String getHtmlout(Boolean webViewAllowJs, String methodName) {
+    private static String getHtmlout(Boolean webViewAllowJs, String methodName) {
         return getHtmlout(webViewAllowJs, methodName, new String[0]);
     }
 
 
-    public static String getHtmlout(Boolean webViewAllowJs, String methodName, String[] paramValues) {
+    private static String getHtmlout(Boolean webViewAllowJs, String methodName, String[] paramValues) {
         return getHtmlout(webViewAllowJs, methodName, paramValues, true);
     }
 

@@ -251,7 +251,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     }
 
     private void showSaveNavigateActionDialog(final IListItem topic, final CharSequence selectedAction, final String params) {
-        ActionSelectDialogFragment.showSaveNavigateActionDialog(getContext(),
+        ActionSelectDialogFragment.INSTANCE.showSaveNavigateActionDialog(getContext(),
                 String.format("%s.navigate_action", getListName()),
                 selectedAction.toString(),
                 () -> showTopicActivity(topic, params)
@@ -293,7 +293,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             if(!Client.getInstance().isUserLogin()){
                 Toast.makeText(getContext(),"Залогиньтесь для просмотра тем форума!",Toast.LENGTH_LONG).show();
             }
-            ActionSelectDialogFragment.execute(getActivity(),
+            ActionSelectDialogFragment.INSTANCE.execute(getActivity(),
                     getString(R.string.default_action),
                     String.format("%s.navigate_action", getListName()),
                     new CharSequence[]{getString(R.string.navigate_getfirstpost), getString(R.string.navigate_getlastpost), getString(R.string.navigate_getnewpost), getString(R.string.navigate_last_url)},

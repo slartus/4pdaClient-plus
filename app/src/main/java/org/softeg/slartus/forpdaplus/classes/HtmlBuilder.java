@@ -9,7 +9,7 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
  * Created by slinkin on 25.12.13.
  */
 public class HtmlBuilder{
-    public final String ACTIONBAR_TOP_MARGIN= getMarginTop()+"px";
+    final String ACTIONBAR_TOP_MARGIN= getMarginTop()+"px";
     protected StringBuilder m_Body;
 
     public void beginHtml(String title) {
