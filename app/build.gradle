@@ -13,7 +13,7 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     def appVersionCode = 616
-    def appVersionName = "3.5.2.8"
+    def appVersionName = "3.5.2.9"
 
 
     defaultConfig {
