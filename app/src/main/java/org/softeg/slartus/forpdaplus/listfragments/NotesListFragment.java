@@ -73,7 +73,7 @@ public class NotesListFragment extends TopicsListFragment {
             Note note = NotesTable.getNote(topic.getId().toString());
             if (note != null) {
                 if (note.Url!=null) {
-                    IntentActivity.tryShowUrl((Activity) getContext(), mHandler, note.Url, true, false, null);
+                    IntentActivity.tryShowUrl((Activity) getContext(), getMHandler(), note.Url, true, false, null);
                 }else {
                     NoteFragment.showNote(topic.getId().toString());
                 }
@@ -112,7 +112,7 @@ public class NotesListFragment extends TopicsListFragment {
                             public void onPositive(MaterialDialog dialog) {
                                 try {
                                     NotesTable.delete(topic.getId().toString());
-                                    mData.remove(topic);
+                                    getMData().remove(topic);
                                     getAdapter().notifyDataSetChanged();
                                 } catch (Throwable ex) {
                                     AppLog.e(getContext(), ex);
@@ -140,7 +140,7 @@ public class NotesListFragment extends TopicsListFragment {
                                 list1.add(new MenuListDialog(pair.first.toString(), new Runnable() {
                                     @Override
                                     public void run() {
-                                        IntentActivity.tryShowUrl((Activity) getContext(), mHandler, pair.second.toString(), true, false, null);
+                                        IntentActivity.tryShowUrl((Activity) getContext(), getMHandler(), pair.second.toString(), true, false, null);
                                     }
                                 }));
                             }

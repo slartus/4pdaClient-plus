@@ -54,7 +54,7 @@ public class FavoritesListFragment extends TopicsListFragment {
             db = cacheDbHelper.getWritableDatabase();
             BaseDao<FavTopic> baseDao = new BaseDao<>(App.getContext(), db, getListName(), FavTopic.class);
             baseDao.createTable(db);
-            for (IListItem item : mData) {
+            for (IListItem item : getMData()) {
                 FavTopic topic = (FavTopic) item;
                 baseDao.insert(topic);
             }

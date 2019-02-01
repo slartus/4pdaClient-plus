@@ -22,7 +22,7 @@ public abstract class UsersListFragment extends BaseTaskListFragment {
     @Override
     protected boolean inBackground(boolean isRefresh) throws Throwable {
         mListInfo = new ListInfo();
-        mListInfo.setFrom(isRefresh ? 0 : mData.size());
+        mListInfo.setFrom(isRefresh ? 0 : getMData().size());
         mLoadResultList = loadUsers(Client.getInstance(), mListInfo);
         return true;
     }
@@ -32,14 +32,14 @@ public abstract class UsersListFragment extends BaseTaskListFragment {
     @Override
     protected void deliveryResult(boolean isRefresh) {
         if (isRefresh)
-            mData.clear();
+            getMData().clear();
         for (IListItem item : mLoadResultList) {
-            mData.add(item);
+            getMData().add(item);
         }
 
         mLoadResultList.clear();
 
-        Collections.sort(mData, getComparator());
+        Collections.sort(getMData(), getComparator());
     }
 
     private Comparator<? super IListItem> getComparator(){

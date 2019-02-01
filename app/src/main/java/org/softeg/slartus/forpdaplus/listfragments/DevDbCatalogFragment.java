@@ -141,7 +141,7 @@ public class DevDbCatalogFragment extends BaseCatalogFragment {
         if (TextUtils.isEmpty(topic.getId())) return;
 
         List<MenuListDialog> list = new ArrayList<>();
-        ExtUrl.addUrlMenu(mHandler, getContext(), list, topic.getId().toString(), topic.getTitle().toString());
+        ExtUrl.addUrlMenu(getMHandler(), getContext(), list, topic.getId().toString(), topic.getTitle().toString());
         ExtUrl.showContextDialog(getContext(), null, list);
     }
 }

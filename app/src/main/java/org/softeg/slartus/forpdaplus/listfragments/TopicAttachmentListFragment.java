@@ -63,15 +63,15 @@ public class TopicAttachmentListFragment extends BaseTaskListFragment {
     @Override
     protected void deliveryResult(boolean isRefresh) {
         if (isRefresh)
-            mData.clear();
+            getMData().clear();
         List<CharSequence> ids=new ArrayList<>();
-        for (IListItem item : mData) {
+        for (IListItem item : getMData()) {
             ids.add(item.getId());
         }
         for (IListItem item : mLoadResultList) {
             if(ids.contains(item.getId()))
                 continue;
-            mData.add(item);
+            getMData().add(item);
         }
 
         mLoadResultList.clear();

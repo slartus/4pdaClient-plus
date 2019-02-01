@@ -46,7 +46,7 @@ public class TopicsHistoryListFragment extends TopicsListFragment {
                 @Override
                 public void run() {
                     TopicsHistoryTable.delete(topic.getId());
-                    mData.remove(topic);
+                    getMData().remove(topic);
                     getAdapter().notifyDataSetChanged();
                 }
             }));

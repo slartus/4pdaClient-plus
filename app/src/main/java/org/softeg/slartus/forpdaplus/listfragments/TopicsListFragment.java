@@ -70,7 +70,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
         try (SQLiteDatabase db = cacheDbHelper.getWritableDatabase()) {
             BaseDao<Topic> baseDao = new BaseDao<>(App.getContext(), db, getListName(), Topic.class);
             baseDao.createTable(db);
-            for (IListItem item : mData) {
+            for (IListItem item : getMData()) {
                 Topic topic = (Topic) item;
                 baseDao.insert(topic);
             }
@@ -94,7 +94,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     @Override
     public boolean inBackground(boolean isRefresh) throws IOException, ParseException, URISyntaxException {
         mListInfo = new ListInfo();
-        mListInfo.setFrom(isRefresh ? 0 : mData.size());
+        mListInfo.setFrom(isRefresh ? 0 : getMData().size());
         mLoadResultList = loadTopics(Client.getInstance(), mListInfo);
         return true;
     }
@@ -103,15 +103,15 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     @Override
     protected void deliveryResult(boolean isRefresh) {
         if (isRefresh)
-            mData.clear();
+            getMData().clear();
         List<CharSequence> ids = new ArrayList<>();
-        for (IListItem item : mData) {
+        for (IListItem item : getMData()) {
             ids.add(item.getId());
         }
         for (IListItem item : mLoadResultList) {
             if (ids.contains(item.getId()))
                 continue;
-            mData.add(item);
+            getMData().add(item);
         }
 
         mLoadResultList.clear();
@@ -120,15 +120,15 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     }
 
     protected void sort() {
-        Collections.sort(mData, getComparator());
+        Collections.sort(getMData(), getComparator());
     }
 
     @Override
     public void setCount() {
-        int count = Math.max(mListInfo.getOutCount(), mData.size());
-        mListViewLoadMoreFooter.setCount(mData.size(), count);
-        mListViewLoadMoreFooter.setState(
-                mData.size() == count ? ListViewLoadMoreFooter.STATE_FULL_DOWNLOADED :
+        int count = Math.max(mListInfo.getOutCount(), getMData().size());
+        getMListViewLoadMoreFooter().setCount(getMData().size(), count);
+        getMListViewLoadMoreFooter().setState(
+                getMData().size() == count ? ListViewLoadMoreFooter.STATE_FULL_DOWNLOADED :
                         ListViewLoadMoreFooter.STATE_LOAD_MORE
         );
     }
@@ -159,7 +159,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                 MainActivity.showListFragment(topic.getId().toString(), new NotesBrickInfo().getName(), args);
             }));
             list.add(new MenuListDialog(getString(R.string.link), () -> showLinkMenu(getContext(), topic)));
-            list.add(new MenuListDialog(getString(R.string.options), () -> showOptionsMenu(getContext(), mHandler, topic, null)));
+            list.add(new MenuListDialog(getString(R.string.options), () -> showOptionsMenu(getContext(), getMHandler(), topic, null)));
 
             ExtUrl.showContextDialog(getContext(), null, list);
         } catch (Exception ex) {
@@ -168,7 +168,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     }
     public void showLinkMenu(final Context context, final IListItem topic){
         final List<MenuListDialog> list = new ArrayList<>();
-        ExtUrl.addUrlSubMenu(mHandler, context, list,
+        ExtUrl.addUrlSubMenu(getMHandler(), context, list,
                 TopicUtils.getTopicUrl(topic.getId().toString(), TopicUtils.getOpenTopicArgs(topic.getId(), getListName())), topic.getId().toString(),
                 topic.getMain().toString());
         ExtUrl.showContextDialog(context, getString(R.string.link), list);
@@ -193,7 +193,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             String title = isFavotitesList ? context.getString(R.string.change_subscription) : context.getString(R.string.add_to_favorite);
 
             optionsMenu.add(new MenuListDialog(title, () -> TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, topic,
-                    new TopicListItemTask(context, (Topic) topic, mAdapter) {
+                    new TopicListItemTask(context, (Topic) topic, getAdapter()) {
                         @Override
                         public String doInBackground(Topic topic1, String... pars) throws Throwable {
                             return TopicApi.changeFavorite(Client.getInstance(), topic1.getId(), pars[0]);
@@ -209,7 +209,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             if (isFavotitesList) {
                 optionsMenu.add(new MenuListDialog(context.getString(R.string.DeleteFromFavorites), () -> {
                     Toast.makeText(context, R.string.request_sent, Toast.LENGTH_SHORT).show();
-                    new TopicListItemTask(context, (Topic) topic, mAdapter) {
+                    new TopicListItemTask(context, (Topic) topic, getAdapter()) {
                         @Override
                         public String doInBackground(Topic topic12, String... pars) throws ParseException, IOException, URISyntaxException {
                             return TopicApi.deleteFromFavorites(Client.getInstance(), topic12.getId());
@@ -217,7 +217,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
                         @Override
                         public void onPostExecute(Topic topic12) {
-                            mData.remove(topic12);
+                            getMData().remove(topic12);
                         }
                     }.execute();
                 }));
@@ -225,7 +225,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                 final FavTopic favTopic = (FavTopic) topic;
                 optionsMenu.add(new MenuListDialog((favTopic.isPinned()?context.getString(R.string.unpin):context.getString(R.string.pin))+context.getString(R.string.in_favorites_combined), () -> {
                     Toast.makeText(context, R.string.request_sent, Toast.LENGTH_SHORT).show();
-                    new TopicListItemTask(context, topic, mAdapter) {
+                    new TopicListItemTask(context, topic, getAdapter()) {
                         @Override
                         public String doInBackground(Topic topic13, String... pars)
                                 throws ParseException, IOException, URISyntaxException {
@@ -308,7 +308,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     }
 
     public void topicAfterClick(String id) {
-        for(IListItem item:mData){
+        for(IListItem item: getMData()){
             if(item.getId().equals(id)){
                 item.setState(IListItem.STATE_NORMAL);
                 getAdapter().notifyDataSetChanged();
@@ -325,7 +325,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
     @Override
     protected BaseAdapter createAdapter() {
-        return new SortedListAdapter(getActivity(), mData, getPreferences().getBoolean("showSubMain", false));
+        return new SortedListAdapter(getActivity(), getMData(), getPreferences().getBoolean("showSubMain", false));
     }
 
     private Comparator<? super IListItem> getComparator() {

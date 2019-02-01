@@ -50,7 +50,7 @@ public class AppsListFragment extends TopicsListFragment {
 
     @Override
     protected BaseAdapter createAdapter() {
-        return new ListAdapter(getActivity(), mData, getPreferences().getBoolean("showSubMain", false));
+        return new ListAdapter(getActivity(), getMData(), getPreferences().getBoolean("showSubMain", false));
     }
 
     @Override
@@ -71,7 +71,7 @@ public class AppsListFragment extends TopicsListFragment {
             db = cacheDbHelper.getWritableDatabase();
             BaseDao<AppItem> baseDao = new BaseDao<>(App.getContext(), db, getListName(), AppItem.class);
             baseDao.createTable(db);
-            for (IListItem item : mData) {
+            for (IListItem item : getMData()) {
                 AppItem news = (AppItem) item;
                 baseDao.insert(news);
             }
@@ -337,7 +337,7 @@ public class AppsListFragment extends TopicsListFragment {
                             ApplicationRelationsTable.addRealtion(appItem.getPackageName(), m.group(1));
                             appItem.setFindedState(AppItem.STATE_FINDED);
                             appItem.setId(m.group(1));
-                            mAdapter.notifyDataSetChanged();
+                            getAdapter().notifyDataSetChanged();
                         }
                         @Override
                         public void onNegative(MaterialDialog dialog) {

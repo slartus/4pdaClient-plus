@@ -159,7 +159,7 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
     protected void afterDeliveryResult() {
         setCount();
         setListShown(true);
-        mAdapter.notifyDataSetChanged();
+        getAdapter().notifyDataSetChanged();
         setEmptyText(App.getContext().getString(R.string.no_data));
         new Thread(this::trySaveCache).start();
 
@@ -270,7 +270,7 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
             if (!isCancelled()) {
                 deliveryCache();
                 restoreListViewScrollPosition();
-                if (mData.size() == 0 || Preferences.Lists.isRefresh())
+                if (getMData().size() == 0 || Preferences.Lists.isRefresh())
                     startLoad();
                 else {
                     setLoading(false);
@@ -291,13 +291,13 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
     }
 
     protected void deliveryCache() {
-        mData.clear();
+        getMData().clear();
         if (mCacheList != null) {
-            mData.addAll(mCacheList);
+            getMData().addAll(mCacheList);
             mCacheList.clear();
         }
         setCount();
-        mAdapter.notifyDataSetChanged();
+        getAdapter().notifyDataSetChanged();
     }
 
 
