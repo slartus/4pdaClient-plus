@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Window;
 import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -41,7 +42,6 @@ import org.softeg.slartus.forpdaplus.db.ForumsTableOld;
 import org.softeg.slartus.forpdaplus.download.DownloadReceiver;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.topic.ForPdaWebInterface;
-import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 import java.io.IOException;
 import java.net.URI;
@@ -59,7 +59,6 @@ import java.util.regex.Pattern;
  */
 public class Client implements IHttpClient {
 
-    public static final String SITE = "4pda.ru";
     public String UserId = "0";
     private String m_User = App.getContext().getString(R.string.guest);
 
@@ -74,7 +73,7 @@ public class Client implements IHttpClient {
     }
 
 
-    public static final Client INSTANCE = new Client();
+    static final Client INSTANCE = new Client();
 
 
     public URI getRedirectUri() {
@@ -87,52 +86,6 @@ public class Client implements IHttpClient {
 
     public void deletePost(String forumId, String themeId, String postId, CharSequence authKey) throws IOException {
         PostApi.delete(this, forumId, themeId, postId, authKey);
-    }
-
-    public String getEditPostPlus(String forumId, String themeId, String postId, String authKey,
-                                  Map<String, String> outParams) throws Throwable {
-        if (TextUtils.isEmpty(forumId) || TextUtils.isEmpty(authKey)) {
-            ExtTopic topic = new ExtTopic(themeId, "");
-            setThemeForumAndAuthKey(topic);
-
-            forumId = topic.getForumId();
-            authKey = topic.getAuthKey();
-
-            outParams.put("forumId", forumId);
-            outParams.put("authKey", authKey);
-        }
-
-        String res = PostApi.getEditPage(this, forumId, themeId, postId, authKey);
-
-        String error = PostApi.checkEditPage(res);
-
-        if (!TextUtils.isEmpty(error))
-            throw new NotReportException(error);
-
-        return res;
-
-    }
-
-    public String editPost(String forumId, String themeId, String authKey, String postId, Boolean enablesig,
-                           Boolean enableEmo, String post, String addedFileList, String post_edit_reason) throws IOException {
-        return PostApi.applyEdit(this, forumId, themeId, authKey, postId, enablesig,
-                enableEmo, post, addedFileList, post_edit_reason);
-    }
-
-    public String attachFilePost(String forumId, String themeId, String authKey, String attachPostKey, String postId, Boolean enablesig, Boolean enableEmo,
-                                 String post, String filePath, String addedFileList, ProgressState progress
-            , String post_edit_reason) throws Exception {
-        return PostApi.attachFile(this, forumId, themeId, authKey, attachPostKey, postId, enablesig, enableEmo,
-                post, filePath, addedFileList, progress, post_edit_reason);
-    }
-
-    public String deleteAttachFilePost(String forumId, String themeId, String authKey, String postId,
-                                       Boolean enablesig, Boolean enableemo,
-                                       String post, String attachToDeleteId, String fileList
-            , String post_edit_reason) throws Exception {
-        return PostApi.deleteAttachedFile(this, forumId, themeId, authKey, postId,
-                enablesig, enableemo,
-                post, attachToDeleteId, fileList, post_edit_reason);
     }
 
     public Boolean changeReputation(String postId, String userId, String type, String message, Map<String, String> outParams) throws IOException {
@@ -150,9 +103,9 @@ public class Client implements IHttpClient {
 
 
     public Boolean hasLoginCookies() {
-        Boolean session = false;
-        Boolean pass_hash = false;
-        Boolean member = false;
+        boolean session = false;
+        boolean pass_hash = false;
+        boolean member = false;
         HttpHelper httpHelper = null;
         try {
             try {
@@ -197,20 +150,11 @@ public class Client implements IHttpClient {
         return body;
     }
 
-    /**
-     * Загрузка тестовой страницы, проверка логина, проверка писем
-     */
-    public void loadTestPage() throws IOException {
-        String body = performGet("http://4pda.ru/forum/index.php?showforum=200");
-        checkLogin(body);
-        checkMails(body);
-    }
-
     public String performGetFullVersion(String s) throws IOException {
 
         HttpHelper httpHelper = new HttpHelper(HttpHelper.FULL_USER_AGENT);
         //HttpHelper httpHelper = new HttpHelper();
-        String res = null;
+        String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
             res = httpHelper.performGet(s);
@@ -231,7 +175,7 @@ public class Client implements IHttpClient {
     public String performGet(String s, Boolean checkEmptyResult, Boolean checkLoginAndMails) throws IOException {
 
         HttpHelper httpHelper = new HttpHelper();
-        String res = null;
+        String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
             res = httpHelper.performGet(s);
@@ -252,7 +196,7 @@ public class Client implements IHttpClient {
 
     public String performPost(String s, Map<String, String> additionalHeaders) throws IOException {
         HttpHelper httpHelper = new HttpHelper();
-        String res = null;
+        String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
             res = httpHelper.performPost(s, additionalHeaders);
@@ -267,7 +211,7 @@ public class Client implements IHttpClient {
     public String uploadFile(String url, String filePath, Map<String, String> additionalHeaders
             , ProgressState progress) throws Exception {
         HttpHelper httpHelper = new HttpHelper();
-        String res = null;
+        String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
             res = httpHelper.uploadFile(url, filePath, additionalHeaders, progress);
@@ -291,7 +235,7 @@ public class Client implements IHttpClient {
 
     public String performPost(String s, Map<String, String> additionalHeaders, String encoding) throws IOException {
         HttpHelper httpHelper = new HttpHelper();
-        String res = null;
+        String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
             res = httpHelper.performPost(s, additionalHeaders, encoding);
@@ -305,7 +249,7 @@ public class Client implements IHttpClient {
     @Override
     public String performPost(String s, List<NameValuePair> additionalHeaders) throws IOException {
         HttpHelper httpHelper = new HttpHelper();
-        String res = null;
+        String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
             res = httpHelper.performPost(s, additionalHeaders);
@@ -337,12 +281,12 @@ public class Client implements IHttpClient {
         return INSTANCE;  //To change body of created methods use File | Settings | File Templates.
     }
 
-    public Boolean likeNews(String postId) throws IOException {
-        return NewsApi.like(this, postId);
+    public void likeNews(String postId) throws IOException {
+        NewsApi.like(this, postId);
     }
 
-    public Boolean likeComment(final String id, final String comment) throws IOException {
-        return NewsApi.likeComment(this, id, comment);
+    public void likeComment(final String id, final String comment) throws IOException {
+        NewsApi.likeComment(this, id, comment);
     }
 
 
@@ -350,16 +294,16 @@ public class Client implements IHttpClient {
         void onUserChanged(String user, Boolean success);
     }
 
-    public void doOnUserChangedListener(String user, Boolean success) {
+    void doOnUserChangedListener(String user, Boolean success) {
         for (OnUserChangedListener listener : m_OnUserChangeListeners.getListeners()) {
             listener.onUserChanged(user, success);
         }
 
     }
 
-    private Observer<OnUserChangedListener> m_OnUserChangeListeners = new Observer<OnUserChangedListener>();
+    private Observer<OnUserChangedListener> m_OnUserChangeListeners = new Observer<>();
 
-    public void addOnUserChangedListener(OnUserChangedListener p) {
+    void addOnUserChangedListener(OnUserChangedListener p) {
         m_OnUserChangeListeners.addStrongListener(p);
     }
 
@@ -374,9 +318,9 @@ public class Client implements IHttpClient {
 
     }
 
-    private Observer<OnMailListener> m_OnMailListeners = new Observer<OnMailListener>();
+    private Observer<OnMailListener> m_OnMailListeners = new Observer<>();
 
-    public void addOnMailListener(OnMailListener p) {
+    void addOnMailListener(OnMailListener p) {
         m_OnMailListeners.addStrongListener(p);
     }
 
@@ -385,7 +329,7 @@ public class Client implements IHttpClient {
         void onProgressChanged(Context context, DownloadTask downloadTask, Exception ex);
     }
 
-    public void doOnOnProgressChanged(OnProgressChangedListener listener, String state) {
+    private void doOnOnProgressChanged(OnProgressChangedListener listener, String state) {
         if (listener != null) {
             listener.onProgressChanged(state);
         }
@@ -401,14 +345,11 @@ public class Client implements IHttpClient {
                     .customView(loginDialog.getView(), true)
                     .positiveText(R.string.login)
                     .negativeText(R.string.cancel)
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            loginDialog.connect(onUserChangedListener);
-                        }
-                    })
+                    .onPositive((dialog1, which) -> loginDialog.connect(onUserChangedListener))
                     .build();
-            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            Window window=dialog.getWindow();
+            assert window != null;
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             dialog.show();
 
         } catch (Exception ex) {
@@ -428,7 +369,7 @@ public class Client implements IHttpClient {
 
     private String m_LoginFailedReason;
 
-    public String getLoginFailedReason() {
+    String getLoginFailedReason() {
         return m_LoginFailedReason;
     }
 
@@ -438,15 +379,15 @@ public class Client implements IHttpClient {
                 enablesig, enableemo, quick, addedFileList);
     }
 
-    public String reply(String forumId, String themeId, String authKey, String attachPostKey, String post,
-                        Boolean enablesig, Boolean enableemo, Boolean quick, String addedFileList) throws IOException {
+    private String reply(String forumId, String themeId, String authKey, String attachPostKey, String post,
+                         Boolean enablesig, Boolean enableemo, Boolean quick, String addedFileList) throws IOException {
         return PostApi.reply(this, forumId, themeId, authKey, attachPostKey, post,
                 enablesig, enableemo, addedFileList, quick);
     }
 
 
-    public Boolean login(String login, String password, Boolean privacy,
-                         String capVal, String capTime, String capSig, String session) throws Exception {
+    Boolean login(String login, String password, Boolean privacy,
+                  String capVal, String capTime, String capSig, String session) throws Exception {
 
         HttpHelper httpHelper = new HttpHelper();
         try {
@@ -458,25 +399,25 @@ public class Client implements IHttpClient {
             LoginResult loginResult = ProfileApi.login(new IHttpClient() {
 
 
-                public String performGetWithCheckLogin(String s, OnProgressChangedListener beforeGetPage, OnProgressChangedListener afterGetPage) throws IOException {
+                public String performGetWithCheckLogin(String s, OnProgressChangedListener beforeGetPage, OnProgressChangedListener afterGetPage) {
                     return null;
                 }
 
-                public String performGet(String s, Boolean b, Boolean bb) throws IOException {
+                public String performGet(String s, Boolean b, Boolean bb) {
                     return null;
                 }
 
 
-                public String performGet(String s) throws IOException {
+                public String performGet(String s) {
                     return null;
                 }
 
                 @Override
-                public String performGetFullVersion(String s) throws IOException {
+                public String performGetFullVersion(String s) {
                     return null;
                 }
 
-                public String performPost(String s, Map<String, String> additionalHeaders) throws IOException {
+                public String performPost(String s, Map<String, String> additionalHeaders) {
 
                     String res = null;
                     try {
@@ -492,7 +433,7 @@ public class Client implements IHttpClient {
                     return res;
                 }
 
-                public String performPost(String s, List<NameValuePair> additionalHeaders) throws IOException {
+                public String performPost(String s, List<NameValuePair> additionalHeaders) {
 
                     String res = null;
                     try {
@@ -508,7 +449,7 @@ public class Client implements IHttpClient {
                     return res;
                 }
 
-                public String performPost(String s, Map<String, String> additionalHeaders, String encoding) throws IOException {
+                public String performPost(String s, Map<String, String> additionalHeaders, String encoding) {
 
                     String res = null;
                     try {
@@ -525,12 +466,12 @@ public class Client implements IHttpClient {
                 }
 
                 @Override
-                public String uploadFile(String url, String filePath, Map<String, String> additionalHeaders, ProgressState progress) throws Exception {
+                public String uploadFile(String url, String filePath, Map<String, String> additionalHeaders, ProgressState progress) {
                     return null;  //To change body of implemented methods use File | Settings | File Templates.
                 }
 
                 @Override
-                public CookieStore getCookieStore() throws IOException {
+                public CookieStore getCookieStore() {
                     try {
                         return finalHttpHelper.getCookieStore();
                     } finally {
@@ -584,7 +525,7 @@ public class Client implements IHttpClient {
 
     }
 
-    public Boolean checkLogin(CookieStore cookies) {
+    private Boolean checkLogin(CookieStore cookies) {
         if (cookies == null)
             return false;
         m_User = "";
@@ -607,7 +548,7 @@ public class Client implements IHttpClient {
 
     }
 
-    public void checkLogin(String pageBody) {
+    private void checkLogin(String pageBody) {
 
         try {
             HttpHelper httpHelper = null;
@@ -670,7 +611,7 @@ public class Client implements IHttpClient {
 
     private int m_QmsCount = 0;
 
-    public int getQmsCount() {
+    int getQmsCount() {
         return m_QmsCount;
     }
 
@@ -679,12 +620,12 @@ public class Client implements IHttpClient {
     }
 
 
-    public void checkMails(String pageBody) {
+    private void checkMails(String pageBody) {
         m_QmsCount = QmsApi.getNewQmsCount(pageBody);
         doOnMailListener();
     }
 
-    public Boolean logout() throws Throwable {
+    Boolean logout() throws Throwable {
         String res = ProfileApi.logout(this, m_K);
         HttpHelper httpHelper = new HttpHelper();
         try {
@@ -729,6 +670,7 @@ public class Client implements IHttpClient {
     private final static Pattern pollTitlePattern = Pattern.compile("<b>(.*?)</b>");
     private final static Pattern pollQuestionsPattern = Pattern.compile("strong>(.*?)</strong[\\s\\S]*?table[^>]*?>([\\s\\S]*?)</table>");
     private final static Pattern pollVotedPattern = Pattern.compile("(<input[^>]*?>)&nbsp;<b>([^>]*)</b>");
+    @SuppressWarnings("RegExpRedundantEscape")
     private final static Pattern pollNotVotedPattern = Pattern.compile("<td[^>]*>([^<]*?)</td><td[^\\[]*\\[ <b>(.*?)</b>[^\\[]*\\[([^\\]]*)");
     private final static Pattern pollBottomPattern = Pattern.compile("<td class=\"row1\" colspan=\"3\" align=\"center\"><b>([^<]*?)</b>[\\s\\S]*?class=\"formbuttonrow\">([\\s\\S]*?)</td");
 
@@ -750,17 +692,17 @@ public class Client implements IHttpClient {
     //13 - тело
     //Да простит меня господь за это. Действие во благо не счетается грехом, ведь верно?
     //А разве может быть иначе?
+    @SuppressWarnings({"RegExpRedundantEscape", "RegExpRepeatedSpace"})
     private final static Pattern postsPattern = Pattern.compile("<div data-post=\"(\\d+)\"[^>]*>[\\s\\S]*?post_date[^>]*?>(.*?)&nbsp;[^#]*#(\\d+)[\\s\\S]*?font color=\"([^\"]*?)\"[\\s\\S]*?data-av=\"([^\"]*)\"[^>]*?>([^>]*?)<[\\s\\S]*?<a href=\"[^\"]*?showuser=(\\d+)\"[\\s\\S]*?<span[^>]*?post_user_info[^>]*?>(<strong[\\s\\S]*?<\\/strong>(?:<br[^>]*?>))?(?:<span[^<]*?color:[^;']*[^>]*?>)?([\\s\\S]*?)(?:<\\/span>|)(?:  \\| [^<]*?)?<\\/span>([\\s\\S]*?<span[^>]*?data-member-rep[^>]*?>([^<]*?)<\\/span>[\\s\\S]*?)<div class=\"post_body([^\"]*?)\"[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div data-post=\"\\d+\"[^>]*>|<!-- TABLE FOOTER -->|<div class=\"topic_foot_nav\">)",
                     Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-    String np = "<div data-post=\"(\\d+)\"[^>]*>[\\s\\S]*?post_date[^>]*?>(.*?)&nbsp;[^#]*#(\\d+)[\\s\\S]*?font color=\"([^\"]*?)\"[\\s\\S]*?\\[B\\](.*?),\\[\\/B\\]\\s*'\\)\"\\s*data-av=\"([^\"]*)\">[\\s\\S]*?<a href=\"[^\"]*?showuser=(\\d+)\"[\\s\\S]*?<span class=\"post_user_info[^\"]*\"[^>]*>(<strong[\\s\\S]*?<\\/strong><br[^>]*>)?(<span[^>]*?>[^<]*?<\\/span>)[\\s\\S]*?<br[^>]*?>([\\s\\S]*?<span[^>]*?ajaxrep[^>]*?>(\\d+)<\\/span>[\\s\\S]*?)<div class=\"post_body([^\"]*?)\"[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div data-post=\"\\d+\"[^>]*>|<!-- TABLE FOOTER -->)";
+
     private final static Pattern editPattern = PatternExtensions.compile("do=edit_post[^\"]*\"");
     private final static Pattern deletePattern = PatternExtensions.compile("onclick=\"[^\"]*seMODdel");
 
 
     //createTopic
     private final static Pattern navStripPattern = PatternExtensions.compile("<div id=\"navstrip\">(.*?)</div>");
-    private final static Pattern userPattern =
-            PatternExtensions.compile("act=login&CODE=03&k=([a-z0-9]{32})");
+
     private final static Pattern titlePattern = PatternExtensions.compile("<title>(.*?) - 4PDA</title>");
     private final static Pattern descriptionPattern = PatternExtensions.compile("<div class=\"topic_title_post\">([^<]*)<");
     private final static Pattern moderatorTitlePattern = PatternExtensions.compile("onclick=\"return setpidchecks\\(this.checked\\);\".*?>&nbsp;(.*?)<");
@@ -790,7 +732,7 @@ public class Client implements IHttpClient {
     }
 
 
-    public static ExtTopic createTopic(String id, String page) {
+    private static ExtTopic createTopic(String id, String page) {
 
         String title = "";
         Matcher m = titlePattern.matcher(page);
@@ -964,7 +906,7 @@ public class Client implements IHttpClient {
 
         //String today = Functions.getToday();
         //String yesterday = Functions.getYesterToday();
-        org.softeg.slartus.forpdaplus.classes.Post post = null;
+        org.softeg.slartus.forpdaplus.classes.Post post;
         Boolean spoil = spoilFirstPost;
         String str;
         Matcher m;
@@ -1012,56 +954,13 @@ public class Client implements IHttpClient {
     }
 
 
-    public void markAllForumAsRead() throws Throwable {
+    void markAllForumAsRead() throws Throwable {
         ForumsApi.markAllAsRead(this);
     }
 
-    public String getThemeForumId(CharSequence themeId) throws IOException {
 
-        String res = performGet("http://4pda.ru/forum/lofiversion/index.php?t" + themeId + ".html");
-
-        return parseForumId(res);
-
-    }
-
-    private String parseForumId(String pageBody) {
-        Pattern pattern = Pattern.compile("<div class='ipbnav'>.*<a href='http://4pda.ru/forum/lofiversion/index.php\\?f(\\d+).html'>.*?</a></div>",
-                Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-        Matcher m = pattern.matcher(pageBody);
-        if (m.find()) {
-            return m.group(1);
-        } else {
-            return null;
-        }
-    }
-
-    private void setThemeForumAndAuthKey(ExtTopic topic) throws IOException {
-
-        String res = performGet("http://4pda.ru/forum/lofiversion/index.php?t" + topic.getId() + ".html");
-
-        if (TextUtils.isEmpty(topic.getForumId())) {
-            String forumId = parseForumId(res);
-            if (forumId != null) {
-                topic.setForumId(forumId);
-                LogUtil.E("BOOM DOOM", "forum id " + forumId);
-            }
-        }
-
-        if (TextUtils.isEmpty(topic.getAuthKey())) {
-            Pattern pattern = Pattern.compile("name=\"auth_key\" value=\"(.*)\"",
-                    Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-            Matcher m = pattern.matcher(res);
-            if (m.find()) {
-                topic.setAuthKey(m.group(1));
-                LogUtil.E("BOOM DOOM", "key " + m.group(1));
-            }
-        }
-
-    }
-
-
-    public DownloadTask downloadFile(Context context, String url, int notificationId, String tempFilePath) {
-        DownloadTask downloadTask = m_DownloadTasks.add(url, notificationId, null);
+    public void downloadFile(Context context, String url, int notificationId, String tempFilePath) {
+        m_DownloadTasks.add(url, notificationId, null);
 
         Intent intent = new Intent(context, DownloadsService.class);
         intent.putExtra(DownloadsService.DOWNLOAD_FILE_ID_KEY, notificationId);
@@ -1069,7 +968,6 @@ public class Client implements IHttpClient {
         intent.putExtra("receiver", new DownloadReceiver(new Handler(), context));
         context.startService(intent);
 
-        return downloadTask;
     }
 
     private DownloadTasks m_DownloadTasks = new DownloadTasks();
