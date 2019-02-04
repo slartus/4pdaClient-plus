@@ -498,7 +498,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
             optionsMenu.add(R.string.OpenTopicForum).setOnMenuItemClickListener(menuItem -> {
                 try {
-                    ForumFragment.showActivity(context, getTopic().getForumId(), getTopic().getId());
+                    ForumFragment.Companion.showActivity(context, getTopic().getForumId(), getTopic().getId());
                 } catch (Exception ex) {
                     AppLog.e(context, ex);
                 }

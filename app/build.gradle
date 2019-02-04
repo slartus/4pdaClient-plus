@@ -61,7 +61,7 @@ android {
         }
         beta {
             applicationId 'org.softeg.slartus.forpdaplus.beta'
-            versionCode 622// у беты свой номер, чтобы не инкрементить релизный
+            versionCode 623// у беты свой номер, чтобы не инкрементить релизный
             versionName "${appVersionName}beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
             signingConfig defaultSigningVariable
             dimension "wtf"

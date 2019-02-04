@@ -14,7 +14,7 @@
         android:layout_height="25dp"
         android:id="@+id/img_viewer_statusBar"
         android:orientation="horizontal"
-        android:animateLayoutChanges="true"
+
         android:visibility="invisible" />
 
 </org.softeg.slartus.forpdaplus.controls.imageview.PullBackLayout>
