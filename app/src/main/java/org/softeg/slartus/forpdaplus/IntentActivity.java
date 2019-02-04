@@ -344,7 +344,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             Matcher m = PatternExtensions.compile(pattern).matcher(url);
             if (m.find()) {
                 String id = m.groupCount() > 0 ? m.group(1) : null;
-                ForumFragment.Companion.showActivity(context, id, null);
+                ForumFragment.Companion.showActivity(id, null);
                 return true;
             }
 

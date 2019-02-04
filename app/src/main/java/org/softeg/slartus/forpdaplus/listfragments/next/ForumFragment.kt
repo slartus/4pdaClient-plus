@@ -49,32 +49,30 @@ import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 
 import java.io.Serializable
+import java.lang.ref.WeakReference
 import java.util.ArrayList
-import java.util.HashMap
 
 /*
  * Created by slartus on 24.02.2015.
  */
 class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFragment.ForumBranch> {
-    protected var listView: RecyclerView? = null
-        private set
+    private var listView: RecyclerView? = null
     private var mEmptyTextView: TextView? = null
-    protected var data = createListData()
-        private set
+    private var data = createListData()
     private var mSearchSetting = SearchSettingsDialogFragment.createForumSearchSettings()
 
 
     private var mAdapter: ForumsAdapter? = null
-    private var m_ForumId: String? = null
+    private var mForumId: String? = null
 
-    internal var lastImageDownload = MainActivity.getPreferences().getBoolean("forum.list.show_images", true)
+    private var lastImageDownload = MainActivity.getPreferences().getBoolean("forum.list.show_images", true)
 
     private val loaderId: Int
         get() = ForumLoader.ID
 
-    private var m_Title: String? = null
-    private var m_Name: String? = null
-    private var m_NeedLogin: Boolean? = false
+    private var mTitle: String? = null
+    private var mName: String? = null
+    private var mNeedLogin: Boolean = false
 
     private val mHandler = Handler()
 
@@ -86,21 +84,21 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
         super.onCreate(savedInstanceState)
         removeArrow()
         if (arguments != null)
-            m_ForumId = arguments!!.getString(FORUM_ID_KEY, null)
+            mForumId = arguments?.getString(FORUM_ID_KEY, null)
         if (savedInstanceState != null) {
-            m_Name = savedInstanceState.getString(NAME_KEY, m_Name)
-            m_Title = savedInstanceState.getString(TITLE_KEY, m_Title)
-            m_NeedLogin = savedInstanceState.getBoolean(NEED_LOGIN_KEY, m_NeedLogin!!)
+            mName = savedInstanceState.getString(NAME_KEY, mName)
+            mTitle = savedInstanceState.getString(TITLE_KEY, mTitle)
+            mNeedLogin = savedInstanceState.getBoolean(NEED_LOGIN_KEY, mNeedLogin)
 
             if (savedInstanceState.containsKey(DATA_KEY)) {
                 data = savedInstanceState.getSerializable(DATA_KEY) as ForumFragment.ForumBranch
             }
 
         }
-        if (m_ForumId == null) {
-            m_ForumId = Preferences.List.getStartForumId()
+        if (mForumId == null) {
+            mForumId = Preferences.List.getStartForumId()
         }
-        setTitle(m_Title)
+        setTitle(mTitle)
         initAdapter()
     }
 
@@ -127,11 +125,25 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
                             .title(R.string.attention)
                             .content(R.string.forum_refresh_content)
                             .positiveText(R.string.refresh)
-                            .onPositive { _, _ -> context?.let { _context -> UpdateForumStructTask(_context).execute() } }
+                            .onPositive { _, _ -> refreshForumStruct() }
                             .negativeText(R.string.cancel).show()
                     false
                 }
                 ?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+    }
+
+    private fun refreshForumStruct() {
+        context?.let {
+            UpdateForumStructTask(WeakReference(it), object : IProgressListener {
+                override fun onProgressChange(dialog: MaterialDialog, message: String) {
+                    mHandler.post { dialog.setContent(message) }
+                }
+
+                override fun done() {
+                    loadData(true)
+                }
+            }).execute()
+        }
     }
 
     override fun onPause() {
@@ -145,8 +157,8 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
         MainActivity.searchSettings = mSearchSetting
 
         if (lastImageDownload == MainActivity.getPreferences().getBoolean("forum.list.show_images", true)) {
-            mAdapter!!.notifyDataSetChangedWithLayout()
-            if (listView != null) listView!!.refreshDrawableState()
+            mAdapter?.notifyDataSetChangedWithLayout()
+            listView?.refreshDrawableState()
             lastImageDownload = MainActivity.getPreferences().getBoolean("forum.list.show_images", true)
         }
     }
@@ -160,7 +172,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
                 .title(R.string.confirm_action)
                 .content(getString(R.string.mark_forum_as_read) + "?")
                 .positiveText(R.string.yes)
-                .onPositive { dialog, which ->
+                .onPositive { _, _ ->
                     Toast.makeText(activity, R.string.request_sent, Toast.LENGTH_SHORT).show()
                     Thread {
                         var ex: Throwable? = null
@@ -195,7 +207,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
                 .show()
     }
 
-    protected fun createListData(): ForumFragment.ForumBranch {
+    private fun createListData(): ForumFragment.ForumBranch {
         return ForumFragment.ForumBranch()
     }
 
@@ -204,9 +216,9 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
 
         val mLayoutManager = LinearLayoutManager(activity)
         mLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        listView!!.layoutManager = mLayoutManager
+        listView?.layoutManager = mLayoutManager
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_POSITION_KEY)) {
-            listView!!.scrollToPosition(savedInstanceState.getInt(SCROLL_POSITION_KEY))
+            listView?.scrollToPosition(savedInstanceState.getInt(SCROLL_POSITION_KEY))
         }
         setListViewAdapter()
         if (data.items.size == 0)
@@ -226,7 +238,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
         return view
     }
 
-    fun reloadData() {
+    private fun reloadData() {
         loadData(true)
     }
 
@@ -235,7 +247,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
     }
 
     override fun loadData(isRefresh: Boolean) {
-        loadForum(m_ForumId)
+        loadForum(mForumId)
     }
 
     fun loadForum(forumId: String?) {
@@ -288,8 +300,8 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
             this.data.crumbs.addAll(data.crumbs)
 
             notifyDataSetChanged()
-            listView!!.refreshDrawableState()
-            listView!!.scrollToPosition(0)
+            listView?.refreshDrawableState()
+            listView?.scrollToPosition(0)
         }
 
         setLoading(false)
@@ -299,11 +311,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
 
     }
 
-    protected fun setEmptyText(s: String) {
-        mEmptyTextView?.text = s
-    }
-
-    protected fun setLoading(loading: Boolean?) {
+    private fun setLoading(@Suppress("UNUSED_PARAMETER") loading: Boolean?) {
         try {
             if (activity == null) return
 
@@ -322,15 +330,15 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(NAME_KEY, m_Name)
-        outState.putString(TITLE_KEY, m_Title)
-        outState.putBoolean(NEED_LOGIN_KEY, m_NeedLogin!!)
-        outState.putString(FORUM_ID_KEY, m_ForumId)
+        outState.putString(NAME_KEY, mName)
+        outState.putString(TITLE_KEY, mTitle)
+        outState.putBoolean(NEED_LOGIN_KEY, mNeedLogin)
+        outState.putString(FORUM_ID_KEY, mForumId)
         outState.putSerializable(DATA_KEY, data)
         try {
             if (listView != null) {
                 outState.putInt(SCROLL_POSITION_KEY,
-                        (listView!!.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition())
+                        (listView?.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition())
             }
         } catch (ex: Throwable) {
             AppLog.e(ex)
@@ -338,15 +346,16 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
 
     }
 
-    protected fun notifyDataSetChanged() {
-        mAdapter!!.notifyDataSetChanged()
+    private fun notifyDataSetChanged() {
+        mAdapter?.notifyDataSetChanged()
     }
 
-    protected fun setListViewAdapter() {
-        listView!!.adapter = mAdapter
+    private fun setListViewAdapter() {
+        listView?.adapter = mAdapter
     }
 
-    protected fun initAdapter() {
+    @Suppress("DEPRECATION")
+    private fun initAdapter() {
         mAdapter = ForumsAdapter(data.crumbs, data.items, object : ForumsAdapter.OnClickListener {
             override fun onItemClick(v: View) {
                 val itemPosition = listView!!.getChildPosition(v)
@@ -399,14 +408,14 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
      * Заголовок списка
      */
     override fun getListTitle(): String? {
-        return m_Title
+        return mTitle
     }
 
     /**
      * Уникальный идентификатор списка
      */
     override fun getListName(): String? {
-        return m_Name
+        return mName
     }
 
     override fun onBackPressed(): Boolean {
@@ -418,9 +427,9 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
     }
 
     fun setBrickInfo(listTemplate: BrickInfo): Fragment {
-        m_Title = listTemplate.title
-        m_Name = listTemplate.name
-        m_NeedLogin = listTemplate.needLogin
+        mTitle = listTemplate.title
+        mName = listTemplate.name
+        mNeedLogin = listTemplate.needLogin
         return this
     }
 
@@ -455,16 +464,14 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
     internal constructor(private val mHeaderset: List<Forum>, private val mDataset: List<Forum>,
                          private val mOnClickListener: OnClickListener, private val mOnLongClickListener: OnLongClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        private val HEADER_VIEW_TYPE = 0
-        private val HEADER_CURRENT_VIEW_TYPE = 1
-        private val HEADER_CURRENT_NOTOPICS_VIEW_TYPE = 2
-        private val DATA_VIEW_TYPE = 3
-
+        companion object {
+            private const val HEADER_VIEW_TYPE = 0
+            private const val HEADER_CURRENT_VIEW_TYPE = 1
+            private const val HEADER_CURRENT_NOTOPICS_VIEW_TYPE = 2
+            private const val DATA_VIEW_TYPE = 3
+        }
 
         private val mIsShowImages: Boolean? = Preferences.Forums.isShowImages()
-
-        private val viewHolders = HashMap<Int, RecyclerView.ViewHolder>()
-
         interface OnClickListener {
             fun onItemClick(v: View)
 
@@ -529,64 +536,64 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
                                         viewType: Int): RecyclerView.ViewHolder? {
             //if (!viewHolders.containsKey(viewType)) {
 
-                return when (viewType) {
-                            DATA_VIEW_TYPE -> {
-                                val v = LayoutInflater.from(parent.context)
-                                        .inflate(R.layout.forum_item, parent, false)
+            return when (viewType) {
+                DATA_VIEW_TYPE -> {
+                    val v = LayoutInflater.from(parent.context)
+                            .inflate(R.layout.forum_item, parent, false)
 
-                                val viewHolder = ViewHolder(v)
-                                if (mIsShowImages != true)
-                                    viewHolder.mImageView.visibility = View.GONE
-                                v.setOnClickListener { v1 -> mOnClickListener.onItemClick(v1) }
-                                v.setOnLongClickListener { v12 ->
-                                    mOnLongClickListener.onItemClick(v12)
-                                    true
-                                }
-                                viewHolder
-                            }
-                            HEADER_VIEW_TYPE -> {
-                                val headerV = LayoutInflater.from(parent.context)
-                                        .inflate(R.layout.forum_header_item, parent, false)
-
-
-                                val headerViewHolder = HeaderViewHolder(headerV)
-                                headerV.setOnClickListener { v13 -> mOnClickListener.onHeaderClick(v13) }
-                                headerV.setOnLongClickListener { v14 ->
-                                    mOnLongClickListener.onHeaderClick(v14)
-                                    true
-                                }
-                                headerViewHolder
-                            }
-                            HEADER_CURRENT_VIEW_TYPE -> {
-                                val headerCV = LayoutInflater.from(parent.context)
-                                        .inflate(R.layout.forum_header_current_item, parent, false)
+                    val viewHolder = ViewHolder(v)
+                    if (mIsShowImages != true)
+                        viewHolder.mImageView.visibility = View.GONE
+                    v.setOnClickListener { v1 -> mOnClickListener.onItemClick(v1) }
+                    v.setOnLongClickListener { v12 ->
+                        mOnLongClickListener.onItemClick(v12)
+                        true
+                    }
+                    viewHolder
+                }
+                HEADER_VIEW_TYPE -> {
+                    val headerV = LayoutInflater.from(parent.context)
+                            .inflate(R.layout.forum_header_item, parent, false)
 
 
-                                val headerCViewHolder = HeaderViewHolder(headerCV)
-                                headerCV.setOnClickListener { v15 -> mOnClickListener.onHeaderTopicsClick(v15) }
-                                headerCV.setOnLongClickListener { v16 ->
-                                    mOnLongClickListener.onHeaderTopicsClick(v16)
-                                    true
-                                }
+                    val headerViewHolder = HeaderViewHolder(headerV)
+                    headerV.setOnClickListener { v13 -> mOnClickListener.onHeaderClick(v13) }
+                    headerV.setOnLongClickListener { v14 ->
+                        mOnLongClickListener.onHeaderClick(v14)
+                        true
+                    }
+                    headerViewHolder
+                }
+                HEADER_CURRENT_VIEW_TYPE -> {
+                    val headerCV = LayoutInflater.from(parent.context)
+                            .inflate(R.layout.forum_header_current_item, parent, false)
 
-                                headerCViewHolder
-                            }
-                            HEADER_CURRENT_NOTOPICS_VIEW_TYPE -> {
-                                val headerCNV = LayoutInflater.from(parent.context)
-                                        .inflate(R.layout.forum_header_notopics_item, parent, false)
+
+                    val headerCViewHolder = HeaderViewHolder(headerCV)
+                    headerCV.setOnClickListener { v15 -> mOnClickListener.onHeaderTopicsClick(v15) }
+                    headerCV.setOnLongClickListener { v16 ->
+                        mOnLongClickListener.onHeaderTopicsClick(v16)
+                        true
+                    }
+
+                    headerCViewHolder
+                }
+                HEADER_CURRENT_NOTOPICS_VIEW_TYPE -> {
+                    val headerCNV = LayoutInflater.from(parent.context)
+                            .inflate(R.layout.forum_header_notopics_item, parent, false)
 
 
-                                val headerCNViewHolder = HeaderViewHolder(headerCNV)
-                                headerCNV.setOnClickListener { v17 -> mOnClickListener.onHeaderClick(v17) }
-                                headerCNV.setOnLongClickListener { v18 ->
-                                    mOnLongClickListener.onHeaderClick(v18)
-                                    false
-                                }
+                    val headerCNViewHolder = HeaderViewHolder(headerCNV)
+                    headerCNV.setOnClickListener { v17 -> mOnClickListener.onHeaderClick(v17) }
+                    headerCNV.setOnLongClickListener { v18 ->
+                        mOnLongClickListener.onHeaderClick(v18)
+                        false
+                    }
 
-                                headerCNViewHolder
-                            }
-                            else -> throw IllegalArgumentException()
-                        }
+                    headerCNViewHolder
+                }
+                else -> throw IllegalArgumentException()
+            }
 //                viewHolders[viewType] = item
 //            }
 //            return viewHolders[viewType]
@@ -603,7 +610,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
                     viewHolder.mText1.text = forum.title
                     viewHolder.mText2.text = forum.description
 
-                    if (forum.iconUrl != null && mIsShowImages!!) {
+                    if (forum.iconUrl != null && mIsShowImages==true) {
                         ImageLoader.getInstance().displayImage(forum.iconUrl,
                                 holder.mImageView,
                                 object : ImageLoadingListener {
@@ -713,72 +720,6 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
 
     }
 
-    private inner class UpdateForumStructTask internal constructor(context: Context) : AsyncTask<String, String, ForumsData>() {
-
-        private val dialog: MaterialDialog = MaterialDialog.Builder(context)
-                .progress(true, 0)
-                .cancelListener { cancel(true) }
-                .content(R.string.refreshing_forum_struct)
-                .build()
-
-        override fun onCancelled() {
-            Toast.makeText(activity, R.string.canceled_refreshing_forum_struct, Toast.LENGTH_SHORT).show()
-        }
-
-        override fun doInBackground(vararg forums: String): ForumsData? {
-
-            try {
-
-                if (isCancelled) return null
-
-                val res = ForumsApi.loadForums(Client.getInstance(), object : ProgressState() {
-                    override fun update(message: String, percents: Int) {
-                        publishProgress(String.format("%s %d", message, percents))
-                    }
-                })
-                publishProgress(App.getContext().getString(R.string.update_base))
-                ForumsTable.updateForums(res.items)
-                return res
-            } catch (e: Throwable) {
-                val res = ForumsData()
-                res.error = e
-
-                return res
-            }
-
-        }
-
-        override fun onProgressUpdate(vararg progress: String) {
-            mHandler.post { dialog.setContent(progress[0]) }
-        }
-
-        override fun onPreExecute() {
-            try {
-                this.dialog.show()
-            } catch (ex: Exception) {
-                AppLog.e(null, ex)
-            }
-
-        }
-
-
-        override fun onPostExecute(data: ForumsData?) {
-            try {
-                if (this.dialog.isShowing) {
-                    this.dialog.dismiss()
-                }
-            } catch (ex: Exception) {
-                AppLog.e(null, ex)
-            }
-
-            loadData(true)
-            if (data != null) {
-                if (data.error != null) {
-                    AppLog.e(activity, data.error)
-                }
-            }
-        }
-    }
 
     companion object {
         private const val DATA_KEY = "BrickFragmentListBase.DATA_KEY"
@@ -791,7 +732,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
         const val TITLE_KEY = "TITLE_KEY"
         const val NEED_LOGIN_KEY = "NEED_LOGIN_KEY"
 
-        fun showActivity(context: Context, forumId: String, topicId: String) {
+        fun showActivity(forumId: String, topicId: String) {
             val args = Bundle()
             if (!TextUtils.isEmpty(forumId))
                 args.putString(ForumFragment.FORUM_ID_KEY, forumId)
@@ -799,5 +740,78 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
                 args.putString(TopicsListFragment.KEY_TOPIC_ID, topicId)
             MainActivity.showListFragment(forumId + topicId, ForumBrickInfo().name, args)
         }
+    }
+}
+
+private interface IProgressListener {
+    fun onProgressChange(dialog: MaterialDialog, message: String)
+    fun done()
+}
+
+private class UpdateForumStructTask internal constructor(val context: WeakReference<Context>, val listener: IProgressListener) : AsyncTask<String, String, ForumsData>() {
+
+    private val dialog: MaterialDialog = MaterialDialog.Builder(context.get()!!)
+            .progress(true, 0)
+            .cancelListener { cancel(true) }
+            .content(R.string.refreshing_forum_struct)
+            .build()
+
+    override fun onCancelled() {
+        Toast.makeText(context.get()
+                ?: App.getInstance(), R.string.canceled_refreshing_forum_struct, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun doInBackground(vararg forums: String): ForumsData? {
+
+        try {
+
+            if (isCancelled) return null
+
+            val res = ForumsApi.loadForums(Client.getInstance(), object : ProgressState() {
+                override fun update(message: String, percents: Int) {
+                    publishProgress(String.format("%s %d", message, percents))
+                }
+            })
+            publishProgress(App.getContext().getString(R.string.update_base))
+            ForumsTable.updateForums(res.items)
+            return res
+        } catch (e: Throwable) {
+            val res = ForumsData()
+            res.error = e
+
+            return res
+        }
+
+    }
+
+    override fun onProgressUpdate(vararg progress: String) {
+        listener.onProgressChange(dialog, progress[0])
+    }
+
+    override fun onPreExecute() {
+        try {
+            this.dialog.show()
+        } catch (ex: Exception) {
+            AppLog.e(null, ex)
+        }
+
+    }
+
+
+    override fun onPostExecute(data: ForumsData?) {
+        try {
+            if (this.dialog.isShowing) {
+                this.dialog.dismiss()
+            }
+        } catch (ex: Exception) {
+            AppLog.e(null, ex)
+        }
+        listener.done()
+
+
+        if (data?.error != null) {
+            AppLog.e(context.get() ?: App.getInstance(), data.error)
+        }
+
     }
 }
