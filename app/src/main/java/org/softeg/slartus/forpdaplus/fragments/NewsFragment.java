@@ -619,7 +619,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             body = NewsApi.parseNewsBody(body);
 
             // удалим все стили
-            body = body.replaceAll("<link rel=\"stylesheet\"[^>]*async>", "");
+            body = body.replaceAll("<link rel=\"stylesheet\"[^>]*>", "");
             return normalizeCommentUrls(body);
         }
 
