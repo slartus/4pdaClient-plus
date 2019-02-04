@@ -364,7 +364,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         forumsProgress.setVisibility(View.VISIBLE);
         new Thread(() -> {
             try {
-                final List<String> forums = ForumsTable.loadForumTitlesList(checkedForumIds);
+                final List<String> forums = ForumsTable.INSTANCE.loadForumTitlesList(checkedForumIds);
                 if (checkedForumIds.contains("all"))
                     forums.add(0, App.getContext().getString(R.string.all_forums));
                 forums.add(0, App.getContext().getString(R.string.total) + ": " + forums.size());
