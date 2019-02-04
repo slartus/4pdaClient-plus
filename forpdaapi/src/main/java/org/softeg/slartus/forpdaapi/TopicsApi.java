@@ -169,7 +169,7 @@ public class TopicsApi {
 
         if ((HttpHelper.getRedirectUri() != null && HttpHelper.getRedirectUri().toString().toLowerCase().contains("act=search"))
                 || url.toLowerCase().contains("act=search")) {
-            res = SearchApi.parse(pageBody, listInfo);
+            res = SearchApi.INSTANCE.parse(pageBody, listInfo);
         } else {
             int start = listInfo.getFrom();
             Pattern lastPageStartPattern = Pattern.compile("<a href=\"(http://4pda.ru)?/forum/index.php\\?showforum=\\d[^\"]*?st=(\\d+)",

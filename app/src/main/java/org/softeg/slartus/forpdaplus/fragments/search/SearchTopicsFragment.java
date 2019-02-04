@@ -57,7 +57,7 @@ public class SearchTopicsFragment extends TopicsListFragment
 
     @Override
     protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException, ParseException, URISyntaxException {
-        return SearchApi.getSearchTopicsResult(client, args.getString(SEARCH_URL_KEY), mListInfo);
+        return SearchApi.INSTANCE.getSearchTopicsResult(client, args.getString(SEARCH_URL_KEY), mListInfo);
     }
 
     @Override

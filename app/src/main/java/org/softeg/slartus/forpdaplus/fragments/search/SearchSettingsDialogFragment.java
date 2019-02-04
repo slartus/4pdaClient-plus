@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -50,19 +51,15 @@ public class SearchSettingsDialogFragment extends DialogFragment {
     private static final String SEARCH_SETTINGS_KEY = "SEARCH_SETTINGS_KEY";
 
 
-    public interface ISearchDialogListener {
-        void doSearchDialogPositiveClick(SearchSettings searchSettings);
-
-        void doSearchDialogNegativeClick();
-    }
-
     private EditText query_edit, username_edit;
     private CheckBox subforums_check, topics_check;
     private Spinner source_spinner, sort_spinner, result_spinner, forumsSpinner;
     private View forumsProgress, topicsProgress;
-    private View topics_group, forums_group, result_group, sort_group, source_group;
+    private View topics_group;
+    private View forums_group;
+    private View result_group;
+    private View source_group;
     private ImageButton forHideButton;
-    private Button rememberButton;
     private LinearLayout forHide;
     public static final int FORUMS_DIALOG_REQUEST = 1;
 
@@ -187,16 +184,13 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         return fragment;
     }
 
-    public static SearchSettingsDialogFragment restartSearch(SearchSettings searchSettings) {
-        return createSettingsFragment(searchSettings);
-    }
-
     @Override
     public void onActivityCreated(android.os.Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         loadPreferences();
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
@@ -205,23 +199,23 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.search_settings_fragment, null);
         assert view != null;
-        query_edit = (EditText) view.findViewById(R.id.query_edit);
-        username_edit = (EditText) view.findViewById(R.id.username_edit);
-        subforums_check = (CheckBox) view.findViewById(R.id.subforums_check);
-        topics_check = (CheckBox) view.findViewById(R.id.topics_check);
-        source_spinner = (Spinner) view.findViewById(R.id.source_spinner);
-        sort_spinner = (Spinner) view.findViewById(R.id.sort_spinner);
-        result_spinner = (Spinner) view.findViewById(R.id.result_spinner);
+        query_edit = view.findViewById(R.id.query_edit);
+        username_edit = view.findViewById(R.id.username_edit);
+        subforums_check = view.findViewById(R.id.subforums_check);
+        topics_check = view.findViewById(R.id.topics_check);
+        source_spinner = view.findViewById(R.id.source_spinner);
+        sort_spinner = view.findViewById(R.id.sort_spinner);
+        result_spinner = view.findViewById(R.id.result_spinner);
         topics_group = view.findViewById(R.id.topics_group);
         forumsProgress = view.findViewById(R.id.forums_progress);
         topicsProgress = view.findViewById(R.id.topics_progress);
         forums_group = view.findViewById(R.id.forums_group);
         source_group = view.findViewById(R.id.source_group);
-        sort_group = view.findViewById(R.id.sort_group);
+
         result_group = view.findViewById(R.id.result_group);
-        forHideButton = (ImageButton) view.findViewById(R.id.forHideButton);
-        forHide = (LinearLayout) view.findViewById(R.id.forHide);
-        rememberButton = (Button) view.findViewById(R.id.remember);
+        forHideButton = view.findViewById(R.id.forHideButton);
+        forHide = view.findViewById(R.id.forHide);
+        Button rememberButton = view.findViewById(R.id.remember);
 
         final RotateAnimation rotate = new RotateAnimation(180, 0, Animation.RELATIVE_TO_SELF,
                 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -259,14 +253,11 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         // в поиске по теме не показываем "запомнить настройки"
         if (SearchSettings.SEARCH_TYPE_FORUM.equals(getSearchSettings().getSearchType())) {
             rememberButton.setVisibility(View.VISIBLE);
-            rememberButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SearchSettings searchSettings = createSearchSettings();
-                    searchSettings.setQuery("");
-                    searchSettings.setUserName("");
-                    searchSettings.save(App.getInstance().getPreferences().edit()).apply();
-                }
+            rememberButton.setOnClickListener(v -> {
+                SearchSettings searchSettings = createSearchSettings();
+                searchSettings.setQuery("");
+                searchSettings.setUserName("");
+                searchSettings.save(App.getInstance().getPreferences().edit()).apply();
             });
         }
         adb.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
@@ -351,7 +342,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
     }
 
     private void initSpinner(View parentView) {
-        forumsSpinner = (Spinner) parentView.findViewById(R.id.forums_spinner);
+        forumsSpinner = parentView.findViewById(R.id.forums_spinner);
         forumsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -371,29 +362,23 @@ public class SearchSettingsDialogFragment extends DialogFragment {
 
         final Handler handler = new Handler();
         forumsProgress.setVisibility(View.VISIBLE);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final List<String> forums = ForumsTable.loadForumTitlesList(checkedForumIds);
-                    if (checkedForumIds.contains("all"))
-                        forums.add(0, App.getContext().getString(R.string.all_forums));
-                    forums.add(0, App.getContext().getString(R.string.total) + ": " + forums.size());
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
+        new Thread(() -> {
+            try {
+                final List<String> forums = ForumsTable.loadForumTitlesList(checkedForumIds);
+                if (checkedForumIds.contains("all"))
+                    forums.add(0, App.getContext().getString(R.string.all_forums));
+                forums.add(0, App.getContext().getString(R.string.total) + ": " + forums.size());
+                handler.post(() -> {
 
-                            if (getActivity() == null)
-                                return;
-                            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, forums);
-                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            forumsSpinner.setAdapter(adapter);
-                            forumsProgress.setVisibility(View.GONE);
-                        }
-                    });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    if (getActivity() == null)
+                        return;
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, forums);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    forumsSpinner.setAdapter(adapter);
+                    forumsProgress.setVisibility(View.GONE);
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }).start();
     }
@@ -406,34 +391,28 @@ public class SearchSettingsDialogFragment extends DialogFragment {
             topicsProgress.setVisibility(View.VISIBLE);
 
             final Handler handler = new Handler();
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    SearchSettings settings = new SearchSettings(SearchSettings.SEARCH_TYPE_FORUM);
-                    settings.getTopicIds().addAll(topicIds);
-                    settings.setSource(SearchSettings.SOURCE_TOPICS);
-                    settings.setResultView(SearchSettings.RESULT_VIEW_TOPICS);
+            new Thread(() -> {
+                SearchSettings settings = new SearchSettings(SearchSettings.SEARCH_TYPE_FORUM);
+                settings.getTopicIds().addAll(topicIds);
+                settings.setSource(SearchSettings.SOURCE_TOPICS);
+                settings.setResultView(SearchSettings.RESULT_VIEW_TOPICS);
 
-                    ArrayList<Topic> topics = new ArrayList<>();
-                    try {
-                        topics = SearchApi.getSearchTopicsResult(Client.getInstance(), settings.getSearchQuery(), new ListInfo());
-                    } catch (IOException | URISyntaxException e) {
-                        e.printStackTrace();
-                    }
-                    final StringBuilder sb = new StringBuilder();
-                    for (Topic topic : topics) {
-                        if (sb.length() > 0)
-                            sb.append(", ");
-                        sb.append(topic.getTitle());
-                    }
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            topics_check.setText(sb.toString());
-                            topicsProgress.setVisibility(View.GONE);
-                        }
-                    });
+                ArrayList<Topic> topics = new ArrayList<>();
+                try {
+                    topics = SearchApi.INSTANCE.getSearchTopicsResult(Client.getInstance(), settings.getSearchQuery(), new ListInfo());
+                } catch (IOException | URISyntaxException e) {
+                    e.printStackTrace();
                 }
+                final StringBuilder sb = new StringBuilder();
+                for (Topic topic : topics) {
+                    if (sb.length() > 0)
+                        sb.append(", ");
+                    sb.append(topic.getTitle());
+                }
+                handler.post(() -> {
+                    topics_check.setText(sb.toString());
+                    topicsProgress.setVisibility(View.GONE);
+                });
             }).start();
         }
     }
