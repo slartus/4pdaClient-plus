@@ -20,7 +20,7 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
+import org.softeg.slartus.forpdaplus.listfragments.next.forum.ForumFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumTopicsBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
 

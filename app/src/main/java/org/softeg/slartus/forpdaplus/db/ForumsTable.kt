@@ -7,7 +7,7 @@ import android.text.TextUtils
 
 import org.softeg.slartus.forpdaapi.Forum
 import org.softeg.slartus.forpdaplus.App
-import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment
+import org.softeg.slartus.forpdaplus.listfragments.next.forum.ForumFragment
 
 import java.io.IOException
 import java.util.ArrayList

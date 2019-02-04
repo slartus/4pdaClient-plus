@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
+import org.softeg.slartus.forpdaplus.listfragments.next.forum.ForumFragment;
 
 /*
  * Created by slinkin on 21.02.14.

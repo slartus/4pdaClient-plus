@@ -46,7 +46,7 @@ import org.softeg.slartus.forpdaplus.listfragments.DevDbModelsFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicAttachmentListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicWritersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.news.NewsListFragment;
-import org.softeg.slartus.forpdaplus.listfragments.next.ForumFragment;
+import org.softeg.slartus.forpdaplus.listfragments.next.forum.ForumFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.DevDbCatalogBrickInfo;
@@ -58,14 +58,11 @@ import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.video.PlayerActivity;
-import org.w3c.dom.Text;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import okhttp3.HttpUrl;
 
 //import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
