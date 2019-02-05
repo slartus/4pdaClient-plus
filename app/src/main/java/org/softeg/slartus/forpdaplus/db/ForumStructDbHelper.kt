@@ -1,12 +1,8 @@
 package org.softeg.slartus.forpdaplus.db
 
 import android.content.Context
-
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper
-
 import org.softeg.slartus.forpdaplus.prefs.Preferences
-
-import java.io.IOException
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,8 +19,8 @@ class ForumStructDbHelper(context: Context) : SQLiteAssetHelper(context, DATABAS
 
     companion object {
 
-        private val DATABASE_VERSION = 23
-        private val DATABASE_NAME = "forum_struct"
+        private const val DATABASE_VERSION = 22
+        private const val DATABASE_NAME = "forum_struct"
     }
 
 
