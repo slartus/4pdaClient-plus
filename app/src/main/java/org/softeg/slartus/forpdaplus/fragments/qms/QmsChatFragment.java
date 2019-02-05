@@ -351,7 +351,7 @@ public class QmsChatFragment extends WebViewFragment {
                 Uri selectedImageUri = data.getData();
                 String selectedImagePath = ImageFilePath.getPath(getMainActivity().getApplicationContext(), selectedImageUri);
                 if (selectedImagePath != null && selectedImagePath.matches("(?i)(.*)(jpg|png|gif)$")) {
-                    Log.e("TEST", "Path " + selectedImagePath);
+
                     saveAttachDirPath(selectedImagePath);
                     new UpdateTask(getMainActivity(), selectedImagePath).execute();
                 } else {
@@ -1084,7 +1084,7 @@ public class QmsChatFragment extends WebViewFragment {
 
         UpdateTask(Context context, String newAttachFilePath) {
             this(context, new ArrayList<>(Arrays.asList(new String[]{newAttachFilePath})));
-            Log.e("TEST", "PATH " + newAttachFilePath);
+
         }
 
         private EditAttach editAttach;

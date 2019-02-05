@@ -304,7 +304,6 @@ public class ShortUserInfo {
     private void storeImage(Bitmap image, String url) {
         File pictureFile = getOutputMediaFile(url);
         if (pictureFile == null) {
-            Log.d("kek", "Error creating media file, check storage permissions: ");// e.getMessage());
             return;
         }
         try {

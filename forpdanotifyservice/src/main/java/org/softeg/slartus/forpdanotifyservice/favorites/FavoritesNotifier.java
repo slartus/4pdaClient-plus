@@ -79,7 +79,6 @@ public class FavoritesNotifier extends NotifierBase {
 
             Client client = new Client(cookiesPath);
             ArrayList<FavTopic> topics = TopicsApi.getFavTopics(client, new ListInfo());
-            Log.d(LOG_TAG, "favorites.size=" + topics.size());
 
             Intent intent = new Intent(NEW_ACTION);
             intent.putExtra(NEW_TOPICS_COUNT_KEY, getNewTopicsCount(topics));
@@ -101,7 +100,6 @@ public class FavoritesNotifier extends NotifierBase {
     }
 
     private boolean hasUnreadNotify(Client client, ArrayList<FavTopic> topics) throws Throwable {
-        Log.d(LOG_TAG, "favorites.hasUnreadNotify=");
 
         if (topics.size() == 0 || getNewTopicsCount(topics) == 0)
             return false;

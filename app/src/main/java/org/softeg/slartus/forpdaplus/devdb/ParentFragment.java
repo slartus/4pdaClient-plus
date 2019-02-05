@@ -83,7 +83,6 @@ public class ParentFragment extends GeneralFragment {
         m_Title = extras.getString(TOOLBAR_TITLE);
         setTitle(m_Title);
         loading();
-        Log.e("kek", "DEVICE"+m_DeviceId);
     }
 
     @Override

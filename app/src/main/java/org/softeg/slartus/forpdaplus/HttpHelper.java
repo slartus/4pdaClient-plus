@@ -116,7 +116,6 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
         multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
         multipartEntity.setCharset(Charset.forName("windows-1251"));
         File uploadFile = new File(filePath);
-        Log.d("save", "url: "+url+"; result: "+(url.contains("savepic")?"file":"FILE_UPLOAD"));
         multipartEntity.addBinaryBody(url.contains("savepice")?"file":"FILE_UPLOAD", uploadFile, ContentType.create("image/png"),
                 FileUtils.getFileNameFromUrl(filePath));
 

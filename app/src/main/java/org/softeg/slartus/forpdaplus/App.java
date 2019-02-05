@@ -530,7 +530,6 @@ public class App extends android.app.Application {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Log.d("KEK", "CHANGE CONFIG " + locale.getCountry() + " : " + newConfig.locale.getCountry());
         Configuration config = getResources().getConfiguration();
         locale = new Locale(lang);
         Locale.setDefault(locale);

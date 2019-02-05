@@ -384,11 +384,11 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         url = url.replace("&amp;", "&").replace("\"", "").trim();
         url = getRedirect(url).toString();
         url = url.trim();
-        Log.d("kek", "fixed url = " + url);
+
         if (url.contains("4pda.ru") & !url.contains("http://") & !url.contains("https://"))
             url = "http://" + url;
         Uri uri = Uri.parse(url.toLowerCase());
-        Log.e("kek", uri.getHost() + " " + url);
+
 
         if (uri.getHost() != null && (uri.getHost().toLowerCase().contains("4pda.ru")
                 || uri.getHost().toLowerCase().contains("4pda.to")

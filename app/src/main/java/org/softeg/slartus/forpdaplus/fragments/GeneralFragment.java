@@ -148,7 +148,6 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         outState.putString("generalTitle", getThisTab().getTitle());
         outState.putString("generalUrl", getThisTab().getUrl());
         outState.putString("generalParentTag", getThisTab().getParentTag());
-        Log.d("kek", getThisTab().getTitle()+" : "+getThisTab().getUrl()+" : "+getThisTab().getParentTag());
     }
 
     @Override
@@ -157,7 +156,6 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         mainActivity = (MainActivity)getActivity();
         actionBar = getMainActivity().getSupportActionBar();
         fragmentPaused = false;
-        Log.e("kek", getTag() + " FRAGMENT " + thisTab);
     }
 
     public ActionBar getSupportActionBar() {
@@ -175,10 +173,8 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     public void onResume() {
         super.onResume();
         fragmentPaused = false;
-        Log.e("kekos", "onresume "+getTag());
         if(actionBar==null)
             actionBar = getMainActivity().getSupportActionBar();
-        Log.d("kek", getMenu()+" : ");
         if(getMenu()!=null)
             onCreateOptionsMenu(getMenu(), null);
         if(getMainActivity()!=null)
@@ -195,7 +191,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     public void onPause() {
         super.onPause();
         fragmentPaused = true;
-        Log.e("kekos", "onpause " + getTag());
+
         if(getSupportActionBar()!=null)
             getSupportActionBar().setSubtitle(null);
         /*if(getMenu()!=null)
@@ -211,7 +207,6 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     public void onDetach() {
         super.onDetach();
         System.gc();
-        Log.e("kek", "ondetach "+ getTag());
     }
 
 

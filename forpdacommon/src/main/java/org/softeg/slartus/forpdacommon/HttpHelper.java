@@ -445,7 +445,6 @@ public class HttpHelper {
     private String performRequest(final String contentType, String url, final String user, final String pass,
                                   final Map<String, String> headers, final List<NameValuePair> nvps, final int requestType,
                                   String encoding) throws IOException {
-        Log.d("kek", "request url " + url);
         if (url.substring(0, 2).equals("//")) {
             url = "http:".concat(url);
         }

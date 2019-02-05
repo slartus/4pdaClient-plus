@@ -157,7 +157,6 @@ public class TabDrawerMenu {
         for (int i = 0; i <= App.getInstance().getTabItems().size() - 1; i++) {
             if (App.getInstance().getTabItems().get(i).getTag().equals(tag)) {
                 final TabItem tabItem = App.getInstance().getTabByTag(tag);
-                Log.e("kek", tabItem.getFragment() + " WTF");
                 tabItem.setFragment(null);
                 App.getInstance().getTabItems().remove(tabItem);
 
@@ -186,12 +185,10 @@ public class TabDrawerMenu {
     void selectTab(TabItem tabItem) {
         mSelectItemListener.selectTab(tabItem);
         notifyDataSetChanged();
-        Log.e("kek", "select save");
         if (ListCore.getRegisteredBrick(tabItem.getTag()) != null) {
             Preferences.Lists.setLastSelectedList(tabItem.getTag());
             Preferences.Lists.addLastAction(tabItem.getTag());
         }
-        Log.e("kek", "select save end");
     }
 
     private Context getContext() {

@@ -45,6 +45,8 @@
 *[style*="color:#000"] *[style*="background-color:white"] {
   color: white !important;
 }
+.article a{color: #dedede !important; text-decoration: underline}
+.article-footer a{color: #dedede !important;text-decoration: none}
 HTML {
   font-size: 1rem;
   margin: 0;

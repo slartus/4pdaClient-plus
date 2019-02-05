@@ -123,7 +123,6 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
             for (int j = 0; j < subMenu.size(); j++) {
                 item = subMenu.getItem(j);
                 if (item.getTitle().equals(name)) {
-                    Log.e("keka", "true");
                     menu.getItem(prevSelectedGroup).getSubMenu().getItem(prevSelectedItem).setCheckable(false).setChecked(false);
                     item.setCheckable(true).setChecked(true);
                     prevSelectedGroup = i;
