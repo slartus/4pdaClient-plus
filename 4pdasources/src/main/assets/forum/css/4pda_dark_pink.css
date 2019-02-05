@@ -24,6 +24,8 @@ Edited by: RadiationX|*or you nick*
 [style*="color:black"] {
   color: #dedede !important;
 }
+.article a{color: #dedede !important; text-decoration: underline}
+.article-footer a{color: #dedede !important;text-decoration: none}
 .mainBox {
   background: #2b2b2b;
   margin: 0.5em 0;

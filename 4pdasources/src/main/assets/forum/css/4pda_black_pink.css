@@ -20,10 +20,16 @@ Edited by: RadiationX|*or you nick*
 [style*="color:darkred"] {
   color: #a11!important;
 }
+[style*="color:#000000"]{
+  color: #dedede !important;
+}
+
 [style*="color:#000000"],
 [style*="color:black"] {
   color: #dedede !important;
 }
+.article a{color: #dedede !important; text-decoration: underline}
+.article-footer a{color: #dedede !important;text-decoration: none}
 .mainBox {
   background: #000000;
   margin: 0.5em 0;
