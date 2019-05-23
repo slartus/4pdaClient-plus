@@ -2150,6 +2150,9 @@ div[data-post] > a {
   color: #2d2d2d;
   text-align: left;
 }
+#news .comment-form {
+  display: none;
+}
 #news .comment-box > .heading {
   position: relative;
   display: block;
