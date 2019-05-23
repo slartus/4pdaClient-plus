@@ -770,6 +770,9 @@ a {
   position: relative;
   padding-bottom: -10px;
 }
+.comment-form {
+  display: none;
+}
 .comment-box > .heading {
   position: relative;
   margin: 0;
