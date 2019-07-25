@@ -68,11 +68,11 @@ public class Client implements IHttpClient {
     }
 
     private HttpHelper httpHelper;
+
     private HttpHelper HttpHelper() throws IOException {
-        if(httpHelper==null)
-            httpHelper=new HttpHelper();
-        return httpHelper;
+        return new HttpHelper();
     }
+
     public String getAuthKey() {
         return m_K;
     }
@@ -178,7 +178,7 @@ public class Client implements IHttpClient {
 
     public String performGet(String s, Boolean checkEmptyResult, Boolean checkLoginAndMails) throws IOException {
 
-        HttpHelper httpHelper =  HttpHelper();
+        HttpHelper httpHelper = HttpHelper();
         String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
@@ -190,7 +190,7 @@ public class Client implements IHttpClient {
         if (checkEmptyResult && TextUtils.isEmpty(res))
             throw new NotReportException(App.getContext().getString(R.string.server_return_empty_page));
         else if (checkLoginAndMails) {
-            checkLogin(res);
+            checkLogin(httpHelper, res);
             if (!s.contains("xhr"))
                 checkMails(res);
         }
@@ -199,7 +199,7 @@ public class Client implements IHttpClient {
     }
 
     public String performPost(String s, Map<String, String> additionalHeaders) throws IOException {
-        HttpHelper httpHelper =  HttpHelper();
+        HttpHelper httpHelper = HttpHelper();
         String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
@@ -214,7 +214,7 @@ public class Client implements IHttpClient {
 
     public String uploadFile(String url, String filePath, Map<String, String> additionalHeaders
             , ProgressState progress) throws Exception {
-        HttpHelper httpHelper =  HttpHelper();
+        HttpHelper httpHelper = HttpHelper();
         String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
@@ -228,7 +228,7 @@ public class Client implements IHttpClient {
 
     @Override
     public CookieStore getCookieStore() throws IOException {
-        HttpHelper httpHelper =  HttpHelper();
+        HttpHelper httpHelper = HttpHelper();
 
         try {
             return httpHelper.getCookieStore();
@@ -238,7 +238,7 @@ public class Client implements IHttpClient {
     }
 
     public String performPost(String s, Map<String, String> additionalHeaders, String encoding) throws IOException {
-        HttpHelper httpHelper =  HttpHelper();
+        HttpHelper httpHelper = HttpHelper();
         String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
@@ -252,7 +252,7 @@ public class Client implements IHttpClient {
 
     @Override
     public String performPost(String s, List<NameValuePair> additionalHeaders) throws IOException {
-        HttpHelper httpHelper =  HttpHelper();
+        HttpHelper httpHelper = HttpHelper();
         String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
@@ -266,7 +266,7 @@ public class Client implements IHttpClient {
 
 
     public List<Cookie> getCookies() throws IOException {
-        HttpHelper httpHelper =  HttpHelper();
+        HttpHelper httpHelper = HttpHelper();
         try {
             return httpHelper.getCookies();
         } finally {
@@ -351,7 +351,7 @@ public class Client implements IHttpClient {
                     .negativeText(R.string.cancel)
                     .onPositive((dialog1, which) -> loginDialog.connect(onUserChangedListener))
                     .build();
-            Window window=dialog.getWindow();
+            Window window = dialog.getWindow();
             assert window != null;
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             dialog.show();
@@ -391,9 +391,9 @@ public class Client implements IHttpClient {
 
 
     Boolean login(String login, String password, Boolean privacy,
-                  String capVal, String capTime, String capSig, String session) throws Exception {
+                  String capVal, String capTime, String capSig) throws Exception {
 
-        HttpHelper httpHelper =  HttpHelper();
+        HttpHelper httpHelper = HttpHelper();
         try {
             httpHelper.clearCookies();
             httpHelper.writeExternalCookies();
@@ -427,46 +427,19 @@ public class Client implements IHttpClient {
                     try {
                         // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
                         res = finalHttpHelper.performPost(s, additionalHeaders);
-                        checkLogin(res);
                         finalHttpHelper.writeExternalCookies();
                     } catch (Exception ignored) {
 
-                    } finally {
-                        finalHttpHelper.close();
                     }
                     return res;
                 }
 
-                public String performPost(String s, List<NameValuePair> additionalHeaders) {
-
-                    String res = null;
-                    try {
-                        // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
-                        res = finalHttpHelper.performPost(s, additionalHeaders);
-                        checkLogin(res);
-                        finalHttpHelper.writeExternalCookies();
-                    } catch (Exception ignored) {
-
-                    } finally {
-                        finalHttpHelper.close();
-                    }
-                    return res;
+                public String performPost(String s, List<NameValuePair> additionalHeaders)  {
+                    return null;
                 }
 
-                public String performPost(String s, Map<String, String> additionalHeaders, String encoding) {
-
-                    String res = null;
-                    try {
-                        // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
-                        res = finalHttpHelper.performPost(s, additionalHeaders, encoding);
-                        checkLogin(res);
-                        finalHttpHelper.writeExternalCookies();
-                    } catch (Exception ignored) {
-
-                    } finally {
-                        finalHttpHelper.close();
-                    }
-                    return res;
+                public String performPost(String s, Map<String, String> additionalHeaders, String encoding)  {
+                    return null;
                 }
 
                 @Override
@@ -476,11 +449,9 @@ public class Client implements IHttpClient {
 
                 @Override
                 public CookieStore getCookieStore() {
-                    try {
+
                         return finalHttpHelper.getCookieStore();
-                    } finally {
-                        finalHttpHelper.close();
-                    }
+
                 }
 
             }, login, password, privacy, capVal, capTime, capSig);
@@ -511,7 +482,7 @@ public class Client implements IHttpClient {
         try {
             HttpHelper httpHelper = null;
             try {
-                httpHelper =  HttpHelper();
+                httpHelper = HttpHelper();
 
                 if (checkLogin(httpHelper.getCookieStore())) {
                     m_Logined = true;
@@ -552,37 +523,28 @@ public class Client implements IHttpClient {
 
     }
 
-    private void checkLogin(String pageBody) {
+    private void checkLogin(HttpHelper httpHelper, String pageBody) {
 
         try {
-            HttpHelper httpHelper = null;
-            try {
-                httpHelper =  HttpHelper();
 
-                if (checkLogin(httpHelper.getCookieStore())) {
-                    m_Logined = true;
-                    return;
-                }
-                if (!TextUtils.isEmpty(m_User) && !TextUtils.isEmpty(UserId)
-                        && !TextUtils.isEmpty(m_K)) {
+            if (checkLogin(httpHelper.getCookieStore())) {
+                m_Logined = true;
+                return;
+            }
+            if (!TextUtils.isEmpty(m_User) && !TextUtils.isEmpty(UserId)
+                    && !TextUtils.isEmpty(m_K)) {
 
-                    List<Cookie> cookies = httpHelper.getLastCookies();
-                    for (Cookie cookie : cookies) {
-                        if ("member_id".equals(cookie.getName())) {
-                            if (UserId.equals(cookie.getValue())) {
-                                m_Logined = true;
-                                return;
-                            }
-                            break;
+                List<Cookie> cookies = httpHelper.getLastCookies();
+                for (Cookie cookie : cookies) {
+                    if ("member_id".equals(cookie.getName())) {
+                        if (UserId.equals(cookie.getValue())) {
+                            m_Logined = true;
+                            return;
                         }
-
+                        break;
                     }
+
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (httpHelper != null)
-                    httpHelper.close();
             }
 
 
@@ -631,7 +593,7 @@ public class Client implements IHttpClient {
 
     Boolean logout() throws Throwable {
         String res = ProfileApi.logout(this, m_K);
-        HttpHelper httpHelper =  HttpHelper();
+        HttpHelper httpHelper = HttpHelper();
         try {
             httpHelper.clearCookies();
             httpHelper.writeExternalCookies();
@@ -639,7 +601,7 @@ public class Client implements IHttpClient {
             httpHelper.close();
         }
 
-        checkLogin(res);
+        checkLogin(httpHelper, res);
         if (m_Logined)
             m_LoginFailedReason = App.getContext().getString(R.string.bad_logout);
 
@@ -698,7 +660,7 @@ public class Client implements IHttpClient {
     //А разве может быть иначе?
     @SuppressWarnings({"RegExpRedundantEscape", "RegExpRepeatedSpace"})
     private final static Pattern postsPattern = Pattern.compile("<div data-post=\"(\\d+)\"[^>]*>[\\s\\S]*?post_date[^>]*?>(.*?)&nbsp;[^#]*#(\\d+)[\\s\\S]*?font color=\"([^\"]*?)\"[\\s\\S]*?data-av=\"([^\"]*)\"[^>]*?>([^>]*?)<[\\s\\S]*?<a href=\"[^\"]*?showuser=(\\d+)\"[\\s\\S]*?<span[^>]*?post_user_info[^>]*?>(<strong[\\s\\S]*?<\\/strong>(?:<br[^>]*?>))?(?:<span[^<]*?color:[^;']*[^>]*?>)?([\\s\\S]*?)(?:<\\/span>|)(?:  \\| [^<]*?)?<\\/span>([\\s\\S]*?<span[^>]*?data-member-rep[^>]*?>([^<]*?)<\\/span>[\\s\\S]*?)<div class=\"post_body([^\"]*?)\"[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div data-post=\"\\d+\"[^>]*>|<!-- TABLE FOOTER -->|<div class=\"topic_foot_nav\">)",
-                    Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+            Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
 
     private final static Pattern editPattern = PatternExtensions.compile("do=edit_post[^\"]*\"");
     private final static Pattern deletePattern = PatternExtensions.compile("onclick=\"[^\"]*seMODdel");
@@ -716,7 +678,7 @@ public class Client implements IHttpClient {
 
     public TopicBodyBuilder parseTopic(String topicPageBody,
                                        Context context, String themeUrl, Boolean spoilFirstPost) throws IOException {
-        checkLogin(topicPageBody);
+        checkLogin(new HttpHelper(),topicPageBody);
 
         Pattern pattern = PatternExtensions.compile("showtopic=(\\d+)(&(.*))?");
         Matcher m = pattern.matcher(themeUrl);

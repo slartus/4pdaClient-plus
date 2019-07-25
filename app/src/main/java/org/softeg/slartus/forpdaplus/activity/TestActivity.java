@@ -23,4 +23,6 @@ public class TestActivity extends FragmentActivity {
 
         ((WebView)findViewById(R.id.wvBody)).loadUrl("http://stackoverflow.com/");
     }
+
+
 }

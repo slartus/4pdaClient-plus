@@ -28,18 +28,20 @@ public class ProfileApi {
      * Проверка логина на странице
      */
     private static void checkLogin(String pageBody, LoginResult loginResult) {
-        Matcher m = Pattern.compile("<i class=\"icon-profile\">[\\s\\S]*?<ul class=\"dropdown-menu\">[\\s\\S]*?showuser=(\\d+)\"[\\s\\S]*?action=logout[^\"]*?k=([a-z0-9]{32})", Pattern.CASE_INSENSITIVE)
+        Matcher kMatcher = Pattern.compile("action=logout[^\\\"]*[;&]k=([^&\\\"]*)", Pattern.CASE_INSENSITIVE)
                 .matcher(pageBody);
 
-        if (m.find()) {
-            loginResult.setUserId(m.group(1));
-            loginResult.setK(m.group(2));
+        Matcher userPattern=Pattern.compile("\"[^\"]*showuser=(\\d+)[^>]*>Профиль<\\/a>", Pattern.CASE_INSENSITIVE).matcher(pageBody);
+
+        if (kMatcher.find()&&userPattern.find()) {
+            loginResult.setUserId(userPattern.group(1));
+            loginResult.setK(kMatcher.group(1));
             loginResult.setSuccess(true);
 
             String[] avatarPatterns = {"(?:'|\")([^'\"]*4pda.(?:to|ru)/*?forum/*?uploads/*?av-[^?'\"]*)",
                     "(?:'|\")([^'\"]*4pda.(?:to|ru)/*?forum/*?style_avatars/[^?'\"]*)"};
             for (String avatarPattern : avatarPatterns) {
-                m = Pattern.compile(avatarPattern, Pattern.CASE_INSENSITIVE).matcher(pageBody);
+                Matcher m = Pattern.compile(avatarPattern, Pattern.CASE_INSENSITIVE).matcher(pageBody);
                 if (m.find()) {
                     loginResult.setUserAvatarUrl(m.group(1));
                     break;
@@ -80,10 +82,11 @@ public class ProfileApi {
         for (Cookie cookie : httpClient.getCookieStore().getCookies()) {
             if (!"deleted".equals(cookie.getValue()) && "member_id".equals(cookie.getName())) {
                 // id пользователя. если он есть - логин успешный
+
                 loginResult.setUserId(cookie.getValue());
                 loginResult.setUserLogin(cookie.getValue());
                 loginResult.setSuccess(true);
-
+break;
             } else if ("deleted".equals(cookie.getValue())) {
                 errorMsg = "Неправильный логин, пароль или капча!";
             } else //noinspection StatementWithEmptyBody
@@ -176,7 +179,7 @@ public class ProfileApi {
                 .readTimeout(30, TimeUnit.SECONDS).build();
 
         String prevPage = RequestUrl(client,"https://4pda.ru/forum/index.php?act=auth");
-        Matcher m = Pattern.compile("act=auth[^\"]*[;&]k=([^&\"]*)").matcher(prevPage);
+        Matcher m = Pattern.compile("act=auth[^\"]*[;&]k=([^&\"]*)", Pattern.CASE_INSENSITIVE).matcher(prevPage);
         String k = UUID.randomUUID().toString();
         if (m.find())
             k = m.group(1);

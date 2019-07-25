@@ -119,8 +119,6 @@ public class LoginDialog {
         @Override
         protected LoginForm doInBackground(String... params) {
             try {
-
-
                 return ProfileApi.getLoginForm();
             } catch (Exception e) {
                 LoginForm loginForm = new LoginForm();
@@ -205,7 +203,7 @@ public class LoginDialog {
         protected Boolean doInBackground(String... params) {
             try {
 
-                return Client.getInstance().login(login, password, privacy, capVal, capTime, capSig, session);
+                return Client.getInstance().login(login, password, privacy, capVal, capTime, capSig);
             } catch (Exception e) {
 
                 ex = e;
