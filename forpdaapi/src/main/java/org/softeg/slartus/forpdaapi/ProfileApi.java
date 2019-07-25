@@ -11,8 +11,14 @@ import org.softeg.slartus.forpdacommon.NotReportException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /*
  * Created by slinkin on 07.02.14.
@@ -20,11 +26,8 @@ import java.util.regex.Pattern;
 public class ProfileApi {
     /**
      * Проверка логина на странице
-     *
-     * @param pageBody
-     * @return если залогинен - true
      */
-    public static void checkLogin(String pageBody, LoginResult loginResult) {
+    private static void checkLogin(String pageBody, LoginResult loginResult) {
         Matcher m = Pattern.compile("<i class=\"icon-profile\">[\\s\\S]*?<ul class=\"dropdown-menu\">[\\s\\S]*?showuser=(\\d+)\"[\\s\\S]*?action=logout[^\"]*?k=([a-z0-9]{32})", Pattern.CASE_INSENSITIVE)
                 .matcher(pageBody);
 
@@ -45,19 +48,11 @@ public class ProfileApi {
         }
     }
 
-    /**
-     * @param httpClient
-     * @param login
-     * @param password
-     * @param privacy
-     * @return
-     * @throws Exception
-     */
     public static LoginResult login(IHttpClient httpClient, String login, String password,
-                                    Boolean privacy, String capVal, String capTime, String capSig, String session) throws Exception {
+                                    Boolean privacy, String capVal, String capTime, String capSig) throws Exception {
         LoginResult loginResult = new LoginResult();
 
-        Map<String, String> additionalHeaders = new HashMap<String, String>();
+        Map<String, String> additionalHeaders = new HashMap<>();
 
         additionalHeaders.put("login", login);
         additionalHeaders.put("password", password);
@@ -91,9 +86,11 @@ public class ProfileApi {
 
             } else if ("deleted".equals(cookie.getValue())) {
                 errorMsg = "Неправильный логин, пароль или капча!";
-            } else if ("pass_hash".equals(cookie.getName())) {
+            } else //noinspection StatementWithEmptyBody
+                if ("pass_hash".equals(cookie.getName())) {
                 // хэш пароля
-            } else if ("session_id".equals(cookie.getName())) {
+            } else //noinspection StatementWithEmptyBody
+                    if ("session_id".equals(cookie.getName())) {
                 // id сессии
             }
         }
@@ -133,10 +130,8 @@ public class ProfileApi {
     /**
      * ЛОгаут
      *
-     * @param httpClient
      * @param k          идентификатор, полученный при логине
-     * @return
-     * @throws Throwable
+     *
      */
     public static String logout(IHttpClient httpClient, String k) throws Throwable {
         return httpClient.performGet("http://4pda.ru/forum/index.php?act=Login&CODE=03&k=" + k);
@@ -147,7 +142,7 @@ public class ProfileApi {
         profile.setId(userID);
         String page = httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID);
 
-        Matcher matcher = Pattern.compile("<form action=\"[^\"]*?4pda\\.ru\\/forum\\/index\\.php\\?showuser[^>]*>[\\s\\S]*?<ul[^>]*>([\\s\\S]*)<\\/ul>[\\s\\S]*?<\\/form>").matcher(page);
+        Matcher matcher = Pattern.compile("<form action=\"[^\"]*?4pda\\.ru/forum/index\\.php\\?showuser[^>]*>[\\s\\S]*?<ul[^>]*>([\\s\\S]*)</ul>[\\s\\S]*?</form>").matcher(page);
         if (matcher.find()) {
             page = matcher.group(1).replaceFirst("<div class=\"photo\">[^<]*<img src=\"([^\"]*)\"[^<]*</div>",
                     "<div class=\"photo\"><div class=\"img " + avType + "\" style=\"background-image: url($1);\"></div></div>");
@@ -164,17 +159,37 @@ public class ProfileApi {
         return Jsoup.parse(httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID)).select("div.user-box > h1").first().text();
     }
 
-    public static LoginForm getLoginForm(IHttpClient httpClient) throws IOException {
-        String page = httpClient.performGet("http://4pda.ru/forum/index.php?act=auth");
+    private static String RequestUrl( OkHttpClient client,String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
 
-        Matcher m = Pattern
+        Response response = client.newCall(request).execute();
+        return response.body().string();
+    }
+
+    public static LoginForm getLoginForm() throws IOException {
+        OkHttpClient client=new OkHttpClient.Builder()
+                .retryOnConnectionFailure(true)
+                .connectTimeout(15, TimeUnit.SECONDS) // connect timeout
+                .writeTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS).build();
+
+        String prevPage = RequestUrl(client,"https://4pda.ru/forum/index.php?act=auth");
+        Matcher m = Pattern.compile("act=auth[^\"]*[;&]k=([^&\"]*)").matcher(prevPage);
+        String k = UUID.randomUUID().toString();
+        if (m.find())
+            k = m.group(1);
+        String page =  RequestUrl(client,"https://4pda.ru/forum/index.php?act=auth&k=" + k);
+
+        m = Pattern
                 .compile("<form[^>]*?>([\\s\\S]*?)</form>")
                 .matcher(page);
         if (!m.find())
             throw new NotReportException("Форма логина не найдена");
         String formText = m.group(1);
         m = Pattern
-                .compile("<img[^>]*?src=\"([^\"]*?turing.4pda.ru\\/captcha[^\"]*)\"")
+                .compile("<img[^>]*?src=\"([^\"]*?turing.4pda.ru/captcha[^\"]*)\"")
                 .matcher(formText);
         if (!m.find())
             throw new NotReportException("Капча не найдена");

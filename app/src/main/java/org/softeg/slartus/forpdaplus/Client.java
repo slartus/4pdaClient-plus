@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -68,6 +67,12 @@ public class Client implements IHttpClient {
 
     }
 
+    private HttpHelper httpHelper;
+    private HttpHelper HttpHelper() throws IOException {
+        if(httpHelper==null)
+            httpHelper=new HttpHelper();
+        return httpHelper;
+    }
     public String getAuthKey() {
         return m_K;
     }
@@ -106,10 +111,9 @@ public class Client implements IHttpClient {
         boolean session = false;
         boolean pass_hash = false;
         boolean member = false;
-        HttpHelper httpHelper = null;
         try {
             try {
-                httpHelper = new HttpHelper();
+                httpHelper = HttpHelper();
 
             } catch (IOException e) {
                 AppLog.e(null, e);
@@ -174,7 +178,7 @@ public class Client implements IHttpClient {
 
     public String performGet(String s, Boolean checkEmptyResult, Boolean checkLoginAndMails) throws IOException {
 
-        HttpHelper httpHelper = new HttpHelper();
+        HttpHelper httpHelper =  HttpHelper();
         String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
@@ -195,7 +199,7 @@ public class Client implements IHttpClient {
     }
 
     public String performPost(String s, Map<String, String> additionalHeaders) throws IOException {
-        HttpHelper httpHelper = new HttpHelper();
+        HttpHelper httpHelper =  HttpHelper();
         String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
@@ -210,7 +214,7 @@ public class Client implements IHttpClient {
 
     public String uploadFile(String url, String filePath, Map<String, String> additionalHeaders
             , ProgressState progress) throws Exception {
-        HttpHelper httpHelper = new HttpHelper();
+        HttpHelper httpHelper =  HttpHelper();
         String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
@@ -224,7 +228,7 @@ public class Client implements IHttpClient {
 
     @Override
     public CookieStore getCookieStore() throws IOException {
-        HttpHelper httpHelper = new HttpHelper();
+        HttpHelper httpHelper =  HttpHelper();
 
         try {
             return httpHelper.getCookieStore();
@@ -234,7 +238,7 @@ public class Client implements IHttpClient {
     }
 
     public String performPost(String s, Map<String, String> additionalHeaders, String encoding) throws IOException {
-        HttpHelper httpHelper = new HttpHelper();
+        HttpHelper httpHelper =  HttpHelper();
         String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
@@ -248,7 +252,7 @@ public class Client implements IHttpClient {
 
     @Override
     public String performPost(String s, List<NameValuePair> additionalHeaders) throws IOException {
-        HttpHelper httpHelper = new HttpHelper();
+        HttpHelper httpHelper =  HttpHelper();
         String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
@@ -262,7 +266,7 @@ public class Client implements IHttpClient {
 
 
     public List<Cookie> getCookies() throws IOException {
-        HttpHelper httpHelper = new HttpHelper();
+        HttpHelper httpHelper =  HttpHelper();
         try {
             return httpHelper.getCookies();
         } finally {
@@ -389,7 +393,7 @@ public class Client implements IHttpClient {
     Boolean login(String login, String password, Boolean privacy,
                   String capVal, String capTime, String capSig, String session) throws Exception {
 
-        HttpHelper httpHelper = new HttpHelper();
+        HttpHelper httpHelper =  HttpHelper();
         try {
             httpHelper.clearCookies();
             httpHelper.writeExternalCookies();
@@ -479,7 +483,7 @@ public class Client implements IHttpClient {
                     }
                 }
 
-            }, login, password, privacy, capVal, capTime, capSig, session);
+            }, login, password, privacy, capVal, capTime, capSig);
             m_Logined = loginResult.isSuccess();
             m_LoginFailedReason = m_Logined ? null : loginResult.getLoginError().toString();
 
@@ -507,7 +511,7 @@ public class Client implements IHttpClient {
         try {
             HttpHelper httpHelper = null;
             try {
-                httpHelper = new HttpHelper();
+                httpHelper =  HttpHelper();
 
                 if (checkLogin(httpHelper.getCookieStore())) {
                     m_Logined = true;
@@ -553,7 +557,7 @@ public class Client implements IHttpClient {
         try {
             HttpHelper httpHelper = null;
             try {
-                httpHelper = new HttpHelper();
+                httpHelper =  HttpHelper();
 
                 if (checkLogin(httpHelper.getCookieStore())) {
                     m_Logined = true;
@@ -627,7 +631,7 @@ public class Client implements IHttpClient {
 
     Boolean logout() throws Throwable {
         String res = ProfileApi.logout(this, m_K);
-        HttpHelper httpHelper = new HttpHelper();
+        HttpHelper httpHelper =  HttpHelper();
         try {
             httpHelper.clearCookies();
             httpHelper.writeExternalCookies();

@@ -121,7 +121,7 @@ public class LoginDialog {
             try {
 
 
-                return ProfileApi.getLoginForm(Client.getInstance());
+                return ProfileApi.getLoginForm();
             } catch (Exception e) {
                 LoginForm loginForm = new LoginForm();
                 loginForm.setError(e);

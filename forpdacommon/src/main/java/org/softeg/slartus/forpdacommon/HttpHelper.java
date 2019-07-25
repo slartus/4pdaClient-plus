@@ -91,8 +91,8 @@ public class HttpHelper {
     public static final String ACCEPT_ENCODING = "Accept-Encoding";
 
     public static String HTTP_CONTENT_CHARSET = "windows-1251";
-    public static String USER_AGENT = "android";
-    public static String FULL_USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0";
+    public static String USER_AGENT = "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Mobile Safari/537.36";
+    public static String FULL_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36";
     public static final String MIME_FORM_ENCODED = "application/x-www-form-urlencoded";
     public static final String MIME_TEXT_PLAIN = "text/plain";
     public static final String HTTP_RESPONSE = "HTTP_RESPONSE";
