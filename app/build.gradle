@@ -12,7 +12,7 @@ android {
     compileSdkVersion 27
     useLibrary 'org.apache.http.legacy'
 
-    def appVersionCode = 616
+    def appVersionCode = 617
     def appVersionName = "3.5.2.9"
 
 
