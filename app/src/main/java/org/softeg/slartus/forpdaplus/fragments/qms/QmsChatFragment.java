@@ -351,7 +351,6 @@ public class QmsChatFragment extends WebViewFragment {
                 Uri selectedImageUri = data.getData();
                 String selectedImagePath = ImageFilePath.getPath(getMainActivity().getApplicationContext(), selectedImageUri);
                 if (selectedImagePath != null && selectedImagePath.matches("(?i)(.*)(jpg|png|gif)$")) {
-
                     saveAttachDirPath(selectedImagePath);
                     new UpdateTask(getMainActivity(), selectedImagePath).execute();
                 } else {

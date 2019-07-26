@@ -114,7 +114,7 @@ public class EditPostFragment extends GeneralFragment {
         mPopupPanelView.hidePopupWindow();
     }
 
-    public static EditPostFragment newInstance(Context context, Bundle args){
+    public static EditPostFragment newInstance(Context context, Bundle args) {
         EditPostFragment fragment = new EditPostFragment();
 
         fragment.setArguments(args);
@@ -122,19 +122,19 @@ public class EditPostFragment extends GeneralFragment {
     }
 
     public static void editPost(Activity context, String forumId, String topicId, String postId, String authKey, String tag) {
-        String url = thisFragmentUrl+forumId+topicId+postId;
+        String url = thisFragmentUrl + forumId + topicId + postId;
         Bundle args = new Bundle();
         args.putString("forumId", forumId);
         args.putString("themeId", topicId);
         args.putString("postId", postId);
         args.putString("authKey", authKey);
         args.putString("parentTag", tag);
-        MainActivity.addTab(context.getString(R.string.edit_post_combined)+context.getString(R.string.combined_in) + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
+        MainActivity.addTab(context.getString(R.string.edit_post_combined) + context.getString(R.string.combined_in) + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
     }
 
     public static void newPost(Activity context, String forumId, String topicId, String authKey,
                                final String body, String tag) {
-        String url = thisFragmentUrl+forumId+topicId+PostApi.NEW_POST_ID;
+        String url = thisFragmentUrl + forumId + topicId + PostApi.NEW_POST_ID;
         Bundle args = new Bundle();
         args.putString("forumId", forumId);
         args.putString("themeId", topicId);
@@ -142,12 +142,12 @@ public class EditPostFragment extends GeneralFragment {
         args.putString("body", body);
         args.putString("authKey", authKey);
         args.putString("parentTag", tag);
-        MainActivity.addTab(context.getString(R.string.answer)+context.getString(R.string.combined_in) + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
+        MainActivity.addTab(context.getString(R.string.answer) + context.getString(R.string.combined_in) + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
     }
 
     public static void newPostWithAttach(Context context, String forumId, String topicId, String authKey,
                                          final Bundle extras) {
-        String url = thisFragmentUrl+forumId+topicId+PostApi.NEW_POST_ID;
+        String url = thisFragmentUrl + forumId + topicId + PostApi.NEW_POST_ID;
         Bundle args = new Bundle();
         args.putString("forumId", forumId);
         args.putString("themeId", topicId);
@@ -177,7 +177,7 @@ public class EditPostFragment extends GeneralFragment {
                     .negativeText(R.string.cancel)
                     .show();
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -192,14 +192,14 @@ public class EditPostFragment extends GeneralFragment {
     public void onResume() {
         super.onResume();
         setArrow();
-        if(mPopupPanelView!=null)
+        if (mPopupPanelView != null)
             mPopupPanelView.resume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if(mPopupPanelView!=null)
+        if (mPopupPanelView != null)
             mPopupPanelView.pause();
     }
 
@@ -246,15 +246,13 @@ public class EditPostFragment extends GeneralFragment {
         });
 
 
-
-
         btnAttachments = (Button) findViewById(R.id.btnAttachments);
         btnAttachments.setOnClickListener(view -> showAttachesListDialog());
 
         btnUpload = (ImageButton) findViewById(R.id.btnUpload);
         btnUpload.setOnClickListener(view -> startAddAttachment());
 
-        if(mPopupPanelView==null)
+        if (mPopupPanelView == null)
             mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
         mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), txtPost);
         mPopupPanelView.activityCreated(getMainActivity(), view);
@@ -277,7 +275,7 @@ public class EditPostFragment extends GeneralFragment {
             mPopupPanelView.setTopic(forumId, topicId, authKey);
 
             if (isNewPost()) {
-                if (args.getString("body")!=null) {
+                if (args.getString("body") != null) {
                     txtPost.setText(args.getString("body"));
                     txtPost.setSelection(txtPost.getText().length());
                 }
@@ -310,7 +308,7 @@ public class EditPostFragment extends GeneralFragment {
                     .negativeText(R.string.cancel)
                     .show();
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -380,18 +378,27 @@ public class EditPostFragment extends GeneralFragment {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void setDataFromExtras(Bundle extras) throws NotReportException {
-        if (extras==null) return;
+        if (extras == null) return;
         if (extras.containsKey(Intent.EXTRA_STREAM)) {
             Object attachesObject = extras.get(Intent.EXTRA_STREAM);
             if (attachesObject instanceof Uri) {
                 Uri uri = (Uri) extras.get(Intent.EXTRA_STREAM);
-                m_AttachFilePaths = new ArrayList<>(Arrays.asList(ImageFilePath.getPath(getMainActivity().getApplicationContext(), uri)));
+                String path = ImageFilePath.getPath(getMainActivity().getApplicationContext(), uri);
+                if (path != null)
+                    m_AttachFilePaths = new ArrayList<>(Arrays.asList(path));
+                else
+                    Toast.makeText(getContext(), "Не могу прикрепить файл", Toast.LENGTH_SHORT).show();
             } else if (attachesObject instanceof ArrayList<?>) {
                 m_AttachFilePaths = new ArrayList<>();
                 ArrayList<?> list = (ArrayList<?>) attachesObject;
                 for (Object item : list) {
                     Uri uri = (Uri) item;
-                    m_AttachFilePaths.add(ImageFilePath.getPath(getMainActivity().getApplicationContext(), uri));
+                    String path = ImageFilePath.getPath(getMainActivity().getApplicationContext(), uri);
+                    if (path != null)
+                        m_AttachFilePaths.add(ImageFilePath.getPath(getMainActivity().getApplicationContext(), uri));
+                    else
+                        Toast.makeText(getContext(), "Не могу прикрепить файл", Toast.LENGTH_SHORT).show();
+
                 }
             }
         }
@@ -406,6 +413,7 @@ public class EditPostFragment extends GeneralFragment {
         }
         txtPost.setSelection(txtPost.getText().length());
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -422,10 +430,10 @@ public class EditPostFragment extends GeneralFragment {
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
         menu.add(R.string.preview).setOnMenuItemClickListener(item1 -> {
-            TabItem tabItem = App.getInstance().getTabByUrl("preview_"+getTag());
-            if(tabItem==null) {
+            TabItem tabItem = App.getInstance().getTabByUrl("preview_" + getTag());
+            if (tabItem == null) {
                 PostPreviewFragment.showSpecial(getPostText(), getTag());
-            }else {
+            } else {
                 ((PostPreviewFragment) tabItem.getFragment()).load(getPostText());
                 getMainActivity().selectTab(tabItem);
                 getMainActivity().hidePopupWindows();
@@ -515,7 +523,7 @@ public class EditPostFragment extends GeneralFragment {
         mAttachesListDialog = new MaterialDialog.Builder(getMainActivity())
                 .cancelable(true)
                 .title(R.string.attachments)
-                        //.setSingleChoiceItems(adapter, -1, null)
+                //.setSingleChoiceItems(adapter, -1, null)
                 .adapter(adapter, new LinearLayoutManager(getActivity()))
                 .neutralText(R.string.in_spoiler)
                 .callback(new MaterialDialog.ButtonCallback() {
@@ -523,7 +531,7 @@ public class EditPostFragment extends GeneralFragment {
                     public void onNeutral(MaterialDialog dialog) {
                         List<String> listItems = new ArrayList<String>();
                         int i = 0;
-                        while (i <= (m_EditPost.getAttaches().size()-1)) {
+                        while (i <= (m_EditPost.getAttaches().size() - 1)) {
                             listItems.add(m_EditPost.getAttaches().get(i).getName());
                             i++;
                         }
@@ -541,7 +549,7 @@ public class EditPostFragment extends GeneralFragment {
                                             selectionStart = 0;
                                         if (txtPost.getText() != null)
                                             //txtPost.getText().insert(selectionStart, "[attachment=" + attach.getId() + ":" + attach.getTitle() + "]");
-                                            txtPost.getText().insert(selectionStart, "[spoiler]"+str.toString()+"[/spoiler]");
+                                            txtPost.getText().insert(selectionStart, "[spoiler]" + str.toString() + "[/spoiler]");
 
                                     }
                                 })
@@ -564,8 +572,10 @@ public class EditPostFragment extends GeneralFragment {
                 .build();
         mAttachesListDialog.show();
     }
+
     private static final int MY_INTENT_CLICK_I = 302;
     private static final int MY_INTENT_CLICK_F = 303;
+
     private void startAddAttachment() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getActivity(), R.string.no_permission, Toast.LENGTH_SHORT).show();
@@ -578,14 +588,14 @@ public class EditPostFragment extends GeneralFragment {
                     switch (i) {
                         case 0://файл
                             try {
-                                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                                    intent.setType("*/*");
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                    }
-                                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-                                    startActivityForResult(intent, MY_INTENT_CLICK_F);
+                                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                                intent.setType("*/*");
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                }
+                                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                                startActivityForResult(intent, MY_INTENT_CLICK_F);
 
                             } catch (ActivityNotFoundException ex) {
                                 Toast.makeText(getMainActivity(), R.string.no_app_for_get_file, Toast.LENGTH_LONG).show();
@@ -626,23 +636,32 @@ public class EditPostFragment extends GeneralFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (resultCode == Activity.RESULT_OK)
-        {
-            if (requestCode == MY_INTENT_CLICK_I)
-            {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == MY_INTENT_CLICK_I) {
                 if (null == data) return;
                 Uri selectedImageUri = data.getData();
                 String selectedImagePath = ImageFilePath.getPath(getMainActivity().getApplicationContext(), selectedImageUri);
-                helperTask(selectedImagePath);
+                if (selectedImagePath != null)
+                    helperTask(selectedImagePath);
+                else
+                    Toast.makeText(getContext(), "Не могу прикрепить файл", Toast.LENGTH_SHORT).show();
+
 
             } else if (requestCode == MY_INTENT_CLICK_F) {
                 if (null == data) return;
                 String path = ImageFilePath.getPath(getMainActivity().getApplicationContext(), data.getData());
-                if (path.matches("(?i)(.*)(7z|zip|rar|tar.gz|exe|cab|xap|txt|log|jpeg|jpg|png|gif|mp3|mp4|apk|ipa|img|.mtz)$")) {
-                    helperTask(path);
-                } else {
-                    Toast.makeText(getMainActivity(), R.string.file_not_support_forum, Toast.LENGTH_SHORT).show();
+                if (path != null)
+                {
+                    if (path.matches("(?i)(.*)(7z|zip|rar|tar.gz|exe|cab|xap|txt|log|jpeg|jpg|png|gif|mp3|mp4|apk|ipa|img|.mtz)$")) {
+                        helperTask(path);
+                    } else {
+                        Toast.makeText(getMainActivity(), R.string.file_not_support_forum, Toast.LENGTH_SHORT).show();
+                    }
                 }
+                else
+                    Toast.makeText(getContext(), "Не могу прикрепить файл", Toast.LENGTH_SHORT).show();
+
+
             }
         }
     }
@@ -741,7 +760,7 @@ public class EditPostFragment extends GeneralFragment {
             this.dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialogInterface) {
-                    if(m_ProgressState!=null)
+                    if (m_ProgressState != null)
                         m_ProgressState.cancel();
                     cancel(false);
                 }
@@ -804,8 +823,8 @@ public class EditPostFragment extends GeneralFragment {
             mPopupPanelView.destroy();
             mPopupPanelView = null;
         }
-        TabItem tabItem = App.getInstance().getTabByUrl("preview_"+getTag());
-        if(tabItem!=null) getMainActivity().tryRemoveTab(tabItem.getTag());
+        TabItem tabItem = App.getInstance().getTabByUrl("preview_" + getTag());
+        if (tabItem != null) getMainActivity().tryRemoveTab(tabItem.getTag());
         super.onDestroy();
     }
 
@@ -819,7 +838,7 @@ public class EditPostFragment extends GeneralFragment {
             this.attachId = attachId;
 
             dialog = new MaterialDialog.Builder(context)
-                    .progress(true,0)
+                    .progress(true, 0)
                     .content(R.string.deleting_file)
                     .build();
         }
@@ -875,7 +894,7 @@ public class EditPostFragment extends GeneralFragment {
             this.enableEmo = enableEmo;
             this.enableSign = enableSign;
             dialog = new MaterialDialog.Builder(context)
-                    .progress(true,0)
+                    .progress(true, 0)
                     .content(R.string.edit_message)
                     .build();
         }
@@ -906,8 +925,8 @@ public class EditPostFragment extends GeneralFragment {
             }
 
             if (success) {
-                if(App.getInstance().isContainsByTag(parentTag)){
-                    ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment())
+                if (App.getInstance().isContainsByTag(parentTag)) {
+                    ((ThemeFragment) App.getInstance().getTabByTag(parentTag).getFragment())
                             .showTheme(ThemeFragment.getThemeUrl(m_EditPost.getTopicId(), "view=findpost&p=" + m_EditPost.getId()), true);
                 }
                 getMainActivity().tryRemoveTab(getTag());
@@ -947,7 +966,7 @@ public class EditPostFragment extends GeneralFragment {
             this.postId = postId;
             this.authKey = authKey;
             dialog = new MaterialDialog.Builder(context)
-                    .progress(true,0)
+                    .progress(true, 0)
                     .cancelListener(new DialogInterface.OnCancelListener() {
                         @Override
                         public void onCancel(DialogInterface dialog) {
@@ -1021,7 +1040,7 @@ public class EditPostFragment extends GeneralFragment {
             this.enableEmo = enableEmo;
             this.enableSign = enableSign;
             dialog = new MaterialDialog.Builder(context)
-                    .progress(true,0)
+                    .progress(true, 0)
                     .content(R.string.sending_message)
                     .build();
         }
@@ -1053,11 +1072,11 @@ public class EditPostFragment extends GeneralFragment {
 
             if (success) {
                 if (!TextUtils.isEmpty(mError)) {
-                    Toast.makeText(getMainActivity(), App.getContext().getString(R.string.error)+": " + mError, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getMainActivity(), App.getContext().getString(R.string.error) + ": " + mError, Toast.LENGTH_LONG).show();
                     return;
                 }
-                if(App.getInstance().isContainsByTag(parentTag)){
-                    ((ThemeFragment)App.getInstance().getTabByTag(parentTag).getFragment())
+                if (App.getInstance().isContainsByTag(parentTag)) {
+                    ((ThemeFragment) App.getInstance().getTabByTag(parentTag).getFragment())
                             .showTheme(String.format("http://4pda.ru/forum/index.php?showtopic=%s&%s", m_EditPost.getTopicId(),
                                     isNewPost() ? "view=getlastpost" : "view=findpost&p=" + m_EditPost.getId()), true);
                 }
@@ -1255,7 +1274,6 @@ public class EditPostFragment extends GeneralFragment {
     }
 
     public EditText searchEditText;
-
 
 
     @Override

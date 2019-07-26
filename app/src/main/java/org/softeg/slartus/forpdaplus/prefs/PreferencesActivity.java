@@ -37,6 +37,7 @@ import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
+import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.ImageFilePath;
@@ -340,11 +341,15 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     if (null == data) return;
                     Uri selectedImageUri = data.getData();
                     String selectedImagePath = ImageFilePath.getPath(App.getContext(), selectedImageUri);
-                    App.getInstance().getPreferences()
-                            .edit()
-                            .putString("userInfoBg", selectedImagePath)
-                            .putBoolean("isUserBackground", true)
-                            .apply();
+                    if (selectedImagePath != null)
+                        App.getInstance().getPreferences()
+                                .edit()
+                                .putString("userInfoBg", selectedImagePath)
+                                .putBoolean("isUserBackground", true)
+                                .apply();
+                    else
+                        Toast.makeText(getActivity(), "Не могу прикрепить файл", Toast.LENGTH_SHORT).show();
+
                 }
             }
         }
