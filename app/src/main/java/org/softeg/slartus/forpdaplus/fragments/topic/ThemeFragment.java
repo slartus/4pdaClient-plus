@@ -246,12 +246,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     .title(R.string.ConfirmTheAction)
                     .content(R.string.entered_text)
                     .positiveText(R.string.apply_yes)
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            clear();
-                            getMainActivity().tryRemoveTab(getTag());
-                        }
+                    .onPositive((dialog, which) -> {
+                        clear();
+                        getMainActivity().tryRemoveTab(getTag());
                     })
                     .negativeText(R.string.apply_cancel)
                     .show();
@@ -636,7 +633,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
             optionsMenu.add(R.string.loading_img_for_session)
                     .setOnMenuItemClickListener(menuItem -> {
-                        Boolean loadImagesAutomatically1 = getLoadsImagesAutomatically();
+                        boolean loadImagesAutomatically1 = getLoadsImagesAutomatically();
                         setLoadsImagesAutomatically(!loadImagesAutomatically1);
                         menuItem.setChecked(!loadImagesAutomatically1);
                         return true;
@@ -832,12 +829,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     .title(R.string.ConfirmTheAction)
                     .content(R.string.entered_text)
                     .positiveText(R.string.apply_yes)
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            clear();
-                            getMainActivity().tryRemoveTab(getTag());
-                        }
+                    .onPositive((dialog, which) -> {
+                        clear();
+                        getMainActivity().tryRemoveTab(getTag());
                     })
                     .negativeText(R.string.apply_cancel)
                     .show();
@@ -895,7 +889,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }
 
 
-        CharSequence[] titles = new CharSequence[]{getS(R.string.quote_post), getS(R.string.blank_quote), getS(R.string.quote_from_buffer)};
+        CharSequence[] titles = new CharSequence[]{getS(R.string.blank_quote), getS(R.string.quote_from_buffer)};
         if (TextUtils.isEmpty(clipboardText))
             titles = new CharSequence[]{getS(R.string.quote_editor), getS(R.string.blank_quote)};
         final CharSequence finalClipboardText = clipboardText;
@@ -906,12 +900,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 .itemsCallback((dialog, view1, i, titles1) -> {
                     switch (i) {
                         case 0:
-                            showQuoteEditor("http://4pda.ru/forum/index.php?act=Post&CODE=02&f=" + forumId + "&t=" + topicId + "&qpid=" + postId);
-                            break;
-                        case 1:
                             getMainActivity().runOnUiThread(() -> new Handler().post(() -> insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n\n[/quote]")));
                             break;
-                        case 2:
+                        case 1:
                             getMainActivity().runOnUiThread(() -> new Handler().post(() -> insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n" + finalClipboardText + "\n[/quote]")));
                             break;
                     }
@@ -1006,12 +997,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 .title(R.string.select_action)
                 .content(R.string.refresh_page)
                 .positiveText(R.string.refresh_p)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        reloadTopic();
-                    }
-                })
+                .onPositive((dialog, which) -> reloadTopic())
                 .negativeText(R.string.apply_no)
                 .show();
     }
@@ -1165,12 +1151,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 .title(R.string.ConfirmTheAction)
                 .content(R.string.want_to_delete_msg)
                 .positiveText(R.string.delete_m)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        deleteMessage(postId);
-                    }
-                })
+                .onPositive((dialog, which) -> deleteMessage(postId))
                 .negativeText(R.string.apply_cancel)
                 .show();
     }
@@ -1336,7 +1317,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         String[] parameterValues = new String[0];
                         if (!TextUtils.isEmpty(query)) {
                             Matcher m = Pattern.compile("(.*?)=(.*?)(&|$)").matcher(url);
-                            ArrayList<String> objs = new ArrayList<String>();
+                            ArrayList<String> objs = new ArrayList<>();
 
                             while (m.find()) {
                                 objs.add(Uri.decode(m.group(2)));
