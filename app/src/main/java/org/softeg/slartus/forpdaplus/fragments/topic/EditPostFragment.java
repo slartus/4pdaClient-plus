@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -18,7 +17,6 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +27,6 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
-import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -49,14 +46,13 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdaapi.post.EditAttach;
 import org.softeg.slartus.forpdaapi.post.EditPost;
 import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdacommon.FileUtils;
-import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.BuildConfig;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
@@ -67,7 +63,6 @@ import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -83,9 +78,7 @@ public class EditPostFragment extends GeneralFragment {
     public static final String TOPIC_BODY_KEY = "EditPostActivity.TOPIC_BODY_KEY";
     public static final String POST_URL_KEY = "EditPostActivity.POST_URL_KEY";
     private EditText txtPost, txtpost_edit_reason;
-    private static final int FILE_PICKER_RESULT = 33;
     private Button btnAttachments;
-    private ImageButton btnUpload;
     private ProgressBar progress_search;
     private EditPost m_EditPost;
 
@@ -93,9 +86,6 @@ public class EditPostFragment extends GeneralFragment {
     private String lastSelectDirPath = Environment.getExternalStorageDirectory().getPath();
 
     final Handler uiHandler = new Handler();
-
-    private final int REQUEST_SAVE = 0;
-    private final int REQUEST_SAVE_IMAGE = 1;
 
     private String parentTag = "";
     private boolean emptyText = true;
@@ -106,15 +96,13 @@ public class EditPostFragment extends GeneralFragment {
 
     public static final String thisFragmentUrl = "EditPostFragment";
 
-    private String pathToFile = "";
-
     @Override
     public void hidePopupWindows() {
         super.hidePopupWindows();
         mPopupPanelView.hidePopupWindow();
     }
 
-    public static EditPostFragment newInstance(Context context, Bundle args) {
+    public static EditPostFragment newInstance(Bundle args) {
         EditPostFragment fragment = new EditPostFragment();
 
         fragment.setArguments(args);
@@ -129,7 +117,7 @@ public class EditPostFragment extends GeneralFragment {
         args.putString("postId", postId);
         args.putString("authKey", authKey);
         args.putString("parentTag", tag);
-        MainActivity.addTab(context.getString(R.string.edit_post_combined) + context.getString(R.string.combined_in) + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
+        MainActivity.addTab(context.getString(R.string.edit_post_combined) + context.getString(R.string.combined_in) + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(args));
     }
 
     public static void newPost(Activity context, String forumId, String topicId, String authKey,
@@ -142,7 +130,7 @@ public class EditPostFragment extends GeneralFragment {
         args.putString("body", body);
         args.putString("authKey", authKey);
         args.putString("parentTag", tag);
-        MainActivity.addTab(context.getString(R.string.answer) + context.getString(R.string.combined_in) + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(context, args));
+        MainActivity.addTab(context.getString(R.string.answer) + context.getString(R.string.combined_in) + App.getInstance().getTabByTag(tag).getTitle(), url, newInstance(args));
     }
 
     public static void newPostWithAttach(Context context, String forumId, String topicId, String authKey,
@@ -154,7 +142,7 @@ public class EditPostFragment extends GeneralFragment {
         args.putString("postId", PostApi.NEW_POST_ID);
         args.putBundle("extras", extras);
         args.putString("authKey", authKey);
-        MainActivity.addTab(context.getString(R.string.edit_post_combined), url, newInstance(context, args));
+        MainActivity.addTab(context.getString(R.string.edit_post_combined), url, newInstance(args));
     }
 
     public ActionBar getSupportActionBar() {
@@ -168,12 +156,7 @@ public class EditPostFragment extends GeneralFragment {
                     .title(R.string.confirm_action)
                     .content(R.string.text_not_empty)
                     .positiveText(R.string.ok)
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            getMainActivity().tryRemoveTab(getTag());
-                        }
-                    })
+                    .onPositive((dialog, which) -> getMainActivity().tryRemoveTab(getTag()))
                     .negativeText(R.string.cancel)
                     .show();
             return true;
@@ -205,7 +188,7 @@ public class EditPostFragment extends GeneralFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.edit_post_plus, container, false);
 
         progress_search = (ProgressBar) findViewById(R.id.progress_search);
@@ -249,7 +232,7 @@ public class EditPostFragment extends GeneralFragment {
         btnAttachments = (Button) findViewById(R.id.btnAttachments);
         btnAttachments.setOnClickListener(view -> showAttachesListDialog());
 
-        btnUpload = (ImageButton) findViewById(R.id.btnUpload);
+        ImageButton btnUpload = (ImageButton) findViewById(R.id.btnUpload);
         btnUpload.setOnClickListener(view -> startAddAttachment());
 
         if (mPopupPanelView == null)
@@ -260,8 +243,7 @@ public class EditPostFragment extends GeneralFragment {
 
         try {
             Bundle args = getArguments();
-
-
+            assert args != null;
             String forumId = args.getString("forumId");
             String topicId = args.getString("themeId");
             String postId = args.getString("postId");
@@ -299,12 +281,7 @@ public class EditPostFragment extends GeneralFragment {
                     .title(R.string.confirm_action)
                     .content(getString(R.string.text_not_empty))
                     .positiveText(R.string.ok)
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            getMainActivity().tryRemoveTab(getTag());
-                        }
-                    })
+                    .onPositive((dialog, which) -> getMainActivity().tryRemoveTab(getTag()))
                     .negativeText(R.string.cancel)
                     .show();
             return true;
@@ -331,19 +308,12 @@ public class EditPostFragment extends GeneralFragment {
                     .title(R.string.is_sure)
                     .content(R.string.confirm_sending)
                     .positiveText(R.string.ok)
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            sendPost(body, getEditReasonText());
-                        }
-                    })
+                    .onPositive((dialog, which) -> sendPost(body, getEditReasonText()))
                     .negativeText(R.string.cancel)
                     .show();
         } else {
             sendPost(body, getEditReasonText());
         }
-
-        return;
     }
 
     @Override
@@ -360,24 +330,8 @@ public class EditPostFragment extends GeneralFragment {
         super.onSaveInstanceState(outState);
     }
 
-    //@Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        //super.onRestoreInstanceState(savedInstanceState);
-        if (savedInstanceState == null) return;
-        if (savedInstanceState.containsKey("EditPost"))
-            m_EditPost = (EditPost) savedInstanceState.getSerializable("EditPost");
-        if (savedInstanceState.containsKey("AttachFilePaths") && savedInstanceState.getStringArray("AttachFilePaths") != null)
-            m_AttachFilePaths = new ArrayList<>(Arrays.asList(savedInstanceState.getStringArray("AttachFilePaths")));
-        lastSelectDirPath = savedInstanceState.getString("lastSelectDirPath");
-
-        txtPost.setText(savedInstanceState.getString("postText"));
-        txtpost_edit_reason.setText(savedInstanceState.getString("txtpost_edit_reason"));
-        mPopupPanelView.setTopic(m_EditPost.getForumId(), m_EditPost.getTopicId(), Client.getInstance().getAuthKey());
-
-    }
-
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private void setDataFromExtras(Bundle extras) throws NotReportException {
+    private void setDataFromExtras(Bundle extras) {
         if (extras == null) return;
         if (extras.containsKey(Intent.EXTRA_STREAM)) {
             Object attachesObject = extras.get(Intent.EXTRA_STREAM);
@@ -421,11 +375,9 @@ public class EditPostFragment extends GeneralFragment {
 
         if (!isNewPost()) {
             item = menu.add(R.string.reason_for_editing).setIcon(R.drawable.pencil);
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    toggleEditReasonDialog();
-                    return true;
-                }
+            item.setOnMenuItemClickListener(menuItem -> {
+                toggleEditReasonDialog();
+                return true;
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
@@ -443,19 +395,16 @@ public class EditPostFragment extends GeneralFragment {
         item = menu.add(R.string.find_in_text);
         item.setActionView(R.layout.action_collapsible_search);
         searchEditText = item.getActionView().findViewById(R.id.editText);
-        searchEditText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN)
-                        && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    String text = searchEditText.getText() == null ? "" : searchEditText.getText().toString().trim();
-                    startSearch(text, true);
-                    searchEditText.requestFocus();
-                    return true;
-                }
-
-                return false;
+        searchEditText.setOnKeyListener((view, keyCode, keyEvent) -> {
+            if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN)
+                    && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                String text = searchEditText.getText() == null ? "" : searchEditText.getText().toString().trim();
+                startSearch(text, true);
+                searchEditText.requestFocus();
+                return true;
             }
+
+            return false;
         });
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -470,32 +419,8 @@ public class EditPostFragment extends GeneralFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
-        // Переделать для appcompat
-            /*item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-                @Override
-                public boolean onMenuItemActionExpand(MenuItem item) {
-                    getInterface().searchEditText.requestFocus();
-                    return true;
-                }
 
-                @Override
-                public boolean onMenuItemActionCollapse(MenuItem item) {
-                    getInterface().txtPost.setText(getInterface().clearPostHighlight());
-                    return true;
-                }
-            });*/
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-
-        /*item = menu.add("Скрыть панели");
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                hidePanels();
-                return true;
-            }
-        });
-
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-        */
     }
 
 
@@ -511,12 +436,8 @@ public class EditPostFragment extends GeneralFragment {
                     .content(R.string.no_attachments)
                     .positiveText(R.string.do_download)
                     .negativeText(R.string.cancel)
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            startAddAttachment();
-                        }
-                    }).show();
+                    .onPositive((dialog, which) -> startAddAttachment())
+                    .show();
             return;
         }
         AttachesAdapter adapter = new AttachesAdapter(m_EditPost.getAttaches());
@@ -526,48 +447,43 @@ public class EditPostFragment extends GeneralFragment {
                 //.setSingleChoiceItems(adapter, -1, null)
                 .adapter(adapter, new LinearLayoutManager(getActivity()))
                 .neutralText(R.string.in_spoiler)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onNeutral(MaterialDialog dialog) {
-                        List<String> listItems = new ArrayList<String>();
-                        int i = 0;
-                        while (i <= (m_EditPost.getAttaches().size() - 1)) {
-                            listItems.add(m_EditPost.getAttaches().get(i).getName());
-                            i++;
-                        }
-                        final CharSequence[] items = listItems.toArray(new CharSequence[listItems.size()]);
-                        final StringBuilder str = new StringBuilder();
-                        new MaterialDialog.Builder(getContext())
-                                .title(R.string.add_in_spoiler)
-                                .positiveText(R.string.add)
-                                .negativeText(R.string.cancel)
-                                .callback(new MaterialDialog.ButtonCallback() {
-                                    @Override
-                                    public void onPositive(MaterialDialog dialog) {
+                .onNeutral((dialog, which) -> {
+                            List<String> listItems = new ArrayList<>();
+                            int i = 0;
+                            while (i <= (m_EditPost.getAttaches().size() - 1)) {
+                                listItems.add(m_EditPost.getAttaches().get(i).getName());
+                                i++;
+                            }
+                            final CharSequence[] items = listItems.toArray(new CharSequence[listItems.size()]);
+                            final StringBuilder str = new StringBuilder();
+                            new MaterialDialog.Builder(getContext())
+                                    .title(R.string.add_in_spoiler)
+                                    .positiveText(R.string.add)
+                                    .negativeText(R.string.cancel)
+                                    .onPositive((dialog1, which1) -> {
                                         int selectionStart = txtPost.getSelectionStart();
                                         if (selectionStart == -1)
                                             selectionStart = 0;
                                         if (txtPost.getText() != null)
                                             //txtPost.getText().insert(selectionStart, "[attachment=" + attach.getId() + ":" + attach.getTitle() + "]");
                                             txtPost.getText().insert(selectionStart, "[spoiler]" + str.toString() + "[/spoiler]");
-
-                                    }
-                                })
-                                .items(items)
-                                .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
-                                    @Override
-                                    public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                                    })
+                                    .items(items)
+                                    .itemsCallbackMultiChoice(null, (dialog12, which12, text) -> {
                                         str.setLength(0);
-                                        for (int i = 0; i < which.length; i++) {
-                                            str.append("[attachment=" + m_EditPost.getAttaches().get(which[i]).getId() + ":" + m_EditPost.getAttaches().get(which[i]).getName() + "]");
+                                        for (Integer which1 : which12) {
+                                            str.append("[attachment=")
+                                                    .append(m_EditPost.getAttaches().get(which1).getId())
+                                                    .append(":")
+                                                    .append(m_EditPost.getAttaches().get(which1).getName())
+                                                    .append("]");
                                         }
                                         return true; // allow selection
-                                    }
-                                })
-                                .alwaysCallMultiChoiceCallback()
-                                .show();
-                    }
-                })
+                                    })
+                                    .alwaysCallMultiChoiceCallback()
+                                    .show();
+                        }
+                )
                 .negativeText(R.string.cancel)
                 .build();
         mAttachesListDialog.show();
@@ -650,15 +566,13 @@ public class EditPostFragment extends GeneralFragment {
             } else if (requestCode == MY_INTENT_CLICK_F) {
                 if (null == data) return;
                 String path = ImageFilePath.getPath(getMainActivity().getApplicationContext(), data.getData());
-                if (path != null)
-                {
+                if (path != null) {
                     if (path.matches("(?i)(.*)(7z|zip|rar|tar.gz|exe|cab|xap|txt|log|jpeg|jpg|png|gif|mp3|mp4|apk|ipa|img|.mtz)$")) {
                         helperTask(path);
                     } else {
                         Toast.makeText(getMainActivity(), R.string.file_not_support_forum, Toast.LENGTH_SHORT).show();
                     }
-                }
-                else
+                } else
                     Toast.makeText(getContext(), "Не могу прикрепить файл", Toast.LENGTH_SHORT).show();
 
 
@@ -696,8 +610,6 @@ public class EditPostFragment extends GeneralFragment {
         return txtpost_edit_reason.getText() == null ? "" : txtpost_edit_reason.getText().toString();
     }
 
-    private final String TEMP_EMPTY_TEXT = "<temptext>";
-
 
     private class UpdateTask extends AsyncTask<String, Pair<String, Integer>, Boolean> {
         private final MaterialDialog dialog;
@@ -706,7 +618,7 @@ public class EditPostFragment extends GeneralFragment {
 
         private List<String> attachFilePaths;
 
-        public UpdateTask(Context context, List<String> attachFilePaths) {
+        UpdateTask(Context context, List<String> attachFilePaths) {
 
             this.attachFilePaths = attachFilePaths;
             dialog = new MaterialDialog.Builder(context)
@@ -715,7 +627,7 @@ public class EditPostFragment extends GeneralFragment {
                     .show();
         }
 
-        public UpdateTask(Context context, String newAttachFilePath) {
+        UpdateTask(Context context, String newAttachFilePath) {
             this(context, new ArrayList<>(Arrays.asList(newAttachFilePath)));
         }
 
@@ -757,13 +669,10 @@ public class EditPostFragment extends GeneralFragment {
         protected void onPreExecute() {
             this.dialog.setCancelable(true);
             this.dialog.setCanceledOnTouchOutside(false);
-            this.dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialogInterface) {
-                    if (m_ProgressState != null)
-                        m_ProgressState.cancel();
-                    cancel(false);
-                }
+            this.dialog.setOnCancelListener(dialogInterface -> {
+                if (m_ProgressState != null)
+                    m_ProgressState.cancel();
+                cancel(false);
             });
             this.dialog.setProgress(0);
 
@@ -833,8 +742,7 @@ public class EditPostFragment extends GeneralFragment {
 
         private String attachId;
 
-        public DeleteAttachTask(Context context, String attachId) {
-
+        DeleteAttachTask(Context context, String attachId) {
             this.attachId = attachId;
 
             dialog = new MaterialDialog.Builder(context)
@@ -887,8 +795,8 @@ public class EditPostFragment extends GeneralFragment {
         private Boolean enableEmo;
         private Boolean enableSign;
 
-        public AcceptEditTask(Context context,
-                              String postBody, String postEditReason, Boolean enableEmo, Boolean enableSign) {
+        AcceptEditTask(Context context,
+                       String postBody, String postEditReason, Boolean enableEmo, Boolean enableSign) {
             this.postBody = postBody;
             this.postEditReason = postEditReason;
             this.enableEmo = enableEmo;
@@ -960,19 +868,14 @@ public class EditPostFragment extends GeneralFragment {
         private String postId;
         private String authKey;
 
-        public LoadTask(Context context, String forumId, String topicId, String postId, String authKey) {
+        LoadTask(Context context, String forumId, String topicId, String postId, String authKey) {
             this.forumId = forumId;
             this.topicId = topicId;
             this.postId = postId;
             this.authKey = authKey;
             dialog = new MaterialDialog.Builder(context)
                     .progress(true, 0)
-                    .cancelListener(new DialogInterface.OnCancelListener() {
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            cancel(true);
-                        }
-                    })
+                    .cancelListener(dialog -> cancel(true))
                     .content(R.string.loading_message)
                     .build();
         }
@@ -1033,8 +936,8 @@ public class EditPostFragment extends GeneralFragment {
         private Boolean enableEmo;
         private Boolean enableSign;
 
-        public PostTask(Context context,
-                        String postBody, String postEditReason, Boolean enableEmo, Boolean enableSign) {
+        PostTask(Context context,
+                 String postBody, String postEditReason, Boolean enableEmo, Boolean enableSign) {
             this.postBody = postBody;
             this.postEditReason = postEditReason;
             this.enableEmo = enableEmo;
@@ -1097,7 +1000,7 @@ public class EditPostFragment extends GeneralFragment {
     public class AttachesAdapter extends RecyclerView.Adapter<AttachesAdapter.AttachViewHolder> {
         private final List<EditAttach> content;
 
-        public AttachesAdapter(List<EditAttach> content) {
+        AttachesAdapter(List<EditAttach> content) {
             super();
             this.content = content;
         }
@@ -1161,7 +1064,7 @@ public class EditPostFragment extends GeneralFragment {
             ImageButton btnDelete;
             TextView txtFile;
 
-            public AttachViewHolder(View convertView) {
+            AttachViewHolder(View convertView) {
                 super(convertView);
                 btnDelete = convertView.findViewById(R.id.btnDelete);
                 btnSpoiler = convertView.findViewById(R.id.btnSpoiler);
@@ -1177,12 +1080,6 @@ public class EditPostFragment extends GeneralFragment {
             getSupportActionBar().show();
             m_BottomPanel.setVisibility(View.VISIBLE);
         }
-        return;
-    }
-
-    public void hidePanels() {
-        getSupportActionBar().hide();
-        m_BottomPanel.setVisibility(View.GONE);
     }
 
     private final int SEARCH_RESULT_FOUND = 1;
@@ -1216,15 +1113,12 @@ public class EditPostFragment extends GeneralFragment {
         m_SearchTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                uiHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (search(searchText, fromSelection) == SEARCH_RESULT_NOTFOUND)
-                            searchEditText.setError(getString(R.string.no_matches_found));
-                        else
-                            searchEditText.setError(null);
+                uiHandler.post(() -> {
+                    if (search(searchText, fromSelection) == SEARCH_RESULT_NOTFOUND)
+                        searchEditText.setError(getString(R.string.no_matches_found));
+                    else
+                        searchEditText.setError(null);
 
-                    }
                 });
                 m_SearchTimer.cancel();
                 m_SearchTimer.purge();

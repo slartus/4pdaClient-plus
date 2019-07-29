@@ -474,12 +474,12 @@ public class PostApi {
                 editPost.setEnableSign("checked".equals(element.attr("checked")));
 
             // управление текущими файлами
-            editPage = getAttachPage(httpClient, postId);
-            if (editPage != null) {
+            String attachBody = getAttachPage(httpClient, postId);
+            if (attachBody != null) {
 
                 Matcher m = Pattern
                         .compile("add_current_item\\( '(\\d+)', '([^']*)', '([^']*)', '([^']*)' \\)", Pattern.CASE_INSENSITIVE)
-                        .matcher(editPage);
+                        .matcher(attachBody);
                 while (m.find()) {
                     editPost.addAttach(new EditAttach(m.group(1), m.group(2), m.group(3), m.group(4)));
                 }
@@ -491,7 +491,7 @@ public class PostApi {
             Pattern pattern = Pattern.compile("<h4>Причина:</h4>\n" +
                     "\\s*\n" +
                     "\\s*<p>(.*)</p>", Pattern.MULTILINE);
-            assert editPage != null;
+
             Matcher m = pattern.matcher(editPage);
             if (m.find()) {
                 editPost.setError(m.group(1));
