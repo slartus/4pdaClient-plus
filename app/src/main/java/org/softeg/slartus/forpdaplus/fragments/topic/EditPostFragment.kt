@@ -9,40 +9,18 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.AsyncTask
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
-import android.os.Handler
+import android.os.*
 import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.ActionBar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.Editable
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.TextUtils
-import android.text.TextWatcher
+import android.text.*
 import android.text.style.BackgroundColorSpan
 import android.util.Pair
 import android.util.TypedValue
-import android.view.Gravity
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
-
+import android.view.*
+import android.widget.*
 import com.afollestad.materialdialogs.MaterialDialog
 import org.softeg.slartus.forpdaapi.ProgressState
 import org.softeg.slartus.forpdaapi.post.EditAttach
@@ -53,17 +31,13 @@ import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.Client
 import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.R
-import org.softeg.slartus.forpdaplus.classes.ImageFilePath
+import org.softeg.slartus.forpdaplus.classes.FilePath
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.prefs.Preferences
-import org.softeg.slartus.forpdaplus.tabs.TabItem
-
-import java.util.ArrayList
-import java.util.Arrays
-import java.util.Timer
-import java.util.TimerTask
+import java.lang.ref.WeakReference
+import java.util.*
 
 /**
  * Created by radiationx on 30.10.15.
@@ -75,7 +49,7 @@ class EditPostFragment : GeneralFragment() {
     private var progress_search: ProgressBar? = null
     private var m_EditPost: EditPost? = null
 
-    private var m_AttachFilePaths: ArrayList<String>? = ArrayList()
+    private var m_AttachFilePaths: ArrayList<String> = ArrayList()
     private var lastSelectDirPath: String? = Environment.getExternalStorageDirectory().path
 
     internal val uiHandler = Handler()
@@ -105,7 +79,7 @@ class EditPostFragment : GeneralFragment() {
 
     private var m_SearchTimer: Timer? = null
 
-    var searchEditText: EditText
+    var searchEditText: EditText? = null
 
     override fun hidePopupWindows() {
         super.hidePopupWindows()
@@ -199,16 +173,17 @@ class EditPostFragment : GeneralFragment() {
 
         try {
             val args = arguments!!
-            val forumId = args.getString("forumId")
-            val topicId = args.getString("themeId")
-            val postId = args.getString("postId")
-            val authKey = args.getString("authKey")
+            val forumId = args.getString("forumId")!!
+            val topicId = args.getString("themeId")!!
+            val postId = args.getString("postId")!!
+            val authKey = args.getString("authKey")!!
             parentTag = args.getString("parentTag")
-            m_EditPost = EditPost()
-            m_EditPost!!.id = postId
-            m_EditPost!!.forumId = forumId
-            m_EditPost!!.topicId = topicId
-            m_EditPost!!.authKey = authKey
+            m_EditPost = EditPost().apply {
+                this.id = postId
+                this.forumId = forumId
+                this.topicId = topicId
+                this.authKey = authKey
+            }
             mPopupPanelView!!.setTopic(forumId, topicId, authKey)
 
             if (isNewPost) {
@@ -273,8 +248,8 @@ class EditPostFragment : GeneralFragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         if (m_EditPost != null)
             outState.putSerializable("EditPost", m_EditPost)
-        if (m_AttachFilePaths != null)
-            outState.putStringArray("AttachFilePaths", m_AttachFilePaths!!.toTypedArray())
+        if (m_AttachFilePaths.any())
+            outState.putStringArray("AttachFilePaths", m_AttachFilePaths.toTypedArray())
         outState.putString("lastSelectDirPath", lastSelectDirPath)
         outState.putString("postText", postText)
         outState.putString("txtpost_edit_reason", editReasonText)
@@ -290,7 +265,7 @@ class EditPostFragment : GeneralFragment() {
             val attachesObject = extras.get(Intent.EXTRA_STREAM)
             if (attachesObject is Uri) {
                 val uri = extras.get(Intent.EXTRA_STREAM) as Uri
-                val path = ImageFilePath.getPath(mainActivity.applicationContext, uri)
+                val path = FilePath.getPath(mainActivity.applicationContext, uri)
                 if (path != null)
                     m_AttachFilePaths = ArrayList(Arrays.asList(path))
                 else
@@ -299,9 +274,9 @@ class EditPostFragment : GeneralFragment() {
                 m_AttachFilePaths = ArrayList()
                 for (item in attachesObject) {
                     val uri = item as Uri
-                    val path = ImageFilePath.getPath(mainActivity.applicationContext, uri)
+                    val path = FilePath.getPath(mainActivity.applicationContext, uri)
                     if (path != null)
-                        m_AttachFilePaths!!.add(ImageFilePath.getPath(mainActivity.applicationContext, uri))
+                        m_AttachFilePaths.add(FilePath.getPath(mainActivity.applicationContext, uri))
                     else
                         Toast.makeText(context, "Не могу прикрепить файл", Toast.LENGTH_SHORT).show()
 
@@ -346,17 +321,17 @@ class EditPostFragment : GeneralFragment() {
         item = menu.add(R.string.find_in_text)
         item.setActionView(R.layout.action_collapsible_search)
         searchEditText = item.actionView.findViewById(R.id.editText)
-        searchEditText.setOnKeyListener { view, keyCode, keyEvent ->
+        searchEditText?.setOnKeyListener { view, keyCode, keyEvent ->
             if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                val text = if (searchEditText.text == null) "" else searchEditText.text.toString().trim { it <= ' ' }
+                val text = if (searchEditText?.text == null) "" else searchEditText?.text.toString().trim { it <= ' ' }
                 startSearch(text, true)
-                searchEditText.requestFocus()
-                return@searchEditText.setOnKeyListener true
+                searchEditText?.requestFocus()
+                return@setOnKeyListener true
             }
 
             false
         }
-        searchEditText.addTextChangedListener(object : TextWatcher {
+        searchEditText?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(mEdit: Editable) {
                 val text = mEdit.toString().trim { it <= ' ' }
                 startSearch(text, false)
@@ -491,7 +466,7 @@ class EditPostFragment : GeneralFragment() {
             if (requestCode == MY_INTENT_CLICK_I) {
                 if (null == data) return
                 val selectedImageUri = data.data
-                val selectedImagePath = ImageFilePath.getPath(mainActivity.applicationContext, selectedImageUri)
+                val selectedImagePath = FilePath.getPath(mainActivity.applicationContext, selectedImageUri)
                 if (selectedImagePath != null)
                     helperTask(selectedImagePath)
                 else
@@ -500,7 +475,7 @@ class EditPostFragment : GeneralFragment() {
 
             } else if (requestCode == MY_INTENT_CLICK_F) {
                 if (null == data) return
-                val path = ImageFilePath.getPath(mainActivity.applicationContext, data.data)
+                val path = FilePath.getPath(mainActivity.applicationContext, data.data)
                 if (path != null) {
                     if (path.matches("(?i)(.*)(7z|zip|rar|tar.gz|exe|cab|xap|txt|log|jpeg|jpg|png|gif|mp3|mp4|apk|ipa|img|.mtz)$".toRegex())) {
                         helperTask(path)
@@ -515,7 +490,7 @@ class EditPostFragment : GeneralFragment() {
         }
     }
 
-    private fun startLoadPost(forumId: String?, topicId: String?, postId: String?, authKey: String?) {
+    private fun startLoadPost(forumId: String, topicId: String, postId: String, authKey: String) {
         LoadTask(mainActivity, forumId, topicId, postId, authKey).execute()
     }
 
@@ -532,111 +507,72 @@ class EditPostFragment : GeneralFragment() {
         }
     }
 
-    fun toggleEditReasonDialog() {
+    private fun toggleEditReasonDialog() {
         txtpost_edit_reason!!.visibility = if (txtpost_edit_reason!!.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
 
+    private inner class UpdateTask internal constructor(context: Context, private val attachFilePaths: List<String>)
+        : BaseTask<String, Pair<String, Int>>(WeakReference(context), R.string.sending_file) {
+        internal constructor(context: Context, newAttachFilePath: String) : this(context, ArrayList<String>(listOf<String>(newAttachFilePath)))
 
-    private inner class UpdateTask internal constructor(context: Context, private val attachFilePaths: List<String>) : AsyncTask<String, Pair<String, Int>, Boolean>() {
-        private val dialog: MaterialDialog
+        override fun createProgressDialolg(context: Context, progressMessageResId: Int): MaterialDialog = MaterialDialog.Builder(context)
+                .progress(false, 100, false)
+                .content(R.string.sending_file)
+                .show()
+
+        override fun work(params: Array<out String>) {
+            m_ProgressState = object : ProgressState() {
+                override fun update(message: String, percents: Int) {
+                    publishProgress(Pair("", percents))
+                }
+            }
+
+            var i = 1
+            for (newAttachFilePath in attachFilePaths) {
+                publishProgress(Pair(String.format(App.getContext().getString(R.string.format_sending_file), i++, attachFilePaths.size), 0))
+                editAttach = PostApi.attachFile(Client.getInstance(),
+                        m_EditPost!!.id, newAttachFilePath, m_ProgressState)
+            }
+        }
+
+        override fun onSuccess() {
+            m_EditPost!!.addAttach(editAttach)
+            refreshAttachmentsInfo()
+        }
+
         private var m_ProgressState: ProgressState? = null
 
         private var editAttach: EditAttach? = null
 
-        private var ex: Throwable? = null
-
-        init {
-            dialog = MaterialDialog.Builder(context)
-                    .progress(false, 100, false)
-                    .content(R.string.sending_file)
-                    .show()
-        }
-
-        internal constructor(context: Context, newAttachFilePath: String) : this(context, ArrayList<String>(Arrays.asList<String>(newAttachFilePath))) {}
-
-        override fun doInBackground(vararg params: String): Boolean? {
-            try {
-                m_ProgressState = object : ProgressState() {
-                    override fun update(message: String, percents: Int) {
-                        publishProgress(Pair("", percents))
-                    }
-                }
-
-                var i = 1
-                for (newAttachFilePath in attachFilePaths) {
-                    publishProgress(Pair(String.format(App.getContext().getString(R.string.format_sending_file), i++, attachFilePaths.size), 0))
-                    editAttach = PostApi.attachFile(Client.getInstance(),
-                            m_EditPost!!.id, newAttachFilePath, m_ProgressState)
-                }
-
-                return true
-            } catch (e: Throwable) {
-                ex = e
-                return false
-            }
-
-        }
-
         override fun onProgressUpdate(vararg values: Pair<String, Int>) {
             super.onProgressUpdate(*values)
             if (!TextUtils.isEmpty(values[0].first))
-                dialog.setContent(values[0].first)
-            dialog.setProgress(values[0].second)
+                dialog?.setContent(values[0].first)
+            dialog?.setProgress(values[0].second)
         }
 
         // can use UI thread here
         override fun onPreExecute() {
-            this.dialog.setCancelable(true)
-            this.dialog.setCanceledOnTouchOutside(false)
-            this.dialog.setOnCancelListener { dialogInterface ->
-                if (m_ProgressState != null)
-                    m_ProgressState!!.cancel()
-                cancel(false)
-            }
-            this.dialog.setProgress(0)
-
-            this.dialog.show()
-        }
-
-        // can use UI thread here
-        override fun onPostExecute(success: Boolean?) {
-            if (this.dialog.isShowing) {
-                this.dialog.dismiss()
-            }
-
-            if (success!! || isCancelled && editAttach != null) {
-                m_EditPost!!.addAttach(editAttach)
-                refreshAttachmentsInfo()
-
-                //                if (!pathToFile.isEmpty()) {
-                //                    File deleteFile = new File(pathToFile);
-                //                    if (deleteFile.exists()) {
-                //                        deleteFile.delete();
-                //                    }
-                //                }
-
-            } else {
-
-                if (ex != null)
-                    AppLog.e(mainActivity, ex)
-                else
-                    Toast.makeText(mainActivity, R.string.unknown_error, Toast.LENGTH_SHORT).show()
-
+            this.dialog?.apply {
+                setCancelable(true)
+                setCanceledOnTouchOutside(false)
+                setOnCancelListener {
+                    if (m_ProgressState != null)
+                        m_ProgressState!!.cancel()
+                    cancel(false)
+                }
+                setProgress(0)
+                show()
             }
         }
 
         @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-        override fun onCancelled(success: Boolean?) {
+        override fun onCancelled(success: Boolean) {
             super.onCancelled(success)
-            if (success!! || isCancelled && editAttach != null) {
-                m_EditPost!!.addAttach(editAttach)
-                refreshAttachmentsInfo()
+            if (success || isCancelled && editAttach != null) {
+                onSuccess()
             } else {
-                if (ex != null)
-                    AppLog.e(mainActivity, ex)
-                else
-                    Toast.makeText(mainActivity, R.string.unknown_error, Toast.LENGTH_SHORT).show()
-
+                showError()
             }
         }
 
@@ -652,104 +588,34 @@ class EditPostFragment : GeneralFragment() {
         super.onDestroy()
     }
 
-    private inner class DeleteAttachTask internal constructor(context: Context, private val attachId: String) : AsyncTask<String, Void, Boolean>() {
-        private val dialog: MaterialDialog
-
-        private var ex: Exception? = null
-
-        init {
-
-            dialog = MaterialDialog.Builder(context)
-                    .progress(true, 0)
-                    .content(R.string.deleting_file)
-                    .build()
+    private inner class DeleteAttachTask internal constructor(context: Context, private val attachId: String)
+        : BaseTask<String, Void>(WeakReference(context), R.string.deleting_file) {
+        override fun work(params: Array<out String>) {
+            PostApi.deleteAttachedFile(Client.getInstance(), m_EditPost!!.id, attachId)
         }
 
-
-        override fun doInBackground(vararg params: String): Boolean? {
-            try {
-                PostApi.deleteAttachedFile(Client.getInstance(), m_EditPost!!.id, attachId)
-                return true
-            } catch (e: Exception) {
-                ex = e
-                return false
-            }
-
-        }
-
-        // can use UI thread here
-        override fun onPreExecute() {
-            this.dialog.show()
-        }
-
-        // can use UI thread here
-        override fun onPostExecute(success: Boolean?) {
-            if (this.dialog.isShowing) {
-                this.dialog.dismiss()
-            }
-
-            if (success!!) {
-                m_EditPost!!.deleteAttach(attachId)
-                refreshAttachmentsInfo()
-            } else {
-                if (ex != null)
-                    AppLog.e(mainActivity, ex)
-                else
-                    Toast.makeText(mainActivity, R.string.unknown_error, Toast.LENGTH_SHORT).show()
-            }
+        override fun onSuccess() {
+            m_EditPost!!.deleteAttach(attachId)
+            refreshAttachmentsInfo()
         }
     }
 
     private inner class AcceptEditTask internal constructor(context: Context,
-                                                            private val postBody: String, private val postEditReason: String, private val enableEmo: Boolean?, private val enableSign: Boolean?) : AsyncTask<String, Void, Boolean>() {
-        private val dialog: MaterialDialog
-
-        private var ex: Exception? = null
-
-        init {
-            dialog = MaterialDialog.Builder(context)
-                    .progress(true, 0)
-                    .content(R.string.edit_message)
-                    .build()
+                                                            private val postBody: String,
+                                                            private val postEditReason: String,
+                                                            private val enableEmo: Boolean?,
+                                                            private val enableSign: Boolean?) : BaseTask<String, Void>(WeakReference(context), R.string.edit_message) {
+        override fun work(params: Array<out String>) {
+            PostApi.sendPost(Client.getInstance(), m_EditPost!!.params, postBody,
+                    postEditReason, enableSign, enableEmo)
         }
 
-        override fun doInBackground(vararg params: String): Boolean? {
-            try {
-                PostApi.sendPost(Client.getInstance(), m_EditPost!!.params, postBody,
-                        postEditReason, enableSign, enableEmo)
-                return true
-            } catch (e: Exception) {
-                ex = e
-                return false
+        override fun onSuccess() {
+            if (App.getInstance().isContainsByTag(parentTag)) {
+                (App.getInstance().getTabByTag(parentTag)!!.fragment as ThemeFragment)
+                        .showTheme(ThemeFragment.getThemeUrl(m_EditPost!!.topicId, "view=findpost&p=" + m_EditPost!!.id!!), true)
             }
-
-        }
-
-        // can use UI thread here
-        override fun onPreExecute() {
-            this.dialog.show()
-        }
-
-        // can use UI thread here
-        override fun onPostExecute(success: Boolean?) {
-            if (this.dialog.isShowing) {
-                this.dialog.dismiss()
-            }
-
-            if (success!!) {
-                if (App.getInstance().isContainsByTag(parentTag)) {
-                    (App.getInstance().getTabByTag(parentTag)!!.fragment as ThemeFragment)
-                            .showTheme(ThemeFragment.getThemeUrl(m_EditPost!!.topicId, "view=findpost&p=" + m_EditPost!!.id!!), true)
-                }
-                mainActivity.tryRemoveTab(tag)
-            } else {
-                if (ex != null)
-                    AppLog.e(mainActivity, ex)
-                else
-                    Toast.makeText(mainActivity, R.string.unknown_error,
-                            Toast.LENGTH_SHORT).show()
-
-            }
+            mainActivity.tryRemoveTab(tag)
         }
     }
 
@@ -762,127 +628,55 @@ class EditPostFragment : GeneralFragment() {
     }
 
     private fun refreshAttachmentsInfo() {
-        btnAttachments!!.text = m_EditPost!!.attaches.size.toString() + ""
+        btnAttachments?.text = (m_EditPost?.attaches?.size ?: 0).toString()
     }
 
-    private inner class LoadTask internal constructor(context: Context, private val forumId: String, private val topicId: String, private val postId: String, private val authKey: String) : AsyncTask<String, Void, Boolean>() {
-        private val dialog: MaterialDialog
-
+    private inner class LoadTask internal constructor(context: Context,
+                                                      private val forumId: String,
+                                                      private val topicId: String,
+                                                      private val postId: String,
+                                                      private val authKey: String) : BaseTask<String, Void>(WeakReference(context), R.string.loading_message) {
         private var editPost: EditPost? = null
-
-        private var ex: Throwable? = null
-
-        init {
-            dialog = MaterialDialog.Builder(context)
-                    .progress(true, 0)
-                    .cancelListener { dialog -> cancel(true) }
-                    .content(R.string.loading_message)
-                    .build()
+        override fun work(params: Array<out String>) {
+            editPost = PostApi.editPost(Client.getInstance(), forumId, topicId, postId, authKey)
         }
 
-        override fun doInBackground(vararg params: String): Boolean? {
-            try {
-                editPost = PostApi.editPost(Client.getInstance(), forumId, topicId, postId, authKey)
+        override fun onSuccess() {
+            setEditPost(editPost)
 
-                return true
-            } catch (e: Throwable) {
-                ex = e
-                return false
-            }
-
-        }
-
-        override fun onPreExecute() {
-            this.dialog.show()
-        }
-
-        override fun onCancelled() {
-            Toast.makeText(mainActivity, R.string.canceled, Toast.LENGTH_SHORT).show()
-            //finish();
-        }
-
-        // can use UI thread here
-        override fun onPostExecute(success: Boolean?) {
-            if (this.dialog.isShowing) {
-                this.dialog.dismiss()
-            }
-
-            if (success!!) {
-                setEditPost(editPost)
-
-                if (m_AttachFilePaths!!.size > 0)
-                    UpdateTask(mainActivity, m_AttachFilePaths)
-                            .execute()
-                m_AttachFilePaths = ArrayList()
-            } else {
-                if (ex != null)
-                    AppLog.e(mainActivity, ex)
-                else
-                    Toast.makeText(mainActivity, R.string.unknown_error, Toast.LENGTH_SHORT).show()
-            }
+            if (m_AttachFilePaths.any())
+                UpdateTask(mainActivity, m_AttachFilePaths)
+                        .execute()
+            m_AttachFilePaths = ArrayList()
         }
     }
 
     private inner class PostTask internal constructor(context: Context,
-                                                      private val postBody: String, private val postEditReason: String, private val enableEmo: Boolean?, private val enableSign: Boolean?) : AsyncTask<String, Void, Boolean>() {
-        private val dialog: MaterialDialog
+                                                      private val postBody: String,
+                                                      private val postEditReason: String,
+                                                      private val enableEmo: Boolean?,
+                                                      private val enableSign: Boolean?) : BaseTask<String, Void>(WeakReference(context), R.string.sending_message) {
         private var mPostResult: String? = null// при удачной отправке страница топика
         private var mError: String? = null
+        override fun work(params: Array<out String>) {
+            mPostResult = PostApi.sendPost(Client.getInstance(), m_EditPost!!.params, postBody,
+                    postEditReason, enableSign, enableEmo)
 
-        private var ex: Exception? = null
-
-        init {
-            dialog = MaterialDialog.Builder(context)
-                    .progress(true, 0)
-                    .content(R.string.sending_message)
-                    .build()
+            mError = PostApi.checkPostErrors(mPostResult)
         }
 
-        override fun doInBackground(vararg params: String): Boolean? {
-            try {
-                mPostResult = PostApi.sendPost(Client.getInstance(), m_EditPost!!.params, postBody,
-                        postEditReason, enableSign, enableEmo)
-
-                mError = PostApi.checkPostErrors(mPostResult)
-                return true
-            } catch (e: Exception) {
-                ex = e
-                return false
+        override fun onSuccess() {
+            if (!TextUtils.isEmpty(mError)) {
+                Toast.makeText(mainActivity, App.getContext().getString(R.string.error) + ": " + mError, Toast.LENGTH_LONG).show()
+                return
             }
-
-        }
-
-        override fun onPreExecute() {
-            this.dialog.show()
-        }
-
-        override fun onPostExecute(success: Boolean?) {
-            if (this.dialog.isShowing) {
-                this.dialog.dismiss()
+            if (App.getInstance().isContainsByTag(parentTag)) {
+                (App.getInstance().getTabByTag(parentTag)!!.fragment as ThemeFragment)
+                        .showTheme(String.format("http://4pda.ru/forum/index.php?showtopic=%s&%s", m_EditPost!!.topicId,
+                                if (isNewPost) "view=getlastpost" else "view=findpost&p=" + m_EditPost!!.id!!), true)
             }
-
-            if (success!!) {
-                if (!TextUtils.isEmpty(mError)) {
-                    Toast.makeText(mainActivity, App.getContext().getString(R.string.error) + ": " + mError, Toast.LENGTH_LONG).show()
-                    return
-                }
-                if (App.getInstance().isContainsByTag(parentTag)) {
-                    (App.getInstance().getTabByTag(parentTag)!!.fragment as ThemeFragment)
-                            .showTheme(String.format("http://4pda.ru/forum/index.php?showtopic=%s&%s", m_EditPost!!.topicId,
-                                    if (isNewPost) "view=getlastpost" else "view=findpost&p=" + m_EditPost!!.id!!), true)
-                }
-                mainActivity.tryRemoveTab(tag)
-
-            } else {
-                if (ex != null)
-                    AppLog.e(mainActivity, ex)
-                else
-                    Toast.makeText(mainActivity, R.string.unknown_error,
-                            Toast.LENGTH_SHORT).show()
-
-            }
+            mainActivity.tryRemoveTab(tag)
         }
-
     }
 
     inner class AttachesAdapter internal constructor(private val content: List<EditAttach>) : RecyclerView.Adapter<AttachesAdapter.AttachViewHolder>() {
@@ -937,17 +731,10 @@ class EditPostFragment : GeneralFragment() {
             return content.size
         }
 
-        internal inner class AttachViewHolder(convertView: View) : RecyclerView.ViewHolder(convertView) {
-
-            var btnSpoiler: ImageButton
-            var btnDelete: ImageButton
-            var txtFile: TextView
-
-            init {
-                btnDelete = convertView.findViewById(R.id.btnDelete)
-                btnSpoiler = convertView.findViewById(R.id.btnSpoiler)
-                txtFile = convertView.findViewById(R.id.txtFile)
-            }
+        inner class AttachViewHolder(convertView: View) : RecyclerView.ViewHolder(convertView) {
+            var btnSpoiler: ImageButton = convertView.findViewById(R.id.btnSpoiler)
+            var btnDelete: ImageButton = convertView.findViewById(R.id.btnDelete)
+            var txtFile: TextView = convertView.findViewById(R.id.txtFile)
         }
     }
 
@@ -974,7 +761,7 @@ class EditPostFragment : GeneralFragment() {
         return raw
     }
 
-    fun startSearch(searchText: String, fromSelection: Boolean?) {
+    fun startSearch(searchText: String, fromSelection: Boolean) {
 
         if (m_SearchTimer != null) {
             m_SearchTimer!!.cancel()
@@ -984,10 +771,10 @@ class EditPostFragment : GeneralFragment() {
         m_SearchTimer!!.schedule(object : TimerTask() {
             override fun run() {
                 uiHandler.post {
-                    if (search(searchText, fromSelection) == SEARCH_RESULT_NOTFOUND)
-                        searchEditText.error = getString(R.string.no_matches_found)
+                    searchEditText?.error = if (search(searchText, fromSelection) == SEARCH_RESULT_NOTFOUND)
+                        getString(R.string.no_matches_found)
                     else
-                        searchEditText.error = null
+                        null
 
                 }
                 m_SearchTimer!!.cancel()
@@ -998,8 +785,8 @@ class EditPostFragment : GeneralFragment() {
 
     }
 
-    fun search(searchText: String, fromSelection: Boolean?): Int {
-        var searchText = searchText
+    fun search(searchTextO: String, fromSelection: Boolean): Int {
+        var searchText = searchTextO
         if (TextUtils.isEmpty(searchText)) return SEARCH_RESULT_EMPTYTEXT
         try {
             progress_search!!.visibility = View.VISIBLE
@@ -1008,7 +795,7 @@ class EditPostFragment : GeneralFragment() {
             val raw = clearPostHighlight()
 
             var startSearchSelection = 0
-            if (fromSelection!!)
+            if (fromSelection)
                 startSearchSelection = txtPost!!.selectionStart + 1
             val text = raw.toString().toLowerCase()
 
@@ -1023,16 +810,16 @@ class EditPostFragment : GeneralFragment() {
             raw.setSpan(BackgroundColorSpan(-0x74ff75), findedStartSelection, findedStartSelection + searchText.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
 
-            txtPost!!.setText(raw)
-            txtPost!!.setSelection(findedStartSelection)
-            txtPost!!.isCursorVisible = true
+            txtPost?.setText(raw)
+            txtPost?.setSelection(findedStartSelection)
+            txtPost?.isCursorVisible = true
             return SEARCH_RESULT_FOUND
         } catch (ex: Throwable) {
             AppLog.e(mainActivity, ex)
         } finally {
-            if ((!fromSelection)!!)
-                searchEditText.requestFocus()
-            progress_search!!.visibility = View.GONE
+            if ((!fromSelection))
+                searchEditText?.requestFocus()
+            progress_search?.visibility = View.GONE
         }
         return SEARCH_RESULT_EMPTYTEXT
     }
@@ -1057,11 +844,11 @@ class EditPostFragment : GeneralFragment() {
     companion object {
 
         val NEW_EDIT_POST_REQUEST_CODE = App.getInstance().uniqueIntValue
-        val TOPIC_BODY_KEY = "EditPostActivity.TOPIC_BODY_KEY"
-        val POST_URL_KEY = "EditPostActivity.POST_URL_KEY"
+        const val TOPIC_BODY_KEY = "EditPostActivity.TOPIC_BODY_KEY"
+        const val POST_URL_KEY = "EditPostActivity.POST_URL_KEY"
 
 
-        val thisFragmentUrl = "EditPostFragment"
+        private const val thisFragmentUrl = "EditPostFragment"
 
         fun newInstance(args: Bundle): EditPostFragment {
             val fragment = EditPostFragment()
@@ -1106,7 +893,69 @@ class EditPostFragment : GeneralFragment() {
             MainActivity.addTab(context.getString(R.string.edit_post_combined), url, newInstance(args))
         }
 
-        private val MY_INTENT_CLICK_I = 302
-        private val MY_INTENT_CLICK_F = 303
+        private const val MY_INTENT_CLICK_I = 302
+        private const val MY_INTENT_CLICK_F = 303
+    }
+}
+
+abstract class BaseTask<Params, Progress>(val context: WeakReference<Context>, progressMessageResId: Int) : AsyncTask<Params, Progress, Boolean>() {
+    init {
+        context.get()?.let {
+            dialog = createProgressDialolg(it, progressMessageResId)
+        }
+    }
+
+    protected open fun createProgressDialolg(context: Context, progressMessageResId: Int): MaterialDialog = MaterialDialog.Builder(context)
+            .progress(true, 0)
+            .cancelListener { cancel(true) }
+            .content(progressMessageResId)
+            .build()
+
+    protected var dialog: MaterialDialog? = null
+
+    protected var ex: Exception? = null
+
+    abstract fun work(params: Array<out Params>)
+
+    override fun doInBackground(vararg params: Params): Boolean {
+        return try {
+            work(params)
+            true
+        } catch (e: Exception) {
+            ex = e
+            false
+        }
+
+    }
+
+    override fun onPreExecute() {
+        this.dialog?.show()
+    }
+
+    override fun onCancelled() {
+        Toast.makeText(context.get()
+                ?: App.getContext(), R.string.canceled, Toast.LENGTH_SHORT).show()
+        //finish();
+    }
+
+    abstract fun onSuccess()
+
+    fun showError(){
+        if (ex != null)
+            AppLog.e(context.get(), ex)
+        else
+            Toast.makeText(context.get() ?: App.getContext(), R.string.unknown_error,
+                    Toast.LENGTH_SHORT).show()
+    }
+    override fun onPostExecute(success: Boolean) {
+        if (this.dialog?.isShowing == true) {
+            this.dialog?.dismiss()
+        }
+
+        if (success) {
+            onSuccess()
+        } else {
+            showError()
+        }
     }
 }
