@@ -26,9 +26,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class FileUtils {
+public class FilePath {
     private static final String DOCUMENTS_DIR = "documents";
-    private static final String TAG = "FileUtils";
+    private static final String TAG = "FilePath";
     private static final Boolean DEBUG = BuildConfig.DEBUG;
     private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
     private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";

@@ -269,7 +269,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                 !extras.containsKey(Intent.EXTRA_TEXT) &&
                 !extras.containsKey(Intent.EXTRA_HTML_TEXT)) return false;
 
-        EditPostFragment.newPostWithAttach(getContext(),
+        EditPostFragment.Companion.newPostWithAttach(getContext(),
                 null, topic.getId().toString(), Client.getInstance().getAuthKey(), extras);
         getActivity().finish();
         return true;

@@ -140,7 +140,7 @@ public class QuickPostFragment extends Fragment {
             @Override
             public boolean onLongClick(View view) {
                 hideKeyboard();
-                EditPostFragment.newPost(getActivity(), mForumId, mTopicId, mAuthKey,
+                EditPostFragment.Companion.newPost(getActivity(), mForumId, mTopicId, mAuthKey,
                         getPostBody(), parentTag);
                 LogUtil.D("QUICK BOOM", "key " + mAuthKey);
                 return true;

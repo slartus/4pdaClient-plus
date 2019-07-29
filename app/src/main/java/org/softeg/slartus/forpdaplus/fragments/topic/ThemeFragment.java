@@ -929,7 +929,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 list.add(new MenuListDialog(getS(R.string.url_post), () -> showLinkMenu(Post.getLink(m_Topic.getId(), postId), postId)));
                 list.add(new MenuListDialog(getS(R.string.report_msg), () -> Post.claim(getMainActivity(), mHandler, m_Topic.getId(), postId)));
                 if (canEdit) {
-                    list.add(new MenuListDialog(getS(R.string.edit_post), () -> EditPostFragment.editPost(getMainActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, Client.getInstance().getAuthKey(), getTag())));
+                    list.add(new MenuListDialog(getS(R.string.edit_post), () -> EditPostFragment.Companion.editPost(getMainActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, Client.getInstance().getAuthKey(), getTag())));
                 }
                 if (canDelete) {
                     list.add(new MenuListDialog(getS(R.string.delete_post), () -> prepareDeleteMessage(postId)));
@@ -1029,7 +1029,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == EditPostFragment.NEW_EDIT_POST_REQUEST_CODE) {
+        if (requestCode == EditPostFragment.Companion.getNEW_EDIT_POST_REQUEST_CODE()) {
             if (resultCode == Activity.RESULT_OK) {
                 String url = data.getStringExtra(EditPostFragment.POST_URL_KEY);
                 assert url != null;

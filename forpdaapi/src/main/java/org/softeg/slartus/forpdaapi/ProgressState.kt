@@ -10,12 +10,12 @@ package org.softeg.slartus.forpdaapi
 abstract class ProgressState {
 
     val isCanceled: Boolean
-        get() = m_Canceled!!
+        get() = canceled!!
 
-    private var m_Canceled: Boolean? = false
+    private var canceled: Boolean? = false
     abstract fun update(message: String, percents: Int)
 
     fun cancel() {
-        m_Canceled = true
+        canceled = true
     }
 }

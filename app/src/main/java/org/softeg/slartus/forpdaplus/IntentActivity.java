@@ -535,7 +535,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 TextUtils.isEmpty(uri.getQueryParameter("p")))
             return false;
 
-        EditPostFragment.editPost(context, uri.getQueryParameter("f"), uri.getQueryParameter("t"), uri.getQueryParameter("p"), authKey, App.getInstance().getCurrentFragmentTag());
+        EditPostFragment.Companion.editPost(context, uri.getQueryParameter("f"), uri.getQueryParameter("t"), uri.getQueryParameter("p"), authKey, App.getInstance().getCurrentFragmentTag());
         return true;
     }
 

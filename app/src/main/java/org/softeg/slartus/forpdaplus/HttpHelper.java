@@ -72,43 +72,38 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
 //    }
 
     public String uploadFile(final String url, String filePath, Map<String, String> additionalHeaders,
-                  final ProgressState progress) throws Exception {
-
-        // process headers using request interceptor
-        final Map<String, String> sendHeaders = new HashMap<String, String>();
+                             final ProgressState progress) throws Exception {
+        final Map<String, String> sendHeaders = new HashMap<>();
         sendHeaders.put(HttpHelper.CONTENT_TYPE, "multipart/form-data;");
-        // sendHeaders.put(CoreProtocolPNames.HTTP_CONTENT_CHARSET, HTTP_CONTENT_CHARSET);
-        // add encoding cat_name for gzip if not present
         if (!sendHeaders.containsKey(HttpHelper.ACCEPT_ENCODING)) {
             sendHeaders.put(HttpHelper.ACCEPT_ENCODING, HttpHelper.GZIP);
         }
 
         if (sendHeaders.size() > 0) {
-            client.addRequestInterceptor(new HttpRequestInterceptor() {
-                public void process(final HttpRequest request, final HttpContext context) throws HttpException, IOException {
-                    for (String key : sendHeaders.keySet()) {
-                        if (!request.containsHeader(key)) {
-                            request.addHeader(key, sendHeaders.get(key));
+            client.addRequestInterceptor((request, context) -> {
+                for (String key : sendHeaders.keySet()) {
+                    if (!request.containsHeader(key)) {
+                        request.addHeader(key, sendHeaders.get(key));
+                    }
+                }
+                if (url.contains("savepice")) {
+                    for (Cookie cookie : getCookieStore().getCookies()) {
+                        if (cookie.getName().equals("PHPSESSID")) {
+                            request.addHeader("Cookie", cookie.getName() + "=" + cookie.getValue());
                         }
                     }
-                    if(url.contains("savepice")){
-                        for(Cookie cookie: getCookieStore().getCookies()){
-                            if(cookie.getName().equals("PHPSESSID")){
-                                request.addHeader("Cookie", cookie.getName()+"="+cookie.getValue());
-                            }
-                        }request.removeHeaders("User-Agent");
-                        request.addHeader("Cache-Control", "max-age=0");
-                        request.addHeader("Upgrade-Insecure-Reaquest", "1");
-                        request.addHeader("Accept", "text-/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-                        request.addHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36 OPR/38.0.2220.31");
-                        request.addHeader("Accept-Language", "ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4");
-                        request.addHeader("Referer", "https://savepice.ru/");
-                        request.addHeader("Origin", "https://savepice.ru");
-                        request.addHeader("X-Requested-With", "XMLHttpRequest");
-
-                    }
+                    request.removeHeaders("User-Agent");
+                    request.addHeader("Cache-Control", "max-age=0");
+                    request.addHeader("Upgrade-Insecure-Reaquest", "1");
+                    request.addHeader("Accept", "text-/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+                    request.addHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36 OPR/38.0.2220.31");
+                    request.addHeader("Accept-Language", "ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4");
+                    request.addHeader("Referer", "https://savepice.ru/");
+                    request.addHeader("Origin", "https://savepice.ru");
+                    request.addHeader("X-Requested-With", "XMLHttpRequest");
 
                 }
+
             });
         }
 
@@ -116,7 +111,7 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
         multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
         multipartEntity.setCharset(Charset.forName("windows-1251"));
         File uploadFile = new File(filePath);
-        multipartEntity.addBinaryBody(url.contains("savepice")?"file":"FILE_UPLOAD", uploadFile, ContentType.create("image/png"),
+        multipartEntity.addBinaryBody(url.contains("savepice") ? "file" : "FILE_UPLOAD", uploadFile, ContentType.create("image/png"),
                 FileUtils.getFileNameFromUrl(filePath));
 
         m_RedirectUri = null;
@@ -178,9 +173,9 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
                     /**
                      * @author Stephen Colebourne
                      */
-                    long totalSent;
+                    private long totalSent;
 
-                    public ProxyOutputStream(OutputStream proxy) {
+                    ProxyOutputStream(OutputStream proxy) {
                         super(proxy);
                         totalSent = 0;
 
@@ -197,7 +192,7 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
                     public void write(byte[] bts, int st, int end)
                             throws IOException {
                         totalSent += end;
-                        progress.update(null, (int) ((totalSent / (float) totalSize) * 100));
+                        progress.update("", (int) ((totalSent / (float) totalSize) * 100));
 
                         out.write(bts, st, end);
                     }
@@ -212,7 +207,7 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
                 } // CONSIDER import this class (and risk more Jar File Hell)
 
                 class ProgressiveOutputStream extends ProxyOutputStream {
-                    public ProgressiveOutputStream(OutputStream proxy) {
+                    private ProgressiveOutputStream(OutputStream proxy) {
                         super(proxy);
                     }
                 }

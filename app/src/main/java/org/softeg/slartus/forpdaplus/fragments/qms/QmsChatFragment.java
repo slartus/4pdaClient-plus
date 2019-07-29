@@ -15,7 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -44,32 +43,19 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.apache.http.client.CookieStore;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.protocol.ClientContext;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HttpContext;
-import org.json.JSONObject;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdaapi.post.EditAttach;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
-import org.softeg.slartus.forpdacommon.FileUtils;
-import org.softeg.slartus.forpdacommon.NotReportException;
-import org.softeg.slartus.forpdacommon.SimpleCookie;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.HttpHelper;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
+import org.softeg.slartus.forpdaplus.classes.FilePath;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
-import org.softeg.slartus.forpdaplus.classes.ImageFilePath;
 import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
@@ -83,8 +69,6 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.utils.UploadUtils;
 
 import java.io.IOException;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -94,13 +78,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import okhttp3.JavaNetCookieJar;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /*
  * Created by radiationx on 12.11.15.
@@ -349,7 +326,7 @@ public class QmsChatFragment extends WebViewFragment {
             if (requestCode == MY_INTENT_CLICK) {
                 if (null == data) return;
                 Uri selectedImageUri = data.getData();
-                String selectedImagePath = ImageFilePath.getPath(getMainActivity().getApplicationContext(), selectedImageUri);
+                String selectedImagePath = FilePath.getPath(getMainActivity().getApplicationContext(), selectedImageUri);
                 if (selectedImagePath != null && selectedImagePath.matches("(?i)(.*)(jpg|png|gif)$")) {
                     saveAttachDirPath(selectedImagePath);
                     new UpdateTask(getMainActivity(), selectedImagePath).execute();
@@ -358,8 +335,8 @@ public class QmsChatFragment extends WebViewFragment {
                 }
 
             } else if (requestCode == FILECHOOSER_RESULTCODE) {
-                String attachFilePath = FileUtils.getRealPathFromURI(getContext(), data.getData());
-                String cssData = FileUtils.readFileText(attachFilePath)
+                String attachFilePath = org.softeg.slartus.forpdacommon.FileUtils.getRealPathFromURI(getContext(), data.getData());
+                String cssData = org.softeg.slartus.forpdacommon.FileUtils.readFileText(attachFilePath)
                         .replace("\\", "\\\\")
                         .replace("'", "\\'").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
                 if (Build.VERSION.SDK_INT < 19)
@@ -1045,7 +1022,7 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
     private void saveAttachDirPath(String attachFilePath) {
-        String lastSelectDirPath = FileUtils.getDirPath(attachFilePath);
+        String lastSelectDirPath = org.softeg.slartus.forpdacommon.FileUtils.getDirPath(attachFilePath);
         App.getInstance().getPreferences().edit().putString("EditPost.AttachDirPath", lastSelectDirPath).apply();
     }
 

@@ -94,7 +94,7 @@ public class SettingsQuickView extends BaseQuickView {
                 }
                 LogUtil.D("BOOM BOOM", "gogogog");
                 ((ThemeFragment) App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getFragment()).hideMessagePanel();
-                EditPostFragment.newPost((MainActivity) getContext(), getForumId() == null ? null : getForumId().toString(),
+                EditPostFragment.Companion.newPost((MainActivity) getContext(), getForumId() == null ? null : getForumId().toString(),
                         getTopicId().toString(), getAuthKey().toString(),
                         getPostBody().toString(), App.getInstance().getCurrentFragmentTag());
 

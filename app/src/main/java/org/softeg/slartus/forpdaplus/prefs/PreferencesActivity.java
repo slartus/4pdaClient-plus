@@ -33,14 +33,12 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.forpdaplus.classes.FilePath;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
-import org.softeg.slartus.forpdaplus.classes.ImageFilePath;
 import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
@@ -340,7 +338,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 {
                     if (null == data) return;
                     Uri selectedImageUri = data.getData();
-                    String selectedImagePath = ImageFilePath.getPath(App.getContext(), selectedImageUri);
+                    String selectedImagePath = FilePath.getPath(App.getContext(), selectedImageUri);
                     if (selectedImagePath != null)
                         App.getInstance().getPreferences()
                                 .edit()
@@ -761,7 +759,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 if (!dirPath.endsWith(File.separator))
                     dirPath += File.separator;
                 File dir = new File(dirPath);
-                File file = new File(FileUtils.getUniqueFilePath(dirPath, "4pda.tmp"));
+                File file = new File(org.softeg.slartus.forpdacommon.FileUtils.getUniqueFilePath(dirPath, "4pda.tmp"));
 
                 if (!dir.exists() && !dir.mkdirs())
                     throw new NotReportException(getString(R.string.FailedToCreateFolderInPath));
@@ -889,7 +887,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         try {
                             String dir = txtPath.getText().toString();
                             dir = dir.replace("/", File.separator);
-                            FileUtils.checkDirPath(dir);
+                            org.softeg.slartus.forpdacommon.FileUtils.checkDirPath(dir);
                             Preferences.System.setSystemDir(dir);
                         } catch (Throwable ex) {
                             AppLog.e(getActivity(), ex);
