@@ -42,7 +42,7 @@ public class HelpTask extends AsyncTask<HelpTask.OnMethodListener, String, Boole
 
     @Override
     protected void onProgressUpdate(String... progress) {
-        this.dialog.setMessage(progress[0]);
+        this.dialog.setContent(progress[0]);
     }
 
     public void progressUpdate(String... progress) {

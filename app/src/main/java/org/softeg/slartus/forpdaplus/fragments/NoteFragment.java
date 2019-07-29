@@ -77,14 +77,6 @@ public class NoteFragment extends GeneralFragment {
 
         outState.putString(NOTE_ID_KEY, m_Id);
     }
-/*
-    @Override
-    protected void onRestoreInstanceState(Bundle outState) {
-        super.onRestoreInstanceState(outState);
-
-        m_Id = outState.getString(NOTE_ID_KEY);
-    }
-    */
 
     @Override
     public void onResume() {
@@ -219,7 +211,7 @@ public class NoteFragment extends GeneralFragment {
 
         @Override
         protected void onProgressUpdate(String... progress) {
-            this.dialog.setMessage(progress[0]);
+            this.dialog.setContent(progress[0]);
         }
 
         private Throwable ex;

@@ -595,12 +595,6 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
         log("onSaveInstanceState");
     }
 
-    @Override
-    protected void onRestoreInstanceState(android.os.Bundle outState) {
-        super.onRestoreInstanceState(outState);
-        log("onRestoreInstanceState");
-    }
-
     public static SharedPreferences getPreferences() {
         return App.getInstance().getPreferences();
     }

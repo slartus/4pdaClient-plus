@@ -171,19 +171,6 @@ public class QmsNewThreadFragment extends GeneralFragment {
         super.onSaveInstanceState(outState);
     }
 
-    /*@Override
-    protected void onRestoreInstanceState(android.os.Bundle outState) {
-        args = outState;
-        m_Id=outState.getString(USER_ID_KEY,m_Id);
-        m_Nick=outState.getString(USER_NICK_KEY,m_Nick);
-
-        username.setText(outState.getString("USER_NAME_TEXT",m_Nick));
-        title.setText(outState.getString("TITLE_TEXT",""));
-        message.setText(outState.getString("MESSAGE_TEXT",""));
-        super.onRestoreInstanceState(outState);
-    }*/
-
-
     private void send() {
         m_Nick = username.getText().toString();
         String theme = title.getText().toString();

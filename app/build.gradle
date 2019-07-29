@@ -110,7 +110,6 @@ android {
     }
 }
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
     api project(':forpdacommon')
     api project(':forpdanotifyservice')
     api project(':4pdasources')
@@ -122,12 +121,12 @@ dependencies {
     api 'com.readystatesoftware.sqliteasset:sqliteassethelper:2.0.1'
     api 'com.github.chrisbanes.photoview:library:1.2.4'
     api 'com.nineoldandroids:library:2.4.0'
-    api 'com.afollestad.material-dialogs:core:0.9.0.2'
+    api 'com.afollestad.material-dialogs:core:0.9.6.0'
     api 'de.hdodenhof:circleimageview:2.0.0'
     api 'com.dmitriy-tarasov:android-intents:1.1.0'
     api 'com.squareup.picasso:picasso:2.5.2'
-    api 'ch.acra:acra:4.9.0'
-    api 'com.google.code.gson:gson:2.7'
+    api 'ch.acra:acra:4.9.2'
+    api 'com.google.code.gson:gson:2.8.5'
     api 'com.squareup.okhttp3:okhttp:3.12.0'
     api 'com.squareup.okhttp3:okhttp-urlconnection:3.10.0'
     api 'com.jakewharton:butterknife:8.5.1'

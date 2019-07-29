@@ -32,7 +32,6 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
     api project(':forpdacommon')
     api project(':sqliteannotations')
     api 'org.jsoup:jsoup:1.11.2'

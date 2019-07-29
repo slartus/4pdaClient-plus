@@ -34,11 +34,9 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
     api ('org.apache.httpcomponents:httpmime:4.3.6') {
         exclude module: 'httpclient'
     }
-//    compile 'org.apache.httpcomponents:httpcore:4.3.3'
     api 'org.apache.httpcomponents:httpclient-android:4.3.5'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

@@ -379,21 +379,6 @@ public class QmsChatFragment extends WebViewFragment {
         InputMethodManager imm = (InputMethodManager) getMainActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(edMessage.getWindowToken(), 0);
     }
-/*
-    @Override
-    protected void onRestoreInstanceState(Bundle outState) {
-        //super.onRestoreInstanceState(outState);
-
-        m_Id = outState.getString(MID_KEY);
-        m_Nick = outState.getString(NICK_KEY);
-        m_TId = outState.getString(TID_KEY);
-        m_ThemeTitle = outState.getString(THEME_TITLE_KEY);
-        setTitle(m_ThemeTitle);
-        setSubtitle(m_Nick);
-        edMessage.setText(outState.getString(POST_TEXT_KEY));
-
-    }
-    */
 
     @JavascriptInterface
     public void showMessage(final String message) {

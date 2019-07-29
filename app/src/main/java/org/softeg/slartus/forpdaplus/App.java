@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
@@ -120,10 +121,6 @@ public class App extends android.app.Application {
     }
 
     private List<TabItem> mTabItems = new ArrayList<>();
-
-    public void setmTabItems(List<TabItem> mTabItems) {
-        this.mTabItems = mTabItems;
-    }
 
     public List<TabItem> getTabItems() {
         return mTabItems;
@@ -482,7 +479,7 @@ public class App extends android.app.Application {
                 cssFile = "black_hd.css";
                 break;*/
             case THEME_CUSTOM_CSS:
-                return "/mnt/sdcard/style.css";
+                return Environment.getExternalStorageDirectory().getPath()+ "/style.css";
         }
         return path + cssFile;
     }
@@ -734,7 +731,7 @@ public class App extends android.app.Application {
 
         }
 
-        public void finishActivities() {
+        void finishActivities() {
             for (Map.Entry<String, Activity> entry : m_Activities.entrySet()) {
                 try {
                     Activity activity = entry.getValue();
