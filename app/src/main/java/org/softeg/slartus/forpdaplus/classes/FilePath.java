@@ -4,15 +4,21 @@ import android.annotation.TargetApi;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.Nullable;
+import org.softeg.slartus.forpdaplus.BuildConfig;
+
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -20,15 +26,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class ImageFilePath {
+public class FileUtils {
+    private static final String DOCUMENTS_DIR = "documents";
+    private static final String TAG = "FileUtils";
+    private static final Boolean DEBUG = BuildConfig.DEBUG;
     private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
     private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
     private static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
     public static String getPath(final Context context, final Uri uri) {
         if (uri == null)
             return null;
+        String absolutePath = getLocalPath(context, uri);
+        return absolutePath != null ? absolutePath : uri.toString();
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private static String getLocalPath(final Context context, final Uri uri) {
         //check here to KITKAT or new version
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
@@ -52,17 +66,46 @@ public class ImageFilePath {
 
                 if ("primary".equalsIgnoreCase(type)) {
                     return Environment.getExternalStorageDirectory() + "/" + split[1];
+                } else if ("home".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/documents/" + split[1];
                 }
             }
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {
 
                 final String id = DocumentsContract.getDocumentId(uri);
-//                final Uri contentUri = ContentUris.withAppendedId(
-//                        Uri.parse("content://<span id=\"IL_AD2\" class=\"IL_AD\">downloads</span>/public_downloads"), Long.valueOf(id));
-                final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
 
-                return getDataColumn(context, contentUri, null, null);
+                if (id != null && id.startsWith("raw:")) {
+                    return id.substring(4);
+                }
+
+                String[] contentUriPrefixesToTry = new String[]{
+                        "content://downloads/public_downloads",
+                        "content://downloads/my_downloads"
+                };
+
+                for (String contentUriPrefix : contentUriPrefixesToTry) {
+                    Uri contentUri = ContentUris.withAppendedId(Uri.parse(contentUriPrefix), Long.valueOf(id));
+                    try {
+                        String path = getDataColumn(context, contentUri, null, null);
+                        if (path != null) {
+                            return path;
+                        }
+                    } catch (Exception e) {
+                    }
+                }
+
+                // path could not be retrieved using ContentResolver, therefore copy file to accessible cache using streams
+                String fileName = getFileName(context, uri);
+                File cacheDir = getDocumentCacheDir(context);
+                File file = generateFileName(fileName, cacheDir);
+                String destinationPath = null;
+                if (file != null) {
+                    destinationPath = file.getAbsolutePath();
+                    saveFileFromUri(context, uri, destinationPath);
+                }
+
+                return destinationPath;
             }
             // MediaProvider
             else if (isMediaDocument(uri)) {
@@ -138,42 +181,23 @@ public class ImageFilePath {
     private static String getDataColumn(Context context, Uri uri, String selection,
                                         String[] selectionArgs) {
 
-        Uri returnUri = uri;
-        Cursor returnCursor = context.getContentResolver().query(returnUri, null, selection, selectionArgs, null);
-        /*
-         * Get the column indexes of the data in the Cursor,
-         *     * move to the first row in the Cursor, get the data,
-         *     * and display it.
-         * */
-        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-        int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
-        returnCursor.moveToFirst();
-        String name = (returnCursor.getString(nameIndex));
-        String size = (Long.toString(returnCursor.getLong(sizeIndex)));
-        File file = new File(context.getFilesDir(), name);
-        try {
-            InputStream inputStream = context.getContentResolver().openInputStream(uri);
-            FileOutputStream outputStream = new FileOutputStream(file);
-            int read = 0;
-            int maxBufferSize = 1 * 1024 * 1024;
-            int bytesAvailable = inputStream.available();
+        final String column = MediaStore.Files.FileColumns.DATA;
+        final String[] projection = {
+                column
+        };
+        try (Cursor cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+                null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                if (DEBUG)
+                    DatabaseUtils.dumpCursor(cursor);
 
-            //int bufferSize = 1024;
-            int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-
-            final byte[] buffers = new byte[bufferSize];
-            while ((read = inputStream.read(buffers)) != -1) {
-                outputStream.write(buffers, 0, read);
+                final int column_index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(column_index);
             }
-            Log.e("File Size", "Size " + file.length());
-            inputStream.close();
-            outputStream.close();
-            Log.e("File Path", "Path " + file.getPath());
-            Log.e("File Size", "Size " + file.length());
         } catch (Exception e) {
-            Log.e("Exception", e.getMessage());
+            Log.e(TAG, e.toString());
         }
-        return file.getPath();
+        return null;
     }
 
     /**
@@ -215,4 +239,123 @@ public class ImageFilePath {
     class LocalStorageProvider {
         static final String AUTHORITY = "org.softeg.slartus.forpdaplus.localstorage.documents";
     }
+
+    public static File getDocumentCacheDir(@NonNull Context context) {
+        File dir = new File(context.getCacheDir(), DOCUMENTS_DIR);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        logDir(context.getCacheDir());
+        logDir(dir);
+
+        return dir;
+    }
+
+    private static void logDir(File dir) {
+        if (!DEBUG) return;
+        Log.d(TAG, "Dir=" + dir);
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            Log.d(TAG, "File=" + file.getPath());
+        }
+    }
+
+
+    public static String getFileName(@NonNull Context context, Uri uri) {
+        String mimeType = context.getContentResolver().getType(uri);
+        String filename = null;
+
+        if (mimeType == null && context != null) {
+            String path = getPath(context, uri);
+            if (path == null) {
+                filename = getName(uri.toString());
+            } else {
+                File file = new File(path);
+                filename = file.getName();
+            }
+        } else {
+            Cursor returnCursor = context.getContentResolver().query(uri, null,
+                    null, null, null);
+            if (returnCursor != null) {
+                int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                returnCursor.moveToFirst();
+                filename = returnCursor.getString(nameIndex);
+                returnCursor.close();
+            }
+        }
+
+        return filename;
+    }
+
+    public static String getName(String filename) {
+        if (filename == null) {
+            return null;
+        }
+        int index = filename.lastIndexOf('/');
+        return filename.substring(index + 1);
+    }
+
+    @Nullable
+    public static File generateFileName(@Nullable String name, File directory) {
+        if (name == null) {
+            return null;
+        }
+
+        File file = new File(directory, name);
+
+        if (file.exists()) {
+            String fileName = name;
+            String extension = "";
+            int dotIndex = name.lastIndexOf('.');
+            if (dotIndex > 0) {
+                fileName = name.substring(0, dotIndex);
+                extension = name.substring(dotIndex);
+            }
+
+            int index = 0;
+
+            while (file.exists()) {
+                index++;
+                name = fileName + '(' + index + ')' + extension;
+                file = new File(directory, name);
+            }
+        }
+
+        try {
+            if (!file.createNewFile()) {
+                return null;
+            }
+        } catch (IOException e) {
+            Log.w(TAG, e);
+            return null;
+        }
+
+        logDir(directory);
+
+        return file;
+    }
+
+    private static void saveFileFromUri(Context context, Uri uri, String destinationPath) {
+        InputStream is = null;
+        BufferedOutputStream bos = null;
+        try {
+            is = context.getContentResolver().openInputStream(uri);
+            bos = new BufferedOutputStream(new FileOutputStream(destinationPath, false));
+            byte[] buf = new byte[1024];
+            is.read(buf);
+            do {
+                bos.write(buf);
+            } while (is.read(buf) != -1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (is != null) is.close();
+                if (bos != null) bos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
