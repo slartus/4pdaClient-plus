@@ -90,7 +90,7 @@ public class Client implements IHttpClient {
     }
 
     public void deletePost(String forumId, String themeId, String postId, CharSequence authKey) throws IOException {
-        PostApi.delete(this, forumId, themeId, postId, authKey);
+        PostApi.INSTANCE.delete(this, forumId, themeId, postId, authKey);
     }
 
     public Boolean changeReputation(String postId, String userId, String type, String message, Map<String, String> outParams) throws IOException {
@@ -100,7 +100,7 @@ public class Client implements IHttpClient {
     }
 
     public String claim(String themeId, String postId, String message) throws IOException {
-        String error = PostApi.claim(this, themeId, postId, message);
+        String error = PostApi.INSTANCE.claim(this, themeId, postId, message);
         if (!TextUtils.isEmpty(error))
             return error;
         return App.getContext().getString(R.string.complaint_sent);
@@ -385,7 +385,7 @@ public class Client implements IHttpClient {
 
     private String reply(String forumId, String themeId, String authKey, String attachPostKey, String post,
                          Boolean enablesig, Boolean enableemo, Boolean quick, String addedFileList) throws IOException {
-        return PostApi.reply(this, forumId, themeId, authKey, attachPostKey, post,
+        return PostApi.INSTANCE.reply(this, forumId, themeId, authKey, attachPostKey, post,
                 enablesig, enableemo, addedFileList, quick);
     }
 

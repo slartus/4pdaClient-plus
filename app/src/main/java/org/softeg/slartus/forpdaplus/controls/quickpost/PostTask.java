@@ -61,7 +61,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
             mPostResult = new PostResult();
             mPostResult.PostResultBody = Client.getInstance().reply(mForumId, mTopicId, mAuthKey,
                     mPost, mEnableSign, mEnableEmotics, true, null);
-            mPostResult.ForumErrorMessage = PostApi.checkPostErrors(mPostResult.PostResultBody);
+            mPostResult.ForumErrorMessage = PostApi.INSTANCE.checkPostErrors(mPostResult.PostResultBody);
 
             if (!TextUtils.isEmpty(mPostResult.ForumErrorMessage))
                 return false;

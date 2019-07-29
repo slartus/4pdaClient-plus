@@ -25,6 +25,13 @@ public class EditPostParams implements Serializable {
         params.put(key, value);
     }
 
+    public void delete(String key) {
+        if (params.containsKey(key)) {
+            params.remove(params.get(key));
+            orderedNames.remove(key);
+        }
+    }
+
     public String get(String key) {
         return params.get(key);
     }

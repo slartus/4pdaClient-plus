@@ -521,7 +521,7 @@ class EditPostFragment : GeneralFragment() {
                 .show()
 
         override fun work(params: Array<out String>) {
-            m_ProgressState = object : ProgressState() {
+            progressState = object : ProgressState() {
                 override fun update(message: String, percents: Int) {
                     publishProgress(Pair("", percents))
                 }
@@ -531,7 +531,7 @@ class EditPostFragment : GeneralFragment() {
             for (newAttachFilePath in attachFilePaths) {
                 publishProgress(Pair(String.format(App.getContext().getString(R.string.format_sending_file), i++, attachFilePaths.size), 0))
                 editAttach = PostApi.attachFile(Client.getInstance(),
-                        m_EditPost!!.id, newAttachFilePath, m_ProgressState)
+                        m_EditPost!!.id, newAttachFilePath, progressState!!)
             }
         }
 
@@ -540,7 +540,7 @@ class EditPostFragment : GeneralFragment() {
             refreshAttachmentsInfo()
         }
 
-        private var m_ProgressState: ProgressState? = null
+        private var progressState: ProgressState? = null
 
         private var editAttach: EditAttach? = null
 
@@ -557,8 +557,8 @@ class EditPostFragment : GeneralFragment() {
                 setCancelable(true)
                 setCanceledOnTouchOutside(false)
                 setOnCancelListener {
-                    if (m_ProgressState != null)
-                        m_ProgressState!!.cancel()
+                    if (progressState != null)
+                        progressState!!.cancel()
                     cancel(false)
                 }
                 setProgress(0)
@@ -662,7 +662,9 @@ class EditPostFragment : GeneralFragment() {
             mPostResult = PostApi.sendPost(Client.getInstance(), m_EditPost!!.params, postBody,
                     postEditReason, enableSign, enableEmo)
 
-            mError = PostApi.checkPostErrors(mPostResult)
+            mPostResult?.let {
+                mError = PostApi.checkPostErrors(it)
+            }
         }
 
         override fun onSuccess() {
@@ -940,13 +942,14 @@ abstract class BaseTask<Params, Progress>(val context: WeakReference<Context>, p
 
     abstract fun onSuccess()
 
-    fun showError(){
+    fun showError() {
         if (ex != null)
             AppLog.e(context.get(), ex)
         else
             Toast.makeText(context.get() ?: App.getContext(), R.string.unknown_error,
                     Toast.LENGTH_SHORT).show()
     }
+
     override fun onPostExecute(success: Boolean) {
         if (this.dialog?.isShowing == true) {
             this.dialog?.dismiss()
