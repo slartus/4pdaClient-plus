@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.text.Html;
 import android.text.TextUtils;
@@ -13,6 +14,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.Cookie;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.TextNode;
 import org.softeg.slartus.forpdaapi.ForumsApi;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.LoginResult;
@@ -26,6 +31,7 @@ import org.softeg.slartus.forpdaapi.TopicReadingUsers;
 import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.users.Users;
+import org.softeg.slartus.forpdacommon.CollectionUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.Observer;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
@@ -434,11 +440,11 @@ public class Client implements IHttpClient {
                     return res;
                 }
 
-                public String performPost(String s, List<NameValuePair> additionalHeaders)  {
+                public String performPost(String s, List<NameValuePair> additionalHeaders) {
                     return null;
                 }
 
-                public String performPost(String s, Map<String, String> additionalHeaders, String encoding)  {
+                public String performPost(String s, Map<String, String> additionalHeaders, String encoding) {
                     return null;
                 }
 
@@ -450,7 +456,7 @@ public class Client implements IHttpClient {
                 @Override
                 public CookieStore getCookieStore() {
 
-                        return finalHttpHelper.getCookieStore();
+                    return finalHttpHelper.getCookieStore();
 
                 }
 
@@ -643,28 +649,6 @@ public class Client implements IHttpClient {
 
     private final static Pattern beforePostsPattern = PatternExtensions.compile("^([\\s\\S]*?)<div data-post");
 
-    //1 - id поста
-    //2 - дата
-    //3 - номер поста
-    //4 - ник
-    //5 - урл аватарки
-    //6 - куратор или нет, если нет, то null
-    //7 - группа
-    //8 - online|offline
-    //9 - id юзера
-    //10 - репа
-    //11 - + - репы, действия
-    //12 - класс тела
-    //13 - тело
-    //Да простит меня господь за это. Действие во благо не счетается грехом, ведь верно?
-    //А разве может быть иначе?
-    @SuppressWarnings({"RegExpRedundantEscape", "RegExpRepeatedSpace"})
-    private final static Pattern postsPattern = Pattern.compile("<div data-post=\"(\\d+)\"[^>]*>[\\s\\S]*?post_date[^>]*?>(.*?)&nbsp;[^#]*#(\\d+)[\\s\\S]*?font color=\"([^\"]*?)\"[\\s\\S]*?data-av=\"([^\"]*)\"[^>]*?>([^>]*?)<[\\s\\S]*?<a href=\"[^\"]*?showuser=(\\d+)\"[\\s\\S]*?<span[^>]*?post_user_info[^>]*?>(<strong[\\s\\S]*?<\\/strong>(?:<br[^>]*?>))?(?:<span[^<]*?color:[^;']*[^>]*?>)?([\\s\\S]*?)(?:<\\/span>|)(?:  \\| [^<]*?)?<\\/span>([\\s\\S]*?<span[^>]*?data-member-rep[^>]*?>([^<]*?)<\\/span>[\\s\\S]*?)<div class=\"post_body([^\"]*?)\"[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div data-post=\"\\d+\"[^>]*>|<!-- TABLE FOOTER -->|<div class=\"topic_foot_nav\">)",
-            Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
-
-    private final static Pattern editPattern = PatternExtensions.compile("do=edit_post[^\"]*\"");
-    private final static Pattern deletePattern = PatternExtensions.compile("onclick=\"[^\"]*seMODdel");
-
 
     //createTopic
     private final static Pattern navStripPattern = PatternExtensions.compile("<div id=\"navstrip\">(.*?)</div>");
@@ -678,7 +662,7 @@ public class Client implements IHttpClient {
 
     public TopicBodyBuilder parseTopic(String topicPageBody,
                                        Context context, String themeUrl, Boolean spoilFirstPost) throws IOException {
-        checkLogin(new HttpHelper(),topicPageBody);
+        checkLogin(new HttpHelper(), topicPageBody);
 
         Pattern pattern = PatternExtensions.compile("showtopic=(\\d+)(&(.*))?");
         Matcher m = pattern.matcher(themeUrl);
@@ -795,6 +779,7 @@ public class Client implements IHttpClient {
         //Boolean browserStyle = prefs.getBoolean("theme.BrowserStylePreRemove", false);
         topicBodyBuilder.beginTopic();
         //>>ОПРОС
+        // TODO!: переделать на jsoup
         Matcher pollMatcher = pollFormPattern.matcher(mainMatcher.group(1));
         if (pollMatcher.find()) {
             String pollSource = pollMatcher.group(1);
@@ -865,51 +850,126 @@ public class Client implements IHttpClient {
         //<<опрос
         topicBodyBuilder.openPostsList();
 
-
-        mainMatcher = postsPattern.matcher(topicBody);
-
-
-        //String today = Functions.getToday();
-        //String yesterday = Functions.getYesterToday();
+        Document doc = Jsoup.parse(topicBody);
         org.softeg.slartus.forpdaplus.classes.Post post;
         Boolean spoil = spoilFirstPost;
-        String str;
-        Matcher m;
-        while (mainMatcher.find()) {
 
-            post = new org.softeg.slartus.forpdaplus.classes.Post(mainMatcher.group(1), mainMatcher.group(2), mainMatcher.group(3));
-            post.setUserState(mainMatcher.group(4));
-            post.setAvatarFileName(mainMatcher.group(5));
-            post.setAuthor(mainMatcher.group(6));
-            post.setUserId(mainMatcher.group(7));
-            if (mainMatcher.group(8) != null) {
-                post.setCurator();
+        for (Element postEl : doc.select("div[data-post]")) {
+            // id поста-обязателен
+            String postId = postEl.attr("data-post");
+            String postDate = "";
+            String postNumber = "";
+
+            Element postHeaderEl = postEl.selectFirst("div.post_header");
+            if (postHeaderEl == null) continue;
+            // дата и номер поста не обязательны
+            Element el = postHeaderEl.selectFirst("span.post_date");
+            if (el != null) {
+                postDate = ((TextNode) el.childNode(0)).text().replace("|", "").trim();
+                postNumber = ((Element) el.childNode(1)).text().replace("#", "").trim();
             }
-            post.setUserGroup(mainMatcher.group(9));
-            str = mainMatcher.group(10);
-            if (str.contains("win_minus")) {
-                post.setCanMinusRep(true);
+            // тело поста-обязательно
+            el = postEl.selectFirst("div.post_body");
+            if (el == null) continue;
+            String postBody = "<div class=\"" + CollectionUtils.join(" ", el.classNames()) + "\">" + el.html() + "</div>";
+
+            post = new org.softeg.slartus.forpdaplus.classes.Post(postId, postDate, postNumber);
+            post.setBody(postBody);
+
+            // всё остальное не обязательно - читать темы можно по крайней мере
+
+            // ник
+            el = postHeaderEl.selectFirst("span.post_nick");
+            if (el != null) {
+                // статус автора
+                Element el1 = el.selectFirst("font");
+                if (el1 != null)
+                    post.setUserState(el1.attr("color"));
+                // ник и аватар автора
+                el1 = el.selectFirst("a[title=Вставить ник]");
+                if (el1 != null) {
+                    post.setAvatarFileName(el1.attr("data-av"));// аватар
+                    post.setAuthor(el1.text());// ник
+                }
+                el1 = el.selectFirst("a[href*=showuser]");
+                if (el1 != null)
+                    post.setUserId(Uri.parse(el1.attr("href")).getQueryParameter("showuser"));
+
             }
-            if (str.contains("win_add")) {
-                post.setCanPlusRep(true);
+
+            // информация о пользователе
+            el = postHeaderEl.selectFirst("span.post_user_info");
+            if (el != null) {
+                Element el1 = el.selectFirst("span>span");// группа пользователя
+                if (el1 != null)
+                    post.setUserGroup(el1.outerHtml());
+                if (el.selectFirst("strong[class=t-cur-title]") != null)// куратор
+                    post.setCurator();
             }
-            m = editPattern.matcher(str);
-            if (m.find()) {
-                post.setCanEdit(true);
-            }
-            m = deletePattern.matcher(str);
-            if (m.find()) {
-                post.setCanDelete(true);
-                // если автор поста не совпадает с текущим пользователем и есть возможность удалить-значит, модератор
-                if (post.getUserId() != null && !post.getUserId().equals(Client.getInstance().UserId)) {
-                    topicBodyBuilder.setMMod(true);
+
+            // репутация
+            el = postHeaderEl.selectFirst("a[href*=act=rep&view=history]");
+            if (el != null)
+                post.setUserReputation(el.text());
+            post.setCanPlusRep(postHeaderEl.selectFirst("a[href*=act=rep&view=win_add]") != null);
+            post.setCanMinusRep(postHeaderEl.selectFirst("a[href*=act=rep&view=win_minus]") != null);
+
+            // операции над постом
+            el = postHeaderEl.selectFirst("span.post_action");
+            if (el != null) {
+                post.setCanEdit(el.selectFirst("a[href*=do=edit_post]") != null);
+                post.setCanDelete(el.selectFirst("a[href*=tact=delete]") != null);
+                if (post.getCanDelete()) {
+                    // если автор поста не совпадает с текущим пользователем и есть возможность удалить-значит, модератор
+                    if (post.getUserId() != null && !post.getUserId().equals(Client.getInstance().UserId)) {
+                        topicBodyBuilder.setMMod(true);
+                    }
                 }
             }
-            post.setUserReputation(mainMatcher.group(11));
-            post.setBody("<div class=\"post_body " + mainMatcher.group(12) + "\">" + mainMatcher.group(13) + "</div>");
             topicBodyBuilder.addPost(post, spoil);
             spoil = false;
         }
+//        mainMatcher = postsPattern.matcher(topicBody);
+//
+//
+//        //String today = Functions.getToday();
+//        //String yesterday = Functions.getYesterToday();
+//
+//        while (mainMatcher.find()) {
+//
+//            post = new org.softeg.slartus.forpdaplus.classes.Post(mainMatcher.group(1), mainMatcher.group(2), mainMatcher.group(3));
+//            post.setUserState(mainMatcher.group(4));
+//            post.setAvatarFileName(mainMatcher.group(5));
+//            post.setAuthor(mainMatcher.group(6));
+//            post.setUserId(mainMatcher.group(7));
+//            if (mainMatcher.group(8) != null) {
+//                post.setCurator();
+//            }
+//            post.setUserGroup(mainMatcher.group(9));
+//            str = mainMatcher.group(10);
+//            if (str.contains("win_minus")) {
+//                post.setCanMinusRep(true);
+//            }
+//            if (str.contains("win_add")) {
+//                post.setCanPlusRep(true);
+//            }
+//            m = editPattern.matcher(str);
+//            if (m.find()) {
+//                post.setCanEdit(true);
+//            }
+//            m = deletePattern.matcher(str);
+//            if (m.find()) {
+//                post.setCanDelete(true);
+//                // если автор поста не совпадает с текущим пользователем и есть возможность удалить-значит, модератор
+//                if (post.getUserId() != null && !post.getUserId().equals(Client.getInstance().UserId)) {
+//                    topicBodyBuilder.setMMod(true);
+//                }
+//            }
+//            post.setUserReputation(mainMatcher.group(11));
+//            post.setBody("<div class=\"post_body " + mainMatcher.group(12) + "\">" + mainMatcher.group(13) + "</div>");
+//            topicBodyBuilder.addPost(post, spoil);
+//            spoil = false;
+//        }
         topicBodyBuilder.endTopic();
         return topicBodyBuilder;
     }

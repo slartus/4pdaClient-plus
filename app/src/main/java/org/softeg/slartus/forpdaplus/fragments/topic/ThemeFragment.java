@@ -1512,7 +1512,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         private String m_ThemeBody;
         private Throwable ex;
 
-        public GetThemeTask() {
+        GetThemeTask() {
         }
 
         private CharSequence prepareTopicUrl(CharSequence url) {
