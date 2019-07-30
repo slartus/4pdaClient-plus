@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.listfragments;
 
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Filterable;
@@ -12,12 +11,12 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.sqliteannotations.BaseDao;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import io.paperdb.Paper;
 
 /**
  * Created by slartus on 19.02.14.
@@ -37,39 +36,15 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
         }
     }
 
-    public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
-
+    public void loadCache(){
+        mCacheList=new ArrayList<>();
+        mCacheList.addAll(
+                Paper.book().read(getListName(), new ArrayList<>())
+        );
     }
 
-    public void saveCache() throws Exception {
-
-    }
-
-    protected <T> void updateItemCache(final T item, final Class<T> tClass, Boolean newThread) {
-        if (newThread) {
-            new Thread(() -> updateItemCache(item, tClass)).start();
-        } else {
-            updateItemCache(item, tClass);
-        }
-    }
-
-    private <T> void updateItemCache(T item, Class<T> tClass) {
-        try {
-            CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
-            SQLiteDatabase db = null;
-            try {
-                db = cacheDbHelper.getWritableDatabase();
-                BaseDao<T> baseDao = new BaseDao<>(App.getContext(), db, getListName(), tClass);
-
-                baseDao.update(item, ((IListItem) item).getId().toString());
-
-            } finally {
-                if (db != null)
-                    db.close();
-            }
-        } catch (Throwable ex) {
-            // Log.e(getContext(), ex);
-        }
+    public void saveCache() {
+        Paper.book().write(getListName(), getMData());
     }
 
     public void trySaveCache() {
@@ -176,11 +151,11 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
 
 
     public class Task extends AsyncTask<Boolean, Void, Boolean> {
-        protected Boolean mRefresh;
+        Boolean mRefresh;
         private Runnable onCancelAction;
-        protected Throwable mEx;
+        Throwable mEx;
 
-        public Task(Boolean refresh) {
+        Task(Boolean refresh) {
             mRefresh = refresh;
         }
 

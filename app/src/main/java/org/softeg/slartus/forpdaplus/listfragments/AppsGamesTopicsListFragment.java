@@ -4,6 +4,7 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
 
 import android.os.Bundle;
 
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.appsgamescatalog.AppGameCatalog;
@@ -11,7 +12,6 @@ import org.softeg.slartus.forpdaapi.appsgamescatalog.AppsGamesCatalogApi;
 import org.softeg.slartus.forpdaplus.Client;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 
 public class AppsGamesTopicsListFragment extends TopicsListFragment {
@@ -22,7 +22,7 @@ public class AppsGamesTopicsListFragment extends TopicsListFragment {
         super();
     }
     @Override
-    protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException, ParseException {
+    protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException {
         return AppsGamesCatalogApi.loadTopics(client, m_Catalog);
     }
 
@@ -41,7 +41,7 @@ public class AppsGamesTopicsListFragment extends TopicsListFragment {
     }
 
     @Override
-    public void onSaveInstanceState(android.os.Bundle outState) {
+    public void onSaveInstanceState(@NotNull android.os.Bundle outState) {
         if (m_Catalog != null)
             outState.putParcelable(CATALOG_KEY, m_Catalog);
 
@@ -57,12 +57,12 @@ public class AppsGamesTopicsListFragment extends TopicsListFragment {
     }
 
     @Override
-    public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
+    public void loadCache(){
 
     }
 
     @Override
-    public void saveCache() throws Exception {
+    public void saveCache() {
 
     }
 }

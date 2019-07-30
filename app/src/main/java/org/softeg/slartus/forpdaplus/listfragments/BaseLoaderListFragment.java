@@ -12,18 +12,16 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.classes.ListData;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+
+import io.paperdb.Paper;
 
 /*
  * Created by slinkin on 17.06.2015.
@@ -38,7 +36,6 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
     private TextView mEmptyTextView;
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     private ListData mData = createListData();
-    private ListViewLoadMoreFooter mListViewLoadMoreFooter;
 
     protected int getLoaderId() {
         return ItemsLoader.ID;
@@ -47,7 +44,6 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
     /**
      * Использовать ли кеш списка
      *
-     * @return
      */
     protected Boolean useCache() {
         return true;
@@ -86,7 +82,7 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
         return mAdapter;
     }
 
-    protected void onBrickFragmentListBaseActivityCreated(Bundle savedInstanceState) {
+    protected void onBrickFragmentListBaseActivityCreated() {
         if (mData.getItems().size() == 0) {
             loadData(1, true);
         }
@@ -102,7 +98,7 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
         if (mData.getItems().size() == 0 && useCache()) {
             startLoadCache();
         } else {
-            onBrickFragmentListBaseActivityCreated(savedInstanceState);
+            onBrickFragmentListBaseActivityCreated();
         }
     }
 
@@ -118,12 +114,12 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
     protected abstract int getViewResourceId();
 
     @Override
-    public android.view.View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container,
+    public android.view.View onCreateView(@NotNull android.view.LayoutInflater inflater, android.view.ViewGroup container,
                                           android.os.Bundle savedInstanceState) {
         view = inflater.inflate(getViewResourceId(), container, false);
         assert view != null;
-        mListView = (ListView) view.findViewById(android.R.id.list);
-        mEmptyTextView = (TextView) view.findViewById(android.R.id.empty);
+        mListView = view.findViewById(android.R.id.list);
+        mEmptyTextView = view.findViewById(android.R.id.empty);
         mListView.setEmptyView(mEmptyTextView);
         mListView.setOnItemClickListener(this);
         mListView.setOnItemLongClickListener(this);
@@ -135,32 +131,15 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
         return view;
     }
 
-    protected void addLoadMoreFooter(Context context) {
-        mListViewLoadMoreFooter = new ListViewLoadMoreFooter(context, getListView());
-        mListViewLoadMoreFooter.setOnLoadMoreClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListViewLoadMoreFooter.setState(ListViewLoadMoreFooter.STATE_LOADING);
-                loadData(getData().getCurrentPage() + 1, false);
-            }
-        });
-        refreshLoadMoreFooter();
-    }
-
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mSwipeRefreshLayout = createSwipeRefreshLayout(view);
     }
 
     private SwipeRefreshLayout createSwipeRefreshLayout(View view) {
-        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.ptr_layout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loadData(true);
-            }
-        });
+        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.ptr_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> loadData(true));
         swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
         swipeRefreshLayout.setProgressBackgroundColorSchemeResource(App.getInstance().getSwipeRefreshBackground());
         return swipeRefreshLayout;
@@ -193,22 +172,12 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
 
     protected AsyncTaskLoader<ListData> createLoader(int loaderId, Bundle args) {
         if (loaderId == ItemsLoader.ID)
-            return new ItemsLoader(getActivity(), args, new LoadDataListener() {
-                @Override
-                public ListData loadData(int loaderId, Bundle args) throws Throwable {
-                    return BaseLoaderListFragment.this.loadData(loaderId, args);
-                }
-
-            });
+            return new ItemsLoader(getActivity(), args, BaseLoaderListFragment.this::loadData);
         else if (loaderId == CacheLoader.ID)
-            return new CacheLoader(getActivity(), args, new LoadDataListener() {
-                @Override
-                public ListData loadData(int loaderId, Bundle args) throws Throwable {
-                    ListData data = new ListData();
-                    data.getItems().addAll(BaseLoaderListFragment.this.loadCache());
-                    return data;
-                }
-
+            return new CacheLoader(getActivity(), (loaderId12, args12) -> {
+                ListData data = new ListData();
+                data.getItems().addAll(BaseLoaderListFragment.this.loadCache());
+                return data;
             });
         return null;
     }
@@ -217,7 +186,7 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
 
     @Override
     public Loader<ListData> onCreateLoader(int id, Bundle args) {
-        Loader<ListData> loader = null;
+        Loader<ListData> loader;
 
         setLoading(true);
         loader = createLoader(id, args);
@@ -239,29 +208,14 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
             mListView.refreshDrawableState();
         }
 
-        refreshLoadMoreFooter();
-
         if (loader.getId() == CacheLoader.ID) {
             loadData(true);
         } else {
             setLoading(false);
             if (data != null && useCache())
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        saveCache();
-                    }
-                }).start();
+                new Thread(this::saveCache).start();
         }
 
-    }
-
-    private void refreshLoadMoreFooter() {
-        if (getData() != null && mListViewLoadMoreFooter != null)
-            mListViewLoadMoreFooter.setState(
-                    getData().getPagesCount() <= getData().getCurrentPage() ? ListViewLoadMoreFooter.STATE_FULL_DOWNLOADED :
-                            ListViewLoadMoreFooter.STATE_LOAD_MORE
-            );
     }
 
     @Override
@@ -277,19 +231,14 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
         try {
             if (getActivity() == null) return;
             //mSwipeRefreshLayout.setRefreshing(loading);
-            mSwipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    mSwipeRefreshLayout.setRefreshing(loading);
-                }
-            });
+            mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(loading));
             if (loading) {
                 setEmptyText(App.getContext().getString(R.string.loading));
             } else {
                 setEmptyText(App.getContext().getString(R.string.no_data));
             }
-        } catch (Throwable ignore) {
-            android.util.Log.e("TAG", ignore.toString());
+        } catch (Throwable ex) {
+            android.util.Log.e("TAG", ex.toString());
         }
     }
 
@@ -346,42 +295,21 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
     }
 
     private void saveCache() {
-
-        FileOutputStream fos;
-        try {
-            fos = getActivity().openFileOutput(getListName(), Context.MODE_PRIVATE);
-            ObjectOutputStream os = new ObjectOutputStream(fos);
-            os.writeObject(mData.getItems());
-            os.close();
-        } catch (Throwable e) {
-
-            e.printStackTrace();
-        }
+        Paper.book().write(getListName(), mData.getItems());
     }
 
     private ArrayList<IListItem> loadCache() {
-        try {
-            FileInputStream fis = getActivity().openFileInput(getListName());
-            ObjectInputStream is = new ObjectInputStream(fis);
-            ArrayList<IListItem> cache = (ArrayList<IListItem>) is.readObject();
-            is.close();
-            return cache;
-        } catch (Throwable e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+       return Paper.book().read(getListName(), new ArrayList<>());
     }
 
     private static class CacheLoader extends android.support.v4.content.AsyncTaskLoader<ListData> {
-        public static final int ID = App.getInstance().getUniqueIntValue();
+        static final int ID = App.getInstance().getUniqueIntValue();
         ListData mApps;
 
-        private Bundle args;
         private LoadDataListener mLoadDataListener;
 
-        public CacheLoader(Context context, Bundle args, LoadDataListener loadDataListener) {
+        CacheLoader(Context context, LoadDataListener loadDataListener) {
             super(context);
-            this.args = args;
             mLoadDataListener = loadDataListener;
         }
 
@@ -465,19 +393,19 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
 
         }
 
-        protected void onReleaseResources() {
+        void onReleaseResources() {
 
         }
     }
 
     private static class ItemsLoader extends android.support.v4.content.AsyncTaskLoader<ListData> {
-        public static final int ID = App.getInstance().getUniqueIntValue();
+        static final int ID = App.getInstance().getUniqueIntValue();
         ListData mApps;
 
         private Bundle args;
         private LoadDataListener mLoadDataListener;
 
-        public ItemsLoader(Context context, Bundle args, LoadDataListener loadDataListener) {
+        ItemsLoader(Context context, Bundle args, LoadDataListener loadDataListener) {
             super(context);
             this.args = args;
             mLoadDataListener = loadDataListener;
@@ -561,7 +489,7 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
 
         }
 
-        protected void onReleaseResources() {
+        void onReleaseResources() {
 
         }
     }

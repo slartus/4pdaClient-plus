@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -29,16 +28,13 @@ import org.softeg.slartus.forpdaplus.classes.PdaApplication;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ApplicationRelationsTable;
 import org.softeg.slartus.forpdaplus.db.ApplicationsDbHelper;
-import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ListAdapter;
-import org.softeg.sqliteannotations.BaseDao;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,43 +56,10 @@ public class AppsListFragment extends TopicsListFragment {
 
     @Override
     protected void updateItem(IListItem item) {
-        updateItemCache((AppItem) item, AppItem.class, true);
+        saveCache();
     }
 
-    @Override
-    public void saveCache() throws Exception {
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
-        SQLiteDatabase db = null;
-        try {
-            db = cacheDbHelper.getWritableDatabase();
-            BaseDao<AppItem> baseDao = new BaseDao<>(App.getContext(), db, getListName(), AppItem.class);
-            baseDao.createTable(db);
-            for (IListItem item : getMData()) {
-                AppItem news = (AppItem) item;
-                baseDao.insert(news);
-            }
 
-        } finally {
-            if (db != null)
-                db.close();
-        }
-    }
-
-    @Override
-    public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
-        mCacheList=new ArrayList<>();
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
-        SQLiteDatabase db = null;
-        try {
-            db = cacheDbHelper.getReadableDatabase();
-            BaseDao<AppItem> baseDao = new BaseDao<>(App.getContext(), db, getListName(), AppItem.class);
-            if (baseDao.isTableExists())
-                mCacheList.addAll(baseDao.getAll());
-        } finally {
-            if (db != null)
-                db.close();
-        }
-    }
 
     public ArrayList<AppItem> loadItems() throws IOException {
         PackageManager packageManager = getContext().getPackageManager();
@@ -145,20 +108,18 @@ public class AppsListFragment extends TopicsListFragment {
     }
 
     private void sort(ArrayList<AppItem> apps) {
-        Collections.sort(apps, new Comparator<AppItem>() {
-            public int compare(AppItem topic, AppItem topic1) {
-                if (topic.getFindedState() != topic1.getFindedState()) {
-                    if (topic1.getFindedState() == AppItem.STATE_FINDED_AND_HAS_UPDATE)
-                        return 1;
-                    if (topic.getFindedState() == AppItem.STATE_FINDED_AND_HAS_UPDATE)
-                        return -1;
-                    if (topic1.getFindedState() == AppItem.STATE_UNFINDED)
-                        return -1;
-                    if (topic.getFindedState() == AppItem.STATE_UNFINDED)
-                        return 1;
-                }
-                return topic.getTitle().toString().toUpperCase().compareTo(topic1.getTitle().toString().toUpperCase());
+        Collections.sort(apps, (topic, topic1) -> {
+            if (topic.getFindedState() != topic1.getFindedState()) {
+                if (topic1.getFindedState() == AppItem.STATE_FINDED_AND_HAS_UPDATE)
+                    return 1;
+                if (topic.getFindedState() == AppItem.STATE_FINDED_AND_HAS_UPDATE)
+                    return -1;
+                if (topic1.getFindedState() == AppItem.STATE_UNFINDED)
+                    return -1;
+                if (topic.getFindedState() == AppItem.STATE_UNFINDED)
+                    return 1;
             }
+            return topic.getTitle().toString().toUpperCase().compareTo(topic1.getTitle().toString().toUpperCase());
         });
     }
 
@@ -272,10 +233,7 @@ public class AppsListFragment extends TopicsListFragment {
     private Boolean filterApp(ApplicationInfo info) {
         if ((info.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0) {
             return true;
-        } else if ((info.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-            return true;
-        }
-        return false;
+        } else return (info.flags & ApplicationInfo.FLAG_SYSTEM) == 0;
     }
 
     private static final CharSequence normalizePattern = "\\d+|alpha|beta|pro|trial|free|plus|premium|donate|demo|paid|special|next|hd|ultimate|pc|lite|classic";
@@ -300,54 +258,46 @@ public class AppsListFragment extends TopicsListFragment {
 
             //if (TextUtils.isEmpty(topic.getId())) return;
             final AppItem appItem = (AppItem) o;
-            menu.add(R.string.associate_with_theme).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    MaterialDialog.Builder builder = new MaterialDialog.Builder(getContext());
-                    builder.title(R.string.enter_url_theme);
+            menu.add(R.string.associate_with_theme).setOnMenuItemClickListener(menuItem -> {
+                MaterialDialog.Builder builder = new MaterialDialog.Builder(getContext());
+                builder.title(R.string.enter_url_theme);
 
-                    final EditText input = new EditText(getContext());
+                final EditText input = new EditText(getContext());
 
-                    input.setInputType(InputType.TYPE_CLASS_TEXT);
-                    input.setText(appItem.getId());
-                    builder.customView(input,true);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setText(appItem.getId());
+                builder.customView(input,true);
 
-                    builder.positiveText(android.R.string.ok);
-                    builder.negativeText(android.R.string.cancel);
-                    builder.callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            String text = input.getText() == null ? "" : input.getText().toString();
-                            if (TextUtils.isEmpty(text)) {
-                                Toast.makeText(getContext(), R.string.empty_url, Toast.LENGTH_SHORT).show();
+                builder.positiveText(android.R.string.ok);
+                builder.negativeText(android.R.string.cancel);
+                builder.onPositive((dialog, which) -> {
+                    String text = input.getText() == null ? "" : input.getText().toString();
+                    if (TextUtils.isEmpty(text)) {
+                        Toast.makeText(getContext(), R.string.empty_url, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    Matcher m = Pattern.compile("showtopic=(\\d+)").matcher(text.trim());
+                    if (!m.find()) {
+                        m = Pattern.compile("(\\d+)").matcher(text.trim());
+                        if (m.find()) {
+                            if (m.group(1).length() != text.trim().length()) {
+                                Toast.makeText(getContext(), R.string.incorrect_url, Toast.LENGTH_SHORT).show();
                                 return;
                             }
-                            Matcher m = Pattern.compile("showtopic=(\\d+)").matcher(text.trim());
-                            if (!m.find()) {
-                                m = Pattern.compile("(\\d+)").matcher(text.trim());
-                                if (m.find()) {
-                                    if (m.group(1).length() != text.trim().length()) {
-                                        Toast.makeText(getContext(), R.string.incorrect_url, Toast.LENGTH_SHORT).show();
-                                        return;
-                                    }
-                                } else {
-                                    Toast.makeText(getContext(), R.string.incorrect_url, Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-                            }
-                            ApplicationRelationsTable.addRealtion(appItem.getPackageName(), m.group(1));
-                            appItem.setFindedState(AppItem.STATE_FINDED);
-                            appItem.setId(m.group(1));
-                            getAdapter().notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(getContext(), R.string.incorrect_url, Toast.LENGTH_SHORT).show();
+                            return;
                         }
-                        @Override
-                        public void onNegative(MaterialDialog dialog) {
-                            dialog.cancel();
-                        }
-                    });
+                    }
+                    ApplicationRelationsTable.addRealtion(appItem.getPackageName(), m.group(1));
+                    appItem.setFindedState(AppItem.STATE_FINDED);
+                    appItem.setId(m.group(1));
+                    getAdapter().notifyDataSetChanged();
+                });
+                builder.onNegative((dialog, which) -> dialog.cancel());
 
-                    builder.show();
-                    return true;
-                }
+                builder.show();
+                return true;
             });
         } catch (Throwable ex) {
             AppLog.e(getContext(), ex);

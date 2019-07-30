@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.listfragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -20,7 +19,6 @@ import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.TopicApi;
-import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
@@ -31,7 +29,6 @@ import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
-import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.fragments.topic.EditPostFragment;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.SortedListAdapter;
 import org.softeg.slartus.forpdaplus.listfragments.next.forum.ForumFragment;
@@ -40,7 +37,6 @@ import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.TopicsListPreferencesActivity;
 import org.softeg.slartus.forpdaplus.prefs.TopicsPreferenceFragment;
-import org.softeg.sqliteannotations.BaseDao;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -64,30 +60,11 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
     protected abstract ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException, ParseException, URISyntaxException;
 
-    @Override
-    public void saveCache() throws Exception {
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
-        try (SQLiteDatabase db = cacheDbHelper.getWritableDatabase()) {
-            BaseDao<Topic> baseDao = new BaseDao<>(App.getContext(), db, getListName(), Topic.class);
-            baseDao.createTable(db);
-            for (IListItem item : getMData()) {
-                Topic topic = (Topic) item;
-                baseDao.insert(topic);
-            }
-
-        }
-    }
 
     @Override
-    public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
+    public void loadCache(){
         clearNotification(2);
-        mCacheList.clear();
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
-        try (SQLiteDatabase db = cacheDbHelper.getReadableDatabase()) {
-            BaseDao<Topic> baseDao = new BaseDao<>(App.getContext(), db, getListName(), Topic.class);
-            if (baseDao.isTableExists())
-                mCacheList.addAll(baseDao.getAll());
-        }
+        super.loadCache();
         sort();
     }
 
@@ -166,14 +143,16 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             AppLog.e(this.getContext(), ex);
         }
     }
-    public void showLinkMenu(final Context context, final IListItem topic){
+
+    public void showLinkMenu(final Context context, final IListItem topic) {
         final List<MenuListDialog> list = new ArrayList<>();
         ExtUrl.addUrlSubMenu(getMHandler(), context, list,
                 TopicUtils.getTopicUrl(topic.getId().toString(), TopicUtils.getOpenTopicArgs(topic.getId(), getListName())), topic.getId().toString(),
                 topic.getMain().toString());
         ExtUrl.showContextDialog(context, getString(R.string.link), list);
     }
-    public void showOptionsMenu(final Context context, final Handler mHandler, final IListItem topic, final String shareItUrl){
+
+    public void showOptionsMenu(final Context context, final Handler mHandler, final IListItem topic, final String shareItUrl) {
         final List<MenuListDialog> list = new ArrayList<>();
         configureOptionsMenu(context, mHandler, list, topic, shareItUrl);
         ExtUrl.showContextDialog(context, getString(R.string.options), list);
@@ -223,13 +202,13 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
                 }));
 
                 final FavTopic favTopic = (FavTopic) topic;
-                optionsMenu.add(new MenuListDialog((favTopic.isPinned()?context.getString(R.string.unpin):context.getString(R.string.pin))+context.getString(R.string.in_favorites_combined), () -> {
+                optionsMenu.add(new MenuListDialog((favTopic.isPinned() ? context.getString(R.string.unpin) : context.getString(R.string.pin)) + context.getString(R.string.in_favorites_combined), () -> {
                     Toast.makeText(context, R.string.request_sent, Toast.LENGTH_SHORT).show();
                     new TopicListItemTask(context, topic, getAdapter()) {
                         @Override
                         public String doInBackground(Topic topic13, String... pars)
                                 throws ParseException, IOException, URISyntaxException {
-                            return TopicApi.pinFavorite(Client.getInstance(), topic13.getId(), favTopic.isPinned()?TopicApi.TRACK_TYPE_UNPIN:TopicApi.TRACK_TYPE_PIN);
+                            return TopicApi.pinFavorite(Client.getInstance(), topic13.getId(), favTopic.isPinned() ? TopicApi.TRACK_TYPE_UNPIN : TopicApi.TRACK_TYPE_PIN);
                         }
 
                         @Override
@@ -278,7 +257,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
-        if(!v.hasWindowFocus()) return;
+        if (!v.hasWindowFocus()) return;
         try {
             id = org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge.getItemId(getActivity(), position, id);
             if (id < 0 || getAdapter().getCount() <= id) return;
@@ -290,8 +269,8 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             if (TextUtils.isEmpty(topic.getId())) return;
             if (tryCreatePost(topic))
                 return;
-            if(!Client.getInstance().isUserLogin()){
-                Toast.makeText(getContext(),"Залогиньтесь для просмотра тем форума!",Toast.LENGTH_LONG).show();
+            if (!Client.getInstance().isUserLogin()) {
+                Toast.makeText(getContext(), "Залогиньтесь для просмотра тем форума!", Toast.LENGTH_LONG).show();
             }
             ActionSelectDialogFragment.INSTANCE.execute(getActivity(),
                     getString(R.string.default_action),
@@ -308,8 +287,8 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     }
 
     public void topicAfterClick(String id) {
-        for(IListItem item: getMData()){
-            if(item.getId().equals(id)){
+        for (IListItem item : getMData()) {
+            if (item.getId().equals(id)) {
                 item.setState(IListItem.STATE_NORMAL);
                 getAdapter().notifyDataSetChanged();
                 updateItem(item);
@@ -319,8 +298,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     }
 
     protected void updateItem(IListItem topic) {
-        if (topic != null)
-            updateItemCache((Topic) topic, Topic.class, true);
+       saveCache();
     }
 
     @Override
@@ -404,10 +382,11 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     }
 
     final static int settingItemId = 537;
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add(0,settingItemId,0, R.string.list_settings)
+        menu.add(0, settingItemId, 0, R.string.list_settings)
                 .setIcon(R.drawable.settings_white)
                 .setOnMenuItemClickListener(menuItem -> {
                     showSettings();

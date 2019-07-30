@@ -11,9 +11,6 @@ import android.widget.AdapterView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaplus.App;
@@ -47,12 +44,12 @@ public class NotesListFragment extends TopicsListFragment {
 
 
     @Override
-    public void saveCache() throws Exception {
+    public void saveCache() {
 
     }
 
     @Override
-    public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
+    public void loadCache(){
 
     }
 
@@ -98,30 +95,22 @@ public class NotesListFragment extends TopicsListFragment {
 
         final List<MenuListDialog> list = new ArrayList<>();
         AddLinksSubMenu(list, topic);
-        list.add(new MenuListDialog(App.getContext().getString(R.string.delete), new Runnable() {
-            @Override
-            public void run() {
-                new MaterialDialog.Builder(getContext())
-                        .title(R.string.confirm_action)
-                        .content(R.string.ask_delete_note)
-                        .cancelable(true)
-                        .negativeText(R.string.cancel)
-                        .positiveText(R.string.delete)
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                try {
-                                    NotesTable.delete(topic.getId().toString());
-                                    getMData().remove(topic);
-                                    getAdapter().notifyDataSetChanged();
-                                } catch (Throwable ex) {
-                                    AppLog.e(getContext(), ex);
-                                }
-                            }
-                        })
-                        .show();
-            }
-        }));
+        list.add(new MenuListDialog(App.getContext().getString(R.string.delete), () -> new MaterialDialog.Builder(getContext())
+                .title(R.string.confirm_action)
+                .content(R.string.ask_delete_note)
+                .cancelable(true)
+                .negativeText(R.string.cancel)
+                .positiveText(R.string.delete)
+                .onPositive((dialog, which) -> {
+                    try {
+                        NotesTable.delete(topic.getId().toString());
+                        getMData().remove(topic);
+                        getAdapter().notifyDataSetChanged();
+                    } catch (Throwable ex) {
+                        AppLog.e(getContext(), ex);
+                    }
+                })
+                .show()));
         ExtUrl.showContextDialog(getContext(), null, list);
 
     }
@@ -132,20 +121,12 @@ public class NotesListFragment extends TopicsListFragment {
             if (note != null) {
                 final ArrayList<Pair> links = note.getLinks();
                 if (links.size() != 0) {
-                    list.add(new MenuListDialog(App.getContext().getString(R.string.links), new Runnable() {
-                        @Override
-                        public void run() {
-                            final List<MenuListDialog> list1 = new ArrayList<>();
-                            for (final Pair pair : links) {
-                                list1.add(new MenuListDialog(pair.first.toString(), new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        IntentActivity.tryShowUrl((Activity) getContext(), getMHandler(), pair.second.toString(), true, false, null);
-                                    }
-                                }));
-                            }
-                            ExtUrl.showContextDialog(getContext(), null, list1);
+                    list.add(new MenuListDialog(App.getContext().getString(R.string.links), () -> {
+                        final List<MenuListDialog> list1 = new ArrayList<>();
+                        for (final Pair pair : links) {
+                            list1.add(new MenuListDialog(pair.first.toString(), () -> IntentActivity.tryShowUrl((Activity) getContext(), getMHandler(), pair.second.toString(), true, false, null)));
                         }
+                        ExtUrl.showContextDialog(getContext(), null, list1);
                     }));
                 }
             }
@@ -154,22 +135,4 @@ public class NotesListFragment extends TopicsListFragment {
         }
     }
 
-    private void exportForNewVersion() {
-        ArrayList<ListInfo> infos = new ArrayList<>();
-
-        final JSONArray root = new JSONArray();
-        for (ListInfo info : infos) {
-//            try {
-//                JSONObject jsonObject = new JSONObject();
-////                jsonObject.put("id", );
-////                jsonObject.put("title", info.getTitle());
-////                jsonObject.put("link", );
-////                jsonObject.put("content", );
-//                root.put(jsonObject);
-//            } catch (JSONException ignored) {
-//
-//            }
-        }
-
-    }
 }

@@ -49,6 +49,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import io.paperdb.Paper;
+
 /**
  * User: slinkin
  * Date: 05.08.11
@@ -520,6 +522,11 @@ public class App extends android.app.Application {
         try {
             DbHelper.prepareBases(this);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try{
+            Paper.init(this);
+        }catch (Throwable e){
             e.printStackTrace();
         }
     }

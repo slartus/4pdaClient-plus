@@ -5,7 +5,6 @@ package org.softeg.slartus.forpdaplus.listfragments
  */
 
 import android.content.Context
-import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
@@ -15,18 +14,16 @@ import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
-
 import org.softeg.slartus.forpdaapi.IListItem
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter
-import org.softeg.slartus.forpdaplus.db.CacheDbHelper
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ListAdapter
 import org.softeg.slartus.forpdaplus.prefs.Preferences
-import org.softeg.sqliteannotations.BaseDao
-
-import java.util.ArrayList
+import java.util.*
+import kotlin.math.max
+import kotlin.math.min
 
 abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickListener {
     protected var mData = ArrayList<IListItem>()
@@ -54,7 +51,7 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
 
     private val notifyAdapter = Runnable { adapter?.notifyDataSetChanged() }
 
-    override fun onCreate(savedInstanceState: android.os.Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState != null) {
@@ -64,7 +61,7 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
         }
     }
 
-    override fun onCreateView(inflater: android.view.LayoutInflater, container: android.view.ViewGroup?, savedInstanceState: android.os.Bundle?): android.view.View? {
+    override fun onCreateView(inflater: android.view.LayoutInflater, container: android.view.ViewGroup?, savedInstanceState: Bundle?): View? {
         view = inflater.inflate(viewId, container, false)
         assert(view != null)
         listView = findViewById(android.R.id.list) as ListView
@@ -77,7 +74,7 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
         return view
     }
 
-    override fun onSaveInstanceState(outState: android.os.Bundle) {
+    override fun onSaveInstanceState(outState: Bundle) {
         if (args != null)
             outState.putAll(args)
 
@@ -198,43 +195,16 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
         val keyCode = event.keyCode
         if (Preferences.System.isScrollUpButton(keyCode)) {
             if (action == KeyEvent.ACTION_DOWN)
-                scrollView.setSelection(Math.max(scrollView.firstVisiblePosition - visibleItemsCount, 0))
+                scrollView.setSelection(max(scrollView.firstVisiblePosition - visibleItemsCount, 0))
             return true// true надо обязательно возвращать даже если не ACTION_DOWN иначе звук нажатия
         }
         if (Preferences.System.isScrollDownButton(keyCode)) {
             if (action == KeyEvent.ACTION_DOWN)
-                scrollView.setSelection(Math.min(scrollView.lastVisiblePosition, scrollView.count - 1))
+                scrollView.setSelection(min(scrollView.lastVisiblePosition, scrollView.count - 1))
             return true// true надо обязательно возвращать даже если не ACTION_DOWN иначе звук нажатия
         }
 
         return false
-    }
-
-    protected open fun <T> updateItemCache(item: T, tClass: Class<T>, newThread: Boolean?) {
-        if (newThread!!) {
-            Thread { updateItemCache(item, tClass) }.start()
-        } else {
-            updateItemCache(item, tClass)
-        }
-    }
-
-    private fun <T> updateItemCache(item: T, tClass: Class<T>) {
-        try {
-            val cacheDbHelper = CacheDbHelper(App.getContext())
-            var db: SQLiteDatabase? = null
-            try {
-                db = cacheDbHelper.writableDatabase
-                val baseDao = BaseDao(App.getContext(), db, listName!!, tClass)
-
-                baseDao.update(item, (item as IListItem).id.toString())
-
-            } finally {
-                db?.close()
-            }
-        } catch (ex: Throwable) {
-            // Log.e(getContext(), ex);
-        }
-
     }
 
     companion object {

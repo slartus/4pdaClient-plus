@@ -2,25 +2,20 @@ package org.softeg.slartus.forpdaplus.listfragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import org.softeg.slartus.forpdaapi.FavTopic;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.sqliteannotations.BaseDao;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.ArrayList;
 
 /*
@@ -33,7 +28,7 @@ public class FavoritesListFragment extends TopicsListFragment {
     }
 
     @Override
-    protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException, ParseException, URISyntaxException {
+    protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException, URISyntaxException {
         SharedPreferences prefs = App.getInstance().getPreferences();
 
         return org.softeg.slartus.forpdaapi.TopicsApi.getFavTopics(Client.getInstance(),
@@ -47,38 +42,8 @@ public class FavoritesListFragment extends TopicsListFragment {
     }
 
     @Override
-    public void saveCache() throws Exception {
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
-        SQLiteDatabase db = null;
-        try {
-            db = cacheDbHelper.getWritableDatabase();
-            BaseDao<FavTopic> baseDao = new BaseDao<>(App.getContext(), db, getListName(), FavTopic.class);
-            baseDao.createTable(db);
-            for (IListItem item : getMData()) {
-                FavTopic topic = (FavTopic) item;
-                baseDao.insert(topic);
-            }
-
-        } finally {
-            if (db != null)
-                db.close();
-        }
-    }
-
-    @Override
-    public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
-        mCacheList.clear();
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
-        SQLiteDatabase db = null;
-        try {
-            db = cacheDbHelper.getReadableDatabase();
-            BaseDao<FavTopic> baseDao = new BaseDao<>(App.getContext(), db, getListName(), FavTopic.class);
-            if (baseDao.isTableExists())
-                mCacheList.addAll(baseDao.getAll());
-        } finally {
-            if (db != null)
-                db.close();
-        }
+    public void loadCache(){
+        super.loadCache();
         sort();
     }
 
@@ -103,15 +68,12 @@ public class FavoritesListFragment extends TopicsListFragment {
         super.onCreateOptionsMenu(menu, inflater);
         menu.removeItem(settingItemId);
         menu.add(R.string.filter_and_ordering)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        Intent settingsActivity = new Intent(
-                                getContext(), ForumTopicsPreferencesActivity.class);
-                        settingsActivity.putExtra("listname", getListName());
-                        startActivityForResult(settingsActivity, FILTER_SORT_REQUEST);
-                        return true;
-                    }
+                .setOnMenuItemClickListener(menuItem -> {
+                    Intent settingsActivity = new Intent(
+                            getContext(), ForumTopicsPreferencesActivity.class);
+                    settingsActivity.putExtra("listname", getListName());
+                    startActivityForResult(settingsActivity, FILTER_SORT_REQUEST);
+                    return true;
                 }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
 

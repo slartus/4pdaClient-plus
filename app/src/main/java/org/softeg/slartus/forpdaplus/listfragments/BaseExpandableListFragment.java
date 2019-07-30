@@ -3,14 +3,12 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
  */
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -19,15 +17,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ExpandableMyListAdapter;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.sqliteannotations.BaseDao;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,7 +35,8 @@ public abstract class BaseExpandableListFragment extends BaseBrickFragment imple
     protected ArrayList<ExpandableGroup> mLoadResultList;
     protected ArrayList<ExpandableGroup> mCacheList = new ArrayList<>();
 
-    private static final String TAG = "BaseExpandableListFragment";
+    @SuppressWarnings("unused")
+    private static final String TAG = "BaseExListFragment";
 
     public static final String FIRST_VISIBLE_ROW_KEY = "FIRST_VISIBLE_ROW_KEY";
     public static final String TOP_KEY = "TOP_KEY";
@@ -106,7 +104,8 @@ super();
     }
 
     @Override
-    public android.view.View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {
+    public android.view.View onCreateView(@NotNull android.view.LayoutInflater inflater,
+                                          android.view.ViewGroup container, android.os.Bundle savedInstanceState) {
 
         view = inflater.inflate(getViewId(), container, false);
         assert view != null;
@@ -157,23 +156,15 @@ super();
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mSwipeRefreshLayout = createSwipeRefreshLayout(view);
     }
 
     protected SwipeRefreshLayout createSwipeRefreshLayout(View view) {
-        // This is the View which is created by ListFragment
-        ViewGroup viewGroup = (ViewGroup) view;
-
-        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.ptr_layout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loadData(true);
-            }
-        });
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.ptr_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> loadData(true));
         swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
         swipeRefreshLayout.setProgressBackgroundColorSchemeResource(App.getInstance().getSwipeRefreshBackground());
         return swipeRefreshLayout;
@@ -199,6 +190,7 @@ super();
         getListView().setAdapter(mAdapter);
     }
 
+    @SuppressWarnings("unused")
     protected void setListShown(boolean b) {
         //mListView.setVisibility(b?);
     }
@@ -218,19 +210,14 @@ super();
             if (getActivity() == null) return;
 
             //mSwipeRefreshLayout.setRefreshing(loading);
-            mSwipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    mSwipeRefreshLayout.setRefreshing(loading);
-                }
-            });
+            mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(loading));
             if (loading) {
                 setEmptyText(App.getContext().getString(R.string.loading));
             } else {
                 setEmptyText(App.getContext().getString(R.string.no_data));
             }
-        } catch (Throwable ignore) {
-            android.util.Log.e("TAG", ignore.toString());
+        } catch (Throwable ex) {
+            android.util.Log.e(TAG, ex.toString());
         }
     }
 
@@ -244,45 +231,15 @@ super();
         }
     }
 
-    public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
+    public void loadCache() {
 
     }
 
-    public void saveCache() throws Exception {
+    public void saveCache()  {
 
     }
 
-    protected <T> void updateItemCache(final T item, final Class<T> tClass, Boolean newThread) {
-        if (newThread) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    updateItemCache(item, tClass);
-                }
-            }).start();
-        } else {
-            updateItemCache(item, tClass);
-        }
-    }
 
-    private <T> void updateItemCache(T item, Class<T> tClass) {
-        try {
-            CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
-            SQLiteDatabase db = null;
-            try {
-                db = cacheDbHelper.getWritableDatabase();
-                BaseDao<T> baseDao = new BaseDao<>(App.getContext(), db, getListName(), tClass);
-
-                baseDao.update(item, ((IListItem) item).getId().toString());
-
-            } finally {
-                if (db != null)
-                    db.close();
-            }
-        } catch (Throwable ex) {
-            // Log.e(getContext(), ex);
-        }
-    }
 
     public void trySaveCache() {
         try {
@@ -320,22 +277,15 @@ super();
 
     public void loadData(final boolean isRefresh) {
         saveListViewScrollPosition();
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (needLogin()) {
-                    Client.getInstance().checkLoginByCookies();
-                    if (!Client.getInstance().getLogined())
-                        Client.getInstance().showLoginForm(getContext(), new Client.OnUserChangedListener() {
-                            public void onUserChanged(String user, Boolean success) {
-                                loadData(isRefresh);
-                            }
-                        });
-                }
-
-                mTask = createTask(isRefresh);
-                mTask.execute();
+        Runnable runnable = () -> {
+            if (needLogin()) {
+                Client.getInstance().checkLoginByCookies();
+                if (!Client.getInstance().getLogined())
+                    Client.getInstance().showLoginForm(getContext(), (user, success) -> loadData(isRefresh));
             }
+
+            mTask = createTask(isRefresh);
+            mTask.execute();
         };
         if (mTask != null && mTask.getStatus() != AsyncTask.Status.FINISHED)
             mTask.cancel(runnable);
@@ -357,12 +307,7 @@ super();
         setListShown(true);
         mAdapter.notifyDataSetChanged();
         setEmptyText(App.getContext().getString(R.string.no_data));
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                trySaveCache();
-            }
-        }).start();
+        new Thread(this::trySaveCache).start();
 
         restoreListViewScrollPosition();
     }
@@ -376,11 +321,11 @@ super();
     }
 
     public class Task extends AsyncTask<Boolean, Void, Boolean> {
-        protected Boolean mRefresh;
+        Boolean mRefresh;
         private Runnable onCancelAction;
-        protected Throwable mEx;
+        Throwable mEx;
 
-        public Task(Boolean refresh) {
+        Task(Boolean refresh) {
             mRefresh = refresh;
         }
 
@@ -419,12 +364,7 @@ super();
             if (!isCancelled())
                 setLoading(false);
             if (mEx != null)
-                AppLog.e(getActivity(), mEx, new Runnable() {
-                    @Override
-                    public void run() {
-                        loadData(mRefresh);
-                    }
-                });
+                AppLog.e(getActivity(), mEx, () -> loadData(mRefresh));
             else if (!result) {
                 onFailureResult();
             }
@@ -503,12 +443,10 @@ super();
     }
 
     public class ExpandableGroup {
-        private String mName;
         private String mTitle;
         private ArrayList<IListItem> mData = new ArrayList<>();
 
-        public ExpandableGroup(String name, String title) {
-            mName = name;
+        public ExpandableGroup(String title) {
             mTitle = title;
         }
 

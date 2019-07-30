@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.listfragments.news;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -18,7 +17,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.PauseOnScrollListener;
 
-import org.softeg.slartus.forpdaapi.IListItem;
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.News;
 import org.softeg.slartus.forpdaplus.App;
@@ -30,16 +29,13 @@ import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
-import org.softeg.slartus.forpdaplus.db.CacheDbHelper;
 import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseTaskListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.NewsListAdapter;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
-import org.softeg.sqliteannotations.BaseDao;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -237,30 +233,16 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
     Boolean useCache = true;
 
     @Override
-    public void saveCache() throws Exception {
+    public void saveCache(){
         if (!useCache) return;
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
-        try (SQLiteDatabase db = cacheDbHelper.getWritableDatabase()) {
-            BaseDao<News> baseDao = new BaseDao<>(App.getContext(), db, getListName(), News.class);
-            baseDao.createTable(db);
-            for (IListItem item : mData) {
-                News news = (News) item;
-                baseDao.insert(news);
-            }
-
-        }
+        super.loadCache();
     }
 
     @Override
-    public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
+    public void loadCache() {
         mCacheList = new ArrayList<>();
         if (!useCache) return;
-        CacheDbHelper cacheDbHelper = new CacheDbHelper(App.getContext());
-        try (SQLiteDatabase db = cacheDbHelper.getReadableDatabase()) {
-            BaseDao<News> baseDao = new BaseDao<>(App.getContext(), db, getListName(), News.class);
-            if (baseDao.isTableExists())
-                mCacheList.addAll(baseDao.getAll());
-        }
+        super.loadCache();
     }
 
     @Override
@@ -316,7 +298,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View v, int position, long id) {
+    public void onItemClick(@NotNull AdapterView<?> adapterView, @NotNull View v, int position, long id) {
         if(!v.hasWindowFocus()) return;
         try {
             id = ListViewMethodsBridge.getItemId(getActivity(), position, id);

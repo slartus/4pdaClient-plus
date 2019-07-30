@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 
 import com.android.internal.util.Predicate;
 
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.ICatalogItem;
 import org.softeg.slartus.forpdaapi.appsgamescatalog.AppGameCatalog;
 import org.softeg.slartus.forpdaapi.appsgamescatalog.AppsGamesCatalogApi;
@@ -17,7 +18,6 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.CatalogAdapter;
 import org.softeg.slartus.forpdaplus.listtemplates.AppsGamesTopicsBrickInfo;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class AppsGamesCatalogFragment extends BaseCatalogFragment {
@@ -83,7 +83,7 @@ public class AppsGamesCatalogFragment extends BaseCatalogFragment {
     }
 
     @Override
-    public void onSaveInstanceState(android.os.Bundle outState) {
+    public void onSaveInstanceState(@NotNull android.os.Bundle outState) {
         outState.putParcelable("CurrentCatalogItem", (AppGameCatalog) m_CurrentCatalogItem);
         outState.putParcelable("LoadingCatalogItem", (AppGameCatalog) m_LoadingCatalogItem);
         outState.putParcelableArrayList("Data", mData);
@@ -100,12 +100,7 @@ public class AppsGamesCatalogFragment extends BaseCatalogFragment {
 
         if (catalogItem.getParent() != null && catalogItem.getId().equals(catalogItem.getParent().getId()))
             return false;
-        mLoadResultList = getFilteredList(new Predicate<AppGameCatalog>() {
-            @Override
-            public boolean apply(AppGameCatalog catalog) {
-                return catalog.getParent() != null && catalog.getParent().getId().equals(catalogItem.getId());
-            }
-        });
+        mLoadResultList = getFilteredList(catalog -> catalog.getParent() != null && catalog.getParent().getId().equals(catalogItem.getId()));
         return !(mCatalogData.size() > 0 && mLoadResultList.size() == 0);
     }
 
@@ -113,9 +108,7 @@ public class AppsGamesCatalogFragment extends BaseCatalogFragment {
     protected void deliveryResult(boolean isRefresh) {
         super.deliveryResult(isRefresh);
         mData.clear();
-        for (AppGameCatalog item : mLoadResultList) {
-            mData.add(item);
-        }
+        mData.addAll(mLoadResultList);
 
         mLoadResultList.clear();
         getAdapter().notifyDataSetChanged();
@@ -130,12 +123,12 @@ public class AppsGamesCatalogFragment extends BaseCatalogFragment {
 
 
     @Override
-    public void loadCache() throws IOException, IllegalAccessException, NoSuchFieldException, java.lang.InstantiationException {
+    public void loadCache()  {
 
     }
 
     @Override
-    public void saveCache() throws Exception {
+    public void saveCache(){
 
     }
 
