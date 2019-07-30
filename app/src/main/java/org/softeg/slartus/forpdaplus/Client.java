@@ -779,15 +779,15 @@ public class Client implements IHttpClient {
         Document doc = Jsoup.parse(topicBody);
 
         //>>ОПРОС
-        Element pollElement = doc.selectFirst("form[action*=addpoll=1]");
-        if (pollElement != null) {
-            StringBuilder pollBuilder = new StringBuilder();
-            pollBuilder.append("<form action=\"modules.php\" method=\"get\">");
-            Element el = pollElement.selectFirst("th");
-            if (el != null)
-                pollBuilder.append("<div class=\"poll_title\"><span>").append(el.text()).append("</span></div>");
-            boolean voted = false;
-        }
+//        Element pollElement = doc.selectFirst("form[action*=addpoll=1]");
+//        if (pollElement != null) {
+//            StringBuilder pollBuilder = new StringBuilder();
+//            pollBuilder.append("<form action=\"modules.php\" method=\"get\">");
+//            Element el = pollElement.selectFirst("th");
+//            if (el != null)
+//                pollBuilder.append("<div class=\"poll_title\"><span>").append(el.text()).append("</span></div>");
+//            boolean voted = false;
+//        }
         //Boolean browserStyle = prefs.getBoolean("theme.BrowserStylePreRemove", false);
         topicBodyBuilder.beginTopic();
 

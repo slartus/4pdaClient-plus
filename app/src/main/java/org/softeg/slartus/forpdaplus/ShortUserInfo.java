@@ -20,13 +20,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.softeg.slartus.forpdaplus.classes.FastBlur;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
@@ -43,20 +43,22 @@ import java.util.regex.Pattern;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ShortUserInfo {
-    public Activity mActivity;
+    private static final String TAG = "ShortUserInfo";
+    Activity mActivity;
     public SharedPreferences prefs;
-    public CircleImageView imgAvatar;
-    public ImageView imgAvatarSquare, infoRefresh, userBackground, openLink;
-    public TextView userNick, qmsMessages, loginButton, userRep;
-    public RelativeLayout textWrapper;
+    private CircleImageView imgAvatar;
+    private ImageView imgAvatarSquare;
+    private ImageView userBackground;
+    private TextView userNick, qmsMessages, loginButton, userRep;
+    private RelativeLayout textWrapper;
     public Handler mHandler = new Handler();
     public Client client;
-    public boolean isSquare;
-    public String avatarUrl = "";
+    private boolean isSquare;
+    private String avatarUrl = "";
     private View view;
 
 
-    public ShortUserInfo(Activity activity, View view) {
+    ShortUserInfo(Activity activity, View view) {
         prefs = App.getInstance().getPreferences();
         client = Client.getInstance();
         mActivity = activity;
@@ -68,103 +70,62 @@ public class ShortUserInfo {
         textWrapper = (RelativeLayout) findViewById(R.id.textWrapper);
         imgAvatar = (CircleImageView) findViewById(R.id.imgAvatar);
         imgAvatarSquare = (ImageView) findViewById(R.id.imgAvatarSquare);
-        infoRefresh = (ImageView) findViewById(R.id.infoRefresh);
-        openLink = (ImageView) findViewById(R.id.openLink);
+        ImageView infoRefresh = (ImageView) findViewById(R.id.infoRefresh);
+        ImageView openLink = (ImageView) findViewById(R.id.openLink);
         userBackground = (ImageView) findViewById(R.id.userBackground);
         isSquare = prefs.getBoolean("isSquareAvarars", false);
 
-        openLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url;
-                url = readFromClipboard(getContext());
-                if (url == null) url = "";
-                new MaterialDialog.Builder(getContext())
-                        .title(R.string.go_to_link)
-                        .input(getContext().getString(R.string.insert_link), isPdaLink(url) ? url : null, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(MaterialDialog dialog, CharSequence input) {
+        openLink.setOnClickListener(v -> {
+            String url;
+            url = readFromClipboard(getContext());
+            if (url == null) url = "";
+            new MaterialDialog.Builder(getContext())
+                    .title(R.string.go_to_link)
+                    .input(getContext().getString(R.string.insert_link), isPdaLink(url) ? url : null, (dialog, input) -> {
 
-                            }
-                        })
-                        .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE)
-                        .positiveText(R.string.open)
-                        .negativeText(R.string.cancel)
-                        .onPositive((dialog, which) -> {
-                            if (!IntentActivity.tryShowUrl((MainActivity) getContext(), ((MainActivity) getContext()).getHandler(), dialog.getInputEditText().getText() + "", false, false)) {
-                                Toast.makeText(getContext(), R.string.links_not_supported, Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .show();
-            }
+                    })
+                    .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE)
+                    .positiveText(R.string.open)
+                    .negativeText(R.string.cancel)
+                    .onPositive((dialog, which) -> {
+                        assert dialog.getInputEditText() != null;
+                        if (!IntentActivity.tryShowUrl((MainActivity) getContext(),
+                                ((MainActivity) getContext()).getHandler(),
+                                dialog.getInputEditText().getText() + "", false, false)) {
+                            Toast.makeText(getContext(), R.string.links_not_supported, Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .show();
         });
 
 
         File imgFile = new File(prefs.getString("userInfoBg", ""));
         if (imgFile.exists()) {
-            ImageLoader.getInstance().displayImage("file://"+imgFile.getPath(), userBackground);
+            ImageLoader.getInstance().displayImage("file://" + imgFile.getPath(), userBackground);
         }
         client.checkLoginByCookies();
         if (isOnline()) {
             if (client.getLogined()) {
                 new updateAsyncTask().execute();
                 if (isSquare) {
-                    imgAvatarSquare.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ProfileFragment.showProfile(client.UserId, client.getUser());
-                        }
-                    });
+                    imgAvatarSquare.setOnClickListener(v -> ProfileFragment.showProfile(client.UserId, client.getUser()));
                 } else {
-                    imgAvatar.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ProfileFragment.showProfile(client.UserId, client.getUser());
-                        }
-                    });
+                    imgAvatar.setOnClickListener(v -> ProfileFragment.showProfile(client.UserId, client.getUser()));
                 }
 
 
-                client.addOnUserChangedListener(new Client.OnUserChangedListener() {
-                    @Override
-                    public void onUserChanged(String user, Boolean success) {
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                refreshQms();
-                            }
-                        });
-                    }
-                });
-                client.addOnMailListener(new Client.OnMailListener() {
-                    @Override
-                    public void onMail(int count) {
-                        mHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                refreshQms();
-                            }
-                        });
-                    }
-                });
+                client.addOnUserChangedListener((user, success) -> mHandler.post(this::refreshQms));
+                client.addOnMailListener(count -> mHandler.post(this::refreshQms));
             } else {
                 loginButton.setVisibility(View.VISIBLE);
-                loginButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        LoginDialog.showDialog(getContext(), null);
-                    }
-                });
+                loginButton.setOnClickListener(v -> LoginDialog.showDialog(getContext(), null));
             }
         } else {
             loginButton.setText(R.string.check_connection);
         }
-        infoRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isOnline() & client.getLogined()) {
-                    new updateAsyncTask().execute();
-                }
+        infoRefresh.setOnClickListener(v -> {
+            if (isOnline() & client.getLogined()) {
+                new updateAsyncTask().execute();
             }
         });
     }
@@ -193,14 +154,18 @@ public class ShortUserInfo {
         protected Void doInBackground(String... urls) {
             try {
                 Document doc = Jsoup.parse(client.performGet("http://4pda.ru/forum/index.php?showuser=" + client.UserId));
-                if (doc.selectFirst("div.user-box > div.photo > img") != null) {
-                    avatarUrl = doc.select("div.user-box > div.photo > img").first().attr("src");
+                Element el = doc.selectFirst("div.user-box > div.photo > img");
+                if (el != null)
+                    avatarUrl = el.attr("src");
+
+                el = doc.selectFirst("div.statistic-box");
+                if (el != null && el.children().size() > 0) {
+                    String repa = el.child(1).selectFirst("ul > li > div.area").text();
+                    if (repa != null) {
+                        reputation = repa;
+                    }
                 }
 
-                String repa = doc.selectFirst("div.statistic-box").child(1).selectFirst("ul > li > div.area").text();
-                if (repa != null) {
-                    reputation = repa;
-                }
 
             } catch (IOException e) {
                 AppLog.e(getContext(), e);
@@ -216,45 +181,39 @@ public class ShortUserInfo {
             } else if (client.getLogined()) {
                 qmsMessages.setVisibility(View.VISIBLE);
                 loginButton.setVisibility(View.GONE);
-                textWrapper.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        QmsContactsBrickInfo brickInfo = new QmsContactsBrickInfo();
-                        MainActivity.addTab(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
-                        //ListFragmentActivity.showListFragment(getContext(), QmsContactsBrickInfo.NAME, null);
-                    }
+                textWrapper.setOnClickListener(v -> {
+                    QmsContactsBrickInfo brickInfo = new QmsContactsBrickInfo();
+                    MainActivity.addTab(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
+                    //ListFragmentActivity.showListFragment(getContext(), QmsContactsBrickInfo.NAME, null);
                 });
                 userNick.setText(client.getUser());
                 userRep.setVisibility(View.VISIBLE);
-                userRep.setText(getContext().getString(R.string.reputation) + ": " + reputation);
+                userRep.setText(String.format("%s: %s", App.getContext().getString(R.string.reputation), reputation));
 
                 refreshQms();
                 if (prefs.getBoolean("isUserBackground", false)) {
                     File imgFile = new File(prefs.getString("userInfoBg", ""));
                     if (imgFile.exists()) {
-                        ImageLoader.getInstance().displayImage("file:///"+imgFile.getPath(), userBackground);
+                        ImageLoader.getInstance().displayImage("file:///" + imgFile.getPath(), userBackground);
                     }
                 } else {
                     if (!avatarUrl.equals(prefs.getString("userAvatarUrl", "")) | prefs.getString("userInfoBg", "").equals("")) {
                         ImageLoader.getInstance().loadImage(avatarUrl, new SimpleImageLoadingListener() {
                             @Override
                             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                                userBackground.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (loadedImage == null) return;
-                                        if (loadedImage.getWidth() == 0 || loadedImage.getHeight() == 0)
-                                            return;
-                                        blur(loadedImage, userBackground, avatarUrl);
-                                        prefs.edit().putString("userAvatarUrl", avatarUrl).apply();
-                                    }
+                                userBackground.post(() -> {
+                                    if (loadedImage == null) return;
+                                    if (loadedImage.getWidth() == 0 || loadedImage.getHeight() == 0)
+                                        return;
+                                    blur(loadedImage, userBackground, avatarUrl);
+                                    prefs.edit().putString("userAvatarUrl", avatarUrl).apply();
                                 });
                             }
                         });
                     } else {
                         File imgFile = new File(prefs.getString("userInfoBg", ""));
                         if (imgFile.exists()) {
-                            ImageLoader.getInstance().displayImage("file:///"+imgFile.getPath(), userBackground);
+                            ImageLoader.getInstance().displayImage("file:///" + imgFile.getPath(), userBackground);
                         }
                     }
                 }
@@ -273,8 +232,9 @@ public class ShortUserInfo {
         }
     }
 
-    public boolean isOnline() {
+    private boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) mActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting()
                 && cm.getActiveNetworkInfo().isAvailable()
@@ -311,9 +271,9 @@ public class ShortUserInfo {
             image.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fos.close();
         } catch (FileNotFoundException e) {
-            Log.d("kek", "File not found: " + e.getMessage());
+            Log.d(TAG, "File not found: " + e.getMessage());
         } catch (IOException e) {
-            Log.d("kek", "Error accessing file: " + e.getMessage());
+            Log.d(TAG, "Error accessing file: " + e.getMessage());
         }
     }
 
@@ -334,7 +294,7 @@ public class ShortUserInfo {
         // Create a media file name
         Long tsLong = System.currentTimeMillis() / 1000;
         String name = tsLong.toString();
-        Matcher m = Pattern.compile("http:\\/\\/s.4pda.to\\/(.*?)\\.").matcher(url);
+        Matcher m = Pattern.compile("http://s.4pda.to/(.*?)\\.").matcher(url);
         if (m.find()) {
             name = m.group(1);
         }
@@ -344,13 +304,12 @@ public class ShortUserInfo {
     }
 
     private boolean isPdaLink(String url) {
-        if (Pattern.compile("4pda.ru/([^/$?&]+)", Pattern.CASE_INSENSITIVE).matcher(url).find())
-            return true;
-        return false;
+        return Pattern.compile("4pda.ru/([^/$?&]+)", Pattern.CASE_INSENSITIVE).matcher(url).find();
     }
 
-    public static String readFromClipboard(Context context) {
+    private static String readFromClipboard(Context context) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        assert clipboard != null;
         if (clipboard.hasPrimaryClip()) {
             android.content.ClipDescription description = clipboard.getPrimaryClipDescription();
             android.content.ClipData data = clipboard.getPrimaryClip();
