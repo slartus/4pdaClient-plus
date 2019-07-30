@@ -28,8 +28,6 @@ import io.paperdb.Paper;
  */
 public abstract class BaseLoaderListFragment extends BaseBrickFragment
         implements LoaderManager.LoaderCallbacks<ListData>, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
-
-    private static final String DATA_KEY = "BrickFragmentListBase.DATA_KEY";
     private static final String FIRST_VISIBLE_POSITION_KEY = "BrickFragmentListBase.FIRST_VISIBLE_POSITION_KEY";
     private static final String FIRST_VISIBLE_VIEW_KEY = "BrickFragmentListBase.FIRST_VISIBLE_VIEW_KEY";
     private ListView mListView;
@@ -56,9 +54,7 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(DATA_KEY)) {
-                mData = (ListData) savedInstanceState.getSerializable(DATA_KEY);
-            }
+            loadCache();
         }
         initAdapter();
     }
@@ -253,7 +249,7 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
             outState.putInt(FIRST_VISIBLE_VIEW_KEY, (v == null) ? 0 : v.getTop());
         }
 
-        outState.putSerializable(DATA_KEY, mData);
+        saveCache();
     }
 
     protected void notifyDataSetChanged() {

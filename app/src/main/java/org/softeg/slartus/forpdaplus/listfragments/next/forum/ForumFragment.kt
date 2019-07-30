@@ -12,6 +12,7 @@ import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
+import io.paperdb.Paper
 import org.softeg.slartus.forpdaapi.Forum
 import org.softeg.slartus.forpdaapi.ForumsApi
 import org.softeg.slartus.forpdaapi.search.SearchSettings
@@ -69,9 +70,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
             mTitle = savedInstanceState.getString(TITLE_KEY, mTitle)
             mNeedLogin = savedInstanceState.getBoolean(NEED_LOGIN_KEY, mNeedLogin)
 
-            if (savedInstanceState.containsKey(DATA_KEY)) {
-                data = savedInstanceState.getSerializable(DATA_KEY) as ForumBranch
-            }
+            loadCache()
 
         }
         if (mForumId == null) {
@@ -204,7 +203,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
             reloadData()
     }
 
-    override fun onCreateView(inflater: android.view.LayoutInflater, container: android.view.ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         view = inflater.inflate(R.layout.forum_fragment, container, false)
         assert(view != null)
@@ -313,7 +312,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
         outState.putString(TITLE_KEY, mTitle)
         outState.putBoolean(NEED_LOGIN_KEY, mNeedLogin)
         outState.putString(FORUM_ID_KEY, mForumId)
-        outState.putSerializable(DATA_KEY, data)
+        saveCache()
         try {
             if (listView != null) {
                 outState.putInt(SCROLL_POSITION_KEY,
@@ -439,8 +438,15 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
             }
     }
 
+    private fun saveCache() {
+        Paper.book().write(listName, data)
+    }
+
+    private fun loadCache() {
+        data= Paper.book().read(listName,data)
+    }
+
     companion object {
-        private const val DATA_KEY = "BrickFragmentListBase.DATA_KEY"
         private const val SCROLL_POSITION_KEY = "SCROLL_POSITION_KEY"
         const val FORUM_ID_KEY = "FORUM_ID_KEY"
         const val FORUM_TITLE_KEY = "FORUM_TITLE_KEY"

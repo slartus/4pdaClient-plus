@@ -18,13 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.Profile;
 import org.softeg.slartus.forpdaapi.ProfileApi;
 import org.softeg.slartus.forpdacommon.FileUtils;
@@ -98,6 +98,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         return "profile";
     }
 
+    @SuppressWarnings("unused")
     private static final String TAG = "ProfileWebViewFragment";
     private AdvWebView m_WebView;
 
@@ -124,10 +125,6 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
 
     private String getUserNick() {
         return args.getString(USER_NAME_KEY, "");
-    }
-
-    private Boolean isDialog() {
-        return args.getBoolean("DIALOG", false);
     }
 
     @Override
@@ -163,7 +160,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.profile_web_view_fragment, container, false);
         initSwipeRefreshLayout();
@@ -181,24 +178,22 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
 
     private final static int FILECHOOSER_RESULTCODE = 1;
 
+    @SuppressWarnings("unused")
     @JavascriptInterface
     public void showChooseCssDialog() {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    intent.setType("file/*");
+        getMainActivity().runOnUiThread(() -> {
+            try {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setType("file/*");
 
-                    // intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
-                    startActivityForResult(intent, FILECHOOSER_RESULTCODE);
+                // intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
+                startActivityForResult(intent, FILECHOOSER_RESULTCODE);
 
-                } catch (ActivityNotFoundException ex) {
-                    Toast.makeText(getMainActivity(), R.string.no_app_for_get_file, Toast.LENGTH_LONG).show();
-                } catch (Exception ex) {
-                    AppLog.e(getMainActivity(), ex);
-                }
+            } catch (ActivityNotFoundException ex) {
+                Toast.makeText(getMainActivity(), R.string.no_app_for_get_file, Toast.LENGTH_LONG).show();
+            } catch (Exception ex) {
+                AppLog.e(getMainActivity(), ex);
             }
         });
     }
@@ -215,11 +210,8 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
                 m_WebView.loadUrl("javascript:window['HtmlInParseLessContent']('" + cssData + "');");
             else
                 m_WebView.evaluateJavascript("window['HtmlInParseLessContent']('" + cssData + "')",
-                        new ValueCallback<String>() {
-                            @Override
-                            public void onReceiveValue(String s) {
+                        s -> {
 
-                            }
                         }
                 );
         }
@@ -296,7 +288,8 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
             return true;
         }
 
-        public boolean tryShowQms_2_0(Activity context, String url) {
+        @SuppressWarnings("unused")
+        boolean tryShowQms_2_0(Activity context, String url) {
             Matcher m = PatternExtensions.compile("4pda.ru/forum/index.php\\?act=qms&mid=(\\d+)&t=(\\d+)").matcher(url);
             if (m.find()) {
                 //QmsChatActivity.openChat(context, m.group(1), getUserNick(), m.group(2), null);
@@ -319,11 +312,11 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     private static class ItemsLoader extends AsyncTaskLoader<Profile> {
-        public static final int ID = App.getInstance().getUniqueIntValue();
+        static final int ID = App.getInstance().getUniqueIntValue();
         Profile mApps;
         private Bundle args;
 
-        public ItemsLoader(Context context, Bundle args) {
+        ItemsLoader(Context context, Bundle args) {
             super(context);
 
             this.args = args;
@@ -423,25 +416,20 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
             getMainActivity().runOnUiThread(runnable);
         }
     }
+    @SuppressWarnings("unused")
     @JavascriptInterface
     public void setPrimaryDevice(final String id) {
-        run(new Runnable() {
-            @Override
-            public void run() {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Map<String, String> additionalHeaders = new HashMap<String, String>();
-                        additionalHeaders.put("auth_key", Client.getInstance().getAuthKey());
-                        try {
-                            Client.getInstance().performPost("http://4pda.ru/forum/index.php?act=profile-xhr&action=dev-primary&md_id=" + id, additionalHeaders);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-                Toast.makeText(getMainActivity(), "Основное устройство изменено", Toast.LENGTH_SHORT).show();
-            }
+        run(() -> {
+            new Thread(() -> {
+                Map<String, String> additionalHeaders = new HashMap<>();
+                additionalHeaders.put("auth_key", Client.getInstance().getAuthKey());
+                try {
+                    Client.getInstance().performPost("http://4pda.ru/forum/index.php?act=profile-xhr&action=dev-primary&md_id=" + id, additionalHeaders);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+            Toast.makeText(getMainActivity(), "Основное устройство изменено", Toast.LENGTH_SHORT).show();
         });
 
     }
@@ -452,72 +440,59 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
 
         if (Client.getInstance().getLogined() && getUserId() != null && !getUserId().equals(Client.getInstance().UserId)) {
             menu.add(getString(R.string.MessagesQms)).setIcon(R.drawable.pencil)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem menuItem) {
-                            QmsContactThemes.showThemes(getUserId(), getUserNick());
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(menuItem -> {
+                        QmsContactThemes.showThemes(getUserId(), getUserNick());
+                        return true;
                     })
                     .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
 
         menu.add(getString(R.string.Reputation))
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        CharSequence[] items = {getString(R.string.do_vote_good), getString(R.string.do_vote_bad), getString(R.string.look), getString(R.string.change_reputation)};
-                        new MaterialDialog.Builder(getMainActivity())
-                                .title(R.string.reputation)
-                                .items(items)
-                                .itemsCallback(new MaterialDialog.ListCallback() {
-                                    @Override
-                                    public void onSelection(MaterialDialog dialog, View view, int i, CharSequence items) {
-                                        switch (i) {
-                                            case 0:
-                                                UserReputationFragment.plusRep(getMainActivity(), new Handler(), getUserId(), getUserNick());
-                                                break;
-                                            case 1:
-                                                UserReputationFragment.minusRep(getMainActivity(), new Handler(), getUserId(), getUserNick());
-                                                break;
-                                            case 2:
-                                                UserReputationFragment.showActivity(getMainActivity(), getUserId(), false);
-                                                break;
-                                            case 3:
-                                                UserReputationFragment.showActivity(getMainActivity(), getUserId(), true);
-                                                break;
-                                        }
-                                    }
-                                })
-                                .show();
+                .setOnMenuItemClickListener(menuItem -> {
+                    CharSequence[] items = {getString(R.string.do_vote_good), getString(R.string.do_vote_bad), getString(R.string.look), getString(R.string.change_reputation)};
+                    new MaterialDialog.Builder(getMainActivity())
+                            .title(R.string.reputation)
+                            .items(items)
+                            .itemsCallback((dialog, view, i, items1) -> {
+                                switch (i) {
+                                    case 0:
+                                        UserReputationFragment.plusRep(getMainActivity(), new Handler(), getUserId(), getUserNick());
+                                        break;
+                                    case 1:
+                                        UserReputationFragment.minusRep(getMainActivity(), new Handler(), getUserId(), getUserNick());
+                                        break;
+                                    case 2:
+                                        UserReputationFragment.showActivity(getUserId(), false);
+                                        break;
+                                    case 3:
+                                        UserReputationFragment.showActivity(getUserId(), true);
+                                        break;
+                                }
+                            })
+                            .show();
 
-                        return true;
-                    }
+                    return true;
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
         menu.add(R.string.topics)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(getUserNick()));
-                        return true;
-                    }
+                .setOnMenuItemClickListener(menuItem -> {
+                    MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(getUserNick()));
+                    return true;
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
         menu.add(R.string.posts)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(getUserNick()));
-                        return true;
-                    }
+                .setOnMenuItemClickListener(menuItem -> {
+                    MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(getUserNick()));
+                    return true;
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
         menu.add(R.string.link)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link_to_profile), "http://4pda.ru/forum/index.php?showuser=" + getUserId());
-                        return true;
-                    }
+                .setOnMenuItemClickListener(menuItem -> {
+                    ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link_to_profile), "http://4pda.ru/forum/index.php?showuser=" + getUserId());
+                    return true;
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }

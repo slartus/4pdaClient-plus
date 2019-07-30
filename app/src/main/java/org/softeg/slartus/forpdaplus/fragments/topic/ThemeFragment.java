@@ -1192,7 +1192,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public void showRep(final String userId) {
-        UserReputationFragment.showActivity(getMainActivity(), userId, false);
+        UserReputationFragment.showActivity(userId, false);
     }
 
     public void insertTextToPost(final String text) {

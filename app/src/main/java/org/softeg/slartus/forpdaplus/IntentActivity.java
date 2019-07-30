@@ -225,7 +225,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         // история репутации
         if ("history".equals(uri.getQueryParameter("view"))
                 && !TextUtils.isEmpty(uri.getQueryParameter("mid"))) {
-            UserReputationFragment.showActivity(context, uri.getQueryParameter("mid"),
+            UserReputationFragment.showActivity( uri.getQueryParameter("mid"),
                     "from".equals(uri.getQueryParameter("mode")));
             return true;
         }

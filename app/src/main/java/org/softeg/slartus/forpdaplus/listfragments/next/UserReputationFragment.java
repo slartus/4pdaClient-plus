@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
@@ -47,7 +48,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
     public static final String USER_FROM_KEY = "USER_FROM_KEY";
 
 
-    public static void showActivity(Context context, CharSequence userId, Boolean from) {
+    public static void showActivity(CharSequence userId, Boolean from) {
         Bundle args = new Bundle();
         args.putString(USER_ID_KEY, userId.toString());
         if (from)
@@ -125,7 +126,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
     }
 
     @Override
-    public View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container,
+    public View onCreateView(@NotNull android.view.LayoutInflater inflater, android.view.ViewGroup container,
                              Bundle savedInstanceState) {
         View v = super.onCreateView(inflater, container, savedInstanceState);
         addLoadMoreFooter(inflater.getContext());
@@ -140,12 +141,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
 
         final List<MenuListDialog> list = new ArrayList<>();
         if (item.getSourceUrl()!=null&&!item.getSourceUrl().contains("forum/index.php?showuser=")) {
-            list.add(new MenuListDialog(getString(R.string.jump_to_page), new Runnable() {
-                @Override
-                public void run() {
-                    IntentActivity.tryShowUrl(getActivity(), new Handler(), item.getSourceUrl(), true, false);
-                }
-            }));
+            list.add(new MenuListDialog(getString(R.string.jump_to_page), () -> IntentActivity.tryShowUrl(getActivity(), new Handler(), item.getSourceUrl(), true, false)));
         }
         ForumUser.onCreateContextMenu(getActivity(), list, item.getUserId(), item.getUser());
         ExtUrl.showContextDialog(getContext(), item.getUser(), list);
@@ -181,30 +177,24 @@ public class UserReputationFragment extends BrickFragmentListBase {
 
 
                 item = menu.add(R.string.increase_reputation).setIcon(R.drawable.thumb_up);
-                item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
+                item.setOnMenuItemClickListener(menuItem -> {
 
-                        plusRep();
-                        return true;
-                    }
+                    plusRep();
+                    return true;
                 });
                 item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
                 item = menu.add(R.string.decrease_reputation).setIcon(R.drawable.thumb_down);
-                item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        minusRep();
-                        return true;
-                    }
+                item.setOnMenuItemClickListener(menuItem -> {
+                    minusRep();
+                    return true;
                 });
                 item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
             item = menu.add(R.string.Profile);
-            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    ProfileFragment.showProfile(getUserId(), getUserNick());
-                    return true;
-                }
+            item.setOnMenuItemClickListener(menuItem -> {
+                ProfileFragment.showProfile(getUserId(), getUserNick());
+                return true;
             });
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         } finally {
@@ -232,13 +222,13 @@ public class UserReputationFragment extends BrickFragmentListBase {
     }
 
     private static class ItemsLoader extends AsyncTaskLoader<ListData> {
-        public static final int ID = App.getInstance().getUniqueIntValue();
+        static final int ID = App.getInstance().getUniqueIntValue();
         ListData mApps;
         private Bundle args;
         private boolean needLoadRepImage;
 
 
-        public ItemsLoader(Context context, Bundle args, boolean needLoadRepImage) {
+        ItemsLoader(Context context, Bundle args, boolean needLoadRepImage) {
             super(context);
 
             this.args = args;
@@ -331,7 +321,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
         protected ArrayList<? extends IListItem> mData;
 
 
-        public ListAdapter(Context context, ArrayList<? extends IListItem> data) {
+        ListAdapter(Context context, ArrayList<? extends IListItem> data) {
             mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             mData = data;
 
@@ -363,11 +353,11 @@ public class UserReputationFragment extends BrickFragmentListBase {
             if (view == null) {
                 view = mInflater.inflate(R.layout.list_item_reputation, parent, false);
                 holder = new ViewHolder();
-                holder.Flag = (TextView) view.findViewById(R.id.imgFlag);
-                holder.TopLeft = (TextView) view.findViewById(R.id.txtTopLeft);
-                holder.TopRight = (TextView) view.findViewById(R.id.txtTopRight);
-                holder.Main = (TextView) view.findViewById(R.id.txtMain);
-                holder.SubMain = (TextView) view.findViewById(R.id.txtSubMain);
+                holder.Flag = view.findViewById(R.id.imgFlag);
+                holder.TopLeft = view.findViewById(R.id.txtTopLeft);
+                holder.TopRight = view.findViewById(R.id.txtTopRight);
+                holder.Main = view.findViewById(R.id.txtMain);
+                holder.SubMain = view.findViewById(R.id.txtSubMain);
                 holder.progress = view.findViewById(R.id.progressBar);
                 view.setTag(holder);
 

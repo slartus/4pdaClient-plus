@@ -895,7 +895,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
             mUserMenuItem.add(R.string.Reputation)
                     .setOnMenuItemClickListener(item -> {
-                        UserReputationFragment.showActivity(MainActivity.this, Client.getInstance().UserId, false);
+                        UserReputationFragment.showActivity(Client.getInstance().UserId, false);
                         return true;
                     });
 

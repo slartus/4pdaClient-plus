@@ -12,16 +12,14 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.classes.ListData;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import io.paperdb.Paper;
 
 
 /*
@@ -29,7 +27,7 @@ import java.io.ObjectOutputStream;
  */
 public abstract class BrickFragmentListBase extends BrickFragmentBase
         implements LoaderManager.LoaderCallbacks<ListData>, AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
-    private static final String DATA_KEY = "BrickFragmentListBase.DATA_KEY";
+
     private static final String FIRST_VISIBLE_POSITION_KEY = "BrickFragmentListBase.FIRST_VISIBLE_POSITION_KEY";
     private static final String FIRST_VISIBLE_VIEW_KEY = "BrickFragmentListBase.FIRST_VISIBLE_VIEW_KEY";
     private ListView mListView;
@@ -46,11 +44,7 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(DATA_KEY)) {
-                mData = (ListData) savedInstanceState.getSerializable(DATA_KEY);
-            }
-        }
+        loadCache();
         initAdapter();
     }
 
@@ -72,7 +66,7 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
         return mAdapter;
     }
 
-    protected void onBrickFragmentListBaseActivityCreated(Bundle savedInstanceState) {
+    protected void onBrickFragmentListBaseActivityCreated() {
         if (mData.getItems().size() == 0) {
             loadCache();
             loadData(1, true);
@@ -86,14 +80,13 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
 
         setListViewAdapter();
 
-        onBrickFragmentListBaseActivityCreated(savedInstanceState);
+        onBrickFragmentListBaseActivityCreated();
     }
-
 
     protected abstract int getViewResourceId();
 
     @Override
-    public View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container,
+    public View onCreateView(@NotNull android.view.LayoutInflater inflater, android.view.ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(getViewResourceId(), container, false);
         assert view != null;
@@ -112,25 +105,17 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
 
     protected void addLoadMoreFooter(Context context) {
         mListViewLoadMoreFooter = new ListViewLoadMoreFooter(context, getListView());
-        mListViewLoadMoreFooter.setOnLoadMoreClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListViewLoadMoreFooter.setState(ListViewLoadMoreFooter.STATE_LOADING);
-                loadData(getData().getCurrentPage() + 1, false);
-            }
+        mListViewLoadMoreFooter.setOnLoadMoreClickListener(view -> {
+            mListViewLoadMoreFooter.setState(ListViewLoadMoreFooter.STATE_LOADING);
+            loadData(getData().getCurrentPage() + 1, false);
         });
         refreshLoadMoreFooter();
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mSwipeRefreshLayout = App.createSwipeRefreshLayout(getActivity(), view, new Runnable() {
-            @Override
-            public void run() {
-                reloadData();
-            }
-        });
+        mSwipeRefreshLayout = App.createSwipeRefreshLayout(getActivity(), view, this::reloadData);
     }
 
     @Override
@@ -202,12 +187,7 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
 
         setLoading(false);
         if (data != null)
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    saveCache();
-                }
-            }).start();
+            new Thread(this::saveCache).start();
     }
 
     private void refreshLoadMoreFooter() {
@@ -234,20 +214,15 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
             if (getActivity() == null) return;
 
             //mSwipeRefreshLayout.setRefreshing(loading);
-            mSwipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    mSwipeRefreshLayout.setRefreshing(loading);
-                }
-            });
+            mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(loading));
             if (loading) {
                 setEmptyText(App.getContext().getString(R.string.loading));
             } else {
                 setEmptyText(App.getContext().getString(R.string.no_data));
             }
-        } catch (Throwable ignore) {
+        } catch (Throwable ex) {
 
-            android.util.Log.e("TAG", ignore.toString());
+            android.util.Log.e("TAG", ex.toString());
         }
     }
 
@@ -261,7 +236,8 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
                 outState.putInt(FIRST_VISIBLE_VIEW_KEY, (v == null) ? 0 : v.getTop());
             }
 
-            outState.putSerializable(DATA_KEY, mData);
+            saveCache();
+
         } catch (Throwable ex) {
             AppLog.e(ex);
         }
@@ -269,32 +245,15 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
     }
 
     private void saveCache() {
-
-        FileOutputStream fos;
-        try {
-            fos = getActivity().openFileOutput(getListName(), Context.MODE_PRIVATE);
-            ObjectOutputStream os = new ObjectOutputStream(fos);
-            os.writeObject(mData);
-            os.close();
-        } catch (Throwable e) {
-
-            e.printStackTrace();
-        }
+        Paper.book().write(getListName(), mData);
     }
 
     protected void loadCache() {
-        try {
-            FileInputStream fis = getActivity().openFileInput(getListName());
-            ObjectInputStream is = new ObjectInputStream(fis);
-            ListData cache = (ListData) is.readObject();
-            is.close();
-            mData.getItems().addAll(cache.getItems());
-            mData.setPagesCount(cache.getPagesCount());
-            mData.setCurrentPage(cache.getCurrentPage());
-            notifyDataSetChanged();
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        mData.getItems().clear();
+        ListData data = Paper.book().read(getListName(), new ListData());
+        mData.setCurrentPage(data.getCurrentPage());
+        mData.setPagesCount(data.getPagesCount());
+        mData.getItems().addAll(data.getItems());
     }
 
     protected void notifyDataSetChanged() {
