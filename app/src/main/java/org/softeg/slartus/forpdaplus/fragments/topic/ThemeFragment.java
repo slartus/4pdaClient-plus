@@ -892,20 +892,18 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         CharSequence[] titles = new CharSequence[]{getS(R.string.blank_quote), getS(R.string.quote_from_buffer)};
         if (TextUtils.isEmpty(clipboardText))
             titles = new CharSequence[]{getS(R.string.quote_editor), getS(R.string.blank_quote)};
-        final CharSequence finalClipboardText = clipboardText;
+        final CharSequence finalClipboardText = clipboardText != null ? clipboardText : "";
         new MaterialDialog.Builder(getContext())
                 .title(R.string.quote)
                 .cancelable(true)
                 .items(titles)
                 .itemsCallback((dialog, view1, i, titles1) -> {
-                    switch (i) {
-                        case 0:
-                            getMainActivity().runOnUiThread(() -> new Handler().post(() -> insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n\n[/quote]")));
-                            break;
-                        case 1:
-                            getMainActivity().runOnUiThread(() -> new Handler().post(() -> insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n" + finalClipboardText + "\n[/quote]")));
-                            break;
+                    CharSequence quoteText = "";
+                    if (i == 1) {
+                        quoteText = finalClipboardText;
                     }
+                    CharSequence finalQuoteText = quoteText;
+                    getMainActivity().runOnUiThread(() -> new Handler().post(() -> insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n" + finalQuoteText + "\n[/quote]")));
                 })
                 .show();
     }
@@ -1273,8 +1271,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            if (newProgress >= 10 && m_ScrollElement != null && m_ScrollY == 0);
-                //tryScrollToElement();
+            if (newProgress >= 10 && m_ScrollElement != null && m_ScrollY == 0) ;
+            //tryScrollToElement();
         }
     }
 
