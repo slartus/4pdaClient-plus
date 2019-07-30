@@ -42,6 +42,7 @@ public class Preferences {
     public static Boolean isHideActionBar() {
         return App.getInstance().getPreferences().getBoolean("actionbar.hide", true);
     }
+
     public static void setHideActionBar(Boolean hide) {
         App.getInstance().getPreferences().edit().putBoolean("actionbar.hide", hide).apply();
     }
@@ -49,6 +50,7 @@ public class Preferences {
     public static Boolean isHideFab() {
         return App.getInstance().getPreferences().getBoolean("fab.hide", true);
     }
+
     public static void setHideFab(Boolean hide) {
         App.getInstance().getPreferences().edit().putBoolean("fab.hide", hide).apply();
     }
@@ -56,6 +58,7 @@ public class Preferences {
     public static Boolean isBrowserView() {
         return App.getInstance().getPreferences().getBoolean("theme.BrowserStyle", true);
     }
+
     public static void setBrowserView(Boolean view) {
         App.getInstance().getPreferences().edit().putBoolean("theme.BrowserStyle", view).apply();
     }
@@ -119,6 +122,7 @@ public class Preferences {
         public static boolean isRefresh() {
             return App.getInstance().getPreferences().getBoolean("lists.refresh", true);
         }
+
         public static boolean isRefreshOnTab() {
             return App.getInstance().getPreferences().getBoolean("lists.refresh_on_tab", true);
         }
@@ -247,7 +251,7 @@ public class Preferences {
 
             public static void addEmoticToFavorites(String name) {
                 name = name.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("]", "&#93;").replace("[", "&#91;");
-                
+
                 Set<String> favoritesEmotics = getEmoticFavorites();
                 HashSet<String> newlist = new HashSet<>();
                 newlist.add(name);
@@ -265,7 +269,7 @@ public class Preferences {
             }
 
             public static Set<String> getEmoticFavorites() {
-                
+
                 try {
                     return App.getInstance().getPreferences().getStringSet("topic.post.emotics_favorites", new HashSet<String>());
                 } catch (Throwable ignored) {
@@ -289,7 +293,7 @@ public class Preferences {
             File dir = App.getInstance().getFilesDir();
             if (dir == null)
                 dir = App.getInstance().getExternalFilesDir(null);
-            
+
             String res = App.getInstance().getPreferences().getString("path.system_path", dir.getPath());
             if (!res.endsWith(File.separator))
                 res = res.concat(File.separator);
@@ -381,7 +385,7 @@ public class Preferences {
             }
 
             public static int getNewsListViewId() {
-                
+
                 switch (App.getInstance().getPreferences().getString("news.list.view", "full")) {
                     case "medium":
                         return R.layout.item_news_medium;
@@ -416,22 +420,12 @@ public class Preferences {
     }
 
     public static class Notice {
-        public static void setNotice(String value) {
-            App.getInstance().getPreferences().edit().putString("notice.text", value).apply();
+        public static void setNoticed(String id) {
+            App.getInstance().getPreferences().edit().putBoolean("notice." + id, true).apply();
         }
 
-        public static String getNotice() {
-            return App.getInstance().getPreferences().getString("notice.text", null);
-        }
-    }
-
-    public static class Warning {
-        public static void setWarning(String value) {
-            App.getInstance().getPreferences().edit().putString("warning.text", value).apply();
-        }
-
-        public static String getWarning() {
-            return App.getInstance().getPreferences().getString("warning.text", null);
+        public static Boolean isNoticed(String id) {
+            return App.getInstance().getPreferences().getBoolean("notice." + id, false);
         }
     }
 
