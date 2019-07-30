@@ -776,9 +776,21 @@ public class Client implements IHttpClient {
         TopicBodyBuilder topicBodyBuilder = new TopicBodyBuilder(context, logined, topic, urlParams,
                 isWebviewAllowJavascriptInterface);
 
+        Document doc = Jsoup.parse(topicBody);
+
+        //>>ОПРОС
+        Element pollElement = doc.selectFirst("form[action*=addpoll=1]");
+        if (pollElement != null) {
+            StringBuilder pollBuilder = new StringBuilder();
+            pollBuilder.append("<form action=\"modules.php\" method=\"get\">");
+            Element el = pollElement.selectFirst("th");
+            if (el != null)
+                pollBuilder.append("<div class=\"poll_title\"><span>").append(el.text()).append("</span></div>");
+            boolean voted = false;
+        }
         //Boolean browserStyle = prefs.getBoolean("theme.BrowserStylePreRemove", false);
         topicBodyBuilder.beginTopic();
-        //>>ОПРОС
+
         // TODO!: переделать на jsoup
         Matcher pollMatcher = pollFormPattern.matcher(mainMatcher.group(1));
         if (pollMatcher.find()) {
@@ -850,7 +862,7 @@ public class Client implements IHttpClient {
         //<<опрос
         topicBodyBuilder.openPostsList();
 
-        Document doc = Jsoup.parse(topicBody);
+
         org.softeg.slartus.forpdaplus.classes.Post post;
         Boolean spoil = spoilFirstPost;
 

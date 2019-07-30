@@ -89,7 +89,7 @@ object PostApi {
     @Throws(IOException::class)
     fun applyEdit(httpClient: IHttpClient, forumId: String, themeId: String, authKey: String, postId: String,
                   enablesig: Boolean,
-                  enableEmo: Boolean?, postText: String, addedFileList: String, post_edit_reason: String): String {
+                  enableEmo: Boolean?, postText: String, addedFileList: String?, post_edit_reason: String): String {
 
         val additionalHeaders = HashMap<String, String>()
         additionalHeaders["act"] = "post"
@@ -104,7 +104,7 @@ object PostApi {
         additionalHeaders["view"] = "findpost"
         //if(!TextUtils.isEmpty(post_edit_reason))
         additionalHeaders["post_edit_reason"] = post_edit_reason
-        additionalHeaders["file-list"] = addedFileList
+        additionalHeaders["file-list"] = addedFileList ?: ""
 
         additionalHeaders["Post"] = postText
         if (enablesig)
@@ -124,7 +124,7 @@ object PostApi {
      */
     @Throws(IOException::class)
     fun reply(httpClient: IHttpClient, forumId: String, topicId: String, authKey: String, attachPostKey: String?, post: String,
-              enablesig: Boolean?, enableemo: Boolean?, addedFileList: String, quick: Boolean): String {
+              enablesig: Boolean?, enableemo: Boolean?, addedFileList: String?, quick: Boolean): String {
 
         val additionalHeaders = HashMap<String, String>()
         if (!quick) {
@@ -136,7 +136,7 @@ object PostApi {
             additionalHeaders["editor_ids[]"] = "ed-0"
             additionalHeaders["iconid"] = "0"
             additionalHeaders["_upload_single_file"] = "1"
-            additionalHeaders["file-list"] = addedFileList
+            additionalHeaders["file-list"] = addedFileList ?: ""
 
         } else {
             additionalHeaders["fast_reply_used"] = "1"
