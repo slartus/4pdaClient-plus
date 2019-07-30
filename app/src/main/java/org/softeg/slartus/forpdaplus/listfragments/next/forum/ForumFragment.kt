@@ -450,7 +450,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
         const val TITLE_KEY = "TITLE_KEY"
         const val NEED_LOGIN_KEY = "NEED_LOGIN_KEY"
 
-        fun showActivity(forumId: String, topicId: String) {
+        fun showActivity(forumId: String?, topicId: String?) {
             val args = Bundle()
             if (!TextUtils.isEmpty(forumId))
                 args.putString(FORUM_ID_KEY, forumId)
