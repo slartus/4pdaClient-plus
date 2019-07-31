@@ -294,7 +294,7 @@ public class App extends android.app.Application {
     }
 
     public int getThemeType() {
-        int themeType = 0;
+        int themeType = THEME_TYPE_LIGHT;
         String themeStr = getCurrentTheme();
         if (themeStr.length() < 3) {
             int theme = Integer.parseInt(themeStr);
@@ -305,9 +305,7 @@ public class App extends android.app.Application {
             else
                 themeType = THEME_TYPE_BLACK;
         } else {
-            if (themeStr.contains("/light/"))
-                themeType = THEME_TYPE_LIGHT;
-            else if (themeStr.contains("/dark/"))
+            if (themeStr.contains("/dark/"))
                 themeType = THEME_TYPE_DARK;
             else if (themeStr.contains("/black/"))
                 themeType = THEME_TYPE_BLACK;
@@ -614,7 +612,7 @@ public class App extends android.app.Application {
             .showImageForEmptyUri(R.drawable.no_image)
             .cacheInMemory(true)
             .resetViewBeforeLoading(true)
-            .cacheOnDisc(true)
+            .cacheOnDisk(true)
             .bitmapConfig(Bitmap.Config.RGB_565)
             .handler(new Handler())
             .displayer(new FadeInBitmapDisplayer(500, true, true, false));
@@ -648,7 +646,7 @@ public class App extends android.app.Application {
                 .threadPriority(Thread.MIN_PRIORITY)
                 .denyCacheImageMultipleSizesInMemory()
                 .memoryCache(new UsingFreqLimitedMemoryCache(5 * 1024 * 1024)) // 2 Mb
-                .discCacheFileNameGenerator(new HashCodeFileNameGenerator())
+                .diskCacheFileNameGenerator(new HashCodeFileNameGenerator())
                 .defaultDisplayImageOptions(options.build())
                 .writeDebugLogs()
                 .build();
@@ -691,13 +689,8 @@ public class App extends android.app.Application {
 
     public static SwipeRefreshLayout createSwipeRefreshLayout(Activity activity, View view,
                                                               final Runnable refreshAction) {
-        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.ptr_layout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshAction.run();
-            }
-        });
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.ptr_layout);
+        swipeRefreshLayout.setOnRefreshListener(refreshAction::run);
         swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
         swipeRefreshLayout.setProgressBackgroundColorSchemeResource(App.getInstance().getSwipeRefreshBackground());
         return swipeRefreshLayout;
@@ -713,8 +706,7 @@ public class App extends android.app.Application {
         }
 
         public void onActivityDestroyed(Activity activity) {
-            if (m_Activities.containsKey(activity.getLocalClassName()))
-                m_Activities.remove(activity.getLocalClassName());
+            m_Activities.remove(activity.getLocalClassName());
         }
 
         public void onActivityPaused(Activity activity) {
