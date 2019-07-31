@@ -44,7 +44,8 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        loadCache();
+        if (savedInstanceState != null)
+            loadCache();
         initAdapter();
     }
 
