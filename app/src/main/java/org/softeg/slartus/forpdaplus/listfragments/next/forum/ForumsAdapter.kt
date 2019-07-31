@@ -92,7 +92,7 @@ internal constructor(private val mHeaderset: List<Forum>, private val mDataset: 
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): RecyclerView.ViewHolder? {
+                                    viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             DATA_VIEW_TYPE -> {
                 val v = LayoutInflater.from(parent.context)

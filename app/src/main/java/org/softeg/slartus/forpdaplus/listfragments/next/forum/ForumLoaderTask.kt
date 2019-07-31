@@ -9,13 +9,13 @@ import org.softeg.slartus.forpdaplus.db.ForumsTable
 /*
  * Created by slinkin on 04.02.2019.
  */
-internal class ForumLoaderTask internal constructor(context: Context, val args: Bundle) : AsyncTaskLoader<ForumFragment.ForumBranch>(context) {
+internal class ForumLoaderTask internal constructor(context: Context, val args: Bundle?) : AsyncTaskLoader<ForumFragment.ForumBranch>(context) {
     private var mApps: ForumFragment.ForumBranch? = null
 
 
     override fun loadInBackground(): ForumFragment.ForumBranch? {
         return try {
-            ForumsTable.getForums(args.getString(ForumFragment.FORUM_ID_KEY))
+            ForumsTable.getForums(args?.getString(ForumFragment.FORUM_ID_KEY))
         } catch (e: Throwable) {
             val forumPage = ForumFragment.ForumBranch()
             forumPage.error = e

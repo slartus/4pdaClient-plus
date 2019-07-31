@@ -16,6 +16,7 @@ import io.paperdb.Paper
 import org.softeg.slartus.forpdaapi.Forum
 import org.softeg.slartus.forpdaapi.ForumsApi
 import org.softeg.slartus.forpdaapi.search.SearchSettings
+import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.Client
 import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.R
@@ -239,28 +240,14 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
             loaderManager.initLoader(loaderId, args, this)
     }
 
-
-    override fun onCreateLoader(id: Int, args: Bundle): Loader<ForumBranch>? {
-        var loader: Loader<ForumBranch>? = null
-        if (id == loaderId) {
-            setLoading(true)
-            loader = createLoader(id, args)
-
-        }
-        return loader
+    override fun onCreateLoader(id: Int, args: Bundle?): Loader<ForumBranch> {
+        setLoading(true)
+        return createLoader(id, args)
     }
 
-    private fun createLoader(id: Int, args: Bundle): Loader<ForumBranch>? {
-        var loader: ForumLoaderTask? = null
-        if (id == ForumLoaderTask.ID) {
-            setLoading(true)
-            context?.let {
-                loader = ForumLoaderTask(it, args)
-            }
-
-
-        }
-        return loader
+    private fun createLoader(id: Int, args: Bundle?): Loader<ForumBranch> {
+        setLoading(true)
+        return ForumLoaderTask(context ?: App.getContext(), args)
     }
 
     override fun onLoadFinished(loader: Loader<ForumBranch>, data: ForumBranch?) {
@@ -443,7 +430,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
     }
 
     private fun loadCache() {
-        data= Paper.book().read(listName,data)
+        data = Paper.book().read(listName, data)
     }
 
     companion object {
