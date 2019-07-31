@@ -6,9 +6,9 @@ android {
     compileSdkVersion 26
     useLibrary "org.apache.http.legacy"
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion rootProject.minSdk
         //noinspection OldTargetApi
-        targetSdkVersion 23
+        targetSdkVersion rootProject.targetSdk
         versionCode 1
         versionName "1.0"
     }
@@ -34,9 +34,9 @@ android {
 dependencies {
     api project(':forpdacommon')
     api project(':sqliteannotations')
-    api 'org.jsoup:jsoup:1.11.2'
-    api "com.squareup.okhttp3:okhttp-urlconnection:3.10.0"
-    api 'com.squareup.okhttp3:okhttp:3.12.0'
+    api "org.jsoup:jsoup:$rootProject.jsoup"
+
+    api "com.squareup.okhttp3:okhttp:$rootProject.okhttp3"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {

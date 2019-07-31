@@ -6,9 +6,9 @@ android {
     compileSdkVersion 26
     useLibrary "org.apache.http.legacy"
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion rootProject.minSdk
         //noinspection OldTargetApi
-        targetSdkVersion 23
+        targetSdkVersion rootProject.targetSdk
         versionCode 1
         versionName "1.0"
     }
