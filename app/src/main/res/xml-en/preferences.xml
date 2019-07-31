@@ -503,7 +503,7 @@
             android:key="About.CheckNewVersion"
             android:title="Check for new version" />
 
-        <Preference android:title="Новая версия ForPDA"
+        <Preference android:title="Альтернативный клиент от Radiation15"
                     android:summary="Open topic"
                     android:key="About.OpenThemeForPda"/>
     </PreferenceScreen>
