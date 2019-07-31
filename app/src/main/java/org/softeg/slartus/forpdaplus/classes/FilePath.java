@@ -13,7 +13,6 @@ import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.jetbrains.annotations.Nullable;
 import org.softeg.slartus.forpdaplus.BuildConfig;
@@ -50,7 +49,7 @@ public class FilePath {
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
 
             // не тестировал
-            if (isMiui(context)) {
+            if (isMiui()) {
 //                Toast.makeText(context, ">>>MIUI<<<", Toast.LENGTH_SHORT).show();
                 return getPathForMiui(context, uri);
             }
@@ -147,13 +146,13 @@ public class FilePath {
         return null;
     }
 
-    private static boolean isMiui(Context context) {
+    private static boolean isMiui() {
         Properties properties = new Properties();
         boolean isMiui;
         try {
             properties.load(new FileInputStream(new File(Environment.getRootDirectory(), "build.prop")));
         } catch (IOException e) {
-            Toast.makeText(context, "Ooppss\n" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
             return false;
         }
         isMiui = properties.getProperty(KEY_MIUI_VERSION_CODE, null) != null
