@@ -51,5 +51,3 @@ License
 Contacts
 -------
     e-mail: slartus@gmail.com
-    web: http://www.softeg.org
-    icq: 233-174-302
