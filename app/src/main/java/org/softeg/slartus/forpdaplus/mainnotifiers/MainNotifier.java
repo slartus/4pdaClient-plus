@@ -21,7 +21,7 @@ import java.util.GregorianCalendar;
 public abstract class MainNotifier {
     private NotifiersManager notifiersManager;
     protected String name;
-    protected int period;
+    int period;
 
     protected static String getAppVersion(Context context) {
         try {

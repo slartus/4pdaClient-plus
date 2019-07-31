@@ -58,7 +58,14 @@ class ForPdaVersionNotifier(notifiersManager: NotifiersManager, period: Int) : M
 
                 val updateInfo = Gson().fromJson(responseBody, UpdateInfo::class.java)
 
-                val newerVersion = updateInfo.versions?.sortedWith(AppVersionComparator())?.lastOrNull()
+                val currentIsBeta = currentVersion.contains("beta", true)
+
+                val newerVersion = // обновление бет показываем только для бет
+                        updateInfo.versions
+                                ?.sortedWith(AppVersionComparator())
+                                ?.lastOrNull {
+                                    currentIsBeta || it.name != "beta"// обновление бет показываем только для бет
+                                }
 
                 if (newerVersion != null)
                     checkVersion(currentVersion, newerVersion, handler, context, toast)
