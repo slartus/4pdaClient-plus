@@ -594,28 +594,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
 
         private String parseBody(String body) {
-//            /*
-//             * Все равно надо переписать регулярку, работает долго.
-//             */
-//            Matcher m = PatternExtensions.compile("(<div class=\"container\"[\\s\\S]*?<span itemprop=\"headline\">([\\s\\S]*?)<\\/span>[\\s\\S]*?)<article id=[^>]*?>([\\s\\S]*?)").matcher(body);
-////body=NewsApi.parseNewsBody(body);
-//            if (m.find()) {
-//                m_Title = m.group(2);
-//                body = m.group(1)
-//                        .replaceAll("<script[\\s\\S]*?/script>", "")
-//                        .replaceAll("<article id=[^>]*?>([\\s\\S]*?)", "");
-//                return normalizeCommentUrls(body).replaceAll("<form[\\s\\S]*?/form>", "");
-//            }
-//            m = PatternExtensions
-//                    .compile("<div id=\"main\">([\\s\\S]*?)<form action=\"(http://4pda.ru)?/wp-comments-post.php\" method=\"post\" id=\"commentform\">")
-//                    .matcher(body);
-//            if (m.find()) {
-//                return normalizeCommentUrls(m.group(1)) + getNavi(body);
-//            }
-//            m = PatternExtensions.compile("<div id=\"main\">([\\s\\S]*?)<div id=\"categories\">").matcher(body);
-//            if (m.find()) {
-//                return normalizeCommentUrls(m.group(1)) + getNavi(body);
-//            }
+
             body = NewsApi.parseNewsBody(body);
 
             // удалим все стили
@@ -649,8 +628,10 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     .matcher(body)
                     .replaceAll("<a class=\"video-thumb-wrapper\" href=\"http://www.youtube.com/watch?v=$1\"><img class=\"video-thumb\" width=\"480\" height=\"320\" src=\"http://img.youtube.com/vi/$1/0.jpg\"/></a>");
             return body
-                    .replaceAll("<div id=\"comment-form-reply-\\d+\"><a href=\"#\" data-callfn=\"commentform_move\" data-comment=\"(\\d+)\">ответить</a></div></div><ul class=\"comment-list level-(\\d+)\">",
-                            "<div id=\"comment-form-reply-$1\"><a href=\"http://4pdaservice.org/$1/$2\">ответить</a></div></div><ul class=\"comment-list level-$2\">")
+                    // удаляем форму ответа
+                    .replaceAll("<form[^>]*action=\"/wp-comments-post.php\"[^>]*>[\\s\\S]*</form>",
+                            "")
+                    // заменяем обрезанные ссылки
                     .replace("href=\"/", "href=\"http://4pda.ru/")
                     .replace("href=\"#commentform\"", "href=\"http://4pdaservice.org/#commentform");
         }
