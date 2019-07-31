@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
-//apply plugin: 'me.tatarka.retrolambda'
 
 repositories {
     maven { url "https://jitpack.io" }
@@ -13,6 +12,14 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     def appVersionCode = 617
+    // именование версий:
+    // первое число не трогаем никогда. только если весь клиент переписали, но тогда это другой репозиторий
+    // второе число только при серьезных изменениях, затрагивающих интерфейс или архитектуру
+    // третье число меняется каждый релиз
+    // 4 число - ТОЛЬКО фиксы в релизе.
+    // новая ветка release - туда попадают только полный новый релиз и только его фиксы
+    // после фикса в релизе мержим в мастер.
+    // мастер - рабочая ветка для следуюшего релиза
     def appVersionName = "3.5.3"
 
 
@@ -67,15 +74,7 @@ android {
             dimension "wtf"
         }
     }
-//    applicationVariants.all { variant ->
-//        variant.outputs.each { output ->
-//            def fileNaming = "ForPDA"
-//            def outputFile = output.outputFile
-//            if (outputFile != null && outputFile.name.endsWith('.apk')) {
-//                output.outputFile = new File(getProject().getRootDir(), "${fileNaming}_${appVersionName}-${variant.buildType.name}.apk")
-//            }
-//        }
-//    }
+    
     android.applicationVariants.all { variant ->
         variant.outputs.all {
             def fileNaming = "ForPDA"
