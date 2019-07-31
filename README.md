@@ -12,14 +12,25 @@ http://4pda.ru/forum/index.php?showtopic=271502
 
 Используемые библиотеки:
 ------
-    android-pinch           http://code.google.com/p/android-pinch/
+    android-pinch   http://code.google.com/p/android-pinch/
     apache
     Android-PullToRefresh   https://github.com/chrisbanes/Android-PullToRefresh
-    ActionBar-PullToRefresh	https://github.com/chrisbanes/ActionBar-PullToRefresh
-    Android SQLiteAssetHelper	https://github.com/jgilfelt/android-sqlite-asset-helper
-    NewQuickAction3D	https://github.com/lorensiuswlt/NewQuickAction3D
-    jsoup	http://jsoup.org/
+    ActionBar-PullToRefresh https://github.com/chrisbanes/ActionBar-PullToRefresh
+    Android SQLiteAssetHelper   https://github.com/jgilfelt/android-sqlite-asset-helper
+    NewQuickAction3D    https://github.com/lorensiuswlt/NewQuickAction3D
+    jsoup   http://jsoup.org/
     Universal Image Loader for Android  https://github.com/nostra13/Android-Universal-Image-Loader
+    Paper   https://github.com/pilgr/Paper
+    Vertical-Intro  https://github.com/armcha/Vertical-Intro
+    okhttp3 https://square.github.io/okhttp/
+    PhotoView   https://github.com/chrisbanes/PhotoView
+    Nine Old Androids   https://github.com/JakeWharton/NineOldAndroids
+    Material Dialogs    https://github.com/afollestad/material-dialogs
+    CircleImageView https://github.com/hdodenhof/CircleImageView
+    https://github.com/d-tarasov/android-intents
+    Picasso https://github.com/square/picasso
+    Acra    https://github.com/ACRA/acra
+    Butter Knife    https://github.com/JakeWharton/butterknife
 License
 -------
 
