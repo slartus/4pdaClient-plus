@@ -29,7 +29,7 @@ import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
-import org.softeg.slartus.forpdaplus.fragments.topic.EditPostFragment;
+import org.softeg.slartus.forpdaplus.fragments.topic.editpost.EditPostFragment;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.SortedListAdapter;
 import org.softeg.slartus.forpdaplus.listfragments.next.forum.ForumFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.FavoritesBrickInfo;
