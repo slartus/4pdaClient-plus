@@ -104,7 +104,7 @@ class ForPdaVersionNotifier(notifiersManager: NotifiersManager, period: Int) : M
                             .neutralText(R.string.update_forget)
                             .onPositive { _, _ ->
                                 try {
-                                    //                                            IntentActivity.tryShowFile((Activity) context, Uri.parse(apk), false);
+                                    //                                            IntentActivity.tryShowFile((Activity) context, Uri.parseCount(apk), false);
                                     DownloadsService.download(context as Activity, siteVersion.apk, false)
                                 } catch (ex: Throwable) {
                                     AppLog.e(context, ex)

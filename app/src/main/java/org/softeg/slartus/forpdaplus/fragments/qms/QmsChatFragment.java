@@ -560,8 +560,6 @@ public class QmsChatFragment extends WebViewFragment {
     private void checkNewQms() {
         try {
             Client.getInstance().setQmsCount(QmsApi.getNewQmsCount(Client.getInstance()));
-            Client.getInstance().doOnMailListener();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
