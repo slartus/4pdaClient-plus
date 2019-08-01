@@ -47,6 +47,8 @@ import org.softeg.slartus.forpdaplus.db.ForumsTableOld;
 import org.softeg.slartus.forpdaplus.download.DownloadReceiver;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.topic.ForPdaWebInterface;
+import org.softeg.slartus.forpdaapi.parsers.MentionsParser;
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 
 import java.io.IOException;
 import java.net.URI;
@@ -197,8 +199,10 @@ public class Client implements IHttpClient {
             throw new NotReportException(App.getContext().getString(R.string.server_return_empty_page));
         else if (checkLoginAndMails) {
             checkLogin(httpHelper, res);
-            if (!s.contains("xhr"))
+            if (!s.contains("xhr")) {
                 checkMails(res);
+                checkMentions(res);
+            }
         }
         // m_HttpHelper.close();
         return res;
@@ -591,6 +595,10 @@ public class Client implements IHttpClient {
         m_QmsCount = count;
     }
 
+    private void checkMentions(String page) {
+        UserInfoRepository.Companion.getInstance()
+                .setMentionsCount(MentionsParser.Companion.getInstance().parseCount(page));
+    }
 
     private void checkMails(String pageBody) {
         m_QmsCount = QmsApi.getNewQmsCount(pageBody);

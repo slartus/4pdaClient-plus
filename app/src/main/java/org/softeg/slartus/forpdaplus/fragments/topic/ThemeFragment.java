@@ -1066,7 +1066,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             }
 
 
-            /*Uri uri = Uri.parse(topicUrl.toLowerCase());
+            /*Uri uri = Uri.parseCount(topicUrl.toLowerCase());
             String postId = null;
             if (!TextUtils.isEmpty(getTopic().getId()) && getTopic().getId().equals(uri.getQueryParameter("showtopic")))
                 postId = uri.getQueryParameter("p");
@@ -1322,6 +1322,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                 objs.add(Uri.decode(m.group(2)));
                             }
                             parameterValues = new String[objs.size()];
+                            Class[] parameterTypes1 = new Class[objs.size()];
                             parameterTypes = new Class[objs.size()];
                             for (int i = 0; i < objs.size(); i++) {
                                 parameterTypes[i] = String.class;

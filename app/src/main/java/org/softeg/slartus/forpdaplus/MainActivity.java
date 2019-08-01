@@ -52,6 +52,7 @@ import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragme
 import org.softeg.slartus.forpdaplus.fragments.search.SearchTopicsFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BricksListDialogFragment;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
+import org.softeg.slartus.forpdaplus.listfragments.MentionsListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
@@ -61,6 +62,7 @@ import org.softeg.slartus.forpdaplus.mainnotifiers.DonateNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
 import java.lang.reflect.Field;
@@ -302,9 +304,9 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
 
     public void hidePopupWindows() {
-        InputMethodManager service=((InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE));
+        InputMethodManager service = ((InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE));
         assert service != null;
-        View currentFocus=this.getCurrentFocus();
+        View currentFocus = this.getCurrentFocus();
         assert currentFocus != null;
         service.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
@@ -357,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
 
     public void animateHamburger(final boolean isArrow, final View.OnClickListener listener) {
         if (toolbar == null) return;
-        DrawerLayout drawerLayout=getmMainDrawerMenu().getDrawerLayout();
+        DrawerLayout drawerLayout = getmMainDrawerMenu().getDrawerLayout();
         if (isArrow) {
             toolbar.setNavigationOnClickListener(toggleListener);
             drawerLayout.setDrawerListener(getmMainDrawerMenu().getDrawerToggle());
@@ -434,7 +436,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
             Toast.makeText(getContext(), "Данное действие временно не поддерживается", Toast.LENGTH_SHORT).show();
             return false;
         }
-        //intent.setData(Uri.parse("http://4pda.ru/forum/lofiversion/index.php?t365142-1650.html"));
+        //intent.setData(Uri.parseCount("http://4pda.ru/forum/lofiversion/index.php?t365142-1650.html"));
         if (intent.getData() != null) {
 
             final String url = intent.getData().toString();
@@ -859,8 +861,7 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
     private int getUserIconRes() {
         Boolean logged = Client.getInstance().getLogined();
         if (logged) {
-
-            if (Client.getInstance().getQmsCount() > 0) {
+            if (Client.getInstance().getQmsCount() > 0 || UserInfoRepository.Companion.getInstance().getUserInfo().getValue().mentionsCountOrDefault(0) > 0) {
                 return R.drawable.message_text;
             }
             return R.drawable.account;
@@ -885,6 +886,18 @@ public class MainActivity extends AppCompatActivity implements BricksListDialogF
                         MainActivity.addTab(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
                         return true;
                     });
+
+            int mentionsCount = UserInfoRepository.Companion.getInstance().getUserInfo()
+                    .getValue().mentionsCountOrDefault(0);
+
+            mUserMenuItem.add("Упоминания: " + mentionsCount)
+                    .setOnMenuItemClickListener(item -> {
+                        MainActivity.addTab("Упоминания", "http://4pda.ru/forum/index.php?act=mentions",
+                                MentionsListFragment.Companion.newFragment());
+
+                        return true;
+                    });
+
 
             mUserMenuItem.add(R.string.Profile)
                     .setOnMenuItemClickListener(item -> {
