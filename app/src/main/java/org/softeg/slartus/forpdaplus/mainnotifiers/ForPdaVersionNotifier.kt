@@ -98,7 +98,7 @@ class ForPdaVersionNotifier(notifiersManager: NotifiersManager, period: Int) : M
                     addToStack(MaterialDialog.Builder(context)
                             .title(R.string.update_new_version)
                             .content("${context.getString(R.string.update_detected_update)} " +
-                                    "${siteVersion.ver} ${siteVersion.name} \n\n ${context.getString(R.string.update_changes)} ${siteVersion.ver}")
+                                    "${siteVersion.ver} ${siteVersion.name} \n\n ${context.getString(R.string.update_changes)} ${siteVersion.info}")
                             .positiveText(R.string.update_download)
                             .negativeText(R.string.update_later)
                             .neutralText(R.string.update_forget)
