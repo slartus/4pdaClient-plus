@@ -170,7 +170,7 @@ private class AppVersionComparator : Comparator<AppVersion> {
             for (i in 0 until maxLength) {
                 if (p0Vals.size == i)
                     return -1
-                if (p0Vals.size == i)
+                if (p1Vals.size == i)
                     return 1
                 val p0Int = p0Vals[i].trim().toIntOrNull()
                 val p1Int = p1Vals[i].trim().toIntOrNull()
