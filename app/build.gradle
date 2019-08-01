@@ -20,7 +20,7 @@ android {
     // новая ветка release - туда попадают только полный новый релиз и только его фиксы
     // после фикса в релизе мержим в мастер.
     // мастер - рабочая ветка для следуюшего релиза
-    def appVersionName = "3.5.3.1"
+    def appVersionName = "3.5.4"
 
 
     defaultConfig {
@@ -32,6 +32,7 @@ android {
         versionCode appVersionCode
         versionName appVersionName
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     dexOptions {
         dexInProcess = true
@@ -68,7 +69,7 @@ android {
         }
         beta {
             applicationId 'org.softeg.slartus.forpdaplus.beta'
-            versionCode 629// у беты свой номер, чтобы не инкрементить релизный
+            versionCode 630// у беты свой номер, чтобы не инкрементить релизный
             versionName "${appVersionName}beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
             signingConfig defaultSigningVariable
             dimension "wtf"
@@ -132,6 +133,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'io.paperdb:paperdb:2.6'
     implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+    implementation 'com.android.support:multidex:1.0.3'
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }
