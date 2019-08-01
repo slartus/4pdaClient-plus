@@ -156,9 +156,12 @@ private class AppVersionComparator : Comparator<AppVersion> {
         fun compare(p0: String?, p1: String?): Int {
             if (p0 == p1) return 0
 
+
             if (p0 == null) return -1
             if (p1 == null) return 1
 
+            val p0IsBeta = p0.contains("beta", true)
+            val p1IsBeta = p1.contains("beta", true)
             val p0Vals = TextUtils.split(p0.replace("beta", ""), "\\.")
             val p1Vals = TextUtils.split(p1.replace("beta", ""), "\\.")
 
@@ -180,7 +183,11 @@ private class AppVersionComparator : Comparator<AppVersion> {
                     return -1
                 return if (p0Int < p1Int) -1 else 1
             }
-            return 0
+            return when {
+                p0IsBeta && p1IsBeta -> 0
+                p0IsBeta -> -1
+                else -> 1
+            }
         }
     }
 
