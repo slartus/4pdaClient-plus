@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.listfragments
+package org.softeg.slartus.forpdaplus.listfragments.mentions
 
 
 import android.annotation.SuppressLint
@@ -37,17 +37,17 @@ import org.softeg.slartus.forpdaplus.classes.WebViewExternals
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment
-import org.softeg.slartus.forpdaplus.fragments.search.SearchPostFragment
 import org.softeg.slartus.forpdaplus.prefs.Preferences
+import java.lang.ref.WeakReference
 import java.util.*
 import java.util.regex.Pattern
 
 class MentionsListFragment : WebViewFragment() {
     companion object {
-        fun newFragment() = SearchPostFragment()
+        fun newFragment() = MentionsListFragment()
 
         private const val FILECHOOSER_RESULTCODE = 1
-        private const val URL = "http://4pda.ru/forum/index.php?act=mentions"
+        const val URL = "http://4pda.ru/forum/index.php?act=mentions"
     }
 
     private val mHandler = Handler()
@@ -136,7 +136,7 @@ class MentionsListFragment : WebViewFragment() {
     fun load(startNum: Int) {
         val runnable = Runnable {
 
-            mTask = LoadResultTask(startNum)
+            mTask = LoadResultTask(this, startNum)
             mTask!!.execute()
         }
         if (mTask != null && mTask!!.status != AsyncTask.Status.FINISHED)
@@ -175,7 +175,7 @@ class MentionsListFragment : WebViewFragment() {
         return mWebviewexternals!!.dispatchKeyEvent(event)
     }
 
-    private fun showHtmlBody(body: String?) {
+    fun showHtmlBody(body: String?) {
         try {
             body_webview.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null)
             if (buttonsPanel!!.translationY != 0f)
@@ -350,48 +350,49 @@ class MentionsListFragment : WebViewFragment() {
                 }
     }
 
-
     private var mentionsResult: MentionsResult? = null
 
-    @SuppressLint("StaticFieldLeak")
-    private inner class LoadResultTask(private val m_Page: Int) : AsyncTask<String, String, Boolean>() {
+    fun setMentionsResult(mentionsResult: MentionsResult?) {
+        this.mentionsResult = mentionsResult
+    }
+}
 
+private class LoadResultTask(fragment: MentionsListFragment, private val m_Page: Int) : AsyncTask<String, String, Boolean>() {
+    private var ex: Throwable? = null
 
+    private var body: String? = null
+    private var mentionsResult: MentionsResult? = null
+    private var fragment: WeakReference<MentionsListFragment> = WeakReference(fragment)
 
-        private var ex: Throwable? = null
+    override fun doInBackground(vararg params: String): Boolean? {
+        try {
+            if (this.isCancelled) return false
 
-        override fun doInBackground(vararg params: String): Boolean? {
-            try {
-                if (this.isCancelled) return false
+            val pageBody = Client.getInstance().loadPageAndCheckLogin("${MentionsListFragment.URL}&st=$m_Page", null)
 
-                val pageBody = Client.getInstance().loadPageAndCheckLogin("$URL&st=$m_Page", null)
-
-
-                mentionsResult = MentionsParser.instance.parseMentions(pageBody)
-
-                return true
-
-            } catch (e: Throwable) {
-                //Log.e(getContext(), e);
-                ex = e
-                return false
-            }
-
+            mentionsResult = MentionsParser.instance.parseMentions(pageBody)
+            body = MentionsHtmlBuilder(mentionsResult!!).build()
+            return true
+        } catch (e: Throwable) {
+            //Log.e(getContext(), e);
+            ex = e
+            return false
         }
+    }
 
-        override fun onPreExecute() {
-            super.onPreExecute()
-            setLoading(true)
-        }
+    override fun onPreExecute() {
+        super.onPreExecute()
+        this.fragment.get()?.setLoading(true)
+    }
 
-        override fun onPostExecute(success: Boolean?) {
-            setLoading(false)
-            showHtmlBody(mentionsResult?.body)
+    override fun onPostExecute(success: Boolean?) {
+        this.fragment.get()?.setMentionsResult(mentionsResult)
+        this.fragment.get()?.setLoading(false)
+        this.fragment.get()?.showHtmlBody(body)
 
-            if (ex != null)
-                AppLog.e(context, ex)
+        if (ex != null)
+            AppLog.e(App.getInstance(), ex)
 
-            super.onPostExecute(success)
-        }
+        super.onPostExecute(success)
     }
 }

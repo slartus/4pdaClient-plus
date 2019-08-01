@@ -1066,7 +1066,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             }
 
 
-            /*Uri uri = Uri.parseCount(topicUrl.toLowerCase());
+            /*Uri uri = Uri.parseCount(postUrl.toLowerCase());
             String postId = null;
             if (!TextUtils.isEmpty(getTopic().getId()) && getTopic().getId().equals(uri.getQueryParameter("showtopic")))
                 postId = uri.getQueryParameter("p");
@@ -1077,13 +1077,13 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 anchor = "entry" + postId;
             } else {
                 Pattern p = Pattern.compile("#(\\w+\\d+)");
-                Matcher m = p.matcher(topicUrl);
+                Matcher m = p.matcher(postUrl);
                 if (m.find()) {
                     anchor = m.group(1);
                 }
             }
             if (anchor == null) {
-                showTheme(topicUrl);
+                showTheme(postUrl);
                 return;
             }
             String fragment = anchor;

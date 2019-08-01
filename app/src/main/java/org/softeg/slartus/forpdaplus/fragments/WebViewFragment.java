@@ -141,7 +141,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
             }
         });
     }
-    protected void setLoading(final Boolean loading) {
+    public void setLoading(final Boolean loading) {
         try {
             if (getMainActivity() == null) return;
             mSwipeRefreshLayout.post(new Runnable() {

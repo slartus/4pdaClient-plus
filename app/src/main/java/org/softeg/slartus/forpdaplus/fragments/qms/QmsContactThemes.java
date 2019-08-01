@@ -181,7 +181,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
                 TextUtils.isEmpty(m_Nick));
         listData.getItems().addAll(mails);
         Client.getInstance().setQmsCount(qmsUsers.unreadMessageUsersCount());
-        Client.getInstance().doOnMailListener();
+
         return listData;
     }
 

@@ -325,7 +325,7 @@ public class Client implements IHttpClient {
         void onMail(int count);
     }
 
-    public void doOnMailListener() {
+    private void doOnMailListener() {
         for (OnMailListener listener : m_OnMailListeners.getListeners()) {
             listener.onMail(0);
         }
@@ -593,16 +593,20 @@ public class Client implements IHttpClient {
 
     public void setQmsCount(int count) {
         m_QmsCount = count;
+        UserInfoRepository.Companion.getInstance()
+                .setMentionsCount(count);
+        doOnMailListener();
     }
 
     private void checkMentions(String page) {
+        Integer mentionsCount=MentionsParser.Companion.getInstance().parseCount(page);
         UserInfoRepository.Companion.getInstance()
-                .setMentionsCount(MentionsParser.Companion.getInstance().parseCount(page));
+                .setMentionsCount(mentionsCount);
     }
 
     private void checkMails(String pageBody) {
-        m_QmsCount = QmsApi.getNewQmsCount(pageBody);
-        doOnMailListener();
+        setQmsCount(QmsApi.getNewQmsCount(pageBody));
+
     }
 
     Boolean logout() throws Throwable {

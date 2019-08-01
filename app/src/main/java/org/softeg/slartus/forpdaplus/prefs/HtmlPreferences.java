@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.prefs;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.Devices;
@@ -56,13 +55,13 @@ public class HtmlPreferences {
 
     public static String modifyStyleImagesBody(String value) {
         value = value
-                .replaceAll("('|\")[^\"'<>]*style_images/([^\"'<>]*)", "$1file:///android_asset/forum/style_images/$2")
+                .replaceAll("(['\"])[^\"'<>]*style_images/([^\"'<>]*)", "$1file:///android_asset/forum/style_images/$2")
                 .replaceAll("\u0000", "");
 
         return value;
     }
 
-    public static String modifyEmoticons(String value, Hashtable<String, String> emoticsDict, String path) {
+    private static String modifyEmoticons(String value, Hashtable<String, String> emoticsDict, String path) {
         return value;
 //        SmilesComparator bvc = new SmilesComparator(emoticsDict);
 //        TreeMap<String, String> sorted_map = new TreeMap<String, String>(bvc);
@@ -82,12 +81,8 @@ public class HtmlPreferences {
         return modifyEmoticonsToLocal(value, emoticsDict);
     }
 
-    public static String modifyEmoticonsToLocal(String value, Hashtable<String, String> emoticsDict) {
+    private static String modifyEmoticonsToLocal(String value, Hashtable<String, String> emoticsDict) {
         return modifyEmoticons(value, emoticsDict, "file:///android_asset/forum/style_emoticons/default/");
-    }
-
-    public static String modifyEmoticonsToServer(String value, Hashtable<String, String> emoticsDict) {
-        return modifyEmoticons(value, emoticsDict, "http://s.4pda.to/img/emot/");
     }
 
     public static String modifyAttachedImagesBody(Boolean webViewAllowJs, String value) {
@@ -108,9 +103,9 @@ public class HtmlPreferences {
 
     }
 
-    public static String modifyLinksBody(String value) {
+    private static String modifyLinksBody(String value) {
         return value
-                .replaceAll("(src|href)=('|\")index.php", "$1=$2http://4pda.ru/forum/index.php")
-                .replaceAll("(src|href)=('|\")/forum", "$1=$2http://4pda.ru/forum");
+                .replaceAll("(src|href)=(['\"])index.php", "$1=$2http://4pda.ru/forum/index.php")
+                .replaceAll("(src|href)=(['\"])/forum", "$1=$2http://4pda.ru/forum");
     }
 }

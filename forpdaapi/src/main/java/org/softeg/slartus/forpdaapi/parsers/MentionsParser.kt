@@ -1,8 +1,7 @@
 package org.softeg.slartus.forpdaapi.parsers
 
-import org.jsoup.Jsoup
 import org.softeg.slartus.forpdaapi.vo.MentionsResult
-import java.lang.StringBuilder
+
 import java.util.regex.Pattern
 
 /**
@@ -13,7 +12,9 @@ class MentionsParser private constructor() {
         val INSTANCE = MentionsParser()
     }
 
-    private val pattern = Pattern.compile("\\Wact=mentions[^\"]*\"[^\"]*\\sdata-count=\"(\\d+)\"", Pattern.CASE_INSENSITIVE)
+    private val countPattern = Pattern.compile("\\Wact=mentions[^\"]*\"[^\"]*\\sdata-count=\"(\\d+)\"", Pattern.CASE_INSENSITIVE)
+    private val mentionsPattern = Pattern
+            .compile("<div[^>]*\\sclass=\"[^\"]*topic_title_post[^\"]*\"[^>]*>.*?<a[^>]*href=\"([^\"]*)\"[^>]*>([\\s\\S]*?)<\\/a><\\/div>[\\s\\S]*?<span[^>]*\\sclass=\"[^\"]*post_date[^\"]*\"[^>]*><a[^>]*>([^\\|&]*)<\\/a>[\\s\\S]*?<font color=\"([^\"]*?)\"[\\s\\S]*?showuser=(\\d+)\"[^>]*?>([\\s\\S]*?)(?:<i[\\s\\S]*?\\/i>)?<\\/a>[\\s\\S]*?<div class=\"post_body[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div[^>]*\\sclass=\"[^\"]*topic_title_post[^\"]*\"[^>]*>|<div><div[^>]*\\sclass=\"[^\"]*pagination[^\"]*\"[^>]*>)", Pattern.CASE_INSENSITIVE)
 
     companion object {
 
@@ -22,66 +23,36 @@ class MentionsParser private constructor() {
     }
 
     fun parseCount(page: String): Int? {
-        val matcher = pattern.matcher(page)
+        val matcher = countPattern.matcher(page)
         if (matcher.find())
             return matcher.group(1)?.toString()?.toIntOrNull()
         return null
     }
 
     fun parseMentions(page: String): MentionsResult {
-        val mentionsResult=parsePages(page)
+        val mentionsResult = parsePages(page)
 
+        mentionsResult.mentions = parseBody(page)
         return mentionsResult
     }
 
-    fun parseBody(body: String, isWebviewAllowJavascriptInterface:Boolean): String {
-        var posts = 0
-        val document=Jsoup.parse(body)
-
-        val reultBody=StringBuilder()
-        reultBody.append("<div class=\"posts_list search-results\">")
-        for(element in document.select("div.borderwrap")){
-            reultBody.append("<div class=\"post_container\">")
-
-            var el=element.selectFirst("div.maintitle")
-            reultBody.append("<div class=\"topic_title_post\">").append(el.html()).append("</div>\n")
-
-            reultBody.append("</div>").append("</div><div class=\"between_messages\"></div>")
-        }
-
-        var userId: String
-        var userName: String
-        var user: String
-        var dateTime: String
-        var userState: String
-
-        val matcher = Pattern.compile("<div class=\"cat_name\" style=\"margin-bottom:0\">([\\s\\S]*?)<\\/div>[\\s\\S]*?post_date\">([^\\|&]*)[\\s\\S]*?<font color=\"([^\"]*?)\"[\\s\\S]*?showuser=(\\d+)\"[^>]*?>([\\s\\S]*?)(?:<i[\\s\\S]*?\\/i>)?<\\/a>[\\s\\S]*?<div class=\"post_body[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div class=\"cat_name\"|<div><div class=\"pagination\">)").matcher(body)
+    private fun parseBody(body: String): List<MentionItem> {
+        val matcher = mentionsPattern.matcher(body)
+        val items = ArrayList<MentionItem>()
         while (matcher.find()) {
-            m_Body.append("<div class=\"post_container\">")
-            m_Body.append("<div class=\"topic_title_post\">").append(matcher.group(1)).append("</div>\n")
-            dateTime = matcher.group(2)
-            userState = if (matcher.group(3) == "red") "" else "online"
-            userId = matcher.group(4)
-            userName = matcher.group(5)
-            user = "<a class=\"s_inf nick " + userState + "\" " + TopicBodyBuilder.getHtmlout(isWebviewAllowJavascriptInterface, "showUserMenu", userId, userName) + "><span>" + userName + "</span></a>"
-            m_Body.append("<div class=\"post_header\">").append(user).append("<div class=\"s_inf date\"><span>").append(dateTime).append("</span></div></div>")
-            m_Body.append("<div class=\"post_body emoticons\">")
-            if (m_SpoilerByButton) {
-                val find = "(<div class='hidetop' style='cursor:pointer;' )" +
-                        "(onclick=\"var _n=this.parentNode.getElementsByTagName\\('div'\\)\\[1\\];if\\(_n.style.display=='none'\\)\\{_n.style.display='';\\}else\\{_n.style.display='none';\\}\">)" +
-                        "(Спойлер \\(\\+/-\\).*?</div>)" +
-                        "(\\s*<div class='hidemain' style=\"display:none\">)"
-                val replace = "$1>$3<input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility\\(this\\)\"/>$4"
-                m_Body.append(Post.modifyBody(matcher.group(6), m_EmoticsDict).replace(find.toRegex(), replace))
-            } else {
-                m_Body.append(Post.modifyBody(matcher.group(6), m_EmoticsDict))
-            }
-            m_Body.append("</div>").append("</div><div class=\"between_messages\"></div>")
-            posts++
+
+            val topicUrl = matcher.group(1)
+            val topicTitle = matcher.group(2)
+            val dateTime = matcher.group(3)
+            val userState = if (matcher.group(4) == "red") "" else "online"
+            val userId = matcher.group(5)
+            val userName = matcher.group(6)
+            val postBody = matcher.group(7)
+            items.add(MentionItem(topicUrl,topicTitle, dateTime, userState, userId, userName, postBody))
         }
 
-        m_Body.append("</div>")
-        return reultBody
+
+        return items
     }
 
     private fun parsePages(page: String): MentionsResult {
@@ -89,8 +60,8 @@ class MentionsParser private constructor() {
         // http://4pda.ru/forum/index.php?act=search&source=all&result=posts&sort=rel&subforums=1&query=pda&forums=281&st=90
         //final Pattern paginationPattern = Pattern.compile("<div class=\"pagination\">([\\s\\S]*?)<\\/div><\\/div><br");
 
-        val lastPageStartPattern = Pattern.compile("(http://4pda.ru)?/forum/index.php\\?act=search.*?st=(\\d+)")
-        val currentPagePattern = Pattern.compile("<span class=\"pagecurrent\">(\\d+)</span>")
+        val lastPageStartPattern = Pattern.compile("act=mentions[^\"]*st=(\\d+)")
+        val currentPagePattern = Pattern.compile("<span[^>]*\\sclass=\"[^\"]*pagecurrent[^\"]*\"[^>]*>(\\d+)</span>")
 
         val searchResult = MentionsResult()
 
@@ -101,7 +72,7 @@ class MentionsParser private constructor() {
 
         m = lastPageStartPattern.matcher(page)
         while (m.find()) {
-            searchResult.setLastPageStartCount(m.group(2))
+            searchResult.setLastPageStartCount(m.group(1))
         }
 
         m = currentPagePattern.matcher(page)
@@ -112,3 +83,12 @@ class MentionsParser private constructor() {
         return searchResult
     }
 }
+
+class MentionItem(
+        val postUrl: String,
+        val topicTitle: String,
+        val dateTime: String,
+        val userState: String,
+        val userId: String,
+        val userName: String,
+        val body: String)

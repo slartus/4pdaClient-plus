@@ -23,6 +23,15 @@ class UserInfoRepository private constructor() {
             }
         }
     }
+
+    fun setQmsCount(value: Int?) {
+        if (userInfo.hasValue() && userInfo.value?.qmsCount != value) {
+            userInfo.value?.let {
+                it.qmsCount = value
+                userInfo.onNext(it)
+            }
+        }
+    }
 }
 
 /**
@@ -33,5 +42,11 @@ class UserInfo {
 
     fun mentionsCountOrDefault(defaultValue: Int): Int {
         return mentionsCount ?: defaultValue
+    }
+
+    var qmsCount: Int? = 0
+
+    fun qmsCountOrDefault(defaultValue: Int): Int {
+        return qmsCount ?: defaultValue
     }
 }

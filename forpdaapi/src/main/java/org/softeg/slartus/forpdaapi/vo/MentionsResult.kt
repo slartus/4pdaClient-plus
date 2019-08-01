@@ -1,12 +1,12 @@
 package org.softeg.slartus.forpdaapi.vo
 
-import java.util.regex.Pattern
+import org.softeg.slartus.forpdaapi.parsers.MentionItem
 import kotlin.math.max
 
-class MentionsResult(var body:String) {
+class MentionsResult {
     private var pagesCount: Int = 0
     private var lastPageStartCount: Int = 0
-
+    var mentions= emptyList<MentionItem>()
     private var currentPage: Int = 0
 
     fun setPagesCount(pagesCount: String) {
