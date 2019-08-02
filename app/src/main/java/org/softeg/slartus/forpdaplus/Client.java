@@ -594,7 +594,7 @@ public class Client implements IHttpClient {
     public void setQmsCount(int count) {
         m_QmsCount = count;
         UserInfoRepository.Companion.getInstance()
-                .setMentionsCount(count);
+                .setQmsCount(count);
         doOnMailListener();
     }
 
