@@ -91,7 +91,7 @@ class ForPdaVersionNotifier(notifiersManager: NotifiersManager, period: Int) : M
         if (siteVersion.ver == prefs.getString("client.version.4pda", ""))
             return
 
-        val siteVersionsNewer = AppVersionComparator.compare(siteVersion.ver, currentVersion) == 1
+        val siteVersionsNewer = AppVersionComparator.compare(siteVersion.ver + siteVersion.name, currentVersion) == 1
         if (siteVersionsNewer) {
             handler.post {
                 try {
@@ -194,6 +194,10 @@ private class AppVersionComparator : Comparator<AppVersion> {
     override fun compare(p0: AppVersion?, p1: AppVersion?): Int {
         val res = compare(p0?.ver, p1?.ver)
         if (res == 0) {
+            if (p0?.name == "beta")
+                return -1
+            if (p1?.name == "beta")
+                return 1
             if (p0?.name == p1?.name)
                 return 0
             if (p0?.name == "release")
