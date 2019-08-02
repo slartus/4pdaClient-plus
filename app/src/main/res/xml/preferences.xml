@@ -579,11 +579,6 @@
             android:key="Radiation.Yandex.money"
             android:summary="Скопировать в буфер: 410012865124764"
             android:title="Яндекс-кошелёк Radiation15" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="donate.DontShow"
-            android:summary="Не показывать для каждой новой версии сообщение о донейте"
-            android:title="Не показывать сообщение" />
 
     </PreferenceScreen>
 </PreferenceScreen>

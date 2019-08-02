@@ -580,11 +580,6 @@
             android:key="Radiation.Yandex.money"
             android:summary="Copied to clipboard: 410012865124764"
             android:title="Yandex-purse Radiation15" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="donate.DontShow"
-            android:summary="Do not show the donate popup"
-            android:title="Do not show message" />
 
     </PreferenceScreen>
 </PreferenceScreen>
