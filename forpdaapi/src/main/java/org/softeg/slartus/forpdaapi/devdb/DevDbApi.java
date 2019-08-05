@@ -125,7 +125,7 @@
 //        if (!m.find())
 //            throw new ShowInBrowserException("Не умею обрабаывать ссылки такого типа!", url);
 //
-//        Uri uri = Uri.parse(url);
+//        Uri uri = Uri.parseCount(url);
 //        DevCatalog root = new DevCatalog("-1", "DevDb.ru").setType(DevCatalog.ROOT);
 //        if (uri.getPathSegments() == null || uri.getPathSegments().size() <= 0)
 //            return root;

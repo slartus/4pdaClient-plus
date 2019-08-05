@@ -23,7 +23,7 @@ public class QmsNewMessagesReceiver extends BroadcastReceiver {
         int newCount = intent.getIntExtra(QmsNotifier.UNREAD_MESSAGE_USERS_COUNT_KEY, 0);
 
         Client.getInstance().setQmsCount(newCount);
-        Client.getInstance().doOnMailListener();
+
 
 //        if(intent.getBooleanExtra("HasUnreadMessage",false))
 //            playNotification(context);

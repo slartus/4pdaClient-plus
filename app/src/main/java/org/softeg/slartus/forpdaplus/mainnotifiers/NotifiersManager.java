@@ -20,7 +20,7 @@ public class NotifiersManager implements DialogInterface.OnDismissListener {
         this.activity = activity;
     }
 
-    public void addNotifyDialog(MaterialDialog alertDialog) {
+    void addNotifyDialog(MaterialDialog alertDialog) {
         try {
             alertDialog.setOnDismissListener(this);
             dialogs.add(alertDialog);

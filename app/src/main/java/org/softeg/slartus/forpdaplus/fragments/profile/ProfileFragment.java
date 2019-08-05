@@ -187,7 +187,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.setType("file/*");
 
-                // intent.setDataAndType(Uri.parse("file://" + lastSelectDirPath), "file/*");
+                // intent.setDataAndType(Uri.parseCount("file://" + lastSelectDirPath), "file/*");
                 startActivityForResult(intent, FILECHOOSER_RESULTCODE);
 
             } catch (ActivityNotFoundException ex) {

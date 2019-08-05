@@ -41,6 +41,7 @@ public abstract class MainNotifier {
         notifiersManager.addNotifyDialog(materialDialog);
     }
 
+
     public MainNotifier(NotifiersManager notifiersManager, String name, int period) {
         this.notifiersManager = notifiersManager;
         this.name = name;
@@ -53,6 +54,8 @@ public abstract class MainNotifier {
     }
 
     protected boolean isTime() {
+        if(period==0)
+            return true;
         GregorianCalendar lastShowpromoCalendar = new GregorianCalendar();
         SharedPreferences prefs = App.getInstance().getPreferences();
         Date lastCheckDate=ExtPreferences.getDateTime(prefs, "notifier." + name, null);
