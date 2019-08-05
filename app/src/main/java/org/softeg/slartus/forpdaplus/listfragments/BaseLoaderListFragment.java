@@ -6,6 +6,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -41,7 +42,6 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
 
     /**
      * Использовать ли кеш списка
-     *
      */
     protected Boolean useCache() {
         return true;
@@ -291,11 +291,15 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
     }
 
     private void saveCache() {
-        Paper.book().write(getListName(), mData.getItems());
+        if (!TextUtils.isEmpty(getListName()))
+            Paper.book().write(getListName(), mData.getItems());
     }
 
     private ArrayList<IListItem> loadCache() {
-       return Paper.book().read(getListName(), new ArrayList<>());
+        if (!TextUtils.isEmpty(getListName()))
+            return Paper.book().read(getListName(), new ArrayList<>());
+        else
+            return new ArrayList<>();
     }
 
     private static class CacheLoader extends android.support.v4.content.AsyncTaskLoader<ListData> {
