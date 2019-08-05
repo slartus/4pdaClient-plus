@@ -151,7 +151,7 @@ class ForPdaVersionNotifier(notifiersManager: NotifiersManager, period: Int) : M
     }
 }
 
-private class AppVersionComparator : Comparator<AppVersion> {
+class AppVersionComparator : Comparator<AppVersion> {
     companion object {
         fun compare(p0: String?, p1: String?): Int {
             if (p0 == p1) return 0
@@ -163,12 +163,16 @@ private class AppVersionComparator : Comparator<AppVersion> {
             val p0IsBeta = p0.contains("beta", true)
             val p1IsBeta = p1.contains("beta", true)
 
-            val p0Vals = TextUtils.split(p0
+            val p0Vals = p0
                     .replace("beta", "")
-                    .replace("release", ""), "\\.")
-            val p1Vals = TextUtils.split(p1
+                    .replace("release", "")
+                    .split(".")
+                    .filterNot { it.isEmpty() }
+            val p1Vals = p1
                     .replace("beta", "")
-                    .replace("release", ""), "\\.")
+                    .replace("release", "")
+                    .split(".")
+                    .filterNot { it.isEmpty() }
 
             val maxLength = max(p0Vals.size, p1Vals.size)
 
@@ -200,16 +204,15 @@ private class AppVersionComparator : Comparator<AppVersion> {
     override fun compare(p0: AppVersion?, p1: AppVersion?): Int {
         val res = compare(p0?.ver, p1?.ver)
         if (res == 0) {
-            if (p0?.name == "beta")
-                return -1
-            if (p1?.name == "beta")
-                return 1
-            if (p0?.name == p1?.name)
-                return 0
-            if (p0?.name == "release")
-                return 1
-            if (p1?.name == "release")
-                return -1
+            when {
+                p0?.name == p1?.name -> return 0
+                p0?.name == "beta" -> return -1
+                p1?.name == "beta" -> return 1
+                p0?.name == "release" && p1?.name.isNullOrEmpty() -> return 0
+                p1?.name == "release" && p0?.name.isNullOrEmpty() -> return 0
+                p0?.name == "release" -> return 1
+                p1?.name == "release" -> return -1
+            }
         }
         return res
     }
@@ -227,7 +230,7 @@ private class AppNotice {
     var text: String? = ""
 }
 
-private class AppVersion {
+class AppVersion {
     var name: String? = ""
     var ver: String? = ""
     var apk: String? = ""
