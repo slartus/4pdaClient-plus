@@ -10,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -261,7 +260,6 @@ public class TabDrawerMenu {
 
         public void onClick(View v) {
             if (App.getInstance().getTabItems().size() > 1) {
-                MainActivity.tabLog("Remove tab from drawer");
                 ((MainActivity) getContext()).tryRemoveTab(tag);
             } else {
                 closeDialog();

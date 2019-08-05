@@ -133,7 +133,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     protected SwipeRefreshLayout mSwipeRefreshLayout;
 
     protected void initSwipeRefreshLayout(){
-        mSwipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.ptr_layout);
+        mSwipeRefreshLayout = getView().findViewById(R.id.ptr_layout);
         mSwipeRefreshLayout = App.createSwipeRefreshLayout(getMainActivity(), getView(), new Runnable() {
             @Override
             public void run() {
@@ -141,7 +141,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
             }
         });
     }
-    protected void setLoading(final Boolean loading) {
+    public void setLoading(final Boolean loading) {
         try {
             if (getMainActivity() == null) return;
             mSwipeRefreshLayout.post(new Runnable() {

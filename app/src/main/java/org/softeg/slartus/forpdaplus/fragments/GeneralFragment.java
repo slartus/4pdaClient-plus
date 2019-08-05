@@ -117,7 +117,6 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         return App.getInstance().getPreferences();
     }
     private View.OnClickListener removeTabListener = v -> {
-        MainActivity.tabLog("Remove tab from fragment [ThisTag: "+getTag()+"]");
         getMainActivity().tryRemoveTab(getTag(), true);
     };
     public void setArrow(){

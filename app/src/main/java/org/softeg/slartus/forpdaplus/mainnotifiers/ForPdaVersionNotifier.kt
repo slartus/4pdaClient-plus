@@ -26,32 +26,33 @@ import org.softeg.slartus.forpdaplus.download.DownloadsService
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 import kotlin.math.max
 
-class ForPdaVersionNotifier(notifiersManager: NotifiersManager, period: Int) : MainNotifier(notifiersManager, "ForPdaVersionNotifier", period) {
+class ForPdaVersionNotifier(
+        notifiersManager: NotifiersManager,
+        period: Int,
+        /**
+         * Только проверка версий. Сообщение о результате в любом случае
+         */
+        private val checkVersionOnly: Boolean
+) : MainNotifier(notifiersManager, "ForPdaVersionNotifier", period) {
 
-    fun start(context: Context, toast: Boolean, now: Boolean) {
-        if (now) {
-            checkVersionFromGithub(context, toast)
-        } else {
-
-            if (!isTime)
-                return
-            saveTime()
-            checkVersionFromGithub(context, toast)
-        }
+    fun start(context: Context) {
+        if (!isTime)
+            return
+        saveTime()
+        checkVersionFromGithub(context)
     }
 
-    private fun checkVersionFromGithub(context: Context, toast: Boolean) {
+    private fun checkVersionFromGithub(context: Context) {
         val handler = Handler()
         Thread {
             var currentVersion = getAppVersion(App.getContext())
             currentVersion = currentVersion.trim { it <= ' ' }
             val link = "https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/updateinfo.json"
             try {
-
                 val client = OkHttpClient()
                 val request = Request.Builder()
                         .url(link)
-                        .cacheControl(CacheControl.FORCE_NETWORK)
+                        .cacheControl(CacheControl.FORCE_NETWORK)// не исопльуем кеширование
                         .build()
 
                 val responseBody = client.newCall(request).execute().body()?.string()
@@ -68,10 +69,10 @@ class ForPdaVersionNotifier(notifiersManager: NotifiersManager, period: Int) : M
                                 }
 
                 if (newerVersion != null)
-                    checkVersion(currentVersion, newerVersion, handler, context, toast)
+                    checkVersion(currentVersion, newerVersion, handler, context)
 
 
-                if (!toast) {
+                if (!checkVersionOnly) {
                     updateInfo?.notices?.filter { !it.text.isNullOrEmpty() }?.forEach {
                         if (!Preferences.Notice.isNoticed(it.id))
                             showNotice(context, it, handler)
@@ -86,7 +87,7 @@ class ForPdaVersionNotifier(notifiersManager: NotifiersManager, period: Int) : M
 
     @Throws(JSONException::class)
     private fun checkVersion(currentVersion: String, siteVersion: AppVersion, handler: Handler,
-                             context: Context, toast: Boolean) {
+                             context: Context) {
         val prefs = App.getInstance().preferences
         if (siteVersion.ver == prefs.getString("client.version.4pda", ""))
             return
@@ -104,7 +105,7 @@ class ForPdaVersionNotifier(notifiersManager: NotifiersManager, period: Int) : M
                             .neutralText(R.string.update_forget)
                             .onPositive { _, _ ->
                                 try {
-                                    //                                            IntentActivity.tryShowFile((Activity) context, Uri.parse(apk), false);
+                                    //                                            IntentActivity.tryShowFile((Activity) context, Uri.parseCount(apk), false);
                                     DownloadsService.download(context as Activity, siteVersion.apk, false)
                                 } catch (ex: Throwable) {
                                     AppLog.e(context, ex)
@@ -116,12 +117,9 @@ class ForPdaVersionNotifier(notifiersManager: NotifiersManager, period: Int) : M
                 } catch (ex: Exception) {
                     AppLog.e(context, NotReportException(context.getString(R.string.error_check_new_version), ex))
                 }
-
-
             }
-
         } else {
-            if (toast) {
+            if (checkVersionOnly) {
                 handler.post { showToast(context) }
             }
         }

@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.support.multidex.MultiDexApplication;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
@@ -70,7 +71,7 @@ import io.paperdb.Paper;
         resDialogOkToast = R.string.crash_dialog_ok_toast, // optional. displays a Toast message when the user accepts to send a report.)
         resDialogTheme = R.style.Crash_Dialog
 )
-public class App extends android.app.Application {
+public class App extends MultiDexApplication {
     public static final int THEME_LIGHT = 0;
     public static final int THEME_DARK = 1;
     public static final int THEME_BLACK = 6;

@@ -47,6 +47,8 @@ import org.softeg.slartus.forpdaplus.db.ForumsTableOld;
 import org.softeg.slartus.forpdaplus.download.DownloadReceiver;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.topic.ForPdaWebInterface;
+import org.softeg.slartus.forpdaapi.parsers.MentionsParser;
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 
 import java.io.IOException;
 import java.net.URI;
@@ -197,8 +199,10 @@ public class Client implements IHttpClient {
             throw new NotReportException(App.getContext().getString(R.string.server_return_empty_page));
         else if (checkLoginAndMails) {
             checkLogin(httpHelper, res);
-            if (!s.contains("xhr"))
+            if (!s.contains("xhr")) {
                 checkMails(res);
+                checkMentions(res);
+            }
         }
         // m_HttpHelper.close();
         return res;
@@ -321,7 +325,7 @@ public class Client implements IHttpClient {
         void onMail(int count);
     }
 
-    public void doOnMailListener() {
+    private void doOnMailListener() {
         for (OnMailListener listener : m_OnMailListeners.getListeners()) {
             listener.onMail(0);
         }
@@ -589,12 +593,20 @@ public class Client implements IHttpClient {
 
     public void setQmsCount(int count) {
         m_QmsCount = count;
+        UserInfoRepository.Companion.getInstance()
+                .setQmsCount(count);
+        doOnMailListener();
     }
 
+    private void checkMentions(String page) {
+        Integer mentionsCount=MentionsParser.Companion.getInstance().parseCount(page);
+        UserInfoRepository.Companion.getInstance()
+                .setMentionsCount(mentionsCount);
+    }
 
     private void checkMails(String pageBody) {
-        m_QmsCount = QmsApi.getNewQmsCount(pageBody);
-        doOnMailListener();
+        setQmsCount(QmsApi.getNewQmsCount(pageBody));
+
     }
 
     Boolean logout() throws Throwable {

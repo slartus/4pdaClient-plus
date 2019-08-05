@@ -20,8 +20,8 @@ android {
     // новая ветка release - туда попадают только полный новый релиз и только его фиксы
     // после фикса в релизе мержим в мастер.
     // мастер - рабочая ветка для следуюшего релиза
-    def appVersionName = "3.5.3.2"
 
+    def appVersionName = "3.5.4"
 
     defaultConfig {
         applicationId 'org.softeg.slartus.forpdaplus'
@@ -33,6 +33,7 @@ android {
         versionName appVersionName
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     dexOptions {
         dexInProcess = true
@@ -69,7 +70,7 @@ android {
         }
         beta {
             applicationId 'org.softeg.slartus.forpdaplus.beta'
-            versionCode 629// у беты свой номер, чтобы не инкрементить релизный
+            versionCode 631// у беты свой номер, чтобы не инкрементить релизный
             versionName "${appVersionName}beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
             signingConfig defaultSigningVariable
             dimension "wtf"
@@ -129,12 +130,15 @@ dependencies {
     api 'com.google.code.gson:gson:2.8.5'
     api "com.squareup.okhttp3:okhttp:$rootProject.okhttp3"
     api 'com.jakewharton:butterknife:8.5.1'// TODO: избавиться
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     api 'com.github.armcha:Vertical-Intro:2.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'io.paperdb:paperdb:2.6'
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+    implementation 'com.android.support:multidex:1.0.3'    
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }
