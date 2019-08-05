@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.fragments.qms;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.Loader;
 import android.text.Html;
 import android.text.TextUtils;
@@ -36,6 +37,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseLoaderListFragment;
+import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
 
@@ -48,7 +50,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     public static final String MID_KEY = "mid";
     public static final String NICK_KEY = "nick";
     ActionMode mMode;
-    private String m_Id ;
+    private String m_Id;
     private String m_Nick = "";
 
     private Boolean DeleteMode = false;
@@ -62,19 +64,29 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     }
 
     @Override
+    public Fragment setBrickInfo(BrickInfo listTemplate) {
+        return super.setBrickInfo(listTemplate);
+    }
+
+    @Override
+    public String getListName() {
+        return "QmsContactThemes_" + m_Id;
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
     }
 
-    public static void showThemes(String userId, String userNick){
+    public static void showThemes(String userId, String userNick) {
         Bundle bundle = new Bundle();
         bundle.putString("mid", userId);
         bundle.putString("nick", userNick);
         MainActivity.addTab(userNick, userId, newInstance(bundle));
     }
 
-    public static QmsContactThemes newInstance(Bundle args){
-        QmsContactThemes fragment=new QmsContactThemes();
+    public static QmsContactThemes newInstance(Bundle args) {
+        QmsContactThemes fragment = new QmsContactThemes();
         fragment.setArguments(args);
         return fragment;
     }
@@ -84,15 +96,15 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         super.onCreate(savedInstanceState);
         setArrow();
 
-        if(savedInstanceState!=null){
+        if (savedInstanceState != null) {
             m_Id = savedInstanceState.getString(MID_KEY);
             m_Nick = savedInstanceState.getString(NICK_KEY);
-        }else if(getArguments()!=null){
+        } else if (getArguments() != null) {
             m_Id = getArguments().getString(MID_KEY);
             m_Nick = getArguments().getString(NICK_KEY);
         }
-        if(m_Nick!=null)
-            if(m_Nick.equals(""))
+        if (m_Nick != null)
+            if (m_Nick.equals(""))
                 new GetUserTask(m_Id).execute();
     }
 
@@ -100,7 +112,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         private String userId;
         private String userNick;
 
-        public GetUserTask(String userId) {
+        GetUserTask(String userId) {
             this.userId = userId;
         }
 
@@ -124,7 +136,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         protected void onPostExecute(final Boolean success) {
             if (success && !TextUtils.isEmpty(userNick)) {
                 m_Nick = userNick;
-                Toast.makeText(App.getContext(), App.getContext().getString(R.string.nick_received)+": " + m_Nick, Toast.LENGTH_SHORT).show();
+                Toast.makeText(App.getContext(), App.getContext().getString(R.string.nick_received) + ": " + m_Nick, Toast.LENGTH_SHORT).show();
                 setTitle(m_Nick);
                 App.getInstance().getTabByTag(getTag()).setTitle(m_Nick);
                 getMainActivity().notifyTabAdapter();
@@ -140,12 +152,13 @@ public class QmsContactThemes extends BaseLoaderListFragment {
             }
         }
     }
+
     private boolean dialogShowed = false;
 
     @Override
     public void onLoadFinished(Loader<ListData> loader, ListData data) {
         super.onLoadFinished(loader, data);
-        if(data.getItems().size()<=0&!dialogShowed) {
+        if (data.getItems().size() <= 0 & !dialogShowed) {
             new MaterialDialog.Builder(getContext())
                     .content(String.format(App.getContext().getString(R.string.ask_create_dialog), m_Nick))
                     .positiveText(R.string.yes)
@@ -205,7 +218,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        if(!DeleteMode)
+        if (!DeleteMode)
             startDeleteMode();
         return true;
     }
@@ -247,7 +260,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
 
         ArrayList<String> ids = new ArrayList<>();
         for (IListItem item : getData().getItems()) {
-            QmsUserTheme theme=(QmsUserTheme)item;
+            QmsUserTheme theme = (QmsUserTheme) item;
             if (theme.isSelected())
                 ids.add(theme.Id);
         }
@@ -275,9 +288,9 @@ public class QmsContactThemes extends BaseLoaderListFragment {
 
         @Override
         public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
-            Boolean anySelected=false;
+            boolean anySelected = false;
             for (IListItem listItem : getData().getItems()) {
-                QmsUserTheme theme=(QmsUserTheme)listItem;
+                QmsUserTheme theme = (QmsUserTheme) listItem;
                 if (theme.isSelected()) {
                     anySelected = true;
                     break;
@@ -311,7 +324,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         ArrayList<String> m_Ids;
         private Throwable ex;
 
-        public DeleteTask(Context context, ArrayList<String> ids) {
+        DeleteTask(Context context, ArrayList<String> ids) {
             m_Ids = ids;
             dialog = new MaterialDialog.Builder(context)
                     .progress(true, 0)
@@ -360,7 +373,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         private LayoutInflater m_Inflater;
         private ArrayList<IListItem> dataList;
 
-        public QmsContactsAdapter(Context context, ArrayList<IListItem> objects) {
+        QmsContactsAdapter(Context context, ArrayList<IListItem> objects) {
 
 
             m_Inflater = LayoutInflater.from(context);
@@ -393,14 +406,14 @@ public class QmsContactThemes extends BaseLoaderListFragment {
 
                 holder = new ViewHolder();
                 //holder.txtIsNew = (ImageView) convertView.findViewById(R.id.txtIsNew);
-                holder.txtCount = (TextView) convertView.findViewById(R.id.txtMessagesCount);
-                holder.txtAllCount = (TextView) convertView.findViewById(R.id.txtAllMessagesCount);
+                holder.txtCount = convertView.findViewById(R.id.txtMessagesCount);
+                holder.txtAllCount = convertView.findViewById(R.id.txtAllMessagesCount);
 
-                holder.txtNick = (TextView) convertView.findViewById(R.id.txtNick);
+                holder.txtNick = convertView.findViewById(R.id.txtNick);
 
-                holder.txtDateTime = (TextView) convertView.findViewById(R.id.txtDateTime);
+                holder.txtDateTime = convertView.findViewById(R.id.txtDateTime);
 
-                holder.checkbox = (CheckBox) convertView.findViewById(R.id.text1);
+                holder.checkbox = convertView.findViewById(R.id.text1);
                 holder.checkbox
                         .setOnCheckedChangeListener((buttonView, isChecked) -> {
                             QmsUserTheme theme = (QmsUserTheme) holder.checkbox
