@@ -50,6 +50,9 @@ public class DownloadReceiver extends ResultReceiver {
 
         final DownloadTask downloadTask = Client.getInstance().getDownloadTasks().getById(notificationId);
 
+        if(downloadTask==null)
+            return;
+
         final Context context = m_Context;
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         switch (downloadTask.getState()) {
