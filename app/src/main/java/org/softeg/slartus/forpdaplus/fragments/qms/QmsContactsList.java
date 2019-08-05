@@ -88,8 +88,6 @@ public class QmsContactsList extends BaseLoaderListFragment {
         ArrayList<QmsUser> users = QmsApi.getQmsSubscribers(Client.getInstance());
         listData.getItems().addAll(users);
         Client.getInstance().setQmsCount(QmsUsers.unreadMessageUsersCount(users));
-        Client.getInstance().doOnMailListener();
-
         return listData;
     }
 

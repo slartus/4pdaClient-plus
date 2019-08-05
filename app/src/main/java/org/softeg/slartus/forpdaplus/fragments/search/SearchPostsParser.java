@@ -36,7 +36,7 @@ public class SearchPostsParser extends HtmlBuilder {
 
     public SearchResult searchResult;
 
-    public String parse(String body) throws MessageInfoException, NotReportException {
+    public String parse(String body) {
         int posts = 0;
         Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(App.getInstance());
         searchResult = createSearchResult(body);

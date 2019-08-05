@@ -15,7 +15,7 @@ import org.softeg.slartus.forpdaplus.prefs.DonateActivity;
  */
 public class DonateNotifier extends MainNotifier {
     public DonateNotifier(NotifiersManager notifiersManager) {
-        super(notifiersManager, "Donate", 31);
+        super(notifiersManager, "Donate", 14);
     }
 
     public void start(FragmentActivity fragmentActivity) {
@@ -48,9 +48,9 @@ public class DonateNotifier extends MainNotifier {
 
     private boolean needShow() {
         SharedPreferences prefs = App.getInstance().getPreferences();
-        if (prefs.getBoolean("donate.DontShow", false)) return false;
-
         String appVersion = getAppVersion(App.getContext());
+        if (appVersion.toLowerCase().contains("beta")) return false;
+
         if (prefs.getString("DonateShowVer", "").equals(appVersion)) {
             if (!isTime()) return false;
         }

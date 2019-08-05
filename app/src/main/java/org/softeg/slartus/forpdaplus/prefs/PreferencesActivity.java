@@ -258,11 +258,11 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
         private void checkUpdates() {
             NotifiersManager notifiersManager = new NotifiersManager(getActivity());
-            new ForPdaVersionNotifier(notifiersManager, 1).start(getActivity(), true, true);
+            new ForPdaVersionNotifier(notifiersManager, 0, true).start(getActivity());
         }
 
 
-        private void setMenuItems(){
+        private void setMenuItems() {
             final SharedPreferences preferences = getPreferenceManager().getSharedPreferences();
 
             String[] items = preferences.getString("selectedMenuItems", ListCore.DEFAULT_MENU_ITEMS).split(",");
@@ -279,11 +279,11 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
 
             ArrayList<String> namesArray = new ArrayList<>();
-            for(BrickInfo item:allItems)
+            for (BrickInfo item : allItems)
                 namesArray.add(item.getTitle());
 
             final Integer[][] finalItems = new Integer[1][1];
-            finalItems[0]=selectedItems;
+            finalItems[0] = selectedItems;
 
             new MaterialDialog.Builder(getActivity())
                     .title(R.string.select_items)
@@ -295,15 +295,16 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     .alwaysCallMultiChoiceCallback()
                     .positiveText(R.string.accept)
                     .onPositive((materialDialog, dialogAction) -> {
-                        if(finalItems[0]==null||finalItems[0].length==0) return;
-                        preferences.edit().putString("selectedMenuItems", Arrays.toString(finalItems[0]).replace(" ","").replace("[","").replace("]","")).apply();
+                        if (finalItems[0] == null || finalItems[0].length == 0) return;
+                        preferences.edit().putString("selectedMenuItems", Arrays.toString(finalItems[0]).replace(" ", "").replace("[", "").replace("]", "")).apply();
                     })
                     .neutralText(R.string.reset)
                     .onNeutral((materialDialog, dialogAction) -> preferences.edit().putString("selectedMenuItems", ListCore.DEFAULT_MENU_ITEMS).apply())
                     .show();
         }
 
-        private static final int MY_INTENT_CLICK=302;
+        private static final int MY_INTENT_CLICK = 302;
+
         private void pickUserBackground() {
             new MaterialDialog.Builder(getActivity())
                     .content(R.string.pick_image)
@@ -330,12 +331,9 @@ public class PreferencesActivity extends BasePreferencesActivity {
         }
 
         @Override
-        public void onActivityResult(int requestCode, int resultCode, Intent data)
-        {
-            if (resultCode == RESULT_OK)
-            {
-                if (requestCode == MY_INTENT_CLICK)
-                {
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (resultCode == RESULT_OK) {
+                if (requestCode == MY_INTENT_CLICK) {
                     if (null == data) return;
                     Uri selectedImageUri = data.getData();
                     String selectedImagePath = FilePath.getPath(App.getContext(), selectedImageUri);
@@ -352,8 +350,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
             }
         }
 
-        public void webViewFontDialog(){
-            try{
+        public void webViewFontDialog() {
+            try {
                 final SharedPreferences prefs = App.getInstance().getPreferences();
                 final int[] selected = {prefs.getInt("webViewFont", 0)};
                 final CharSequence[] name = {""};
@@ -371,7 +369,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                     name[0] = "inherit";
                                     break;
                                 case 2:
-                                    if(dialogShowed[0]) return true;
+                                    if (dialogShowed[0]) return true;
                                     dialogShowed[0] = true;
                                     new MaterialDialog.Builder(getActivity())
                                             .inputType(InputType.TYPE_CLASS_TEXT)
@@ -389,12 +387,13 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                 .putInt("webViewFont", selected[0]).apply())
                         .show();
 
-            }catch (Exception ex) {
+            } catch (Exception ex) {
                 AppLog.e(getActivity(), ex);
             }
         }
-        private void showMainAccentColorDialog(){
-            try{
+
+        private void showMainAccentColorDialog() {
+            try {
                 final SharedPreferences prefs = App.getInstance().getPreferences();
                 String string = prefs.getString("mainAccentColor", "pink");
                 int position = -1;
@@ -424,7 +423,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                             switch (selected[0]) {
                                 case 0:
                                     prefs.edit().putString("mainAccentColor", "pink").apply();
-                                    if(!prefs.getBoolean("accentColorEdited",false)){
+                                    if (!prefs.getBoolean("accentColorEdited", false)) {
                                         prefs.edit()
                                                 .putInt("accentColor", Color.rgb(2, 119, 189))
                                                 .putInt("accentColorPressed", Color.rgb(0, 89, 159))
@@ -433,7 +432,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                     break;
                                 case 1:
                                     prefs.edit().putString("mainAccentColor", "blue").apply();
-                                    if(!prefs.getBoolean("accentColorEdited",false)){
+                                    if (!prefs.getBoolean("accentColorEdited", false)) {
                                         prefs.edit()
                                                 .putInt("accentColor", Color.rgb(233, 30, 99))
                                                 .putInt("accentColorPressed", Color.rgb(203, 0, 69))
@@ -442,7 +441,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                     break;
                                 case 2:
                                     prefs.edit().putString("mainAccentColor", "gray").apply();
-                                    if(!prefs.getBoolean("accentColorEdited",false)){
+                                    if (!prefs.getBoolean("accentColorEdited", false)) {
                                         prefs.edit()
                                                 .putInt("accentColor", Color.rgb(117, 117, 117))
                                                 .putInt("accentColorPressed", Color.rgb(87, 87, 87))
@@ -453,11 +452,12 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         })
                         .show();
 
-            }catch (Exception ex) {
+            } catch (Exception ex) {
                 AppLog.e(getActivity(), ex);
             }
 
         }
+
         private void showAccentColorDialog() {
 
             try {
@@ -496,15 +496,18 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
                 redTxt.addTextChangedListener(new TextWatcher() {
                     @Override
-                    public void afterTextChanged(Editable s) {}
+                    public void afterTextChanged(Editable s) {
+                    }
+
                     @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        if(redTxt.getText().toString().equals("")){
+                        if (redTxt.getText().toString().equals("")) {
                             colors[0] = 0;
-                        }else{
+                        } else {
                             colors[0] = Integer.parseInt(redTxt.getText().toString());
                         }
                         preview.setBackgroundColor(Color.rgb(colors[0], colors[1], colors[2]));
@@ -514,15 +517,18 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 });
                 greenTxt.addTextChangedListener(new TextWatcher() {
                     @Override
-                    public void afterTextChanged(Editable s) {}
+                    public void afterTextChanged(Editable s) {
+                    }
+
                     @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        if(greenTxt.getText().toString().equals("")){
+                        if (greenTxt.getText().toString().equals("")) {
                             colors[1] = 0;
-                        }else{
+                        } else {
                             colors[1] = Integer.parseInt(greenTxt.getText().toString());
                         }
                         preview.setBackgroundColor(Color.rgb(colors[0], colors[1], colors[2]));
@@ -532,15 +538,18 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 });
                 blueTxt.addTextChangedListener(new TextWatcher() {
                     @Override
-                    public void afterTextChanged(Editable s) {}
+                    public void afterTextChanged(Editable s) {
+                    }
+
                     @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        if(blueTxt.getText().toString().equals("")){
+                        if (blueTxt.getText().toString().equals("")) {
                             colors[2] = 0;
-                        }else{
+                        } else {
                             colors[2] = Integer.parseInt(blueTxt.getText().toString());
                         }
                         preview.setBackgroundColor(Color.rgb(colors[0], colors[1], colors[2]));
@@ -600,7 +609,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
                 new MaterialDialog.Builder(getActivity())
                         .title(R.string.color)
-                        .customView(view,true)
+                        .customView(view, true)
                         .positiveText(R.string.accept)
                         .negativeText(R.string.cancel)
                         .neutralText(R.string.reset)
@@ -609,8 +618,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
                             if (colorPressed[0] < 0) colorPressed[0] = 0;
                             if (colorPressed[1] < 0) colorPressed[1] = 0;
                             if (colorPressed[2] < 0) colorPressed[2] = 0;
-                            if(Color.rgb(colors[0], colors[1], colors[2])!=prefs.getInt("accentColor", Color.rgb(2, 119, 189))){
-                                prefs.edit().putBoolean("accentColorEdited",true).apply();
+                            if (Color.rgb(colors[0], colors[1], colors[2]) != prefs.getInt("accentColor", Color.rgb(2, 119, 189))) {
+                                prefs.edit().putBoolean("accentColorEdited", true).apply();
                             }
                             prefs.edit()
                                     .putInt("accentColor", Color.rgb(colors[0], colors[1], colors[2]))
@@ -620,7 +629,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                         .onNeutral((dialog, which) -> prefs.edit()
                                 .putInt("accentColor", Color.rgb(2, 119, 189))
                                 .putInt("accentColorPressed", Color.rgb(0, 89, 159))
-                                .putBoolean("accentColorEdited",false)
+                                .putBoolean("accentColorEdited", false)
                                 //.putInt("accentColor", Color.rgb(96, 125, 139))
                                 //.putInt("accentColorPressed", Color.rgb(76, 95, 109))
                                 .apply())
@@ -630,6 +639,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             }
 
         }
+
         /*private int PICK_IMAGE_REQUEST = 1;
         private void pickUserBackground() {
 
@@ -726,7 +736,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     "<b>Разработчик(v3.x):</b> Александр Тайнюк aka <a href=\"http://4pda.ru/forum/index.php?showuser=1726458\">iSanechek</a><br/>\n" +
                     "<b>E-mail:</b> <a href=\"mailto:devuicore@gmail.com\">devuicore@gmail.com</a><br/><br/>\n" +
                     "<b>Помощник разработчиков: </b> Алексей Шолохов aka <a href=\"http://4pda.ru/forum/index.php?showuser=96664\">Морфий</a>\n" +
-					"<b>E-mail:</b> <a href=\"mailto:asolohov@gmail.com\">asolohov@gmail.com</a><br/><br/>\n" +
+                    "<b>E-mail:</b> <a href=\"mailto:asolohov@gmail.com\">asolohov@gmail.com</a><br/><br/>\n" +
                     "<b>Благодарности: </b> <br/>\n" +
                     "* <b><a href=\"http://4pda.ru/forum/index.php?showuser=1657987\">__KoSyAk__</a></b> Иконка программы<br/>\n" +
                     "* <b>Пользователям 4pda</b> (тестирование, идеи, поддержка)\n" +
@@ -879,7 +889,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             rbCustom.setOnCheckedChangeListener(checkedChangeListener);
             new MaterialDialog.Builder(getActivity())
                     .title(R.string.path_to_data)
-                    .customView(view,true)
+                    .customView(view, true)
                     .cancelable(true)
                     .positiveText(android.R.string.ok)
                     .negativeText(android.R.string.cancel)
