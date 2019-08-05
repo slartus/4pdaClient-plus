@@ -30,6 +30,7 @@ internal constructor(private val mHeaderset: List<Forum>, private val mDataset: 
     }
 
     private val mIsShowImages: Boolean? = Preferences.Forums.isShowImages()
+
     interface OnClickListener {
         fun onItemClick(v: View)
 
@@ -167,26 +168,26 @@ internal constructor(private val mHeaderset: List<Forum>, private val mDataset: 
                 viewHolder.mText1.text = forum.title
                 viewHolder.mText2.text = forum.description
 
-                if (forum.iconUrl != null && mIsShowImages==true) {
+                if (forum.iconUrl != null && mIsShowImages == true) {
                     ImageLoader.getInstance().displayImage(forum.iconUrl,
                             holder.mImageView,
                             object : ImageLoadingListener {
 
-                                override fun onLoadingStarted(p1: String, p2: View) {
-                                    p2.visibility = View.INVISIBLE
+                                override fun onLoadingStarted(p1: String?, p2: View?) {
+                                    p2?.visibility = View.INVISIBLE
                                     //holder.mProgressBar.setVisibility(View.VISIBLE);
                                 }
 
-                                override fun onLoadingFailed(p1: String, p2: View, p3: FailReason) {
+                                override fun onLoadingFailed(p1: String?, p2: View?, p3: FailReason?) {
                                     // holder.mProgressBar.setVisibility(View.INVISIBLE);
                                 }
 
-                                override fun onLoadingComplete(p1: String, p2: View, p3: Bitmap) {
-                                    p2.visibility = View.VISIBLE
+                                override fun onLoadingComplete(p1: String?, p2: View?, p3: Bitmap?) {
+                                    p2?.visibility = View.VISIBLE
                                     // holder.mProgressBar.setVisibility(View.INVISIBLE);
                                 }
 
-                                override fun onLoadingCancelled(p1: String, p2: View) {
+                                override fun onLoadingCancelled(p1: String?, p2: View?) {
 
                                 }
                             })
