@@ -108,8 +108,17 @@ public class TopicBodyBuilder extends HtmlBuilder {
     }
 
     public void addPost(Post post, Boolean spoil) {
-        m_Body.append("<div name=\"entry").append(post.getId()).append("\"class=\"jump\" style=\"position: absolute; width: 100%; margin-top:-").append(ACTIONBAR_TOP_MARGIN).append("; left: 0;\" id=\"entry").append(post.getId()).append("\"></div>\n");
-        m_Body.append("<div class=\"post_container\" name=\"del").append(post.getId()).append("\">");
+        m_Body.append("<div name=\"entry")
+                .append(post.getId())
+                .append("\"class=\"jump\" style=\"position: absolute; width: 100%; margin-top:-")
+                .append(ACTIONBAR_TOP_MARGIN)
+                .append("; left: 0;\" id=\"entry")
+                .append(post.getId())
+                .append("\"></div>\n");
+        m_Body
+                .append("<div class=\"post_container\" name=\"del")
+                .append(post.getId())
+                .append("\">");
 
         addPostHeader(m_Body, post);
 

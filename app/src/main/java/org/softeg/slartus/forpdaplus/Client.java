@@ -890,7 +890,7 @@ public class Client implements IHttpClient {
 
             // всё остальное не обязательно - читать темы можно по крайней мере
 
-            // ник
+            // пользователь
             el = postHeaderEl.selectFirst("span.post_nick");
             if (el != null) {
                 // статус автора
@@ -898,14 +898,23 @@ public class Client implements IHttpClient {
                 if (el1 != null)
                     post.setUserState(el1.attr("color"));
                 // ник и аватар автора
-                el1 = el.selectFirst("a[title=Вставить ник]");
+                el1 = el.selectFirst("a[data-av]");
                 if (el1 != null) {
                     post.setAvatarFileName(el1.attr("data-av"));// аватар
-                    post.setAuthor(el1.text());// ник
+                    List<TextNode> textNodes = el1.textNodes();
+                    if (textNodes.size() > 0)
+                        post.setAuthor(el1.textNodes().get(0).toString());// ник
+                    else
+                        post.setAuthor(el1.html());// ник
                 }
                 el1 = el.selectFirst("a[href*=showuser]");
-                if (el1 != null)
+                if (el1 != null) {
                     post.setUserId(Uri.parse(el1.attr("href")).getQueryParameter("showuser"));
+                    if (TextUtils.isEmpty(post.getNick()))
+                        post.setAuthor(el1.html());
+                    if (TextUtils.isEmpty(post.getAvatarFileName()))
+                        post.setAvatarFileName(el1.attr("data-av"));
+                }
 
             }
 
