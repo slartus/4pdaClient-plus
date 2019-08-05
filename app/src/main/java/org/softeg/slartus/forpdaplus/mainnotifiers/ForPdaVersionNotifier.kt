@@ -162,8 +162,13 @@ private class AppVersionComparator : Comparator<AppVersion> {
 
             val p0IsBeta = p0.contains("beta", true)
             val p1IsBeta = p1.contains("beta", true)
-            val p0Vals = TextUtils.split(p0.replace("beta", ""), "\\.")
-            val p1Vals = TextUtils.split(p1.replace("beta", ""), "\\.")
+
+            val p0Vals = TextUtils.split(p0
+                    .replace("beta", "")
+                    .replace("release", ""), "\\.")
+            val p1Vals = TextUtils.split(p1
+                    .replace("beta", "")
+                    .replace("release", ""), "\\.")
 
             val maxLength = max(p0Vals.size, p1Vals.size)
 
@@ -186,7 +191,8 @@ private class AppVersionComparator : Comparator<AppVersion> {
             return when {
                 p0IsBeta && p1IsBeta -> 0
                 p0IsBeta -> -1
-                else -> 1
+                p1IsBeta -> 1
+                else -> 0
             }
         }
     }
