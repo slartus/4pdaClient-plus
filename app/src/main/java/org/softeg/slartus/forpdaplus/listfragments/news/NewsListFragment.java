@@ -235,7 +235,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
     @Override
     public void saveCache(){
         if (!useCache) return;
-        super.loadCache();
+        super.saveCache();
     }
 
     @Override
