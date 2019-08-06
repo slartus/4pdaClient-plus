@@ -19,7 +19,7 @@ import org.softeg.slartus.forpdaapi.qms.QmsUsers;
 import org.softeg.slartus.forpdacommon.ExtDateFormat;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdacommon.NotificationBridge;
-import org.softeg.slartus.forpdanotifyservice.Client;
+
 import org.softeg.slartus.forpdanotifyservice.MainService;
 import org.softeg.slartus.forpdanotifyservice.NotifierBase;
 import org.softeg.slartus.forpdanotifyservice.R;
@@ -78,14 +78,14 @@ public class QmsNotifier extends NotifierBase {
                 return;
 
 
-            Client client = new Client(cookiesPath);
-            ArrayList<QmsUser> qmsUsers = QmsApi.getQmsSubscribers(client);
+
+            ArrayList<QmsUser> qmsUsers = QmsApi.getQmsSubscribers();
             // Log.d(LOG_TAG, "QmsUsers.size=" + qmsUsers.size());
 
             Intent intent = new Intent(NEW_ACTION);
             intent.putExtra(UNREAD_MESSAGE_USERS_COUNT_KEY, QmsUsers.unreadMessageUsersCount(qmsUsers));
-            Boolean hasUnread = false;
-            if (qmsUsers.size() > 0 && checkUser(client, qmsUsers, qmsUsers.get(0))) {
+            boolean hasUnread = false;
+            if (qmsUsers.size() > 0 && checkUser(qmsUsers, qmsUsers.get(0))) {
                 hasUnread = true;
                 intent.putExtra(HAS_UNREAD_MESSAGE_KEY, true);
             } else {
@@ -109,7 +109,7 @@ public class QmsNotifier extends NotifierBase {
     private SimpleDateFormat m_TodayTimeFormat = new SimpleDateFormat("Сегодня HH:mm", Locale.getDefault());
 
 
-    private boolean checkUser(Client client, ArrayList<QmsUser> qmsUsers, QmsUser user) throws Throwable {
+    private boolean checkUser(ArrayList<QmsUser> qmsUsers, QmsUser user) throws Throwable {
         // Log.d(LOG_TAG, "checkUser=" + user.getMid());
 
         if (TextUtils.isEmpty(user.getNewMessagesCount()))
@@ -128,10 +128,10 @@ public class QmsNotifier extends NotifierBase {
 
 
         qmsUsers.clear();
-        QmsUserThemes qmsUserThemes = QmsApi.getQmsUserThemes(client, user.getId(), qmsUsers, false);
+        QmsUserThemes qmsUserThemes = QmsApi.getQmsUserThemes(user.getId(), qmsUsers, false);
 
         if (qmsUsers.size() > 0 && !qmsUsers.get(0).getId().equals(user.getId())) {
-            return checkUser(client, qmsUsers, qmsUsers.get(0));
+            return checkUser(qmsUsers, qmsUsers.get(0));
         }
 
         if (qmsUserThemes.size() == 0 || qmsUserThemes.getHasNewCount() == 0)
@@ -235,7 +235,7 @@ public class QmsNotifier extends NotifierBase {
         }
     }
 
-    public static int REQUEST_CODE_START = 839264710;
+    private static int REQUEST_CODE_START = 839264710;
     private static PendingIntent getAlarmPendingIntent(Context context) {
         Intent downloader = new Intent(context, AlarmReceiver.class);
         return PendingIntent.getBroadcast(context,

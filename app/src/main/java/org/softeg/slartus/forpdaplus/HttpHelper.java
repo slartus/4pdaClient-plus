@@ -6,7 +6,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
@@ -15,8 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
-import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 
 import java.io.File;
 import java.io.FilterOutputStream;
@@ -41,30 +38,9 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
     }
 
     HttpHelper(String userAgent) {
-        super(userAgent, PreferencesActivity.getCookieFilePath());
+        super(userAgent);
     }
 
-    void writeExternalCookies() throws Exception {
-        String cookiesFile = PreferencesActivity.getCookieFilePath();
-        writeExternalCookies(cookiesFile);
-    }
-
-
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        if (mLeakedException != null) {
-            AppLog.e(null, mLeakedException);
-            mLeakedException = null;
-        }
-    }
-
-//    public String uploadFile2(final String url, String filePath, Map<String, String> additionalHeaders,
-//                             final ProgressState progress) throws Exception {
-//        RequestBody requestBody = new MultipartBody.Builder()
-//                .setType(MultipartBody.FORM)
-//                .build();
-//    }
 
     String uploadFile(final String url, String filePath, Map<String, String> additionalHeaders,
                       final ProgressState progress) throws Exception {
@@ -82,11 +58,11 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
                     }
                 }
                 if (url.contains("savepice")) {
-                    for (Cookie cookie : getCookieStore().getCookies()) {
-                        if (cookie.getName().equals("PHPSESSID")) {
-                            request.addHeader("Cookie", cookie.getName() + "=" + cookie.getValue());
-                        }
-                    }
+//                    for (Cookie cookie : getCookieStore().getCookies()) {
+//                        if (cookie.getName().equals("PHPSESSID")) {
+//                            request.addHeader("Cookie", cookie.getName() + "=" + cookie.getValue());
+//                        }
+//                    }
                     request.removeHeaders("User-Agent");
                     request.addHeader("Cache-Control", "max-age=0");
                     request.addHeader("Upgrade-Insecure-Reaquest", "1");

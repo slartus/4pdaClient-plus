@@ -3,7 +3,6 @@ package org.softeg.slartus.forpdaplus.fragments.profile;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.apache.http.cookie.Cookie;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +33,7 @@ import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.io.IOException;
+import java.net.HttpCookie;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -44,12 +43,12 @@ import java.util.regex.Matcher;
  */
 public class ProfileEditFragment extends WebViewFragment {
     private AdvWebView m_WebView;
-    private Handler mHandler = new android.os.Handler();
+
     public final static String m_Title = "Изменить личные данные";
     private String parentTag = App.getInstance().getCurrentFragmentTag();
     private final static String url = "http://4pda.ru/forum/index.php?act=UserCP&CODE=01";
 
-    public static void editProfile(){
+    public static void editProfile() {
         MainActivity.addTab(m_Title, url, new ProfileEditFragment());
     }
 
@@ -79,10 +78,12 @@ public class ProfileEditFragment extends WebViewFragment {
     public void reload() {
         asyncTask = new getEditProfileTask().execute("".replace("|", ""));
     }
+
     @Override
     public String Prefix() {
         return "edit_profile";
     }
+
     AsyncTask asyncTask = null;
 
     @Override
@@ -116,25 +117,20 @@ public class ProfileEditFragment extends WebViewFragment {
         m_WebView.addJavascriptInterface(this, "HTMLOUT");
         m_WebView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
 
-        asyncTask  = new getEditProfileTask().execute();
+        asyncTask = new getEditProfileTask().execute();
         return view;
     }
 
     @JavascriptInterface
     public void sendProfile(final String json) {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-               asyncTask = new editProfileTask(getMainActivity(), json).execute();
-            }
-        });
+        getMainActivity().runOnUiThread(() -> asyncTask = new editProfileTask(getMainActivity(), json).execute());
     }
 
     private class editProfileTask extends AsyncTask<String, Void, Void> {
-        Map<String, String> additionalHeaders = new HashMap<String, String>();
+        Map<String, String> additionalHeaders = new HashMap<>();
         MaterialDialog dialog;
 
-        public editProfileTask(Context context,String json) {
+        editProfileTask(Context context, String json) {
             dialog = new MaterialDialog.Builder(context)
                     .progress(true, 0)
                     .content("Отправка данных")
@@ -143,9 +139,9 @@ public class ProfileEditFragment extends WebViewFragment {
             try {
                 JSONArray jr = new JSONArray(json);
                 JSONObject jb;
-                for (int i = 0; i <jr.length(); i++){
+                for (int i = 0; i < jr.length(); i++) {
                     jb = jr.getJSONObject(i);
-                    if(!jb.getString("name").equals("null")){
+                    if (!jb.getString("name").equals("null")) {
                         additionalHeaders.put(jb.getString("name"), jb.getString("value"));
                     }
                 }
@@ -184,9 +180,9 @@ public class ProfileEditFragment extends WebViewFragment {
             if (this.dialog.isShowing()) {
                 this.dialog.dismiss();
             }
-            Toast.makeText(getContext(),"Данные отправлены",Toast.LENGTH_SHORT).show();
-            if(App.getInstance().isContainsByTag(parentTag)){
-                ((ProfileFragment)App.getInstance().getTabByTag(parentTag).getFragment()).startLoadData();
+            Toast.makeText(getContext(), "Данные отправлены", Toast.LENGTH_SHORT).show();
+            if (App.getInstance().isContainsByTag(parentTag)) {
+                ((ProfileFragment) App.getInstance().getTabByTag(parentTag).getFragment()).startLoadData();
             }
             getMainActivity().tryRemoveTab(getTag());
         }
@@ -203,7 +199,8 @@ public class ProfileEditFragment extends WebViewFragment {
 
     private class getEditProfileTask extends AsyncTask<String, String, Boolean> {
 
-        public getEditProfileTask() {}
+        getEditProfileTask() {
+        }
 
         private String m_ThemeBody;
 
@@ -216,6 +213,7 @@ public class ProfileEditFragment extends WebViewFragment {
 
                 return true;
             } catch (Throwable e) {
+                ex = e;
                 return false;
             }
         }
@@ -235,17 +233,17 @@ public class ProfileEditFragment extends WebViewFragment {
         private String parseBody(String body) {
             Matcher m = PatternExtensions.compile("br \\/>\\s*(<fieldset>[\\S\\s]*<.form>)").matcher(body);
             if (m.find()) {
-                body = "<form>"+m.group(1);
+                body = "<form>" + m.group(1);
                 //body =  + "</form><input type=\"button\" value=\"asdghjk\" onclick=\"jsonElem();\">";
                 body = body.replaceAll("<td class=\"row1\" width=\"30%\"><b>О себе:</b>[\\s\\S]*?</td>",
                         "<td class=\"row1\" width=\"30%\"><b>О себе</b></td>");
                 body = body.replaceAll("<td width=\"30%\" class=\"row1\" style='padding:6px;'><b>Город</b>[\\s\\S]*?</td>",
                         "<td class=\"row1\" width=\"30%\" style='padding:6px;'><b>Город</b></td>");
-                body = body.replaceAll("legend","h2").replaceAll("<fieldset>","<div class=\"field\">").replaceAll("</fieldset>","</div>");
+                body = body.replaceAll("legend", "h2").replaceAll("<fieldset>", "<div class=\"field\">").replaceAll("</fieldset>", "</div>");
                 Document doc = Jsoup.parse(body);
                 doc.select(".formbuttonrow .button").remove();
                 doc.select(".formbuttonrow").append("<input type=\"button\" value=\"Сохранить\" onclick=\"jsonElem();\">");
-                doc.select("textarea").first().attr("maxlength","500");
+                doc.select("textarea").first().attr("maxlength", "500");
                 body = doc.html();
             }
             return body;
@@ -273,17 +271,14 @@ public class ProfileEditFragment extends WebViewFragment {
 
             CookieSyncManager syncManager = CookieSyncManager.createInstance(m_WebView.getContext());
             CookieManager cookieManager = CookieManager.getInstance();
-            try {
-                for (Cookie cookie : Client.getInstance().getCookies()) {
+
+                for (HttpCookie cookie : Client.getInstance().getCookies()) {
 
                     if (cookie.getDomain() != null) {
                         cookieManager.setCookie(cookie.getDomain(), cookie.getName() + "=" + cookie.getValue());
                     }
                     //cookieManager.setCookie(cookie.getTitle(),cookie.getValue());
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             syncManager.sync();
         }
     }

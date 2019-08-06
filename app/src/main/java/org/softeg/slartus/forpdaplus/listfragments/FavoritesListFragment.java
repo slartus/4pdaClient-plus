@@ -31,7 +31,7 @@ public class FavoritesListFragment extends TopicsListFragment {
     protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException, URISyntaxException {
         SharedPreferences prefs = App.getInstance().getPreferences();
 
-        return org.softeg.slartus.forpdaapi.TopicsApi.getFavTopics(Client.getInstance(),
+        return org.softeg.slartus.forpdaapi.TopicsApi.getFavTopics(
                 prefs.getString(getListName() + ".sort_key", "last_post"),
                 prefs.getString(getListName() + ".sort_by", "Z-A"),
                 prefs.getString(getListName() + ".prune_day", "100"),

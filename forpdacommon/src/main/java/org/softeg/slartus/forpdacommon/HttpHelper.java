@@ -1,25 +1,21 @@
 package org.softeg.slartus.forpdacommon;
 
+
+import android.support.v4.util.Pair;
+
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
-import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.params.ClientPNames;
 import org.apache.http.client.utils.URIUtils;
 import org.apache.http.conn.ClientConnectionManager;
@@ -33,7 +29,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.DefaultRedirectHandler;
 import org.apache.http.impl.client.RedirectLocations;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
@@ -43,16 +38,8 @@ import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -64,12 +51,14 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
+
+import ru.slartus.http.AppResponse;
+import ru.slartus.http.Http;
 
 /**
  * Created by IntelliJ IDEA.
@@ -81,53 +70,24 @@ import java.util.zip.GZIPInputStream;
 public class HttpHelper {
     protected static final String TAG = "HttpHelper";
     protected static final String CONTENT_TYPE = "Content-Type";
-    private static final int POST_TYPE = 1;
-    private static final int GET_TYPE = 2;
     public static final String GZIP = "gzip";
     public static final String ACCEPT_ENCODING = "Accept-Encoding";
 
     private static String HTTP_CONTENT_CHARSET = "windows-1251";
-    public static String USER_AGENT = "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Mobile Safari/537.36";
+    protected static String USER_AGENT = "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Mobile Safari/537.36";
     public static String FULL_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36";
-    private static final String MIME_FORM_ENCODED = "application/x-www-form-urlencoded";
+
 
     // Establish client once, as static field with static setup block.
     // (This is a best practice in HttpClient docs - but will leave reference until *process* stopped on Android.)
     protected final DefaultHttpClient client;
 
-    public CookieStore getCookieStore() {
-        return client.getCookieStore();
-    }
 
-    public List<Cookie> getLastCookies() {
-        return client.getCookieStore().getCookies();
-    }
-
-    protected void writeExternalCookies(String cookiesFile) throws Exception {
-
-        if (!FileUtils.mkDirs(cookiesFile))
-            throw new Exception("Не могу создать директорию '" + cookiesFile + "' для cookies");
-
-        if(new File(cookiesFile).createNewFile()) {
-            FileOutputStream fw = new FileOutputStream(cookiesFile, false);
-
-            ObjectOutput out = new ObjectOutputStream(fw);
-            final List<Cookie> cookies = client.getCookieStore().getCookies();
-
-
-            for (Cookie cookie : cookies) {
-                new SerializableCookie(cookie).writeExternal(out);
-            }
-            out.close();
-            fw.close();
-        }
-    }
-
-    protected RuntimeException mLeakedException = new IllegalStateException(
+    private RuntimeException mLeakedException = new IllegalStateException(
             "AndroidHttpClient created and never closed");
 
     @Override
-    protected void finalize() throws Throwable {
+    public void finalize() throws Throwable {
         super.finalize();
         if (mLeakedException != null) {
 
@@ -151,38 +111,14 @@ public class HttpHelper {
         return client.getConnectionManager();
     }
 
-    public void clearCookies() {
-        client.getCookieStore().clear();
-    }
 
 
-    private static void readExternalCookies(CookieStore cookieStore, String cookieFile) throws IOException {
-        FileInputStream fw = new FileInputStream(cookieFile);
-        ObjectInput input = new ObjectInputStream(fw);
-        while (true) {
-            try {
-                SerializableCookie serializableCookie = new SerializableCookie();
-                serializableCookie.readExternal(input);
-                cookieStore.addCookie(serializableCookie);
-            } catch (Exception ex) {
-                break;
-            }
 
-        }
-        input.close();
-        fw.close();
-    }
-
-    public List<Cookie> getCookies() {
-        return client.getCookieStore().getCookies();
-    }
-
-
-    public HttpHelper(String userAgent, final String cookiesPath) {
+    public HttpHelper(String userAgent) {
         responseHandler = new ResponseHandler<String>() {
             public String handleResponse(HttpResponse httpResponse) throws IOException {
-                StatusLine status = httpResponse.getStatusLine();
-                checkStatus(status, m_LastUrl);
+
+
                 return EntityUtils.toString(httpResponse.getEntity(), HTTP_CONTENT_CHARSET);
 
             }
@@ -222,7 +158,7 @@ public class HttpHelper {
         SchemeRegistry schemeRegistry = new SchemeRegistry();
         schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
 //        schemeRegistry.register(new Scheme("https", SSLSocketFactory.getSocketFactory(), 443));
-        schemeRegistry.register(new Scheme("https", sf,  443));
+        schemeRegistry.register(new Scheme("https", sf, 443));
         ThreadSafeClientConnManager cm = new ThreadSafeClientConnManager(params, schemeRegistry);
         client = new DefaultHttpClient(cm, params);
 
@@ -243,11 +179,7 @@ public class HttpHelper {
             public List<Cookie> getCookies() {
                 if (m_Cookies == null) {
                     m_Cookies = new ArrayList<>();
-                    try {
-                        readExternalCookies(this, cookiesPath);
-                    } catch (IOException ignoreEx) {
-                        // e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                    }
+                    //readExternalCookies(this, cookiesPath);
                 }
                 return m_Cookies;
             }
@@ -379,38 +311,42 @@ public class HttpHelper {
 
     protected final ResponseHandler<String> responseHandler;
 
-    public String performGet(final String url) throws IOException {
-        return performRequest(null, url, null, null, null, new ArrayList<NameValuePair>(), HttpHelper.GET_TYPE, HTTP_CONTENT_CHARSET);
-    }
-
-    /**
-     * Perform an HTTP GET operation with user/pass and headers.
-     */
-    public String performGet(final String url, final String user, final String pass,
-                             final Map<String, String> additionalHeaders) throws IOException {
-        return performRequest(null, url, user, pass, additionalHeaders, new ArrayList<NameValuePair>(), HttpHelper.GET_TYPE, HTTP_CONTENT_CHARSET);
+    public static String performGet(final String url) {
+        AppResponse response = Http.Companion.getInstance().performGet(url);
+        m_RedirectUri = response.getRedirectUrl() != null ? URI.create(response.getRedirectUrl()) : null;
+        m_LastUrl=response.getRequestUrl();
+        return response.getResponseBody();
     }
 
     /**
      * Perform a simplified HTTP POST operation.
      */
-    public String performPost(final String url, final Map<String, String> params) throws IOException {
-        return performRequest(url, params, HTTP_CONTENT_CHARSET);
+    public static String performPost(final String url, final List<NameValuePair> params) {
+
+        ArrayList<Pair<String, String>> listParams = new ArrayList<>();
+        for (NameValuePair key : params) {
+            listParams.add(new Pair<>(key.getName(), key.getValue()));
+        }
+        AppResponse response = Http.Companion.getInstance().postMultipart(url, listParams);
+        m_RedirectUri = response.getRedirectUrl() != null ? URI.create(response.getRedirectUrl()) : null;
+        m_LastUrl=response.getRequestUrl();
+        return response.getResponseBody();
     }
 
-    /**
-     * Perform a simplified HTTP POST operation.
-     */
-    public String performPost(final String url, final List<NameValuePair> params) throws IOException {
-        return performRequest(HttpHelper.MIME_FORM_ENCODED, url, null, null, null, params, HttpHelper.POST_TYPE, HTTP_CONTENT_CHARSET);
-    }
-
-    public String performPost(final String url, final Map<String, String> params, String encoding) throws IOException {
-        return performRequest(url, params, encoding);
+    public static String performPost(final String url, final Map<String, String> params) throws IOException {
+        ArrayList<Pair<String, String>> listParams = new ArrayList<>();
+        for (String key : params.keySet()) {
+            listParams.add(new Pair<>(key, params.get(key)));
+        }
+        AppResponse response = Http.Companion.getInstance().performPost(url, listParams);
+        m_RedirectUri = response.getRedirectUrl() != null ? URI.create(response.getRedirectUrl()) : null;
+        m_LastUrl=response.getRequestUrl();
+        return response.getResponseBody();
     }
 
     protected static URI m_RedirectUri;
-    private static String m_LastUrl;
+    protected static String m_LastUrl;
+
 
     public static URI getRedirectUri() {
         return m_RedirectUri;
@@ -420,94 +356,6 @@ public class HttpHelper {
         return m_LastUrl;
     }
 
-
-    private String performRequest(String url,
-                                  final Map<String, String> params,
-                                  String encoding) throws IOException {
-        List<NameValuePair> nvps = null;
-        if ((params != null) && (params.size() > 0)) {
-            nvps = new ArrayList<>();
-            for (Map.Entry<String, String> entry : params.entrySet()) {
-                nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
-            }
-        }
-        return performRequest(HttpHelper.MIME_FORM_ENCODED, url, null, null, null, nvps, HttpHelper.POST_TYPE, encoding);
-    }
-
-    //
-    // private methods
-    //
-    private String performRequest(final String contentType, String url, final String user, final String pass,
-                                  final Map<String, String> headers, final List<NameValuePair> nvps, final int requestType,
-                                  String encoding) throws IOException {
-        if (url.substring(0, 2).equals("//")) {
-            url = "http:".concat(url);
-        }
-        url = url.replace("\"", "").replace("'", "");
-        m_LastUrl = url;
-        // add user and pass to client credentials if present
-        if ((user != null) && (pass != null)) {
-            client.getCredentialsProvider().setCredentials(AuthScope.ANY,
-                    new UsernamePasswordCredentials(user, pass));
-        }
-
-        // process headers using request interceptor
-        final Map<String, String> sendHeaders = new HashMap<>();
-        // add encoding cat_name for gzip if not present
-
-        sendHeaders.put(HttpHelper.ACCEPT_ENCODING, HttpHelper.GZIP);
-
-        if ((headers != null) && (headers.size() > 0)) {
-            sendHeaders.putAll(headers);
-        }
-        if (requestType == HttpHelper.POST_TYPE) {
-            sendHeaders.put(HttpHelper.CONTENT_TYPE, contentType);
-        }
-        if (sendHeaders.size() > 0) {
-            client.addRequestInterceptor(new HttpRequestInterceptor() {
-                public void process(final HttpRequest request, final HttpContext context) {
-                    for (String key : sendHeaders.keySet()) {
-                        if (!request.containsHeader(key)) {
-                            request.addHeader(key, sendHeaders.get(key));
-                        }
-                    }
-                }
-            });
-        }
-
-
-        m_RedirectUri = null;
-
-        // handle POST or GET request respectively
-        HttpRequestBase method = null;
-        if (requestType == HttpHelper.POST_TYPE) {
-            method = new HttpPost(url);
-            // data - name/value params
-
-            if (nvps != null) {
-                try {
-                    HttpPost methodPost = (HttpPost) method;
-                    methodPost.setEntity(new UrlEncodedFormEntity(nvps, encoding));
-                } catch (UnsupportedEncodingException e) {
-                    throw new RuntimeException("Error peforming HTTP request: " + e.getMessage(), e);
-                }
-            }
-        } else if (requestType == HttpHelper.GET_TYPE) {
-            method = new HttpGet(url);
-        }
-        // execute request
-        return execute(method);
-    }
-
-    private synchronized String execute(final HttpRequestBase method) throws IOException {
-        String response;
-        // execute method returns?!? (rather than async) - do it here sync, and wrap async elsewhere
-
-        response = client.execute(method, responseHandler);
-
-
-        return response;
-    }
 
     protected void checkStatus(StatusLine status, String url) throws IOException {
         int statusCode = status.getStatusCode();

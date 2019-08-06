@@ -23,8 +23,8 @@ import java.util.regex.Pattern;
 public class ExtTopic extends Topic implements ForumItem, IListItem, Serializable {
 
 
-
     private String authKey;
+    private String lastUrl;
 
 
     public ExtTopic(Topic topic) {
@@ -52,14 +52,19 @@ public class ExtTopic extends Topic implements ForumItem, IListItem, Serializabl
         m_PagesCount = Integer.parseInt(value) + 1;
     }
 
-    public int getPostsPerPageCount(String lastUrl) {
-if(m_PagesCount==1)
-    return 0;
-        URI redirectUri = Client.getInstance().getRedirectUri();
-        if (redirectUri != null)
-            lastUrl = redirectUri.toString();
+    public int getPostsPerPageCount(String lastUrl1) {
+        if (m_PagesCount == 1)
+            return 0;
+
+        if (TextUtils.isEmpty(lastUrl)) {
+            URI redirectUri = Client.getInstance().getRedirectUri();
+            if (redirectUri != null)
+                lastUrl1 = redirectUri.toString();
+        } else {
+            lastUrl1 = lastUrl;
+        }
         Pattern p = Pattern.compile("st=(\\d+)");
-        Matcher m = p.matcher(lastUrl);
+        Matcher m = p.matcher(lastUrl1);
         if (m.find())
             m_LastPageStartCount = Math.max(Integer.parseInt(m.group(1)), m_LastPageStartCount);
 
@@ -93,16 +98,9 @@ if(m_PagesCount==1)
     public static void showActivity(CharSequence themeId, CharSequence params) {
         ThemeFragment.showTopicById(themeId, params);
     }
+
     public static void showActivity(CharSequence title, CharSequence themeId, CharSequence params) {
         ThemeFragment.showTopicById(title, themeId, params);
-    }
-
-    public String getShowBrowserUrl(String params) {
-        return getShowBrowserUrl(m_Id, params);
-    }
-
-    public static String getShowBrowserUrl(CharSequence id, CharSequence params) {
-        return "http://4pda.ru/forum/index.php?showtopic=" + id + (TextUtils.isEmpty(params) ? "" : ("&" + params));
     }
 
     public String getAuthKey() {
@@ -113,20 +111,22 @@ if(m_PagesCount==1)
         this.authKey = authKey;
     }
 
-    public boolean getIsOld() {
-        return false;
-    }
-
     public void dispose() {
 
     }
 
     private boolean postVote = true;
-    public void setPostVote(boolean b){
+
+    public void setPostVote(boolean b) {
         postVote = b;
     }
-    public boolean isPostVote(){
+
+    public boolean isPostVote() {
         return postVote;
     }
 
+    public void setLastUrl(String lastUrl) {
+
+        this.lastUrl = lastUrl;
+    }
 }

@@ -26,7 +26,8 @@ android {
 }
 
 dependencies {
-    api "com.squareup.okhttp3:okhttp:$rootProject.okhttp3"
+    api "com.squareup.okhttp3:okhttp-urlconnection:4.0.1"
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttp3"
     api "com.android.support:support-v4:$rootProject.supportLibraryVersion"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

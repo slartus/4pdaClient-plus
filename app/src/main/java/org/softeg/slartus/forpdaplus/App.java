@@ -51,6 +51,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.paperdb.Paper;
+import ru.slartus.http.Http;
 
 /**
  * User: slinkin
@@ -499,6 +500,8 @@ public class App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        Http.Companion.init(this);
+
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 

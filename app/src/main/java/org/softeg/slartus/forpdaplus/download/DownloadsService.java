@@ -40,6 +40,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Date;
@@ -202,9 +203,9 @@ public class DownloadsService extends IntentService {
         DownloadManager dm = (DownloadManager) context.getSystemService(DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 
-        List<Cookie> cookies = Client.getInstance().getCookies();
+
         StringBuilder sb = new StringBuilder();
-        for (Cookie cookie : cookies) {
+        for (HttpCookie cookie : Client.getInstance().getCookies()) {
             sb.append(cookie.getName() + "=" + cookie.getValue() + ";");
 
         }

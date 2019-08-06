@@ -1,14 +1,16 @@
 package org.softeg.slartus.forpdaapi;
 
+import android.support.v4.util.Pair;
 import android.text.Html;
 import android.text.TextUtils;
 
-import org.apache.http.cookie.Cookie;
 import org.jsoup.Jsoup;
 import org.softeg.slartus.forpdaapi.classes.LoginForm;
 import org.softeg.slartus.forpdacommon.NotReportException;
 
 import java.io.IOException;
+import java.net.HttpCookie;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -19,6 +21,8 @@ import java.util.regex.Pattern;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import ru.slartus.http.AppResponse;
+import ru.slartus.http.Http;
 
 /*
  * Created by slinkin on 07.02.14.
@@ -28,14 +32,19 @@ public class ProfileApi {
      * Проверка логина на странице
      */
     private static void checkLogin(String pageBody, LoginResult loginResult) {
-        Matcher kMatcher = Pattern.compile("action=logout[^\\\"]*[;&]k=([^&\\\"]*)", Pattern.CASE_INSENSITIVE)
+        Matcher kMatcher = Pattern
+                .compile("action=logout[^\\\"]*[;&]k=([^&\\\"]*)", Pattern.CASE_INSENSITIVE)
                 .matcher(pageBody);
 
-        Matcher userPattern=Pattern.compile("\"[^\"]*showuser=(\\d+)[^>]*>Профиль<\\/a>", Pattern.CASE_INSENSITIVE).matcher(pageBody);
-
-        if (kMatcher.find()&&userPattern.find()) {
-            loginResult.setUserId(userPattern.group(1));
+        Matcher userPattern = Pattern
+                .compile("\"[^\"]*showuser=(\\d+)[^>]*>Профиль<\\/a>|<div class=\"user_home\">.*?<a href=\"[^\"]*showuser=(\\d+)\"",
+                        Pattern.CASE_INSENSITIVE).matcher(pageBody);
+        if (kMatcher.find()) {
             loginResult.setK(kMatcher.group(1));
+        }
+        if (userPattern.find()) {
+            loginResult.setUserId(userPattern.group(1) != null ? userPattern.group(1) : userPattern.group(2));
+
             loginResult.setSuccess(true);
 
             String[] avatarPatterns = {"(?:'|\")([^'\"]*4pda.(?:to|ru)/*?forum/*?uploads/*?av-[^?'\"]*)",
@@ -50,7 +59,7 @@ public class ProfileApi {
         }
     }
 
-    public static LoginResult login(IHttpClient httpClient, String login, String password,
+    public static LoginResult login(String login, String password,
                                     Boolean privacy, String capVal, String capTime, String capSig) throws Exception {
         LoginResult loginResult = new LoginResult();
 
@@ -70,8 +79,12 @@ public class ProfileApi {
         additionalHeaders.put("captcha-sig", capSig);
         additionalHeaders.put("return", "http://4pda.ru/forum/index.php");
 
-
-        String res = httpClient.performPost("https://4pda.ru/forum/index.php?act=auth", additionalHeaders);
+        ArrayList<Pair<String, String>> listParams = new ArrayList<>();
+        for (String key : additionalHeaders.keySet()) {
+            listParams.add(new Pair<>(key, additionalHeaders.get(key)));
+        }
+        AppResponse response = Http.Companion.getInstance().performPost("https://4pda.ru/forum/index.php?act=auth&return=" + "http://4pda.ru/forum/index.php", listParams);
+        String res = response.getResponseBody();
 
         if (TextUtils.isEmpty(res)) {
             loginResult.setLoginError("Сервер вернул пустую страницу");
@@ -79,23 +92,24 @@ public class ProfileApi {
         }
 
         String errorMsg = null;
-        for (Cookie cookie : httpClient.getCookieStore().getCookies()) {
+
+        for (HttpCookie cookie : Http.Companion.getInstance().getCookieStore().getCookies()) {
             if (!"deleted".equals(cookie.getValue()) && "member_id".equals(cookie.getName())) {
                 // id пользователя. если он есть - логин успешный
 
                 loginResult.setUserId(cookie.getValue());
                 loginResult.setUserLogin(cookie.getValue());
                 loginResult.setSuccess(true);
-break;
+                break;
             } else if ("deleted".equals(cookie.getValue())) {
                 errorMsg = "Неправильный логин, пароль или капча!";
             } else //noinspection StatementWithEmptyBody
                 if ("pass_hash".equals(cookie.getName())) {
-                // хэш пароля
-            } else //noinspection StatementWithEmptyBody
+                    // хэш пароля
+                } else //noinspection StatementWithEmptyBody
                     if ("session_id".equals(cookie.getName())) {
-                // id сессии
-            }
+                        // id сессии
+                    }
         }
 
         if (errorMsg != null) {
@@ -133,8 +147,7 @@ break;
     /**
      * ЛОгаут
      *
-     * @param k          идентификатор, полученный при логине
-     *
+     * @param k идентификатор, полученный при логине
      */
     public static String logout(IHttpClient httpClient, String k) throws Throwable {
         return httpClient.performGet("http://4pda.ru/forum/index.php?act=Login&CODE=03&k=" + k);
@@ -162,7 +175,7 @@ break;
         return Jsoup.parse(httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID)).select("div.user-box > h1").first().text();
     }
 
-    private static String RequestUrl( OkHttpClient client,String url) throws IOException {
+    private static String RequestUrl(OkHttpClient client, String url) throws IOException {
         Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -172,18 +185,18 @@ break;
     }
 
     public static LoginForm getLoginForm() throws IOException {
-        OkHttpClient client=new OkHttpClient.Builder()
+        OkHttpClient client = new OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)
                 .connectTimeout(15, TimeUnit.SECONDS) // connect timeout
                 .writeTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS).build();
 
-        String prevPage = RequestUrl(client,"https://4pda.ru/forum/index.php?act=auth");
+        String prevPage = RequestUrl(client, "https://4pda.ru/forum/index.php?act=auth");
         Matcher m = Pattern.compile("act=auth[^\"]*[;&]k=([^&\"]*)", Pattern.CASE_INSENSITIVE).matcher(prevPage);
         String k = UUID.randomUUID().toString();
         if (m.find())
             k = m.group(1);
-        String page =  RequestUrl(client,"https://4pda.ru/forum/index.php?act=auth&k=" + k);
+        String page = RequestUrl(client, "https://4pda.ru/forum/index.php?act=auth&k=" + k);
 
         m = Pattern
                 .compile("<form[^>]*?>([\\s\\S]*?)</form>")

@@ -38,13 +38,12 @@ public class TopicsApi {
     private final static Pattern topicsPattern = PatternExtensions.compile("(<div data-item-fid[\\s\\S]*?</script></div></div>)");
     private final static Pattern topicPattern = PatternExtensions.compile("<div data-item-fid=\"(\\d*)\" data-item-track=\"(\\w*)\" data-item-pin=\"(\\d)\"[\\s\\S]*?<a href=\"([^\"]*?)\"[^>]*>(<strong>|)([\\s\\S]*?)(<\\/strong>|)<\\/a>[\\s\\S]*?<span class=\"topic_desc\">([\\s\\S]*?)(<[\\s\\S]*?showforum=(\\d*?)\"[\\s\\S]*?)<a href=\"[^\"]*view=getlastpost[^\"]*\">Послед.:<\\/a>\\s*<a href=\"[^\"]*?\\/forum\\/index.php\\?showuser=\\d+\">(.*?)<\\/a>(.*?)<");
 
-    public static ArrayList<FavTopic> getFavTopics(IHttpClient client,
+    public static ArrayList<FavTopic> getFavTopics(
                                                    ListInfo listInfo) throws IOException, URISyntaxException {
-        return getFavTopics(client, null, null, null, null, false, false, listInfo);
+        return getFavTopics( null, null, null, null, false, false, listInfo);
     }
 
-    public static ArrayList<FavTopic> getFavTopics(IHttpClient client,
-                                                   String sortKey,
+    public static ArrayList<FavTopic> getFavTopics(String sortKey,
                                                    String sortBy,
                                                    String pruneDay,
                                                    String topicFilter,
@@ -68,7 +67,7 @@ public class TopicsApi {
         URI uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
                 URLEncodedUtils.format(qparams, "UTF-8"), null);
 
-        String pageBody = client.performGet(uri.toString());
+        String pageBody = HttpHelper.performGet(uri.toString());
 
         Matcher m = countPattern.matcher(pageBody);
         if (m.find()) {
@@ -128,7 +127,7 @@ public class TopicsApi {
                 if (listInfo.getOutCount() <= res.size())
                     break;
                 listInfo.setFrom(res.size());
-                ArrayList<FavTopic> nextPageTopics = getFavTopics(client, sortKey, sortBy, pruneDay, topicFilter, false, false, listInfo);
+                ArrayList<FavTopic> nextPageTopics = getFavTopics(sortKey, sortBy, pruneDay, topicFilter, false, false, listInfo);
                 if (nextPageTopics.size() == 0)
                     break;
                 res.addAll(nextPageTopics);

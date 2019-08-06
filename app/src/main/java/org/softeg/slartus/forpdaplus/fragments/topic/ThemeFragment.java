@@ -97,6 +97,8 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ru.slartus.http.AppResponse;
+import ru.slartus.http.Http;
 
 import static org.softeg.slartus.forpdaplus.utils.Utils.getS;
 
@@ -151,6 +153,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     private Handler mHandler = new Handler();
 
     private String m_LastUrl;
+    private AppResponse lastResponse=null;
     private ArrayList<SessionHistory> m_History = new ArrayList<>();
     private ExtTopic m_Topic;
     private Boolean m_SpoilFirstPost = true;
@@ -285,6 +288,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     Log.e("ThemeActivity", "redirect is null");
                 m_LastUrl = Client.getInstance().getRedirectUri() == null ? Client.getInstance().getLastUrl() : Client.getInstance().getRedirectUri().toString();
                 m_Topic = postResult.ExtTopic;
+                m_Topic.setLastUrl(m_LastUrl);
 
                 if (postResult.TopicBody == null)
                     Log.e("ThemeActivity", "TopicBody is null");
@@ -375,6 +379,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             if (m_Topic != null)
                 mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), Client.getInstance().getAuthKey());
             m_LastUrl = savedInstanceState.getString("LastUrl");
+            if (m_Topic != null)
+                m_Topic.setLastUrl(m_LastUrl);
             m_ScrollElement = savedInstanceState.getString("ScrollElement");
 
             m_FromHistory = savedInstanceState.getBoolean("FromHistory");
@@ -391,6 +397,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 m_ScrollY = sessionHistory.getY();
                 m_LastUrl = sessionHistory.getUrl();
                 m_Topic = sessionHistory.getTopic();
+                if (m_Topic != null)
+                    m_Topic.setLastUrl(m_LastUrl);
+
                 if (m_Topic != null)
                     mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), Client.getInstance().getAuthKey());
                 if (sessionHistory.getBody() == null) {
@@ -817,6 +826,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             } else {
                 m_LastUrl = sessionHistory.getUrl();
                 m_Topic = sessionHistory.getTopic();
+                if (m_Topic != null)
+                    m_Topic.setLastUrl(m_LastUrl);
                 if (m_Topic != null)
                     mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), Client.getInstance().getAuthKey());
                 showBody(sessionHistory.getBody());
@@ -1511,16 +1522,20 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
                 m_LastUrl = forums[0];
                 m_LastUrl = "http://4pda.ru/forum/index.php?" + prepareTopicUrl(m_LastUrl);
+
                 if (forums.length == 1) {
-                    pageBody = client.loadPageAndCheckLogin("http://4pda.ru/forum/index.php?" + prepareTopicUrl(m_LastUrl), null);
+                    lastResponse = Http.Companion.getInstance().performGet("http://4pda.ru/forum/index.php?" + prepareTopicUrl(m_LastUrl));
+                    pageBody = lastResponse.getResponseBody();
                 } else
                     pageBody = forums[1];
-                m_LastUrl = client.getRedirectUri() == null ? m_LastUrl : client.getRedirectUri().toString();
+                if (lastResponse != null) {
+                    m_LastUrl = lastResponse.redirectUrlElseRequestUrl();
+                }
                 m_SpoilFirstPost = Preferences.Topic.getSpoilFirstPost();
                 TopicBodyBuilder topicBodyBuilder = client.parseTopic(pageBody, App.getInstance(), m_LastUrl,
                         m_SpoilFirstPost);
                 m_Topic = topicBodyBuilder.getTopic();
-
+                m_Topic.setLastUrl(m_LastUrl);
                 m_ThemeBody = topicBodyBuilder.getBody();
                 topicBodyBuilder.clear();
                 return true;

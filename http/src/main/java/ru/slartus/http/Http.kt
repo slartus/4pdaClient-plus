@@ -7,8 +7,9 @@ import android.support.v4.util.Pair
 import android.util.Log
 import okhttp3.*
 import okio.Buffer
-import java.io.File
 import java.io.IOException
+import java.net.CookieManager
+import java.net.CookiePolicy.ACCEPT_ALL
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -17,14 +18,17 @@ import java.util.concurrent.TimeUnit
 /*
  * Created by slartus on 25.01.2015.
  */
-class Http private constructor() {
-    private object Holder {
-        val INSTANCE = Http()
-    }
+class Http private constructor(context: Context) {
 
     companion object {
         const val TAG = "Http"
-        val instance by lazy { Holder.INSTANCE }
+        private var INSTANCE: Http? = null
+        private var USER_AGENT = "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Mobile Safari/537.36"
+        fun init(context: Context) {
+            INSTANCE = Http(context)
+        }
+
+        val instance by lazy { INSTANCE!! }
 
         @Suppress("DEPRECATION")
         fun isOnline(context: Context): Boolean {
@@ -35,9 +39,13 @@ class Http private constructor() {
     }
 
     private var client: OkHttpClient
+    var cookieStore: PersistentCookieStore = PersistentCookieStore(context)
 
     init {
+        val cookieHandler = CookieManager(cookieStore, ACCEPT_ALL)
+
         val builder = OkHttpClient.Builder()
+                .cookieJar(JavaNetCookieJar(cookieHandler))
                 .retryOnConnectionFailure(true)
                 .connectTimeout(15, TimeUnit.SECONDS) // connect timeout
                 .writeTimeout(15, TimeUnit.SECONDS)
@@ -52,87 +60,23 @@ class Http private constructor() {
                 .build()    // socket timeout
     }
 
-
-    fun performGet(url: String): String {
+    fun request(url: String): Response {
         Log.d(TAG, "get: $url")
         val request = Request.Builder()
+                .addHeader("User-Agent", USER_AGENT)
                 .url(url)
                 .build()
 
-        val response = client.newCall(request).execute()
-        return response.body()!!.string()
+        return client.newCall(request).execute()
     }
 
-
-    /**
-     * Validate cache, return stream. Return cache if no network.
-     * @param context
-     * @return
-     */
-    private fun getOnlineInterceptor(context: Context): Interceptor {
-
-        return Interceptor { chain ->
-            val response = chain.proceed(chain.request())
-
-            val headers = response.header("Cache-Control")
-            if (isOnline(context) && (headers == null || headers.contains("no-store")
-                            || headers.contains("must-revalidate")
-                            || headers.contains("no-cache") || headers.contains("max-age=0"))) {
-
-                response.newBuilder()
-                        .header("Cache-Control", "public, max-age=600")
-                        .build()
-            } else {
-                response
-            }
-        }
+    fun performGet(url: String): AppResponse {
+        val response = request(url)
+        val body = response.body?.string()
+        return AppResponse(url, response.request.url.toString(), body)
     }
 
-    /**
-     * Get me cache.
-     * @param context
-     * @return
-     */
-    private fun getOfflineInterceptor(context: Context): Interceptor {
-        return Interceptor { chain ->
-            var request = chain.request()
-            request = if (!isOnline(context)) {
-                request.newBuilder()
-                        .header("Cache-Control", "public, only-if-cached")
-                        .build()
-            } else {
-                request.newBuilder()
-                        .header("Cache-Control", "public, no-cache")
-                        .build()
-            }
-
-            chain.proceed(request)
-        }
-    }
-
-    @Throws(IOException::class)
-    private fun performGetAsyncWithCache(context: Context, url: String, callback: Callback) {
-        Log.d(TAG, "get: $url")
-        val request = Request.Builder()
-                .url(url)
-                .build()
-
-        val cacheSize = (20 * 1024 * 1024).toLong() // 10 MB
-        val httpCacheDirectory = File(context.cacheDir, "responses")
-
-        val cache = Cache(httpCacheDirectory, cacheSize)
-
-        client
-                .newBuilder()
-                .addNetworkInterceptor(getOnlineInterceptor(context))
-                .addInterceptor(getOfflineInterceptor(context))
-                .cache(cache)
-                .build().newCall(request)
-                .enqueue(callback)
-    }
-
-    @Throws(Exception::class)
-    fun postMultipart(url: String, values: List<Pair<String, String>>): String {
+    fun postMultipart(url: String, values: List<Pair<String, String>>): AppResponse {
         // Use the imgur image upload API as documented at https://api.imgur.com/endpoints/image
         val formBuilder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -142,7 +86,7 @@ class Http private constructor() {
 
         val requestBody = formBuilder.build()
         val request = Request.Builder()
-
+                .addHeader("User-Agent", USER_AGENT)
                 .url(url)
                 .post(requestBody)
                 .build()
@@ -150,7 +94,9 @@ class Http private constructor() {
         try {
             val response = client.newCall(request).execute()
             if (!response.isSuccessful) throw HttpException("Unexpected code $response")
-            return response.body()!!.string()
+
+            val body = response.body?.string()
+            return AppResponse(url, response.request.url.toString(), body)
         } catch (ex: IOException) {
             throw HttpException(ex)
         }
@@ -158,7 +104,7 @@ class Http private constructor() {
 
     @Throws(IOException::class)
     @JvmOverloads
-    fun performPost(url: String, values: List<Pair<String, String>> = ArrayList()): String {
+    fun performPost(url: String, values: List<Pair<String, String>> = ArrayList()): AppResponse {
         val formBuilder = FormBody.Builder()
         values
                 .filter { it.second != null }
@@ -168,6 +114,7 @@ class Http private constructor() {
 
         Log.d(TAG, "post: $url")
         val request = Request.Builder()
+                .addHeader("User-Agent", USER_AGENT)
                 .url(url)
                 .cacheControl(CacheControl.FORCE_NETWORK)
                 .post(formBody)
@@ -177,7 +124,9 @@ class Http private constructor() {
         try {
             val response = client.newCall(request).execute()
             if (!response.isSuccessful) throw HttpException("Unexpected code $response")
-            return response.body()!!.string()
+
+            val body = response.body?.string()
+            return AppResponse(url, response.request.url.toString(), body)
         } catch (ex: IOException) {
             throw HttpException(ex)
         }
@@ -189,7 +138,7 @@ class Http private constructor() {
         override fun intercept(chain: Interceptor.Chain): Response {
             val request = chain.request()
 
-            Log.i("OkHttp", request.url().toString())
+            Log.i("OkHttp", request.url.toString())
 
             return chain.proceed(request)
         }
@@ -202,10 +151,10 @@ class Http private constructor() {
 
             val t1 = System.nanoTime()
             val buffer = Buffer()
-            request.body()?.writeTo(buffer)
+            request.body?.writeTo(buffer)
             val requestBody = buffer.readUtf8()
             Log.d("OkHttp", String.format("Sending request %s on %s%n%s body: %s",
-                    request.url(), chain.connection(), request.headers(), requestBody))
+                    request.url, chain.connection(), request.headers, requestBody))
 
             val response = chain.proceed(request)
 
@@ -214,7 +163,7 @@ class Http private constructor() {
 
 
             Log.d("OkHttp", String.format("Received response for %s in %.1fms%n%s",
-                    response.request().url(), (t2 - t1) / 1e6, response.headers()))
+                    response.request.url, (t2 - t1) / 1e6, response.headers))
 
             return response
         }

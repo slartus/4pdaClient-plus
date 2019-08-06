@@ -12,8 +12,6 @@ import android.view.WindowManager;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.client.CookieStore;
-import org.apache.http.cookie.Cookie;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -28,6 +26,7 @@ import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdaapi.ReputationsApi;
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdaapi.TopicReadingUsers;
+import org.softeg.slartus.forpdaapi.parsers.MentionsParser;
 import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.users.Users;
@@ -35,7 +34,6 @@ import org.softeg.slartus.forpdacommon.CollectionUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.Observer;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
-import org.softeg.slartus.forpdacommon.SimpleCookie;
 import org.softeg.slartus.forpdaplus.classes.DownloadTask;
 import org.softeg.slartus.forpdaplus.classes.DownloadTasks;
 import org.softeg.slartus.forpdaplus.classes.Forum;
@@ -47,15 +45,17 @@ import org.softeg.slartus.forpdaplus.db.ForumsTableOld;
 import org.softeg.slartus.forpdaplus.download.DownloadReceiver;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.topic.ForPdaWebInterface;
-import org.softeg.slartus.forpdaapi.parsers.MentionsParser;
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 
 import java.io.IOException;
+import java.net.HttpCookie;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ru.slartus.http.Http;
 
 /**
  * Created by IntelliJ IDEA.
@@ -75,9 +75,8 @@ public class Client implements IHttpClient {
 
     }
 
-    private HttpHelper httpHelper;
 
-    private HttpHelper HttpHelper() throws IOException {
+    private HttpHelper HttpHelper() {
         return new HttpHelper();
     }
 
@@ -87,7 +86,6 @@ public class Client implements IHttpClient {
 
 
     static final Client INSTANCE = new Client();
-
 
     public URI getRedirectUri() {
         return HttpHelper.getRedirectUri();
@@ -119,47 +117,17 @@ public class Client implements IHttpClient {
         boolean session = false;
         boolean pass_hash = false;
         boolean member = false;
-        try {
-            try {
-                httpHelper = HttpHelper();
 
-            } catch (IOException e) {
-                AppLog.e(null, e);
-                return false;
-            }
-            List<Cookie> cookies = httpHelper.getCookies();
-            for (Cookie cookie : cookies) {
-                if (!session && cookie.getName().equals("session_id"))
-                    session = true;
-                else if (!pass_hash && cookie.getName().equals("pass_hash"))
-                    pass_hash = true;
-                else if (!member && cookie.getName().equals("member_id"))
-                    member = true;
-            }
-        } finally {
-            if (httpHelper != null)
-                httpHelper.close();
+        for (HttpCookie cookie : Http.Companion.getInstance().getCookieStore().getCookies()) {
+            if (!session && cookie.getName().equals("session_id"))
+                session = true;
+            else if (!pass_hash && cookie.getName().equals("pass_hash"))
+                pass_hash = true;
+            else if (!member && cookie.getName().equals("member_id"))
+                member = true;
         }
+
         return session && pass_hash && member;
-    }
-
-
-    public String performGetWithCheckLogin(String url, OnProgressChangedListener beforeGetPage, OnProgressChangedListener afterGetPage) throws IOException {
-        if (beforeGetPage != null)
-            beforeGetPage.onProgressChanged(App.getContext().getString(R.string.receiving_data));
-        String body = performGet(url);
-        if (beforeGetPage != null)
-            afterGetPage.onProgressChanged(App.getContext().getString(R.string.receiving_data));
-
-        /*Matcher headerMatcher = PatternExtensions.compile("<body>([\\s\\S]*?)globalmess").matcher(body);
-        if (headerMatcher.find()) {
-            checkLogin(headerMatcher.group(1));
-            checkMails(headerMatcher.group(1));
-        } else {
-            checkLogin(body);
-            checkMails(body);
-        }*/
-        return body;
     }
 
     public String performGetFullVersion(String s) throws IOException {
@@ -169,7 +137,7 @@ public class Client implements IHttpClient {
         String res;
         try {
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
-            res = httpHelper.performGet(s);
+            res = HttpHelper.performGet(s);
         } finally {
             httpHelper.close();
 
@@ -186,19 +154,16 @@ public class Client implements IHttpClient {
 
     public String performGet(String s, Boolean checkEmptyResult, Boolean checkLoginAndMails) throws IOException {
 
-        HttpHelper httpHelper = HttpHelper();
-        String res;
-        try {
-            // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
-            res = httpHelper.performGet(s);
-        } finally {
-            httpHelper.close();
 
-        }
+        String res;
+
+        // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
+        res = HttpHelper.performGet(s);
+
         if (checkEmptyResult && TextUtils.isEmpty(res))
             throw new NotReportException(App.getContext().getString(R.string.server_return_empty_page));
         else if (checkLoginAndMails) {
-            checkLogin(httpHelper, res);
+            checkLogin(res);
             if (!s.contains("xhr")) {
                 checkMails(res);
                 checkMentions(res);
@@ -209,15 +174,12 @@ public class Client implements IHttpClient {
     }
 
     public String performPost(String s, Map<String, String> additionalHeaders) throws IOException {
-        HttpHelper httpHelper = HttpHelper();
+
         String res;
-        try {
-            // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
-            res = httpHelper.performPost(s, additionalHeaders);
-            //  m_HttpHelper.close();
-        } finally {
-            httpHelper.close();
-        }
+
+        // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
+        res = HttpHelper.performPost(s, additionalHeaders);
+
         return res;
     }
 
@@ -236,52 +198,34 @@ public class Client implements IHttpClient {
         return res;
     }
 
-    @Override
-    public CookieStore getCookieStore() throws IOException {
-        HttpHelper httpHelper = HttpHelper();
-
-        try {
-            return httpHelper.getCookieStore();
-        } finally {
-            httpHelper.close();
-        }
-    }
-
     public String performPost(String s, Map<String, String> additionalHeaders, String encoding) throws IOException {
-        HttpHelper httpHelper = HttpHelper();
+
         String res;
-        try {
-            // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
-            res = httpHelper.performPost(s, additionalHeaders, encoding);
-            //  m_HttpHelper.close();
-        } finally {
-            httpHelper.close();
-        }
+
+        // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
+        res = HttpHelper.performPost(s, additionalHeaders);
+
         return res;
     }
 
     @Override
-    public String performPost(String s, List<NameValuePair> additionalHeaders) throws IOException {
-        HttpHelper httpHelper = HttpHelper();
+    public String performPost(String s, List<NameValuePair> additionalHeaders) {
+
         String res;
-        try {
-            // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
-            res = httpHelper.performPost(s, additionalHeaders);
-            //  m_HttpHelper.close();
-        } finally {
-            httpHelper.close();
-        }
+
+        // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
+        res = HttpHelper.performPost(s, additionalHeaders);
+        //  m_HttpHelper.close();
+
         return res;
     }
 
 
-    public List<Cookie> getCookies() throws IOException {
-        HttpHelper httpHelper = HttpHelper();
-        try {
-            return httpHelper.getCookies();
-        } finally {
-            httpHelper.close();
-        }
+    public List<HttpCookie> getCookies() {
+
+
+        return Http.Companion.getInstance().getCookieStore().getCookies();
+
 
     }
 
@@ -403,68 +347,11 @@ public class Client implements IHttpClient {
     Boolean login(String login, String password, Boolean privacy,
                   String capVal, String capTime, String capSig) throws Exception {
 
-        HttpHelper httpHelper = HttpHelper();
-        try {
-            httpHelper.clearCookies();
-            httpHelper.writeExternalCookies();
 
 
-            final HttpHelper finalHttpHelper = httpHelper;
-            LoginResult loginResult = ProfileApi.login(new IHttpClient() {
+            Http.Companion.getInstance().getCookieStore().removeAll();
 
-
-                public String performGetWithCheckLogin(String s, OnProgressChangedListener beforeGetPage, OnProgressChangedListener afterGetPage) {
-                    return null;
-                }
-
-                public String performGet(String s, Boolean b, Boolean bb) {
-                    return null;
-                }
-
-
-                public String performGet(String s) {
-                    return null;
-                }
-
-                @Override
-                public String performGetFullVersion(String s) {
-                    return null;
-                }
-
-                public String performPost(String s, Map<String, String> additionalHeaders) {
-
-                    String res = null;
-                    try {
-                        // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
-                        res = finalHttpHelper.performPost(s, additionalHeaders);
-                        finalHttpHelper.writeExternalCookies();
-                    } catch (Exception ignored) {
-
-                    }
-                    return res;
-                }
-
-                public String performPost(String s, List<NameValuePair> additionalHeaders) {
-                    return null;
-                }
-
-                public String performPost(String s, Map<String, String> additionalHeaders, String encoding) {
-                    return null;
-                }
-
-                @Override
-                public String uploadFile(String url, String filePath, Map<String, String> additionalHeaders, ProgressState progress) {
-                    return null;  //To change body of implemented methods use File | Settings | File Templates.
-                }
-
-                @Override
-                public CookieStore getCookieStore() {
-
-                    return finalHttpHelper.getCookieStore();
-
-                }
-
-            }, login, password, privacy, capVal, capTime, capSig);
+            LoginResult loginResult = ProfileApi.login(login, password, privacy, capVal, capTime, capSig);
             m_Logined = loginResult.isSuccess();
             m_LoginFailedReason = m_Logined ? null : loginResult.getLoginError().toString();
 
@@ -473,15 +360,10 @@ public class Client implements IHttpClient {
             m_User = loginResult.getUserLogin().toString();
             m_K = loginResult.getK().toString();
 
-            httpHelper.getCookieStore().addCookie(new SimpleCookie("4pda.UserId", loginResult.getUserId().toString()));
-            httpHelper.getCookieStore().addCookie(new SimpleCookie("4pda.User", m_User));
-            httpHelper.getCookieStore().addCookie(new SimpleCookie("4pda.K", m_K));
+            Http.Companion.getInstance().getCookieStore().addCustom("4pda.UserId", loginResult.getUserId().toString());
+            Http.Companion.getInstance().getCookieStore().addCustom("4pda.User", m_User);
+            Http.Companion.getInstance().getCookieStore().addCustom("4pda.K", m_K);
 
-            httpHelper.writeExternalCookies();
-
-        } finally {
-            httpHelper.close();
-        }
 
         return m_Logined;
     }
@@ -490,18 +372,12 @@ public class Client implements IHttpClient {
 
     public void checkLoginByCookies() {
         try {
-            HttpHelper httpHelper = null;
-            try {
-                httpHelper = HttpHelper();
 
-                if (checkLogin(httpHelper.getCookieStore())) {
-                    m_Logined = true;
-                }
-            } finally {
 
-                if (httpHelper != null)
-                    httpHelper.finalize();
+            if (checkLogin()) {
+                m_Logined = true;
             }
+
         } catch (Throwable ignored) {
 
         } finally {
@@ -510,14 +386,13 @@ public class Client implements IHttpClient {
 
     }
 
-    private Boolean checkLogin(CookieStore cookies) {
-        if (cookies == null)
-            return false;
+    private Boolean checkLogin() {
+
         m_User = "";
         m_K = "";
 
-        Cookie memberIdCookie = null;
-        for (Cookie cookie : cookies.getCookies()) {
+        HttpCookie memberIdCookie = null;
+        for (HttpCookie cookie : Http.Companion.getInstance().getCookieStore().getCookies()) {
             if ("4pda.UserId".equals(cookie.getName())) {
                 UserId = cookie.getValue();
             } else if ("4pda.User".equals(cookie.getName())) {
@@ -533,19 +408,17 @@ public class Client implements IHttpClient {
 
     }
 
-    private void checkLogin(HttpHelper httpHelper, String pageBody) {
+    private void checkLogin(String pageBody) {
 
         try {
 
-            if (checkLogin(httpHelper.getCookieStore())) {
+            if (checkLogin()) {
                 m_Logined = true;
                 return;
             }
             if (!TextUtils.isEmpty(m_User) && !TextUtils.isEmpty(UserId)
                     && !TextUtils.isEmpty(m_K)) {
-
-                List<Cookie> cookies = httpHelper.getLastCookies();
-                for (Cookie cookie : cookies) {
+                for (HttpCookie cookie : Http.Companion.getInstance().getCookieStore().getCookies()) {
                     if ("member_id".equals(cookie.getName())) {
                         if (UserId.equals(cookie.getValue())) {
                             m_Logined = true;
@@ -553,7 +426,6 @@ public class Client implements IHttpClient {
                         }
                         break;
                     }
-
                 }
             }
 
@@ -577,12 +449,7 @@ public class Client implements IHttpClient {
     }
 
     public boolean isUserLogin() {
-        try {
-            return checkLogin(getCookieStore());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return checkLogin();
     }
 
     private int m_QmsCount = 0;
@@ -599,7 +466,7 @@ public class Client implements IHttpClient {
     }
 
     private void checkMentions(String page) {
-        Integer mentionsCount=MentionsParser.Companion.getInstance().parseCount(page);
+        Integer mentionsCount = MentionsParser.Companion.getInstance().parseCount(page);
         UserInfoRepository.Companion.getInstance()
                 .setMentionsCount(mentionsCount);
     }
@@ -611,15 +478,10 @@ public class Client implements IHttpClient {
 
     Boolean logout() throws Throwable {
         String res = ProfileApi.logout(this, m_K);
-        HttpHelper httpHelper = HttpHelper();
-        try {
-            httpHelper.clearCookies();
-            httpHelper.writeExternalCookies();
-        } finally {
-            httpHelper.close();
-        }
 
-        checkLogin(httpHelper, res);
+        Http.Companion.getInstance().getCookieStore().removeAll();
+
+        checkLogin(res);
         if (m_Logined)
             m_LoginFailedReason = App.getContext().getString(R.string.bad_logout);
 
@@ -674,7 +536,7 @@ public class Client implements IHttpClient {
 
     public TopicBodyBuilder parseTopic(String topicPageBody,
                                        Context context, String themeUrl, Boolean spoilFirstPost) throws IOException {
-        checkLogin(new HttpHelper(), topicPageBody);
+        checkLogin(topicPageBody);
 
         Pattern pattern = PatternExtensions.compile("showtopic=(\\d+)(&(.*))?");
         Matcher m = pattern.matcher(themeUrl);

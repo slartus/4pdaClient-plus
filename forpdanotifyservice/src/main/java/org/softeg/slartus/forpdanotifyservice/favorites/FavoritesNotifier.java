@@ -19,7 +19,7 @@ import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.TopicsApi;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdacommon.NotificationBridge;
-import org.softeg.slartus.forpdanotifyservice.Client;
+
 import org.softeg.slartus.forpdanotifyservice.MainService;
 import org.softeg.slartus.forpdanotifyservice.NotifierBase;
 import org.softeg.slartus.forpdanotifyservice.R;
@@ -32,7 +32,7 @@ import java.util.GregorianCalendar;
  */
 public class FavoritesNotifier extends NotifierBase {
 
-    private static final String LOG_TAG = "QmsMainService.FavoritesNotifier";
+    private static final String LOG_TAG = "FavoritesNotifier";
     public static final String NEW_ACTION = "org.softeg.slartus.forpdanotifyservice.newtopicpost";
     public static final String TIME_OUT_KEY = "FavoritesNotifier.service.timeout";
     public static final String LAST_DATETIME_KEY = "FavoritesNotifier.service.lastdatetime";
@@ -77,13 +77,13 @@ public class FavoritesNotifier extends NotifierBase {
                 return;
 
 
-            Client client = new Client(cookiesPath);
-            ArrayList<FavTopic> topics = TopicsApi.getFavTopics(client, new ListInfo());
+
+            ArrayList<FavTopic> topics = TopicsApi.getFavTopics(new ListInfo());
 
             Intent intent = new Intent(NEW_ACTION);
             intent.putExtra(NEW_TOPICS_COUNT_KEY, getNewTopicsCount(topics));
             Boolean hasUnread = false;
-            if (hasUnreadNotify(client, topics)) {
+            if (hasUnreadNotify( topics)) {
                 hasUnread = true;
                 intent.putExtra(HAS_UNREAD_NOTIFY_KEY, true);
             } else {
@@ -99,7 +99,7 @@ public class FavoritesNotifier extends NotifierBase {
         }
     }
 
-    private boolean hasUnreadNotify(Client client, ArrayList<FavTopic> topics) throws Throwable {
+    private boolean hasUnreadNotify( ArrayList<FavTopic> topics) throws Throwable {
 
         if (topics.size() == 0 || getNewTopicsCount(topics) == 0)
             return false;
