@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus.utils;
 
 import android.support.v4.util.Pair;
+import android.webkit.MimeTypeMap;
 
 import org.json.JSONObject;
 import org.softeg.slartus.forpdacommon.FileUtils;
@@ -21,6 +22,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import ru.slartus.http.Http;
 
+import static android.webkit.MimeTypeMap.getFileExtensionFromUrl;
+
 /**
  * Created by isanechek on 1/27/18.
  */
@@ -36,12 +39,12 @@ public class UploadUtils {
             e.printStackTrace();
         }
 
-        ArrayList<Pair<String,String>> values=new ArrayList<>();
-        for (String key:additionalHeaders.keySet()) {
+        ArrayList<Pair<String, String>> values = new ArrayList<>();
+        for (String key : additionalHeaders.keySet()) {
             values.add(new Pair<>(key, additionalHeaders.get(key)));
         }
 
-        return Http.Companion.getInstance().uploadFile(url,nameValue,pathToFile,url.contains("savepice")?"file":"FILE_UPLOAD",
+        return Http.Companion.getInstance().uploadFile(url, nameValue, pathToFile, url.contains("savepice") ? "file" : "FILE_UPLOAD",
                 values).getResponseBody();
 //        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 //        File file = new File(pathToFile);
@@ -83,7 +86,7 @@ public class UploadUtils {
 //        return res;
     }
 
-    public static String attachFile(String newFilePath) throws Exception {
+    public static String attachSavePiceFile(String newFilePath) throws Exception {
         Map<String, String> additionalHeaders = new HashMap<>();
         additionalHeaders.put("img", "file");
         additionalHeaders.put("url", "");
@@ -92,11 +95,47 @@ public class UploadUtils {
         additionalHeaders.put("preview_size", "180");
         additionalHeaders.put("rotation_type", "0");
 
-        String response = okUploadFile("https://savepice.ru/upload", newFilePath, additionalHeaders);
-        JSONObject jsonObject = new JSONObject(response);
-        if (jsonObject.optBoolean("error", false)) {
-            throw new NotReportException(jsonObject.optString("text"));
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        File file = new File(newFilePath);
+
+
+        final MediaType mediaType = MediaType.parse("image/png");
+
+        builder.addFormDataPart("file", String.valueOf(RequestBody.create(mediaType, file)));
+        builder.addFormDataPart("Cache-Control", "max-age=0");
+        builder.addFormDataPart("Upgrade-Insecure-Reaquest", "1");
+        builder.addFormDataPart("Accept", "text-/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+        builder.addFormDataPart("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36 OPR/38.0.2220.31");
+        builder.addFormDataPart("Accept-Language", "ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4");
+        builder.addFormDataPart("Referer", "https://savepice.ru/");
+        builder.addFormDataPart("Origin", "https://savepice.ru");
+        builder.addFormDataPart("X-Requested-With", "XMLHttpRequest");
+        if (additionalHeaders.size() > 0) {
+            for (String key : additionalHeaders.keySet()) {
+                builder.addFormDataPart(key, additionalHeaders.get(key));
+            }
         }
-        return jsonObject.optString("redirect_path").replace("/uploaded/", "/uploads/").replace(".html", "");
+        RequestBody requestBody = builder.build();
+        Request request = new Request.Builder()
+                .url("https://savepice.ru/upload")
+                .post(requestBody)
+                .build();
+
+        OkHttpClient client = new OkHttpClient.Builder().build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String res = response.body().string();
+
+                JSONObject jsonObject = new JSONObject(res);
+                if (jsonObject.optBoolean("error", false)) {
+                    throw new NotReportException(jsonObject.optString("text"));
+                }
+                return jsonObject.optString("redirect_path").replace("/uploaded/", "/uploads/").replace(".html", "");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

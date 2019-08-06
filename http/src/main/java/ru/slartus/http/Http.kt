@@ -6,6 +6,7 @@ import android.net.ConnectivityManager
 import android.support.v4.util.Pair
 import android.util.Log
 import android.webkit.MimeTypeMap
+import android.webkit.MimeTypeMap.getFileExtensionFromUrl
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okio.Buffer
@@ -15,9 +16,6 @@ import java.net.CookieManager
 import java.net.CookiePolicy.ACCEPT_ALL
 import java.util.*
 import java.util.concurrent.TimeUnit
-import android.webkit.MimeTypeMap.getFileExtensionFromUrl
-
-
 
 
 @Suppress("unused")
@@ -156,16 +154,8 @@ class Http private constructor(context: Context) {
         val file = File(filePath)
 
 
-        val mediaType = getFileExtensionFromUrl(file.absolutePath).toMediaTypeOrNull()
+        val mediaType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(getFileExtensionFromUrl(file.toString()))?.toMediaTypeOrNull()
         builder.addFormDataPart(fileFormDataName, fileName, RequestBody.create(mediaType, file))
-        builder.addFormDataPart("Cache-Control", "max-age=0")
-        builder.addFormDataPart("Upgrade-Insecure-Reaquest", "1")
-        builder.addFormDataPart("Accept", "text-/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-        builder.addFormDataPart("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36 OPR/38.0.2220.31")
-        builder.addFormDataPart("Accept-Language", "ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4")
-        builder.addFormDataPart("Referer", "https://savepice.ru/")
-        builder.addFormDataPart("Origin", "https://savepice.ru")
-        builder.addFormDataPart("X-Requested-With", "XMLHttpRequest")
         if (formDataParts.isNotEmpty()) {
             for (formDataPart in formDataParts.filter { it.first != null && it.second != null }) {
                 builder.addFormDataPart(formDataPart.first!!, formDataPart.second!!)
@@ -173,7 +163,7 @@ class Http private constructor(context: Context) {
         }
         val requestBody = builder.build()
         val request = Request.Builder()
-                .addHeader("User-Agent", USER_AGENT)
+             //   .addHeader("User-Agent", USER_AGENT)
                 .url(url)
                 .post(requestBody)
                 .build()

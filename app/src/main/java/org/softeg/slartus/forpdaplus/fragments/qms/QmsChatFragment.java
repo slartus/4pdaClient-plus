@@ -1092,8 +1092,8 @@ public class QmsChatFragment extends WebViewFragment {
 //                        }
 //
 //                    }
-//                    String res = QmsApi.attachFile(Client.getInstance(), newAttachFilePath, m_ProgressState);
-                    String res = UploadUtils.attachFile(newAttachFilePath);
+//                    String res = QmsApi.attachSavePiceFile(Client.getInstance(), newAttachFilePath, m_ProgressState);
+                    String res = UploadUtils.attachSavePiceFile(newAttachFilePath);
 
 
 
