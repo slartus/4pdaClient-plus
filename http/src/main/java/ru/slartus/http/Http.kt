@@ -3,19 +3,21 @@ package ru.slartus.http
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.os.FileUtils
 import android.support.v4.util.Pair
 import android.util.Log
+import android.webkit.MimeTypeMap
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okio.Buffer
 import java.io.File
 import java.io.IOException
-import java.io.UnsupportedEncodingException
 import java.net.CookieManager
 import java.net.CookiePolicy.ACCEPT_ALL
 import java.util.*
 import java.util.concurrent.TimeUnit
+import android.webkit.MimeTypeMap.getFileExtensionFromUrl
+
+
 
 
 @Suppress("unused")
@@ -39,6 +41,15 @@ class Http private constructor(context: Context) {
             val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val netInfo = cm.activeNetworkInfo
             return netInfo != null && netInfo.isConnectedOrConnecting
+        }
+
+        private fun getMimeType(url: String): String? {
+            var type: String? = null
+            val extension = getFileExtensionFromUrl(url)
+            if (extension != null) {
+                type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+            }
+            return type
         }
     }
 
@@ -137,14 +148,16 @@ class Http private constructor(context: Context) {
 
     }
 
+
+
     fun uploadFile(url: String, fileName: String, filePath: String, fileFormDataName: String,
                    formDataParts: List<Pair<String, String>> = ArrayList()): AppResponse {
         val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
         val file = File(filePath)
 
 
-        val MT = "image/png".toMediaTypeOrNull()
-        builder.addFormDataPart(fileFormDataName, fileName, RequestBody.create(MT, file)) // <-------
+        val mediaType = getFileExtensionFromUrl(file.absolutePath).toMediaTypeOrNull()
+        builder.addFormDataPart(fileFormDataName, fileName, RequestBody.create(mediaType, file))
         builder.addFormDataPart("Cache-Control", "max-age=0")
         builder.addFormDataPart("Upgrade-Insecure-Reaquest", "1")
         builder.addFormDataPart("Accept", "text-/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")

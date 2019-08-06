@@ -77,10 +77,6 @@ public class Client implements IHttpClient {
     }
 
 
-    private HttpHelper HttpHelper() {
-        return new HttpHelper();
-    }
-
     public String getAuthKey() {
         return m_K;
     }
@@ -186,17 +182,15 @@ public class Client implements IHttpClient {
 
 
     public String uploadFile(String url, String filePath, Map<String, String> additionalHeaders
-            , ProgressState progress) throws Exception {
-        HttpHelper httpHelper = HttpHelper();
+            , ProgressState progress) {
+
         String res;
-        try {
+
             res= UploadUtils.okUploadFile(url,filePath,additionalHeaders);
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
             //res = httpHelper.uploadFile(url, filePath, additionalHeaders, progress);
             //  m_HttpHelper.close();
-        } finally {
-            httpHelper.close();
-        }
+
         return res;
     }
 
