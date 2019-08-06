@@ -46,6 +46,7 @@ import org.softeg.slartus.forpdaplus.download.DownloadReceiver;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.topic.ForPdaWebInterface;
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
+import org.softeg.slartus.forpdaplus.utils.UploadUtils;
 
 import java.io.IOException;
 import java.net.HttpCookie;
@@ -189,8 +190,9 @@ public class Client implements IHttpClient {
         HttpHelper httpHelper = HttpHelper();
         String res;
         try {
+            res= UploadUtils.okUploadFile(url,filePath,additionalHeaders);
             // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
-            res = httpHelper.uploadFile(url, filePath, additionalHeaders, progress);
+            //res = httpHelper.uploadFile(url, filePath, additionalHeaders, progress);
             //  m_HttpHelper.close();
         } finally {
             httpHelper.close();

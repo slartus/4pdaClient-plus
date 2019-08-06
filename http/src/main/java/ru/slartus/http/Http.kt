@@ -3,11 +3,15 @@ package ru.slartus.http
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.os.FileUtils
 import android.support.v4.util.Pair
 import android.util.Log
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okio.Buffer
+import java.io.File
 import java.io.IOException
+import java.io.UnsupportedEncodingException
 import java.net.CookieManager
 import java.net.CookiePolicy.ACCEPT_ALL
 import java.util.*
@@ -131,6 +135,44 @@ class Http private constructor(context: Context) {
             throw HttpException(ex)
         }
 
+    }
+
+    fun uploadFile(url: String, fileName: String, filePath: String, fileFormDataName: String,
+                   formDataParts: List<Pair<String, String>> = ArrayList()): AppResponse {
+        val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
+        val file = File(filePath)
+
+
+        val MT = "image/png".toMediaTypeOrNull()
+        builder.addFormDataPart(fileFormDataName, fileName, RequestBody.create(MT, file)) // <-------
+        builder.addFormDataPart("Cache-Control", "max-age=0")
+        builder.addFormDataPart("Upgrade-Insecure-Reaquest", "1")
+        builder.addFormDataPart("Accept", "text-/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+        builder.addFormDataPart("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.84 Safari/537.36 OPR/38.0.2220.31")
+        builder.addFormDataPart("Accept-Language", "ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4")
+        builder.addFormDataPart("Referer", "https://savepice.ru/")
+        builder.addFormDataPart("Origin", "https://savepice.ru")
+        builder.addFormDataPart("X-Requested-With", "XMLHttpRequest")
+        if (formDataParts.isNotEmpty()) {
+            for (formDataPart in formDataParts.filter { it.first != null && it.second != null }) {
+                builder.addFormDataPart(formDataPart.first!!, formDataPart.second!!)
+            }
+        }
+        val requestBody = builder.build()
+        val request = Request.Builder()
+                .addHeader("User-Agent", USER_AGENT)
+                .url(url)
+                .post(requestBody)
+                .build()
+        try {
+            val response = client.newCall(request).execute()
+            if (!response.isSuccessful) throw HttpException("Unexpected code $response")
+
+            val body = response.body?.string()
+            return AppResponse(url, response.request.url.toString(), body)
+        } catch (ex: IOException) {
+            throw HttpException(ex)
+        }
     }
 
     private class LoggingInterceptor : Interceptor {

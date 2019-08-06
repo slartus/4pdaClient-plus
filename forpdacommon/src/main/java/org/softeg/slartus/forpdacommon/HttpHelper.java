@@ -345,7 +345,7 @@ public class HttpHelper {
     }
 
     protected static URI m_RedirectUri;
-    protected static String m_LastUrl;
+    private static String m_LastUrl;
 
 
     public static URI getRedirectUri() {
