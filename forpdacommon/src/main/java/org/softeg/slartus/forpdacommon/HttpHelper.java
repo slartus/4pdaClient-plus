@@ -1,11 +1,8 @@
 package org.softeg.slartus.forpdacommon;
 
-import android.util.Log;
-
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
@@ -84,19 +81,15 @@ import java.util.zip.GZIPInputStream;
 public class HttpHelper {
     protected static final String TAG = "HttpHelper";
     protected static final String CONTENT_TYPE = "Content-Type";
-    protected static final int POST_TYPE = 1;
-    protected static final int GET_TYPE = 2;
-    protected static final int DOWNLOAD_TYPE = 3;
+    private static final int POST_TYPE = 1;
+    private static final int GET_TYPE = 2;
     public static final String GZIP = "gzip";
     public static final String ACCEPT_ENCODING = "Accept-Encoding";
 
-    public static String HTTP_CONTENT_CHARSET = "windows-1251";
+    private static String HTTP_CONTENT_CHARSET = "windows-1251";
     public static String USER_AGENT = "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Mobile Safari/537.36";
     public static String FULL_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36";
-    public static final String MIME_FORM_ENCODED = "application/x-www-form-urlencoded";
-    public static final String MIME_TEXT_PLAIN = "text/plain";
-    public static final String HTTP_RESPONSE = "HTTP_RESPONSE";
-    public static final String HTTP_RESPONSE_ERROR = "HTTP_RESPONSE_ERROR";
+    private static final String MIME_FORM_ENCODED = "application/x-www-form-urlencoded";
 
     // Establish client once, as static field with static setup block.
     // (This is a best practice in HttpClient docs - but will leave reference until *process* stopped on Android.)
@@ -110,23 +103,24 @@ public class HttpHelper {
         return client.getCookieStore().getCookies();
     }
 
-    public void writeExternalCookies(String cookiesFile) throws Exception {
+    protected void writeExternalCookies(String cookiesFile) throws Exception {
 
         if (!FileUtils.mkDirs(cookiesFile))
             throw new Exception("Не могу создать директорию '" + cookiesFile + "' для cookies");
 
-        new File(cookiesFile).createNewFile();
-        FileOutputStream fw = new FileOutputStream(cookiesFile, false);
+        if(new File(cookiesFile).createNewFile()) {
+            FileOutputStream fw = new FileOutputStream(cookiesFile, false);
 
-        ObjectOutput out = new ObjectOutputStream(fw);
-        final List<Cookie> cookies = client.getCookieStore().getCookies();
+            ObjectOutput out = new ObjectOutputStream(fw);
+            final List<Cookie> cookies = client.getCookieStore().getCookies();
 
 
-        for (Cookie cookie : cookies) {
-            new SerializableCookie(cookie).writeExternal(out);
+            for (Cookie cookie : cookies) {
+                new SerializableCookie(cookie).writeExternal(out);
+            }
+            out.close();
+            fw.close();
         }
-        out.close();
-        fw.close();
     }
 
     protected RuntimeException mLeakedException = new IllegalStateException(
@@ -153,7 +147,7 @@ public class HttpHelper {
         }
     }
 
-    public ClientConnectionManager getConnectionManager() {
+    private ClientConnectionManager getConnectionManager() {
         return client.getConnectionManager();
     }
 
@@ -162,7 +156,7 @@ public class HttpHelper {
     }
 
 
-    public static void readExternalCookies(CookieStore cookieStore, String cookieFile) throws IOException {
+    private static void readExternalCookies(CookieStore cookieStore, String cookieFile) throws IOException {
         FileInputStream fw = new FileInputStream(cookieFile);
         ObjectInput input = new ObjectInputStream(fw);
         while (true) {
@@ -248,7 +242,7 @@ public class HttpHelper {
 
             public List<Cookie> getCookies() {
                 if (m_Cookies == null) {
-                    m_Cookies = new ArrayList<Cookie>();
+                    m_Cookies = new ArrayList<>();
                     try {
                         readExternalCookies(this, cookiesPath);
                     } catch (IOException ignoreEx) {
@@ -276,7 +270,7 @@ public class HttpHelper {
         // add gzip decompressor to handle gzipped content in responses
         // (default we *do* always send accept encoding gzip cat_name in request)
         client.addResponseInterceptor(new HttpResponseInterceptor() {
-            public void process(final HttpResponse response, final HttpContext context) throws HttpException, IOException {
+            public void process(final HttpResponse response, final HttpContext context) {
                 HttpEntity entity = response.getEntity();
                 Header contentEncodingHeader = entity.getContentEncoding();
 
@@ -307,6 +301,7 @@ public class HttpHelper {
 
                 Matcher matcher = Pattern.compile("(http://sdl\\d+.4pda.ru/\\d+/)(.*?)(\\?.*)").matcher(location);
                 if (matcher.find()) {
+                    //noinspection deprecation
                     location = matcher.group(1) + URLEncoder.encode(matcher.group(2)) + matcher.group(3);
                 } else
                     location = location.replaceAll(" ", "%20");
@@ -400,7 +395,7 @@ public class HttpHelper {
      * Perform a simplified HTTP POST operation.
      */
     public String performPost(final String url, final Map<String, String> params) throws IOException {
-        return performRequest(HttpHelper.MIME_FORM_ENCODED, url, null, null, null, params, HttpHelper.POST_TYPE, HTTP_CONTENT_CHARSET);
+        return performRequest(url, params, HTTP_CONTENT_CHARSET);
     }
 
     /**
@@ -411,11 +406,11 @@ public class HttpHelper {
     }
 
     public String performPost(final String url, final Map<String, String> params, String encoding) throws IOException {
-        return performRequest(HttpHelper.MIME_FORM_ENCODED, url, null, null, null, params, HttpHelper.POST_TYPE, encoding);
+        return performRequest(url, params, encoding);
     }
 
     protected static URI m_RedirectUri;
-    protected static String m_LastUrl;
+    private static String m_LastUrl;
 
     public static URI getRedirectUri() {
         return m_RedirectUri;
@@ -426,8 +421,8 @@ public class HttpHelper {
     }
 
 
-    private String performRequest(final String contentType, String url, final String user, final String pass,
-                                  final Map<String, String> headers, final Map<String, String> params, final int requestType,
+    private String performRequest(String url,
+                                  final Map<String, String> params,
                                   String encoding) throws IOException {
         List<NameValuePair> nvps = null;
         if ((params != null) && (params.size() > 0)) {
@@ -436,7 +431,7 @@ public class HttpHelper {
                 nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
             }
         }
-        return performRequest(contentType, url, user, pass, headers, nvps, requestType, encoding);
+        return performRequest(HttpHelper.MIME_FORM_ENCODED, url, null, null, null, nvps, HttpHelper.POST_TYPE, encoding);
     }
 
     //
@@ -470,7 +465,7 @@ public class HttpHelper {
         }
         if (sendHeaders.size() > 0) {
             client.addRequestInterceptor(new HttpRequestInterceptor() {
-                public void process(final HttpRequest request, final HttpContext context) throws HttpException, IOException {
+                public void process(final HttpRequest request, final HttpContext context) {
                     for (String key : sendHeaders.keySet()) {
                         if (!request.containsHeader(key)) {
                             request.addHeader(key, sendHeaders.get(key));
@@ -517,7 +512,7 @@ public class HttpHelper {
     protected void checkStatus(StatusLine status, String url) throws IOException {
         int statusCode = status.getStatusCode();
         if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_PARTIAL_CONTENT) {
-            if (statusCode != 200 && statusCode != 300) {
+            if (statusCode != 300) {
                 if (statusCode >= 500 && statusCode < 600)
                     throw new ShowInBrowserException("Сайт не отвечает: " + statusCode + " " + AppHttpStatus.getReasonPhrase(statusCode, status.getReasonPhrase()), url);
                 else if (statusCode == 404)
@@ -530,7 +525,7 @@ public class HttpHelper {
 
 
     static class GzipDecompressingEntity extends HttpEntityWrapper {
-        public GzipDecompressingEntity(final HttpEntity entity) {
+        GzipDecompressingEntity(final HttpEntity entity) {
             super(entity);
         }
 

@@ -1,12 +1,7 @@
 package org.softeg.slartus.forpdaplus;
 
-import android.util.Log;
-
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpException;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
@@ -16,7 +11,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.protocol.HttpContext;
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
@@ -41,15 +36,15 @@ import java.util.Map;
  */
 public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
 
-    public HttpHelper() throws IOException {
+    public HttpHelper() {
         this(USER_AGENT);
     }
 
-    public HttpHelper(String userAgent) throws IOException {
+    HttpHelper(String userAgent) {
         super(userAgent, PreferencesActivity.getCookieFilePath());
     }
 
-    public void writeExternalCookies() throws Exception {
+    void writeExternalCookies() throws Exception {
         String cookiesFile = PreferencesActivity.getCookieFilePath();
         writeExternalCookies(cookiesFile);
     }
@@ -71,8 +66,8 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
 //                .build();
 //    }
 
-    public String uploadFile(final String url, String filePath, Map<String, String> additionalHeaders,
-                             final ProgressState progress) throws Exception {
+    String uploadFile(final String url, String filePath, Map<String, String> additionalHeaders,
+                      final ProgressState progress) throws Exception {
         final Map<String, String> sendHeaders = new HashMap<>();
         sendHeaders.put(HttpHelper.CONTENT_TYPE, "multipart/form-data;");
         if (!sendHeaders.containsKey(HttpHelper.ACCEPT_ENCODING)) {
@@ -170,9 +165,6 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
             public void writeTo(OutputStream outstream) throws IOException {
 
                 class ProxyOutputStream extends FilterOutputStream {
-                    /**
-                     * @author Stephen Colebourne
-                     */
                     private long totalSent;
 
                     ProxyOutputStream(OutputStream proxy) {
@@ -185,11 +177,11 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
                         out.write(idx);
                     }
 
-                    public void write(byte[] bts) throws IOException {
+                    public void write(@NotNull byte[] bts) throws IOException {
                         out.write(bts);
                     }
 
-                    public void write(byte[] bts, int st, int end)
+                    public void write(@NotNull byte[] bts, int st, int end)
                             throws IOException {
                         totalSent += end;
                         progress.update("", (int) ((totalSent / (float) totalSize) * 100));
@@ -230,18 +222,16 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
 
     public HttpResponse getDownloadResponse(String url, long range) throws IOException {
         // process headers using request interceptor
-        final Map<String, String> sendHeaders = new HashMap<String, String>();
+        final Map<String, String> sendHeaders = new HashMap<>();
         sendHeaders.put(HttpHelper.ACCEPT_ENCODING, HttpHelper.GZIP);
         if (range != 0)
             sendHeaders.put("Range", "bytes=" + range + "-");
 
         if (sendHeaders.size() > 0) {
-            client.addRequestInterceptor(new HttpRequestInterceptor() {
-                public void process(final HttpRequest request, final HttpContext context) throws HttpException, IOException {
-                    for (String key : sendHeaders.keySet()) {
-                        if (!request.containsHeader(key)) {
-                            request.addHeader(key, sendHeaders.get(key));
-                        }
+            client.addRequestInterceptor((request, context) -> {
+                for (String key : sendHeaders.keySet()) {
+                    if (!request.containsHeader(key)) {
+                        request.addHeader(key, sendHeaders.get(key));
                     }
                 }
             });
