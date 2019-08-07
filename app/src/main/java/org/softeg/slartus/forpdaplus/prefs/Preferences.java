@@ -4,12 +4,10 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import org.softeg.slartus.forpdaapi.ClientPreferences;
-import org.softeg.slartus.forpdaapi.Forum;
 import org.softeg.slartus.forpdacommon.Connectivity;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsPagerBrickInfo;
 
@@ -22,29 +20,14 @@ import java.util.Set;
  * Created by slartus on 23.02.14.
  */
 public class Preferences {
-    public static Boolean isLoadShortUserInfo() {
-        return App.getInstance().getPreferences().getBoolean("isLoadShortUserInfo", false);
-    }
 
-    public static Boolean isLoadImagesFromWeb(String listName) {
-        return isLoadImages(listName + ".LoadsImages");
-    }
-
-    public static Boolean isLoadImages(String prefsKey) {
-        int loadImagesType = ExtPreferences.parseInt(App.getInstance().getPreferences(), prefsKey, 1);
+    private static Boolean isLoadImages() {
+        int loadImagesType = ExtPreferences.parseInt(App.getInstance().getPreferences(), "news.list.loadimages", 1);
         if (loadImagesType == 2) {
             return Connectivity.isConnectedWifi(App.getContext());
         }
 
         return loadImagesType == 1;
-    }
-
-    public static Boolean isHideActionBar() {
-        return App.getInstance().getPreferences().getBoolean("actionbar.hide", true);
-    }
-
-    public static void setHideActionBar(Boolean hide) {
-        App.getInstance().getPreferences().edit().putBoolean("actionbar.hide", hide).apply();
     }
 
     public static Boolean isHideFab() {
@@ -53,18 +36,6 @@ public class Preferences {
 
     public static void setHideFab(Boolean hide) {
         App.getInstance().getPreferences().edit().putBoolean("fab.hide", hide).apply();
-    }
-
-    public static Boolean isBrowserView() {
-        return App.getInstance().getPreferences().getBoolean("theme.BrowserStyle", true);
-    }
-
-    public static void setBrowserView(Boolean view) {
-        App.getInstance().getPreferences().edit().putBoolean("theme.BrowserStyle", view).apply();
-    }
-
-    public static Boolean notifyBetaVersions() {
-        return App.getInstance().getPreferences().getBoolean("notify.beta_version", false);
     }
 
     public static void setHideArrows(Boolean hide) {
@@ -101,17 +72,17 @@ public class Preferences {
         public static void addLastAction(String name) {
             String[] lastActions = App.getInstance().getPreferences().getString("lists.last_actions", "").split("\\|");
 
-            String newValue = name + "|";
+            StringBuilder newValue = new StringBuilder(name + "|");
             int max = 5;
             for (String nm : lastActions) {
                 if (TextUtils.isEmpty(nm)) continue;
                 if (nm.equals(name)) continue;
 
-                newValue += nm + "|";
+                newValue.append(nm).append("|");
                 max--;
                 if (max == 0) break;
             }
-            App.getInstance().getPreferences().edit().putString("lists.last_actions", newValue).apply();
+            App.getInstance().getPreferences().edit().putString("lists.last_actions", newValue.toString()).apply();
         }
 
         public static String[] getLastActions() {
@@ -135,7 +106,7 @@ public class Preferences {
             }
         }
 
-        public static void setListSort(String listName, String value) {
+        static void setListSort(String listName, String value) {
             App.getInstance().getPreferences().edit().putString(listName + ".list.sort", value).apply();
         }
 
@@ -149,16 +120,6 @@ public class Preferences {
 
         public static String getStartForumId() {
             return App.getInstance().getPreferences().getString(ForumBrickInfo.NAME + ".start_forum_id", null);
-        }
-
-        public static Forum getStartForum() {
-            String id = App.getInstance().getPreferences().getString(ForumBrickInfo.NAME + ".start_forum_id", null);
-            if (TextUtils.isEmpty(id))
-                return null;
-            String title = App.getInstance().getPreferences().getString(ForumBrickInfo.NAME + ".start_forum_title", null);
-            if (TextUtils.isEmpty(title))
-                return null;
-            return new Forum(id, title);
         }
 
         public static void setStartForum(String id, String title) {
@@ -209,26 +170,16 @@ public class Preferences {
 
         public static void setShowAvatarsOpt(int value) {
             App.getInstance().getPreferences()
-                    .edit().putInt("topic.show_avatar_opt", value).commit();
+                    .edit().putInt("topic.show_avatar_opt", value).apply();
         }
 
         public static int getFontSize() {
             return Preferences.getFontSize("theme");
         }
 
-        public static void setFontSize(int value) {
-            Preferences.setFontSize("theme", value);
-        }
-
         public static int getHistoryLimit() {
             return ExtPreferences.parseInt(App.getInstance().getPreferences(), "topic.history_limit", 5);
         }
-
-        public static void setHistoryLimit(int value) {
-            App.getInstance().getPreferences()
-                    .edit().putInt("topic.history_limit", value).commit();
-        }
-
 
         public static class Post {
 
@@ -271,7 +222,7 @@ public class Preferences {
             public static Set<String> getEmoticFavorites() {
 
                 try {
-                    return App.getInstance().getPreferences().getStringSet("topic.post.emotics_favorites", new HashSet<String>());
+                    return App.getInstance().getPreferences().getStringSet("topic.post.emotics_favorites", new HashSet<>());
                 } catch (Throwable ignored) {
                     return new HashSet<>();
                 }
@@ -285,7 +236,7 @@ public class Preferences {
             return App.getInstance().getPreferences().getBoolean("webviewCompatMode", false);
         }
 
-        public static void setSystemDir(String value) {
+        static void setSystemDir(String value) {
             App.getInstance().getPreferences().edit().putString("path.system_path", value).apply();
         }
 
@@ -294,6 +245,7 @@ public class Preferences {
             if (dir == null)
                 dir = App.getInstance().getExternalFilesDir(null);
 
+            assert dir != null;
             String res = App.getInstance().getPreferences().getString("path.system_path", dir.getPath());
             if (!res.endsWith(File.separator))
                 res = res.concat(File.separator);
@@ -317,10 +269,10 @@ public class Preferences {
             return isPrefsButton(keyCode, "keys.scrollDown", "25");
         }
 
-        public static boolean isPrefsButton(int keyCode, String prefKey, String defaultValue) {
+        static boolean isPrefsButton(int keyCode, String prefKey, String defaultValue) {
             String scrollUpKeys = "," + App.getInstance().getPreferences()
                     .getString(prefKey, defaultValue).replace(" ", "") + ",";
-            return (scrollUpKeys.contains("," + Integer.toString(keyCode) + ","));
+            return (scrollUpKeys.contains("," + keyCode + ","));
         }
 
         public static boolean isDevSavePage() {
@@ -345,15 +297,6 @@ public class Preferences {
 
         public static String getDrawerMenuPosition() {
             return App.getInstance().getPreferences().getString("system.drawermenuposition", "left");
-        }
-
-        public static String getDownloadFilesDir() {
-            String res = App.getInstance().getPreferences().getString("downloads.path", DownloadsService.getDownloadDir(App.getContext()));
-            if (TextUtils.isEmpty(res))
-                return res;
-            if (!res.endsWith(File.separator))
-                res += File.separator;
-            return res;
         }
 
         public static void setEvaluateJavascriptEnabled(boolean value) {
@@ -381,42 +324,21 @@ public class Preferences {
 
         public static class List {
             public static Boolean isLoadImages() {
-                return Preferences.isLoadImages("news.list.loadimages");
+                return Preferences.isLoadImages();
             }
 
             public static int getNewsListViewId() {
 
-                switch (App.getInstance().getPreferences().getString("news.list.view", "full")) {
-                    case "medium":
-                        return R.layout.item_news_medium;
-                    default:
-                        return R.layout.item_news;
+                if ("medium".equals(App.getInstance().getPreferences().getString("news.list.view", "full"))) {
+                    return R.layout.item_news_medium;
                 }
+                return R.layout.item_news;
             }
         }
     }
 
     public static class Menu {
-        public static boolean getGroupExpanded(int groupIndex) {
-            return App.getInstance().getPreferences().getBoolean("menu.GroupExpanded." + groupIndex, true);
-        }
 
-        public static void setGroupExpanded(int groupIndex, Boolean expanded) {
-            App.getInstance().getPreferences().edit().putBoolean("menu.GroupExpanded." + groupIndex, expanded).apply();
-        }
-    }
-
-    public static class Search {
-    }
-
-    public static class Attention {
-        public static void setAttentionId(String value) {
-            App.getInstance().getPreferences().edit().putString("attention.id", value).apply();
-        }
-
-        public static String getAttentionId() {
-            return App.getInstance().getPreferences().getString("attention.id", null);
-        }
     }
 
     public static class Notice {
@@ -440,32 +362,28 @@ public class Preferences {
     }
 
     public static class Notifications {
-        public static void setSound(Uri soundUri) {
+        static void setSound(Uri soundUri) {
             ClientPreferences.Notifications.setSound(App.getContext(), soundUri);
         }
 
-        public static Uri getSound() {
+        static Uri getSound() {
             return ClientPreferences.Notifications.getSound(App.getContext());
         }
 
-        public static boolean isDefaultSound() {
-            return ClientPreferences.Notifications.isDefaultSound(App.getContext());
-        }
-
-        public static class SilentMode {
-            public static Calendar getStartTime() {
+        static class SilentMode {
+            static Calendar getStartTime() {
                 return ClientPreferences.Notifications.SilentMode.getStartTime(App.getContext());
             }
 
-            public static void setStartTime(int hourOfDay, int minute) {
+            static void setStartTime(int hourOfDay, int minute) {
                 ClientPreferences.Notifications.SilentMode.setTime(App.getContext(), "notifiers.silent_mode.start_time", hourOfDay, minute);
             }
 
-            public static Calendar getEndTime() {
+            static Calendar getEndTime() {
                 return ClientPreferences.Notifications.SilentMode.getTime(App.getContext(), "notifiers.silent_mode.end_time");
             }
 
-            public static void setEndTime(int hourOfDay, int minute) {
+            static void setEndTime(int hourOfDay, int minute) {
                 ClientPreferences.Notifications.SilentMode.setTime(App.getContext(), "notifiers.silent_mode.end_time", hourOfDay, minute);
             }
         }
@@ -491,11 +409,4 @@ public class Preferences {
         return App.getInstance().getPreferences().getBoolean("NYDone", false);
     }
 
-    public static void newForPdaShowDone() {
-        App.getInstance().getPreferences().edit().putBoolean("newforpda", true).apply();
-    }
-
-    public static boolean isNewForPdaShow() {
-        return App.getInstance().getPreferences().getBoolean("newforpda", false);
-    }
 }

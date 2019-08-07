@@ -37,7 +37,7 @@ internal class UpdateForumStructTask internal constructor(val context: WeakRefer
             if (isCancelled) return null
 
             val res = ForumsApi.loadForums(Client.getInstance(), object : ProgressState() {
-                override fun update(message: String, percents: Int) {
+                override fun update(message: String, percents: Long) {
                     publishProgress(String.format("%s %d", message, percents))
                 }
             })

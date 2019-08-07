@@ -156,9 +156,9 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
 
             final Preference downloadsPathPreference = findPreference("downloads.path");
-            downloadsPathPreference.setSummary(DownloadsService.getDownloadDir(App.getInstance()));
+            downloadsPathPreference.setSummary(DownloadsService.getDownloadDir());
             ((EditTextPreference) downloadsPathPreference)
-                    .setText(DownloadsService.getDownloadDir(App.getInstance()));
+                    .setText(DownloadsService.getDownloadDir());
             downloadsPathPreference.setOnPreferenceChangeListener((preference13, o) -> {
 
                 if (showDownloadsPath(o)) {

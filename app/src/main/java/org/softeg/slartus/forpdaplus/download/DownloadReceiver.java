@@ -21,8 +21,6 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.DownloadTask;
 import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
 
-import java.io.UnsupportedEncodingException;
-
 
 /**
  * User: slinkin
@@ -38,10 +36,12 @@ public class DownloadReceiver extends ResultReceiver {
         m_Handler = handler;
         m_Context = context;
     }
+
     private static int getNotificationIcon() {
         boolean whiteIcon = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
         return whiteIcon ? R.drawable.notify_icon : R.drawable.icon_mat;
     }
+
     @Override
     protected void onReceiveResult(int resultCode, Bundle resultData) {
         super.onReceiveResult(resultCode, resultData);
@@ -50,7 +50,7 @@ public class DownloadReceiver extends ResultReceiver {
 
         final DownloadTask downloadTask = Client.getInstance().getDownloadTasks().getById(notificationId);
 
-        if(downloadTask==null)
+        if (downloadTask == null)
             return;
 
         final Context context = m_Context;
@@ -59,7 +59,7 @@ public class DownloadReceiver extends ResultReceiver {
             case DownloadTask.STATE_ERROR:
                 Intent i = new Intent(context, MainActivity.class);
 
-                Notification notif = null;
+                Notification notif;
                 notif = NotificationBridge.createBridge(
                         context,
                         getNotificationIcon(),
@@ -71,75 +71,61 @@ public class DownloadReceiver extends ResultReceiver {
                         .setAutoCancel(true)
                         .createNotification();
 
+                assert mNotificationManager != null;
                 mNotificationManager.notify(downloadTask.getUrl(), notificationId, notif);
                 break;
             case DownloadTask.STATE_CANCELED: {
                 Intent intent = new Intent(context, MainActivity.class);
                 intent.putExtra("template", DownloadFragment.TEMPLATE);
 
-                Notification notification = null;
-                try {
-                    notification = NotificationBridge.createBridge(
-                            context,
-                            getNotificationIcon(),
-                            context.getString(R.string.DownloadAborted),
-                            System.currentTimeMillis())
-                            .setContentTitle(downloadTask.getFileName())
-                            .setContentText(DownloadTask.getStateMessage(downloadTask.getState(), downloadTask.getEx()))
-                            .setContentIntent(PendingIntent.getActivity(context, 0, intent, 0))
-                            .setAutoCancel(true)
-                            .createNotification();
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+                Notification notification;
 
+                notification = NotificationBridge.createBridge(
+                        context,
+                        getNotificationIcon(),
+                        context.getString(R.string.DownloadAborted),
+                        System.currentTimeMillis())
+                        .setContentTitle(downloadTask.getFileName())
+                        .setContentText(DownloadTask.getStateMessage(downloadTask.getState(), downloadTask.getEx()))
+                        .setContentIntent(PendingIntent.getActivity(context, 0, intent, 0))
+                        .setAutoCancel(true)
+                        .createNotification();
+
+
+                assert mNotificationManager != null;
                 mNotificationManager.notify(downloadTask.getUrl(), notificationId, notification);
                 return;
             }
             case DownloadTask.STATE_SUCCESSFULL: {
                 Intent intent = getRunFileIntent(downloadTask.getOutputFile());
 
-                Notification notification = null;
-                try {
-                    notification = NotificationBridge.createBridge(
-                            context,
-                            getNotificationIcon(),
-                            context.getString(R.string.DownloadComplete),
-                            System.currentTimeMillis())
-                            .setContentTitle(downloadTask.getFileName())
-                            .setContentText(DownloadTask.getStateMessage(downloadTask.getState(), downloadTask.getEx()))
-                            .setContentIntent(PendingIntent.getActivity(context, 0, intent, 0))
-                            .setAutoCancel(true)
-                            .createNotification();
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+                Notification notification;
 
+                notification = NotificationBridge.createBridge(
+                        context,
+                        getNotificationIcon(),
+                        context.getString(R.string.DownloadComplete),
+                        System.currentTimeMillis())
+                        .setContentTitle(downloadTask.getFileName())
+                        .setContentText(DownloadTask.getStateMessage(downloadTask.getState(), downloadTask.getEx()))
+                        .setContentIntent(PendingIntent.getActivity(context, 0, intent, 0))
+                        .setAutoCancel(true)
+                        .createNotification();
+
+
+                assert mNotificationManager != null;
                 mNotificationManager.notify(downloadTask.getUrl(), notificationId, notification);
 
-                m_Handler.post(new Runnable() {
-                    public void run() {
-                        try {
-                            Toast.makeText(context, downloadTask.getFileName() + "\n" + context.getString(R.string.DownloadComplete), Toast.LENGTH_SHORT).show();
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                m_Handler.post(() -> Toast.makeText(context, downloadTask.getFileName() + "\n" + context.getString(R.string.DownloadComplete), Toast.LENGTH_SHORT).show());
                 return;
             }
             default: {
-
-                try {
-                    showProgressNotification(context, notificationId, downloadTask.getFileName(), downloadTask.getPercents(), downloadTask.getUrl());
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
+                showProgressNotification(context, notificationId, downloadTask.getFileName(), downloadTask.getPercents(), downloadTask.getUrl());
             }
         }
     }
 
-    public static void showProgressNotification(Context context, int notificationId, String title, int percents, String tag) {
+    static void showProgressNotification(Context context, int notificationId, String title, int percents, String tag) {
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         Intent intent = new Intent(context, MainActivity.class);
@@ -156,12 +142,13 @@ public class DownloadReceiver extends ResultReceiver {
                 .setAutoCancel(true);
 
 
-        Notification notification = null;
-        
-            notificationBridge.setProgress(100, percents, false);
-            notification = notificationBridge.createNotification();
-        
+        Notification notification;
 
+        notificationBridge.setProgress(100, percents, false);
+        notification = notificationBridge.createNotification();
+
+
+        assert mNotificationManager != null;
         mNotificationManager.notify(tag, notificationId, notification);
     }
 
@@ -170,7 +157,7 @@ public class DownloadReceiver extends ResultReceiver {
         Intent newIntent = new Intent(Intent.ACTION_VIEW);
         String mimeType = myMime.getMimeTypeFromExtension(FileUtils.fileExt(filePath).substring(1));
         newIntent.setDataAndType(Uri.parse("file://" + filePath), mimeType);
-        newIntent.setFlags(newIntent.FLAG_ACTIVITY_NEW_TASK);
+        newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return newIntent;
     }
 }
