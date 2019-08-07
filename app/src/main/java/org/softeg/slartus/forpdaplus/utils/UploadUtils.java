@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.utils;
 
 import android.support.v4.util.Pair;
-import android.webkit.MimeTypeMap;
 
 import org.json.JSONObject;
 import org.softeg.slartus.forpdaapi.ProgressState;
@@ -9,7 +8,6 @@ import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,7 +65,14 @@ public class UploadUtils {
 
         final MediaType mediaType = MediaType.parse("image/png");
 
-        builder.addFormDataPart("file", String.valueOf(RequestBody.create(mediaType, file)));
+        String nameValue = "";
+        try {
+            nameValue = FileUtils.getFileNameFromUrl(newFilePath);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        builder.addFormDataPart("file",nameValue,RequestBody.create(mediaType, file));
         builder.addFormDataPart("Cache-Control", "max-age=0");
         builder.addFormDataPart("Upgrade-Insecure-Reaquest", "1");
         builder.addFormDataPart("Accept", "text-/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
@@ -88,19 +93,16 @@ public class UploadUtils {
                 .build();
 
         OkHttpClient client = new OkHttpClient.Builder().build();
-        try {
-            Response response = client.newCall(request).execute();
-            if (response.isSuccessful()) {
-                String res = response.body().string();
 
-                JSONObject jsonObject = new JSONObject(res);
-                if (jsonObject.optBoolean("error", false)) {
-                    throw new NotReportException(jsonObject.optString("text"));
-                }
-                return jsonObject.optString("redirect_path").replace("/uploaded/", "/uploads/").replace(".html", "");
+        Response response = client.newCall(request).execute();
+        if (response.isSuccessful()) {
+            String res = response.body().string();
+
+            JSONObject jsonObject = new JSONObject(res);
+            if (jsonObject.optBoolean("error", false)) {
+                throw new NotReportException(jsonObject.optString("text"));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            return jsonObject.optString("redirect_path").replace("/uploaded/", "/uploads/").replace(".html", "");
         }
         return null;
     }
