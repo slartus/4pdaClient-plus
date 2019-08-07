@@ -11,10 +11,12 @@ class URIUtils {
                     Uri.Builder()
                             .scheme(scheme)
                             .authority(authority)
-                            .appendPath(path)
 
+            path.split("/").forEach {
+                builder.appendPath(it)
+            }
             params.forEach {
-                builder.appendQueryParameter(it.value,URLEncoder.encode(it.value, encoding))
+                builder.appendQueryParameter(it.name,URLEncoder.encode(it.value, encoding))
             }
             return builder.build()
         }
