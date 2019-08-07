@@ -14,20 +14,14 @@ import android.os.Environment;
 import android.os.ResultReceiver;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-
 
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.HttpHelper;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.ActionSelectDialogFragment;
 import org.softeg.slartus.forpdaplus.classes.DownloadTask;
@@ -36,12 +30,10 @@ import org.softeg.slartus.forpdaplus.db.DownloadsTable;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.net.HttpCookie;
-import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
@@ -56,51 +48,7 @@ import ru.slartus.http.Http;
  * Time: 9:58
  */
 public class DownloadsService extends IntentService {
-
-    public static Integer notification_text_color = null;
-    public static float notification_text_size = -1;
-    private final String COLOR_SEARCH_RECURSE_TIP = "SOME_SAMPLE_TEXT";
     private final static int BUFFER_SIZE = 1024 * 8;
-
-
-    private boolean recurseGroup(ViewGroup gp) {
-        final int count = gp.getChildCount();
-        for (int i = 0; i < count; ++i) {
-            if (gp.getChildAt(i) instanceof TextView) {
-                final TextView text = (TextView) gp.getChildAt(i);
-                final String szText = text.getText().toString();
-                if (COLOR_SEARCH_RECURSE_TIP.equals(szText)) {
-                    notification_text_color = text.getTextColors().getDefaultColor();
-                    notification_text_size = text.getTextSize();
-                    DisplayMetrics metrics = new DisplayMetrics();
-                    WindowManager systemWM = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-                    systemWM.getDefaultDisplay().getMetrics(metrics);
-                    notification_text_size /= metrics.scaledDensity;
-                    return true;
-                }
-            } else if (gp.getChildAt(i) instanceof ViewGroup)
-                return recurseGroup((ViewGroup) gp.getChildAt(i));
-        }
-        return false;
-    }
-    /*
-    private void extractColors() {
-        if (notification_text_color != null)
-            return;
-
-        try {
-            Notification ntf = new Notification();
-            //noinspection deprecation
-            ntf.setLatestEventInfo(this, COLOR_SEARCH_RECURSE_TIP, "Utest", null);
-            LinearLayout group = new LinearLayout(this);
-            ViewGroup event = (ViewGroup) ntf.contentView.apply(this, group);
-            recurseGroup(event);
-            group.removeAllViews();
-        } catch (Exception e) {
-            // notification_text_color = android.R.color.black;
-        }
-    }
-    */
 
     public static final String DOWNLOAD_FILE_ID_KEY = "DownloadFileIdKey";
 
@@ -110,10 +58,9 @@ public class DownloadsService extends IntentService {
 
     public DownloadsService() {
         super("DownloadsService");
-
     }
 
-    public static String getDownloadDir(Context context) {
+    public static String getDownloadDir() {
         return App.getInstance().getPreferences().getString("downloads.path", getDefaultDownloadPath());
     }
 
@@ -213,23 +160,23 @@ public class DownloadsService extends IntentService {
     private static void clientDownload(final Context context1, final String url, String tempFilePath,
                                        final int notificationId) throws UnsupportedEncodingException {
         final String fileName = FileUtils.getFileNameFromUrl(url);
-
-        if (TextUtils.isEmpty(tempFilePath)) {
-            final String filePath = FileUtils.combine(DownloadsService.getDownloadDir(context1),
-                    FileUtils.getFileNameFromUrl(url) + "_download");
-            final File file = new File(filePath);
-            if (file.exists()) {
-                new MaterialDialog.Builder(context1)
-                        .title(R.string.attention)
-                        .content(R.string.ask_file_need_download)
-                        .positiveText(R.string.continue_download)
-                        .negativeText(R.string.re_download)
-                        .onPositive((dialog, which) -> startDownload(context1, url, filePath, notificationId, fileName))
-                        .onNegative((dialog, which) -> startDownload(context1, url, null, notificationId, fileName))
-                        .show();
-                return;
-            }
-        }
+// TODO: докачка файла
+//        if (TextUtils.isEmpty(tempFilePath)) {
+//            final String filePath = FileUtils.combine(DownloadsService.getDownloadDir(),
+//                    FileUtils.getFileNameFromUrl(url) + "_download");
+//            final File file = new File(filePath);
+//            if (file.exists()) {
+//                new MaterialDialog.Builder(context1)
+//                        .title(R.string.attention)
+//                        .content(R.string.ask_file_need_download)
+//                        .positiveText(R.string.continue_download)
+//                        .negativeText(R.string.re_download)
+//                        .onPositive((dialog, which) -> startDownload(context1, url, filePath, notificationId, fileName))
+//                        .onNegative((dialog, which) -> startDownload(context1, url, null, notificationId, fileName))
+//                        .show();
+//                return;
+//            }
+//        }
 
         startDownload(context1, url, tempFilePath, notificationId, fileName);
     }
@@ -252,10 +199,10 @@ public class DownloadsService extends IntentService {
 
 
     public void downloadFile(ResultReceiver receiver, int notificationId, String tempFilePath) {
-        DownloadTask downloadTask = null;
+        DownloadTask downloadTask;
 
 
-        String dirPath = getDownloadDir(getApplicationContext());
+        String dirPath = getDownloadDir();
         downloadTask = Client.getInstance().getDownloadTasks().getById(notificationId);
 
         if (downloadTask.getState() == DownloadTask.STATE_CANCELED) {
@@ -301,14 +248,14 @@ public class DownloadsService extends IntentService {
             int prevPercent = 0;
 
             Date lastUpdateTime = new Date();
-            Boolean first = true;
+            boolean first = true;
 
             // for test
 
             InputStream in = response.body().byteStream();
             FileOutputStream output = new FileOutputStream(downloadingFilePath, true);
 
-            byte data[] = new byte[BUFFER_SIZE];
+            byte[] data = new byte[BUFFER_SIZE];
             try {
                 while ((count = in.read(data)) != -1) {
                     if (downloadTask.getState() == DownloadTask.STATE_CANCELED) {
@@ -345,13 +292,13 @@ public class DownloadsService extends IntentService {
             if (!downloadingFile.renameTo(downloadedFile)) {
                 throw new NotReportException(App.getContext().getString(R.string.rename_file_exception) + downloadingFilePath + App.getContext().getString(R.string.combined_in) + filePath);
             }
-            downloadTask.setState(downloadTask.STATE_SUCCESSFULL);
+            downloadTask.setState(DownloadTask.STATE_SUCCESSFULL);
             sendDownloadProgressState(receiver, notificationId);
             DownloadsTable.endRow(downloadTask);
 
         } catch (Exception ex) {
             downloadTask.setEx(ex);
-            downloadTask.setState(downloadTask.STATE_ERROR);
+            downloadTask.setState(DownloadTask.STATE_ERROR);
             DownloadsTable.endRow(downloadTask);
             sendDownloadProgressState(receiver, notificationId);
 

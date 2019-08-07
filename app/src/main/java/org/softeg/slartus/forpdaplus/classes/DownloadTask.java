@@ -28,7 +28,7 @@ public class DownloadTask {
     public static final int STATE_ERROR = 3;
     public static final int STATE_CANCELED = 4;
 
-    private ArrayList<Client.OnProgressPositionChangedListener> m_OnStateListeners = new ArrayList<Client.OnProgressPositionChangedListener>();
+    private ArrayList<Client.OnProgressPositionChangedListener> m_OnStateListeners = new ArrayList<>();
     private String m_Url;
     private String outputFile;
     private int m_State = STATE_PENDING;
@@ -39,10 +39,10 @@ public class DownloadTask {
     private Date m_CreateDate;
     private Date m_StateChangedDate;
     private int m_NotificationId;
-    private long m_Range;
+
     private String m_DownloadingFilePath;
 
-    public DownloadTask(String url, int notificationId) {
+    DownloadTask(String url, int notificationId) {
 
         m_Url = url;
         m_NotificationId = notificationId;
@@ -124,7 +124,7 @@ public class DownloadTask {
         return ex;
     }
 
-    public void addStateListener(Client.OnProgressPositionChangedListener stateListener) {
+    void addStateListener(Client.OnProgressPositionChangedListener stateListener) {
         if (stateListener != null) {
             m_OnStateListeners.add(stateListener);
         }
@@ -159,14 +159,14 @@ public class DownloadTask {
         return m_Url;
     }
 
-    public String getFileName() throws UnsupportedEncodingException {
+    public String getFileName() {
         try{
             if (TextUtils.isEmpty(outputFile))
                 return FileUtils.getFileNameFromUrl(m_Url);
 
             int index = outputFile.lastIndexOf("/");
 
-            return outputFile.substring(index + 1, outputFile.length());
+            return outputFile.substring(index + 1);
         }catch (Throwable ignored){
             return m_Url;
         }
@@ -185,10 +185,6 @@ public class DownloadTask {
         return m_ContentLength;
     }
 
-    public void setM_ContentLength(long value) {
-        m_ContentLength = value;
-    }
-
 
     public long getDownloadedSize() {
         return downloadedSize;
@@ -203,14 +199,6 @@ public class DownloadTask {
             m_State = STATE_CANCELED;
             doStateChanged();
         }
-    }
-
-    public void setCreateDate(Date value) {
-        m_CreateDate = value;
-    }
-
-    public Date getCreateDate() {
-        return m_CreateDate;
     }
 
     public Date getStateChangedDate() {
