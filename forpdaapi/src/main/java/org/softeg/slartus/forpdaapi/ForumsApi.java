@@ -11,7 +11,6 @@ import org.softeg.slartus.forpdacommon.BasicNameValuePair;
 import org.softeg.slartus.forpdacommon.NameValuePair;
 import org.softeg.slartus.forpdacommon.URIUtils;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,8 +58,8 @@ public class ForumsApi extends ArrayList<Forum> {
         return res;
     }
 
-    public static void loadCategoryForums(IHttpClient httpClient, Element boardForumRowElement, Forum parentForum,
-                                          ForumsData data, ProgressState progressState) throws Exception {
+    private static void loadCategoryForums(IHttpClient httpClient, Element boardForumRowElement, Forum parentForum,
+                                           ForumsData data, ProgressState progressState) throws Exception {
         if (boardForumRowElement == null)
             return;
 
@@ -104,8 +103,8 @@ public class ForumsApi extends ArrayList<Forum> {
         }
     }
 
-    public static void loadSubForums(IHttpClient httpClient, String url, Forum parentForum,
-                                     ForumsData data, ProgressState progressState) throws Exception {
+    private static void loadSubForums(IHttpClient httpClient, String url, Forum parentForum,
+                                      ForumsData data, ProgressState progressState) throws Exception {
         String pageBody = httpClient.performGetFullVersion(url);
         Document doc = Jsoup.parse(pageBody, "http://4pda.ru");
         Element catElement = doc.select("div.borderwrap[id~=fo_\\d+]").first();
@@ -158,14 +157,14 @@ public class ForumsApi extends ArrayList<Forum> {
 
     public static void markForumAsRead(IHttpClient httpClient, CharSequence forumId) throws Throwable {
 
-        List<NameValuePair> qparams = new ArrayList<NameValuePair>();
+        List<NameValuePair> qparams = new ArrayList<>();
         qparams.add(new BasicNameValuePair("act", "login"));
         qparams.add(new BasicNameValuePair("CODE", "04"));
         qparams.add(new BasicNameValuePair("f", forumId.toString()));
         qparams.add(new BasicNameValuePair("fromforum", forumId.toString()));
 
 
-        Uri uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",qparams, "UTF-8");
+        Uri uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",qparams, "UTF-8");
 
         httpClient.performGet(uri.toString());
     }

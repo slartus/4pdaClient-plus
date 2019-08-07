@@ -14,7 +14,6 @@ import org.softeg.slartus.forpdacommon.URIUtils;
 import org.softeg.slartus.forpdacommon.UrlExtensions;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -130,7 +129,7 @@ public class SearchSettings implements Parcelable {
         qualms.add(new BasicNameValuePair("result", m_ResultView));
         qualms.add(new BasicNameValuePair("noform", "1"));
 
-        Uri uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
+        Uri uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
                 qualms, "windows-1251");
         return uri.toString();
     }

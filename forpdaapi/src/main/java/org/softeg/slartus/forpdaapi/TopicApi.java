@@ -15,8 +15,6 @@ import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdacommon.URIUtils;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -61,7 +59,7 @@ public class TopicApi {
      */
     public static final String TRACK_TYPE_UNPIN = "unpin";
 
-    public static String changeFavorite(IHttpClient httpClient, CharSequence topicId, String trackType) throws IOException, URISyntaxException {
+    public static String changeFavorite(IHttpClient httpClient, CharSequence topicId, String trackType) throws IOException {
         boolean exists;
 
         FavTopic favTopic = findTopicInFav(topicId);
@@ -86,7 +84,7 @@ public class TopicApi {
             qparams.add(new BasicNameValuePair("track_type", trackType));
         }
 
-        Uri uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
+        Uri uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
                 qparams, "UTF-8");
         httpClient.performGet(uri.toString());
         favTopic = findTopicInFav(topicId);
@@ -112,7 +110,7 @@ public class TopicApi {
         throw new NotReportException("Неизвестная ошибка добавления темы в избранное");
     }
 
-    private static FavTopic findTopicInFav( CharSequence topicId) throws IOException, URISyntaxException {
+    private static FavTopic findTopicInFav( CharSequence topicId) throws IOException{
         if (topicId == null)
             return null;
         ListInfo listInfo = new ListInfo();
@@ -133,7 +131,7 @@ public class TopicApi {
         return null;
     }
 
-    public static String deleteFromFavorites(IHttpClient httpClient, String id) throws IOException, URISyntaxException {
+    public static String deleteFromFavorites(IHttpClient httpClient, String id) throws IOException{
         return changeFavorite(httpClient, id, TRACK_TYPE_DELETE);
     }
 
@@ -204,7 +202,7 @@ public class TopicApi {
         return res;
     }
 
-    public static String pinFavorite(IHttpClient httpClient, String topicId, String trackType) throws IOException, URISyntaxException {
+    public static String pinFavorite(IHttpClient httpClient, String topicId, String trackType) throws IOException{
         FavTopic favTopic = findTopicInFav(topicId);
 
         if (favTopic == null) {
@@ -215,7 +213,7 @@ public class TopicApi {
         qparams.add(new BasicNameValuePair("act", "fav"));
         qparams.add(new BasicNameValuePair("selectedtids", favTopic.getTid()));
         qparams.add(new BasicNameValuePair("tact", trackType));
-        Uri uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
+        Uri uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
                 qparams, "UTF-8");
         httpClient.performGet(uri.toString());
         return TRACK_TYPE_PIN.equals(trackType) ? "Тема закреплена" : "Тема откреплена";

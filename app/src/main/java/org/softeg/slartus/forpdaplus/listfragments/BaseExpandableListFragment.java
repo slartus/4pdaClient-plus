@@ -26,7 +26,6 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ExpandableMyListAdapter;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class BaseExpandableListFragment extends BaseBrickFragment implements

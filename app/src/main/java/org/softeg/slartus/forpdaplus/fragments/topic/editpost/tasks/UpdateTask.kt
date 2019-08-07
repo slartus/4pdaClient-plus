@@ -18,7 +18,7 @@ import java.util.*
 class UpdateTask internal constructor(listener: EditPostFragmentListener,
                                       private val postId: String,
                                       private val attachFilePaths: List<String>)
-    : BaseTask<String, Pair<String, Int>>(listener, R.string.sending_file) {
+    : BaseTask<String, Pair<String, Long>>(listener, R.string.sending_file) {
 
     internal constructor(listener: EditPostFragmentListener,
                          postId: String,
@@ -31,7 +31,7 @@ class UpdateTask internal constructor(listener: EditPostFragmentListener,
 
     override fun work(params: Array<out String>) {
         progressState = object : ProgressState() {
-            override fun update(message: String, percents: Int) {
+            override fun update(message: String, percents: Long) {
                 publishProgress(Pair("", percents))
             }
         }
@@ -52,11 +52,11 @@ class UpdateTask internal constructor(listener: EditPostFragmentListener,
 
     private var editAttach: EditAttach? = null
 
-    override fun onProgressUpdate(vararg values: Pair<String, Int>) {
+    override fun onProgressUpdate(vararg values: Pair<String, Long>) {
         super.onProgressUpdate(*values)
         if (!TextUtils.isEmpty(values[0].first))
             dialog?.setContent(values[0].first)
-        dialog?.setProgress(values[0].second)
+        dialog?.setProgress(values[0].second.toInt() )
     }
 
     // can use UI thread here

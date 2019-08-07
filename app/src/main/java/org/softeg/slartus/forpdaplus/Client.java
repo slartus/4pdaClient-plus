@@ -134,7 +134,7 @@ public class Client implements IHttpClient {
         //HttpHelper httpHelper = new HttpHelper();
         String res;
 
-            // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
+        // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
         res = HttpHelper.performGet(s);
 
         if (TextUtils.isEmpty(res))
@@ -179,15 +179,13 @@ public class Client implements IHttpClient {
     }
 
 
-    public String uploadFile(String url, String filePath, Map<String, String> additionalHeaders
-            , ProgressState progress) {
+    public String uploadFile(String url, String filePath, Map<String, String> additionalHeaders,
+                             ProgressState progress) {
 
         String res;
 
-            res= UploadUtils.okUploadFile(url,filePath,additionalHeaders);
-            // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
-            //res = httpHelper.uploadFile(url, filePath, additionalHeaders, progress);
-            //  m_HttpHelper.close();
+        res = UploadUtils.okUploadFile(url, filePath, additionalHeaders, progress);
+
 
         return res;
     }
@@ -342,21 +340,20 @@ public class Client implements IHttpClient {
                   String capVal, String capTime, String capSig) throws Exception {
 
 
+        Http.Companion.getInstance().getCookieStore().removeAll();
 
-            Http.Companion.getInstance().getCookieStore().removeAll();
-
-            LoginResult loginResult = ProfileApi.login(login, password, privacy, capVal, capTime, capSig);
-            m_Logined = loginResult.isSuccess();
-            m_LoginFailedReason = m_Logined ? null : loginResult.getLoginError().toString();
+        LoginResult loginResult = ProfileApi.login(login, password, privacy, capVal, capTime, capSig);
+        m_Logined = loginResult.isSuccess();
+        m_LoginFailedReason = m_Logined ? null : loginResult.getLoginError().toString();
 
 
-            // m_SessionId = outParams.get("SessionId");
-            m_User = loginResult.getUserLogin().toString();
-            m_K = loginResult.getK().toString();
+        // m_SessionId = outParams.get("SessionId");
+        m_User = loginResult.getUserLogin().toString();
+        m_K = loginResult.getK().toString();
 
-            Http.Companion.getInstance().getCookieStore().addCustom("4pda.UserId", loginResult.getUserId().toString());
-            Http.Companion.getInstance().getCookieStore().addCustom("4pda.User", m_User);
-            Http.Companion.getInstance().getCookieStore().addCustom("4pda.K", m_K);
+        Http.Companion.getInstance().getCookieStore().addCustom("4pda.UserId", loginResult.getUserId().toString());
+        Http.Companion.getInstance().getCookieStore().addCustom("4pda.User", m_User);
+        Http.Companion.getInstance().getCookieStore().addCustom("4pda.K", m_K);
 
 
         return m_Logined;

@@ -8,6 +8,7 @@ import android.util.Log
 import android.webkit.MimeTypeMap
 import android.webkit.MimeTypeMap.getFileExtensionFromUrl
 import okhttp3.*
+import okhttp3.Headers.Companion.headersOf
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okio.Buffer
 import java.io.File
@@ -16,7 +17,7 @@ import java.net.CookieManager
 import java.net.CookiePolicy.ACCEPT_ALL
 import java.util.*
 import java.util.concurrent.TimeUnit
-
+import okhttp3.RequestBody.Companion.asRequestBody
 
 @Suppress("unused")
 /*
@@ -64,10 +65,10 @@ class Http private constructor(context: Context) {
                 .writeTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
 
-        if (BuildConfig.DEBUG)
-            builder.addInterceptor(DebugLoggingInterceptor())
-        else
-            builder.addInterceptor(LoggingInterceptor())
+//        if (BuildConfig.DEBUG)
+//            builder.addInterceptor(DebugLoggingInterceptor())
+//        else
+//            builder.addInterceptor(LoggingInterceptor())
 
         client = builder
                 .build()    // socket timeout
@@ -147,23 +148,35 @@ class Http private constructor(context: Context) {
     }
 
 
-
     fun uploadFile(url: String, fileName: String, filePath: String, fileFormDataName: String,
-                   formDataParts: List<Pair<String, String>> = ArrayList()): AppResponse {
+                   formDataParts: List<Pair<String, String>> = emptyList(),
+                   progressListener: CountingFileRequestBody.ProgressListener? = null): AppResponse {
         val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
-        val file = File(filePath)
 
+
+        val file = File(filePath)
+        val totalSize = file.length()
 
         val mediaType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(getFileExtensionFromUrl(file.toString()))?.toMediaTypeOrNull()
-        builder.addFormDataPart(fileFormDataName, fileName, RequestBody.create(mediaType, file))
-        if (formDataParts.isNotEmpty()) {
-            for (formDataPart in formDataParts.filter { it.first != null && it.second != null }) {
-                builder.addFormDataPart(formDataPart.first!!, formDataPart.second!!)
-            }
+
+
+        if (progressListener != null) {
+            builder.addPart(headersOf("Content-Disposition", "form-data; name=\"$fileFormDataName\"; filename=\"$fileName\""),
+                    CountingFileRequestBody(file, mediaType) { num ->
+                        val progress = num.toFloat() / totalSize.toFloat() * 100.0
+                        progressListener.transferred(progress.toLong())
+                    })
+        } else {
+            builder.addFormDataPart(fileFormDataName, fileName, file.asRequestBody(mediaType))
         }
+
+        formDataParts.filter { it.first != null && it.second != null }.forEach {
+            builder.addFormDataPart(it.first!!, it.second!!)
+        }
+
         val requestBody = builder.build()
         val request = Request.Builder()
-             //   .addHeader("User-Agent", USER_AGENT)
+                .addHeader("User-Agent", USER_AGENT)
                 .url(url)
                 .post(requestBody)
                 .build()

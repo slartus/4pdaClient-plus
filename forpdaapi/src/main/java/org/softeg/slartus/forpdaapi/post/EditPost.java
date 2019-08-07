@@ -103,7 +103,7 @@ public class EditPost implements Serializable {
         params.put("auth_key", authKey);
     }
 
-    public String getFileList() {
+    private String getFileList() {
         if (params.containsKey("file-list"))
             return params.get("file-list");
         return "";

@@ -6,7 +6,7 @@ import java.net.URLEncoder
 class URIUtils {
     companion object {
         @JvmStatic
-        fun createURI(scheme: String, authority: String, port: Int, path: String,params: MutableList<NameValuePair>, encoding: String): Uri {
+        fun createURI(scheme: String, authority: String, path: String,params: MutableList<NameValuePair>, encoding: String): Uri {
             val builder =
                     Uri.Builder()
                             .scheme(scheme)

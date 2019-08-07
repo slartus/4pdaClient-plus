@@ -256,7 +256,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
         } else if (data != null) {
             if (data.items.size == 0 && data.items.size > 1) {
                 val forum = data.items[data.items.size - 1]
-                ForumTopicsListFragment.showForumTopicsList(activity, forum.id, forum.title)
+                ForumTopicsListFragment.showForumTopicsList(forum.id, forum.title)
                 return
             }
             this.data.items.clear()
@@ -333,7 +333,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
                     mSearchSetting = searchSettings
                     MainActivity.searchSettings = mSearchSetting
                 } else {
-                    ForumTopicsListFragment.showForumTopicsList(activity, forum.id, forum.title)
+                    ForumTopicsListFragment.showForumTopicsList(forum.id, forum.title)
                 }
             }
 
@@ -346,7 +346,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
             override fun onHeaderTopicsClick(v: View) {
                 val itemPosition = listView!!.getChildPosition(v)
                 val forum = data.crumbs[itemPosition]
-                ForumTopicsListFragment.showForumTopicsList(activity, forum.id, forum.title)
+                ForumTopicsListFragment.showForumTopicsList(forum.id, forum.title)
             }
 
 
