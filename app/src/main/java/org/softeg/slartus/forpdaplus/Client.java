@@ -11,7 +11,7 @@ import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.apache.http.NameValuePair;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -31,6 +31,7 @@ import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.users.Users;
 import org.softeg.slartus.forpdacommon.CollectionUtils;
+import org.softeg.slartus.forpdacommon.NameValuePair;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.Observer;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
@@ -93,7 +94,7 @@ public class Client implements IHttpClient {
     }
 
     public void deletePost(String forumId, String themeId, String postId, CharSequence authKey) throws IOException {
-        PostApi.INSTANCE.delete(this, forumId, themeId, postId, authKey);
+        PostApi.INSTANCE.delete(this, postId, authKey);
     }
 
     public Boolean changeReputation(String postId, String userId, String type, String message, Map<String, String> outParams) throws IOException {
@@ -129,16 +130,13 @@ public class Client implements IHttpClient {
 
     public String performGetFullVersion(String s) throws IOException {
 
-        HttpHelper httpHelper = new HttpHelper(HttpHelper.FULL_USER_AGENT);
+
         //HttpHelper httpHelper = new HttpHelper();
         String res;
-        try {
-            // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
-            res = HttpHelper.performGet(s);
-        } finally {
-            httpHelper.close();
 
-        }
+            // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
+        res = HttpHelper.performGet(s);
+
         if (TextUtils.isEmpty(res))
             throw new NotReportException(App.getContext().getString(R.string.server_return_empty_page));
         // m_HttpHelper.close();

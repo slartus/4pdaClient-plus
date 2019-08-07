@@ -4,23 +4,20 @@ import android.net.Uri;
 import android.text.Html;
 import android.text.TextUtils;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URIUtils;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.softeg.slartus.forpdaapi.search.SearchApi;
+import org.softeg.slartus.forpdacommon.BasicNameValuePair;
 import org.softeg.slartus.forpdacommon.Functions;
 import org.softeg.slartus.forpdacommon.HttpHelper;
+import org.softeg.slartus.forpdacommon.NameValuePair;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
+import org.softeg.slartus.forpdacommon.URIUtils;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,7 +36,7 @@ public class TopicsApi {
     private final static Pattern topicPattern = PatternExtensions.compile("<div data-item-fid=\"(\\d*)\" data-item-track=\"(\\w*)\" data-item-pin=\"(\\d)\"[\\s\\S]*?<a href=\"([^\"]*?)\"[^>]*>(<strong>|)([\\s\\S]*?)(<\\/strong>|)<\\/a>[\\s\\S]*?<span class=\"topic_desc\">([\\s\\S]*?)(<[\\s\\S]*?showforum=(\\d*?)\"[\\s\\S]*?)<a href=\"[^\"]*view=getlastpost[^\"]*\">Послед.:<\\/a>\\s*<a href=\"[^\"]*?\\/forum\\/index.php\\?showuser=\\d+\">(.*?)<\\/a>(.*?)<");
 
     public static ArrayList<FavTopic> getFavTopics(
-                                                   ListInfo listInfo) throws IOException, URISyntaxException {
+                                                   ListInfo listInfo) throws IOException {
         return getFavTopics( null, null, null, null, false, false, listInfo);
     }
 
@@ -49,7 +46,7 @@ public class TopicsApi {
                                                    String topicFilter,
                                                    Boolean unreadInTop,
                                                    Boolean fullPagesList,
-                                                   ListInfo listInfo) throws IOException, URISyntaxException {
+                                                   ListInfo listInfo) throws IOException {
         List<NameValuePair> qparams = new ArrayList<>();
         qparams.add(new BasicNameValuePair("act", "fav"));
         qparams.add(new BasicNameValuePair("type", "topics"));
@@ -64,8 +61,8 @@ public class TopicsApi {
         qparams.add(new BasicNameValuePair("st", Integer.toString(listInfo.getFrom())));
 
 
-        URI uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
-                URLEncodedUtils.format(qparams, "UTF-8"), null);
+        Uri uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
+                qparams, "UTF-8");
 
         String pageBody = HttpHelper.performGet(uri.toString());
 

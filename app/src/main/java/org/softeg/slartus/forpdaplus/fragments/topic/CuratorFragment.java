@@ -22,11 +22,10 @@ import android.widget.ImageButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+import org.softeg.slartus.forpdacommon.BasicNameValuePair;
+import org.softeg.slartus.forpdacommon.NameValuePair;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;

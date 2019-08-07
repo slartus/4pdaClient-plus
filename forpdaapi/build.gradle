@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 26
-    useLibrary "org.apache.http.legacy"
+
     defaultConfig {
         minSdkVersion rootProject.minSdk
         //noinspection OldTargetApi

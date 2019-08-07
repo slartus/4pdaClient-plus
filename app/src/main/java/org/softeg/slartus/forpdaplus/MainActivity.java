@@ -954,14 +954,12 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             if (!searchSettings.getUserName().equals(""))
                 title = App.getContext().getString(R.string.search) + ": " + searchSettings.getUserName();
         }
-        try {
-            if (SearchSettings.RESULT_VIEW_TOPICS.equals(searchSettings.getResultView()))
-                MainActivity.addTab(title, searchSettings.getSearchQuery(), SearchTopicsFragment.newFragment(searchSettings.getSearchQuery()));
-            else
-                MainActivity.addTab(title, searchSettings.getSearchQuery(), SearchPostFragment.newFragment(searchSettings.getSearchQuery()));
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+
+        if (SearchSettings.RESULT_VIEW_TOPICS.equals(searchSettings.getResultView()))
+            MainActivity.addTab(title, searchSettings.getSearchQuery(), SearchTopicsFragment.newFragment(searchSettings.getSearchQuery()));
+        else
+            MainActivity.addTab(title, searchSettings.getSearchQuery(), SearchPostFragment.newFragment(searchSettings.getSearchQuery()));
+
 
     }
 

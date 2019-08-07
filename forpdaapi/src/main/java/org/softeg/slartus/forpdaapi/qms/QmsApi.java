@@ -1,9 +1,6 @@
 package org.softeg.slartus.forpdaapi.qms;
 
 import android.text.Html;
-import android.util.Log;
-
-import org.apache.http.cookie.Cookie;
 import org.json.JSONObject;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.ProgressState;

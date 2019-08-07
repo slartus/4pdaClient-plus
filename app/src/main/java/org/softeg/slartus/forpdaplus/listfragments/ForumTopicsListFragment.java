@@ -3,19 +3,19 @@ package org.softeg.slartus.forpdaplus.listfragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URIUtils;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.TopicsApi;
+import org.softeg.slartus.forpdacommon.BasicNameValuePair;
+import org.softeg.slartus.forpdacommon.NameValuePair;
+import org.softeg.slartus.forpdacommon.URIUtils;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
@@ -113,8 +113,8 @@ public class ForumTopicsListFragment extends TopicsListFragment {
             qparams.add(new BasicNameValuePair("st", Integer.toString(listInfo.getFrom())));
 
 
-            URI uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
-                    URLEncodedUtils.format(qparams, "UTF-8"), null);
+            Uri uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
+                    qparams, "UTF-8");
             mUrl = uri.toString();
         } else {
             mUrl = mUrl.replaceAll("&st=\\d+", "").concat("&st=" + mListInfo.getFrom());

@@ -9,7 +9,7 @@ abstract class BaseActivity: AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        compositeDisposable?.dispose()
+        compositeDisposable.dispose()
     }
 
     fun addToDisposable(disposable: Disposable?) {

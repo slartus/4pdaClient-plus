@@ -9,7 +9,7 @@ repositories {
 
 android {
     compileSdkVersion 27
-    useLibrary 'org.apache.http.legacy'
+
 
     def appVersionCode = 619
     // именование версий:

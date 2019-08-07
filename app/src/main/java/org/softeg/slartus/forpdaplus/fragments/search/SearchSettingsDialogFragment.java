@@ -41,7 +41,6 @@ import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
 import org.softeg.slartus.forpdaplus.db.ForumsTable;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -400,7 +399,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
                 ArrayList<Topic> topics = new ArrayList<>();
                 try {
                     topics = SearchApi.INSTANCE.getSearchTopicsResult(Client.getInstance(), settings.getSearchQuery(), new ListInfo());
-                } catch (IOException | URISyntaxException e) {
+                } catch (IOException  e) {
                     e.printStackTrace();
                 }
                 final StringBuilder sb = new StringBuilder();

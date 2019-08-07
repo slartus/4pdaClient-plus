@@ -3,22 +3,19 @@ package org.softeg.slartus.forpdaapi.search;/*
  */
 
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.Html;
-import android.util.Log;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URIUtils;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
+import org.softeg.slartus.forpdacommon.BasicNameValuePair;
+import org.softeg.slartus.forpdacommon.NameValuePair;
+import org.softeg.slartus.forpdacommon.URIUtils;
 import org.softeg.slartus.forpdacommon.UrlExtensions;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +27,7 @@ public class SearchSettings implements Parcelable {
     /*
     сортировать результаты по релевантности
      */
+    @SuppressWarnings("unused")
     public static final String RESULT_SORT_RELEVANT = "rel";
     /*
     сортировать результаты по дате(от новых к старым)
@@ -38,6 +36,7 @@ public class SearchSettings implements Parcelable {
     /*
    сортировать результаты по дате(от старых к новым)
     */
+    @SuppressWarnings("unused")
     public static final String RESULT_SORT_DATE = "da";
 
     /*
@@ -52,7 +51,7 @@ public class SearchSettings implements Parcelable {
     /*
    Искать везде
     */
-    public static final String SOURCE_ALL = "all";
+    private static final String SOURCE_ALL = "all";
     /*
    Искать Только в заголовках тем
     */
@@ -72,15 +71,15 @@ public class SearchSettings implements Parcelable {
     public static final String SEARCH_TYPE_USER_POSTS = "SEARCH_TYPE_USER_POSTS";
 
     private String m_SearchType = SEARCH_TYPE_FORUM;
-    protected Set<String> m_TopicsIds = new HashSet<>();
+    private Set<String> m_TopicsIds = new HashSet<>();
 
-    protected String m_Query;
-    protected String m_ResultView = RESULT_VIEW_POSTS;
-    protected Boolean m_SearchInSubForums = true;
-    protected String m_Sort = RESULT_SORT_DATE_DESC;
-    protected String m_UserName;
-    protected String m_Source = SOURCE_ALL;
-    protected Set<String> m_ForumsIds = new HashSet<>();
+    private String m_Query;
+    private String m_ResultView = RESULT_VIEW_POSTS;
+    private Boolean m_SearchInSubForums = true;
+    private String m_Sort = RESULT_SORT_DATE_DESC;
+    private String m_UserName;
+    private String m_Source = SOURCE_ALL;
+    private Set<String> m_ForumsIds = new HashSet<>();
 
     public SearchSettings() {
 
@@ -115,7 +114,7 @@ public class SearchSettings implements Parcelable {
         return m_ForumsIds;
     }
 
-    public String getSearchQuery() throws URISyntaxException {
+    public String getSearchQuery() {
 
         List<NameValuePair> qualms = new ArrayList<>();
         qualms.add(new BasicNameValuePair("act", "search"));
@@ -131,8 +130,8 @@ public class SearchSettings implements Parcelable {
         qualms.add(new BasicNameValuePair("result", m_ResultView));
         qualms.add(new BasicNameValuePair("noform", "1"));
 
-        URI uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
-                URLEncodedUtils.format(qualms, "windows-1251"), null);
+        Uri uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
+                qualms, "windows-1251");
         return uri.toString();
     }
 
@@ -140,52 +139,42 @@ public class SearchSettings implements Parcelable {
         return m_ResultView;
     }
 
-    public Boolean tryParse(String url) {
+    private void tryParse(String url) {
         url = tryUrlDecode(url);
         url = Html.fromHtml(url).toString();
         Matcher m = Pattern.compile("(?:([\\w\\[\\]]+)=(.*?))(?:\\&|$)").matcher(url);
         m_ForumsIds = new HashSet<>();
         m_TopicsIds = new HashSet<>();
-        boolean res = false;
         while (m.find()) {
             String key = m.group(1).toLowerCase();
             String val = m.group(2);
             switch (key) {
                 case "query":
                     m_Query = val;
-                    res = true;
                     break;
                 case "username":
                     m_UserName = val;
-                    res = true;
                     break;
                 case "forums[]":
                     m_ForumsIds.add(val);
-                    res = true;
                     break;
                 case "subforums":
                     m_SearchInSubForums = "1".equals(val);
-                    res = true;
                     break;
                 case "source":
                     m_Source = val;
-                    res = true;
                     break;
                 case "sort":
                     m_Sort = val;
-                    res = true;
                     break;
                 case "result":
                     m_ResultView = val;
-                    res = true;
                     break;
                 case "topics[]":
                     m_TopicsIds.add(val);
-                    res = true;
                     break;
             }
         }
-        return res;
     }
 
 
@@ -194,14 +183,6 @@ public class SearchSettings implements Parcelable {
             if (UrlExtensions.isUrlUtf8Encoded(url))
                 return URLDecoder.decode(url, "UTF-8");
             return URLDecoder.decode(url, "windows-1251");
-        } catch (UnsupportedEncodingException e) {
-            return url;
-        }
-    }
-
-    private String tryUrlEncode(String url) {
-        try {
-            return URLEncoder.encode(url, "windows-1251");
         } catch (UnsupportedEncodingException e) {
             return url;
         }
@@ -279,12 +260,12 @@ public class SearchSettings implements Parcelable {
         return editor.putStringSet("search.topics", m_TopicsIds);
     }
 
-    public SharedPreferences.Editor saveForums(SharedPreferences.Editor editor) {
-        return editor.putStringSet("search.forums", m_ForumsIds);
+    private void saveForums(SharedPreferences.Editor editor) {
+        editor.putStringSet("search.forums", m_ForumsIds);
     }
 
-    public SharedPreferences.Editor saveSearchInSubForums(SharedPreferences.Editor editor) {
-        return editor.putBoolean("search.subforums", m_SearchInSubForums);
+    private void saveSearchInSubForums(SharedPreferences.Editor editor) {
+        editor.putBoolean("search.subforums", m_SearchInSubForums);
     }
 
     public void load(SharedPreferences preferences) {
@@ -303,7 +284,7 @@ public class SearchSettings implements Parcelable {
     }
 
 
-    public void loadForums(SharedPreferences preferences) {
+    private void loadForums(SharedPreferences preferences) {
         m_ForumsIds = new HashSet<>();
         Set<String> defaultForumIds = new HashSet<>();
         defaultForumIds.add("all");

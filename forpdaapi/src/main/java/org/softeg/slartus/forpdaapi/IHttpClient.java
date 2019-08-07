@@ -1,6 +1,6 @@
 package org.softeg.slartus.forpdaapi;
 
-import org.apache.http.NameValuePair;
+import org.softeg.slartus.forpdacommon.NameValuePair;
 
 import java.io.IOException;
 import java.util.List;

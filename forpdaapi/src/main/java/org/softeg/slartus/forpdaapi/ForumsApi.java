@@ -2,15 +2,14 @@ package org.softeg.slartus.forpdaapi;
 
 import android.net.Uri;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URIUtils;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.softeg.slartus.forpdaapi.classes.ForumsData;
+import org.softeg.slartus.forpdacommon.BasicNameValuePair;
+import org.softeg.slartus.forpdacommon.NameValuePair;
+import org.softeg.slartus.forpdacommon.URIUtils;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -166,8 +165,7 @@ public class ForumsApi extends ArrayList<Forum> {
         qparams.add(new BasicNameValuePair("fromforum", forumId.toString()));
 
 
-        URI uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
-                URLEncodedUtils.format(qparams, "UTF-8"), null);
+        Uri uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",qparams, "UTF-8");
 
         httpClient.performGet(uri.toString());
     }

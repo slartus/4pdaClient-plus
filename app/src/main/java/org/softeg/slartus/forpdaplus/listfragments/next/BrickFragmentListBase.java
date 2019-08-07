@@ -116,7 +116,7 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
     @Override
     public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mSwipeRefreshLayout = App.createSwipeRefreshLayout(getActivity(), view, this::reloadData);
+        mSwipeRefreshLayout = App.createSwipeRefreshLayout( view, this::reloadData);
     }
 
     @Override

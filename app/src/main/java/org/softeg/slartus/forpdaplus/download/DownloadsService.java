@@ -22,8 +22,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.cookie.Cookie;
+
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
@@ -40,12 +39,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.ref.WeakReference;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import ru.slartus.http.AppResponse;
+import ru.slartus.http.Http;
 
 /**
  * User: slinkin
@@ -265,113 +267,113 @@ public class DownloadsService extends IntentService {
 
 
     public void downloadFile(ResultReceiver receiver, int notificationId, String tempFilePath) {
-
-        DownloadTask downloadTask = null;
-        try {
-
-            String dirPath = getDownloadDir(getApplicationContext());
-            downloadTask = Client.getInstance().getDownloadTasks().getById(notificationId);
-
-            if (downloadTask.getState() == DownloadTask.STATE_CANCELED) {
-                return;
-            }
-
-            String url = downloadTask.getUrl();
-
-            url = FileUtils.getDirPath(url) + "/" + URLEncoder.encode(FileUtils.getFileNameFromUrl(url));
-            HttpHelper httpHelper = new HttpHelper();
-
-            try {
-
-                String fileName = TextUtils.isEmpty(tempFilePath) ? FileUtils.getFileNameFromUrl(url) : FileUtils.getFileNameFromUrl(tempFilePath.replace("_download", ""));
-                String saveDir = dirPath;
-
-                String filePath = TextUtils.isEmpty(tempFilePath) ? FileUtils.getUniqueFilePath(saveDir, fileName) : FileUtils.combine(saveDir, fileName);
-                downloadTask.setOutputFile(filePath);
-                String downloadingFilePath = filePath + "_download";
-                downloadTask.setDownloadingFilePath(downloadingFilePath);
-
-
-                FileUtils.mkDirs(downloadingFilePath);
-                // new File(downloadingFilePath).createNewFile();
-
-                long total = TextUtils.isEmpty(tempFilePath) ? 0 : DownloadTask.getRange(tempFilePath);
-
-
-                url = FileUtils.getDirPath(url) + "/" + URLEncoder.encode(FileUtils.getFileNameFromUrl(url));
-                HttpEntity entity = httpHelper.getDownloadEntity(url, total);
-
-                long fileLength = entity.getContentLength() + total;
-                downloadTask.updateInfo(fileLength);
-                downloadTask.setProgressState(total, fileLength);
-                sendDownloadProgressState(receiver, notificationId);
-
-
-                int count;
-                int percent = 0;
-                int prevPercent = 0;
-
-                Date lastUpdateTime = new Date();
-                Boolean first = true;
-
-                // for test
-
-                InputStream in = entity.getContent();
-                FileOutputStream output = new FileOutputStream(downloadingFilePath, true);
-
-                byte data[] = new byte[BUFFER_SIZE];
-                try {
-                    while ((count = in.read(data)) != -1) {
-                        if (downloadTask.getState() == DownloadTask.STATE_CANCELED) {
-                            sendDownloadProgressState(receiver, notificationId);
-                            return;
-                        }
-
-
-                        output.write(data, 0, count);
-                        total += count;
-
-                        percent = (int) ((float) total / fileLength * 100);
-
-                        long diffInMs = new Date().getTime() - lastUpdateTime.getTime();
-                        long diffInSec = TimeUnit.MILLISECONDS.toSeconds(diffInMs);
-
-                        if ((percent != prevPercent && diffInSec > 1) || first) {
-                            lastUpdateTime = new Date();
-                            downloadTask.setProgressState(total, fileLength);
-                            sendDownloadProgressState(receiver, notificationId);
-                            first = false;
-                        }
-                        prevPercent = percent;
-                    }
-                    downloadTask.setProgressState(fileLength, fileLength);
-                    sendDownloadProgressState(receiver, notificationId);
-                } finally {
-                    output.flush();
-                    output.close();
-                    in.close();
-                }
-                File downloadingFile = new File(downloadingFilePath);
-                File downloadedFile = new File(filePath);
-                if (!downloadingFile.renameTo(downloadedFile)) {
-                    throw new NotReportException(App.getContext().getString(R.string.rename_file_exception) + downloadingFilePath +App.getContext().getString(R.string.combined_in) + filePath);
-                }
-                downloadTask.setState(downloadTask.STATE_SUCCESSFULL);
-                sendDownloadProgressState(receiver, notificationId);
-                DownloadsTable.endRow(downloadTask);
-            } finally {
-                httpHelper.close();
-            }
-        } catch (Exception ex) {
-            if (downloadTask != null) {
-                downloadTask.setEx(ex);
-                downloadTask.setState(downloadTask.STATE_ERROR);
-                DownloadsTable.endRow(downloadTask);
-                sendDownloadProgressState(receiver, notificationId);
-            }
-
-            ex.printStackTrace();
-        }
+// TODO:заменить на okhttp
+//        DownloadTask downloadTask = null;
+//        try {
+//
+//            String dirPath = getDownloadDir(getApplicationContext());
+//            downloadTask = Client.getInstance().getDownloadTasks().getById(notificationId);
+//
+//            if (downloadTask.getState() == DownloadTask.STATE_CANCELED) {
+//                return;
+//            }
+//
+//            String url = downloadTask.getUrl();
+//
+//            url = FileUtils.getDirPath(url) + "/" + URLEncoder.encode(FileUtils.getFileNameFromUrl(url));
+//            HttpHelper httpHelper = new HttpHelper();
+//
+//            try {
+//
+//                String fileName = TextUtils.isEmpty(tempFilePath) ? FileUtils.getFileNameFromUrl(url) : FileUtils.getFileNameFromUrl(tempFilePath.replace("_download", ""));
+//                String saveDir = dirPath;
+//
+//                String filePath = TextUtils.isEmpty(tempFilePath) ? FileUtils.getUniqueFilePath(saveDir, fileName) : FileUtils.combine(saveDir, fileName);
+//                downloadTask.setOutputFile(filePath);
+//                String downloadingFilePath = filePath + "_download";
+//                downloadTask.setDownloadingFilePath(downloadingFilePath);
+//
+//
+//                FileUtils.mkDirs(downloadingFilePath);
+//                // new File(downloadingFilePath).createNewFile();
+//
+//                long total = TextUtils.isEmpty(tempFilePath) ? 0 : DownloadTask.getRange(tempFilePath);
+//
+//
+//                url = FileUtils.getDirPath(url) + "/" + URLEncoder.encode(FileUtils.getFileNameFromUrl(url));
+//                HttpEntity entity = httpHelper.getDownloadEntity(url, total);
+//
+//                long fileLength = entity.getContentLength() + total;
+//                downloadTask.updateInfo(fileLength);
+//                downloadTask.setProgressState(total, fileLength);
+//                sendDownloadProgressState(receiver, notificationId);
+//
+//
+//                int count;
+//                int percent = 0;
+//                int prevPercent = 0;
+//
+//                Date lastUpdateTime = new Date();
+//                Boolean first = true;
+//
+//                // for test
+//
+//                InputStream in = entity.getContent();
+//                FileOutputStream output = new FileOutputStream(downloadingFilePath, true);
+//
+//                byte data[] = new byte[BUFFER_SIZE];
+//                try {
+//                    while ((count = in.read(data)) != -1) {
+//                        if (downloadTask.getState() == DownloadTask.STATE_CANCELED) {
+//                            sendDownloadProgressState(receiver, notificationId);
+//                            return;
+//                        }
+//
+//
+//                        output.write(data, 0, count);
+//                        total += count;
+//
+//                        percent = (int) ((float) total / fileLength * 100);
+//
+//                        long diffInMs = new Date().getTime() - lastUpdateTime.getTime();
+//                        long diffInSec = TimeUnit.MILLISECONDS.toSeconds(diffInMs);
+//
+//                        if ((percent != prevPercent && diffInSec > 1) || first) {
+//                            lastUpdateTime = new Date();
+//                            downloadTask.setProgressState(total, fileLength);
+//                            sendDownloadProgressState(receiver, notificationId);
+//                            first = false;
+//                        }
+//                        prevPercent = percent;
+//                    }
+//                    downloadTask.setProgressState(fileLength, fileLength);
+//                    sendDownloadProgressState(receiver, notificationId);
+//                } finally {
+//                    output.flush();
+//                    output.close();
+//                    in.close();
+//                }
+//                File downloadingFile = new File(downloadingFilePath);
+//                File downloadedFile = new File(filePath);
+//                if (!downloadingFile.renameTo(downloadedFile)) {
+//                    throw new NotReportException(App.getContext().getString(R.string.rename_file_exception) + downloadingFilePath +App.getContext().getString(R.string.combined_in) + filePath);
+//                }
+//                downloadTask.setState(downloadTask.STATE_SUCCESSFULL);
+//                sendDownloadProgressState(receiver, notificationId);
+//                DownloadsTable.endRow(downloadTask);
+//            } finally {
+//                httpHelper.close();
+//            }
+//        } catch (Exception ex) {
+//            if (downloadTask != null) {
+//                downloadTask.setEx(ex);
+//                downloadTask.setState(downloadTask.STATE_ERROR);
+//                DownloadsTable.endRow(downloadTask);
+//                sendDownloadProgressState(receiver, notificationId);
+//            }
+//
+//            ex.printStackTrace();
+//        }
     }
 
     public static void sendDownloadProgressState(ResultReceiver receiver, int downloadTaskId) {
@@ -385,15 +387,15 @@ public class DownloadsService extends IntentService {
 
         private final MaterialDialog dialog;
 
-        private Context m_Context;
+        private WeakReference<Context> m_Context;
         private onOpenUrlInterface openUrlAction;
 
         public interface onOpenUrlInterface {
             void open(Uri uri);
         }
 
-        public GetTempUrlTask(Context context, onOpenUrlInterface openUrlAction) {
-            m_Context = context;
+        GetTempUrlTask(Context context, onOpenUrlInterface openUrlAction) {
+            m_Context = new WeakReference<>(context);
             this.openUrlAction = openUrlAction;
 
             dialog = new MaterialDialog.Builder(context)
@@ -404,26 +406,13 @@ public class DownloadsService extends IntentService {
 
         @Override
         protected Uri doInBackground(String... params) {
-            HttpHelper httpHelper = null;
-
             try {
-                httpHelper = new HttpHelper();
                 String url = params[0];
-
-                httpHelper.getDownloadResponse(url, 0);
-                URI redirectUri = HttpHelper.getRedirectUri();
-                Uri uri = Uri.parse(url);
-                if (redirectUri != null)
-                    uri = Uri.parse(redirectUri.toString());
-
-
-                return uri;
+                AppResponse appResponse=Http.Companion.getInstance().performGet(url);
+                return Uri.parse(appResponse.redirectUrlElseRequestUrl());
             } catch (Throwable e) {
                 ex = e;
                 return null;
-            } finally {
-                if (httpHelper != null)
-                    httpHelper.close();
             }
         }
 
@@ -453,9 +442,9 @@ public class DownloadsService extends IntentService {
 
             } else {
                 if (ex != null)
-                    AppLog.e(m_Context, ex);
+                    AppLog.e(m_Context.get(), ex);
                 else
-                    Toast.makeText(m_Context, R.string.unknown_error,
+                    Toast.makeText(m_Context.get(), R.string.unknown_error,
                             Toast.LENGTH_SHORT).show();
             }
         }

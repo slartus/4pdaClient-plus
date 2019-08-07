@@ -30,7 +30,7 @@ import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
-import org.apache.http.HttpResponse;
+
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdanotifyservice.MainService;
 import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
@@ -627,7 +627,6 @@ public class App extends MultiDexApplication {
 
     public static void initImageLoader(Context context) {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                //.imageDownloader(new HttpHelperForImage(context))
                 .imageDownloader(new BaseImageDownloader(context) {
                     @Override
                     public InputStream getStream(String imageUri, Object extra) throws IOException {
@@ -637,13 +636,8 @@ public class App extends MultiDexApplication {
                     }
 
                     @Override
-                    protected InputStream getStreamFromNetwork(String imageUri, Object extra) throws IOException {
-                        HttpResponse httpResponse = new HttpHelper().getDownloadResponse(imageUri, 0);
-
-//                        Response response = new HttpHelper().getDownloadResponse(imageUri, 0);
-                        return httpResponse.getEntity().getContent();
-
-//                        return response.body().byteStream();
+                    protected InputStream getStreamFromNetwork(String imageUri, Object extra) {
+                        return Http.Companion.getInstance().request(imageUri).body().byteStream();
                     }
                 })
                 .threadPoolSize(5)
@@ -691,7 +685,7 @@ public class App extends MultiDexApplication {
         return getInstance();
     }
 
-    public static SwipeRefreshLayout createSwipeRefreshLayout(Activity activity, View view,
+    public static SwipeRefreshLayout createSwipeRefreshLayout(View view,
                                                               final Runnable refreshAction) {
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.ptr_layout);
         swipeRefreshLayout.setOnRefreshListener(refreshAction::run);

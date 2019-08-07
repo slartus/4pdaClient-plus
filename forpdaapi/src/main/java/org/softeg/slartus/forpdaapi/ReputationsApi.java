@@ -4,21 +4,17 @@ package org.softeg.slartus.forpdaapi;/*
 
 
 import android.net.Uri;
-import android.util.Log;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URIUtils;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.softeg.slartus.forpdaapi.classes.ReputationsListData;
+import org.softeg.slartus.forpdacommon.BasicNameValuePair;
+import org.softeg.slartus.forpdacommon.NameValuePair;
+import org.softeg.slartus.forpdacommon.URIUtils;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,13 +26,11 @@ public class ReputationsApi {
     /**
      * Загружает историю репутации пользователя
      *
-     * @param httpClient
      * @param self       - действия пользователя с репутацией других пользователей
-     * @throws java.io.IOException
      */
     public static ReputationsListData loadReputation(IHttpClient httpClient, String userId, Boolean self,
                                                      ListInfo listInfo, String plusImage)
-            throws IOException, URISyntaxException {
+            throws IOException {
 
 
         List<NameValuePair> qparams = new ArrayList<>();
@@ -48,8 +42,8 @@ public class ReputationsApi {
             qparams.add(new BasicNameValuePair("mode", "from"));
 
 
-        URI uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
-                URLEncodedUtils.format(qparams, "UTF-8"), null);
+        Uri uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
+                qparams, "UTF-8");
 
         String body = httpClient.performGet(uri.toString());
 
@@ -123,17 +117,14 @@ public class ReputationsApi {
     /**
      * Изменение репутации пользователя
      *
-     * @param httpClient
+     *
      * @param postId     Идентификатор поста, за который поднимаем репутацию. 0 - "в профиле"
-     * @param userId
      * @param type       "add" - поднять, "minus" - опустить
-     * @param message
      * @return Текст ошибки или пустая строка в случае успеха
-     * @throws IOException
      */
     public static Boolean changeReputation(IHttpClient httpClient, String postId, String userId, String type, String message,
                                            Map<String, String> outParams) throws IOException {
-        Map<String, String> additionalHeaders = new HashMap<String, String>();
+        Map<String, String> additionalHeaders = new HashMap<>();
         additionalHeaders.put("act", "rep");
         additionalHeaders.put("p", postId);
         additionalHeaders.put("mid", userId);

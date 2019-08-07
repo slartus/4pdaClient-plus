@@ -8,11 +8,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.apache.http.MalformedChunkCodingException;
-import org.apache.http.NoHttpResponseException;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.conn.HttpHostConnectException;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.ShowInBrowserException;
 import org.softeg.slartus.forpdaplus.App;
@@ -113,8 +109,7 @@ public final class AppLog {
             return App.getContext().getString(R.string.server_not_available_or_not_respond);
         if (isTimeOutException(ex))
             return App.getContext().getString(R.string.exceeded_timeout);
-        if (isException(ex, MalformedChunkCodingException.class))
-            return App.getContext().getString(R.string.server_failed_to_respond);
+
         if (isException(ex, SocketException.class))
             return App.getContext().getString(R.string.connection_lost);
         return defaultValue;
@@ -136,12 +131,8 @@ public final class AppLog {
 
         if (ex == null) return false;
         Class clazz = ex.getClass();
-        //noinspection ConstantConditions
+
         return clazz == java.net.UnknownHostException.class ||
-                clazz == HttpHostConnectException.class ||
-                clazz == ClientProtocolException.class ||
-                clazz == NoHttpResponseException.class ||
-                clazz == org.apache.http.conn.HttpHostConnectException.class ||
                 (!isCause && isHostUnavailableException(ex.getCause(), true));
     }
 

@@ -1,18 +1,18 @@
 package org.softeg.slartus.forpdaapi;
 
+import android.net.Uri;
 import android.text.Html;
 import android.text.TextUtils;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URIUtils;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
 import org.softeg.slartus.forpdaapi.post.PostAttach;
 import org.softeg.slartus.forpdaapi.users.Users;
+import org.softeg.slartus.forpdacommon.BasicNameValuePair;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.Functions;
+import org.softeg.slartus.forpdacommon.NameValuePair;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
+import org.softeg.slartus.forpdacommon.URIUtils;
 
 import java.io.IOException;
 import java.net.URI;
@@ -86,8 +86,8 @@ public class TopicApi {
             qparams.add(new BasicNameValuePair("track_type", trackType));
         }
 
-        URI uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
-                URLEncodedUtils.format(qparams, "UTF-8"), null);
+        Uri uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
+                qparams, "UTF-8");
         httpClient.performGet(uri.toString());
         favTopic = findTopicInFav(topicId);
         if (favTopic != null && trackType.equals(favTopic.getTrackType())) {
@@ -215,8 +215,8 @@ public class TopicApi {
         qparams.add(new BasicNameValuePair("act", "fav"));
         qparams.add(new BasicNameValuePair("selectedtids", favTopic.getTid()));
         qparams.add(new BasicNameValuePair("tact", trackType));
-        URI uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
-                URLEncodedUtils.format(qparams, "UTF-8"), null);
+        Uri uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
+                qparams, "UTF-8");
         httpClient.performGet(uri.toString());
         return TRACK_TYPE_PIN.equals(trackType) ? "Тема закреплена" : "Тема откреплена";
     }

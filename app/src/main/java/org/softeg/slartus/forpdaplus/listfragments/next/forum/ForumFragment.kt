@@ -242,10 +242,10 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<ForumBranch> {
         setLoading(true)
-        return createLoader(id, args)
+        return createLoader(args)
     }
 
-    private fun createLoader(id: Int, args: Bundle?): Loader<ForumBranch> {
+    private fun createLoader(args: Bundle?): Loader<ForumBranch> {
         setLoading(true)
         return ForumLoaderTask(context ?: App.getContext(), args)
     }
