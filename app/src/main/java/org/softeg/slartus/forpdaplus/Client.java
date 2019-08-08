@@ -135,7 +135,7 @@ public class Client implements IHttpClient {
         String res;
 
         // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
-        res = HttpHelper.performGet(s);
+        res = Http.Companion.getInstance().performGetFull(s).getResponseBody();
 
         if (TextUtils.isEmpty(res))
             throw new NotReportException(App.getContext().getString(R.string.server_return_empty_page));
@@ -866,7 +866,7 @@ public class Client implements IHttpClient {
 
 
     void markAllForumAsRead() throws Throwable {
-        ForumsApi.markAllAsRead(this);
+        ForumsApi.Companion.markAllAsRead(this);
     }
 
 

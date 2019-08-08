@@ -233,7 +233,7 @@ public class DownloadsService extends IntentService {
 
             url = FileUtils.getDirPath(url) + "/" + URLEncoder.encode(FileUtils.getFileNameFromUrl(url));
 
-            Response response = Http.Companion.getInstance().request(url);
+            Response response = Http.Companion.getInstance().response(url);
 
             //HttpEntity entity = httpHelper.getDownloadEntity(url, total);
 
@@ -244,7 +244,7 @@ public class DownloadsService extends IntentService {
 
 
             int count;
-            int percent = 0;
+            int percent;
             int prevPercent = 0;
 
             Date lastUpdateTime = new Date();

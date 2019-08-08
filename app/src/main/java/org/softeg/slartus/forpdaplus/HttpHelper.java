@@ -18,24 +18,24 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
 //
 //
 //    public HttpResponse getDownloadResponse(String url, long range) throws IOException {
-//        // process headers using request interceptor
+//        // process headers using response interceptor
 //        final Map<String, String> sendHeaders = new HashMap<>();
 //        sendHeaders.put(HttpHelper.ACCEPT_ENCODING, HttpHelper.GZIP);
 //        if (range != 0)
 //            sendHeaders.put("Range", "bytes=" + range + "-");
 //
 //        if (sendHeaders.size() > 0) {
-//            client.addRequestInterceptor((request, context) -> {
+//            client.addRequestInterceptor((response, context) -> {
 //                for (String key : sendHeaders.keySet()) {
-//                    if (!request.containsHeader(key)) {
-//                        request.addHeader(key, sendHeaders.get(key));
+//                    if (!response.containsHeader(key)) {
+//                        response.addHeader(key, sendHeaders.get(key));
 //                    }
 //                }
 //            });
 //        }
 //
-//        HttpGet request = new HttpGet(url);
-//        HttpResponse response = client.execute(request);
+//        HttpGet response = new HttpGet(url);
+//        HttpResponse response = client.execute(response);
 //        StatusLine status = response.getStatusLine();
 //        checkStatus(status, url);
 //
@@ -43,7 +43,7 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
 //    }
 ////
 ////    public Response getDownloadResponse(String url, long range) throws IOException {
-////        // process headers using request interceptor
+////        // process headers using response interceptor
 ////        final Map<String, String> sendHeaders = new HashMap<String, String>();
 ////        sendHeaders.put(HttpHelper.ACCEPT_ENCODING, HttpHelper.GZIP);
 ////        if (range != 0)
@@ -51,12 +51,12 @@ public class HttpHelper extends org.softeg.slartus.forpdacommon.HttpHelper {
 ////
 ////        OkHttpClient okHttpClient= new OkHttpClient();
 ////        Headers headers = Headers.of(sendHeaders);
-////        Request request = new Request.Builder()
+////        Request response = new Request.Builder()
 ////                .headers(headers)
 ////                .url(url)
 ////                .build();
 ////
-////        return okHttpClient.newCall(request).execute();
+////        return okHttpClient.newCall(response).execute();
 ////    }
 //
 //    public HttpEntity getDownloadEntity(String url, long range) throws Exception {

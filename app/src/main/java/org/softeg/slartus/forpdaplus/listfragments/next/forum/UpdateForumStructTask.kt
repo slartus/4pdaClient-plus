@@ -8,7 +8,6 @@ import org.softeg.slartus.forpdaapi.ForumsApi
 import org.softeg.slartus.forpdaapi.ProgressState
 import org.softeg.slartus.forpdaapi.classes.ForumsData
 import org.softeg.slartus.forpdaplus.App
-import org.softeg.slartus.forpdaplus.Client
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.db.ForumsTable
@@ -36,7 +35,7 @@ internal class UpdateForumStructTask internal constructor(val context: WeakRefer
 
             if (isCancelled) return null
 
-            val res = ForumsApi.loadForums(Client.getInstance(), object : ProgressState() {
+            val res = ForumsApi.loadForums(object : ProgressState() {
                 override fun update(message: String, percents: Long) {
                     publishProgress(String.format("%s %d", message, percents))
                 }

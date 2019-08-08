@@ -744,7 +744,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     "Copyright 2011-2016 Artem Slinkin <slartus@gmail.com>";
 
             new MaterialDialog.Builder(getActivity())
-                    .title(getProgramFullName(getActivity()))
+                    .title(getProgramFullName())
                     .content(Html.fromHtml(text))
                     .positiveText(android.R.string.ok)
                     .show();
@@ -985,19 +985,29 @@ public class PreferencesActivity extends BasePreferencesActivity {
         App.resStartNotifierServices();
     }
 
-
-    public static String getProgramFullName(Context context) {
-        String programName = context.getString(R.string.app_name);
+    public static PackageInfo getPackageInfo() {
+        String packageName = App.getInstance().getPackageName();
         try {
-            String packageName = context.getPackageName();
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(
+
+            return App.getInstance().getPackageManager().getPackageInfo(
                     packageName, PackageManager.GET_META_DATA);
-
-            programName += " v" + pInfo.versionName + " c" + pInfo.versionCode;
-
         } catch (PackageManager.NameNotFoundException e1) {
-            AppLog.e(context, e1);
+            AppLog.e(App.getInstance(), e1);
         }
+        PackageInfo packageInfo = new PackageInfo();
+        packageInfo.packageName = packageName;
+        packageInfo.versionName = "unknown";
+        packageInfo.versionCode = 1;
+        return packageInfo;
+    }
+
+    public static String getProgramFullName() {
+        String programName = App.getInstance().getString(R.string.app_name);
+
+        PackageInfo pInfo = getPackageInfo();
+
+        programName += " v" + pInfo.versionName + " c" + pInfo.versionCode;
+
         return programName;
     }
 

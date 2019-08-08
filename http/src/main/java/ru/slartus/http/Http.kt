@@ -3,6 +3,7 @@ package ru.slartus.http
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.os.Build
 import android.support.v4.util.Pair
 import android.util.Log
 import android.webkit.MimeTypeMap
@@ -18,19 +19,21 @@ import java.net.CookiePolicy.ACCEPT_ALL
 import java.util.*
 import java.util.concurrent.TimeUnit
 import okhttp3.RequestBody.Companion.asRequestBody
+import java.net.HttpCookie
+import java.net.URI
 
 @Suppress("unused")
 /*
  * Created by slartus on 25.01.2015.
  */
-class Http private constructor(context: Context) {
+class Http private constructor(context: Context, appName: String, appVersion: String) {
 
     companion object {
         const val TAG = "Http"
         private var INSTANCE: Http? = null
-        private var USER_AGENT = "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Mobile Safari/537.36"
-        fun init(context: Context) {
-            INSTANCE = Http(context)
+        private const val FULL_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36"
+        fun init(context: Context, appName: String, appVersion: String) {
+            INSTANCE = Http(context, appName, appVersion)
         }
 
         val instance by lazy { INSTANCE!! }
@@ -74,20 +77,62 @@ class Http private constructor(context: Context) {
                 .build()    // socket timeout
     }
 
+    private val userAgent by lazy {
+        String.format(Locale.getDefault(),
+                "%s/%s (Android %s; %s; %s %s; %s)",
+                appName,
+                appVersion,
+                Build.VERSION.RELEASE,
+                Build.MODEL,
+                Build.BRAND,
+                Build.DEVICE,
+                Locale.getDefault().language)
+    }
+
+
     private fun prepareUrl(url: String) = url.replace(Regex("^//4pda\\.ru"), "http://4pda.ru")
 
-    fun request(url: String): Response {
+    private fun buildRequestHeaders(userAgent: String = this.userAgent): Headers {
+        val headersBuilder = Headers.Builder()
+        headersBuilder.add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3")
+        // headersBuilder.add("Accept-Encoding", "gzip, deflate")
+        headersBuilder.add("Accept-Language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7,vi;q=0.6,bg;q=0.5")
+        headersBuilder.add("User-Agent", userAgent)
+        return headersBuilder.build()
+    }
 
+    fun response(url: String) = response(url, false)
+    private fun response(url: String, desktopVersion: Boolean = false): Response {
         val request = Request.Builder()
-                .addHeader("User-Agent", USER_AGENT)
+                .headers(buildRequestHeaders(if (desktopVersion) FULL_USER_AGENT else userAgent))
                 .url(prepareUrl(url))
                 .build()
+        try {
+            if (desktopVersion)
+                setCookieDeskVer(true)
+            return client.newCall(request).execute()
+        } finally {
+            if (desktopVersion)
+                setCookieDeskVer(false)
+        }
+    }
 
-        return client.newCall(request).execute()
+    private fun setCookieDeskVer(deskVer: Boolean) {
+        val uri = URI.create("http://4pda.ru/")
+        cookieStore.cookies.filter { it.name == "deskver" }.forEach {
+            cookieStore.remove(uri, it)
+        }
+        cookieStore.add(uri, HttpCookie("deskver", if (deskVer) "1" else "0"))
     }
 
     fun performGet(url: String): AppResponse {
-        val response = request(url)
+        val response = response(url)
+        val body = response.body?.string()
+        return AppResponse(url, response.request.url.toString(), body)
+    }
+
+    fun performGetFull(url: String): AppResponse {
+        val response = response(url, true)
         val body = response.body?.string()
         return AppResponse(url, response.request.url.toString(), body)
     }
@@ -101,8 +146,9 @@ class Http private constructor(context: Context) {
         }
 
         val requestBody = formBuilder.build()
+
         val request = Request.Builder()
-                .addHeader("User-Agent", USER_AGENT)
+                .headers(buildRequestHeaders(userAgent))
                 .url(prepareUrl(url))
                 .post(requestBody)
                 .build()
@@ -130,7 +176,7 @@ class Http private constructor(context: Context) {
 
         Log.d(TAG, "post: $url")
         val request = Request.Builder()
-                .addHeader("User-Agent", USER_AGENT)
+                .headers(buildRequestHeaders(userAgent))
                 .url(prepareUrl(url))
                 .cacheControl(CacheControl.FORCE_NETWORK)
                 .post(formBody)
@@ -178,7 +224,7 @@ class Http private constructor(context: Context) {
 
         val requestBody = builder.build()
         val request = Request.Builder()
-                .addHeader("User-Agent", USER_AGENT)
+                .headers(buildRequestHeaders(userAgent))
                 .url(prepareUrl(url))
                 .post(requestBody)
                 .build()
@@ -213,7 +259,7 @@ class Http private constructor(context: Context) {
             val buffer = Buffer()
             request.body?.writeTo(buffer)
             val requestBody = buffer.readUtf8()
-            Log.d("OkHttp", String.format("Sending request %s on %s%n%s body: %s",
+            Log.d("OkHttp", String.format("Sending response %s on %s%n%s body: %s",
                     request.url, chain.connection(), request.headers, requestBody))
 
             val response = chain.proceed(request)

@@ -200,13 +200,13 @@ public class PersistentCookieStore implements CookieStore {
     }
 
     /*  http://tools.ietf.org/html/rfc6265#section-5.1.4
-        A request-path path-matches a given cookie-path if at least one of
+        A response-path path-matches a given cookie-path if at least one of
         the following conditions holds:
-        o  The cookie-path and the request-path are identical.
-        o  The cookie-path is a prefix of the request-path, and the last
+        o  The cookie-path and the response-path are identical.
+        o  The cookie-path is a prefix of the response-path, and the last
         character of the cookie-path is %x2F ("/").
-        o  The cookie-path is a prefix of the request-path, and the first
-        character of the request-path that is not included in the cookie-
+        o  The cookie-path is a prefix of the response-path, and the first
+        character of the response-path that is not included in the cookie-
         path is a %x2F ("/") character. */
 
     private boolean checkPathsMatch(String cookiePath, String requestPath) {
