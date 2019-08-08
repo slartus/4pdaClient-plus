@@ -31,6 +31,7 @@ import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.users.Users;
 import org.softeg.slartus.forpdacommon.CollectionUtils;
+import org.softeg.slartus.forpdacommon.HttpHelper;
 import org.softeg.slartus.forpdacommon.NameValuePair;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.Observer;
@@ -93,7 +94,7 @@ public class Client implements IHttpClient {
         return HttpHelper.getLastUri();
     }
 
-    public void deletePost(String forumId, String themeId, String postId, CharSequence authKey) throws IOException {
+    public void deletePost(String postId, CharSequence authKey) throws IOException {
         PostApi.INSTANCE.delete(this, postId, authKey);
     }
 

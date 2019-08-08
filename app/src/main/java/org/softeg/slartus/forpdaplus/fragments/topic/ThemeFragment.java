@@ -1176,7 +1176,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             Throwable ex = null;
 
             try {
-                Post.delete(postId, m_Topic.getForumId(), m_Topic.getId(), Client.getInstance().getAuthKey());
+                Post.delete(postId, Client.getInstance().getAuthKey());
             } catch (Throwable e) {
                 ex = e;
             }

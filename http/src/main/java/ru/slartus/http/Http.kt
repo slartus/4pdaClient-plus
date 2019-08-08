@@ -21,6 +21,7 @@ import java.util.concurrent.TimeUnit
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.net.HttpCookie
 import java.net.URI
+import java.nio.charset.Charset
 
 @Suppress("unused")
 /*
@@ -167,14 +168,14 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     @Throws(IOException::class)
     @JvmOverloads
     fun performPost(url: String, values: List<Pair<String, String>> = ArrayList()): AppResponse {
-        val formBuilder = FormBody.Builder()
+        val formBuilder = FormBody.Builder(Charset.forName("windows-1251"))
         values
                 .filter { it.second != null }
-                .forEach { formBuilder.add(it.first!!, it.second!!) }
+                .forEach { formBuilder.addEncoded(it.first!!, it.second!!) }
 
         val formBody = formBuilder.build()
 
-        Log.d(TAG, "post: $url")
+        Log.i(TAG, "post: $url")
         val request = Request.Builder()
                 .headers(buildRequestHeaders(userAgent))
                 .url(prepareUrl(url))
