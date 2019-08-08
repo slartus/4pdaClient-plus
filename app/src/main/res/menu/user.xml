@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/guest_item"
+        android:icon="@drawable/account_outline"
+        android:title="@string/guest"
+        app:showAsAction="ifRoom" >
+        <menu>
+            <item
+                android:id="@+id/login_item"
+                android:title="@string/login"/>
+            <item
+                android:id="@+id/registration_item"
+                android:title="@string/Registration"/>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/user_item"
+        android:icon="@drawable/account"
+        android:title="@string/guest"
+        android:visible="false"
+        app:showAsAction="ifRoom" >
+        <menu>
+            <item
+                android:id="@+id/qms_item"
+                android:title="QMS"/>
+            <item
+                android:id="@+id/mentions_item"
+                android:title="Упоминания"/>
+            <item
+                android:id="@+id/profile_item"
+                android:title="@string/Profile"/>
+            <item
+                android:id="@+id/reputation_item"
+                android:title="@string/reputation"/>
+            <item
+                android:id="@+id/logout_item"
+                android:title="@string/Logout"/>
+        </menu>
+    </item>
+</menu>
