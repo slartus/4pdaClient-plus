@@ -42,13 +42,13 @@ public class FavoritesListFragment extends TopicsListFragment {
     }
 
     @Override
-    public void loadCache(){
+    public void loadCache() {
         super.loadCache();
         sort();
     }
 
     @Override
-    protected void sort(){
+    protected void sort() {
 
     }
 
@@ -65,7 +65,7 @@ public class FavoritesListFragment extends TopicsListFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==R.id.filter_and_ordering_item){
+        if (item.getItemId() == R.id.filter_and_ordering_item) {
             Intent settingsActivity = new Intent(
                     getContext(), ForumTopicsPreferencesActivity.class);
             settingsActivity.putExtra("listname", getListName());
@@ -76,12 +76,17 @@ public class FavoritesListFragment extends TopicsListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        if(inflater!=null)
-            inflater.inflate(R.menu.favorites,menu);
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         if (menu.findItem(R.id.list_settings_item) != null)
             menu.findItem(R.id.list_settings_item).setVisible(false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (inflater != null)
+            inflater.inflate(R.menu.favorites, menu);
     }
 
 }

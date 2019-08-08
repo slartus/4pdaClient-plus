@@ -156,11 +156,17 @@ public class ForumTopicsListFragment extends TopicsListFragment {
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if (menu.findItem(R.id.list_settings_item) != null)
+            menu.findItem(R.id.list_settings_item).setVisible(false);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         if(inflater!=null)
             inflater.inflate(R.menu.forum_topics,menu);
-        if (menu.findItem(R.id.list_settings_item) != null)
-            menu.findItem(R.id.list_settings_item).setVisible(false);
+
     }
 }

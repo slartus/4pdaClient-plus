@@ -306,10 +306,12 @@ public class AppsListFragment extends TopicsListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         if (menu.findItem(R.id.list_settings_item) != null)
             menu.findItem(R.id.list_settings_item).setVisible(false);
     }
+
 
     private AppItem findById(ArrayList<AppItem> apps, CharSequence id) {
         for (AppItem app : apps) {

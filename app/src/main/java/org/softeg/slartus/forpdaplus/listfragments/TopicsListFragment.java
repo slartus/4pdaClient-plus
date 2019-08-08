@@ -62,7 +62,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
 
     @Override
-    public void loadCache(){
+    public void loadCache() {
         clearNotification(2);
         super.loadCache();
         sort();
@@ -298,7 +298,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     }
 
     protected void updateItem(IListItem topic) {
-       saveCache();
+        saveCache();
     }
 
     @Override
@@ -383,7 +383,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==R.id.list_settings_item){
+        if (item.getItemId() == R.id.list_settings_item) {
             showSettings();
             return true;
         }
@@ -391,10 +391,18 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if (menu.findItem(R.id.list_settings_item) != null)
+            menu.findItem(R.id.list_settings_item).setVisible(true);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if(inflater!=null)
-            inflater.inflate(R.menu.topics,menu);
+        if (inflater != null) {
+            inflater.inflate(R.menu.topics, menu);
+        }
     }
 
     @Override

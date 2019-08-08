@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -111,27 +110,12 @@ public class CuratorFragment extends WebViewFragment {
         }else {
             setHideFab(fab);
             setFabColors(fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    webView.evalJs("getIds();");
-                }
-            });
+            fab.setOnClickListener(view -> webView.evalJs("getIds();"));
         }
         ImageButton up = (ImageButton) findViewById(R.id.btnUp);
         ImageButton down = (ImageButton) findViewById(R.id.btnDown);
-        up.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                webView.pageUp(true);
-            }
-        });
-        down.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                webView.pageDown(true);
-            }
-        });
+        up.setOnClickListener(v -> webView.pageUp(true));
+        down.setOnClickListener(v -> webView.pageDown(true));
         initSwipeRefreshLayout();
         webView.addJavascriptInterface(this, "HTMLOUT");
         topicId = getArguments().getString("TOPIC_ID");
@@ -281,82 +265,68 @@ public class CuratorFragment extends WebViewFragment {
         if(App.getInstance().getPreferences().getBoolean("pancilInActionBar",false)) {
             menu.add(R.string.write)
                     .setIcon(R.drawable.auto_fix)
-                    .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-
-                        public boolean onMenuItemClick(MenuItem item) {
-                            webView.evalJs("getIds();");
-                            return true;
-                        }
+                    .setOnMenuItemClickListener(item -> {
+                        webView.evalJs("getIds();");
+                        return true;
                     }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
         menu.add(R.string.setting)
                 .setIcon(R.drawable.settings_white)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        ThemeCurator.showMmodDialog(getActivity(), CuratorFragment.this, getArguments().getString("TOPIC_ID"));
-                        return true;
-                    }
+                .setOnMenuItemClickListener(item -> {
+                    ThemeCurator.showMmodDialog(getActivity(), CuratorFragment.this, getArguments().getString("TOPIC_ID"));
+                    return true;
                 }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         menu.add(R.string.link)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), url);
-                        return true;
-                    }
+                .setOnMenuItemClickListener(item -> {
+                    ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), url);
+                    return true;
                 });
     }
+    @SuppressWarnings("unused")
     @JavascriptInterface
     public void showCuratorDialog(final String ids) {
-        run(new Runnable() {
-            @Override
-            public void run() {
-                CuratorFragment.this.ids = ids;
-                String[] idsArray = ids.split(",");
-                if (TextUtils.isEmpty(idsArray[0])) {
-                    Toast.makeText(getContext(), R.string.no_selected_posts, Toast.LENGTH_SHORT).show();
-                    return;
-                }
+        run(() -> {
+            CuratorFragment.this.ids = ids;
+            String[] idsArray = ids.split(",");
+            if (TextUtils.isEmpty(idsArray[0])) {
+                Toast.makeText(getContext(), R.string.no_selected_posts, Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                LayoutInflater inflater = getMainActivity().getLayoutInflater();
-                View view = inflater.inflate(R.layout.curator_actions, null);
-                final RadioGroup group = (RadioGroup) view.findViewById(R.id.radioGroup);
-                final EditText editText = (EditText) view.findViewById(R.id.editText2);
-                editText.setVisibility(View.GONE);
-                group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(RadioGroup group, int checkedId) {
-                        switch (checkedId) {
+            LayoutInflater inflater = getMainActivity().getLayoutInflater();
+            View view = inflater.inflate(R.layout.curator_actions, null);
+            final RadioGroup group = view.findViewById(R.id.radioGroup);
+            final EditText editText = view.findViewById(R.id.editText2);
+            editText.setVisibility(View.GONE);
+            group.setOnCheckedChangeListener((group1, checkedId) -> {
+                switch (checkedId) {
+                    case R.id.radioButton:
+                        editText.setVisibility(View.GONE);
+                        break;
+                    case R.id.radioButton2:
+                        editText.setVisibility(View.VISIBLE);
+                        break;
+                }
+            });
+
+            new MaterialDialog.Builder(getContext())
+                    .customView(view, true)
+                    .positiveText(R.string.perform)
+                    .negativeText(R.string.cancel)
+                    .onPositive((dialog, which) -> {
+                        switch (group.getCheckedRadioButtonId()) {
                             case R.id.radioButton:
-                                editText.setVisibility(View.GONE);
+                                postact = "del";
                                 break;
                             case R.id.radioButton2:
-                                editText.setVisibility(View.VISIBLE);
+                                postact = "mov";
+                                postarg = editText.getText().toString();
                                 break;
                         }
-                    }
-                });
+                        new PostTask().execute();
 
-                new MaterialDialog.Builder(getContext())
-                        .customView(view, true)
-                        .positiveText(R.string.perform)
-                        .negativeText(R.string.cancel)
-                        .onPositive((dialog, which) -> {
-                            switch (group.getCheckedRadioButtonId()) {
-                                case R.id.radioButton:
-                                    postact = "del";
-                                    break;
-                                case R.id.radioButton2:
-                                    postact = "mov";
-                                    postarg = editText.getText().toString();
-                                    break;
-                            }
-                            new PostTask().execute();
-
-                        })
-                        .show();
-            }
+                    })
+                    .show();
         });
 
     }
