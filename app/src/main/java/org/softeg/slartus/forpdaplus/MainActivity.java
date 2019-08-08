@@ -851,10 +851,10 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                         MentionsListFragment.Companion.newFragment());
                 return true;
             case R.id.profile_item:
-                ProfileFragment.showProfile(Client.getInstance().UserId, Client.getInstance().getUser());
+                ProfileFragment.showProfile(UserInfoRepository.Companion.getInstance().getId(), Client.getInstance().getUser());
                 return true;
             case R.id.reputation_item:
-                UserReputationFragment.showActivity(Client.getInstance().UserId, false);
+                UserReputationFragment.showActivity(UserInfoRepository.Companion.getInstance().getId(), false);
                 return true;
             case R.id.logout_item:
                 LoginDialog.logout(MainActivity.this);

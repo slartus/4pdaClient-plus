@@ -1,5 +1,7 @@
 package org.softeg.slartus.forpdaplus.classes.common;
 
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
 import android.content.Context;
 
 import java.util.List;
@@ -20,14 +22,22 @@ public class StringUtils {
         return sb.toString();
     }
 
+    public static String fromClipboard(Context context){
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        assert clipboard != null;
+        if (clipboard.hasPrimaryClip()) {
+            android.content.ClipDescription description = clipboard.getPrimaryClipDescription();
+            android.content.ClipData data = clipboard.getPrimaryClip();
+            if (data != null && description != null && description.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN))
+                return String.valueOf(data.getItemAt(0).getText());
+        }
+        return null;
+    }
 
     public static void copyToClipboard(Context context, String link) {
-
-
         android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         android.content.ClipData clip = android.content.ClipData.newPlainText("url", link);
         clipboard.setPrimaryClip(clip);
-
     }
 
 

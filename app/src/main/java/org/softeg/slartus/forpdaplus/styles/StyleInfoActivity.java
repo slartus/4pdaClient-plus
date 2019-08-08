@@ -54,7 +54,7 @@ public class StyleInfoActivity extends BrowserViewsFragmentActivity {
     public void onCreate(Bundle saveInstance) {
         super.onCreate(saveInstance);
         setContentView(R.layout.activity_style_info);
-        webView = (WebView) findViewById(R.id.wvBody);
+        webView = findViewById(R.id.wvBody);
         registerForContextMenu(webView);
         setWebViewSettings();
 
@@ -135,27 +135,21 @@ public class StyleInfoActivity extends BrowserViewsFragmentActivity {
             sb.append(String.format("<b>%s:</b>&nbsp;%s<br/>\n", title, value));
     }
 
+    @SuppressWarnings("unused")
     @JavascriptInterface
     public void showImgPreview(final String title, final String previewUrl, final String fullUrl) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ThemeFragment.showImgPreview(StyleInfoActivity.this, title, previewUrl, fullUrl);
-            }
-        });
+        runOnUiThread(() -> ThemeFragment.showImgPreview(StyleInfoActivity.this, title, previewUrl, fullUrl));
     }
 
+    @SuppressWarnings("unused")
     @JavascriptInterface
     public void copyToClipboard(final String value) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    StringUtils.copyToClipboard(StyleInfoActivity.this, value);
-                    Toast.makeText(StyleInfoActivity.this, String.format("Текст '%s' скопирован в буфер обмена", value), Toast.LENGTH_SHORT).show();
-                } catch (Throwable ex) {
-                    AppLog.e(StyleInfoActivity.this, ex);
-                }
+        runOnUiThread(() -> {
+            try {
+                StringUtils.copyToClipboard(StyleInfoActivity.this, value);
+                Toast.makeText(StyleInfoActivity.this, String.format("Текст '%s' скопирован в буфер обмена", value), Toast.LENGTH_SHORT).show();
+            } catch (Throwable ex) {
+                AppLog.e(StyleInfoActivity.this, ex);
             }
         });
     }

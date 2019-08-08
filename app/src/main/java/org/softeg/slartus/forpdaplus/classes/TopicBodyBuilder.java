@@ -10,6 +10,7 @@ import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.emotic.Smiles;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 
 import java.util.Hashtable;
 
@@ -298,7 +299,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
                     .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "quote", new String[]{m_Topic.getForumId(), m_Topic.getId(), post.getId(), post.getDate(), post.getUserId(), nickParam}))
                     .append("><span>Цитата</span></a>");
 
-            if (!Client.getInstance().UserId.equals(post.getUserId()) & getTopic().isPostVote()) {
+            if (!UserInfoRepository.Companion.getInstance().getId().equals(post.getUserId()) & getTopic().isPostVote()) {
                 sb.append("<a class=\"button vote bad\" ")
                         .append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "postVoteBad", post.getId()))
                         .append("><span>Плохо</span></a>");

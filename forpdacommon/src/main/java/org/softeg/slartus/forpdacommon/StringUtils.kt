@@ -14,7 +14,7 @@ fun String.fromHtml(): Spanned =StringUtils.fromHtml(this)
 
 @Suppress("DEPRECATION")
 object StringUtils {
-    val ruble = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) "\u20BD" else Html.fromHtml("<strike>Р</strike>")
+
     fun fromHtml(html: String): Spanned {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);

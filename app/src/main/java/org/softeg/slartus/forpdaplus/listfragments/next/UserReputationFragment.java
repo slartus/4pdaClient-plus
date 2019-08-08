@@ -35,6 +35,7 @@ import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.UserReputationBrickInfo;
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -173,7 +174,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         try {
             MenuItem item;
-            if (Client.getInstance().getLogined() && !getUserId().equals(Client.getInstance().UserId)) {
+            if (Client.getInstance().getLogined() && !getUserId().equals(UserInfoRepository.Companion.getInstance().getId())) {
 
 
                 item = menu.add(R.string.increase_reputation).setIcon(R.drawable.thumb_up);

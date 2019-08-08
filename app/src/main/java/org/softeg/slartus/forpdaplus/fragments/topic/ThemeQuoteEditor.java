@@ -15,9 +15,9 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
-import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.HtmlUtils;
@@ -70,20 +70,21 @@ public class ThemeQuoteEditor extends DialogFragment implements View.OnClickList
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         super.onViewCreated(view, savedInstanceState);
     }
 
+    @NotNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.quote_editor, null);
         assert v != null;
-        txtBody = (EditText) v.findViewById(R.id.txtBody);
+        txtBody = v.findViewById(R.id.txtBody);
         progressBar = v.findViewById(R.id.progressBar);
-        buttons = (LinearLayout) v.findViewById(R.id.relativeLayout);
+        buttons = v.findViewById(R.id.relativeLayout);
         v.findViewById(R.id.btnAll).setOnClickListener(this);
         v.findViewById(R.id.btnAuthor).setOnClickListener(this);
         v.findViewById(R.id.btnAuthor).setOnClickListener(this);
@@ -94,12 +95,9 @@ public class ThemeQuoteEditor extends DialogFragment implements View.OnClickList
         MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                 .customView(v,false)
                 .positiveText(R.string.insert)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        ((ThemeFragment)((MainActivity)getActivity()).getSupportFragmentManager().findFragmentByTag(parentTag)).insertTextToPost(txtBody.getText().toString());
-                    }
-                })
+                .onPositive((dialog1, which) -> ((ThemeFragment) getActivity()
+                        .getSupportFragmentManager().findFragmentByTag(parentTag)).insertTextToPost(txtBody.getText().toString()))
+
                 .negativeText(R.string.cancel)
                 .build();
 
@@ -178,7 +176,7 @@ public class ThemeQuoteEditor extends DialogFragment implements View.OnClickList
 
         private String m_QuoteUrl;
 
-        public QuoteLoader(String url) {
+        QuoteLoader(String url) {
             m_QuoteUrl = url;
 
         }
@@ -233,12 +231,7 @@ public class ThemeQuoteEditor extends DialogFragment implements View.OnClickList
                 parseQuote();
                 buttons.setVisibility(View.VISIBLE);
             } else {
-                AppLog.e(getActivity(), ex, new Runnable() {
-                    @Override
-                    public void run() {
-                        new QuoteLoader(m_QuoteUrl).execute();
-                    }
-                });
+                AppLog.e(getActivity(), ex, () -> new QuoteLoader(m_QuoteUrl).execute());
             }
         }
     }

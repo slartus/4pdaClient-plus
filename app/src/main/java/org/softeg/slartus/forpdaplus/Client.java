@@ -11,7 +11,6 @@ import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -68,10 +67,6 @@ import ru.slartus.http.Http;
  * To change this template use File | Settings | File Templates.
  */
 public class Client implements IHttpClient {
-
-    public String UserId = "0";
-    private String m_User = App.getContext().getString(R.string.guest);
-
     private String m_K = "";
 
     private Client() {
@@ -245,9 +240,11 @@ public class Client implements IHttpClient {
         void onUserChanged(String user, Boolean success);
     }
 
-    void doOnUserChangedListener(String user, Boolean success) {
+    void doOnUserChangedListener() {
+        String name = UserInfoRepository.Companion.getInstance().getName();
+        boolean logined = UserInfoRepository.Companion.getInstance().getUserInfo().getValue().getLogined();
         for (OnUserChangedListener listener : m_OnUserChangeListeners.getListeners()) {
-            listener.onUserChanged(user, success);
+            listener.onUserChanged(name, logined);
         }
 
     }
@@ -309,13 +306,11 @@ public class Client implements IHttpClient {
     }
 
     public String getUser() {
-        return m_User;
+        return UserInfoRepository.Companion.getInstance().getName();
     }
 
-    private Boolean m_Logined = false;
-
     public Boolean getLogined() {
-        return m_Logined;
+        return UserInfoRepository.Companion.getInstance().getUserInfo().getValue().getLogined();
     }
 
     private String m_LoginFailedReason;
@@ -344,59 +339,59 @@ public class Client implements IHttpClient {
         Http.Companion.getInstance().getCookieStore().removeAll();
 
         LoginResult loginResult = ProfileApi.login(login, password, privacy, capVal, capTime, capSig);
-        m_Logined = loginResult.isSuccess();
-        m_LoginFailedReason = m_Logined ? null : loginResult.getLoginError().toString();
+        boolean logined = loginResult.isSuccess();
+        UserInfoRepository.Companion.getInstance().setLogined(logined);
+        m_LoginFailedReason = logined ? null : loginResult.getLoginError().toString();
 
 
         // m_SessionId = outParams.get("SessionId");
-        m_User = loginResult.getUserLogin().toString();
+        UserInfoRepository.Companion.getInstance().setName(loginResult.getUserLogin().toString());
         m_K = loginResult.getK().toString();
 
         Http.Companion.getInstance().getCookieStore().addCustom("4pda.UserId", loginResult.getUserId().toString());
-        Http.Companion.getInstance().getCookieStore().addCustom("4pda.User", m_User);
+        Http.Companion.getInstance().getCookieStore().addCustom("4pda.User", UserInfoRepository.Companion.getInstance().getName());
         Http.Companion.getInstance().getCookieStore().addCustom("4pda.K", m_K);
 
 
-        return m_Logined;
+        return logined;
     }
 
     private final Pattern checkLoginPattern = PatternExtensions.compile("<a href=\"(http://4pda.ru)?/forum/index.php\\?showuser=(\\d+)\">(.*?)</a></b> \\( <a href=\"(http://4pda.ru)?/forum/index.php\\?act=Login&amp;CODE=03&amp;k=([a-z0-9]{32})\">Выход</a>");
 
     public void checkLoginByCookies() {
         try {
-
-
             if (checkLogin()) {
-                m_Logined = true;
+                UserInfoRepository.Companion.getInstance().setLogined(true);
             }
-
         } catch (Throwable ignored) {
 
         } finally {
-            doOnUserChangedListener(m_User, m_Logined);
+            doOnUserChangedListener();
         }
 
     }
 
     private Boolean checkLogin() {
-
-        m_User = "";
+        String userId = "";
+        UserInfoRepository.Companion.getInstance().setName("");
         m_K = "";
 
         HttpCookie memberIdCookie = null;
         for (HttpCookie cookie : Http.Companion.getInstance().getCookieStore().getCookies()) {
             if ("4pda.UserId".equals(cookie.getName())) {
-                UserId = cookie.getValue();
+                userId = cookie.getValue();
+
             } else if ("4pda.User".equals(cookie.getName())) {
-                m_User = cookie.getValue();
+                UserInfoRepository.Companion.getInstance().setName(cookie.getValue());
             } else if ("4pda.K".equals(cookie.getName())) {
                 m_K = cookie.getValue();
             } else if ("member_id".equals(cookie.getName())) {
                 memberIdCookie = cookie;
+                UserInfoRepository.Companion.getInstance().setId(memberIdCookie.getValue());
             }
         }
 
-        return !TextUtils.isEmpty(m_User) && !TextUtils.isEmpty(UserId) && !TextUtils.isEmpty(m_K) && memberIdCookie != null && UserId.equals(memberIdCookie.getValue());
+        return !TextUtils.isEmpty(UserInfoRepository.Companion.getInstance().getName()) && !TextUtils.isEmpty(userId) && !TextUtils.isEmpty(m_K) && memberIdCookie != null && userId.equals(memberIdCookie.getValue());
 
     }
 
@@ -405,15 +400,15 @@ public class Client implements IHttpClient {
         try {
 
             if (checkLogin()) {
-                m_Logined = true;
+                UserInfoRepository.Companion.getInstance().setLogined(true);
                 return;
             }
-            if (!TextUtils.isEmpty(m_User) && !TextUtils.isEmpty(UserId)
+            if (!TextUtils.isEmpty(UserInfoRepository.Companion.getInstance().getName()) && !TextUtils.isEmpty(UserInfoRepository.Companion.getInstance().getId())
                     && !TextUtils.isEmpty(m_K)) {
                 for (HttpCookie cookie : Http.Companion.getInstance().getCookieStore().getCookies()) {
                     if ("member_id".equals(cookie.getName())) {
-                        if (UserId.equals(cookie.getValue())) {
-                            m_Logined = true;
+                        if (UserInfoRepository.Companion.getInstance().getId().equals(cookie.getValue())) {
+                            UserInfoRepository.Companion.getInstance().setLogined(true);
                             return;
                         }
                         break;
@@ -424,19 +419,19 @@ public class Client implements IHttpClient {
 
             Matcher m = checkLoginPattern.matcher(pageBody);
             if (m.find()) {
-                UserId = m.group(2);
-                m_User = m.group(3);
+                UserInfoRepository.Companion.getInstance().setId(m.group(2));
+                UserInfoRepository.Companion.getInstance().setName(m.group(3));
                 m_K = m.group(5);
-                m_Logined = true;
+                UserInfoRepository.Companion.getInstance().setLogined(true);
             } else {
-                m_Logined = false;
-                m_User = "гость";
+                UserInfoRepository.Companion.getInstance().setLogined(false);
+                UserInfoRepository.Companion.getInstance().setName("гость");
                 m_K = "";
-                UserId = "";
+                UserInfoRepository.Companion.getInstance().setId("");
             }
 
         } finally {
-            doOnUserChangedListener(m_User, m_Logined);
+            doOnUserChangedListener();
         }
     }
 
@@ -474,10 +469,10 @@ public class Client implements IHttpClient {
         Http.Companion.getInstance().getCookieStore().removeAll();
 
         checkLogin(res);
-        if (m_Logined)
+        if (UserInfoRepository.Companion.getInstance().getUserInfo().getValue().getLogined())
             m_LoginFailedReason = App.getContext().getString(R.string.bad_logout);
 
-        return !m_Logined;
+        return !UserInfoRepository.Companion.getInstance().getUserInfo().getValue().getLogined();
     }
 
     public Forum loadForums() throws Exception {
@@ -542,7 +537,7 @@ public class Client implements IHttpClient {
         }
 
 
-        return loadTopic(context, topicId, topicPageBody, spoilFirstPost, m_Logined,
+        return loadTopic(context, topicId, topicPageBody, spoilFirstPost, UserInfoRepository.Companion.getInstance().getUserInfo().getValue().getLogined(),
                 urlParams);
     }
 
@@ -808,7 +803,7 @@ public class Client implements IHttpClient {
                 post.setCanDelete(el.selectFirst("a[href*=tact=delete]") != null);
                 if (post.getCanDelete()) {
                     // если автор поста не совпадает с текущим пользователем и есть возможность удалить-значит, модератор
-                    if (post.getUserId() != null && !post.getUserId().equals(Client.getInstance().UserId)) {
+                    if (post.getUserId() != null && !post.getUserId().equals(UserInfoRepository.Companion.getInstance().getId())) {
                         topicBodyBuilder.setMMod(true);
                     }
                 }

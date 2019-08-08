@@ -21,6 +21,7 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import org.softeg.slartus.forpdaapi.ProfileApi;
 import org.softeg.slartus.forpdaapi.classes.LoginForm;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 
 import java.lang.ref.WeakReference;
 
@@ -234,8 +235,10 @@ public class LoginDialog {
             if (this.dialog.isShowing()) {
                 this.dialog.dismiss();
             }
+            UserInfoRepository.Companion.getInstance().setLogined(success);
+            UserInfoRepository.Companion.getInstance().setName(login);
             doOnUserChangedListener(login, success);
-            Client.getInstance().doOnUserChangedListener(login, success);
+            Client.getInstance().doOnUserChangedListener();
             App.getInstance().getPreferences().edit().putBoolean("needLoadRepImage", success).apply();
             if (success) {
                 Toast.makeText(mContext.get(), R.string.login_performed,

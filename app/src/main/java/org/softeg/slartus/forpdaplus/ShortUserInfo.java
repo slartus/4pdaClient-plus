@@ -28,10 +28,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.softeg.slartus.forpdaplus.classes.FastBlur;
+import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -77,7 +79,7 @@ public class ShortUserInfo {
 
         openLink.setOnClickListener(v -> {
             String url;
-            url = readFromClipboard(getContext());
+            url = StringUtils.fromClipboard(getContext());
             if (url == null) url = "";
             new MaterialDialog.Builder(getContext())
                     .title(R.string.go_to_link)
@@ -108,9 +110,9 @@ public class ShortUserInfo {
             if (client.getLogined()) {
                 new updateAsyncTask().execute();
                 if (isSquare) {
-                    imgAvatarSquare.setOnClickListener(v -> ProfileFragment.showProfile(client.UserId, client.getUser()));
+                    imgAvatarSquare.setOnClickListener(v -> ProfileFragment.showProfile(UserInfoRepository.Companion.getInstance().getId(), client.getUser()));
                 } else {
-                    imgAvatar.setOnClickListener(v -> ProfileFragment.showProfile(client.UserId, client.getUser()));
+                    imgAvatar.setOnClickListener(v -> ProfileFragment.showProfile(UserInfoRepository.Companion.getInstance().getId(), client.getUser()));
                 }
 
 
@@ -141,7 +143,7 @@ public class ShortUserInfo {
     private void refreshQms() {
         int qmsCount = client.getQmsCount();
         if (qmsCount != 0) {
-            qmsMessages.setText(String.format(mActivity.getString(R.string.new_qms_messages), qmsCount));
+            qmsMessages.setText(String.format(App.getInstance().getString(R.string.new_qms_messages), qmsCount));
         } else {
             qmsMessages.setText(R.string.no_new_qms_messages);
         }
@@ -153,7 +155,7 @@ public class ShortUserInfo {
         @Override
         protected Void doInBackground(String... urls) {
             try {
-                Document doc = Jsoup.parse(client.performGet("http://4pda.ru/forum/index.php?showuser=" + client.UserId));
+                Document doc = Jsoup.parse(client.performGet("http://4pda.ru/forum/index.php?showuser=" + UserInfoRepository.Companion.getInstance().getId()));
                 Element el = doc.selectFirst("div.user-box > div.photo > img");
                 if (el != null)
                     avatarUrl = el.attr("src");
@@ -233,7 +235,7 @@ public class ShortUserInfo {
     }
 
     private boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) mActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) App.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
         assert cm != null;
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting()
@@ -307,15 +309,4 @@ public class ShortUserInfo {
         return Pattern.compile("4pda.ru/([^/$?&]+)", Pattern.CASE_INSENSITIVE).matcher(url).find();
     }
 
-    private static String readFromClipboard(Context context) {
-        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        assert clipboard != null;
-        if (clipboard.hasPrimaryClip()) {
-            android.content.ClipDescription description = clipboard.getPrimaryClipDescription();
-            android.content.ClipData data = clipboard.getPrimaryClip();
-            if (data != null && description != null && description.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN))
-                return String.valueOf(data.getItemAt(0).getText());
-        }
-        return null;
-    }
 }
