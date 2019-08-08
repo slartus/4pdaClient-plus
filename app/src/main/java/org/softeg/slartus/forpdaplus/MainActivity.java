@@ -392,7 +392,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             mMainDrawerMenu.getNavigationView().getHeaderView(0).setVisibility(View.GONE);
 
         Client.INSTANCE.checkLoginByCookies();
-        Client.getInstance().addOnUserChangedListener((user, success) -> mHandler.post(this::setUserMenu));
+        Client.getInstance().addOnUserChangedListener((user, success) -> mHandler.post(this::invalidateOptionsMenu));
 
         addToDisposable(UserInfoRepository
                 .Companion.getInstance()
@@ -876,6 +876,14 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
+
+        refreshUserMenu(menu);
+        menu.findItem(R.id.tabs_item).setVisible(getPreferences().getBoolean("openTabDrawerButton", false));
+        menu.findItem(R.id.exit_item).setVisible(getPreferences().getBoolean("showedExitButton", false));
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void refreshUserMenu(Menu menu){
         boolean logged = Client.getInstance().getLogined();
         menu.findItem(R.id.guest_item).setVisible(!logged);
         MenuItem userMenuItem = menu.findItem(R.id.user_item);
@@ -884,16 +892,10 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             userMenuItem.setIcon(getUserIconRes());
             String qmsTitle= Client.getInstance().getQmsCount() > 0 ? ("QMS (" + Client.getInstance().getQmsCount() + ")") : "QMS";
             menu.findItem(R.id.qms_item).setTitle(qmsTitle);
-
             int mentionsCount = UserInfoRepository.Companion.getInstance().getUserInfo()
                     .getValue().mentionsCountOrDefault(0);
-
             menu.findItem(R.id.mentions_item).setTitle("Упоминания " + (mentionsCount > 0 ? ("(" + mentionsCount + ")") : ""));
         }
-
-        menu.findItem(R.id.tabs_item).setVisible(getPreferences().getBoolean("openTabDrawerButton", false));
-        menu.findItem(R.id.exit_item).setVisible(getPreferences().getBoolean("showedExitButton", false));
-        return super.onPrepareOptionsMenu(menu);
     }
 
     public void setUserMenu() {

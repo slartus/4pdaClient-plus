@@ -26,11 +26,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -153,7 +153,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     private Handler mHandler = new Handler();
 
     private String m_LastUrl;
-    private AppResponse lastResponse=null;
+    private AppResponse lastResponse = null;
     private ArrayList<SessionHistory> m_History = new ArrayList<>();
     private ExtTopic m_Topic;
     private Boolean m_SpoilFirstPost = true;
@@ -417,261 +417,157 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }
     }
 
-    private Boolean m_FirstTime = true;
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        if (!m_FirstTime)
-            onPrepareOptionsMenu();
-        m_FirstTime = false;
-        if (mTopicOptionsMenu != null)
-            configureOptionsMenu(getMainActivity(), getHandler(), mTopicOptionsMenu, true, getLastUrl());
-        else if (getTopic() != null)
-            mTopicOptionsMenu = addOptionsMenu(getMainActivity(), getHandler(), menu, true, getLastUrl());
-
-    }
-
-    private SubMenu mTopicOptionsMenu;
-
-    private SubMenu addOptionsMenu(final Context context, final Handler mHandler,
-                                   Menu menu, Boolean addFavorites, final String shareItUrl) {
-        SubMenu optionsMenu = menu.addSubMenu(getS(R.string.theme_option));
-
-        configureOptionsMenu(context, mHandler, optionsMenu, addFavorites, shareItUrl);
-        return optionsMenu;
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
     }
 
-    private void configureOptionsMenu(final Context context, final Handler mHandler, SubMenu optionsMenu,
-                                      Boolean addFavorites, final String shareItUrl) {
 
-        optionsMenu.clear();
+//    @Override
+//    public void onPrepareOptionsMenu(Menu menu) {
+//        super.onPrepareOptionsMenu(menu);
+//        if (!m_FirstTime)
+//            onPrepareOptionsMenu();
+//        m_FirstTime = false;
+//        if (mTopicOptionsMenu != null)
+//            configureOptionsMenu(getMainActivity(), getHandler(), mTopicOptionsMenu, true, getLastUrl());
+//        else if (getTopic() != null)
+//            mTopicOptionsMenu = addOptionsMenu(getMainActivity(), getHandler(), menu, true, getLastUrl());
+//
+//    }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu();
+        boolean pancil = App.getInstance().getPreferences().getBoolean("pancilInActionBar", false);
+        menu.findItem(R.id.new_post_item).setVisible(pancil);
+        boolean onTopicReadersAndWriters = Preferences.Topic.getReadersAndWriters();
+        menu.findItem(R.id.topic_readers_item).setVisible(!onTopicReadersAndWriters);
+        menu.findItem(R.id.topic_writers_item).setVisible(!onTopicReadersAndWriters);
+        menu.findItem(R.id.avatars_item).setTitle(String.format(getS(R.string.avatars), App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]));
+        menu.findItem(R.id.hide_pencil_item).setVisible(!pancil);
+        menu.findItem(R.id.hide_pencil_item).setChecked(Preferences.isHideFab());
+        menu.findItem(R.id.hide_arrows_item).setChecked(Preferences.isHideArrows());
+        menu.findItem(R.id.loading_img_for_session_item).setChecked(getLoadsImagesAutomatically());
+        menu.findItem(R.id.multi_moderation_item).setVisible(Preferences.System.isCurator());
+    }
 
-        if (addFavorites) {
-            optionsMenu.add(R.string.AddToFavorites).setOnMenuItemClickListener(menuItem -> {
-                try {
-                    TopicUtils.showSubscribeSelectTypeDialog(context, mHandler, getTopic());
-                } catch (Exception ex) {
-                    AppLog.e(context, ex);
-                }
-
-                return true;
-            });
-
-            optionsMenu.add(R.string.DeleteFromFavorites).setOnMenuItemClickListener(menuItem -> {
-                try {
-                    final HelpTask helpTask = new HelpTask(context, context.getString(R.string.DeletingFromFavorites));
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        try {
+            Bundle args = new Bundle();
+            switch (id) {
+                case R.id.new_post_item:
+                    toggleMessagePanelVisibility();
+                    return true;
+                case R.id.refresh_item:
+                    reloadTopic();
+                    return true;
+                case R.id.page_attaches_item:
+                    showPageAttaches();
+                    return true;
+                case R.id.topic_attaches_item:
+                    showTopicAttaches();
+                    return true;
+                case R.id.page_search_item:
+                    onSearchRequested();
+                    return true;
+                case R.id.topic_search_item:
+                    SearchSettingsDialogFragment.showSearchSettingsDialog(getMainActivity(),
+                            SearchSettingsDialogFragment.createTopicSearchSettings(getTopic().getId()));
+                    return true;
+                case R.id.add_to_favorites_item:
+                    try {
+                        TopicUtils.showSubscribeSelectTypeDialog(getContext(), mHandler, getTopic());
+                    } catch (Exception ex) {
+                        AppLog.e(getContext(), ex);
+                    }
+                    return true;
+                case R.id.del_from_favorites_item:
+                    final HelpTask helpTask = new HelpTask(getContext(), getContext().getString(R.string.DeletingFromFavorites));
                     helpTask.setOnPostMethod(param -> {
                         if (helpTask.Success)
-                            Toast.makeText(context, (String) param, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), (String) param, Toast.LENGTH_SHORT).show();
                         else
-                            AppLog.e(context, helpTask.ex);
+                            AppLog.e(getContext(), helpTask.ex);
                         return null;
                     });
                     helpTask.execute((HelpTask.OnMethodListener) param -> TopicApi.deleteFromFavorites(Client.getInstance(),
                             getTopic().getId())
                     );
-                } catch (Exception ex) {
-                    AppLog.e(context, ex);
-                }
-                return true;
-            });
-
-
-            // new
-/*            optionsMenu.add(R.string.FindOnPage).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    onSearchRequested();
                     return true;
-                }
-            });
-
-            optionsMenu.add(R.string.FindInTopic).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    SearchSettingsDialogFragment.showSearchSettingsDialog(getMainActivity(),
-                            SearchSettingsDialogFragment.createTopicSearchSettings(getTopic().getId()));
-                    return true;
-                }
-            });*/
-
-
-            optionsMenu.add(R.string.OpenTopicForum).setOnMenuItemClickListener(menuItem -> {
-                try {
+                case R.id.open_topic_forum_item:
                     ForumFragment.Companion.showActivity(getTopic().getForumId(), getTopic().getId());
-                } catch (Exception ex) {
-                    AppLog.e(context, ex);
-                }
-                return true;
-            });
-        }
+                    return true;
+                case R.id.topic_notes_item:
+                    args.putString(NotesListFragment.TOPIC_ID_KEY, getTopic().getId());
+                    MainActivity.showListFragment(new NotesBrickInfo().getName(), args);
+                    return true;
+                case R.id.topic_readers_item:
+                    args.putString(TopicReadersListFragment.TOPIC_ID_KEY, getTopic().getId());
+                    MainActivity.showListFragment(getTopic().getId(), TopicReadersBrickInfo.NAME, args);
+                    return true;
+                case R.id.topic_writers_item:
+                    args.putString(TopicWritersListFragment.TOPIC_ID_KEY, getTopic().getId());
+                    MainActivity.showListFragment(getTopic().getId(), TopicWritersBrickInfo.NAME, args);
+                    return true;
+                case R.id.link_item:
+                    ExtUrl.showSelectActionDialog(getMainActivity(), getS(R.string.link),
+                            TextUtils.isEmpty(getLastUrl()) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : getLastUrl());
+                    return true;
+                case R.id.avatars_item:
+                    String[] avatars = App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles);
+                    new MaterialDialog.Builder(getMainActivity())
+                            .title(R.string.show_avatars)
+                            .cancelable(true)
+                            .items(avatars)
+                            .itemsCallbackSingleChoice(Preferences.Topic.getShowAvatarsOpt(), (dialog, view1, i, avatars1) -> {
+                                Preferences.Topic.setShowAvatarsOpt(i);
+                                getActivity().invalidateOptionsMenu();
+                                return true; // allow selection
+                            })
+                            .show();
+                    return true;
+                case R.id.hide_pencil_item:
+                    Preferences.setHideFab(!Preferences.isHideFab());
+                    setHideFab(fab);
+                    getActivity().invalidateOptionsMenu();
+                    return true;
+                case R.id.hide_arrows_item:
+                    Preferences.setHideArrows(!Preferences.isHideArrows());
+                    setHideArrows(Preferences.isHideArrows());
+                    getActivity().invalidateOptionsMenu();
+                    return true;
+                case R.id.loading_img_for_session_item:
+                    boolean loadImagesAutomatically1 = getLoadsImagesAutomatically();
+                    setLoadsImagesAutomatically(!loadImagesAutomatically1);
+                    return true;
+                case R.id.font_size_item:
+                    showFontSizeDialog();
+                    return true;
+                case R.id.topic_style_item:
+                    showStylesDialog(App.getInstance().getPreferences());
+                    return true;
+                case R.id.multi_moderation_item:
+                    ThemeCurator.showMmodDialog(getActivity(), ThemeFragment.this, getTopic().getId());
+                    return true;
 
-
-        optionsMenu.add(R.string.NotesByTopic).setOnMenuItemClickListener(menuItem -> {
-            Bundle args = new Bundle();
-            args.putString(NotesListFragment.TOPIC_ID_KEY, getTopic().getId());
-            MainActivity.showListFragment(new NotesBrickInfo().getName(), args);
-            return true;
-        });
-        if (!Preferences.Topic.getReadersAndWriters()) {
-            optionsMenu.add(R.string.who_read_topic).setOnMenuItemClickListener(menuItem -> {
-                Bundle args = new Bundle();
-                args.putString(TopicReadersListFragment.TOPIC_ID_KEY, getTopic().getId());
-                MainActivity.showListFragment(getTopic().getId(), TopicReadersBrickInfo.NAME, args);
-                return true;
-            });
-            optionsMenu.add(R.string.who_posted_msg).setOnMenuItemClickListener(menuItem -> {
-                Bundle args = new Bundle();
-                args.putString(TopicWritersListFragment.TOPIC_ID_KEY, getTopic().getId());
-                MainActivity.showListFragment(getTopic().getId(), TopicWritersBrickInfo.NAME, args);
-                return true;
-            });
-        }
-
-        /*optionsMenu.add("Ссылка").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                ExtUrl.showSelectActionDialog(getMainActivity(), "Ссылка", TextUtils.isEmpty(getLastUrl()) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : getLastUrl());
-                return true;
             }
-        });*/
-    }
+        } catch (Exception ex) {
+            AppLog.e(getContext(), ex);
+            return true;
+        }
 
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, final MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-
-        try {
-            boolean pancil = App.getInstance().getPreferences().getBoolean("pancilInActionBar", false);
-            if (pancil) {
-                menu.add(R.string.new_post)
-                        .setIcon(R.drawable.pencil)
-                        .setOnMenuItemClickListener(item -> {
-                            toggleMessagePanelVisibility();
-                            return true;
-                        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-            }
-            menu.add(R.string.Refresh)
-                    .setIcon(R.drawable.refresh)
-                    .setOnMenuItemClickListener(item -> {
-                        reloadTopic();
-                        return true;
-                    }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-
-            SubMenu subMenu = menu.addSubMenu(R.string.Attaches)
-                    .setIcon(R.drawable.download_white);
-
-            subMenu.add(R.string.attachments_page)
-                    .setOnMenuItemClickListener(item -> {
-                        showPageAttaches();
-                        return true;
-                    });
-            subMenu.add(R.string.all_attachments_topic)
-                    .setOnMenuItemClickListener(item -> {
-                        showTopicAttaches();
-                        return true;
-                    });
-
-            menu.add(R.string.FindOnPage)
-                    .setOnMenuItemClickListener(item -> {
-                        onSearchRequested();
-
-                        return true;
-                    });
-            menu.add(R.string.FindInTopic)
-                    .setOnMenuItemClickListener(item -> {
-                        SearchSettingsDialogFragment.showSearchSettingsDialog(getMainActivity(),
-                                SearchSettingsDialogFragment.createTopicSearchSettings(getTopic().getId()));
-                        return true;
-                    });
-
-            mTopicOptionsMenu = addOptionsMenu(getMainActivity(), getHandler(), menu, true, getLastUrl());
-
-            menu.add(R.string.link).setOnMenuItemClickListener(menuItem -> {
-                ExtUrl.showSelectActionDialog(getMainActivity(), getS(R.string.link), TextUtils.isEmpty(getLastUrl()) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : getLastUrl());
-                return true;
-            });
-
-            SubMenu optionsMenu = menu.addSubMenu(R.string.theme_view);
-            optionsMenu.getItem().setTitle(R.string.theme_view);
-
-            optionsMenu.add(String.format(getS(R.string.avatars),
-                    App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]))
-                    .setOnMenuItemClickListener(menuItem -> {
-                        String[] avatars = App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles);
-                        new MaterialDialog.Builder(getMainActivity())
-                                .title(R.string.show_avatars)
-                                .cancelable(true)
-                                .items(avatars)
-                                .itemsCallbackSingleChoice(Preferences.Topic.getShowAvatarsOpt(), (dialog, view1, i, avatars1) -> {
-                                    //if(i==-1) return false;
-
-                                    Preferences.Topic.setShowAvatarsOpt(i);
-                                    menuItem.setTitle(String.format(getS(R.string.show_avatars_a),
-                                            App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles)[Preferences.Topic.getShowAvatarsOpt()]));
-                                    return true; // allow selection
-                                })
-                                .show();
-                        return true;
-                    });
-            if (!pancil) {
-                optionsMenu.add(R.string.hide_pencil)
-                        .setOnMenuItemClickListener(menuItem -> {
-                            Preferences.setHideFab(!Preferences.isHideFab());
-                            setHideFab(fab);
-                            menuItem.setChecked(Preferences.isHideFab());
-                            return true;
-                        }).setCheckable(true).setChecked(Preferences.isHideFab());
-            }
-
-            optionsMenu.add(R.string.hide_arrows)
-                    .setOnMenuItemClickListener(menuItem -> {
-                        Preferences.setHideArrows(!Preferences.isHideArrows());
-                        setHideArrows(Preferences.isHideArrows());
-                        menuItem.setChecked(Preferences.isHideArrows());
-                        return true;
-                    }).setCheckable(true).setChecked(Preferences.isHideArrows());
-
-            optionsMenu.add(R.string.loading_img_for_session)
-                    .setOnMenuItemClickListener(menuItem -> {
-                        boolean loadImagesAutomatically1 = getLoadsImagesAutomatically();
-                        setLoadsImagesAutomatically(!loadImagesAutomatically1);
-                        menuItem.setChecked(!loadImagesAutomatically1);
-                        return true;
-                    }).setCheckable(true).setChecked(getLoadsImagesAutomatically());
-            optionsMenu.add(R.string.font_size)
-                    .setOnMenuItemClickListener(menuItem -> {
-                        showFontSizeDialog();
-                        return true;
-                    });
-
-            optionsMenu.add(R.string.theme_style).setOnMenuItemClickListener(menuItem -> {
-                showStylesDialog(App.getInstance().getPreferences());
-                return true;
-            });
-            if (Preferences.System.isCurator()) {
-                menu.add(R.string.multi_moderation).setOnMenuItemClickListener(menuItem -> {
-                    try {
-                        ThemeCurator.showMmodDialog(getActivity(), ThemeFragment.this, getTopic().getId());
-                    } catch (Exception ex) {
-                        return false;
-                    }
-                    return true;
-                });
-            }
-
-        } catch (Exception ex) {
-            AppLog.e(getMainActivity(), ex);
-        }
+        //inflater.inflate(R.menu.user, menu);
+        if (inflater != null)
+            inflater.inflate(R.menu.topic, menu);
     }
 
     @Override
@@ -713,11 +609,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         return m_LastUrl;
     }
 
-    public boolean onSearchRequested() {
+    public void onSearchRequested() {
         hideMessagePanel();
         pnlSearch.setVisibility(View.VISIBLE);
-
-        return false;
     }
 
     protected void showQuoteEditor(String url) {
@@ -732,6 +626,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }
     }
 
+    @SuppressWarnings("unused")
+    @JavascriptInterface
     public void checkBodyAndReload() {
         try {
             webView.evalJs("window.HTMLOUT.checkBodyAndReload(document.getElementsByTagName('body')[0].innerHTML);");
@@ -762,6 +658,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             webView.findAll(query);
         }
         try {
+            @SuppressWarnings("JavaReflectionMemberAccess")
             Method m = WebView.class.getMethod("setFindIsUp", Boolean.TYPE);
             m.invoke(webView, true);
         } catch (Throwable ignored) {
@@ -778,6 +675,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             }
 
             try {
+                @SuppressWarnings("JavaReflectionMemberAccess")
                 Method m = WebView.class.getMethod("setFindIsUp", Boolean.TYPE);
                 m.invoke(webView, false);
             } catch (Throwable ignored) {
@@ -785,6 +683,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
             pnlSearch.setVisibility(View.GONE);
             InputMethodManager imm = (InputMethodManager) getMainActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            assert imm != null;
             imm.hideSoftInputFromWindow(pnlSearch.getWindowToken(), 0);
         });
     }
@@ -873,6 +772,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         return m_PostBody;
     }
 
+    @SuppressWarnings("unused")
+    @JavascriptInterface
     public void setPostBody(String postBody) {
         m_PostBody = postBody;
     }
@@ -930,7 +831,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 list.add(new MenuListDialog(getS(R.string.url_post), () -> showLinkMenu(Post.getLink(m_Topic.getId(), postId), postId)));
                 list.add(new MenuListDialog(getS(R.string.report_msg), () -> Post.claim(getMainActivity(), mHandler, m_Topic.getId(), postId)));
                 if (canEdit) {
-                    list.add(new MenuListDialog(getS(R.string.edit_post), () -> EditPostFragment.Companion.editPost(getMainActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, Client.getInstance().getAuthKey(), getTag())));
+                    list.add(new MenuListDialog(getS(R.string.edit_post), () ->
+                            EditPostFragment.Companion.editPost(getMainActivity(), m_Topic.getForumId(), m_Topic.getId(), postId, Client.getInstance().getAuthKey(), getTag())));
                 }
                 if (canDelete) {
                     list.add(new MenuListDialog(getS(R.string.delete_post), () -> prepareDeleteMessage(postId)));
@@ -1264,6 +1166,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     private boolean calledScroll = false;
 
+    @SuppressWarnings("unused")
     private void tryScrollToElement() {
         if (calledScroll)
             return;
@@ -1333,7 +1236,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                 objs.add(Uri.decode(m.group(2)));
                             }
                             parameterValues = new String[objs.size()];
-                            Class[] parameterTypes1 = new Class[objs.size()];
+
                             parameterTypes = new Class[objs.size()];
                             for (int i = 0; i < objs.size(); i++) {
                                 parameterTypes[i] = String.class;
