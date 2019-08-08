@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -600,22 +599,6 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             // удалим все стили
             body = body.replaceAll("<link rel=\"stylesheet\"[^>]*>", "");
             return normalizeCommentUrls(body);
-        }
-
-
-        private String getNavi(String body) {
-            String navi = "<P></P><div class=\"navigation\"><div>";
-
-            Matcher matcher = Pattern.compile("<a href=\"/(\\w+)/newer/(\\d+)/\" rel=\"next\">").matcher(body);
-            if (matcher.find()) {
-                navi += "<a href=\"http://4pda.ru/" + matcher.group(1) + "/newer/" + matcher.group(2) + "/\" rel=\"next\">&#8592;&nbsp;Назад</a> ";
-            }
-
-            matcher = Pattern.compile("&nbsp;<a href=\"/(\\w+)/older/(\\d+)/\" rel=\"prev\">").matcher(body);
-            if (matcher.find()) {
-                navi += "&nbsp;<a href=\"http://4pda.ru/" + matcher.group(1) + "/older/" + matcher.group(2) + "/\" rel=\"prev\">Вперед&nbsp;&#8594;</a> ";
-            }
-            return navi + "</div/div>";
         }
 
 

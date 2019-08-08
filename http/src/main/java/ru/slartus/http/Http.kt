@@ -74,11 +74,13 @@ class Http private constructor(context: Context) {
                 .build()    // socket timeout
     }
 
+    private fun prepareUrl(url: String) = url.replace(Regex("^//4pda\\.ru"), "http://4pda.ru")
+
     fun request(url: String): Response {
-        Log.d(TAG, "get: $url")
+
         val request = Request.Builder()
                 .addHeader("User-Agent", USER_AGENT)
-                .url(url)
+                .url(prepareUrl(url))
                 .build()
 
         return client.newCall(request).execute()
@@ -101,7 +103,7 @@ class Http private constructor(context: Context) {
         val requestBody = formBuilder.build()
         val request = Request.Builder()
                 .addHeader("User-Agent", USER_AGENT)
-                .url(url)
+                .url(prepareUrl(url))
                 .post(requestBody)
                 .build()
 
@@ -129,7 +131,7 @@ class Http private constructor(context: Context) {
         Log.d(TAG, "post: $url")
         val request = Request.Builder()
                 .addHeader("User-Agent", USER_AGENT)
-                .url(url)
+                .url(prepareUrl(url))
                 .cacheControl(CacheControl.FORCE_NETWORK)
                 .post(formBody)
                 .build()
@@ -177,7 +179,7 @@ class Http private constructor(context: Context) {
         val requestBody = builder.build()
         val request = Request.Builder()
                 .addHeader("User-Agent", USER_AGENT)
-                .url(url)
+                .url(prepareUrl(url))
                 .post(requestBody)
                 .build()
         try {
