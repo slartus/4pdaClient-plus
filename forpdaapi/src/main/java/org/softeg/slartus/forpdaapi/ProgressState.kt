@@ -13,7 +13,7 @@ abstract class ProgressState {
         get() = canceled!!
 
     private var canceled: Boolean? = false
-    abstract fun update(message: String, percents: Int)
+    abstract fun update(message: String, percents: Long)
 
     fun cancel() {
         canceled = true

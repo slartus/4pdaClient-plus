@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/new_post_item"
+        android:icon="@drawable/pencil"
+        android:title="@string/new_post"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/refresh_item"
+        android:icon="@drawable/refresh"
+        android:title="@string/Refresh"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/attaches_item"
+        android:icon="@drawable/download_white"
+        android:title="@string/Attaches">
+        <menu>
+            <item
+                android:id="@+id/page_attaches_item"
+                android:title="@string/attachments_page" />
+            <item
+                android:id="@+id/topic_attaches_item"
+                android:title="@string/all_attachments_topic" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/page_search_item"
+        android:title="@string/FindOnPage" />
+
+    <item
+        android:id="@+id/topic_search_item"
+        android:title="@string/FindInTopic" />
+
+    <item
+        android:id="@+id/topic_options_item"
+        android:title="@string/theme_option">
+        <menu>
+            <item
+                android:id="@+id/add_to_favorites_item"
+                android:title="@string/AddToFavorites" />
+            <item
+                android:id="@+id/del_from_favorites_item"
+                android:title="@string/DeleteFromFavorites" />
+            <item
+                android:id="@+id/open_topic_forum_item"
+                android:title="@string/OpenTopicForum" />
+            <item
+                android:id="@+id/topic_notes_item"
+                android:title="@string/NotesByTopic" />
+            <item
+                android:id="@+id/topic_readers_item"
+                android:title="@string/who_read_topic" />
+            <item
+                android:id="@+id/topic_writers_item"
+                android:title="@string/who_posted_msg" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/link_item"
+        android:title="@string/link" />
+
+    <item
+        android:id="@+id/view_item"
+        android:title="@string/theme_view">
+        <menu>
+            <item
+                android:id="@+id/avatars_item"
+                android:title="@string/avatars" />
+
+            <item
+                android:id="@+id/hide_pencil_item"
+                android:checkable="true"
+                android:title="@string/hide_pencil" />
+            <item
+                android:id="@+id/hide_arrows_item"
+                android:checkable="true"
+                android:title="@string/hide_arrows" />
+            <item
+                android:id="@+id/loading_img_for_session_item"
+                android:checkable="true"
+                android:title="@string/loading_img_for_session" />
+            <item
+                android:id="@+id/font_size_item"
+                android:title="@string/font_size" />
+            <item
+                android:id="@+id/topic_style_item"
+                android:title="@string/theme_style" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/multi_moderation_item"
+        android:title="@string/multi_moderation" />
+
+</menu>

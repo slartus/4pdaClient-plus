@@ -1,12 +1,16 @@
 package org.softeg.slartus.forpdaplus.utils;
 
+import android.support.v4.util.Pair;
+
 import org.json.JSONObject;
+import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +20,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import ru.slartus.http.Http;
 
 /**
  * Created by isanechek on 1/27/18.
@@ -23,7 +28,30 @@ import okhttp3.Response;
 
 public class UploadUtils {
 
-    private static String okUploadFile(String url, String pathToFile, Map<String, String> additionalHeaders) {
+    public static String okUploadFile(String url, String pathToFile,
+                                      Map<String, String> additionalHeaders, ProgressState progress) {
+
+        String nameValue = "";
+        try {
+            nameValue = FileUtils.getFileNameFromUrl(pathToFile);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<Pair<String, String>> values = new ArrayList<>();
+        for (String key : additionalHeaders.keySet()) {
+            values.add(new Pair<>(key, additionalHeaders.get(key)));
+        }
+
+        return Http.Companion.getInstance()
+                .uploadFile(url, nameValue, pathToFile, "FILE_UPLOAD",
+                        values, num -> {
+                            progress.update("", num);
+                        }).getResponseBody();
+
+    }
+
+    private static String okUploadFile(String pathToFile, Map<String, String> additionalHeaders) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         File file = new File(pathToFile);
         String res = "";
@@ -36,7 +64,7 @@ public class UploadUtils {
                 e.printStackTrace();
             }
 
-            builder.addFormDataPart(url.contains("savepice")?"file":"FILE_UPLOAD", nameValue, RequestBody.create(MT, file)); // <-------
+            builder.addFormDataPart("file", nameValue, RequestBody.create(MT, file)); // <-------
             builder.addFormDataPart("Cache-Control", "max-age=0");
             builder.addFormDataPart("Upgrade-Insecure-Reaquest", "1");
             builder.addFormDataPart("Accept", "text-/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
@@ -52,7 +80,7 @@ public class UploadUtils {
             }
             RequestBody requestBody = builder.build();
             Request request = new Request.Builder()
-                    .url(url)
+                    .url("https://savepice.ru/upload")
                     .post(requestBody)
                     .build();
             OkHttpClient client = new OkHttpClient.Builder().build();
@@ -68,7 +96,7 @@ public class UploadUtils {
         return res;
     }
 
-    public static String attachFile(String newFilePath) throws Exception {
+    public static String attachSavePiceFile(String newFilePath) throws Exception {
         Map<String, String> additionalHeaders = new HashMap<>();
         additionalHeaders.put("img", "file");
         additionalHeaders.put("url", "");
@@ -77,11 +105,12 @@ public class UploadUtils {
         additionalHeaders.put("preview_size", "180");
         additionalHeaders.put("rotation_type", "0");
 
-        String response = okUploadFile("https://savepice.ru/upload", newFilePath, additionalHeaders);
+        String response = okUploadFile(newFilePath, additionalHeaders);
         JSONObject jsonObject = new JSONObject(response);
         if (jsonObject.optBoolean("error", false)) {
             throw new NotReportException(jsonObject.optString("text"));
         }
         return jsonObject.optString("redirect_path").replace("/uploaded/", "/uploads/").replace(".html", "");
     }
+
 }

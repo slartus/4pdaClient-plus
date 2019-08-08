@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.listfragments.users;/*
  * Created by slinkin on 10.04.2014.
  */
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.View;
@@ -14,6 +15,7 @@ import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.users.LeadUser;
 import org.softeg.slartus.forpdaapi.users.User;
 import org.softeg.slartus.forpdaapi.users.UsersApi;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
@@ -91,7 +93,7 @@ public class LeadersListFragment extends BaseExpandableListFragment {
             final LeadUser leadUser = ((LeadUser) o);
 
             final List<MenuListDialog> list = new ArrayList<>();
-            list.add(new MenuListDialog(getContext().getString(R.string.list_forums), () -> {
+            list.add(new MenuListDialog(App.getInstance().getString(R.string.list_forums), () -> {
                 if (leadUser.isAllForumsOwner()) {
                     MainActivity.showListFragment(new ForumBrickInfo().getName(), null);
                 } else {
@@ -100,15 +102,17 @@ public class LeadersListFragment extends BaseExpandableListFragment {
                     for (Forum f : leadUser.getForums()) {
                         forumTitles[i++] = f.getTitle();
                     }
-                    new MaterialDialog.Builder(getContext())
-                            .title(R.string.forums)
-                            .items(forumTitles)
-                            .itemsCallbackSingleChoice(-1, (dialog, view, i1, forumTitles1) -> {
-                                ForumTopicsListFragment.showForumTopicsList(getActivity(),
-                                        leadUser.getForums().get(i1).getId(), leadUser.getForums().get(i1).getTitle());
-                                return true; // allow selection
-                            })
-                            .show();
+                    Context context = getContext();
+                    if (context != null)
+                        new MaterialDialog.Builder(context)
+                                .title(R.string.forums)
+                                .items(forumTitles)
+                                .itemsCallbackSingleChoice(-1, (dialog, view, i1, forumTitles1) -> {
+                                    ForumTopicsListFragment.showForumTopicsList(
+                                            leadUser.getForums().get(i1).getId(), leadUser.getForums().get(i1).getTitle());
+                                    return true; // allow selection
+                                })
+                                .show();
                 }
             }));
             ForumUser.onCreateContextMenu(getContext(), list, leadUser.getId().toString(), leadUser.getNick().toString());
@@ -117,8 +121,8 @@ public class LeadersListFragment extends BaseExpandableListFragment {
     }
 
     @Override
-    public void saveCache()  {
-        ArrayList<LeadUser> items=new ArrayList<>();
+    public void saveCache() {
+        ArrayList<LeadUser> items = new ArrayList<>();
         for (ExpandableGroup group : mData) {
             for (IListItem item : group.getChildren()) {
                 ((LeadUser) item).fillCacheFields();
@@ -129,9 +133,9 @@ public class LeadersListFragment extends BaseExpandableListFragment {
     }
 
     @Override
-    public void loadCache(){
+    public void loadCache() {
         mCacheList.clear();
-        ArrayList<LeadUser> items=Paper.book().read(getListName(), new ArrayList<>());
+        ArrayList<LeadUser> items = Paper.book().read(getListName(), new ArrayList<>());
         HashMap<String, ExpandableGroup> groups = new HashMap<>();
         for (LeadUser leadUser : items) {
             leadUser.fillFromCache();

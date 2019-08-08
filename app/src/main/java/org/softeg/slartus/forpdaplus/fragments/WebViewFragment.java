@@ -107,15 +107,13 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         if (Preferences.System.isDevSavePage()) {
-            menu.add(R.string.save_page).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    try {
-                        saveHtml();
-                    } catch (Exception ex) {
-                        return false;
-                    }
-                    return true;
+            menu.add(R.string.save_page).setOnMenuItemClickListener(menuItem -> {
+                try {
+                    saveHtml();
+                } catch (Exception ex) {
+                    return false;
                 }
+                return true;
             });
         }
     }
@@ -134,22 +132,12 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
 
     protected void initSwipeRefreshLayout(){
         mSwipeRefreshLayout = getView().findViewById(R.id.ptr_layout);
-        mSwipeRefreshLayout = App.createSwipeRefreshLayout(getMainActivity(), getView(), new Runnable() {
-            @Override
-            public void run() {
-                reload();
-            }
-        });
+        mSwipeRefreshLayout = App.createSwipeRefreshLayout(getView(), () -> reload());
     }
     public void setLoading(final Boolean loading) {
         try {
             if (getMainActivity() == null) return;
-            mSwipeRefreshLayout.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSwipeRefreshLayout.setRefreshing(loading);
-                    }
-            });
+            mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(loading));
         } catch (Throwable ignore) {
             android.util.Log.e("TAG", ignore.toString());
         }
@@ -173,12 +161,9 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     public void onPause() {
         super.onPause();
         if (getWebView()!=null) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (getWebView()!=null&&isFragmentPaused())
-                        getWebView().onPause();
-                }
+            new Handler().postDelayed(() -> {
+                if (getWebView()!=null&&isFragmentPaused())
+                    getWebView().onPause();
             }, 1500);
             getWebView().setWebViewClient(null);
             getWebView().setPictureListener(null);
@@ -209,8 +194,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         if (getWebView() == null)
             return;
 
-        LinearLayout arrows = (LinearLayout) getView().findViewById(R.id.arrows);
-        LinearLayout arrowsShadow = (LinearLayout) getView().findViewById(R.id.arrows_shadow);
+        LinearLayout arrows = getView().findViewById(R.id.arrows);
+        LinearLayout arrowsShadow = getView().findViewById(R.id.arrows_shadow);
 
         if (arrows == null) return;
         if(hide){
@@ -289,9 +274,9 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         View v = getMainActivity().getLayoutInflater().inflate(R.layout.font_size_dialog, null);
 
         assert v != null;
-        final SeekBar seekBar = (SeekBar) v.findViewById(R.id.value_seekbar);
+        final SeekBar seekBar = v.findViewById(R.id.value_seekbar);
         seekBar.setProgress(Preferences.getFontSize(Prefix()) - 1);
-        final TextView textView = (TextView) v.findViewById(R.id.value_textview);
+        final TextView textView = v.findViewById(R.id.value_textview);
         textView.setText((seekBar.getProgress() + 1) + "");
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -321,13 +306,10 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
                 .show();
         dialog.setActionButton(DialogAction.NEUTRAL, R.string.reset);
         View neutral = dialog.getActionButton(DialogAction.NEUTRAL);
-        neutral.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                seekBar.setProgress(15);
-                Preferences.setFontSize(Prefix(), 16);
-                getWebView().getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
-            }
+        neutral.setOnClickListener(v1 -> {
+            seekBar.setProgress(15);
+            Preferences.setFontSize(Prefix(), 16);
+            getWebView().getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
         });
         dialog.show();
     }
@@ -335,8 +317,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         try {
             final String currentValue = App.getInstance().getCurrentTheme();
 
-            ArrayList<CharSequence> newStyleNames = new ArrayList<CharSequence>();
-            final ArrayList<CharSequence> newStyleValues = new ArrayList<CharSequence>();
+            ArrayList<CharSequence> newStyleNames = new ArrayList<>();
+            final ArrayList<CharSequence> newStyleValues = new ArrayList<>();
 
             PreferencesActivity.getStylesList(getMainActivity(), newStyleNames, newStyleValues);
             final int[] selected = {newStyleValues.indexOf(currentValue)};
@@ -347,16 +329,13 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
                     .cancelable(true)
                     .positiveText(R.string.accept)
                     .items(styleNames)
-                    .itemsCallbackSingleChoice(selected[0], new MaterialDialog.ListCallbackSingleChoice() {
-                        @Override
-                        public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                            if (which == -1) {
-                                Toast.makeText(getMainActivity(), R.string.ChooseStyle, Toast.LENGTH_LONG).show();
-                                return false;
-                            }
-                            selected[0] = which;
-                            return true;
+                    .itemsCallbackSingleChoice(selected[0], (dialog, view, which, text) -> {
+                        if (which == -1) {
+                            Toast.makeText(getMainActivity(), R.string.ChooseStyle, Toast.LENGTH_LONG).show();
+                            return false;
                         }
+                        selected[0] = which;
+                        return true;
                     })
                     .alwaysCallSingleChoiceCallback()
                     .callback(new MaterialDialog.ButtonCallback() {
@@ -396,14 +375,10 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         }
     }
 
+    @SuppressWarnings("unused")
     @JavascriptInterface
     public void saveHtml(final String html) {
-        getMainActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new SaveHtml(getMainActivity(), html, Prefix()+"");
-            }
-        });
+        getMainActivity().runOnUiThread(() -> new SaveHtml(getMainActivity(), html, Prefix()+""));
     }
 
     @Override

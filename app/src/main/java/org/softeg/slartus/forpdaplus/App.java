@@ -30,7 +30,7 @@ import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
-import org.apache.http.HttpResponse;
+
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdanotifyservice.MainService;
 import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
@@ -51,6 +51,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.paperdb.Paper;
+import ru.slartus.http.Http;
+
+import static org.softeg.slartus.forpdaplus.prefs.PreferencesActivity.getPackageInfo;
 
 /**
  * User: slinkin
@@ -480,7 +483,7 @@ public class App extends MultiDexApplication {
                 cssFile = "black_hd.css";
                 break;*/
             case THEME_CUSTOM_CSS:
-                return Environment.getExternalStorageDirectory().getPath()+ "/style.css";
+                return Environment.getExternalStorageDirectory().getPath() + "/style.css";
         }
         return path + cssFile;
     }
@@ -499,6 +502,8 @@ public class App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        Http.Companion.init(this, getString(R.string.app_name), getPackageInfo().versionName);
+
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
@@ -523,9 +528,9 @@ public class App extends MultiDexApplication {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try{
+        try {
             Paper.init(this);
-        }catch (Throwable e){
+        } catch (Throwable e) {
             e.printStackTrace();
         }
     }
@@ -624,7 +629,6 @@ public class App extends MultiDexApplication {
 
     public static void initImageLoader(Context context) {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                //.imageDownloader(new HttpHelperForImage(context))
                 .imageDownloader(new BaseImageDownloader(context) {
                     @Override
                     public InputStream getStream(String imageUri, Object extra) throws IOException {
@@ -634,13 +638,8 @@ public class App extends MultiDexApplication {
                     }
 
                     @Override
-                    protected InputStream getStreamFromNetwork(String imageUri, Object extra) throws IOException {
-                        HttpResponse httpResponse = new HttpHelper().getDownloadResponse(imageUri, 0);
-
-//                        Response response = new HttpHelper().getDownloadResponse(imageUri, 0);
-                        return httpResponse.getEntity().getContent();
-
-//                        return response.body().byteStream();
+                    protected InputStream getStreamFromNetwork(String imageUri, Object extra) {
+                        return Http.Companion.getInstance().response(imageUri).body().byteStream();
                     }
                 })
                 .threadPoolSize(5)
@@ -688,7 +687,7 @@ public class App extends MultiDexApplication {
         return getInstance();
     }
 
-    public static SwipeRefreshLayout createSwipeRefreshLayout(Activity activity, View view,
+    public static SwipeRefreshLayout createSwipeRefreshLayout(View view,
                                                               final Runnable refreshAction) {
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.ptr_layout);
         swipeRefreshLayout.setOnRefreshListener(refreshAction::run);

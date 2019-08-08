@@ -31,7 +31,7 @@ ext {
     targetSdk = 23
     minSdk = 15
 
-    okhttp3 = "3.12.0"
+    okhttp3 = "4.0.1"
     jsoup="1.11.2"
 
 }

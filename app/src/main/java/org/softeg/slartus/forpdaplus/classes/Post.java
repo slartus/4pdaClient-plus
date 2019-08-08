@@ -164,8 +164,8 @@ public class Post {
         return m_CanDelete;
     }
 
-    public static void delete(String postId, String forumId, String themeId, String authKey) throws IOException {
-        Client.getInstance().deletePost(forumId, themeId, postId, authKey);
+    public static void delete(String postId, String authKey) throws IOException {
+        Client.getInstance().deletePost(postId, authKey);
     }
 
     public void setCanPlusRep(boolean value) {

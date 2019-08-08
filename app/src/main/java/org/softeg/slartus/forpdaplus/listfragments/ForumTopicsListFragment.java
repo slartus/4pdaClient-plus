@@ -1,21 +1,21 @@
 package org.softeg.slartus.forpdaplus.listfragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URIUtils;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.TopicsApi;
+import org.softeg.slartus.forpdacommon.BasicNameValuePair;
+import org.softeg.slartus.forpdacommon.NameValuePair;
+import org.softeg.slartus.forpdacommon.URIUtils;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
@@ -25,8 +25,6 @@ import org.softeg.slartus.forpdaplus.listtemplates.ForumTopicsBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,11 +52,11 @@ public class ForumTopicsListFragment extends TopicsListFragment {
     }
 
     private String getForumId() {
-        return getArguments().getString(ForumFragment.FORUM_ID_KEY);
+        return getArguments() == null ? null : getArguments().getString(ForumFragment.FORUM_ID_KEY);
     }
 
     private String getForumTitle() {
-        return getArguments().getString(ForumFragment.FORUM_TITLE_KEY);
+        return getArguments() == null ? null : getArguments().getString(ForumFragment.FORUM_TITLE_KEY);
     }
 
     @Override
@@ -91,7 +89,7 @@ public class ForumTopicsListFragment extends TopicsListFragment {
     }
 
     @Override
-    public void onSaveInstanceState(android.os.Bundle outState) {
+    public void onSaveInstanceState(@NotNull android.os.Bundle outState) {
         outState.putString(URL_KEY, mUrl);
 
         super.onSaveInstanceState(outState);
@@ -101,11 +99,12 @@ public class ForumTopicsListFragment extends TopicsListFragment {
     private String mUrl = null;
 
     @Override
-    protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException, URISyntaxException {
+    protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException {
         SharedPreferences prefs = App.getInstance().getPreferences();
         if (mUrl == null) {
             List<NameValuePair> qparams = new ArrayList<>();
-            qparams.add(new BasicNameValuePair("showforum", getForumId()));
+            if (getForumId() != null)
+                qparams.add(new BasicNameValuePair("showforum", getForumId()));
             qparams.add(new BasicNameValuePair("sort_key", prefs.getString(getListName() + ".sort_key", "last_post")));
             qparams.add(new BasicNameValuePair("sort_by", prefs.getString(getListName() + ".sort_by", "Z-A")));
             qparams.add(new BasicNameValuePair("prune_day", prefs.getString(getListName() + ".prune_day", "100")));
@@ -113,20 +112,20 @@ public class ForumTopicsListFragment extends TopicsListFragment {
             qparams.add(new BasicNameValuePair("st", Integer.toString(listInfo.getFrom())));
 
 
-            URI uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
-                    URLEncodedUtils.format(qparams, "UTF-8"), null);
+            Uri uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
+                    qparams, "UTF-8");
             mUrl = uri.toString();
         } else {
             mUrl = mUrl.replaceAll("&st=\\d+", "").concat("&st=" + mListInfo.getFrom());
         }
-        ArrayList<Topic> res = TopicsApi.getForumTopics(client, mUrl,getForumId(),
+        ArrayList<Topic> res = TopicsApi.getForumTopics(client, mUrl, getForumId(),
                 prefs.getBoolean(getListName() + ".unread_in_top", false),
                 mListInfo);
         mUrl = Client.getInstance().getRedirectUri() != null ? Client.getInstance().getRedirectUri().toString() : mUrl;
         return res;
     }
 
-    public static void showForumTopicsList(Context context, CharSequence forumId, CharSequence forumTitle) {
+    public static void showForumTopicsList(CharSequence forumId, CharSequence forumTitle) {
         Bundle args = new Bundle();
         args.putString(ForumFragment.FORUM_ID_KEY, forumId.toString());
         args.putString(ForumFragment.FORUM_TITLE_KEY, forumTitle.toString());

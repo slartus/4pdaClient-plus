@@ -15,7 +15,7 @@ import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
+
 import java.util.ArrayList;
 
 /*
@@ -28,10 +28,10 @@ public class FavoritesListFragment extends TopicsListFragment {
     }
 
     @Override
-    protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException, URISyntaxException {
+    protected ArrayList<? extends IListItem> loadTopics(Client client, ListInfo listInfo) throws IOException {
         SharedPreferences prefs = App.getInstance().getPreferences();
 
-        return org.softeg.slartus.forpdaapi.TopicsApi.getFavTopics(Client.getInstance(),
+        return org.softeg.slartus.forpdaapi.TopicsApi.getFavTopics(
                 prefs.getString(getListName() + ".sort_key", "last_post"),
                 prefs.getString(getListName() + ".sort_by", "Z-A"),
                 prefs.getString(getListName() + ".prune_day", "100"),

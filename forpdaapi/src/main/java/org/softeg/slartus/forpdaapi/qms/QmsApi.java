@@ -1,9 +1,6 @@
 package org.softeg.slartus.forpdaapi.qms;
 
 import android.text.Html;
-import android.util.Log;
-
-import org.apache.http.cookie.Cookie;
 import org.json.JSONObject;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.ProgressState;
@@ -17,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ru.slartus.http.Http;
 
 /**
  * Created by slartus on 02.03.14.
@@ -158,8 +157,8 @@ public class QmsApi {
         return matchChatBody(httpClient.performPost("http://4pda.ru/forum/index.php?act=qms&mid" + mid + "&t=" + threadId + "&xhr=body&do=1", additionalHeaders, encoding));
     }
 
-    public static ArrayList<QmsUser> getQmsSubscribers(IHttpClient httpClient) throws Throwable {
-        String pageBody = httpClient.performGet("http://4pda.ru/forum/index.php?&act=qms-xhr&action=userlist");
+    public static ArrayList<QmsUser> getQmsSubscribers() throws Throwable {
+        String pageBody = Http.Companion.getInstance().performGet("http://4pda.ru/forum/index.php?&act=qms-xhr&action=userlist").getResponseBody();
         return parseQmsUsers(pageBody);
     }
 
@@ -186,10 +185,10 @@ public class QmsApi {
         return res;
     }
 
-    public static QmsUserThemes getQmsUserThemes(IHttpClient httpClient, String mid,
+    public static QmsUserThemes getQmsUserThemes( String mid,
                                                  ArrayList<QmsUser> outUsers, Boolean parseNick) throws Throwable {
         QmsUserThemes res = new QmsUserThemes();
-        String pageBody = httpClient.performGet("http://4pda.ru/forum/index.php?act=qms&mid=" + mid);
+        String pageBody = Http.Companion.getInstance().performGet("http://4pda.ru/forum/index.php?act=qms&mid=" + mid).getResponseBody();
         Pattern newCountPattern = Pattern.compile("([\\s\\S]*?)\\((\\d+)\\s*\\/\\s*(\\d+)\\)\\s*$");
         Pattern countPattern = Pattern.compile("([\\s\\S]*?)\\((\\d+)\\)\\s*$");
         Pattern strongPattern = Pattern.compile("<strong>([\\s\\S]*?)</strong>");

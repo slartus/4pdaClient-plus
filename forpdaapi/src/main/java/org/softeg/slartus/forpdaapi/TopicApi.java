@@ -4,22 +4,17 @@ import android.net.Uri;
 import android.text.Html;
 import android.text.TextUtils;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URIUtils;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.message.BasicNameValuePair;
 import org.softeg.slartus.forpdaapi.post.PostAttach;
 import org.softeg.slartus.forpdaapi.users.Users;
+import org.softeg.slartus.forpdacommon.BasicNameValuePair;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.Functions;
-import org.softeg.slartus.forpdacommon.HttpHelper;
+import org.softeg.slartus.forpdacommon.NameValuePair;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
+import org.softeg.slartus.forpdacommon.URIUtils;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -53,7 +48,7 @@ public class TopicApi {
     /**
      * Удалить
      */
-    public static final String TRACK_TYPE_DELETE = "delete";
+    private static final String TRACK_TYPE_DELETE = "delete";
 
     /**
      * закрепить
@@ -64,10 +59,10 @@ public class TopicApi {
      */
     public static final String TRACK_TYPE_UNPIN = "unpin";
 
-    public static String changeFavorite(IHttpClient httpClient, CharSequence topicId, String trackType) throws IOException, URISyntaxException, ParseException {
-        Boolean exists;
+    public static String changeFavorite(IHttpClient httpClient, CharSequence topicId, String trackType) throws IOException {
+        boolean exists;
 
-        FavTopic favTopic = findTopicInFav(httpClient, topicId);
+        FavTopic favTopic = findTopicInFav(topicId);
 
         exists = favTopic != null;
         if (favTopic == null && TRACK_TYPE_DELETE.equals(trackType)) {
@@ -89,10 +84,10 @@ public class TopicApi {
             qparams.add(new BasicNameValuePair("track_type", trackType));
         }
 
-        URI uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
-                URLEncodedUtils.format(qparams, "UTF-8"), null);
+        Uri uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
+                qparams, "UTF-8");
         httpClient.performGet(uri.toString());
-        favTopic = findTopicInFav(httpClient, topicId);
+        favTopic = findTopicInFav(topicId);
         if (favTopic != null && trackType.equals(favTopic.getTrackType())) {
             if (exists) {
                 if (TRACK_TYPE_NONE.equals(trackType))
@@ -115,14 +110,14 @@ public class TopicApi {
         throw new NotReportException("Неизвестная ошибка добавления темы в избранное");
     }
 
-    private static FavTopic findTopicInFav(IHttpClient httpClient, CharSequence topicId) throws ParseException, IOException, URISyntaxException {
+    private static FavTopic findTopicInFav( CharSequence topicId) throws IOException{
         if (topicId == null)
             return null;
         ListInfo listInfo = new ListInfo();
         listInfo.setFrom(0);
         int topicsCount = 0;
         while (true) {
-            ArrayList<FavTopic> topics = TopicsApi.getFavTopics(httpClient, listInfo);
+            ArrayList<FavTopic> topics = TopicsApi.getFavTopics( listInfo);
 
             for (FavTopic topic : topics) {
                 if (!topicId.equals(topic.getId())) continue;
@@ -136,7 +131,7 @@ public class TopicApi {
         return null;
     }
 
-    public static String deleteFromFavorites(IHttpClient httpClient, String id) throws ParseException, IOException, URISyntaxException {
+    public static String deleteFromFavorites(IHttpClient httpClient, String id) throws IOException{
         return changeFavorite(httpClient, id, TRACK_TYPE_DELETE);
     }
 
@@ -207,8 +202,8 @@ public class TopicApi {
         return res;
     }
 
-    public static String pinFavorite(IHttpClient httpClient, String topicId, String trackType) throws ParseException, IOException, URISyntaxException {
-        FavTopic favTopic = findTopicInFav(httpClient, topicId);
+    public static String pinFavorite(IHttpClient httpClient, String topicId, String trackType) throws IOException{
+        FavTopic favTopic = findTopicInFav(topicId);
 
         if (favTopic == null) {
             return "Тема не найдена в избранном";
@@ -218,17 +213,10 @@ public class TopicApi {
         qparams.add(new BasicNameValuePair("act", "fav"));
         qparams.add(new BasicNameValuePair("selectedtids", favTopic.getTid()));
         qparams.add(new BasicNameValuePair("tact", trackType));
-        URI uri = URIUtils.createURI("http", "4pda.ru", -1, "/forum/index.php",
-                URLEncodedUtils.format(qparams, "UTF-8"), null);
+        Uri uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
+                qparams, "UTF-8");
         httpClient.performGet(uri.toString());
         return TRACK_TYPE_PIN.equals(trackType) ? "Тема закреплена" : "Тема откреплена";
-    }
-
-    public static TopicBodyParser parseTopic(IHttpClient httpClient, String url) throws IOException {
-        String pageBody = httpClient.performGet(url);
-        TopicBodyParser topicBodyParser = new TopicBodyParser(HttpHelper.getRedirectUri() == null ? url : HttpHelper.getRedirectUri().toString());
-        topicBodyParser.parse(pageBody);
-        return topicBodyParser;
     }
 
     public static String toMobileVersionUrl(String url) {
@@ -242,25 +230,5 @@ public class TopicApi {
         return url;
     }
 
-    public static Boolean isTopicUrl(String url) {
 
-        url = toMobileVersionUrl(url);
-
-        Uri uri = Uri.parse(url.toLowerCase());
-        if (!"4pda.ru".equals(uri.getHost()))
-            return false;
-        if (!TextUtils.isEmpty(uri.getQueryParameter("showtopic")))
-            return true;
-        if (!TextUtils.isEmpty(uri.getQueryParameter("pid")) &&
-                "findpost".equals(uri.getQueryParameter("act")))
-            return true;
-
-        return false;
-
-    }
-
-
-    public static void addPoll(String url) {
-
-    }
 }

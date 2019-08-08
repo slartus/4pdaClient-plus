@@ -1,7 +1,8 @@
 package org.softeg.slartus.forpdaapi.post;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
+
+import org.softeg.slartus.forpdacommon.BasicNameValuePair;
+import org.softeg.slartus.forpdacommon.NameValuePair;
 
 import java.io.Serializable;
 import java.util.ArrayList;

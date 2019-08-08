@@ -43,6 +43,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdaapi.post.EditAttach;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
@@ -1025,7 +1026,7 @@ public class QmsChatFragment extends WebViewFragment {
     }
 
 
-    private class UpdateTask extends AsyncTask<String, Pair<String, Integer>, Boolean> {
+    private class UpdateTask extends AsyncTask<String, Pair<String, Long>, Boolean> {
         private final MaterialDialog dialog;
         private ProgressState m_ProgressState;
 
@@ -1053,47 +1054,18 @@ public class QmsChatFragment extends WebViewFragment {
             try {
                 m_ProgressState = new ProgressState() {
                     @Override
-                    public void update(String message, int percents) {
+                    public void update(@NotNull String message, long percents) {
                         publishProgress(new Pair<>("", percents));
                     }
+
                 };
 
                 int i = 1;
                 for (String newAttachFilePath : attachFilePaths) {
-//                    publishProgress(new Pair<>(String.format(App.getContext().getString(R.string.format_sending_file), i++, attachFilePaths.size()), 0));
-//
-//                    boolean found = false;
-//                    for (Cookie cookie1 : Client.getInstance().getCookies()) {
-//                        if (cookie1.getName().equals("PHPSESSID")) {
-//                            found = true;
-//                            break;
-//                        }
-//                    }
-//                    if (!found) {
-//                        CookieStore cookieStore = new BasicCookieStore();
-//                        HttpContext context = new BasicHttpContext();
-//                        context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
-//                        new DefaultHttpClient().execute(new HttpPost("https://savepice.ru/"), context);
-//
-//
-//                        for (Cookie cookie : cookieStore.getCookies()) {
-//                            Log.d("save", "coolie name" + cookie.getName());
-//                            if (cookie.getName().equals("PHPSESSID")) {
-//                                Log.d("save", "try save cookie");
-//                                HttpHelper helper = new HttpHelper();
-//                                try {
-//                                    helper.getCookieStore().getCookies();
-//                                    helper.getCookieStore().addCookie(new SimpleCookie(cookie.getName(), cookie.getValue()));
-//                                    helper.writeExternalCookies();
-//                                } finally {
-//                                    helper.close();
-//                                }
-//                            }
-//                        }
-//
-//                    }
-//                    String res = QmsApi.attachFile(Client.getInstance(), newAttachFilePath, m_ProgressState);
-                    String res = UploadUtils.attachFile(newAttachFilePath);
+                   // publishProgress(new Pair<>(String.format(App.getContext().getString(R.string.format_sending_file), i++, attachFilePaths.size()), 0));
+
+//                    String res = QmsApi.attachSavePiceFile(Client.getInstance(), newAttachFilePath, m_ProgressState);
+                    String res = UploadUtils.attachSavePiceFile(newAttachFilePath);
 
 
 

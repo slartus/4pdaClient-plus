@@ -4,7 +4,6 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 26
-    useLibrary "org.apache.http.legacy"
     defaultConfig {
         minSdkVersion rootProject.minSdk
         //noinspection OldTargetApi
@@ -34,10 +33,8 @@ android {
 }
 
 dependencies {
-    api ('org.apache.httpcomponents:httpmime:4.3.6') {
-        exclude module: 'httpclient'
-    }
-    api 'org.apache.httpcomponents:httpclient-android:4.3.5'
+    api project(':http')
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {

@@ -2,11 +2,12 @@ package org.softeg.slartus.forpdaapi.post
 
 import android.text.Html
 import android.text.TextUtils
-import org.apache.http.message.BasicNameValuePair
+
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.softeg.slartus.forpdaapi.IHttpClient
 import org.softeg.slartus.forpdaapi.ProgressState
+import org.softeg.slartus.forpdacommon.BasicNameValuePair
 import org.softeg.slartus.forpdacommon.NotReportException
 import java.io.IOException
 import java.util.*
@@ -28,7 +29,7 @@ object PostApi {
      * @throws IOException
      */
     @Throws(IOException::class)
-    fun delete(httpClient: IHttpClient, forumId: String, topicId: String, postId: String, authKey: CharSequence): Boolean {
+    fun delete(httpClient: IHttpClient, postId: String, authKey: CharSequence): Boolean {
         httpClient.performGet("http://4pda.ru/forum/index.php?act=zmod&auth_key=$authKey&code=postchoice&tact=delete&selectedpids=$postId")
         return true// !TODO: проверка ответа
     }
@@ -439,7 +440,7 @@ object PostApi {
         val doc = Jsoup.parse(editPage)
         val editPost = EditPost()
         val postFormElement = doc.select("#postingform").first()
-        val isNew = postId == "0"
+
         if (postFormElement != null) {
             for (el in postFormElement.select("input[type=hidden]")) {
                 val value = el.attr("value")

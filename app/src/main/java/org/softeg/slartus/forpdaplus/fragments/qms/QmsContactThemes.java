@@ -190,7 +190,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
 
 
         QmsUsers qmsUsers = new QmsUsers();
-        QmsUserThemes mails = QmsApi.getQmsUserThemes(Client.getInstance(), m_Id, qmsUsers,
+        QmsUserThemes mails = QmsApi.getQmsUserThemes(m_Id, qmsUsers,
                 TextUtils.isEmpty(m_Nick));
         listData.getItems().addAll(mails);
         Client.getInstance().setQmsCount(qmsUsers.unreadMessageUsersCount());
