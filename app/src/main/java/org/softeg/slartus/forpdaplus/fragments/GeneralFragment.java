@@ -193,9 +193,6 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
 
         if(getSupportActionBar()!=null)
             getSupportActionBar().setSubtitle(null);
-        /*if(getMenu()!=null)
-            getMenu().clear();*/
-        getMainActivity().onCreateOptionsMenu(MainActivity.mainMenu);
     }
     @Override
     public void onDestroy() {

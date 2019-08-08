@@ -25,13 +25,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
@@ -65,7 +63,6 @@ import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
 import java.lang.reflect.Field;
-import java.net.URISyntaxException;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -811,10 +808,6 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         }
     }
 
-    public static Menu mainMenu;
-    private SubMenu mUserMenuItem;
-
-
     private int getUserIconRes() {
         Boolean logged = Client.getInstance().getLogined();
         if (logged) {
@@ -827,121 +820,84 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         }
     }
 
-    public void setUserMenu() {
-        if (mUserMenuItem == null) return;
-        Boolean logged = Client.getInstance().getLogined();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
 
-        mUserMenuItem.getItem().setIcon(getUserIconRes());
-        mUserMenuItem.getItem().setTitle(Client.getInstance().getUser());
-        mUserMenuItem.clear();
-        if (logged) {
-            String text = Client.getInstance().getQmsCount() > 0 ? ("QMS (" + Client.getInstance().getQmsCount() + ")") : "QMS";
-            mUserMenuItem.add(text)
-                    .setOnMenuItemClickListener(item -> {
-                        //ListFragmentActivity.showListFragment(MainActivity.this, QmsContactsBrickInfo.NAME, null);
-                        QmsContactsBrickInfo brickInfo = new QmsContactsBrickInfo();
-                        MainActivity.addTab(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
-                        return true;
-                    });
+    }
 
-            int mentionsCount = UserInfoRepository.Companion.getInstance().getUserInfo()
-                    .getValue().mentionsCountOrDefault(0);
-
-            mUserMenuItem.add("Упоминания " + (mentionsCount > 0 ? ("(" + mentionsCount + ")") : ""))
-                    .setOnMenuItemClickListener(item -> {
-                        MainActivity.addTab("Упоминания", "http://4pda.ru/forum/index.php?act=mentions",
-                                MentionsListFragment.Companion.newFragment());
-
-                        return true;
-                    });
-
-
-            mUserMenuItem.add(R.string.Profile)
-                    .setOnMenuItemClickListener(item -> {
-                        ProfileFragment.showProfile(Client.getInstance().UserId, Client.getInstance().getUser());
-                        return true;
-                    });
-
-
-            mUserMenuItem.add(R.string.Reputation)
-                    .setOnMenuItemClickListener(item -> {
-                        UserReputationFragment.showActivity(Client.getInstance().UserId, false);
-                        return true;
-                    });
-
-            mUserMenuItem.add(R.string.Logout)
-                    .setOnMenuItemClickListener(item -> {
-                        LoginDialog.logout(MainActivity.this);
-                        return true;
-                    });
-        } else {
-            mUserMenuItem.add(R.string.Login).setOnMenuItemClickListener(item -> {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.tabs_item:
+                mTabDraweMenu.toggleOpenState();
+                return true;
+            case R.id.search_item:
+                SearchSettingsDialogFragment.showSearchSettingsDialog(MainActivity.this, searchSettings);
+                return true;
+            case R.id.exit_item:
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
+                return true;
+            case R.id.qms_item:
+                QmsContactsBrickInfo brickInfo = new QmsContactsBrickInfo();
+                MainActivity.addTab(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
+                return true;
+            case R.id.mentions_item:
+                MainActivity.addTab("Упоминания", "http://4pda.ru/forum/index.php?act=mentions",
+                        MentionsListFragment.Companion.newFragment());
+                return true;
+            case R.id.profile_item:
+                ProfileFragment.showProfile(Client.getInstance().UserId, Client.getInstance().getUser());
+                return true;
+            case R.id.reputation_item:
+                UserReputationFragment.showActivity(Client.getInstance().UserId, false);
+                return true;
+            case R.id.logout_item:
+                LoginDialog.logout(MainActivity.this);
+                return true;
+            case R.id.login_item:
                 LoginDialog.showDialog(MainActivity.this, null);
                 return true;
-            });
-
-            mUserMenuItem.add(R.string.Registration).setOnMenuItemClickListener(item -> {
+            case R.id.registration_item:
                 Intent marketIntent = new Intent(
                         Intent.ACTION_VIEW,
                         Uri.parse("http://4pda.ru/forum/index.php?act=Reg&CODE=00"));
                 MainActivity.this.startActivity(marketIntent);
-                //
                 return true;
-            });
         }
-    }
 
-    private void createUserMenu(Menu menu) {
-        mUserMenuItem = menu.addSubMenu(Client.getInstance().getUser());
-
-        mUserMenuItem.getItem().setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        setUserMenu();
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        if (menu != null)
-            menu.clear();
-        else
-            menu = new MenuBuilder(this);
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        boolean logged = Client.getInstance().getLogined();
+        menu.findItem(R.id.guest_item).setVisible(!logged);
+        MenuItem userMenuItem = menu.findItem(R.id.user_item);
+        userMenuItem.setVisible(logged);
+        if(logged) {
+            userMenuItem.setIcon(getUserIconRes());
+            String qmsTitle= Client.getInstance().getQmsCount() > 0 ? ("QMS (" + Client.getInstance().getQmsCount() + ")") : "QMS";
+            menu.findItem(R.id.qms_item).setTitle(qmsTitle);
 
-        createUserMenu(menu);
-        if (getPreferences().getBoolean("openTabDrawerButton", false)) {
-            menu.add(R.string.tabs)
-                    .setIcon(R.drawable.checkbox_multiple_blank_outline)
-                    .setOnMenuItemClickListener(item -> {
-                        mTabDraweMenu.toggleOpenState();
-                        return true;
-                    })
-                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            int mentionsCount = UserInfoRepository.Companion.getInstance().getUserInfo()
+                    .getValue().mentionsCountOrDefault(0);
+
+            menu.findItem(R.id.mentions_item).setTitle("Упоминания " + (mentionsCount > 0 ? ("(" + mentionsCount + ")") : ""));
         }
 
-        menu.add(R.string.Search)
-                .setIcon(R.drawable.magnify)
-                .setOnMenuItemClickListener(item -> {
-                    SearchSettingsDialogFragment.showSearchSettingsDialog(MainActivity.this, searchSettings);
-                    return true;
-                })
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        menu.findItem(R.id.tabs_item).setVisible(getPreferences().getBoolean("openTabDrawerButton", false));
+        menu.findItem(R.id.exit_item).setVisible(getPreferences().getBoolean("showedExitButton", false));
+        return super.onPrepareOptionsMenu(menu);
+    }
 
-        boolean showed = getPreferences().getBoolean("showedExitButton", false);
-        if (getPreferences().getBoolean("showExitButton", false)) {
-            if (!showed) {
-                getPreferences().edit().putBoolean("showedExitButton", true).apply();
-            }
-
-            menu.add(0, 0, 999, R.string.CloseApp)
-                    .setIcon(R.drawable.close_white)
-                    .setOnMenuItemClickListener(item -> {
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                        System.exit(1);
-                        return true;
-                    });
-        }
-
-        mainMenu = menu;
-        return false;
+    public void setUserMenu() {
+        invalidateOptionsMenu();
     }
 
     public static void startForumSearch(SearchSettings searchSettings) {
