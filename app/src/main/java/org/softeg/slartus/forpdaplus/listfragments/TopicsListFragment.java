@@ -381,17 +381,20 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
         getContext().startActivity(settingsActivity);
     }
 
-    final static int settingItemId = 537;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==R.id.list_settings_item){
+            showSettings();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add(0, settingItemId, 0, R.string.list_settings)
-                .setIcon(R.drawable.settings_white)
-                .setOnMenuItemClickListener(menuItem -> {
-                    showSettings();
-                    return true;
-                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        if(inflater!=null)
+            inflater.inflate(R.menu.topics,menu);
     }
 
     @Override

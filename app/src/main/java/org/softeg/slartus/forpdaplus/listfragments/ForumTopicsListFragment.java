@@ -144,17 +144,23 @@ public class ForumTopicsListFragment extends TopicsListFragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==R.id.filter_and_ordering_item){
+            Intent settingsActivity = new Intent(
+                    getContext(), ForumTopicsPreferencesActivity.class);
+            settingsActivity.putExtra("listname", getListName());
+            startActivityForResult(settingsActivity, FILTER_SORT_REQUEST);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.removeItem(settingItemId);
-
-        menu.add(R.string.filter_and_ordering)
-                .setOnMenuItemClickListener(menuItem -> {
-                    Intent settingsActivity = new Intent(
-                            getContext(), ForumTopicsPreferencesActivity.class);
-                    settingsActivity.putExtra("listname", getListName());
-                    startActivityForResult(settingsActivity, FILTER_SORT_REQUEST);
-                    return true;
-                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        if(inflater!=null)
+            inflater.inflate(R.menu.forum_topics,menu);
+        if (menu.findItem(R.id.list_settings_item) != null)
+            menu.findItem(R.id.list_settings_item).setVisible(false);
     }
 }

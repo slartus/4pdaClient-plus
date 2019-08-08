@@ -60,7 +60,6 @@ public class AppsListFragment extends TopicsListFragment {
     }
 
 
-
     public ArrayList<AppItem> loadItems() throws IOException {
         PackageManager packageManager = getContext().getPackageManager();
         ArrayList<AppItem> apps = new ArrayList<>();
@@ -249,7 +248,7 @@ public class AppsListFragment extends TopicsListFragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         try {
-            super.onCreateContextMenu(menu,v,menuInfo);
+            super.onCreateContextMenu(menu, v, menuInfo);
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
             if (info.id == -1) return;
             Object o = getAdapter().getItem((int) info.id);
@@ -266,7 +265,7 @@ public class AppsListFragment extends TopicsListFragment {
 
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 input.setText(appItem.getId());
-                builder.customView(input,true);
+                builder.customView(input, true);
 
                 builder.positiveText(android.R.string.ok);
                 builder.negativeText(android.R.string.cancel);
@@ -308,7 +307,8 @@ public class AppsListFragment extends TopicsListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.removeItem(settingItemId);
+        if (menu.findItem(R.id.list_settings_item) != null)
+            menu.findItem(R.id.list_settings_item).setVisible(false);
     }
 
     private AppItem findById(ArrayList<AppItem> apps, CharSequence id) {

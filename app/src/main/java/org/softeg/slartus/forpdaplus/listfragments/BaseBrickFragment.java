@@ -94,17 +94,20 @@ public abstract class BaseBrickFragment extends GeneralFragment{
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==R.id.refresh_item){
+            loadData(true);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add(R.string.refresh)
-                .setIcon(R.drawable.refresh)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        loadData(true);
-                        return true;
-                    }
-                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        if(inflater!=null)
+            inflater.inflate(R.menu.base_brick,menu);
+
     }
 
     @Override

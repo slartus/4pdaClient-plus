@@ -21,21 +21,6 @@ import ru.slartus.http.Http;
  */
 public class HttpHelper {
     protected static final String TAG = "HttpHelper";
-    protected static final String CONTENT_TYPE = "Content-Type";
-    public static final String GZIP = "gzip";
-    public static final String ACCEPT_ENCODING = "Accept-Encoding";
-
-    private static String HTTP_CONTENT_CHARSET = "windows-1251";
-    protected static String USER_AGENT = "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Mobile Safari/537.36";
-    public static String FULL_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36";
-
-
-
-
-
-
-
-
 
     public static String performGet(final String url) {
         AppResponse response = Http.Companion.getInstance().performGet(url);
@@ -44,11 +29,7 @@ public class HttpHelper {
         return response.getResponseBody();
     }
 
-    /**
-     * Perform a simplified HTTP POST operation.
-     */
     public static String performPost(final String url, final List<NameValuePair> params) {
-
         ArrayList<Pair<String, String>> listParams = new ArrayList<>();
         for (NameValuePair key : params) {
             listParams.add(new Pair<>(key.getName(), key.getValue()));
@@ -70,7 +51,7 @@ public class HttpHelper {
         return response.getResponseBody();
     }
 
-    protected static URI m_RedirectUri;
+    private static URI m_RedirectUri;
     private static String m_LastUrl;
 
 
