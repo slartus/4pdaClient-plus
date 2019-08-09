@@ -84,7 +84,7 @@ public class TopicApi {
             qparams.add(new BasicNameValuePair("track_type", trackType));
         }
 
-        Uri uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
+        String uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
                 qparams, "UTF-8");
         httpClient.performGet(uri.toString());
         favTopic = findTopicInFav(topicId);
@@ -213,7 +213,7 @@ public class TopicApi {
         qparams.add(new BasicNameValuePair("act", "fav"));
         qparams.add(new BasicNameValuePair("selectedtids", favTopic.getTid()));
         qparams.add(new BasicNameValuePair("tact", trackType));
-        Uri uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
+        String uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
                 qparams, "UTF-8");
         httpClient.performGet(uri.toString());
         return TRACK_TYPE_PIN.equals(trackType) ? "Тема закреплена" : "Тема откреплена";

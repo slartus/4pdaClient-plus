@@ -6,7 +6,7 @@ import java.net.URLEncoder
 class URIUtils {
     companion object {
         @JvmStatic
-        fun createURI(scheme: String, authority: String, path: String,params: MutableList<NameValuePair>, encoding: String): Uri {
+        fun createURI(scheme: String, authority: String, path: String, params: MutableList<NameValuePair>, encoding: String): String {
             val builder =
                     Uri.Builder()
                             .scheme(scheme)
@@ -15,10 +15,12 @@ class URIUtils {
             path.split("/").forEach {
                 builder.appendPath(it)
             }
-            params.forEach {
-                builder.appendQueryParameter(it.name,URLEncoder.encode(it.value, encoding))
-            }
-            return builder.build()
+
+            var url = builder.build().toString()
+            url += "?" + params.map {
+                "${it.name}=${URLEncoder.encode(it.value,encoding)}"
+            }.joinToString("&")
+            return url
         }
 
     }

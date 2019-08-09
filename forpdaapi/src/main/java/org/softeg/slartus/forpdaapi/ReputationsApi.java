@@ -42,7 +42,7 @@ public class ReputationsApi {
             qparams.add(new BasicNameValuePair("mode", "from"));
 
 
-        Uri uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
+        String uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
                 qparams, "UTF-8");
 
         String body = httpClient.performGet(uri.toString());

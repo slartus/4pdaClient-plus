@@ -72,12 +72,13 @@ public class Client implements IHttpClient {
     private String m_K = "";
 
     private Client() {
-        UserInfoRepository
-                .Companion.getInstance()
-                .getUserInfo()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(userInfo -> doOnUserChangedListener());
+        App.getInstance().addToDisposable(
+                UserInfoRepository
+                        .Companion.getInstance()
+                        .getUserInfo()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(userInfo -> doOnUserChangedListener()));
     }
 
 
@@ -350,8 +351,6 @@ public class Client implements IHttpClient {
         UserInfoRepository.Companion.getInstance().setLogined(logined);
         m_LoginFailedReason = logined ? null : loginResult.getLoginError().toString();
 
-
-        // m_SessionId = outParams.get("SessionId");
         UserInfoRepository.Companion.getInstance().setName(loginResult.getUserLogin().toString());
         m_K = loginResult.getK().toString();
 
@@ -488,19 +487,9 @@ public class Client implements IHttpClient {
 
 
     public String loadPageAndCheckLogin(String url, OnProgressChangedListener progressChangedListener) throws IOException {
-
         doOnOnProgressChanged(progressChangedListener, App.getContext().getString(R.string.receiving_data));
         String body = performGet(url);
         doOnOnProgressChanged(progressChangedListener, App.getContext().getString(R.string.processing_data));
-
-        /*Matcher headerMatcher = PatternExtensions.compile("<body>([\\s\\S]*?)globalmess").matcher(body);
-        if (headerMatcher.find()) {
-            checkLogin(headerMatcher.group(1));
-            checkMails(headerMatcher.group(1));
-        } else {
-            checkLogin(body);
-            checkMails(body);
-        }*/
         return body;
     }
 

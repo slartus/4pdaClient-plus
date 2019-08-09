@@ -129,7 +129,7 @@ public class SearchSettings implements Parcelable {
         qualms.add(new BasicNameValuePair("result", m_ResultView));
         qualms.add(new BasicNameValuePair("noform", "1"));
 
-        Uri uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
+        String uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
                 qualms, "windows-1251");
         return uri.toString();
     }

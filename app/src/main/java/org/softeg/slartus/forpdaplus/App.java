@@ -51,6 +51,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.paperdb.Paper;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import ru.slartus.http.Http;
 
 import static org.softeg.slartus.forpdaplus.prefs.PreferencesActivity.getPackageInfo;
@@ -75,6 +77,7 @@ import static org.softeg.slartus.forpdaplus.prefs.PreferencesActivity.getPackage
         resDialogTheme = R.style.Crash_Dialog
 )
 public class App extends MultiDexApplication {
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
     public static final int THEME_LIGHT = 0;
     public static final int THEME_DARK = 1;
     public static final int THEME_BLACK = 6;
@@ -752,5 +755,13 @@ public class App extends MultiDexApplication {
         }
     }
 
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        compositeDisposable.dispose();
+    }
 
+    public void addToDisposable(Disposable disposable) {
+        compositeDisposable.add(disposable);
+    }
 }

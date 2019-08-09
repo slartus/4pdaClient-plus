@@ -61,7 +61,7 @@ public class TopicsApi {
         qparams.add(new BasicNameValuePair("st", Integer.toString(listInfo.getFrom())));
 
 
-        Uri uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
+        String uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
                 qparams, "UTF-8");
 
         String pageBody = HttpHelper.performGet(uri.toString());

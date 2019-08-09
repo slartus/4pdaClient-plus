@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdaplus.App;
@@ -79,6 +80,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
     private final static int FILECHOOSER_RESULTCODE = 1;
 
+    @SuppressWarnings("unused")
     @JavascriptInterface
     public void showChooseCssDialog() {
         getMainActivity().runOnUiThread(() -> {
@@ -110,11 +112,8 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
                 mWvBody.loadUrl("javascript:window['HtmlInParseLessContent']('" + cssData + "');");
             else
                 mWvBody.evaluateJavascript("window['HtmlInParseLessContent']('" + cssData + "')",
-                        new ValueCallback<String>() {
-                            @Override
-                            public void onReceiveValue(String s) {
+                        s -> {
 
-                            }
                         }
                 );
         }
@@ -131,7 +130,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.search_posts_result, container, false);
         initSwipeRefreshLayout();
         assert view != null;
@@ -231,6 +230,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         }
     }
 
+    @SuppressWarnings("unused")
     @JavascriptInterface
     public void showUserMenu(final String userId, final String userNick) {
         getMainActivity().runOnUiThread(() -> ForumUser.showUserQuickAction(getMainActivity(), getWebView(), userId, userNick));
@@ -250,16 +250,19 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         getMainActivity().runOnUiThread(() -> search((m_SearchResult.getCurrentPage() - 2) * m_SearchResult.getPostsPerPageCount(getSearchQuery())));
     }
 
+    @SuppressWarnings("unused")
     @JavascriptInterface
     public void firstPage() {
         getMainActivity().runOnUiThread(() -> search(0));
     }
 
+    @SuppressWarnings("unused")
     @JavascriptInterface
     public void lastPage() {
         getMainActivity().runOnUiThread(() -> search((m_SearchResult.getPagesCount() - 1) * m_SearchResult.getPostsPerPageCount(getSearchQuery())));
     }
 
+    @SuppressWarnings("unused")
     @JavascriptInterface
     public void jumpToPage() {
         getMainActivity().runOnUiThread(() -> {
@@ -277,12 +280,9 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
             new MaterialDialog.Builder(getContext())
                     .title(R.string.jump_to_page)
                     .items(pages)
-                    .itemsCallbackSingleChoice(m_SearchResult.getCurrentPage() - 1, new MaterialDialog.ListCallbackSingleChoice() {
-                        @Override
-                        public boolean onSelection(MaterialDialog dialog, View view1, int i, CharSequence pages) {
-                            search(i * postsPerPage);
-                            return true; // allow selection
-                        }
+                    .itemsCallbackSingleChoice(m_SearchResult.getCurrentPage() - 1, (dialog, view1, i, pages1) -> {
+                        search(i * postsPerPage);
+                        return true; // allow selection
                     })
                     .show();
         });
@@ -421,7 +421,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     private class LoadResultTask extends AsyncTask<String, String, Boolean> {
         private int m_Page;
 
-        public LoadResultTask(int page) {
+        LoadResultTask(int page) {
             m_Page = page;
 
         }
