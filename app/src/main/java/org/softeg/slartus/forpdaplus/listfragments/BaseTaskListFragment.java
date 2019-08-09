@@ -3,20 +3,26 @@ package org.softeg.slartus.forpdaplus.listfragments;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Filterable;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 import io.paperdb.Paper;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by slartus on 19.02.14.
@@ -100,6 +106,8 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
         return new Task(isRefresh);
     }
 
+
+
     public void loadData(final boolean isRefresh) {
 
         saveListViewScrollPosition();
@@ -107,7 +115,7 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
             if (needLogin()) {
                 Client.getInstance().checkLoginByCookies();
                 if (!Client.getInstance().getLogined()) {
-                    Client.getInstance().showLoginForm(getContext(), (user, success) -> loadData(isRefresh));
+                    Client.getInstance().showLoginForm(getContext());
                     return;
                 }
             }

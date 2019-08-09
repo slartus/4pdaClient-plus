@@ -21,14 +21,16 @@ class UserInfoRepository private constructor() {
                 .memberId
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    userInfo.value?.id = if (it == "deleted") "" else it
-                    if (userInfo.value?.id.isNullOrEmpty()) {
-                        userInfo.value?.clear()
-                    } else {
-                        userInfo.value?.logined = true
+                .subscribe { memberId ->
+                    userInfo.value?.let {
+                        it.id = if (memberId == "deleted") "" else memberId
+                        if (it.id.isEmpty()) {
+                            it.clear()
+                        } else {
+                            it.logined = true
+                        }
+                        userInfo.onNext(it)
                     }
-                    userInfo.onNext(userInfo.value!!)
                 })
     }
 
@@ -65,6 +67,13 @@ class UserInfoRepository private constructor() {
                 it.name = value
                 userInfo.onNext(it)
             }
+        }
+    }
+
+    fun clear() {
+        userInfo.value?.let {
+            it.clear()
+            userInfo.onNext(it)
         }
     }
 }

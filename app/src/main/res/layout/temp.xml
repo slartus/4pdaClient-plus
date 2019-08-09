@@ -23,50 +23,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <android.support.constraint.Group
-        android:id="@+id/avatar_group"
+        android:id="@+id/logined_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
         android:visibility="gone"
-        app:constraint_referenced_ids="imgAvatar,imgAvatarSquare" />
+        app:constraint_referenced_ids="imgAvatar,imgAvatarSquare,userNick,userRep,qmsMessages"
+        tools:visibility="visible" />
 
     <android.support.constraint.Guideline
         android:id="@+id/start_guidline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:orientation="vertical"
         app:layout_constraintGuide_begin="16dp" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/top_guidline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="40dp" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgAvatar"
         android:layout_width="64dp"
         android:layout_height="64dp"
+
+        android:layout_marginTop="40dp"
         android:scaleType="centerCrop"
         app:civ_border_color="@android:color/transparent"
         app:civ_border_width="0dp"
         app:layout_constraintStart_toStartOf="@+id/start_guidline"
-        app:layout_constraintTop_toTopOf="@+id/top_guidline"
+        app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/account" />
 
     <ImageView
         android:id="@+id/imgAvatarSquare"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:contentDescription="avatar"
         android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="@+id/start_guidline"
-        app:layout_constraintTop_toTopOf="@+id/top_guidline" />
+        app:layout_constraintTop_toTopOf="@+id/imgAvatar"
+        android:contentDescription="avatar" />
 
     <ImageView
         android:id="@+id/infoRefresh"
@@ -76,11 +68,11 @@
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="avatar"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/top_guidline"
-        app:srcCompat="@drawable/refresh" />
+        app:layout_constraintTop_toTopOf="@+id/imgAvatar"
+        app:srcCompat="@drawable/refresh"
+        android:contentDescription="avatar" />
 
     <ImageView
         android:id="@+id/openLink"
@@ -90,45 +82,25 @@
         android:layout_marginEnd="52dp"
         android:layout_marginRight="52dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="open link"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/top_guidline"
-        app:srcCompat="@drawable/link" />
-
-
-    <android.support.constraint.Guideline
-        android:id="@+id/bottom_guidline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="113dp" />
+        app:layout_constraintTop_toTopOf="@+id/infoRefresh"
+        app:srcCompat="@drawable/link"
+        android:contentDescription="open link" />
 
     <TextView
         android:id="@+id/loginButton"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="56dp"
         android:gravity="center_vertical"
         android:paddingBottom="8dp"
         android:text="Войти"
-        android:textAlignment="gravity"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/start_guidline"
-        app:layout_constraintTop_toTopOf="@+id/bottom_guidline"
-        tools:visibility="visible" />
+        app:layout_constraintStart_toStartOf="@+id/start_guidline" />
 
-    <android.support.constraint.Group
-        android:id="@+id/profile_info_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="gone"
-        app:constraint_referenced_ids="userNick,userRep,qmsMessages" />
 
     <TextView
         android:id="@+id/userNick"
@@ -137,8 +109,8 @@
         android:textColor="@color/white"
         android:textSize="14sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/qmsMessages"
         app:layout_constraintStart_toStartOf="@+id/start_guidline"
-        app:layout_constraintTop_toTopOf="@+id/bottom_guidline"
         tools:text="Гость" />
 
     <TextView
@@ -159,7 +131,7 @@
         android:layout_height="20dp"
         android:textColor="@color/white"
         android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/start_guidline"
-        app:layout_constraintTop_toBottomOf="@+id/userNick"
         tools:text="Нет новых сообщений" />
 </android.support.constraint.ConstraintLayout>

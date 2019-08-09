@@ -280,7 +280,7 @@ super();
             if (needLogin()) {
                 Client.getInstance().checkLoginByCookies();
                 if (!Client.getInstance().getLogined())
-                    Client.getInstance().showLoginForm(getContext(), (user, success) -> loadData(isRefresh));
+                    Client.getInstance().showLoginForm(getContext());
             }
 
             mTask = createTask(isRefresh);

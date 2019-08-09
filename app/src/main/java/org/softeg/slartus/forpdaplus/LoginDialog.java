@@ -21,7 +21,6 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import org.softeg.slartus.forpdaapi.ProfileApi;
 import org.softeg.slartus.forpdaapi.classes.LoginForm;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 
 import java.lang.ref.WeakReference;
 
@@ -33,7 +32,6 @@ import java.lang.ref.WeakReference;
 public class LoginDialog {
     private String capTime;
     private String capSig;
-    private String session;
     private EditText username_edit;
     private final EditText password_edit;
     private CheckBox privacy_checkbox;
@@ -62,14 +60,13 @@ public class LoginDialog {
         return mView;
     }
 
-    void connect(Client.OnUserChangedListener onConnectResult) {
+    void connect() {
         saveData();
         LoginTask loginTask = new LoginTask(mContext,
                 username_edit.getText().toString(), password_edit.getText().toString(),
                 privacy_checkbox.isChecked(),
                 ((EditText) mView.findViewById(R.id.cap_value_ed)).getText().toString(),
-                capTime, capSig, session,
-                onConnectResult);
+                capTime, capSig);
         loginTask.execute(username_edit.getText().toString(), password_edit.getText().toString(),
                 Boolean.toString(privacy_checkbox.isChecked()));
     }
@@ -87,14 +84,14 @@ public class LoginDialog {
     }
 
 
-    public static void showDialog(final Context context, final Client.OnUserChangedListener onConnectResult) {
+    public static void showDialog(final Context context) {
         final LoginDialog loginDialog = new LoginDialog(context);
         MaterialDialog dialog = new MaterialDialog.Builder(context)
                 .title(R.string.login)
                 .customView(loginDialog.getView(), true)
                 .positiveText(R.string.login)
                 .negativeText(R.string.cancel)
-                .onPositive((dialog1, which) ->   loginDialog.connect(onConnectResult))
+                .onPositive((dialog1, which) ->   loginDialog.connect())
                 .build();
         Window window=dialog.getWindow();
         assert window != null;
@@ -157,7 +154,6 @@ public class LoginDialog {
                 });
                 capTime = loginForm.getCapTime();
                 capSig = loginForm.getCapSig();
-                session = loginForm.getSession();
             } else {
 
                 AppLog.e(mContext, loginForm.getError());
@@ -177,13 +173,10 @@ public class LoginDialog {
         private String capVal;
         private String capTime;
         private String capSig;
-        private String session;
-        private Client.OnUserChangedListener m_OnConnectResult;
 
         LoginTask(Context context,
                   String login, String password, Boolean privacy,
-                  String capVal, String capTime, String capSig, String session,
-                  Client.OnUserChangedListener onConnectResult) {
+                  String capVal, String capTime, String capSig) {
             mContext = new WeakReference<>(context);
             this.login = login;
             this.password = password;
@@ -191,8 +184,6 @@ public class LoginDialog {
             this.capVal = capVal;
             this.capTime = capTime;
             this.capSig = capSig;
-            this.session = session;
-            m_OnConnectResult = onConnectResult;
             dialog = new MaterialDialog.Builder(mContext.get())
                     .progress(true, 0)
                     .cancelable(false)
@@ -225,10 +216,6 @@ public class LoginDialog {
         private Exception ex;
 
 
-        private void doOnUserChangedListener(String user, Boolean success) {
-            if (m_OnConnectResult != null)
-                m_OnConnectResult.onUserChanged(user, success);
-        }
 
         // can use UI thread here
         protected void onPostExecute(final Boolean success) {
@@ -236,9 +223,6 @@ public class LoginDialog {
                 this.dialog.dismiss();
             }
 
-
-            doOnUserChangedListener(login, success);
-            Client.getInstance().doOnUserChangedListener();
             App.getInstance().getPreferences().edit().putBoolean("needLoadRepImage", success).apply();
             if (success) {
                 Toast.makeText(mContext.get(), R.string.login_performed,

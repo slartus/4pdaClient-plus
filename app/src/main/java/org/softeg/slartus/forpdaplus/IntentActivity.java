@@ -620,21 +620,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         final Pattern imagePattern = PatternExtensions.compile("https?://.*?\\.(png|jpg|jpeg|gif)$");
         if (isFile) {
             if (!Client.getInstance().getLogined() && !Client.getInstance().hasLoginCookies()) {
-                Client.getInstance().showLoginForm(activity, new Client.OnUserChangedListener() {
-                    public void onUserChanged(String user, Boolean success) {
-                        if (success) {
-                            if (imagePattern.matcher(uri.toString()).find()) {
-//                                showImage(activity, uri.toString());
-                                showImage(activity, uri.toString());
-                                if (finish)
-                                    activity.finish();
-                            } else
-                                downloadFileStart(activity, uri.toString(), finish);
-                        } else if (finish)
-                            activity.finish();
-
-                    }
-                });
+                Client.getInstance().showLoginForm(activity);
             } else {
                 if (imagePattern.matcher(uri.toString()).find()) {
 //                    showImage(activity, uri.toString());

@@ -505,7 +505,6 @@ public class App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        Http.Companion.init(this, getString(R.string.app_name), getPackageInfo().versionName);
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
@@ -536,6 +535,8 @@ public class App extends MultiDexApplication {
         } catch (Throwable e) {
             e.printStackTrace();
         }
+        Http.Companion.init(this, getString(R.string.app_name), getPackageInfo().versionName);
+        Client.getInstance().checkLoginByCookies();
     }
 
     @Override

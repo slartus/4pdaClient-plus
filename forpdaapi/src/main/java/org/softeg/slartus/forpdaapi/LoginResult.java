@@ -8,7 +8,7 @@ public class LoginResult {
     private CharSequence userLogin = "гость";
     private CharSequence userId = "";
     private Boolean success = false;
-    private CharSequence loginError;
+    private CharSequence loginError="";
     private CharSequence userAvatarUrl;
 
     public CharSequence getK() {

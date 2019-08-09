@@ -410,11 +410,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     || host.toLowerCase().contains("googleusercontent.com")
                     || host.toLowerCase().contains("windowsphone.com")))) {
                 if (!Client.getInstance().getLogined() && !Client.getInstance().hasLoginCookies()) {
-                    Client.getInstance().showLoginForm(getContext(), (user, success) -> {
-                        if (success) {
-                            showImage(url);
-                        }
-                    });
+                    Client.getInstance().showLoginForm(getContext());
                 } else {
                     showImage(url);
                 }

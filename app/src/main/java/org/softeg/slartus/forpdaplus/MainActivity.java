@@ -62,6 +62,7 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -167,7 +168,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
 
         loadPreferences(App.getInstance().getPreferences());
         if (shortUserInfo != null)
-            shortUserInfo.mActivity = this;
+            shortUserInfo.setMActivity(new WeakReference<>(this));
         if (saveInstance != null) {
             App.getInstance().setTabIterator(saveInstance.getInt("tabIterator"));
             App.getInstance().setCurrentFragmentTag(saveInstance.getString("currentTag"));
@@ -392,14 +393,13 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             mMainDrawerMenu.getNavigationView().getHeaderView(0).setVisibility(View.GONE);
 
         Client.INSTANCE.checkLoginByCookies();
-        Client.getInstance().addOnUserChangedListener((user, success) -> mHandler.post(this::invalidateOptionsMenu));
 
         addToDisposable(UserInfoRepository
                 .Companion.getInstance()
                 .getUserInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(userInfo -> setUserMenu()));
+                .subscribe(userInfo -> invalidateOptionsMenu()));
     }
 
     @Override
@@ -860,7 +860,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                 LoginDialog.logout(MainActivity.this);
                 return true;
             case R.id.login_item:
-                LoginDialog.showDialog(MainActivity.this, null);
+                LoginDialog.showDialog(MainActivity.this);
                 return true;
             case R.id.registration_item:
                 Intent marketIntent = new Intent(
@@ -896,10 +896,6 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                     .getValue().mentionsCountOrDefault(0);
             menu.findItem(R.id.mentions_item).setTitle("Упоминания " + (mentionsCount > 0 ? ("(" + mentionsCount + ")") : ""));
         }
-    }
-
-    public void setUserMenu() {
-        invalidateOptionsMenu();
     }
 
     public static void startForumSearch(SearchSettings searchSettings) {

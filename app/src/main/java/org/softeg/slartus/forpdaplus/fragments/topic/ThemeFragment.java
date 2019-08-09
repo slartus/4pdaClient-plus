@@ -1315,11 +1315,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             final Pattern imagePattern = PatternExtensions.compile("\\.(png|jpg|jpeg|gif)$");
             if (!imagePattern.matcher(url).find()) return false;
             if (!Client.getInstance().getLogined() && !Client.getInstance().hasLoginCookies()) {
-                Client.getInstance().showLoginForm(getContext(), (user, success) -> {
-                    if (success) {
-                        showImage(url);
-                    }
-                });
+                Client.getInstance().showLoginForm(getContext());
             } else {
                 showImage(url);
             }

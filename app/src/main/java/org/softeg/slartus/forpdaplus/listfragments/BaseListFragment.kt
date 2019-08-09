@@ -14,6 +14,8 @@ import android.widget.AdapterView
 import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.TextView
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.softeg.slartus.forpdaapi.IListItem
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.R
@@ -21,6 +23,7 @@ import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ListAdapter
 import org.softeg.slartus.forpdaplus.prefs.Preferences
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min
@@ -45,9 +48,9 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
 
     var adapter: BaseAdapter? = null
         protected set
-    protected var mListViewLoadMoreFooter: ListViewLoadMoreFooter?=null
+    protected var mListViewLoadMoreFooter: ListViewLoadMoreFooter? = null
 
-    private var mSwipeRefreshLayout: SwipeRefreshLayout?=null
+    private var mSwipeRefreshLayout: SwipeRefreshLayout? = null
 
     private val notifyAdapter = Runnable { adapter?.notifyDataSetChanged() }
 
@@ -108,6 +111,15 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (needLogin() == true)
+            addToDisposable(UserInfoRepository.instance
+                    .userInfo
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { userInfo ->
+                        if (userInfo.logined)
+                            loadData(true)
+                    })
         mListViewLoadMoreFooter = ListViewLoadMoreFooter(view.context, listView!!)
         mListViewLoadMoreFooter?.setOnLoadMoreClickListener {
             mListViewLoadMoreFooter?.setState(ListViewLoadMoreFooter.STATE_LOADING)

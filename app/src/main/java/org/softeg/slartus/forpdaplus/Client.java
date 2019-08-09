@@ -33,7 +33,6 @@ import org.softeg.slartus.forpdacommon.CollectionUtils;
 import org.softeg.slartus.forpdacommon.HttpHelper;
 import org.softeg.slartus.forpdacommon.NameValuePair;
 import org.softeg.slartus.forpdacommon.NotReportException;
-import org.softeg.slartus.forpdacommon.Observer;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.classes.DownloadTask;
 import org.softeg.slartus.forpdaplus.classes.DownloadTasks;
@@ -57,8 +56,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import ru.slartus.http.Http;
 
 /**
@@ -72,13 +69,7 @@ public class Client implements IHttpClient {
     private String m_K = "";
 
     private Client() {
-        App.getInstance().addToDisposable(
-                UserInfoRepository
-                        .Companion.getInstance()
-                        .getUserInfo()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(userInfo -> doOnUserChangedListener()));
+        checkLoginByCookies();
     }
 
 
@@ -243,44 +234,6 @@ public class Client implements IHttpClient {
         NewsApi.likeComment(this, id, comment);
     }
 
-
-    public interface OnUserChangedListener {
-        void onUserChanged(String user, Boolean success);
-    }
-
-    void doOnUserChangedListener() {
-        String name = UserInfoRepository.Companion.getInstance().getName();
-        boolean logined = UserInfoRepository.Companion.getInstance().getUserInfo().getValue().getLogined();
-        for (OnUserChangedListener listener : m_OnUserChangeListeners.getListeners()) {
-            listener.onUserChanged(name, logined);
-        }
-
-    }
-
-    private Observer<OnUserChangedListener> m_OnUserChangeListeners = new Observer<>();
-
-    void addOnUserChangedListener(OnUserChangedListener p) {
-        m_OnUserChangeListeners.addStrongListener(p);
-    }
-
-    public interface OnMailListener {
-        void onMail(int count);
-    }
-
-    private void doOnMailListener() {
-        for (OnMailListener listener : m_OnMailListeners.getListeners()) {
-            listener.onMail(0);
-        }
-
-    }
-
-    private Observer<OnMailListener> m_OnMailListeners = new Observer<>();
-
-    void addOnMailListener(OnMailListener p) {
-        m_OnMailListeners.addStrongListener(p);
-    }
-
-
     public interface OnProgressPositionChangedListener {
         void onProgressChanged(Context context, DownloadTask downloadTask, Exception ex);
     }
@@ -291,7 +244,7 @@ public class Client implements IHttpClient {
         }
     }
 
-    public void showLoginForm(Context mContext, final OnUserChangedListener onUserChangedListener) {
+    public void showLoginForm(Context mContext) {
         try {
 
             final LoginDialog loginDialog = new LoginDialog(mContext);
@@ -301,7 +254,7 @@ public class Client implements IHttpClient {
                     .customView(loginDialog.getView(), true)
                     .positiveText(R.string.login)
                     .negativeText(R.string.cancel)
-                    .onPositive((dialog1, which) -> loginDialog.connect(onUserChangedListener))
+                    .onPositive((dialog1, which) -> loginDialog.connect())
                     .build();
             Window window = dialog.getWindow();
             assert window != null;
@@ -321,10 +274,10 @@ public class Client implements IHttpClient {
         return UserInfoRepository.Companion.getInstance().getUserInfo().getValue().getLogined();
     }
 
-    private String m_LoginFailedReason;
+    private CharSequence m_LoginFailedReason;
 
     String getLoginFailedReason() {
-        return m_LoginFailedReason;
+        return m_LoginFailedReason == null ? null : m_LoginFailedReason.toString();
     }
 
     public String reply(String forumId, String themeId, String authKey, String post,
@@ -347,11 +300,12 @@ public class Client implements IHttpClient {
         Http.Companion.getInstance().getCookieStore().removeAll();
 
         LoginResult loginResult = ProfileApi.login(login, password, privacy, capVal, capTime, capSig);
-        boolean logined =UserInfoRepository.Companion.getInstance().getLogined();
+        boolean logined = UserInfoRepository.Companion.getInstance().getLogined();
 
-        m_LoginFailedReason = logined ? null : loginResult.getLoginError().toString();
+        m_LoginFailedReason = logined ? null : loginResult.getLoginError();
 
-        UserInfoRepository.Companion.getInstance().setName(loginResult.getUserLogin().toString());
+        if (logined)
+            UserInfoRepository.Companion.getInstance().setName(loginResult.getUserLogin().toString());
         m_K = loginResult.getK().toString();
 
         Http.Companion.getInstance().getCookieStore().addCustom("4pda.User", UserInfoRepository.Companion.getInstance().getName());
@@ -361,23 +315,17 @@ public class Client implements IHttpClient {
         return logined;
     }
 
-    private final Pattern checkLoginPattern = PatternExtensions.compile("<a href=\"(http://4pda.ru)?/forum/index.php\\?showuser=(\\d+)\">(.*?)</a></b> \\( <a href=\"(http://4pda.ru)?/forum/index.php\\?act=Login&amp;CODE=03&amp;k=([a-z0-9]{32})\">Выход</a>");
+    private final Pattern checkLoginPattern = PatternExtensions.compile("\\Wk=([a-z0-9]{32})");
 
     public void checkLoginByCookies() {
         try {
             checkLogin();
         } catch (Throwable ignored) {
 
-        } finally {
-            doOnUserChangedListener();
         }
-
     }
 
     private void checkLogin() {
-        UserInfoRepository.Companion.getInstance().setName("");
-        m_K = "";
-
         for (HttpCookie cookie : Http.Companion.getInstance().getCookieStore().getCookies()) {
             if ("4pda.User".equals(cookie.getName())) {
                 UserInfoRepository.Companion.getInstance().setName(cookie.getValue());
@@ -388,20 +336,13 @@ public class Client implements IHttpClient {
     }
 
     private void checkLogin(String pageBody) {
-        try {
-            checkLogin();
+        checkLogin();
 
-            Matcher m = checkLoginPattern.matcher(pageBody);
-            if (m.find()) {
-                UserInfoRepository.Companion.getInstance().setName(m.group(3));
-                m_K = m.group(5);
-            } else {
-                UserInfoRepository.Companion.getInstance().setName("гость");
-                m_K = "";
-            }
-
-        } finally {
-            doOnUserChangedListener();
+        Matcher m = checkLoginPattern.matcher(pageBody);
+        if (m.find()) {
+            m_K = m.group(1);
+        } else {
+            m_K = "";
         }
     }
 
@@ -412,7 +353,6 @@ public class Client implements IHttpClient {
     public void setQmsCount(int count) {
         UserInfoRepository.Companion.getInstance()
                 .setQmsCount(count);
-        doOnMailListener();
     }
 
     private void checkMentions(String page) {

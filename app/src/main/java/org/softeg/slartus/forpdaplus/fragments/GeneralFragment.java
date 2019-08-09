@@ -18,12 +18,15 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
 /**
  * Created by radiationx on 12.11.15.
  */
 public abstract class GeneralFragment extends Fragment implements IBrickFragment{
     public abstract boolean closeTab();
-
+private CompositeDisposable compositeDisposable=new CompositeDisposable();
     private ActionBar actionBar;
     private MainActivity mainActivity;
     protected View view;
@@ -198,6 +201,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
+        compositeDisposable.dispose();
     }
 
     @Override
@@ -240,5 +244,9 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         Log.i("Clear Notification", "Notification Id: " + notifId);
         NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(notifId);
+    }
+
+    protected void addToDisposable(Disposable disposable){
+        compositeDisposable.add(disposable);
     }
 }
