@@ -133,8 +133,8 @@ dependencies {
     api 'com.github.armcha:Vertical-Intro:2.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'io.paperdb:paperdb:2.6'
-    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
-    implementation 'com.android.support:multidex:1.0.3'    
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxjava2"
+    implementation 'com.android.support:multidex:1.0.3'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

@@ -1,6 +1,10 @@
 package org.softeg.slartus.forpdaplus.repositories
 
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+import org.softeg.slartus.forpdaplus.App
+import ru.slartus.http.Http
 
 class UserInfoRepository private constructor() {
     private object Holder {
@@ -10,6 +14,22 @@ class UserInfoRepository private constructor() {
     companion object {
         const val TAG = "UserInfoRepository"
         val instance by lazy { Holder.INSTANCE }
+    }
+
+    init {
+        App.getInstance().addToDisposable(Http.instance.cookieStore
+                .memberId
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    userInfo.value?.id = if (it == "deleted") "" else it
+                    if (userInfo.value?.id.isNullOrEmpty()) {
+                        userInfo.value?.clear()
+                    } else {
+                        userInfo.value?.logined = true
+                    }
+                    userInfo.onNext(userInfo.value!!)
+                })
     }
 
     val userInfo: BehaviorSubject<UserInfo> = BehaviorSubject.createDefault(UserInfo())
@@ -24,6 +44,7 @@ class UserInfoRepository private constructor() {
         }
     }
 
+    fun getQmsCount() = userInfo.value?.qmsCount ?: 0
     fun setQmsCount(value: Int?) {
         if (userInfo.hasValue() && userInfo.value?.qmsCount != value) {
             userInfo.value?.let {
@@ -33,29 +54,11 @@ class UserInfoRepository private constructor() {
         }
     }
 
-    fun getLogined() = userInfo.value?.logined?:false
+    fun getLogined() = userInfo.value?.logined ?: false
 
-    fun setLogined(value: Boolean) {
-        if (userInfo.hasValue() && userInfo.value?.logined != value) {
-            userInfo.value?.let {
-                it.logined = value
-                userInfo.onNext(it)
-            }
-        }
-    }
+    fun getId() = userInfo.value?.id ?: ""
 
-    fun getId() = userInfo.value?.id?:""
-
-    fun setId(value: String) {
-        if (userInfo.hasValue() && userInfo.value?.id != value) {
-            userInfo.value?.let {
-                it.id = value
-                userInfo.onNext(it)
-            }
-        }
-    }
-
-    fun getName() = userInfo.value?.name?:""
+    fun getName() = userInfo.value?.name ?: ""
     fun setName(value: String) {
         if (userInfo.hasValue() && userInfo.value?.name != value) {
             userInfo.value?.let {
@@ -85,4 +88,12 @@ class UserInfo {
     }
 
     var logined = false
+
+    fun clear() {
+        logined = false
+        id = ""
+        name = "Гость"
+        mentionsCount = 0
+        qmsCount = 0
+    }
 }

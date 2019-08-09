@@ -32,12 +32,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import io.reactivex.subjects.BehaviorSubject;
+import okhttp3.Cookie;
+
 public class PersistentCookieStore implements CookieStore {
     private static final String TAG = PersistentCookieStore.class
             .getSimpleName();
 
     // Persistence
     private static final String SP_COOKIE_STORE = "cookieStore";
+    @SuppressWarnings("RegExpEmptyAlternationBranch")
     private static final String SP_KEY_DELIMITER = "|"; // Unusual char in URL
     private static final String SP_KEY_DELIMITER_REGEX = "\\"
             + SP_KEY_DELIMITER;
@@ -72,6 +76,7 @@ public class PersistentCookieStore implements CookieStore {
                 }
                 // Repeated cookies cannot exist in persistence
                 // targetCookies.remove(cookie)
+                addedCookie(cookie);
                 targetCookies.add(cookie);
             } catch (URISyntaxException e) {
                 Log.w(TAG, e);
@@ -79,10 +84,23 @@ public class PersistentCookieStore implements CookieStore {
         }
     }
 
-    private static final URI m_URI=URI.create("http://slartus.ru");
-    public void addCustom(String key, String value) {
-        add(m_URI,new HttpCookie(key,value));
+    private void addedCookie(HttpCookie cookie) {
+        if ("member_id".equals(cookie.getName()))
+            memberId.onNext(cookie.getValue());
     }
+
+    private void deletedCookit(HttpCookie cookie) {
+        if ("member_id".equals(cookie.getName()))
+            memberId.onNext("");
+    }
+
+    private static final URI m_URI = URI.create("http://slartus.ru");
+
+    public void addCustom(String key, String value) {
+        add(m_URI, new HttpCookie(key, value));
+    }
+
+    public BehaviorSubject<String> memberId = BehaviorSubject.createDefault("");
 
     @Override
     public synchronized void add(URI uri, HttpCookie cookie) {
@@ -102,10 +120,6 @@ public class PersistentCookieStore implements CookieStore {
     /**
      * Get the real URI from the cookie "domain" and "path" attributes, if they
      * are not set then uses the URI provided (coming from the response)
-     *
-     * @param uri
-     * @param cookie
-     * @return
      */
     private static URI cookieUri(URI uri, HttpCookie cookie) {
         URI cookieUri = uri;
@@ -131,8 +145,9 @@ public class PersistentCookieStore implements CookieStore {
 
         editor.putString(uri.toString() + SP_KEY_DELIMITER + cookie.getName(),
                 new SerializableHttpCookie().encode(cookie));
-
         editor.apply();
+
+        addedCookie(cookie);
     }
 
     @Override
@@ -220,6 +235,7 @@ public class PersistentCookieStore implements CookieStore {
         for (HttpCookie cookieToRemove : cookiesToRemove) {
             editor.remove(uri.toString() + SP_KEY_DELIMITER
                     + cookieToRemove.getName());
+            deletedCookit(cookieToRemove);
         }
         editor.apply();
     }
@@ -246,6 +262,7 @@ public class PersistentCookieStore implements CookieStore {
         editor.remove(uri.toString() + SP_KEY_DELIMITER
                 + cookieToRemove.getName());
         editor.apply();
+        deletedCookit(cookieToRemove);
     }
 
     @Override
@@ -257,6 +274,7 @@ public class PersistentCookieStore implements CookieStore {
 
     private void removeAllFromPersistence() {
         sharedPreferences.edit().clear().apply();
+        memberId.onNext("");
     }
 
 }

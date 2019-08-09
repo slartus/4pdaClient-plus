@@ -37,6 +37,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.TopicsListPreferencesActivity;
 import org.softeg.slartus.forpdaplus.prefs.TopicsPreferenceFragment;
+import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -269,7 +270,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             if (TextUtils.isEmpty(topic.getId())) return;
             if (tryCreatePost(topic))
                 return;
-            if (!Client.getInstance().isUserLogin()) {
+            if (!UserInfoRepository.Companion.getInstance().getLogined()) {
                 Toast.makeText(getContext(), "Залогиньтесь для просмотра тем форума!", Toast.LENGTH_LONG).show();
             }
             ActionSelectDialogFragment.INSTANCE.execute(getActivity(),

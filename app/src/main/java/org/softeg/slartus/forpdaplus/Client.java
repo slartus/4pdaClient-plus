@@ -347,14 +347,13 @@ public class Client implements IHttpClient {
         Http.Companion.getInstance().getCookieStore().removeAll();
 
         LoginResult loginResult = ProfileApi.login(login, password, privacy, capVal, capTime, capSig);
-        boolean logined = loginResult.isSuccess();
-        UserInfoRepository.Companion.getInstance().setLogined(logined);
+        boolean logined =UserInfoRepository.Companion.getInstance().getLogined();
+
         m_LoginFailedReason = logined ? null : loginResult.getLoginError().toString();
 
         UserInfoRepository.Companion.getInstance().setName(loginResult.getUserLogin().toString());
         m_K = loginResult.getK().toString();
 
-        Http.Companion.getInstance().getCookieStore().addCustom("4pda.UserId", loginResult.getUserId().toString());
         Http.Companion.getInstance().getCookieStore().addCustom("4pda.User", UserInfoRepository.Companion.getInstance().getName());
         Http.Companion.getInstance().getCookieStore().addCustom("4pda.K", m_K);
 
@@ -366,9 +365,7 @@ public class Client implements IHttpClient {
 
     public void checkLoginByCookies() {
         try {
-            if (checkLogin()) {
-                UserInfoRepository.Companion.getInstance().setLogined(true);
-            }
+            checkLogin();
         } catch (Throwable ignored) {
 
         } finally {
@@ -377,63 +374,30 @@ public class Client implements IHttpClient {
 
     }
 
-    private Boolean checkLogin() {
-        String userId = "";
+    private void checkLogin() {
         UserInfoRepository.Companion.getInstance().setName("");
         m_K = "";
 
-        HttpCookie memberIdCookie = null;
         for (HttpCookie cookie : Http.Companion.getInstance().getCookieStore().getCookies()) {
-            if ("4pda.UserId".equals(cookie.getName())) {
-                userId = cookie.getValue();
-
-            } else if ("4pda.User".equals(cookie.getName())) {
+            if ("4pda.User".equals(cookie.getName())) {
                 UserInfoRepository.Companion.getInstance().setName(cookie.getValue());
             } else if ("4pda.K".equals(cookie.getName())) {
                 m_K = cookie.getValue();
-            } else if ("member_id".equals(cookie.getName())) {
-                memberIdCookie = cookie;
-                UserInfoRepository.Companion.getInstance().setId(memberIdCookie.getValue());
             }
         }
-
-        return !TextUtils.isEmpty(UserInfoRepository.Companion.getInstance().getName()) && !TextUtils.isEmpty(userId) && !TextUtils.isEmpty(m_K) && memberIdCookie != null && userId.equals(memberIdCookie.getValue());
-
     }
 
     private void checkLogin(String pageBody) {
-
         try {
-
-            if (checkLogin()) {
-                UserInfoRepository.Companion.getInstance().setLogined(true);
-                return;
-            }
-            if (!TextUtils.isEmpty(UserInfoRepository.Companion.getInstance().getName()) && !TextUtils.isEmpty(UserInfoRepository.Companion.getInstance().getId())
-                    && !TextUtils.isEmpty(m_K)) {
-                for (HttpCookie cookie : Http.Companion.getInstance().getCookieStore().getCookies()) {
-                    if ("member_id".equals(cookie.getName())) {
-                        if (UserInfoRepository.Companion.getInstance().getId().equals(cookie.getValue())) {
-                            UserInfoRepository.Companion.getInstance().setLogined(true);
-                            return;
-                        }
-                        break;
-                    }
-                }
-            }
-
+            checkLogin();
 
             Matcher m = checkLoginPattern.matcher(pageBody);
             if (m.find()) {
-                UserInfoRepository.Companion.getInstance().setId(m.group(2));
                 UserInfoRepository.Companion.getInstance().setName(m.group(3));
                 m_K = m.group(5);
-                UserInfoRepository.Companion.getInstance().setLogined(true);
             } else {
-                UserInfoRepository.Companion.getInstance().setLogined(false);
                 UserInfoRepository.Companion.getInstance().setName("гость");
                 m_K = "";
-                UserInfoRepository.Companion.getInstance().setId("");
             }
 
         } finally {
@@ -441,18 +405,11 @@ public class Client implements IHttpClient {
         }
     }
 
-    public boolean isUserLogin() {
-        return checkLogin();
-    }
-
-    private int m_QmsCount = 0;
-
     int getQmsCount() {
-        return m_QmsCount;
+        return UserInfoRepository.Companion.getInstance().getQmsCount();
     }
 
     public void setQmsCount(int count) {
-        m_QmsCount = count;
         UserInfoRepository.Companion.getInstance()
                 .setQmsCount(count);
         doOnMailListener();

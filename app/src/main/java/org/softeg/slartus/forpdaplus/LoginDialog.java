@@ -235,8 +235,8 @@ public class LoginDialog {
             if (this.dialog.isShowing()) {
                 this.dialog.dismiss();
             }
-            UserInfoRepository.Companion.getInstance().setLogined(success);
-            UserInfoRepository.Companion.getInstance().setName(login);
+
+
             doOnUserChangedListener(login, success);
             Client.getInstance().doOnUserChangedListener();
             App.getInstance().getPreferences().edit().putBoolean("needLoadRepImage", success).apply();

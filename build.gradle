@@ -33,5 +33,6 @@ ext {
 
     okhttp3 = "4.0.1"
     jsoup="1.11.2"
+    rxjava2="2.1.1"
 
 }
