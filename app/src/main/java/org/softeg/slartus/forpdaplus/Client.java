@@ -57,6 +57,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import ru.slartus.http.Http;
 
 /**
@@ -70,7 +72,12 @@ public class Client implements IHttpClient {
     private String m_K = "";
 
     private Client() {
-
+        UserInfoRepository
+                .Companion.getInstance()
+                .getUserInfo()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(userInfo -> doOnUserChangedListener());
     }
 
 
