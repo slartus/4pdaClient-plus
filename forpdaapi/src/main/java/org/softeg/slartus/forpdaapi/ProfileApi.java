@@ -83,7 +83,8 @@ public class ProfileApi {
         for (String key : additionalHeaders.keySet()) {
             listParams.add(new Pair<>(key, additionalHeaders.get(key)));
         }
-        AppResponse response = Http.Companion.getInstance().performPost("https://4pda.ru/forum/index.php?act=auth&return=" + "http://4pda.ru/forum/index.php", listParams);
+        AppResponse response = Http.Companion.getInstance()
+                .performPost("https://4pda.ru/forum/index.php?act=auth&return=" + "http://4pda.ru/forum/index.php", listParams);
         String res = response.getResponseBody();
 
         if (TextUtils.isEmpty(res)) {

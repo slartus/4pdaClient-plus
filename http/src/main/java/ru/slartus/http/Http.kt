@@ -171,7 +171,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         val formBuilder = FormBody.Builder(Charset.forName("windows-1251"))
         values
                 .filter { it.second != null }
-                .forEach { formBuilder.addEncoded(it.first!!, it.second!!) }
+                .forEach { formBuilder.add(it.first!!, it.second!!) }
 
         val formBody = formBuilder.build()
 
