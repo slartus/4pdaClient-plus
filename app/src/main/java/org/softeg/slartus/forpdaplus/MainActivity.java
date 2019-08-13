@@ -59,6 +59,7 @@ import org.softeg.slartus.forpdaplus.mainnotifiers.DonateNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.repositories.UserInfo;
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
@@ -884,11 +885,12 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     }
 
     private void refreshUserMenu(Menu menu){
-        boolean logged = Client.getInstance().getLogined();
+        boolean logged = UserInfoRepository.Companion.getInstance().getLogined();
         menu.findItem(R.id.guest_item).setVisible(!logged);
         MenuItem userMenuItem = menu.findItem(R.id.user_item);
         userMenuItem.setVisible(logged);
         if(logged) {
+            userMenuItem.setTitle(UserInfoRepository.Companion.getInstance().getName());
             userMenuItem.setIcon(getUserIconRes());
             String qmsTitle= Client.getInstance().getQmsCount() > 0 ? ("QMS (" + Client.getInstance().getQmsCount() + ")") : "QMS";
             menu.findItem(R.id.qms_item).setTitle(qmsTitle);
