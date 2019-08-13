@@ -10,6 +10,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.softeg.slartus.forpdacommon.DateExtensions;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.BuildConfig;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.util.Date;
@@ -24,17 +25,7 @@ public abstract class MainNotifier {
     int period;
 
     protected static String getAppVersion(Context context) {
-        try {
-            String packageName = context.getPackageName();
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(
-                    packageName, PackageManager.GET_META_DATA);
-
-            return pInfo.versionName;
-
-        } catch (PackageManager.NameNotFoundException e1) {
-            AppLog.e(context, e1);
-        }
-        return "";
+        return BuildConfig.VERSION_NAME;
     }
 
     public void addToStack(MaterialDialog materialDialog){

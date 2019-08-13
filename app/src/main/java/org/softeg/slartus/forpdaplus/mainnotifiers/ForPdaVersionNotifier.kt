@@ -8,7 +8,6 @@ import android.app.Activity
 import android.content.Context
 import android.os.Handler
 import android.text.Html
-import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
@@ -92,7 +91,12 @@ class ForPdaVersionNotifier(
         if (siteVersion.ver == prefs.getString("client.version.4pda", ""))
             return
 
-        val siteVersionsNewer = AppVersionComparator.compare(siteVersion.ver + siteVersion.name, currentVersion) == 1
+        val siteVersionsNewer = AppVersionComparator.compare(siteVersion,
+                AppVersion().apply {
+                    ver = currentVersion.replace("beta", "")
+                    name = if (currentVersion.contains("beta")) "beta" else "release"
+                    versionCode = BuildConfig.VERSION_CODE
+                }) == 1
         if (siteVersionsNewer) {
             handler.post {
                 try {
@@ -151,6 +155,25 @@ class ForPdaVersionNotifier(
 
 class AppVersionComparator : Comparator<AppVersion> {
     companion object {
+        fun compare(p0: AppVersion?, p1: AppVersion?): Int {
+            val res = compare(p0?.ver, p1?.ver)
+            if (res == 0) {
+                when {
+                    p0?.name == p1?.name -> return p0?.versionCode?.compareTo(p1?.versionCode ?: 0)
+                            ?: 0
+                    p0?.name == "beta" -> return -1
+                    p1?.name == "beta" -> return 1
+                    p0?.name == "release" && p1?.name.isNullOrEmpty() -> return p0.versionCode.compareTo(p1?.versionCode
+                            ?: 0)
+                    p1?.name == "release" && p0?.name.isNullOrEmpty() -> return p0?.versionCode?.compareTo(p1.versionCode)
+                            ?: 0
+                    p0?.name == "release" -> return 1
+                    p1?.name == "release" -> return -1
+                }
+            }
+            return p0?.versionCode?.compareTo(p1?.versionCode ?: 0) ?: 0
+        }
+
         fun compare(p0: String?, p1: String?): Int {
             if (p0 == p1) return 0
 
@@ -199,21 +222,8 @@ class AppVersionComparator : Comparator<AppVersion> {
         }
     }
 
-    override fun compare(p0: AppVersion?, p1: AppVersion?): Int {
-        val res = compare(p0?.ver, p1?.ver)
-        if (res == 0) {
-            when {
-                p0?.name == p1?.name -> return 0
-                p0?.name == "beta" -> return -1
-                p1?.name == "beta" -> return 1
-                p0?.name == "release" && p1?.name.isNullOrEmpty() -> return 0
-                p1?.name == "release" && p0?.name.isNullOrEmpty() -> return 0
-                p0?.name == "release" -> return 1
-                p1?.name == "release" -> return -1
-            }
-        }
-        return res
-    }
+    override fun compare(p0: AppVersion?, p1: AppVersion?) =
+            AppVersionComparator.compare(p0, p1)
 
 }
 
@@ -233,4 +243,5 @@ class AppVersion {
     var ver: String? = ""
     var apk: String? = ""
     var info: String? = ""
+    var versionCode: Int = 0
 }
