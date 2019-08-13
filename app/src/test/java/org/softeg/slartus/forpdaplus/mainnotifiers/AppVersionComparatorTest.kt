@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.mainnotifiers
 
+import android.util.Log
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -10,7 +11,7 @@ class AppVersionComparatorTest {
     fun compare() {
         val tests = ArrayList<Triple<String?, String?, Int>>()
         tests.add(Triple(null, null, 0))
-        tests.add(Triple(null, "", -1))
+        tests.add(Triple(null, "", 0))
         tests.add(Triple("1", "1", 0))
         tests.add(Triple("1.2.3.4", "1.2.3.4", 0))
         tests.add(Triple("1...2...3...4...", "1.2.3.4", 0))
@@ -28,7 +29,6 @@ class AppVersionComparatorTest {
             assertEquals(AppVersionComparator.compare(it.first, it.second), it.third)
             assertEquals(AppVersionComparator.compare(it.second, it.first), -1 * it.third)
 
-
             assertEquals(comparator.compare(
                     AppVersion().apply { ver = it.first },
                     AppVersion().apply { ver = it.second }), it.third)
@@ -37,8 +37,6 @@ class AppVersionComparatorTest {
                     AppVersion().apply { ver = it.first }), -1 * it.third)
 
         }
-
-
 
         assertEquals(comparator.compare(
                 AppVersion().apply {
@@ -58,7 +56,7 @@ class AppVersionComparatorTest {
                 AppVersion().apply {
                     name = ""
                     ver = ""
-                }), -1)
+                }), 0)
 
         assertEquals(comparator.compare(
                 AppVersion().apply {
