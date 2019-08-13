@@ -61,6 +61,7 @@ class UserInfoRepository private constructor() {
     fun getId() = userInfo.value?.id ?: ""
 
     fun getName() = userInfo.value?.name ?: ""
+
     fun setName(value: String) {
         if (userInfo.hasValue() && userInfo.value?.name != value) {
             userInfo.value?.let {
@@ -69,6 +70,8 @@ class UserInfoRepository private constructor() {
             }
         }
     }
+
+    
 
     fun clear() {
         userInfo.value?.let {
@@ -98,6 +101,9 @@ class UserInfo {
 
     var logined = false
 
+    var reputation = ""
+
+    var avatarUrl = ""
     fun clear() {
         logined = false
         id = ""

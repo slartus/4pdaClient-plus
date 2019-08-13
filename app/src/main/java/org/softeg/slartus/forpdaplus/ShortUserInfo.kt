@@ -31,6 +31,7 @@ import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo
 import org.softeg.slartus.forpdaplus.prefs.Preferences
+import org.softeg.slartus.forpdaplus.repositories.UserInfo
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository
 import java.io.File
 import java.io.FileNotFoundException
@@ -146,7 +147,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
                             if (userInfo.logined && !TextUtils.isEmpty(userInfo.id)) {
                                 updateAsyncTask().execute()
                             }
-                            refreshQms()
+                            refreshQms(userInfo)
                         })
     }
 
@@ -155,7 +156,14 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
     }
 
     private fun refreshQms() {
-        val qmsCount = client.qmsCount
+        UserInfoRepository.instance.userInfo.value?.let {
+            refreshQms(it)
+        }
+
+    }
+
+    private fun refreshQms(userInfo: UserInfo) {
+        val qmsCount = userInfo.qmsCount
         if (qmsCount != 0) {
             qmsMessages.text = String.format(App.getInstance().getString(R.string.new_qms_messages), qmsCount)
         } else {
@@ -196,9 +204,6 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
                     qmsMessages.visibility = View.GONE
                 }
                 client.logined!! -> {
-                    qmsMessages.visibility = View.VISIBLE
-                    loginButton.visibility = View.GONE
-
                     userNick.text = client.user
                     userRep.visibility = View.VISIBLE
                     userRep.text = String.format("%s: %s", App.getContext().getString(R.string.reputation), reputation)

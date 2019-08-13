@@ -17,9 +17,9 @@ class URIUtils {
             }
 
             var url = builder.build().toString()
-            url += "?" + params.map {
-                "${it.name}=${URLEncoder.encode(it.value,encoding)}"
-            }.joinToString("&")
+            url += "?" + params.joinToString("&") {
+                "${it.name}=${URLEncoder.encode(it.value?:"", encoding)}"
+            }
             return url
         }
 
