@@ -880,7 +880,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
 
         refreshUserMenu(menu);
         menu.findItem(R.id.tabs_item).setVisible(getPreferences().getBoolean("openTabDrawerButton", false));
-        menu.findItem(R.id.exit_item).setVisible(getPreferences().getBoolean("showedExitButton", false));
+        menu.findItem(R.id.exit_item).setVisible(getPreferences().getBoolean("showExitButton", false));
         return super.onPrepareOptionsMenu(menu);
     }
 
