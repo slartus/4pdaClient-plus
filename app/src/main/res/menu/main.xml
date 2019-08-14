@@ -18,5 +18,6 @@
         android:id="@+id/exit_item"
         android:icon="@drawable/close_white"
         android:title="@string/CloseApp"
+        android:orderInCategory="999"
         android:visible="false" />
 </menu>
