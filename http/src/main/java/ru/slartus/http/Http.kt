@@ -57,7 +57,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     }
 
     private var client: OkHttpClient
-    var cookieStore: PersistentCookieStore = PersistentCookieStore(context)
+    var cookieStore: PersistentCookieStore = PersistentCookieStore.getInstance(context)
 
     init {
         val cookieHandler = CookieManager(cookieStore, ACCEPT_ALL)

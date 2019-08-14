@@ -58,6 +58,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import ru.slartus.http.PersistentCookieStore;
+
 /**
  * User: slinkin
  * Date: 03.10.11
@@ -983,6 +985,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
     public void onStop() {
         super.onStop();
         App.resStartNotifierServices();
+        PersistentCookieStore.Companion.getInstance(App.getInstance()).reload();
     }
 
     public static PackageInfo getPackageInfo() {
