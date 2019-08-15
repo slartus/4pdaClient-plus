@@ -258,7 +258,15 @@ object QmsApi {
     }
 
 
-    fun attachFile(pathToFile: String, progress: ProgressState): EditAttach {
+    fun fromCharCode(vararg codePoints: Int): String {
+        val builder = StringBuilder(codePoints.size)
+        for (codePoint in codePoints) {
+            builder.append(Character.toChars(codePoint))
+        }
+        return builder.toString()
+    }
+
+    fun attachFile(pathToFile: String, progress: ProgressState, code:String ="check"): EditAttach {
         var nameValue = "file"
         try {
             nameValue = FileUtils.getFileNameFromUrl(pathToFile)
@@ -269,15 +277,32 @@ object QmsApi {
         val finalNameValue = nameValue
         val params = ArrayList<Pair<String, String>>()
         params.add(Pair("name", nameValue))
-        params.add(Pair("code", "check"))
+        params.add(Pair("code", code))
         params.add(Pair("relType", "MSG"))
         params.add(Pair("index", "1"))
         val (_, _, responseBody) = Http.instance.uploadFile("http://4pda.ru/forum/index.php?act=attach", nameValue,
                 pathToFile, "FILE_UPLOAD", params, CountingFileRequestBody.ProgressListener { num -> progress.update(finalNameValue, num) })
 
-        if (responseBody == "0")
-            throw NotReportException("Неудачная заливка файла")
-        val parts = responseBody!!.split("\u0002".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val body = ("" + responseBody).replace("(^\\x03|\\x03$)".toRegex(), "")
+
+        val parts = body.split(fromCharCode(2).toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+
+        val k = parts[0].toInt()
+
+        if (k == 0) {
+            Thread.sleep(1000)
+            return attachFile(pathToFile, progress,"upload")
+        }
+        val error = when (k) {
+            -1 -> " no access on server."
+            -2 -> " too big."
+            -3 -> " has invalid mime type"
+            -4 -> " is banned on server."
+            else -> null
+        }
+        if (error != null)
+            throw NotReportException(error)
+
         val id = parts[0]
         val name = parts[1]
         val ext = parts[2]
