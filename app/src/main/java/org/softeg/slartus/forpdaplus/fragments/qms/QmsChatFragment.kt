@@ -443,14 +443,6 @@ class QmsChatFragment : WebViewFragment() {
 
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item!!.itemId == android.R.id.home) {
-            onBackPressed()
-            return true
-        }
-
-        return true
-    }
 
     private fun clearNotifTimer() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(mainActivity)
@@ -640,41 +632,42 @@ class QmsChatFragment : WebViewFragment() {
         ExtUrl.showSelectActionDialog(mHandler, context!!, m_ThemeTitle, "", link, "", "", "", m_Id, m_Nick)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+            R.id.refresh_item -> {
+                reload()
+                return true
+            }
+            R.id.setting_item -> {
+                val intent = Intent(mainActivity, QmsChatPreferencesActivity::class.java)
+                mainActivity.startActivity(intent)
+                return true
+            }
+            R.id.delete_dialog_item -> {
+                deleteDialog()
+                return true
+            }
+            R.id.font_size_item -> {
+                showFontSizeDialog()
+                return true
+            }
+            R.id.profile_interlocutor_item -> {
+                showCompanionProfile()
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
-        menu!!.add(R.string.refresh)
-                .setIcon(R.drawable.refresh)
-                .setOnMenuItemClickListener { menuItem ->
-                    reload()
-                    true
-                }.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-
-        menu.add(R.string.setting)
-                .setIcon(R.drawable.settings_white)
-                .setOnMenuItemClickListener { menuItem ->
-                    val intent = Intent(mainActivity, QmsChatPreferencesActivity::class.java)
-                    mainActivity.startActivity(intent)
-                    true
-                }.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
-
-        menu.add(R.string.delete_dialog)
-                .setIcon(R.drawable.delete)
-                .setOnMenuItemClickListener { menuItem ->
-                    deleteDialog()
-                    true
-                }.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
-
-        menu.add(R.string.font_size)
-                .setOnMenuItemClickListener { menuItem ->
-                    showFontSizeDialog()
-                    true
-                }
-
-        menu.add(R.string.profile_interlocutor)
-                .setOnMenuItemClickListener { menuItem ->
-                    showCompanionProfile()
-                    true
-                }.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+        inflater?.inflate(R.menu.qms_chat, menu)
     }
 
     /*

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/refresh_item"
+        android:icon="@drawable/refresh"
+        android:title="@string/refresh"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/setting_item"
+        android:icon="@drawable/settings_white"
+        android:title="@string/setting"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/delete_dialog_item"
+        android:icon="@drawable/delete"
+        android:title="@string/delete_dialog"
+        app:showAsAction="collapseActionView" />
+
+    <item
+        android:id="@+id/font_size_item"
+        android:title="@string/font_size" />
+
+    <item
+        android:id="@+id/profile_interlocutor_item"
+        android:title="@string/profile_interlocutor"
+        app:showAsAction="never" />
+
+</menu>
