@@ -223,21 +223,25 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         return true;
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.new_thread_item:
+                QmsNewThreadFragment.showUserNewThread(getMainActivity(), m_Id, m_Nick);
+                return true;
+            case R.id.profile_interlocutor_item:
+                ProfileFragment.showProfile(m_Id, m_Nick);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add(R.string.new_thread)
-                .setIcon(R.drawable.pencil)
-                .setOnMenuItemClickListener(menuItem -> {
-                    QmsNewThreadFragment.showUserNewThread(getMainActivity(), m_Id, m_Nick);
-                    return true;
-                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-        menu.add(R.string.profile_interlocutor)
-                .setOnMenuItemClickListener(menuItem -> {
-                    ProfileFragment.showProfile(m_Id, m_Nick);
-                    return true;
-                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        if(inflater!=null)
+            inflater .inflate(R.menu.qms_contact_themes, menu);
     }
 
     private void startDeleteMode() {
