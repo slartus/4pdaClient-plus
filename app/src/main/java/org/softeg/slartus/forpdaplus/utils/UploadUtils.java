@@ -45,9 +45,7 @@ public class UploadUtils {
 
         return Http.Companion.getInstance()
                 .uploadFile(url, nameValue, pathToFile, "FILE_UPLOAD",
-                        values, num -> {
-                            progress.update("", num);
-                        }).getResponseBody();
+                        values, num -> progress.update("", num)).getResponseBody();
 
     }
 

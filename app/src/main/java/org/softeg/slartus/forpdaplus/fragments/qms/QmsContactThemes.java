@@ -190,7 +190,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
 
 
         QmsUsers qmsUsers = new QmsUsers();
-        QmsUserThemes mails = QmsApi.getQmsUserThemes(m_Id, qmsUsers,
+        QmsUserThemes mails = QmsApi.INSTANCE.getQmsUserThemes(m_Id, qmsUsers,
                 TextUtils.isEmpty(m_Nick));
         listData.getItems().addAll(mails);
         Client.getInstance().setQmsCount(qmsUsers.unreadMessageUsersCount());
@@ -209,7 +209,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
             item.setSelected(!item.isSelected());
             getAdapter().notifyDataSetChanged();
         } else {
-            QmsChatFragment.openChat(m_Id, m_Nick, item.Id, item.Title);
+            QmsChatFragment.Companion.openChat(m_Id, m_Nick, item.Id, item.Title);
             //org.softeg.slartus.forpdaplus.qms.QmsChatActivity.openChat(getMainActivity(), m_Id, m_Nick, item.Id, item.Title);
         }
 
@@ -336,7 +336,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
         protected Boolean doInBackground(String... params) {
             try {
 
-                QmsApi.deleteDialogs(Client.getInstance(), m_Id, m_Ids);
+                QmsApi.INSTANCE.deleteDialogs(Client.getInstance(), m_Id, m_Ids);
 
                 return true;
             } catch (Throwable e) {

@@ -79,7 +79,7 @@ public class QmsNotifier extends NotifierBase {
 
 
 
-            ArrayList<QmsUser> qmsUsers = QmsApi.getQmsSubscribers();
+            ArrayList<QmsUser> qmsUsers = QmsApi.INSTANCE.getQmsSubscribers();
             // Log.d(LOG_TAG, "QmsUsers.size=" + qmsUsers.size());
 
             Intent intent = new Intent(NEW_ACTION);
@@ -128,7 +128,7 @@ public class QmsNotifier extends NotifierBase {
 
 
         qmsUsers.clear();
-        QmsUserThemes qmsUserThemes = QmsApi.getQmsUserThemes(user.getId(), qmsUsers, false);
+        QmsUserThemes qmsUserThemes = QmsApi.INSTANCE.getQmsUserThemes(user.getId(), qmsUsers, false);
 
         if (qmsUsers.size() > 0 && !qmsUsers.get(0).getId().equals(user.getId())) {
             return checkUser(qmsUsers, qmsUsers.get(0));

@@ -394,7 +394,7 @@ object PostApi {
                 .compile("add_current_item\\(\\s*'(\\d+)',\\s*'([^']*)',\\s*'([^']*)',\\s*'([^']*)'\\s*\\);", Pattern.CASE_INSENSITIVE)
                 .matcher(res)
         if (m.find()) {
-            return EditAttach(m.group(1), m.group(2), m.group(3), m.group(4))
+            return EditAttach(m.group(1), m.group(2))
         }
         checkAttachError(res)
         return null
@@ -482,7 +482,7 @@ object PostApi {
                         .compile("add_current_item\\( '(\\d+)', '([^']*)', '([^']*)', '([^']*)' \\)", Pattern.CASE_INSENSITIVE)
                         .matcher(attachBody)
                 while (m.find()) {
-                    editPost.addAttach(EditAttach(m.group(1), m.group(2), m.group(3), m.group(4)))
+                    editPost.addAttach(EditAttach(m.group(1), m.group(2)))
                 }
             }
         }

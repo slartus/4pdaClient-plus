@@ -294,7 +294,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
             Matcher m = PatternExtensions.compile("4pda.ru/forum/index.php\\?act=qms&mid=(\\d+)&t=(\\d+)").matcher(url);
             if (m.find()) {
                 //QmsChatActivity.openChat(context, m.group(1), getUserNick(), m.group(2), null);
-                QmsChatFragment.openChat(m.group(1), getUserNick(), m.group(2), null);
+                QmsChatFragment.Companion.openChat(m.group(1), getUserNick(), m.group(2), null);
 
 
                 return true;

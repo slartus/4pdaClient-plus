@@ -85,7 +85,7 @@ public class QmsContactsList extends BaseLoaderListFragment {
     @Override
     protected ListData loadData(int loaderId, Bundle args) throws Throwable {
         ListData listData = new ListData();
-        ArrayList<QmsUser> users = QmsApi.getQmsSubscribers();
+        ArrayList<QmsUser> users = QmsApi.INSTANCE.getQmsSubscribers();
         listData.getItems().addAll(users);
         Client.getInstance().setQmsCount(QmsUsers.unreadMessageUsersCount(users));
         return listData;

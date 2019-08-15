@@ -362,7 +362,7 @@ public class Client implements IHttpClient {
     }
 
     private void checkMails(String pageBody) {
-        setQmsCount(QmsApi.getNewQmsCount(pageBody));
+        setQmsCount(QmsApi.INSTANCE.getNewQmsCount(pageBody));
 
     }
 

@@ -567,7 +567,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         if (!TextUtils.isEmpty(mid)) {
             if (!TextUtils.isEmpty(tid)) {
                 //QmsChatActivity.openChat(context, mid, null, tid, null);
-                QmsChatFragment.openChat(mid, null, tid, null);
+                QmsChatFragment.Companion.openChat(mid, null, tid, null);
             } else {
                 //QmsContactThemesActivity.showThemes(context, mid, "");
                 QmsContactThemes.showThemes(mid, "");

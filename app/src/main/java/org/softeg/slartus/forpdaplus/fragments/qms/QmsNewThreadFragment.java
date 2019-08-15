@@ -281,8 +281,8 @@ public class QmsNewThreadFragment extends GeneralFragment {
         protected Boolean doInBackground(String... params) {
             try {
                 outParams = new HashMap<>();
-                m_ChatBody = QmsApi.createThread(Client.getInstance(), userId, userNick, title, body,
-                        outParams, QmsChatFragment.getEncoding());
+                m_ChatBody = QmsApi.INSTANCE.createThread(Client.getInstance(), userId, userNick, title, body,
+                        outParams, QmsChatFragment.Companion.getEncoding());
 
                 return true;
             } catch (Exception e) {
@@ -304,7 +304,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
 
             if (success) {
                 getMainActivity().tryRemoveTab(getTag());
-                QmsChatFragment.openChat(outParams.get("mid"), outParams.get("user"),
+                QmsChatFragment.Companion.openChat(outParams.get("mid"), outParams.get("user"),
                         outParams.get("t"), outParams.get("title"), m_ChatBody);
             } else {
                 if (ex != null)

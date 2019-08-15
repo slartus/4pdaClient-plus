@@ -7,14 +7,10 @@ import java.io.Serializable;
 public class EditAttach implements Serializable {
     private String mId;
     private String mName;
-    private String mSize;
-    private String mType;
 
-    public EditAttach(String id, String name, String size, String type) {
+    public EditAttach(String id, String name) {
         mId = id;
         mName = name;
-        mSize = size;
-        mType = type;
     }
 
     public String getId() {

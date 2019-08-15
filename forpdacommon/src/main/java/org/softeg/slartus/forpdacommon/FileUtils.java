@@ -164,7 +164,7 @@ public class FileUtils {
     /*
     * Нормализует(уберает иллегальные символы)
      */
-    public static String normalize(String fileName) {
+    private static String normalize(String fileName) {
         for (char illegalChar : ILLEGAL_CHARACTERS) {
             fileName = fileName.replace(illegalChar, '_');
         }
@@ -175,7 +175,7 @@ public class FileUtils {
         String decodedUrl = UrlExtensions.decodeUrl(url).toString();
         int index = decodedUrl.lastIndexOf("/");
 
-        return normalize(decodedUrl.substring(index + 1, decodedUrl.length()));
+        return normalize(decodedUrl.substring(index + 1));
     }
 
     public static String getDirPath(String filePath) {
@@ -207,7 +207,7 @@ public class FileUtils {
         int ind = fileName.lastIndexOf(".");
         if (ind != -1) {
             name = fileName.substring(0, ind);
-            ext = fileName.substring(ind, fileName.length());
+            ext = fileName.substring(ind);
         }
         if (!dirPath.endsWith(File.separator))
             dirPath += File.separator;

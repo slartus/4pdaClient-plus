@@ -4,7 +4,6 @@ package ru.slartus.http
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
-import android.os.FileUtils
 import android.support.v4.util.Pair
 import android.util.Log
 import android.webkit.MimeTypeMap
@@ -12,17 +11,18 @@ import android.webkit.MimeTypeMap.getFileExtensionFromUrl
 import okhttp3.*
 import okhttp3.Headers.Companion.headersOf
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
 import okio.Buffer
 import java.io.File
 import java.io.IOException
 import java.net.CookieManager
 import java.net.CookiePolicy.ACCEPT_ALL
-import java.util.*
-import java.util.concurrent.TimeUnit
-import okhttp3.RequestBody.Companion.asRequestBody
 import java.net.HttpCookie
 import java.net.URI
 import java.nio.charset.Charset
+import java.util.*
+import java.util.concurrent.TimeUnit
+
 
 @Suppress("unused")
 /*
@@ -166,7 +166,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         }
     }
 
-    @Throws(IOException::class)
+
     @JvmOverloads
     fun performPost(url: String, values: List<Pair<String, String>> = ArrayList()): AppResponse {
         val formBuilder = FormBody.Builder(Charset.forName("windows-1251"))
@@ -197,13 +197,12 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
     }
 
-
     fun uploadFile(url: String, fileNameO: String, filePath: String, fileFormDataName: String,
                    formDataParts: List<Pair<String, String>> = emptyList(),
                    progressListener: CountingFileRequestBody.ProgressListener? = null): AppResponse {
         val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
 
-        val fileName=Translit.translit(fileNameO).replace(' ', '_')
+        val fileName = Translit.translit(fileNameO).replace(' ', '_')
         val file = File(filePath)
         val totalSize = file.length()
 
@@ -219,7 +218,10 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         } else {
             builder.addFormDataPart(fileFormDataName, fileName, file.asRequestBody(mediaType))
         }
-
+        if (!formDataParts.any { it.first?.toLowerCase() == "size" })
+            builder.addFormDataPart("size", file.length().toString())
+        if (!formDataParts.any { it.first?.toLowerCase() == "md5" })
+            builder.addFormDataPart("md5", FileUtils.calculateMD5(file))
         formDataParts.filter { it.first != null && it.second != null }.forEach {
             builder.addFormDataPart(it.first!!, it.second!!)
         }
