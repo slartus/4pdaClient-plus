@@ -4,6 +4,7 @@ package ru.slartus.http
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
+import android.os.FileUtils
 import android.support.v4.util.Pair
 import android.util.Log
 import android.webkit.MimeTypeMap
@@ -197,16 +198,16 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     }
 
 
-    fun uploadFile(url: String, fileName: String, filePath: String, fileFormDataName: String,
+    fun uploadFile(url: String, fileNameO: String, filePath: String, fileFormDataName: String,
                    formDataParts: List<Pair<String, String>> = emptyList(),
                    progressListener: CountingFileRequestBody.ProgressListener? = null): AppResponse {
         val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
 
-
+        val fileName=Translit.translit(fileNameO).replace(' ', '_')
         val file = File(filePath)
         val totalSize = file.length()
 
-        val mediaType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(getFileExtensionFromUrl(file.toString()))?.toMediaTypeOrNull()
+        val mediaType = "text/plain".toMediaTypeOrNull()
 
 
         if (progressListener != null) {
