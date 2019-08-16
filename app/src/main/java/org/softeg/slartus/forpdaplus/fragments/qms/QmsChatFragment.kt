@@ -111,7 +111,7 @@ class QmsChatFragment : WebViewFragment() {
         return false
     }
 
-    @SuppressLint("AddJavascriptInterface")
+    @SuppressLint("AddJavascriptInterface", "JavascriptInterface")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         view = inflater.inflate(R.layout.qms_chat, container, false)
@@ -151,27 +151,24 @@ class QmsChatFragment : WebViewFragment() {
 
 
         wvChat = findViewById(R.id.wvChat) as AdvWebView
-        registerForContextMenu(wvChat!!)
+        registerForContextMenu(wvChat)
+        wvChat?.apply {
+            settings.domStorageEnabled = true
+            settings.setAppCacheMaxSize((1024 * 1024 * 8).toLong())
+            settings.setAppCachePath(mainActivity.applicationContext.cacheDir.absolutePath)
+            settings.setAppCacheEnabled(true)
+            settings.allowFileAccess = true
+            settings.cacheMode = WebSettings.LOAD_DEFAULT
 
+            settings.defaultFontSize = Preferences.Topic.getFontSize()
+        }
+        wvChat?.addJavascriptInterface(this, "HTMLOUT")
 
-        wvChat!!.settings.domStorageEnabled = true
-        wvChat!!.settings.setAppCacheMaxSize((1024 * 1024 * 8).toLong())
-        val appCachePath = mainActivity.applicationContext.cacheDir.absolutePath
-        wvChat!!.settings.setAppCachePath(appCachePath)
-        wvChat!!.settings.setAppCacheEnabled(true)
-
-        wvChat!!.settings.allowFileAccess = true
-
-        wvChat!!.settings.cacheMode = WebSettings.LOAD_DEFAULT
-
-        wvChat!!.addJavascriptInterface(this, "HTMLOUT")
-        wvChat!!.settings.defaultFontSize = Preferences.Topic.getFontSize()
-        val m_WebViewExternals = WebViewExternals(this)
-        m_WebViewExternals.loadPreferences(App.getInstance().preferences)
-
-        m_WebViewExternals.setWebViewSettings(true)
-
-        wvChat!!.webViewClient = MyWebViewClient()
+        WebViewExternals(this).apply {
+            loadPreferences(App.getInstance().preferences)
+            setWebViewSettings(true)
+        }
+        wvChat?.webViewClient = MyWebViewClient()
         val extras = arguments!!
 
         m_Id = extras.getString(MID_KEY)
@@ -179,18 +176,14 @@ class QmsChatFragment : WebViewFragment() {
         m_TId = extras.getString(TID_KEY)
         m_ThemeTitle = extras.getString(THEME_TITLE_KEY)
 
-
-        val m_PageBody = arrayOf(extras.getString(PAGE_BODY_KEY))
-        if (TextUtils.isEmpty(m_Nick))
-            title = "QMS"
-        else
-            title = m_ThemeTitle
+        val pageBody    = arrayOf(extras.getString(PAGE_BODY_KEY))
+        title = if (TextUtils.isEmpty(m_Nick)) "QMS" else m_ThemeTitle
         if (supportActionBar != null)
             setSubtitle(m_Nick)
-        if (!TextUtils.isEmpty(m_PageBody[0])) {
-            m_LastBodyLength = m_PageBody[0].length.toLong()
+        if (!TextUtils.isEmpty(pageBody[0])) {
+            m_LastBodyLength = pageBody[0].length.toLong()
             Thread {
-                val body = transformChatBody(m_PageBody[0])
+                val body = transformChatBody(pageBody[0])
 
                 mHandler.post { wvChat!!.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null) }
             }.start()

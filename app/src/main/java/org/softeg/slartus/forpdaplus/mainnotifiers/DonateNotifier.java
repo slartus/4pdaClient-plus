@@ -48,7 +48,7 @@ public class DonateNotifier extends MainNotifier {
 
     private boolean needShow() {
         SharedPreferences prefs = App.getInstance().getPreferences();
-        String appVersion = getAppVersion(App.getContext());
+        String appVersion = getAppVersion();
         if (appVersion.toLowerCase().contains("beta")) return false;
 
         if (prefs.getString("DonateShowVer", "").equals(appVersion)) {
@@ -60,6 +60,6 @@ public class DonateNotifier extends MainNotifier {
 
     private void saveSettings() {
         saveTime();
-        App.getInstance().getPreferences().edit().putString("DonateShowVer", getAppVersion(App.getContext())).apply();
+        App.getInstance().getPreferences().edit().putString("DonateShowVer", getAppVersion()).apply();
     }
 }

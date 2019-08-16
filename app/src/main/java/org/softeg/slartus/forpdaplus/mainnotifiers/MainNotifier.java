@@ -1,9 +1,6 @@
 package org.softeg.slartus.forpdaplus.mainnotifiers;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -11,7 +8,6 @@ import org.softeg.slartus.forpdacommon.DateExtensions;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.BuildConfig;
-import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -22,9 +18,9 @@ import java.util.GregorianCalendar;
 public abstract class MainNotifier {
     private NotifiersManager notifiersManager;
     protected String name;
-    int period;
+    private int period;
 
-    protected static String getAppVersion(Context context) {
+    protected static String getAppVersion() {
         return BuildConfig.VERSION_NAME;
     }
 

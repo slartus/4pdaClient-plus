@@ -59,7 +59,6 @@ import org.softeg.slartus.forpdaplus.mainnotifiers.DonateNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.repositories.UserInfo;
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
@@ -280,7 +279,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
 
             searchSettings = SearchSettingsDialogFragment.createDefaultSearchSettings();
 
-            NotifiersManager notifiersManager = new NotifiersManager(this);
+            NotifiersManager notifiersManager = new NotifiersManager();
             new DonateNotifier(notifiersManager).start(this);
             //new TopicAttentionNotifier(notifiersManager).start(this);
             new ForPdaVersionNotifier(notifiersManager, 1, false).start(this);
