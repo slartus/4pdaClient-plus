@@ -259,7 +259,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
         }
 
         private void checkUpdates() {
-            NotifiersManager notifiersManager = new NotifiersManager(getActivity());
+            NotifiersManager notifiersManager = new NotifiersManager();
             new ForPdaVersionNotifier(notifiersManager, 0, true).start(getActivity());
         }
 

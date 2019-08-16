@@ -44,7 +44,7 @@ class ForPdaVersionNotifier(
     private fun checkVersionFromGithub(context: Context) {
         val handler = Handler()
         Thread {
-            var currentVersion = getAppVersion(App.getContext())
+            var currentVersion = getAppVersion()
             currentVersion = currentVersion.trim { it <= ' ' }
             val link = "https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/updateinfo.json"
             try {
