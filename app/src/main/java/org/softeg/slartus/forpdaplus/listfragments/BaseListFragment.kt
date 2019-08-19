@@ -117,6 +117,7 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { userInfo ->
+                        setLoading(false)
                         if (userInfo.logined)
                             loadData(true)
                     })
