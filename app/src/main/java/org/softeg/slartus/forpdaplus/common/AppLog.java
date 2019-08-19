@@ -20,6 +20,8 @@ import java.net.ConnectException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
+import ru.slartus.http.HttpException;
+
 public final class AppLog {
 
     private static final String TAG = "AppLog";
@@ -111,6 +113,8 @@ public final class AppLog {
         if (isTimeOutException(ex))
             return App.getContext().getString(R.string.exceeded_timeout);
         if (isException(ex, ConnectException.class))
+            return ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : ex.getMessage();
+        if (isException(ex, HttpException.class))
             return ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : ex.getMessage();
         if (isException(ex, SocketException.class))
             return App.getContext().getString(R.string.connection_lost);
