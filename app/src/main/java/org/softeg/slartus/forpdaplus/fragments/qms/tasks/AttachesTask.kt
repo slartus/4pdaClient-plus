@@ -21,7 +21,7 @@ class AttachesTask internal constructor(qmsChatFragment: QmsChatFragment,
                                         private val attachFilePaths: List<String>) : AsyncTask<String, Pair<String, Long>, Boolean>() {
     private val dialog: MaterialDialog = MaterialDialog.Builder(qmsChatFragment.context!!)
             .progress(true, 0)
-            .content(R.string.deleting_messages)
+            .content(R.string.sending_file)
             .build()
     private val qmsChatFragment = WeakReference(qmsChatFragment)
     private var progressState: ProgressState = object : ProgressState() {

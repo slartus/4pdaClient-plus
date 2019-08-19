@@ -19,7 +19,7 @@ class DeleteDialogTask internal constructor(qmsChatFragment: QmsChatFragment,
 
     private val dialog: MaterialDialog = MaterialDialog.Builder(qmsChatFragment.context!!)
             .progress(true, 0)
-            .content(R.string.deleting_messages)
+            .content(R.string.deleting_dialogs)
             .build()
     private val qmsChatFragment = WeakReference(qmsChatFragment)
     private var ex: Throwable? = null
