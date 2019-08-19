@@ -13,21 +13,20 @@ import java.security.NoSuchAlgorithmException;
 
 public class FileUtils {
     private static final String TAG = "MD5";
-    public static String calculateMD5(File updateFile) {
+    public static String calculateMD5(File updateFile) throws Exception {
         MessageDigest digest;
         try {
             digest = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
-            Log.e(TAG, "Exception while getting digest", e);
-            return null;
+            throw new Exception("Exception while getting digest", e);
+
         }
 
         InputStream is;
         try {
             is = new FileInputStream(updateFile);
         } catch (FileNotFoundException e) {
-            Log.e(TAG, "Exception while getting FileInputStream", e);
-            return null;
+            throw new Exception("Exception while getting FileInputStream", e);
         }
 
         byte[] buffer = new byte[8192];
