@@ -108,6 +108,13 @@ public class QmsContactThemes extends BaseLoaderListFragment {
                 new GetUserTask(m_Id).execute();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(MID_KEY, m_Id);
+        outState.putString(NICK_KEY, m_Nick);
+    }
+
     private class GetUserTask extends AsyncTask<String, Void, Boolean> {
         private String userId;
         private String userNick;
