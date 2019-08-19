@@ -205,7 +205,8 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         val fileName = Translit.translit(fileNameO).replace(' ', '_')
         val file = File(filePath)
         val totalSize = file.length()
-
+        if (totalSize == 0L)
+            throw HttpException("File is empty")
         val mediaType = "text/plain".toMediaTypeOrNull()
 
 
