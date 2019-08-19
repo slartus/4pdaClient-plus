@@ -16,6 +16,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.Exceptions.MessageInfoException;
 import org.softeg.slartus.forpdaplus.classes.ShowInBrowserDialog;
 
+import java.net.ConnectException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
@@ -32,11 +33,11 @@ public final class AppLog {
     }
 
     public static void toastE(Context context, Throwable ex) {
-        String message=ex.getLocalizedMessage();
-        if(TextUtils.isEmpty(message))
-            message=ex.getMessage();
-        if(TextUtils.isEmpty(message))
-            message=ex.toString();
+        String message = ex.getLocalizedMessage();
+        if (TextUtils.isEmpty(message))
+            message = ex.getMessage();
+        if (TextUtils.isEmpty(message))
+            message = ex.toString();
         android.util.Log.e(TAG, ex.toString());
         try {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
@@ -109,7 +110,8 @@ public final class AppLog {
             return App.getContext().getString(R.string.server_not_available_or_not_respond);
         if (isTimeOutException(ex))
             return App.getContext().getString(R.string.exceeded_timeout);
-
+        if (isException(ex, ConnectException.class))
+            return ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : ex.getMessage();
         if (isException(ex, SocketException.class))
             return App.getContext().getString(R.string.connection_lost);
         return defaultValue;
