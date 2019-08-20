@@ -2,8 +2,8 @@ package org.softeg.slartus.forpdaplus.listfragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,6 +27,8 @@ import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import ru.slartus.http.Http;
 
 /*
  * Created by slinkin on 03.03.14.
@@ -112,16 +114,16 @@ public class ForumTopicsListFragment extends TopicsListFragment {
             qparams.add(new BasicNameValuePair("st", Integer.toString(listInfo.getFrom())));
 
 
-            String uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
+            mUrl = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
                     qparams, "UTF-8");
-            mUrl = uri.toString();
         } else {
             mUrl = mUrl.replaceAll("&st=\\d+", "").concat("&st=" + mListInfo.getFrom());
         }
-        ArrayList<Topic> res = TopicsApi.getForumTopics(client, mUrl, getForumId(),
+        Pair<String, ArrayList<Topic>> response = TopicsApi.getForumTopics(mUrl, getForumId(),
                 prefs.getBoolean(getListName() + ".unread_in_top", false),
                 mListInfo);
-        mUrl = Client.getInstance().getRedirectUri() != null ? Client.getInstance().getRedirectUri().toString() : mUrl;
+        ArrayList<Topic> res = response.second;
+        mUrl = response.first;
         return res;
     }
 
@@ -145,7 +147,7 @@ public class ForumTopicsListFragment extends TopicsListFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==R.id.filter_and_ordering_item){
+        if (item.getItemId() == R.id.filter_and_ordering_item) {
             Intent settingsActivity = new Intent(
                     getContext(), ForumTopicsPreferencesActivity.class);
             settingsActivity.putExtra("listname", getListName());
@@ -165,8 +167,8 @@ public class ForumTopicsListFragment extends TopicsListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if(inflater!=null)
-            inflater.inflate(R.menu.forum_topics,menu);
+        if (inflater != null)
+            inflater.inflate(R.menu.forum_topics, menu);
 
     }
 }

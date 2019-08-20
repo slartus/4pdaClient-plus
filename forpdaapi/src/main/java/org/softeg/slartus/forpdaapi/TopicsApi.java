@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaapi;
 
 import android.net.Uri;
+import android.support.v4.util.Pair;
 import android.text.Html;
 import android.text.TextUtils;
 
@@ -25,6 +26,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ru.slartus.http.AppResponse;
+import ru.slartus.http.Http;
+
 /*
  * Created by slinkin on 20.02.14.
  */
@@ -36,8 +40,8 @@ public class TopicsApi {
     private final static Pattern topicPattern = PatternExtensions.compile("<div data-item-fid=\"(\\d*)\" data-item-track=\"(\\w*)\" data-item-pin=\"(\\d)\"[\\s\\S]*?<a href=\"([^\"]*?)\"[^>]*>(<strong>|)([\\s\\S]*?)(<\\/strong>|)<\\/a>[\\s\\S]*?<span class=\"topic_desc\">([\\s\\S]*?)(<[\\s\\S]*?showforum=(\\d*?)\"[\\s\\S]*?)<a href=\"[^\"]*view=getlastpost[^\"]*\">Послед.:<\\/a>\\s*<a href=\"[^\"]*?\\/forum\\/index.php\\?showuser=\\d+\">(.*?)<\\/a>(.*?)<");
 
     public static ArrayList<FavTopic> getFavTopics(
-                                                   ListInfo listInfo) throws IOException {
-        return getFavTopics( null, null, null, null, false, false, listInfo);
+            ListInfo listInfo) throws IOException {
+        return getFavTopics(null, null, null, null, false, false, listInfo);
     }
 
     public static ArrayList<FavTopic> getFavTopics(String sortKey,
@@ -64,7 +68,7 @@ public class TopicsApi {
         String uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
                 qparams, "UTF-8");
 
-        String pageBody = HttpHelper.performGet(uri.toString());
+        String pageBody = HttpHelper.performGet(uri);
 
         Matcher m = countPattern.matcher(pageBody);
         if (m.find()) {
@@ -152,15 +156,16 @@ public class TopicsApi {
         return res;
     }
 
-    public static ArrayList<Topic> getForumTopics(IHttpClient client,
-                                                  String url,
-                                                  String forumId,
+    public static Pair<String, ArrayList<Topic>> getForumTopics(String url,
+                                                                String forumId,
 
-                                                  Boolean unreadInTop,
-                                                  ListInfo listInfo) throws IOException {
+                                                                Boolean unreadInTop,
+                                                                ListInfo listInfo) throws IOException {
 
-        String pageBody = client.performGetFullVersion(url);
-
+        AppResponse appResponse = Http.Companion.getInstance().performGetFull(url);
+        String pageBody = appResponse.getResponseBody();
+        if (pageBody == null)
+            pageBody = "";
         ArrayList<Topic> res = new ArrayList<>();
 
         if ((HttpHelper.getRedirectUri() != null && HttpHelper.getRedirectUri().toString().toLowerCase().contains("act=search"))
@@ -233,7 +238,7 @@ public class TopicsApi {
                 throw new NotReportException(Html.fromHtml(m.group(1)).toString(), new Exception(Html.fromHtml(m.group(1)).toString()));
             }
         }
-        return res;
+        return new Pair<>(appResponse.redirectUrlElseRequestUrl(), res);
     }
 
 }

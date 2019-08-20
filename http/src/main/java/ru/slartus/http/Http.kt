@@ -102,13 +102,16 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
     fun response(url: String) = response(url, false)
     private fun response(url: String, desktopVersion: Boolean = false): Response {
-        val request = Request.Builder()
-                .headers(buildRequestHeaders(if (desktopVersion) FULL_USER_AGENT else userAgent))
-                .url(prepareUrl(url))
-                .build()
+
         try {
             if (desktopVersion)
                 setCookieDeskVer(true)
+
+            val request = Request.Builder()
+                    .headers(buildRequestHeaders(if (desktopVersion) FULL_USER_AGENT else userAgent))
+                    .url(prepareUrl(url))
+                    .build()
+
             return client.newCall(request).execute()
         } finally {
             if (desktopVersion)

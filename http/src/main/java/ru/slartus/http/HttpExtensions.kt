@@ -4,7 +4,7 @@ import okhttp3.*
 import java.io.File
 
 
-fun File.asRequestBody(contentType: MediaType? = null) = RequestBody.create(contentType, this)
+fun File.asRequestBody(contentType: MediaType? = null): RequestBody = RequestBody.create(contentType, this)
 
 fun String.toMediaTypeOrNull(): MediaType? {
     return try {

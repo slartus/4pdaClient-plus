@@ -116,7 +116,7 @@ class PersistentCookieStore private constructor(context: Context) : CookieStore 
         loadAllFromPersistence()
     }
 
-    fun reload(){
+    fun reload() {
         sharedPreferences.reload()
         loadAllFromPersistence()
     }
