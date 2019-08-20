@@ -133,6 +133,12 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         return AppResponse(url, response.request.url.toString(), body)
     }
 
+    fun performGetRedirectUrlElseRequestUrl(url: String): String {
+        val response = response(url)
+        val redirectUrl=response.request.url.toString()
+        return if (redirectUrl.isEmpty()) url else redirectUrl
+    }
+
     fun performGetFull(url: String): AppResponse {
         val response = response(url, true)
         val body = response.body?.string()

@@ -212,7 +212,6 @@ public class DownloadsService extends IntentService {
         String url = downloadTask.getUrl();
 
 
-
         try {
             url = FileUtils.getDirPath(url) + "/" + URLEncoder.encode(FileUtils.getFileNameFromUrl(url));
             String fileName = TextUtils.isEmpty(tempFilePath) ? FileUtils.getFileNameFromUrl(url) : FileUtils.getFileNameFromUrl(tempFilePath.replace("_download", ""));
@@ -338,8 +337,8 @@ public class DownloadsService extends IntentService {
         protected Uri doInBackground(String... params) {
             try {
                 String url = params[0];
-                AppResponse appResponse = Http.Companion.getInstance().performGet(url);
-                return Uri.parse(appResponse.redirectUrlElseRequestUrl());
+                String fileUrl = Http.Companion.getInstance().performGetRedirectUrlElseRequestUrl(url);
+                return Uri.parse(fileUrl);
             } catch (Throwable e) {
                 ex = e;
                 return null;
