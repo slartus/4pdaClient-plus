@@ -9,9 +9,6 @@ import android.util.Log
 import android.webkit.MimeTypeMap
 import android.webkit.MimeTypeMap.getFileExtensionFromUrl
 import okhttp3.*
-import okhttp3.Headers.Companion.headersOf
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.asRequestBody
 import okio.Buffer
 import java.io.File
 import java.io.IOException
@@ -211,7 +208,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
 
         if (progressListener != null) {
-            builder.addPart(headersOf("Content-Disposition", "form-data; name=\"$fileFormDataName\"; filename=\"$fileName\""),
+            builder.addPart(Headers.of("Content-Disposition", "form-data; name=\"$fileFormDataName\"; filename=\"$fileName\""),
                     CountingFileRequestBody(file, mediaType) { num ->
                         val progress = num.toFloat() / totalSize.toFloat() * 100.0
                         progressListener.transferred(progress.toLong())

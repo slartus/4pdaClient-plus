@@ -25,6 +25,7 @@ import org.softeg.slartus.forpdaplus.download.DownloadsService
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 import kotlin.math.max
 
+
 class ForPdaVersionNotifier(
         notifiersManager: NotifiersManager,
         period: Int,
@@ -54,7 +55,7 @@ class ForPdaVersionNotifier(
                         .cacheControl(CacheControl.FORCE_NETWORK)// не исопльуем кеширование
                         .build()
 
-                val responseBody = client.newCall(request).execute().body?.string()
+                val responseBody = client.newCall(request).execute().body()?.string()
 
                 val updateInfo = Gson().fromJson(responseBody, UpdateInfo::class.java)
 

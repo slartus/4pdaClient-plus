@@ -31,7 +31,7 @@ ext {
     targetSdk = 23
     minSdk = 15
 
-    okhttp3 = "4.0.1"
+    okhttp3 = "3.12.3"// увеличивать нельзя!!
     jsoup="1.11.2"
     rxjava2="2.1.1"
 

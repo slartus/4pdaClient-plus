@@ -252,24 +252,29 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
     }
 
     private fun blur(bkg: Bitmap?, view: ImageView, url: String) {
-        var bkg = bkg
-        bkg = Bitmap.createScaledBitmap(bkg!!, view.width, view.height, false)
+        try {
+            var bkg = bkg
+            bkg = Bitmap.createScaledBitmap(bkg!!, view.width, view.height, false)
 
-        val scaleFactor = 3f
-        val radius = 64
+            val scaleFactor = 3f
+            val radius = 64
 
-        var overlay: Bitmap? = Bitmap.createBitmap((view.width / scaleFactor).toInt(),
-                (view.height / scaleFactor).toInt(), Bitmap.Config.RGB_565)
-        val canvas = Canvas(overlay!!)
-        canvas.translate(-view.left / scaleFactor, -view.top / scaleFactor)
-        canvas.scale(1 / scaleFactor, 1 / scaleFactor)
-        val paint = Paint()
-        paint.flags = Paint.FILTER_BITMAP_FLAG
-        canvas.drawBitmap(bkg!!, 0f, 0f, paint)
+            var overlay: Bitmap? = Bitmap.createBitmap((view.width / scaleFactor).toInt(),
+                    (view.height / scaleFactor).toInt(), Bitmap.Config.RGB_565)
+            val canvas = Canvas(overlay!!)
+            canvas.translate(-view.left / scaleFactor, -view.top / scaleFactor)
+            canvas.scale(1 / scaleFactor, 1 / scaleFactor)
+            val paint = Paint()
+            paint.flags = Paint.FILTER_BITMAP_FLAG
+            canvas.drawBitmap(bkg!!, 0f, 0f, paint)
 
-        overlay = FastBlur.doBlur(overlay, radius, true)
-        view.setImageBitmap(overlay)
-        storeImage(overlay, url)
+            overlay = FastBlur.doBlur(overlay, radius, true)
+            view.setImageBitmap(overlay)
+            storeImage(overlay, url)
+        }catch (ex:Throwable){
+            ex.printStackTrace()
+        }
+
     }
 
     private fun storeImage(image: Bitmap?, url: String) {
