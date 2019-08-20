@@ -1,14 +1,16 @@
 package org.softeg.slartus.forpdaapi.post
 
+import android.support.v4.util.Pair
 import android.text.Html
 import android.text.TextUtils
-
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.softeg.slartus.forpdaapi.IHttpClient
 import org.softeg.slartus.forpdaapi.ProgressState
 import org.softeg.slartus.forpdacommon.BasicNameValuePair
 import org.softeg.slartus.forpdacommon.NotReportException
+import ru.slartus.http.AppResponse
+import ru.slartus.http.Http
 import java.io.IOException
 import java.util.*
 import java.util.regex.Pattern
@@ -125,7 +127,7 @@ object PostApi {
      */
     @Throws(IOException::class)
     fun reply(httpClient: IHttpClient, forumId: String, topicId: String, authKey: String, attachPostKey: String?, post: String,
-              enablesig: Boolean?, enableemo: Boolean?, addedFileList: String?, quick: Boolean): String {
+              enablesig: Boolean?, enableemo: Boolean?, addedFileList: String?, quick: Boolean): AppResponse {
 
         val additionalHeaders = HashMap<String, String>()
         if (!quick) {
@@ -144,7 +146,7 @@ object PostApi {
         }
 
 
-        return quickReply(httpClient, additionalHeaders, forumId, topicId, authKey, attachPostKey, post,
+        return quickReply(additionalHeaders, forumId, topicId, authKey, attachPostKey, post,
                 enablesig, enableemo)
 
     }
@@ -153,9 +155,9 @@ object PostApi {
      * Быстрый ответ
      */
     @Throws(IOException::class)
-    fun quickReply(httpClient: IHttpClient, additionalHeaders: MutableMap<String, String>, forumId: String,
+    fun quickReply(additionalHeaders: MutableMap<String, String>, forumId: String,
                    topicId: String, authKey: String, attachPostKey: String?, post: String,
-                   enablesig: Boolean?, enableemo: Boolean?): String {
+                   enablesig: Boolean?, enableemo: Boolean?): AppResponse {
 
         additionalHeaders["act"] = "Post"
         additionalHeaders["CODE"] = "03"
@@ -175,22 +177,24 @@ object PostApi {
 
         // additionalHeaders.put("referer", "http://4pda.ru/forum/index.php?act=Post&CODE=03&f=" + forumId + "&t=" + topicId + "&st=20&auth_key=" + authKey + "&fast_reply_used=1");
 
-        return httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders)
-
-
+        val listParams = ArrayList<Pair<String, String>>()
+        for (key in additionalHeaders.keys) {
+            listParams.add(Pair(key, additionalHeaders[key]))
+        }
+        return Http.instance.performPost("http://4pda.ru/forum/index.php", listParams)
     }
 
-    fun checkPostErrors(page: String): String? {
+    fun checkPostErrors(page: String?): String? {
         var checkPattern = Pattern.compile("\t\t<h4>Причина:</h4>\n" +
                 "\n" +
                 "\t\t<p>(.*?)</p>", Pattern.MULTILINE)
-        var m = checkPattern.matcher(page)
+        var m = checkPattern.matcher(page?:"")
         if (m.find()) {
             return m.group(1)
         }
 
         checkPattern = Pattern.compile("<div class=\".*?\">(<b>)?ОБНАРУЖЕНЫ СЛЕДУЮЩИЕ ОШИБКИ(</b>)?</div>\n" + "\\s*<div class=\".*?\">(.*?)</div>", Pattern.MULTILINE)
-        m = checkPattern.matcher(page)
+        m = checkPattern.matcher(page?:"")
         return if (m.find()) {
             Html.fromHtml(m.group(3)).toString()
         } else null

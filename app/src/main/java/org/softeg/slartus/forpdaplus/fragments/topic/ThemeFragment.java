@@ -287,7 +287,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 hideMessagePanel();
                 if (Client.getInstance().getRedirectUri() == null)
                     Log.e("ThemeActivity", "redirect is null");
-                m_LastUrl = Client.getInstance().getRedirectUri() == null ? Client.getInstance().getLastUrl() : Client.getInstance().getRedirectUri().toString();
+                m_LastUrl = postResult.Response.redirectUrlElseRequestUrl();
                 m_Topic = postResult.ExtTopic;
                 m_Topic.setLastUrl(m_LastUrl);
 
@@ -300,10 +300,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 if (postResult.Exception != null)
                     AppLog.e(getMainActivity(), postResult.Exception, () -> mQuickPostFragment.post());
                 else if (!TextUtils.isEmpty(postResult.ForumErrorMessage))
-                    new MaterialDialog.Builder(getContext())
-                            .title(R.string.forum_msg)
-                            .content(postResult.ForumErrorMessage)
-                            .show();
+                    if (getContext() != null)
+                        new MaterialDialog.Builder(getContext())
+                                .title(R.string.forum_msg)
+                                .content(postResult.ForumErrorMessage)
+                                .show();
             }
         });
 

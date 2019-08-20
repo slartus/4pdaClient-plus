@@ -56,6 +56,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ru.slartus.http.AppResponse;
 import ru.slartus.http.Http;
 
 /**
@@ -280,13 +281,13 @@ public class Client implements IHttpClient {
         return m_LoginFailedReason == null ? null : m_LoginFailedReason.toString();
     }
 
-    public String reply(String forumId, String themeId, String authKey, String post,
-                        Boolean enablesig, Boolean enableemo, Boolean quick, String addedFileList) throws IOException {
+    public AppResponse reply(String forumId, String themeId, String authKey, String post,
+                             Boolean enablesig, Boolean enableemo, Boolean quick, String addedFileList) throws IOException {
         return reply(forumId, themeId, authKey, null, post,
                 enablesig, enableemo, quick, addedFileList);
     }
 
-    private String reply(String forumId, String themeId, String authKey, String attachPostKey, String post,
+    private AppResponse reply(String forumId, String themeId, String authKey, String attachPostKey, String post,
                          Boolean enablesig, Boolean enableemo, Boolean quick, String addedFileList) throws IOException {
         return PostApi.INSTANCE.reply(this, forumId, themeId, authKey, attachPostKey, post,
                 enablesig, enableemo, addedFileList, quick);

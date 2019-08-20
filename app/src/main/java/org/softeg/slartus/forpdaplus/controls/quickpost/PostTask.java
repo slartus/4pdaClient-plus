@@ -14,6 +14,8 @@ import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
+import ru.slartus.http.AppResponse;
+
 /**
  * Created by slartus on 23.02.14.
  */
@@ -24,7 +26,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
         public String ForumErrorMessage;
         public Throwable Exception;
         public String TopicBody;
-        public String PostResultBody;// страница результата
+        public AppResponse Response;// страница результата
     }
 
     private final MaterialDialog dialog;
@@ -36,10 +38,10 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
     private String mAuthKey;
     private Boolean mEnableEmotics;
     private Boolean mEnableSign;
-    protected PostResult mPostResult;
+    PostResult mPostResult;
 
-    public PostTask(Context context, String post, String forumId, String topicId, String authKey,
-                    Boolean enableEmotics, Boolean enableSign) {
+    PostTask(Context context, String post, String forumId, String topicId, String authKey,
+             Boolean enableEmotics, Boolean enableSign) {
         mPost = post;
         mForumId = forumId;
         mTopicId = topicId;
@@ -59,9 +61,10 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
     protected Boolean doInBackground(String... params) {
         try {
             mPostResult = new PostResult();
-            mPostResult.PostResultBody = Client.getInstance().reply(mForumId, mTopicId, mAuthKey,
+
+            mPostResult.Response =Client.getInstance().reply(mForumId, mTopicId, mAuthKey,
                     mPost, mEnableSign, mEnableEmotics, true, null);
-            mPostResult.ForumErrorMessage = PostApi.INSTANCE.checkPostErrors(mPostResult.PostResultBody);
+            mPostResult.ForumErrorMessage = PostApi.INSTANCE.checkPostErrors(mPostResult.Response.getResponseBody());
 
             if (!TextUtils.isEmpty(mPostResult.ForumErrorMessage))
                 return false;
@@ -70,9 +73,9 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
             String lastUrl = Client.getInstance().getRedirectUri() == null ?
                     ("http://4pda.ru/forum/index.php?showtopic=" + mTopicId + "&view=getnewpost")
                     : Client.getInstance().getRedirectUri().toString();
-            TopicBodyBuilder topicBodyBuilder = Client.getInstance().parseTopic(mPostResult.PostResultBody, App.getInstance(), lastUrl,
+            TopicBodyBuilder topicBodyBuilder = Client.getInstance().parseTopic(mPostResult.Response.getResponseBody(), App.getInstance(), lastUrl,
                     Preferences.Topic.getSpoilFirstPost());
-            mPostResult.PostResultBody = null;
+            mPostResult.Response.setResponseBody(null);
 
             mPostResult.ExtTopic = topicBodyBuilder.getTopic();
             mPostResult.TopicBody = topicBodyBuilder.getBody();

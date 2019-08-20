@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -123,38 +124,24 @@ public class QuickPostFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {
+    public View onCreateView(@NotNull android.view.LayoutInflater inflater, android.view.ViewGroup container, android.os.Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.quick_post_fragment, null);
         assert v != null;
 
 
-        final ImageButton send_button = (ImageButton) v.findViewById(R.id.send_button);
+        final ImageButton send_button = v.findViewById(R.id.send_button);
 
-        send_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startPost();
-            }
-        });
-        send_button.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                hideKeyboard();
-                EditPostFragment.Companion.newPost(getActivity(), mForumId, mTopicId, mAuthKey,
-                        getPostBody(), parentTag);
-                LogUtil.D("QUICK BOOM", "key " + mAuthKey);
-                return true;
-            }
+        send_button.setOnClickListener(view -> startPost());
+        send_button.setOnLongClickListener(view -> {
+            hideKeyboard();
+            EditPostFragment.Companion.newPost(getActivity(), mForumId, mTopicId, mAuthKey,
+                    getPostBody(), parentTag);
+            LogUtil.D("QUICK BOOM", "key " + mAuthKey);
+            return true;
         });
 
-        mPostEditText = (EditText) v.findViewById(R.id.post_text);
-        mPostEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                return false;
-            }
-        });
+        mPostEditText = v.findViewById(R.id.post_text);
+        mPostEditText.setOnEditorActionListener((v1, actionId, event) -> false);
         mPostEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -177,7 +164,7 @@ public class QuickPostFragment extends Fragment {
             }
         });
 
-        ImageButton advanced_button = (ImageButton) v.findViewById(R.id.advanced_button);
+        ImageButton advanced_button = v.findViewById(R.id.advanced_button);
         mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_ALL);
         mPopupPanelView.createView(inflater, advanced_button, mPostEditText);
         mPopupPanelView.activityCreated(getActivity(), v);
@@ -197,18 +184,15 @@ public class QuickPostFragment extends Fragment {
             LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.send_post_confirm_dialog, null);
             assert view != null;
-            final CheckBox checkBox = (CheckBox) view.findViewById(R.id.chkConfirmationSend);
+            final CheckBox checkBox = view.findViewById(R.id.chkConfirmationSend);
             new MaterialDialog.Builder(getActivity())
                     .title(R.string.confirm_action)
                     .customView(view,true)
                     .positiveText(R.string.send)
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            if (!checkBox.isChecked())
-                                Preferences.Topic.setConfirmSend(false);
-                            post();
-                        }
+                    .onPositive((dialog, which) -> {
+                        if (!checkBox.isChecked())
+                            Preferences.Topic.setConfirmSend(false);
+                        post();
                     })
                     .negativeText(R.string.cancel)
                     .show();
@@ -258,7 +242,7 @@ public class QuickPostFragment extends Fragment {
 
     private class InnerPostTask extends PostTask {
 
-        public InnerPostTask(Context context, String post, String forumId, String topicId, String authKey, Boolean enableEmotics, Boolean enableSign) {
+        InnerPostTask(Context context, String post, String forumId, String topicId, String authKey, Boolean enableEmotics, Boolean enableSign) {
             super(context, post, forumId, topicId, authKey, enableEmotics, enableSign);
         }
 
