@@ -194,7 +194,7 @@ public class ThemeQuoteEditor extends DialogFragment implements View.OnClickList
             try {
 
 
-                String page = Client.getInstance().performGet(m_QuoteUrl);
+                String page = Client.getInstance().performGet(m_QuoteUrl).getResponseBody();
                 Matcher m = Pattern.compile("<textarea name=\"post\"[^>]*>([\\s\\S]*?)</textarea>",Pattern.CASE_INSENSITIVE)
                         .matcher(page);
                 if (m.find()) {

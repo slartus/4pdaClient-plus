@@ -61,7 +61,7 @@ public class AppsGamesCatalogApi {
     public static class Apps {
 
         private static void loadCatalog(IHttpClient client, AppGameCatalog catalog, ArrayList<AppGameCatalog> res) throws IOException {
-            String pageBody = client.performGet(APPS_CATALOG_URL);
+            String pageBody = client.performGet(APPS_CATALOG_URL).getResponseBody();
 
             Matcher contentMatcher = Pattern.compile("<div class=\"[^\"]*post_body[^\"]*\"[^>]*?>([\\s\\S]*?)<a name=\"entry\\d+\"></a>",
                     Pattern.CASE_INSENSITIVE).matcher(pageBody);
@@ -111,7 +111,7 @@ public class AppsGamesCatalogApi {
         }
 
         public static ArrayList<Topic> loadCategoryThemes(IHttpClient client, String catalogId) throws IOException {
-            String pageBody = client.performGet(APPS_CATALOG_URL);
+            String pageBody = client.performGet(APPS_CATALOG_URL).getResponseBody();
             ArrayList<Topic> res = new ArrayList<>();
 
             Pattern pattern = Pattern.compile("<a name=\"entry" + catalogId + "\">([\\s\\S]*?)</div>(?:<!--Begin Msg Number|<!-- TABLE FOOTER)", Pattern.CASE_INSENSITIVE);
@@ -148,7 +148,7 @@ public class AppsGamesCatalogApi {
         }
 
         private static ArrayList<Topic> loadSubCategoryThemes(IHttpClient client, CharSequence categoryId, CharSequence subCategoryId) throws IOException {
-            String pageBody = client.performGet(APPS_CATALOG_URL);
+            String pageBody = client.performGet(APPS_CATALOG_URL).getResponseBody();
             ArrayList<Topic> res = new ArrayList<>();
 
             Pattern pattern = Pattern.compile("<a name=\"entry" + categoryId + "\">([\\s\\S]*?)</div>(?:<!--Begin Msg Number|<!-- TABLE FOOTER)", Pattern.CASE_INSENSITIVE);
@@ -190,7 +190,7 @@ public class AppsGamesCatalogApi {
 
         private static void loadCatalog(IHttpClient client, AppGameCatalog catalog, ArrayList<AppGameCatalog> res) throws IOException {
 
-            String pageBody = client.performGet(GAMES_CATALOG_URL);
+            String pageBody = client.performGet(GAMES_CATALOG_URL).getResponseBody();
 
             Pattern pattern = Pattern.compile("<div class=\"[^\"]*post_body[^\"]*\">(.*?)(?:<!--Begin Msg Number|<!-- TABLE FOOTER)",
                     Pattern.CASE_INSENSITIVE);
@@ -225,7 +225,7 @@ public class AppsGamesCatalogApi {
         }
 
         public static ArrayList<Topic> loadCategoryThemes(IHttpClient client, String catalogId) throws IOException {
-            String pageBody = client.performGet(GAMES_CATALOG_URL);
+            String pageBody = client.performGet(GAMES_CATALOG_URL).getResponseBody();
             ArrayList<Topic> res = new ArrayList<>();
 
             Pattern pattern = Pattern.compile("<a name=\"entry" + catalogId + "\">([\\s\\S]*?)</div>(?:<!--Begin Msg Number|<!-- TABLE FOOTER)", Pattern.CASE_INSENSITIVE);
@@ -253,7 +253,7 @@ public class AppsGamesCatalogApi {
         }
 
         private static ArrayList<Topic> loadSubCategoryThemes(IHttpClient client, String catalogId, AppGameCatalog subCategory) throws IOException {
-            String pageBody = client.performGet(GAMES_CATALOG_URL);
+            String pageBody = client.performGet(GAMES_CATALOG_URL).getResponseBody();
             ArrayList<Topic> res = new ArrayList<>();
 
             Pattern pattern = Pattern.compile("<div class=\"post_body(?:\\s|\\w)*?\">(<div align=.center.>)?(?:<!--coloro:coral-->)?<span style=.color:coral.>(?:<!--/coloro-->)?<b>(<div align=.center.>)?" + catalogId + "\\..*?</div>(.*?)</div>");

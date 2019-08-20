@@ -229,7 +229,7 @@ public class ParentFragment extends GeneralFragment {
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-                parsed = new ParseHelper().parseHelper(Client.getInstance().performGet(params[0]));
+                parsed = new ParseHelper().parseHelper(Client.getInstance().performGet(params[0]).getResponseBody());
                 return true;
             } catch (Throwable e) {
                 ex = e;

@@ -17,6 +17,8 @@ import java.util.Hashtable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ru.slartus.http.AppResponse;
+
 /**
  * Created by IntelliJ IDEA.
  * User: slinkin
@@ -36,10 +38,10 @@ public class SearchPostsParser extends HtmlBuilder {
 
     public SearchResult searchResult;
 
-    public String parse(String body) {
+    public String parse(AppResponse response) {
         int posts = 0;
         Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(App.getInstance());
-        searchResult = createSearchResult(body);
+        searchResult = createSearchResult(response);
         beginHtml(App.getContext().getString(R.string.search_result));
         beginTopic(searchResult);
 
@@ -47,6 +49,7 @@ public class SearchPostsParser extends HtmlBuilder {
 
         String userId, userName, user, dateTime, userState;
 
+        String body = response.getResponseBody();
         Matcher matcher = Pattern.compile("<div class=\"cat_name\" style=\"margin-bottom:0\">([\\s\\S]*?)<\\/div>[\\s\\S]*?post_date\">([^\\|&]*)[\\s\\S]*?<font color=\"([^\"]*?)\"[\\s\\S]*?showuser=(\\d+)\"[^>]*?>([\\s\\S]*?)(?:<i[\\s\\S]*?\\/i>)?<\\/a>[\\s\\S]*?<div class=\"post_body[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div class=\"cat_name\"|<div><div class=\"pagination\">)").matcher(body);
         while (matcher.find()) {
             m_Body.append("<div class=\"post_container\">");
@@ -82,7 +85,7 @@ public class SearchPostsParser extends HtmlBuilder {
         return m_Body.toString();
     }
 
-    private SearchResult createSearchResult(String page) {
+    private SearchResult createSearchResult(AppResponse response) {
 
 
         final Pattern pagesCountPattern = Pattern.compile("var pages = parseInt\\((\\d+)\\);");
@@ -92,8 +95,11 @@ public class SearchPostsParser extends HtmlBuilder {
         final Pattern lastPageStartPattern = Pattern.compile("(http://4pda.ru)?/forum/index.php\\?act=search.*?st=(\\d+)");
         final Pattern currentPagePattern = Pattern.compile("<span class=\"pagecurrent\">(\\d+)</span>");
 
-        SearchResult searchResult = new SearchResult();
+        SearchResult searchResult = new SearchResult(response.redirectUrlElseRequestUrl());
 
+        String page = response.getResponseBody();
+        if (page == null)
+            page = "";
         Matcher m = pagesCountPattern.matcher(page);
         if (m.find()) {
             searchResult.setPagesCount(m.group(1));

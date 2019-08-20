@@ -110,7 +110,7 @@ public class NewsList extends ArrayList<News> {
     }
 
     private String getPage(int page, String newsUrl) throws IOException, ParseException {
-        String dailyNewsPage = mClient.performGet(newsUrl);
+        String dailyNewsPage = mClient.performGet(newsUrl).getResponseBody();
         Matcher postsMatcher = Pattern.compile("<div class=\"post\" id=\"post-\\d+\">([\\s\\S]*?)<span id=\"ka_\\d+_0_n\"></span></div><br /></div></div>")
                 .matcher(dailyNewsPage);
         Boolean someUnloaded = false;// одна из новостей незагружена - значит и остальные

@@ -130,7 +130,7 @@ public class CuratorFragment extends WebViewFragment {
         protected Boolean doInBackground(Boolean... get) {
             try {
                 if (isCancelled()) return false;
-                m_ThemeBody = parse(Client.getInstance().performGet(url,true,false)).getHtml().toString();
+                m_ThemeBody = parse(Client.getInstance().performGet(url,true,false).getResponseBody()).getHtml().toString();
                 return true;
             } catch (Throwable e) {
                 return false;
@@ -165,7 +165,7 @@ public class CuratorFragment extends WebViewFragment {
                 nvps.add(new BasicNameValuePair("postact", postact));
                 nvps.add(new BasicNameValuePair("postarg", postarg));
                 nvps.add(new BasicNameValuePair("postsel2", ids));
-                m_ThemeBody = parse(Client.getInstance().performPost(postUrl, nvps)).getHtml().toString();
+                m_ThemeBody = parse(Client.getInstance().performPost(postUrl, nvps).getResponseBody()).getHtml().toString();
                 postarg = "";
                 postact = "";
                 ids = "";

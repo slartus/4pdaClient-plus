@@ -19,12 +19,9 @@ public class UsersApi {
     /**
      * Администрация: Админы, суперы,модеры
      *
-     * @param client
-     * @return
-     * @throws IOException
      */
     public static ArrayList<LeadUser> getLeaders(IHttpClient client) throws IOException {
-        String page = client.performGet("http://4pda.ru/forum/index.php?act=Stats&CODE=leaders");
+        String page = client.performGet("http://4pda.ru/forum/index.php?act=Stats&CODE=leaders").getResponseBody();
 
         Document doc = Jsoup.parse(page);
         ArrayList<LeadUser> res = new ArrayList<>();

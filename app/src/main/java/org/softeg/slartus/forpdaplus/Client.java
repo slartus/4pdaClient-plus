@@ -85,10 +85,6 @@ public class Client implements IHttpClient {
         return HttpHelper.getRedirectUri();
     }
 
-    public String getLastUrl() {
-        return HttpHelper.getLastUri();
-    }
-
     public void deletePost(String postId, CharSequence authKey) throws IOException {
         PostApi.INSTANCE.delete(this, postId, authKey);
     }
@@ -124,103 +120,73 @@ public class Client implements IHttpClient {
         return session && pass_hash && member;
     }
 
-    public String performGetFullVersion(String s) throws IOException {
+    public AppResponse performGetFullVersion(String s) throws IOException {
 
 
         //HttpHelper httpHelper = new HttpHelper();
-        String res;
+        AppResponse res;
 
         // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
-        res = Http.Companion.getInstance().performGetFull(s).getResponseBody();
+        res = Http.Companion.getInstance().performGetFull(s);
 
-        if (TextUtils.isEmpty(res))
+        if (TextUtils.isEmpty(res.getResponseBody()))
             throw new NotReportException(App.getContext().getString(R.string.server_return_empty_page));
         // m_HttpHelper.close();
         return res;
     }
 
-    public String performGet(String s) throws IOException {
+    public AppResponse performGet(String s) throws IOException {
         return performGet(s, true, true);
     }
 
-    public String performGet(String s, Boolean checkEmptyResult, Boolean checkLoginAndMails) throws IOException {
+    public AppResponse performGet(String s, Boolean checkEmptyResult, Boolean checkLoginAndMails) throws IOException {
 
 
-        String res;
+        AppResponse res;
 
         // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
         res = HttpHelper.performGet(s);
 
-        if (checkEmptyResult && TextUtils.isEmpty(res))
+        if (checkEmptyResult && TextUtils.isEmpty(res.getResponseBody()))
             throw new NotReportException(App.getContext().getString(R.string.server_return_empty_page));
         else if (checkLoginAndMails) {
-            checkLogin(res);
+            checkLogin(res.getResponseBody());
             if (!s.contains("xhr")) {
-                checkMails(res);
-                checkMentions(res);
+                checkMails(res.getResponseBody());
+                checkMentions(res.getResponseBody());
             }
         }
         // m_HttpHelper.close();
         return res;
     }
 
-    public String performPost(String s, Map<String, String> additionalHeaders) throws IOException {
-
-        String res;
+    public AppResponse performPost(String s, Map<String, String> additionalHeaders) throws IOException {
 
         // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
-        res = HttpHelper.performPost(s, additionalHeaders);
-
-        return res;
+        return HttpHelper.performPost(s, additionalHeaders);
     }
 
 
-    public String uploadFile(String url, String filePath, Map<String, String> additionalHeaders,
-                             ProgressState progress) {
-
-        String res;
-
-        res = UploadUtils.okUploadFile(url, filePath, additionalHeaders, progress);
-
-
-        return res;
+    public AppResponse uploadFile(String url, String filePath, Map<String, String> additionalHeaders,
+                                  ProgressState progress) {
+        return UploadUtils.okUploadFile(url, filePath, additionalHeaders, progress);
     }
 
-    public String performPost(String s, Map<String, String> additionalHeaders, String encoding) throws IOException {
-
-        String res;
-
-        // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
-        res = HttpHelper.performPost(s, additionalHeaders);
-
-        return res;
+    public AppResponse performPost(String s, Map<String, String> additionalHeaders, String encoding) throws IOException {
+        return HttpHelper.performPost(s, additionalHeaders);
     }
 
     @Override
-    public String performPost(String s, List<NameValuePair> additionalHeaders) {
-
-        String res;
-
-        // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
-        res = HttpHelper.performPost(s, additionalHeaders);
-        //  m_HttpHelper.close();
-
-        return res;
+    public AppResponse performPost(String s, List<NameValuePair> additionalHeaders) {
+        return HttpHelper.performPost(s, additionalHeaders);
     }
 
-
     public List<HttpCookie> getCookies() {
-
-
         return Http.Companion.getInstance().getCookieStore().getCookies();
-
-
     }
 
     public Users getTopicWritersUsers(String topicId) throws IOException {
-
         return org.softeg.slartus.forpdaapi.TopicApi.getWriters(this, topicId);
-
     }
 
     public static Client getInstance() {
@@ -288,8 +254,8 @@ public class Client implements IHttpClient {
     }
 
     private AppResponse reply(String forumId, String themeId, String authKey, String attachPostKey, String post,
-                         Boolean enablesig, Boolean enableemo, Boolean quick, String addedFileList) throws IOException {
-        return PostApi.INSTANCE.reply(this, forumId, themeId, authKey, attachPostKey, post,
+                              Boolean enablesig, Boolean enableemo, Boolean quick, String addedFileList) throws IOException {
+        return PostApi.INSTANCE.reply(forumId, themeId, authKey, attachPostKey, post,
                 enablesig, enableemo, addedFileList, quick);
     }
 
@@ -384,9 +350,9 @@ public class Client implements IHttpClient {
     }
 
 
-    public String loadPageAndCheckLogin(String url, OnProgressChangedListener progressChangedListener) throws IOException {
+    public AppResponse preformGetWithProgress(String url, OnProgressChangedListener progressChangedListener) throws IOException {
         doOnOnProgressChanged(progressChangedListener, App.getContext().getString(R.string.receiving_data));
-        String body = performGet(url);
+        AppResponse body = performGet(url);
         doOnOnProgressChanged(progressChangedListener, App.getContext().getString(R.string.processing_data));
         return body;
     }

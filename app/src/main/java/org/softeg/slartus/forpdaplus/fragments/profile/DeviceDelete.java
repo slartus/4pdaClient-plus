@@ -51,7 +51,7 @@ public class DeviceDelete {
         @Override
         protected Void doInBackground(String... params) {
             try {
-                res = Client.getInstance().performGet(URL);
+                res = Client.getInstance().performGet(URL).getResponseBody();
             } catch (Exception e) {}
             return null;
         }

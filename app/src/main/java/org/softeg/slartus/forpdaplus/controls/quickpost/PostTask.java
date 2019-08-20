@@ -50,7 +50,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
         mEnableSign = enableSign;
 
         dialog = new MaterialDialog.Builder(context)
-                .progress(true,0)
+                .progress(true, 0)
                 .cancelable(false)
                 .content(R.string.sending_message)
                 .build();
@@ -62,7 +62,7 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
         try {
             mPostResult = new PostResult();
 
-            mPostResult.Response =Client.getInstance().reply(mForumId, mTopicId, mAuthKey,
+            mPostResult.Response = Client.getInstance().reply(mForumId, mTopicId, mAuthKey,
                     mPost, mEnableSign, mEnableEmotics, true, null);
             mPostResult.ForumErrorMessage = PostApi.INSTANCE.checkPostErrors(mPostResult.Response.getResponseBody());
 
@@ -70,12 +70,10 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
                 return false;
 
 
-            String lastUrl = Client.getInstance().getRedirectUri() == null ?
-                    ("http://4pda.ru/forum/index.php?showtopic=" + mTopicId + "&view=getnewpost")
-                    : Client.getInstance().getRedirectUri().toString();
+            String lastUrl = mPostResult.Response.redirectUrlElseRequestUrl();
             TopicBodyBuilder topicBodyBuilder = Client.getInstance().parseTopic(mPostResult.Response.getResponseBody(), App.getInstance(), lastUrl,
                     Preferences.Topic.getSpoilFirstPost());
-            mPostResult.Response.setResponseBody(null);
+            mPostResult.Response.setResponseBody("");
 
             mPostResult.ExtTopic = topicBodyBuilder.getTopic();
             mPostResult.TopicBody = topicBodyBuilder.getBody();

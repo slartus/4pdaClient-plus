@@ -2,19 +2,15 @@ package org.softeg.slartus.forpdaplus.video.api;
 
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.softeg.slartus.forpdaplus.Client;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class YouTubeAPI {
-    public static final String URL_GET_VIDEO_INFO = "http://www.youtube.com/get_video_info?&video_id=";
+    private static final String URL_GET_VIDEO_INFO = "http://www.youtube.com/get_video_info?&video_id=";
 
     public static CharSequence getYoutubeId(CharSequence youtubeUrl) {
         String[] patterns = {
@@ -36,7 +32,7 @@ public class YouTubeAPI {
         String url = URL_GET_VIDEO_INFO + id;
 
 
-        String infoStr = Client.getInstance().performGet(url);
+        String infoStr = Client.getInstance().performGet(url).getResponseBody();
         Matcher m = Pattern.compile("([^&=]*)=([^$&]*)", Pattern.CASE_INSENSITIVE).matcher(infoStr);
 
         String fmtList = null;
@@ -68,7 +64,7 @@ public class YouTubeAPI {
 
         if (fmtList != null && url_encoded_fmt_stream_map != null) {
             Matcher fmtMatcher = Pattern.compile("(\\d+)\\/(\\d+x\\d+)").matcher(fmtList);
-            String streamStrs[] = url_encoded_fmt_stream_map.split(",");
+            String[] streamStrs = url_encoded_fmt_stream_map.split(",");
             int fmtInd = 0;
             while (fmtMatcher.find()) {
                 fmtInd++;
@@ -92,35 +88,6 @@ public class YouTubeAPI {
         }
 
         return -1;
-    }
-
-    private static boolean parse2(VideoItem info) throws Exception {
-
-        String page = Client.getInstance().performGet(String.format("https://gdata.youtube.com/feeds/api/videos/%s?v=2&alt=json", info.getvId()));
-
-        try {
-            JSONObject jsonObject = new JSONObject(page);
-
-
-            info.setTitle(jsonObject.getJSONObject("entry").getJSONObject("title").getString("$t"));
-
-            String url = jsonObject.getJSONObject("entry").getJSONObject("content").getString("src");
-            if (!url.endsWith("3gp")) {
-                url = null;
-                JSONArray jarray = jsonObject.getJSONObject("entry").getJSONObject("media$group").getJSONArray("media$content");
-                for (int i = 0; i < jarray.length(); i++) {
-                    JSONObject jitem = jarray.getJSONObject(i);
-                    String qualityUrl = jitem.getString("url");
-                    if (!qualityUrl.endsWith("3gp")) continue;
-                    url = qualityUrl;
-                    break;
-                }
-            }
-            return url != null;
-        } catch (Throwable ex) {
-            return false;
-        }
-
     }
 
 
@@ -148,19 +115,19 @@ public class YouTubeAPI {
 
     public static class YouTubeFMTQuality {
 
-        public static final int GPP3_LOW = 13;        //3GPP (MPEG-4 encoded) Low quality
-        public static final int GPP3_MEDIUM = 17;        //3GPP (MPEG-4 encoded) Medium quality
-        public static final int MP4_NORMAL = 18;        //MP4  (H.264 encoded) Normal quality
-        public static final int MP4_HIGH = 22;        //MP4  (H.264 encoded) High quality
-        public static final int MP4_HIGH1 = 37;        //MP4  (H.264 encoded) High quality
+        static final int GPP3_LOW = 13;        //3GPP (MPEG-4 encoded) Low quality
+        static final int GPP3_MEDIUM = 17;        //3GPP (MPEG-4 encoded) Medium quality
+        static final int MP4_NORMAL = 18;        //MP4  (H.264 encoded) Normal quality
+        static final int MP4_HIGH = 22;        //MP4  (H.264 encoded) High quality
+        static final int MP4_HIGH1 = 37;        //MP4  (H.264 encoded) High quality
 
-        public static final CharSequence GPP3_LOW_TITLE = "240p";        //3GPP (MPEG-4 encoded) Low quality
-        public static final CharSequence GPP3_MEDIUM_TITLE = "360p";        //3GPP (MPEG-4 encoded) Medium quality
-        public static final CharSequence MP4_NORMAL_TITLE = "480p";        //MP4  (H.264 encoded) Normal quality
-        public static final CharSequence MP4_HIGH_TITLE = "720p HD";        //MP4  (H.264 encoded) High quality
-        public static final CharSequence MP4_HIGH1_TITLE = "1080p HD";        //MP4  (H.264 encoded) High quality
+        static final CharSequence GPP3_LOW_TITLE = "240p";        //3GPP (MPEG-4 encoded) Low quality
+        static final CharSequence GPP3_MEDIUM_TITLE = "360p";        //3GPP (MPEG-4 encoded) Medium quality
+        static final CharSequence MP4_NORMAL_TITLE = "480p";        //MP4  (H.264 encoded) Normal quality
+        static final CharSequence MP4_HIGH_TITLE = "720p HD";        //MP4  (H.264 encoded) High quality
+        static final CharSequence MP4_HIGH1_TITLE = "1080p HD";        //MP4  (H.264 encoded) High quality
 
-        public static final int[] supported = {
+        static final int[] supported = {
                 GPP3_LOW,
                 GPP3_MEDIUM,
                 MP4_NORMAL,
@@ -168,7 +135,7 @@ public class YouTubeAPI {
                 MP4_HIGH1
         };
 
-        public static final CharSequence[] supported_titles = {
+        static final CharSequence[] supported_titles = {
                 GPP3_LOW_TITLE,
                 GPP3_MEDIUM_TITLE,
                 MP4_NORMAL_TITLE,

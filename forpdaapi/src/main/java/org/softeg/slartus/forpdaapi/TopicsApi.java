@@ -68,7 +68,7 @@ public class TopicsApi {
         String uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
                 qparams, "UTF-8");
 
-        String pageBody = HttpHelper.performGet(uri);
+        String pageBody = HttpHelper.performGet(uri).getResponseBody();
 
         Matcher m = countPattern.matcher(pageBody);
         if (m.find()) {

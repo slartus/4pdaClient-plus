@@ -195,7 +195,7 @@ public class DeviceEdit {
         protected Void doInBackground(String... params) {
             try {
                 Matcher m = Pattern.compile("(\\d+)\\|\\|(.*)(\\n|$)")
-                        .matcher(Client.getInstance().performGet("http://4pda.ru/forum/index.php?act=profile-xhr&action=dev-autocomplete&q=" + requestText.replace(" ", "+") + "&limit=150"));
+                        .matcher(Client.getInstance().performGet("http://4pda.ru/forum/index.php?act=profile-xhr&action=dev-autocomplete&q=" + requestText.replace(" ", "+") + "&limit=150").getResponseBody());
                 deviceIds.clear();
                 deviceNames.clear();
                 while (m.find()) {
@@ -231,7 +231,7 @@ public class DeviceEdit {
         @Override
         protected Void doInBackground(String... params) {
             try {
-                String result = Client.getInstance().performGet(url);
+                String result = Client.getInstance().performGet(url).getResponseBody();
 
                 Matcher m = Pattern.compile("md_id_(\\d+)").matcher(result);
                 if(m.find())
@@ -249,7 +249,7 @@ public class DeviceEdit {
                         deviceStatus = Integer.valueOf(m.group(1));
                     }
 
-                    result = Client.getInstance().performGet("http://4pda.ru/forum/index.php?act=profile-xhr&action=dev-id-mod&dev_id=" + deviceId + "&dev_mod=");
+                    result = Client.getInstance().performGet("http://4pda.ru/forum/index.php?act=profile-xhr&action=dev-id-mod&dev_id=" + deviceId + "&dev_mod=").getResponseBody();
                     m = Pattern.compile("\\d+\\|\\|(.*)").matcher(result);
                     if (m.find()) deviceName = m.group(1);
                 }

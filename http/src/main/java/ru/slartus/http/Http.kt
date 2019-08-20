@@ -130,19 +130,19 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     fun performGet(url: String): AppResponse {
         val response = response(url)
         val body = response.body?.string()
-        return AppResponse(url, response.request.url.toString(), body)
+        return AppResponse(url, response.request.url.toString(), body ?: "")
     }
 
     fun performGetRedirectUrlElseRequestUrl(url: String): String {
         val response = response(url)
-        val redirectUrl=response.request.url.toString()
+        val redirectUrl = response.request.url.toString()
         return if (redirectUrl.isEmpty()) url else redirectUrl
     }
 
     fun performGetFull(url: String): AppResponse {
         val response = response(url, true)
         val body = response.body?.string()
-        return AppResponse(url, response.request.url.toString(), body)
+        return AppResponse(url, response.request.url.toString(), body ?: "")
     }
 
     fun postMultipart(url: String, values: List<Pair<String, String>>): AppResponse {
@@ -166,7 +166,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
             if (!response.isSuccessful) throw HttpException("Unexpected code $response")
 
             val body = response.body?.string()
-            return AppResponse(url, response.request.url.toString(), body)
+            return AppResponse(url, response.request.url.toString(), body ?: "")
         } catch (ex: IOException) {
             throw HttpException(ex)
         }
@@ -196,7 +196,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
             if (!response.isSuccessful) throw HttpException("Unexpected code $response")
 
             val body = response.body?.string()
-            return AppResponse(url, response.request.url.toString(), body)
+            return AppResponse(url, response.request.url.toString(), body ?: "")
         } catch (ex: IOException) {
             throw HttpException(ex)
         }
@@ -244,7 +244,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
             if (!response.isSuccessful) throw HttpException("Unexpected code $response")
 
             val body = response.body?.string()
-            return AppResponse(url, response.request.url.toString(), body)
+            return AppResponse(url, response.request.url.toString(), body ?: "")
         } catch (ex: IOException) {
             throw HttpException(ex)
         }

@@ -31,7 +31,7 @@ object SearchApi {
         val body = client.performGetFullVersion(searchUrl.replace("st=\\d+".toRegex(), "") + "&st=" + st)
 
 
-        return parse(body, listInfo)
+        return parse(body.responseBody, listInfo)
     }
 
     fun parse(body: String, listInfo: ListInfo): ArrayList<Topic> {

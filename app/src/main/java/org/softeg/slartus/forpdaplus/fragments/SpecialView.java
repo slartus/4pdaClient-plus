@@ -127,7 +127,7 @@ public class SpecialView extends WebViewFragment {
             try {
                 if (isCancelled()) return false;
 
-                m_ThemeBody = Client.getInstance().performGet(m_Url);
+                m_ThemeBody = Client.getInstance().performGet(m_Url).getResponseBody();
 
                 Matcher matcher = PatternExtensions.compile("<title>([\\S\\s]*?)</title>").matcher(m_ThemeBody);
                 if (matcher.find())

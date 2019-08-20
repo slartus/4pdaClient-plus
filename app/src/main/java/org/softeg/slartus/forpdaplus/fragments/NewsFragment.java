@@ -547,7 +547,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 Client client = Client.getInstance();
 
                 if (TextUtils.isEmpty(Comment))
-                    m_ThemeBody = transformBody(client.performGet(m_NewsUrl));
+                    m_ThemeBody = transformBody(client.performGet(m_NewsUrl).getResponseBody());
                 else {
                     Map<String, String> additionalHeaders = new HashMap<>();
                     additionalHeaders.put("comment", Comment);
@@ -555,7 +555,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     additionalHeaders.put("submit", "Отправить комментарий");
                     additionalHeaders.put("comment_reply_ID", ReplyId);
                     additionalHeaders.put("comment_reply_dp", Dp);
-                    m_ThemeBody = transformBody(client.performPost("http://4pda.ru/wp-comments-post.php", additionalHeaders, "UTF-8"));
+                    m_ThemeBody = transformBody(client.performPost("http://4pda.ru/wp-comments-post.php", additionalHeaders, "UTF-8").getResponseBody());
                 }
                 return true;
             } catch (Throwable e) {

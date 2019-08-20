@@ -246,7 +246,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
             try {
                 if(needLoadRepImage){
                     String plusImage = Jsoup
-                            .parse(Client.getInstance().performGet("http://4pda.ru/forum/index.php?act=rep&view=history&mid=2556269&mode=to&order=asc"))
+                            .parse(Client.getInstance().performGet("http://4pda.ru/forum/index.php?act=rep&view=history&mid=2556269&mode=to&order=asc").getResponseBody())
                             .select("#ipbwrapper .borderwrap .ipbtable tbody")
                             .last().select("tr:nth-last-child(2) td img").first().attr("src");
                     if(plusImage!=null)

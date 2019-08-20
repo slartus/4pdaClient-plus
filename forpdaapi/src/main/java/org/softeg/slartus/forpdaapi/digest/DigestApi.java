@@ -68,7 +68,7 @@ public class DigestApi {
         public static ArrayList<DigestCatalog> getCatalog(IHttpClient client, DigestCatalog parent) throws IOException {
             ArrayList<DigestCatalog> res = new ArrayList<>();
 
-            String body = client.performGet("http://4pda.ru/forum/index.php?showtopic=" + APP_DIGEST_ID + "&view=getlastpost");
+            String body = client.performGet("http://4pda.ru/forum/index.php?showtopic=" + APP_DIGEST_ID + "&view=getlastpost").getResponseBody();
 
             final String[] messages = body.split("<!--Begin Msg Number");
 
@@ -133,7 +133,7 @@ public class DigestApi {
         public static ArrayList<Topic> getAppDigestCategoryThemes(IHttpClient client, DigestCatalog category,
                                                                   DigestCatalog grandCategory, DigestCatalog parentCategory) throws IOException {
             ArrayList<Topic> res = new ArrayList<>();
-            String body = client.performGet("http://4pda.ru/forum/index.php?showtopic=" + APP_DIGEST_ID + "&view=getlastpost");
+            String body = client.performGet("http://4pda.ru/forum/index.php?showtopic=" + APP_DIGEST_ID + "&view=getlastpost").getResponseBody();
             Matcher mtchr = Pattern.compile(grandCategory.getTitle() + "[\\s\\S]*?"
                     + Pattern.quote(parentCategory.getTitle().toString()) + "([\\s\\S]*?)" +
                     "(?:<!--Begin Msg Number|<!-- TABLE FOOTER -->|Обновление ранее опубликованных на форуме программ)").matcher(body);
@@ -155,7 +155,7 @@ public class DigestApi {
 
         public static ArrayList<Topic> getAppDigestSubCategoryThemes(IHttpClient client, DigestCatalog category,
                                                                      DigestCatalog grandCategory, DigestCatalog parentCategory) throws IOException {
-            String body = client.performGet("http://4pda.ru/forum/index.php?showtopic=" + APP_DIGEST_ID + "&view=getlastpost");
+            String body = client.performGet("http://4pda.ru/forum/index.php?showtopic=" + APP_DIGEST_ID + "&view=getlastpost").getResponseBody();
             Matcher mtchr = Pattern.compile(grandCategory.getTitle() + "[\\s\\S]*?"
                     + Pattern.quote(parentCategory.getTitle().toString()) + "[\\s\\S]*?"
                     + "<span style=.color:coral.><b>\\Q" + category.getTitle() + "\\E</b>([\\s\\S]*?)" +
@@ -184,7 +184,7 @@ public class DigestApi {
     public static class Games {
 
         public static ArrayList<Topic> loadTopics(IHttpClient client, DigestCatalog catalog) throws IOException {
-            String body = client.performGet("http://4pda.ru/forum/index.php?showtopic=" + GAME_DIGEST_ID + "&view=getlastpost");
+            String body = client.performGet("http://4pda.ru/forum/index.php?showtopic=" + GAME_DIGEST_ID + "&view=getlastpost").getResponseBody();
             Matcher mtchr = Pattern.compile(catalog.getParent().getTitle() + "[\\s\\S]*?"
                     + Pattern.quote(catalog.getTitle().toString()) + "([\\s\\S]*?)" +
                     "(?:<!--Begin Msg Number|<!-- TABLE FOOTER -->|Обновление ранее опубликованных на форуме игр)").matcher(body);
@@ -209,7 +209,7 @@ public class DigestApi {
         }
 
         public static Collection<? extends DigestCatalog> getCatalog(IHttpClient client, DigestCatalog parentCatalog) throws IOException {
-            String body = client.performGet("http://4pda.ru/forum/index.php?showtopic=" + GAME_DIGEST_ID + "&view=getlastpost");
+            String body = client.performGet("http://4pda.ru/forum/index.php?showtopic=" + GAME_DIGEST_ID + "&view=getlastpost").getResponseBody();
             final String[] messages = body.split("<!--Begin Msg Number");
 
             final int[] msgId = {messages.length};

@@ -22,21 +22,8 @@ import java.util.regex.Pattern;
  */
 public class ExtTopic extends Topic implements ForumItem, IListItem, Serializable {
 
-
     private String authKey;
     private String lastUrl;
-
-
-    public ExtTopic(Topic topic) {
-
-        setId(topic.getId());
-        setTitle(topic.getTitle(), false);
-
-        setIsNew(topic.getIsNew());
-        setDescription(topic.getDescription(), false);
-        setLastMessageDate(topic.getLastMessageDate());
-        setLastMessageAuthor(topic.getLastMessageAuthor(), false);
-    }
 
     public ExtTopic(String id, String title) {
         super(id, title);

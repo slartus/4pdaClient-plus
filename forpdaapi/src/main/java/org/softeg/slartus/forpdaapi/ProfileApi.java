@@ -151,13 +151,13 @@ public class ProfileApi {
      * @param k идентификатор, полученный при логине
      */
     public static String logout(IHttpClient httpClient, String k) throws Throwable {
-        return httpClient.performGet("http://4pda.ru/forum/index.php?act=Login&CODE=03&k=" + k);
+        return httpClient.performGet("http://4pda.ru/forum/index.php?act=Login&CODE=03&k=" + k).getResponseBody();
     }
 
     public static Profile getProfile(IHttpClient httpClient, CharSequence userID, String avType) throws IOException {
         Profile profile = new Profile();
         profile.setId(userID);
-        String page = httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID);
+        String page = httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID).getResponseBody();
 
         Matcher matcher = Pattern.compile("<form action=\"[^\"]*?4pda\\.ru/forum/index\\.php\\?showuser[^>]*>[\\s\\S]*?<ul[^>]*>([\\s\\S]*)</ul>[\\s\\S]*?</form>").matcher(page);
         if (matcher.find()) {
@@ -173,7 +173,7 @@ public class ProfileApi {
     }
 
     public static String getUserNick(IHttpClient httpClient, CharSequence userID) throws IOException {
-        return Jsoup.parse(httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID)).select("div.user-box > h1").first().text();
+        return Jsoup.parse(httpClient.performGet("http://4pda.ru/forum/index.php?showuser=" + userID).getResponseBody()).select("div.user-box > h1").first().text();
     }
 
     private static String RequestUrl(OkHttpClient client, String url) throws IOException {

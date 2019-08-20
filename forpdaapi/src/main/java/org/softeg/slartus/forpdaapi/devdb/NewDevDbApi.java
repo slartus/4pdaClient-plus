@@ -29,7 +29,7 @@ public class NewDevDbApi {
     }
 
     public static ArrayList<DevCatalog> parseBrands(IHttpClient client, String devicesTypeUrl) throws Throwable {
-        String pageBody = client.performGet(devicesTypeUrl + "all");
+        String pageBody = client.performGet(devicesTypeUrl + "all").getResponseBody();
         Document doc = Jsoup.parse(pageBody);
         ArrayList<DevCatalog> res = new ArrayList<>();
 
@@ -47,7 +47,7 @@ public class NewDevDbApi {
 
     public static ArrayList<DevModel> parseModels(IHttpClient client, String brandUrl) throws Throwable {
         ArrayList<DevModel> res = new ArrayList<>();
-        String pageBody = client.performGet(brandUrl + "/all");
+        String pageBody = client.performGet(brandUrl + "/all").getResponseBody();
 
         Document doc = Jsoup.parse(pageBody);
         Elements con = doc.selectFirst("div.device-frame").getElementById("device-brand-items-list").children();

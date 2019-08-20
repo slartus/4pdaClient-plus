@@ -31,12 +31,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 public class NewsApi {
     public static Boolean like(IHttpClient httpClient, String newsId) throws IOException {
-        String res = httpClient.performGet("https://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=0&v=1", false, false);
+        String res = httpClient.performGet("https://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=0&v=1", false, false).getResponseBody();
         return res != null;
     }
 
     public static Boolean likeComment(IHttpClient httpClient, String newsId, String postId) throws IOException {
-        String res = httpClient.performGet("https://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=" + postId + "&v=1", false, false);
+        String res = httpClient.performGet("https://4pda.ru/wp-content/plugins/karma/ajax.php?p=" + newsId + "&c=" + postId + "&v=1", false, false).getResponseBody();
         return res != null;
     }
 
@@ -108,7 +108,7 @@ public class NewsApi {
         String requestUrl = justUrl + "/page/" + pageNum + "/" + params;
 
         ArrayList<News> res = new ArrayList<>();
-        String dailyNewsPage = httpClient.performGet(UrlExtensions.removeDoubleSplitters(requestUrl));
+        String dailyNewsPage = httpClient.performGet(UrlExtensions.removeDoubleSplitters(requestUrl)).getResponseBody();
 
         Pattern articlesPattern = Pattern.compile("(<article class=\"post[^\"]*?\"[^>]*?>[^<]*?<div[^>]*?>[^<]*?(?:<div[^>]*?>[^<]*?<\\/div>)?[^<]*?<a[^>]*?href=\"([^\"]*)\" title[\\s\\S]*?src=\"([^\"]*)\" alt=\"([^\"]*?)\"[\\s\\S]*?<\\/article>)|(<li itemscope[^>]*>[\\s\\S]*?itemprop=\"url\" href=\"([^\"]*?)\"[\\s\\S]*?src=\"([^\"]*?)\" alt=\"([^\"]*?)\"[\\s\\S]*?<\\/div>[^<]*<\\/li>)");
         Pattern descriptionPattern = Pattern.compile("(<div itemprop=\"description\">[\\s\\S]*?<p [^>]*>([\\s\\S]*)<\\/p>[^<]*)|(<div itemprop=\"description\">([\\s\\S]*?)<\\/div>)");
@@ -187,7 +187,7 @@ public class NewsApi {
         try {
 
 
-            String body = httpClient.performGet(url);
+            String body = httpClient.performGet(url).getResponseBody();
             if (TextUtils.isEmpty(body))
                 throw new NotReportException("Сервер вернул пустую страницу!");
 

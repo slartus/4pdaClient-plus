@@ -45,7 +45,7 @@ public class ReputationsApi {
         String uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
                 qparams, "UTF-8");
 
-        String body = httpClient.performGet(uri.toString());
+        String body = httpClient.performGet(uri).getResponseBody();
 
         Document doc = Jsoup.parse(body);
         Element el = doc.select("div.maintitle").first();
@@ -131,7 +131,7 @@ public class ReputationsApi {
         additionalHeaders.put("type", type);
         additionalHeaders.put("message", message);
 
-        String res = httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders);
+        String res = httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders).getResponseBody();
 
         Pattern p = Pattern.compile("<title>(.*?)</title>");
         Matcher m = p.matcher(res);

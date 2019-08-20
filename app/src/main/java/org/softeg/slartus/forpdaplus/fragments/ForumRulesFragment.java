@@ -143,7 +143,7 @@ public class ForumRulesFragment extends WebViewFragment{
             try {
                 if (isCancelled()) return false;
                 Client client = Client.getInstance();
-                m_ThemeBody = transformBody(client.performGet(url));
+                m_ThemeBody = transformBody(client.performGet(url).getResponseBody());
 
                 return true;
             } catch (Throwable e) {

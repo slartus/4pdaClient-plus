@@ -176,7 +176,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
 
         override fun doInBackground(vararg urls: String): Boolean? {
             try {
-                val doc = Jsoup.parse(client.performGet("http://4pda.ru/forum/index.php?showuser=" + UserInfoRepository.instance.getId()))
+                val doc = Jsoup.parse(client.performGet("http://4pda.ru/forum/index.php?showuser=" + UserInfoRepository.instance.getId()).responseBody)
                 var el: Element? = doc.selectFirst("div.user-box > div.photo > img")
                 if (el != null)
                     avatarUrl = el.attr("src")

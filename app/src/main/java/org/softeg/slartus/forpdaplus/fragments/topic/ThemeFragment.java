@@ -285,8 +285,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         mQuickPostFragment.setOnPostSendListener(postResult -> {
             if (postResult.Success) {
                 hideMessagePanel();
-                if (Client.getInstance().getRedirectUri() == null)
-                    Log.e("ThemeActivity", "redirect is null");
+
                 m_LastUrl = postResult.Response.redirectUrlElseRequestUrl();
                 m_Topic = postResult.ExtTopic;
                 m_Topic.setLastUrl(m_LastUrl);

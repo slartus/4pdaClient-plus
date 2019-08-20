@@ -20,6 +20,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import ru.slartus.http.AppResponse;
 import ru.slartus.http.Http;
 
 /**
@@ -28,8 +29,8 @@ import ru.slartus.http.Http;
 
 public class UploadUtils {
 
-    public static String okUploadFile(String url, String pathToFile,
-                                      Map<String, String> additionalHeaders, ProgressState progress) {
+    public static AppResponse okUploadFile(String url, String pathToFile,
+                                           Map<String, String> additionalHeaders, ProgressState progress) {
 
         String nameValue = "";
         try {
@@ -45,7 +46,7 @@ public class UploadUtils {
 
         return Http.Companion.getInstance()
                 .uploadFile(url, nameValue, pathToFile, "FILE_UPLOAD",
-                        values, num -> progress.update("", num)).getResponseBody();
+                        values, num -> progress.update("", num));
 
     }
 

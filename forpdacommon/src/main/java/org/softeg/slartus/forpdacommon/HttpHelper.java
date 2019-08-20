@@ -22,47 +22,39 @@ import ru.slartus.http.Http;
 public class HttpHelper {
     protected static final String TAG = "HttpHelper";
 
-    public static String performGet(final String url) {
+    public static AppResponse performGet(final String url) {
         AppResponse response = Http.Companion.getInstance().performGet(url);
         m_RedirectUri = response.getRedirectUrl() != null ? URI.create(response.getRedirectUrl()) : null;
-        m_LastUrl=response.getRequestUrl();
-        return response.getResponseBody();
+
+        return response;
     }
 
-    public static String performPost(final String url, final List<NameValuePair> params) {
+    public static AppResponse performPost(final String url, final List<NameValuePair> params) {
         ArrayList<Pair<String, String>> listParams = new ArrayList<>();
         for (NameValuePair key : params) {
             listParams.add(new Pair<>(key.getName(), key.getValue()));
         }
         AppResponse response = Http.Companion.getInstance().postMultipart(url, listParams);
         m_RedirectUri = response.getRedirectUrl() != null ? URI.create(response.getRedirectUrl()) : null;
-        m_LastUrl=response.getRequestUrl();
-        return response.getResponseBody();
+
+        return response;
     }
 
-    public static String performPost(final String url, final Map<String, String> params) throws IOException {
+    public static AppResponse performPost(final String url, final Map<String, String> params) throws IOException {
         ArrayList<Pair<String, String>> listParams = new ArrayList<>();
         for (String key : params.keySet()) {
             listParams.add(new Pair<>(key, params.get(key)));
         }
         AppResponse response = Http.Companion.getInstance().performPost(url, listParams);
         m_RedirectUri = response.getRedirectUrl() != null ? URI.create(response.getRedirectUrl()) : null;
-        m_LastUrl=response.getRequestUrl();
-        return response.getResponseBody();
+
+        return response;
     }
 
     private static URI m_RedirectUri;
-    private static String m_LastUrl;
-
 
     public static URI getRedirectUri() {
         return m_RedirectUri;
     }
-
-    public static String getLastUri() {
-        return m_LastUrl;
-    }
-
-
 
 }

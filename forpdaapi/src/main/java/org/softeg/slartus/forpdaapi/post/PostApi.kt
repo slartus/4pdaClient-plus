@@ -43,7 +43,7 @@ object PostApi {
      */
     @Throws(IOException::class)
     fun getEditPage(httpClient: IHttpClient, forumId: String, topicId: String, postId: String, authKey: String): String {
-        val res: String
+        val res: AppResponse
         if (postId == NEW_POST_ID)
             res = httpClient.performGet("http://4pda.ru/forum/index.php?act=post&do=reply_post&f=" + forumId
                     + "&t=" + topicId)
@@ -54,13 +54,13 @@ object PostApi {
                     + "&auth_key=" + authKey)
 
 
-        return res
+        return res.responseBody
 
     }
 
     @Throws(IOException::class)
     fun getAttachPage(httpClient: IHttpClient, postId: String): String? {
-        return if (postId == NEW_POST_ID) null else httpClient.performGet("http://4pda.ru/forum/index.php?&act=attach&code=attach_upload_show&attach_rel_id=$postId")
+        return if (postId == NEW_POST_ID) null else httpClient.performGet("http://4pda.ru/forum/index.php?&act=attach&code=attach_upload_show&attach_rel_id=$postId").responseBody
     }
 
     /**
@@ -116,7 +116,7 @@ object PostApi {
             additionalHeaders["enableemo"] = "yes"
 
 
-        return httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders)
+        return httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders).responseBody
     }
 
     /**
@@ -126,8 +126,8 @@ object PostApi {
      * @throws IOException
      */
     @Throws(IOException::class)
-    fun reply(httpClient: IHttpClient, forumId: String, topicId: String, authKey: String, attachPostKey: String?, post: String,
-              enablesig: Boolean?, enableemo: Boolean?, addedFileList: String?, quick: Boolean): AppResponse {
+    fun reply(forumId: String, topicId: String, authKey: String, attachPostKey: String?, post: String, enablesig: Boolean?,
+              enableemo: Boolean?, addedFileList: String?, quick: Boolean): AppResponse {
 
         val additionalHeaders = HashMap<String, String>()
         if (!quick) {
@@ -254,7 +254,7 @@ object PostApi {
 
         if (postId == NEW_POST_ID)
             return httpClient.uploadFile("http://4pda.ru/forum/index.php", filePath, additionalHeaders,
-                    progress)
+                    progress).responseBody
 
         httpClient.uploadFile("http://4pda.ru/forum/index.php", filePath, additionalHeaders, progress)
         progress.update("Файл загружен, получение страницы", 100)
@@ -307,7 +307,7 @@ object PostApi {
             additionalHeaders["enableemo"] = "yes"
 
         if (postId == NEW_POST_ID)
-            return httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders)
+            return httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders).responseBody
         httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders)
         return getEditPage(httpClient, forumId, themeId, postId, authKey)
     }
@@ -333,7 +333,7 @@ object PostApi {
                 "\\s*<h4>Причина:</h4>\n" +
                 "\\s*\n" +
                 "\\s*<p>(.*)</p>", Pattern.MULTILINE)
-        val m = p.matcher(res)
+        val m = p.matcher(res.responseBody)
         return if (m.find()) {
 
             "Ошибка отправки жалобы: " + m.group(1)
@@ -381,7 +381,7 @@ object PostApi {
         val res = httpClient
                 .performGet(String.format("http://4pda.ru/forum/index.php?&act=attach&code=attach_upload_remove&attach_rel_id=%s&attach_id=%s", postId,
                         attachId))
-        checkAttachError(res)
+        checkAttachError(res.responseBody)
     }
 
     @Throws(Exception::class)
@@ -396,11 +396,11 @@ object PostApi {
                 progress)
         val m = Pattern
                 .compile("add_current_item\\(\\s*'(\\d+)',\\s*'([^']*)',\\s*'([^']*)',\\s*'([^']*)'\\s*\\);", Pattern.CASE_INSENSITIVE)
-                .matcher(res)
+                .matcher(res.responseBody)
         if (m.find()) {
             return EditAttach(m.group(1), m.group(2))
         }
-        checkAttachError(res)
+        checkAttachError(res.responseBody)
         return null
 
     }
@@ -434,7 +434,7 @@ object PostApi {
             nameValuePairs.add(BasicNameValuePair("enablesig", "yes"))
 
 
-        return httpClient.performPost("http://4pda.ru/forum/index.php", nameValuePairs)
+        return httpClient.performPost("http://4pda.ru/forum/index.php", nameValuePairs).responseBody
     }
 
 

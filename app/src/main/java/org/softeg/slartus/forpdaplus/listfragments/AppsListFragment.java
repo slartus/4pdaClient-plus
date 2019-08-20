@@ -9,7 +9,6 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -186,8 +185,8 @@ public class AppsListFragment extends TopicsListFragment {
         final String gameCatalogUrl = "http://4pda.ru/forum/index.php?showtopic=117270";
         // Client.getInstance().doOnOnProgressChanged(progressChangedListener, "Получение данных...");
 
-        String gamesBody = Client.getInstance().loadPageAndCheckLogin(gameCatalogUrl, null);
-        String appsBody = Client.getInstance().loadPageAndCheckLogin(appCatalogUrl, null);
+        String gamesBody = Client.getInstance().preformGetWithProgress(gameCatalogUrl, null).getResponseBody();
+        String appsBody = Client.getInstance().preformGetWithProgress(appCatalogUrl, null).getResponseBody();
         //  Client.getInstance().doOnOnProgressChanged(progressChangedListener, "Обработка данных...");
         Matcher m = Pattern.compile("http://4pda.ru/forum/index.php\\?showtopic=(\\d+)[^\"]*?. target=._blank.>(.*?)</a>(.*?)</li>", Pattern.CASE_INSENSITIVE)
                 .matcher(gamesBody);

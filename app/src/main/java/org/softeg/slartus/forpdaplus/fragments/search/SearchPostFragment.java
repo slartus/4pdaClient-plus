@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
@@ -52,6 +51,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ru.slartus.http.AppResponse;
 
 /**
  * Created by radiationx on 15.11.15.
@@ -198,11 +199,9 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
             mWvBody.setScrollbarFadingEnabled(false);
         }
 
-
         m_WebViewExternals.setWebViewSettings();
         mWvBody.setWebViewClient(new MyWebViewClient());
         mWvBody.addJavascriptInterface(this, "HTMLOUT");
-
     }
 
 
@@ -426,16 +425,16 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
         }
 
-        private String pageBody;
+        private AppResponse response;
 
         @Override
         protected Boolean doInBackground(String... params) {
             try {
                 if (this.isCancelled()) return false;
 
-                pageBody = Client.getInstance().loadPageAndCheckLogin(getSearchQuery() + "&st=" + m_Page, null);
+                response = Client.getInstance().preformGetWithProgress(getSearchQuery() + "&st=" + m_Page, null);
                 SearchPostsParser searchPostsParser = new SearchPostsParser();
-                pageBody = searchPostsParser.parse(pageBody);
+                response.setResponseBody(searchPostsParser.parse(response));
                 m_SearchResult = searchPostsParser.searchResult;
                 return true;
 
@@ -460,7 +459,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
         protected void onPostExecute(final Boolean success) {
             setLoading(false);
-            showHtmlBody(pageBody);
+            showHtmlBody(response.getResponseBody());
 
 
             if (ex != null)
