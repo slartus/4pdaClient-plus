@@ -6,7 +6,7 @@
         android:icon="@drawable/checkbox_multiple_blank_outline"
         android:title="@string/tabs"
         android:visible="false"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/search_item"

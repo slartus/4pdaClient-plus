@@ -5,7 +5,7 @@
         android:id="@+id/guest_item"
         android:icon="@drawable/account_outline"
         android:title="@string/guest"
-        app:showAsAction="ifRoom" >
+        app:showAsAction="always" >
         <menu>
             <item
                 android:id="@+id/login_item"
@@ -21,7 +21,7 @@
         android:icon="@drawable/account"
         android:title="@string/guest"
         android:visible="false"
-        app:showAsAction="ifRoom" >
+        app:showAsAction="always" >
         <menu>
             <item
                 android:id="@+id/qms_item"
