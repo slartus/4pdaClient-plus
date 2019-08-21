@@ -7,7 +7,6 @@ package org.softeg.slartus.forpdaplus.mainnotifiers
 import android.app.Activity
 import android.content.Context
 import android.os.Handler
-import android.text.Html
 import android.util.Log
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
@@ -17,6 +16,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONException
 import org.softeg.slartus.forpdacommon.NotReportException
+import org.softeg.slartus.forpdacommon.fromHtml
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.BuildConfig
 import org.softeg.slartus.forpdaplus.R
@@ -134,7 +134,7 @@ class ForPdaVersionNotifier(
         handler.post {
             addToStack(MaterialDialog.Builder(context)
                     .title(if (appNotice.type == "warning") context.getString(R.string.notifier_warning) else context.getString(R.string.notifier_notification))
-                    .content(Html.fromHtml(appNotice.text))
+                    .content(appNotice.text.fromHtml())
                     .positiveText(R.string.notifier_understand)
                     .onPositive { _, _ ->
                         Preferences.Notice.setNoticed(appNotice.id)
