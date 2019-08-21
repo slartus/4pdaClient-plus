@@ -365,7 +365,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
                 //.setSingleChoiceItems(adapter, -1, null)
                 .adapter(adapter, LinearLayoutManager(activity))
                 .neutralText(R.string.in_spoiler)
-                .positiveText(R.string.attach_file)
+
                 .onNeutral { _, _ ->
                     val listItems = ArrayList<String>()
                     var i = 0
@@ -402,7 +402,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
                             .alwaysCallMultiChoiceCallback()
                             .show()
                 }
-                .onPositive { _, _ ->startAddAttachment()}
+                
                 .negativeText(R.string.cancel)
                 .build()
         mAttachesListDialog!!.show()
