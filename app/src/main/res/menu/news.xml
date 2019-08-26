@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/comment_item"
+        android:icon="@drawable/pencil"
+        android:title="@string/comment"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/refresh_item"
+        android:icon="@drawable/refresh"
+        android:title="@string/Refresh"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/thumb_up_item"
+        android:icon="@drawable/thumb_up"
+        android:title="@string/Like"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/setting_item"
+        android:icon="@drawable/settings_white"
+        android:title="@string/Settings">
+        <menu>
+            <item
+                android:id="@+id/hide_pencil_item"
+                android:checkable="true"
+                android:title="@string/hide_pencil" />
+
+            <item
+                android:id="@+id/font_size_item"
+                android:title="@string/font_size" />
+
+            <item
+                android:id="@+id/LoadImages_item"
+                android:title="@string/LoadImages"
+                android:checkable="true"/>
+
+
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/link_item"
+        android:title="@string/link"        />
+</menu>

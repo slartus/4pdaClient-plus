@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.classes.common;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.text.TextUtils;
 
 import java.util.List;
 
@@ -22,14 +23,21 @@ public class StringUtils {
         return sb.toString();
     }
 
-    public static String fromClipboard(Context context){
-        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        assert clipboard != null;
-        if (clipboard.hasPrimaryClip()) {
-            android.content.ClipDescription description = clipboard.getPrimaryClipDescription();
-            android.content.ClipData data = clipboard.getPrimaryClip();
-            if (data != null && description != null && description.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN))
-                return String.valueOf(data.getItemAt(0).getText());
+    public static String fromClipboard(Context context) {
+        ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        assert clipboardManager != null;
+        if (clipboardManager.hasPrimaryClip()) {
+            android.content.ClipData data = clipboardManager.getPrimaryClip();
+            if (data != null)
+                for (int i = 0; i < data.getItemCount(); i++) {
+                    CharSequence clipboardText = data.getItemAt(i).getText();
+                    if ("primaryClip".contentEquals(clipboardText) || "clipboardManager".contentEquals(clipboardText))
+                        clipboardText = null;
+                    if (clipboardText != null)
+                        clipboardText = clipboardText.toString().trim();
+                    if (!TextUtils.isEmpty(clipboardText))
+                        return clipboardText.toString().trim();
+                }
         }
         return null;
     }

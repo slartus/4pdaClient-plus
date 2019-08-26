@@ -49,17 +49,16 @@ object SearchApi {
                 continue
 
             val tdElement = trElement.child(2)
-            var el: Element = tdElement.select("a").last() ?: continue
-            var m = idPattern.matcher(el.attr("href"))
+            var el: Element? = tdElement.select("a").last() ?: continue
+            var m = idPattern.matcher(el!!.attr("href"))
             if (!m.find())
                 continue
             val theme = Topic(m.group(1), el.text())
             el = tdElement.select("span.desc").first()
-            if (el != null)
-                theme.description = el.text()
+            theme.description = el?.text() ?: ""
             theme.isNew = tdElement.select("a[href*=view=getnewpost]").first() != null
 
-            theme.sortOrder = Integer.toString(sortOrder++)
+            theme.sortOrder = (sortOrder++).toString()
 
             el = trElement.select("span.forumdesc>a").first()
             if (el != null) {
@@ -84,7 +83,8 @@ object SearchApi {
             val pagesCountPattern = Pattern.compile("st=(\\d+)", Pattern.CASE_INSENSITIVE)
             val matcher = pagesCountPattern.matcher(el.attr("href"))
             if (matcher.find()) {
-                listInfo.outCount = Math.max(Integer.parseInt(matcher.group(1)) + 1, listInfo.outCount)
+                listInfo.outCount = ((matcher.group(1).toIntOrNull()
+                        ?: 0) + 1).coerceAtLeast(listInfo.outCount)
             }
         }
         return res
