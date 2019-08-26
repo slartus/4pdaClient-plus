@@ -194,71 +194,52 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        boolean pencil = App.getInstance().getPreferences().getBoolean("pancilInActionBar", false);
+        menu.findItem(R.id.comment_item).setVisible(Client.getInstance().getLogined() & pencil);
+        menu.findItem(R.id.hide_pencil_item).setChecked(Preferences.isHideFab());
+        menu.findItem(R.id.LoadImages_item).setChecked(getWebView().getSettings().getLoadsImagesAutomatically());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.comment_item:
+                respond();
+                return true;
+            case R.id.refresh_item:
+                refresh();
+                return true;
+            case R.id.thumb_up_item:
+                like();
+                return true;
+            case R.id.hide_pencil_item:
+                Preferences.setHideFab(!Preferences.isHideFab());
+                setHideFab(fab);
+                item.setChecked(Preferences.isHideFab());
+                return true;
+            case R.id.font_size_item:
+                showFontSizeDialog();
+                return true;
+            case R.id.LoadImages_item:
+                boolean loadImagesAutomatically1 = getWebView().getSettings().getLoadsImagesAutomatically();
+                getWebView().getSettings().setLoadsImagesAutomatically(!loadImagesAutomatically1);
+                item.setChecked(!loadImagesAutomatically1);
+                return true;
+            case R.id.link_item:
+                ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), getUrl());
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        boolean pencil = App.getInstance().getPreferences().getBoolean("pancilInActionBar", false);
-        if (Client.getInstance().getLogined() & pencil) {
-            menu.add(R.string.comment).setIcon(R.drawable.pencil)
-                    .setOnMenuItemClickListener(menuItem -> {
-                        respond();
-                        return true;
-                    })
-                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        }
-        menu.add(R.string.Refresh).setIcon(R.drawable.refresh)
-                .setOnMenuItemClickListener(menuItem -> {
-                    refresh();
-                    return true;
-                })
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-        menu.add(R.string.Like).setIcon(R.drawable.thumb_up)
-                .setOnMenuItemClickListener(menuItem -> {
-                    like();
-                    return true;
-                })
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
-        SubMenu optionsMenu = menu.addSubMenu(R.string.setting);
-        optionsMenu.getItem().setIcon(R.drawable.settings_white);
-        optionsMenu.getItem().setTitle(R.string.Settings);
-        /*optionsMenu.add("Скрывать верхнюю панель")
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        Preferences.setHideActionBar(!Preferences.isHideActionBar());
-                        setHideActionBar();
-                        menuItem.setChecked(Preferences.isHideActionBar());
-                        return true;
-                    }
-                }).setCheckable(true).setChecked(Preferences.isHideActionBar());*/
-        if (!pencil) {
-            optionsMenu.add(R.string.hide_pencil)
-                    .setOnMenuItemClickListener(menuItem -> {
-                        Preferences.setHideFab(!Preferences.isHideFab());
-                        setHideFab(fab);
-                        menuItem.setChecked(Preferences.isHideFab());
-                        return true;
-                    }).setCheckable(true).setChecked(Preferences.isHideFab());
-        }
-        optionsMenu.add(R.string.font_size)
-                .setOnMenuItemClickListener(menuItem -> {
-                    showFontSizeDialog();
-                    return true;
-                });
-
-        optionsMenu.add(R.string.LoadImages)
-                .setOnMenuItemClickListener(menuItem -> {
-                    boolean loadImagesAutomatically1 = getWebView().getSettings().getLoadsImagesAutomatically();
-                    getWebView().getSettings().setLoadsImagesAutomatically(!loadImagesAutomatically1);
-                    menuItem.setChecked(!loadImagesAutomatically1);
-                    return true;
-                }).setCheckable(true).setChecked(getWebView().getSettings().getLoadsImagesAutomatically());
-
-        menu.add(R.string.link)
-                .setOnMenuItemClickListener(menuItem -> {
-                    ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link), getUrl());
-                    return true;
-                });
+        if (inflater != null)
+            inflater.inflate(R.menu.news, menu);
     }
 
 
