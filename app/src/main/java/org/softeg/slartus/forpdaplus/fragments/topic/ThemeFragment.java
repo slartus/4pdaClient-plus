@@ -783,23 +783,29 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         final String finalPostDate = Functions.getForumDateTime(Functions.parseForumDateTime(postDate, Functions.getToday(), Functions.getYesterToday()));
         final String mUserNick = userNick.replace("\"", "\\\"");
         CharSequence clipboardText = StringUtils.fromClipboard(App.getContext());
-
+        if (TextUtils.isEmpty(clipboardText)) {
+            getMainActivity().runOnUiThread(() -> new Handler().post(() ->
+                    insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n\n[/quote]")));
+            return;
+        }
 
         CharSequence[] titles = new CharSequence[]{getS(R.string.blank_quote), getS(R.string.quote_from_buffer)};
-        if (TextUtils.isEmpty(clipboardText))
-            titles = new CharSequence[]{getS(R.string.quote_editor), getS(R.string.blank_quote)};
-        final CharSequence finalClipboardText = clipboardText != null ? clipboardText : "";
+        final CharSequence finalClipboardText = clipboardText;
         new MaterialDialog.Builder(getContext())
                 .title(R.string.quote)
                 .cancelable(true)
                 .items(titles)
                 .itemsCallback((dialog, view1, i, titles1) -> {
-                    CharSequence quoteText = "";
-                    if (i == 1) {
-                        quoteText = finalClipboardText;
+                    switch (i) {
+                        case 0:
+                            getMainActivity().runOnUiThread(() ->
+                                    new Handler().post(() -> insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n\n[/quote]")));
+                            break;
+                        case 1:
+                            getMainActivity().runOnUiThread(() ->
+                                    new Handler().post(() -> insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n" + finalClipboardText + "\n[/quote]")));
+                            break;
                     }
-                    CharSequence finalQuoteText = quoteText;
-                    getMainActivity().runOnUiThread(() -> new Handler().post(() -> insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n" + finalQuoteText + "\n[/quote]")));
                 })
                 .show();
     }
