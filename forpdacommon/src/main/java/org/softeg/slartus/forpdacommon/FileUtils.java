@@ -165,10 +165,10 @@ public class FileUtils {
     * Нормализует(уберает иллегальные символы)
      */
     private static String normalize(String fileName) {
-        for (char illegalChar : ILLEGAL_CHARACTERS) {
-            fileName = fileName.replace(illegalChar, '_');
-        }
-        return fileName;
+//        for (char illegalChar : ILLEGAL_CHARACTERS) {
+//            fileName = fileName.replace(illegalChar, '_');
+//        }
+        return fileName.replaceAll("[^а-яА-Яa-zA-z0-9._-]","_");
     }
 
     public static String getFileNameFromUrl(String url) throws UnsupportedEncodingException {
