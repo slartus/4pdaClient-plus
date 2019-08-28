@@ -57,11 +57,12 @@ public class QmsNewThreadFragment extends GeneralFragment {
         return false;
     }
 
-    public static QmsNewThreadFragment newInstance(Bundle args){
+    public static QmsNewThreadFragment newInstance(Bundle args) {
         QmsNewThreadFragment fragment = new QmsNewThreadFragment();
         fragment.setArguments(args);
         return fragment;
     }
+
     public static void showUserNewThread(Context activity, String userId, String userNick) {
         Bundle args = new Bundle();
         args.putString(USER_ID_KEY, userId);
@@ -72,7 +73,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(mPopupPanelView!=null)
+        if (mPopupPanelView != null)
             mPopupPanelView.pause();
     }
 
@@ -80,7 +81,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
     public void onResume() {
         super.onResume();
         setArrow();
-        if(mPopupPanelView!=null)
+        if (mPopupPanelView != null)
             mPopupPanelView.resume();
     }
 
@@ -122,7 +123,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
                 }
             }
         });
-        if(mPopupPanelView==null)
+        if (mPopupPanelView == null)
             mPopupPanelView = new PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS | PopupPanelView.VIEW_FLAG_BBCODES);
         mPopupPanelView.createView(LayoutInflater.from(getContext()), (ImageButton) findViewById(R.id.advanced_button), message);
         mPopupPanelView.activityCreated(getMainActivity(), view);
@@ -135,8 +136,8 @@ public class QmsNewThreadFragment extends GeneralFragment {
         if (!TextUtils.isEmpty(m_Nick)) {
             username.setText(m_Nick);
             username.setVisibility(View.GONE);
-            setTitle(m_Nick + ":"+getString(R.string.qms_title_new_thread));
-            App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":"+getString(R.string.qms_title_new_thread));
+            setTitle(m_Nick + ":" + getString(R.string.qms_title_new_thread));
+            App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":" + getString(R.string.qms_title_new_thread));
 
         } else if (!TextUtils.isEmpty(m_Id)) {
             setTitle(getString(R.string.qms_title_new_thread));
@@ -160,14 +161,13 @@ public class QmsNewThreadFragment extends GeneralFragment {
     }
 
 
-
     @Override
     public void onSaveInstanceState(android.os.Bundle outState) {
-        outState.putString(USER_ID_KEY,m_Id);
-        outState.putString(USER_NICK_KEY,m_Nick);
-        outState.putString("USER_NAME_TEXT",username.getText().toString());
-        outState.putString("TITLE_TEXT",title.getText().toString());
-        outState.putString("MESSAGE_TEXT",message.getText().toString());
+        outState.putString(USER_ID_KEY, m_Id);
+        outState.putString(USER_NICK_KEY, m_Nick);
+        outState.putString("USER_NAME_TEXT", username.getText().toString());
+        outState.putString("TITLE_TEXT", title.getText().toString());
+        outState.putString("MESSAGE_TEXT", message.getText().toString());
         super.onSaveInstanceState(outState);
     }
 
@@ -234,11 +234,11 @@ public class QmsNewThreadFragment extends GeneralFragment {
             //setSupportProgressBarIndeterminateVisibility(false);
             if (success && !TextUtils.isEmpty(userNick)) {
                 m_Nick = userNick;
-                Toast.makeText(getContext(), App.getContext().getString(R.string.nick_received)+": " + m_Nick, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), App.getContext().getString(R.string.nick_received) + ": " + m_Nick, Toast.LENGTH_SHORT).show();
                 username.setText(m_Nick);
                 username.setVisibility(View.GONE);
-                setTitle(m_Nick + ":"+App.getContext().getString(R.string.qms_title_new_thread));
-                App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":"+App.getContext().getString(R.string.qms_title_new_thread));
+                setTitle(m_Nick + ":" + App.getContext().getString(R.string.qms_title_new_thread));
+                App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":" + App.getContext().getString(R.string.qms_title_new_thread));
                 getMainActivity().notifyTabAdapter();
             } else {
                 username.setVisibility(View.VISIBLE);
@@ -270,7 +270,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
             this.body = body;
 
             dialog = new MaterialDialog.Builder(context)
-                    .progress(true,0)
+                    .progress(true, 0)
                     .content(App.getContext().getString(R.string.sending_message))
                     .build();
         }
@@ -304,8 +304,19 @@ public class QmsNewThreadFragment extends GeneralFragment {
 
             if (success) {
                 getMainActivity().tryRemoveTab(getTag());
-                QmsChatFragment.Companion.openChat(outParams.get("mid"), outParams.get("user"),
-                        outParams.get("t"), outParams.get("title"), m_ChatBody);
+                String userId = outParams.get("mid");
+                String tId = outParams.get("t");
+                if (TextUtils.isEmpty(userId)) {
+                    Toast.makeText(getActivity(), "Идентификатор пользователя не найден", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(tId)) {
+                    Toast.makeText(getActivity(), "Идентификатор темы не найден", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                QmsChatFragment.Companion.openChat(userId, outParams.get("user"),
+                        tId, outParams.get("title"), m_ChatBody);
             } else {
                 if (ex != null)
                     AppLog.e(getMainActivity(), ex);

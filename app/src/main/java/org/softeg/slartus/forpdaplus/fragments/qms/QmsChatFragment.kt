@@ -753,33 +753,33 @@ class QmsChatFragment : WebViewFragment() {
         private const val POST_TEXT_KEY = "PostText"
         private const val FILECHOOSER_RESULTCODE = 1
 
-        fun openChat(userId: String, userNick: String, tid: String, themeTitle: String, pageBody: String) {
+        fun openChat(userId: String, userNick: String?, tid: String, themeTitle: String?, pageBody: String?) {
             MainActivity.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle, pageBody))
         }
 
-        fun openChat(userId: String, userNick: String, tid: String, themeTitle: String) {
+        fun openChat(userId: String, userNick: String?, tid: String, themeTitle: String?) {
             MainActivity.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle))
         }
 
-        fun newInstance(userId: String, userNick: String, tid: String, themeTitle: String, pageBody: String): QmsChatFragment {
+        fun newInstance(userId: String, userNick: String?, tid: String, themeTitle: String?, pageBody: String?): QmsChatFragment {
             val args = Bundle()
             args.putString(MID_KEY, userId)
-            args.putString(NICK_KEY, userNick)
+            args.putString(NICK_KEY, userNick ?: userId)
             args.putString(TID_KEY, tid)
-            args.putString(THEME_TITLE_KEY, themeTitle)
-            args.putString(PAGE_BODY_KEY, pageBody)
+            args.putString(THEME_TITLE_KEY, themeTitle ?: "")
+            args.putString(PAGE_BODY_KEY, pageBody ?: "")
 
             val fragment = QmsChatFragment()
             fragment.arguments = args
             return fragment
         }
 
-        fun newInstance(userId: String, userNick: String, tid: String, themeTitle: String): QmsChatFragment {
+        fun newInstance(userId: String, userNick: String?, tid: String, themeTitle: String?): QmsChatFragment {
             val args = Bundle()
             args.putString(MID_KEY, userId)
-            args.putString(NICK_KEY, userNick)
+            args.putString(NICK_KEY, userNick ?: userId)
             args.putString(TID_KEY, tid)
-            args.putString(THEME_TITLE_KEY, themeTitle)
+            args.putString(THEME_TITLE_KEY, themeTitle ?: "")
 
             val fragment = QmsChatFragment()
             fragment.arguments = args
