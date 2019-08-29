@@ -358,8 +358,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         try {
-            Paper.book().write("History", m_History);
-            Paper.book().write("Topic", m_Topic);
+            if (m_History != null)
+                Paper.book().write("History", m_History);
+            if (m_Topic != null)
+                Paper.book().write("Topic", m_Topic);
             //outState.putSerializable("History", m_History);
             //outState.putSerializable("Topic", m_Topic);
             webView.saveState(outState);
