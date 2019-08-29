@@ -11,7 +11,7 @@ android {
     compileSdkVersion 27
 
 
-    def appVersionCode = 622
+    def appVersionCode = 623
     // именование версий:
     // первое число не трогаем никогда. только если весь клиент переписали, но тогда это другой репозиторий
     // второе число только при серьезных изменениях, затрагивающих интерфейс или архитектуру
@@ -21,7 +21,7 @@ android {
     // после фикса в релизе мержим в мастер.
     // мастер - рабочая ветка для следуюшего релиза
 
-    def appVersionName = "3.5.4.1"
+    def appVersionName = "3.5.4.2"
 
     defaultConfig {
         applicationId 'org.softeg.slartus.forpdaplus'
