@@ -98,6 +98,7 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.paperdb.Paper;
 import ru.slartus.http.AppResponse;
 import ru.slartus.http.Http;
 
@@ -357,8 +358,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         try {
-            outState.putSerializable("History", m_History);
-            outState.putSerializable("Topic", m_Topic);
+            Paper.book().write("History", m_History);
+            Paper.book().write("Topic", m_Topic);
+            //outState.putSerializable("History", m_History);
+            //outState.putSerializable("Topic", m_Topic);
             webView.saveState(outState);
             outState.putString("LastUrl", getLastUrl());
             outState.putString("ScrollElement", m_ScrollElement);
@@ -375,8 +378,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState == null) return;
+
         try {
-            m_Topic = (ExtTopic) savedInstanceState.getSerializable("Topic");
+            m_Topic = Paper.book().read("Topic", null);
             if (m_Topic != null)
                 mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), Client.getInstance().getAuthKey());
             m_LastUrl = savedInstanceState.getString("LastUrl");
@@ -391,7 +395,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
 
             loadPreferences(App.getInstance().getPreferences());
-            m_History = (ArrayList<SessionHistory>) savedInstanceState.getSerializable("History");
+            m_History = Paper.book().read("History", m_History);
             assert m_History != null;
             if (m_History.size() > 0) {
                 SessionHistory sessionHistory = m_History.get(m_History.size() - 1);

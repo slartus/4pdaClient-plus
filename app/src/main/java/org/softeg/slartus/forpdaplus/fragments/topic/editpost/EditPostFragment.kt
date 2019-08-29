@@ -24,6 +24,7 @@ import android.util.TypedValue
 import android.view.*
 import android.widget.*
 import com.afollestad.materialdialogs.MaterialDialog
+import io.paperdb.Paper
 import org.softeg.slartus.forpdaapi.post.EditAttach
 import org.softeg.slartus.forpdaapi.post.EditPost
 import org.softeg.slartus.forpdaapi.post.PostApi
@@ -36,6 +37,7 @@ import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.PostPreviewFragment
+import org.softeg.slartus.forpdaplus.fragments.topic.SessionHistory
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.editpost.tasks.*
 import org.softeg.slartus.forpdaplus.prefs.Preferences
@@ -250,7 +252,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
     override fun onSaveInstanceState(outState: Bundle) {
         if (mEditpost != null)
-            outState.putSerializable("EditPost", mEditpost)
+            Paper.book().write("EditPost", mEditpost)
         if (mAttachfilepaths.any())
             outState.putStringArray("AttachFilePaths", mAttachfilepaths.toTypedArray())
         outState.putString("lastSelectDirPath", lastSelectDirPath)
