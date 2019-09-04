@@ -116,7 +116,7 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
     @Override
     public void onViewCreated(@NotNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mSwipeRefreshLayout = App.createSwipeRefreshLayout( view, this::reloadData);
+        mSwipeRefreshLayout = App.createSwipeRefreshLayout(view, this::reloadData);
     }
 
     @Override
@@ -246,7 +246,8 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
     }
 
     private void saveCache() {
-        Paper.book().write(getListName(), mData);
+        if (mData != null)
+            Paper.book().write(getListName(), mData);
     }
 
     protected void loadCache() {

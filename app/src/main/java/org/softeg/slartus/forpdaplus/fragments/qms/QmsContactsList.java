@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.fragments.qms;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.ContextMenu;
@@ -121,18 +122,23 @@ public class QmsContactsList extends BaseLoaderListFragment {
         if (TextUtils.isEmpty(qmsUser.getId())) return;
 
         final List<MenuListDialog> list = new ArrayList<>();
-        list.add(new MenuListDialog(getString(R.string.delete), () -> new Thread(() -> {
-            try {
-                Map<String, String> additionalHeaders = new HashMap<>();
-                additionalHeaders.put("act", "qms-xhr");
-                additionalHeaders.put("action", "del-member");
-                additionalHeaders.put("del-mid", qmsUser.getId());
-                Client.getInstance().performPost("http://4pda.ru/forum/index.php", additionalHeaders);
-                reloadData();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start()));
+        list.add(new MenuListDialog(getString(R.string.delete), () -> {
+            Handler handler=new Handler();
+            new Thread(() -> {
+                try {
+                    Map<String, String> additionalHeaders = new HashMap<>();
+                    additionalHeaders.put("act", "qms-xhr");
+                    additionalHeaders.put("action", "del-member");
+                    additionalHeaders.put("del-mid", qmsUser.getId());
+                    Client.getInstance().performPost("http://4pda.ru/forum/index.php", additionalHeaders);
+
+                    handler.post(this::reloadData);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }));
 
         ExtUrl.showContextDialog(getContext(), null, list);
     }
@@ -146,7 +152,7 @@ public class QmsContactsList extends BaseLoaderListFragment {
         private Boolean mShowAvatars;
 
 
-        public QmsContactsAdapter(Context context, ArrayList<IListItem> dataList, ImageLoader imageLoader) {
+        QmsContactsAdapter(Context context, ArrayList<IListItem> dataList, ImageLoader imageLoader) {
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 
@@ -188,15 +194,15 @@ public class QmsContactsList extends BaseLoaderListFragment {
                 holder = new ViewHolder();
                 assert convertView != null;
                 if(App.getInstance().getPreferences().getBoolean("isSquareAvarars",false)){
-                    holder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatarSquare);
+                    holder.imgAvatar = convertView.findViewById(R.id.imgAvatarSquare);
                 }else {
-                    holder.imgAvatar = (ImageView) convertView.findViewById(R.id.imgAvatar);
+                    holder.imgAvatar = convertView.findViewById(R.id.imgAvatar);
                 }
 
                 holder.imgAvatar.setVisibility(mShowAvatars ? View.VISIBLE : View.GONE);
 
-                holder.txtCount = (TextView) convertView.findViewById(R.id.txtMessagesCount);
-                holder.txtNick = (TextView) convertView.findViewById(R.id.txtNick);
+                holder.txtCount = convertView.findViewById(R.id.txtMessagesCount);
+                holder.txtNick = convertView.findViewById(R.id.txtNick);
 
                 convertView.setTag(holder);
             } else {

@@ -31,8 +31,9 @@ public class StringUtils {
             if (data != null)
                 for (int i = 0; i < data.getItemCount(); i++) {
                     CharSequence clipboardText = data.getItemAt(i).getText();
-                    if ("primaryClip".contentEquals(clipboardText) || "clipboardManager".contentEquals(clipboardText))
-                        clipboardText = null;
+                    if (clipboardText != null)
+                        if ("primaryClip".contentEquals(clipboardText) || "clipboardManager".contentEquals(clipboardText))
+                            clipboardText = null;
                     if (clipboardText != null)
                         clipboardText = clipboardText.toString().trim();
                     if (!TextUtils.isEmpty(clipboardText))

@@ -50,6 +50,7 @@ public abstract class BaseTaskListFragment extends BaseListFragment {
     }
 
     public void saveCache() {
+        if(getMData()!=null)
         Paper.book().write(getListName(), getMData());
     }
 
