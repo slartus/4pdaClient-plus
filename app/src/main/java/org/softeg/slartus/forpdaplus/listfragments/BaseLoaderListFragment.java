@@ -2,7 +2,6 @@ package org.softeg.slartus.forpdaplus.listfragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -160,13 +159,11 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
         Bundle loadArgs = getLoadArgs();
         if (loadArgs != null)
             args.putAll(loadArgs);
-        new Handler().post(() -> {
-            setLoading(true);
-            if (getLoaderManager().getLoader(getLoaderId()) != null)
-                getLoaderManager().restartLoader(getLoaderId(), args, this);
-            else
-                getLoaderManager().initLoader(getLoaderId(), args, this);
-        });
+        setLoading(true);
+        if (getLoaderManager().getLoader(getLoaderId()) != null)
+            getLoaderManager().restartLoader(getLoaderId(), args, this);
+        else
+            getLoaderManager().initLoader(getLoaderId(), args, this);
     }
 
     protected AsyncTaskLoader<ListData> createLoader(int loaderId, Bundle args) {
