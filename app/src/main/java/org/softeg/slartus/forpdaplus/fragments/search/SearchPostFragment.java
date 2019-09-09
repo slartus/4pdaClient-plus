@@ -150,7 +150,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         mWvBody.loadDataWithBaseURL("http://4pda.ru/forum/", "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
                 "</head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8", null);
         registerForContextMenu(mWvBody);
-        buttonsPanel = (FrameLayout)findViewById(R.id.buttonsPanel);
+        buttonsPanel = (FrameLayout) findViewById(R.id.buttonsPanel);
         return view;
     }
 
@@ -219,7 +219,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         try {
             MainActivity.searchSettings = SearchSettings.parse(getSearchQuery());
             mWvBody.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
-            if(buttonsPanel.getTranslationY()!=0)
+            if (buttonsPanel.getTranslationY() != 0)
                 ViewPropertyAnimator.animate(buttonsPanel)
                         .setInterpolator(new AccelerateDecelerateInterpolator())
                         .setDuration(500)
@@ -459,8 +459,8 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
 
         protected void onPostExecute(final Boolean success) {
             setLoading(false);
-            showHtmlBody(response.getResponseBody());
-
+            if (response != null)
+                showHtmlBody(response.getResponseBody());
 
             if (ex != null)
                 AppLog.e(getContext(), ex);

@@ -70,7 +70,7 @@ public class DownloadsService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        int notificationId = intent.getExtras().getInt(DOWNLOAD_FILE_ID_KEY);
+        int notificationId = intent.getExtras() != null ? intent.getExtras().getInt(DOWNLOAD_FILE_ID_KEY, -1) : -1;
         ResultReceiver receiver = intent.getParcelableExtra("receiver");
         String tempFilePath = intent.getStringExtra(DOWNLOAD_FILE_TEMP_NAME_KEY);
         downloadFile(receiver, notificationId, tempFilePath);
@@ -205,7 +205,7 @@ public class DownloadsService extends IntentService {
         String dirPath = getDownloadDir();
         downloadTask = Client.getInstance().getDownloadTasks().getById(notificationId);
 
-        if (downloadTask.getState() == DownloadTask.STATE_CANCELED) {
+        if (downloadTask == null || downloadTask.getState() == DownloadTask.STATE_CANCELED) {
             return;
         }
 
@@ -215,9 +215,8 @@ public class DownloadsService extends IntentService {
         try {
             url = FileUtils.getDirPath(url) + "/" + URLEncoder.encode(FileUtils.getFileNameFromUrl(url));
             String fileName = TextUtils.isEmpty(tempFilePath) ? FileUtils.getFileNameFromUrl(url) : FileUtils.getFileNameFromUrl(tempFilePath.replace("_download", ""));
-            String saveDir = dirPath;
 
-            String filePath = TextUtils.isEmpty(tempFilePath) ? FileUtils.getUniqueFilePath(saveDir, fileName) : FileUtils.combine(saveDir, fileName);
+            String filePath = TextUtils.isEmpty(tempFilePath) ? FileUtils.getUniqueFilePath(dirPath, fileName) : FileUtils.combine(dirPath, fileName);
             downloadTask.setOutputFile(filePath);
             String downloadingFilePath = filePath + "_download";
             downloadTask.setDownloadingFilePath(downloadingFilePath);

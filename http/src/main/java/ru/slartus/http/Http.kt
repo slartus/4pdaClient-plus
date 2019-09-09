@@ -89,7 +89,13 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     }
 
 
-    private fun prepareUrl(url: String) = url.replace(Regex("^//4pda\\.ru"), "http://4pda.ru")
+    private fun prepareUrl(url: String): String {
+        var res = url.replace(Regex("^//4pda\\.ru"), "http://4pda.ru")
+        res = res.replace(Regex("^//([^/]*)/"), "http://$1/")
+        if (!res.startsWith("http"))
+            res = "http://$res"
+        return res
+    }
 
     private fun buildRequestHeaders(userAgent: String = this.userAgent): Headers {
         val headersBuilder = Headers.Builder()
