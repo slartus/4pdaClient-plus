@@ -21,7 +21,7 @@ android {
     // после фикса в релизе мержим в мастер.
     // мастер - рабочая ветка для следуюшего релиза
 
-    def appVersionName = "3.5.4.3"
+    def appVersionName = "3.5.4.4"
 
     defaultConfig {
         applicationId 'org.softeg.slartus.forpdaplus'
@@ -70,7 +70,7 @@ android {
         }
         beta {
             applicationId 'org.softeg.slartus.forpdaplus.beta'
-            versionCode 640// у беты свой номер, чтобы не инкрементить релизный
+            versionCode 641// у беты свой номер, чтобы не инкрементить релизный
             versionName "${appVersionName}beta" //beta - С МАЛЕНЬКОЙ БУКВЫ ПЛЗ.))
             signingConfig defaultSigningVariable
             dimension "wtf"
