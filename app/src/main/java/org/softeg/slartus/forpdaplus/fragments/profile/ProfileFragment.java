@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.fragments.profile;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -54,7 +55,7 @@ import java.util.regex.Matcher;
 /**
  * Created by radiationx on 31.10.15.
  */
-public class ProfileFragment extends WebViewFragment implements LoaderManager.LoaderCallbacks<Profile>{
+public class ProfileFragment extends WebViewFragment implements LoaderManager.LoaderCallbacks<Profile> {
     public static final String USER_ID_KEY = "UserIdKey";
     public static final String USER_NAME_KEY = "UserNameKey";
     private String title;
@@ -129,13 +130,14 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     @Override
-    public AdvWebView getWebView(){
+    public AdvWebView getWebView() {
         return m_WebView;
     }
 
-    public static void showProfile(String userId, String userNick){
+    public static void showProfile(String userId, String userNick) {
         MainActivity.addTab(userNick, "http://4pda.ru/forum/index.php?showuser=" + userId, newInstance(userId, userNick));
     }
+
     public static ProfileFragment newInstance(String userId, String userNick) {
         Bundle args = new Bundle();
         args.putString(USER_ID_KEY, userId);
@@ -160,6 +162,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         super.onSaveInstanceState(outState);
     }
 
+    @SuppressLint("AddJavascriptInterface")
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -335,7 +338,10 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
                         args.getString(USER_ID_KEY),
                         App.getInstance().getPreferences().getBoolean("isSquareAvarars", false) ? "" : "circle");
                 ProfileHtmlBuilder builder = new ProfileHtmlBuilder();
-                builder.beginHtml(profile.getNick().toString());
+                CharSequence nick = profile.getNick();
+                if (nick == null)
+                    nick = profile.getId();
+                builder.beginHtml(nick.toString());
                 builder.beginBody("profile");
                 builder.append(profile.getHtmlBody());
                 builder.append("<script>\n" +
@@ -417,6 +423,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
             getMainActivity().runOnUiThread(runnable);
         }
     }
+
     @SuppressWarnings("unused")
     @JavascriptInterface
     public void setPrimaryDevice(final String id) {
