@@ -33,11 +33,11 @@ import java.util.GregorianCalendar;
 public class FavoritesNotifier extends NotifierBase {
 
     private static final String LOG_TAG = "FavoritesNotifier";
-    public static final String NEW_ACTION = "org.softeg.slartus.forpdanotifyservice.newtopicpost";
+    private static final String NEW_ACTION = "org.softeg.slartus.forpdanotifyservice.newtopicpost";
     public static final String TIME_OUT_KEY = "FavoritesNotifier.service.timeout";
-    public static final String LAST_DATETIME_KEY = "FavoritesNotifier.service.lastdatetime";
-    public static final String NEW_TOPICS_COUNT_KEY = "NewTopicsCount";
-    public static final String HAS_UNREAD_NOTIFY_KEY = "HasUnreadNotify";
+    private static final String LAST_DATETIME_KEY = "FavoritesNotifier.service.lastdatetime";
+    private static final String NEW_TOPICS_COUNT_KEY = "NewTopicsCount";
+    private static final String HAS_UNREAD_NOTIFY_KEY = "HasUnreadNotify";
     private Boolean m_PinnedOnly = false;
 
     public FavoritesNotifier(Context context) {
@@ -77,13 +77,12 @@ public class FavoritesNotifier extends NotifierBase {
                 return;
 
 
-
             ArrayList<FavTopic> topics = TopicsApi.getFavTopics(new ListInfo());
 
             Intent intent = new Intent(NEW_ACTION);
             intent.putExtra(NEW_TOPICS_COUNT_KEY, getNewTopicsCount(topics));
-            Boolean hasUnread = false;
-            if (hasUnreadNotify( topics)) {
+            boolean hasUnread = false;
+            if (hasUnreadNotify(topics)) {
                 hasUnread = true;
                 intent.putExtra(HAS_UNREAD_NOTIFY_KEY, true);
             } else {
@@ -99,7 +98,7 @@ public class FavoritesNotifier extends NotifierBase {
         }
     }
 
-    private boolean hasUnreadNotify( ArrayList<FavTopic> topics) throws Throwable {
+    private boolean hasUnreadNotify(ArrayList<FavTopic> topics){
 
         if (topics.size() == 0 || getNewTopicsCount(topics) == 0)
             return false;
@@ -137,7 +136,7 @@ public class FavoritesNotifier extends NotifierBase {
         }
     }
 
-    public static int REQUEST_CODE_START = 839264722;
+    private static int REQUEST_CODE_START = 839264722;
 
     private static PendingIntent getAlarmPendingIntent(Context context, int flag) {
         Intent downloader = new Intent(context, FavoritesAlarmReceiver.class);
@@ -152,7 +151,8 @@ public class FavoritesNotifier extends NotifierBase {
 
         AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        alarm.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), (long) (timeOut * 60000), pendingIntent);
+        if (alarm != null)
+            alarm.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), (long) (timeOut * 60000), pendingIntent);
     }
 
     public static void restartTask(final Context context, Intent intent) {
@@ -176,7 +176,8 @@ public class FavoritesNotifier extends NotifierBase {
     public void cancel(Context context) {
         try {
             AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            alarm.cancel(getAlarmPendingIntent(context, 0));
+            if (alarm != null)
+                alarm.cancel(getAlarmPendingIntent(context, 0));
         } catch (Throwable ex) {
             Log.e(LOG_TAG, ex.toString());
         }
@@ -223,9 +224,11 @@ public class FavoritesNotifier extends NotifierBase {
                 bridge.setSound(getSound(context));
             Notification noti = bridge.createNotification();
 
-            notificationManager.notify(MY_NOTIFICATION_ID, noti);
+            if (notificationManager != null)
+                notificationManager.notify(MY_NOTIFICATION_ID, noti);
         } else if (getNewTopicsCount(topics) == 0) {
-            notificationManager.cancel(MY_NOTIFICATION_ID);
+            if (notificationManager != null)
+                notificationManager.cancel(MY_NOTIFICATION_ID);
         }
     }
 }
