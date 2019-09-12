@@ -535,6 +535,7 @@ public class App extends MultiDexApplication {
         } catch (Throwable e) {
             e.printStackTrace();
         }
+        resStartNotifierServices();
         Http.Companion.init(this, getString(R.string.app_name), getPackageInfo().versionName);
         Client.getInstance().checkLoginByCookies();
     }
@@ -562,11 +563,7 @@ public class App extends MultiDexApplication {
     public static App getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new App();
-
         }
-
-        reStartQmsService();
-        reStartFavoritesNotifierService();
         return INSTANCE;
     }
 
