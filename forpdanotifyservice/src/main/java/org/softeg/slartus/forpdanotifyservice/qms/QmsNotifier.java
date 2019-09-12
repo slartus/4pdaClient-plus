@@ -78,7 +78,6 @@ public class QmsNotifier extends NotifierBase {
                 return;
 
 
-
             ArrayList<QmsUser> qmsUsers = QmsApi.INSTANCE.getQmsSubscribers();
             // Log.d(LOG_TAG, "QmsUsers.size=" + qmsUsers.size());
 
@@ -236,6 +235,7 @@ public class QmsNotifier extends NotifierBase {
     }
 
     private static int REQUEST_CODE_START = 839264710;
+
     private static PendingIntent getAlarmPendingIntent(Context context) {
         Intent downloader = new Intent(context, AlarmReceiver.class);
         return PendingIntent.getBroadcast(context,
@@ -249,8 +249,8 @@ public class QmsNotifier extends NotifierBase {
 
         if (adaptiveTimeOut < timeOut) {
             // адаптивный таймаут проверки новых ЛС.
-            float[] steps = {1.0f, 2.5f, 5.0f, 10.0f, 20.0f, 30.0f};
-            float newAdaptiveTimeout=adaptiveTimeOut;
+            float[] steps = {1.0f, 2.5f, 5.0f, 10.0f, 15.0f};
+            float newAdaptiveTimeout = adaptiveTimeOut;
             for (int i = 0; i < steps.length - 1; i++) {
                 if (adaptiveTimeOut - steps[i] < 0.1) {
                     newAdaptiveTimeout = steps[i + 1];
@@ -267,8 +267,10 @@ public class QmsNotifier extends NotifierBase {
         PendingIntent pendingIntent = getAlarmPendingIntent(context);
 
         AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarm.cancel(pendingIntent);
-        alarm.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + (long) (timeOut * 60000), pendingIntent);
+        if (alarm != null) {
+            alarm.cancel(pendingIntent);
+            alarm.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + (long) (timeOut * 60000), pendingIntent);
+        }
     }
 
 
@@ -286,7 +288,8 @@ public class QmsNotifier extends NotifierBase {
     public void cancel(Context context) {
         try {
             AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            alarm.cancel(PendingIntent.getBroadcast(context, REQUEST_CODE_START, new Intent(context, AlarmReceiver.class), 0));
+            if (alarm != null)
+                alarm.cancel(PendingIntent.getBroadcast(context, REQUEST_CODE_START, new Intent(context, AlarmReceiver.class), 0));
         } catch (Throwable ex) {
             Log.e(LOG_TAG, ex.toString());
         }
@@ -334,10 +337,11 @@ public class QmsNotifier extends NotifierBase {
                 bridge.setSound(getSound(context));
             Notification noti = bridge.createNotification();
 
-
-            notificationManager.notify(MY_NOTIFICATION_ID, noti);
+            if (notificationManager != null)
+                notificationManager.notify(MY_NOTIFICATION_ID, noti);
         } else if (unreadMessagesCount == 0) {
-            notificationManager.cancel(MY_NOTIFICATION_ID);
+            if (notificationManager != null)
+                notificationManager.cancel(MY_NOTIFICATION_ID);
         }
     }
 

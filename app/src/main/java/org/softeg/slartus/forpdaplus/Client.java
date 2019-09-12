@@ -248,22 +248,13 @@ public class Client implements IHttpClient {
     }
 
     public AppResponse reply(String forumId, String themeId, String authKey, String post,
-                             Boolean enablesig, Boolean enableemo, Boolean quick, String addedFileList) throws IOException {
-        return reply(forumId, themeId, authKey, null, post,
-                enablesig, enableemo, quick, addedFileList);
-    }
-
-    private AppResponse reply(String forumId, String themeId, String authKey, String attachPostKey, String post,
                               Boolean enablesig, Boolean enableemo, Boolean quick, String addedFileList) throws IOException {
-        return PostApi.INSTANCE.reply(forumId, themeId, authKey, attachPostKey, post,
+        return PostApi.INSTANCE.reply(forumId, themeId, authKey, null, post,
                 enablesig, enableemo, addedFileList, quick);
     }
 
-
     Boolean login(String login, String password, Boolean privacy,
                   String capVal, String capTime, String capSig) throws Exception {
-
-
         Http.Companion.getInstance().getCookieStore().removeAll();
 
         LoginResult loginResult = ProfileApi.login(login, password, privacy, capVal, capTime, capSig);
@@ -322,6 +313,11 @@ public class Client implements IHttpClient {
                 .setQmsCount(count);
     }
 
+    public void check(String page) {
+        checkMentions(page);
+        checkMails(page);
+    }
+
     private void checkMentions(String page) {
         Integer mentionsCount = MentionsParser.Companion.getInstance().parseCount(page);
         UserInfoRepository.Companion.getInstance()
@@ -330,7 +326,6 @@ public class Client implements IHttpClient {
 
     private void checkMails(String pageBody) {
         setQmsCount(QmsApi.INSTANCE.getNewQmsCount(pageBody));
-
     }
 
     Boolean logout() throws Throwable {

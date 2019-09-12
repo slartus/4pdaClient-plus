@@ -369,6 +369,7 @@ private class LoadResultTask(fragment: MentionsListFragment, private val m_Page:
             if (this.isCancelled) return false
 
             val pageBody = Client.getInstance().preformGetWithProgress("${MentionsListFragment.URL}&st=$m_Page", null).responseBody
+            Client.getInstance().check(pageBody)
 
             mentionsResult = MentionsParser.instance.parseMentions(pageBody)
             body = MentionsHtmlBuilder(mentionsResult!!).build()

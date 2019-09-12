@@ -1420,6 +1420,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 if (forums.length == 1) {
                     lastResponse = Http.Companion.getInstance().performGet("http://4pda.ru/forum/index.php?" + prepareTopicUrl(m_LastUrl));
                     pageBody = lastResponse.getResponseBody();
+                    Client.getInstance().check(pageBody);
                 } else
                     pageBody = forums[1];
                 if (lastResponse != null) {
