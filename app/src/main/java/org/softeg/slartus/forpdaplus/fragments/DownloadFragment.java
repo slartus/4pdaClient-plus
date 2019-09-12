@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -7,9 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +25,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
@@ -61,7 +61,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
     private TextView txtLoadMoreThemes, txtPullToLoadMore;
     private ImageView imgPullToLoadMore;
 
-    public static void newInstance(){
+    public static void newInstance() {
         MainActivity.addTab(TITLE, TEMPLATE, new DownloadFragment());
     }
 
@@ -83,7 +83,6 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
 
             downloadTasks.setFullSize(BaseTable.getRowsCount(db, DownloadsTable.TABLE_NAME));
 
-            assert db != null;
             c = db.query(DownloadsTable.TABLE_NAME, null, selection, selectionArgs, null, null, DownloadsTable.COLUMN_CREATEDATETIME + " DESC", "20");
 
             if (c.moveToFirst()) {
@@ -143,16 +142,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
 
         getListView().setAdapter(m_Adapter);
         getListView().setOnItemClickListener(this);
-        Client.getInstance().getDownloadTasks().setOnStateListener(new Client.OnProgressPositionChangedListener() {
-            public void onProgressChanged(Context context, DownloadTask downloadTask, Exception ex) {
-                mHandler.post(new Runnable() {
-                    public void run() {
-                        m_Adapter.notifyDataSetChanged();
-                    }
-                });
-
-            }
-        });
+        Client.getInstance().getDownloadTasks().setOnStateListener((context, downloadTask, ex) -> mHandler.post(() -> m_Adapter.notifyDataSetChanged()));
         return view;
     }
 
@@ -162,20 +152,19 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
         removeArrow();
     }
 
+    @SuppressLint("InflateParams")
     private View createListFooter(LayoutInflater inflater) {
         m_ListFooter = inflater.inflate(R.layout.list_footer, null);
 
         m_ListFooter.setVisibility(View.GONE);
-        m_ListFooter.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                if (Client.getInstance().getDownloadTasks().getFullLength() > Client.getInstance().getDownloadTasks().size())
-                    loadMore();
-            }
+        m_ListFooter.setOnClickListener(view -> {
+            if (Client.getInstance().getDownloadTasks().getFullLength() > Client.getInstance().getDownloadTasks().size())
+                loadMore();
         });
-        txtLoadMoreThemes = (TextView) m_ListFooter.findViewById(R.id.txtLoadMoreThemes1);
-        txtPullToLoadMore = (TextView) m_ListFooter.findViewById(R.id.txtPullToLoadMore1);
-        imgPullToLoadMore = (ImageView) m_ListFooter.findViewById(R.id.imgPullToLoadMore1);
-        ProgressBar m_ProgressBar = (ProgressBar) m_ListFooter.findViewById(R.id.load_more_progress1);
+        txtLoadMoreThemes = m_ListFooter.findViewById(R.id.txtLoadMoreThemes1);
+        txtPullToLoadMore = m_ListFooter.findViewById(R.id.txtPullToLoadMore1);
+        imgPullToLoadMore = m_ListFooter.findViewById(R.id.imgPullToLoadMore1);
+        ProgressBar m_ProgressBar = m_ListFooter.findViewById(R.id.load_more_progress1);
         m_ProgressBar.setVisibility(View.GONE);
         return m_ListFooter;
     }
@@ -185,7 +174,8 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
         int loadMoreVisibility = (Client.getInstance().getDownloadTasks().getFullLength() > Client.getInstance().getDownloadTasks().size()) ? View.VISIBLE : View.GONE;
         txtPullToLoadMore.setVisibility(loadMoreVisibility);
         imgPullToLoadMore.setVisibility(loadMoreVisibility);
-        txtLoadMoreThemes.setText(App.getContext().getString(R.string.total)+": " + Client.getInstance().getDownloadTasks().getFullLength());
+        String text = App.getContext().getString(R.string.total) + ": " + Client.getInstance().getDownloadTasks().getFullLength();
+        txtLoadMoreThemes.setText(text);
 
         m_ListFooter.setVisibility(Client.getInstance().getDownloadTasks().size() > 0 ? View.VISIBLE : View.GONE);
     }
@@ -200,6 +190,9 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
             if (l < 0) return;
             CharSequence[] items;
             final DownloadTask downloadTask = m_Adapter.getItem((int) l);
+            if (downloadTask == null) return;
+            Context context = getContext();
+            if (context != null) return;
             switch (downloadTask.getState()) {
                 case DownloadTask.STATE_PENDING:
                 case DownloadTask.STATE_CONNECTING:
@@ -209,12 +202,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
                             .content(R.string.cancel_download_title)
                             .cancelable(true)
                             .positiveText(R.string.yes)
-                            .callback(new MaterialDialog.ButtonCallback() {
-                                @Override
-                                public void onPositive(MaterialDialog dialog) {
-                                    downloadTask.cancel();
-                                }
-                            })
+                            .onPositive((dialog, which) -> downloadTask.cancel())
                             .negativeText(R.string.no)
                             .show();
                     break;
@@ -224,33 +212,22 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
                     new MaterialDialog.Builder(getContext())
                             .title(R.string.choose_action)
                             .items(items)
-                            .itemsCallback(new MaterialDialog.ListCallback() {
-                                @Override
-                                public void onSelection(MaterialDialog dialog, View view, int i, CharSequence items) {
-                                    switch (i) {
-                                        case 0: // Повторить загрузку
-                                            Client.getInstance().getDownloadTasks().remove(downloadTask);
-                                            DownloadsService.download(getMainActivity(), downloadTask.getUrl(), false);
+                            .itemsCallback((dialog, view1, i1, items1) -> {
+                                switch (i1) {
+                                    case 0: // Повторить загрузку
+                                        Client.getInstance().getDownloadTasks().remove(downloadTask);
+                                        DownloadsService.download(getMainActivity(), downloadTask.getUrl(), false);
 
-                                            mHandler.post(new Runnable() {
-                                                public void run() {
-                                                    m_Adapter.notifyDataSetChanged();
-                                                }
-                                            });
-                                            break;
-                                        case 1: // Докачать файл
-                                            Client.getInstance().getDownloadTasks().remove(downloadTask);
-                                            DownloadsService.download(getMainActivity(), downloadTask.getUrl(),
-                                                    downloadTask.getDownloadingFilePath(), downloadTask.getId(),false);
+                                        mHandler.post(() -> m_Adapter.notifyDataSetChanged());
+                                        break;
+                                    case 1: // Докачать файл
+                                        Client.getInstance().getDownloadTasks().remove(downloadTask);
+                                        DownloadsService.download(getMainActivity(), downloadTask.getUrl(),
+                                                downloadTask.getDownloadingFilePath(), downloadTask.getId(), false);
 
-                                            mHandler.post(new Runnable() {
-                                                public void run() {
-                                                    m_Adapter.notifyDataSetChanged();
-                                                }
-                                            });
+                                        mHandler.post(() -> m_Adapter.notifyDataSetChanged());
 
-                                            break;
-                                    }
+                                        break;
                                 }
                             })
                             .cancelable(true)
@@ -262,24 +239,17 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
                     new MaterialDialog.Builder(getContext())
                             .title(R.string.confirm_action)
                             .items(items)
-                            .itemsCallback(new MaterialDialog.ListCallback() {
-                                @Override
-                                public void onSelection(MaterialDialog dialog, View view, int i, CharSequence items) {
-                                    switch (i) {
-                                        case 0: // Запустить файл
-                                            runFile(downloadTask.getOutputFile());
-                                            break;
-                                        case 1: // Повторить загрузку
-                                            //Client.getInstance().getDownloadTasks().remove(downloadTask);
-                                            DownloadsService.download(getMainActivity(), downloadTask.getUrl(),false);
+                            .itemsCallback((dialog, view12, i12, items12) -> {
+                                switch (i12) {
+                                    case 0: // Запустить файл
+                                        runFile(downloadTask.getOutputFile());
+                                        break;
+                                    case 1: // Повторить загрузку
+                                        //Client.getInstance().getDownloadTasks().remove(downloadTask);
+                                        DownloadsService.download(getMainActivity(), downloadTask.getUrl(), false);
 
-                                            mHandler.post(new Runnable() {
-                                                public void run() {
-                                                    m_Adapter.notifyDataSetChanged();
-                                                }
-                                            });
-                                            break;
-                                    }
+                                        mHandler.post(() -> m_Adapter.notifyDataSetChanged());
+                                        break;
                                 }
                             })
                             .cancelable(true)
@@ -296,10 +266,11 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
 
     private void runFile(String filePath) {
         try {
-
-            getContext().startActivity(getRunFileIntent(filePath));
+            Context context = getContext();
+            if (context != null)
+                context.startActivity(getRunFileIntent(filePath));
         } catch (ActivityNotFoundException e) {
-            AppLog.e(getContext(), new NotReportException(getContext().getString(R.string.no_app_for_open_file)));
+            AppLog.e(getContext(), new NotReportException(App.getContext().getString(R.string.no_app_for_open_file)));
         }
     }
 
@@ -312,33 +283,28 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
         return newIntent;
     }
 
+    @SuppressWarnings("unused")
     public Boolean onParentBackPressed() {
         return false;
     }
-    
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.add(R.string.clean_out).setIcon(R.drawable.delete)
-                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                new MaterialDialog.Builder(getContext())
-                        .title(R.string.confirm_action)
-                        .content(R.string.ask_delete_all_nonactive_downloads)
-                        .positiveText(R.string.delete)
-                        .negativeText(R.string.cancel)
-                        .callback(new MaterialDialog.ButtonCallback() {
-                            @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                clearNotActiveDownloads();
-                            }
-                        })
-                        .show();
+                .setOnMenuItemClickListener(menuItem -> {
+                    Context context = getContext();
+                    if (context != null)
+                        new MaterialDialog.Builder(context)
+                                .title(R.string.confirm_action)
+                                .content(R.string.ask_delete_all_nonactive_downloads)
+                                .positiveText(R.string.delete)
+                                .negativeText(R.string.cancel)
+                                .onPositive((dialog, which) -> clearNotActiveDownloads())
+                                .show();
 
-                return true;
-            }
-        }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                    return true;
+                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
     public void refresh() {
@@ -382,6 +348,7 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
         loadMore();
     }
 
+    @SuppressWarnings("unused")
     public Boolean refreshed() {
         return true;  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -390,42 +357,39 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
         return m_ListView;
     }
 
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo, Handler handler) {
+    public void onCreateContextMenu() {
 
     }
 
     private ArrayAdapter<DownloadTask> m_Adapter;
-    
+
 
     public class DownloadTasksAdapter extends ArrayAdapter<DownloadTask> {
         private LayoutInflater m_Inflater;
 
-        public DownloadTasksAdapter(Context context, int textViewResourceId, ArrayList<DownloadTask> objects) {
+        DownloadTasksAdapter(Context context, int textViewResourceId, ArrayList<DownloadTask> objects) {
             super(context, textViewResourceId, objects);
             m_Inflater = LayoutInflater.from(context);
         }
 
+        @NotNull
         @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, @NotNull ViewGroup parent) {
 
             final ViewHolder holder;
 
-
             if (convertView == null) {
-
-
                 convertView = m_Inflater.inflate(R.layout.download_task_item, parent, false);
-
 
                 holder = new ViewHolder();
                 assert convertView != null;
-                holder.txtFileName = (TextView) convertView
+                holder.txtFileName = convertView
                         .findViewById(R.id.txtFileName);
-                holder.txtDescription = (TextView) convertView
+                holder.txtDescription = convertView
                         .findViewById(R.id.txtDescription);
-                holder.txtResult = (TextView) convertView
+                holder.txtResult = convertView
                         .findViewById(R.id.txtResult);
-                holder.progress = (ProgressBar) convertView
+                holder.progress = convertView
                         .findViewById(R.id.progress);
 
                 convertView.setTag(holder);
@@ -434,25 +398,29 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
             }
 
             DownloadTask downloadTask = this.getItem(position);
-            try {
-                holder.txtFileName.setText(downloadTask.getFileName());
-            } catch (Throwable ex) {
-                holder.txtFileName.setText(ex.toString());
+            if (downloadTask != null) {
+                try {
+                    holder.txtFileName.setText(downloadTask.getFileName());
+                } catch (Throwable ex) {
+                    holder.txtFileName.setText(ex.toString());
+                }
+
+
+                String description = App.getContext().getString(R.string.downloaded) + " " + downloadTask.getPercents() + "%("
+                        + Functions.getSizeText(downloadTask.getDownloadedSize()) + "/"
+                        + Functions.getSizeText(downloadTask.getM_ContentLength()) + ")";
+                holder.txtDescription.setText(description);
+
+                int state = downloadTask.getState();
+
+                boolean processing = state == DownloadTask.STATE_CONNECTING || state == DownloadTask.STATE_DOWNLOADING
+                        || state == DownloadTask.STATE_PENDING;
+                holder.progress.setIndeterminate(state == DownloadTask.STATE_CONNECTING);
+                holder.progress.setProgress(downloadTask.getPercents());
+                holder.progress.setVisibility(processing ? View.VISIBLE : View.GONE);
+                holder.txtResult.setVisibility(processing ? View.GONE : View.VISIBLE);
+                holder.txtResult.setText(downloadTask.getStateMessage());
             }
-
-            holder.txtDescription.setText(App.getContext().getString(R.string.downloaded)+" " + downloadTask.getPercents() + "%("
-                    + Functions.getSizeText(downloadTask.getDownloadedSize()) + "/"
-                    + Functions.getSizeText(downloadTask.getM_ContentLength()) + ")");
-            int state = downloadTask.getState();
-
-            Boolean processing = state == DownloadTask.STATE_CONNECTING || state == DownloadTask.STATE_DOWNLOADING
-                    || state == DownloadTask.STATE_PENDING;
-            holder.progress.setIndeterminate(state == DownloadTask.STATE_CONNECTING);
-            holder.progress.setProgress(downloadTask.getPercents());
-
-            holder.progress.setVisibility(processing ? View.VISIBLE : View.GONE);
-            holder.txtResult.setVisibility(processing ? View.GONE : View.VISIBLE);
-            holder.txtResult.setText(downloadTask.getStateMessage());
 
             return convertView;
         }
