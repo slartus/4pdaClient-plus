@@ -289,22 +289,29 @@ public class DownloadFragment extends GeneralFragment implements AdapterView.OnI
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.clear_item) {
+            Context context = getContext();
+            if (context != null)
+                new MaterialDialog.Builder(context)
+                        .title(R.string.confirm_action)
+                        .content(R.string.ask_delete_all_nonactive_downloads)
+                        .positiveText(R.string.delete)
+                        .negativeText(R.string.cancel)
+                        .onPositive((dialog, which) -> clearNotActiveDownloads())
+                        .show();
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        menu.add(R.string.clean_out).setIcon(R.drawable.delete)
-                .setOnMenuItemClickListener(menuItem -> {
-                    Context context = getContext();
-                    if (context != null)
-                        new MaterialDialog.Builder(context)
-                                .title(R.string.confirm_action)
-                                .content(R.string.ask_delete_all_nonactive_downloads)
-                                .positiveText(R.string.delete)
-                                .negativeText(R.string.cancel)
-                                .onPositive((dialog, which) -> clearNotActiveDownloads())
-                                .show();
 
-                    return true;
-                }).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        if (inflater != null)
+            inflater.inflate(R.menu.downloads, menu);
     }
 
     public void refresh() {
