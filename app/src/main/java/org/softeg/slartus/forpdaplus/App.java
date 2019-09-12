@@ -559,20 +559,14 @@ public class App extends MultiDexApplication {
     }
 
 
-    private static Boolean m_QmsStarted = false;
-    private static Boolean m_FavoritesNotifierStarted = false;
-
     public static App getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new App();
 
         }
-        if (!m_QmsStarted) {
-            reStartQmsService();
-        }
-        if (!m_FavoritesNotifierStarted) {
-            reStartFavoritesNotifierService();
-        }
+
+        reStartQmsService();
+        reStartFavoritesNotifierService();
         return INSTANCE;
     }
 
@@ -599,7 +593,7 @@ public class App extends MultiDexApplication {
     }
 
     private static void startQmsService(Boolean adaptive) {
-        m_QmsStarted = true;
+
         try {
             if (!QmsNotifier.isUse(getContext()))
                 return;
@@ -672,7 +666,6 @@ public class App extends MultiDexApplication {
     }
 
     private static void startFavoritesNotifierService() {
-        m_FavoritesNotifierStarted = true;
         try {
             if (!FavoritesNotifier.isUse(getContext())) return;
 
