@@ -110,6 +110,7 @@ public class EditPost implements Serializable {
     }
 
     public void addAttach(EditAttach editAttach) {
+        if (editAttach == null) return;
         attaches.add(editAttach);
         String fileList = getFileList();
         if (!"".equals(fileList))

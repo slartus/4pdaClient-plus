@@ -242,7 +242,7 @@ public class ForPdaWebInterface {
         run(new Runnable() {
             @Override
             public void run() {
-                ForumUser.showUserQuickAction(getMainActivity(), getContext().getWebView(), getContext().getTopic().getId(), postId, userId, userNick,
+                ForumUser.showUserQuickAction(getMainActivity(), getContext().getTopic().getId(), postId, userId, userNick,
                         new ForumUser.InsertNickInterface() {
                             @Override
                             public void insert(String text) {

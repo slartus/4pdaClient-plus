@@ -192,7 +192,7 @@ class MentionsListFragment : WebViewFragment() {
     @Suppress("unused")
     @JavascriptInterface
     fun showUserMenu(userId: String, userNick: String) {
-        mainActivity.runOnUiThread { ForumUser.showUserQuickAction(mainActivity, webView, userId, userNick) }
+        mainActivity.runOnUiThread { ForumUser.showUserQuickAction(mainActivity, userId, userNick) }
     }
 
     @JavascriptInterface

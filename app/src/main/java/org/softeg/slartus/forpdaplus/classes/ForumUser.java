@@ -31,23 +31,19 @@ import java.util.Map;
  * Time: 10:44
  */
 public class ForumUser {
-    private String m_Nick;
-    private String m_Group;
-    private String m_Id;
-    private String m_Reputation;
 
     public interface InsertNickInterface {
         void insert(String text);
     }
 
-    public static void showUserQuickAction(final FragmentActivity context, View webView, final String userId,
+    public static void showUserQuickAction(final FragmentActivity context, final String userId,
                                            String userNick) {
-        showUserQuickAction(context, webView, null, "", userId, userNick, null);
+        showUserQuickAction(context, null, "", userId, userNick, null);
     }
 
-    public static void showUserQuickAction(final FragmentActivity context, View webView, final String topicId, final String postId,
+    public static void showUserQuickAction(final FragmentActivity context, final String topicId, final String postId,
                                            final String userId,
-                                           String userNick,final InsertNickInterface insertNickInterface) {
+                                           String userNick, final InsertNickInterface insertNickInterface) {
         try {
             userNick = Html.fromHtml(userNick.replace("<", "&lt;")).toString();
 
@@ -57,9 +53,9 @@ public class ForumUser {
 
             int insertNickPosition = -1;
             int sendQmsPosition = -1;
-            int showProfilePosition = -1;
-            int showUserTopicsPosition = -1;
-            int showUserPostsPosition = -1;
+            int showProfilePosition;
+            int showUserTopicsPosition;
+            int showUserPostsPosition;
             int showUserPostsInTopicPosition = -1;
 
             if (Client.getInstance().getLogined()) {
@@ -96,23 +92,20 @@ public class ForumUser {
             new MaterialDialog.Builder(context)
                     .title(finalUserNick)
                     .items(items.toArray(new CharSequence[items.size()]))
-                    .itemsCallback(new MaterialDialog.ListCallback() {
-                        @Override
-                        public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
-                            if (i == finalInsertNickPosition) {
-                                assert insertNickInterface != null;
-                                insertNickInterface.insert(String.format(TopicBodyBuilder.NICK_SNAPBACK_TEMPLATE,postId, finalUserNick ));
-                            } else if (i == finalSendQmsPosition) {
-                                QmsContactThemes.showThemes(userId, finalUserNick);
-                            } else if (i == finalShowProfilePosition) {
-                                ProfileFragment.showProfile(userId, finalUserNick);
-                            } else if (i == finalShowUserTopicsPosition) {
-                                MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick));
-                            } else if (i == finalShowUserPostsPosition) {
-                                MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick));
-                            } else if (i == finalShowUserPostsInTopicPosition) {
-                                MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsInTopicSearchSettings(finalUserNick, topicId));
-                            }
+                    .itemsCallback((materialDialog, view, i1, charSequence) -> {
+                        if (i1 == finalInsertNickPosition) {
+                            assert insertNickInterface != null;
+                            insertNickInterface.insert(String.format(TopicBodyBuilder.NICK_SNAPBACK_TEMPLATE,postId, finalUserNick ));
+                        } else if (i1 == finalSendQmsPosition) {
+                            QmsContactThemes.showThemes(userId, finalUserNick);
+                        } else if (i1 == finalShowProfilePosition) {
+                            ProfileFragment.showProfile(userId, finalUserNick);
+                        } else if (i1 == finalShowUserTopicsPosition) {
+                            MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick));
+                        } else if (i1 == finalShowUserPostsPosition) {
+                            MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick));
+                        } else if (i1 == finalShowUserPostsInTopicPosition) {
+                            MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsInTopicSearchSettings(finalUserNick, topicId));
                         }
                     })
                     .show();
@@ -127,31 +120,11 @@ public class ForumUser {
             final String finalUserNick = Html.fromHtml(userNick).toString();
 
             if (Client.getInstance().getLogined()) {
-                menu.add(new MenuListDialog(context.getString(R.string.MessagesQms), new Runnable() {
-                    @Override
-                    public void run() {
-                        QmsContactThemes.showThemes(userId, finalUserNick);
-                    }
-                }));
+                menu.add(new MenuListDialog(context.getString(R.string.MessagesQms), () -> QmsContactThemes.showThemes(userId, finalUserNick)));
             }
-            menu.add(new MenuListDialog(context.getString(R.string.Profile), new Runnable() {
-                @Override
-                public void run() {
-                    ProfileFragment.showProfile(userId, finalUserNick);
-                }
-            }));
-            menu.add(new MenuListDialog(context.getString(R.string.FindUserTopics), new Runnable() {
-                @Override
-                public void run() {
-                    MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick));
-                }
-            }));
-            menu.add(new MenuListDialog(context.getString(R.string.FindUserPosts), new Runnable() {
-                @Override
-                public void run() {
-                    MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick));
-                }
-            }));
+            menu.add(new MenuListDialog(context.getString(R.string.Profile), () -> ProfileFragment.showProfile(userId, finalUserNick)));
+            menu.add(new MenuListDialog(context.getString(R.string.FindUserTopics), () -> MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick))));
+            menu.add(new MenuListDialog(context.getString(R.string.FindUserPosts), () -> MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick))));
         } catch (Throwable ex) {
             AppLog.e(context, ex);
         }
@@ -166,9 +139,9 @@ public class ForumUser {
         View layout = inflater.inflate(R.layout.reputation, null);
 
         assert layout != null;
-        TextView username_view = (TextView) layout.findViewById(R.id.username_view);
-        TextView textUser = (TextView) layout.findViewById(R.id.user);
-        final EditText message_edit = (EditText) layout.findViewById(R.id.message_edit);
+        TextView username_view = layout.findViewById(R.id.username_view);
+        TextView textUser = layout.findViewById(R.id.user);
+        final EditText message_edit = layout.findViewById(R.id.message_edit);
 
         if(userId.equals(userNick)){
             textUser.setVisibility(View.GONE);
@@ -180,50 +153,43 @@ public class ForumUser {
                 .title(title)
                 .customView(layout,true)
                 .positiveText(context.getString(R.string.Change))
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        Toast.makeText(context, context.getString(R.string.ChangeReputationRequest), Toast.LENGTH_SHORT).show();
+                .onPositive((dialog, which) -> {
+                    Toast.makeText(context, context.getString(R.string.ChangeReputationRequest), Toast.LENGTH_SHORT).show();
 
-                        new Thread(new Runnable() {
-                            public void run() {
-                                Exception ex = null;
-                                final Map<String, String> outParams = new HashMap<>();
-                                Boolean res = false;
-                                try {
-                                    res = Client.getInstance().changeReputation(postId, userId, type, message_edit.getText().toString()
-                                            , outParams);
-                                } catch (IOException e) {
-                                    ex = e;
+                    new Thread(() -> {
+                        Exception ex = null;
+                        final Map<String, String> outParams = new HashMap<>();
+                        Boolean res = false;
+                        try {
+                            res = Client.getInstance().changeReputation(postId, userId, type, message_edit.getText().toString()
+                                    , outParams);
+                        } catch (IOException e) {
+                            ex = e;
+                        }
+
+                        final Exception finalEx = ex;
+                        final Boolean finalRes = res;
+                        handler.post(() -> {
+                            try {
+                                if (finalEx != null) {
+                                    Toast.makeText(context, context.getString(R.string.ChangeReputationError), Toast.LENGTH_SHORT).show();
+                                    AppLog.e(context, finalEx);
+                                } else if (!finalRes) {
+                                    new MaterialDialog.Builder(context)
+                                            .title(context.getString(R.string.ChangeReputationError))
+                                            .content(outParams.get("Result"))
+                                            .cancelable(true)
+                                            .positiveText(R.string.ok)
+                                            .show();
+                                } else {
+                                    Toast.makeText(context, outParams.get("Result"), Toast.LENGTH_SHORT).show();
                                 }
-
-                                final Exception finalEx = ex;
-                                final Boolean finalRes = res;
-                                handler.post(new Runnable() {
-                                    public void run() {
-                                        try {
-                                            if (finalEx != null) {
-                                                Toast.makeText(context, context.getString(R.string.ChangeReputationError), Toast.LENGTH_SHORT).show();
-                                                AppLog.e(context, finalEx);
-                                            } else if (!finalRes) {
-                                                new MaterialDialog.Builder(context)
-                                                        .title(context.getString(R.string.ChangeReputationError))
-                                                        .content(outParams.get("Result"))
-                                                        .cancelable(true)
-                                                        .positiveText(R.string.ok)
-                                                        .show();
-                                            } else {
-                                                Toast.makeText(context, outParams.get("Result"), Toast.LENGTH_SHORT).show();
-                                            }
-                                        } catch (Exception ex) {
-                                            AppLog.e(context, ex);
-                                        }
-
-                                    }
-                                });
+                            } catch (Exception ex1) {
+                                AppLog.e(context, ex1);
                             }
-                        }).start();
-                    }
+
+                        });
+                    }).start();
                 })
                 .negativeText(R.string.cancel)
                 .show();

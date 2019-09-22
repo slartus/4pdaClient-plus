@@ -232,7 +232,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     @SuppressWarnings("unused")
     @JavascriptInterface
     public void showUserMenu(final String userId, final String userNick) {
-        getMainActivity().runOnUiThread(() -> ForumUser.showUserQuickAction(getMainActivity(), getWebView(), userId, userNick));
+        getMainActivity().runOnUiThread(() -> ForumUser.showUserQuickAction(getMainActivity(), userId, userNick));
     }
 
     @JavascriptInterface
