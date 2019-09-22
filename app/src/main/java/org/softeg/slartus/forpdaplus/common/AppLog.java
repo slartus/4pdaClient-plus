@@ -118,6 +118,7 @@ public final class AppLog {
             return ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : ex.getMessage();
         if (isException(ex, SocketException.class))
             return App.getContext().getString(R.string.connection_lost);
+
         return defaultValue;
     }
 
@@ -148,7 +149,8 @@ public final class AppLog {
 
     private static Boolean isTimeOutException(Throwable ex, Boolean isCause) {
         if (ex == null) return false;
-        return (ex.getClass() == ConnectTimeoutException.class) || ex.getClass() == SocketTimeoutException.class ||
+
+        return (isException(ex,ConnectTimeoutException.class)) || isException(ex, SocketTimeoutException.class) ||
                 (ex.getClass() == SocketException.class
                         && "recvfrom failed: ETIMEDOUT (Connection timed out)".equals(ex.getMessage())) ||
                 (!isCause && isTimeOutException(ex.getCause(), true));
