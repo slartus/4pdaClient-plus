@@ -500,9 +500,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                             AppLog.e(getContext(), helpTask.ex);
                         return null;
                     });
-                    helpTask.execute((HelpTask.OnMethodListener) param -> TopicApi.deleteFromFavorites(Client.getInstance(),
-                            getTopic().getId())
-                    );
+                    helpTask.execute((HelpTask.OnMethodListener) param -> TopicApi.deleteFromFavorites(Client.getInstance(),getTopic().getId()));
                     return true;
                 case R.id.open_topic_forum_item:
                     ForumFragment.Companion.showActivity(getTopic().getForumId(), getTopic().getId());
