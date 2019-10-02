@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.ReputationEvent;
@@ -37,6 +38,7 @@ import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.UserReputationBrickInfo;
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -241,16 +243,29 @@ public class UserReputationFragment extends BrickFragmentListBase {
         }
 
 
+        /**
+         * Загрузка ссылки на изображение, которое является плюсовой репой
+         */
+        private void loadRepImage() throws IOException {
+            String body=Client.getInstance().performGet("http://4pda.ru/forum/index.php?act=rep&view=history&mid=2556269&mode=to&order=asc").getResponseBody();
+            Element el=Jsoup
+                    .parse(body)
+                    .select("#ipbwrapper .borderwrap .ipbtable tbody")
+                    .last();
+            if(el!=null)
+                el= el.select("tr:nth-last-child(2) td img").first();
+            if(el!=null) {
+                String plusImage = el.attr("src");
+                if (plusImage != null)
+                    getPreferences().edit().putString("repPlusImage", plusImage).putBoolean("needLoadRepImage", false).apply();
+            }
+        }
+
         @Override
         public ListData loadInBackground() {
             try {
                 if(needLoadRepImage){
-                    String plusImage = Jsoup
-                            .parse(Client.getInstance().performGet("http://4pda.ru/forum/index.php?act=rep&view=history&mid=2556269&mode=to&order=asc").getResponseBody())
-                            .select("#ipbwrapper .borderwrap .ipbtable tbody")
-                            .last().select("tr:nth-last-child(2) td img").first().attr("src");
-                    if(plusImage!=null)
-                        getPreferences().edit().putString("repPlusImage", plusImage).putBoolean("needLoadRepImage", false).apply();
+                    loadRepImage();
                 }
 
                 ListInfo listInfo = new ListInfo();
