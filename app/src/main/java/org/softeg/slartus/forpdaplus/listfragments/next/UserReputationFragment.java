@@ -42,6 +42,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Response;
+import ru.slartus.http.Http;
+
 /*
  * Created by slinkin on 19.02.2015.
  */
@@ -116,12 +119,13 @@ public class UserReputationFragment extends BrickFragmentListBase {
         getActivity().openContextMenu(view);
 
     }
+
     @Override
     public void onLoadFinished(Loader<ListData> loader, ListData data) {
         super.onLoadFinished(loader, data);
-        if(data.getEx()==null){
-            if(data instanceof ReputationsListData){
-                if(getSupportActionBar()!=null)
+        if (data.getEx() == null) {
+            if (data instanceof ReputationsListData) {
+                if (getSupportActionBar() != null)
                     setSubtitle(((ReputationsListData) data).getRep());
                 Args.putString(USER_NICK_KEY, ((ReputationsListData) data).getUser());
             }
@@ -143,7 +147,7 @@ public class UserReputationFragment extends BrickFragmentListBase {
         final ReputationEvent item = (ReputationEvent) getAdapter().getItem((int) info.id);
 
         final List<MenuListDialog> list = new ArrayList<>();
-        if (item.getSourceUrl()!=null&&!item.getSourceUrl().contains("forum/index.php?showuser=")) {
+        if (item.getSourceUrl() != null && !item.getSourceUrl().contains("forum/index.php?showuser=")) {
             list.add(new MenuListDialog(getString(R.string.jump_to_page), () -> IntentActivity.tryShowUrl(getActivity(), new Handler(), item.getSourceUrl(), true, false)));
         }
         ForumUser.onCreateContextMenu(getActivity(), list, item.getUserId(), item.getUser());
@@ -151,12 +155,10 @@ public class UserReputationFragment extends BrickFragmentListBase {
     }
 
 
-
-
     private static final String START_KEY = "START_KEY";
 
     protected Bundle getLoadArgs() {
-        Bundle args =Args;
+        Bundle args = Args;
         args.putInt(START_KEY, getData().getItems().size());
 
         return args;
@@ -209,16 +211,10 @@ public class UserReputationFragment extends BrickFragmentListBase {
     protected AsyncTaskLoader<ListData> createLoader(int id, Bundle args) {
         ItemsLoader loader = null;
         if (id == ItemsLoader.ID) {
-            boolean needLoadRepImage;
-            if (!Client.getInstance().getLogined()){
-                getPreferences().edit().putBoolean("needLoadRepImage", false).remove("repPlusImage").apply();
-                needLoadRepImage = false;
-            }else {
-                needLoadRepImage = getPreferences().getBoolean("needLoadRepImage", false);
-            }
+
 
             setLoading(true);
-            loader = new ItemsLoader(getActivity(), args, needLoadRepImage);
+            loader = new ItemsLoader(getActivity(), args);
 
         }
         return loader;
@@ -228,14 +224,12 @@ public class UserReputationFragment extends BrickFragmentListBase {
         static final int ID = App.getInstance().getUniqueIntValue();
         ListData mApps;
         private Bundle args;
-        private boolean needLoadRepImage;
 
 
-        ItemsLoader(Context context, Bundle args, boolean needLoadRepImage) {
+        ItemsLoader(Context context, Bundle args) {
             super(context);
 
             this.args = args;
-            this.needLoadRepImage = needLoadRepImage;
         }
 
         public Bundle getArgs() {
@@ -247,24 +241,39 @@ public class UserReputationFragment extends BrickFragmentListBase {
          * Загрузка ссылки на изображение, которое является плюсовой репой
          */
         private void loadRepImage() throws IOException {
-            String body=Client.getInstance().performGet("http://4pda.ru/forum/index.php?act=rep&view=history&mid=2556269&mode=to&order=asc").getResponseBody();
-            Element el=Jsoup
+            String body = Client.getInstance().performGet("http://4pda.ru/forum/index.php?act=rep&view=history&mid=236113&mode=to&order=asc").getResponseBody();
+            Element el = Jsoup
                     .parse(body)
-                    .select("#ipbwrapper .borderwrap .ipbtable tbody")
-                    .last();
-            if(el!=null)
-                el= el.select("tr:nth-last-child(2) td img").first();
-            if(el!=null) {
+                    .select("td.row1>img")
+                    .first();
+            if (el != null) {
+                String plusImage = el.attr("src");
+                if (plusImage != null) {
+                    getPreferences().edit()
+                            .putString("repPlusImage", plusImage)
+                            .putBoolean("needLoadRepImage", false)
+                            .apply();
+                    return;
+                }
+            }
+            if (el != null)
+                el = el.select("tr:nth-last-child(2) td img").first();
+            if (el != null) {
                 String plusImage = el.attr("src");
                 if (plusImage != null)
-                    getPreferences().edit().putString("repPlusImage", plusImage).putBoolean("needLoadRepImage", false).apply();
+                    getPreferences().edit()
+                            .putString("repPlusImage", plusImage)
+                            .putBoolean("needLoadRepImage", false)
+                            .apply();
             }
         }
 
         @Override
         public ListData loadInBackground() {
             try {
-                if(needLoadRepImage){
+                String repPlusImage = getPreferences().getString("repPlusImage", "http://s.4pda.to/ShmfPSURw3VD2aNlTerb3hvYwGCMxd4z0muJAAA.gif");
+                Response response = Http.Companion.getInstance().response(repPlusImage);
+                if (!response.isSuccessful()) {
                     loadRepImage();
                 }
 
@@ -388,20 +397,20 @@ public class UserReputationFragment extends BrickFragmentListBase {
             setVisibility(holder.progress, topic.isInProgress() ? View.VISIBLE : View.INVISIBLE);
             switch (topic.getState()) {
                 case IListItem.STATE_GREEN:
-                    setVisibility(holder.Flag,View.VISIBLE);
+                    setVisibility(holder.Flag, View.VISIBLE);
                     holder.Flag.setText("+");
                     holder.Flag.setBackgroundResource(R.drawable.plusrep);
                     //holder.Flag.setImageResource(R.drawable.new_flag);
                     break;
                 case IListItem.STATE_RED:
-                    setVisibility(holder.Flag,View.VISIBLE);
+                    setVisibility(holder.Flag, View.VISIBLE);
                     holder.Flag.setBackgroundResource(R.drawable.minusrep);
                     holder.Flag.setText("-");
                     //holder.Flag.setImageResource(R.drawable.old_flag);
                     break;
                 default:
-                    setVisibility(holder.Flag,View.INVISIBLE);
-                   // holder.Flag.setImageBitmap(null);
+                    setVisibility(holder.Flag, View.INVISIBLE);
+                    // holder.Flag.setImageBitmap(null);
             }
             return view;
         }
