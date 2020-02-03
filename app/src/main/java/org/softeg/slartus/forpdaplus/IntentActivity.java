@@ -134,7 +134,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
     public static Boolean isYoutube(String url) {
         url = IntentActivity.getRedirectUrl(url);
-        return PatternExtensions.compile("youtube.com/(?:watch|v|e|embed)|youtu.be").matcher(url).find();
+        return PlayerActivity.isYoutube(url);
     }
 
     public static Boolean tryShowYoutube(Activity context, String url, Boolean finish) {

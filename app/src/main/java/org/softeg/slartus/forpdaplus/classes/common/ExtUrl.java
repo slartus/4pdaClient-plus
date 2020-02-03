@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
@@ -19,9 +20,13 @@ import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
+import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static org.softeg.slartus.forpdaplus.video.PlayerActivity.PLAYER_UNSELECTED;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,9 +37,9 @@ import java.util.List;
  */
 public class ExtUrl {
 
-    public static void showContextDialog(final Context context, final String title, final List<MenuListDialog> list){
+    public static void showContextDialog(final Context context, final String title, final List<MenuListDialog> list) {
         final List<String> names = new ArrayList<>();
-        for(MenuListDialog menuListDialog:list)
+        for (MenuListDialog menuListDialog : list)
             names.add(menuListDialog.getTitle());
 
         new MaterialDialog.Builder(context)
@@ -50,7 +55,7 @@ public class ExtUrl {
     }
 
     public static void openNewTab(Context context, Handler handler, String url) {
-        if(!IntentActivity.tryShowUrl((Activity)context, handler, url, false, false))
+        if (!IntentActivity.tryShowUrl((Activity) context, handler, url, false, false))
             Toast.makeText(context, R.string.links_not_supported, Toast.LENGTH_SHORT).show();
     }
 
@@ -151,7 +156,6 @@ public class ExtUrl {
                 .show();
 
 
-
     }
 
     public static void addUrlMenu(final android.os.Handler handler, final Context context, List<MenuListDialog> menu, final String url,
@@ -162,37 +166,55 @@ public class ExtUrl {
     public static void showSelectActionDialog(final android.os.Handler handler, final Context context,
                                               final String title, final String body, final String url, final String topicId, final String topic,
                                               final String postId, final String userId, final String user) {
-        CharSequence[] titles = new CharSequence[]{context.getString(R.string.open_in_new_tab),context.getString(R.string.open_in), context.getString(R.string.share_link),context.getString(R.string.copy_link), context.getString(R.string.create_note), context.getString(R.string.save)};
+        ArrayList<String> titles =
+                new ArrayList<>(Arrays.asList(
+                        context.getString(R.string.open_in_new_tab),
+                        context.getString(R.string.open_in),
+                        context.getString(R.string.share_link),
+                        context.getString(R.string.copy_link),
+                        context.getString(R.string.create_note),
+                        context.getString(R.string.save)));
+        if (IntentActivity.isYoutube(url)) {
+            int savedSelectedPlayer = Integer.parseInt(App.getInstance().getPreferences()
+                    .getString(Preferences.KEY_YOUTUBE_PLAYER, Integer.toString(PLAYER_UNSELECTED)));
+            if (savedSelectedPlayer != PLAYER_UNSELECTED) {
+                titles.add(context.getString(R.string.reset_player));
+            }
+        }
         new MaterialDialog.Builder(context)
                 .content(url)
                 .items(titles)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View view, int i, CharSequence titles) {
-                        switch (i) {
-                            case 0:
-                                openNewTab(context, handler, url);
-                                break;
-                            case 1:
-                                showInBrowser(context, url);
-                                break;
-                            case 2:
-                                shareIt(context, title, url, url);
-                                break;
-                            case 3:
-                                copyLinkToClipboard(context, url);
-                                break;
-                            case 4:
-                                NoteDialog.showDialog(handler, context,
-                                        title, body, url, topicId, topic,
-                                        postId, userId, user);
-                                break;
-                            case 5:
-                                DownloadsService.download(((MainActivity)context), url, false);
-                                break;
-                            default:
-                                break;
-                        }
+                .itemsCallback((dialog, view, i, titles1) -> {
+                    switch (i) {
+                        case 0:
+                            openNewTab(context, handler, url);
+                            break;
+                        case 1:
+                            showInBrowser(context, url);
+                            break;
+                        case 2:
+                            shareIt(context, title, url, url);
+                            break;
+                        case 3:
+                            copyLinkToClipboard(context, url);
+                            break;
+                        case 4:
+                            NoteDialog.showDialog(handler, context,
+                                    title, body, url, topicId, topic,
+                                    postId, userId, user);
+                            break;
+                        case 5:
+                            DownloadsService.download(((MainActivity) context), url, false);
+                            break;
+                        case 6:
+                            App.getInstance()
+                                    .getPreferences()
+                                    .edit()
+                                    .putString(Preferences.KEY_YOUTUBE_PLAYER, Integer.toString(PLAYER_UNSELECTED))
+                                    .apply();
+                            break;
+                        default:
+                            break;
                     }
                 })
                 .cancelable(true)
@@ -205,7 +227,7 @@ public class ExtUrl {
 
 
     public static void showImageSelectActionDialog(final android.os.Handler handler, final Context context, final String url) {
-        CharSequence[] titles = new CharSequence[]{context.getString(R.string.open),context.getString(R.string.open_in), context.getString(R.string.copy_link), context.getString(R.string.save)};
+        CharSequence[] titles = new CharSequence[]{context.getString(R.string.open), context.getString(R.string.open_in), context.getString(R.string.copy_link), context.getString(R.string.save)};
         new MaterialDialog.Builder(context)
                 .content(url)
                 .items(titles)
@@ -224,7 +246,7 @@ public class ExtUrl {
                                 copyLinkToClipboard(context, url);
                                 break;
                             case 3:
-                                DownloadsService.download((Activity)context, url, false);
+                                DownloadsService.download((Activity) context, url, false);
                                 break;
                         }
                     }

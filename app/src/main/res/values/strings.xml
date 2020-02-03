@@ -110,6 +110,7 @@
     <string name="Like">Понравилось</string>
     <string name="client_player">Плеер клиента</string>
     <string name="system_player">Проигрыватель системы</string>
+    <string name="reset_player">Сбросить выбор плеера youtube</string>
     <string name="ask_player">Спрашивать</string>
 
 

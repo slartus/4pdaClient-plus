@@ -103,6 +103,7 @@
     <string name="Like">Like</string>
     <string name="client_player">Player</string>
     <string name="system_player">System player</string>
+    <string name="reset_player">Reset youtube player</string>
     <string name="ask_player">Ask</string>
 
 

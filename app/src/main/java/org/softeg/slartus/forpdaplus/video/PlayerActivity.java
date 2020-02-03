@@ -34,6 +34,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.video.api.Quality;
 import org.softeg.slartus.forpdaplus.video.api.VideoItem;
 import org.softeg.slartus.forpdaplus.video.api.YouTubeAPI;
@@ -43,6 +44,9 @@ import org.softeg.slartus.forpdaplus.video.api.exceptions.ListIdException;
 
 public class PlayerActivity extends AppCompatActivity {
 
+    public static final int PLAYER_UNSELECTED = -1;
+    public static final int PLAYER_CLIENT = 0;
+    public static final int PLAYER_SYSTEM = 1;
     VideoView mVideoView;
     String mVideoUrl;
     ProgressBar pb;
@@ -123,13 +127,13 @@ public class PlayerActivity extends AppCompatActivity {
 
     public static void showYoutubeChoiceDialog(final Activity activity, final CharSequence youtubeUrl) {
         int savedSelectedPlayer = Integer.parseInt(App.getInstance().getPreferences()
-                .getString("news.videoplayer", "-1"));
-        if (savedSelectedPlayer != -1) {
+                .getString(Preferences.KEY_YOUTUBE_PLAYER, Integer.toString(PLAYER_UNSELECTED)));
+        if (savedSelectedPlayer != PLAYER_UNSELECTED) {
             startVideo(savedSelectedPlayer, activity, youtubeUrl);
             return;
         }
         CharSequence[] items = {App.getContext().getString(R.string.client_player), App.getContext().getString(R.string.system_player)};
-        final int[] selected_player = {0};
+        final int[] selected_player = {PLAYER_CLIENT};
         new MaterialDialog.Builder(activity)
                 .title(R.string.select_player)
                 .items(items)
@@ -140,32 +144,24 @@ public class PlayerActivity extends AppCompatActivity {
                 .alwaysCallSingleChoiceCallback()
                 .positiveText(R.string.always)
                 .neutralText(R.string.only_now)
-                .callback(new MaterialDialog.ButtonCallback() {
-                    @Override
-                    public void onPositive(MaterialDialog dialog) {
-                        App.getInstance().getPreferences()
-                                .edit()
-                                .putString("news.videoplayer", Integer.toString(selected_player[0]))
-                                .apply();
+                .onPositive((dialog, which) -> {
+                    App.getInstance().getPreferences()
+                            .edit()
+                            .putString(Preferences.KEY_YOUTUBE_PLAYER, Integer.toString(selected_player[0]))
+                            .apply();
 
-                        startVideo(selected_player[0], activity, youtubeUrl);
-                    }
-                    @Override
-                    public void onNeutral(MaterialDialog dialog) {
-                        startVideo(selected_player[0], activity, youtubeUrl);
-                    }
+                    startVideo(selected_player[0], activity, youtubeUrl);
                 })
+                .onNeutral((dialog, which) -> startVideo(selected_player[0], activity, youtubeUrl))
                 .show();
     }
 
     private static void startVideo(int selectedPlayer, Activity activity, CharSequence youtubeUrl) {
         switch (selectedPlayer) {
-            case 0:
-
+            case PLAYER_CLIENT:
                 PlayerActivity.showActivity(activity, youtubeUrl);
                 break;
-            case 1:
-
+            case PLAYER_SYSTEM:
                 IntentActivity.showInDefaultBrowser(activity, youtubeUrl.toString());
                 break;
         }
