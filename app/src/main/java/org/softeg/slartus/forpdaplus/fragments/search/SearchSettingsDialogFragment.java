@@ -240,10 +240,16 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         if (view.findViewById(R.id.forums_spinner) != null) {
             initSpinner(view);
         }
+
+        SearchSettings searchSettings = getSearchSettings();
+        int titleResId = R.string.search;
+        if (SearchSettings.SEARCH_TYPE_TOPIC.equals(getSearchSettings().getSearchType())) {
+            titleResId = R.string.search_in_topic;
+        }
         MaterialDialog adb = new MaterialDialog.Builder(getActivity())
                 .customView(view, true)
                 .cancelable(true)
-                .title(R.string.search)
+                .title(titleResId)
                 .positiveText(R.string.find)
                 //.negativeText(R.string.cancel)
                 .onPositive((materialDialog, dialogAction) -> MainActivity.startForumSearch(createSearchSettings()))
@@ -253,7 +259,6 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         if (SearchSettings.SEARCH_TYPE_FORUM.equals(getSearchSettings().getSearchType())) {
             rememberButton.setVisibility(View.VISIBLE);
             rememberButton.setOnClickListener(v -> {
-                SearchSettings searchSettings = createSearchSettings();
                 searchSettings.setQuery("");
                 searchSettings.setUserName("");
                 searchSettings.save(App.getInstance().getPreferences().edit()).apply();
@@ -324,11 +329,8 @@ public class SearchSettingsDialogFragment extends DialogFragment {
                 source_group.setVisibility(View.GONE);
                 result_group.setVisibility(View.GONE);
                 break;
-            case SearchSettings.SEARCH_TYPE_USER_POSTS:
-                source_group.setVisibility(View.GONE);
-                result_group.setVisibility(View.GONE);
-                break;
             case SearchSettings.SEARCH_TYPE_USER_TOPICS:
+            case SearchSettings.SEARCH_TYPE_USER_POSTS:
                 source_group.setVisibility(View.GONE);
                 result_group.setVisibility(View.GONE);
                 break;
@@ -399,7 +401,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
                 ArrayList<Topic> topics = new ArrayList<>();
                 try {
                     topics = SearchApi.INSTANCE.getSearchTopicsResult(Client.getInstance(), settings.getSearchQuery(), new ListInfo());
-                } catch (IOException  e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
                 final StringBuilder sb = new StringBuilder();

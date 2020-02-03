@@ -295,6 +295,7 @@
     <string name="close_program_toasr">Нажмите кнопку НАЗАД снова, чтобы выйти из программы</string>
     <string name="tabs">Вкладки</string>
     <string name="search">Поиск</string>
+    <string name="search_in_topic">Поиск в теме</string>
     <string name="all">Все</string>
     <string name="other">Разное</string>
     <string name="mark_all_forums_read">Отметить весь форум прочитанным</string>

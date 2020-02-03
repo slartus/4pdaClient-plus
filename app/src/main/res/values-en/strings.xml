@@ -286,6 +286,7 @@
     <string name="close_program_toasr">Press BACK button again to exit</string>
     <string name="tabs">Tabs</string>
     <string name="search">Search</string>
+    <string name="search_in_topic">Search in topic</string>
     <string name="all">All</string>
     <string name="other">Miscellaneous</string>
     <string name="mark_all_forums_read">Mark all forums as read</string>
