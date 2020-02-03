@@ -783,6 +783,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         m_PostBody = postBody;
     }
 
+    @SuppressWarnings("unused")
+    @JavascriptInterface
     public void quote(final String forumId, final String topicId, final String postId, final String postDate, String userId, String userNick) {
         final String finalPostDate = Functions.getForumDateTime(Functions.parseForumDateTime(postDate, Functions.getToday(), Functions.getYesterToday()));
         final String mUserNick = userNick.replace("\"", "\\\"");
