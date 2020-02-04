@@ -194,9 +194,6 @@
             android:name=".activity.NewYear"
             android:theme="@style/AppTheme.FullScreen" />
 
-        <activity android:name=".activity.NewVersionApp"
-            android:theme="@style/ThemeLight"/>
-
         <service
             android:name=".download.DownloadsService"
             android:enabled="true" />

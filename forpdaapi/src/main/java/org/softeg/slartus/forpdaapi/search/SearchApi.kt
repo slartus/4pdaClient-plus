@@ -69,7 +69,7 @@ object SearchApi {
             }
             el = trElement.select("td:has(a[href*=getlastpost])").first()
             if (el != null) {
-                theme.lastMessageDate = Functions.parseForumDateTime(el.ownText(), today, yesterday)
+                theme.lastMessageDate = Functions.parseForumDateTime(el.text(), today, yesterday)
             }
             el = trElement.select("td:has(a[href*=showuser=])").first()
             if (el != null) {

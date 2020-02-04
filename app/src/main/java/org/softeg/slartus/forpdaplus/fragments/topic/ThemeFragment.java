@@ -1,9 +1,6 @@
 package org.softeg.slartus.forpdaplus.fragments.topic;
 
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -77,8 +74,8 @@ import org.softeg.slartus.forpdaplus.listfragments.TopicReadersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicUtils;
 import org.softeg.slartus.forpdaplus.listfragments.TopicWritersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment;
-import org.softeg.slartus.forpdaplus.listfragments.next.forum.ForumFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
+import org.softeg.slartus.forpdaplus.listfragments.next.forum.ForumFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicReadersBrickInfo;
