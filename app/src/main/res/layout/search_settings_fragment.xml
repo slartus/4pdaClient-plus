@@ -6,9 +6,9 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/query_edit"
@@ -133,12 +133,13 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textStyle="bold" />
 
-                    <Spinner
-                        android:id="@+id/result_spinner"
+                    <ToggleButton
+                        android:id="@+id/result_toggle"
                         android:layout_width="match_parent"
                         android:layout_height="36dp"
-                        android:entries="@array/SearchResultTitles"
-                        android:entryValues="@array/SearchResultValues" />
+
+                        android:textOn="@string/SearchResultTitles_posts"
+                        android:textOff="@string/SearchResultTitles_topics" />
 
                 </TableRow>
 

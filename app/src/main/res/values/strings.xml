@@ -475,5 +475,6 @@
     <string name="lang_changed">Язык приложения был изменен, перезапустить приложение?</string>
     <string name="file_not_support_forum">Данный тип файлов не поддерживается форумом.</string>
     <string name="attach_file">Загрузить</string>
-
+    <string name="SearchResultTitles_topics">Темы</string>
+    <string name="SearchResultTitles_posts">Сообщения</string>
 </resources>

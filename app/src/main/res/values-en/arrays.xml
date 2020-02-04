@@ -238,4 +238,6 @@
         <item>en</item>
         <item>ru</item>
     </string-array>
+    <string name="SearchResultTitles_topics">Themes</string>
+    <string name="SearchResultTitles_posts">Messages</string>
 </resources>

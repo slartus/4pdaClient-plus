@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.ToggleButton;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -52,7 +53,8 @@ public class SearchSettingsDialogFragment extends DialogFragment {
 
     private EditText query_edit, username_edit;
     private CheckBox subforums_check, topics_check;
-    private Spinner source_spinner, sort_spinner, result_spinner, forumsSpinner;
+    private Spinner source_spinner, sort_spinner, forumsSpinner;
+    private ToggleButton result_toggle;
     private View forumsProgress, topicsProgress;
     private View topics_group;
     private View forums_group;
@@ -204,7 +206,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         topics_check = view.findViewById(R.id.topics_check);
         source_spinner = view.findViewById(R.id.source_spinner);
         sort_spinner = view.findViewById(R.id.sort_spinner);
-        result_spinner = view.findViewById(R.id.result_spinner);
+        result_toggle = view.findViewById(R.id.result_toggle);
         topics_group = view.findViewById(R.id.topics_group);
         forumsProgress = view.findViewById(R.id.forums_progress);
         topicsProgress = view.findViewById(R.id.topics_progress);
@@ -276,7 +278,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         searchSettings.setSearchInSubForums(subforums_check.isChecked());
         searchSettings.setSource(getResources().getStringArray(R.array.SearchSourceValues)[(int) source_spinner.getSelectedItemId()]);
         searchSettings.setSort(getResources().getStringArray(R.array.SearchSortValues)[(int) sort_spinner.getSelectedItemId()]);
-        searchSettings.setResultView(getResources().getStringArray(R.array.SearchResultValues)[(int) result_spinner.getSelectedItemId()]);
+        searchSettings.setResultView(result_toggle.isChecked() ? "posts" : "topics");
         if (!topics_check.isChecked())
             searchSettings.getTopicIds().clear();
         return searchSettings;
@@ -319,7 +321,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
 
         source_spinner.setSelection(ArrayUtils.indexOf(searchSettings.getSource(), getResources().getStringArray(R.array.SearchSourceValues)));
         sort_spinner.setSelection(ArrayUtils.indexOf(searchSettings.getSort(), getResources().getStringArray(R.array.SearchSortValues)));
-        result_spinner.setSelection(ArrayUtils.indexOf(searchSettings.getResultView(), getResources().getStringArray(R.array.SearchResultValues)));
+        result_toggle.setChecked(!"topics".equals(searchSettings.getResultView()));
         loadForums(searchSettings.getForumsIds());
         loadTopics(searchSettings.getTopicIds());
 
