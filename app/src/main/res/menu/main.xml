@@ -11,7 +11,7 @@
     <item
         android:id="@+id/search_item"
         android:icon="@drawable/magnify"
-        android:title="@string/Search"
+        android:title="@string/forum_search"
         app:showAsAction="always" />
 
     <item

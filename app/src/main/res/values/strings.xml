@@ -477,4 +477,5 @@
     <string name="attach_file">Загрузить</string>
     <string name="SearchResultTitles_topics">Темы</string>
     <string name="SearchResultTitles_posts">Сообщения</string>
+    <string name="forum_search">Поиск по форуму</string>
 </resources>

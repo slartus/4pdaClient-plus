@@ -30,11 +30,14 @@
 
     <item
         android:id="@+id/page_search_item"
+        android:icon="@drawable/magnify"
         android:title="@string/FindOnPage" />
 
     <item
         android:id="@+id/topic_search_item"
-        android:title="@string/FindInTopic" />
+        android:icon="@drawable/magnify"
+        android:title="@string/FindInTopic"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/topic_options_item"
