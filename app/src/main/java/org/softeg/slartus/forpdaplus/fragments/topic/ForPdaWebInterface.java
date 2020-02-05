@@ -342,6 +342,13 @@ public class ForPdaWebInterface {
     @JavascriptInterface
     public void showRepMenu(final String postId, final String userId, final String userNick, final String canPlus, final String canMinus) {
         run(() -> {
+            boolean minus = "1".equals(canMinus);
+            boolean plus = "1".equals(canPlus);
+            if (!minus && !plus) {
+                getContext().showRep(userId);
+                return;
+            }
+
             List<String> items = new ArrayList<>();
 
             int i = 0;
@@ -349,7 +356,7 @@ public class ForPdaWebInterface {
             int plusRepPosition = -1;
             int showRepPosition;
             int minusRepPosition = -1;
-            if ("1".equals(canPlus)) {
+            if (plus) {
                 items.add(getContext().getString(R.string.do_vote_good) + " (+1)");
                 plusRepPosition = i;
                 i++;
@@ -359,7 +366,7 @@ public class ForPdaWebInterface {
             showRepPosition = i;
             i++;
 
-            if ("1".equals(canMinus)) {
+            if (minus) {
                 items.add(getContext().getString(R.string.do_vote_bad) + " (-1)");
                 minusRepPosition = i;
             }

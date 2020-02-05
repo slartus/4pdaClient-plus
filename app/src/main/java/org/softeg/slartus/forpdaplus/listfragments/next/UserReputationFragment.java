@@ -271,7 +271,6 @@ public class UserReputationFragment extends BrickFragmentListBase {
         @Override
         public ListData loadInBackground() {
             try {
-
                 loadRepImage();
 
                 ListInfo listInfo = new ListInfo();

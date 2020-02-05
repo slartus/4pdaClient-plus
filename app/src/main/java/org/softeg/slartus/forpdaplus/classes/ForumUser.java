@@ -18,6 +18,7 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.fragments.qms.QmsContactThemes;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchSettingsDialogFragment;
+import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,34 +50,35 @@ public class ForumUser {
 
             List<String> items = new ArrayList<>();
 
-            int i = 0;
-
             int insertNickPosition = -1;
             int sendQmsPosition = -1;
             int showProfilePosition;
             int showUserTopicsPosition;
             int showUserPostsPosition;
             int showUserPostsInTopicPosition = -1;
+            int showUserReputationPosition = -1;
 
             if (Client.getInstance().getLogined()) {
-                if (insertNickInterface != null){
+                if (insertNickInterface != null) {
                     items.add(context.getString(R.string.InsertNick));
-                    insertNickPosition = i; i++;
+                    insertNickPosition = items.size() - 1;
                 }
                 items.add(context.getString(R.string.MessagesQms));
-                sendQmsPosition = i; i++;
+                sendQmsPosition = items.size() - 1;
             }
             items.add(context.getString(R.string.Profile));
-            showProfilePosition = i; i++;
+            showProfilePosition = items.size() - 1;
             items.add(context.getString(R.string.FindUserTopics));
-            showUserTopicsPosition = i; i++;
+            showUserTopicsPosition = items.size() - 1;
             items.add(context.getString(R.string.FindUserPosts));
-            showUserPostsPosition = i;
-            if(topicId!=null){
-                i++;
+            showUserPostsPosition = items.size() - 1;
+            if (topicId != null) {
                 items.add(context.getString(R.string.FindUserPostsInTopic));
-                showUserPostsInTopicPosition = i;
+                showUserPostsInTopicPosition = items.size() - 1;
             }
+
+            items.add(context.getString(R.string.Reputation));
+            showUserReputationPosition = items.size() - 1;
 
             if (items.size() == 0) return;
 
@@ -89,13 +91,14 @@ public class ForumUser {
             final int finalShowUserPostsInTopicPosition = showUserPostsInTopicPosition;
             final String finalUserNick = userNick;
 
+            int finalShowUserReputationPosition = showUserReputationPosition;
             new MaterialDialog.Builder(context)
                     .title(finalUserNick)
                     .items(items.toArray(new CharSequence[items.size()]))
                     .itemsCallback((materialDialog, view, i1, charSequence) -> {
                         if (i1 == finalInsertNickPosition) {
                             assert insertNickInterface != null;
-                            insertNickInterface.insert(String.format(TopicBodyBuilder.NICK_SNAPBACK_TEMPLATE,postId, finalUserNick ));
+                            insertNickInterface.insert(String.format(TopicBodyBuilder.NICK_SNAPBACK_TEMPLATE, postId, finalUserNick));
                         } else if (i1 == finalSendQmsPosition) {
                             QmsContactThemes.showThemes(userId, finalUserNick);
                         } else if (i1 == finalShowProfilePosition) {
@@ -106,6 +109,8 @@ public class ForumUser {
                             MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick));
                         } else if (i1 == finalShowUserPostsInTopicPosition) {
                             MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsInTopicSearchSettings(finalUserNick, topicId));
+                        }else if (i1 == finalShowUserReputationPosition) {
+                            UserReputationFragment.showActivity(userId, false);
                         }
                     })
                     .show();
@@ -143,15 +148,15 @@ public class ForumUser {
         TextView textUser = layout.findViewById(R.id.user);
         final EditText message_edit = layout.findViewById(R.id.message_edit);
 
-        if(userId.equals(userNick)){
+        if (userId.equals(userNick)) {
             textUser.setVisibility(View.GONE);
             username_view.setVisibility(View.GONE);
-        }else {
+        } else {
             username_view.setText(userNick);
         }
         new MaterialDialog.Builder(context)
                 .title(title)
-                .customView(layout,true)
+                .customView(layout, true)
                 .positiveText(context.getString(R.string.Change))
                 .onPositive((dialog, which) -> {
                     Toast.makeText(context, context.getString(R.string.ChangeReputationRequest), Toast.LENGTH_SHORT).show();
