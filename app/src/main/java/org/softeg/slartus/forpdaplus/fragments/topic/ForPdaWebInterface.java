@@ -336,7 +336,6 @@ public class ForPdaWebInterface {
     @JavascriptInterface
     public void claim(final String postId) {
         run(() -> Post.claim(getMainActivity(), new Handler(), getContext().getTopic().getId(), postId));
-
     }
 
     @JavascriptInterface
