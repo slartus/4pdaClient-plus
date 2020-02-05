@@ -271,11 +271,8 @@ public class UserReputationFragment extends BrickFragmentListBase {
         @Override
         public ListData loadInBackground() {
             try {
-                String repPlusImage = getPreferences().getString("repPlusImage", "http://s.4pda.to/ShmfPSURw3VD2aNlTerb3hvYwGCMxd4z0muJAAA.gif");
-                Response response = Http.Companion.getInstance().response(repPlusImage);
-                if (!response.isSuccessful()) {
-                    loadRepImage();
-                }
+
+                loadRepImage();
 
                 ListInfo listInfo = new ListInfo();
                 listInfo.setFrom(getArgs().getBoolean(IS_REFRESH_KEY) ? 0 : getArgs().getInt(START_KEY));
