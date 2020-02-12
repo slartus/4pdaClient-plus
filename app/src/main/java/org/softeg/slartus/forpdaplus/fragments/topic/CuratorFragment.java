@@ -23,6 +23,10 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.softeg.slartus.forpdacommon.BasicNameValuePair;
 import org.softeg.slartus.forpdacommon.NameValuePair;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
@@ -53,6 +57,7 @@ public class CuratorFragment extends WebViewFragment {
     private String postarg = "";
     private String postact = "";
     private String postUrl = "";
+
     @Override
     public AdvWebView getWebView() {
         return webView;
@@ -87,7 +92,8 @@ public class CuratorFragment extends WebViewFragment {
     public boolean closeTab() {
         return false;
     }
-    public static CuratorFragment newInstance(String url, String topicId){
+
+    public static CuratorFragment newInstance(String url, String topicId) {
         CuratorFragment fragment = new CuratorFragment();
         Bundle args = new Bundle();
         args.putString("URL", url);
@@ -95,6 +101,7 @@ public class CuratorFragment extends WebViewFragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     public static void showSpecial(String url, String topicId) {
         MainActivity.addTab(App.getContext().getString(R.string.multi_moderation), url, newInstance(url, topicId));
     }
@@ -105,9 +112,9 @@ public class CuratorFragment extends WebViewFragment {
         view = inflater.inflate(R.layout.curator_fragment, container, false);
         webView = (AdvWebView) findViewById(R.id.wvBody);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if(App.getInstance().getPreferences().getBoolean("pancilInActionBar",false)){
+        if (App.getInstance().getPreferences().getBoolean("pancilInActionBar", false)) {
             fab.hide();
-        }else {
+        } else {
             setHideFab(fab);
             setFabColors(fab);
             fab.setOnClickListener(view -> webView.evalJs("getIds();"));
@@ -123,6 +130,7 @@ public class CuratorFragment extends WebViewFragment {
         load(url, topicId);
         return view;
     }
+
     private class LoadPostsTask extends AsyncTask<Boolean, String, Boolean> {
         private String m_ThemeBody;
 
@@ -130,7 +138,7 @@ public class CuratorFragment extends WebViewFragment {
         protected Boolean doInBackground(Boolean... get) {
             try {
                 if (isCancelled()) return false;
-                m_ThemeBody = parse(Client.getInstance().performGet(url,true,false).getResponseBody()).getHtml().toString();
+                m_ThemeBody = parse(Client.getInstance().performGet(url, true, false).getResponseBody()).getHtml().toString();
                 return true;
             } catch (Throwable e) {
                 return false;
@@ -153,6 +161,7 @@ public class CuratorFragment extends WebViewFragment {
             }
         }
     }
+
     private class PostTask extends AsyncTask<Boolean, String, Boolean> {
         private String m_ThemeBody;
 
@@ -189,48 +198,41 @@ public class CuratorFragment extends WebViewFragment {
             }
         }
     }
-    private HtmlBuilder parse(String m_ThemeBody){
+
+    private HtmlBuilder parse(String m_ThemeBody) {
         HtmlBuilder builder = new HtmlBuilder();
         builder.beginHtml("curator");
         builder.beginBody("curator");
 
         String pages = "";
         Pattern mainPattern = PatternExtensions.compile("<form method=\"post\"[\\s\\S]*?action=\"([^\"]*?)\"[^>]*>([\\s\\S]*?)</form>");
-        Pattern postsPattern = PatternExtensions.compile("(<input [\\s\\S]*?)<hr>");
-        Pattern postPattern = PatternExtensions.compile("<input type=\"checkbox\" name=\"postsel\\[\\]\" value=\"(\\d*?)\"[\\s\\S]*?showuser=(\\d*)\"[^>]*>([^<]*)</a>([^$]*)<br>[^<]*<br>([^$]*)");
+        Pattern postsPattern = PatternExtensions.compile("<div id=\"anchor-p\\d+\">([\\s\\S]+?)<\\/div>(?=(<div id=\"anchor-p\\d+\">|<hr>))");
+        Pattern postPattern = PatternExtensions.compile("<input type=\"checkbox\" name=\"postsel\\[\\]\" value=\"(\\d*?)\"[\\s\\S]*?showuser=(\\d*)\"[^>]*>(.*?)<\\/a>([^$]*?)(?:<br[^>]*>)+([^$]*)");
 
         Matcher postMatcher;
         Matcher m = Pattern.compile("<br>Страницы:[^<]*([\\s\\S]*?)<br>").matcher(m_ThemeBody);
-        if(m.find())
+        if (m.find())
             pages = m.group(1);
 
         m = mainPattern.matcher(m_ThemeBody);
-        if(m.find()){
+        if (m.find()) {
             builder.append("<div class=\"panel top\"><div class=\"pages\">").append(pages).append("</div>");
             builder.append("<div class=\"controls\"><button onclick=\"invertCheckboxes();\">Инвертировать</button><button onclick=\"setCheckedAll();\">Выделить всё</button></div></div>");
             builder.append("<div class=\"posts_list\">");
             postUrl = m.group(1);
 
             m = postsPattern.matcher(m.group(2));
-            while (m.find()){
+            while (m.find()) {
 
                 postMatcher = postPattern.matcher(m.group(1));
-                if(postMatcher.find()){
-                    builder.append("<div class=\"post_container\">");
-                    builder.append("<div class=\"post_header\">");
-                    builder.append("<a class=\"inf nick\" href=\"http://4pda.ru/forum/index.php?showuser=")
-                            .append(postMatcher.group(2)).append("\"><span><b>").append(postMatcher.group(3))
-                            .append("</b></span></a>");
-                    builder.append("<a class=\"inf link\" href=\"http://4pda.ru/forum/index.php?act=findpost&amp;pid=")
-                            .append(postMatcher.group(1)).append("\"><span><span class=\"sharp\">#</span>").append(postMatcher.group(1))
-                            .append("</span></a>");
-                    builder.append("<div class=\"date-link\"><span class=\"inf date\"><span>").append(postMatcher.group(4).replaceAll("\n","").replace("@", "")).append("</span></span></div>");
-                    builder.append("<label class=\"checkbox\"><input type=\"checkbox\" name=\"postsel[]\" value=\"").append(postMatcher.group(1)).append("\"><span class=\"icon\"></span></label>");
-                    builder.append("</div>");
-                    builder.append("<div class=\"post_body \">");
-                    builder.append(postMatcher.group(5));
-                    builder.append("</div>");
-                    builder.append("</div>");
+                if (postMatcher.find()) {
+                    String postId = postMatcher.group(1);
+                    String userId = postMatcher.group(2);
+                    String userNick = postMatcher.group(3);
+                    String groupAndDate = postMatcher.group(4);
+                    String postBody = postMatcher.group(5);
+
+                    addPost(builder,postId,userId,userNick,groupAndDate,postBody);
                 }
             }
             builder.append("</div>");
@@ -241,6 +243,27 @@ public class CuratorFragment extends WebViewFragment {
         builder.endHtml();
         return builder;
     }
+
+    private void addPost(HtmlBuilder builder, String postId, String userId, String userNick,
+                         String groupAndDate, String postBody){
+        builder.append("<div class=\"post_container\">");
+        builder.append("<div class=\"post_header\">");
+        builder.append("<a class=\"inf nick\" href=\"http://4pda.ru/forum/index.php?showuser=")
+                .append(userId).append("\"><span><b>").append(userNick)
+                .append("</b></span></a>");
+        builder.append("<a class=\"inf link\" href=\"http://4pda.ru/forum/index.php?act=findpost&amp;pid=")
+                .append(postId).append("\"><span><span class=\"sharp\">#</span>").append(postId)
+                .append("</span></a>");
+        builder.append("<div class=\"date-link\"><span class=\"inf date\"><span>")
+                .append(groupAndDate.replaceAll("\n", "").replace("@", "")).append("</span></span></div>");
+        builder.append("<label class=\"checkbox\"><input type=\"checkbox\" name=\"postsel[]\" value=\"").append(postId).append("\"><span class=\"icon\"></span></label>");
+        builder.append("</div>");
+        builder.append("<div class=\"post_body \">");
+        builder.append(postBody);
+        builder.append("</div>");
+        builder.append("</div>");
+    }
+
     private void showThemeBody(String body) {
         try {
             webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
@@ -250,19 +273,21 @@ public class CuratorFragment extends WebViewFragment {
         }
     }
 
-    public void load(String url, String topicId){
+    public void load(String url, String topicId) {
         this.topicId = topicId;
         load(url);
     }
-    public void load(String url){
+
+    public void load(String url) {
         this.url = url;
         setLoading(true);
         new LoadPostsTask().execute(true);
     }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if(App.getInstance().getPreferences().getBoolean("pancilInActionBar",false)) {
+        if (App.getInstance().getPreferences().getBoolean("pancilInActionBar", false)) {
             menu.add(R.string.write)
                     .setIcon(R.drawable.auto_fix)
                     .setOnMenuItemClickListener(item -> {
@@ -282,6 +307,7 @@ public class CuratorFragment extends WebViewFragment {
                     return true;
                 });
     }
+
     @SuppressWarnings("unused")
     @JavascriptInterface
     public void showCuratorDialog(final String ids) {
@@ -335,6 +361,7 @@ public class CuratorFragment extends WebViewFragment {
     public void run(final Runnable runnable) {
         getMainActivity().runOnUiThread(runnable);
     }
+
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, final String url) {
@@ -345,9 +372,10 @@ public class CuratorFragment extends WebViewFragment {
         }
 
     }
+
     private boolean checkIsTheme(String url) {
 
-        if("mmod".equals(Uri.parse(url).getQueryParameter("act"))){
+        if ("mmod".equals(Uri.parse(url).getQueryParameter("act"))) {
             load(url);
             return true;
         }
