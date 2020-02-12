@@ -35,6 +35,7 @@ import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdanotifyservice.MainService;
 import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
+import org.softeg.slartus.forpdaplus.acra.ACRAReportSenderFactory;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
@@ -62,20 +63,22 @@ import static org.softeg.slartus.forpdaplus.prefs.PreferencesActivity.getPackage
  * Date: 05.08.11
  * Time: 8:03
  */
+
 @ReportsCrashes(
-        mailTo = "slartus@gmail.com",
-        mode = ReportingInteractionMode.DIALOG,
-        customReportContent = {ReportField.APP_VERSION_CODE, ReportField.APP_VERSION_NAME,
-                ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL,
-                ReportField.CUSTOM_DATA, ReportField.STACK_TRACE, ReportField.LOGCAT},
-        resToastText = R.string.crash_toast_text, // optional, displayed as soon as the crash occurs, before collecting data which can take a few seconds
-        resDialogText = R.string.crash_dialog_text,
-        resDialogIcon = R.drawable.icon_mat, //optional. default is a warning sign
-        resDialogTitle = R.string.crash_dialog_title, // optional. default is your application name
-        resDialogCommentPrompt = R.string.crash_dialog_comment_prompt, // optional. when defined, adds a user text field input with this text resource as a label
-        resDialogOkToast = R.string.crash_dialog_ok_toast, // optional. displays a Toast message when the user accepts to send a report.)
-        resDialogTheme = R.style.Crash_Dialog
-)
+        mode = ReportingInteractionMode.TOAST,
+        customReportContent = {ReportField.APP_VERSION_CODE,
+                ReportField.APP_VERSION_NAME, ReportField.USER_COMMENT, ReportField.IS_SILENT, ReportField.PACKAGE_NAME,
+                ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL, ReportField.AVAILABLE_MEM_SIZE, ReportField.SHARED_PREFERENCES,
+                ReportField.APPLICATION_LOG, ReportField.STACK_TRACE, ReportField.LOGCAT},
+        resNotifTitle = R.string.crash_dialog_title,
+        resNotifText =  R.string.crash_dialog_text,
+        resNotifIcon = R.drawable.notify_icon,
+        resToastText = R.string.crash_dialog_text,
+        resDialogOkToast = R.string.crash_dialog_ok_toast,
+        resDialogText = R.string.crash_dialog_text, resDialogIcon = android.R.drawable.ic_dialog_info,
+        resDialogTitle = R.string.crash_dialog_title, resDialogCommentPrompt = R.string.crash_dialog_comment_prompt,
+        reportSenderFactoryClasses = {ACRAReportSenderFactory.class})
+//optional. default is a warning sign
 public class App extends MultiDexApplication {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     public static final int THEME_LIGHT = 0;
@@ -519,8 +522,7 @@ public class App extends MultiDexApplication {
         config.locale = locale;
         getResources().updateConfiguration(config, null);
 
-        ACRA.init(this);
-        ACRA.getErrorReporter().putCustomData("USER_NICK", getPreferences().getString("Login", "empty"));
+
         initImageLoader(this);
         m_MyActivityLifecycleCallbacks = new MyActivityLifecycleCallbacks();
         registerActivityLifecycleCallbacks(m_MyActivityLifecycleCallbacks);
@@ -538,6 +540,15 @@ public class App extends MultiDexApplication {
         resStartNotifierServices();
         Http.Companion.init(this, getString(R.string.app_name), getPackageInfo().versionName);
         Client.getInstance().checkLoginByCookies();
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        if (!ACRA.isACRASenderServiceProcess()) {
+            ACRA.init(this);
+
+        }
     }
 
     @Override

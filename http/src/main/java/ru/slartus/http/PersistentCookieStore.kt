@@ -265,6 +265,8 @@ class PersistentCookieStore private constructor(context: Context) : CookieStore 
         path is a %x2F ("/") character. */
 
     private fun checkPathsMatch(cookiePath: String, requestPath: String): Boolean {
+        if (cookiePath.isEmpty())
+            return false
         return requestPath == cookiePath ||
                 requestPath.startsWith(cookiePath) && cookiePath[cookiePath.length - 1] == '/' ||
                 requestPath.startsWith(cookiePath) && requestPath.substring(cookiePath.length)[0] == '/'

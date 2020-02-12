@@ -125,7 +125,7 @@ dependencies {
     api 'com.afollestad.material-dialogs:core:0.9.6.0'
     api 'de.hdodenhof:circleimageview:2.0.0'
     api 'com.dmitriy-tarasov:android-intents:1.1.0'
-    api 'com.squareup.picasso:picasso:2.5.2'
+    api 'com.squareup.picasso:picasso:2.71828'
     api 'ch.acra:acra:4.9.2'
     api 'com.google.code.gson:gson:2.8.5'
     api "com.squareup.okhttp3:okhttp:$rootProject.okhttp3"
@@ -137,6 +137,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
+    implementation "com.evernote:android-job:1.2.6"
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
