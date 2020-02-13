@@ -73,7 +73,7 @@ class QmsChatFragment : WebViewFragment() {
 
     private var mMode: ActionMode? = null
     private var deleteMode: Boolean? = false
-
+    private var daysCount: Int? = DAYS_PART_COUNT
 
     //Upload file to savepic.ru
     private val attachList = ArrayList<EditAttach>()
@@ -97,7 +97,10 @@ class QmsChatFragment : WebViewFragment() {
 
     override fun reload() {
         Thread(Runnable { this.reLoadChatSafe() }).start()
+    }
 
+    fun reload(loadMore: Boolean = false) {
+        Thread(Runnable { this.reLoadChatSafe(loadMore) }).start()
     }
 
     override fun getAsyncTask(): AsyncTask<*, *, *>? {
@@ -117,6 +120,8 @@ class QmsChatFragment : WebViewFragment() {
         themeId = extras?.getString(TID_KEY)
         themeTitle = extras?.getString(THEME_TITLE_KEY)
         title = if (TextUtils.isEmpty(contactNick)) "QMS" else themeTitle
+        if (extras?.containsKey(KEY_DAYSCOUNT) == true)
+            daysCount = extras.getInt(KEY_DAYSCOUNT)
         if (supportActionBar != null)
             setSubtitle(contactNick)
     }
@@ -293,7 +298,8 @@ class QmsChatFragment : WebViewFragment() {
                     .content(String.format(App.getContext().getString(R.string.ask_delete_messages), ids.size))
                     .positiveText(R.string.delete)
                     .onPositive { _, _ ->
-                        sendTask = DeleteTask(this, contactId ?: "", themeId ?: "", ids)
+                        sendTask = DeleteTask(this, contactId ?: "",
+                                themeId ?: "", ids, daysCount)
                         sendTask?.execute()
                     }
                     .negativeText(R.string.cancel)
@@ -301,14 +307,19 @@ class QmsChatFragment : WebViewFragment() {
         }
     }
 
-    @Suppress("unused")
+    @JavascriptInterface
+    fun loadMore() {
+        mainActivity.runOnUiThread {
+            daysCount = (daysCount ?: 0) + DAYS_PART_COUNT
+            reload(true)
+        }
+    }
+
     @JavascriptInterface
     fun startDeleteModeJs(count: String) {
         mainActivity.runOnUiThread { startDeleteMode(count) }
-
     }
 
-    @Suppress("unused")
     @JavascriptInterface
     fun stopDeleteModeJs() {
         if (deleteMode != true)
@@ -386,6 +397,9 @@ class QmsChatFragment : WebViewFragment() {
         outState.putString(TID_KEY, themeId)
         outState.putString(THEME_TITLE_KEY, themeTitle)
         outState.putString(POST_TEXT_KEY, edMessage!!.text.toString())
+        daysCount?.let {
+            outState.putInt(KEY_DAYSCOUNT, it)
+        }
     }
 
     override fun onResume() {
@@ -449,10 +463,9 @@ class QmsChatFragment : WebViewFragment() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
-
     }
 
-    fun transformChatBody(chatBody: String): String {
+    fun transformChatBody(chatBody: String, loadMore: Boolean = false): String {
         var chatBodyLocal = chatBody
         checkNewQms()
         if ((themeTitle == null) or (contactNick == null)) {
@@ -464,7 +477,7 @@ class QmsChatFragment : WebViewFragment() {
         }
         val htmlBuilder = HtmlBuilder()
         htmlBuilder.beginHtml("QMS")
-        htmlBuilder.beginBody("qms", "", Preferences.Topic.isShowAvatars())
+        htmlBuilder.beginBody("qms${if (loadMore) "_" else ""}", "", Preferences.Topic.isShowAvatars())
         //        htmlBuilder.beginBody("qms", "onload=\"scrollToElement('bottom_element')\"", Preferences.Topic.isShowAvatars());
 
         if (!Preferences.Topic.isShowAvatars())
@@ -481,26 +494,21 @@ class QmsChatFragment : WebViewFragment() {
         return htmlBuilder.html.toString()
     }
 
-    private fun reLoadChatSafe() {
+    private fun reLoadChatSafe(loadMore: Boolean = false) {
         uiHandler.post { setSubtitle(App.getContext().getString(R.string.refreshing)) }
 
         var chatBody: String? = null
         var ex: Throwable? = null
-        var updateTitle = false
         try {
             val body: String
 
-            if (TextUtils.isEmpty(contactNick)) {
-                updateTitle = true
-                val additionalHeaders = HashMap<String, String>()
-                body = QmsApi.getChat(Client.getInstance(), contactId!!, themeId!!, additionalHeaders)
-                if (additionalHeaders.containsKey("Nick"))
-                    contactNick = additionalHeaders["Nick"]
-                if (additionalHeaders.containsKey("ThemeTitle"))
-                    themeTitle = additionalHeaders["ThemeTitle"]
-            } else {
-                body = QmsApi.getChat(Client.getInstance(), contactId!!, themeId!!)
-            }
+            val qmsPage = QmsApi.getChat(Client.getInstance(), contactId!!, themeId!!, daysCount)
+            body = qmsPage.body ?: ""
+            if (!qmsPage.userNick.isNullOrEmpty())
+                contactNick = qmsPage.userNick?.toString() ?: contactNick
+            if (!qmsPage.title.isNullOrEmpty())
+                themeTitle = qmsPage.title?.toString() ?: themeTitle
+
             if (body.length.toLong() == lastBodyLength) {
                 checkNewQms()
                 uiHandler.post {
@@ -510,20 +518,19 @@ class QmsChatFragment : WebViewFragment() {
                 return
             }
             lastBodyLength = body.length.toLong()
-            chatBody = transformChatBody(body)
+            chatBody = transformChatBody(body, loadMore)
         } catch (e: Throwable) {
             ex = e
         }
 
         val finalEx = ex
         val finalChatBody = chatBody
-        val finalUpdateTitle = updateTitle
+
         uiHandler.post {
             if (finalEx == null) {
-                if (finalUpdateTitle)
-                    title = themeTitle
+                title = themeTitle
                 setSubtitle(contactNick)
-                wvChat!!.loadDataWithBaseURL("http://4pda.ru/forum/", finalChatBody, "text/html", "UTF-8", null)
+                wvChat?.loadDataWithBaseURL("http://4pda.ru/forum/", finalChatBody, "text/html", "UTF-8", null)
             } else {
                 if ("Такого диалога не существует." == finalEx.message) {
                     MaterialDialog.Builder(mainActivity)
@@ -560,7 +567,7 @@ class QmsChatFragment : WebViewFragment() {
             if (ex != null)
                 AppLog.e(mainActivity, ex) {
                     sendTask = SendTask(this, contactId ?: "", themeId ?: "", messageText
-                            ?: "", attachList)
+                            ?: "", attachList, daysCount)
                     sendTask!!.execute()
                 }
             else
@@ -596,7 +603,8 @@ class QmsChatFragment : WebViewFragment() {
             return
         }
         messageText = edMessage!!.text.toString()
-        sendTask = SendTask(this, contactId ?: "", themeId ?: "", messageText ?: "", attachList)
+        sendTask = SendTask(this, contactId ?: "", themeId ?: "",
+                messageText ?: "", attachList, daysCount)
         sendTask?.execute()
     }
 
@@ -745,6 +753,7 @@ class QmsChatFragment : WebViewFragment() {
     }
 
     companion object {
+        private const val KEY_DAYSCOUNT = "KEY_DAYSCOUNT"
         private const val MID_KEY = "mid"
         private const val TID_KEY = "tid"
         private const val THEME_TITLE_KEY = "theme_title"
@@ -752,7 +761,7 @@ class QmsChatFragment : WebViewFragment() {
         private const val PAGE_BODY_KEY = "page_body"
         private const val POST_TEXT_KEY = "PostText"
         private const val FILECHOOSER_RESULTCODE = 1
-
+        private const val DAYS_PART_COUNT = 7
         fun openChat(userId: String, userNick: String?, tid: String, themeTitle: String?, pageBody: String?) {
             MainActivity.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle, pageBody))
         }

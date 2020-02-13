@@ -484,7 +484,7 @@ public class Client implements IHttpClient {
                 throw new NotReportException(context.getString(R.string.site_response) + Html.fromHtml(topicBody).toString());
             throw new IOException(context.getString(R.string.error_parsing_page) + " id=" + id);
         }
-        Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(context);
+        Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface();
 
         ExtTopic topic = createTopic(id, mainMatcher.group(1));
         topicBody = topicBody.replace("^[\\s\\S]*?<div data-post", "<div data-post").replace("<div class=\"topic_foot_nav\">[\\s\\S]*", "<div class=\"topic_foot_nav\">");

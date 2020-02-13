@@ -19,7 +19,7 @@ class MentionsHtmlBuilder(private val mentionsResult: MentionsResult) : HtmlBuil
     }
 
     fun build(): String {
-        val isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(App.getInstance())
+        val isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface()
 
         beginHtml(App.getContext().getString(R.string.search_result))
         beginTopic(mentionsResult)
@@ -64,7 +64,7 @@ class MentionsHtmlBuilder(private val mentionsResult: MentionsResult) : HtmlBuil
         m_Body.append("<div id=\"topMargin\"></div>\n<div class=\"panel top\">")
         if (mentionsResult.getPagesCount() > 1) {
             TopicBodyBuilder.addButtons(m_Body, mentionsResult.getCurrentPage(), mentionsResult.getPagesCount(),
-                    Functions.isWebviewAllowJavascriptInterface(App.getInstance()), true, true)
+                    Functions.isWebviewAllowJavascriptInterface(), true, true)
         }
         m_Body.append("</div>")
         //m_Body.append("<br/><br/>");
@@ -76,7 +76,7 @@ class MentionsHtmlBuilder(private val mentionsResult: MentionsResult) : HtmlBuil
         m_Body.append("<div class=\"panel bottom\">")
         if (mentionsResult.getPagesCount() > 1) {
             TopicBodyBuilder.addButtons(m_Body, mentionsResult.getCurrentPage(), mentionsResult.getPagesCount(),
-                    Functions.isWebviewAllowJavascriptInterface(App.getInstance()), true, false)
+                    Functions.isWebviewAllowJavascriptInterface(), true, false)
         }
         m_Body.append("</div><div id=\"bottomMargin\"></div>")
         endBody()

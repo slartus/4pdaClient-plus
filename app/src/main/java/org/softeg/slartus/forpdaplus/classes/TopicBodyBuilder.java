@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import org.softeg.slartus.forpdacommon.HtmlOutUtils;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
@@ -198,30 +199,7 @@ public class TopicBodyBuilder extends HtmlBuilder {
     }
 
     public static String getHtmlout(Boolean webViewAllowJs, String methodName, String[] paramValues, Boolean modifyParams) {
-        StringBuilder sb = new StringBuilder();
-        if (!webViewAllowJs) {
-            sb.append("href=\"http://www.HTMLOUT.ru/");
-            sb.append(methodName).append("?");
-            int i = 0;
-
-            for (String paramName : paramValues) {
-                sb.append("val").append(i).append("=").append(modifyParams ? Uri.encode(paramName) : paramName).append("&");
-                i++;
-            }
-
-            sb = sb.delete(sb.length() - 1, sb.length());
-            sb.append("\"");
-        } else {
-
-            sb.append(" onclick=\"window.HTMLOUT.").append(methodName).append("(");
-            for (String paramName : paramValues) {
-                sb.append("'").append(paramName).append("',");
-            }
-            if (paramValues.length > 0)
-                sb.delete(sb.length() - 1, sb.length());
-            sb.append(")\"");
-        }
-        return sb.toString();
+        return HtmlOutUtils.getHtmlout(methodName,paramValues,modifyParams);
     }
 
     private void addPostHeader(StringBuilder sb, Post msg) {

@@ -26,11 +26,8 @@ public class Functions {
     private static SimpleDateFormat fullDateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
 
-    public static Boolean isWebviewAllowJavascriptInterface(Context context) {
-        final SharedPreferences prefs = App.getInstance().getPreferences();
-        return prefs.getBoolean("system.WebviewAllowJavascriptInterface", true);
-//        return !Build.VERSION.RELEASE.startsWith("2.3")|| Build.VERSION.RELEASE.equals("2.3.7")
-//                || Build.VERSION.RELEASE.equals("2.3.4");
+    public static Boolean isWebviewAllowJavascriptInterface() {
+        return org.softeg.slartus.forpdacommon.Functions.isWebviewAllowJavascriptInterface();
     }
 
 

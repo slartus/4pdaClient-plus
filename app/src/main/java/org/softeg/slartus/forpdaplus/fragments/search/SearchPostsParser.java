@@ -40,7 +40,7 @@ public class SearchPostsParser extends HtmlBuilder {
 
     public String parse(AppResponse response) {
         int posts = 0;
-        Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface(App.getInstance());
+        Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface();
         searchResult = createSearchResult(response);
         beginHtml(App.getContext().getString(R.string.search_result));
         beginTopic(searchResult);
@@ -123,7 +123,7 @@ public class SearchPostsParser extends HtmlBuilder {
         m_Body.append("<div id=\"topMargin\"></div>\n<div class=\"panel top\">");
         if (searchResult.getPagesCount() > 1) {
             TopicBodyBuilder.addButtons(m_Body, searchResult.getCurrentPage(), searchResult.getPagesCount(),
-                    Functions.isWebviewAllowJavascriptInterface(App.getInstance()), true, true);
+                    Functions.isWebviewAllowJavascriptInterface(), true, true);
         }
         m_Body.append("</div>");
         //m_Body.append("<br/><br/>");
@@ -136,7 +136,7 @@ public class SearchPostsParser extends HtmlBuilder {
         if (searchResult.getPagesCount() > 1) {
             TopicBodyBuilder.addButtons(m_Body, searchResult.getCurrentPage(),
                     searchResult.getPagesCount(),
-                    Functions.isWebviewAllowJavascriptInterface(App.getInstance()), true, false);
+                    Functions.isWebviewAllowJavascriptInterface(), true, false);
         }
         m_Body.append("</div><div id=\"bottomMargin\"></div>");
         endBody();
