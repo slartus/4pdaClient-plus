@@ -5,7 +5,7 @@
   "warning_text": "Файл обновления необходимо скачивать через системный менеджер загрузок.<br><br>Если у вас тормозит открытие спойлеров, то обновите WebView до последней версии.",
   "update_beta": {
     "ver": "3.5.5",
-    "apk": "http://4pda.ru/forum/dl/post/18803749/ForPDA_3.5.5_c643-beta.apk",
+    "apk": "http://4pda.ru/forum/dl/post/18813959/ForPDA_3.5.5_c645-beta.apk",
     "info": ""
   },
 
@@ -32,8 +32,8 @@
     {
       "name": "beta",
       "ver": "3.5.5",
-      "versionCode":643,
-      "apk": "http://4pda.ru/forum/dl/post/18803749/ForPDA_3.5.5_c643-beta.apk",
+      "versionCode":645,
+      "apk": "http://4pda.ru/forum/dl/post/18813959/ForPDA_3.5.5_c645-beta.apk",
       "info": ""
     }
   ]
