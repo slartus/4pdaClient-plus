@@ -2,13 +2,13 @@ package org.softeg.slartus.forpdaapi.qms
 
 
 import android.support.v4.util.Pair
-import android.text.Html
 import org.softeg.slartus.forpdaapi.IHttpClient
 import org.softeg.slartus.forpdaapi.ProgressState
 import org.softeg.slartus.forpdaapi.post.EditAttach
 import org.softeg.slartus.forpdacommon.FileUtils
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdacommon.PatternExtensions
+import org.softeg.slartus.forpdacommon.fromHtml
 import ru.slartus.http.CountingFileRequestBody
 import ru.slartus.http.Http
 import java.io.IOException
@@ -42,7 +42,7 @@ object QmsApi {
 
         val m = Pattern.compile("<div class=\"error\">([\\s\\S]*?)</div>").matcher(pageBody)
         if (m.find()) {
-            throw Exception(Html.fromHtml(m.group(1)).toString())
+            throw Exception(m.group(1).fromHtml().toString())
         }
 
     }
@@ -57,8 +57,8 @@ object QmsApi {
             val m = Pattern.compile("<span class=\"navbar-title\">\\s*?<a href=\"[^\"]*/forum/index.php\\?showuser=\\d+\"[^>]*><strong>(.*?):</strong></a>([\\s\\S]*?)\\s*?</span>")
                     .matcher(pageBody)
             if (m.find()) {
-                additionalHeaders["Nick"] = Html.fromHtml(m.group(1)).toString()
-                additionalHeaders["ThemeTitle"] = Html.fromHtml(m.group(2)).toString()
+                additionalHeaders["Nick"] = m.group(1).fromHtml().toString()
+                additionalHeaders["ThemeTitle"] = m.group(2).fromHtml().toString()
                 // break;
             }
 
@@ -66,8 +66,8 @@ object QmsApi {
         return matchChatBody(pageBody)
     }
 
-    private fun matchChatBody(pageBody: String): String {
-        var pageBody = pageBody
+    private fun matchChatBody(pageBod: String): String {
+        var pageBody = pageBod
         var chatInfo = ""
         var m = Pattern.compile("<span class=\"nav-text\"[\\s\\S]*?<a href=\"[^\"]*showuser[^>]*>([^>]*?)</a>:</b>([^<]*)").matcher(pageBody)
         if (m.find())
@@ -89,7 +89,7 @@ object QmsApi {
         if (m.find())
             return "<div id=\"thread_form\"></div>"
         else
-            pageBody = pageBody + ""
+            pageBody += ""
         return pageBody
     }
 
@@ -129,7 +129,7 @@ object QmsApi {
         outParams["user"] = userNick
         outParams["title"] = title
         //}
-        if (outParams.size == 0) {
+        if (outParams.isEmpty()) {
             m = Pattern.compile("<div class=\"form-error\">(.*?)</div>").matcher(pageBody.responseBody)
             if (m.find())
                 throw NotReportException(m.group(1))
@@ -168,7 +168,7 @@ object QmsApi {
         return matchChatBody(httpClient.performPost("http://4pda.ru/forum/index.php?act=qms&mid$mid&t=$threadId&xhr=body&do=1", additionalHeaders, encoding).responseBody)
     }
 
-    fun parseQmsUsers(pageBody: String?): ArrayList<QmsUser> {
+    private fun parseQmsUsers(pageBody: String?): ArrayList<QmsUser> {
         val res = ArrayList<QmsUser>()
         val m = Pattern.compile("<a class=\"list-group-item[^>]*=(\\d*)\">[^<]*<div class=\"bage\">([^<]*)[\\s\\S]*?src=\"([^\"]*)\" title=\"([^\"]*)\"", Pattern.CASE_INSENSITIVE).matcher(pageBody!!)
         var count: String
@@ -181,7 +181,7 @@ object QmsApi {
                 avatar = "http:$avatar"
             }
             qmsUser.setAvatarUrl(avatar)
-            qmsUser.nick = Html.fromHtml(m.group(4)).toString().trim { it <= ' ' }
+            qmsUser.nick = m.group(4).fromHtml().toString().trim { it <= ' ' }
             count = m.group(2).trim { it <= ' ' }
             if (count != "")
                 qmsUser.newMessagesCount = count.replace("(", "").replace(")", "")
@@ -199,7 +199,7 @@ object QmsApi {
         val newCountPattern = Pattern.compile("([\\s\\S]*?)\\((\\d+)\\s*\\/\\s*(\\d+)\\)\\s*$")
         val countPattern = Pattern.compile("([\\s\\S]*?)\\((\\d+)\\)\\s*$")
         val strongPattern = Pattern.compile("<strong>([\\s\\S]*?)</strong>")
-        var matcher = Pattern.compile("<div class=\"list-group\">([\\s\\S]*)<form [^>]*>([\\s\\S]*?)<\\/form>").matcher(pageBody!!)
+        var matcher = Pattern.compile("<div class=\"list-group\">([\\s\\S]*)<form [^>]*>([\\s\\S]*?)<\\/form>").matcher(pageBody)
         if (matcher.find()) {
             outUsers.addAll(parseQmsUsers(matcher.group(1)))
             matcher = Pattern.compile("<a class=\"list-group-item[^>]*-(\\d*)\">[\\s\\S]*?<div[^>]*>([\\s\\S]*?)<\\/div>([\\s\\S]*?)<\\/a>").matcher(matcher.group(2))
@@ -244,8 +244,8 @@ object QmsApi {
     }
 
     fun getNewQmsCount(pageBody: String): Int {
-        val qms_2_0_Pattern = PatternExtensions.compile("id=\"events-count\"[^>]*>[^\\d]*?(\\d+)<")
-        val m = qms_2_0_Pattern.matcher(pageBody)
+        val qms20Pattern = PatternExtensions.compile("id=\"events-count\"[^>]*>[^\\d]*?(\\d+)<")
+        val m = qms20Pattern.matcher(pageBody)
         return if (m.find()) {
             Integer.parseInt(m.group(1))
         } else 0
@@ -258,7 +258,7 @@ object QmsApi {
     }
 
 
-    fun fromCharCode(vararg codePoints: Int): String {
+    private fun fromCharCode(vararg codePoints: Int): String {
         val builder = StringBuilder(codePoints.size)
         for (codePoint in codePoints) {
             builder.append(Character.toChars(codePoint))
