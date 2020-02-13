@@ -509,6 +509,7 @@ public class App extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
 
+        org.softeg.slartus.forpdacommon.FACTORY.init(this);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 

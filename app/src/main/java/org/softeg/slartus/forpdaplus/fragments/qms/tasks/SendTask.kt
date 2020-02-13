@@ -14,7 +14,8 @@ class SendTask internal constructor(qmsChatFragment: QmsChatFragment,
                                     private val contactId: String,
                                     private val themeId: String,
                                     private val messageText: String,
-                                    private val attachs: ArrayList<EditAttach>) : AsyncTask<ArrayList<String>, Void, Boolean>() {
+                                    private val attachs: ArrayList<EditAttach>,
+                                    private val daysCount:Int?) : AsyncTask<ArrayList<String>, Void, Boolean>() {
     private val dialog = MaterialDialog.Builder(qmsChatFragment.context!!)
             .progress(true, 0)
             .content(qmsChatFragment.context!!.getString(R.string.sending_message))
@@ -25,8 +26,9 @@ class SendTask internal constructor(qmsChatFragment: QmsChatFragment,
 
     override fun doInBackground(vararg params: ArrayList<String>): Boolean? {
         return try {
-            chatBody = qmsChatFragment.get()?.transformChatBody(QmsApi.sendMessage(Client.getInstance(), contactId, themeId, messageText,
-                    QmsChatFragment.encoding, attachs))
+            val qmsPage=QmsApi.sendMessage(Client.getInstance(), contactId, themeId, messageText,
+                    QmsChatFragment.encoding, attachs,daysCount)
+            chatBody = qmsChatFragment.get()?.transformChatBody(qmsPage.body?:"")
             true
         } catch (e: Throwable) {
             ex = e

@@ -2,13 +2,10 @@ package org.softeg.slartus.forpdaapi.qms
 
 
 import android.support.v4.util.Pair
-import android.text.Html
 import org.softeg.slartus.forpdaapi.IHttpClient
 import org.softeg.slartus.forpdaapi.ProgressState
 import org.softeg.slartus.forpdaapi.post.EditAttach
-import org.softeg.slartus.forpdacommon.FileUtils
-import org.softeg.slartus.forpdacommon.NotReportException
-import org.softeg.slartus.forpdacommon.PatternExtensions
+import org.softeg.slartus.forpdacommon.*
 import ru.slartus.http.CountingFileRequestBody
 import ru.slartus.http.Http
 import java.io.IOException
@@ -23,7 +20,6 @@ import java.util.regex.Pattern
 object QmsApi {
 
     val qmsSubscribers: ArrayList<QmsUser>
-        @Throws(Throwable::class)
         get() {
             val pageBody = Http.instance.performGet("http://4pda.ru/forum/index.php?&act=qms-xhr&action=userlist").responseBody
             return parseQmsUsers(pageBody)
@@ -42,36 +38,51 @@ object QmsApi {
 
         val m = Pattern.compile("<div class=\"error\">([\\s\\S]*?)</div>").matcher(pageBody)
         if (m.find()) {
-            throw Exception(Html.fromHtml(m.group(1)).toString())
+            throw Exception(m.group(1).fromHtml().toString())
         }
 
     }
 
     @Throws(Throwable::class)
-    @JvmOverloads
-    fun getChat(httpClient: IHttpClient, mid: String, themeId: String, additionalHeaders: MutableMap<String, String>? = null): String {
+    fun getChat(httpClient: IHttpClient, mid: String, themeId: String, daysCount: Int?): QmsPage {
         val pageBody = getChatPage(httpClient, mid, themeId)
         checkChatError(pageBody)
-        if (additionalHeaders != null) {
 
-            val m = Pattern.compile("<span class=\"navbar-title\">\\s*?<a href=\"[^\"]*/forum/index.php\\?showuser=\\d+\"[^>]*><strong>(.*?):</strong></a>([\\s\\S]*?)\\s*?</span>")
-                    .matcher(pageBody)
-            if (m.find()) {
-                additionalHeaders["Nick"] = Html.fromHtml(m.group(1)).toString()
-                additionalHeaders["ThemeTitle"] = Html.fromHtml(m.group(2)).toString()
-                // break;
-            }
-
+        val qmsPage = QmsPage()
+        val m = Pattern.compile("<[^>]*?\"navbar-title\"[^>]*?>[\\s\\S]*?<a[^>]*?showuser=(\\d+)[^>]*?>(.*?)<\\/a>:<\\/b>\\s*([\\s\\S]*?)\\s*<\\/span>")
+                .matcher(pageBody)
+        if (m.find()) {
+            qmsPage.userId = m.group(1)
+            qmsPage.userNick = m.group(2).fromHtml()
+            qmsPage.title = m.group(3).fromHtml()
         }
-        return matchChatBody(pageBody)
+
+        qmsPage.body = matchChatBody(pageBody, daysCount)
+        return qmsPage
     }
 
-    private fun matchChatBody(pageBody: String): String {
-        var pageBody = pageBody
+    private fun matchChatBody(pageBod: String, daysCount: Int?): String {
+        var pageBody = pageBod
         var chatInfo = ""
         var m = Pattern.compile("<span class=\"nav-text\"[\\s\\S]*?<a href=\"[^\"]*showuser[^>]*>([^>]*?)</a>:</b>([^<]*)").matcher(pageBody)
         if (m.find())
             chatInfo = "<span id=\"chatInfo\" style=\"display:none;\">" + m.group(1).trim { it <= ' ' } + "|:|" + m.group(2).trim { it <= ' ' } + "</span>"
+
+        if (daysCount != null) {
+            val datesMatcher = Pattern.compile("(<div class=\"date\">[\\s\\S]*?(?=(?:<div class=\"date\">|<div class=\"form-thread)))")
+                    .matcher(pageBody)
+            var days = emptyArray<String>()
+            while (datesMatcher.find()) {
+                val dayBody = datesMatcher.group(1)
+                days = days.plus(dayBody)
+            }
+            if (days.isNotEmpty() || daysCount == 0) {
+                if (days.size > daysCount) {
+                    chatInfo += "<div class=\"navi\"><a id=\"chat_more_button\" class=\"button\" ${HtmlOutUtils.getHtmlout("loadMore")} >Загрузить ещё (${daysCount}/${days.size}дн.)</a></div>"
+                }
+                return chatInfo + days.takeLast(daysCount).joinToString(separator = "\n")
+            }
+        }
         m = Pattern.compile("<div id=\"thread-inside-top\"><\\/div>([\\s\\S]*)<div id=\"thread-inside-bottom\">").matcher(pageBody)
         if (m.find())
             return chatInfo + "<div id=\"thread_form\"><div id=\"thread-inside-top\"></div>" + m.group(1) + "</div>"
@@ -89,13 +100,13 @@ object QmsApi {
         if (m.find())
             return "<div id=\"thread_form\"></div>"
         else
-            pageBody = pageBody + ""
+            pageBody += ""
         return pageBody
     }
 
     @Throws(Throwable::class)
     fun sendMessage(httpClient: IHttpClient, mid: String, tid: String, message: String, encoding: String,
-                    attachs: ArrayList<EditAttach>): String {
+                    attachs: ArrayList<EditAttach>, daysCount: Int?): QmsPage {
         val additionalHeaders = HashMap<String, String>()
         additionalHeaders["action"] = "send-message"
         additionalHeaders["mid"] = mid
@@ -105,7 +116,7 @@ object QmsApi {
             additionalHeaders["attaches"] = attachs.joinToString { it.id }
         httpClient.performPost("http://4pda.ru/forum/index.php?act=qms-xhr",
                 additionalHeaders, encoding)
-        return getChat(httpClient, mid, tid)
+        return getChat(httpClient, mid, tid, daysCount)
     }
 
     @Throws(IOException::class)
@@ -129,12 +140,12 @@ object QmsApi {
         outParams["user"] = userNick
         outParams["title"] = title
         //}
-        if (outParams.size == 0) {
+        if (outParams.isEmpty()) {
             m = Pattern.compile("<div class=\"form-error\">(.*?)</div>").matcher(pageBody.responseBody)
             if (m.find())
                 throw NotReportException(m.group(1))
         }
-        return matchChatBody(pageBody.responseBody)
+        return matchChatBody(pageBody.responseBody, 0)
     }
 
     @Throws(IOException::class)
@@ -150,7 +161,8 @@ object QmsApi {
     }
 
     @Throws(IOException::class)
-    fun deleteMessages(httpClient: IHttpClient, mid: String, threadId: String, ids: List<String>, encoding: String): String {
+    fun deleteMessages(httpClient: IHttpClient, mid: String, threadId: String, ids: List<String>,
+                       encoding: String, daysCount: Int?): String {
         val additionalHeaders = HashMap<String, String>()
         additionalHeaders["act"] = "qms"
         additionalHeaders["mid"] = mid
@@ -165,10 +177,11 @@ object QmsApi {
             additionalHeaders["message-id[$id]"] = id
         }
 
-        return matchChatBody(httpClient.performPost("http://4pda.ru/forum/index.php?act=qms&mid$mid&t=$threadId&xhr=body&do=1", additionalHeaders, encoding).responseBody)
+        return matchChatBody(httpClient.performPost("http://4pda.ru/forum/index.php?act=qms&mid$mid&t=$threadId&xhr=body&do=1",
+                additionalHeaders, encoding).responseBody, daysCount)
     }
 
-    fun parseQmsUsers(pageBody: String?): ArrayList<QmsUser> {
+    private fun parseQmsUsers(pageBody: String?): ArrayList<QmsUser> {
         val res = ArrayList<QmsUser>()
         val m = Pattern.compile("<a class=\"list-group-item[^>]*=(\\d*)\">[^<]*<div class=\"bage\">([^<]*)[\\s\\S]*?src=\"([^\"]*)\" title=\"([^\"]*)\"", Pattern.CASE_INSENSITIVE).matcher(pageBody!!)
         var count: String
@@ -181,7 +194,7 @@ object QmsApi {
                 avatar = "http:$avatar"
             }
             qmsUser.setAvatarUrl(avatar)
-            qmsUser.nick = Html.fromHtml(m.group(4)).toString().trim { it <= ' ' }
+            qmsUser.nick = m.group(4).fromHtml().toString().trim { it <= ' ' }
             count = m.group(2).trim { it <= ' ' }
             if (count != "")
                 qmsUser.newMessagesCount = count.replace("(", "").replace(")", "")
@@ -199,7 +212,7 @@ object QmsApi {
         val newCountPattern = Pattern.compile("([\\s\\S]*?)\\((\\d+)\\s*\\/\\s*(\\d+)\\)\\s*$")
         val countPattern = Pattern.compile("([\\s\\S]*?)\\((\\d+)\\)\\s*$")
         val strongPattern = Pattern.compile("<strong>([\\s\\S]*?)</strong>")
-        var matcher = Pattern.compile("<div class=\"list-group\">([\\s\\S]*)<form [^>]*>([\\s\\S]*?)<\\/form>").matcher(pageBody!!)
+        var matcher = Pattern.compile("<div class=\"list-group\">([\\s\\S]*)<form [^>]*>([\\s\\S]*?)<\\/form>").matcher(pageBody)
         if (matcher.find()) {
             outUsers.addAll(parseQmsUsers(matcher.group(1)))
             matcher = Pattern.compile("<a class=\"list-group-item[^>]*-(\\d*)\">[\\s\\S]*?<div[^>]*>([\\s\\S]*?)<\\/div>([\\s\\S]*?)<\\/a>").matcher(matcher.group(2))
@@ -244,8 +257,8 @@ object QmsApi {
     }
 
     fun getNewQmsCount(pageBody: String): Int {
-        val qms_2_0_Pattern = PatternExtensions.compile("id=\"events-count\"[^>]*>[^\\d]*?(\\d+)<")
-        val m = qms_2_0_Pattern.matcher(pageBody)
+        val qms20Pattern = PatternExtensions.compile("id=\"events-count\"[^>]*>[^\\d]*?(\\d+)<")
+        val m = qms20Pattern.matcher(pageBody)
         return if (m.find()) {
             Integer.parseInt(m.group(1))
         } else 0
@@ -258,7 +271,7 @@ object QmsApi {
     }
 
 
-    fun fromCharCode(vararg codePoints: Int): String {
+    private fun fromCharCode(vararg codePoints: Int): String {
         val builder = StringBuilder(codePoints.size)
         for (codePoint in codePoints) {
             builder.append(Character.toChars(codePoint))
@@ -266,7 +279,7 @@ object QmsApi {
         return builder.toString()
     }
 
-    fun attachFile(pathToFile: String, progress: ProgressState, code:String ="check"): EditAttach {
+    fun attachFile(pathToFile: String, progress: ProgressState, code: String = "check"): EditAttach {
         var nameValue = "file"
         try {
             nameValue = FileUtils.getFileNameFromUrl(pathToFile)
@@ -291,7 +304,7 @@ object QmsApi {
 
         if (k == 0) {
             Thread.sleep(1000)
-            return attachFile(pathToFile, progress,"upload")
+            return attachFile(pathToFile, progress, "upload")
         }
         val error = when (k) {
             -1 -> " no access on server."

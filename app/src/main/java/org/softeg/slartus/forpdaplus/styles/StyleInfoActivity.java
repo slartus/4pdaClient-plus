@@ -125,7 +125,7 @@ public class StyleInfoActivity extends BrowserViewsFragmentActivity {
         res = HtmlPreferences.modifyStyleImagesBody(res);
 
         if (!WebViewExternals.isLoadImages("theme"))
-            res = HtmlPreferences.modifyAttachedImagesBody(Functions.isWebviewAllowJavascriptInterface(this), res);
+            res = HtmlPreferences.modifyAttachedImagesBody(Functions.isWebviewAllowJavascriptInterface(), res);
 
         webView.loadDataWithBaseURL("http://4pda.ru/forum/", res, "text/html", "UTF-8", null);
     }

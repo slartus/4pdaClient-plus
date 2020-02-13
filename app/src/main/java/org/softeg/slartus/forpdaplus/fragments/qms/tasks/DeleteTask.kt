@@ -12,7 +12,8 @@ import java.util.*
 class DeleteTask internal constructor(qmsChatFragment: QmsChatFragment,
                                       private val contactId: String,
                                       private val themeId: String,
-                                      private val postIds:List<String>) : AsyncTask<ArrayList<String>, Void, Boolean>() {
+                                      private val postIds:List<String>,
+                                      private val daysCount:Int?) : AsyncTask<ArrayList<String>, Void, Boolean>() {
 
     private val dialog: MaterialDialog = MaterialDialog.Builder(qmsChatFragment.context!!)
             .progress(true, 0)
@@ -25,7 +26,7 @@ class DeleteTask internal constructor(qmsChatFragment: QmsChatFragment,
     override fun doInBackground(vararg params: ArrayList<String>): Boolean? {
         return try {
             chatBody = qmsChatFragment.get()?.transformChatBody(QmsApi.deleteMessages(Client.getInstance(),
-                    contactId, themeId, postIds, QmsChatFragment.encoding))
+                    contactId, themeId, postIds, QmsChatFragment.encoding,daysCount))
             true
         } catch (e: Throwable) {
             ex = e

@@ -1,5 +1,8 @@
 package org.softeg.slartus.forpdacommon;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -12,6 +15,14 @@ import java.util.GregorianCalendar;
 public class Functions {
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     public static SimpleDateFormat parseDateTimeFormat = new SimpleDateFormat("dd.MM.yyyy, HH:mm");
+
+    public static Boolean isWebviewAllowJavascriptInterface() {
+
+        final SharedPreferences prefs =  PreferenceManager.getDefaultSharedPreferences(FACTORY.getApplication().get());
+        return prefs.getBoolean("system.WebviewAllowJavascriptInterface", true);
+//        return !Build.VERSION.RELEASE.startsWith("2.3")|| Build.VERSION.RELEASE.equals("2.3.7")
+//                || Build.VERSION.RELEASE.equals("2.3.4");
+    }
 
     public static String getToday() {
         GregorianCalendar nowCalendar = new GregorianCalendar();
