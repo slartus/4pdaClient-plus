@@ -222,6 +222,19 @@ window.addEventListener('load', scrollPageQMS);
 function scrollPageQMS() {
 	if (document.body.id == "qms"){
 	    window.scrollTo(0, document.body.scrollHeight);
+	}else if(document.body.id == "qms_more"){
+	    var elements = document.getElementsByClassName("date");
+	    if (elements.length > 7){
+	        var el = elements[Math.max(elements.length % 7,7)];
+            var x = 0;
+            var y = 0;
+            while (el != null) {
+                x += el.offsetLeft;
+                y += el.offsetTop;
+                el = el.parent;
+            }
+            window.scrollTo(0, y);
+        }
 	}
 }
 

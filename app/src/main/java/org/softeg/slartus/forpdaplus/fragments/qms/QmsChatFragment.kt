@@ -477,7 +477,7 @@ class QmsChatFragment : WebViewFragment() {
         }
         val htmlBuilder = HtmlBuilder()
         htmlBuilder.beginHtml("QMS")
-        htmlBuilder.beginBody("qms${if (loadMore) "_" else ""}", "", Preferences.Topic.isShowAvatars())
+        htmlBuilder.beginBody("qms${if (loadMore) "_more" else ""}", "", Preferences.Topic.isShowAvatars())
         //        htmlBuilder.beginBody("qms", "onload=\"scrollToElement('bottom_element')\"", Preferences.Topic.isShowAvatars());
 
         if (!Preferences.Topic.isShowAvatars())
@@ -488,6 +488,8 @@ class QmsChatFragment : WebViewFragment() {
         chatBodyLocal = chatBodyLocal.replace("(<a[^>]*?href=\"([^\"]*?savepice[^\"]*-)[\\w]*(\\.[^\"]*)\"[^>]*?>)[^<]*?(</a>)".toRegex(), "$1<img src=\"$2prev$3\">$4")
         htmlBuilder.append(chatBodyLocal)
         htmlBuilder.append("<div id=\"bottom_element\" name=\"bottom_element\"></div>")
+        //m_Body.append("<script>jsEmoticons.parseAll('").append("file:///android_asset/forum/style_emoticons/default/").append("');initPostBlock();</script>");
+        htmlBuilder.append("<script>jsEmoticons.parseAll('").append("file:///android_asset/forum/style_emoticons/default/").append("');</script>")
         htmlBuilder.endBody()
         htmlBuilder.endHtml()
 
