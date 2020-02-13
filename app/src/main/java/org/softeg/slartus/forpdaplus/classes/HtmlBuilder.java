@@ -22,7 +22,7 @@ public class HtmlBuilder{
         if (!Preferences.System.isDevStyle()) {
             addStyleSheetLink(m_Body);
         }
-        m_Body.append("<script type=\"text/javascript\" src=\"file://").append(getStyle().replace(".css","")).append(".js\"></script>\n");
+        //m_Body.append("<script type=\"text/javascript\" src=\"file://").append(getStyle().replace(".css","")).append(".js\"></script>\n");
         m_Body.append("<script type=\"text/javascript\" src=\"file://").append(Preferences.System.getSystemDir()).append("custom_scripts.js\"></script>\n");
         if (Preferences.System.isDevGrid())
             m_Body.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"file:///android_asset/grid.css\"/>\n");
