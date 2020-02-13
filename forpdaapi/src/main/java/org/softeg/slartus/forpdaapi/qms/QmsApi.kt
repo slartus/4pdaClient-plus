@@ -78,7 +78,7 @@ object QmsApi {
             }
             if (days.isNotEmpty() || daysCount == 0) {
                 if (days.size > daysCount) {
-                    chatInfo += "<div class=\"navi\"><a id=\"chat_more_button\" class=\"button\" ${HtmlOutUtils.getHtmlout("loadMore")} >Загрузить ещё (${daysCount}/${days.size}дн.)</a></div>"
+                    chatInfo += "<div class=\"panel\"><div class=\"navi\"><a id=\"chat_more_button\" class=\"button page\" ${HtmlOutUtils.getHtmlout("loadMore")} >Загрузить ещё (${daysCount}/${days.size}дн.)</a></div></div>"
                 }
                 return chatInfo + days.takeLast(daysCount).joinToString(separator = "\n")
             }
