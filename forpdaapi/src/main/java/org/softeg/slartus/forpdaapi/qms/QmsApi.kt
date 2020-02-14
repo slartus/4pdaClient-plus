@@ -80,7 +80,7 @@ object QmsApi {
                 if (days.size > daysCount) {
                     chatInfo += "<div class=\"panel\"><div class=\"navi\"><a id=\"chat_more_button\" class=\"button page\" ${HtmlOutUtils.getHtmlout("loadMore")} >Загрузить ещё (${daysCount}/${days.size}дн.)</a></div></div>"
                 }
-                return chatInfo + days.takeLast(daysCount).joinToString(separator = "\n")
+                return chatInfo + "<div id=\"thread_form\"><div id=\"thread-inside-top\"></div>" + days.takeLast(daysCount).joinToString(separator = "\n") + "</div>"
             }
         }
         m = Pattern.compile("<div id=\"thread-inside-top\"><\\/div>([\\s\\S]*)<div id=\"thread-inside-bottom\">").matcher(pageBody)
