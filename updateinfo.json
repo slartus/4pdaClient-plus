@@ -14,9 +14,9 @@
   "versions": [
     {
       "name": "release",
-      "ver": "3.5.5.1",
-      "versionCode":631,
-      "apk": "https://github.com/slartus/4pdaClient-plus/releases/download/3.5.5.1/ForPDA_3.5.5.1-release.apk",
+      "ver": "3.5.5.2",
+      "versionCode":632,
+      "apk": "https://github.com/slartus/4pdaClient-plus/releases/download/3.5.5.2/ForPDA_3.5.5.2-release.apk",
       "info": "[!] Важное замечание\n[+] Нововведение\n[-] Исправлена ошибка\n[*] в qms отображаются сообщения за последние 7 дней с возможностью догрузить\n[*] тихая отправка сообщения об ошибке\n[-] мультимодерация\n[*] Иконка поиска в просмотре темы открывает поиск по теме.\n[-] дата сообщения в результатах поиска\n[+] Сброс выбора youtube плеера в контекстном меню ссылки youtube"
     },
     {
