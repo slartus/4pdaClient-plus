@@ -8,9 +8,12 @@ package org.softeg.slartus.forpdacommon
 import android.os.Build
 import android.text.Html
 import android.text.Spanned
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
-fun String.toHtml(): Spanned =StringUtils.fromHtml(this)
-fun String.fromHtml(): Spanned =StringUtils.fromHtml(this)
+
+fun String.toHtml(): Spanned = StringUtils.fromHtml(this)
+fun String.fromHtml(): Spanned = StringUtils.fromHtml(this)
 
 @Suppress("DEPRECATION")
 object StringUtils {
@@ -23,5 +26,19 @@ object StringUtils {
             return Html.fromHtml(html);
         }
     }
+}
 
+fun String.md5(): String? {
+    try { // Create MD5 Hash
+        val digest = MessageDigest.getInstance("MD5")
+        digest.update(this.toByteArray())
+        val messageDigest = digest.digest()
+        // Create Hex String
+        val hexString = StringBuffer()
+        for (i in messageDigest.indices) hexString.append(Integer.toHexString(0xFF and messageDigest[i].toInt()))
+        return hexString.toString()
+    } catch (e: NoSuchAlgorithmException) {
+        e.printStackTrace()
+    }
+    return ""
 }

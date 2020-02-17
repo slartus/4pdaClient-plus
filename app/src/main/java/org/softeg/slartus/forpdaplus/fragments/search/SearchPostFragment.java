@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
@@ -148,7 +149,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         mWvBody.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
         mWvBody.addJavascriptInterface(this, "HTMLOUT");
         mWvBody.loadDataWithBaseURL("http://4pda.ru/forum/", "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
-                "</head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8", null);
+                "</head><body bgcolor=" + AppTheme.getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8", null);
         registerForContextMenu(mWvBody);
         buttonsPanel = (FrameLayout) findViewById(R.id.buttonsPanel);
         return view;

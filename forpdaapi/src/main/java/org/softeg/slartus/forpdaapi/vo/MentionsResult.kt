@@ -1,12 +1,13 @@
 package org.softeg.slartus.forpdaapi.vo
 
 import org.softeg.slartus.forpdaapi.parsers.MentionItem
+import java.io.Serializable
 import kotlin.math.max
 
-class MentionsResult {
+class MentionsResult : Serializable {
     private var pagesCount: Int = 0
     private var lastPageStartCount: Int = 0
-    var mentions= emptyList<MentionItem>()
+    var mentions = emptyList<MentionItem>()
     private var currentPage: Int = 0
 
     fun setPagesCount(pagesCount: String) {
@@ -30,6 +31,7 @@ class MentionsResult {
     }
 
     fun getPostsPerPageCount(): Int {
-        return lastPageStartCount
+        return if (pagesCount>1) lastPageStartCount/(pagesCount-1) else 0
     }
+
 }

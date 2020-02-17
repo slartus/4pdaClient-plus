@@ -1,21 +1,15 @@
 package org.softeg.slartus.forpdaplus;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.multidex.MultiDexApplication;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.View;
 
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
@@ -30,25 +24,21 @@ import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
-
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdanotifyservice.MainService;
 import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
 import org.softeg.slartus.forpdaplus.acra.ACRAReportSenderFactory;
-import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
+import org.softeg.slartus.forpdaplus.repositories.InternetConnection;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import io.paperdb.Paper;
@@ -81,25 +71,7 @@ import static org.softeg.slartus.forpdaplus.prefs.PreferencesActivity.getPackage
 //optional. default is a warning sign
 public class App extends MultiDexApplication {
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    public static final int THEME_LIGHT = 0;
-    public static final int THEME_DARK = 1;
-    public static final int THEME_BLACK = 6;
 
-    public static final int THEME_MATERIAL_LIGHT = 2;
-    public static final int THEME_MATERIAL_DARK = 3;
-    public static final int THEME_MATERIAL_BLACK = 5;
-
-    public static final int THEME_LIGHT_OLD_HD = 4;
-
-    public static final int THEME_CUSTOM_CSS = 99;
-
-    private final Integer[] LIGHT_THEMES = {THEME_LIGHT, THEME_LIGHT_OLD_HD, THEME_MATERIAL_LIGHT};
-    private final Integer[] DARK_THEMES = {THEME_MATERIAL_DARK, THEME_DARK};
-
-
-    public static final int THEME_TYPE_LIGHT = 0;
-    public static final int THEME_TYPE_DARK = 2;
-    public static final int THEME_TYPE_BLACK = 3;
 
     private Locale locale;
     private String lang;
@@ -182,318 +154,6 @@ public class App extends MultiDexApplication {
     }
 
 
-    public String getWebViewFont() {
-        return getPreferences().getString("webViewFontName", "");
-    }
-
-    public int getColorAccent(String type) {
-        int color = 0;
-        switch (type) {
-            case "Accent":
-                color = getPreferences().getInt("accentColor", Color.rgb(2, 119, 189));
-                break;
-            case "Pressed":
-                color = getPreferences().getInt("accentColorPressed", Color.rgb(0, 89, 159));
-                break;
-        }
-        return color;
-    }
-
-    public int getMainAccentColor() {
-        int color = R.color.accentPink;
-        switch (getPreferences().getString("mainAccentColor", "pink")) {
-            case "pink":
-                color = R.color.accentPink;
-                break;
-            case "blue":
-                color = R.color.accentBlue;
-                break;
-            case "gray":
-                color = R.color.accentGray;
-                break;
-        }
-        return color;
-    }
-
-    public int getThemeStyleResID() {
-        int theme = R.style.ThemeLight;
-        String color = getPreferences().getString("mainAccentColor", "pink");
-        int themeType = getThemeType();
-        if (themeType == THEME_TYPE_LIGHT) {
-            switch (color) {
-                case "pink":
-                    theme = R.style.MainPinkLight;
-                    break;
-                case "blue":
-                    theme = R.style.MainBlueLight;
-                    break;
-                case "gray":
-                    theme = R.style.MainGrayLight;
-                    break;
-            }
-        } else if (themeType == THEME_TYPE_DARK) {
-            switch (color) {
-                case "pink":
-                    theme = R.style.MainPinkDark;
-                    break;
-                case "blue":
-                    theme = R.style.MainBlueDark;
-                    break;
-                case "gray":
-                    theme = R.style.MainGrayDark;
-                    break;
-            }
-        } else {
-            switch (color) {
-                case "pink":
-                    theme = R.style.MainPinkBlack;
-                    break;
-                case "blue":
-                    theme = R.style.MainBlueBlack;
-                    break;
-                case "gray":
-                    theme = R.style.MainGrayBlack;
-                    break;
-            }
-        }
-        return theme;
-    }
-
-    public int getPrefsThemeStyleResID() {
-        int theme = R.style.ThemePrefsLightPink;
-        String color = getPreferences().getString("mainAccentColor", "pink");
-        int themeType = getThemeType();
-        if (themeType == THEME_TYPE_LIGHT) {
-            switch (color) {
-                case "pink":
-                    theme = R.style.ThemePrefsLightPink;
-                    break;
-                case "blue":
-                    theme = R.style.ThemePrefsLightBlue;
-                    break;
-                case "gray":
-                    theme = R.style.ThemePrefsLightGray;
-                    break;
-            }
-        } else if (themeType == THEME_TYPE_DARK) {
-            switch (color) {
-                case "pink":
-                    theme = R.style.ThemePrefsDarkPink;
-                    break;
-                case "blue":
-                    theme = R.style.ThemePrefsDarkBlue;
-                    break;
-                case "gray":
-                    theme = R.style.ThemePrefsDarkGray;
-                    break;
-            }
-        } else {
-            switch (color) {
-                case "pink":
-                    theme = R.style.ThemePrefsBlackPink;
-                    break;
-                case "blue":
-                    theme = R.style.ThemePrefsBlackBlue;
-                    break;
-                case "gray":
-                    theme = R.style.ThemePrefsBlackGray;
-                    break;
-            }
-        }
-        return theme;
-    }
-
-    public int getThemeType() {
-        int themeType = THEME_TYPE_LIGHT;
-        String themeStr = getCurrentTheme();
-        if (themeStr.length() < 3) {
-            int theme = Integer.parseInt(themeStr);
-            if (ArrayUtils.indexOf(theme, LIGHT_THEMES) != -1)
-                themeType = THEME_TYPE_LIGHT;
-            else if (ArrayUtils.indexOf(theme, DARK_THEMES) != -1)
-                themeType = THEME_TYPE_DARK;
-            else
-                themeType = THEME_TYPE_BLACK;
-        } else {
-            if (themeStr.contains("/dark/"))
-                themeType = THEME_TYPE_DARK;
-            else if (themeStr.contains("/black/"))
-                themeType = THEME_TYPE_BLACK;
-        }
-        return themeType;
-    }
-
-    public int getThemeBackgroundColorRes() {
-        int themeType = getThemeType();
-        if (themeType == THEME_TYPE_LIGHT)
-            return R.color.app_background_light;
-        else if (themeType == THEME_TYPE_DARK)
-            return R.color.app_background_dark;
-        else
-            return R.color.app_background_black;
-    }
-
-    public int getSwipeRefreshBackground() {
-        int themeType = getThemeType();
-        if (themeType == THEME_TYPE_LIGHT)
-            return R.color.swipe_background_light;
-        else if (themeType == THEME_TYPE_DARK)
-            return R.color.swipe_background_dark;
-        else
-            return R.color.swipe_background_black;
-    }
-
-    public int getNavBarColor() {
-        int themeType = getThemeType();
-        if (themeType == THEME_TYPE_LIGHT)
-            return R.color.navBar_light;
-        else if (themeType == THEME_TYPE_DARK)
-            return R.color.navBar_dark;
-        else
-            return R.color.navBar_black;
-    }
-
-    public int getDrawerMenuText() {
-        int themeType = getThemeType();
-        if (themeType == THEME_TYPE_LIGHT)
-            return R.color.drawer_menu_text_light;
-        else if (themeType == THEME_TYPE_DARK)
-            return R.color.drawer_menu_text_dark;
-        else
-            return R.color.drawer_menu_text_dark;
-    }
-
-
-    public int getThemeStyleWebViewBackground() {
-        int themeType = getThemeType();
-        if (themeType == THEME_TYPE_LIGHT)
-            return Color.parseColor("#eeeeee");
-        else if (themeType == THEME_TYPE_DARK)
-            return Color.parseColor("#1a1a1a");
-        else
-            return Color.parseColor("#000000");
-    }
-
-    public String getCurrentBackgroundColorHtml() {
-        int themeType = getThemeType();
-        if (themeType == THEME_TYPE_LIGHT)
-            return "#eeeeee";
-        else if (themeType == THEME_TYPE_DARK)
-            return "#1a1a1a";
-        else
-            return "#000000";
-    }
-
-    public String getCurrentTheme() {
-        return getPreferences().getString("appstyle", Integer.toString(THEME_LIGHT));
-    }
-
-    public String getCurrentThemeName() {
-        int themeType = getThemeType();
-        if (themeType == THEME_TYPE_LIGHT)
-            return "white";
-        else if (themeType == THEME_TYPE_DARK)
-            return "dark";
-        else
-            return "black";
-    }
-
-    private String checkThemeFile(String themePath) {
-        try {
-            if (!new File(themePath).exists()) {
-                // Toast.makeText(INSTANCE,"не найден файл темы: "+themePath,Toast.LENGTH_LONG).show();
-                return defaultCssTheme();
-            }
-            return themePath;
-        } catch (Throwable ex) {
-            return defaultCssTheme();
-        }
-    }
-
-    private String defaultCssTheme() {
-        return "/android_asset/forum/css/4pda_light_blue.css";
-    }
-
-    public String getThemeCssFileName() {
-        String themeStr = getCurrentTheme();
-        return getThemeCssFileName(themeStr);
-    }
-
-    public String getThemeCssFileName(String themeStr) {
-        if (themeStr.length() > 3)
-            return checkThemeFile(themeStr);
-
-        String path = "/android_asset/forum/css/";
-        String cssFile = "4pda_light_blue.css";
-        int theme = Integer.parseInt(themeStr);
-        if (theme == -1)
-            return themeStr;
-        String color = getPreferences().getString("mainAccentColor", "pink");
-        switch (theme) {
-            case THEME_LIGHT:
-                switch (color) {
-                    case "pink":
-                        cssFile = "4pda_light_blue.css";
-                        break;
-                    case "blue":
-                        cssFile = "4pda_light_pink.css";
-                        break;
-                    case "gray":
-                        cssFile = "4pda_light_gray.css";
-                        break;
-                }
-                break;
-            case THEME_DARK:
-                switch (color) {
-                    case "pink":
-                        cssFile = "4pda_dark_blue.css";
-                        break;
-                    case "blue":
-                        cssFile = "4pda_dark_pink.css";
-                        break;
-                    case "gray":
-                        cssFile = "4pda_dark_gray.css";
-                        break;
-                }
-                break;
-            case THEME_BLACK:
-                switch (color) {
-                    case "pink":
-                        cssFile = "4pda_black_blue.css";
-                        break;
-                    case "blue":
-                        cssFile = "4pda_black_pink.css";
-                        break;
-                    case "gray":
-                        cssFile = "4pda_black_gray.css";
-                        break;
-                }
-                break;
-            case THEME_MATERIAL_LIGHT:
-                cssFile = "material_light.css";
-                break;
-            case THEME_MATERIAL_DARK:
-                cssFile = "material_dark.css";
-                break;
-            case THEME_MATERIAL_BLACK:
-                cssFile = "material_black.css";
-                break;
-            case THEME_LIGHT_OLD_HD:
-                cssFile = "standart_4PDA.css";
-                break;
-
-            /*case THEME_WHITE_HD:
-                cssFile = "white_hd.css";
-                break;
-            case THEME_BLACK_HD:
-                cssFile = "black_hd.css";
-                break;*/
-            case THEME_CUSTOM_CSS:
-                return Environment.getExternalStorageDirectory().getPath() + "/style.css";
-        }
-        return path + cssFile;
-    }
-
     private static App INSTANCE = null;
 
     public App() {
@@ -503,6 +163,7 @@ public class App extends MultiDexApplication {
     }
 
     private MyActivityLifecycleCallbacks m_MyActivityLifecycleCallbacks;
+    @SuppressWarnings("FieldCanBeLocal")
     private static boolean isNewYear = false;
 
     @Override
@@ -527,7 +188,7 @@ public class App extends MultiDexApplication {
         initImageLoader(this);
         m_MyActivityLifecycleCallbacks = new MyActivityLifecycleCallbacks();
         registerActivityLifecycleCallbacks(m_MyActivityLifecycleCallbacks);
-        setTheme(getThemeStyleResID());
+        setTheme(AppTheme.getThemeStyleResID());
         try {
             DbHelper.prepareBases(this);
         } catch (IOException e) {
@@ -541,6 +202,7 @@ public class App extends MultiDexApplication {
         resStartNotifierServices();
         Http.Companion.init(this, getString(R.string.app_name), getPackageInfo().versionName);
         Client.getInstance().checkLoginByCookies();
+        InternetConnection.getInstance().subscribeInternetState();
     }
 
     @Override
@@ -697,65 +359,9 @@ public class App extends MultiDexApplication {
                                                               final Runnable refreshAction) {
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.ptr_layout);
         swipeRefreshLayout.setOnRefreshListener(refreshAction::run);
-        swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
-        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(App.getInstance().getSwipeRefreshBackground());
+        swipeRefreshLayout.setColorSchemeResources(AppTheme.getMainAccentColor());
+        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(AppTheme.getSwipeRefreshBackground());
         return swipeRefreshLayout;
-    }
-
-
-    private static final class MyActivityLifecycleCallbacks implements ActivityLifecycleCallbacks {
-
-        private HashMap<String, Activity> m_Activities = new HashMap<>();
-
-        public void onActivityCreated(Activity activity, Bundle bundle) {
-            m_Activities.put(activity.getLocalClassName(), activity);
-        }
-
-        public void onActivityDestroyed(Activity activity) {
-            m_Activities.remove(activity.getLocalClassName());
-        }
-
-        public void onActivityPaused(Activity activity) {
-
-        }
-
-        public void onActivityResumed(Activity activity) {
-
-        }
-
-        public void onActivitySaveInstanceState(Activity activity,
-                                                Bundle outState) {
-
-        }
-
-        public void onActivityStarted(Activity activity) {
-
-        }
-
-        public void onActivityStopped(Activity activity) {
-
-        }
-
-        void finishActivities() {
-            for (Map.Entry<String, Activity> entry : m_Activities.entrySet()) {
-                try {
-                    Activity activity = entry.getValue();
-
-                    if (activity == null)
-                        continue;
-
-                    if (Build.VERSION.SDK_INT >= 17 && activity.isDestroyed())
-                        continue;
-
-                    if (activity.isFinishing())
-                        continue;
-
-                    entry.getValue().finish();
-                } catch (Throwable ex) {
-                    Log.e("", "finishActivities:" + ex.toString());
-                }
-            }
-        }
     }
 
     @Override

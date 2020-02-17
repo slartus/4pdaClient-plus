@@ -44,6 +44,7 @@ import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
@@ -273,7 +274,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         view = inflater.inflate(R.layout.theme, container, false);
         ButterKnife.bind(this, view);
         initSwipeRefreshLayout();
-        lastStyle = App.getInstance().getThemeCssFileName();
+        lastStyle = AppTheme.getThemeCssFileName();
         LoadsImagesAutomatically = null;
 
         getMainActivity().setDefaultKeyMode(Activity.DEFAULT_KEYS_SEARCH_LOCAL);// чтобы поиск начинался при вводе текста
@@ -409,7 +410,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 if (sessionHistory.getBody() == null) {
                     showTheme(sessionHistory.getUrl());
                 } else {
-                    String body = sessionHistory.getBody().replace(savedInstanceState.getString("LastStyle"), App.getInstance().getThemeCssFileName());
+                    String body = sessionHistory.getBody().replace(savedInstanceState.getString("LastStyle"),
+                            AppTheme.getThemeCssFileName());
                     showBody(body);
                     sessionHistory.setBody(body);
                 }
@@ -762,7 +764,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     public void clear(Boolean clearChache) {
         webView.setWebViewClient(null);
-        webView.loadData("<html><head></head><body bgcolor=" + App.getInstance().getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8");
+        webView.loadData("<html><head></head><body bgcolor=" + AppTheme.getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8");
         if (clearChache)
             webView.clearCache(true);
         if (m_Topic != null)

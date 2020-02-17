@@ -31,6 +31,7 @@ import org.softeg.slartus.forpdaapi.ProfileApi;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
@@ -275,7 +276,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         @Override
         protected String getStyle() {
             //return "/android_asset/profile/css/" + (App.getInstance().isWhiteTheme() ? "profile_white.css" : "profile_black.css");
-            return App.getInstance().getThemeCssFileName();
+            return AppTheme.getThemeCssFileName();
 
         }
     }
