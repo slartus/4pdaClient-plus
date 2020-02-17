@@ -652,7 +652,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public void showTopicAttaches() {
         if (m_Topic == null)
             return;
-        TopicAttachmentListFragment.showActivity(getMainActivity(), m_Topic.getId());
+        TopicAttachmentListFragment.showActivity(m_Topic.getId());
     }
 
     private void doSearch(String query) {
