@@ -30,6 +30,6 @@ class MentionsResult {
     }
 
     fun getPostsPerPageCount(): Int {
-        return lastPageStartCount
+        return if (pagesCount>1) lastPageStartCount/(pagesCount-1) else 0
     }
 }
