@@ -23,10 +23,10 @@ import android.text.style.BackgroundColorSpan
 import android.util.TypedValue
 import android.view.*
 import android.widget.*
-import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import io.paperdb.Paper
 import io.reactivex.Single
+import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.SingleSubject
 import kotlinx.android.synthetic.main.edit_post_plus.*
 import org.softeg.slartus.forpdaapi.post.EditAttach
@@ -38,7 +38,7 @@ import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.classes.FilePath
 import org.softeg.slartus.forpdaplus.common.AppLog
-import org.softeg.slartus.forpdaplus.common.SingleQueue
+import org.softeg.slartus.forpdaplus.common.TrueQueue
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.PostPreviewFragment
@@ -264,7 +264,9 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     private fun sendMail() {
         val body = postText
         addToDisposable(
-                SingleQueue(listOf({ checkMail() }, { confirmSendMail() }))
+                TrueQueue(
+                        { d: Disposable? -> addToDisposable(d) },
+                        listOf({ checkMail() }, { confirmSendMail() }))
                         .subscribe(
                                 {
                                     if (it)
