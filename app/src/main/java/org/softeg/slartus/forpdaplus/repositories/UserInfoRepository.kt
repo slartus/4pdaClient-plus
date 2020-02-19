@@ -4,6 +4,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import org.softeg.slartus.forpdaplus.App
+import org.softeg.slartus.forpdaplus.R
 import ru.slartus.http.Http
 
 class UserInfoRepository private constructor() {
@@ -86,7 +87,7 @@ class UserInfoRepository private constructor() {
  */
 class UserInfo {
     var id = ""
-    var name = "Гость"
+    var name = App.getInstance().getString(R.string.guest)
     var mentionsCount: Int? = 0
 
     fun mentionsCountOrDefault(defaultValue: Int): Int {
@@ -107,7 +108,7 @@ class UserInfo {
     fun clear() {
         logined = false
         id = ""
-        name = "Гость"
+        name = App.getInstance().getString(R.string.guest)
         mentionsCount = 0
         qmsCount = 0
     }

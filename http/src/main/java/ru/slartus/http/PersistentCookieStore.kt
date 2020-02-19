@@ -219,7 +219,7 @@ class PersistentCookieStore private constructor(context: Context) : CookieStore 
         }
 
         // Check it there are expired cookies and remove them
-        if (!targetCookies.isEmpty()) {
+        if (targetCookies.isNotEmpty()) {
             val cookiesToRemoveFromPersistence = ArrayList<HttpCookie>()
             val it = targetCookies.iterator()
             while (it
@@ -265,6 +265,8 @@ class PersistentCookieStore private constructor(context: Context) : CookieStore 
         path is a %x2F ("/") character. */
 
     private fun checkPathsMatch(cookiePath: String, requestPath: String): Boolean {
+        if (cookiePath.isEmpty()&&requestPath.isEmpty())
+            return true
         if (cookiePath.isEmpty())
             return false
         return requestPath == cookiePath ||
