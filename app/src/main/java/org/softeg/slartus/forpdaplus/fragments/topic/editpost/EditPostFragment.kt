@@ -23,6 +23,7 @@ import android.text.style.BackgroundColorSpan
 import android.util.TypedValue
 import android.view.*
 import android.widget.*
+import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import io.paperdb.Paper
 import io.reactivex.Single
@@ -325,32 +326,32 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         txtPost!!.setSelection(txtPost!!.text.length)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.edit_reason_item -> {
+                toggleEditReasonDialog()
+                return true
+            }
+            R.id.preview_item -> {
+                val tabItem = App.getInstance().getTabByUrl("preview_" + tag!!)
+                if (tabItem == null) {
+                    PostPreviewFragment.showSpecial(postText, tag)
+                } else {
+                    (tabItem.fragment as PostPreviewFragment).load(postText)
+                    mainActivity.selectTab(tabItem)
+                    mainActivity.hidePopupWindows()
+                }
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
-        var item: MenuItem
-
-        if (!isNewPost) {
-            item = menu!!.add(R.string.reason_for_editing).setIcon(R.drawable.pencil)
-            item.setOnMenuItemClickListener {
-                toggleEditReasonDialog()
-                true
-            }
-            item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
-        }
-        menu!!.add(R.string.preview).setOnMenuItemClickListener {
-            val tabItem = App.getInstance().getTabByUrl("preview_" + tag!!)
-            if (tabItem == null) {
-                PostPreviewFragment.showSpecial(postText, tag)
-            } else {
-                (tabItem.fragment as PostPreviewFragment).load(postText)
-                mainActivity.selectTab(tabItem)
-                mainActivity.hidePopupWindows()
-            }
-            true
-        }
-        item = menu.add(R.string.find_in_text)
-        item.setActionView(R.layout.action_collapsible_search)
-        searchEditText = item.actionView.findViewById(R.id.editText)
+        inflater?.inflate(R.menu.edit_post, menu)
+        menu?.findItem(R.id.find_in_text_item)?.setActionView(R.layout.action_collapsible_search)
+        searchEditText = menu?.findItem(R.id.find_in_text_item)?.actionView?.findViewById(R.id.editText)
         searchEditText?.setOnKeyListener { _, keyCode, keyEvent ->
             if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 val text = if (searchEditText?.text == null) "" else searchEditText?.text.toString().trim { it <= ' ' }
@@ -371,8 +372,16 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
         })
+    }
 
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
+    override fun onPrepareOptionsMenu(menu: Menu?) {
+        super.onPrepareOptionsMenu(menu)
+        menu?.findItem(R.id.edit_reason_item)?.isVisible = !isNewPost
+
+        if (!supportActionBar!!.isShowing) {
+            supportActionBar!!.show()
+            mBottompanel!!.visibility = View.VISIBLE
+        }
     }
 
     private fun showAttachesListDialog() {
@@ -669,13 +678,6 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         }
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?) {
-        super.onPrepareOptionsMenu(menu)
-        if (!supportActionBar!!.isShowing) {
-            supportActionBar!!.show()
-            mBottompanel!!.visibility = View.VISIBLE
-        }
-    }
 
     private fun clearPostHighlight(): Spannable {
         val startSearchSelection = txtPost!!.selectionStart
