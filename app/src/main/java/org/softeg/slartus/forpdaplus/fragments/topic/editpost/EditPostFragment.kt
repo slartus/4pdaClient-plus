@@ -25,6 +25,9 @@ import android.view.*
 import android.widget.*
 import com.afollestad.materialdialogs.MaterialDialog
 import io.paperdb.Paper
+import io.reactivex.Single
+import io.reactivex.subjects.SingleSubject
+import kotlinx.android.synthetic.main.edit_post_plus.*
 import org.softeg.slartus.forpdaapi.post.EditAttach
 import org.softeg.slartus.forpdaapi.post.EditPost
 import org.softeg.slartus.forpdaapi.post.PostApi
@@ -34,10 +37,10 @@ import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.classes.FilePath
 import org.softeg.slartus.forpdaplus.common.AppLog
+import org.softeg.slartus.forpdaplus.common.SingleQueue
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.PostPreviewFragment
-import org.softeg.slartus.forpdaplus.fragments.topic.SessionHistory
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.editpost.tasks.*
 import org.softeg.slartus.forpdaplus.prefs.Preferences
@@ -47,7 +50,6 @@ import java.util.*
  * Created by radiationx on 30.10.15.
  */
 class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
-   
 
 
     private var txtPost: EditText? = null
@@ -79,7 +81,6 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
     private val editReasonText: String
         get() = if (txtPostEditReason!!.text == null) "" else txtPostEditReason!!.text.toString()
-
 
 
     private var mSearchTimer: Timer? = null
@@ -197,6 +198,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
                     txtPost!!.setSelection(txtPost!!.text.length)
                 }
             }
+            layout_edit_reason?.visibility = if (isNewPost) View.GONE else View.VISIBLE
             setDataFromExtras(args.getBundle("extras"))
 
             startLoadPost(forumId, topicId, postId, authKey)
@@ -229,25 +231,48 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         return false
     }
 
-    private fun sendMail() {
+    private fun checkMail(): Single<Boolean> {
         if (emptyText) {
             val toast = Toast.makeText(context, R.string.enter_message, Toast.LENGTH_SHORT)
             toast.setGravity(Gravity.TOP, 0, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64f, App.getInstance().resources.displayMetrics).toInt())
             toast.show()
-            return
+            return Single.just(false)
         }
-        val body = postText
+        return Single.just(true)
+    }
+
+    private fun confirmSendMail(): Single<Boolean> {
+        val result = SingleSubject.create<Boolean>()
         if (Preferences.Topic.getConfirmSend()) {
-            MaterialDialog.Builder(context!!)
+            val dialog = MaterialDialog.Builder(context!!)
                     .title(R.string.is_sure)
                     .content(R.string.confirm_sending)
                     .positiveText(R.string.ok)
-                    .onPositive { _, _ -> sendPost(body, editReasonText) }
+                    .onPositive { _, _ -> result.onSuccess(true) }
                     .negativeText(R.string.cancel)
                     .show()
+            dialog.setOnDismissListener {
+                result.onSuccess(false)
+            }
         } else {
-            sendPost(body, editReasonText)
+            result.onSuccess(false)
         }
+        return result
+    }
+
+    private fun sendMail() {
+        val body = postText
+        addToDisposable(
+                SingleQueue(listOf({ checkMail() }, { confirmSendMail() }))
+                        .subscribe(
+                                {
+                                    if (it)
+                                        sendPost(body, editReasonText)
+                                },
+                                {
+                                    AppLog.e(it)
+                                }
+                        ))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -404,7 +429,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
                             .alwaysCallMultiChoiceCallback()
                             .show()
                 }
-                
+
                 .negativeText(R.string.cancel)
                 .build()
         mAttachesListDialog!!.show()
@@ -545,7 +570,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     private fun sendPost(text: String, editPostReason: String) {
 
         if (isNewPost) {
-            PostTask(this,mEditpost, text, editPostReason,
+            PostTask(this, mEditpost, text, editPostReason,
                     Preferences.Topic.Post.getEnableEmotics(), Preferences.Topic.Post.getEnableSign())
                     .execute()
         } else {
@@ -556,7 +581,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     }
 
     private fun toggleEditReasonDialog() {
-        txtPostEditReason?.visibility = if (txtPostEditReason?.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        layout_edit_reason?.visibility = if (layout_edit_reason?.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
 
 
@@ -582,8 +607,6 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     private fun refreshAttachmentsInfo() {
         btnAttachments?.text = (mEditpost?.attaches?.size ?: 0).toString()
     }
-
-
 
 
     inner class AttachesAdapter internal constructor(private val content: List<EditAttach>) : RecyclerView.Adapter<AttachesAdapter.AttachViewHolder>() {
@@ -699,13 +722,13 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         try {
             progressSearch!!.visibility = View.VISIBLE
 
-            searchText = searchText.toLowerCase()
+            searchText = searchText.toLowerCase(Locale.getDefault())
             val raw = clearPostHighlight()
 
             var startSearchSelection = 0
             if (fromSelection)
                 startSearchSelection = txtPost!!.selectionStart + 1
-            val text = raw.toString().toLowerCase()
+            val text = raw.toString().toLowerCase(Locale.getDefault())
 
 
             var findedStartSelection = TextUtils.indexOf(text, searchText, startSearchSelection)
