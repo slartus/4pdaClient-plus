@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -24,7 +23,6 @@ import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdacommon.UrlExtensions;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.common.Email;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.devdb.ParentFragment;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
@@ -51,7 +49,6 @@ import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.DevDbCatalogBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.DevDbModelsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.FavoritesBrickInfo;
-import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
@@ -73,10 +70,6 @@ import java.util.regex.Pattern;
  * To change this template use File | Settings | File Templates.
  */
 public class IntentActivity extends MainActivity implements BricksListDialogFragment.IBricksListDialogCaller {
-    public static final String ACTION_SELECT_TOPIC = "org.softeg.slartus.forpdaplus.SELECT_TOPIC";
-    public static final String RESULT_TOPIC_ID = "org.softeg.slartus.forpdaplus.RESULT_TOPIC_ID";
-
-
     @Override
     public void onBricksListDialogResult(DialogInterface dialog, String dialogId,
                                          BrickInfo brickInfo, Bundle args) {
@@ -98,31 +91,6 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return url;
     }
 
-    public static boolean checkSendAction(BricksListDialogFragment.IBricksListDialogCaller activity, final Intent intent) {
-        String action = intent.getAction();
-        if (Intent.ACTION_SEND.equals(action) || Intent.ACTION_SEND_MULTIPLE.equals(action)) {
-            Bundle extras = intent.getExtras();
-            // логи только в тему программы!
-            try {
-                if (extras != null && extras.containsKey(Intent.EXTRA_EMAIL)
-                        && extras.get(Intent.EXTRA_EMAIL) != null && Email.EMAIL.equals(extras.getStringArray(Intent.EXTRA_EMAIL)[0])) {
-
-
-                    Toast.makeText(activity.getContext(), "Сообщение об ошибке отправлять только на email!", Toast.LENGTH_LONG).show();
-
-                    return true;
-                }
-            } catch (Throwable ignored) {
-
-            }
-            BricksListDialogFragment.showDialog(activity, BricksListDialogFragment.CREATE_POST_ID,
-                    ListCore.getBricksNames(ListCore.getCreatePostBricks()), extras);
-
-            return true;
-        }
-        return false;
-    }
-
     public static Boolean isNews(String url) {
 
         url = IntentActivity.getRedirectUrl(url);
@@ -137,7 +105,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return PlayerActivity.isYoutube(url);
     }
 
-    public static Boolean tryShowYoutube(Activity context, String url, Boolean finish) {
+    public static Boolean tryShowYoutube(Activity context, String url) {
         url = IntentActivity.getRedirectUrl(url);
         if (!isYoutube(url)) return false;
         PlayerActivity.showYoutubeChoiceDialog(context, url);
@@ -155,7 +123,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return false;
     }
 
-    public static Boolean tryShowNewsList(Activity context, String url, Boolean finish) {
+    public static Boolean tryShowNewsList(String url) {
         if (isNewsList(url)) {
             Bundle args = new Bundle();
             args.putString(NewsListFragment.NEWS_LIST_URL_KEY, url);
@@ -166,7 +134,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return false;
     }
 
-    public static Boolean tryShowNews(Activity context, String url, Boolean finish) {
+    public static Boolean tryShowNews(String url) {
         if (isNews(url)) {
             MainActivity.addTab(url, NewsFragment.newInstance(url));
             return true;
@@ -174,7 +142,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return false;
     }
 
-    public static Boolean tryShowSpecial(Activity context, String url, Boolean finish) {
+    public static Boolean tryShowSpecial(String url) {
         if (url.contains("special")) {
             SpecialView.showSpecial(url);
             return true;
@@ -205,7 +173,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return url;
     }
 
-    public static boolean tryShowSearch(Activity context, String url, Boolean finish) {
+    public static boolean tryShowSearch(String url) {
 
         Matcher m = PatternExtensions.compile("4pda.ru.*?act=search").matcher(url);
         if (m.find()) {
@@ -215,7 +183,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return false;
     }
 
-    public static boolean tryReputation(Activity context, Handler handler, Uri uri, Boolean finish) {
+    public static boolean tryReputation(Activity context, Handler handler, Uri uri) {
         if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
             return false;
         if (!"rep".equals(uri.getQueryParameter("act")))
@@ -266,7 +234,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
 
-    public static boolean tryShowClaim(Activity context, Handler handler, Uri uri, Boolean finish) {
+    public static boolean tryShowClaim(Activity context, Handler handler, Uri uri) {
         if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
             return false;
         if (!"report".equals(uri.getQueryParameter("act")))
@@ -283,7 +251,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
 
-    public static boolean tryProfile(Activity context, Uri uri, Boolean finish) {
+    public static boolean tryProfile(Uri uri) {
         if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
             return false;
         if ("profile".equals(uri.getQueryParameter("act"))
@@ -304,7 +272,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return false;
     }
 
-    public static boolean tryEditProfile(Activity context, Uri uri, Boolean finish) {
+    public static boolean tryEditProfile(Uri uri) {
         if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
             return false;
         if (!"usercp".equals(uri.getQueryParameter("act")))
@@ -317,7 +285,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return false;
     }
 
-    public static boolean tryEditDevice(Activity context, Uri uri, Boolean finish) {
+    public static boolean tryEditDevice(Activity context, Uri uri) {
         if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
             return false;
         if ("profile-xhr".equals(uri.getQueryParameter("act"))) {
@@ -333,7 +301,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return false;
     }
 
-    public static boolean tryShowForum(Activity context, String url, Boolean finish) {
+    public static boolean tryShowForum(String url) {
         String[] patterns = {"4pda.ru.*?showforum=(\\d+)$", "4pda.ru/forum/lofiversion/index.php\\?f(\\d+)\\.html",
                 "4pda.ru/forum/index.php.*?act=idx"};
         for (String pattern : patterns) {
@@ -354,7 +322,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return tryShowUrl(context, handler, url, showInDefaultBrowser, finishActivity, null);
     }
 
-    public static boolean tryShowRules(Activity context, Uri uri, Boolean finish) {
+    public static boolean tryShowRules(Uri uri) {
         if ("announce".equals(uri.getQueryParameter("act")) | "boardrules".equals(uri.getQueryParameter("act"))) {
             ForumRulesFragment.showRules(uri.toString());
             return true;
@@ -401,19 +369,19 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 showTopic(url);
                 return true;
             }
-            if (tryShowRules(context, uri, finishActivity)) {
+            if (tryShowRules(uri)) {
                 return true;
             }
 
-            if (tryShowNews(context, url, finishActivity)) {
+            if (tryShowNews(url)) {
                 return true;
             }
 
-            if (tryShowNewsList(context, url, finishActivity)) {
+            if (tryShowNewsList(url)) {
                 return true;
             }
 
-            if (tryShowSpecial(context, url, finishActivity)) {
+            if (tryShowSpecial(url)) {
                 return true;
             }
 
@@ -421,54 +389,54 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 return true;
             }
 
-            if (tryProfile(context, uri, finishActivity)) {
+            if (tryProfile(uri)) {
                 return true;
             }
 
-            if (tryEditProfile(context, uri, finishActivity)) {
+            if (tryEditProfile(uri)) {
                 return true;
             }
 
-            if (tryEditDevice(context, uri, finishActivity)) {
+            if (tryEditDevice(context, uri)) {
                 return true;
             }
 
-            if (tryShowForum(context, url, finishActivity)) {
+            if (tryShowForum(url)) {
                 return true;
             }
 
-            if (tryReputation(context, handler, uri, finishActivity))
+            if (tryReputation(context, handler, uri))
                 return true;
 
-            if (tryShowClaim(context, handler, uri, finishActivity))
+            if (tryShowClaim(context, handler, uri))
                 return true;
 
-            if (tryShowQms(context, uri, finishActivity))
+            if (tryShowQms(uri))
                 return true;
 
-            if (tryFav(context, url, finishActivity))
+            if (tryFav(url))
                 return true;
 
-            if (tryFavorites(context, url, finishActivity))
+            if (tryFavorites(url))
                 return true;
 
-            if (tryShowEditPost(context, uri, authKey, finishActivity))
+            if (tryShowEditPost(context, uri, authKey))
                 return true;
 
-            if (tryShowTopicWriters(context, uri, finishActivity))
+            if (tryShowTopicWriters(uri))
                 return true;
 
-            if (tryShowSearch(context, url, finishActivity))
+            if (tryShowSearch(url))
                 return true;
 
-            if (tryShowTopicAttaches(context, uri, finishActivity))
+            if (tryShowTopicAttaches(uri))
                 return true;
         }
 
-        if (tryDevdb(context, url, finishActivity))
+        if (tryDevdb(url))
             return true;
 
-        if (tryShowYoutube(context, url, finishActivity))
+        if (tryShowYoutube(context, url))
             return true;
 
         if (showInDefaultBrowser)
@@ -484,7 +452,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         MainActivity.addTab(url, ThemeFragment.newInstance(url));
     }
 
-    private static boolean tryFavorites(Activity context, String url, Boolean finishActivity) {
+    private static boolean tryFavorites(String url) {
         Matcher m = PatternExtensions.compile("4pda.ru.*?autocom=favtopics").matcher(url);
         if (m.find()) {
             MainActivity.showListFragment(new FavoritesBrickInfo().getName(), null);
@@ -493,7 +461,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return false;
     }
 
-    private static boolean tryFav(Activity context, String url, Boolean finishActivity) {
+    private static boolean tryFav(String url) {
         Matcher m = PatternExtensions.compile("4pda.ru.*?act=fav").matcher(url);
         if (m.find()) {
             MainActivity.showListFragment(new FavoritesBrickInfo().getName(), null);
@@ -502,7 +470,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return false;
     }
 
-    public static boolean tryDevdb(Activity context, String url, Boolean finish) {
+    public static boolean tryDevdb(String url) {
         if (NewDevDbApi.isCatalogUrl(url)) {
             Bundle args = new Bundle();
             args.putString(DevDbCatalogFragment.URL_KEY, url);
@@ -522,7 +490,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return false;
     }
 
-    public static boolean tryShowEditPost(Activity context, Uri uri, String authKey, Boolean finish) {
+    public static boolean tryShowEditPost(Activity context, Uri uri, String authKey) {
         if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
             return false;
         if (!"post".equals(uri.getQueryParameter("act")))
@@ -538,7 +506,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return true;
     }
 
-    public static boolean tryShowTopicAttaches(Activity context, Uri uri, Boolean finish) {
+    public static boolean tryShowTopicAttaches(Uri uri) {
         if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
             return false;
         if (!"attach".equals(uri.getQueryParameter("act")))
@@ -548,11 +516,11 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         if (TextUtils.isEmpty(uri.getQueryParameter("tid")))
             return false;
 
-        TopicAttachmentListFragment.showActivity(context, uri.getQueryParameter("tid"));
+        TopicAttachmentListFragment.showActivity(uri.getQueryParameter("tid"));
         return true;
     }
 
-    public static boolean tryShowQms(Activity context, Uri uri, Boolean finish) {
+    public static boolean tryShowQms(Uri uri) {
         if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
             return false;
         String mid;
@@ -581,7 +549,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         return true;
     }
 
-    public static boolean tryShowTopicWriters(Activity context, Uri uri, Boolean finish) {
+    public static boolean tryShowTopicWriters(Uri uri) {
         if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
             return false;
 
@@ -659,8 +627,8 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.send_post_confirm_dialog, null);
             assert view != null;
-            final CheckBox checkBox = (CheckBox) view.findViewById(R.id.chkConfirmationSend);
-            final TextView message = (TextView) view.findViewById(R.id.textView);
+            final CheckBox checkBox = view.findViewById(R.id.chkConfirmationSend);
+            final TextView message = view.findViewById(R.id.textView);
             message.setText(R.string.ask_start_download_file);
             checkBox.setText(R.string.confirm_download);
             new MaterialDialog.Builder(activity)
@@ -668,20 +636,14 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                     .customView(view, true)
                     .positiveText(R.string.ok)
                     .negativeText(R.string.cancel)
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            //dialogInterface.dismiss();
-                            if (!checkBox.isChecked())
-                                Preferences.Files.setConfirmDownload(false);
-                            DownloadsService.download(activity, url, finish);
-                        }
-
-                        @Override
-                        public void onNegative(MaterialDialog dialog) {
-                            if (finish)
-                                activity.finish();
-                        }
+                    .onPositive((dialog, which) -> {
+                        if (!checkBox.isChecked())
+                            Preferences.Files.setConfirmDownload(false);
+                        DownloadsService.download(activity, url, finish);
+                    })
+                    .onNegative((dialog, which) -> {
+                        if (finish)
+                            activity.finish();
                     })
                     .show();
 

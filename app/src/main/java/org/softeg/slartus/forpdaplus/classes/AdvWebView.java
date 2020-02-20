@@ -12,6 +12,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
@@ -66,7 +67,7 @@ public class AdvWebView extends WebView {
                 getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
             } catch (Throwable ignore) {}
         }*/
-        setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());
+        setBackgroundColor(AppTheme.getThemeStyleWebViewBackground());
         //loadData("<html><head></head></html>", "text/html", "UTF-8");
     }
 

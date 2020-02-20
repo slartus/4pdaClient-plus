@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/edit_reason_item"
+        android:title="@string/reason_for_editing"
+        android:icon="@drawable/pencil"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/preview_item"
+        android:title="@string/preview"
+        />
+
+    <item
+        android:id="@+id/find_in_text_item"
+        android:title="@string/find_in_text"
+        android:icon="@drawable/pencil"
+        android:actionLayout="@layout/action_collapsible_search"
+        app:showAsAction="collapseActionView"
+        />
+</menu>

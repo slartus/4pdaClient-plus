@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.io.IOException;
@@ -330,7 +331,7 @@ public class BbCodesPanel extends BbCodesBasePanel {
 
     @Override
     protected BbImage[] getImages() {
-        String style = App.getInstance().getCurrentThemeName();
+        String style = AppTheme.getCurrentThemeName();
         if(style.equals("dark")) style = "black";
 
         BbImage[] res = new BbImage[m_BbCodes.length];
