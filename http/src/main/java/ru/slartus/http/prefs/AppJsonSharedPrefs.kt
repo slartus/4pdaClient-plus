@@ -93,7 +93,7 @@ class AppJsonSharedPrefs(internal var filePath: String) : IPreferences {
         putBoolean(key, value)
     }
 
-    fun commit() {
+    private fun commit() {
         if (mJSONObject == null) return
         synchronized(sync) {
             try {

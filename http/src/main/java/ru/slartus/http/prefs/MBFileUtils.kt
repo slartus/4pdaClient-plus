@@ -49,7 +49,7 @@ object MBFileUtils {
             }catch (ofle:OverlappingFileLockException){
                 try {
                     // Wait a bit
-                    Thread.sleep(0)
+                    Thread.sleep(10)
                 } catch (ex: InterruptedException) {
                     throw InterruptedIOException("Interrupted waiting for a file lock.")
                 }
