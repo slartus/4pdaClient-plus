@@ -234,14 +234,15 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     private void showBody(Profile profile) {
-        title = profile.getNick().toString();
+        CharSequence nick = profile.getNick();
+
+        title = nick != null ? nick.toString() : "unknown";
         super.showBody();
         m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", profile.getHtmlBody(), "text/html", "UTF-8", null);
-        if (profile.getNick() != null)
+        if (nick != null)
             args.putString(USER_NAME_KEY, profile.getNick().toString());
         if (getMainActivity() != null)
-            setTitle(profile.getNick());
-
+            setTitle(title);
     }
 
     @Override
@@ -442,8 +443,6 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         });
 
     }
-
-
 
 
     @Override

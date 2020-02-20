@@ -44,7 +44,7 @@ public class ActionSelectDialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
                         PreferenceManager.getDefaultSharedPreferences(context)
-                                .edit().putString(preferenceKey, selectedAction).commit();
+                                .edit().putString(preferenceKey, selectedAction).apply();
 
                         showTopicAction.run();
 
@@ -55,7 +55,7 @@ public class ActionSelectDialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
                         PreferenceManager.getDefaultSharedPreferences(context)
-                                .edit().putString(preferenceKey, null).commit();
+                                .edit().putString(preferenceKey, null).apply();
 
                         showTopicAction.run();
                     }
@@ -104,7 +104,7 @@ public class ActionSelectDialogFragment {
                                 PreferenceManager.getDefaultSharedPreferences(context)
                                         .edit()
                                         .putString(preferenceKey, newValue.toString())
-                                        .commit();
+                                        .apply();
 
                                 if (!TextUtils.isEmpty(hintForChangeDefault))
                                     new AlertDialog.Builder(context)

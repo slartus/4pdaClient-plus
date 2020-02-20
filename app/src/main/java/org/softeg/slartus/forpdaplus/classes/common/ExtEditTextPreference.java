@@ -90,7 +90,7 @@ public class ExtEditTextPreference extends EditTextPreference {
 
             SharedPreferences.Editor editor = getPreferenceManager().getSharedPreferences().edit();
             editor.putFloat(getKey(), value);
-            editor.commit();
+            editor.apply();
             return true;
         }
         return false;

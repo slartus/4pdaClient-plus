@@ -24,7 +24,7 @@ public class ForumTopicsPreferencesActivity extends BasePreferencesActivity {
         ForumTopicsPreferencesFragment fragment = new ForumTopicsPreferencesFragment();
         fragment.setArguments(getIntent().getExtras());
         getFragmentManager().beginTransaction().replace(android.R.id.content,
-                fragment).commit();
+                fragment).commitAllowingStateLoss();
     }
 
     @Override

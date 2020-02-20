@@ -117,7 +117,7 @@ public class PlayerActivity extends AppCompatActivity {
             mFragment1 = MenuFragment.getInstance(parseResult);
             ft.add(mFragment1, MenuFragment.ID);
         }
-        ft.commit();
+        ft.commitAllowingStateLoss();
 
     }
 

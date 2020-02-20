@@ -462,6 +462,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        ExtTopic topic = getTopic();
         try {
             Bundle args = new Bundle();
             switch (id) {
@@ -481,45 +482,61 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     onSearchRequested();
                     return true;
                 case R.id.topic_search_item:
-                    SearchSettingsDialogFragment.showSearchSettingsDialog(getMainActivity(),
-                            SearchSettingsDialogFragment.createTopicSearchSettings(getTopic().getId()));
+                    if (topic != null) {
+                        SearchSettingsDialogFragment.showSearchSettingsDialog(getMainActivity(),
+                                SearchSettingsDialogFragment.createTopicSearchSettings(topic.getId()));
+                    }
                     return true;
                 case R.id.add_to_favorites_item:
                     try {
-                        TopicUtils.showSubscribeSelectTypeDialog(getContext(), mHandler, getTopic());
+                        if (topic != null) {
+                            TopicUtils.showSubscribeSelectTypeDialog(getContext(), mHandler, topic);
+                        }
                     } catch (Exception ex) {
                         AppLog.e(getContext(), ex);
                     }
                     return true;
                 case R.id.del_from_favorites_item:
-                    final HelpTask helpTask = new HelpTask(getContext(), getContext().getString(R.string.DeletingFromFavorites));
-                    helpTask.setOnPostMethod(param -> {
-                        if (helpTask.Success)
-                            Toast.makeText(getContext(), (String) param, Toast.LENGTH_SHORT).show();
-                        else
-                            AppLog.e(getContext(), helpTask.ex);
-                        return null;
-                    });
-                    helpTask.execute((HelpTask.OnMethodListener) param -> TopicApi.deleteFromFavorites(Client.getInstance(),getTopic().getId()));
+                    if (topic != null) {
+                        final HelpTask helpTask = new HelpTask(getContext(), getContext().getString(R.string.DeletingFromFavorites));
+                        helpTask.setOnPostMethod(param -> {
+                            if (helpTask.Success)
+                                Toast.makeText(getContext(), (String) param, Toast.LENGTH_SHORT).show();
+                            else
+                                AppLog.e(getContext(), helpTask.ex);
+                            return null;
+                        });
+                        helpTask.execute((HelpTask.OnMethodListener) param -> TopicApi.deleteFromFavorites(Client.getInstance(), topic.getId()));
+                    }
                     return true;
                 case R.id.open_topic_forum_item:
-                    ForumFragment.Companion.showActivity(getTopic().getForumId(), getTopic().getId());
+                    if (topic != null) {
+                        ForumFragment.Companion.showActivity(topic.getForumId(), topic.getId());
+                    }
                     return true;
                 case R.id.topic_notes_item:
-                    args.putString(NotesListFragment.TOPIC_ID_KEY, getTopic().getId());
-                    MainActivity.showListFragment(new NotesBrickInfo().getName(), args);
+                    if (topic != null) {
+                        args.putString(NotesListFragment.TOPIC_ID_KEY, topic.getId());
+                        MainActivity.showListFragment(new NotesBrickInfo().getName(), args);
+                    }
                     return true;
                 case R.id.topic_readers_item:
-                    args.putString(TopicReadersListFragment.TOPIC_ID_KEY, getTopic().getId());
-                    MainActivity.showListFragment(getTopic().getId(), TopicReadersBrickInfo.NAME, args);
+                    if (topic != null) {
+                        args.putString(TopicReadersListFragment.TOPIC_ID_KEY, topic.getId());
+                        MainActivity.showListFragment(topic.getId(), TopicReadersBrickInfo.NAME, args);
+                    }
                     return true;
                 case R.id.topic_writers_item:
-                    args.putString(TopicWritersListFragment.TOPIC_ID_KEY, getTopic().getId());
-                    MainActivity.showListFragment(getTopic().getId(), TopicWritersBrickInfo.NAME, args);
+                    if (topic != null) {
+                        args.putString(TopicWritersListFragment.TOPIC_ID_KEY, topic.getId());
+                        MainActivity.showListFragment(topic.getId(), TopicWritersBrickInfo.NAME, args);
+                    }
                     return true;
                 case R.id.link_item:
-                    ExtUrl.showSelectActionDialog(getMainActivity(), getS(R.string.link),
-                            TextUtils.isEmpty(getLastUrl()) ? ("http://4pda.ru/forum/index.php?showtopic=" + getTopic().getId()) : getLastUrl());
+                    if (topic != null) {
+                        ExtUrl.showSelectActionDialog(getMainActivity(), getS(R.string.link),
+                                TextUtils.isEmpty(getLastUrl()) ? ("http://4pda.ru/forum/index.php?showtopic=" + topic.getId()) : getLastUrl());
+                    }
                     return true;
                 case R.id.avatars_item:
                     String[] avatars = App.getContext().getResources().getStringArray(R.array.AvatarsShowTitles);
@@ -555,7 +572,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     showStylesDialog(App.getInstance().getPreferences());
                     return true;
                 case R.id.multi_moderation_item:
-                    ThemeCurator.showMmodDialog(getActivity(), ThemeFragment.this, getTopic().getId());
+                    if (topic != null) {
+                        ThemeCurator.showMmodDialog(getActivity(), ThemeFragment.this, getTopic().getId());
+                    }
                     return true;
 
             }
@@ -1046,7 +1065,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public void setHistoryBody(int index, String body) {
-        m_History.get(index).setBody(body);
+        if (index > m_History.size()) {
+            addToHistory(body);
+        } else {
+            m_History.get(index).setBody(body);
+        }
     }
 
     public AdvWebView getWebView() {

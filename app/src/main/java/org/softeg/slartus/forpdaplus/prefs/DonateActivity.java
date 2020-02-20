@@ -27,7 +27,7 @@ public class DonateActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
 
         getFragmentManager().beginTransaction().replace(android.R.id.content,
-                new PrefsFragment()).commit();
+                new PrefsFragment()).commitAllowingStateLoss();
     }
 
     public static class PrefsFragment extends PreferenceFragment {
