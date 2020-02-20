@@ -11,6 +11,7 @@ import org.softeg.slartus.forpdacommon.NotReportException;
 import java.io.IOException;
 import java.net.HttpCookie;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -18,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -186,11 +188,7 @@ public class ProfileApi {
     }
 
     public static LoginForm getLoginForm() throws IOException {
-        OkHttpClient client = new OkHttpClient.Builder()
-                .retryOnConnectionFailure(true)
-                .connectTimeout(15, TimeUnit.SECONDS) // connect timeout
-                .writeTimeout(15, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS).build();
+        OkHttpClient client = Http.newClientBuiler().build();
 
         String prevPage = RequestUrl(client, "https://4pda.ru/forum/index.php?act=auth");
         Matcher m = Pattern.compile("act=auth[^\"]*[;&]k=([^&\"]*)", Pattern.CASE_INSENSITIVE).matcher(prevPage);

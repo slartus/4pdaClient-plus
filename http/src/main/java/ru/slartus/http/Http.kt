@@ -1,6 +1,7 @@
 package ru.slartus.http
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
@@ -17,8 +18,12 @@ import java.net.CookiePolicy.ACCEPT_ALL
 import java.net.HttpCookie
 import java.net.URI
 import java.nio.charset.Charset
+import java.security.cert.CertificateException
 import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 
 @Suppress("unused")
@@ -52,6 +57,47 @@ class Http private constructor(context: Context, appName: String, appVersion: St
             }
             return type
         }
+
+        @JvmStatic
+        fun newClientBuiler(): OkHttpClient.Builder {
+            val trustManager=object : X509TrustManager {
+
+                override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate>? = emptyArray()
+
+                @SuppressLint("TrustAllX509TrustManager")
+                @Throws(CertificateException::class)
+                override fun checkClientTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {
+                }
+
+                @SuppressLint("TrustAllX509TrustManager")
+                @Throws(CertificateException::class)
+                override fun checkServerTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {
+                }
+            }
+            val trustAllCerts = arrayOf<TrustManager>(trustManager)
+
+            // Install the all-trusting trust manager
+            val sslContext = SSLContext.getInstance("SSL")
+            sslContext.init(null, trustAllCerts, java.security.SecureRandom())
+            // Create an ssl socket factory with our all-trusting manager
+            val sslSocketFactory = sslContext.socketFactory
+//
+//            val spec = ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
+//                    .tlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_1, TlsVersion.TLS_1_0)
+//                    .cipherSuites(
+//                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+//                            CipherSuite.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,
+//                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+//                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA)
+//                    .build()
+            return OkHttpClient.Builder()
+                    .connectionSpecs(listOf(ConnectionSpec.COMPATIBLE_TLS, ConnectionSpec.CLEARTEXT))
+                    .retryOnConnectionFailure(true)
+                    .connectTimeout(15, TimeUnit.SECONDS) // connect timeout
+                    .writeTimeout(15, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .sslSocketFactory(sslSocketFactory,trustManager)
+        }
     }
 
     private var client: OkHttpClient
@@ -60,12 +106,8 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     init {
         val cookieHandler = CookieManager(cookieStore, ACCEPT_ALL)
 
-        val builder = OkHttpClient.Builder()
+        val builder = newClientBuiler()
                 .cookieJar(JavaNetCookieJar(cookieHandler))
-                .retryOnConnectionFailure(true)
-                .connectTimeout(15, TimeUnit.SECONDS) // connect timeout
-                .writeTimeout(15, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
 
 //        if (BuildConfig.DEBUG)
 //            builder.addInterceptor(DebugLoggingInterceptor())
