@@ -53,8 +53,10 @@ public class DonateActivity extends PreferenceActivity {
         });
 
         fragment.findPreference("Yandex.money").setOnPreferenceClickListener(preference -> {
-            StringUtils.copyToClipboard(fragment.getActivity(), "41001491859942");
-            Toast.makeText(fragment.getActivity(), fragment.getActivity().getString(R.string.DonateAccountNimberCopied), Toast.LENGTH_SHORT).show();
+            Intent marketIntent = new Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://money.yandex.ru/to/41001491859942"));
+            fragment.startActivity(Intent.createChooser(marketIntent, fragment.getString(R.string.Choice)));
             return true;
         });
 
