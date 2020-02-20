@@ -75,7 +75,7 @@ public class ClientPreferences {
                 cal.set(Calendar.MINUTE, minute);
 
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                prefs.edit().putLong(key, cal.getTimeInMillis()).commit();
+                prefs.edit().putLong(key, cal.getTimeInMillis()).apply();
             }
 
             public static Boolean isEnabled(Context context) {

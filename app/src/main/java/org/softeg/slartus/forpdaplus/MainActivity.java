@@ -504,7 +504,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                 }
             }
         }
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
     public void hideFragments(FragmentTransaction transaction, boolean withAnimation) {
@@ -537,12 +537,12 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                 addTab(tabItem.getTitle(), tabItem.getUrl(), tabItem.getFragment());
                 return;
             }
-            transaction.commit();
+            transaction.commitAllowingStateLoss();
             return;
         }
         if (onresume) fragment.onResume();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(fragment);
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
     private void addFragment(FragmentTransaction transaction, Fragment fragment, String tag) {
@@ -722,7 +722,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             hideFragments(transaction, false);
             transaction.remove(getSupportFragmentManager().findFragmentByTag(tag));
-            transaction.commit();
+            transaction.commitAllowingStateLoss();
             mTabDraweMenu.removeTab(tag);
         }
     }
@@ -734,7 +734,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             transaction.remove(item.getFragment());
             App.getInstance().getTabItems().remove(item);
         }
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
     /**

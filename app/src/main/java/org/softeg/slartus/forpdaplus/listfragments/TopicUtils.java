@@ -48,7 +48,7 @@ public class TopicUtils {
         App.getInstance().getPreferences()
                 .edit()
                 .putString(String.format("%s.navigate_action", template), navigateAction.toString())
-                .commit();
+                .apply();
     }
 
     public static final String BROWSER = "browser";
