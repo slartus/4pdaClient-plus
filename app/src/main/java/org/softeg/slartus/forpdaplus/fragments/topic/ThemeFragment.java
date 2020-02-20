@@ -1044,7 +1044,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public void setHistoryBody(int index, String body) {
-        m_History.get(index).setBody(body);
+        if(index>m_History.size()){
+            addToHistory(body);
+        }else {
+            m_History.get(index).setBody(body);
+        }
     }
 
     public AdvWebView getWebView() {
