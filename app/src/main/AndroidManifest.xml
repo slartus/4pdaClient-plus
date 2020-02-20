@@ -142,12 +142,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
-        <activity
-            android:name=".activity.TestActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTop"
-            android:theme="@style/ThemeLight" />
         <activity
             android:name=".prefs.PreferencesActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
