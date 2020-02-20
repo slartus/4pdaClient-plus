@@ -23,6 +23,7 @@ import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.download.DownloadsService
 import org.softeg.slartus.forpdaplus.prefs.Preferences
+import ru.slartus.http.Http
 import kotlin.math.max
 
 
@@ -49,7 +50,7 @@ class ForPdaVersionNotifier(
             currentVersion = currentVersion.trim { it <= ' ' }
             val link = "https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/updateinfo.json"
             try {
-                val client = OkHttpClient()
+                val client = Http.newClientBuiler().build()
                 val request = Request.Builder()
                         .url(link)
                         .cacheControl(CacheControl.FORCE_NETWORK)// не исопльуем кеширование

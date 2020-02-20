@@ -82,7 +82,7 @@ public class UploadUtils {
                     .url("https://savepice.ru/upload")
                     .post(requestBody)
                     .build();
-            OkHttpClient client = new OkHttpClient.Builder().build();
+            OkHttpClient client = Http.newClientBuiler().build();
             try {
                 Response response = client.newCall(request).execute();
                 if (response.isSuccessful()) {

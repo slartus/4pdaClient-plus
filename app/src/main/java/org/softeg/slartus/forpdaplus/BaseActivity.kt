@@ -7,6 +7,7 @@ import io.reactivex.disposables.Disposable
 abstract class BaseActivity: AppCompatActivity() {
     private var compositeDisposable = CompositeDisposable()
 
+
     override fun onDestroy() {
         super.onDestroy()
         compositeDisposable.dispose()
