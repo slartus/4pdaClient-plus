@@ -1395,6 +1395,22 @@ div[data-post] > a {
   margin: 0;
   padding: 0;
 }
+
+#main.article{
+	padding: 1em;
+    padding-top: 1em;
+    padding-bottom: 0.5em;
+}
+
+#main.article-header h1{
+	font-size: 1.5em;
+}
+
+#main.article img {
+  width: 100%;
+  height: auto;
+}
+
 #main iframe {
   max-width: 100%;
   width: 480px;

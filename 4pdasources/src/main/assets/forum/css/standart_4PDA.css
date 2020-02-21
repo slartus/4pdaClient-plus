@@ -1400,6 +1400,21 @@ img[src*="style_emoticons"] {
   margin: -0.4rem -0.4rem -100px;
   padding: 0.4rem 0.4rem 2rem;
 }
+
+#news.article{
+	padding: 1em;
+    padding-top: 1em;
+    padding-bottom: 0.5em;
+}
+
+#news.article-header h1{
+	font-size: 1.5em;
+}
+
+#news.article img {
+  width: 100%;
+  height: auto;
+}
 #main iframe {
   max-width: 100%;
   width: 480px;

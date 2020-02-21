@@ -124,6 +124,22 @@ a {
   max-width: 60em;
   margin: 0 auto;
 }
+
+.article{
+	padding: 1em;
+    padding-top: 1em;
+    padding-bottom: 0.5em;
+}
+
+.article-header h1{
+	font-size: 1.5em;
+}
+
+.article img {
+  width: 100%;
+  height: auto;
+}
+
 .container {
   background: #000000;
   margin: 0.5em 0;
