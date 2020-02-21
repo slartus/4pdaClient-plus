@@ -46,11 +46,14 @@ public class Functions {
 
     }
 
-    public static Date parseForumDateTime(String dateTime, String today, String yesterday) {
-        return org.softeg.slartus.forpdacommon.Functions.parseForumDateTime(dateTime, today, yesterday);
+    public static Date parseForumDateTime(String dateTime) {
+        return org.softeg.slartus.forpdacommon.Functions.parseForumDateTime(dateTime);
 
     }
 
+    public static Date parseForumDateTime(String dateTime, String today, String yesterday) {
+        return org.softeg.slartus.forpdacommon.Functions.parseForumDateTime(dateTime, today, yesterday);
+    }
 
     public static String getFullDateString(Date date) {
 

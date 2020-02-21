@@ -19,6 +19,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -587,6 +588,44 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     @Override
+    public void onSupportActionModeStarted(android.support.v7.view.ActionMode mode) {
+        super.onSupportActionModeStarted(mode);
+
+        try {
+            mode.getMenu().add(Menu.NONE,Menu.NONE,0,R.string.quote)
+                    .setOnMenuItemClickListener(menuItem -> {
+                        try {
+                            getWebView().evalJs("htmlOutSelectionPostInfo();");
+                        }catch (Throwable ex){
+                            AppLog.e(ex);
+                        }
+                        return true;
+                    });
+        } catch (Throwable ex) {
+            AppLog.e(getMainActivity(), ex);
+        }
+    }
+
+    @Override
+    public void onActionModeStarted(ActionMode mode) {
+        super.onActionModeStarted(mode);
+
+        try {
+            mode.getMenu().add(Menu.NONE,Menu.NONE,0,R.string.quote)
+                    .setOnMenuItemClickListener(menuItem -> {
+                try {
+                    getWebView().evalJs("htmlOutSelectionPostInfo();");
+                }catch (Throwable ex){
+                    AppLog.e(ex);
+                }
+                return true;
+            });
+        } catch (Throwable ex) {
+            AppLog.e(getMainActivity(), ex);
+        }
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, final MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         //inflater.inflate(R.menu.user, menu);
@@ -802,6 +841,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         m_PostBody = postBody;
     }
 
+    public void insertQuote(CharSequence postId, CharSequence postDate, CharSequence userNick, CharSequence text) {
+        getMainActivity().runOnUiThread(() -> new Handler().post(() ->
+                insertTextToPost("[quote name=\"" + userNick + "\" date=\"" + postDate + "\" post=\"" + postId + "\"]\n" + text + "\n[/quote]")));
+    }
+
     @SuppressWarnings("unused")
     @JavascriptInterface
     public void quote(final String forumId, final String topicId, final String postId, final String postDate, String userId, String userNick) {
@@ -809,8 +853,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         final String mUserNick = userNick.replace("\"", "\\\"");
         CharSequence clipboardText = StringUtils.fromClipboard(App.getContext());
         if (TextUtils.isEmpty(clipboardText)) {
-            getMainActivity().runOnUiThread(() -> new Handler().post(() ->
-                    insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n\n[/quote]")));
+            insertQuote(postId, finalPostDate, mUserNick, "");
             return;
         }
 
@@ -823,12 +866,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 .itemsCallback((dialog, view1, i, titles1) -> {
                     switch (i) {
                         case 0:
-                            getMainActivity().runOnUiThread(() ->
-                                    new Handler().post(() -> insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n\n[/quote]")));
+                            insertQuote(postId, finalPostDate, mUserNick, "");
                             break;
                         case 1:
-                            getMainActivity().runOnUiThread(() ->
-                                    new Handler().post(() -> insertTextToPost("[quote name=\"" + mUserNick + "\" date=\"" + finalPostDate + "\" post=\"" + postId + "\"]\n" + finalClipboardText + "\n[/quote]")));
+                            insertQuote(postId, finalPostDate, mUserNick, finalClipboardText);
                             break;
                     }
                 })

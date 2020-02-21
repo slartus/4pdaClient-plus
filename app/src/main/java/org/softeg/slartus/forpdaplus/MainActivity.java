@@ -27,6 +27,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -883,15 +884,41 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         return super.onPrepareOptionsMenu(menu);
     }
 
-    private void refreshUserMenu(Menu menu){
+    @Override
+    public void onSupportActionModeStarted(@NonNull android.support.v7.view.ActionMode mode) {
+        super.onSupportActionModeStarted(mode);
+        Fragment currentFragment = getCurrentFragment();
+        if (currentFragment instanceof GeneralFragment) {
+            ((GeneralFragment) currentFragment).onSupportActionModeStarted(mode);
+        }
+    }
+
+    @Override
+    public void onActionModeStarted(ActionMode mode) {
+        super.onActionModeStarted(mode);
+        Fragment currentFragment = getCurrentFragment();
+        if (currentFragment instanceof GeneralFragment) {
+            ((GeneralFragment) currentFragment).onActionModeStarted(mode);
+        }
+    }
+
+    private Fragment getCurrentFragment() {
+        String currentFragmentTag = App.getInstance().getCurrentFragmentTag();
+        if (currentFragmentTag != null && !"null".equals(currentFragmentTag)) {
+            return getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
+        }
+        return null;
+    }
+
+    private void refreshUserMenu(Menu menu) {
         boolean logged = UserInfoRepository.Companion.getInstance().getLogined();
         menu.findItem(R.id.guest_item).setVisible(!logged);
         MenuItem userMenuItem = menu.findItem(R.id.user_item);
         userMenuItem.setVisible(logged);
-        if(logged) {
+        if (logged) {
             userMenuItem.setTitle(UserInfoRepository.Companion.getInstance().getName());
             userMenuItem.setIcon(getUserIconRes());
-            String qmsTitle= Client.getInstance().getQmsCount() > 0 ? ("QMS (" + Client.getInstance().getQmsCount() + ")") : "QMS";
+            String qmsTitle = Client.getInstance().getQmsCount() > 0 ? ("QMS (" + Client.getInstance().getQmsCount() + ")") : "QMS";
             menu.findItem(R.id.qms_item).setTitle(qmsTitle);
             int mentionsCount = UserInfoRepository.Companion.getInstance().getUserInfo()
                     .getValue().mentionsCountOrDefault(0);

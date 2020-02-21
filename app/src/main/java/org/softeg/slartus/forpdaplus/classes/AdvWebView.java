@@ -188,12 +188,12 @@ public class AdvWebView extends WebView {
     /**
      * Impliment in the activity/fragment/view that you want to listen to the webview
      */
-    public static interface OnScrollChangedCallback {
-        public void onScrollDown(Boolean inTouch);
+    public interface OnScrollChangedCallback {
+        void onScrollDown(Boolean inTouch);
 
-        public void onScrollUp(Boolean inTouch);
+        void onScrollUp(Boolean inTouch);
 
-        public void onTouch();
+        void onTouch();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
