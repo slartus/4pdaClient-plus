@@ -1681,6 +1681,22 @@ div[data-post] > a {
   margin: 0;
   padding: 0.5rem 0;
 }
+
+#news.article{
+	padding: 1em;
+    padding-top: 1em;
+    padding-bottom: 0.5em;
+}
+
+#news.article-header h1{
+	font-size: 1.5em;
+}
+
+#news.article img {
+  width: 100%;
+  height: auto;
+}
+
 #news iframe {
   max-width: 100%;
   width: 480px;
