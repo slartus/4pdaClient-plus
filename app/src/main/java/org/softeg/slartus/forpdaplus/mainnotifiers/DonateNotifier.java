@@ -15,7 +15,7 @@ import org.softeg.slartus.forpdaplus.prefs.DonateActivity;
  */
 public class DonateNotifier extends MainNotifier {
     public DonateNotifier(NotifiersManager notifiersManager) {
-        super(notifiersManager, "Donate", 14);
+        super(notifiersManager, "Donate", 14*24);
     }
 
     public void start(FragmentActivity fragmentActivity) {

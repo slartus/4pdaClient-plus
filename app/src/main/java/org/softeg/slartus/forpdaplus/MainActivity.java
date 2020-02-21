@@ -27,6 +27,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.ActionMode;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -163,7 +164,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
 
     @Override
     public void onCreate(Bundle saveInstance) {
-        setTheme(App.getInstance().getThemeStyleResID());
+        setTheme(AppTheme.getThemeStyleResID());
         super.onCreate(saveInstance);
 
         loadPreferences(App.getInstance().getPreferences());
@@ -203,14 +204,14 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             intent.setAction(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             setIntent(intent);
-            lastTheme = App.getInstance().getThemeStyleResID();
+            lastTheme = AppTheme.getThemeStyleResID();
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
                 getWindow().getDecorView()
                         .setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
 
             if (getPreferences().getBoolean("coloredNavBar", true) && Build.VERSION.SDK_INT >= 21)
-                getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(App.getInstance().getNavBarColor()));
+                getWindow().setNavigationBarColor(App.getInstance().getResources().getColor(AppTheme.getNavBarColor()));
 
 
             setContentView(R.layout.main);
@@ -246,11 +247,11 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             statusBar = findViewById(R.id.status_bar);
             fakeStatusBar = findViewById(R.id.fakeSB);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                switch (App.getInstance().getThemeType()) {
-                    case App.THEME_TYPE_LIGHT:
+                switch (AppTheme.getThemeType()) {
+                    case AppTheme.THEME_TYPE_LIGHT:
                         statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_light));
                         break;
-                    case App.THEME_TYPE_DARK:
+                    case AppTheme.THEME_TYPE_DARK:
                         statusBar.setBackgroundColor(getResources().getColor(R.color.statusBar_dark));
                         break;
                     default:
@@ -611,7 +612,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                     .setNegativeButton(R.string.cancel, null)
                     .show();
         }
-        if (App.getInstance().getThemeStyleResID() != lastTheme) {
+        if (AppTheme.getThemeStyleResID() != lastTheme) {
             Message msg = handler.obtainMessage();
             msg.what = MSG_RECREATE;
             handler.sendMessage(msg);
@@ -883,15 +884,41 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         return super.onPrepareOptionsMenu(menu);
     }
 
-    private void refreshUserMenu(Menu menu){
+    @Override
+    public void onSupportActionModeStarted(@NonNull android.support.v7.view.ActionMode mode) {
+        super.onSupportActionModeStarted(mode);
+        Fragment currentFragment = getCurrentFragment();
+        if (currentFragment instanceof GeneralFragment) {
+            ((GeneralFragment) currentFragment).onSupportActionModeStarted(mode);
+        }
+    }
+
+    @Override
+    public void onActionModeStarted(ActionMode mode) {
+        super.onActionModeStarted(mode);
+        Fragment currentFragment = getCurrentFragment();
+        if (currentFragment instanceof GeneralFragment) {
+            ((GeneralFragment) currentFragment).onActionModeStarted(mode);
+        }
+    }
+
+    private Fragment getCurrentFragment() {
+        String currentFragmentTag = App.getInstance().getCurrentFragmentTag();
+        if (currentFragmentTag != null && !"null".equals(currentFragmentTag)) {
+            return getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
+        }
+        return null;
+    }
+
+    private void refreshUserMenu(Menu menu) {
         boolean logged = UserInfoRepository.Companion.getInstance().getLogined();
         menu.findItem(R.id.guest_item).setVisible(!logged);
         MenuItem userMenuItem = menu.findItem(R.id.user_item);
         userMenuItem.setVisible(logged);
-        if(logged) {
+        if (logged) {
             userMenuItem.setTitle(UserInfoRepository.Companion.getInstance().getName());
             userMenuItem.setIcon(getUserIconRes());
-            String qmsTitle= Client.getInstance().getQmsCount() > 0 ? ("QMS (" + Client.getInstance().getQmsCount() + ")") : "QMS";
+            String qmsTitle = Client.getInstance().getQmsCount() > 0 ? ("QMS (" + Client.getInstance().getQmsCount() + ")") : "QMS";
             menu.findItem(R.id.qms_item).setTitle(qmsTitle);
             int mentionsCount = UserInfoRepository.Companion.getInstance().getUserInfo()
                     .getValue().mentionsCountOrDefault(0);

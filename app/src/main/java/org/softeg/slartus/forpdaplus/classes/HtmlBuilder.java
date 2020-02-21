@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.classes;
 import android.text.TextUtils;
 
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 /**
@@ -66,7 +67,7 @@ public class HtmlBuilder{
     }
 
     protected String getStyle() {
-        return App.getInstance().getThemeCssFileName();
+        return AppTheme.getThemeCssFileName();
     }
 
     public HtmlBuilder append(String str) {
@@ -83,10 +84,10 @@ public class HtmlBuilder{
                 .append(isImage ? "" : "noimages ")
                 .append(App.getInstance().isNewYear() ? "newyear " : "")
                 .append(App.getInstance().getPreferences().getBoolean("isAccelerateGif", false) ? "ongpuimg \" " : "\" ");
-        if(App.getInstance().getWebViewFont().equals("")) {
+        if(AppTheme.getWebViewFont().equals("")) {
             m_Body.append(" ");
         }else {
-            m_Body.append("style=\"font-family:").append(App.getInstance().getWebViewFont()).append(";\" ");
+            m_Body.append("style=\"font-family:").append(AppTheme.getWebViewFont()).append(";\" ");
         }
         m_Body.append(bodyScript == null || TextUtils.isEmpty(bodyScript) ? "" : bodyScript)
                 .append(">\n");

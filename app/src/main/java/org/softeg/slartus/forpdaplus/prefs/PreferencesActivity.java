@@ -35,6 +35,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.FilePath;
@@ -673,7 +674,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
         private void showStylesDialog() {
 
             try {
-                final String currentValue = App.getInstance().getCurrentTheme();
+                final String currentValue = AppTheme.getCurrentTheme();
 
                 ArrayList<CharSequence> newStyleNames = new ArrayList<>();
                 final ArrayList<CharSequence> newstyleValues = new ArrayList<>();
@@ -709,7 +710,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
                                 return;
                             }
                             String stylePath = newstyleValues.get(selected[0]).toString();
-                            stylePath = App.getInstance().getThemeCssFileName(stylePath);
+                            stylePath = AppTheme.getThemeCssFileName(stylePath);
                             String xmlPath = stylePath.replace(".css", ".xml");
                             CssStyle cssStyle = CssStyle.parseStyle(getActivity(), xmlPath);
                             if (!cssStyle.ExistsInfo) {
@@ -937,7 +938,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             CharSequence styleName = styleNames[i];
             CharSequence styleValue = styleValues[i];
 
-            xmlPath = App.getInstance().getThemeCssFileName(styleValue.toString()).replace(".css", ".xml").replace("/android_asset/", "");
+            xmlPath =AppTheme.getThemeCssFileName(styleValue.toString()).replace(".css", ".xml").replace("/android_asset/", "");
             cssStyle = CssStyle.parseStyleFromAssets(context, xmlPath);
             if (cssStyle.ExistsInfo)
                 styleName = cssStyle.Title;

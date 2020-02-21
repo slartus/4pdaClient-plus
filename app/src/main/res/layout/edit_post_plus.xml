@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_parent"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -9,54 +10,63 @@
         android:id="@+id/progress_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/txtpost_edit_reason"
+        android:layout_above="@+id/layout_edit_reason"
         android:layout_centerInParent="true"
         android:visibility="gone" />
 
     <ScrollView
         android:id="@+id/textAreaScroller"
+        style="?edit_text"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:scrollbars="vertical"
-        android:layout_above="@+id/txtpost_edit_reason"
-        style="?edit_text"
+        android:layout_above="@+id/layout_edit_reason"
+        android:fillViewport="true"
         android:gravity="top"
-        android:fillViewport="true">
+        android:scrollbars="vertical">
 
         <EditText
             android:id="@+id/txtPost"
-            android:background="@android:color/transparent"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:gravity="top"
             android:hint="Введите текст сообщения"
             android:inputType="textCapSentences|textMultiLine"
             android:padding="16dp"
-            android:scrollHorizontally="false"
-            android:singleLine="false"
             android:scrollbars="vertical"
-            android:gravity="top" />
+            android:scrollHorizontally="false"
+            android:singleLine="false" />
     </ScrollView>
 
-    <EditText
-        android:id="@+id/txtpost_edit_reason"
-        style="?edit_text"
-        android:layout_width="fill_parent"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/layout_edit_reason"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottomPanel"
-        android:capitalize="sentences"
-        android:hint="@string/EditReason"
-        android:padding="16dp"
-        android:scrollHorizontally="false"
-        android:singleLine="true"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/txtpost_edit_reason"
+            style="?edit_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:capitalize="sentences"
+            android:hint="@string/EditReason"
+            android:padding="16dp"
+            android:scrollHorizontally="false"
+            android:singleLine="true"
+            tools:text="test"
+             />
+    </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
+        android:id="@+id/shadow"
         android:layout_width="fill_parent"
         android:layout_height="6dp"
-        android:orientation="vertical"
-        android:id="@+id/shadow"
+        android:layout_above="@+id/bottomPanel"
         android:background="@drawable/shadow_to_top"
-        android:layout_above="@+id/bottomPanel" />
+        android:orientation="vertical" />
 
     <LinearLayout
         android:id="@+id/bottomPanel"
@@ -67,38 +77,38 @@
         android:orientation="vertical">
 
         <FrameLayout
+            style="?post_panel"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
             android:gravity="center_vertical"
-            style="?post_panel">
+            android:minHeight="48dp">
 
             <ImageButton
                 android:id="@+id/advanced_button"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/plus" />
 
             <Button
                 android:id="@+id/btnAttachments"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_width="wrap_content"
-                android:minWidth="56dp"
                 android:layout_height="48dp"
-                android:drawableLeft="@drawable/ic_paperclip_grey600_24dp"
-                android:text="0"
                 android:layout_marginLeft="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:drawableLeft="@drawable/ic_paperclip_grey600_24dp"
+                android:minWidth="56dp"
                 android:paddingLeft="4dp"
-                android:textSize="14sp"
-                android:textColor="#757575" />
+                android:text="0"
+                android:textColor="#757575"
+                android:textSize="14sp" />
 
             <ImageButton
                 android:id="@+id/btnUpload"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginLeft="104dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/upload" />
 
             <Button
@@ -107,9 +117,9 @@
                 android:layout_height="48dp"
                 android:layout_marginLeft="156dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="Отправить"
                 android:textColor="@color/accentGray"
-                android:textStyle="bold"
-                android:text="Отправить" />
+                android:textStyle="bold" />
         </FrameLayout>
 
         <LinearLayout

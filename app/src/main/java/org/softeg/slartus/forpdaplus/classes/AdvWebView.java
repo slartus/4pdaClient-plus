@@ -14,6 +14,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
@@ -78,7 +79,7 @@ public class AdvWebView extends WebView {
                 getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
             } catch (Throwable ignore) {}
         }*/
-        setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());
+        setBackgroundColor(AppTheme.getThemeStyleWebViewBackground());
         //loadData("<html><head></head></html>", "text/html", "UTF-8");
     }
 
@@ -134,7 +135,7 @@ public class AdvWebView extends WebView {
     private Point m_MotionDown = null;
     @Override
     public boolean onTouchEvent(android.view.MotionEvent event) {
-        Boolean b = super.onTouchEvent(event);
+        boolean b = super.onTouchEvent(event);
         try {
 
             if (mOnScrollChangedCallback == null) return b;
@@ -199,12 +200,12 @@ public class AdvWebView extends WebView {
     /**
      * Impliment in the activity/fragment/view that you want to listen to the webview
      */
-    public static interface OnScrollChangedCallback {
-        public void onScrollDown(Boolean inTouch);
+    public interface OnScrollChangedCallback {
+        void onScrollDown(Boolean inTouch);
 
-        public void onScrollUp(Boolean inTouch);
+        void onScrollUp(Boolean inTouch);
 
-        public void onTouch();
+        void onTouch();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)

@@ -309,7 +309,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
                 return;
             final News news = (News) o;
             if (TextUtils.isEmpty(news.getId())) return;
-            if(!IntentActivity.tryShowSpecial(getMainActivity(), news.getUrl(), false))
+            if(!IntentActivity.tryShowSpecial(news.getUrl()))
                 MainActivity.addTab(news.getTitle().toString(), news.getUrl(), NewsFragment.newInstance(news.getUrl()));
             getAdapter().notifyDataSetChanged();
 

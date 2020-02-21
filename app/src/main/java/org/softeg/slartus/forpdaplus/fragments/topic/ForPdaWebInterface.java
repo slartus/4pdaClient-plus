@@ -32,6 +32,7 @@ import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.Post;
 import org.softeg.slartus.forpdaplus.classes.SaveHtml;
 import org.softeg.slartus.forpdaplus.classes.TopicAttaches;
+import org.softeg.slartus.forpdaplus.classes.common.Functions;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.listfragments.TopicReadersListFragment;
@@ -439,6 +440,16 @@ public class ForPdaWebInterface {
     @JavascriptInterface
     public void saveHtml(final String html) {
         getMainActivity().runOnUiThread(() -> new SaveHtml(getMainActivity(), html, "Topic"));
+    }
+
+    /**
+     * Инфо о посте с селектнутым текстом
+     */
+    @JavascriptInterface
+    public void selectionPostInfo(final String postId, final String postDate, final  String userId,
+                                  String userNick, String selection) {
+        if(!TextUtils.isEmpty(postId)&&!TextUtils.isEmpty(postDate)&&!TextUtils.isEmpty(userNick))
+            getContext().insertQuote(postId, Functions.getForumDateTime(Functions.parseForumDateTime(postDate)), userNick, selection);
     }
 
     public void run(final Runnable runnable) {

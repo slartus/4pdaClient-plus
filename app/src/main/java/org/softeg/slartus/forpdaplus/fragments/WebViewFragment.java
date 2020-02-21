@@ -30,6 +30,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.IWebViewContainer;
@@ -144,8 +145,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     }
 
     public void setFabColors(final FloatingActionButton fab){
-        fab.setBackgroundTintList(ColorStateList.valueOf(App.getInstance().getColorAccent("Accent")));
-        fab.setRippleColor(App.getInstance().getColorAccent("Pressed"));
+        fab.setBackgroundTintList(ColorStateList.valueOf(AppTheme.getColorAccent("Accent")));
+        fab.setRippleColor(AppTheme.getColorAccent("Pressed"));
     }
     @Override
     public void onResume() {
@@ -315,7 +316,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     }
     public void showStylesDialog(final SharedPreferences prefs) {
         try {
-            final String currentValue = App.getInstance().getCurrentTheme();
+            final String currentValue = AppTheme.getCurrentTheme();
 
             ArrayList<CharSequence> newStyleNames = new ArrayList<>();
             final ArrayList<CharSequence> newStyleValues = new ArrayList<>();
@@ -341,12 +342,12 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
                     .callback(new MaterialDialog.ButtonCallback() {
                         @Override
                         public void onPositive(MaterialDialog dialog) {
-                            int lastTheme = App.getInstance().getThemeStyleResID();
+                            int lastTheme = AppTheme.getThemeStyleResID();
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putString("appstyle", newStyleValues.get(selected[0]).toString());
                             //editor.putBoolean("theme.BrowserStyle", checkBox.isChecked());
                             editor.apply();
-                            if(App.getInstance().getThemeStyleResID()!=lastTheme)
+                            if(AppTheme.getThemeStyleResID()!=lastTheme)
                                 getMainActivity().recreate();
                             else
                                 setStyleSheet();
@@ -360,8 +361,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     }
     public void setStyleSheet() {
         try {
-            getWebView().loadUrl("javascript:changeStyle('file://"+App.getInstance().getThemeCssFileName()+"');");
-            Log.e("Test", "setStyleSheet: " + "file://"+App.getInstance().getThemeCssFileName());
+            getWebView().loadUrl("javascript:changeStyle('file://"+ AppTheme.getThemeCssFileName()+"');");
+            Log.e("Test", "setStyleSheet: " + "file://"+AppTheme.getThemeCssFileName());
         } catch (Throwable ex) {
             AppLog.e(getMainActivity(), ex);
         }
