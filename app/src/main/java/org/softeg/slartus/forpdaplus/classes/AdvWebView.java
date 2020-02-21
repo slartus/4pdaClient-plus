@@ -1,10 +1,12 @@
 package org.softeg.slartus.forpdaplus.classes;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,7 +26,6 @@ import java.util.Calendar;
  * Time: 10:00
  */
 public class AdvWebView extends WebView {
-    private static final String TOPIC_BODY_KEY = "AdvWebView.TOPIC_BODY_KEY";
     private int actionBarHeight = 56;
 
     public AdvWebView(Context context) {
@@ -37,7 +38,18 @@ public class AdvWebView extends WebView {
         init();
     }
 
+    public AdvWebView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public AdvWebView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init();
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
     private void init() {
         // gd = new GestureDetector(context, sogl);
         getSettings().setJavaScriptEnabled(true);
@@ -123,7 +135,7 @@ public class AdvWebView extends WebView {
     private Point m_MotionDown = null;
     @Override
     public boolean onTouchEvent(android.view.MotionEvent event) {
-        Boolean b = super.onTouchEvent(event);
+        boolean b = super.onTouchEvent(event);
         try {
 
             if (mOnScrollChangedCallback == null) return b;
