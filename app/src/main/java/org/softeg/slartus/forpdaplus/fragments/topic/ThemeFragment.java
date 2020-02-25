@@ -331,6 +331,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             setFabColors(fab);
             fab.setOnClickListener(view1 -> toggleMessagePanelVisibility());
         }
+        initWebView();
+        return view;
+    }
+
+    private void initWebView() {
         registerForContextMenu(webView);
         setWebViewSettings();
         webView.getSettings().setDomStorageEnabled(true);
@@ -350,7 +355,27 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         setHideArrows(Preferences.isHideArrows());
         webView.addJavascriptInterface(new ForPdaWebInterface(this), ForPdaWebInterface.NAME);
-        return view;
+
+        webView.setActionModeListener((actionMode, callback, type) -> {
+            Menu menu = actionMode.getMenu();
+            ArrayList<MenuItem> items = new ArrayList<>();
+            for (int i = 0; i < menu.size(); i++) {
+                items.add(menu.getItem(i));
+            }
+
+            //  menu.clear();
+
+
+            menu.add(R.string.quote)
+                    .setOnMenuItemClickListener(item -> {
+                        webView.evalJs("htmlOutSelectionPostInfo();");
+                        actionMode.finish();
+                        return true;
+                    })
+                    .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+
+        });
     }
 
     @Override
@@ -585,44 +610,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onSupportActionModeStarted(android.support.v7.view.ActionMode mode) {
-        super.onSupportActionModeStarted(mode);
-
-        try {
-            mode.getMenu().add(Menu.NONE,Menu.NONE,0,R.string.quote)
-                    .setOnMenuItemClickListener(menuItem -> {
-                        try {
-                            getWebView().evalJs("htmlOutSelectionPostInfo();");
-                        }catch (Throwable ex){
-                            AppLog.e(ex);
-                        }
-                        return true;
-                    });
-        } catch (Throwable ex) {
-            AppLog.e(getMainActivity(), ex);
-        }
-    }
-
-    @Override
-    public void onActionModeStarted(ActionMode mode) {
-        super.onActionModeStarted(mode);
-
-        try {
-            mode.getMenu().add(Menu.NONE,Menu.NONE,0,R.string.quote)
-                    .setOnMenuItemClickListener(menuItem -> {
-                try {
-                    getWebView().evalJs("htmlOutSelectionPostInfo();");
-                }catch (Throwable ex){
-                    AppLog.e(ex);
-                }
-                return true;
-            });
-        } catch (Throwable ex) {
-            AppLog.e(getMainActivity(), ex);
-        }
     }
 
     @Override

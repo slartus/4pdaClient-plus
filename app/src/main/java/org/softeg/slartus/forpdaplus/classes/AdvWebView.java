@@ -10,10 +10,10 @@ import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewParent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
@@ -222,6 +222,42 @@ public class AdvWebView extends WebView {
         } catch (Throwable ex) {
             android.util.Log.e("AdvWebView", ex.toString());
         }
+    }
+    private OnStartActionModeListener actionModeListener;
+
+    public interface OnStartActionModeListener {
+        void OnStart(android.view.ActionMode actionMode, android.view.ActionMode.Callback callback, int type);
+    }
+
+    public void setActionModeListener(OnStartActionModeListener actionModeListener) {
+        this.actionModeListener = actionModeListener;
+    }
+
+    @Override
+    public android.view.ActionMode startActionMode(android.view.ActionMode.Callback callback) {
+        return myActionMode(callback, 0);
+    }
+
+    @Override
+    public android.view.ActionMode startActionMode(android.view.ActionMode.Callback callback, int type) {
+        return myActionMode(callback, type);
+    }
+
+
+    private android.view.ActionMode myActionMode(android.view.ActionMode.Callback callback, int type) {
+        ViewParent parent = getParent();
+        if (parent == null) {
+            return null;
+        }
+        android.view.ActionMode actionMode;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            actionMode = super.startActionMode(callback, type);
+        } else {
+            actionMode = super.startActionMode(callback);
+        }
+        if (actionModeListener != null)
+            actionModeListener.OnStart(actionMode, callback, type);
+        return actionMode;
     }
 
 }
