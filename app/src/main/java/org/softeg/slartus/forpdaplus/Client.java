@@ -81,7 +81,7 @@ public class Client implements IHttpClient {
 
     static final Client INSTANCE = new Client();
 
-    public URI getRedirectUri() {
+    public static URI getRedirectUri() {
         return HttpHelper.getRedirectUri();
     }
 
