@@ -221,7 +221,7 @@ public abstract class TopicsListFragment extends BaseTaskListFragment {
             }
             optionsMenu.add(new MenuListDialog(context.getString(R.string.OpenTopicForum), () -> ForumFragment.Companion.showActivity(topic.getForumId(), topic.getId())));
         }
-        optionsMenu.add(new MenuListDialog(getString(R.string.attachments), () -> TopicAttachmentListFragment.showActivity(context, listItem.getId())));
+        optionsMenu.add(new MenuListDialog(getString(R.string.attachments), () -> TopicAttachmentListFragment.showActivity( listItem.getId())));
     }
 
     private void showTopicActivity(IListItem topic, String args) {

@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 public class FeatureActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(App.getInstance().getThemeStyleResID());
+        setTheme(AppTheme.getThemeStyleResID());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.feature_activity);
     }

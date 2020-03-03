@@ -20,6 +20,7 @@ import android.widget.Toast;
 import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -164,8 +165,8 @@ super();
     protected SwipeRefreshLayout createSwipeRefreshLayout(View view) {
         SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.ptr_layout);
         swipeRefreshLayout.setOnRefreshListener(() -> loadData(true));
-        swipeRefreshLayout.setColorSchemeResources(App.getInstance().getMainAccentColor());
-        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(App.getInstance().getSwipeRefreshBackground());
+        swipeRefreshLayout.setColorSchemeResources(AppTheme.getMainAccentColor());
+        swipeRefreshLayout.setProgressBackgroundColorSchemeResource(AppTheme.getSwipeRefreshBackground());
         return swipeRefreshLayout;
     }
 

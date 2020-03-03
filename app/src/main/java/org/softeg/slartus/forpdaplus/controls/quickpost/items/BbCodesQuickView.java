@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.App;
+import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -77,15 +78,15 @@ public class BbCodesQuickView extends BaseQuickView {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         webView = new WebView(inflater.getContext());
         webView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        webView.setBackgroundColor(App.getInstance().getThemeStyleWebViewBackground());
+        webView.setBackgroundColor(AppTheme.getThemeStyleWebViewBackground());
         loadWebView();
         return webView;
     }
 
     private void loadWebView() {
         StringBuilder sb = new StringBuilder();
-        sb.append("<html><body style=\"text-align: center; margin:0;\" bgcolor=\"").append(App.getInstance().getCurrentBackgroundColorHtml()).append("\">");
-        String style = App.getInstance().getCurrentThemeName();
+        sb.append("<html><body style=\"text-align: center; margin:0;\" bgcolor=\"").append(AppTheme.getCurrentBackgroundColorHtml()).append("\">");
+        String style = AppTheme.getCurrentThemeName();
         if(style.equals("dark")) style = "black";
         String path = "file:///android_asset/forum/style_images/1/folder_editor_buttons_" + style + "/";
         initVars();
@@ -99,15 +100,12 @@ public class BbCodesQuickView extends BaseQuickView {
         sb.append("</body></html>");
         webView.setWebViewClient(new MyWebViewClient());
         webView.loadDataWithBaseURL("http://4pda.ru/forum/", sb.toString(), "text/html", "UTF-8", null);
-        webView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+        webView.setOnTouchListener((view, motionEvent) -> {
+            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
 //                    getSelectionStart() = getEditor().getSelectionStart();
 //                    getSelectionEnd() = getEditor().getSelectionEnd();
-                }
-                return false;
             }
+            return false;
         });
     }
 
