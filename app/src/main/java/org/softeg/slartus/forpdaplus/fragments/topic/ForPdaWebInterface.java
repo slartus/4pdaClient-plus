@@ -191,7 +191,7 @@ public class ForPdaWebInterface {
 
     @JavascriptInterface
     public void insertTextToPost(final String text) {
-        Runnable runnable = () -> new Handler().post(() -> getContext().insertTextToPost(text));
+        Runnable runnable = () -> new Handler().post(() -> getContext().insertTextToPost(text, -1));
         if (android.os.Build.VERSION.SDK_INT >= 16) {
             run(runnable);
         } else {

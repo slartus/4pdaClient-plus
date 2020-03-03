@@ -358,14 +358,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         webView.setActionModeListener((actionMode, callback, type) -> {
             Menu menu = actionMode.getMenu();
-            ArrayList<MenuItem> items = new ArrayList<>();
-            for (int i = 0; i < menu.size(); i++) {
-                items.add(menu.getItem(i));
-            }
-
-            //  menu.clear();
-
-
             menu.add(R.string.quote)
                     .setOnMenuItemClickListener(item -> {
                         webView.evalJs("htmlOutSelectionPostInfo();");
@@ -373,8 +365,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                         return true;
                     })
                     .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-
         });
     }
 
@@ -829,8 +819,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public void insertQuote(CharSequence postId, CharSequence postDate, CharSequence userNick, CharSequence text) {
+        String endQuote = "\n[/quote]";
+        final String fullQuoteText = "[quote name=\"" + userNick + "\" date=\"" + postDate + "\" post=\"" + postId + "\"]\n" + text + endQuote;
+        int selectedIndex = -1;//fullQuoteText.length() - endQuote.length(); //наверное , лучше курсор в конец всё же ставить
         getMainActivity().runOnUiThread(() -> new Handler().post(() ->
-                insertTextToPost("[quote name=\"" + userNick + "\" date=\"" + postDate + "\" post=\"" + postId + "\"]\n" + text + "\n[/quote]")));
+                insertTextToPost(fullQuoteText, selectedIndex)));
     }
 
     @SuppressWarnings("unused")
@@ -1153,8 +1146,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         UserReputationFragment.showActivity(userId, false);
     }
 
-    public void insertTextToPost(final String text) {
-        mQuickPostFragment.insertTextToPost(text);
+    public void insertTextToPost(final String text, Integer cursorPosition) {
+        mQuickPostFragment.insertTextToPost(text, cursorPosition);
         showMessagePanel();
     }
 
