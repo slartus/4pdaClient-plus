@@ -81,17 +81,26 @@ class Http private constructor(context: Context, appName: String, appVersion: St
             sslContext.init(null, trustAllCerts, java.security.SecureRandom())
             // Create an ssl socket factory with our all-trusting manager
             val sslSocketFactory = sslContext.socketFactory
-//
-//            val spec = ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
-//                    .tlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_1, TlsVersion.TLS_1_0)
-//                    .cipherSuites(
-//                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-//                            CipherSuite.TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,
-//                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
-//                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA)
-//                    .build()
+
+            val spec = ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
+                    .supportsTlsExtensions(true)
+                    .tlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_1, TlsVersion.TLS_1_0)
+                    .cipherSuites(
+                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+                            CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
+                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
+                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+                            CipherSuite.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,
+                            CipherSuite.TLS_ECDHE_RSA_WITH_RC4_128_SHA,
+                            CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
+                            CipherSuite.TLS_DHE_DSS_WITH_AES_128_CBC_SHA,
+                            CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
+                    .build()
             return OkHttpClient.Builder()
-                    .connectionSpecs(listOf(ConnectionSpec.COMPATIBLE_TLS, ConnectionSpec.CLEARTEXT))
+                    .connectionSpecs(listOf(spec, ConnectionSpec.CLEARTEXT))
                     .retryOnConnectionFailure(true)
                     .connectTimeout(15, TimeUnit.SECONDS) // connect timeout
                     .writeTimeout(15, TimeUnit.SECONDS)
