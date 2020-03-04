@@ -60,6 +60,7 @@ public class ExtUrl {
     }
 
     public static void showInBrowser(Context context, String url) {
+        url = url.replaceAll("^\\/\\/4pda", "https://4pda");
         if (!url.startsWith("http:") && !url.startsWith("https:")) {
             url = "https:" + url;
         }
@@ -68,6 +69,7 @@ public class ExtUrl {
     }
 
     public static void shareIt(Context context, String subject, String text, String url) {
+        url = url.replaceAll("^\\/\\/4pda", "https://4pda");
         Intent sendMailIntent = new Intent(Intent.ACTION_SEND);
         sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
         sendMailIntent.putExtra(Intent.EXTRA_TEXT, text);
@@ -78,6 +80,7 @@ public class ExtUrl {
     }
 
     public static void copyLinkToClipboard(Context context, String link) {
+        link = link.replaceAll("^\\/\\/4pda", "https://4pda");
         StringUtils.copyToClipboard(context, link);
         Toast.makeText(context, R.string.link_copied_to_buffer, Toast.LENGTH_SHORT).show();
     }
