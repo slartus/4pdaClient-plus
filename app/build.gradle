@@ -86,7 +86,7 @@ android {
                 vCode = "0" + vCode
             def flavor = variant.productFlavors[0]
             if (flavor.name == "beta")
-                outputFileName = "${fileNaming}_${appVersionName}_c${vCode}-${flavor.name}.apk"
+                outputFileName = "beta.apk"
             else
                 outputFileName = "${fileNaming}_${appVersionName}-${variant.buildType.name}.apk"
         }
