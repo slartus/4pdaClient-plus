@@ -33,9 +33,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Build beta APK
-        run: bash ./gradlew assembleBeta --stacktrace      
-      - run: |    
-          mkdir app/build/outputs/apk/beta/
+        run: bash ./gradlew assembleBeta --stacktrace            
       - name: Upload APK
         uses: actions/upload-artifact@v1
         with:
