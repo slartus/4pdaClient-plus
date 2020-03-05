@@ -279,7 +279,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     }
 
 
-    public void onSupportActionModeStarted(@NonNull android.support.v7.view.ActionMode mode) {
+    public void onSupportActionModeStarted(android.support.v7.view.ActionMode mode) {
 
     }
 
