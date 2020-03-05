@@ -293,7 +293,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 if (postResult.TopicBody == null)
                     Log.e("ThemeActivity", "TopicBody is null");
                 addToHistory(postResult.TopicBody);
-                showBody(postResult.TopicBody);
+                try {
+                    showBody(postResult.TopicBody);
+                } catch (Exception e) {
+                    AppLog.e(e);
+                }
 
             } else {
                 if (postResult.Exception != null)
@@ -769,7 +773,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     m_Topic.setLastUrl(m_LastUrl);
                 if (m_Topic != null)
                     mQuickPostFragment.setTopic(m_Topic.getForumId(), m_Topic.getId(), Client.getInstance().getAuthKey());
-                showBody(sessionHistory.getBody());
+                try {
+                    showBody(sessionHistory.getBody());
+                } catch (Exception e) {
+                    AppLog.e(e);
+                }
             }
             return true;
         }
@@ -884,7 +892,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }
     }
 
-    private void showBody(String body) {
+    private void showBody(String body) throws Exception {
         super.showBody();
         try {
             setScrollElement();
@@ -1516,7 +1524,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
             if (success && m_Topic != null) {
                 addToHistory(m_ThemeBody);
-                showBody(m_ThemeBody);
+                try {
+                    showBody(m_ThemeBody);
+                } catch (Exception e) {
+                    AppLog.e(e);
+                }
             } else {
                 if (m_Topic == null) {
                     return;

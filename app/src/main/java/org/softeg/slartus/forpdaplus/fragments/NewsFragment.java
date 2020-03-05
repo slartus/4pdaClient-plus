@@ -484,7 +484,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         asyncTask.execute(m_NewsUrl.replace("|", ""));
     }
 
-    public void showBody(String body) {
+    public void showBody(String body) throws Exception {
         super.showBody();
         try {
             setTitle(m_Title);
@@ -613,7 +613,11 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             Comment = null;
             if (isCancelled()) return;
             if (success) {
-                showBody(m_ThemeBody);
+                try {
+                    showBody(m_ThemeBody);
+                } catch (Exception e) {
+                    AppLog.e(e);
+                }
                 setLoading(false);
             } else {
                 setTitle(ex.getMessage());

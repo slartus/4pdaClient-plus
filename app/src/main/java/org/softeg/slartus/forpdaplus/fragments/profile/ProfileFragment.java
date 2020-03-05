@@ -233,7 +233,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
             getLoaderManager().initLoader(ItemsLoader.ID, args, this);
     }
 
-    private void showBody(Profile profile) {
+    private void showBody(Profile profile) throws Exception {
         CharSequence nick = profile.getNick();
 
         title = nick != null ? nick.toString() : "unknown";
@@ -260,7 +260,11 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
         if (data != null && data.getError() != null) {
             AppLog.e(getMainActivity(), data.getError());
         } else if (data != null) {
-            showBody(data);
+            try {
+                showBody(data);
+            } catch (Exception e) {
+                AppLog.e(e);
+            }
         }
 
 
