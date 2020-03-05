@@ -70,12 +70,35 @@ public class FilePath {
                 }
             }
             // DownloadsProvider
-            else if (isDownloadsDocument(uri)) {
+            else if (isDownloadsDocument(uri) || isMediaDocument(uri)) {
 
-                final String id = DocumentsContract.getDocumentId(uri);
-
-                if (id != null && id.startsWith("raw:")) {
+                String id = DocumentsContract.getDocumentId(uri);
+                if (id == null)
+                    return null;
+                if (id.startsWith("raw:")) {
                     return id.substring(4);
+                }
+
+                id = id.replace("msf:", "video:");
+                final String[] split = id.split(":");
+                if (split.length == 2) {
+                    final String type = split[0];
+
+                    Uri contentUri = null;
+                    if ("image".equals(type)) {
+                        contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                    } else if ("video".equals(type)) {
+                        contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                    } else if ("audio".equals(type)) {
+                        contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                    }
+
+                    final String selection = "_id=?";
+                    final String[] selectionArgs = new String[]{
+                            split[1]
+                    };
+                    if (contentUri != null)
+                        return getDataColumn(context, contentUri, selection, selectionArgs);
                 }
 
                 String[] contentUriPrefixesToTry = new String[]{
@@ -105,28 +128,6 @@ public class FilePath {
                 }
 
                 return destinationPath;
-            }
-            // MediaProvider
-            else if (isMediaDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
-
-                Uri contentUri = null;
-                if ("image".equals(type)) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-                }
-
-                final String selection = "_id=?";
-                final String[] selectionArgs = new String[]{
-                        split[1]
-                };
-
-                return getDataColumn(context, contentUri, selection, selectionArgs);
             }
         }
         // MediaStore (and general)
