@@ -126,34 +126,36 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     public static void showYoutubeChoiceDialog(final Activity activity, final CharSequence youtubeUrl) {
-        int savedSelectedPlayer = Integer.parseInt(App.getInstance().getPreferences()
-                .getString(Preferences.KEY_YOUTUBE_PLAYER, Integer.toString(PLAYER_UNSELECTED)));
-        if (savedSelectedPlayer != PLAYER_UNSELECTED) {
-            startVideo(savedSelectedPlayer, activity, youtubeUrl);
-            return;
-        }
-        CharSequence[] items = {App.getContext().getString(R.string.client_player), App.getContext().getString(R.string.system_player)};
-        final int[] selected_player = {PLAYER_CLIENT};
-        new MaterialDialog.Builder(activity)
-                .title(R.string.select_player)
-                .items(items)
-                .itemsCallbackSingleChoice(selected_player[0], (dialog, view, i, text) -> {
-                    selected_player[0] = i;
-                    return true; // allow selection
-                })
-                .alwaysCallSingleChoiceCallback()
-                .positiveText(R.string.always)
-                .neutralText(R.string.only_now)
-                .onPositive((dialog, which) -> {
-                    App.getInstance().getPreferences()
-                            .edit()
-                            .putString(Preferences.KEY_YOUTUBE_PLAYER, Integer.toString(selected_player[0]))
-                            .apply();
+        IntentActivity.showInDefaultBrowser(activity, youtubeUrl.toString());
 
-                    startVideo(selected_player[0], activity, youtubeUrl);
-                })
-                .onNeutral((dialog, which) -> startVideo(selected_player[0], activity, youtubeUrl))
-                .show();
+//        int savedSelectedPlayer = Integer.parseInt(App.getInstance().getPreferences()
+//                .getString(Preferences.KEY_YOUTUBE_PLAYER, Integer.toString(PLAYER_UNSELECTED)));
+//        if (savedSelectedPlayer != PLAYER_UNSELECTED) {
+//            startVideo(savedSelectedPlayer, activity, youtubeUrl);
+//            return;
+//        }
+//        CharSequence[] items = {App.getContext().getString(R.string.client_player), App.getContext().getString(R.string.system_player)};
+//        final int[] selected_player = {PLAYER_CLIENT};
+//        new MaterialDialog.Builder(activity)
+//                .title(R.string.select_player)
+//                .items(items)
+//                .itemsCallbackSingleChoice(selected_player[0], (dialog, view, i, text) -> {
+//                    selected_player[0] = i;
+//                    return true; // allow selection
+//                })
+//                .alwaysCallSingleChoiceCallback()
+//                .positiveText(R.string.always)
+//                .neutralText(R.string.only_now)
+//                .onPositive((dialog, which) -> {
+//                    App.getInstance().getPreferences()
+//                            .edit()
+//                            .putString(Preferences.KEY_YOUTUBE_PLAYER, Integer.toString(selected_player[0]))
+//                            .apply();
+//
+//                    startVideo(selected_player[0], activity, youtubeUrl);
+//                })
+//                .onNeutral((dialog, which) -> startVideo(selected_player[0], activity, youtubeUrl))
+//                .show();
     }
 
     private static void startVideo(int selectedPlayer, Activity activity, CharSequence youtubeUrl) {
