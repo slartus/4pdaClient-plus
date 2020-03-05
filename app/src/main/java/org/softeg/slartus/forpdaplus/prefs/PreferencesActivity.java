@@ -1,5 +1,6 @@
 package org.softeg.slartus.forpdaplus.prefs;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.ActivityNotFoundException;
@@ -16,6 +17,7 @@ import android.os.Handler;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
@@ -32,7 +34,15 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
+
+import org.softeg.slartus.forpdacommon.ExternalStorage;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
@@ -57,7 +67,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.SingleSubject;
 import ru.slartus.http.PersistentCookieStore;
 
 /**
@@ -163,13 +178,26 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     .setText(DownloadsService.getDownloadDir());
             downloadsPathPreference.setOnPreferenceChangeListener((preference13, o) -> {
 
-                if (showDownloadsPath(o)) {
-                    downloadsPathPreference
-                            .setSummary(o.toString());
-                    Toast.makeText(getActivity(), R.string.path_edited_success, Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                return false;
+                String prevValue = App.getInstance().getPreferences().getString("downloads.path", "");
+                m_PathPermission = SingleSubject.create();
+                App.getInstance().addToDisposable(
+                        m_PathPermission
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe((aBoolean, throwable) -> {
+                                    if (aBoolean) {
+                                        Toast.makeText(getActivity(), R.string.path_edited_success, Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        App.getInstance().getPreferences().edit().putString("downloads.path", prevValue).apply();
+                                        ((EditTextPreference) downloadsPathPreference).setText(prevValue);
+                                    }
+                                    if (throwable != null) {
+                                        AppLog.e(throwable);
+                                    }
+                                }));
+                checkDownloadsPath(o);
+
+                return true;
 
             });
 
@@ -765,25 +793,75 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 getActivity().startActivityForResult(intent, requestCode);
         }
 
-        private boolean showDownloadsPath(Object o) {
+        private SingleSubject<Boolean> m_PathPermission = SingleSubject.create();
+
+        private void checkExternalPathPermission(String dirPath) {
+            Dexter.withActivity(getActivity())
+                    .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .withListener(new PermissionListener() {
+                        @Override
+                        public void onPermissionGranted(PermissionGrantedResponse response) {
+                            tryCreateTempFile(dirPath);
+                        }
+
+                        @Override
+                        public void onPermissionDenied(PermissionDeniedResponse response) {
+                            Toast.makeText(App.getInstance(), R.string.error_external_storage, Toast.LENGTH_SHORT).show();
+                            m_PathPermission.onSuccess(false);
+                        }
+
+                        @Override
+                        public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                            //Toast.makeText(App.getInstance(), R.string.error_external_storage, Toast.LENGTH_SHORT).show();
+                            if (token != null)
+                                token.continuePermissionRequest();
+                        }
+                    })
+                    .check();
+        }
+
+        private void tryCreateTempFile(String dirPath) {
+            try {
+                File dir = new File(dirPath);
+                File file = new File(org.softeg.slartus.forpdacommon.FileUtils.getUniqueFilePath(dirPath, "4pda.tmp"));
+
+                if (!dir.exists() && !dir.mkdirs()) {
+                    m_PathPermission.onSuccess(false);
+                    throw new NotReportException(getString(R.string.FailedToCreateFolderInPath));
+                }
+
+                if (!file.createNewFile()) {
+                    m_PathPermission.onSuccess(false);
+                    throw new NotReportException(getString(R.string.FailedToCreateFileInPath));
+                }
+                file.delete();
+                m_PathPermission.onSuccess(true);
+
+            } catch (Throwable ex) {
+                m_PathPermission.onSuccess(false);
+                AppLog.e(getActivity(), new NotReportException(ex.toString()));
+            }
+        }
+
+        private void checkDownloadsPath(Object o) {
             try {
                 String dirPath = o.toString();
                 if (!dirPath.endsWith(File.separator))
                     dirPath += File.separator;
-                File dir = new File(dirPath);
-                File file = new File(org.softeg.slartus.forpdacommon.FileUtils.getUniqueFilePath(dirPath, "4pda.tmp"));
 
-                if (!dir.exists() && !dir.mkdirs())
-                    throw new NotReportException(getString(R.string.FailedToCreateFolderInPath));
+                List<File> externalLocations = ExternalStorage.getAllStorageLocations();
+                for (File externalLocation : externalLocations) {
+                    if (dirPath.startsWith(externalLocation.getAbsolutePath()) || dirPath.startsWith(externalLocation.getCanonicalPath())) {
+                        checkExternalPathPermission(dirPath);
+                        return;
+                    }
+                }
+                tryCreateTempFile(dirPath);
 
-                if (!file.createNewFile())
-                    throw new NotReportException(getString(R.string.FailedToCreateFileInPath));
-                file.delete();
-                return true;
             } catch (Throwable ex) {
+                m_PathPermission.onSuccess(false);
                 AppLog.e(getActivity(), new NotReportException(ex.toString()));
             }
-            return false;
         }
 
         private void showTheme(String themeId) {
@@ -937,7 +1015,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             CharSequence styleName = styleNames[i];
             CharSequence styleValue = styleValues[i];
 
-            xmlPath = App.getInstance().getThemeCssFileName(styleValue.toString()).replace(".css", ".xml").replace("/android_asset/", "");
+            xmlPath = AppTheme.getThemeCssFileName(styleValue.toString()).replace(".css", ".xml").replace("/android_asset/", "");
             cssStyle = CssStyle.parseStyleFromAssets(context, xmlPath);
             if (cssStyle.ExistsInfo)
                 styleName = cssStyle.Title;
