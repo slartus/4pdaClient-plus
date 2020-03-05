@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaplus.fragments.search;/*
  * Created by slinkin on 24.04.2014.
  */
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,6 +15,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
@@ -197,8 +200,11 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         if (savedInstanceState != null) {
             args.putAll(savedInstanceState);
         }
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.search_settings_fragment, null);
+        Activity activity=getActivity();
+        assert activity != null;
+        LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        assert inflater != null;
+        View view = inflater.inflate(R.layout.search_settings_fragment, (ViewGroup) null);
         assert view != null;
         query_edit = view.findViewById(R.id.query_edit);
         username_edit = view.findViewById(R.id.username_edit);
@@ -243,12 +249,11 @@ public class SearchSettingsDialogFragment extends DialogFragment {
             initSpinner(view);
         }
 
-        SearchSettings searchSettings = getSearchSettings();
         int titleResId = R.string.search;
         if (SearchSettings.SEARCH_TYPE_TOPIC.equals(getSearchSettings().getSearchType())) {
             titleResId = R.string.search_in_topic;
         }
-        MaterialDialog adb = new MaterialDialog.Builder(getActivity())
+        MaterialDialog adb = new MaterialDialog.Builder(activity)
                 .customView(view, true)
                 .cancelable(true)
                 .title(titleResId)
@@ -261,14 +266,18 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         if (SearchSettings.SEARCH_TYPE_FORUM.equals(getSearchSettings().getSearchType())) {
             rememberButton.setVisibility(View.VISIBLE);
             rememberButton.setOnClickListener(v -> {
+                SearchSettings searchSettings = createSearchSettings();
                 searchSettings.setQuery("");
                 searchSettings.setUserName("");
-                searchSettings.save(App.getInstance().getPreferences().edit()).apply();
+                SharedPreferences.Editor editor = App.getInstance().getPreferences().edit();
+                searchSettings.save(editor);
+                editor.apply();
             });
         }
-        adb.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        final MaterialDialog d = adb;
-        return d;
+        Window window = adb.getWindow();
+        if (window != null)
+            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        return adb;
     }
 
     private SearchSettings createSearchSettings() {
@@ -306,16 +315,12 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         String query = searchSettings.getQuery();
         if (query != null) {
             query_edit.setText(query);
-            if (query.length() >= 0) {
-                query_edit.setSelection(query.length());
-            }
+            query_edit.setSelection(query.length());
         }
         String username = searchSettings.getUserName();
         if (username != null) {
             username_edit.setText(username);
-            if (username.length() >= 0) {
-                username_edit.setSelection(username.length());
-            }
+            username_edit.setSelection(username.length());
         }
         subforums_check.setChecked(searchSettings.getIsSubForums());
 
