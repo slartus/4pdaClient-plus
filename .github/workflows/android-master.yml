@@ -39,3 +39,6 @@ jobs:
         with:
           name: app_beta
           path: app/build/outputs/apk/beta/release/beta.apk
+          env-url: FOOBAR
+      - name: Use uploaded url
+        run: echo "${{ env.FOOBAR }}"
