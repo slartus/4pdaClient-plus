@@ -93,7 +93,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         return m_WebViewExternals;
     }
 
-    public void showBody(){
+    public void showBody() throws Exception {
         getThisTab().setTitle(getTitle()).setUrl(getUrl());
         getMainActivity().notifyTabAdapter();
     }

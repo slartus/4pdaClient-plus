@@ -31,10 +31,10 @@ import org.softeg.slartus.forpdaplus.prefs.Preferences;
 /**
  * Created by radiationx on 06.12.15.
  */
-public class ForumRulesFragment extends WebViewFragment{
+public class ForumRulesFragment extends WebViewFragment {
     private AdvWebView m_WebView;
     private AsyncTask asyncTask;
-    public  String m_Title = App.getContext().getString(R.string.forum_rules);
+    public String m_Title = App.getContext().getString(R.string.forum_rules);
     private String url = "http://4pda.ru/forum/index.php?act=boardrules";
 
     @Override
@@ -90,7 +90,7 @@ public class ForumRulesFragment extends WebViewFragment{
         super.onPause();
     }
 
-    public static ForumRulesFragment newInstance(String url){
+    public static ForumRulesFragment newInstance(String url) {
         ForumRulesFragment fragment = new ForumRulesFragment();
         Bundle args = new Bundle();
         args.putString("URL", url);
@@ -101,7 +101,8 @@ public class ForumRulesFragment extends WebViewFragment{
     public static void showRules() {
         MainActivity.addTab(App.getContext().getString(R.string.forum_rules), "RULES", new ForumRulesFragment());
     }
-    public static void showRules(String url){
+
+    public static void showRules(String url) {
         MainActivity.addTab(App.getContext().getString(R.string.forum_rules), url, newInstance(url));
     }
 
@@ -126,7 +127,7 @@ public class ForumRulesFragment extends WebViewFragment{
         m_WebView.addJavascriptInterface(this, "HTMLOUT");
         m_WebView.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
         m_WebView.setWebViewClient(new MyWebViewClient());
-        if(getArguments()!=null)
+        if (getArguments() != null)
             url = getArguments().getString("URL");
 
         asyncTask = new LoadRulesTask().execute();
@@ -159,7 +160,7 @@ public class ForumRulesFragment extends WebViewFragment{
             builder.append("<div class=\"posts_list\"><div class=\"post_container\"><div class=\"post_body \">");
             Document doc = Jsoup.parse(body);
             Element element = doc.select(".tablepad").first();
-            if(element==null)
+            if (element == null)
                 element = doc.select(".postcolor").first();
             builder.append(element.html());
             m_Title = doc.select(".maintitle").first().text().trim();
@@ -184,7 +185,11 @@ public class ForumRulesFragment extends WebViewFragment{
             if (success) {
                 showThemeBody(m_ThemeBody);
                 setTitle(m_Title);
-                showBody();
+                try {
+                    showBody();
+                } catch (Exception e) {
+                    AppLog.e(e);
+                }
             } else {
                 getSupportActionBar().setTitle(ex.getMessage());
                 m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
@@ -192,6 +197,7 @@ public class ForumRulesFragment extends WebViewFragment{
             }
         }
     }
+
     private void showThemeBody(String body) {
         try {
             setTitle(m_Title);
@@ -200,6 +206,7 @@ public class ForumRulesFragment extends WebViewFragment{
             AppLog.e(getMainActivity(), ex);
         }
     }
+
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, final String url) {
@@ -210,6 +217,7 @@ public class ForumRulesFragment extends WebViewFragment{
     }
 
     Menu menu;
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
