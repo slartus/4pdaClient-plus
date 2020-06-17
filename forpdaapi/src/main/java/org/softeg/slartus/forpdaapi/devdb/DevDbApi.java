@@ -20,39 +20,39 @@
 //public class DevDbApi {
 //
 //    public static ArrayList<DevCatalog> parseDevicesTypes(IHttpClient client) throws Throwable {
-//        String pageBody = client.performGet("http://devdb.ru");
+//        String pageBody = client.performGet("https://devdb.ru");
 //
-//        Pattern pattern = Pattern.compile("<a href=\"(http://devdb.ru/\\w+)/\"><p><img src=\"([^\"]*)\" alt=\"([^\"]*)\"[^/>]*/><br /><br />([^<]*)</a></p>",
+//        Pattern pattern = Pattern.compile("<a href=\"(https://devdb.ru/\\w+)/\"><p><img src=\"([^\"]*)\" alt=\"([^\"]*)\"[^/>]*/><br /><br />([^<]*)</a></p>",
 //                Pattern.CASE_INSENSITIVE);
 //        Matcher m = pattern.matcher(pageBody);
 //        ArrayList<DevCatalog> res = new ArrayList<>();
 //        while (m.find()) {
 //            DevCatalog f = new DevCatalog(m.group(1), m.group(4));
 //            f.setDescription(m.group(3));
-//            f.setImageUrl(UrlExtensions.removeDoubleSplitters("http://devdb.ru/" + m.group(2)));
+//            f.setImageUrl(UrlExtensions.removeDoubleSplitters("https://devdb.ru/" + m.group(2)));
 //            f.setType(DevCatalog.DEVICE_TYPE);
 //            res.add(f);
 //        }
-//        res.add(new DevCatalog("http://devdb.ru/accessories/", "Акссесуары").setType(DevCatalog.DEVICE_TYPE));
+//        res.add(new DevCatalog("https://devdb.ru/accessories/", "Акссесуары").setType(DevCatalog.DEVICE_TYPE));
 //        return res;
 //    }
 //
 //    public static ArrayList<DevCatalog> getStandartDevicesTypes() {
 //        ArrayList<DevCatalog> res = new ArrayList<>();
 //
-//        res.add(new DevCatalog("http://devdb.ru/pda/", "Коммуникаторы").setType(DevCatalog.DEVICE_TYPE));
-//        res.add(new DevCatalog("http://devdb.ru/phone/", "Сотовые телефоны").setType(DevCatalog.DEVICE_TYPE));
-//        res.add(new DevCatalog("http://devdb.ru/pnd/", "Навигаторы").setType(DevCatalog.DEVICE_TYPE));
-//        res.add(new DevCatalog("http://devdb.ru/ebook/", "Электронные книги").setType(DevCatalog.DEVICE_TYPE));
-//        res.add(new DevCatalog("http://devdb.ru/pad/", "Планшеты").setType(DevCatalog.DEVICE_TYPE));
-//        res.add(new DevCatalog("http://devdb.ru/accessories/", "Акссесуары").setType(DevCatalog.DEVICE_TYPE));
+//        res.add(new DevCatalog("https://devdb.ru/pda/", "Коммуникаторы").setType(DevCatalog.DEVICE_TYPE));
+//        res.add(new DevCatalog("https://devdb.ru/phone/", "Сотовые телефоны").setType(DevCatalog.DEVICE_TYPE));
+//        res.add(new DevCatalog("https://devdb.ru/pnd/", "Навигаторы").setType(DevCatalog.DEVICE_TYPE));
+//        res.add(new DevCatalog("https://devdb.ru/ebook/", "Электронные книги").setType(DevCatalog.DEVICE_TYPE));
+//        res.add(new DevCatalog("https://devdb.ru/pad/", "Планшеты").setType(DevCatalog.DEVICE_TYPE));
+//        res.add(new DevCatalog("https://devdb.ru/accessories/", "Акссесуары").setType(DevCatalog.DEVICE_TYPE));
 //        return res;
 //    }
 //
 //    public static ArrayList<DevCatalog> parseBrands(IHttpClient client, String devicesTypeUrl) throws Throwable {
 //        String pageBody = client.performGet(devicesTypeUrl);
 //
-//        Pattern pattern = Pattern.compile("<li><a href=\"(http://devdb.ru/\\w+/[^\"]*)\">([^\"]*)</a></li>",
+//        Pattern pattern = Pattern.compile("<li><a href=\"(https://devdb.ru/\\w+/[^\"]*)\">([^\"]*)</a></li>",
 //                Pattern.CASE_INSENSITIVE);
 //        Matcher m = pattern.matcher(pageBody);
 //        ArrayList<DevCatalog> res = new ArrayList<>();
@@ -153,7 +153,7 @@
 //            default:
 //                return root;
 //        }
-//        DevCatalog devType = new DevCatalog("http://devdb.ru/" + uri.getPathSegments().get(0), title)
+//        DevCatalog devType = new DevCatalog("https://devdb.ru/" + uri.getPathSegments().get(0), title)
 //                .setType(DevCatalog.DEVICE_TYPE);
 //        devType.setParent(root);
 //        if (uri.getPathSegments().size() < 2) {

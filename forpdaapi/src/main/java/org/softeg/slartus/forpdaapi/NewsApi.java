@@ -41,7 +41,7 @@ public class NewsApi {
     }
 
     public static String parseNewsBody(String newsPageBody) {
-        Document doc = Jsoup.parse(newsPageBody, "http://4pda.ru");
+        Document doc = Jsoup.parse(newsPageBody, "https://4pda.ru");
         org.jsoup.nodes.Element bodyElement = doc.select("div.container").first();
         if(bodyElement!=null)
             return  bodyElement.parent().html();
@@ -65,14 +65,14 @@ public class NewsApi {
     }
 
     public static ArrayList<News> getNews(IHttpClient httpClient, String url, ListInfo listInfo, SharedPreferences preferences) throws Exception {
-        //http://4pda.ru/2013/page/7/
-        //http://4pda.ru/2013/2/page/7/
-        //http://4pda.ru/2013/2/2/page/7/
-        //http://4pda.ru/tag/programs-for-ios/page/3
-        //http://4pda.ru/page/5/
-        //http://4pda.ru/page/5/?s=ios - поиск
-        //http://4pda.ru/?s=%EF%EB%E0%ED%F8%E5%F2
-        //http://4pda.ru/page/6/?s=%EF%EB%E0%ED%F8%E5%F2
+        //https://4pda.ru/2013/page/7/
+        //https://4pda.ru/2013/2/page/7/
+        //https://4pda.ru/2013/2/2/page/7/
+        //https://4pda.ru/tag/programs-for-ios/page/3
+        //https://4pda.ru/page/5/
+        //https://4pda.ru/page/5/?s=ios - поиск
+        //https://4pda.ru/?s=%EF%EB%E0%ED%F8%E5%F2
+        //https://4pda.ru/page/6/?s=%EF%EB%E0%ED%F8%E5%F2
 
         final int NEWS_PER_PAGE = 28;// 30 новостей на страницу выводит форум
         int pageNum = 1;
@@ -129,7 +129,7 @@ public class NewsApi {
             childGroup = 0;
             if (m.group(1) == null) group = 4;
 
-            news.setId(m.group(group + 2).replace("http://4pda.ru", ""));
+            news.setId(m.group(group + 2).replace("https://4pda.ru", ""));
             news.setTitle(Html.fromHtml(m.group(group + 4).replaceAll("&amp;","&")).toString());
             news.setImgUrl(m.group(group + 3));
 

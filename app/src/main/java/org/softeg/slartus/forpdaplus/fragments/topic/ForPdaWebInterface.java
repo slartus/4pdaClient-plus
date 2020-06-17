@@ -422,7 +422,7 @@ public class ForPdaWebInterface {
                 for (JsonElement a : s.getAsJsonArray()) {
                     String url = a.getAsString();
                     if (!url.contains("http")) {
-                        url = "http:".concat(url);
+                        url = "https:".concat(url);
                     }
                     list1.add(url);
                 }

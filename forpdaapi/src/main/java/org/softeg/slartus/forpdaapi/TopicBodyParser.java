@@ -155,22 +155,22 @@ public class TopicBodyParser implements Parcelable {
     }
 
     public String getNextPageUrl() {
-        return String.format("http://4pda.ru/forum/index.php?showtopic=%s&st=%d", getTopicId(), currentPage * postsPerPage);
+        return String.format("https://4pda.ru/forum/index.php?showtopic=%s&st=%d", getTopicId(), currentPage * postsPerPage);
     }
 
     public String getPrevPageUrl() {
-        return String.format("http://4pda.ru/forum/index.php?showtopic=%s&st=%d", getTopicId(), (currentPage - 2) * postsPerPage);
+        return String.format("https://4pda.ru/forum/index.php?showtopic=%s&st=%d", getTopicId(), (currentPage - 2) * postsPerPage);
     }
 
     public String getLastPageUrl() {
-        return String.format("http://4pda.ru/forum/index.php?showtopic=%s&st=%d", getTopicId(), (pagesCount - 1) * postsPerPage);
+        return String.format("https://4pda.ru/forum/index.php?showtopic=%s&st=%d", getTopicId(), (pagesCount - 1) * postsPerPage);
     }
 
     public String getFirstPageUrl() {
-        return String.format("http://4pda.ru/forum/index.php?showtopic=%s", getTopicId());
+        return String.format("https://4pda.ru/forum/index.php?showtopic=%s", getTopicId());
     }
 
     public String getPageUrl(int pageNum) {
-        return String.format("http://4pda.ru/forum/index.php?showtopic=%s&st=%d", getTopicId(), (pageNum - 1) * postsPerPage);
+        return String.format("https://4pda.ru/forum/index.php?showtopic=%s&st=%d", getTopicId(), (pageNum - 1) * postsPerPage);
     }
 }

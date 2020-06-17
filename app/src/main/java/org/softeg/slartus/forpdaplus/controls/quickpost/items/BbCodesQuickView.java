@@ -99,7 +99,7 @@ public class BbCodesQuickView extends BaseQuickView {
 
         sb.append("</body></html>");
         webView.setWebViewClient(new MyWebViewClient());
-        webView.loadDataWithBaseURL("http://4pda.ru/forum/", sb.toString(), "text/html", "UTF-8", null);
+        webView.loadDataWithBaseURL("https://4pda.ru/forum/", sb.toString(), "text/html", "UTF-8", null);
         webView.setOnTouchListener((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
 //                    getSelectionStart() = getEditor().getSelectionStart();

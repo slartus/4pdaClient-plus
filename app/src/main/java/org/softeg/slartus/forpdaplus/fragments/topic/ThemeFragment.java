@@ -1536,7 +1536,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 if (ex.getClass() != NotReportException.class) {
                     setTitle(ex.getMessage());
                     webView.loadDataWithBaseURL(m_LastUrl, m_ThemeBody, "text/html", "UTF-8", null);
-                    //webView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
+                    //webView.loadDataWithBaseURL("https://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
                     addToHistory(m_ThemeBody);
                 }
                 AppLog.e(getMainActivity(), ex, () -> showTheme(getLastUrl()));

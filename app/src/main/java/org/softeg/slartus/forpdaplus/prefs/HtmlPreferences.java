@@ -105,7 +105,7 @@ public class HtmlPreferences {
 
     private static String modifyLinksBody(String value) {
         return value
-                .replaceAll("(src|href)=(['\"])index.php", "$1=$2http://4pda.ru/forum/index.php")
-                .replaceAll("(src|href)=(['\"])/forum", "$1=$2http://4pda.ru/forum");
+                .replaceAll("(src|href)=(['\"])index.php", "$1=$2https://4pda.ru/forum/index.php")
+                .replaceAll("(src|href)=(['\"])/forum", "$1=$2https://4pda.ru/forum");
     }
 }

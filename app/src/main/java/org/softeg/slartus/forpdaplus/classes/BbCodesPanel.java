@@ -362,7 +362,7 @@ public class BbCodesPanel extends BbCodesBasePanel {
                     .substring(selectionStart, selectionEnd);
         }
 
-        createUrlDialog(null, urlText, mContext.getString(org.softeg.slartus.forpdaplus.R.string.enter_full_address), "http://");
+        createUrlDialog(null, urlText, mContext.getString(org.softeg.slartus.forpdaplus.R.string.enter_full_address), "https://");
 
     }
 

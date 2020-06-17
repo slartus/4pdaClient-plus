@@ -173,7 +173,7 @@ public class TopicsApi {
             res = SearchApi.INSTANCE.parse(pageBody, listInfo);
         } else {
             int start = listInfo.getFrom();
-            Pattern lastPageStartPattern = Pattern.compile("<a href=\"(http://4pda.ru)?/forum/index.php\\?showforum=\\d[^\"]*?st=(\\d+)",
+            Pattern lastPageStartPattern = Pattern.compile("<a href=\"(https?://4pda.ru)?/forum/index.php\\?showforum=\\d[^\"]*?st=(\\d+)",
                     Pattern.CASE_INSENSITIVE);
 
             String today = Functions.getToday();

@@ -186,7 +186,7 @@ public class PostPreviewFragment extends WebViewFragment {
         bbCodes.add(new BBCode("(?i)\\[FONT=[\"|^$]*([^$]*?)[\"^$]*\\]", "<span style=\"font-family:$1\">"));
         bbCodes.add(new BBCode("(?i)\\[/FONT\\]", "</span>"));
 
-        bbCodes.add(new BBCode("(?i)\\[SNAPBACK\\]([^$]*?)\\[/SNAPBACK\\]", "<a href=\"/forum/index.php?act=findpost&amp;pid=$1\" target=\"_blank\" title=\"Перейти к сообщению\"><img src=\"http://s.4pda.ru/forum/style_images/1/post_snapback.gif\" alt=\"*\" border=\"0\"></a>"));
+        bbCodes.add(new BBCode("(?i)\\[SNAPBACK\\]([^$]*?)\\[/SNAPBACK\\]", "<a href=\"/forum/index.php?act=findpost&amp;pid=$1\" target=\"_blank\" title=\"Перейти к сообщению\"><img src=\"https://s.4pda.ru/forum/style_images/1/post_snapback.gif\" alt=\"*\" border=\"0\"></a>"));
 
         bbCodes.add(new BBCode("(?i)\\[OFFTOP\\]", "<font style=\"font-size:9px;color:gray;\">"));
         bbCodes.add(new BBCode("(?i)\\[/OFFTOP\\]", "</font>"));
