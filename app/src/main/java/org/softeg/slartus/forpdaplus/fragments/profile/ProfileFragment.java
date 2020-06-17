@@ -73,7 +73,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
 
     @Override
     public String getUrl() {
-        return "http://4pda.ru/forum/index.php?showuser=" + getUserId();
+        return "https://4pda.ru/forum/index.php?showuser=" + getUserId();
     }
 
     @Override
@@ -136,7 +136,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     public static void showProfile(String userId, String userNick) {
-        MainActivity.addTab(userNick, "http://4pda.ru/forum/index.php?showuser=" + userId, newInstance(userId, userNick));
+        MainActivity.addTab(userNick, "https://4pda.ru/forum/index.php?showuser=" + userId, newInstance(userId, userNick));
     }
 
     public static ProfileFragment newInstance(String userId, String userNick) {
@@ -238,7 +238,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
 
         title = nick != null ? nick.toString() : "unknown";
         super.showBody();
-        m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", profile.getHtmlBody(), "text/html", "UTF-8", null);
+        m_WebView.loadDataWithBaseURL("https://4pda.ru/forum/", profile.getHtmlBody(), "text/html", "UTF-8", null);
         if (nick != null)
             args.putString(USER_NAME_KEY, profile.getNick().toString());
         if (getMainActivity() != null)
@@ -438,7 +438,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
                 Map<String, String> additionalHeaders = new HashMap<>();
                 additionalHeaders.put("auth_key", Client.getInstance().getAuthKey());
                 try {
-                    Client.getInstance().performPost("http://4pda.ru/forum/index.php?act=profile-xhr&action=dev-primary&md_id=" + id, additionalHeaders);
+                    Client.getInstance().performPost("https://4pda.ru/forum/index.php?act=profile-xhr&action=dev-primary&md_id=" + id, additionalHeaders);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -506,7 +506,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
 
         menu.add(R.string.link)
                 .setOnMenuItemClickListener(menuItem -> {
-                    ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link_to_profile), "http://4pda.ru/forum/index.php?showuser=" + getUserId());
+                    ExtUrl.showSelectActionDialog(getMainActivity(), getString(R.string.link_to_profile), "https://4pda.ru/forum/index.php?showuser=" + getUserId());
                     return true;
                 })
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);

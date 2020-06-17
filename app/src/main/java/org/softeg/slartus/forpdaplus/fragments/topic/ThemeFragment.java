@@ -179,11 +179,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public static String getThemeUrl(CharSequence topicId) {
-        return "http://4pda.ru/forum/index.php?showtopic=" + topicId;
+        return "https://4pda.ru/forum/index.php?showtopic=" + topicId;
     }
 
     public static String getThemeUrl(CharSequence topicId, CharSequence urlParams) {
-        return String.format("http://4pda.ru/forum/index.php?showtopic=%s%s", topicId, TextUtils.isEmpty(urlParams) ? "" : ("&" + urlParams));
+        return String.format("https://4pda.ru/forum/index.php?showtopic=%s%s", topicId, TextUtils.isEmpty(urlParams) ? "" : ("&" + urlParams));
     }
 
     public static void showTopicById(CharSequence topicId, CharSequence urlParams) {
@@ -555,7 +555,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 case R.id.link_item:
                     if (topic != null) {
                         ExtUrl.showSelectActionDialog(getMainActivity(), getS(R.string.link),
-                                TextUtils.isEmpty(getLastUrl()) ? ("http://4pda.ru/forum/index.php?showtopic=" + topic.getId()) : getLastUrl());
+                                TextUtils.isEmpty(getLastUrl()) ? ("https://4pda.ru/forum/index.php?showtopic=" + topic.getId()) : getLastUrl());
                     }
                     return true;
                 case R.id.avatars_item:
@@ -883,7 +883,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 list.add(new MenuListDialog(getS(R.string.quote_post), () -> quote(m_Topic.getForumId(), m_Topic.getId(), postId, postDate, userId, userNick)));
             }
             list.add(new MenuListDialog(getS(R.string.create_note), () -> NoteDialog.showDialog(mHandler, getMainActivity(), m_Topic.getTitle(), null,
-                    "http://4pda.ru/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
+                    "https://4pda.ru/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
                     m_Topic.getId(), m_Topic.getTitle(), postId, null, null)));
 
             ExtUrl.showContextDialog(getContext(), null, list);
@@ -901,7 +901,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
 
             //webView.loadDataWithBaseURL(m_LastUrl, body, "text/html", "UTF-8", null);
-            webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
+            webView.loadDataWithBaseURL("https://4pda.ru/forum/", body, "text/html", "UTF-8", null);
 
             TopicsHistoryTable.addHistory(m_Topic, m_LastUrl);
             if (buttonsPanel.getTranslationY() != 0)
@@ -1062,7 +1062,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         Matcher m = Pattern.compile("lofiversion/index.php\\?t(\\d+)(?:-(\\d+))?.html", Pattern.CASE_INSENSITIVE)
                 .matcher(url);
         if (m.find())
-            return "http://4pda.ru/forum/index.php?showtopic=" + m.group(1) +
+            return "https://4pda.ru/forum/index.php?showtopic=" + m.group(1) +
                     (m.group(2) != null ? ("&st=" + m.group(2)) : "");
         return url;
     }
@@ -1467,10 +1467,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 Client client = Client.getInstance();
 
                 m_LastUrl = forums[0];
-                m_LastUrl = "http://4pda.ru/forum/index.php?" + prepareTopicUrl(m_LastUrl);
+                m_LastUrl = "https://4pda.ru/forum/index.php?" + prepareTopicUrl(m_LastUrl);
 
                 if (forums.length == 1) {
-                    lastResponse = Http.Companion.getInstance().performGet("http://4pda.ru/forum/index.php?" + prepareTopicUrl(m_LastUrl));
+                    lastResponse = Http.Companion.getInstance().performGet("https://4pda.ru/forum/index.php?" + prepareTopicUrl(m_LastUrl));
                     pageBody = lastResponse.getResponseBody();
                     Client.getInstance().check(pageBody);
                 } else

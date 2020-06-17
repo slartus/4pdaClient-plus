@@ -21,10 +21,10 @@ public class NewDevDbApi {
 
     public static ArrayList<DevCatalog> getStandartDevicesTypes() {
         ArrayList<DevCatalog> res = new ArrayList<>();
-        res.add(new DevCatalog("http://4pda.ru/devdb/phones/", "Телефоны").setType(DevCatalog.DEVICE_TYPE));
-        res.add(new DevCatalog("http://4pda.ru/devdb/pad/", "Планшеты").setType(DevCatalog.DEVICE_TYPE));
-        res.add(new DevCatalog("http://4pda.ru/devdb/ebook/", "Электронные книги").setType(DevCatalog.DEVICE_TYPE));
-        res.add(new DevCatalog("http://4pda.ru/devdb/smartwatch/", "Смарт часы").setType(DevCatalog.DEVICE_TYPE));
+        res.add(new DevCatalog("https://4pda.ru/devdb/phones/", "Телефоны").setType(DevCatalog.DEVICE_TYPE));
+        res.add(new DevCatalog("https://4pda.ru/devdb/pad/", "Планшеты").setType(DevCatalog.DEVICE_TYPE));
+        res.add(new DevCatalog("https://4pda.ru/devdb/ebook/", "Электронные книги").setType(DevCatalog.DEVICE_TYPE));
+        res.add(new DevCatalog("https://4pda.ru/devdb/smartwatch/", "Смарт часы").setType(DevCatalog.DEVICE_TYPE));
         return res;
     }
 
@@ -113,7 +113,7 @@ public class NewDevDbApi {
             default:
                 return root;
         }
-        DevCatalog devType = new DevCatalog("http://4pda.ru/devdb/" + uri.getPathSegments().get(0), title)
+        DevCatalog devType = new DevCatalog("https://4pda.ru/devdb/" + uri.getPathSegments().get(0), title)
                 .setType(DevCatalog.DEVICE_TYPE);
         devType.setParent(root);
         if (uri.getPathSegments().size() < 2) {

@@ -128,7 +128,7 @@ public class NoteFragment extends GeneralFragment {
                 addRow(getString(R.string.link), note.getUrlLink(), note.Url, rowparams, textviewparams);
             }
 
-            webView.loadDataWithBaseURL("http://4pda.ru/forum/", transformChatBody(note.Body), "text/html", "UTF-8", null);
+            webView.loadDataWithBaseURL("https://4pda.ru/forum/", transformChatBody(note.Body), "text/html", "UTF-8", null);
         } catch (Throwable ex) {
             AppLog.e(getMainActivity(), ex);
         }

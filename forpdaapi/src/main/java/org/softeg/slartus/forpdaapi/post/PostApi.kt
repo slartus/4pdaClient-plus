@@ -32,7 +32,7 @@ object PostApi {
      */
     @Throws(IOException::class)
     fun delete(httpClient: IHttpClient, postId: String, authKey: CharSequence): Boolean {
-        httpClient.performGet("http://4pda.ru/forum/index.php?act=zmod&auth_key=$authKey&code=postchoice&tact=delete&selectedpids=$postId")
+        httpClient.performGet("https://4pda.ru/forum/index.php?act=zmod&auth_key=$authKey&code=postchoice&tact=delete&selectedpids=$postId")
         return true// !TODO: проверка ответа
     }
 
@@ -45,10 +45,10 @@ object PostApi {
     fun getEditPage(httpClient: IHttpClient, forumId: String, topicId: String, postId: String, authKey: String): String {
         val res: AppResponse
         if (postId == NEW_POST_ID)
-            res = httpClient.performGet("http://4pda.ru/forum/index.php?act=post&do=reply_post&f=" + forumId
+            res = httpClient.performGet("https://4pda.ru/forum/index.php?act=post&do=reply_post&f=" + forumId
                     + "&t=" + topicId)
         else
-            res = httpClient.performGet("http://4pda.ru/forum/index.php?act=post&do=edit_post&f=" + forumId
+            res = httpClient.performGet("https://4pda.ru/forum/index.php?act=post&do=edit_post&f=" + forumId
                     + "&t=" + topicId
                     + "&p=" + postId
                     + "&auth_key=" + authKey)
@@ -60,7 +60,7 @@ object PostApi {
 
     @Throws(IOException::class)
     fun getAttachPage(httpClient: IHttpClient, postId: String): String? {
-        return if (postId == NEW_POST_ID) null else httpClient.performGet("http://4pda.ru/forum/index.php?&act=attach&code=attach_upload_show&attach_rel_id=$postId").responseBody
+        return if (postId == NEW_POST_ID) null else httpClient.performGet("https://4pda.ru/forum/index.php?&act=attach&code=attach_upload_show&attach_rel_id=$postId").responseBody
     }
 
     /**
@@ -116,7 +116,7 @@ object PostApi {
             additionalHeaders["enableemo"] = "yes"
 
 
-        return httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders).responseBody
+        return httpClient.performPost("https://4pda.ru/forum/index.php", additionalHeaders).responseBody
     }
 
     /**
@@ -175,13 +175,13 @@ object PostApi {
             additionalHeaders["enableemo"] = "yes"
 
 
-        // additionalHeaders.put("referer", "http://4pda.ru/forum/index.php?act=Post&CODE=03&f=" + forumId + "&t=" + topicId + "&st=20&auth_key=" + authKey + "&fast_reply_used=1");
+        // additionalHeaders.put("referer", "https://4pda.ru/forum/index.php?act=Post&CODE=03&f=" + forumId + "&t=" + topicId + "&st=20&auth_key=" + authKey + "&fast_reply_used=1");
 
         val listParams = ArrayList<Pair<String, String>>()
         for (key in additionalHeaders.keys) {
             listParams.add(Pair(key, additionalHeaders[key]))
         }
-        return Http.instance.performPost("http://4pda.ru/forum/index.php", listParams)
+        return Http.instance.performPost("https://4pda.ru/forum/index.php", listParams)
     }
 
     fun checkPostErrors(page: String?): String? {
@@ -253,10 +253,10 @@ object PostApi {
         additionalHeaders["iconid"] = "0"
 
         if (postId == NEW_POST_ID)
-            return httpClient.uploadFile("http://4pda.ru/forum/index.php", filePath, additionalHeaders,
+            return httpClient.uploadFile("https://4pda.ru/forum/index.php", filePath, additionalHeaders,
                     progress).responseBody
 
-        httpClient.uploadFile("http://4pda.ru/forum/index.php", filePath, additionalHeaders, progress)
+        httpClient.uploadFile("https://4pda.ru/forum/index.php", filePath, additionalHeaders, progress)
         progress.update("Файл загружен, получение страницы", 100)
         return getEditPage(httpClient, forumId, topicId, postId, authKey)
     }
@@ -307,8 +307,8 @@ object PostApi {
             additionalHeaders["enableemo"] = "yes"
 
         if (postId == NEW_POST_ID)
-            return httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders).responseBody
-        httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders)
+            return httpClient.performPost("https://4pda.ru/forum/index.php", additionalHeaders).responseBody
+        httpClient.performPost("https://4pda.ru/forum/index.php", additionalHeaders)
         return getEditPage(httpClient, forumId, themeId, postId, authKey)
     }
 
@@ -327,7 +327,7 @@ object PostApi {
         additionalHeaders["p"] = postId
         additionalHeaders["message"] = message
 
-        val res = httpClient.performPost("http://4pda.ru/forum/index.php?act=report&amp;send=1&amp;t=$topicId&amp;p=$postId", additionalHeaders)
+        val res = httpClient.performPost("https://4pda.ru/forum/index.php?act=report&amp;send=1&amp;t=$topicId&amp;p=$postId", additionalHeaders)
 
         val p = Pattern.compile("<div class=\"errorwrap\">\n" +
                 "\\s*<h4>Причина:</h4>\n" +
@@ -379,7 +379,7 @@ object PostApi {
                            postId: String,
                            attachId: String) {
         val res = httpClient
-                .performGet(String.format("http://4pda.ru/forum/index.php?&act=attach&code=attach_upload_remove&attach_rel_id=%s&attach_id=%s", postId,
+                .performGet(String.format("https://4pda.ru/forum/index.php?&act=attach&code=attach_upload_remove&attach_rel_id=%s&attach_id=%s", postId,
                         attachId))
         checkAttachError(res.responseBody)
     }
@@ -391,7 +391,7 @@ object PostApi {
                    progress: ProgressState): EditAttach? {
 
 
-        val res = httpClient.uploadFile("http://4pda.ru/forum/index.php?&act=attach&code=attach_upload_process&attach_rel_id=$postId",
+        val res = httpClient.uploadFile("https://4pda.ru/forum/index.php?&act=attach&code=attach_upload_process&attach_rel_id=$postId",
                 newFilePath, HashMap(),
                 progress)
         val m = Pattern
@@ -434,7 +434,7 @@ object PostApi {
             nameValuePairs.add(BasicNameValuePair("enablesig", "yes"))
 
 
-        return httpClient.performPost("http://4pda.ru/forum/index.php", nameValuePairs).responseBody
+        return httpClient.performPost("https://4pda.ru/forum/index.php", nameValuePairs).responseBody
     }
 
 

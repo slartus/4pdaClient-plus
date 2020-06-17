@@ -352,7 +352,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
 
         }, object : ForumsAdapter.OnLongClickListener {
             private fun show(id: String) {
-                ExtUrl.showSelectActionDialog(mainActivity, getString(R.string.link), "http://4pda.ru/forum/index.php?showforum=$id")
+                ExtUrl.showSelectActionDialog(mainActivity, getString(R.string.link), "https://4pda.ru/forum/index.php?showforum=$id")
             }
 
             override fun onItemClick(v: View) {

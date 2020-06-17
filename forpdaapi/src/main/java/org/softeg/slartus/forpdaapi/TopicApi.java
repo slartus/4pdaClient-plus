@@ -139,7 +139,7 @@ public class TopicApi {
      * Кто читает тему
      */
     public static TopicReadingUsers getReadingUsers(IHttpClient httpClient, String topicId) throws IOException {
-        String body = httpClient.performGetFullVersion("http://4pda.ru/forum/index.php?showtopic=" + topicId).getResponseBody();
+        String body = httpClient.performGetFullVersion("https://4pda.ru/forum/index.php?showtopic=" + topicId).getResponseBody();
 
         Matcher m = Pattern.compile("<a href=\".*?/forum/index.php\\?showuser=(\\d+)\" title=\"\\(([^)]*)\\)[^\"]*\"><span style='color:(.*?)'>(.*?)</span></a>").matcher(body);
         TopicReadingUsers res = new TopicReadingUsers();
@@ -160,7 +160,7 @@ public class TopicApi {
     }
 
     public static Users getWriters(IHttpClient httpClient, String topicId) throws IOException {
-        String body = httpClient.performGet("http://4pda.ru/forum/index.php?s=&act=Stats&CODE=who&t=" + topicId).getResponseBody();
+        String body = httpClient.performGet("https://4pda.ru/forum/index.php?s=&act=Stats&CODE=who&t=" + topicId).getResponseBody();
 
         Matcher m = Pattern.compile("<div[^>]*?>[^<]*<span[^>]*?><a[^>]*?showuser=(\\d+)[^>]*?>([\\s\\S]*?)<\\/a><\\/span>[^<]*?(\\d+)<\\/div>", Pattern.CASE_INSENSITIVE).matcher(body);
         Users res = new Users();
@@ -178,7 +178,7 @@ public class TopicApi {
     }
 
     public static ArrayList<PostAttach> getTopicAttachment(IHttpClient httpClient, String topicId) throws IOException {
-        String body = httpClient.performGet("http://4pda.ru/forum/index.php?act=attach&code=showtopic&tid=" + topicId).getResponseBody();
+        String body = httpClient.performGet("https://4pda.ru/forum/index.php?act=attach&code=showtopic&tid=" + topicId).getResponseBody();
 
         Matcher m = Pattern.compile("<tr id=\"(\\d+)\"><td align=\"center\" class=\"row1\"><img src=\"[^\"]*/([^.]*)\\..*?\" alt=\"Прикрепленный файл\" /></td><td class=\"row2\"><a href=\"([^\"]*)\" target=\"_blank\">([^<]*)</a><div class=\"desc\">\\(([^)]*)\\)</div></td><td align=\"center\" class=\"row1\">([^<]*)</td><td class=\"row2\" align=\"center\"><a href=\"#\" onclick=\"opener.location='[^']*pid=(\\d+)';\">\\d+</a></td></tr>"
                 , Pattern.CASE_INSENSITIVE).matcher(body);
@@ -190,7 +190,7 @@ public class TopicApi {
             item.setId(m.group(1));
 
             item.setFileType(m.group(2));
-            item.setUrl("http://4pda.ru" + m.group(3));
+            item.setUrl("https://4pda.ru" + m.group(3));
             item.setName(m.group(4));
             item.setAdditionDate(Functions.parseForumDateTime(m.group(5).replace("Добавлено ", ""), today, yesterday));
             item.setFileSize(FileUtils.parseFileSize(m.group(6)));
@@ -224,7 +224,7 @@ public class TopicApi {
 
         Matcher m = PatternExtensions.compile("4pda.ru/forum/lofiversion/index.php\\?t(\\d+)(?:-(\\d+))?.html").matcher(url);
         if (m.find()) {
-            return "http://4pda.ru/forum/index.php?showtopic=" + m.group(1) + (TextUtils.isEmpty(m.group(2)) ? "" : ("&st=" + m.group(2)));
+            return "https://4pda.ru/forum/index.php?showtopic=" + m.group(1) + (TextUtils.isEmpty(m.group(2)) ? "" : ("&st=" + m.group(2)));
         }
         return url;
     }

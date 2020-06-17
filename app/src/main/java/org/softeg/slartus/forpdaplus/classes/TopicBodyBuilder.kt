@@ -123,7 +123,7 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
     private val titleBlock: String
         private get() {
             val desc = if (TextUtils.isEmpty(topic!!.description)) "" else "<span class=\"comma\">, </span>" + topic!!.description
-            return ("<div class=\"topic_title_post\"><a href=\"http://4pda.ru/forum/index.php?showtopic="
+            return ("<div class=\"topic_title_post\"><a href=\"https://4pda.ru/forum/index.php?showtopic="
                     + topic!!.id
                     + (if (TextUtils.isEmpty(m_UrlParams)) "" else "&$m_UrlParams") + "\">"
                     + "<span class=\"name\">" + topic!!.title + "</span>"

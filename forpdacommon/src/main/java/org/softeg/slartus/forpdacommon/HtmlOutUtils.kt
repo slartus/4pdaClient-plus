@@ -27,7 +27,7 @@ object HtmlOutUtils {
     fun getHtmlout(methodName: String?, paramValues: Array<String?>, modifyParams: Boolean): String? {
         var sb = StringBuilder()
         if (!Functions.isWebviewAllowJavascriptInterface()) {
-            sb.append("href=\"http://www.HTMLOUT.ru/")
+            sb.append("href=\"https://www.HTMLOUT.ru/")
             sb.append(methodName).append("?")
             var i = 0
             for (paramName in paramValues) {

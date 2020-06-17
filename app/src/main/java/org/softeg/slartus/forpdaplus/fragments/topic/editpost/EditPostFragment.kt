@@ -256,7 +256,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
                 result.onSuccess(false)
             }
         } else {
-            result.onSuccess(false)
+            result.onSuccess(true)
         }
         return result
     }
@@ -568,7 +568,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         }
         if (App.getInstance().isContainsByTag(parentTag)) {
             (App.getInstance().getTabByTag(parentTag)!!.fragment as ThemeFragment)
-                    .showTheme(String.format("http://4pda.ru/forum/index.php?showtopic=%s&%s", editPost?.topicId,
+                    .showTheme(String.format("https://4pda.ru/forum/index.php?showtopic=%s&%s", editPost?.topicId,
                             if (isNewPost) "view=getlastpost" else ("view=findpost&p=" + editPost?.id)), true)
         }
         mainActivity.tryRemoveTab(tag)

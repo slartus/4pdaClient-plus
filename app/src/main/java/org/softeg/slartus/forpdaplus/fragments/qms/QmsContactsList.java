@@ -130,7 +130,7 @@ public class QmsContactsList extends BaseLoaderListFragment {
                     additionalHeaders.put("act", "qms-xhr");
                     additionalHeaders.put("action", "del-member");
                     additionalHeaders.put("del-mid", qmsUser.getId());
-                    Client.getInstance().performPost("http://4pda.ru/forum/index.php", additionalHeaders);
+                    Client.getInstance().performPost("https://4pda.ru/forum/index.php", additionalHeaders);
 
                     handler.post(this::reloadData);
 

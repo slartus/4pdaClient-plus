@@ -397,7 +397,7 @@ public class ForPdaWebInterface {
     public void go_gadget_show() {
         run(() -> {
 
-            String url = "http://4pda.ru/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&mode=show&poll_open=true&st=" +
+            String url = "https://4pda.ru/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&mode=show&poll_open=true&st=" +
                     getContext().getTopic().getCurrentPage() * getContext().getTopic().getPostsPerPageCount(getContext().getLastUrl());
             getContext().showTheme(url);
         });
@@ -407,7 +407,7 @@ public class ForPdaWebInterface {
     @JavascriptInterface
     public void go_gadget_vote() {
         run(() -> {
-            String url = "http://4pda.ru/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&poll_open=true&st=" +
+            String url = "https://4pda.ru/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&poll_open=true&st=" +
                     getContext().getTopic().getCurrentPage() * getContext().getTopic().getPostsPerPageCount(getContext().getLastUrl());
             getContext().showTheme(url);
         });

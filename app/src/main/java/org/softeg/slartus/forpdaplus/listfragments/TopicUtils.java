@@ -138,7 +138,7 @@ public class TopicUtils {
     }
 
     public static String getTopicUrl(String topicId, String urlArgs) {
-        return "http://4pda.ru/forum/index.php?showtopic=" + topicId + (TextUtils.isEmpty(urlArgs) ? "" : ("&" + urlArgs));
+        return "https://4pda.ru/forum/index.php?showtopic=" + topicId + (TextUtils.isEmpty(urlArgs) ? "" : ("&" + urlArgs));
     }
 
     public static void showSubscribeSelectTypeDialog(final Context context, final android.os.Handler handler,

@@ -93,7 +93,7 @@ public class PostPreviewFragment extends WebViewFragment {
 
         builder.endBody();
         builder.endHtml();
-        webView.loadDataWithBaseURL("http://4pda.ru/forum/", builder.getHtml().toString(), "text/html", "UTF-8", null);
+        webView.loadDataWithBaseURL("https://4pda.ru/forum/", builder.getHtml().toString(), "text/html", "UTF-8", null);
         webViewClient = new MyWebViewClient();
     }
     @Nullable
@@ -238,7 +238,7 @@ public class PostPreviewFragment extends WebViewFragment {
 
         bbCodes.add(new BBCode("name=\"([^$]*?)\"", "$1"));
         bbCodes.add(new BBCode("date=\"([^$]*?)\"", " @ $1"));
-        bbCodes.add(new BBCode("post=([^]^<]*)", "<a href=\"/forum/index.php?act=findpost&amp;pid=$1\" target=\"_blank\" title=\"Перейти к сообщению\"><img src=\"http://s.4pda.ru/forum/style_images/1/post_snapback.gif\" alt=\"*\" border=\"0\"></a>"));
+        bbCodes.add(new BBCode("post=([^]^<]*)", "<a href=\"/forum/index.php?act=findpost&amp;pid=$1\" target=\"_blank\" title=\"Перейти к сообщению\"><img src=\"https://s.4pda.ru/forum/style_images/1/post_snapback.gif\" alt=\"*\" border=\"0\"></a>"));
 
     }
     private class BBCode {

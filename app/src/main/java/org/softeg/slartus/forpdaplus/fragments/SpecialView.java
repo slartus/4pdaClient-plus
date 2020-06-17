@@ -152,14 +152,14 @@ public class SpecialView extends WebViewFragment {
             if (success) {
                 showThemeBody(m_ThemeBody);
             } else {
-                m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
+                m_WebView.loadDataWithBaseURL("https://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
             }
         }
     }
     private void showThemeBody(String body) {
         try {
             setTitle(m_Title);
-            m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
+            m_WebView.loadDataWithBaseURL("https://4pda.ru/forum/", body, "text/html", "UTF-8", null);
         } catch (Exception ex) {
             AppLog.e(getMainActivity(), ex);
         }

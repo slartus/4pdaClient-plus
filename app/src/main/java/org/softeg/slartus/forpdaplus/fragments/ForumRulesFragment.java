@@ -35,7 +35,7 @@ public class ForumRulesFragment extends WebViewFragment {
     private AdvWebView m_WebView;
     private AsyncTask asyncTask;
     public String m_Title = App.getContext().getString(R.string.forum_rules);
-    private String url = "http://4pda.ru/forum/index.php?act=boardrules";
+    private String url = "https://4pda.ru/forum/index.php?act=boardrules";
 
     @Override
     public boolean closeTab() {
@@ -192,7 +192,7 @@ public class ForumRulesFragment extends WebViewFragment {
                 }
             } else {
                 getSupportActionBar().setTitle(ex.getMessage());
-                m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
+                m_WebView.loadDataWithBaseURL("https://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
                 AppLog.e(getMainActivity(), ex);
             }
         }
@@ -201,7 +201,7 @@ public class ForumRulesFragment extends WebViewFragment {
     private void showThemeBody(String body) {
         try {
             setTitle(m_Title);
-            m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
+            m_WebView.loadDataWithBaseURL("https://4pda.ru/forum/", body, "text/html", "UTF-8", null);
         } catch (Exception ex) {
             AppLog.e(getMainActivity(), ex);
         }

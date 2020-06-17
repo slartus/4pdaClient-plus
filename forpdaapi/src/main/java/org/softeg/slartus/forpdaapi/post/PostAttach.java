@@ -127,7 +127,7 @@ public class PostAttach implements IListItem {
 
 
     public String getPostUrl() {
-        return "http://4pda.ru/forum/index.php?act=findpost&pid=" + postId;
+        return "https://4pda.ru/forum/index.php?act=findpost&pid=" + postId;
     }
 
 

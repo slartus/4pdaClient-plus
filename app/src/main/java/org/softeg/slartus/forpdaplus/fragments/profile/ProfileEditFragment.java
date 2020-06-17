@@ -46,7 +46,7 @@ public class ProfileEditFragment extends WebViewFragment {
 
     public final static String m_Title = "Изменить личные данные";
     private String parentTag = App.getInstance().getCurrentFragmentTag();
-    private final static String url = "http://4pda.ru/forum/index.php?act=UserCP&CODE=01";
+    private final static String url = "https://4pda.ru/forum/index.php?act=UserCP&CODE=01";
 
     public static void editProfile() {
         MainActivity.addTab(m_Title, url, new ProfileEditFragment());
@@ -168,7 +168,7 @@ public class ProfileEditFragment extends WebViewFragment {
         @Override
         protected Void doInBackground(String... urls) {
             try {
-                Client.getInstance().performPost("http://4pda.ru/forum/index.php", additionalHeaders);
+                Client.getInstance().performPost("https://4pda.ru/forum/index.php", additionalHeaders);
             } catch (IOException e) {
                 Log.d("asdasd", e.toString());
             }
@@ -191,7 +191,7 @@ public class ProfileEditFragment extends WebViewFragment {
     private void showThemeBody(String body) {
         try {
             setTitle(m_Title);
-            m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
+            m_WebView.loadDataWithBaseURL("https://4pda.ru/forum/", body, "text/html", "UTF-8", null);
         } catch (Exception ex) {
             AppLog.e(getMainActivity(), ex);
         }
@@ -265,7 +265,7 @@ public class ProfileEditFragment extends WebViewFragment {
                 showThemeBody(m_ThemeBody);
             } else {
                 getSupportActionBar().setTitle(ex.getMessage());
-                m_WebView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
+                m_WebView.loadDataWithBaseURL("https://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
                 AppLog.e(getMainActivity(), ex);
             }
 

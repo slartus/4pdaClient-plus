@@ -193,9 +193,9 @@ public class FavoritesNotifier extends NotifierBase {
     private void sendNotify(Context context, ArrayList<FavTopic> topics, Boolean hasUnread) {
         Log.i(LOG_TAG, "favotires sendNotify");
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        String url = "http://4pda.ru/forum/index.php?autocom=favtopics";
+        String url = "https://4pda.ru/forum/index.php?autocom=favtopics";
         if (getNewTopicsCount(topics) == 1)
-            url = "http://4pda.ru/forum/index.php?showtopic=" + topics.get(0).getId() + "&view=getnewpost";
+            url = "https://4pda.ru/forum/index.php?showtopic=" + topics.get(0).getId() + "&view=getnewpost";
 
         Intent marketIntent = new Intent(
                 Intent.ACTION_VIEW,

@@ -141,10 +141,10 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
 
     private fun prepareUrl(url: String): String {
-        var res = url.replace(Regex("^//4pda\\.ru"), "http://4pda.ru")
-        res = res.replace(Regex("^//([^/]*)/"), "http://$1/")
+        var res = url.replace(Regex("^//4pda\\.ru"), "https://4pda.ru")
+        res = res.replace(Regex("^//([^/]*)/"), "https://$1/")
         if (!res.startsWith("http"))
-            res = "http://$res"
+            res = "https://$res"
         return res
     }
 
@@ -178,7 +178,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     }
 
     private fun setCookieDeskVer(deskVer: Boolean) {
-        val uri = URI.create("http://4pda.ru/")
+        val uri = URI.create("https://4pda.ru/")
         cookieStore.cookies.filter { it.name == "deskver" }.forEach {
             cookieStore.remove(uri, it)
         }

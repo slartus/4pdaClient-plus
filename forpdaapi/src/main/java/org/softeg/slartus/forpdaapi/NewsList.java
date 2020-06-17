@@ -62,7 +62,7 @@ public class NewsList extends ArrayList<News> {
     public void loadNextNewsPage() throws IOException, ParseException {
 
         if (size() == 0) {
-            getPage(1, "http://4pda.ru/" + mSearchTag);
+            getPage(1, "https://4pda.ru/" + mSearchTag);
             return;
         }
         mLastNewsUrl = size() > 0 ? get(size() - 1).getId() : "";
@@ -78,7 +78,7 @@ public class NewsList extends ArrayList<News> {
             loadPage(year, nextPage, 0);
         } else {
             int nextPage = mLastNewsPage + 1;
-            getPage(nextPage, "http://4pda.ru/" + mSearchTag + "page/" + nextPage);
+            getPage(nextPage, "https://4pda.ru/" + mSearchTag + "page/" + nextPage);
         }
 
 
@@ -86,7 +86,7 @@ public class NewsList extends ArrayList<News> {
 
     private void loadPage(int year, int nextPage, int iteration) throws IOException, ParseException {
 
-        String dailyNewsUrl = "http://4pda.ru/" + year + "/page/" + nextPage;
+        String dailyNewsUrl = "https://4pda.ru/" + year + "/page/" + nextPage;
 
         String dailyNewsPage = getPage(nextPage, dailyNewsUrl);
 
@@ -132,7 +132,7 @@ public class NewsList extends ArrayList<News> {
             Matcher m = mPattern.matcher(postData);
 
             if (m.find()) {
-                String id = "http://4pda.ru" + m.group(1);
+                String id = "https://4pda.ru" + m.group(1);
 
                 if (!someUnloaded && findByTitle(id) != null) continue;
                 someUnloaded = true;

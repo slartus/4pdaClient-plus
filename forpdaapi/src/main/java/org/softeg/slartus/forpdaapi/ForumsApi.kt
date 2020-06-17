@@ -26,8 +26,8 @@ class ForumsApi : ArrayList<Forum>() {
             val res = ForumsData()
 
             val pageBody = Http.instance
-                    .performGetFull("http://4pda.ru/forum/index.php?act=idx").responseBody
-            val doc = Jsoup.parse(pageBody!!, "http://4pda.ru")
+                    .performGetFull("https://4pda.ru/forum/index.php?act=idx").responseBody
+            val doc = Jsoup.parse(pageBody!!, "https://4pda.ru")
             val categoryElements = doc.select("div.borderwrap[id~=fo_\\d+]")
 
             for (catElement in categoryElements) {
@@ -106,7 +106,7 @@ class ForumsApi : ArrayList<Forum>() {
         private fun loadSubForums(url: String, parentForum: Forum,
                                   data: ForumsData, progressState: ProgressState) {
             val pageBody = Http.instance.performGetFull(url).responseBody
-            val doc = Jsoup.parse(pageBody!!, "http://4pda.ru")
+            val doc = Jsoup.parse(pageBody!!, "https://4pda.ru")
             val catElement = doc.select("div.borderwrap[id~=fo_\\d+]").first() ?: return
             val boardForumRowElement = catElement.select("table.ipbtable>tbody").first() ?: return
 
@@ -151,7 +151,7 @@ class ForumsApi : ArrayList<Forum>() {
 
         @Throws(Throwable::class)
         fun markAllAsRead(httpClient: IHttpClient) {
-            httpClient.performGet("http://4pda.ru/forum/index.php?act=Login&CODE=05", true, false)
+            httpClient.performGet("https://4pda.ru/forum/index.php?act=Login&CODE=05", true, false)
         }
 
         @Throws(Throwable::class)

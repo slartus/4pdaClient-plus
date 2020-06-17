@@ -188,7 +188,7 @@ class QmsChatFragment : WebViewFragment() {
             Thread {
                 val body = transformChatBody(pageBody)
 
-                mHandler.post { wvChat?.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null) }
+                mHandler.post { wvChat?.loadDataWithBaseURL("https://4pda.ru/forum/", body, "text/html", "UTF-8", null) }
             }.start()
         }
         hideKeyboard()
@@ -532,7 +532,7 @@ class QmsChatFragment : WebViewFragment() {
             if (finalEx == null) {
                 title = themeTitle
                 setSubtitle(contactNick)
-                wvChat?.loadDataWithBaseURL("http://4pda.ru/forum/", finalChatBody, "text/html", "UTF-8", null)
+                wvChat?.loadDataWithBaseURL("https://4pda.ru/forum/", finalChatBody, "text/html", "UTF-8", null)
             } else {
                 if ("Такого диалога не существует." == finalEx.message) {
                     MaterialDialog.Builder(mainActivity)
@@ -564,7 +564,7 @@ class QmsChatFragment : WebViewFragment() {
         if (success) {
             edMessage!!.text.clear()
 
-            wvChat!!.loadDataWithBaseURL("http://4pda.ru/forum/", chatBody, "text/html", "UTF-8", null)
+            wvChat!!.loadDataWithBaseURL("https://4pda.ru/forum/", chatBody, "text/html", "UTF-8", null)
         } else {
             if (ex != null)
                 AppLog.e(mainActivity, ex) {

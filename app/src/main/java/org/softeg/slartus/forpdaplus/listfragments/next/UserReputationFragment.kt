@@ -164,7 +164,7 @@ class UserReputationFragment : BrickFragmentListBase() {
          */
         @Throws(IOException::class)
         private fun loadRepImage() {
-            val body = Client.getInstance().performGet("http://4pda.ru/forum/index.php?act=rep&view=history&mid=236113&mode=to&order=asc").responseBody
+            val body = Client.getInstance().performGet("https://4pda.ru/forum/index.php?act=rep&view=history&mid=236113&mode=to&order=asc").responseBody
             var el = Jsoup
                     .parse(body)
                     .select("td.row1>img")
@@ -197,7 +197,7 @@ class UserReputationFragment : BrickFragmentListBase() {
                 loadReputation(Client.getInstance(),
                         args.getString(USER_ID_KEY),
                         args.getBoolean(USER_FROM_KEY), listInfo,
-                        GeneralFragment.getPreferences().getString("repPlusImage", "http://s.4pda.to/ShmfPSURw3VD2aNlTerb3hvYwGCMxd4z0muJ.gif"))
+                        GeneralFragment.getPreferences().getString("repPlusImage", "https://s.4pda.to/ShmfPSURw3VD2aNlTerb3hvYwGCMxd4z0muJ.gif"))
             } catch (e: Throwable) {
                 val forumPage = ListData()
                 forumPage.ex = e

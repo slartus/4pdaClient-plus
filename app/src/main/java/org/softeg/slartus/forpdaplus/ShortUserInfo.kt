@@ -176,7 +176,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
 
         override fun doInBackground(vararg urls: String): Boolean? {
             try {
-                val doc = Jsoup.parse(client.performGet("http://4pda.ru/forum/index.php?showuser=" + UserInfoRepository.instance.getId()).responseBody)
+                val doc = Jsoup.parse(client.performGet("https://4pda.ru/forum/index.php?showuser=" + UserInfoRepository.instance.getId()).responseBody)
                 var el: Element? = doc.selectFirst("div.user-box > div.photo > img")
                 if (el != null)
                     avatarUrl = el.attr("src")
@@ -308,7 +308,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
         // Create a media file name
         val tsLong = System.currentTimeMillis() / 1000
         var name = tsLong.toString()
-        val m = Pattern.compile("http://s.4pda.to/(.*?)\\.").matcher(url)
+        val m = Pattern.compile("https://s.4pda.to/(.*?)\\.").matcher(url)
         if (m.find()) {
             name = m.group(1)
         }

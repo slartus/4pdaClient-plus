@@ -105,7 +105,7 @@ import java.util.regex.Pattern
         additionalHeaders["mid"] = userId
         additionalHeaders["type"] = type
         additionalHeaders["message"] = message
-        val res = httpClient.performPost("http://4pda.ru/forum/index.php", additionalHeaders).responseBody
+        val res = httpClient.performPost("https://4pda.ru/forum/index.php", additionalHeaders).responseBody
         val p = Pattern.compile("<title>(.*?)</title>")
         val m = p.matcher(res)
         if (m.find()) {

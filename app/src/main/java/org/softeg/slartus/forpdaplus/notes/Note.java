@@ -46,19 +46,19 @@ public class Note {
     }
 
     public String getTopicLink() {
-        return "<a href='http://4pda.ru/forum/index.php?showtopic=" + TopicId + "'>" + Topic + "</a>";
+        return "<a href='https://4pda.ru/forum/index.php?showtopic=" + TopicId + "'>" + Topic + "</a>";
     }
 
     public String getTopicUrl() {
-        return "http://4pda.ru/forum/index.php?showtopic=" + TopicId;
+        return "https://4pda.ru/forum/index.php?showtopic=" + TopicId;
     }
 
     public String getUserLink() {
-        return "<a href='http://4pda.ru/forum/index.php?showuser=" + UserId + "'>" + User + "</a>";
+        return "<a href='https://4pda.ru/forum/index.php?showuser=" + UserId + "'>" + User + "</a>";
     }
 
     public String getUserUrl() {
-        return "http://4pda.ru/forum/index.php?showuser=" + UserId;
+        return "https://4pda.ru/forum/index.php?showuser=" + UserId;
     }
 
     public String getUrlLink() {

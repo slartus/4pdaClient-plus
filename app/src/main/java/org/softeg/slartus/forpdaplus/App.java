@@ -302,7 +302,7 @@ public class App extends MultiDexApplication {
                     @Override
                     public InputStream getStream(String imageUri, Object extra) throws IOException {
                         if (imageUri.substring(0, 2).equals("//"))
-                            imageUri = "http:".concat(imageUri);
+                            imageUri = "https:".concat(imageUri);
                         return  super.getStream(imageUri, extra);
                     }
 

@@ -263,7 +263,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
     protected ListInfo mListInfo = new ListInfo();
 
 
-    private String mUrl = "http://4pda.ru/";
+    private String mUrl = "https://4pda.ru/";
     private String mTag = "";
 
     @Override

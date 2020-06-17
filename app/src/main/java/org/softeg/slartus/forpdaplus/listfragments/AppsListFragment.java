@@ -181,18 +181,18 @@ public class AppsListFragment extends TopicsListFragment {
     }
 
     private void compareFromSite(ArrayList<String> appsName, ArrayList<AppItem> apps) throws IOException {
-        final String appCatalogUrl = "http://4pda.ru/forum/index.php?showtopic=112220";
-        final String gameCatalogUrl = "http://4pda.ru/forum/index.php?showtopic=117270";
+        final String appCatalogUrl = "https://4pda.ru/forum/index.php?showtopic=112220";
+        final String gameCatalogUrl = "https://4pda.ru/forum/index.php?showtopic=117270";
         // Client.getInstance().doOnOnProgressChanged(progressChangedListener, "Получение данных...");
 
         String gamesBody = Client.getInstance().preformGetWithProgress(gameCatalogUrl, null).getResponseBody();
         String appsBody = Client.getInstance().preformGetWithProgress(appCatalogUrl, null).getResponseBody();
         //  Client.getInstance().doOnOnProgressChanged(progressChangedListener, "Обработка данных...");
-        Matcher m = Pattern.compile("http://4pda.ru/forum/index.php\\?showtopic=(\\d+)[^\"]*?. target=._blank.>(.*?)</a>(.*?)</li>", Pattern.CASE_INSENSITIVE)
+        Matcher m = Pattern.compile("//4pda.ru/forum/index.php\\?showtopic=(\\d+)[^\"]*?. target=._blank.>(.*?)</a>(.*?)</li>", Pattern.CASE_INSENSITIVE)
                 .matcher(gamesBody);
         compareFromMatcher(appsName, apps, m);
 
-        m = Pattern.compile("<a href=\"(?:http://4pda.ru)?/forum/index.php\\?showtopic=(\\d+)\" target=._blank.>(.*?)</a>.*?(?:</b>)? - (.*?)<", Pattern.CASE_INSENSITIVE)
+        m = Pattern.compile("<a href=\"(?:(?:https?:)?//4pda.ru)?/forum/index.php\\?showtopic=(\\d+)\" target=._blank.>(.*?)</a>.*?(?:</b>)? - (.*?)<", Pattern.CASE_INSENSITIVE)
                 .matcher(appsBody);
         compareFromMatcher(appsName, apps, m);
     }

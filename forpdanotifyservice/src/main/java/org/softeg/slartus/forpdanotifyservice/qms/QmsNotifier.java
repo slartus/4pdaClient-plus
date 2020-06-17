@@ -305,7 +305,7 @@ public class QmsNotifier extends NotifierBase {
     private static void sendNotify(Context context, ArrayList<QmsUser> mails, boolean hasUnreadMessage) {
         Log.i(LOG_TAG, "qms sendNotify");
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        String url = "http://4pda.ru/forum/index.php?act=qms";
+        String url = "https://4pda.ru/forum/index.php?act=qms";
         int unreadMessagesCount = QmsUsers.unreadMessageUsersCount(mails);
         if (unreadMessagesCount == 1)// если новые сообщения только с одним пользователем
             url += "&mid=" + mails.get(0).getId();

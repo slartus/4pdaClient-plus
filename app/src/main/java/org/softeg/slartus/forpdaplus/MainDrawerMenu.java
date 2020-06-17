@@ -264,7 +264,7 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
                         .show();
                 break;
             case FaqBrickInfo.NAME:
-                IntentActivity.showTopic("http://4pda.ru/forum/index.php?s=&showtopic=271502&view=findpost&p=45570566");
+                IntentActivity.showTopic("https://4pda.ru/forum/index.php?s=&showtopic=271502&view=findpost&p=45570566");
                 break;
             case ForumRulesBrick.NAME:
                 ForumRulesFragment.showRules();

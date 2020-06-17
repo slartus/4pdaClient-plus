@@ -21,7 +21,7 @@ object QmsApi {
 
     val qmsSubscribers: ArrayList<QmsUser>
         get() {
-            val pageBody = Http.instance.performGet("http://4pda.ru/forum/index.php?&act=qms-xhr&action=userlist").responseBody
+            val pageBody = Http.instance.performGet("https://4pda.ru/forum/index.php?&act=qms-xhr&action=userlist").responseBody
             return parseQmsUsers(pageBody)
         }
 
@@ -30,7 +30,7 @@ object QmsApi {
     fun getChatPage(httpClient: IHttpClient, mid: String, themeId: String): String {
         val additionalHeaders = HashMap<String, String>()
         additionalHeaders["xhr"] = "body"
-        return httpClient.performPost("http://4pda.ru/forum/index.php?act=qms&mid=$mid&t=$themeId", additionalHeaders).responseBody
+        return httpClient.performPost("https://4pda.ru/forum/index.php?act=qms&mid=$mid&t=$themeId", additionalHeaders).responseBody
     }
 
     @Throws(Exception::class)
@@ -114,7 +114,7 @@ object QmsApi {
         additionalHeaders["message"] = message
         if (attachs.any())
             additionalHeaders["attaches"] = attachs.joinToString { it.id }
-        httpClient.performPost("http://4pda.ru/forum/index.php?act=qms-xhr",
+        httpClient.performPost("https://4pda.ru/forum/index.php?act=qms-xhr",
                 additionalHeaders, encoding)
         return getChat(httpClient, mid, tid, daysCount)
     }
@@ -127,7 +127,7 @@ object QmsApi {
         additionalHeaders["username"] = userNick
         additionalHeaders["title"] = title
         additionalHeaders["message"] = message
-        val pageBody = httpClient.performPost("http://4pda.ru/forum/index.php?act=qms&mid=$userID&xhr=body&do=1", additionalHeaders, encoding)
+        val pageBody = httpClient.performPost("https://4pda.ru/forum/index.php?act=qms&mid=$userID&xhr=body&do=1", additionalHeaders, encoding)
 
         var m = Pattern.compile("<input\\s*type=\"hidden\"\\s*name=\"mid\"\\s*value=\"(\\d+)\"\\s*/>").matcher(pageBody.responseBody)
         if (m.find())
@@ -157,7 +157,7 @@ object QmsApi {
         for (id in ids) {
             additionalHeaders["thread-id[$id]"] = id
         }
-        httpClient.performPost("http://4pda.ru/forum/index.php?act=qms&xhr=body&do=1&mid=$mid", additionalHeaders)
+        httpClient.performPost("https://4pda.ru/forum/index.php?act=qms&xhr=body&do=1&mid=$mid", additionalHeaders)
     }
 
     @Throws(IOException::class)
@@ -177,7 +177,7 @@ object QmsApi {
             additionalHeaders["message-id[$id]"] = id
         }
 
-        return matchChatBody(httpClient.performPost("http://4pda.ru/forum/index.php?act=qms&mid$mid&t=$threadId&xhr=body&do=1",
+        return matchChatBody(httpClient.performPost("https://4pda.ru/forum/index.php?act=qms&mid$mid&t=$threadId&xhr=body&do=1",
                 additionalHeaders, encoding).responseBody, daysCount)
     }
 
@@ -191,7 +191,7 @@ object QmsApi {
             qmsUser.setId(m.group(1))
             var avatar = m.group(3)
             if (avatar.substring(0, 2) == "//") {
-                avatar = "http:$avatar"
+                avatar = "https:$avatar"
             }
             qmsUser.setAvatarUrl(avatar)
             qmsUser.nick = m.group(4).fromHtml().toString().trim { it <= ' ' }
@@ -208,7 +208,7 @@ object QmsApi {
     fun getQmsUserThemes(mid: String,
                          outUsers: ArrayList<QmsUser>, parseNick: Boolean?): QmsUserThemes {
         val res = QmsUserThemes()
-        val pageBody = Http.instance.performGet("http://4pda.ru/forum/index.php?act=qms&mid=$mid").responseBody
+        val pageBody = Http.instance.performGet("https://4pda.ru/forum/index.php?act=qms&mid=$mid").responseBody
         val newCountPattern = Pattern.compile("([\\s\\S]*?)\\((\\d+)\\s*\\/\\s*(\\d+)\\)\\s*$")
         val countPattern = Pattern.compile("([\\s\\S]*?)\\((\\d+)\\)\\s*$")
         val strongPattern = Pattern.compile("<strong>([\\s\\S]*?)</strong>")
@@ -266,7 +266,7 @@ object QmsApi {
 
     @Throws(IOException::class)
     fun getNewQmsCount(client: IHttpClient): Int {
-        val body = client.performGet("http://4pda.ru/forum/index.php?showforum=200")
+        val body = client.performGet("https://4pda.ru/forum/index.php?showforum=200")
         return getNewQmsCount(body.responseBody)
     }
 
@@ -293,7 +293,7 @@ object QmsApi {
         params.add(Pair("code", code))
         params.add(Pair("relType", "MSG"))
         params.add(Pair("index", "1"))
-        val (_, _, responseBody) = Http.instance.uploadFile("http://4pda.ru/forum/index.php?act=attach", nameValue,
+        val (_, _, responseBody) = Http.instance.uploadFile("https://4pda.ru/forum/index.php?act=attach", nameValue,
                 pathToFile, "FILE_UPLOAD", params, CountingFileRequestBody.ProgressListener { num -> progress.update(finalNameValue, num) })
 
         val body = ("" + responseBody).replace("(^\\x03|\\x03$)".toRegex(), "")
@@ -336,7 +336,7 @@ object QmsApi {
         params.add(Pair("relId", "0"))
         params.add(Pair("index", "1"))
         params.add(Pair("id", attachId))
-        Http.instance.performPost("http://4pda.ru/forum/index.php?act=attach", params)
+        Http.instance.performPost("https://4pda.ru/forum/index.php?act=attach", params)
 
         return true
     }

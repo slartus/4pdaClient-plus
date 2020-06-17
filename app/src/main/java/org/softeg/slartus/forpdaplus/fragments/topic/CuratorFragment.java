@@ -248,10 +248,10 @@ public class CuratorFragment extends WebViewFragment {
                          String groupAndDate, String postBody){
         builder.append("<div class=\"post_container\">");
         builder.append("<div class=\"post_header\">");
-        builder.append("<a class=\"inf nick\" href=\"http://4pda.ru/forum/index.php?showuser=")
+        builder.append("<a class=\"inf nick\" href=\"https://4pda.ru/forum/index.php?showuser=")
                 .append(userId).append("\"><span><b>").append(userNick)
                 .append("</b></span></a>");
-        builder.append("<a class=\"inf link\" href=\"http://4pda.ru/forum/index.php?act=findpost&amp;pid=")
+        builder.append("<a class=\"inf link\" href=\"https://4pda.ru/forum/index.php?act=findpost&amp;pid=")
                 .append(postId).append("\"><span><span class=\"sharp\">#</span>").append(postId)
                 .append("</span></a>");
         builder.append("<div class=\"date-link\"><span class=\"inf date\"><span>")
@@ -266,7 +266,7 @@ public class CuratorFragment extends WebViewFragment {
 
     private void showThemeBody(String body) {
         try {
-            webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
+            webView.loadDataWithBaseURL("https://4pda.ru/forum/", body, "text/html", "UTF-8", null);
             webView.setWebViewClient(new MyWebViewClient());
         } catch (Exception ex) {
             AppLog.e(getMainActivity(), ex);
