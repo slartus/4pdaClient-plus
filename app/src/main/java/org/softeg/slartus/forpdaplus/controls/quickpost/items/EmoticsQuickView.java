@@ -87,7 +87,7 @@ public class EmoticsQuickView extends BaseQuickView {
 
         sb.append("</body></html>");
         webView.setWebViewClient(new MyWebViewClient());
-        webView.loadDataWithBaseURL("http://4pda.ru/forum/", sb.toString(), "text/html", "UTF-8", null);
+        webView.loadDataWithBaseURL("https://4pda.ru/forum/", sb.toString(), "text/html", "UTF-8", null);
     }
 
     public class MyWebViewClient extends WebViewClient {

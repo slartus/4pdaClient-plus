@@ -167,7 +167,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         url = TopicApi.toMobileVersionUrl(url);
         Matcher m = PatternExtensions.compile("4pda.ru.*?act=boardrules").matcher(url);// переброс с правил форума на графический вариант
         if (m.find()) {
-            return "http://4pda.ru/forum/index.php?showtopic=296875";
+            return "https://4pda.ru/forum/index.php?showtopic=296875";
         }
 
         return url;
@@ -346,14 +346,14 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     public static Boolean tryShowUrl(Activity context, Handler handler, String url, Boolean showInDefaultBrowser,
                                      final Boolean finishActivity, String authKey) {
         if (url.substring(0, 2).equals("//")) {
-            url = "http:".concat(url);
+            url = "https:".concat(url);
         }
         url = url.replace("&amp;", "&").replace("\"", "").trim();
         url = getRedirect(url).toString();
         url = url.trim();
 
         if (url.contains("4pda.ru") & !url.contains("http://") & !url.contains("https://"))
-            url = "http://" + url;
+            url = "https://" + url;
         Uri uri = Uri.parse(url.toLowerCase());
 
 

@@ -104,7 +104,7 @@ public class LoginDialog {
         logoutTask.execute();
         App.getInstance().getPreferences().edit()
                 .putBoolean("isRecdRepImage", false)
-                .putString("repPlusImage", "http://s.4pda.to/ShmfPSURw3VD2aNlTerb3hvYwGCMxd4z0muJ.gif")
+                .putString("repPlusImage", "https://s.4pda.to/ShmfPSURw3VD2aNlTerb3hvYwGCMxd4z0muJ.gif")
                 .apply();
     }
 

@@ -94,7 +94,7 @@ public class Post {
     }
 
     public static String getLink(String topicId, String postId) {
-        return "http://4pda.ru/forum/index.php?showtopic=" + topicId + "&view=findpost&p=" + postId;
+        return "https://4pda.ru/forum/index.php?showtopic=" + topicId + "&view=findpost&p=" + postId;
     }
 
     public void setUserId(String value) {
@@ -279,14 +279,14 @@ public class Post {
 
     private static void changePostReputation(final Activity themeActivity, final Handler handler, final String postId, final String direction) {
         Toast.makeText(themeActivity, R.string.vote_request_sent, Toast.LENGTH_SHORT).show();
-        // http://s.4pda.ru/forum/jscripts/karma3.js
+        // https://s.4pda.ru/forum/jscripts/karma3.js
         new Thread(new Runnable() {
             public void run() {
                 Throwable ex = null;
 
                 String message = null;
                 try {
-                    String res = Client.getInstance().performGet("http://4pda.ru/forum/zka.php?i=" + postId + "&v=" + direction, true, false).getResponseBody();
+                    String res = Client.getInstance().performGet("https://4pda.ru/forum/zka.php?i=" + postId + "&v=" + direction, true, false).getResponseBody();
 
                     Matcher m = Pattern.compile("ok:\\s*?((?:\\+|\\-)?\\d+)").matcher(res);
                     if (m.find()) {
@@ -340,10 +340,10 @@ public class Post {
     public void setAvatarFileName(String avatarFileName) {
         if (TextUtils.isEmpty(avatarFileName))
             return;
-        String path = "http://s.4pda.to/forum/uploads/";
+        String path = "https://s.4pda.to/forum/uploads/";
         if (avatarFileName.contains("/"))
             if(!Pattern.compile("\\d+\\/").matcher(avatarFileName).find())
-                path = "http://s.4pda.to/forum/style_avatars/";
+                path = "https://s.4pda.to/forum/style_avatars/";
         this.avatarFileName = path + avatarFileName;
     }
 

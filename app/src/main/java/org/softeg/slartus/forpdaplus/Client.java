@@ -126,7 +126,7 @@ public class Client implements IHttpClient {
         //HttpHelper httpHelper = new HttpHelper();
         AppResponse res;
 
-        // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
+        // s="https://4pda.ru/2009/12/28/18506/#comment-363525";
         res = Http.Companion.getInstance().performGetFull(s);
 
         if (TextUtils.isEmpty(res.getResponseBody()))
@@ -144,7 +144,7 @@ public class Client implements IHttpClient {
 
         AppResponse res;
 
-        // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
+        // s="https://4pda.ru/2009/12/28/18506/#comment-363525";
         res = HttpHelper.performGet(s);
 
         if (checkEmptyResult && TextUtils.isEmpty(res.getResponseBody()))
@@ -162,7 +162,7 @@ public class Client implements IHttpClient {
 
     public AppResponse performPost(String s, Map<String, String> additionalHeaders) throws IOException {
 
-        // s="http://4pda.ru/2009/12/28/18506/#comment-363525";
+        // s="https://4pda.ru/2009/12/28/18506/#comment-363525";
         return HttpHelper.performPost(s, additionalHeaders);
     }
 

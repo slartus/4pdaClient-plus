@@ -72,7 +72,7 @@ public class ImageViewDialogFragment extends DialogFragment {
                         try {
                             URI uri = new URI(mUrl);
                             if (!uri.isAbsolute())
-                                url = "http://4pda.ru" + url;
+                                url = "https://4pda.ru" + url;
                         } catch (URISyntaxException e) {
                             e.printStackTrace();
                         }

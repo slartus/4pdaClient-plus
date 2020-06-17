@@ -89,7 +89,7 @@ public class SearchPostsParser extends HtmlBuilder {
 
 
         final Pattern pagesCountPattern = Pattern.compile("var pages = parseInt\\((\\d+)\\);");
-        // http://4pda.ru/forum/index.php?act=search&source=all&result=posts&sort=rel&subforums=1&query=pda&forums=281&st=90
+        // https://4pda.ru/forum/index.php?act=search&source=all&result=posts&sort=rel&subforums=1&query=pda&forums=281&st=90
         //final Pattern paginationPattern = Pattern.compile("<div class=\"pagination\">([\\s\\S]*?)<\\/div><\\/div><br");
 
         final Pattern lastPageStartPattern = Pattern.compile("(https?://4pda.ru)?/forum/index.php\\?act=search.*?st=(\\d+)");

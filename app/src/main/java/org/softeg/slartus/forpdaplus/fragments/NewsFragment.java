@@ -383,7 +383,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
 
         private boolean checkIsImage(final String url) {
-            final Pattern imagePattern = PatternExtensions.compile("http://.*?\\.(png|jpg|jpeg|gif)$");
+            final Pattern imagePattern = PatternExtensions.compile("https?://.*?\\.(png|jpg|jpeg|gif)$");
             Uri uri = Uri.parse(url.toLowerCase());
             String host = uri.getHost();
             if (imagePattern.matcher(uri.toString()).find()
@@ -488,7 +488,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         super.showBody();
         try {
             setTitle(m_Title);
-            webView.loadDataWithBaseURL("http://4pda.ru/forum/", body, "text/html", "UTF-8", null);
+            webView.loadDataWithBaseURL("https://4pda.ru/forum/", body, "text/html", "UTF-8", null);
             if (buttonsPanel.getTranslationY() != 0)
                 ViewPropertyAnimator.animate(buttonsPanel)
                         .setInterpolator(new AccelerateDecelerateInterpolator())
@@ -536,7 +536,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     additionalHeaders.put("submit", "Отправить комментарий");
                     additionalHeaders.put("comment_reply_ID", ReplyId);
                     additionalHeaders.put("comment_reply_dp", Dp);
-                    m_ThemeBody = transformBody(client.performPost("http://4pda.ru/wp-comments-post.php", additionalHeaders, "UTF-8").getResponseBody());
+                    m_ThemeBody = transformBody(client.performPost("https://4pda.ru/wp-comments-post.php", additionalHeaders, "UTF-8").getResponseBody());
                 }
                 return true;
             } catch (Throwable e) {
@@ -554,7 +554,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             builder.beginBody("news", null, loadImages);
             builder.append("<div style=\"padding-top:").append(String.valueOf(HtmlBuilder.getMarginTop())).append("px\"/>\n");
             builder.append("<div id=\"main\">");
-            body = body.replaceAll("\"//", "\"http://");
+            body = body.replaceAll("\"//", "\"https://");
 
             Matcher matcher = PatternExtensions.compile("ModKarma\\((\\{?[\\s\\S]*?\\}?)(?:,\\s?\\d+)?\\)").matcher(body);
             builder.append(parseBody(body));
@@ -586,14 +586,14 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
             body = Pattern.compile("<iframe[^><]*?src=\"http://www.youtube.com/embed/([^\"/]*)\".*?(?:</iframe>|/>)", Pattern.CASE_INSENSITIVE)
                     .matcher(body)
-                    .replaceAll("<a class=\"video-thumb-wrapper\" href=\"http://www.youtube.com/watch?v=$1\"><img class=\"video-thumb\" width=\"480\" height=\"320\" src=\"http://img.youtube.com/vi/$1/0.jpg\"/></a>");
+                    .replaceAll("<a class=\"video-thumb-wrapper\" href=\"https?://www.youtube.com/watch?v=$1\"><img class=\"video-thumb\" width=\"480\" height=\"320\" src=\"https://img.youtube.com/vi/$1/0.jpg\"/></a>");
             return body
                     // удаляем форму ответа
                     .replaceAll("<form[^>]*action=\"/wp-comments-post.php\"[^>]*>[\\s\\S]*</form>",
                             "")
                     // заменяем обрезанные ссылки
-                    .replace("href=\"/", "href=\"http://4pda.ru/")
-                    .replace("href=\"#commentform\"", "href=\"http://4pdaservice.org/#commentform");
+                    .replace("href=\"/", "href=\"https://4pda.ru/")
+                    .replace("href=\"#commentform\"", "href=\"https://4pdaservice.org/#commentform");
         }
 
 
@@ -621,7 +621,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 setLoading(false);
             } else {
                 setTitle(ex.getMessage());
-                webView.loadDataWithBaseURL("http://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
+                webView.loadDataWithBaseURL("https://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
                 AppLog.e(getMainActivity(), ex);
             }
         }

@@ -432,7 +432,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             Toast.makeText(getContext(), "Данное действие временно не поддерживается", Toast.LENGTH_SHORT).show();
             return false;
         }
-        //intent.setData(Uri.parseCount("http://4pda.ru/forum/lofiversion/index.php?t365142-1650.html"));
+        //intent.setData(Uri.parseCount("https://4pda.ru/forum/lofiversion/index.php?t365142-1650.html"));
         if (intent.getData() != null) {
 
             final String url = intent.getData().toString();

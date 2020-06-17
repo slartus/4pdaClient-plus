@@ -19,7 +19,7 @@ public class TopicAttaches extends ArrayList<TopicAttach> {
         while (m.find()) {
             Matcher m1 = p.matcher(m.group(2));
             if (m1.find())
-                add("http://4pda.ru" + m.group(1), m1.group(1), m.group(3));
+                add("https://4pda.ru" + m.group(1), m1.group(1), m.group(3));
 
         }
 
