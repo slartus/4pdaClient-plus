@@ -18,23 +18,27 @@ import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import javax.xml.parsers.DocumentBuilderFactory
+import kotlin.math.ceil
 
 /*
 * Created by slinkin on 20.02.14.
 */
 object NewsApi {
-    @kotlin.Throws(IOException::class)
+    @JvmStatic
+
     fun like(httpClient: IHttpClient, newsId: String): Boolean {
         val res = httpClient.performGet("https://4pda.ru/wp-content/plugins/karma/ajax.php?p=$newsId&c=0&v=1", false, false).responseBody
         return res != null
     }
 
-    @kotlin.Throws(IOException::class)
+    @JvmStatic
+
     fun likeComment(httpClient: IHttpClient, newsId: String, postId: String): Boolean {
         val res = httpClient.performGet("https://4pda.ru/wp-content/plugins/karma/ajax.php?p=$newsId&c=$postId&v=1", false, false).responseBody
         return res != null
     }
 
+    @JvmStatic
     fun parseNewsBody(newsPageBody: String): String {
         var newsPageBody = newsPageBody
         val doc = Jsoup.parse(newsPageBody, "https://4pda.ru")
@@ -54,7 +58,8 @@ object NewsApi {
         Log.e("TEST", message)
     }
 
-    @kotlin.Throws(Exception::class)
+    @JvmStatic
+
     fun getNews(httpClient: IHttpClient, url: String, listInfo: ListInfo, preferences: SharedPreferences): ArrayList<News> {
         //https://4pda.ru/2013/page/7/
         //https://4pda.ru/2013/2/page/7/
@@ -89,61 +94,11 @@ object NewsApi {
         } else {
             preferences.getInt("lm", NEWS_PER_PAGE)
         }
-        pageNum = Math.ceil((listInfo.from / page).toDouble()).toInt() + pageNum
+        pageNum += ceil((listInfo.from / page).toDouble()).toInt()
         val requestUrl = "$justUrl/page/$pageNum/$params"
         val res = ArrayList<News>()
-        val dailyNewsPage = httpClient.performGet(UrlExtensions.removeDoubleSplitters(requestUrl)).responseBody
-        val doc = Jsoup.parse(dailyNewsPage)
-        val articleElements = doc.select("article.post")
-        val articlesPattern = Pattern.compile("(<article class=\"post[^\"]*?\"[^>]*?>[^<]*?<div[^>]*?>[^<]*?(?:<div[^>]*?>[^<]*?<\\/div>)?[^<]*?<a[^>]*?href=\"([^\"]*)\" title[\\s\\S]*?src=\"([^\"]*)\" alt=\"([^\"]*?)\"[\\s\\S]*?<\\/article>)|(<li itemscope[^>]*>[\\s\\S]*?itemprop=\"url\" href=\"([^\"]*?)\"[\\s\\S]*?src=\"([^\"]*?)\" alt=\"([^\"]*?)\"[\\s\\S]*?<\\/div>[^<]*<\\/li>)")
-        val descriptionPattern = Pattern.compile("(<div itemprop=\"description\">[\\s\\S]*?<p [^>]*>([\\s\\S]*)<\\/p>[^<]*)|(<div itemprop=\"description\">([\\s\\S]*?)<\\/div>)")
-        val labelPattern = Pattern.compile("<a href=\"([^\"]*)\" class=\"label[^>]*>([\\s\\S]*?)<\\/a>")
-        val countPattern = Pattern.compile("class=\"v-count\"[^>]*>(\\d*)</a>")
-        val datePattern = Pattern.compile("<meta itemprop=\"datePublished\" content=\"(\\d+-\\d+-\\d+)[\\s\\S]*?\"\\/>")
-        val authorPattern = Pattern.compile("(<span class=\"autor\"><a [^>]*>([^<]*)</a>)|(<meta itemprop=\"author\" content=\"([^\"]*)\"/>)")
-        m = articlesPattern.matcher(dailyNewsPage)
-        var matcher: Matcher? = null
+        val dailyNewsPage = parseNewsListPage(httpClient, requestUrl, res)
 
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
-        var news: News
-        var group: Int
-        var childGroup: Int
-        while (m.find()) {
-            news = News()
-            group = 0
-            childGroup = 0
-            if (m.group(1) == null) group = 4
-            news.setId(m.group(group + 2).replace("https://4pda.ru", ""))
-            news.setTitle(Html.fromHtml(m.group(group + 4).replace("&amp;".toRegex(), "&")).toString())
-            news.imgUrl = m.group(group + 3)
-            if (matcher == null) matcher = descriptionPattern.matcher(m.group(group + 1)) else matcher.usePattern(descriptionPattern).reset(m.group(group + 1))
-            if (matcher!!.find()) {
-                if (matcher.group(1) == null) childGroup = 2
-                news.description = Html.fromHtml(matcher.group(childGroup + 2).replace("<a [^>]*>([^<]*)</a>".toRegex(), "$1")).toString().trim { it <= ' ' }
-            }
-            childGroup = 0
-            matcher.usePattern(labelPattern).reset(m.group(group + 1))
-            if (matcher.find()) {
-                news.tagLink = matcher.group(1)
-                news.tagTitle = Html.fromHtml(matcher.group(2).trim { it <= ' ' })
-            } else {
-                news.tagTitle = ""
-            }
-            matcher.usePattern(countPattern).reset(m.group(group + 1))
-            if (matcher.find()) {
-                news.commentsCount = matcher.group(1).toInt()
-            }
-            matcher.usePattern(datePattern).reset(m.group(group + 1))
-            if (matcher.find()) {
-                news.newsDate = matcher.group(1)
-            }
-            matcher.usePattern(authorPattern).reset(m.group(group + 1))
-            if (matcher.find()) {
-                if (matcher.group(1) == null) childGroup = 2
-                news.author = matcher.group(childGroup + 2)
-            }
-            res.add(news)
-        }
         if (res.size == 0 && pageNum == 1 && listInfo.from == 0) return getNewsFromRss(httpClient, UrlExtensions.removeDoubleSplitters("$url/feed/"))
         val lastPageNum = lastPageNum(dailyNewsPage)
         listInfo.outCount = res.size * lastPageNum
@@ -153,11 +108,45 @@ object NewsApi {
         return res
     }
 
+    fun parseNewsListPage(httpClient: IHttpClient, requestUrl: String, res: ArrayList<News>): String {
+        val dailyNewsPage = httpClient.performGet(UrlExtensions.removeDoubleSplitters(requestUrl)).responseBody
+        val doc = Jsoup.parse(dailyNewsPage)
+        val articleElements = doc.select("article.post")
+        for (articleElement in articleElements) {
+            val id = articleElement?.attr("itemId")
+            val titleElement = articleElement.selectFirst("a")
+            val title = titleElement?.attr("title")
+            if (title.isNullOrEmpty())
+                continue
+            val urlId = titleElement.attr("href")
+            if (urlId.isNullOrEmpty())
+                continue
+            val labelElement = articleElement.selectFirst("a.label")
+
+            res.add(News().apply {
+                this.setId(urlId)
+                this.setTitle(title)
+                this.imgUrl = articleElement.selectFirst("img[itemprop=image][id=hb${id}]")?.attr("src")
+                        ?: ""
+                this.description = articleElement.selectFirst("div[itemprop=description]")?.text()
+                this.tagLink = labelElement?.attr("href")
+                this.tagName = labelElement?.text()
+                this.commentsCount = articleElement.selectFirst(".v-count")?.text()?.toIntOrNull()
+                        ?: 0
+                this.newsDate = articleElement.selectFirst("meta[itemprop=datePublished]")
+                        ?.attr("content")?.take(10)
+                this.author = articleElement.selectFirst("span.autor")?.text()
+                        ?: articleElement.selectFirst("meta[itemprop=author]")?.attr("content")
+            })
+        }
+        return dailyNewsPage
+    }
+
     private fun normalizeRss(body: String): String {
         return body.replace("&(?!.{1,4};)".toRegex(), "&amp;")
     }
 
-    @kotlin.Throws(Exception::class)
+
     fun getNewsFromRss(httpClient: IHttpClient, url: String?): ArrayList<News> {
         val res = ArrayList<News>()
         try {
