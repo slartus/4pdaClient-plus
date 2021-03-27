@@ -33,7 +33,11 @@ jobs:
         with:
           java-version: 1.8
       - name: Build APK
-        run: bash ./gradlew assembleBeta --stacktrace            
+        run: bash ./gradlew assembleBeta --stacktrace     
+        env:
+          RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
       - name: Upload APK
         uses: actions/upload-artifact@v1
         with:
