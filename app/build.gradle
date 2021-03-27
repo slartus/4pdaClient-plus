@@ -8,15 +8,21 @@ repositories {
     mavenCentral()
 }
 
-// Create a variable called keystorePropertiesFile, and initialize it to your
-// keystore.properties file, in the rootProject folder.
-def keystorePropertiesFile = rootProject.file("keystore.properties")
+def release_store_password
+def release_key_password
+def release_key_alias
 
-// Initialize a new Properties() object called keystoreProperties.
 def keystoreProperties = new Properties()
-
-// Load your keystore.properties file into the keystoreProperties object.
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+if (rootProject.file("keystore.properties").exists()) {
+    keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
+    release_store_password = keystoreProperties['RELEASE_STORE_PASSWORD']
+    release_key_password = keystoreProperties['RELEASE_KEY_PASSWORD']
+    release_key_alias = keystoreProperties['RELEASE_KEY_ALIAS']
+} else {
+    release_store_password = System.env.RELEASE_STORE_PASSWORD
+    release_key_password = System.env.RELEASE_KEY_PASSWORD
+    release_key_alias = System.env.RELEASE_KEY_ALIAS
+}
 
 android {
     compileSdkVersion 27
@@ -58,10 +64,10 @@ android {
     }
     signingConfigs {
         release {
-            keyAlias keystoreProperties['RELEASE_KEY_ALIAS']
-            keyPassword keystoreProperties['RELEASE_KEY_PASSWORD']
+            storePassword = release_store_password
+            keyAlias = release_key_alias
+            keyPassword = release_key_password
             storeFile file("keystore.jks")
-            storePassword keystoreProperties['RELEASE_STORE_PASSWORD']
         }
     }
     buildTypes {
