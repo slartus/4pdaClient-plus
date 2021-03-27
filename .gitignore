@@ -68,7 +68,6 @@ Temporary Items
 
 ### Gradle ###
 .gradle
-build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -81,7 +80,6 @@ gradle-app.setting
 
 
 ### Java ###
-*.class
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -143,3 +141,4 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
+/keystore.properties
