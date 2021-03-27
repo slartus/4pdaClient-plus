@@ -14,10 +14,10 @@
   "versions": [
     {
       "name": "release",
-      "ver": "3.5.7.2",
-      "versionCode":640,
-      "apk": "https://github.com/slartus/4pdaClient-plus/releases/download/3.5.7/ForPDA_3.5.7.2-release.apk",
-      "info": "[!] Важное замечание\n[+] Нововведение\n[-] невозможность отправить/редактировать сообщение\n[-] Исправлена ошибка\n[-] невозможность отправить-редактировать сообщение"
+      "ver": "3.5.7.3",
+      "versionCode":641,
+      "apk": "https://github.com/slartus/4pdaClient-plus/releases/download/3.5.7/ForPDA_3.5.7.3-release.apk",
+      "info": "[!] Важное замечание\n[+] Нововведение\n[-] Исправлена ошибка\n[*] Изменения\n\n3.5.7\n[-] лента новостей, открытие новости, просмотр комментариев\n[-] невозможность отправить-редактировать сообщение"
     },
     {
       "name": "beta",
