@@ -142,7 +142,8 @@ a {
   height: 0;
 }
 .container .product-detail .photo img {
-  width: 100%;
+    width: 100%;
+    height: auto;
 }
 .container .product-detail .photo .label {
   color: #ffffff;
@@ -2803,7 +2804,8 @@ li .post-block {
     height: 0;
   }
   .container .product-detail .photo img {
-    width: 100%;
+      width: 100%;
+      height: auto;
   }
   .container .product-detail .photo .label {
     color: #ffffff;
