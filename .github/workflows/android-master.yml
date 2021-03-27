@@ -23,7 +23,7 @@ jobs:
         run: bash ./gradlew test --stacktrace
 
   apk:
-    name: Generate release APK
+    name: Generate beta APK
     runs-on: ubuntu-latest
 
     steps:
@@ -32,13 +32,13 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Build rel APK
-        run: bash ./gradlew assembleRel --stacktrace            
+      - name: Build APK
+        run: bash ./gradlew assembleBeta --stacktrace            
       - name: Upload APK
         uses: actions/upload-artifact@v1
         with:
-          name: app_rel
-          path: app/build/outputs/apk/rel/release/release.apk
+          name: app
+          path: app/build/outputs/apk/beta/release/beta.apk
           env-url: FOOBAR
       - name: Use uploaded url
         run: echo "${{ env.FOOBAR }}"
