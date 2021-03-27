@@ -42,15 +42,29 @@ object NewsApi {
     fun parseNewsBody(newsPageBody: String): String {
         var newsPageBody = newsPageBody
         val doc = Jsoup.parse(newsPageBody, "https://4pda.ru")
-        val bodyElement = doc.select("div.container").first()
-        if (bodyElement != null) return bodyElement.parent().html()
-        var m = PatternExtensions.compile("<article[^>]*>([\\s\\S]*?)</article>").matcher(newsPageBody)
-        if (m.find()) newsPageBody = m.group(1) else {
-            m = PatternExtensions.compile("<body[^>]*>([\\s\\S]*?)</body>").matcher(newsPageBody)
-            newsPageBody = if (m.find()) m.group(1) else {
-                newsPageBody.replace("[\\s\\S]*?<body[^>]*>".toRegex(), "<body><div id=\"main\">")
+        val bodyElement = doc.selectFirst("div.article:has(div.article-header)")
+                ?: doc.selectFirst("div.container:has(meta[itemprop=datePublished])")
+                ?: doc.selectFirst("div.container")
+        if (bodyElement != null) {
+            newsPageBody = bodyElement.parent().html()
+        } else {
+            var m = PatternExtensions.compile("<article[^>]*>([\\s\\S]*?)</article>").matcher(newsPageBody)
+            if (m.find()) newsPageBody = m.group(1) else {
+                m = PatternExtensions.compile("<body[^>]*>([\\s\\S]*?)</body>").matcher(newsPageBody)
+                newsPageBody = if (m.find()) m.group(1) else {
+                    newsPageBody.replace("[\\s\\S]*?<body[^>]*>".toRegex(), "<body><div id=\"main\">")
+                }
             }
         }
+
+        val commentsBody = doc
+                .selectFirst("div.comment-box")
+                ?.selectFirst("ul.comment-list")
+                ?.outerHtml()
+        if (!commentsBody.isNullOrEmpty()) {
+            newsPageBody += "<div class=\"comment-box\">${commentsBody}</div>"
+        }
+
         return newsPageBody
     }
 
@@ -110,7 +124,7 @@ object NewsApi {
 
     fun parseNewsListPage(httpClient: IHttpClient, requestUrl: String, res: ArrayList<News>): String {
         val dailyNewsPage = httpClient.performGet(UrlExtensions.removeDoubleSplitters(requestUrl)).responseBody
-        val doc = Jsoup.parse(dailyNewsPage)
+        val doc = Jsoup.parse(dailyNewsPage, "https://4pda.ru")
         val articleElements = doc.select("article.post")
         for (articleElement in articleElements) {
             val id = articleElement?.attr("itemId")

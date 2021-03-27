@@ -75,7 +75,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     private int m_ScrollY = 0;
     private int m_ScrollX = 0;
     private String m_NewsUrl;
-    private ArrayList<History> m_History = new ArrayList<>();
+    private final ArrayList<History> m_History = new ArrayList<>();
     private boolean loadImages;
     private String m_Title = App.getContext().getString(R.string.news);
     private FloatingActionButton fab;
