@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +30,24 @@ import java.util.regex.Pattern;
  * Time: 7:31
  */
 public class FileUtils {
+    public static String getAppExternalFolderPath() throws NotReportException {
+        Map<String, File> externalLocations = ExternalStorage.getAllStorageLocations();
+        File sdCard = externalLocations.get(ExternalStorage.SD_CARD);
+        File externalSdCard = externalLocations.get(ExternalStorage.EXTERNAL_SD_CARD);
+        String externalDirPath = Environment.getExternalStorageDirectory() == null ? null : Environment.getExternalStorageDirectory().toString();
+        if (externalDirPath == null) {
+            if (externalSdCard != null)
+                externalDirPath = externalSdCard.toString();
+            else if (sdCard != null)
+                externalDirPath = sdCard.toString();
+        }
+
+        String path = externalDirPath + "/data/4pdaClient/";
+        if (!FileUtils.hasStorage(path, true))
+            throw new NotReportException("Нет доступа к папке программы: " + path);
+        return path;
+    }
+
     public static String readTrimRawTextFile(Context ctx, int resId) {
         InputStream inputStream = ctx.getResources().openRawResource(resId);
 
@@ -276,6 +296,19 @@ public class FileUtils {
         return directory.canWrite();
     }
 
+    public static void copy(File src, File dst) throws IOException {
+        InputStream in = new FileInputStream(src);
+        OutputStream out = new FileOutputStream(dst);
+
+        // Transfer bytes from in to out
+        byte[] buf = new byte[1024];
+        int len;
+        while ((len = in.read(buf)) > 0) {
+            out.write(buf, 0, len);
+        }
+        in.close();
+        out.close();
+    }
 
     public static void checkDirPath(String dirPath) throws IOException {
         if (!dirPath.endsWith(File.separator))

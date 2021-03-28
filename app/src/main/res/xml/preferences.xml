@@ -347,6 +347,18 @@
                 android:summary="Можно указать несколько через запятую"
                 android:title="Код кнопки для прокрутки вниз" />
         </PreferenceScreen>
+        <PreferenceScreen android:title="Бэкап">
+            <PreferenceCategory android:title="Заметки">
+                <Preference
+                    android:key="backup.notes.backup"
+                    android:summary="Сделать резервную копию"
+                    android:title="Резерв"/>
+                <Preference
+                    android:key="backup.notes.restore"
+                    android:summary="Восстановить из резервной копии"
+                    android:title="Восстановить"/>
+            </PreferenceCategory>
+        </PreferenceScreen>
         <PreferenceScreen android:title="Для разработчика стилей">
             <CheckBoxPreference
                 android:defaultValue="false"

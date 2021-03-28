@@ -14,10 +14,11 @@ import java.io.IOException;
 public class NotesDbHelper extends SQLiteAssetHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "notes";
+    public static final String DATABASE_NAME = "notes";
+    public static final String DATABASE_DIR =  Preferences.System.getSystemDir();
 
     public NotesDbHelper(Context context) throws IOException {
-        super(context, DATABASE_NAME, Preferences.System.getSystemDir(), null, DATABASE_VERSION);
+        super(context, DATABASE_NAME, DATABASE_DIR, null, DATABASE_VERSION);
 
     }
 
