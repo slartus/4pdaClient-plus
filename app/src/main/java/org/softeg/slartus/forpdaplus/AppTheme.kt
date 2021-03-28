@@ -130,6 +130,13 @@ object AppTheme {
         }
 
     @JvmStatic
+    val themeTextColorRes: Int
+        get() {
+            val themeType = themeType
+            return if (themeType == THEME_TYPE_LIGHT) android.R.color.black else if (themeType == THEME_TYPE_DARK) android.R.color.white else android.R.color.white
+        }
+
+    @JvmStatic
     val swipeRefreshBackground: Int
         get() {
             val themeType = themeType

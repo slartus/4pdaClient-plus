@@ -44,8 +44,8 @@ public class ExternalStorage {
     /**
      * @return A map of all storage locations available
      */
-    public static  List<File>  getAllStorageLocations() {
-        List<File> map = new ArrayList<>(10);
+    public static Map<String, File> getAllStorageLocations() {
+        Map<String, File> map = new HashMap<String, File>(10);
 
         List<String> mMounts = new ArrayList<String>(10);
         List<String> mVold = new ArrayList<String>(10);
@@ -123,7 +123,7 @@ public class ExternalStorage {
                         key = EXTERNAL_SD_CARD;
                     }
                     mountHash.add(hash);
-                    map.add(root);
+                    map.put(key, root);
                 }
             }
         }
@@ -131,7 +131,7 @@ public class ExternalStorage {
         mMounts.clear();
 
         if(map.isEmpty()){
-            map.add(Environment.getExternalStorageDirectory());
+            map.put(SD_CARD, Environment.getExternalStorageDirectory());
         }
         return map;
     }
