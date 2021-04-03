@@ -141,9 +141,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
             findPreference("cookies.delete").setOnPreferenceClickListener(this);
             findPreference("About.History").setOnPreferenceClickListener(this);
             findPreference("About.ShareIt").setOnPreferenceClickListener(this);
-            findPreference("About.AddRep").setOnPreferenceClickListener(this);
-            findPreference("About.AddRepTwo").setOnPreferenceClickListener(this);
-            findPreference("About.AddRepThree").setOnPreferenceClickListener(this);
             findPreference("About.ShowTheme").setOnPreferenceClickListener(this);
             findPreference("About.CheckNewVersion").setOnPreferenceClickListener(this);
             findPreference("About.OpenThemeForPda").setOnPreferenceClickListener(this);
@@ -344,15 +341,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     return true;
                 case "About.ShareIt":
                     showShareIt();
-                    return true;
-                case "About.AddRep":
-                    if (showAddRep("236113", "slartus")) return true;
-                    return true;
-                case "About.AddRepTwo":
-                    if (showAddRep("2556269", "Radiation15")) return true;
-                    return true;
-                case "About.AddRepThree":
-                    if (showAddRep("1726458", "iSanechek")) return true;
                     return true;
                 case "About.ShowTheme":
                     showTheme("271502");
@@ -984,16 +972,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
         private void showTheme(String themeId) {
             getActivity().finish();
             ThemeFragment.showTopicById(themeId);
-        }
-
-        private boolean showAddRep(String id, String nick) {
-            if (!Client.getInstance().getLogined()) {
-                Toast.makeText(getActivity(), getString(R.string.NeedToLogin), Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            Handler mHandler = new Handler();
-            ForumUser.startChangeRep(getActivity(), mHandler, id, nick, "0", "add", getString(R.string.RaiseReputation));
-            return false;
         }
 
         private void showShareIt() {

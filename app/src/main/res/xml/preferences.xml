@@ -499,15 +499,6 @@
             android:key="About.ShareIt"
             android:title="Рассказать друзьям" />
         <Preference
-            android:key="About.AddRep"
-            android:title="Поднять репутацию Slartus'y" />
-        <Preference
-            android:key="About.AddRepTwo"
-            android:title="Поднять репутацию Radiation15" />
-        <Preference
-            android:key="About.AddRepThree"
-            android:title="Поднять репутацию iSanechek'y" />
-        <Preference
             android:key="About.ShowTheme"
             android:summary="Открыть тему обсуждения программы"
             android:title="Открыть тему" />

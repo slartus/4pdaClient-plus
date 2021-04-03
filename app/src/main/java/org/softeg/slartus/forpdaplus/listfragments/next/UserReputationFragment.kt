@@ -124,14 +124,6 @@ class UserReputationFragment : BrickFragmentListBase() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.up_rep_item -> {
-                plusRep()
-                true
-            }
-            R.id.down_rep_item -> {
-                minusRep()
-                true
-            }
             R.id.profile_rep_item -> {
                 ProfileFragment.showProfile(userId, userNick)
                 true
@@ -143,8 +135,6 @@ class UserReputationFragment : BrickFragmentListBase() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         val loginedAndNotSelf = Client.getInstance().logined && userId != instance.getId()
-        menu.findItem(R.id.up_rep_item).isVisible = loginedAndNotSelf
-        menu.findItem(R.id.down_rep_item).isVisible = loginedAndNotSelf
     }
 
     override fun createLoader(id: Int, args: Bundle): AsyncTaskLoader<ListData> {
