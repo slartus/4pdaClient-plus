@@ -110,13 +110,11 @@
 
     <string-array name="downloaderManagersArray">
         <item>Системного менеджера</item>
-        <item>Клиента</item>
         <item>Внешнего менеджера</item>
     </string-array>
 
     <string-array name="downloaderManagersValues">
         <item>1</item>
-        <item>0</item>
         <item>2</item>
     </string-array>
 
@@ -129,17 +127,6 @@
         <item>-1</item>
         <item>0</item>
         <item>1</item>
-    </string-array>
-
-    <string-array name="video_player_types_titles">
-        <item>@string/client_player</item>
-        <item>@string/system_player</item>
-        <item>@string/ask_player</item>
-    </string-array>
-    <string-array name="video_player_types_values">
-        <item>0</item>
-        <item>1</item>
-        <item>-1</item>
     </string-array>
     <string-array name="drawermenupositions_titles">
         <item>Слева</item>

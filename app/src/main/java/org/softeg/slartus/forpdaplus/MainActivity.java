@@ -42,7 +42,6 @@ import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdaplus.activity.NewYear;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.fragments.search.SearchPostFragment;
@@ -405,13 +404,6 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
 
     @Override
     protected void onNewIntent(Intent intent) {
-
-        if (intent.getStringExtra("template") != null) {
-            if (intent.getStringExtra("template").equals(DownloadFragment.TEMPLATE)) {
-                DownloadFragment.newInstance();
-                return;
-            }
-        }
         checkIntent(intent);
     }
 

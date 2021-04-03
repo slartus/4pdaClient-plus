@@ -6,13 +6,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
@@ -20,13 +18,10 @@ import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
-import org.softeg.slartus.forpdaplus.prefs.Preferences;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.softeg.slartus.forpdaplus.video.PlayerActivity.PLAYER_UNSELECTED;
 
 /**
  * Created by IntelliJ IDEA.
@@ -45,12 +40,7 @@ public class ExtUrl {
         new MaterialDialog.Builder(context)
                 .title(title)
                 .items(names.toArray(new CharSequence[names.size()]))
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-                        list.get(which).getRunnable().run();
-                    }
-                })
+                .itemsCallback((dialog, itemView, which, text) -> list.get(which).getRunnable().run())
                 .show();
     }
 
@@ -177,13 +167,6 @@ public class ExtUrl {
                         context.getString(R.string.copy_link),
                         context.getString(R.string.create_note),
                         context.getString(R.string.save)));
-        if (IntentActivity.isYoutube(url)) {
-            int savedSelectedPlayer = Integer.parseInt(App.getInstance().getPreferences()
-                    .getString(Preferences.KEY_YOUTUBE_PLAYER, Integer.toString(PLAYER_UNSELECTED)));
-            if (savedSelectedPlayer != PLAYER_UNSELECTED) {
-                titles.add(context.getString(R.string.reset_player));
-            }
-        }
         new MaterialDialog.Builder(context)
                 .content(url)
                 .items(titles)
@@ -209,13 +192,6 @@ public class ExtUrl {
                         case 5:
                             DownloadsService.download(((MainActivity) context), url, false);
                             break;
-                        case 6:
-                            App.getInstance()
-                                    .getPreferences()
-                                    .edit()
-                                    .putString(Preferences.KEY_YOUTUBE_PLAYER, Integer.toString(PLAYER_UNSELECTED))
-                                    .apply();
-                            break;
                         default:
                             break;
                     }
@@ -234,24 +210,21 @@ public class ExtUrl {
         new MaterialDialog.Builder(context)
                 .content(url)
                 .items(titles)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View view, int i, CharSequence titles) {
-                        switch (i) {
-                            case 0:
+                .itemsCallback((dialog, view, i, titles1) -> {
+                    switch (i) {
+                        case 0:
 //                                ImageViewActivity.startActivity(context, url);
-                                ImgViewer.startActivity(context, url);
-                                break;
-                            case 1:
-                                showInBrowser(context, url);
-                                break;
-                            case 2:
-                                copyLinkToClipboard(context, url);
-                                break;
-                            case 3:
-                                DownloadsService.download((Activity) context, url, false);
-                                break;
-                        }
+                            ImgViewer.startActivity(context, url);
+                            break;
+                        case 1:
+                            showInBrowser(context, url);
+                            break;
+                        case 2:
+                            copyLinkToClipboard(context, url);
+                            break;
+                        case 3:
+                            DownloadsService.download((Activity) context, url, false);
+                            break;
                     }
                 })
                 .cancelable(true)

@@ -177,48 +177,14 @@ public class PreferencesActivity extends BasePreferencesActivity {
             }
             findPreference("notifiers.service.sound").setOnPreferenceClickListener(this);
 
-
-            final Preference downloadsPathPreference = findPreference("downloads.path");
-            downloadsPathPreference.setSummary(DownloadsService.getDownloadDir());
-            ((EditTextPreference) downloadsPathPreference)
-                    .setText(DownloadsService.getDownloadDir());
-            downloadsPathPreference.setOnPreferenceChangeListener((preference13, o) -> {
-
-                String prevValue = App.getInstance().getPreferences().getString("downloads.path", "");
-                m_PathPermission = SingleSubject.create();
-                App.getInstance().addToDisposable(
-                        m_PathPermission
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe((aBoolean, throwable) -> {
-                                    if (aBoolean) {
-                                        Toast.makeText(getActivity(), R.string.path_edited_success, Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        App.getInstance().getPreferences().edit().putString("downloads.path", prevValue).apply();
-                                        ((EditTextPreference) downloadsPathPreference).setText(prevValue);
-                                    }
-                                    if (throwable != null) {
-                                        AppLog.e(throwable);
-                                    }
-                                }));
-                checkDownloadsPath(o);
-
+            findPreference("backup.notes.backup").setOnPreferenceClickListener(preference13 -> {
+                showBackupNotesBackupDialog();
                 return true;
-
             });
 
-            findPreference("backup.notes.backup").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    showBackupNotesBackupDialog();
-                    return true;
-                }
-            });
-
-            findPreference("backup.notes.restore").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    restoreNotes();
-                    return true;
-                }
+            findPreference("backup.notes.restore").setOnPreferenceClickListener(preference14 -> {
+                restoreNotes();
+                return true;
             });
             DonateActivity.setDonateClickListeners(this);
 

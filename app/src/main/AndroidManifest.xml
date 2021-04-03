@@ -190,9 +190,6 @@
             android:name=".activity.NewYear"
             android:theme="@style/AppTheme.FullScreen" />
 
-        <service
-            android:name=".download.DownloadsService"
-            android:enabled="true" />
         <service android:name="org.softeg.slartus.forpdanotifyservice.MainService" />
 
         <receiver android:name="org.softeg.slartus.forpdanotifyservice.qms.AlarmReceiver" />

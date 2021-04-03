@@ -52,7 +52,7 @@ import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
-import org.softeg.slartus.forpdaplus.video.PlayerActivity;
+
 
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -373,7 +373,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
             }
 
             if (IntentActivity.isYoutube(url)) {
-                PlayerActivity.showYoutubeChoiceDialog(getActivity(), url);
+                IntentActivity.showInDefaultBrowser(getActivity(), url);
                 return true;
             }
 

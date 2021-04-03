@@ -108,10 +108,7 @@
     <string name="Close">Закрыть</string>
     <string name="LeaveComment">Оставить комментарий</string>
     <string name="Like">Понравилось</string>
-    <string name="client_player">Плеер клиента</string>
-    <string name="system_player">Проигрыватель системы</string>
-    <string name="reset_player">Сбросить выбор плеера youtube</string>
-    <string name="ask_player">Спрашивать</string>
+
 
 
     <string name="crash_toast_text">>Ooooops! Ошибка приложения!</string>
