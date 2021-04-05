@@ -177,6 +177,10 @@ public class Client implements IHttpClient {
         return HttpHelper.performPost(s, additionalHeaders);
     }
 
+    public AppResponse performPost(String url, String json) {
+        return Http.Companion.getInstance().performPost(url, json);
+    }
+
     public List<HttpCookie> getCookies() {
         return Http.Companion.getInstance().getCookieStore().getCookies();
     }

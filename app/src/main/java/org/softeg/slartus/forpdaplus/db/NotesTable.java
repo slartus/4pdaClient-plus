@@ -99,54 +99,6 @@ public class NotesTable {
         }
     }
 
-    public static ArrayList<Topic> getNotes(String topicId) throws ParseException, IOException {
-        ArrayList<Topic> res = new ArrayList<Topic>();
-
-        SQLiteDatabase db = null;
-        Cursor c = null;
-        try {
-            NotesDbHelper dbHelper = new NotesDbHelper(App.getInstance());
-            db = dbHelper.getWritableDatabase();
-            String selection = null;
-            String[] selectionArgs = null;
-
-            if (!TextUtils.isEmpty(topicId)) {
-                selection = COLUMN_TOPIC_ID + "=?";
-                selectionArgs = new String[]{topicId};
-            }
-            assert db != null;
-            c = db.query(TABLE_NAME, null, selection, selectionArgs, null, null, COLUMN_DATE + " DESC");
-
-            if (c.moveToFirst()) {
-                int columnIdIndex = c.getColumnIndex(COLUMN_ID);
-                int columnTitleIndex = c.getColumnIndex(COLUMN_TITLE);
-                int columnBodyIndex = c.getColumnIndex(COLUMN_BODY);
-                int columnUserIndex = c.getColumnIndex(COLUMN_USER);
-                int columnDateIndex = c.getColumnIndex(COLUMN_DATE);
-                do {
-                    String id = c.getString(columnIdIndex);
-                    String title = c.getString(columnTitleIndex);
-
-                    Date createDate = DbHelper.parseDate(c.getString(columnDateIndex));
-
-                    Topic topic = new Topic(id, title);
-                    topic.setDescription(c.getString(columnBodyIndex));
-                    topic.setLastMessageAuthor(c.getString(columnUserIndex));
-                    topic.setLastMessageDate(createDate);
-                    res.add(topic);
-                } while (c.moveToNext());
-
-            }
-        } finally {
-            if (db != null) {
-                if (c != null)
-                    c.close();
-                db.close();
-            }
-        }
-
-        return res;
-    }
 
     @NonNull
     private static ContentValues getContentValues(Note note) {
@@ -217,7 +169,21 @@ public class NotesTable {
         return downloadTasks;
     }
 
-    public static ArrayList<Note> getNotes(SQLiteDatabase db, String topicId) throws ParseException, IOException {
+    public static ArrayList<Note> getNotes(String topicId) throws ParseException, IOException {
+        SQLiteDatabase db = null;
+
+        try {
+            NotesDbHelper dbHelper = new NotesDbHelper(App.getInstance());
+            db = dbHelper.getReadableDatabase();
+            return getNotes(db, topicId);
+        } finally {
+            if (db != null) {
+                db.close();
+            }
+        }
+    }
+
+    public static ArrayList<Note> getNotes(SQLiteDatabase db, String topicId) throws ParseException {
         ArrayList<Note> notes = new ArrayList<Note>();
 
         Cursor c = null;
@@ -261,8 +227,8 @@ public class NotesTable {
             }
         } finally {
 
-                if (c != null)
-                    c.close();
+            if (c != null)
+                c.close();
 
         }
 
@@ -377,18 +343,17 @@ public class NotesTable {
         }
     }
 
-    public static int restoreFrom( ArrayList<Note> notes) throws ParseException, IOException {
+    public static int restoreFrom(ArrayList<Note> notes) throws IOException {
 
         SQLiteDatabase db = null;
         try {
-
 
 
             NotesDbHelper dbHelper = new NotesDbHelper(App.getInstance());
             db = dbHelper.getWritableDatabase();
             db.beginTransaction();
             db.execSQL("delete from " + TABLE_NAME);
-            for(Note note :notes){
+            for (Note note : notes) {
                 ContentValues values = getContentValues(note);
                 values.put(COLUMN_ID, note.Id);
                 db.insertOrThrow(TABLE_NAME, null, values);

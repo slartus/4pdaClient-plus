@@ -3,6 +3,8 @@ package org.softeg.slartus.forpdaplus.notes;
 import android.text.TextUtils;
 import android.util.Pair;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 
@@ -16,6 +18,7 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class Note {
+    @SerializedName("_id")
     public String Id;
     public String Title;
     public String Body;

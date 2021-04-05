@@ -60,7 +60,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
         @JvmStatic
         fun newClientBuiler(): OkHttpClient.Builder {
-            val trustManager=object : X509TrustManager {
+            val trustManager = object : X509TrustManager {
 
                 override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate>? = emptyArray()
 
@@ -105,7 +105,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
                     .connectTimeout(15, TimeUnit.SECONDS) // connect timeout
                     .writeTimeout(15, TimeUnit.SECONDS)
                     .readTimeout(30, TimeUnit.SECONDS)
-                    .sslSocketFactory(sslSocketFactory,trustManager)
+                    .sslSocketFactory(sslSocketFactory, trustManager)
         }
     }
 
@@ -154,7 +154,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         // headersBuilder.add("Accept-Encoding", "gzip, deflate")
         headersBuilder.add("Accept-Language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7,vi;q=0.6,bg;q=0.5")
         headersBuilder.add("User-Agent", userAgent)
-        headersBuilder.add("Connection","close")// https://stackoverflow.com/questions/52726909/java-io-ioexception-unexpected-end-of-stream-on-connection
+        headersBuilder.add("Connection", "close")// https://stackoverflow.com/questions/52726909/java-io-ioexception-unexpected-end-of-stream-on-connection
         return headersBuilder.build()
     }
 
@@ -260,6 +260,32 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         }
 
     }
+
+    @JvmOverloads
+    fun performPost(url: String, json: String): AppResponse {
+        Log.i(TAG, "post: $url json: $json")
+        val body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json) // new
+
+        val request = Request.Builder()
+                .headers(buildRequestHeaders(userAgent))
+                .url(prepareUrl(url))
+                .cacheControl(CacheControl.FORCE_NETWORK)
+                .post(body)
+                .build()
+
+
+        try {
+            val response = client.newCall(request).execute()
+            if (!response.isSuccessful) throw HttpException("Unexpected code $response")
+
+            val body = response.body?.string()
+            return AppResponse(url, response.request.url.toString(), body ?: "")
+        } catch (ex: IOException) {
+            throw HttpException(ex)
+        }
+
+    }
+
 
     fun uploadFile(url: String, fileNameO: String, filePath: String, fileFormDataName: String,
                    formDataParts: List<Pair<String, String>> = emptyList(),
