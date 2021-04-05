@@ -54,8 +54,9 @@ public class ExtUrl {
         if (!url.startsWith("http:") && !url.startsWith("https:")) {
             url = "https:" + url;
         }
-        Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        context.startActivity(Intent.createChooser(marketIntent, context.getString(R.string.choose)));
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse(url), "text/html");
+        context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose)));
     }
 
     public static void shareIt(Context context, String subject, String text, String url) {
@@ -63,8 +64,7 @@ public class ExtUrl {
         Intent sendMailIntent = new Intent(Intent.ACTION_SEND);
         sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
         sendMailIntent.putExtra(Intent.EXTRA_TEXT, text);
-        sendMailIntent.setData(Uri.parse(url));
-        sendMailIntent.setType("text/plain");
+        sendMailIntent.setDataAndType(Uri.parse(url), "text/plain");
 
         context.startActivity(Intent.createChooser(sendMailIntent, context.getString(R.string.chare_via)));
     }

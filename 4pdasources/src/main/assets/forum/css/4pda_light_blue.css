@@ -841,6 +841,24 @@ a {
   content: "";
   display: table;
 }
+
+.comment-box .comment-list li .heading img {
+  width: 10%;
+  height: auto;
+}
+.comment-box .comment-list li .dropdown-menu li {
+    font-size: 0.7em;
+    display: inline;
+    margin-right: 5px;
+}
+.comment-box .comment-list li .dropdown-menu li:first-child {
+     display: none;
+}
+
+.comment-box .comment-list li .date{
+     font-size: 0.7em;
+}
+
 .comment-box .comment-list li .heading .nickname {
   float: left;
   font-size: 0.875em;
