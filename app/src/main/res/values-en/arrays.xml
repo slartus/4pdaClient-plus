@@ -110,13 +110,11 @@
 
     <string-array name="downloaderManagersArray">
         <item>System manager</item>
-        <item>Client</item>
         <item>External manager</item>
     </string-array>
 
     <string-array name="downloaderManagersValues">
         <item>1</item>
-        <item>0</item>
         <item>2</item>
     </string-array>
 
@@ -131,16 +129,6 @@
         <item>1</item>
     </string-array>
 
-    <string-array name="video_player_types_titles">
-        <item>@string/client_player</item>
-        <item>@string/system_player</item>
-        <item>@string/ask_player</item>
-    </string-array>
-    <string-array name="video_player_types_values">
-        <item>0</item>
-        <item>1</item>
-        <item>-1</item>
-    </string-array>
     <string-array name="drawermenupositions_titles">
         <item>left</item>
         <item>right</item>

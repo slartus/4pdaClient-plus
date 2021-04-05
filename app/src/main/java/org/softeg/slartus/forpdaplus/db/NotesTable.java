@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
@@ -14,6 +15,7 @@ import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.notes.Note;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -82,17 +84,7 @@ public class NotesTable {
             db = helper.getWritableDatabase();
             // db.beginTransaction();
 
-            ContentValues values = new ContentValues();
-
-            values.put(COLUMN_TITLE, note.Title);
-            values.put(COLUMN_BODY, note.Body);
-            values.put(COLUMN_URL, note.Url);
-            values.put(COLUMN_TOPIC_ID, note.TopicId);
-            values.put(COLUMN_POST_ID, note.PostId);
-            values.put(COLUMN_USER_ID, note.UserId);
-            values.put(COLUMN_USER, note.User);
-            values.put(COLUMN_TOPIC, note.Topic);
-            values.put(COLUMN_DATE, DbHelper.DateTimeFormat.format(note.Date));
+            ContentValues values = getContentValues(note);
 
 
             db.insertOrThrow(TABLE_NAME, null, values);
@@ -156,6 +148,22 @@ public class NotesTable {
         return res;
     }
 
+    @NonNull
+    private static ContentValues getContentValues(Note note) {
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_TITLE, note.Title);
+        values.put(COLUMN_BODY, note.Body);
+        values.put(COLUMN_URL, note.Url);
+        values.put(COLUMN_TOPIC_ID, note.TopicId);
+        values.put(COLUMN_POST_ID, note.PostId);
+        values.put(COLUMN_USER_ID, note.UserId);
+        values.put(COLUMN_USER, note.User);
+        values.put(COLUMN_TOPIC, note.Topic);
+        values.put(COLUMN_DATE, DbHelper.DateTimeFormat.format(note.Date));
+        return values;
+    }
+
     public static Themes getNoteThemes(String topicId) throws ParseException, IOException {
         Themes downloadTasks = new Themes();
 
@@ -209,14 +217,13 @@ public class NotesTable {
         return downloadTasks;
     }
 
-    public static ArrayList<Note> getNotes(SQLiteAssetHelper helper, String topicId) throws ParseException, IOException {
+    public static ArrayList<Note> getNotes(SQLiteDatabase db, String topicId) throws ParseException, IOException {
         ArrayList<Note> notes = new ArrayList<Note>();
 
-        SQLiteDatabase db = null;
         Cursor c = null;
         try {
 
-            db = helper.getWritableDatabase();
+
             String selection = null;
             String[] selectionArgs = null;
 
@@ -253,11 +260,10 @@ public class NotesTable {
                 } while (c.moveToNext());
             }
         } finally {
-            if (db != null) {
+
                 if (c != null)
                     c.close();
-                db.close();
-            }
+
         }
 
         return notes;
@@ -353,6 +359,49 @@ public class NotesTable {
                     c.close();
                 db.close();
             }
+        }
+    }
+
+    public static ArrayList<Note> getNotesFromFile(String filePath) throws ParseException, IOException {
+        SQLiteDatabase backupDb = null;
+
+        try {
+
+            backupDb = SQLiteDatabase.openOrCreateDatabase(new File(filePath), null);
+            ArrayList<Note> notes = getNotes(backupDb, null);
+
+            return notes;
+        } finally {
+            if (backupDb != null)
+                backupDb.close();
+        }
+    }
+
+    public static int restoreFrom( ArrayList<Note> notes) throws ParseException, IOException {
+
+        SQLiteDatabase db = null;
+        try {
+
+
+
+            NotesDbHelper dbHelper = new NotesDbHelper(App.getInstance());
+            db = dbHelper.getWritableDatabase();
+            db.beginTransaction();
+            db.execSQL("delete from " + TABLE_NAME);
+            for(Note note :notes){
+                ContentValues values = getContentValues(note);
+                values.put(COLUMN_ID, note.Id);
+                db.insertOrThrow(TABLE_NAME, null, values);
+            }
+
+            db.setTransactionSuccessful();
+            return notes.size();
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+                db.close();
+            }
+
         }
     }
 }

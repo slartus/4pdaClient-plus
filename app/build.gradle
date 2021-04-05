@@ -8,11 +8,27 @@ repositories {
     mavenCentral()
 }
 
+def release_store_password
+def release_key_password
+def release_key_alias
+
+def keystoreProperties = new Properties()
+if (rootProject.file("keystore.properties").exists()) {
+    keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
+    release_store_password = keystoreProperties['RELEASE_STORE_PASSWORD']
+    release_key_password = keystoreProperties['RELEASE_KEY_PASSWORD']
+    release_key_alias = keystoreProperties['RELEASE_KEY_ALIAS']
+} else {
+    release_store_password = System.env.RELEASE_STORE_PASSWORD
+    release_key_password = System.env.RELEASE_KEY_PASSWORD
+    release_key_alias = System.env.RELEASE_KEY_ALIAS
+}
+
 android {
     compileSdkVersion 27
 
 
-    def appVersionCode = 641
+    def appVersionCode = 647
     // именование версий:
     // первое число не трогаем никогда. только если весь клиент переписали, но тогда это другой репозиторий
     // второе число только при серьезных изменениях, затрагивающих интерфейс или архитектуру
@@ -22,7 +38,7 @@ android {
     // после фикса в релизе мержим в мастер.
     // мастер - рабочая ветка для следуюшего релиза
 
-    def appVersionName = "3.5.7.3"
+    def appVersionName = "3.5.8"
 
     defaultConfig {
         applicationId 'org.softeg.slartus.forpdaplus'
@@ -48,10 +64,10 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("keystore.key")
-            keyAlias "4pdakey"
-            keyPassword "xjFX06dR7HGj6RvgHUtPQTEJVeuuMOgY"
-            storePassword "xjFX06dR7HGj6RvgHUtPQTEJVeuuMOgY"
+            storePassword = release_store_password
+            keyAlias = release_key_alias
+            keyPassword = release_key_password
+            storeFile file("keystore.jks")
         }
     }
     buildTypes {

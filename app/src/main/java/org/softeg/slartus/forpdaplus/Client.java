@@ -1,9 +1,7 @@
 package org.softeg.slartus.forpdaplus;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
-import android.os.Handler;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.Window;
@@ -42,8 +40,6 @@ import org.softeg.slartus.forpdaplus.classes.common.Functions;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.ForumsTableOld;
-import org.softeg.slartus.forpdaplus.download.DownloadReceiver;
-import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.topic.ForPdaWebInterface;
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 import org.softeg.slartus.forpdaplus.utils.UploadUtils;
@@ -720,19 +716,7 @@ public class Client implements IHttpClient {
         ForumsApi.Companion.markAllAsRead(this);
     }
 
-
-    public void downloadFile(Context context, String url, int notificationId, String tempFilePath) {
-        m_DownloadTasks.add(url, notificationId, null);
-
-        Intent intent = new Intent(context, DownloadsService.class);
-        intent.putExtra(DownloadsService.DOWNLOAD_FILE_ID_KEY, notificationId);
-        intent.putExtra(DownloadsService.DOWNLOAD_FILE_TEMP_NAME_KEY, tempFilePath);
-        intent.putExtra("receiver", new DownloadReceiver(new Handler(), context));
-        context.startService(intent);
-
-    }
-
-    private DownloadTasks m_DownloadTasks = new DownloadTasks();
+    private final DownloadTasks m_DownloadTasks = new DownloadTasks();
 
     public DownloadTasks getDownloadTasks() {
         return m_DownloadTasks;

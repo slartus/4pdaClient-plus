@@ -142,10 +142,6 @@
                 android:key="files.ConfirmDownload"
                 android:summary="Подтверждение загрузки файла при выборе ссылки"
                 android:title="Подтверждать загрузку файла" />
-            <EditTextPreference
-                android:key="downloads.path"
-                android:summary="При скачивании менеджером клиента!"
-                android:title="Путь к папке загрузки файлов" />
             <ListPreference
                 android:entries="@array/downloaderManagersArray"
                 android:entryValues="@array/downloaderManagersValues"
@@ -192,12 +188,6 @@
             android:key="news.FullScreen"
             android:summary="Просмотр новости во весь экран"
             android:title="Во весь экран" />
-        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
-            android:defaultValue="-1"
-            android:entries="@array/video_player_types_titles"
-            android:entryValues="@array/video_player_types_values"
-            android:key="news.videoplayer"
-            android:title="Проигрыватель видео" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="loadNewsComment"
@@ -347,6 +337,18 @@
                 android:summary="Можно указать несколько через запятую"
                 android:title="Код кнопки для прокрутки вниз" />
         </PreferenceScreen>
+        <PreferenceScreen android:title="Бэкап">
+            <PreferenceCategory android:title="Заметки">
+                <Preference
+                    android:key="backup.notes.backup"
+                    android:summary="Сделать резервную копию"
+                    android:title="Резерв"/>
+                <Preference
+                    android:key="backup.notes.restore"
+                    android:summary="Восстановить из резервной копии"
+                    android:title="Восстановить"/>
+            </PreferenceCategory>
+        </PreferenceScreen>
         <PreferenceScreen android:title="Для разработчика стилей">
             <CheckBoxPreference
                 android:defaultValue="false"
@@ -486,15 +488,6 @@
         <Preference
             android:key="About.ShareIt"
             android:title="Рассказать друзьям" />
-        <Preference
-            android:key="About.AddRep"
-            android:title="Поднять репутацию Slartus'y" />
-        <Preference
-            android:key="About.AddRepTwo"
-            android:title="Поднять репутацию Radiation15" />
-        <Preference
-            android:key="About.AddRepThree"
-            android:title="Поднять репутацию iSanechek'y" />
         <Preference
             android:key="About.ShowTheme"
             android:summary="Открыть тему обсуждения программы"

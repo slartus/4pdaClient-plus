@@ -20,12 +20,7 @@ import java.util.Set;
  * Created by slartus on 23.02.14.
  */
 public class Preferences {
-    /**
-     * Плеер для youtube
-     */
-    public static final String KEY_YOUTUBE_PLAYER = "news.videoplayer";
-
-    private static Boolean isLoadImages() {
+   private static Boolean isLoadImages() {
         int loadImagesType = ExtPreferences.parseInt(App.getInstance().getPreferences(), "news.list.loadimages", 1);
         if (loadImagesType == 2) {
             return Connectivity.isConnectedWifi(App.getContext());

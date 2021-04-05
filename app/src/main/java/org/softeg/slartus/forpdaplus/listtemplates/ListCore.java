@@ -61,7 +61,6 @@ public class ListCore {
     public static ArrayList<BrickInfo> getOthersBricks(){
         ArrayList<BrickInfo> res = new ArrayList<>();
         res.add(new PreferencesBrickInfo());
-        res.add(new DownloadsBrickInfo());
         res.add(new MarkAllReadBrickInfo());
         res.add(new FaqBrickInfo());
         res.add(new ForumRulesBrick());

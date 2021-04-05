@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -13,11 +14,13 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
@@ -43,6 +46,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 
 
 import org.softeg.slartus.forpdacommon.ExternalStorage;
+import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.AppTheme;
@@ -52,12 +56,16 @@ import org.softeg.slartus.forpdaplus.classes.FilePath;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.controls.OpenFileDialog;
+import org.softeg.slartus.forpdaplus.db.NotesDbHelper;
+import org.softeg.slartus.forpdaplus.db.NotesTable;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
+import org.softeg.slartus.forpdaplus.notes.Note;
 import org.softeg.slartus.forpdaplus.styles.CssStyle;
 import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity;
 
@@ -133,9 +141,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
             findPreference("cookies.delete").setOnPreferenceClickListener(this);
             findPreference("About.History").setOnPreferenceClickListener(this);
             findPreference("About.ShareIt").setOnPreferenceClickListener(this);
-            findPreference("About.AddRep").setOnPreferenceClickListener(this);
-            findPreference("About.AddRepTwo").setOnPreferenceClickListener(this);
-            findPreference("About.AddRepThree").setOnPreferenceClickListener(this);
             findPreference("About.ShowTheme").setOnPreferenceClickListener(this);
             findPreference("About.CheckNewVersion").setOnPreferenceClickListener(this);
             findPreference("About.OpenThemeForPda").setOnPreferenceClickListener(this);
@@ -172,41 +177,115 @@ public class PreferencesActivity extends BasePreferencesActivity {
             }
             findPreference("notifiers.service.sound").setOnPreferenceClickListener(this);
 
-
-            final Preference downloadsPathPreference = findPreference("downloads.path");
-            downloadsPathPreference.setSummary(DownloadsService.getDownloadDir());
-            ((EditTextPreference) downloadsPathPreference)
-                    .setText(DownloadsService.getDownloadDir());
-            downloadsPathPreference.setOnPreferenceChangeListener((preference13, o) -> {
-
-                String prevValue = App.getInstance().getPreferences().getString("downloads.path", "");
-                m_PathPermission = SingleSubject.create();
-                App.getInstance().addToDisposable(
-                        m_PathPermission
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe((aBoolean, throwable) -> {
-                                    if (aBoolean) {
-                                        Toast.makeText(getActivity(), R.string.path_edited_success, Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        App.getInstance().getPreferences().edit().putString("downloads.path", prevValue).apply();
-                                        ((EditTextPreference) downloadsPathPreference).setText(prevValue);
-                                    }
-                                    if (throwable != null) {
-                                        AppLog.e(throwable);
-                                    }
-                                }));
-                checkDownloadsPath(o);
-
+            findPreference("backup.notes.backup").setOnPreferenceClickListener(preference13 -> {
+                showBackupNotesBackupDialog();
                 return true;
-
             });
 
-
+            findPreference("backup.notes.restore").setOnPreferenceClickListener(preference14 -> {
+                restoreNotes();
+                return true;
+            });
             DonateActivity.setDonateClickListeners(this);
 
             findPreference("showExitButton").setOnPreferenceClickListener(this);
 
+        }
+
+        private void showBackupNotesBackupDialog() {
+            try {
+                File dbFile = new File(NotesDbHelper.DATABASE_DIR + "/"+ NotesDbHelper.DATABASE_NAME);
+                if (!dbFile.exists()) {
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Ошибка")
+                            .setMessage("Файл базы заметок не найден. Возможно, вы ещё не создали ни одной заметки")
+                            .setPositiveButton("ОК", null)
+                            .create().show();
+                    return;
+                }
+                String externalDirPath;
+                Map<String, File> externalLocations = ExternalStorage.getAllStorageLocations();
+                File sdCard = externalLocations.get(ExternalStorage.SD_CARD);
+                File externalSdCard = externalLocations.get(ExternalStorage.EXTERNAL_SD_CARD);
+
+                if (externalSdCard != null)
+                    externalDirPath = externalSdCard.toString();
+                else if (sdCard != null)
+                    externalDirPath = sdCard.toString();
+                else
+                    externalDirPath = Environment.getExternalStorageDirectory().toString();
+                String toPath = externalDirPath + "/forpda_notes.sqlite";
+                File newFile = new File(toPath);
+                int i = 0;
+                while (newFile.exists()) {
+                    newFile = new File(externalDirPath + String.format("/forpda_notes_%d.sqlite", i++));
+                }
+                boolean b = newFile.createNewFile();
+                if (!b) {
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Ошибка").setMessage("Не удалось создать файл: " + toPath)
+                            .setPositiveButton("ОК", null)
+                            .create().show();
+                    return;
+                }
+
+
+                FileUtils.copy(dbFile, newFile);
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Успех!")
+                        .setMessage("Резервная копия заметок сохранена в файл:\n" + newFile.toString())
+                        .setPositiveButton("ОК", null)
+                        .create().show();
+            } catch (Throwable ex) {
+                AppLog.e(getContext(), ex);
+            }
+
+        }
+
+        private void restoreNotes() {
+            new OpenFileDialog(getContext())
+                    .setFilter(".*\\.(?i:sqlite)")
+                    .setOpenDialogListener(new OpenFileDialog.OpenDialogListener() {
+                        @Override
+                        public void OnSelectedFile(final String fileName) {
+                            try {
+                                Uri sourceuri = Uri.parse(fileName);
+                                if (sourceuri == null) {
+                                    Toast.makeText(getContext(), "Файл не выбран!", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                final ArrayList<Note> notes = NotesTable.getNotesFromFile(fileName);
+
+                                new AlertDialog.Builder(getContext())
+                                        .setTitle("Внимание!")
+                                        .setMessage("Заметок для восстановления: " + notes.size() +
+                                                "\n\nВосстановление заметок приведёт к полной потере всех существующих заметок!")
+                                        .setPositiveButton("Продолжить", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                dialogInterface.dismiss();
+                                                try {
+                                                    int count = NotesTable.restoreFrom(notes);
+                                                    new AlertDialog.Builder(getContext())
+                                                            .setTitle("Успех!")
+                                                            .setMessage("Резервная копия заметок восстановлена!\nЗаметок восстановлено: " + count)
+                                                            .setPositiveButton("ОК", null)
+                                                            .create().show();
+                                                } catch (Throwable ex) {
+                                                    AppLog.e(getContext(), ex);
+                                                }
+                                            }
+                                        })
+                                        .setNegativeButton("Отмена",null)
+                                        .create().show();
+
+                            } catch (Throwable ex) {
+                                AppLog.e(getContext(), ex);
+                            }
+
+                        }
+                    })
+                    .show();
         }
 
 
@@ -228,15 +307,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     return true;
                 case "About.ShareIt":
                     showShareIt();
-                    return true;
-                case "About.AddRep":
-                    if (showAddRep("236113", "slartus")) return true;
-                    return true;
-                case "About.AddRepTwo":
-                    if (showAddRep("2556269", "Radiation15")) return true;
-                    return true;
-                case "About.AddRepThree":
-                    if (showAddRep("1726458", "iSanechek")) return true;
                     return true;
                 case "About.ShowTheme":
                     showTheme("271502");
@@ -850,8 +920,8 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 if (!dirPath.endsWith(File.separator))
                     dirPath += File.separator;
 
-                List<File> externalLocations = ExternalStorage.getAllStorageLocations();
-                for (File externalLocation : externalLocations) {
+                Map<String, File> externalLocations = ExternalStorage.getAllStorageLocations();
+                for (File externalLocation : externalLocations.values()) {
                     if (dirPath.startsWith(externalLocation.getAbsolutePath()) || dirPath.startsWith(externalLocation.getCanonicalPath())) {
                         checkExternalPathPermission(dirPath);
                         return;
@@ -868,16 +938,6 @@ public class PreferencesActivity extends BasePreferencesActivity {
         private void showTheme(String themeId) {
             getActivity().finish();
             ThemeFragment.showTopicById(themeId);
-        }
-
-        private boolean showAddRep(String id, String nick) {
-            if (!Client.getInstance().getLogined()) {
-                Toast.makeText(getActivity(), getString(R.string.NeedToLogin), Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            Handler mHandler = new Handler();
-            ForumUser.startChangeRep(getActivity(), mHandler, id, nick, "0", "add", getString(R.string.RaiseReputation));
-            return false;
         }
 
         private void showShareIt() {

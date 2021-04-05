@@ -3,17 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/up_rep_item"
-        android:icon="@drawable/thumb_up"
-        android:title="@string/increase_reputation"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/down_rep_item"
-        android:icon="@drawable/thumb_down"
-        android:title="@string/decrease_reputation"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/profile_rep_item"
         android:icon="@drawable/thumb_down"
         android:title="@string/Profile"

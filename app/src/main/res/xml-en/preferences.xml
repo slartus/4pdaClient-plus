@@ -142,10 +142,6 @@
                 android:key="files.ConfirmDownload"
                 android:summary="Confirm file upload when you select"
                 android:title="Confirm file upload" />
-            <EditTextPreference
-                android:key="downloads.path"
-                android:summary="When downloading with a client manager!"
-                android:title="The path to the download folder file" />
             <ListPreference
                 android:entries="@array/downloaderManagersArray"
                 android:entryValues="@array/downloaderManagersValues"
@@ -192,12 +188,7 @@
             android:key="news.FullScreen"
             android:summary="News view in full screen"
             android:title="Full screen" />
-        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
-            android:defaultValue="-1"
-            android:entries="@array/video_player_types_titles"
-            android:entryValues="@array/video_player_types_values"
-            android:key="news.videoplayer"
-            android:title="Video player" />
+
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="loadNewsComment"
@@ -347,6 +338,18 @@
                 android:summary="You can specify multiple comma-separated"
                 android:title="Button code to scroll up button code to scroll down" />
         </PreferenceScreen>
+        <PreferenceScreen android:title="Backup">
+            <PreferenceCategory android:title="Notes">
+                <Preference
+                    android:key="backup.notes.backup"
+                    android:summary="Create backup"
+                    android:title="Backup"/>
+                <Preference
+                    android:key="backup.notes.restore"
+                    android:summary="Restore from backup"
+                    android:title="Restore"/>
+            </PreferenceCategory>
+        </PreferenceScreen>
         <PreferenceScreen android:title="For Developer styles">
             <CheckBoxPreference
                 android:defaultValue="false"
@@ -486,15 +489,6 @@
         <Preference
             android:key="About.ShareIt"
             android:title="Share to friends" />
-        <Preference
-            android:key="About.AddRep"
-            android:title="Raise reputation for Slartus" />
-        <Preference
-            android:key="About.AddRepTwo"
-            android:title="Raise reputation for Radiation15" />
-        <Preference
-            android:key="About.AddRepThree"
-            android:title="Raise reputation for iSanechek'y" />
         <Preference
             android:key="About.ShowTheme"
             android:summary="Open discussion of the topic of the program"

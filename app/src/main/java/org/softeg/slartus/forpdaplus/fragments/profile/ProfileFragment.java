@@ -464,22 +464,16 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
 
         menu.add(getString(R.string.Reputation))
                 .setOnMenuItemClickListener(menuItem -> {
-                    CharSequence[] items = {getString(R.string.do_vote_good), getString(R.string.do_vote_bad), getString(R.string.look), getString(R.string.change_reputation)};
+                    CharSequence[] items = {getString(R.string.look), getString(R.string.change_reputation)};
                     new MaterialDialog.Builder(getMainActivity())
                             .title(R.string.reputation)
                             .items(items)
                             .itemsCallback((dialog, view, i, items1) -> {
                                 switch (i) {
                                     case 0:
-                                        UserReputationFragment.plusRep(getMainActivity(), new Handler(), getUserId(), getUserNick());
-                                        break;
-                                    case 1:
-                                        UserReputationFragment.minusRep(getMainActivity(), new Handler(), getUserId(), getUserNick());
-                                        break;
-                                    case 2:
                                         UserReputationFragment.showActivity(getUserId(), false);
                                         break;
-                                    case 3:
+                                    case 1:
                                         UserReputationFragment.showActivity(getUserId(), true);
                                         break;
                                 }

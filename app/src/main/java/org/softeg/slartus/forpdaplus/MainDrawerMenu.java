@@ -13,7 +13,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,12 +23,10 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.fragments.DownloadFragment;
 import org.softeg.slartus.forpdaplus.fragments.ForumRulesFragment;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.AppAndGame;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
-import org.softeg.slartus.forpdaplus.listtemplates.DownloadsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.FaqBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumRulesBrick;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
@@ -210,13 +207,6 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
             case PreferencesBrickInfo.NAME:
                 mActivity.startActivityForResult(new Intent(mActivity, PreferencesActivity.class), 0);
                 break;
-            case DownloadsBrickInfo.NAME:
-                try {
-                    DownloadFragment.newInstance();
-                } catch (Exception ex) {
-                    AppLog.e(mActivity, ex);
-                }
-                break;
             case MarkAllReadBrickInfo.NAME:
                 if (!Client.getInstance().getLogined()) {
                     Toast.makeText(mActivity, R.string.need_login, Toast.LENGTH_SHORT).show();
@@ -230,33 +220,29 @@ public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedLi
                             @Override
                             public void onPositive(MaterialDialog dialog) {
                                 Toast.makeText(mActivity, R.string.request_sent, Toast.LENGTH_SHORT).show();
-                                new Thread(new Runnable() {
-                                    public void run() {
-                                        Throwable ex = null;
+                                new Thread(() -> {
+                                    Throwable ex = null;
+                                    try {
+                                        Client.getInstance().markAllForumAsRead();
+                                    } catch (Throwable e) {
+                                        ex = e;
+                                    }
+
+                                    final Throwable finalEx = ex;
+
+                                    mHandler.post(() -> {
                                         try {
-                                            Client.getInstance().markAllForumAsRead();
-                                        } catch (Throwable e) {
-                                            ex = e;
+                                            if (finalEx != null) {
+                                                Toast.makeText(mActivity, R.string.error, Toast.LENGTH_SHORT).show();
+                                                AppLog.e(mActivity, finalEx);
+                                            } else {
+                                                Toast.makeText(mActivity, R.string.forum_setted_read, Toast.LENGTH_SHORT).show();
+                                            }
+                                        } catch (Exception ex1) {
+                                            AppLog.e(mActivity, ex1);
                                         }
 
-                                        final Throwable finalEx = ex;
-
-                                        mHandler.post(new Runnable() {
-                                            public void run() {
-                                                try {
-                                                    if (finalEx != null) {
-                                                        Toast.makeText(mActivity, R.string.error, Toast.LENGTH_SHORT).show();
-                                                        AppLog.e(mActivity, finalEx);
-                                                    } else {
-                                                        Toast.makeText(mActivity, R.string.forum_setted_read, Toast.LENGTH_SHORT).show();
-                                                    }
-                                                } catch (Exception ex) {
-                                                    AppLog.e(mActivity, ex);
-                                                }
-
-                                            }
-                                        });
-                                    }
+                                    });
                                 }).start();
                             }
                         })
