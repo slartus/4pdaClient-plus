@@ -1,11 +1,9 @@
 package org.softeg.slartus.forpdaplus.prefs;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -15,11 +13,8 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.Html;
@@ -37,29 +32,18 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
-
 
 import org.softeg.slartus.forpdacommon.ExternalStorage;
 import org.softeg.slartus.forpdacommon.FileUtils;
-import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.AppTheme;
-import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.FilePath;
-import org.softeg.slartus.forpdaplus.classes.ForumUser;
 import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.OpenFileDialog;
 import org.softeg.slartus.forpdaplus.db.NotesDbHelper;
 import org.softeg.slartus.forpdaplus.db.NotesTable;
-import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
@@ -76,12 +60,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.SingleSubject;
 import ru.slartus.http.PersistentCookieStore;
 
 /**
@@ -149,13 +130,13 @@ public class PreferencesActivity extends BasePreferencesActivity {
             if (preference != null) {
                 preference.setOnPreferenceClickListener(this);
                 Calendar clndr = Preferences.Notifications.SilentMode.getStartTime();
-                preference.setSummary(String.format("%02d:%02d", clndr.get(Calendar.HOUR_OF_DAY), clndr.get(Calendar.MINUTE)));
+                preference.setSummary(String.format(Locale.getDefault(),"%02d:%02d", clndr.get(Calendar.HOUR_OF_DAY), clndr.get(Calendar.MINUTE)));
             }
             preference = findPreference("notifiers.silent_mode.end_time");
             if (preference != null) {
                 preference.setOnPreferenceClickListener(this);
                 Calendar clndr = Preferences.Notifications.SilentMode.getEndTime();
-                preference.setSummary(String.format("%02d:%02d", clndr.get(Calendar.HOUR_OF_DAY), clndr.get(Calendar.MINUTE)));
+                preference.setSummary(String.format(Locale.getDefault(),"%02d:%02d", clndr.get(Calendar.HOUR_OF_DAY), clndr.get(Calendar.MINUTE)));
             }
 
             preference = findPreference("notifiers.service.use_sound");
@@ -177,12 +158,12 @@ public class PreferencesActivity extends BasePreferencesActivity {
             }
             findPreference("notifiers.service.sound").setOnPreferenceClickListener(this);
 
-            findPreference("backup.notes.backup").setOnPreferenceClickListener(preference13 -> {
+            findPreference("notes.backup").setOnPreferenceClickListener(preference13 -> {
                 showBackupNotesBackupDialog();
                 return true;
             });
 
-            findPreference("backup.notes.restore").setOnPreferenceClickListener(preference14 -> {
+            findPreference("notes.restore").setOnPreferenceClickListener(preference14 -> {
                 restoreNotes();
                 return true;
             });
@@ -194,9 +175,9 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
         private void showBackupNotesBackupDialog() {
             try {
-                File dbFile = new File(NotesDbHelper.DATABASE_DIR + "/"+ NotesDbHelper.DATABASE_NAME);
+                File dbFile = new File(NotesDbHelper.DATABASE_DIR + "/" + NotesDbHelper.DATABASE_NAME);
                 if (!dbFile.exists()) {
-                    new AlertDialog.Builder(getContext())
+                    new AlertDialog.Builder(getActivity())
                             .setTitle("Ошибка")
                             .setMessage("Файл базы заметок не найден. Возможно, вы ещё не создали ни одной заметки")
                             .setPositiveButton("ОК", null)
@@ -218,11 +199,11 @@ public class PreferencesActivity extends BasePreferencesActivity {
                 File newFile = new File(toPath);
                 int i = 0;
                 while (newFile.exists()) {
-                    newFile = new File(externalDirPath + String.format("/forpda_notes_%d.sqlite", i++));
+                    newFile = new File(externalDirPath + String.format(Locale.getDefault(),"/forpda_notes_%d.sqlite", i++));
                 }
                 boolean b = newFile.createNewFile();
                 if (!b) {
-                    new AlertDialog.Builder(getContext())
+                    new AlertDialog.Builder(getActivity())
                             .setTitle("Ошибка").setMessage("Не удалось создать файл: " + toPath)
                             .setPositiveButton("ОК", null)
                             .create().show();
@@ -231,59 +212,53 @@ public class PreferencesActivity extends BasePreferencesActivity {
 
 
                 FileUtils.copy(dbFile, newFile);
-                new AlertDialog.Builder(getContext())
+                new AlertDialog.Builder(getActivity())
                         .setTitle("Успех!")
                         .setMessage("Резервная копия заметок сохранена в файл:\n" + newFile.toString())
                         .setPositiveButton("ОК", null)
                         .create().show();
             } catch (Throwable ex) {
-                AppLog.e(getContext(), ex);
+                AppLog.e(getActivity(), ex);
             }
 
         }
 
         private void restoreNotes() {
-            new OpenFileDialog(getContext())
+            new OpenFileDialog(getActivity())
                     .setFilter(".*\\.(?i:sqlite)")
-                    .setOpenDialogListener(new OpenFileDialog.OpenDialogListener() {
-                        @Override
-                        public void OnSelectedFile(final String fileName) {
-                            try {
-                                Uri sourceuri = Uri.parse(fileName);
-                                if (sourceuri == null) {
-                                    Toast.makeText(getContext(), "Файл не выбран!", Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-                                final ArrayList<Note> notes = NotesTable.getNotesFromFile(fileName);
-
-                                new AlertDialog.Builder(getContext())
-                                        .setTitle("Внимание!")
-                                        .setMessage("Заметок для восстановления: " + notes.size() +
-                                                "\n\nВосстановление заметок приведёт к полной потере всех существующих заметок!")
-                                        .setPositiveButton("Продолжить", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                dialogInterface.dismiss();
-                                                try {
-                                                    int count = NotesTable.restoreFrom(notes);
-                                                    new AlertDialog.Builder(getContext())
-                                                            .setTitle("Успех!")
-                                                            .setMessage("Резервная копия заметок восстановлена!\nЗаметок восстановлено: " + count)
-                                                            .setPositiveButton("ОК", null)
-                                                            .create().show();
-                                                } catch (Throwable ex) {
-                                                    AppLog.e(getContext(), ex);
-                                                }
-                                            }
-                                        })
-                                        .setNegativeButton("Отмена",null)
-                                        .create().show();
-
-                            } catch (Throwable ex) {
-                                AppLog.e(getContext(), ex);
+                    .setOpenDialogListener(fileName -> {
+                        try {
+                            Uri sourceuri = Uri.parse(fileName);
+                            if (sourceuri == null) {
+                                Toast.makeText(getActivity(), "Файл не выбран!", Toast.LENGTH_SHORT).show();
+                                return;
                             }
+                            final ArrayList<Note> notes = NotesTable.getNotesFromFile(fileName);
 
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle("Внимание!")
+                                    .setMessage("Заметок для восстановления: " + notes.size() +
+                                            "\n\nВосстановление заметок приведёт к полной потере всех существующих заметок!")
+                                    .setPositiveButton("Продолжить", (dialogInterface, i) -> {
+                                        dialogInterface.dismiss();
+                                        try {
+                                            int count = NotesTable.restoreFrom(notes);
+                                            new AlertDialog.Builder(getActivity())
+                                                    .setTitle("Успех!")
+                                                    .setMessage("Резервная копия заметок восстановлена!\nЗаметок восстановлено: " + count)
+                                                    .setPositiveButton("ОК", null)
+                                                    .create().show();
+                                        } catch (Throwable ex) {
+                                            AppLog.e(getActivity(), ex);
+                                        }
+                                    })
+                                    .setNegativeButton("Отмена", null)
+                                    .create().show();
+
+                        } catch (Throwable ex) {
+                            AppLog.e(getActivity(), ex);
                         }
+
                     })
                     .show();
         }
@@ -330,20 +305,20 @@ public class PreferencesActivity extends BasePreferencesActivity {
                     setMenuItems();
                     return true;
                 case "notifiers.service.sound":
-                    pickRingtone(NOTIFIERS_SERVICE_SOUND_REQUEST_CODE, Preferences.Notifications.getSound());
+                    pickRingtone(Preferences.Notifications.getSound());
                     return true;
                 case "notifiers.silent_mode.start_time":
                     Calendar calendar = Preferences.Notifications.SilentMode.getStartTime();
                     new TimePickerDialog(getActivity(), (timePicker, hourOfDay, minute) -> {
                         Preferences.Notifications.SilentMode.setStartTime(hourOfDay, minute);
-                        findPreference(key).setSummary(String.format("%02d:%02d", hourOfDay, minute));
+                        findPreference(key).setSummary(String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute));
                     }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
                     return true;
                 case "notifiers.silent_mode.end_time":
                     Calendar endcalendar = Preferences.Notifications.SilentMode.getEndTime();
                     new TimePickerDialog(getActivity(), (timePicker, hourOfDay, minute) -> {
                         Preferences.Notifications.SilentMode.setEndTime(hourOfDay, minute);
-                        findPreference(key).setSummary(String.format("%02d:%02d", hourOfDay, minute));
+                        findPreference(key).setSummary(String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute));
                     }, endcalendar.get(Calendar.HOUR_OF_DAY), endcalendar.get(Calendar.MINUTE), true).show();
                     return true;
                 case "About.CheckNewVersion":
@@ -855,84 +830,13 @@ public class PreferencesActivity extends BasePreferencesActivity {
             //textView.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
-        private void pickRingtone(int requestCode, Uri defaultSound) {
+        private void pickRingtone(Uri defaultSound) {
             Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, App.getContext().getString(R.string.pick_audio));
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, defaultSound);
             if (getActivity() != null)
-                getActivity().startActivityForResult(intent, requestCode);
-        }
-
-        private SingleSubject<Boolean> m_PathPermission = SingleSubject.create();
-
-        private void checkExternalPathPermission(String dirPath) {
-            Dexter.withActivity(getActivity())
-                    .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    .withListener(new PermissionListener() {
-                        @Override
-                        public void onPermissionGranted(PermissionGrantedResponse response) {
-                            tryCreateTempFile(dirPath);
-                        }
-
-                        @Override
-                        public void onPermissionDenied(PermissionDeniedResponse response) {
-                            Toast.makeText(App.getInstance(), R.string.error_external_storage, Toast.LENGTH_SHORT).show();
-                            m_PathPermission.onSuccess(false);
-                        }
-
-                        @Override
-                        public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-                            //Toast.makeText(App.getInstance(), R.string.error_external_storage, Toast.LENGTH_SHORT).show();
-                            if (token != null)
-                                token.continuePermissionRequest();
-                        }
-                    })
-                    .check();
-        }
-
-        private void tryCreateTempFile(String dirPath) {
-            try {
-                File dir = new File(dirPath);
-                File file = new File(org.softeg.slartus.forpdacommon.FileUtils.getUniqueFilePath(dirPath, "4pda.tmp"));
-
-                if (!dir.exists() && !dir.mkdirs()) {
-                    m_PathPermission.onSuccess(false);
-                    throw new NotReportException(getString(R.string.FailedToCreateFolderInPath));
-                }
-
-                if (!file.createNewFile()) {
-                    m_PathPermission.onSuccess(false);
-                    throw new NotReportException(getString(R.string.FailedToCreateFileInPath));
-                }
-                file.delete();
-                m_PathPermission.onSuccess(true);
-
-            } catch (Throwable ex) {
-                m_PathPermission.onSuccess(false);
-                AppLog.e(getActivity(), new NotReportException(ex.toString()));
-            }
-        }
-
-        private void checkDownloadsPath(Object o) {
-            try {
-                String dirPath = o.toString();
-                if (!dirPath.endsWith(File.separator))
-                    dirPath += File.separator;
-
-                Map<String, File> externalLocations = ExternalStorage.getAllStorageLocations();
-                for (File externalLocation : externalLocations.values()) {
-                    if (dirPath.startsWith(externalLocation.getAbsolutePath()) || dirPath.startsWith(externalLocation.getCanonicalPath())) {
-                        checkExternalPathPermission(dirPath);
-                        return;
-                    }
-                }
-                tryCreateTempFile(dirPath);
-
-            } catch (Throwable ex) {
-                m_PathPermission.onSuccess(false);
-                AppLog.e(getActivity(), new NotReportException(ex.toString()));
-            }
+                getActivity().startActivityForResult(intent, PreferencesActivity.NOTIFIERS_SERVICE_SOUND_REQUEST_CODE);
         }
 
         private void showTheme(String themeId) {
@@ -1076,7 +980,7 @@ public class PreferencesActivity extends BasePreferencesActivity {
             CharSequence styleName = styleNames[i];
             CharSequence styleValue = styleValues[i];
 
-            xmlPath =AppTheme.getThemeCssFileName(styleValue.toString()).replace(".css", ".xml").replace("/android_asset/", "");
+            xmlPath = AppTheme.getThemeCssFileName(styleValue.toString()).replace(".css", ".xml").replace("/android_asset/", "");
             cssStyle = CssStyle.parseStyleFromAssets(context, xmlPath);
             if (cssStyle.ExistsInfo)
                 styleName = cssStyle.Title;

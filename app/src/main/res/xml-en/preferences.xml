@@ -338,18 +338,7 @@
                 android:summary="You can specify multiple comma-separated"
                 android:title="Button code to scroll up button code to scroll down" />
         </PreferenceScreen>
-        <PreferenceScreen android:title="Backup">
-            <PreferenceCategory android:title="Notes">
-                <Preference
-                    android:key="backup.notes.backup"
-                    android:summary="Create backup"
-                    android:title="Backup"/>
-                <Preference
-                    android:key="backup.notes.restore"
-                    android:summary="Restore from backup"
-                    android:title="Restore"/>
-            </PreferenceCategory>
-        </PreferenceScreen>
+
         <PreferenceScreen android:title="For Developer styles">
             <CheckBoxPreference
                 android:defaultValue="false"
@@ -478,6 +467,25 @@
                 android:title="End" />
         </PreferenceScreen>
     </PreferenceScreen>
+
+    <PreferenceScreen
+        android:key="notes"
+        android:title="Notes">
+
+        <PreferenceCategory
+            android:key="notes.backup.category"
+            android:title="Backup">
+            <Preference
+                android:key="notes.backup"
+                android:summary="Create backup"
+                android:title="Backup" />
+            <Preference
+                android:key="notes.restore"
+                android:summary="Restore from backup"
+                android:title="Restore" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+
 
     <PreferenceScreen android:title="About">
         <Preference
