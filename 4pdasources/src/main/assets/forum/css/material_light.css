@@ -368,7 +368,7 @@ span[style*="font-size:8pt"] * {
   background: #3490c3;
 }
 .post-block.spoil.close > .block-title .anchor:before {
-  background-image: url(material_src/link_white.svg), url(../material_src/link_white.svg);
+  background-image: url(material_src/link_white.svg), url(../css/material_src/link_white.svg);
 }
 .post-block.spoil.close > .block-body {
   display: none;
@@ -1109,7 +1109,7 @@ span[style*="font-size:8pt"] * {
   height: 1.5rem;
   margin-right: 0.3rem;
   content: '';
-  background-image: url(material_src/attach.svg), url(../material_src/attach.svg);
+  background-image: url(material_src/attach.svg), url(../css/material_src/attach.svg);
   background-repeat: no-repeat;
   background-size: 1.5rem;
   vertical-align: middle;

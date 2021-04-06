@@ -150,7 +150,7 @@ span[style*="font-size:8pt"] * {
   background: #ddecff;
   background-repeat: no-repeat;
   background-position: right;
-  background-image: url(file:///android_asset/forum/style_images/1/css_img_quote.gif), url(forum/style_images/1/css_img_quote.gif);
+  background-image: url(file:///android_asset/forum/style_images/1/white/css_img_quote.gif), url(../style_images/1/white/css_img_quote.gif);
 }
 .post-block.quote > .block-title:before {
   content: 'Цитата ( ';
