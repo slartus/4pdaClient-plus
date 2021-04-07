@@ -195,7 +195,6 @@
             android:title="Не загружать комментарии" />
     </PreferenceScreen>
 
-
     <PreferenceScreen android:title="Списки">
         <PreferenceCategory android:title="Общее">
             <CheckBoxPreference
@@ -264,15 +263,6 @@
                 android:summary="По умолчанию - пусто"
                 android:title="Путь к файлу cookies" />
 
-            <Preference
-                android:key="cookies.path.SetSystemPath"
-                android:summary="Задать системный путь"
-                android:title="Системный" />
-
-            <Preference
-                android:key="cookies.path.SetAppPath"
-                android:summary="Задать путь к общей папке программы на карте памяти"
-                android:title="Общая папка" />
 
             <Preference
                 android:key="cookies.delete"
@@ -337,18 +327,7 @@
                 android:summary="Можно указать несколько через запятую"
                 android:title="Код кнопки для прокрутки вниз" />
         </PreferenceScreen>
-        <PreferenceScreen android:title="Бэкап">
-            <PreferenceCategory android:title="Заметки">
-                <Preference
-                    android:key="backup.notes.backup"
-                    android:summary="Сделать резервную копию"
-                    android:title="Резерв"/>
-                <Preference
-                    android:key="backup.notes.restore"
-                    android:summary="Восстановить из резервной копии"
-                    android:title="Восстановить"/>
-            </PreferenceCategory>
-        </PreferenceScreen>
+
         <PreferenceScreen android:title="Для разработчика стилей">
             <CheckBoxPreference
                 android:defaultValue="false"
@@ -478,6 +457,47 @@
         </PreferenceScreen>
     </PreferenceScreen>
 
+    <PreferenceScreen
+        android:key="notes"
+        android:title="Заметки">
+
+        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+            android:defaultValue="local"
+            android:entries="@array/NotesStoragePlacements"
+            android:entryValues="@array/NotesStoragePlacementValues"
+            android:key="notes.db.placement"
+            android:title="Место хранения" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="notes.db.placement"
+            android:summary="Локальное хранилище"
+            android:title="Место хранения" />
+
+        <PreferenceCategory
+            android:key="notes.remote.settings"
+            android:title="Удалённый сервер">
+            <Preference
+                android:key="notes.remote.url"
+                android:title="Ссылка" />
+            <Preference
+                android:key="notes.remote.help"
+                android:title="Помощь" />
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:key="notes.backup.category"
+            android:title="Локальное хранилище">
+            <Preference
+                android:key="notes.backup"
+                android:summary="Сделать резервную копию"
+                android:title="Резерв" />
+            <Preference
+                android:key="notes.restore"
+                android:summary="Восстановить из резервной копии"
+                android:title="Восстановить" />
+        </PreferenceCategory>
+    </PreferenceScreen>
     <PreferenceScreen android:title="О программе">
         <Preference
             android:key="About.AppVersion"
@@ -495,9 +515,10 @@
         <Preference
             android:key="About.CheckNewVersion"
             android:title="Проверить наличие новой версии" />
-        <Preference android:title="Альтернативный клиент от Radiation15"
+        <Preference
+            android:key="About.OpenThemeForPda"
             android:summary="Открыть тему"
-            android:key="About.OpenThemeForPda"/>
+            android:title="Альтернативный клиент от Radiation15" />
     </PreferenceScreen>
 
     <PreferenceScreen android:title="Помочь проекту">

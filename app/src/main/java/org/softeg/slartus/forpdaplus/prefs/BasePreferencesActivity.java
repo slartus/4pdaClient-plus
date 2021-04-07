@@ -12,6 +12,7 @@ import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatSpinner;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Toast;
 
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.AppTheme;
@@ -45,21 +46,26 @@ public class BasePreferencesActivity extends PreferenceActivity {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             switch (name) {
                 case "EditText":
-                    return new AppCompatEditText(this,attrs);
+                    return new AppCompatEditText(this, attrs);
                 case "Spinner":
-                    return new AppCompatSpinner(this,attrs);
+                    return new AppCompatSpinner(this, attrs);
                 case "CheckBox":
-                    return new AppCompatCheckBox(this,attrs);
+                    return new AppCompatCheckBox(this, attrs);
                 case "RadioButton":
-                    return new AppCompatRadioButton(this,attrs);
+                    return new AppCompatRadioButton(this, attrs);
                 case "CheckedTextView":
-                    return new AppCompatCheckedTextView(this,attrs);
+                    return new AppCompatCheckedTextView(this, attrs);
             }
         }
 
         return null;
     }
+
     private static List<String> fragments = new ArrayList<String>();
+
+    protected void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void loadHeadersFromResource(int resid, List<Header> target) {

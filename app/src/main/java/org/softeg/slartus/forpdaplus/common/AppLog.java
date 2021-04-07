@@ -49,34 +49,38 @@ public final class AppLog {
     }
 
     public static void e(Context context, Throwable ex, Runnable netExceptionAction) {
-        String exLocation = getLocation();
-        android.util.Log.e(TAG, exLocation + ex);
-        if (tryShowNetException(context != null ? context : App.getInstance(), ex, netExceptionAction))
-            return;
+        try {
+            String exLocation = getLocation();
+            android.util.Log.e(TAG, exLocation + ex);
+            if (tryShowNetException(context != null ? context : App.getInstance(), ex, netExceptionAction))
+                return;
 
-        String message = ex.getMessage();
-        if (TextUtils.isEmpty(message))
-            message = ex.toString();
-        if (ex.getClass() == ShowInBrowserException.class) {
-            ShowInBrowserDialog.showDialog(context, (ShowInBrowserException) ex);
-        } else if (ex instanceof NotReportException) {
-            assert context != null;
-            new MaterialDialog.Builder(context)
-                    .title(R.string.error)
-                    .content(message)
-                    .positiveText(R.string.ok)
-                    .show();
-        } else if (ex.getClass() == MessageInfoException.class) {
-            MessageInfoException messageInfoException = (MessageInfoException) ex;
-            assert context != null;
-            new MaterialDialog.Builder(context)
-                    .title(messageInfoException.Title)
-                    .content(messageInfoException.Text)
-                    .positiveText(R.string.ok)
-                    .show();
-        } else {
-            org.acra.ACRA.getErrorReporter().handleException(ex);
+            String message = ex.getMessage();
+            if (TextUtils.isEmpty(message))
+                message = ex.toString();
+            if (ex.getClass() == ShowInBrowserException.class) {
+                ShowInBrowserDialog.showDialog(context, (ShowInBrowserException) ex);
+            } else if (ex instanceof NotReportException) {
+                assert context != null;
+                new MaterialDialog.Builder(context)
+                        .title(R.string.error)
+                        .content(message)
+                        .positiveText(R.string.ok)
+                        .show();
+            } else if (ex.getClass() == MessageInfoException.class) {
+                MessageInfoException messageInfoException = (MessageInfoException) ex;
+                assert context != null;
+                new MaterialDialog.Builder(context)
+                        .title(messageInfoException.Title)
+                        .content(messageInfoException.Text)
+                        .positiveText(R.string.ok)
+                        .show();
+            } else {
+                org.acra.ACRA.getErrorReporter().handleException(ex);
 
+            }
+        }catch (Throwable error){
+            android.util.Log.e(TAG, error.toString());
         }
     }
 

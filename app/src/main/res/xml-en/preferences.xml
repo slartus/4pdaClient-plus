@@ -265,15 +265,6 @@
                 android:summary="Default - empty"
                 android:title="The path to your cookies" />
 
-            <Preference
-                android:key="cookies.path.SetSystemPath"
-                android:summary="Ask the system path"
-                android:title="System" />
-
-            <Preference
-                android:key="cookies.path.SetAppPath"
-                android:summary="Set path to the shared folder of the program on the memory card"
-                android:title="A shared folder" />
 
             <Preference
                 android:key="cookies.delete"
@@ -338,18 +329,7 @@
                 android:summary="You can specify multiple comma-separated"
                 android:title="Button code to scroll up button code to scroll down" />
         </PreferenceScreen>
-        <PreferenceScreen android:title="Backup">
-            <PreferenceCategory android:title="Notes">
-                <Preference
-                    android:key="backup.notes.backup"
-                    android:summary="Create backup"
-                    android:title="Backup"/>
-                <Preference
-                    android:key="backup.notes.restore"
-                    android:summary="Restore from backup"
-                    android:title="Restore"/>
-            </PreferenceCategory>
-        </PreferenceScreen>
+
         <PreferenceScreen android:title="For Developer styles">
             <CheckBoxPreference
                 android:defaultValue="false"
@@ -478,6 +458,42 @@
                 android:title="End" />
         </PreferenceScreen>
     </PreferenceScreen>
+
+    <PreferenceScreen
+        android:key="notes"
+        android:title="Notes">
+        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+            android:defaultValue="local"
+            android:entries="@array/NotesStoragePlacements"
+            android:entryValues="@array/NotesStoragePlacementValues"
+            android:key="notes.db.placement"
+            android:title="Placement" />
+
+        <PreferenceCategory
+            android:key="notes.remote.settings"
+            android:title="Remote server">
+            <Preference
+                android:key="notes.remote.url"
+                android:title="Url" />
+            <Preference
+                android:key="notes.remote.help"
+                android:title="Help" />
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:key="notes.backup.category"
+            android:title="Local storage">
+            <Preference
+                android:key="notes.backup"
+                android:summary="Create backup"
+                android:title="Backup" />
+            <Preference
+                android:key="notes.restore"
+                android:summary="Restore from backup"
+                android:title="Restore" />
+        </PreferenceCategory>
+    </PreferenceScreen>
+
 
     <PreferenceScreen android:title="About">
         <Preference

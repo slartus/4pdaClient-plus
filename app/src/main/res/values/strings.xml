@@ -475,4 +475,9 @@
     <string name="SearchResultTitles_topics">Темы</string>
     <string name="SearchResultTitles_posts">Сообщения</string>
     <string name="forum_search">Поиск по форуму</string>
+
+    <string name="oops">Oops! Ошибка :(</string>
+    <string name="oops_comment_hint">Комментарий (необязательно)</string>
+    <string name="oops_message">Пожалуйста, нажмите \\\"отправить отчёт\\\", чтобы мы могли разобраться в чём дело</string>
+    <string name="oops_send_text">Отправить отчёт</string>
 </resources>

@@ -24,6 +24,10 @@
         <item>0</item>
     </string-array>
 
+    <string-array name="NotesStoragePlacements">
+        <item>Local storage</item>
+        <item>Remote server</item>
+    </string-array>
 
     <string-array name="AvatarsShowTitles">
         <item>Always</item>

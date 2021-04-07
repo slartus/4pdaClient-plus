@@ -75,7 +75,7 @@
     <string name="AcceptStyle">Apply style</string>
     <string name="ChooseStyle">Choose Style</string>
     <string name="Information">Information</string>
-    <string name="StyleDoesNotContainDesc">Can\'t sort descending</string>
+    <string name="StyleDoesNotContainDesc">Style doesn not has description</string>
     <string name="OpenLinkInBrowser">Open Link In Browser</string>
     <string name="Open">Open</string>
     <string name="DownloadAborted">Download Aborted</string>
@@ -465,4 +465,9 @@
     <string name="file_not_support_forum">This file type is not supported by forum.</string>
     <string name="attach_file">Attach</string>
     <string name="forum_search">Forum search</string>
+
+    <string name="oops">Oops! Error :(</string>
+    <string name="oops_comment_hint">Comment</string>
+    <string name="oops_message">Please send report</string>
+    <string name="oops_send_text">Send report</string>
 </resources>
