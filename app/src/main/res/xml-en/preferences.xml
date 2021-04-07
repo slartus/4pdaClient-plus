@@ -466,7 +466,7 @@
             android:defaultValue="local"
             android:entries="@array/NotesStoragePlacements"
             android:entryValues="@array/NotesStoragePlacementValues"
-            android:key="notes.db.placement"
+            android:key="notes.placement"
             android:title="Placement" />
 
         <PreferenceCategory

@@ -465,15 +465,8 @@
             android:defaultValue="local"
             android:entries="@array/NotesStoragePlacements"
             android:entryValues="@array/NotesStoragePlacementValues"
-            android:key="notes.db.placement"
+            android:key="notes.placement"
             android:title="Место хранения" />
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="notes.db.placement"
-            android:summary="Локальное хранилище"
-            android:title="Место хранения" />
-
         <PreferenceCategory
             android:key="notes.remote.settings"
             android:title="Удалённый сервер">

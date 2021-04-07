@@ -138,7 +138,7 @@ class PreferencesActivity : BasePreferencesActivity() {
         }
 
         private fun notesCategory() {
-            findPreference("notes.db.placement")?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, value ->
+            findPreference("notes.placement")?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, value ->
                 if (value == "remote") {
                     showNotesRemoteServerDialog()
                 }
@@ -201,7 +201,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                             }, {
                                 setLoading(false)
                                 Preferences.Notes.setPlacement("local")
-                                findPreference("notes.db.placement")?.summary = resources
+                                findPreference("notes.placement")?.summary = resources
                                         .getStringArray(R.array.NotesStoragePlacements)
                                         .firstOrNull()
                                 refreshNotesEnabled()

@@ -402,11 +402,11 @@ public class Preferences {
 
     public static class Notes {
         public static Boolean isLocal() {
-            return !App.getInstance().getPreferences().getString("notes.db.placement", "local").equals("remote");
+            return !App.getInstance().getPreferences().getString("notes.placement", "local").equals("remote");
         }
 
         public static void setPlacement(String value) {
-            App.getInstance().getPreferences().edit().putString("notes.db.placement", value).apply();
+            App.getInstance().getPreferences().edit().putString("notes.placement", value).apply();
         }
 
         public static String getRemoteUrl() {
