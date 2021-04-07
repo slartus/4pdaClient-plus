@@ -480,4 +480,6 @@
     <string name="oops_comment_hint">Комментарий (необязательно)</string>
     <string name="oops_message">Пожалуйста, нажмите \\\"отправить отчёт\\\", чтобы мы могли разобраться в чём дело</string>
     <string name="oops_send_text">Отправить отчёт</string>
+    <string name="notes_remote_url">Ссылка</string>
+
 </resources>

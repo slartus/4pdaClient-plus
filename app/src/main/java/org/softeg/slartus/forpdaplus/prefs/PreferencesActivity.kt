@@ -183,7 +183,7 @@ class PreferencesActivity : BasePreferencesActivity() {
             val editText = view.findViewById<EditText>(R.id.edit_text)
             editText.setText(Preferences.Notes.getRemoteUrl() ?: "")
             MaterialDialog.Builder(activity)
-                    .title(R.string.path_to_data)
+                    .title(R.string.notes_remote_url)
                     .customView(view, true)
                     .cancelable(true)
                     .positiveText(R.string.ok)

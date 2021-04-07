@@ -470,4 +470,5 @@
     <string name="oops_comment_hint">Comment</string>
     <string name="oops_message">Please send report</string>
     <string name="oops_send_text">Send report</string>
+    <string name="notes_remote_url">Url</string>
 </resources>
