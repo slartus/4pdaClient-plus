@@ -20,7 +20,7 @@ import java.util.Set;
  * Created by slartus on 23.02.14.
  */
 public class Preferences {
-   private static Boolean isLoadImages() {
+    private static Boolean isLoadImages() {
         int loadImagesType = ExtPreferences.parseInt(App.getInstance().getPreferences(), "news.list.loadimages", 1);
         if (loadImagesType == 2) {
             return Connectivity.isConnectedWifi(App.getContext());
@@ -397,6 +397,24 @@ public class Preferences {
                 return App.getInstance().getPreferences().getBoolean("refreshQMSData", false);
             }
 
+        }
+    }
+
+    public static class Notes {
+        public static Boolean isLocal() {
+            return !App.getInstance().getPreferences().getString("notes.db.placement", "local").equals("remote");
+        }
+
+        public static void setPlacement(String value) {
+            App.getInstance().getPreferences().edit().putString("notes.db.placement", value).apply();
+        }
+
+        public static String getRemoteUrl() {
+            return App.getInstance().getPreferences().getString("notes.remote.url", "");
+        }
+
+        public static void setRemoteUrl(String value) {
+            App.getInstance().getPreferences().edit().putString("notes.remote.url", value).apply();
         }
     }
 

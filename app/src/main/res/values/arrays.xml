@@ -24,6 +24,15 @@
         <item>0</item>
     </string-array>
 
+    <string-array name="NotesStoragePlacements">
+        <item>Локальное хранилище</item>
+        <item>Удалённый сервер</item>
+    </string-array>
+
+    <string-array name="NotesStoragePlacementValues">
+        <item>local</item>
+        <item>remote</item>
+    </string-array>
 
     <string-array name="AvatarsShowTitles">
         <item>Всегда</item>

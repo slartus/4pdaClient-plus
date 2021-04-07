@@ -50,7 +50,7 @@ class NotesListFragment : BaseListFragment() {
         dataSubscriber?.dispose()
     }
 
-    private fun loadData(){
+    private fun loadData() {
         dataSubscriber?.dispose()
         dataSubscriber =
                 NotesRepository.instance
@@ -81,7 +81,7 @@ class NotesListFragment : BaseListFragment() {
                                 },
                                 {
                                     setLoading(false)
-                                    AppLog.e(it)
+                                    AppLog.e(activity, it)
                                 }
                         )
     }

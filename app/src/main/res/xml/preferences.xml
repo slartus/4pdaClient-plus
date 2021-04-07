@@ -263,15 +263,6 @@
                 android:summary="По умолчанию - пусто"
                 android:title="Путь к файлу cookies" />
 
-            <Preference
-                android:key="cookies.path.SetSystemPath"
-                android:summary="Задать системный путь"
-                android:title="Системный" />
-
-            <Preference
-                android:key="cookies.path.SetAppPath"
-                android:summary="Задать путь к общей папке программы на карте памяти"
-                android:title="Общая папка" />
 
             <Preference
                 android:key="cookies.delete"
@@ -470,6 +461,13 @@
         android:key="notes"
         android:title="Заметки">
 
+        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+            android:defaultValue="local"
+            android:entries="@array/NotesStoragePlacements"
+            android:entryValues="@array/NotesStoragePlacementValues"
+            android:key="notes.db.placement"
+            android:title="Место хранения" />
+
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="notes.db.placement"
@@ -477,8 +475,19 @@
             android:title="Место хранения" />
 
         <PreferenceCategory
+            android:key="notes.remote.settings"
+            android:title="Удалённый сервер">
+            <Preference
+                android:key="notes.remote.url"
+                android:title="Ссылка" />
+            <Preference
+                android:key="notes.remote.help"
+                android:title="Помощь" />
+        </PreferenceCategory>
+
+        <PreferenceCategory
             android:key="notes.backup.category"
-            android:title="Бэкап">
+            android:title="Локальное хранилище">
             <Preference
                 android:key="notes.backup"
                 android:summary="Сделать резервную копию"
