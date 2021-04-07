@@ -101,13 +101,15 @@ try {
             $repository = new Repository();
             $repository->insertRow($data['Title'], $data["Body"], $data["Url"],
                 $data["TopicId"], $data["Topic"], $data["PostId"], $data["UserId"], $data["User"], $data["Date"]);
-            $repository->getNotes();
+            $notes = $repository->getNotes();
+            echo json_encode($notes);
             break;
         case "del":
             $id = isset($_REQUEST["id"]) ? $_REQUEST["id"] : null;
             $repository = new Repository();
             $repository->delete($id);
-            $repository->getNotes();
+            $notes = $repository->getNotes();
+            echo json_encode($notes);
             break;
     }
 } catch (Exception $ex) {
