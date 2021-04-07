@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-$PASSWORD = "MY_PASSWORD";
+$PASSWORD = "MY_PASSWORD";// для безопасности замените пароль на свой
 
 class Repository
 {
