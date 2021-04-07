@@ -29,6 +29,7 @@ import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.AppTheme.currentTheme
 import org.softeg.slartus.forpdaplus.AppTheme.getThemeCssFileName
+import org.softeg.slartus.forpdaplus.IntentActivity
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.classes.FilePath
 import org.softeg.slartus.forpdaplus.classes.InputFilterMinMax
@@ -133,7 +134,10 @@ class PreferencesActivity : BasePreferencesActivity() {
             DonateActivity.setDonateClickListeners(this)
             findPreference("showExitButton").onPreferenceClickListener = this
 
+            notesCategory()
+        }
 
+        private fun notesCategory() {
             findPreference("notes.db.placement")?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, value ->
                 if (value == "remote") {
                     showNotesRemoteServerDialog()
@@ -147,12 +151,16 @@ class PreferencesActivity : BasePreferencesActivity() {
                     true
                 }
             }
+            findPreference("notes.remote.help")?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                IntentActivity.showInDefaultBrowser(activity, "https://github.com/slartus/4pdaClient-plus/wiki/Notes")
+                true
+            }
             refreshNotesEnabled()
         }
 
         private fun refreshNotesEnabled() {
-            findPreference("notes.remote.settings").isEnabled = !Preferences.Notes.isLocal()
-            findPreference("notes.backup.category").isEnabled = Preferences.Notes.isLocal()
+//            findPreference("notes.remote.settings").isEnabled = !Preferences.Notes.isLocal()
+//            findPreference("notes.backup.category").isEnabled = Preferences.Notes.isLocal()
         }
 
         private fun setLoading(progress: Boolean) {

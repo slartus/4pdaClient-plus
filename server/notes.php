@@ -8,7 +8,7 @@ class Repository
 
     function __construct()
     {
-        $this->db = new SQLite3('notes.sqlite');
+        $this->db = new SQLite3('Notes.sqlite');
         $this->checkDb();
     }
 
@@ -43,7 +43,8 @@ Topic text,
         while ($res = $results->fetchArray(1)) {
             $data[] = $res;
         }
-        echo json_encode($data);
+        return $data;
+
     }
 
     function insertRow($title, $body, $url, $topicId, $topic,
@@ -92,7 +93,8 @@ try {
     switch ($action) {
         case "get":
             $repository = new Repository();
-            $repository->getNotes();
+            $notes = $repository->getNotes();
+            echo json_encode($notes);
             break;
         case "ins":
             $data = json_decode(file_get_contents('php://input'), true);
