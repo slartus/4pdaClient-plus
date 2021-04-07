@@ -62,19 +62,23 @@ class NotesRepository private constructor() {
         }
     }
 
-    private val local by lazy {
-        Preferences.Notes.isLocal()
-    }
-    private val apiUrl by lazy {
-        Preferences.Notes.getRemoteUrl()
-    }
+    private val local: Boolean
+        get() {
+            return Preferences.Notes.isLocal()
+        }
+
+
+    private val apiUrl: String
+        get() {
+            return Preferences.Notes.getRemoteUrl() ?: ""
+        }
 
     private fun getUrl(action: String): String {
         return getUrl(apiUrl, action)
     }
 
     val notesSubject: BehaviorSubject<List<Note>> = BehaviorSubject.createDefault(emptyList())
-    private fun load() {
+    fun load() {
         if (local) {
             GlobalScope.launch(Dispatchers.IO) {
                 val notes = NotesTable.getNotes(null)
@@ -99,7 +103,6 @@ class NotesRepository private constructor() {
         }
     }
 
-
     fun delete(id: String) {
         if (local) {
             GlobalScope.launch(Dispatchers.IO) {
@@ -118,7 +121,8 @@ class NotesRepository private constructor() {
                         notesSubject.onNext(parseNotes(response))
                     } catch (ex: Throwable) {
                         notesSubject.onNext(notesSubject.value ?: emptyList())
-                        AppLog.e(Exception("notes delete:" + (ex.localizedMessage ?: ex.message), ex))
+                        AppLog.e(Exception("notes delete:" + (ex.localizedMessage
+                                ?: ex.message), ex))
                     }
                 }
             }
@@ -162,7 +166,8 @@ class NotesRepository private constructor() {
                         action()
                     } catch (ex: Throwable) {
                         notesSubject.onNext(notesSubject.value ?: emptyList())
-                        AppLog.e(Exception("notes insert:" + (ex.localizedMessage ?: ex.message), ex))
+                        AppLog.e(Exception("notes insert:" + (ex.localizedMessage
+                                ?: ex.message), ex))
                     }
                 }
             }

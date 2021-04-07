@@ -194,7 +194,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                             setLoading(true)
                             NotesRepository.checUrlAsync(baseUrl, {
                                 setLoading(false)
-                                Preferences.Notes.setPlacement("local")
+                                Preferences.Notes.setPlacement("remote")
                                 Preferences.Notes.setRemoteUrl(baseUrl)
                                 findPreference("notes.remote.url")?.summary = baseUrl
                                 refreshNotesEnabled()
@@ -921,6 +921,7 @@ class PreferencesActivity : BasePreferencesActivity() {
 
     public override fun onStop() {
         super.onStop()
+
         App.resStartNotifierServices()
         getInstance(App.getInstance()).reload()
     }

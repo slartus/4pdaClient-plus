@@ -51,6 +51,7 @@ class NotesListFragment : BaseListFragment() {
     }
 
     private fun loadData() {
+        NotesRepository.instance.load()
         dataSubscriber?.dispose()
         dataSubscriber =
                 NotesRepository.instance
