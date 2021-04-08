@@ -72,7 +72,11 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
     }
 
     private fun getSpoiler(title: String, body: String, opened: Boolean): String {
-        return (if (m_HtmlPreferences.isSpoilerByButton) "<div class=\"hat\"><div class='hidetop " + if (opened) "open " else "close' style='cursor:pointer;' ><input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility(this)\"/>$title" else "<div class=\"hat\"><div class='hidetop " + if (opened) "open " else "close' style='cursor:pointer;' onclick=\"openHat(this);\">$title") + "</div><div class='hidemain'" + if (opened) " " else " style=\"display:none\">$body</div></div>"
+        val stateClass = if (opened) "open" else "close"
+        val spoilByButtonTemplate = "<div class='hidetop $stateClass' style='cursor:pointer;'><input class='spoiler_button' type=\"button\" value=\"+\" onclick=\"toggleSpoilerVisibility(this)\"/>"
+        val spoilDivTemplate = "<div class='hidetop $stateClass' style='cursor:pointer;' onclick=\"openHat(this);\">"
+        val spoilTemplate = if (m_HtmlPreferences.isSpoilerByButton) spoilByButtonTemplate else spoilDivTemplate
+        return "<div class=\"hat\">$spoilTemplate$title</div><div class='hidemain'" + (if (opened) " " else " style=\"display:none\"") + ">$body</div></div>"
     }
 
     fun addPost(post: Post, spoil: Boolean) {
@@ -210,6 +214,7 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
 
     companion object {
         const val NICK_SNAPBACK_TEMPLATE = "[SNAPBACK]%s[/SNAPBACK] [B]%s,[/B] \n"
+
         @JvmStatic
         fun addButtons(sb: StringBuilder, currentPage: Int, pagesCount: Int, isUseJs: Boolean,
                        useSelectTextAsNumbers: Boolean, top: Boolean) {
@@ -223,6 +228,7 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
             sb.append("<a class=\"button last").append(if (nextDisabled) " disable\"" else "\"" + getHtmlout(isUseJs, "lastPage")).append("><span>&gt;&gt;</span></a>\n")
             sb.append("</div>\n")
         }
+
         @JvmStatic
         fun getHtmlout(webViewAllowJs: Boolean, methodName: String, val1: String?, val2: String?): String? {
             return getHtmlout(webViewAllowJs, methodName, arrayOf(val1, val2))
