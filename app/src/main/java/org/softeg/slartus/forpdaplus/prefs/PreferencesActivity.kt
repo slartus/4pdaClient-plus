@@ -445,10 +445,10 @@ class PreferencesActivity : BasePreferencesActivity() {
                     .show()
         }
 
-        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
             if (resultCode == RESULT_OK) {
                 if (requestCode == MY_INTENT_CLICK) {
-                    val selectedImageUri = data.data
+                    val selectedImageUri = data?.data
                     val selectedImagePath = FilePath.getPath(App.getContext(), selectedImageUri)
                     if (selectedImagePath != null) App.getInstance().preferences
                             .edit()

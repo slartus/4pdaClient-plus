@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.listfragments.adapters;
+package org.softeg.slartus.forpdaplus.listfragments.news;
 
 import android.content.Context;
 import android.util.Log;

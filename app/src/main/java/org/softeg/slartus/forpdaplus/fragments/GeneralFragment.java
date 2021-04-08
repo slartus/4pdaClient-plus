@@ -4,11 +4,10 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.view.ActionMode;
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -201,8 +200,9 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         fragmentPaused = false;
         if (actionBar == null)
             actionBar = getMainActivity().getSupportActionBar();
-        if (getMenu() != null)
-            onCreateOptionsMenu(getMenu(), null);
+        Menu menu=getMenu();
+        if (menu != null)
+            onCreateOptionsMenu(menu, new MenuInflater(getContext()));
         if (getMainActivity() != null)
             getMainActivity().setTitle(generalTitle);
         if (getSupportActionBar() != null)

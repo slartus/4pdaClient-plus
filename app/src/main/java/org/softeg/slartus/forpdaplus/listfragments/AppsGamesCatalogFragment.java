@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.widget.BaseAdapter;
 
 
+import androidx.core.util.Predicate;
+
 import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.ICatalogItem;
 import org.softeg.slartus.forpdaapi.appsgamescatalog.AppGameCatalog;
@@ -39,7 +41,7 @@ public class AppsGamesCatalogFragment extends BaseCatalogFragment {
     private ArrayList<AppGameCatalog> getFilteredList(Predicate<AppGameCatalog> predicate) {
         ArrayList<AppGameCatalog> res = new ArrayList<>();
         for (AppGameCatalog item : mCatalogData) {
-            if (!predicate.apply(item)) continue;
+            if (!predicate.test(item)) continue;
             res.add(item);
         }
         return res;

@@ -31,7 +31,6 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter;
 import org.softeg.slartus.forpdaplus.fragments.NewsFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseTaskListFragment;
-import org.softeg.slartus.forpdaplus.listfragments.adapters.NewsListAdapter;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
@@ -54,7 +53,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
     protected ArrayList<News> mCacheList = new ArrayList<>();
 
 
-    public class NewsCategoryItem {
+    public static class NewsCategoryItem {
         String Path;
         public String Title;
         String Tag;
@@ -66,10 +65,35 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         }
     }
 
-    public class NavigationListAdapter extends BaseAdapter implements SpinnerAdapter {
+    public static class NavigationListAdapter extends BaseAdapter implements SpinnerAdapter {
         private final LayoutInflater mInflater;
 
+        private ArrayList<NewsCategoryItem> mItems = null;
 
+        private ArrayList<NewsCategoryItem> getItems() {
+            if (mItems == null) {
+                mItems = new ArrayList<>();
+                mItems.add(new NewsCategoryItem("", "Новости", "Все"));
+                mItems.add(new NewsCategoryItem("news", "Новости", "Новости"));
+                mItems.add(new NewsCategoryItem("articles", "Новости", "Статьи"));
+                mItems.add(new NewsCategoryItem("tag/how-to-android/", "Новости", "   Android"));
+                mItems.add(new NewsCategoryItem("tag/how-to-ios/", "Новости", "   iOS"));
+                mItems.add(new NewsCategoryItem("tag/how-to-wp/", "Новости", "   WP"));
+                mItems.add(new NewsCategoryItem("articles/tag/interview/", "Новости", "   Интервью"));
+                mItems.add(new NewsCategoryItem("software", "Новости", "Программы"));
+                mItems.add(new NewsCategoryItem("software/tag/programs-for-android", "Новости/Программы", "   Android"));
+                mItems.add(new NewsCategoryItem("software/tag/programs-for-ios", "Новости/Программы", "   iOS"));
+                mItems.add(new NewsCategoryItem("software/tag/programs-for-windows-phone-7", "Новости/Программы", "   WP"));
+                mItems.add(new NewsCategoryItem("software/tag/devstory/", "Новости/Программы", "   DevStory"));
+                mItems.add(new NewsCategoryItem("games", "Новости", "Игры"));
+                mItems.add(new NewsCategoryItem("games/tag/games-for-android", "Новости/Игры", "   Android"));
+                mItems.add(new NewsCategoryItem("games/tag/games-for-ios", "Новости/Игры", "   iOS"));
+                mItems.add(new NewsCategoryItem("games/tag/games-for-windows-phone-7", "Новости/Игры", "   WP"));
+                mItems.add(new NewsCategoryItem("games/tag/devstory/", "Новости/Игры", "   DevStory"));
+                mItems.add(new NewsCategoryItem("reviews", "Новости", "Обзоры"));
+            }
+            return mItems;
+        }
         NavigationListAdapter(Context context) {
             super();
             mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -122,32 +146,6 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
         }
     }
 
-    private ArrayList<NewsCategoryItem> mItems = null;
-
-    private ArrayList<NewsCategoryItem> getItems() {
-        if (mItems == null) {
-            mItems = new ArrayList<>();
-            mItems.add(new NewsCategoryItem("", "Новости", "Все"));
-            mItems.add(new NewsCategoryItem("news", "Новости", "Новости"));
-            mItems.add(new NewsCategoryItem("articles", "Новости", "Статьи"));
-            mItems.add(new NewsCategoryItem("tag/how-to-android/", "Новости", "   Android"));
-            mItems.add(new NewsCategoryItem("tag/how-to-ios/", "Новости", "   iOS"));
-            mItems.add(new NewsCategoryItem("tag/how-to-wp/", "Новости", "   WP"));
-            mItems.add(new NewsCategoryItem("articles/tag/interview/", "Новости", "   Интервью"));
-            mItems.add(new NewsCategoryItem("software", "Новости", "Программы"));
-            mItems.add(new NewsCategoryItem("software/tag/programs-for-android", "Новости/Программы", "   Android"));
-            mItems.add(new NewsCategoryItem("software/tag/programs-for-ios", "Новости/Программы", "   iOS"));
-            mItems.add(new NewsCategoryItem("software/tag/programs-for-windows-phone-7", "Новости/Программы", "   WP"));
-            mItems.add(new NewsCategoryItem("software/tag/devstory/", "Новости/Программы", "   DevStory"));
-            mItems.add(new NewsCategoryItem("games", "Новости", "Игры"));
-            mItems.add(new NewsCategoryItem("games/tag/games-for-android", "Новости/Игры", "   Android"));
-            mItems.add(new NewsCategoryItem("games/tag/games-for-ios", "Новости/Игры", "   iOS"));
-            mItems.add(new NewsCategoryItem("games/tag/games-for-windows-phone-7", "Новости/Игры", "   WP"));
-            mItems.add(new NewsCategoryItem("games/tag/devstory/", "Новости/Игры", "   DevStory"));
-            mItems.add(new NewsCategoryItem("reviews", "Новости", "Обзоры"));
-        }
-        return mItems;
-    }
     @Override
     public boolean onNavigationItemSelected(int itemPosition, long itemId) {
         selectItem(itemPosition);
@@ -155,8 +153,8 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
     }
 
     private void selectItem(int position) {
-        position = Math.min(position, getItems().size() - 1);// на всякий случай, если изменится в будущем кол-во разделов
-        String tag = getItems().get(position).Tag;
+        position = Math.min(position, listAdapter.getItems().size() - 1);// на всякий случай, если изменится в будущем кол-во разделов
+        String tag = listAdapter.getItems().get(position).Tag;
         Preferences.News.setLastSelectedSection(position);
         if(!tag.equals(mTag)) {
             mTag = tag;
@@ -182,10 +180,6 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
             getSupportActionBar().setListNavigationCallbacks(listAdapter, this);
             getSupportActionBar().setSelectedNavigationItem(Preferences.News.getLastSelectedSection());
         }
-    }
-
-    public NewsListFragment() {
-        super();
     }
 
     @Override
@@ -215,17 +209,18 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         removeArrow();
+        listAdapter = new NavigationListAdapter(getActivity());
         if (getArguments() != null) {
             if (getArguments().containsKey(TAG_EXTRA_KEY)) {
                 mTag = getArguments().getString(TAG_EXTRA_KEY);
-                mTag = getItems().get(Preferences.News.getLastSelectedSection()).Tag;
+                mTag = listAdapter.getItems().get(Preferences.News.getLastSelectedSection()).Tag;
             }
             if (getArguments().containsKey(NEWS_LIST_URL_KEY)) {
                 useCache = false;// не используем кеш для открытого по ссылке списка
                 mUrl = getArguments().getString(NEWS_LIST_URL_KEY);
             }
         }
-        listAdapter = new NavigationListAdapter(getActivity());
+
         onHiddenChanged(false);
 
     }
@@ -267,7 +262,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
     private String mTag = "";
 
     @Override
-    public boolean inBackground(boolean isRefresh) throws Exception {
+    public boolean inBackground(boolean isRefresh) {
         mListInfo = new ListInfo();
         mListInfo.setFrom(isRefresh ? 0 : mData.size());
         mLoadResultList = org.softeg.slartus.forpdaapi.NewsApi.getNews(Client.getInstance(), mUrl + mTag, mListInfo, App.getInstance().getPreferences());

@@ -301,7 +301,8 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         InputMethodManager service = ((InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE));
         assert service != null;
         View currentFocus = this.getCurrentFocus();
-        assert currentFocus != null;
+        if(currentFocus==null)
+            currentFocus=new View(this);
         service.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
         if (fragment != null)
