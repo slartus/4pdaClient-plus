@@ -76,30 +76,6 @@ public class NotesTable {
         }
     }
 
-    public static void insertNote(SQLiteAssetHelper helper, Note note) {
-        SQLiteDatabase db = null;
-
-        try {
-
-            db = helper.getWritableDatabase();
-            // db.beginTransaction();
-
-            ContentValues values = getContentValues(note);
-
-
-            db.insertOrThrow(TABLE_NAME, null, values);
-
-        } catch (Exception ex) {
-            AppLog.e(App.getInstance(), ex);
-        } finally {
-            if (db != null) {
-                // db.endTransaction();
-                db.close();
-            }
-        }
-    }
-
-
     @NonNull
     private static ContentValues getContentValues(Note note) {
         ContentValues values = new ContentValues();
@@ -114,59 +90,6 @@ public class NotesTable {
         values.put(COLUMN_TOPIC, note.Topic);
         values.put(COLUMN_DATE, DbHelper.DateTimeFormat.format(note.Date));
         return values;
-    }
-
-    public static Themes getNoteThemes(String topicId) throws ParseException, IOException {
-        Themes downloadTasks = new Themes();
-
-        SQLiteDatabase db = null;
-        Cursor c = null;
-        try {
-            NotesDbHelper dbHelper = new NotesDbHelper(App.getInstance());
-            db = dbHelper.getWritableDatabase();
-            String selection = null;
-            String[] selectionArgs = null;
-
-            if (!TextUtils.isEmpty(topicId)) {
-                selection = COLUMN_TOPIC_ID + "=?";
-                selectionArgs = new String[]{topicId};
-            }
-            c = db.query(TABLE_NAME, null, selection, selectionArgs, null, null, COLUMN_DATE + " DESC");
-
-            if (c.moveToFirst()) {
-                int columnIdIndex = c.getColumnIndex(COLUMN_ID);
-                int columnTitleIndex = c.getColumnIndex(COLUMN_TITLE);
-                int columnBodyIndex = c.getColumnIndex(COLUMN_BODY);
-                int columnUrlIndex = c.getColumnIndex(COLUMN_URL);
-                int columnTopicIdIndex = c.getColumnIndex(COLUMN_TOPIC_ID);
-                int columnPostIdIndex = c.getColumnIndex(COLUMN_POST_ID);
-                int columnUserIdIndex = c.getColumnIndex(COLUMN_USER_ID);
-                int columnUserIndex = c.getColumnIndex(COLUMN_USER);
-                int columnTopicIndex = c.getColumnIndex(COLUMN_TOPIC);
-                int columnDateIndex = c.getColumnIndex(COLUMN_DATE);
-                do {
-                    String id = c.getString(columnIdIndex);
-                    String title = c.getString(columnTitleIndex);
-
-                    Date createDate = DbHelper.parseDate(c.getString(columnDateIndex));
-
-                    ExtTopic topic = new ExtTopic(id, title);
-                    topic.setDescription(c.getString(columnBodyIndex));
-                    topic.setLastMessageAuthor(c.getString(columnUserIndex));
-                    topic.setLastMessageDate(createDate);
-                    downloadTasks.add(topic);
-                } while (c.moveToNext());
-
-            }
-        } finally {
-            if (db != null) {
-                if (c != null)
-                    c.close();
-                db.close();
-            }
-        }
-
-        return downloadTasks;
     }
 
     public static ArrayList<Note> getNotes(String topicId) throws ParseException, IOException {

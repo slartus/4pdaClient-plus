@@ -7,13 +7,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdaplus.Client
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.db.NotesTable
 import org.softeg.slartus.forpdaplus.notes.Note
 import org.softeg.slartus.forpdaplus.prefs.Preferences
-import java.lang.Exception
 import java.util.*
 
 class NotesRepository private constructor() {
@@ -126,6 +124,14 @@ class NotesRepository private constructor() {
                     }
                 }
             }
+        }
+    }
+
+    fun getNote(id: String): Note? {
+        return if (local) {
+            NotesTable.getNote(id)
+        } else {
+            notesSubject.value?.firstOrNull { it.id == id }
         }
     }
 

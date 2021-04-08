@@ -25,10 +25,12 @@ import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
-import org.softeg.slartus.forpdaplus.db.NotesTable;
 import org.softeg.slartus.forpdaplus.emotic.Smiles;
 import org.softeg.slartus.forpdaplus.notes.Note;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
+import org.softeg.slartus.forpdaplus.repositories.NotesRepository;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Created by radiationx on 17.11.15.
@@ -38,14 +40,13 @@ public class NoteFragment extends GeneralFragment {
     public boolean closeTab() {
         return false;
     }
-    private Handler mHandler = new Handler();
+
+    private final Handler mHandler = new Handler();
     private static final String NOTE_ID_KEY = "NoteId";
 
     private String m_Id;
-    private String m_TopicId;
     private AdvWebView webView;
     private TableLayout infoTable;
-    private View view;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,10 +58,11 @@ public class NoteFragment extends GeneralFragment {
     public void onPause() {
         super.onPause();
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.note_view, container, false);
+        View view = inflater.inflate(R.layout.note_view, container, false);
         //createActionMenu();
 
         infoTable = (TableLayout) findViewById(R.id.infoTable);
@@ -71,6 +73,7 @@ public class NoteFragment extends GeneralFragment {
         loadData();
         return view;
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -84,12 +87,12 @@ public class NoteFragment extends GeneralFragment {
         setArrow();
     }
 
-    public static NoteFragment newInstance(Bundle args){
+    public static NoteFragment newInstance(Bundle args) {
         NoteFragment fragment = new NoteFragment();
         fragment.setArguments(args);
         return fragment;
     }
-    
+
     public static void showNote(String id) {
         Bundle args = new Bundle();
         args.putString(NOTE_ID_KEY, id);
@@ -98,7 +101,7 @@ public class NoteFragment extends GeneralFragment {
 
 
     private void loadData() {
-        new LoadPageTask(getContext()).execute();
+        new LoadPageTask(new WeakReference<>(this), m_Id).execute();
     }
 
     private void fillData(final Note note) {
@@ -150,21 +153,16 @@ public class NoteFragment extends GeneralFragment {
         TextView textView2 = createSecondTextView();
         textView2.setText(Html.fromHtml(text));
         textView2.setEllipsize(null);
-        textView2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                if (!TextUtils.isEmpty(url))
+        textView2.setOnClickListener(view -> {
+            if (!TextUtils.isEmpty(url))
 
-                    IntentActivity.tryShowUrl(getMainActivity(), mHandler, url, true, false);
-            }
+                IntentActivity.tryShowUrl(getMainActivity(), mHandler, url, true, false);
         });
-        textView2.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if (!TextUtils.isEmpty(url)) {
-                    ExtUrl.showSelectActionDialog(mHandler, getMainActivity(), url);
-                }
-                return true;
+        textView2.setOnLongClickListener(view -> {
+            if (!TextUtils.isEmpty(url)) {
+                ExtUrl.showSelectActionDialog(mHandler, getMainActivity(), url);
             }
+            return true;
         });
 
         row.addView(textView2, textviewparams);
@@ -191,21 +189,27 @@ public class NoteFragment extends GeneralFragment {
     private TextView createFirtsTextView() {
         return (TextView) getMainActivity().getLayoutInflater().inflate(R.layout.note_first_textview, null);
     }
+
     private TextView createSecondTextView() {
         return (TextView) getMainActivity().getLayoutInflater().inflate(R.layout.note_second_textview, null);
     }
 
-    public class LoadPageTask extends AsyncTask<String, String, Note> {
-
+    private static class LoadPageTask extends AsyncTask<String, String, Note> {
 
         private final MaterialDialog dialog;
 
-        public LoadPageTask(Context context) {
+        private final String id;
 
+        private final WeakReference<NoteFragment> fragment;
+
+        public LoadPageTask(WeakReference<NoteFragment> fragment, String id) {
+            this.id = id;
+            this.fragment = fragment;
+            Context context = fragment.get().getContext();
             dialog = new MaterialDialog.Builder(context)
-                    .progress(true,0)
+                    .progress(true, 0)
                     .cancelable(false)
-                    .content(getString(R.string.loading))
+                    .content(context.getString(R.string.loading))
                     .build();
         }
 
@@ -219,8 +223,7 @@ public class NoteFragment extends GeneralFragment {
         @Override
         protected Note doInBackground(String... params) {
             try {
-
-                return NotesTable.getNote(m_Id);
+                return NotesRepository.getInstance().getNote(id);
             } catch (Throwable e) {
 
                 ex = e;
@@ -248,24 +251,17 @@ public class NoteFragment extends GeneralFragment {
             if (this.dialog.isShowing()) {
                 this.dialog.dismiss();
             }
-
+            NoteFragment f = fragment.get();
             if (note != null) {
-
-                fillData(note);
-
+                if (f != null)
+                    f.fillData(note);
             } else {
                 if (ex != null)
-                    AppLog.e(getMainActivity(), ex, new Runnable() {
-                        @Override
-                        public void run() {
-                            loadData();
-                        }
-                    });
+                    AppLog.e(f == null ? null : f.getContext(), ex, f != null ? f::loadData : null);
             }
         }
 
     }
-
 
 
 }

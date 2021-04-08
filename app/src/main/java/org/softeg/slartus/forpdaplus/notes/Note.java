@@ -5,6 +5,8 @@ import android.util.Pair;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.softeg.slartus.forpdaapi.IListItem;
+import org.softeg.slartus.forpdacommon.Functions;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 
@@ -17,7 +19,7 @@ import java.util.ArrayList;
  * Time: 13:24
  * To change this template use File | Settings | File Templates.
  */
-public class Note {
+public class Note implements IListItem {
     @SerializedName("_id")
     public String Id;
     public String Title;
@@ -66,5 +68,51 @@ public class Note {
 
     public String getUrlLink() {
         return "<a href='" + Url + "'>"+App.getContext().getString(R.string.link)+"</a>";
+    }
+
+    @Override
+    public CharSequence getId() {
+        return Id;
+    }
+
+
+    @Override
+    public CharSequence getTopLeft() {
+        return User;
+    }
+
+    @Override
+    public CharSequence getTopRight() {
+        return Functions.getForumDateTime(Date);
+    }
+
+    @Override
+    public CharSequence getMain() {
+        return Title;
+    }
+
+    @Override
+    public CharSequence getSubMain() {
+        return Body;
+    }
+
+    @Override
+    public int getState() {
+        return 0;
+    }
+
+    @Override
+    public void setState(int state) {
+
+    }
+
+    @Override
+    public CharSequence getSortOrder() {
+        return Functions.getForumDateTime(Date);
+    }
+
+    @Override
+    public boolean isInProgress() {
+        return false;
     }
 }

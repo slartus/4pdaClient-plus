@@ -4,9 +4,9 @@ package org.softeg.slartus.forpdaapi;
  * Created by slinkin on 17.01.14.
  */
 public interface IListItem {
-    public final int STATE_NORMAL = 0;
-    public final int STATE_GREEN = 1;
-    public final int STATE_RED = 2;
+    int STATE_NORMAL = 0;
+    int STATE_GREEN = 1;
+    int STATE_RED = 2;
 
     CharSequence getId();
 
