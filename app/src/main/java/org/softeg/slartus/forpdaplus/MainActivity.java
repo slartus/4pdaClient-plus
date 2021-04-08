@@ -93,7 +93,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     }
 
     private final static String tabPrefix = "tab";
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
 
     private MainDrawerMenu mMainDrawerMenu;
     private static TabDrawerMenu mTabDraweMenu;
@@ -108,7 +108,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     private RelativeLayout statusBar;
     private RelativeLayout fakeStatusBar;
     private int statusBarHeight = -1;
-    private Runnable setStatusBarHeight = new Runnable() {
+    private final Runnable setStatusBarHeight = new Runnable() {
         @Override
         public void run() {
             int[] ints = new int[2];
@@ -324,16 +324,16 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     }
 
     private boolean lastHamburgerArrow = true;
-    private DecelerateInterpolator interpolator = new DecelerateInterpolator();
+    private final DecelerateInterpolator interpolator = new DecelerateInterpolator();
 
-    private View.OnClickListener toggleListener = new View.OnClickListener() {
+    private final View.OnClickListener toggleListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if (mMainDrawerMenu != null)
                 mMainDrawerMenu.toggleOpenState();
         }
     };
-    private DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener() {
+    private final DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener() {
         @Override
         public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
         }
@@ -405,6 +405,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
 
     @Override
     protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         checkIntent(intent);
     }
 
