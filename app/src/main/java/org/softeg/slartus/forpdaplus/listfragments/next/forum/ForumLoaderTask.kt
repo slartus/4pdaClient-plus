@@ -2,7 +2,7 @@ package org.softeg.slartus.forpdaplus.listfragments.next.forum
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.content.AsyncTaskLoader
+import androidx.loader.content.AsyncTaskLoader
 import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.db.ForumsTable
 

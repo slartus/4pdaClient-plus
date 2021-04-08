@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.content.AsyncTaskLoader
-import android.support.v4.content.Loader
+import androidx.loader.content.AsyncTaskLoader
+import androidx.loader.content.Loader
 import android.view.*
 import android.widget.AdapterView
 import android.widget.BaseAdapter
@@ -91,7 +91,7 @@ class UserReputationFragment : BrickFragmentListBase() {
         return v
     }
 
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
         if (info.id == -1L) return
         val item = adapter.getItem(info.id.toInt()) as ReputationEvent
@@ -117,7 +117,7 @@ class UserReputationFragment : BrickFragmentListBase() {
         return false
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.reputation, menu)
     }

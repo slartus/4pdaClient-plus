@@ -5,7 +5,6 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
 import android.os.Bundle;
 import android.widget.BaseAdapter;
 
-import com.android.internal.util.Predicate;
 
 import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaapi.ICatalogItem;

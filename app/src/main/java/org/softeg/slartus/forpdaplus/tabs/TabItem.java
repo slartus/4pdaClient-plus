@@ -1,6 +1,6 @@
 package org.softeg.slartus.forpdaplus.tabs;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 /**
  * Created by radiationx on 31.10.15.

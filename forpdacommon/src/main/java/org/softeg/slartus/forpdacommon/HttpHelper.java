@@ -1,7 +1,7 @@
 package org.softeg.slartus.forpdacommon;
 
 
-import android.support.v4.util.Pair;
+import androidx.core.util.Pair;
 
 import java.io.IOException;
 import java.net.URI;

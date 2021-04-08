@@ -1,6 +1,6 @@
 package org.softeg.slartus.forpdaplus.utils;
 
-import android.support.v4.util.Pair;
+import androidx.core.util.Pair;
 
 import org.json.JSONObject;
 import org.softeg.slartus.forpdaapi.ProgressState;

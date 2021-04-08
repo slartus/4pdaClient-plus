@@ -1,6 +1,6 @@
 package org.softeg.slartus.forpdaapi;
 
-import android.support.v4.util.Pair;
+import androidx.core.util.Pair;
 import android.text.Html;
 import android.text.TextUtils;
 
@@ -11,15 +11,12 @@ import org.softeg.slartus.forpdacommon.NotReportException;
 import java.io.IOException;
 import java.net.HttpCookie;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

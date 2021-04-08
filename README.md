@@ -30,7 +30,6 @@ http://4pda.ru/forum/index.php?showtopic=271502
     https://github.com/d-tarasov/android-intents
     Picasso https://github.com/square/picasso
     Acra    https://github.com/ACRA/acra
-    Butter Knife    https://github.com/JakeWharton/butterknife
 License
 -------
 

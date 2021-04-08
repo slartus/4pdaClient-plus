@@ -53,8 +53,7 @@ class TopicAttachmentListFragment : BaseTaskListFragment() {
     override fun onItemClick(adapterView: AdapterView<*>, v: View, position: Int, id: Long) {
         activity?.openContextMenu(v)
     }
-
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
         if (info.id == -1L) return
         val o = adapter!!.getItem(info.id.toInt()) ?: return
@@ -67,7 +66,7 @@ class TopicAttachmentListFragment : BaseTaskListFragment() {
         ExtUrl.showContextDialog(context, null, list)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.topic_attachments, menu)
     }
@@ -77,7 +76,7 @@ class TopicAttachmentListFragment : BaseTaskListFragment() {
         afterDeliveryResult()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
             R.id.change_order_item -> {
                 changeOrder()

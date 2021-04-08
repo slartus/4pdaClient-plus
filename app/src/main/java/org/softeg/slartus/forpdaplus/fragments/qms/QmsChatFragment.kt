@@ -13,7 +13,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.preference.PreferenceManager
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -163,7 +163,7 @@ class QmsChatFragment : WebViewFragment() {
         })
 
         wvChat = findViewById(R.id.wvChat) as AdvWebView
-        registerForContextMenu(wvChat)
+        registerForContextMenu(wvChat!!)
         wvChat?.apply {
             settings.domStorageEnabled = true
             settings.setAppCachePath(mainActivity.applicationContext.cacheDir.absolutePath)
@@ -636,8 +636,8 @@ class QmsChatFragment : WebViewFragment() {
         ExtUrl.showSelectActionDialog(mHandler, context!!, themeTitle, "", link, "", "", "", contactId, contactNick)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
                 return true
@@ -668,7 +668,7 @@ class QmsChatFragment : WebViewFragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.qms_chat, menu)
     }

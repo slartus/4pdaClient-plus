@@ -1,6 +1,6 @@
 package org.softeg.slartus.forpdaplus.acra
 
-import android.support.v4.util.Pair
+import androidx.core.util.Pair
 import java.util.ArrayList
 
 /*

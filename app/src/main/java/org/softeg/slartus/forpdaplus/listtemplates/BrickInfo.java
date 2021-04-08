@@ -1,6 +1,6 @@
 package org.softeg.slartus.forpdaplus.listtemplates;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 /**
  * Created by slinkin on 20.02.14.

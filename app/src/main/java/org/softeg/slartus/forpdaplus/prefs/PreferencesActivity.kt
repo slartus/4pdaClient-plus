@@ -14,8 +14,8 @@ import android.os.Bundle
 import android.os.Environment
 import android.preference.Preference
 import android.preference.PreferenceFragment
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AlertDialog
+import androidx.fragment.app.FragmentManager
+import androidx.appcompat.app.AlertDialog
 import android.text.*
 import android.view.LayoutInflater
 import android.view.View

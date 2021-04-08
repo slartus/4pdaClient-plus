@@ -98,7 +98,8 @@ class NotesListFragment : BaseListFragment() {
         }
     }
 
-    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo) {
+
+    override fun onCreateContextMenu(menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
         val info = menuInfo as AdapterView.AdapterContextMenuInfo
         if (info.id == -1L) return
         if (info.id < 0 || adapter!!.count <= info.id) return

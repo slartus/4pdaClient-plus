@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v4.widget.DrawerLayout android:id="@+id/drawer_layout"
+    <androidx.drawerlayout.widget.DrawerLayout android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,19 +13,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true">
 
-                <android.support.design.widget.AppBarLayout
+                <com.google.android.material.appbar.AppBarLayout
                     android:id="@+id/appbarlayout"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:theme="@style/MainThemeLight.AppBarOverlay">
 
-                    <android.support.v7.widget.Toolbar
+                    <androidx.appcompat.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
@@ -34,7 +34,7 @@
                         app:contentInsetEndWithActions="0dp"
                         app:popupTheme="?attr/actionBarPopupTheme"
                         app:subtitleTextAppearance="@style/actionbar_subtitle" />
-                </android.support.design.widget.AppBarLayout>
+                </com.google.android.material.appbar.AppBarLayout>
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                         android:background="@drawable/toolbar_shadow"
                         android:fitsSystemWindows="true" />
                 </FrameLayout>
-            </android.support.design.widget.CoordinatorLayout>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
             <RelativeLayout
                 android:id="@+id/status_bar"
@@ -61,7 +61,7 @@
                 android:layout_height="25dp" />
         </RelativeLayout>
 
-        <android.support.design.widget.NavigationView
+        <com.google.android.material.navigation.NavigationView
             android:id="@+id/left_drawer"
             android:layout_width="240dp"
             android:layout_height="match_parent"
@@ -104,7 +104,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp" />
         </RelativeLayout>
-    </android.support.v4.widget.DrawerLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

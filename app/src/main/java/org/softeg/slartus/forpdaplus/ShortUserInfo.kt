@@ -8,7 +8,7 @@ import android.graphics.Paint
 import android.net.ConnectivityManager
 import android.os.AsyncTask
 import android.os.Handler
-import android.support.constraint.Group
+import androidx.constraintlayout.widget.Group
 import android.text.InputType
 import android.text.TextUtils
 import android.util.Log

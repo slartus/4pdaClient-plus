@@ -1,7 +1,9 @@
 package org.softeg.slartus.forpdaplus.devdb.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +16,6 @@ import org.softeg.slartus.forpdaplus.devdb.model.FirmwareModel;
 
 import java.util.List;
 
-import butterknife.BindView;
 
 /**
  * Created by isanechek on 19.12.15.
@@ -57,15 +58,15 @@ public class FirmwareAdapter extends RecyclerView.Adapter<FirmwareAdapter.ViewHo
 
     public static class ViewHolder extends BaseRecyclerViewHolder {
 
-        @BindView(R.id.devDbFirmwareTitle)
         TextView textBody;
-        @BindView(R.id.devDbFirmwareDate)
         TextView date;
-        @BindView(R.id.devDbFirmwareDescription)
         TextView description;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            textBody = itemView.findViewById(R.id.devDbFirmwareTitle);
+            date = itemView.findViewById(R.id.devDbFirmwareDate);
+            description = itemView.findViewById(R.id.devDbFirmwareDescription);
         }
     }
 }

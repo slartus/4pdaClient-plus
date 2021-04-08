@@ -8,8 +8,8 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import android.support.multidex.MultiDexApplication;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.multidex.MultiDexApplication;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
