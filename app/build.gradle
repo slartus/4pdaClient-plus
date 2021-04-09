@@ -110,19 +110,19 @@ android {
         }
     }
 
-    android.applicationVariants.all { variant ->
-        variant.outputs.all {
-            def fileNaming = "ForPDA"
-            def vCode = variant.versionCode
-            if (vCode < 10)
-                vCode = "0" + vCode
-            def flavor = variant.productFlavors[0]
-            if (flavor.name == "beta")
-                outputFileName = "beta.apk"
-            else
-                outputFileName = "${fileNaming}_${appVersionName}-${variant.buildType.name}.apk"
-        }
-    }
+//    android.applicationVariants.all { variant ->
+//        variant.outputs.all {
+//            def fileNaming = "ForPDA"
+//            def vCode = variant.versionCode
+//            if (vCode < 10)
+//                vCode = "0" + vCode
+//            def flavor = variant.productFlavors[0]
+//            if (flavor.name == "beta")
+//                outputFileName = "beta.apk"
+//            else
+//                outputFileName = "${fileNaming}_${appVersionName}-${variant.buildType.name}.apk"
+//        }
+//    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
