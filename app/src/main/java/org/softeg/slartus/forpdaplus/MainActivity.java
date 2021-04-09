@@ -15,9 +15,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.annotation.NonNull;
+
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
+
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -26,6 +29,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+
 import android.text.TextUtils;
 import android.view.ActionMode;
 import android.view.KeyEvent;
@@ -301,8 +305,8 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         InputMethodManager service = ((InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE));
         assert service != null;
         View currentFocus = this.getCurrentFocus();
-        if(currentFocus==null)
-            currentFocus=new View(this);
+        if (currentFocus == null)
+            currentFocus = new View(this);
         service.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
         if (fragment != null)
@@ -394,7 +398,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                 .getUserInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(userInfo -> invalidateOptionsMenu()));
+                .subscribe(userInfo -> invalidateOptionsMenu(), throwable -> AppLog.e(this, throwable)));
     }
 
     @Override
