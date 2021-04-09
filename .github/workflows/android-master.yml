@@ -1,38 +1,38 @@
-name: Android Pull Request & Master CI
-
-on:
-  pull_request:
-    branches:
-      - 'master'
-  push:
-    branches:
-      - 'master'
-
-jobs:  
-  apk:
-    name: Generate beta APK
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v1
-      - name: set up JDK 1.8
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      # Without NDK not compile and not normal error message. NDK is required
-      - name: Install NDK
-        run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;20.0.5594570" --sdk_root=${ANDROID_SDK_ROOT}
-      - name: Build APK
-        run: bash ./gradlew assembleBeta --stacktrace     
-        env:
-          RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
-          RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
-          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
-      - name: Upload APK
-        uses: actions/upload-artifact@v1
-        with:
-          name: app
-          path: app/build/outputs/apk/beta/release/beta.apk
-          env-url: FOOBAR
-      - name: Use uploaded url
-        run: echo "${{ env.FOOBAR }}"
+#name: Android Pull Request & Master CI
+#
+#on:
+#  pull_request:
+#    branches:
+#      - 'master'
+#  push:
+#    branches:
+#      - 'master'
+#
+#jobs:
+#  apk:
+#    name: Generate beta APK
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - uses: actions/checkout@v1
+#      - name: set up JDK 1.8
+#        uses: actions/setup-java@v1
+#        with:
+#          java-version: 1.8
+#      # Without NDK not compile and not normal error message. NDK is required
+#      - name: Install NDK
+#        run: echo "y" | sudo ${ANDROID_HOME}/tools/bin/sdkmanager --install "ndk;20.0.5594570" --sdk_root=${ANDROID_SDK_ROOT}
+#      - name: Build APK
+#        run: bash ./gradlew assembleBeta --stacktrace
+#        env:
+#          RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+#          RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+#          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+#      - name: Upload APK
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: app
+#          path: app/build/outputs/apk/beta/release/beta.apk
+#          env-url: FOOBAR
+#      - name: Use uploaded url
+#        run: echo "${{ env.FOOBAR }}"
