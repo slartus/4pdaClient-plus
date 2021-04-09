@@ -8,21 +8,6 @@ repositories {
     mavenCentral()
 }
 
-def release_store_password
-def release_key_password
-def release_key_alias
-
-def keystoreProperties = new Properties()
-if (rootProject.file("keystore.properties").exists()) {
-    keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
-    release_store_password = keystoreProperties['RELEASE_STORE_PASSWORD']
-    release_key_password = keystoreProperties['RELEASE_KEY_PASSWORD']
-    release_key_alias = keystoreProperties['RELEASE_KEY_ALIAS']
-} else {
-    release_store_password = System.env.RELEASE_STORE_PASSWORD
-    release_key_password = System.env.RELEASE_KEY_PASSWORD
-    release_key_alias = System.env.RELEASE_KEY_ALIAS
-}
 
 android {
     compileSdkVersion 27
@@ -63,11 +48,41 @@ android {
         }
     }
     signingConfigs {
-        release {
-            storePassword = release_store_password
-            keyAlias = release_key_alias
-            keyPassword = release_key_password
+//        def release_store_password
+//        def release_key_password
+//        def release_key_alias
+//
+//        def keystoreProperties = new Properties()
+//        if (rootProject.file("keystore.properties").exists()) {
+//            keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
+//            release_store_password = keystoreProperties['RELEASE_STORE_PASSWORD']
+//            release_key_password = keystoreProperties['RELEASE_KEY_PASSWORD']
+//            release_key_alias = keystoreProperties['RELEASE_KEY_ALIAS']
+//        } else {
+//            release_store_password = System.env.RELEASE_STORE_PASSWORD
+//            release_key_password = System.env.RELEASE_KEY_PASSWORD
+//            release_key_alias = System.env.RELEASE_KEY_ALIAS
+//        }
+//        release {
+//            storePassword = release_store_password
+//            keyAlias = release_key_alias
+//            keyPassword = release_key_password
+//            storeFile file("keystore.jks")
+//        }
+
+        def keystoreProperties = new Properties()
+
+        if (rootProject.file("keystore.properties").exists()) {
+            file("keystore.jks").withInputStream { keystoreProperties.load(it) }
             storeFile file("keystore.jks")
+            storePassword "$keystoreProperties.RELEASE_STORE_PASSWORD"
+            keyAlias "$keystoreProperties.RELEASE_KEY_ALIAS"
+            keyPassword "$keystoreProperties.RELEASE_KEY_PASSWORD"
+        } else {
+            storeFile file("my_app_keystore")
+            storePassword System.getenv('RELEASE_STORE_PASSWORD')
+            keyAlias System.getenv('RELEASE_KEY_ALIAS')
+            keyPassword System.getenv('RELEASE_KEY_PASSWORD')
         }
     }
     buildTypes {
