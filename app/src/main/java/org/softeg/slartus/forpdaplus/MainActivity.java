@@ -317,12 +317,6 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         return appBarLayout;
     }
 
-    public void setArrow(final boolean b, final View.OnClickListener listener) {
-        if (mMainDrawerMenu == null) return;
-        mMainDrawerMenu.getDrawerToggle().setDrawerIndicatorEnabled(!b);
-        mMainDrawerMenu.getDrawerToggle().setToolbarNavigationClickListener(listener);
-    }
-
     private boolean lastHamburgerArrow = true;
     private final DecelerateInterpolator interpolator = new DecelerateInterpolator();
 
@@ -502,7 +496,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         transaction.commitAllowingStateLoss();
     }
 
-    public void hideFragments(FragmentTransaction transaction, boolean withAnimation) {
+    private void hideFragments(FragmentTransaction transaction, boolean withAnimation) {
         if (getSupportFragmentManager().getFragments() == null) return;
         if (withAnimation)
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
@@ -546,7 +540,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(fragment);
     }
 
-    public void endActionFragment(String title, String tag) {
+    private void endActionFragment(String title, String tag) {
         App.getInstance().setCurrentFragmentTag(tag);
         endActionFragment(title);
     }
@@ -678,7 +672,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         }
     }
 
-    public static void addTabToList(String name, String url, String tag, Fragment fragment, boolean select) {
+    private static void addTabToList(String name, String url, String tag, Fragment fragment, boolean select) {
         TabItem item = null;
         if (App.getInstance().isContainsByUrl(url)) {
             if (select) item = App.getInstance().getTabByUrl(url);
@@ -710,7 +704,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             }
     }
 
-    public void removeTab(String tag) {
+    private void removeTab(String tag) {
         if (activityPaused | mTabDraweMenu == null) {
             tabTagForRemove = tag;
         } else {
@@ -940,7 +934,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     }
 
     @SuppressWarnings("ResourceType")
-    protected void loadPreferences(SharedPreferences prefs) {
+    private void loadPreferences(SharedPreferences prefs) {
         setRequestedOrientation(ExtPreferences.parseInt(prefs, "theme.ScreenOrientation", -1));
     }
 }
