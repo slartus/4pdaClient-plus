@@ -5,6 +5,9 @@ on:
   pull_request:
     branches:
       - 'master'
+  push:
+    branches:
+      - 'master'
 
 env:
   KEYSTORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
@@ -13,7 +16,7 @@ env:
 
 jobs:
   build_apk_aab:
-    if: startsWith(github.head_ref, 'release/') == true
+#    if: startsWith(github.head_ref, 'release/') == true
     name: Build release artifacts
     runs-on: ubuntu-latest
     steps:
