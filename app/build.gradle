@@ -12,7 +12,7 @@ repositories {
 android {
     compileSdkVersion 27
 
-
+    def releaseFileName
     def appVersionCode = 647
     // именование версий:
     // первое число не трогаем никогда. только если весь клиент переписали, но тогда это другой репозиторий
@@ -83,6 +83,7 @@ android {
             storePassword System.getenv('RELEASE_STORE_PASSWORD')
             keyAlias System.getenv('RELEASE_KEY_ALIAS')
             keyPassword System.getenv('RELEASE_KEY_PASSWORD')
+            outputFileName="app-release.apk"
         }
     }
     buildTypes {
