@@ -37,13 +37,9 @@ jobs:
           ./gradlew test
           ./gradlew assembleRelease
       
-      - name: Build release APK and AAB after test
-        run: |
-            cd..
-            cd..
+      - name: ls
+        run:             
             ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
-            ./gradlew test
-            ./gradlew assembleRelease
 
       - name: Upload signed APK
         uses: actions/upload-artifact@v2
