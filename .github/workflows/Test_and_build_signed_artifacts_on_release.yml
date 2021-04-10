@@ -35,11 +35,7 @@ jobs:
       - name: Run tests and build release artifacts        
         run: |
           ./gradlew test
-          ./gradlew assembleRelease
-      
-      - name: ls
-        run:             
-            ls -R | awk '/:$/ {sub(/:$/,""); s=$0;next}{ print s "/" $0 }'
+          ./gradlew assembleRel      
 
       - name: Upload signed APK
         uses: actions/upload-artifact@v2
