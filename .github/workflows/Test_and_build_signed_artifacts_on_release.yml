@@ -39,7 +39,7 @@ jobs:
       
       - name: ls
         run:             
-            ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+            find . -name \*.apk
 
       - name: Upload signed APK
         uses: actions/upload-artifact@v2
