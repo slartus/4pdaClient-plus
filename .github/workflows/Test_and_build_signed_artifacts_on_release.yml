@@ -32,26 +32,18 @@ jobs:
           token: ${{ secrets.KEYSTORE_ACCESS_TOKEN }}
           path: app # путь внутри директории с основным проектом, куда нужно сложить файлы
 
-      - name: Run tests and build release artifacts
-        id: abc
+      - name: Run tests and build release artifacts        
         run: |
           ./gradlew test
-          ./gradlew assembleRelease --stacktrace
-          ./gradlew bundleRelease
-      - name: Printing
+          ./gradlew assembleRelease
+      
+      - name: Build release APK and AAB after test
         run: |
-          echo "All:"
-          echo "${{ steps.abc.outputs.all }}"
-          echo "Added:"
-          echo "${{ steps.abc.outputs.added }}"
-          echo "Removed:"
-          echo "${{ steps.abc.outputs.removed }}"
-          echo "Renamed:"
-          echo "${{ steps.abc.outputs.renamed }}"
-          echo "Modified:"
-          echo "${{ steps.abc.outputs.modified }}"
-          echo "Added+Modified:"
-          echo "${{ steps.abc.outputs.added_modified }}"
+            cd..
+            cd..
+            ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+            ./gradlew test
+            ./gradlew assembleRelease
 
       - name: Upload signed APK
         uses: actions/upload-artifact@v2
