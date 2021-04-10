@@ -39,7 +39,7 @@ jobs:
       
       - name: ls
         run:             
-            find . -name \*.apk
+            ls -R | awk '/:$/ {sub(/:$/,""); s=$0;next}{ print s "/" $0 }'
 
       - name: Upload signed APK
         uses: actions/upload-artifact@v2
