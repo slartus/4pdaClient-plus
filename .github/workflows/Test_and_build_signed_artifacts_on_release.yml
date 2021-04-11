@@ -36,6 +36,7 @@ jobs:
         run: |
           ./gradlew test
           ./gradlew assembleRel      
+          ./gradlew assembleRelease      
 
       - name: Upload signed APK
         uses: actions/upload-artifact@v2
