@@ -14,8 +14,8 @@ import android.os.Bundle
 import android.os.Environment
 import android.preference.Preference
 import android.preference.PreferenceFragment
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AlertDialog
+import androidx.fragment.app.FragmentManager
+import androidx.appcompat.app.AlertDialog
 import android.text.*
 import android.view.LayoutInflater
 import android.view.View
@@ -445,10 +445,10 @@ class PreferencesActivity : BasePreferencesActivity() {
                     .show()
         }
 
-        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
             if (resultCode == RESULT_OK) {
                 if (requestCode == MY_INTENT_CLICK) {
-                    val selectedImageUri = data.data
+                    val selectedImageUri = data?.data
                     val selectedImagePath = FilePath.getPath(App.getContext(), selectedImageUri)
                     if (selectedImagePath != null) App.getInstance().preferences
                             .edit()

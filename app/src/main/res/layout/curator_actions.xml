@@ -9,14 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.AppCompatRadioButton
+        <androidx.appcompat.widget.AppCompatRadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Удалить"
             android:checked="true"
             android:id="@+id/radioButton" />
 
-        <android.support.v7.widget.AppCompatRadioButton
+        <androidx.appcompat.widget.AppCompatRadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Переместить в тему"

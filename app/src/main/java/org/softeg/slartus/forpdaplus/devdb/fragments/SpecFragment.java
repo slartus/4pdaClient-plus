@@ -3,7 +3,7 @@ package org.softeg.slartus.forpdaplus.devdb.fragments;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,15 +85,6 @@ public class SpecFragment extends BaseDevDbFragment implements FLifecycleUtil {
         Gallery gallery = (Gallery) view.findViewById(R.id.gallery);
         LazyAdapter adapter = new LazyAdapter(getActivity(), data.getGalleryImages().toArray(new String[data.getGalleryImages().size()]));
         gallery.setAdapter(adapter);
-
-//        RecyclerView recyclerView = ButterKnife.findById(getActivity(), R.id.gallery);
-//        final LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-//        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
-//        recyclerView.setLayoutManager(manager);
-//        SpecGalleryAdapter adapter = new SpecGalleryAdapter(getActivity(), data.getGalleryImages());
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.setHasFixedSize(true);
 
         /*
         перенес сюда, ибо в onCreate imgUrls return null.

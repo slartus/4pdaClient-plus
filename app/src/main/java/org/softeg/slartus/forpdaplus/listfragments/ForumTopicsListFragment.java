@@ -3,7 +3,7 @@ package org.softeg.slartus.forpdaplus.listfragments;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.util.Pair;
+import androidx.core.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,8 +27,6 @@ import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import ru.slartus.http.Http;
 
 /*
  * Created by slinkin on 03.03.14.

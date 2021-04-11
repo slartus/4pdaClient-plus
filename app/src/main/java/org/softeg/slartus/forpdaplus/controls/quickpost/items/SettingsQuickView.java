@@ -1,8 +1,8 @@
 package org.softeg.slartus.forpdaplus.controls.quickpost.items;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatCheckBox;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;

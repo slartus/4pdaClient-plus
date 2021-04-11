@@ -10,16 +10,18 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -94,9 +96,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import io.paperdb.Paper;
 import ru.slartus.http.AppResponse;
 import ru.slartus.http.Http;
@@ -107,43 +106,12 @@ import static org.softeg.slartus.forpdaplus.utils.Utils.getS;
  * Created by radiationx on 28.10.15.
  */
 public class ThemeFragment extends WebViewFragment implements BricksListDialogFragment.IBricksListDialogCaller {
-    @BindView(R.id.quick_post_panel)
     LinearLayout mQuickPostPanel;
-    @BindView(R.id.fab)
     FloatingActionButton fab;
-    @BindView(R.id.wvBody)
     AdvWebView webView;
-    @BindView(R.id.txtSearch)
     EditText txtSearch;
-    @BindView(R.id.pnlSearch)
     LinearLayout pnlSearch;
-    @BindView(R.id.buttonsPanel)
     FrameLayout buttonsPanel;
-
-    @OnClick(R.id.btnPrevSearch)
-    public void btnPrevSearch() {
-        webView.findNext(false);
-    }
-
-    @OnClick(R.id.btnNextSearch)
-    public void btnNextSearch() {
-        webView.findNext(true);
-    }
-
-    @OnClick(R.id.btnCloseSearch)
-    public void btnCloseSearch() {
-        closeSearch();
-    }
-
-    @OnClick(R.id.btnUp)
-    public void btnUp() {
-        webView.pageUp(true);
-    }
-
-    @OnClick(R.id.btnDown)
-    public void btnDown() {
-        webView.pageDown(true);
-    }
 
 
     private static final String TAG = "ThemeActivity";
@@ -273,7 +241,20 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.theme, container, false);
-        ButterKnife.bind(this, view);
+
+        mQuickPostPanel = view.findViewById(R.id.quick_post_panel);
+        fab = view.findViewById(R.id.fab);
+        webView = view.findViewById(R.id.wvBody);
+        txtSearch = view.findViewById(R.id.txtSearch);
+        pnlSearch = view.findViewById(R.id.pnlSearch);
+        buttonsPanel = view.findViewById(R.id.buttonsPanel);
+
+        view.findViewById(R.id.btnPrevSearch).setOnClickListener(view1 -> webView.findNext(false));
+        view.findViewById(R.id.btnNextSearch).setOnClickListener(view1 -> webView.findNext(true));
+        view.findViewById(R.id.btnCloseSearch).setOnClickListener(view1 -> closeSearch());
+        view.findViewById(R.id.btnUp).setOnClickListener(view1 -> webView.pageUp(true));
+        view.findViewById(R.id.btnDown).setOnClickListener(view1 -> webView.pageDown(true));
+
         initSwipeRefreshLayout();
         lastStyle = AppTheme.getThemeCssFileName();
         LoadsImagesAutomatically = null;

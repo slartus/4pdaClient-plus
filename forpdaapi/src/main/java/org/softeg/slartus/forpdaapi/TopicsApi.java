@@ -1,7 +1,7 @@
 package org.softeg.slartus.forpdaapi;
 
 import android.net.Uri;
-import android.support.v4.util.Pair;
+import androidx.core.util.Pair;
 import android.text.Html;
 import android.text.TextUtils;
 

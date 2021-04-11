@@ -6,7 +6,7 @@ package org.softeg.slartus.forpdaplus.acra
 
 
 import android.content.Context
-import android.support.v4.util.Pair
+import androidx.core.util.Pair
 import org.acra.ACRA
 import org.acra.ReportField
 import org.acra.collector.CrashReportData

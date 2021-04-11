@@ -5,9 +5,10 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class BricksListDialogFragment extends DialogFragment implements AdapterV
 
     public interface IBricksListDialogCaller {
         Context getContext();
-        android.support.v4.app.FragmentManager getSupportFragmentManager();
+        FragmentManager getSupportFragmentManager();
 
         void onBricksListDialogResult(android.content.DialogInterface dialog, String dialogId,
                                       BrickInfo brickInfo, Bundle args);

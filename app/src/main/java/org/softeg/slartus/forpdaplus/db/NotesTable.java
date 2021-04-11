@@ -3,15 +3,12 @@ package org.softeg.slartus.forpdaplus.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
-import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.classes.Themes;
-import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.notes.Note;
 

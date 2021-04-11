@@ -1,7 +1,7 @@
 package org.softeg.slartus.forpdaplus;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Created by radiationx on 16.01.16.

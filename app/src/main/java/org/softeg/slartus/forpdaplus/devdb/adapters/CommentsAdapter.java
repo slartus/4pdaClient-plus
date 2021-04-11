@@ -1,7 +1,9 @@
 package org.softeg.slartus.forpdaplus.devdb.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +18,6 @@ import org.softeg.slartus.forpdaplus.devdb.model.CommentsModel;
 
 import java.util.List;
 
-import butterknife.BindView;
 
 /**
  * Created by isanechek on 18.11.15.
@@ -68,24 +69,20 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
     public static class ViewHolder extends BaseRecyclerViewHolder {
 
-        @BindView(R.id.devDbCommentsRatingNum)
         TextView devDbCommentsRatingNum;
-        //        @Bind(R.id.devDbCommentsRatingText)
-//        TextView devDbCommentsRatingText;
-        @BindView(R.id.devDbCommentsUserName)
         TextView devDbCommentsUserName;
-        @BindView(R.id.devDbCommentsDatePost)
         TextView devDbCommentsDatePost;
-        //        @Bind(R.id.devDbCommentsRating)
-//        TextView devDbCommentsRating;
-        @BindView(R.id.devDbCommentsBodeText)
         TextView devDbCommentsBodeText;
-        @BindView(R.id.devDbRatingCon)
         FrameLayout mFrameLayout;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
+            devDbCommentsRatingNum = itemView.findViewById(R.id.devDbCommentsRatingNum);
+            devDbCommentsUserName = itemView.findViewById(R.id.devDbCommentsUserName);
+            devDbCommentsDatePost = itemView.findViewById(R.id.devDbCommentsDatePost);
+            devDbCommentsBodeText = itemView.findViewById(R.id.devDbCommentsBodeText);
+            mFrameLayout = itemView.findViewById(R.id.devDbRatingCon);
         }
 
     }

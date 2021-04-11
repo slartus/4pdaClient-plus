@@ -1,7 +1,7 @@
 package org.softeg.slartus.forpdaapi.qms
 
 
-import android.support.v4.util.Pair
+import androidx.core.util.Pair
 import org.softeg.slartus.forpdaapi.IHttpClient
 import org.softeg.slartus.forpdaapi.ProgressState
 import org.softeg.slartus.forpdaapi.post.EditAttach

@@ -38,7 +38,7 @@
             android:singleLine="false" />
     </ScrollView>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_edit_reason"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
         android:visibility="gone"
         tools:visibility="visible">
 
-        <android.support.v7.widget.AppCompatEditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/txtpost_edit_reason"
             style="?edit_text"
             android:layout_width="fill_parent"
@@ -58,7 +58,7 @@
             android:singleLine="true"
             tools:text="test"
              />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:id="@+id/shadow"

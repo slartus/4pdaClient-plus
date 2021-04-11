@@ -5,7 +5,8 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
 import android.os.Bundle;
 import android.widget.BaseAdapter;
 
-import com.android.internal.util.Predicate;
+
+import androidx.core.util.Predicate;
 
 import org.softeg.slartus.forpdaapi.ICatalogItem;
 import org.softeg.slartus.forpdaapi.digest.DigestApi;
@@ -75,7 +76,7 @@ public class DigestCatalogFragment extends BaseCatalogFragment {
     private ArrayList<DigestCatalog> getFilteredList(Predicate<DigestCatalog> predicate) {
         ArrayList<DigestCatalog> res = new ArrayList<>();
         for (DigestCatalog item : mCatalogData) {
-            if (!predicate.apply(item)) continue;
+            if (!predicate.test(item)) continue;
             res.add(item);
         }
         return res;
@@ -89,12 +90,7 @@ public class DigestCatalogFragment extends BaseCatalogFragment {
         if (((DigestCatalog) catalogItem).getLevel() == DigestCatalog.LEVEL_TOPICS_NEXT)
             return false;
 
-        mLoadResultList = getFilteredList(new Predicate<DigestCatalog>() {
-            @Override
-            public boolean apply(DigestCatalog catalog) {
-                return catalog.getParent() != null && catalog.getParent().getId().equals(catalogItem.getId());
-            }
-        });
+        mLoadResultList = getFilteredList(catalog -> catalog.getParent() != null && catalog.getParent().getId().equals(catalogItem.getId()));
         if (mCatalogData.size() > 0 && mLoadResultList.size() == 0)
             return false;
         return true;

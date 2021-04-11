@@ -1,7 +1,7 @@
 package org.softeg.slartus.forpdaplus.devdb.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,6 @@ import org.softeg.slartus.forpdaplus.devdb.model.PricesModel;
 
 import java.util.List;
 
-import butterknife.BindView;
 
 /**
  * Created by isanechek on 19.12.15.
@@ -60,15 +59,15 @@ public class PricesAdapter extends RecyclerView.Adapter<PricesAdapter.ViewHolder
 
     public static class ViewHolder extends BaseRecyclerViewHolder {
 
-        @BindView(R.id.devDbPricesText)
         TextView textBody;
-        @BindView(R.id.devDbPricesDate)
         TextView date;
-        @BindView(R.id.devDbPricesDescription)
         TextView description;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            textBody=itemView.findViewById(R.id.devDbPricesText);
+            date=itemView.findViewById(R.id.devDbPricesDate);
+            description=itemView.findViewById(R.id.devDbPricesDescription);
         }
     }
 }

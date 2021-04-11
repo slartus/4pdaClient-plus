@@ -6,13 +6,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ShareActionProvider;
+
+import androidx.core.content.ContextCompat;
+import androidx.core.view.MenuItemCompat;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ShareActionProvider;
+
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,7 +41,6 @@ import org.softeg.slartus.forpdaplus.utils.SystemBarTintManager;
 
 import java.util.ArrayList;
 
-import butterknife.ButterKnife;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -101,11 +102,11 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
         setTheme(R.style.ImageViewTheme);
         setContentView(LAYOUT);
 
-        backLayout = ButterKnife.findById(ImgViewer.this, R.id.image_viewer_pullBack);
+        backLayout = findViewById(R.id.image_viewer_pullBack);
         backLayout.setCallback(this);
 
         if (DevDbUtils.isKitKat()) {
-            statusBar = ButterKnife.findById(ImgViewer.this, R.id.img_viewer_statusBar);
+            statusBar = findViewById(R.id.img_viewer_statusBar);
             statusBar.setVisibility(View.VISIBLE);
             statusBar.setMinimumHeight(getStatusBarHeight());
             statusBar.setBackgroundColor(ContextCompat.getColor(App.getContext(), R.color.background_toolbar));
@@ -128,21 +129,18 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
         }
 
 
-
         mVisible = true;
 
 
         if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(IMAGE_URLS_KEY)) {
             urls = getIntent().getExtras().getStringArrayList(IMAGE_URLS_KEY);
-        }
-        else if (savedInstanceState != null && savedInstanceState.containsKey(IMAGE_URLS_KEY)) {
+        } else if (savedInstanceState != null && savedInstanceState.containsKey(IMAGE_URLS_KEY)) {
             urls = savedInstanceState.getStringArrayList(IMAGE_URLS_KEY);
         }
 
         if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_INDEX_KEY)) {
             index = savedInstanceState.getInt(SELECTED_INDEX_KEY);
-        }
-        else if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(SELECTED_INDEX_KEY)) {
+        } else if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(SELECTED_INDEX_KEY)) {
             index = getIntent().getExtras().getInt(SELECTED_INDEX_KEY);
         }
         initUI();
@@ -150,7 +148,7 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     }
 
     private void initUI() {
-        pager = ButterKnife.findById(ImgViewer.this, R.id.img_viewer_pager);
+        pager = findViewById(R.id.img_viewer_pager);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -286,8 +284,8 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
 
         private void loadImage(View imageLayout) {
             assert imageLayout != null;
-            progress = ButterKnife.findById(imageLayout, R.id.progress);
-            photoView = ButterKnife.findById(imageLayout, R.id.photo_view);
+            progress = imageLayout.findViewById(R.id.progress);
+            photoView = imageLayout.findViewById(R.id.photo_view);
             imageLoader.displayImage(urls.get(index), photoView, options, new SimpleImageLoadingListener() {
                 @Override
                 public void onLoadingStarted(String imageUri, View view) {
@@ -326,10 +324,10 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(adapter.views!=null) {
+        if (adapter.views != null) {
             for (int i = 0; i < adapter.views.size(); i++) {
                 if (adapter.views.get(i) == null) continue;
-                ((ImageView) ButterKnife.findById(adapter.views.get(i), R.id.photo_view)).setImageBitmap(null);
+                ((ImageView) adapter.views.get(i).findViewById(R.id.photo_view)).setImageBitmap(null);
             }
         }
         System.gc();

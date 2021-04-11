@@ -1,7 +1,7 @@
 package org.softeg.slartus.forpdaplus.devdb.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +17,6 @@ import org.softeg.slartus.forpdaplus.devdb.model.ReviewsModel;
 
 import java.util.List;
 
-import butterknife.BindView;
 
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHolder> {
 
@@ -60,15 +59,15 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
 
     public static class ViewHolder extends BaseRecyclerViewHolder {
 
-        @BindView(R.id.devDbReviewsText)
         TextView textBody;
-        @BindView(R.id.devDbReviewsDate)
         TextView date;
-        @BindView(R.id.devDbReviewsIV)
         ImageView image;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            textBody=itemView.findViewById(R.id.devDbReviewsText);
+            date=itemView.findViewById(R.id.devDbReviewsDate);
+            image=itemView.findViewById(R.id.devDbReviewsIV);
         }
     }
 }

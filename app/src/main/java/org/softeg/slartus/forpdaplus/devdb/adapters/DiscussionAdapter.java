@@ -1,7 +1,7 @@
 package org.softeg.slartus.forpdaplus.devdb.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,6 @@ import org.softeg.slartus.forpdaplus.devdb.model.DiscussionModel;
 
 import java.util.List;
 
-import butterknife.BindView;
 
 /**
  * Created by isanechek on 19.12.15.
@@ -57,15 +56,15 @@ public class DiscussionAdapter  extends RecyclerView.Adapter<DiscussionAdapter.V
 
     public static class ViewHolder extends BaseRecyclerViewHolder {
 
-        @BindView(R.id.devDbDiscussionText)
         TextView textBody;
-        @BindView(R.id.devDbDiscussionDate)
         TextView date;
-        @BindView(R.id.devDbDiscussionDescription)
         TextView description;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            textBody=itemView.findViewById(R.id.devDbDiscussionText);
+            date=itemView.findViewById(R.id.devDbDiscussionDate);
+            description=itemView.findViewById(R.id.devDbDiscussionDescription);
         }
     }
 }

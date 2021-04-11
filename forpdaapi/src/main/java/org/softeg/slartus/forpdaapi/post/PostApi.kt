@@ -1,6 +1,6 @@
 package org.softeg.slartus.forpdaapi.post
 
-import android.support.v4.util.Pair
+import androidx.core.util.Pair
 import android.text.Html
 import android.text.TextUtils
 import org.jsoup.Jsoup

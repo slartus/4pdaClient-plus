@@ -15,17 +15,21 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.navigation.NavigationView;
+
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+
 import android.text.TextUtils;
 import android.view.ActionMode;
 import android.view.KeyEvent;
@@ -93,7 +97,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     }
 
     private final static String tabPrefix = "tab";
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
 
     private MainDrawerMenu mMainDrawerMenu;
     private static TabDrawerMenu mTabDraweMenu;
@@ -108,7 +112,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     private RelativeLayout statusBar;
     private RelativeLayout fakeStatusBar;
     private int statusBarHeight = -1;
-    private Runnable setStatusBarHeight = new Runnable() {
+    private final Runnable setStatusBarHeight = new Runnable() {
         @Override
         public void run() {
             int[] ints = new int[2];
@@ -301,7 +305,8 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         InputMethodManager service = ((InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE));
         assert service != null;
         View currentFocus = this.getCurrentFocus();
-        assert currentFocus != null;
+        if (currentFocus == null)
+            currentFocus = new View(this);
         service.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
         if (fragment != null)
@@ -316,23 +321,17 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         return appBarLayout;
     }
 
-    public void setArrow(final boolean b, final View.OnClickListener listener) {
-        if (mMainDrawerMenu == null) return;
-        mMainDrawerMenu.getDrawerToggle().setDrawerIndicatorEnabled(!b);
-        mMainDrawerMenu.getDrawerToggle().setToolbarNavigationClickListener(listener);
-    }
-
     private boolean lastHamburgerArrow = true;
-    private DecelerateInterpolator interpolator = new DecelerateInterpolator();
+    private final DecelerateInterpolator interpolator = new DecelerateInterpolator();
 
-    private View.OnClickListener toggleListener = new View.OnClickListener() {
+    private final View.OnClickListener toggleListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if (mMainDrawerMenu != null)
                 mMainDrawerMenu.toggleOpenState();
         }
     };
-    private DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener() {
+    private final DrawerLayout.DrawerListener drawerListener = new DrawerLayout.DrawerListener() {
         @Override
         public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
         }
@@ -399,11 +398,12 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                 .getUserInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(userInfo -> invalidateOptionsMenu()));
+                .subscribe(userInfo -> invalidateOptionsMenu(), throwable -> AppLog.e(this, throwable)));
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         checkIntent(intent);
     }
 
@@ -500,7 +500,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         transaction.commitAllowingStateLoss();
     }
 
-    public void hideFragments(FragmentTransaction transaction, boolean withAnimation) {
+    private void hideFragments(FragmentTransaction transaction, boolean withAnimation) {
         if (getSupportFragmentManager().getFragments() == null) return;
         if (withAnimation)
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
@@ -544,7 +544,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).show(fragment);
     }
 
-    public void endActionFragment(String title, String tag) {
+    private void endActionFragment(String title, String tag) {
         App.getInstance().setCurrentFragmentTag(tag);
         endActionFragment(title);
     }
@@ -676,7 +676,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         }
     }
 
-    public static void addTabToList(String name, String url, String tag, Fragment fragment, boolean select) {
+    private static void addTabToList(String name, String url, String tag, Fragment fragment, boolean select) {
         TabItem item = null;
         if (App.getInstance().isContainsByUrl(url)) {
             if (select) item = App.getInstance().getTabByUrl(url);
@@ -708,7 +708,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             }
     }
 
-    public void removeTab(String tag) {
+    private void removeTab(String tag) {
         if (activityPaused | mTabDraweMenu == null) {
             tabTagForRemove = tag;
         } else {
@@ -877,7 +877,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     }
 
     @Override
-    public void onSupportActionModeStarted(@NonNull android.support.v7.view.ActionMode mode) {
+    public void onSupportActionModeStarted(@NonNull androidx.appcompat.view.ActionMode mode) {
         super.onSupportActionModeStarted(mode);
         Fragment currentFragment = getCurrentFragment();
         if (currentFragment instanceof GeneralFragment) {
@@ -938,7 +938,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     }
 
     @SuppressWarnings("ResourceType")
-    protected void loadPreferences(SharedPreferences prefs) {
+    private void loadPreferences(SharedPreferences prefs) {
         setRequestedOrientation(ExtPreferences.parseInt(prefs, "theme.ScreenOrientation", -1));
     }
 }

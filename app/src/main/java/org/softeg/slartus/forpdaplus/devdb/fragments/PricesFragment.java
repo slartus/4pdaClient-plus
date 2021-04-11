@@ -2,9 +2,9 @@ package org.softeg.slartus.forpdaplus.devdb.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +23,6 @@ import org.softeg.slartus.forpdaplus.devdb.model.PricesModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
 
 /**
  * Created by isanechek on 14.12.15.
@@ -61,7 +60,7 @@ public class PricesFragment extends BaseDevDbFragment implements FLifecycleUtil 
         } else {
             /*CardView cardView = (CardView) view.findViewById(R.id.dev_db_error_message_con);
             cardView.setVisibility(View.VISIBLE);*/
-            TextView textView = ButterKnife.findById(view, R.id.dev_db_error_message);
+            TextView textView = view.findViewById(R.id.dev_db_error_message);
             textView.setVisibility(View.VISIBLE);
         }
         return view;

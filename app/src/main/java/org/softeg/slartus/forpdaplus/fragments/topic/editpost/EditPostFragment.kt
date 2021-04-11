@@ -14,10 +14,10 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.ActionBar
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.ActionBar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.text.*
 import android.text.style.BackgroundColorSpan
 import android.util.TypedValue
@@ -349,7 +349,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.edit_post, menu)
         menu?.findItem(R.id.find_in_text_item)?.setActionView(R.layout.action_collapsible_search)
@@ -376,7 +376,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         })
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?) {
+    override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         menu?.findItem(R.id.edit_reason_item)?.isVisible = !isNewPost
 

@@ -2,7 +2,7 @@ package org.softeg.slartus.forpdaplus.listfragments.next;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;

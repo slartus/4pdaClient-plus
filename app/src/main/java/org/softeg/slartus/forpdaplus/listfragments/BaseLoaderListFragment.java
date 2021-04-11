@@ -2,10 +2,10 @@ package org.softeg.slartus.forpdaplus.listfragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.AsyncTaskLoader;
+import androidx.loader.content.Loader;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -303,7 +303,7 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
             return new ArrayList<>();
     }
 
-    private static class CacheLoader extends android.support.v4.content.AsyncTaskLoader<ListData> {
+    private static class CacheLoader extends AsyncTaskLoader<ListData> {
         static final int ID = App.getInstance().getUniqueIntValue();
         ListData mApps;
 
@@ -399,7 +399,7 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
         }
     }
 
-    private static class ItemsLoader extends android.support.v4.content.AsyncTaskLoader<ListData> {
+    private static class ItemsLoader extends AsyncTaskLoader<ListData> {
         static final int ID = App.getInstance().getUniqueIntValue();
         ListData mApps;
 
