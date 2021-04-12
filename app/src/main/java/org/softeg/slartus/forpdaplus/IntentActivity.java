@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -22,6 +24,7 @@ import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdacommon.UrlExtensions;
 import org.softeg.slartus.forpdaplus.classes.ForumUser;
+import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.devdb.ParentFragment;
@@ -191,7 +194,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         // история репутации
         if ("history".equals(uri.getQueryParameter("view"))
                 && !TextUtils.isEmpty(uri.getQueryParameter("mid"))) {
-            UserReputationFragment.showActivity( uri.getQueryParameter("mid"),
+            UserReputationFragment.showActivity(uri.getQueryParameter("mid"),
                     "from".equals(uri.getQueryParameter("mode")));
             return true;
         }
@@ -661,15 +664,22 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     public static void showInDefaultBrowser(Context context, String url) {
         try {
 
-            Intent marketIntent = new Intent(
+            Intent intent = new Intent(
                     Intent.ACTION_VIEW,
                     Uri.parse(url));
             if (is4pdaUrl(url))
-                context.startActivity(Intent.createChooser(marketIntent, context.getString(R.string.open_in)));
-            else
-                context.startActivity(marketIntent);
-        } catch (Exception ex) {
+                context.startActivity(Intent.createChooser(intent, context.getString(R.string.open_in)));
+            else if (intent.resolveActivity(context.getPackageManager()) != null) {
+                context.startActivity(intent);
+            } else {
+                StringUtils.copyToClipboard(context, url);
+                Toast.makeText(context, context.getString(R.string.link_copied_to_buffer), Toast.LENGTH_SHORT).show();
+                throw new ActivityNotFoundException();
+            }
+        } catch (ActivityNotFoundException ex) {
             AppLog.e(context, new NotReportException(context.getString(R.string.no_app_for_link) + ": " + url));
+        } catch (Throwable ex) {
+            AppLog.e(context, ex);
         }
     }
 }

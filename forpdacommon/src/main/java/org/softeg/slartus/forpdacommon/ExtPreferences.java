@@ -17,22 +17,6 @@ import java.util.Date;
  */
 public class ExtPreferences {
 
-    public static Object getPreferenceDefaultValue(Preference preference) {
-        try {
-            Field defaultField = Preference.class.getDeclaredField("mDefaultValue");
-            if (defaultField == null)
-                return "";
-            defaultField.setAccessible(true);
-            Object defaultValue = defaultField.get(preference);
-            if (defaultValue != null)
-                return defaultValue.toString();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     private static SimpleDateFormat s_DateTimeFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
     public static Date getDateTime(SharedPreferences prefs, String key, Date defValue) {

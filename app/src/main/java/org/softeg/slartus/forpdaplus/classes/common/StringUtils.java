@@ -1,6 +1,5 @@
 package org.softeg.slartus.forpdaplus.classes.common;
 
-import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.text.TextUtils;
@@ -48,25 +47,4 @@ public class StringUtils {
         android.content.ClipData clip = android.content.ClipData.newPlainText("url", link);
         clipboard.setPrimaryClip(clip);
     }
-
-
-    public static void translite(CharSequence str) {
-        String res = "";
-        for (int i = 0; i < str.length(); i++) {
-            char ch = str.charAt(i);
-
-            if (ch < 'А' && ch > 'я') {
-                res += ch;
-                continue;
-            }
-            switch (ch) {
-                case 'А':
-                case 'а':
-                    res += 'a';
-
-            }
-        }
-    }
-
-
 }

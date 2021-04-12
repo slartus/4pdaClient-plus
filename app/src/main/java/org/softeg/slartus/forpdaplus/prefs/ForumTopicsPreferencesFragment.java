@@ -28,11 +28,11 @@ public class ForumTopicsPreferencesFragment extends PreferenceFragment {
             assert listName != null;
             assert !"".equals(listName);
 
-            setKey(preferences, "sort_key", listName);
-            setKey(preferences, "sort_by", listName);
-            setKey(preferences, "prune_day", listName);
-            setKey(preferences, "topicfilter", listName);
-            setKey(preferences, "unread_in_top", listName);
+            setKey(preferences, "sort_key", listName,"last_post");
+            setKey(preferences, "sort_by", listName,"Z-A");
+            setKey(preferences, "prune_day", listName,"100");
+            setKey(preferences, "topicfilter", listName,"all");
+            setKey(preferences, "unread_in_top", listName,"false");
         }
         PreferenceManager.setDefaultValues(getActivity(), R.xml.forum_topics_list_prefs, false);
     }
@@ -47,30 +47,26 @@ public class ForumTopicsPreferencesFragment extends PreferenceFragment {
     }
 
     @SuppressWarnings("ConstantConditions")
-    private void setKey(SharedPreferences preferences, String prefsKey, String listName) {
+    private void setKey(SharedPreferences preferences, String prefsKey, String listName, String defValue) {
         Preference pref = findPreference(prefsKey);
         String newKey = listName + "." + prefsKey;
 
-        Object defValue = ExtPreferences.getPreferenceDefaultValue(pref);
         if (pref instanceof ListPreference) {
             if (preferences.getString(newKey, null) == null) {
-                String defSValue = defValue == null ? null : defValue.toString();
-                preferences.edit().putString(newKey, defSValue).apply();
+
+                preferences.edit().putString(newKey, defValue).apply();
             }
         } else if (pref instanceof CheckBoxPreference) {
-            Boolean defSValue = Boolean.parseBoolean(defValue.toString());
+            Boolean defSValue = Boolean.parseBoolean(defValue);
 
             ((CheckBoxPreference) pref).setChecked(preferences.getBoolean(newKey, defSValue));
 
         }
 
         pref.setKey(newKey);
-        pref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object o) {
-                getActivity().setResult(ForumTopicsPreferencesActivity.RESULT_OK);
-                return true;
-            }
+        pref.setOnPreferenceChangeListener((preference, o) -> {
+            getActivity().setResult(ForumTopicsPreferencesActivity.RESULT_OK);
+            return true;
         });
 
 
