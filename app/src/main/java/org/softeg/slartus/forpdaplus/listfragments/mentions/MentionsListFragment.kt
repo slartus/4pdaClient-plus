@@ -143,7 +143,7 @@ class MentionsListFragment : WebViewFragment() {
 
     fun load(startNum: Int) {
         setLoading(true)
-        InternetConnection.instance.loadDataOnInternetConnected {
+        InternetConnection.instance.loadDataOnInternetConnected( {
             GlobalScope.launch(Dispatchers.IO) {
                 try {
                     val pageBody = Client.getInstance()
@@ -166,7 +166,7 @@ class MentionsListFragment : WebViewFragment() {
                     AppLog.e(ex)
                 }
             }
-        }
+        })
     }
 
     override fun getContext(): Context? {

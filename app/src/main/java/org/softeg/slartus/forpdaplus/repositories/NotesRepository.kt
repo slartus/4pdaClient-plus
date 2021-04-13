@@ -26,7 +26,7 @@ class NotesRepository private constructor() {
         val instance by lazy { Holder.INSTANCE }
 
         fun checUrlAsync(baseUrl: String, successAction: () -> Unit, errorAction: (ex: Throwable) -> Unit) {
-            InternetConnection.instance.loadDataOnInternetConnected {
+            InternetConnection.instance.loadDataOnInternetConnected( {
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
                         val url = getUrl(baseUrl, "get")
@@ -42,7 +42,7 @@ class NotesRepository private constructor() {
                         }
                     }
                 }
-            }
+            })
         }
 
         private fun getUrl(baseUrl: String, action: String): String {
@@ -83,7 +83,7 @@ class NotesRepository private constructor() {
                 notesSubject.onNext(notes.toList())
             }
         } else {
-            InternetConnection.instance.loadDataOnInternetConnected {
+            InternetConnection.instance.loadDataOnInternetConnected( {
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
                         val url = getUrl("get")
@@ -96,7 +96,7 @@ class NotesRepository private constructor() {
                         }
                     }
                 }
-            }
+            })
         }
     }
 
@@ -107,7 +107,7 @@ class NotesRepository private constructor() {
             }
             load()
         } else {
-            InternetConnection.instance.loadDataOnInternetConnected {
+            InternetConnection.instance.loadDataOnInternetConnected( {
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
                         val uriBuilder = Uri.parse(apiUrl).buildUpon()
@@ -122,7 +122,7 @@ class NotesRepository private constructor() {
                                 ?: ex.message), ex))
                     }
                 }
-            }
+            })
         }
     }
 
@@ -143,7 +143,7 @@ class NotesRepository private constructor() {
             }
 
         } else {
-            InternetConnection.instance.loadDataOnInternetConnected {
+            InternetConnection.instance.loadDataOnInternetConnected( {
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
                         val uriBuilder = Uri.parse(apiUrl).buildUpon()
@@ -175,7 +175,7 @@ class NotesRepository private constructor() {
                                 ?: ex.message), ex))
                     }
                 }
-            }
+            })
         }
     }
 

@@ -88,6 +88,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.TopicReadersBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.repositories.InternetConnection;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
 import java.lang.ref.WeakReference;
@@ -1225,10 +1226,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public List<ArrayList<String>> imageAttaches = new ArrayList<>();
-
-    private void getTheme(){
-
-    }
 
     private class MyWebViewClient extends WebViewClient {
         private final long LOADING_ERROR_TIMEOUT = TimeUnit.SECONDS.toMillis(45);
