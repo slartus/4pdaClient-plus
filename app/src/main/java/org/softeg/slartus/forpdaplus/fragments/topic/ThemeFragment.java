@@ -328,6 +328,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     })
                     .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS);
         });
+        webView.getSettings().setJavaScriptEnabled(false);
     }
 
     @Override
