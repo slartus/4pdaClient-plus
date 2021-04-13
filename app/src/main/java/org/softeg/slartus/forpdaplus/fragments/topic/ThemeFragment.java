@@ -43,6 +43,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
+import org.jetbrains.annotations.Nullable;
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
@@ -66,6 +67,7 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.HelpTask;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImageViewDialogFragment;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
+import org.softeg.slartus.forpdaplus.controls.quickpost.PostTask;
 import org.softeg.slartus.forpdaplus.controls.quickpost.QuickPostFragment;
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
@@ -105,7 +107,7 @@ import static org.softeg.slartus.forpdaplus.utils.Utils.getS;
 /**
  * Created by radiationx on 28.10.15.
  */
-public class ThemeFragment extends WebViewFragment implements BricksListDialogFragment.IBricksListDialogCaller {
+public class ThemeFragment extends WebViewFragment implements BricksListDialogFragment.IBricksListDialogCaller, QuickPostFragment.PostSendListener {
     LinearLayout mQuickPostPanel;
     FloatingActionButton fab;
     AdvWebView webView;
@@ -263,34 +265,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         mQuickPostFragment = (QuickPostFragment) getChildFragmentManager().findFragmentById(R.id.quick_post_fragment);
         mQuickPostFragment.setParentTag(getTag());
-        mQuickPostFragment.setOnPostSendListener(postResult -> {
-            if (postResult.Success) {
-                hideMessagePanel();
 
-                m_LastUrl = postResult.Response.redirectUrlElseRequestUrl();
-                m_Topic = postResult.ExtTopic;
-                m_Topic.setLastUrl(m_LastUrl);
-
-                if (postResult.TopicBody == null)
-                    Log.e("ThemeActivity", "TopicBody is null");
-                addToHistory(postResult.TopicBody);
-                try {
-                    showBody(postResult.TopicBody);
-                } catch (Exception e) {
-                    AppLog.e(e);
-                }
-
-            } else {
-                if (postResult.Exception != null)
-                    AppLog.e(getMainActivity(), postResult.Exception, () -> mQuickPostFragment.post());
-                else if (!TextUtils.isEmpty(postResult.ForumErrorMessage))
-                    if (getContext() != null)
-                        new MaterialDialog.Builder(getContext())
-                                .title(R.string.forum_msg)
-                                .content(postResult.ForumErrorMessage)
-                                .show();
-            }
-        });
 
         txtSearch.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1210,6 +1185,36 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         }, 250);
     }
 
+    @Override
+    public void onAfterSendPost(@Nullable PostTask.PostResult postResult) {
+        if (postResult.Success) {
+            hideMessagePanel();
+
+            m_LastUrl = postResult.Response.redirectUrlElseRequestUrl();
+            m_Topic = postResult.ExtTopic;
+            m_Topic.setLastUrl(m_LastUrl);
+
+            if (postResult.TopicBody == null)
+                Log.e("ThemeActivity", "TopicBody is null");
+            addToHistory(postResult.TopicBody);
+            try {
+                showBody(postResult.TopicBody);
+            } catch (Exception e) {
+                AppLog.e(e);
+            }
+
+        } else {
+            if (postResult.Exception != null)
+                AppLog.e(getMainActivity(), postResult.Exception, () -> mQuickPostFragment.post());
+            else if (!TextUtils.isEmpty(postResult.ForumErrorMessage))
+                if (getContext() != null)
+                    new MaterialDialog.Builder(getContext())
+                            .title(R.string.forum_msg)
+                            .content(postResult.ForumErrorMessage)
+                            .show();
+        }
+    }
+
     private class MyChromeClient extends WebChromeClient {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
@@ -1220,6 +1225,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public List<ArrayList<String>> imageAttaches = new ArrayList<>();
+
+    private void getTheme(){
+
+    }
 
     private class MyWebViewClient extends WebViewClient {
         private final long LOADING_ERROR_TIMEOUT = TimeUnit.SECONDS.toMillis(45);

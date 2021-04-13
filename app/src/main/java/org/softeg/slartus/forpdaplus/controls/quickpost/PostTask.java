@@ -20,7 +20,7 @@ import ru.slartus.http.AppResponse;
  * Created by slartus on 23.02.14.
  */
 public class PostTask extends AsyncTask<String, Void, Boolean> {
-    public class PostResult {
+    public static class PostResult {
         public Boolean Success;
         public ExtTopic ExtTopic;
         public String ForumErrorMessage;
@@ -30,14 +30,14 @@ public class PostTask extends AsyncTask<String, Void, Boolean> {
     }
 
     private final MaterialDialog dialog;
-    private String mPost;
+    private final String mPost;
 
 
-    private String mForumId;
-    private String mTopicId;
-    private String mAuthKey;
-    private Boolean mEnableEmotics;
-    private Boolean mEnableSign;
+    private final String mForumId;
+    private final String mTopicId;
+    private final String mAuthKey;
+    private final Boolean mEnableEmotics;
+    private final Boolean mEnableSign;
     PostResult mPostResult;
 
     PostTask(Context context, String post, String forumId, String topicId, String authKey,

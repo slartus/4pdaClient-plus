@@ -20,6 +20,7 @@ import org.softeg.slartus.forpdaplus.controls.quickpost.PostTask.PostResult
 import org.softeg.slartus.forpdaplus.fragments.topic.editpost.EditPostFragment.Companion.newPost
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.utils.LogUtil
+import java.lang.ref.WeakReference
 
 class QuickPostFragment : Fragment() {
     private var emptyText = true
@@ -39,11 +40,16 @@ class QuickPostFragment : Fragment() {
     }
 
     interface PostSendListener {
-        fun onPostExecute(postResult: PostResult?)
+        fun onAfterSendPost(postResult: PostResult?)
     }
 
-    fun setOnPostSendListener(postSendListener: PostSendListener?) {
-        mPostSendListener = postSendListener
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mPostSendListener = when {
+            context is PostSendListener -> context
+            parentFragment is PostSendListener -> parentFragment as PostSendListener
+            else -> throw RuntimeException("$context must implement PostSendListener")
+        }
     }
 
     fun setTopic(forumId: String?, topicId: String?, authKey: String?) {
@@ -61,7 +67,7 @@ class QuickPostFragment : Fragment() {
         get() = if (mPostEditText!!.text != null) mPostEditText!!.text.toString() else ""
 
     fun insertTextToPost(text: String?, cursorPosition: Int = -1) {
-        val selection = mPostEditText?.selectionStart?:-1
+        val selection = mPostEditText?.selectionStart ?: -1
         if (mPostEditText!!.text != null) mPostEditText!!.text.insert(if (selection == -1) 0 else selection, text)
         if (cursorPosition != -1) mPostEditText!!.setSelection((if (selection == -1) 0 else selection) + cursorPosition)
     }
@@ -98,11 +104,11 @@ class QuickPostFragment : Fragment() {
         super.onSaveInstanceState(outState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = inflater.inflate(R.layout.quick_post_fragment, null)!!
-        val send_button = v.findViewById<ImageButton>(R.id.send_button)
-        send_button.setOnClickListener { startPost() }
-        send_button.setOnLongClickListener {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        val v = inflater.inflate(R.layout.quick_post_fragment, null as ViewGroup?)!!
+        val sendButton = v.findViewById<ImageButton>(R.id.send_button)
+        sendButton.setOnClickListener { startPost() }
+        sendButton.setOnLongClickListener {
             hideKeyboard()
             newPost(activity!!, mForumId!!, mTopicId!!, mAuthKey!!,
                     postBody, parentTag)
@@ -117,20 +123,20 @@ class QuickPostFragment : Fragment() {
             override fun afterTextChanged(s: Editable) {
                 if (s.toString().isEmpty()) {
                     if (!emptyText) {
-                        send_button.clearColorFilter()
+                        sendButton.clearColorFilter()
                         emptyText = true
                     }
                 } else {
                     if (emptyText) {
-                        send_button.setColorFilter(ContextCompat.getColor(App.getContext(), R.color.selectedItemText), PorterDuff.Mode.SRC_ATOP)
+                        sendButton.setColorFilter(ContextCompat.getColor(App.getContext(), R.color.selectedItemText), PorterDuff.Mode.SRC_ATOP)
                         emptyText = false
                     }
                 }
             }
         })
-        val advanced_button = v.findViewById<ImageButton>(R.id.advanced_button)
+        val advancedButton = v.findViewById<ImageButton>(R.id.advanced_button)
         mPopupPanelView = PopupPanelView(PopupPanelView.VIEW_FLAG_ALL)
-        mPopupPanelView!!.createView(inflater, advanced_button, mPostEditText)
+        mPopupPanelView!!.createView(inflater, advancedButton, mPostEditText)
         mPopupPanelView!!.activityCreated(activity, v)
         return v
     }
@@ -144,13 +150,13 @@ class QuickPostFragment : Fragment() {
         }
         if (Preferences.Topic.getConfirmSend()) {
             val inflater = activity!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val view = inflater.inflate(R.layout.send_post_confirm_dialog, null)!!
+            val view = inflater.inflate(R.layout.send_post_confirm_dialog, null as ViewGroup?)!!
             val checkBox = view.findViewById<CheckBox>(R.id.chkConfirmationSend)
             MaterialDialog.Builder(activity!!)
                     .title(R.string.confirm_action)
                     .customView(view, true)
                     .positiveText(R.string.send)
-                    .onPositive { dialog: MaterialDialog?, which: DialogAction? ->
+                    .onPositive { _: MaterialDialog?, _: DialogAction? ->
                         if (!checkBox.isChecked) Preferences.Topic.setConfirmSend(false)
                         post()
                     }
@@ -164,7 +170,9 @@ class QuickPostFragment : Fragment() {
     fun post() {
         try {
             hideKeyboard()
-            val postTask: PostTask = InnerPostTask(activity,
+            val postTask: PostTask = InnerPostTask(
+                    this,
+                    activity,
                     if (mPostEditText!!.text == null) "" else mPostEditText!!.text.toString(),
                     mForumId, mTopicId, mAuthKey,
                     Preferences.Topic.Post.getEnableEmotics(), Preferences.Topic.Post.getEnableSign())
@@ -192,13 +200,25 @@ class QuickPostFragment : Fragment() {
         if (mPopupPanelView != null) mPopupPanelView!!.resume()
     }
 
-    private inner class InnerPostTask internal constructor(context: Context?, post: String?, forumId: String?, topicId: String?, authKey: String?, enableEmotics: Boolean?, enableSign: Boolean?)
+    private class InnerPostTask(
+            fragment: QuickPostFragment,
+            context: Context?, post: String?, forumId: String?,
+            topicId: String?, authKey: String?, enableEmotics: Boolean?, enableSign: Boolean?)
         : PostTask(context, post, forumId, topicId, authKey, enableEmotics, enableSign) {
+        var quickPostFragment: WeakReference<QuickPostFragment>? = null
+
+        init {
+            quickPostFragment = WeakReference(fragment)
+        }
+
         override fun onPostExecute(success: Boolean) {
             super.onPostExecute(success)
-            mPostResult.Success = success
-            if (success) if (mPostEditText!!.text != null) mPostEditText!!.text.clear()
-            if (mPostSendListener != null) mPostSendListener!!.onPostExecute(mPostResult)
+            quickPostFragment?.get()?.let { fragment ->
+                mPostResult.Success = success
+                if (success) fragment.mPostEditText?.text?.clear()
+                fragment.mPostSendListener?.onAfterSendPost(mPostResult)
+            }
+
         }
     }
 }

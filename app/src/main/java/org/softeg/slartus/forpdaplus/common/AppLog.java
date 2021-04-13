@@ -85,11 +85,12 @@ public final class AppLog {
     }
 
     private static boolean tryShowNetException(Context context, Throwable ex, final Runnable netExceptionAction) {
+        String message = getLocalizedMessage(ex, null);
+        if (message == null)
+            return false;
         try {
 
-            String message = getLocalizedMessage(ex, null);
-            if (message == null)
-                return false;
+
             MaterialDialog.Builder builder = new MaterialDialog.Builder(context)
                     .title(R.string.check_connection)
                     .content(message)
@@ -106,6 +107,7 @@ public final class AppLog {
             return true;
 
         } catch (Throwable loggedEx) {
+            Toast.makeText(App.getInstance(),message,Toast.LENGTH_SHORT).show();
             android.util.Log.e(TAG, ex.toString());
             return true;
         }

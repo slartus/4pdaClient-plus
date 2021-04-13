@@ -92,8 +92,7 @@ class NotesRepository private constructor() {
                     } catch (ex: Throwable) {
                         notesSubject.onNext(notesSubject.value ?: emptyList())
                         withContext(Dispatchers.Main) {
-                            AppLog.e(Exception("notes load:" + (ex.localizedMessage
-                                    ?: ex.message), ex))
+                            AppLog.e(ex)
                         }
                     }
                 }
