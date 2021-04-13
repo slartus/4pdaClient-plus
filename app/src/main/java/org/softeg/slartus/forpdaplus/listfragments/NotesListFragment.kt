@@ -49,11 +49,13 @@ class NotesListFragment : BaseListFragment() {
     }
 
     private fun loadData() {
-        NotesRepository.instance.load()
+        setLoading(true)
+
         dataSubscriber?.dispose()
         dataSubscriber =
                 NotesRepository.instance
                         .notesSubject
+                        .skip(1)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
@@ -74,6 +76,7 @@ class NotesListFragment : BaseListFragment() {
                                     AppLog.e(activity, it)
                                 }
                         )
+        NotesRepository.instance.load()
     }
 
     var dataSubscriber: Disposable? = null
