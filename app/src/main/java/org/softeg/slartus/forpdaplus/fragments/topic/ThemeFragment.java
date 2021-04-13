@@ -579,16 +579,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         if (m_Topic != null) {
             setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
         }
-        if (mQuickPostFragment != null)
-            mQuickPostFragment.onResume();
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mQuickPostFragment != null)
-            mQuickPostFragment.onPause();
-    }
 
     private void hideKeyboard() {
         mQuickPostFragment.hideKeyboard();

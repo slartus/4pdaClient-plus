@@ -4,18 +4,22 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.os.Parcelable;
+
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.controls.quickpost.items.BBCodesAndSmilesItem;
@@ -29,7 +33,7 @@ import java.util.List;
 
 
 public class PopupPanelView {
-    private int mViewsFlags = VIEW_FLAG_ALL;
+    private final int mViewsFlags;
     public static final int VIEW_FLAG_SETTINGS = 2;
     public static final int VIEW_FLAG_EMOTICS = 4;
     public static final int VIEW_FLAG_BBCODES = 8;
@@ -71,12 +75,10 @@ public class PopupPanelView {
 
         advanced_button.setOnClickListener(view -> toggleAdvPanelVisibility());
     }
-    public void activityCreated(Activity activity){
-        activityCreated(activity, null);
-    }
+
     public void activityCreated(Activity activity, View view) {
         parentLayout = activity.getWindow().getDecorView().findViewById(android.R.id.content);
-        if(view==null)
+        if (view == null)
             this.emoticonsCover = parentLayout.findViewById(R.id.footer_for_emoticons);
         else
             this.emoticonsCover = view.findViewById(R.id.footer_for_emoticons);
@@ -85,8 +87,7 @@ public class PopupPanelView {
                 R.dimen.keyboard_height);
         changeKeyboardHeight((int) popUpheight);
         enablePopUpView();
-        checkKeyboardHeight(parentLayout);
-
+        addGlobalLayoutListener();
 
         ArrayList<QuickPostItem> items = new ArrayList<>();
 
@@ -155,53 +156,53 @@ public class PopupPanelView {
         advanced_button.setImageResource(R.drawable.plus);
     }
 
-    /**
-     * change height of emoticons keyboard according to height of actual
-     * keyboard
-     *
-     * @param height minimum height by which we can make sure actual keyboard is
-     *               open or not
-     */
-    private LinearLayout.LayoutParams params;
     private void changeKeyboardHeight(int height) {
         if (height > 100) {
             keyboardHeight = height;
-            params = new LinearLayout.LayoutParams(
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, keyboardHeight);
             emoticonsCover.setLayoutParams(params);
         }
     }
 
+    private final ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+            Rect r = new Rect();
+            parentLayout.getWindowVisibleDisplayFrame(r);
+
+            int screenHeight = parentLayout.getRootView().getHeight();
+            if (k == -1)
+                k = screenHeight - r.bottom;
+            int heightDifference = screenHeight - r.bottom - k;
+
+            if (previousHeightDiffrence - heightDifference > 50) {
+                hidePopupWindow();
+            }
+
+            isKeyBoardVisible = heightDifference > 100;
+            if (previousHeightDiffrence != heightDifference)
+                changeKeyboardHeight(heightDifference);
+            previousHeightDiffrence = heightDifference;
+        }
+    };
+
     /**
      * Checking keyboard height and keyboard visibility
      */
     private int previousHeightDiffrence = 0;
-    private int heightDifference;
-    private int screenHeight;
     private int k = -1;
-    private Rect r;
-    @SuppressWarnings("ConstantConditions")
-    private void checkKeyboardHeight(final View parentLayout) {
-        parentLayout.getViewTreeObserver().addOnGlobalLayoutListener(
-                () -> {
-                    r = new Rect();
-                    parentLayout.getWindowVisibleDisplayFrame(r);
 
-                    screenHeight = parentLayout.getRootView().getHeight();
-                    if (k == -1)
-                        k = screenHeight - r.bottom;
-                    heightDifference = screenHeight - r.bottom - k;
+    private void addGlobalLayoutListener() {
+        removeGlobalLayoutListener();
+        if (parentLayout != null)
+            parentLayout.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
+    }
 
-                    if (previousHeightDiffrence - heightDifference > 50) {
-                        hidePopupWindow();
-                    }
-
-                    isKeyBoardVisible = heightDifference > 100;
-                    if (previousHeightDiffrence != heightDifference)
-                        changeKeyboardHeight(heightDifference);
-                    previousHeightDiffrence = heightDifference;
-                }
-        );
+    private void removeGlobalLayoutListener() {
+        if (parentLayout != null)
+            parentLayout.getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
     }
 
     /**
@@ -222,27 +223,31 @@ public class PopupPanelView {
             if (popupWindow != null)
                 popupWindow.dismiss();
             popupWindow = null;
-            for(QuickPostItem item:mQuickPostPagerAdapter.mItems)
-                if(item.getBaseQuickView()!=null)
+            for (QuickPostItem item : mQuickPostPagerAdapter.mItems)
+                if (item.getBaseQuickView() != null)
                     item.getBaseQuickView().onDestroy();
         } catch (Throwable ex) {
             Log.e("PopupPanelView", ex.toString());
         }
     }
-    public void pause(){
+
+    public void pause() {
         try {
+            removeGlobalLayoutListener();
             hidePopupWindow();
-            for(QuickPostItem item:mQuickPostPagerAdapter.mItems)
-                if(item.getBaseQuickView()!=null)
+            for (QuickPostItem item : mQuickPostPagerAdapter.mItems)
+                if (item.getBaseQuickView() != null)
                     item.getBaseQuickView().onPause();
         } catch (Throwable ex) {
             Log.e("PopupPanelView", ex.toString());
         }
     }
-    public void resume(){
+
+    public void resume() {
         try {
-            for(QuickPostItem item:mQuickPostPagerAdapter.mItems)
-                if(item.getBaseQuickView()!=null)
+            addGlobalLayoutListener();
+            for (QuickPostItem item : mQuickPostPagerAdapter.mItems)
+                if (item.getBaseQuickView() != null)
                     item.getBaseQuickView().onResume();
         } catch (Throwable ex) {
             Log.e("PopupPanelView", ex.toString());
@@ -250,9 +255,9 @@ public class PopupPanelView {
     }
 
     public class QuickPostPagerAdapter extends PagerAdapter {
-        private List<QuickPostItem> mItems;
-        private BaseQuickView[] mViews;
-        private Activity mActivity;
+        private final List<QuickPostItem> mItems;
+        private final BaseQuickView[] mViews;
+        private final Activity mActivity;
 
 
         public QuickPostPagerAdapter(Activity activity, List<QuickPostItem> items) {
@@ -261,8 +266,9 @@ public class PopupPanelView {
             mViews = new BaseQuickView[mItems.size()];
         }
 
+        @NotNull
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(@NotNull ViewGroup container, int position) {
             if (mViews[position] == null) {
                 mViews[position] = mItems.get(position).createView(mActivity, mPostEditText);
                 mViews[position].setTopic(mForumId, mTopicId, mAuthKey);
@@ -272,7 +278,7 @@ public class PopupPanelView {
         }
 
         @Override
-        public void destroyItem(ViewGroup container, int position, Object view) {
+        public void destroyItem(ViewGroup container, int position, @NotNull Object view) {
             container.removeView((View) view);
         }
 
@@ -282,7 +288,7 @@ public class PopupPanelView {
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object) {
+        public boolean isViewFromObject(View view, @NotNull Object object) {
             return view.equals(object);
         }
 

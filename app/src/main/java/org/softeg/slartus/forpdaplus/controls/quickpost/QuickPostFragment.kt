@@ -36,7 +36,7 @@ class QuickPostFragment : Fragment() {
 
     private var mPopupPanelView: PopupPanelView? = null
     fun hidePopupWindow() {
-        if (mPopupPanelView != null) mPopupPanelView!!.hidePopupWindow()
+        mPopupPanelView?.hidePopupWindow()
     }
 
     interface PostSendListener {
@@ -56,7 +56,7 @@ class QuickPostFragment : Fragment() {
         mForumId = forumId
         mTopicId = topicId
         mAuthKey = authKey
-        if (mPopupPanelView != null) mPopupPanelView!!.setTopic(mForumId, mTopicId, mAuthKey)
+        mPopupPanelView?.setTopic(mForumId, mTopicId, mAuthKey)
     }
 
     fun clearPostBody() {
@@ -68,36 +68,36 @@ class QuickPostFragment : Fragment() {
 
     fun insertTextToPost(text: String?, cursorPosition: Int = -1) {
         val selection = mPostEditText?.selectionStart ?: -1
-        if (mPostEditText!!.text != null) mPostEditText!!.text.insert(if (selection == -1) 0 else selection, text)
-        if (cursorPosition != -1) mPostEditText!!.setSelection((if (selection == -1) 0 else selection) + cursorPosition)
+        mPostEditText?.text?.insert(if (selection == -1) 0 else selection, text)
+        if (cursorPosition != -1) mPostEditText?.setSelection((if (selection == -1) 0 else selection) + cursorPosition)
     }
 
     fun hideKeyboard() {
         if (activity == null) return
-        val imm = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(mPostEditText!!.windowToken, 0)
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.hideSoftInputFromWindow(mPostEditText?.windowToken, 0)
     }
 
     fun showKeyboard() {
         if (activity == null) return
-        mPostEditText!!.requestFocus()
-        val imm = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.showSoftInput(mPostEditText, InputMethodManager.SHOW_IMPLICIT)
+        mPostEditText?.requestFocus()
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.showSoftInput(mPostEditText, InputMethodManager.SHOW_IMPLICIT)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (savedInstanceState != null) {
-            mPostEditText!!.setText(savedInstanceState.getString("QuickPostFragment.Post"))
+            mPostEditText?.setText(savedInstanceState.getString("QuickPostFragment.Post"))
             mForumId = savedInstanceState.getString("QuickPostFragment.ForumId")
             mTopicId = savedInstanceState.getString("QuickPostFragment.TopicId")
             mAuthKey = savedInstanceState.getString("QuickPostFragment.AuthKey")
         }
-        mPopupPanelView!!.setTopic(mForumId, mTopicId, mAuthKey)
+        mPopupPanelView?.setTopic(mForumId, mTopicId, mAuthKey)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (mPostEditText!!.text != null) outState.putString("QuickPostFragment.Post", mPostEditText!!.text.toString())
+        if (mPostEditText?.text != null) outState.putString("QuickPostFragment.Post", mPostEditText?.text.toString())
         outState.putString("QuickPostFragment.ForumId", mForumId)
         outState.putString("QuickPostFragment.TopicId", mTopicId)
         outState.putString("QuickPostFragment.AuthKey", mAuthKey)
@@ -136,8 +136,8 @@ class QuickPostFragment : Fragment() {
         })
         val advancedButton = v.findViewById<ImageButton>(R.id.advanced_button)
         mPopupPanelView = PopupPanelView(PopupPanelView.VIEW_FLAG_ALL)
-        mPopupPanelView!!.createView(inflater, advancedButton, mPostEditText)
-        mPopupPanelView!!.activityCreated(activity, v)
+        mPopupPanelView?.createView(inflater, advancedButton, mPostEditText)
+        mPopupPanelView?.activityCreated(activity, v)
         return v
     }
 
@@ -183,21 +183,21 @@ class QuickPostFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        if (mPopupPanelView != null) {
-            mPopupPanelView!!.destroy()
-            mPopupPanelView = null
-        }
+
+        mPopupPanelView?.destroy()
+        mPopupPanelView = null
+
         super.onDestroy()
     }
 
     override fun onPause() {
         super.onPause()
-        if (mPopupPanelView != null) mPopupPanelView!!.pause()
+        mPopupPanelView?.pause()
     }
 
     override fun onResume() {
         super.onResume()
-        if (mPopupPanelView != null) mPopupPanelView!!.resume()
+        mPopupPanelView?.resume()
     }
 
     private class InnerPostTask(
