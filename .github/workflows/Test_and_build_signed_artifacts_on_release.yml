@@ -37,8 +37,16 @@ jobs:
         run: |
           ./gradlew test
           ./gradlew assembleRel      
+          ./gradlew assembleBeta
           ./gradlew assembleRelease      
-
+      - name: Save name of our Artifact
+        id: set-result-artifact
+        run: |
+          ARTIFACT_PATHNAME_APK=$(ls app/build/outputs/apk/beta/release/*.apk | head -n 1)
+          ARTIFACT_NAME_APK=$(basename $ARTIFACT_PATHNAME_APK)
+          echo "ARTIFACT_NAME_APK is " ${ARTIFACT_NAME_APK}
+          echo "ARTIFACT_PATHNAME_APK=${ARTIFACT_PATHNAME_APK}" >> $GITHUB_ENV
+          echo "ARTIFACT_NAME_APK=${ARTIFACT_NAME_APK}" >> $GITHUB_ENV
       - name: Upload signed APK
         uses: actions/upload-artifact@v2
         with:
