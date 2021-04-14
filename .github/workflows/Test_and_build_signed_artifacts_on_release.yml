@@ -44,4 +44,4 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: ${{ env.ARTIFACT_NAME_APK }}
-          path: app/build/outputs/apk/rel/release/${{ env.ARTIFACT_NAME_APK }}
+          path: ${{ env.ARTIFACT_PATHNAME_APK }}
