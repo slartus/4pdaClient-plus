@@ -49,7 +49,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: apk
-          path: /home/runner/work/4pdaClient-plus/app/build/outputs/apk/debug/app-debug.apk
+          path: /home/runner/work/4pdaClient-plus/app/build/outputs/apk/rel/debug/ForPDA_3.5.8-debug.apk
 #      - name: Run tests and build release artifacts        
 #        run: |
 #          ./gradlew test
