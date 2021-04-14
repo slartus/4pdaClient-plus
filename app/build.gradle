@@ -93,7 +93,9 @@ android {
             def fileNaming = "ForPDA"
             def vCode = variant.versionCode
             def flavor = variant.productFlavors[0]
-            if (flavor.name == "beta")
+            if (variant.buildType.name == "debug")
+                outputFileName = "app-debug.apk"
+            else if (flavor.name == "beta")
                 outputFileName = "${fileNaming}_${appVersionName}-beta_c${vCode}.apk"
             else
                 outputFileName = "${fileNaming}_${appVersionName}-${variant.buildType.name}.apk"
