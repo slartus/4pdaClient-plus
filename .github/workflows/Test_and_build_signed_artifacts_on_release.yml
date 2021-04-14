@@ -11,9 +11,9 @@ on:
       
 
 env:
-  KEYSTORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
-  RELEASE_SIGN_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
-  RELEASE_SIGN_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+  RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+  RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+  RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
 
 jobs:
 #based on https://gist.github.com/alexanderbazo/227476190ef5ab655795e34ec0d314d6          
