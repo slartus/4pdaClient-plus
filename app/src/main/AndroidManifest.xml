@@ -7,11 +7,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /><!-- Для доступа к установке apk при клике в шторке -->
 
     <uses-feature
         android:name="android.software.leanback"
@@ -30,6 +32,7 @@
         android:resizeableActivity="false"
         android:theme="@style/MainPinkBlack"
         android:usesCleartextTraffic="true"
+        android:requestLegacyExternalStorage="true"
         tools:ignore="UnusedAttribute"
         tools:replace="android:icon">
 
@@ -247,6 +250,7 @@
 
         <receiver android:name="org.softeg.slartus.forpdanotifyservice.qms.AlarmReceiver" />
         <receiver android:name="org.softeg.slartus.forpdanotifyservice.favorites.FavoritesAlarmReceiver" />
+
 
         <meta-data
             android:name="com.sec.android.support.multiwindow"
