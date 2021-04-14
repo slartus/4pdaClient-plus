@@ -16,22 +16,6 @@ env:
   RELEASE_SIGN_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
 
 jobs:
-  build_apk_aab:
-#    if: startsWith(github.head_ref, 'release/') == true
-    name: Build release artifacts
-    runs-on: ubuntu-latest
-    steps:
-
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with: {java-version: 1.8}
-
-      - name: Checkout keystore repo
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ secrets.KEYSTORE_GIT_REPOSITORY }}
-          token: ${{ secrets.KEYSTORE_ACCESS_TOKEN }}
-          path: app # путь внутри директории с основным проектом, куда нужно сложить файлы
 #based on https://gist.github.com/alexanderbazo/227476190ef5ab655795e34ec0d314d6          
   apk:
     name: Generate APK
@@ -42,19 +26,13 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 1.8
-      - name: Config secrets
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ secrets.KEYSTORE_GIT_REPOSITORY }}
-          token: ${{ secrets.KEYSTORE_ACCESS_TOKEN }}
-          path: app # путь внутри директории с основным проектом, куда нужно сложить файлы          
+          java-version: 1.8     
       - name: Build APK
         run: bash ./gradlew assembleRelease
       - name: Save name of our Artifact
         id: set-result-artifact
         run: |
-          ARTIFACT_PATHNAME_APK=$(ls app/*.apk | head -n 1)
+          ARTIFACT_PATHNAME_APK=$(ls app/build/outputs/apk/rel/release/*.apk | head -n 1)
           ARTIFACT_NAME_APK=$(basename $ARTIFACT_PATHNAME_APK)
           echo "ARTIFACT_NAME_APK is " ${ARTIFACT_NAME_APK}
           echo "ARTIFACT_PATHNAME_APK=${ARTIFACT_PATHNAME_APK}" >> $GITHUB_ENV
