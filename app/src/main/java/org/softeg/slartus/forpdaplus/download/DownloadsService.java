@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
-import androidx.core.content.ContextCompat;
 import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -32,7 +34,6 @@ import ru.slartus.http.Http;
  * Time: 9:58
  */
 public class DownloadsService {
-    public static final int UPDATE_PROGRESS = 8344;
 
     public static void download(final Activity context1, final String url, final Boolean finish) {
         ActionSelectDialogFragment.INSTANCE.execute(context1,
@@ -42,8 +43,8 @@ public class DownloadsService {
                 context1.getResources().getTextArray(R.array.downloaderManagersValues),
                 value -> {
                     try {
-                        // системный
-                        if ("2".equals(value.toString())) {
+                        // внешний
+                        if (value != null && "2".equals(value.toString())) {
                             new GetTempUrlTask(context1, uri -> {
                                 try {
                                     Intent marketIntent = new Intent(Intent.ACTION_VIEW, uri);
@@ -79,20 +80,21 @@ public class DownloadsService {
 
 
     private static void systemDownload(Context context, String fileName, String url) {
-        DownloadManager dm = (DownloadManager) context.getSystemService(IntentService.DOWNLOAD_SERVICE);
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-
-
-        StringBuilder sb = new StringBuilder();
+        StringBuilder cookiesString = new StringBuilder();
         for (HttpCookie cookie : Client.getInstance().getCookies()) {
-            sb.append(cookie.getName() + "=" + cookie.getValue() + ";");
-
+            cookiesString.append(cookie.getName()).append("=").append(cookie.getValue()).append(";");
         }
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.addRequestHeader("Cookie", sb.toString());
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
 
+        DownloadManager dm = (DownloadManager) context.getSystemService(IntentService.DOWNLOAD_SERVICE);
         assert dm != null;
+
+        DownloadManager.Request request =
+                new DownloadManager.Request(Uri.parse(url))
+                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                        .addRequestHeader("Cookie", cookiesString.toString())
+                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+        request.allowScanningByMediaScanner();
+
         dm.enqueue(request);
     }
 
