@@ -50,7 +50,7 @@ jobs:
           token: ${{ secrets.KEYSTORE_ACCESS_TOKEN }}
           path: app # путь внутри директории с основным проектом, куда нужно сложить файлы          
       - name: Build APK
-        run: bash ./gradlew assembleBeta
+        run: bash ./gradlew assembleRelease
       - name: Save name of our Artifact
         id: set-result-artifact
         run: |
