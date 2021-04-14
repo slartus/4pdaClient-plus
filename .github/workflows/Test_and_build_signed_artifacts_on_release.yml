@@ -36,14 +36,13 @@ jobs:
       - name: Run tests and build release artifacts        
         run: |
           ./gradlew test
-          ./gradlew assembleRel      
-          ./gradlew assembleBeta
-          ./gradlew assembleRelease      
+          ./gradlew assembleRel
+          ./gradlew assembleRelease
 # based on https://medium.com/google-developer-experts/github-actions-for-android-developers-6b54c8a32f55          
       - name: Save name of our Artifact
         id: set-result-artifact
         run: |
-          ARTIFACT_PATHNAME_APK=$(ls app/build/outputs/apk/beta/release/*.apk | head -n 1)
+          ARTIFACT_PATHNAME_APK=$(ls app/build/outputs/apk/rel/release/*.apk | head -n 1)
           ARTIFACT_NAME_APK=$(basename $ARTIFACT_PATHNAME_APK)
           echo "ARTIFACT_NAME_APK is " ${ARTIFACT_NAME_APK}
           echo "ARTIFACT_PATHNAME_APK=${ARTIFACT_PATHNAME_APK}" >> $GITHUB_ENV
