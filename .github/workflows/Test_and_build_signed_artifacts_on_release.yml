@@ -28,12 +28,14 @@ jobs:
         with:
           java-version: 1.8     
       - name: Build APK
-        run: bash ./gradlew assembleRelease
+        run: |
+          ./gradlew test
+          ./gradlew assembleRelease
 # based on https://medium.com/google-developer-experts/github-actions-for-android-developers-6b54c8a32f55         
       - name: Save name of our Artifact
         id: set-result-artifact
         run: |
-          ARTIFACT_PATHNAME_APK=$(ls app/build/outputs/apk/rel/release/*.apk | head -n 1)
+          ARTIFACT_PATHNAME_APK=$(ls app/build/outputs/apk/beta/release/*.apk | head -n 1)
           ARTIFACT_NAME_APK=$(basename $ARTIFACT_PATHNAME_APK)
           echo "ARTIFACT_NAME_APK is " ${ARTIFACT_NAME_APK}
           echo "ARTIFACT_PATHNAME_APK=${ARTIFACT_PATHNAME_APK}" >> $GITHUB_ENV
@@ -41,48 +43,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v1
         with:
-          name: apk
+          name: ${{ env.ARTIFACT_NAME_APK }}
           path: app/build/outputs/apk/rel/release/${{ env.ARTIFACT_NAME_APK }}
-#      - name: Run tests and build release artifacts        
-#        run: |
-#          ./gradlew test
-#          ./gradlew assembleRel
-#          ./gradlew assembleRelease
-         
-#      - name: Save name of our Artifact
-#        id: set-result-artifact
-#        run: |
-#          ARTIFACT_PATHNAME_APK=$(ls ../app/build/*.apk | head -n 1)
-#          ARTIFACT_NAME_APK=$(basename $ARTIFACT_PATHNAME_APK)
-#          echo "ARTIFACT_NAME_APK is " ${ARTIFACT_NAME_APK}
-#          echo "ARTIFACT_PATHNAME_APK=${ARTIFACT_PATHNAME_APK}" >> $GITHUB_ENV
-#          echo "ARTIFACT_NAME_APK=${ARTIFACT_NAME_APK}" >> $GITHUB_ENV
-#      - name: Upload signed APK
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: app-release.apk
-#          path: app/build/outputs/apk/rel/release/app-rel-release.apk
-#
-#      - name: Upload signed APK2
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: app-release.apk
-#          path: app/build/outputs/apk/release/app-rel-release.apk
-#          
-#      - name: Upload signed APK3
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: app-release.apk
-#          path: app/build/outputs/apk/rel/release/app-release.apk          
-#
-#      - name: Upload signed APK4
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: app-release.apk
-#          path: app/build/outputs/apk/release/app-rel-release.apk          
-#
-##      - name: Upload AAB Bundle
-##        uses: actions/upload-artifact@v2
-##        with:
-##          name: app-release.aab
-##          path: app/build/outputs/bundle/release/app-release.aab
