@@ -50,11 +50,11 @@ jobs:
           token: ${{ secrets.KEYSTORE_ACCESS_TOKEN }}
           path: app # путь внутри директории с основным проектом, куда нужно сложить файлы          
       - name: Build APK
-        run: bash ./gradlew assembleRel --stacktrace
+        run: bash ./gradlew assembleBeta
       - name: Save name of our Artifact
         id: set-result-artifact
         run: |
-          ARTIFACT_PATHNAME_APK=$(ls app/build/outputs/apk/rel/release/*.apk | head -n 1)
+          ARTIFACT_PATHNAME_APK=$(ls app/*.apk | head -n 1)
           ARTIFACT_NAME_APK=$(basename $ARTIFACT_PATHNAME_APK)
           echo "ARTIFACT_NAME_APK is " ${ARTIFACT_NAME_APK}
           echo "ARTIFACT_PATHNAME_APK=${ARTIFACT_PATHNAME_APK}" >> $GITHUB_ENV
