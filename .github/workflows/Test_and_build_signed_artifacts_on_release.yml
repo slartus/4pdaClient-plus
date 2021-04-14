@@ -39,6 +39,7 @@ jobs:
           ./gradlew assembleRel      
           ./gradlew assembleBeta
           ./gradlew assembleRelease      
+# based on https://medium.com/google-developer-experts/github-actions-for-android-developers-6b54c8a32f55          
       - name: Save name of our Artifact
         id: set-result-artifact
         run: |
