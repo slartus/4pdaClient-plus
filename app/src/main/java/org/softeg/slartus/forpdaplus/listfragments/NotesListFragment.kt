@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus.listfragments
 
 import android.app.Activity
+import android.os.Bundle
 import android.text.TextUtils
 import android.view.ContextMenu
 import android.view.View
@@ -33,8 +34,14 @@ class NotesListFragment : BaseListFragment() {
     //        return NotesRepository.getInstance().
     //                NotesTable.getNotes(args!=null?args.getString(TOPIC_ID_KEY):null);
     //    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        removeArrow()
+    }
+
     override fun onResume() {
         super.onResume()
+        removeArrow()
         loadData()
     }
 
