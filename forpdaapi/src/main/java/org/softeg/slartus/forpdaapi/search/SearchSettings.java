@@ -131,7 +131,7 @@ public class SearchSettings implements Parcelable {
 
         String uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
                 qualms, "windows-1251");
-        return uri.toString();
+        return uri;
     }
 
     public String getResultView() {

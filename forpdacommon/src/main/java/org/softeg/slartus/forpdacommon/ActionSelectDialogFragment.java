@@ -15,7 +15,7 @@ public class ActionSelectDialogFragment {
 
 
     public interface OkListener {
-        public void execute(CharSequence value);
+        void execute(CharSequence value);
     }
 
     public static void showSaveNavigateActionDialog(final Context context,

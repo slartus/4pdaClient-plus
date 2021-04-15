@@ -9,11 +9,11 @@ import java.util.ArrayList;
  * Created by slinkin on 17.02.2015.
  */
 public class ForumsData implements Serializable {
-    private int pagesCount = 1;
-    private int currentPage = 1;
+    private final int pagesCount = 1;
+    private final int currentPage = 1;
     private Throwable error = null;
 
-    private ArrayList<Forum> items = new ArrayList<Forum>();
+    private final ArrayList<Forum> items = new ArrayList<Forum>();
 
     public ArrayList<Forum> getItems() {
         return items;

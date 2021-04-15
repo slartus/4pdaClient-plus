@@ -8,8 +8,8 @@ import java.util.List;
  * Created by slinkin on 19.11.2014.
  */
 public class Observer<I> {
-    private ArrayList<I> strongListeners = new ArrayList<I>();
-    private ArrayList<WeakReference<I>> weakListeners = new ArrayList<WeakReference<I>>();
+    private final ArrayList<I> strongListeners = new ArrayList<I>();
+    private final ArrayList<WeakReference<I>> weakListeners = new ArrayList<WeakReference<I>>();
 
     public void addStrongListener(I listener) {
         strongListeners.add(listener);

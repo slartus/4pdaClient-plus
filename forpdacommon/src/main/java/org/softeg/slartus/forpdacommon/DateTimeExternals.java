@@ -10,9 +10,9 @@ import java.util.GregorianCalendar;
  * Created by slartus on 20.02.14.
  */
 public class DateTimeExternals {
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-    private static SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy в HH:mm");
-    private static SimpleDateFormat parseDateTimeFormat = new SimpleDateFormat("dd.MM.yyyy, HH:mm");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy в HH:mm");
+    private static final SimpleDateFormat parseDateTimeFormat = new SimpleDateFormat("dd.MM.yyyy, HH:mm");
 
     /**
      * Сегодня в формате dd.MM.yyyy
@@ -54,7 +54,7 @@ public class DateTimeExternals {
      */
     public static Date parseForumDateTime(String dateTime, String today, String yesterday) throws ParseException {
         try {
-            Date res = parseDateTimeFormat.parse(dateTime.toString().replace("Сегодня", today).replace("Вчера", yesterday));
+            Date res = parseDateTimeFormat.parse(dateTime.replace("Сегодня", today).replace("Вчера", yesterday));
 
             Calendar calendar = new GregorianCalendar();
             calendar.setTime(res);

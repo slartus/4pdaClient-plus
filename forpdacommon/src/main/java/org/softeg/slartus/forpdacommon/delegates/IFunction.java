@@ -3,5 +3,5 @@ package org.softeg.slartus.forpdacommon.delegates;/*
  */
 
 public interface IFunction<T> {
-    public T run();
+    T run();
 }

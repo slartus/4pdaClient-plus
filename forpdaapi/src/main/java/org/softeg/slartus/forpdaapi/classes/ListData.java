@@ -13,7 +13,7 @@ public class ListData implements Serializable {
     private int currentPage = 1;
     private Throwable ex = null;
 
-    private ArrayList<IListItem> items = new ArrayList<IListItem>();
+    private final ArrayList<IListItem> items = new ArrayList<IListItem>();
 
     public ArrayList<IListItem> getItems() {
         return items;

@@ -12,8 +12,8 @@ public class DevCatalog implements ICatalogItem, Parcelable {
     public static final int ROOT = -1;
     public static final int DEVICE_TYPE = 0;
     public static final int DEVICE_BRAND = 1;
-    private String mId;
-    private String mTitle;
+    private final String mId;
+    private final String mTitle;
     private String mImageUrl;
     private String description;
     private int type;

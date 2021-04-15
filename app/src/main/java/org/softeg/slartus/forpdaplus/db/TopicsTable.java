@@ -57,7 +57,7 @@ public class TopicsTable {
         values.put(COLUMN_ID, topic.getId());
         values.put(COLUMN_FORUM_ID, topic.getForumId());
         values.put(COLUMN_TITLE, topic.getTitle());
-        values.put(COLUMN_DESCRIPTION, topic.getDescription() == null ? null : topic.getDescription());
+        values.put(COLUMN_DESCRIPTION, topic.getDescription());
         if (topic.getLastMessageDate() != null)
             values.put(COLUMN_LAST_MESSAGE_DATE, DbHelper.DateTimeFormat.format(topic.getLastMessageDate()));
         if (topic.getLastMessageAuthor() != null)

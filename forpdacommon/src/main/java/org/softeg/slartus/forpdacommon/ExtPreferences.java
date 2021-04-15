@@ -17,7 +17,7 @@ import java.util.Date;
  */
 public class ExtPreferences {
 
-    private static SimpleDateFormat s_DateTimeFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+    private static final SimpleDateFormat s_DateTimeFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
     public static Date getDateTime(SharedPreferences prefs, String key, Date defValue) {
         try {

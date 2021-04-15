@@ -23,7 +23,7 @@ import java.util.Map;
  * Created by slartus on 05.06.13.
  */
 public abstract class NotifierBase {
-    private Context mContext;
+    private final Context mContext;
 
     public NotifierBase(Context context) {
         mContext = context;
@@ -46,7 +46,7 @@ public abstract class NotifierBase {
         return preferences.getString("CookiesPath", null);
     }
 
-    private SimpleDateFormat m_DateTimeFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.getDefault());
+    private final SimpleDateFormat m_DateTimeFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss", Locale.getDefault());
 
     protected GregorianCalendar loadLastDate(String lastDateTimeKey) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());

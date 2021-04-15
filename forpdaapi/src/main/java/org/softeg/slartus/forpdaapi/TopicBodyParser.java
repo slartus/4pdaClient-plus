@@ -15,7 +15,7 @@ public class TopicBodyParser implements Parcelable {
     private String topicTitle;
     private String topicDescription;
     private String postsBody;
-    private Uri uri;
+    private final Uri uri;
 
     private int pagesCount = 1, postsPerPage = 1, currentPage = 1;
 

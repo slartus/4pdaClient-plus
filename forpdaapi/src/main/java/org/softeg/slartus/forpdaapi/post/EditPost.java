@@ -9,8 +9,8 @@ import java.util.List;
 public class EditPost implements Serializable {
     private String error;
     private String body;
-    private EditPostParams params = new EditPostParams();
-    private List<EditAttach> attaches = new ArrayList<>();
+    private final EditPostParams params = new EditPostParams();
+    private final List<EditAttach> attaches = new ArrayList<>();
     private String postEditReason;
     private boolean enableEmo;
     private boolean enableSign;

@@ -103,9 +103,9 @@ public class QmsNotifier extends NotifierBase {
         }
     }
 
-    private SimpleDateFormat m_DateFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
-    private SimpleDateFormat m_TimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-    private SimpleDateFormat m_TodayTimeFormat = new SimpleDateFormat("Сегодня HH:mm", Locale.getDefault());
+    private final SimpleDateFormat m_DateFormat = new SimpleDateFormat("dd MMM", Locale.getDefault());
+    private final SimpleDateFormat m_TimeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private final SimpleDateFormat m_TodayTimeFormat = new SimpleDateFormat("Сегодня HH:mm", Locale.getDefault());
 
 
     private boolean checkUser(ArrayList<QmsUser> qmsUsers, QmsUser user) throws Throwable {
@@ -234,7 +234,7 @@ public class QmsNotifier extends NotifierBase {
         }
     }
 
-    private static int REQUEST_CODE_START = 839264710;
+    private static final int REQUEST_CODE_START = 839264710;
 
     private static PendingIntent getAlarmPendingIntent(Context context) {
         Intent downloader = new Intent(context, AlarmReceiver.class);

@@ -30,7 +30,7 @@ public class DigestCatalog implements ICatalogItem, Parcelable {
     private int type = TYPE_APPLICATIONS;
 
     private ICatalogItem parent;
-    private ArrayList<DigestCatalog> children = new ArrayList<>();
+    private final ArrayList<DigestCatalog> children = new ArrayList<>();
     private String htmlTitle;
 
     public DigestCatalog() {

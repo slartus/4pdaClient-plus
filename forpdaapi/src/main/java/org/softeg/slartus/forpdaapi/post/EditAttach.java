@@ -5,8 +5,8 @@ package org.softeg.slartus.forpdaapi.post;/*
 import java.io.Serializable;
 
 public class EditAttach implements Serializable {
-    private String mId;
-    private String mName;
+    private final String mId;
+    private final String mName;
 
     public EditAttach(String id, String name) {
         mId = id;

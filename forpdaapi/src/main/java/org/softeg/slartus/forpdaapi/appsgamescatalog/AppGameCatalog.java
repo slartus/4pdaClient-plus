@@ -33,7 +33,7 @@ public class AppGameCatalog implements ICatalogItem, Parcelable {
     private int type = TYPE_APPLICATIONS;
 
     private ICatalogItem parent;
-    private ArrayList<AppGameCatalog> children = new ArrayList<>();
+    private final ArrayList<AppGameCatalog> children = new ArrayList<>();
     private String htmlTitle;
 
     public AppGameCatalog() {

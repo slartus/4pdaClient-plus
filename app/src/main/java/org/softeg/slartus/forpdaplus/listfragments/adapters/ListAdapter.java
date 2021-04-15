@@ -1,6 +1,7 @@
 package org.softeg.slartus.forpdaplus.listfragments.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.BaseAdapter;
@@ -132,7 +133,7 @@ public class ListAdapter extends BaseAdapter implements Filterable {
         holder.TopRight.setText(topic.getTopRight());
         holder.Main.setText(topic.getMain());
 
-        if (topic.getSubMain().equals("") | showSubMain) {
+        if (showSubMain && TextUtils.isEmpty(topic.getSubMain())) {
             holder.SubMain.setVisibility(View.GONE);
         } else {
             holder.SubMain.setVisibility(View.VISIBLE);

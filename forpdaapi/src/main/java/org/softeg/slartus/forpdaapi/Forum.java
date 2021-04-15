@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class Forum implements Serializable {
     private String m_Id;
     private String description;
-    private String m_Title;
+    private final String m_Title;
     private boolean hasTopics = false;
     private boolean hasForums = false;
     private String iconUrl;

@@ -16,7 +16,7 @@ public class ListInfo {
         return from;
     }
 
-    private Map<String, String> m_Params = new HashMap<>();
+    private final Map<String, String> m_Params = new HashMap<>();
 
     public Map<String, String> getParams() {
         return m_Params;

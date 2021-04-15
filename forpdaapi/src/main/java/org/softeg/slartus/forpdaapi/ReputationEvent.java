@@ -18,7 +18,7 @@ public class ReputationEvent implements IListItem, Serializable {
     private int state;
     private String date;
 
-    private String m_Id = UUID.randomUUID().toString();
+    private final String m_Id = UUID.randomUUID().toString();
 
     @Override
     public CharSequence getId() {

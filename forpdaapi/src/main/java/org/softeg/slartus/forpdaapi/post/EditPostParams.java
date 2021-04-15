@@ -14,8 +14,8 @@ import java.util.Map;
  * Created by slinkin on 14.07.2015.
  */
 public class EditPostParams implements Serializable {
-    private List<String> orderedNames = new ArrayList<>();
-    private Map<String, String> params = new HashMap<>();
+    private final List<String> orderedNames = new ArrayList<>();
+    private final Map<String, String> params = new HashMap<>();
 
     public Boolean containsKey(String key) {
         return params.containsKey(key);

@@ -13,7 +13,7 @@ public class TopicsListData implements Serializable {
     private int currentPage = 1;
     private Throwable error = null;
 
-    private ArrayList<Topic> items = new ArrayList<Topic>();
+    private final ArrayList<Topic> items = new ArrayList<Topic>();
 
     public ArrayList<Topic> getItems() {
         return items;

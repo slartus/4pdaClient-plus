@@ -9,7 +9,7 @@ import org.softeg.slartus.forpdaapi.IListItem;
  */
 public class DevModel implements IListItem {
     public String name;
-    private String id;
+    private final String id;
     private CharSequence description;
     private String imgUrl;
     private String rate;

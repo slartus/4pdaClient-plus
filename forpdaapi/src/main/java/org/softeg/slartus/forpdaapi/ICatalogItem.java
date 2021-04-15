@@ -12,7 +12,7 @@ public interface ICatalogItem {
 
     ICatalogItem getParent();
 
-    public void setParent(ICatalogItem catalogItem);
+    void setParent(ICatalogItem catalogItem);
 
     ICatalogItem clone();
 

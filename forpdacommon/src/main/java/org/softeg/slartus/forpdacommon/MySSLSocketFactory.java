@@ -23,7 +23,7 @@ import javax.net.ssl.X509TrustManager;
  */
 
 public class MySSLSocketFactory extends SSLSocketFactory {
-    private SSLContext sslContext = SSLContext.getInstance("TLS");
+    private final SSLContext sslContext = SSLContext.getInstance("TLS");
 
     public MySSLSocketFactory(KeyStore trustStore) throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException, KeyManagementException {
         super(trustStore);

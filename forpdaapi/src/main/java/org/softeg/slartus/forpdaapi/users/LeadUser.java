@@ -10,7 +10,7 @@ import org.softeg.sqliteannotations.Column;
 import java.util.ArrayList;
 
 public class LeadUser extends User {
-    private ArrayList<Forum> forums = new ArrayList<>();
+    private final ArrayList<Forum> forums = new ArrayList<>();
 
     @Column(name = "groupName")
     private String group;

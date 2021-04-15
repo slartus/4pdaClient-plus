@@ -27,7 +27,7 @@ class ForumsApi : ArrayList<Forum>() {
 
             val pageBody = Http.instance
                     .performGetFull("https://4pda.ru/forum/index.php?act=idx").responseBody
-            val doc = Jsoup.parse(pageBody!!, "https://4pda.ru")
+            val doc = Jsoup.parse(pageBody, "https://4pda.ru")
             val categoryElements = doc.select("div.borderwrap[id~=fo_\\d+]")
 
             for (catElement in categoryElements) {
@@ -106,7 +106,7 @@ class ForumsApi : ArrayList<Forum>() {
         private fun loadSubForums(url: String, parentForum: Forum,
                                   data: ForumsData, progressState: ProgressState) {
             val pageBody = Http.instance.performGetFull(url).responseBody
-            val doc = Jsoup.parse(pageBody!!, "https://4pda.ru")
+            val doc = Jsoup.parse(pageBody, "https://4pda.ru")
             val catElement = doc.select("div.borderwrap[id~=fo_\\d+]").first() ?: return
             val boardForumRowElement = catElement.select("table.ipbtable>tbody").first() ?: return
 

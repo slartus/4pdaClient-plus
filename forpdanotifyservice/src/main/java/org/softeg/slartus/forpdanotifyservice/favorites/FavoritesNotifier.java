@@ -136,7 +136,7 @@ public class FavoritesNotifier extends NotifierBase {
         }
     }
 
-    private static int REQUEST_CODE_START = 839264722;
+    private static final int REQUEST_CODE_START = 839264722;
 
     private static PendingIntent getAlarmPendingIntent(Context context, int flag) {
         Intent downloader = new Intent(context, FavoritesAlarmReceiver.class);

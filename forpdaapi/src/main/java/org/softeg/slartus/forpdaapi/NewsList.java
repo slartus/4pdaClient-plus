@@ -17,8 +17,8 @@ import java.util.regex.Pattern;
  * Created by slinkin on 20.02.14.
  */
 public class NewsList extends ArrayList<News> {
-    private IHttpClient mClient;
-    private CharSequence mSearchTag;
+    private final IHttpClient mClient;
+    private final CharSequence mSearchTag;
 
     private CharSequence mLastNewsUrl;
     private int mLastNewsPage;

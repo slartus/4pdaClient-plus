@@ -276,10 +276,7 @@ public class FileUtils {
             } else {
                 return true;
             }
-        } else if (!requireWriteAccess && Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            return true;
-        }
-        return false;
+        } else return !requireWriteAccess && Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
     }
 
     private static boolean checkFsWritable(String dirPath) {
