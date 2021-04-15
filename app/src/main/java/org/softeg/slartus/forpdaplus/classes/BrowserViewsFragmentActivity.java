@@ -90,9 +90,9 @@ public abstract class BrowserViewsFragmentActivity extends AppCompatActivity imp
         View v = getLayoutInflater().inflate(R.layout.font_size_dialog, null);
 
         assert v != null;
-        final SeekBar seekBar = (SeekBar) v.findViewById(R.id.value_seekbar);
+        final SeekBar seekBar = v.findViewById(R.id.value_seekbar);
         seekBar.setProgress(Preferences.getFontSize(Prefix()) - 1);
-        final TextView textView = (TextView) v.findViewById(R.id.value_textview);
+        final TextView textView = v.findViewById(R.id.value_textview);
         textView.setText((seekBar.getProgress() + 1) + "");
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

@@ -81,7 +81,7 @@ public class TopicsPreferenceFragment extends PreferenceFragment implements Pref
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View v = inflater.inflate(R.layout.topics_sort_dialog, null);
         assert v != null;
-        final RadioGroup radioGroup = (RadioGroup) v.findViewById(R.id.rgSortType);
+        final RadioGroup radioGroup = v.findViewById(R.id.rgSortType);
 
         switch (Preferences.List.getListSort(getListName(), Preferences.List.defaultListSort())) {
             case "sortorder.desc":

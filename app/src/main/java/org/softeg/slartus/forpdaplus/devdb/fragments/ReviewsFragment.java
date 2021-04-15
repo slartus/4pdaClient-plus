@@ -61,7 +61,7 @@ public class ReviewsFragment extends BaseDevDbFragment implements FLifecycleUtil
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
         mModelList = new Gson().fromJson(getArguments().getString(LIST_ARG),  new TypeToken<ArrayList<ReviewsModel>>() {}.getType());
         if (mModelList.size() != 0) {
-            mRecyclerView = (RecyclerView) view.findViewById(R.id.devDbRecyclerView);
+            mRecyclerView = view.findViewById(R.id.devDbRecyclerView);
             mRecyclerView.setVisibility(View.VISIBLE);
             mAdapter = new ReviewsAdapter(getActivity(), mModelList, ImageLoader.getInstance());
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

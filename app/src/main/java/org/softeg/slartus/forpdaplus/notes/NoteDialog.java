@@ -28,14 +28,14 @@ public class NoteDialog {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.note_new, null);
 
-        final EditText etTitle = (EditText) view.findViewById(R.id.title);
+        final EditText etTitle = view.findViewById(R.id.title);
         etTitle.setText(title);
-        ImageButton clear_title = (ImageButton) view.findViewById(R.id.clear_title);
+        ImageButton clear_title = view.findViewById(R.id.clear_title);
         clear_title.setOnClickListener(view1 -> etTitle.setText(""));
 
-        final EditText etMessage = (EditText) view.findViewById(R.id.message);
+        final EditText etMessage = view.findViewById(R.id.message);
         etMessage.setText(body);
-        ImageButton clear_message = (ImageButton) view.findViewById(R.id.clear_message);
+        ImageButton clear_message = view.findViewById(R.id.clear_message);
         clear_message.setOnClickListener(view12 -> etMessage.setText(""));
 
         new MaterialDialog.Builder(context)

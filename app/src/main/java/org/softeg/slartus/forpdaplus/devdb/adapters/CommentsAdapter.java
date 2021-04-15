@@ -25,10 +25,10 @@ import java.util.List;
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
     private static final int LAYOUT = R.layout.dev_db_comments_item;
-    private LayoutInflater mLayoutInflater;
-    private Context mContext;
+    private final LayoutInflater mLayoutInflater;
+    private final Context mContext;
 
-    private List<CommentsModel> mModels;
+    private final List<CommentsModel> mModels;
 
     public CommentsAdapter(Context context, List<CommentsModel> models) {
         super();

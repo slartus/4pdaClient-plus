@@ -4,10 +4,10 @@ package org.softeg.slartus.forpdaplus.devdb.model;
  * Created by isanechek on 18.12.15.
  */
 public class DiscussionModel {
-    private String mDiscussionTitle;
-    private String mDiscussionLink;
-    private String mDiscussionDate;
-    private String mDiscussionDescription;
+    private final String mDiscussionTitle;
+    private final String mDiscussionLink;
+    private final String mDiscussionDate;
+    private final String mDiscussionDescription;
 
     public DiscussionModel(String discussionDescription, String discussionDate, String discussionLink, String discussionTitle) {
         mDiscussionDescription = discussionDescription;

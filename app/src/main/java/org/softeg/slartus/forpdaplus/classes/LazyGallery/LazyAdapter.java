@@ -22,8 +22,8 @@ import java.io.IOException;
 
 public class LazyAdapter extends BaseAdapter {
 
-    private Activity activity;
-    private String[] data;
+    private final Activity activity;
+    private final String[] data;
     private static LayoutInflater inflater=null;
     public ImageLoader imageLoader;
 
@@ -51,7 +51,7 @@ public class LazyAdapter extends BaseAdapter {
         if(convertView==null)
             vi = inflater.inflate(R.layout.gallery_item, null);
 
-        ImageView image=(ImageView)vi.findViewById(R.id.image);
+        ImageView image= vi.findViewById(R.id.image);
 
         imageLoader.displayImage(data[position], image);
         return vi;

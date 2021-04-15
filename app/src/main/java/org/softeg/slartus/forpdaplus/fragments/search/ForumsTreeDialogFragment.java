@@ -40,7 +40,7 @@ public class ForumsTreeDialogFragment extends DialogFragment {
     private ForumsAdapter m_ListViewAdapter;
     private SpinnerAdapter m_SpinnerAdapter;
     private View m_Progress;
-    private ArrayList<CheckableForumItem> m_Forums = new ArrayList<>();
+    private final ArrayList<CheckableForumItem> m_Forums = new ArrayList<>();
 
     public static ForumsTreeDialogFragment newInstance(Boolean dialog, Collection<String> checkedForumIds) {
         Bundle args = new Bundle();
@@ -72,9 +72,9 @@ public class ForumsTreeDialogFragment extends DialogFragment {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.forums_tree_dialog_fragment, null);
         assert view != null;
-        m_ListView = (ListView) view.findViewById(android.R.id.list);
+        m_ListView = view.findViewById(android.R.id.list);
         initListView();
-        m_Spinner = (Spinner) view.findViewById(R.id.selected_spinner);
+        m_Spinner = view.findViewById(R.id.selected_spinner);
         initSpinner();
 
         m_Progress = view.findViewById(R.id.progress);
@@ -227,8 +227,8 @@ public class ForumsTreeDialogFragment extends DialogFragment {
 
     public class SpinnerAdapter extends BaseAdapter {
 
-        private ArrayList<CheckableForumItem> mForums;
-        private LayoutInflater m_Inflater;
+        private final ArrayList<CheckableForumItem> mForums;
+        private final LayoutInflater m_Inflater;
 
         public SpinnerAdapter(Context context, ArrayList<CheckableForumItem> forums) {
             super();
@@ -276,7 +276,7 @@ public class ForumsTreeDialogFragment extends DialogFragment {
                 rowView = m_Inflater.inflate(android.R.layout.simple_spinner_dropdown_item, null);
                 holder = new ViewHolder();
                 assert rowView != null;
-                holder.text = (TextView) rowView
+                holder.text = rowView
                         .findViewById(android.R.id.text1);
 
                 rowView.setTag(holder);

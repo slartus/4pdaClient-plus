@@ -65,7 +65,7 @@ public class SpecFragment extends BaseDevDbFragment implements FLifecycleUtil {
 
     private void initUI() throws IOException {
         imgUrls =data.getGalleryLinks();
-        LinearLayout specList = (LinearLayout) view.findViewById(R.id.spec_list);
+        LinearLayout specList = view.findViewById(R.id.spec_list);
         for(Element element:data.getSpecTable()){
             if(element.text().isEmpty()) continue;
             TextView title = new TextView(getContext());
@@ -82,7 +82,7 @@ public class SpecFragment extends BaseDevDbFragment implements FLifecycleUtil {
             }
         }
 
-        Gallery gallery = (Gallery) view.findViewById(R.id.gallery);
+        Gallery gallery = view.findViewById(R.id.gallery);
         LazyAdapter adapter = new LazyAdapter(getActivity(), data.getGalleryImages().toArray(new String[data.getGalleryImages().size()]));
         gallery.setAdapter(adapter);
 
@@ -104,7 +104,7 @@ public class SpecFragment extends BaseDevDbFragment implements FLifecycleUtil {
         con.setVisibility(View.VISIBLE);*/
 
         if(data.getPrice()!=null){
-            TextView priceTV = (TextView) view.findViewById(R.id.price);
+            TextView priceTV = view.findViewById(R.id.price);
             priceTV.setVisibility(View.VISIBLE);
             priceTV.setText(data.getPrice()+" Р");
         }

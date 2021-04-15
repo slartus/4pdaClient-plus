@@ -204,7 +204,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         assert activity != null;
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
-        View view = inflater.inflate(R.layout.search_settings_fragment, (ViewGroup) null);
+        View view = inflater.inflate(R.layout.search_settings_fragment, null);
         assert view != null;
         query_edit = view.findViewById(R.id.query_edit);
         username_edit = view.findViewById(R.id.username_edit);

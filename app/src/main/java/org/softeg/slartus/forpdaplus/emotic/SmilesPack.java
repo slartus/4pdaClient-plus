@@ -11,7 +11,7 @@ import org.softeg.slartus.forpdaplus.classes.BbImage;
  */
 public class SmilesPack extends Smiles {
 
-    private String m_DirPath;
+    private final String m_DirPath;
 
     protected SmilesPack(String cssFilePath) {
         super();

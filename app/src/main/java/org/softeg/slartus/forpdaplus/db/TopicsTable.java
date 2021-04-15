@@ -56,12 +56,12 @@ public class TopicsTable {
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, topic.getId());
         values.put(COLUMN_FORUM_ID, topic.getForumId());
-        values.put(COLUMN_TITLE, topic.getTitle().toString());
-        values.put(COLUMN_DESCRIPTION, topic.getDescription() == null ? null : topic.getDescription().toString());
+        values.put(COLUMN_TITLE, topic.getTitle());
+        values.put(COLUMN_DESCRIPTION, topic.getDescription() == null ? null : topic.getDescription());
         if (topic.getLastMessageDate() != null)
             values.put(COLUMN_LAST_MESSAGE_DATE, DbHelper.DateTimeFormat.format(topic.getLastMessageDate()));
         if (topic.getLastMessageAuthor() != null)
-            values.put(COLUMN_LAST_MESSAGE_Author, topic.getLastMessageAuthor().toString());
+            values.put(COLUMN_LAST_MESSAGE_Author, topic.getLastMessageAuthor());
         values.put(COLUMN_HASNEW, topic.getIsNew());
         if (icount > 0) {
             db.update(TABLE_NAME, values, "_id=?", new String[]{topic.getId()});

@@ -38,15 +38,15 @@ import java.util.regex.Pattern;
  * Created by radiationx on 07.11.15.
  */
 public class DeviceEdit {
-    private View mView;
+    private final View mView;
     private String requestText="";
     private final ArrayList<String> deviceNames = new ArrayList<String>();
     private final ArrayList<String> deviceIds = new ArrayList<String>();
     private final AutoCompleteTextView autoComplete;
     private ArrayAdapter<String> autoCompleteAdapter;
 
-    private EditText accessories;
-    private Spinner spinner;
+    private final EditText accessories;
+    private final Spinner spinner;
     private final ProgressBar loadingResult;
     private final ProgressBar loadingContent;
     private final LinearLayout content;
@@ -59,9 +59,9 @@ public class DeviceEdit {
     private String accessoriesText = "";
     private int deviceStatus=1;
 
-    private boolean isEditDevice;
+    private final boolean isEditDevice;
 
-    private Context mContext;
+    private final Context mContext;
 
     private String parentTag = "";
 
@@ -75,12 +75,12 @@ public class DeviceEdit {
 
         final long[] lastTimeStamp = {System.currentTimeMillis()};
 
-        autoComplete = (AutoCompleteTextView) mView.findViewById(R.id.autoComplete);
-        accessories = (EditText) mView.findViewById(R.id.accessories);
-        spinner = (Spinner) mView.findViewById(R.id.spinner);
-        loadingResult = (ProgressBar) mView.findViewById(R.id.loadingResult);
-        loadingContent = (ProgressBar) mView.findViewById(R.id.loadingContent);
-        content = (LinearLayout) mView.findViewById(R.id.content);
+        autoComplete = mView.findViewById(R.id.autoComplete);
+        accessories = mView.findViewById(R.id.accessories);
+        spinner = mView.findViewById(R.id.spinner);
+        loadingResult = mView.findViewById(R.id.loadingResult);
+        loadingContent = mView.findViewById(R.id.loadingContent);
+        content = mView.findViewById(R.id.content);
 
         String[] data = {"Владею", "Был", "Продаю", "Продано"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, data);

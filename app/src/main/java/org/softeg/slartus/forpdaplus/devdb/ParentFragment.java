@@ -38,7 +38,7 @@ public class ParentFragment extends GeneralFragment {
     private int m_Position;
     private String m_Title;
 
-    private int LAYOUT = R.layout.dev_db_parent_fragment;
+    private final int LAYOUT = R.layout.dev_db_parent_fragment;
     private ViewPager viewPager;
     private MaterialDialog dialog;
     private DevDbViewPagerAdapter adapter;
@@ -195,7 +195,7 @@ public class ParentFragment extends GeneralFragment {
         showTabs(m_Position);
     }
 
-    private ViewPager.OnPageChangeListener mChangeListener = new ViewPager.OnPageChangeListener() {
+    private final ViewPager.OnPageChangeListener mChangeListener = new ViewPager.OnPageChangeListener() {
         int currentPosition = 0;
 
         @Override

@@ -13,8 +13,8 @@ public class Forum implements ForumItem {
 
 
     private String m_Title;
-    private Forums m_Forums = new Forums();
-    private Themes m_Themes = new Themes();
+    private final Forums m_Forums = new Forums();
+    private final Themes m_Themes = new Themes();
 
     private Forum parent;
     public int level = 0;

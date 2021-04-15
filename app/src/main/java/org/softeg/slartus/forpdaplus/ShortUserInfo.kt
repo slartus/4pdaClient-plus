@@ -172,7 +172,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
     }
 
     private inner class updateAsyncTask : AsyncTask<String, Void, Boolean?>() {
-        internal var reputation = ""
+        var reputation = ""
 
         override fun doInBackground(vararg urls: String): Boolean? {
             try {

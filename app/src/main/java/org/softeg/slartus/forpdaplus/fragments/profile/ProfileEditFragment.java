@@ -45,7 +45,7 @@ public class ProfileEditFragment extends WebViewFragment {
     private AdvWebView m_WebView;
 
     public final static String m_Title = "Изменить личные данные";
-    private String parentTag = App.getInstance().getCurrentFragmentTag();
+    private final String parentTag = App.getInstance().getCurrentFragmentTag();
     private final static String url = "https://4pda.ru/forum/index.php?act=UserCP&CODE=01";
 
     public static void editProfile() {

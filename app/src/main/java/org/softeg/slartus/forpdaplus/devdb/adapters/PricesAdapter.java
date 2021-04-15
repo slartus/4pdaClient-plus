@@ -21,9 +21,9 @@ import java.util.List;
 public class PricesAdapter extends RecyclerView.Adapter<PricesAdapter.ViewHolder> {
 
     private static final int LAYOUT = R.layout.dev_db_prices_item;
-    private LayoutInflater mLayoutInflater;
-    private Context mContext;
-    private List<PricesModel> mModels;
+    private final LayoutInflater mLayoutInflater;
+    private final Context mContext;
+    private final List<PricesModel> mModels;
 
     public PricesAdapter(Context context, List<PricesModel> models) {
         super();

@@ -42,9 +42,9 @@ import java.util.List;
 public class OpenFileDialog extends AlertDialog.Builder {
 
     private String currentPath = Environment.getExternalStorageDirectory().getPath();
-    private List<File> files = new ArrayList<>();
-    private TextView title;
-    private ListView listView;
+    private final List<File> files = new ArrayList<>();
+    private final TextView title;
+    private final ListView listView;
     private FilenameFilter filenameFilter;
     private int selectedIndex = -1;
     private OpenDialogListener listener;
@@ -101,7 +101,7 @@ public class OpenFileDialog extends AlertDialog.Builder {
 
     }
 
-    private Context mContext;
+    private final Context mContext;
 
 
     @Override

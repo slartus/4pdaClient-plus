@@ -62,7 +62,7 @@ public class PopupPanelView {
         popUpView = inflater.inflate(R.layout.quick_post_tabs_fragment, null);
 
         assert popUpView != null;
-        mViewPager = (ViewPager) popUpView.findViewById(R.id.pager1);
+        mViewPager = popUpView.findViewById(R.id.pager1);
 
         this.advanced_button = advanced_button;
         mPostEditText = editText;

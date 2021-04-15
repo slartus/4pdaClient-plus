@@ -11,7 +11,7 @@ import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
 public class MemoryCache {
-    private HashMap<String, SoftReference<Bitmap>> cache=new HashMap<String, SoftReference<Bitmap>>();
+    private final HashMap<String, SoftReference<Bitmap>> cache=new HashMap<String, SoftReference<Bitmap>>();
 
     public Bitmap get(String id){
         if(!cache.containsKey(id))

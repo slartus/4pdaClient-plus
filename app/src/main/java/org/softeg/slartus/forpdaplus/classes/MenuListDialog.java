@@ -4,8 +4,8 @@ package org.softeg.slartus.forpdaplus.classes;
  * Created by radiationx on 31.01.16.
  */
 public class MenuListDialog {
-    private Runnable runnable;
-    private String title;
+    private final Runnable runnable;
+    private final String title;
 
     public MenuListDialog(String title, Runnable runnable){
         this.title = title;

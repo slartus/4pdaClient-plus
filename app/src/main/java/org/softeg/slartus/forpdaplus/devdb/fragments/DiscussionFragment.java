@@ -51,7 +51,7 @@ public class DiscussionFragment extends BaseDevDbFragment implements FLifecycleU
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
         mModelList = new Gson().fromJson(getArguments().getString(LIST_ARG),  new TypeToken<ArrayList<DiscussionModel>>() {}.getType());
         if (mModelList.size() != 0) {
-            mRecyclerView = (RecyclerView) view.findViewById(R.id.devDbRecyclerView);
+            mRecyclerView = view.findViewById(R.id.devDbRecyclerView);
             mRecyclerView.setVisibility(View.VISIBLE);
             mAdapter = new DiscussionAdapter(getActivity(), mModelList);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

@@ -5,10 +5,10 @@ package org.softeg.slartus.forpdaplus.devdb.model;
  */
 public class PricesModel {
 
-    private String pricesTitle;
-    private String pricesLink;
-    private String pricesDate;
-    private String pricesDescription;
+    private final String pricesTitle;
+    private final String pricesLink;
+    private final String pricesDate;
+    private final String pricesDescription;
 
     public PricesModel(String pricesDate, String pricesDescription, String pricesLink, String pricesTitle) {
         this.pricesDate = pricesDate;

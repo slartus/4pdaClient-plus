@@ -50,7 +50,7 @@ public class CommentsFragment extends BaseDevDbFragment implements FLifecycleUti
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
         mModelList = new Gson().fromJson(getArguments().getString(LIST_ARG),  new TypeToken<ArrayList<CommentsModel>>() {}.getType());
         if (mModelList.size() != 0) {
-            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.devDbRecyclerView);
+            RecyclerView recyclerView = view.findViewById(R.id.devDbRecyclerView);
             recyclerView.setVisibility(View.VISIBLE);
             mAdapter = new CommentsAdapter(getActivity(), mModelList);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

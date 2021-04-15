@@ -32,14 +32,14 @@ import java.lang.ref.WeakReference;
 public class LoginDialog {
     private String capTime;
     private String capSig;
-    private EditText username_edit;
+    private final EditText username_edit;
     private final EditText password_edit;
-    private CheckBox privacy_checkbox;
-    private View mView;
-    private ImageView mImageView;
-    private ProgressBar mProgressBar;
+    private final CheckBox privacy_checkbox;
+    private final View mView;
+    private final ImageView mImageView;
+    private final ProgressBar mProgressBar;
 
-    private Context mContext;
+    private final Context mContext;
 
     LoginDialog(Context context) {
         mContext = context;
@@ -167,12 +167,12 @@ public class LoginDialog {
 
         WeakReference<Context> mContext;
         private final MaterialDialog dialog;
-        private String login;
-        private String password;
-        private Boolean privacy;
-        private String capVal;
-        private String capTime;
-        private String capSig;
+        private final String login;
+        private final String password;
+        private final Boolean privacy;
+        private final String capVal;
+        private final String capTime;
+        private final String capSig;
 
         LoginTask(Context context,
                   String login, String password, Boolean privacy,

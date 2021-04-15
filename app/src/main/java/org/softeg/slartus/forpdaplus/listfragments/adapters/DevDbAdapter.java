@@ -51,8 +51,8 @@ public class DevDbAdapter extends BaseAdapter {
             holder = new ViewHolder();
 
             assert view != null;
-            holder.Main = (TextView) view.findViewById(R.id.text1);
-            holder.SubMain = (TextView) view.findViewById(R.id.text2);
+            holder.Main = view.findViewById(R.id.text1);
+            holder.SubMain = view.findViewById(R.id.text2);
             view.setTag(holder);
 
         } else {

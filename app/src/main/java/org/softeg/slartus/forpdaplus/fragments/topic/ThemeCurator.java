@@ -18,9 +18,9 @@ import org.softeg.slartus.forpdaplus.common.AppLog;
  * Created by radiationx on 15.11.15.
  */
 public class ThemeCurator {
-    private FragmentActivity mTopicActivity;
+    private final FragmentActivity mTopicActivity;
     private CuratorFragment context;
-    private String topicId;
+    private final String topicId;
 
     public ThemeCurator(FragmentActivity topicActivity, String topicId) {
         mTopicActivity = topicActivity;
@@ -40,7 +40,7 @@ public class ThemeCurator {
         LayoutInflater inflater = activity.getLayoutInflater();
         View view = inflater.inflate(R.layout.mmod_dialog, null);
 
-        Spinner num_spinner = (Spinner) view.findViewById(R.id.num_spinner);
+        Spinner num_spinner = view.findViewById(R.id.num_spinner);
         String[] data = new String[]{"100", "500", "1000", "5000", activity.getString(R.string.all)};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -76,7 +76,7 @@ public class ThemeCurator {
             }
         });
 
-        Spinner rating_spinner = (Spinner) view.findViewById(R.id.rating_spinner);
+        Spinner rating_spinner = view.findViewById(R.id.rating_spinner);
         data = new String[]{activity.getString(R.string.not_important), "0", "-1", "-2", "-5"};
         adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

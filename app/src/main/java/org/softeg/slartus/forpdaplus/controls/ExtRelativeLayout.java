@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 
 
 public class ExtRelativeLayout extends RelativeLayout {
-    private int[] mInsets = new int[4];
+    private final int[] mInsets = new int[4];
 
     public ExtRelativeLayout(Context context) {
         super(context);

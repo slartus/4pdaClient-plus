@@ -443,8 +443,8 @@ super();
     }
 
     public class ExpandableGroup {
-        private String mTitle;
-        private ArrayList<IListItem> mData = new ArrayList<>();
+        private final String mTitle;
+        private final ArrayList<IListItem> mData = new ArrayList<>();
 
         public ExpandableGroup(String title) {
             mTitle = title;

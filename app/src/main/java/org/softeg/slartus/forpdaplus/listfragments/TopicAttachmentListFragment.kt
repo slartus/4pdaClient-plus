@@ -68,7 +68,7 @@ class TopicAttachmentListFragment : BaseTaskListFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.topic_attachments, menu)
+        inflater.inflate(R.menu.topic_attachments, menu)
     }
 
     private fun changeOrder() {
@@ -77,7 +77,7 @@ class TopicAttachmentListFragment : BaseTaskListFragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item?.itemId) {
+        when (item.itemId) {
             R.id.change_order_item -> {
                 changeOrder()
                 return true

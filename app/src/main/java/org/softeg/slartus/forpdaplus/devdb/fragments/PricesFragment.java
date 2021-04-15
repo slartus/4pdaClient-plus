@@ -51,7 +51,7 @@ public class PricesFragment extends BaseDevDbFragment implements FLifecycleUtil 
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
         mModelList = new Gson().fromJson(getArguments().getString(LIST_ARG),  new TypeToken<ArrayList<PricesModel>>() {}.getType());
         if (mModelList.size() != 0) {
-            mRecyclerView = (RecyclerView) view.findViewById(R.id.devDbRecyclerView);
+            mRecyclerView = view.findViewById(R.id.devDbRecyclerView);
             mRecyclerView.setVisibility(View.VISIBLE);
             mAdapter = new PricesAdapter(getActivity(), mModelList);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

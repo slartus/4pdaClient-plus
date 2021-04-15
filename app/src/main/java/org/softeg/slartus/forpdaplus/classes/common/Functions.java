@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public class Functions {
 
 
-    private static SimpleDateFormat fullDateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+    private static final SimpleDateFormat fullDateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
 
     public static Boolean isWebviewAllowJavascriptInterface() {

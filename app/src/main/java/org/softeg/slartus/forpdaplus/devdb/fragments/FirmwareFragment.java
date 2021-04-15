@@ -52,7 +52,7 @@ public class FirmwareFragment extends BaseDevDbFragment implements FLifecycleUti
 //        recLifeCycle(getClass(), RETURN_FROM_SUPER);
         mModelList = new Gson().fromJson(getArguments().getString(LIST_ARG),  new TypeToken<ArrayList<FirmwareModel>>() {}.getType());
         if (mModelList.size() != 0) {
-            mRecyclerView = (RecyclerView) view.findViewById(R.id.devDbRecyclerView);
+            mRecyclerView = view.findViewById(R.id.devDbRecyclerView);
             mRecyclerView.setVisibility(View.VISIBLE);
             mAdapter = new FirmwareAdapter(getActivity(), mModelList);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

@@ -129,7 +129,7 @@ public class ListCore {
         return res;
     }
 
-    private static ArrayList<BrickInfo> m_RegisteredBricks = new ArrayList<>();
+    private static final ArrayList<BrickInfo> m_RegisteredBricks = new ArrayList<>();
 
     public static ArrayList<BrickInfo> getRegisteredBricks(){
         return m_RegisteredBricks;

@@ -93,7 +93,7 @@ public class BbCodesPanel extends BbCodesBasePanel {
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence items) {
-                        String tag = "[SIZE=" + Integer.toString(i + 1) + "]";
+                        String tag = "[SIZE=" + (i + 1) + "]";
                         txtPost.getText().insert(finalSelectionStart, tag);
                         txtPost.getText().insert(finalSelectionEnd + tag.length(), "[/SIZE]");
                         return true; // allow selection

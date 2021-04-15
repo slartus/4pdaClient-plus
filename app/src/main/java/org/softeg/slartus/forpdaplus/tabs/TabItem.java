@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment;
 public class TabItem{
     private String title;
     private String url;
-    private String tag;
+    private final String tag;
     private String parentTag;
     private String subTitle;
     private Fragment fragment;

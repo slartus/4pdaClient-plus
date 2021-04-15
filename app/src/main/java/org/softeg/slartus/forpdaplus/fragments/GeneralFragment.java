@@ -30,7 +30,7 @@ import io.reactivex.disposables.Disposable;
 public abstract class GeneralFragment extends Fragment implements IBrickFragment {
     public abstract boolean closeTab();
 
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ActionBar actionBar;
     private MainActivity mainActivity;
     protected View view;
@@ -129,7 +129,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         return App.getInstance().getPreferences();
     }
 
-    private View.OnClickListener removeTabListener = v -> getMainActivity().tryRemoveTab(getTag(), true);
+    private final View.OnClickListener removeTabListener = v -> getMainActivity().tryRemoveTab(getTag(), true);
 
     public void setArrow() {
         getMainActivity().animateHamburger(false, removeTabListener);

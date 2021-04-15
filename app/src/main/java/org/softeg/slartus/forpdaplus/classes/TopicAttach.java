@@ -6,10 +6,10 @@ package org.softeg.slartus.forpdaplus.classes;
  * Time: 9:38
  */
 public class TopicAttach {
-    private String Uri;
+    private final String Uri;
 
-    private String FileName;
-    private String FileSize;
+    private final String FileName;
+    private final String FileSize;
 
 
     public TopicAttach(String url, String fileName, String fileSize) {

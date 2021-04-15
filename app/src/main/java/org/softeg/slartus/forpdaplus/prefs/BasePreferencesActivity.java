@@ -61,7 +61,7 @@ public class BasePreferencesActivity extends PreferenceActivity {
         return null;
     }
 
-    private static List<String> fragments = new ArrayList<String>();
+    private static final List<String> fragments = new ArrayList<String>();
 
     protected void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

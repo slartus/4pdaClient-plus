@@ -174,7 +174,7 @@ public class BbCodesQuickView extends BaseQuickView {
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int i, CharSequence items) {
-                        String tag = "[SIZE=" + Integer.toString(i + 1) + "]";
+                        String tag = "[SIZE=" + (i + 1) + "]";
                         getEditor().getText().insert(finalSelectionStart, tag);
                         getEditor().getText().insert(finalSelectionEnd + tag.length(), "[/SIZE]");
                         return true; // allow selection

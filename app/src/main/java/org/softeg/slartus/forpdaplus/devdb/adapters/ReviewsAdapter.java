@@ -21,10 +21,10 @@ import java.util.List;
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHolder> {
 
     private static final int LAYOUT = R.layout.dev_db_reviews_item;
-    private LayoutInflater mLayoutInflater;
-    private Context mContext;
-    private List<ReviewsModel> mModels;
-    private ImageLoader imageLoader;
+    private final LayoutInflater mLayoutInflater;
+    private final Context mContext;
+    private final List<ReviewsModel> mModels;
+    private final ImageLoader imageLoader;
 
     public ReviewsAdapter(Context context, List<ReviewsModel> models, ImageLoader imageLoader) {
         super();

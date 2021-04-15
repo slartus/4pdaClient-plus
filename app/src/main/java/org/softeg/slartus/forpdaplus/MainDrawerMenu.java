@@ -38,13 +38,13 @@ import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 import java.util.List;
 
 public class MainDrawerMenu implements NavigationView.OnNavigationItemSelectedListener {
-    private DrawerLayout mDrawerLayout;
-    private NavigationView mDrawer;
-    private ActionBarDrawerToggle mDrawerToggle;
-    private MainActivity mActivity;
-    private SelectItemListener mSelectItemListener;
-    private Handler mHandler = new Handler();
-    private SharedPreferences prefs;
+    private final DrawerLayout mDrawerLayout;
+    private final NavigationView mDrawer;
+    private final ActionBarDrawerToggle mDrawerToggle;
+    private final MainActivity mActivity;
+    private final SelectItemListener mSelectItemListener;
+    private final Handler mHandler = new Handler();
+    private final SharedPreferences prefs;
 
     private Menu menu;
     private int prevSelectedGroup;

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class ListAdapter extends BaseAdapter implements Filterable {
     private final LayoutInflater mInflater;
     protected ArrayList<? extends IListItem> mData;
-    private boolean showSubMain;
+    private final boolean showSubMain;
 
 
     public ListAdapter(Context context, ArrayList<? extends IListItem> data, boolean showSubMain) {
@@ -115,11 +115,11 @@ public class ListAdapter extends BaseAdapter implements Filterable {
 
             holder = new ViewHolder();
             assert view != null;
-            holder.Flag = (LinearLayout) view.findViewById(R.id.imgFlag);
-            holder.TopLeft = (TextView) view.findViewById(R.id.txtTopLeft);
-            holder.TopRight = (TextView) view.findViewById(R.id.txtTopRight);
-            holder.Main = (TextView) view.findViewById(R.id.txtMain);
-            holder.SubMain = (TextView) view.findViewById(R.id.txtSubMain);
+            holder.Flag = view.findViewById(R.id.imgFlag);
+            holder.TopLeft = view.findViewById(R.id.txtTopLeft);
+            holder.TopRight = view.findViewById(R.id.txtTopRight);
+            holder.Main = view.findViewById(R.id.txtMain);
+            holder.SubMain = view.findViewById(R.id.txtSubMain);
             holder.progress = view.findViewById(R.id.progressBar);
             holder.isPinned = view.findViewById(R.id.pinned);
             view.setTag(holder);

@@ -5,11 +5,11 @@ package org.softeg.slartus.forpdaplus.devdb.model;
  */
 public class ReviewsModel {
 
-    private String mReviewLink;
-    private String mReviewImgLink;
-    private String mReviewTitle;
-    private String mReviewDate;
-    private String mReviewsDescription;
+    private final String mReviewLink;
+    private final String mReviewImgLink;
+    private final String mReviewTitle;
+    private final String mReviewDate;
+    private final String mReviewsDescription;
 
     public ReviewsModel(String reviewDate, String reviewImgLink, String reviewLink, String reviewsDescription, String reviewTitle) {
         mReviewDate = reviewDate;

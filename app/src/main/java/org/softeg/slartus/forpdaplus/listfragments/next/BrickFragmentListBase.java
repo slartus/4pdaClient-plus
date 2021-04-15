@@ -33,7 +33,7 @@ public abstract class BrickFragmentListBase extends BrickFragmentBase
     private ListView mListView;
     private TextView mEmptyTextView;
     protected SwipeRefreshLayout mSwipeRefreshLayout;
-    private ListData mData = createListData();
+    private final ListData mData = createListData();
     private ListViewLoadMoreFooter mListViewLoadMoreFooter;
 
     protected abstract int getLoaderId();

@@ -27,7 +27,7 @@ public class NewsListAdapter extends BaseAdapter {
     private ArrayList<News> newsList;
 
     final LayoutInflater inflater;
-    private ImageLoader imageLoader;
+    private final ImageLoader imageLoader;
     private Boolean mLoadImages;
     private int mNewsListRowId;
 

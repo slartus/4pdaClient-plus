@@ -84,7 +84,7 @@ public class TopicReadersListFragment extends BaseLoaderListFragment {
 
     public class UsersAdapter extends BaseAdapter {
         protected LayoutInflater m_Inflater;
-        private ArrayList<IListItem> mUsers;
+        private final ArrayList<IListItem> mUsers;
 
         public UsersAdapter(Context context, ArrayList<IListItem> users) {
             mUsers = users;
@@ -116,7 +116,7 @@ public class TopicReadersListFragment extends BaseLoaderListFragment {
                 holder = new ViewHolder();
                 assert convertView != null;
 
-                holder.txtNick = (TextView) convertView.findViewById(R.id.txtNick);
+                holder.txtNick = convertView.findViewById(R.id.txtNick);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();

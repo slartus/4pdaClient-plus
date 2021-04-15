@@ -324,7 +324,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     private static class ItemsLoader extends AsyncTaskLoader<Profile> {
         static final int ID = App.getInstance().getUniqueIntValue();
         Profile mApps;
-        private Bundle args;
+        private final Bundle args;
 
         ItemsLoader(Context context, Bundle args) {
             super(context);

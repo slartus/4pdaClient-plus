@@ -48,8 +48,8 @@ public class CatalogAdapter extends BaseAdapter {
             view = mInflater.inflate(R.layout.catalog_item, parent, false);
             holder = new ViewHolder();
 
-            holder.Main = (TextView) view.findViewById(R.id.text1);
-            holder.SubMain = (TextView) view.findViewById(R.id.text2);
+            holder.Main = view.findViewById(R.id.text1);
+            holder.SubMain = view.findViewById(R.id.text2);
             view.setTag(holder);
 
         } else {

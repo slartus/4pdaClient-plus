@@ -19,7 +19,7 @@ import java.util.List;
  * Created by isanechek on 23.11.15.
  */
 public class ParseHelper {
-    private ParsedModel parsed = new ParsedModel();
+    private final ParsedModel parsed = new ParsedModel();
 
     public ParsedModel parseHelper(String page) {
         Element main = Jsoup.parse(page).select(".device-frame").first();

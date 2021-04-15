@@ -28,7 +28,7 @@ import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
 public class StyleInfoActivity extends BrowserViewsFragmentActivity {
     private static final String STYLE_PATH_KEY = "StylePath";
     private WebView webView;
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
 
     @Override
     public String Prefix() {

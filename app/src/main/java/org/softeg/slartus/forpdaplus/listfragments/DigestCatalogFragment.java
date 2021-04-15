@@ -91,9 +91,7 @@ public class DigestCatalogFragment extends BaseCatalogFragment {
             return false;
 
         mLoadResultList = getFilteredList(catalog -> catalog.getParent() != null && catalog.getParent().getId().equals(catalogItem.getId()));
-        if (mCatalogData.size() > 0 && mLoadResultList.size() == 0)
-            return false;
-        return true;
+        return mCatalogData.size() <= 0 || mLoadResultList.size() != 0;
     }
 
     @Override

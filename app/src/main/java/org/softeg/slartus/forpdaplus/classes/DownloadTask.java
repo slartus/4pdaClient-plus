@@ -28,17 +28,17 @@ public class DownloadTask {
     public static final int STATE_ERROR = 3;
     public static final int STATE_CANCELED = 4;
 
-    private ArrayList<Client.OnProgressPositionChangedListener> m_OnStateListeners = new ArrayList<>();
-    private String m_Url;
+    private final ArrayList<Client.OnProgressPositionChangedListener> m_OnStateListeners = new ArrayList<>();
+    private final String m_Url;
     private String outputFile;
     private int m_State = STATE_PENDING;
     private Exception ex;
     private int m_Percents;
     private long downloadedSize;
     private long m_ContentLength;
-    private Date m_CreateDate;
+    private final Date m_CreateDate;
     private Date m_StateChangedDate;
-    private int m_NotificationId;
+    private final int m_NotificationId;
 
     private String m_DownloadingFilePath;
 

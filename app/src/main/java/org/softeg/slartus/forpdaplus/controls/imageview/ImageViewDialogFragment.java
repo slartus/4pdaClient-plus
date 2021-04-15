@@ -56,7 +56,7 @@ public class ImageViewDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View v = getActivity().getLayoutInflater().inflate(R.layout.image_view_dialog, null);
-        m_PhotoView=(PhotoView)v.findViewById(R.id.iv_photo);
+        m_PhotoView= v.findViewById(R.id.iv_photo);
         //m_PhotoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         m_PhotoView.setMaximumScale(10f);
         m_ProgressView=v.findViewById(R.id.progressBar);

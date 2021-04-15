@@ -366,7 +366,7 @@ class MentionsListFragment : WebViewFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        menu!!.add(R.string.link)
+        menu.add(R.string.link)
                 .setOnMenuItemClickListener {
                     ExtUrl.showSelectActionDialog(mainActivity, getString(R.string.link), URL)
                     true

@@ -119,7 +119,7 @@ class UserReputationFragment : BrickFragmentListBase() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.reputation, menu)
+        inflater.inflate(R.menu.reputation, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -146,7 +146,7 @@ class UserReputationFragment : BrickFragmentListBase() {
         return loader!!
     }
 
-    private class ItemsLoader internal constructor(context: Context?, val args: Bundle) : AsyncTaskLoader<ListData>(context!!) {
+    private class ItemsLoader(context: Context?, val args: Bundle) : AsyncTaskLoader<ListData>(context!!) {
         var mApps: ListData? = null
 
         /**
@@ -234,7 +234,7 @@ class UserReputationFragment : BrickFragmentListBase() {
 
     }
 
-    private class ListAdapter internal constructor(context: Context?, data: ArrayList<out IListItem>) : BaseAdapter() {
+    private class ListAdapter(context: Context?, data: ArrayList<out IListItem>) : BaseAdapter() {
         private val mInflater: LayoutInflater = context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         private var mData: ArrayList<out IListItem> = data
 
@@ -293,7 +293,7 @@ class UserReputationFragment : BrickFragmentListBase() {
             if (v!!.visibility != visibility) v.visibility = visibility
         }
 
-        internal inner class ViewHolder {
+        inner class ViewHolder {
             var flag: TextView? = null
             var progress: View? = null
             var topLeft: TextView? = null

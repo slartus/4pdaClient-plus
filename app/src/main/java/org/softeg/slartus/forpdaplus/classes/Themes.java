@@ -36,7 +36,7 @@ public class Themes extends ArrayList<ExtTopic> {
         title = title.toLowerCase().replace(" ", "");
         for (int i = 0; i < size(); i++) {
             ExtTopic topic = get(i);
-            if (topic.getTitle().toString().replace(" ", "").equalsIgnoreCase(title))
+            if (topic.getTitle().replace(" ", "").equalsIgnoreCase(title))
                 return topic;
         }
         return null;

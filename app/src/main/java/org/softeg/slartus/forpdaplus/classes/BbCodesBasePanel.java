@@ -26,7 +26,7 @@ import java.io.InputStream;
  */
 public abstract class BbCodesBasePanel {
     protected Context mContext;
-    private IGetBitmap m_GetBitmapFunc;
+    private final IGetBitmap m_GetBitmapFunc;
     protected LinearLayout lnrBbCodes;
     protected EditText txtPost;
 
@@ -84,8 +84,8 @@ public abstract class BbCodesBasePanel {
         /**
          * The parent context
          */
-        private Context myContext;
-        private float m_Density;
+        private final Context myContext;
+        private final float m_Density;
         // Put some images to project-folder: /res/drawable/
         // format: jpg, gif, png, bmp, ...
 

@@ -28,7 +28,7 @@ import ru.slartus.http.AppResponse;
  */
 public class SearchPostsParser extends HtmlBuilder {
     private boolean m_SpoilerByButton = false;
-    private Hashtable<String, String> m_EmoticsDict;
+    private final Hashtable<String, String> m_EmoticsDict;
 
     public SearchPostsParser() {
         SharedPreferences prefs = App.getInstance().getPreferences();

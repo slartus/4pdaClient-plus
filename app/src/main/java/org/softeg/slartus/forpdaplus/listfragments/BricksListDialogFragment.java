@@ -113,7 +113,7 @@ public class BricksListDialogFragment extends DialogFragment implements AdapterV
         getDialog().setTitle(R.string.select_list);
         View v = inflater.inflate(R.layout.bricks_list_dialog, container, false);
         assert v != null;
-        m_ListView = (ListView) v.findViewById(android.R.id.list);
+        m_ListView = v.findViewById(android.R.id.list);
         return v;
     }
 
@@ -162,7 +162,7 @@ public class BricksListDialogFragment extends DialogFragment implements AdapterV
             if (view == null) {
                 view = mInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
                 holder = new ViewHolder();
-                holder.text1 = (TextView) view.findViewById(android.R.id.text1);
+                holder.text1 = view.findViewById(android.R.id.text1);
                 view.setTag(holder);
 
             } else {

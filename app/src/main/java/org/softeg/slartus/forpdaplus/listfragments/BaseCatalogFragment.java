@@ -131,7 +131,7 @@ public abstract class BaseCatalogFragment extends BaseTaskListFragment {
 
     public class CatalogTask extends Task {
 
-        private ICatalogItem mCatalogItem;
+        private final ICatalogItem mCatalogItem;
 
         public CatalogTask(Boolean refresh, ICatalogItem catalogItem) {
             super(refresh);

@@ -221,7 +221,7 @@ public class Post {
 
 
         assert layout != null;
-        final EditText message_edit = (EditText) layout.findViewById(R.id.message_edit);
+        final EditText message_edit = layout.findViewById(R.id.message_edit);
 
 
         new MaterialDialog.Builder(context)

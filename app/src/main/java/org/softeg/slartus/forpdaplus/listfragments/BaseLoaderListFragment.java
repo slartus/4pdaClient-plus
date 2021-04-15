@@ -35,7 +35,7 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
     private ListView mListView;
     private TextView mEmptyTextView;
     protected SwipeRefreshLayout mSwipeRefreshLayout;
-    private ListData mData = createListData();
+    private final ListData mData = createListData();
 
     protected int getLoaderId() {
         return ItemsLoader.ID;
@@ -307,7 +307,7 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
         static final int ID = App.getInstance().getUniqueIntValue();
         ListData mApps;
 
-        private LoadDataListener mLoadDataListener;
+        private final LoadDataListener mLoadDataListener;
 
         CacheLoader(Context context, LoadDataListener loadDataListener) {
             super(context);
@@ -403,8 +403,8 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
         static final int ID = App.getInstance().getUniqueIntValue();
         ListData mApps;
 
-        private Bundle args;
-        private LoadDataListener mLoadDataListener;
+        private final Bundle args;
+        private final LoadDataListener mLoadDataListener;
 
         ItemsLoader(Context context, Bundle args, LoadDataListener loadDataListener) {
             super(context);

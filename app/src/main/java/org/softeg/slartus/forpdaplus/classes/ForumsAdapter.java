@@ -24,7 +24,7 @@ import java.util.Set;
  * To change this template use File | Settings | File Templates.
  */
 public class ForumsAdapter extends ArrayAdapter<CheckableForumItem> {
-    private LayoutInflater m_Inflater;
+    private final LayoutInflater m_Inflater;
 
     public ForumsAdapter(Context context,
                          ArrayList<CheckableForumItem> objects) {
@@ -55,9 +55,9 @@ public class ForumsAdapter extends ArrayAdapter<CheckableForumItem> {
             assert rowView != null;
             rowView.setClickable(false);
             rowView.setFocusable(false);
-            holder.text = (TextView) rowView
+            holder.text = rowView
                     .findViewById(R.id.text);
-            holder.checkBox = (CheckBox) rowView
+            holder.checkBox = rowView
                     .findViewById(R.id.checkBox);
             holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override

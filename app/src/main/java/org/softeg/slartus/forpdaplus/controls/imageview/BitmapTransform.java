@@ -41,4 +41,4 @@ public class BitmapTransform implements Transformation {
         return maxWidth + "x" + maxHeight;
     }
 
-};
+}

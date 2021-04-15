@@ -116,7 +116,7 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     }
 
     private class GetUserTask extends AsyncTask<String, Void, Boolean> {
-        private String userId;
+        private final String userId;
         private String userNick;
 
         GetUserTask(String userId) {
@@ -381,8 +381,8 @@ public class QmsContactThemes extends BaseLoaderListFragment {
     }
 
     public class QmsContactsAdapter extends BaseAdapter {
-        private LayoutInflater m_Inflater;
-        private ArrayList<IListItem> dataList;
+        private final LayoutInflater m_Inflater;
+        private final ArrayList<IListItem> dataList;
 
         QmsContactsAdapter(Context context, ArrayList<IListItem> objects) {
 

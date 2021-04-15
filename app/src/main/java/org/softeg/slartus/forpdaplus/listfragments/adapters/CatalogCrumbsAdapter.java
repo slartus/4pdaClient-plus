@@ -48,7 +48,7 @@ public class CatalogCrumbsAdapter extends BaseAdapter {
             view = mInflater.inflate(R.layout.catalog_crumb_item, parent, false);
             assert view != null;
             holder = new ViewHolder();
-            holder.Main = (TextView) view.findViewById(R.id.text1);
+            holder.Main = view.findViewById(R.id.text1);
             view.setTag(holder);
 
         } else {

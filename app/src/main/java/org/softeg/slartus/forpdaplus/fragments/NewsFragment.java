@@ -67,7 +67,7 @@ import java.util.regex.Pattern;
 public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
     private static final String URL_KEY = "Url";
 
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
     private AdvWebView webView;
 
     private Boolean m_FromHistory = false;
@@ -312,7 +312,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
     private class MyWebViewClient extends WebViewClient {
 
-        private Map<String, Boolean> loadedUrls = new HashMap<>();
+        private final Map<String, Boolean> loadedUrls = new HashMap<>();
 
         @Override
         public WebResourceResponse shouldInterceptRequest(WebView view, String url) {

@@ -33,7 +33,7 @@ public class PostPreviewFragment extends WebViewFragment {
     private String title;
     private WebViewClient webViewClient;
     private HtmlBuilder builder;
-    private List<BBCode> bbCodes = new ArrayList<>();
+    private final List<BBCode> bbCodes = new ArrayList<>();
 
 
     @Override

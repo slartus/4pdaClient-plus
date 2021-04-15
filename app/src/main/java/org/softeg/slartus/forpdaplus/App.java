@@ -70,7 +70,7 @@ import static org.softeg.slartus.forpdaplus.prefs.PreferencesActivity.getPackage
         reportSenderFactoryClasses = {ACRAReportSenderFactory.class})
 //optional. default is a warning sign
 public class App extends MultiDexApplication {
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
     private Locale locale;
@@ -104,7 +104,7 @@ public class App extends MultiDexApplication {
         currentFragmentTag = s;
     }
 
-    private List<TabItem> mTabItems = new ArrayList<>();
+    private final List<TabItem> mTabItems = new ArrayList<>();
 
     public List<TabItem> getTabItems() {
         return mTabItems;
@@ -139,7 +139,7 @@ public class App extends MultiDexApplication {
         return null;
     }
 
-    private AtomicInteger m_AtomicInteger = new AtomicInteger();
+    private final AtomicInteger m_AtomicInteger = new AtomicInteger();
 
     public int getUniqueIntValue() {
         return m_AtomicInteger.incrementAndGet();
@@ -164,7 +164,7 @@ public class App extends MultiDexApplication {
 
     private MyActivityLifecycleCallbacks m_MyActivityLifecycleCallbacks;
     @SuppressWarnings("FieldCanBeLocal")
-    private static boolean isNewYear = false;
+    private static final boolean isNewYear = false;
 
     @Override
     public void onCreate() {
@@ -283,7 +283,7 @@ public class App extends MultiDexApplication {
         }
     }
 
-    private static DisplayImageOptions.Builder options = new DisplayImageOptions.Builder()
+    private static final DisplayImageOptions.Builder options = new DisplayImageOptions.Builder()
             .showImageForEmptyUri(R.drawable.no_image)
             .cacheInMemory(true)
             .resetViewBeforeLoading(true)
@@ -301,7 +301,7 @@ public class App extends MultiDexApplication {
                 .imageDownloader(new BaseImageDownloader(context) {
                     @Override
                     public InputStream getStream(String imageUri, Object extra) throws IOException {
-                        if (imageUri.substring(0, 2).equals("//"))
+                        if (imageUri.startsWith("//"))
                             imageUri = "https:".concat(imageUri);
                         return  super.getStream(imageUri, extra);
                     }

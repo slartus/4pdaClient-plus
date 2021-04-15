@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class DevDbModelsAdapter extends BaseAdapter {
     private final LayoutInflater mInflater;
     private ArrayList<DevModel> mData;
-    private ImageLoader imageLoader;
+    private final ImageLoader imageLoader;
     public DevDbModelsAdapter(Context context, ArrayList<DevModel> data) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mData = data;
@@ -56,10 +56,10 @@ public class DevDbModelsAdapter extends BaseAdapter {
             holder = new ViewHolder();
 
             assert view != null;
-            holder.imageView = (ImageView) view.findViewById(R.id.imageView);
+            holder.imageView = view.findViewById(R.id.imageView);
             holder.progressView = view.findViewById(R.id.progressView);
-            holder.titleTextView = (TextView) view.findViewById(R.id.titleTextView);
-            holder.descTextView = (TextView) view.findViewById(R.id.descTextView);
+            holder.titleTextView = view.findViewById(R.id.titleTextView);
+            holder.descTextView = view.findViewById(R.id.descTextView);
             view.setTag(holder);
 
         } else {

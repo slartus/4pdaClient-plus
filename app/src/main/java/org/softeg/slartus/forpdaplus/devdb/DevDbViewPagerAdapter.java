@@ -20,7 +20,7 @@ import java.util.Map;
 public class DevDbViewPagerAdapter extends FragmentPagerAdapter {
 
     private Map<Integer, BaseDevDbFragment> tabs;
-    private Context c;
+    private final Context c;
 
     public DevDbViewPagerAdapter(Context context, FragmentManager fm, ParsedModel parsed) {
         super(fm);

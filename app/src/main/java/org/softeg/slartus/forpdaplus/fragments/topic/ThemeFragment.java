@@ -486,7 +486,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                 AppLog.e(getContext(), helpTask.ex);
                             return null;
                         });
-                        helpTask.execute((HelpTask.OnMethodListener) param -> TopicApi.deleteFromFavorites(Client.getInstance(), topic.getId()));
+                        helpTask.execute(param -> TopicApi.deleteFromFavorites(Client.getInstance(), topic.getId()));
                     }
                     return true;
                 case R.id.open_topic_forum_item:
@@ -1294,7 +1294,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                                 parameterValues[i] = objs.get(i);
                             }
                         }
-                        ThemeFragment.class.getMethod(function, parameterTypes).invoke(getMainActivity(), (Object[]) parameterValues);
+                        ThemeFragment.class.getMethod(function, parameterTypes).invoke(getMainActivity(), parameterValues);
                     } catch (Exception e) {
                         AppLog.eToast(getMainActivity(), e);
                     }
@@ -1437,7 +1437,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         private int scrollY = 0;
         private String m_ThemeBody;
         private Throwable ex;
-        private WeakReference<ThemeFragment> themeFragmentRef;
+        private final WeakReference<ThemeFragment> themeFragmentRef;
 
         GetThemeTask(ThemeFragment themeFragment) {
             this.themeFragmentRef = new WeakReference<>(themeFragment);

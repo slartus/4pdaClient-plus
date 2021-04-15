@@ -49,8 +49,8 @@ import java.util.List;
  */
 public class ForPdaWebInterface {
     public static final String NAME = "HTMLOUT";
-    private FragmentActivity activity;
-    private ThemeFragment context;
+    private final FragmentActivity activity;
+    private final ThemeFragment context;
 
     ForPdaWebInterface(ThemeFragment context) {
         this.context = context;

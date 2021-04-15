@@ -23,9 +23,9 @@ import java.util.List;
 public class FirmwareAdapter extends RecyclerView.Adapter<FirmwareAdapter.ViewHolder> {
 
     private static final int LAYOUT = R.layout.dev_db_firmware_item;
-    private LayoutInflater mLayoutInflater;
-    private Context mContext;
-    private List<FirmwareModel> mModels;
+    private final LayoutInflater mLayoutInflater;
+    private final Context mContext;
+    private final List<FirmwareModel> mModels;
 
     public FirmwareAdapter(Context context, List<FirmwareModel> models) {
         super();

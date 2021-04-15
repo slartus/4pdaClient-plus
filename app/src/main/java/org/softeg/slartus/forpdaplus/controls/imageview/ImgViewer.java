@@ -224,11 +224,11 @@ public class ImgViewer extends AppCompatActivity implements PullBackLayout.Callb
 
     class ImgAdapter extends PagerAdapter {
         SparseArray<View> views = new SparseArray<>();
-        private LayoutInflater inflater;
+        private final LayoutInflater inflater;
         private PhotoView photoView;
         private ProgressBar progress;
-        private ImageLoader imageLoader;
-        private DisplayImageOptions options;
+        private final ImageLoader imageLoader;
+        private final DisplayImageOptions options;
 
         public ImgAdapter() {
             this.inflater = LayoutInflater.from(ImgViewer.this);

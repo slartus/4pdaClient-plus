@@ -32,13 +32,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TabDrawerMenu {
-    private DrawerLayout mDrawerLayout;
-    private RelativeLayout mDrawer;
-    private Activity mActivity;
-    private SelectItemListener mSelectItemListener;
+    private final DrawerLayout mDrawerLayout;
+    private final RelativeLayout mDrawer;
+    private final Activity mActivity;
+    private final SelectItemListener mSelectItemListener;
     public static TabAdapter adapter;
-    private ListView mListView;
-    private Handler handler = new Handler();
+    private final ListView mListView;
+    private final Handler handler = new Handler();
 
 
     public interface SelectItemListener {
@@ -131,7 +131,7 @@ public class TabDrawerMenu {
         }
     }
 
-    private Runnable notifyAdapter = new Runnable() {
+    private final Runnable notifyAdapter = new Runnable() {
         @Override
         public void run() {
             adapter.notifyDataSetChanged();

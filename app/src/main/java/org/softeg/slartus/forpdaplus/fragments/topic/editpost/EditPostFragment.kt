@@ -352,9 +352,9 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.edit_post, menu)
-        menu?.findItem(R.id.find_in_text_item)?.setActionView(R.layout.action_collapsible_search)
-        searchEditText = menu?.findItem(R.id.find_in_text_item)?.actionView?.findViewById(R.id.editText)
+        inflater.inflate(R.menu.edit_post, menu)
+        menu.findItem(R.id.find_in_text_item)?.setActionView(R.layout.action_collapsible_search)
+        searchEditText = menu.findItem(R.id.find_in_text_item)?.actionView?.findViewById(R.id.editText)
         searchEditText?.setOnKeyListener { _, keyCode, keyEvent ->
             if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 val text = if (searchEditText?.text == null) "" else searchEditText?.text.toString().trim { it <= ' ' }
@@ -379,7 +379,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
-        menu?.findItem(R.id.edit_reason_item)?.isVisible = !isNewPost
+        menu.findItem(R.id.edit_reason_item)?.isVisible = !isNewPost
 
         if (!supportActionBar!!.isShowing) {
             supportActionBar!!.show()

@@ -5,10 +5,10 @@ package org.softeg.slartus.forpdaplus.devdb.model;
  */
 public class FirmwareModel {
 
-    private String firmwareTitle;
-    private String firmwareLink;
-    private String firmwareDate;
-    private String firmwareDescription;
+    private final String firmwareTitle;
+    private final String firmwareLink;
+    private final String firmwareDate;
+    private final String firmwareDescription;
 
     public FirmwareModel(String firmwareDate, String firmwareDescription, String firmwareLink, String firmwareTitle) {
         this.firmwareDate = firmwareDate;

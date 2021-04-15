@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class FileCache {
 
-    private File cacheDir;
+    private final File cacheDir;
 
     public FileCache(Context context) throws IOException {
         cacheDir = context.getCacheDir();

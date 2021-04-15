@@ -12,8 +12,8 @@ import org.softeg.slartus.forpdaplus.R;
  * Created by slinkin on 20.02.14.
  */
 public class ListViewLoadMoreFooter {
-    private Context mContext;
-    private Boolean mCanLoadMore = false;
+    private final Context mContext;
+    private final Boolean mCanLoadMore = false;
     private View mFooterView = null;
     private TextView count_textview;
     private View progressPanel;
@@ -75,7 +75,7 @@ public class ListViewLoadMoreFooter {
                 mClickListener.onClick(view);
             }
         });
-        count_textview = (TextView) mFooterView.findViewById(R.id.count_textview);
+        count_textview = mFooterView.findViewById(R.id.count_textview);
         progressPanel = mFooterView.findViewById(R.id.progressPanel);
         loadMorePanel = mFooterView.findViewById(R.id.loadMorePanel);
     }

@@ -59,7 +59,7 @@ import ru.slartus.http.AppResponse;
  * Created by radiationx on 15.11.15.
  */
 public class SearchPostFragment extends WebViewFragment implements ISearchResultView {
-    private Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
     private AdvWebView mWvBody;
     private static final String SEARCH_URL_KEY = "SEARCH_URL_KEY";
     private WebViewExternals m_WebViewExternals;
@@ -381,7 +381,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
                     }
                     Method method = this.getClass().getMethod(function, parameterTypes);
 
-                    method.invoke(getMainActivity(), (Object[]) parameterValues);
+                    method.invoke(getMainActivity(), parameterValues);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -419,7 +419,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     private SearchResult m_SearchResult;
 
     private class LoadResultTask extends AsyncTask<String, String, Boolean> {
-        private int m_Page;
+        private final int m_Page;
 
         LoadResultTask(int page) {
             m_Page = page;

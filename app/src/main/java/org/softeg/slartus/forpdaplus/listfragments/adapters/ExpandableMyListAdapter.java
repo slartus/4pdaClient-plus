@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class ExpandableMyListAdapter extends BaseExpandableListAdapter {
     final LayoutInflater mInflater;
-    private ArrayList<BaseExpandableListFragment.ExpandableGroup> mData;
+    private final ArrayList<BaseExpandableListFragment.ExpandableGroup> mData;
 
     public ExpandableMyListAdapter(Context context, ArrayList<BaseExpandableListFragment.ExpandableGroup> mData) {
         this.mData = mData;
@@ -70,7 +70,7 @@ public class ExpandableMyListAdapter extends BaseExpandableListAdapter {
             holder = new GroupViewHolder();
             assert convertView != null;
 
-            holder.text = (TextView) convertView.findViewById(R.id.group);
+            holder.text = convertView.findViewById(R.id.group);
 
             convertView.setTag(holder);
 
@@ -93,11 +93,11 @@ public class ExpandableMyListAdapter extends BaseExpandableListAdapter {
         if (view == null) {
             view = mInflater.inflate(R.layout.list_item, parent, false);
             holder = new ViewHolder();
-            holder.Flag = (LinearLayout) view.findViewById(R.id.imgFlag);
-            holder.TopLeft = (TextView) view.findViewById(R.id.txtTopLeft);
-            holder.TopRight = (TextView) view.findViewById(R.id.txtTopRight);
-            holder.Main = (TextView) view.findViewById(R.id.txtMain);
-            holder.SubMain = (TextView) view.findViewById(R.id.txtSubMain);
+            holder.Flag = view.findViewById(R.id.imgFlag);
+            holder.TopLeft = view.findViewById(R.id.txtTopLeft);
+            holder.TopRight = view.findViewById(R.id.txtTopRight);
+            holder.Main = view.findViewById(R.id.txtMain);
+            holder.SubMain = view.findViewById(R.id.txtSubMain);
             view.setTag(holder);
 
         } else {

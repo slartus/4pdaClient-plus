@@ -8,8 +8,8 @@ import java.util.ArrayList;
  * Created by radiationx on 05.01.16.
  */
 public class SpecModel {
-    private ArrayList<String> galleryLinks = new ArrayList<>();
-    private ArrayList<String> galleryImages = new ArrayList<>();
+    private final ArrayList<String> galleryLinks = new ArrayList<>();
+    private final ArrayList<String> galleryImages = new ArrayList<>();
     private String price;
     private Elements specTable;
 

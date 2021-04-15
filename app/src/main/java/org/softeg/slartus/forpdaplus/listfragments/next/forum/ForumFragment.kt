@@ -83,13 +83,13 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        menu?.add(R.string.mark_forum_as_read)
+        menu.add(R.string.mark_forum_as_read)
                 ?.setOnMenuItemClickListener {
                     markAsRead()
                     false
                 }
                 ?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
-        menu?.add(R.string.set_forum_starting)
+        menu.add(R.string.set_forum_starting)
                 ?.setOnMenuItemClickListener {
                     val f = data.crumbs[data.crumbs.size - 1]
                     Preferences.List.setStartForum(f.id,
@@ -98,7 +98,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
                     false
                 }
                 ?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
-        menu?.add(R.string.refresh_forum_struct)
+        menu.add(R.string.refresh_forum_struct)
                 ?.setOnMenuItemClickListener {
                     MaterialDialog.Builder(activity!!)
                             .title(R.string.attention)

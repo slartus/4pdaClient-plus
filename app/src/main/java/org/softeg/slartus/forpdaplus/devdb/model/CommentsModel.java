@@ -7,13 +7,13 @@ import java.util.ArrayList;
  */
 public class CommentsModel {
 
-    private String mCommentUserLink;
-    private String mCommentUserName;
-    private String mCommentDate;
-    private String mCommentText;
-    private String mCommentRatingText;
-    private String mCommentRatingNum;
-    private ArrayList<String> mRatingList;
+    private final String mCommentUserLink;
+    private final String mCommentUserName;
+    private final String mCommentDate;
+    private final String mCommentText;
+    private final String mCommentRatingText;
+    private final String mCommentRatingNum;
+    private final ArrayList<String> mRatingList;
 
     public CommentsModel(String commentDate, String commentRatingNum, String commentRatingText, String commentText, String commentUserLink, String commentUserName, ArrayList<String> listRating) {
         mCommentDate = commentDate;

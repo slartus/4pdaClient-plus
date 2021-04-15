@@ -11,7 +11,7 @@ import java.util.Map;
 
 public final class MyActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
 
-    private HashMap<String, Activity> m_Activities = new HashMap<>();
+    private final HashMap<String, Activity> m_Activities = new HashMap<>();
 
     public void onActivityCreated(Activity activity, Bundle bundle) {
         m_Activities.put(activity.getLocalClassName(), activity);

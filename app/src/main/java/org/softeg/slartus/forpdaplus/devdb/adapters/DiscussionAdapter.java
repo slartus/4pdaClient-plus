@@ -21,9 +21,9 @@ import java.util.List;
 public class DiscussionAdapter  extends RecyclerView.Adapter<DiscussionAdapter.ViewHolder> {
 
     private static final int LAYOUT = R.layout.dev_db_disscussion_item;
-    private LayoutInflater mLayoutInflater;
-    private Context mContext;
-    private List<DiscussionModel> mModels;
+    private final LayoutInflater mLayoutInflater;
+    private final Context mContext;
+    private final List<DiscussionModel> mModels;
 
     public DiscussionAdapter(Context context, List<DiscussionModel> models) {
         super();

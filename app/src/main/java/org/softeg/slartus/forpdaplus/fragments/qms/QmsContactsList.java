@@ -145,10 +145,10 @@ public class QmsContactsList extends BaseLoaderListFragment {
 
     public class QmsContactsAdapter extends BaseAdapter {
 
-        private ArrayList<IListItem> dataList;
+        private final ArrayList<IListItem> dataList;
 
         final LayoutInflater inflater;
-        private ImageLoader imageLoader;
+        private final ImageLoader imageLoader;
         private Boolean mShowAvatars;
 
 

@@ -174,7 +174,7 @@ public class ThemeQuoteEditor extends DialogFragment implements View.OnClickList
     public class QuoteLoader extends AsyncTask<String, String, Boolean> {
 
 
-        private String m_QuoteUrl;
+        private final String m_QuoteUrl;
 
         QuoteLoader(String url) {
             m_QuoteUrl = url;

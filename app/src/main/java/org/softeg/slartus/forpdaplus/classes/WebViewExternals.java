@@ -23,7 +23,7 @@ import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
  */
 public class WebViewExternals {
 
-    private IWebViewContainer m_WebViewContainer;
+    private final IWebViewContainer m_WebViewContainer;
 
 
     public WebViewExternals(IWebViewContainer webViewContainer) {
@@ -47,7 +47,7 @@ public class WebViewExternals {
 
 
 
-    private Boolean m_CurrentFullScreen = false;
+    private final Boolean m_CurrentFullScreen = false;
 
     protected Boolean getCurrentFullScreen() {
         return m_CurrentFullScreen;
@@ -135,11 +135,11 @@ public class WebViewExternals {
 
             int keyCode = event.getKeyCode();
 
-            if (scrollUpKeys.contains("," + Integer.toString(keyCode) + ",")) {
+            if (scrollUpKeys.contains("," + keyCode + ",")) {
                 if (action == KeyEvent.ACTION_DOWN)
                     scrollView.pageUp(false);
                 return true;// true надо обязательно возвращать даже если не ACTION_DOWN иначе звук нажатия
-            } else if (scrollDownKeys.contains("," + Integer.toString(keyCode) + ",")) {
+            } else if (scrollDownKeys.contains("," + keyCode + ",")) {
                 if (action == KeyEvent.ACTION_DOWN)
                     scrollView.pageDown(false);
                 return true;// true надо обязательно возвращать даже если не ACTION_DOWN иначе звук нажатия
@@ -164,10 +164,10 @@ public class WebViewExternals {
 
             int keyCode = event.getKeyCode();
 
-            if (prevPageKeys.contains("," + Integer.toString(keyCode) + ",")) {
+            if (prevPageKeys.contains("," + keyCode + ",")) {
                 m_WebViewContainer.prevPage();
                 return true;
-            } else if (nextPageKeys.contains("," + Integer.toString(keyCode) + ",")) {
+            } else if (nextPageKeys.contains("," + keyCode + ",")) {
                 m_WebViewContainer.nextPage();
                 return true;
             }

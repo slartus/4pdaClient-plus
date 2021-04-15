@@ -97,7 +97,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
         username = (EditText) findViewById(R.id.username);
         title = (EditText) findViewById(R.id.title);
         message = (EditText) findViewById(R.id.message);
-        final Button send_button = (Button) view.findViewById(R.id.btnSendPost);
+        final Button send_button = view.findViewById(R.id.btnSendPost);
         send_button.setOnClickListener(view1 -> send());
         message.addTextChangedListener(new TextWatcher() {
             @Override
@@ -204,7 +204,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
     }
 
     private class GetUserTask extends AsyncTask<String, Void, Boolean> {
-        private String userId;
+        private final String userId;
         private String userNick;
 
         public GetUserTask(String userId) {
@@ -257,10 +257,10 @@ public class QmsNewThreadFragment extends GeneralFragment {
     private class SendTask extends AsyncTask<String, Void, Boolean> {
         private final MaterialDialog dialog;
         public String m_ChatBody;
-        private String userId;
-        private String userNick;
-        private String title;
-        private String body;
+        private final String userId;
+        private final String userNick;
+        private final String title;
+        private final String body;
 
 
         public SendTask(Context context, String userId, String userNick, String title, String body) {

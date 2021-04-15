@@ -11,9 +11,7 @@ public class Devices {
             return false;
         if (!"EeePad".equalsIgnoreCase(Build.BOARD))
             return false;
-        if (!"TF300TG".equalsIgnoreCase(Build.DEVICE))
-            return false;
-        return true;
+        return "TF300TG".equalsIgnoreCase(Build.DEVICE);
     }
 
     public static boolean isNookSimpleTouch() {
@@ -21,10 +19,7 @@ public class Devices {
             return false;
         if (!"zoom2".equalsIgnoreCase(Build.BOARD))
             return false;
-        if (!"zoom2".equalsIgnoreCase(Build.DEVICE))
-            return false;
-
-        return true;
+        return "zoom2".equalsIgnoreCase(Build.DEVICE);
     }
 
     public static final int NOOK_SIMPLE_TOUCH_RIGHT_NEXTPAGE = 407;
