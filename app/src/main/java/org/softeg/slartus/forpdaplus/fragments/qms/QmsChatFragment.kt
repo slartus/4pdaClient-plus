@@ -466,32 +466,17 @@ class QmsChatFragment : WebViewFragment() {
     }
 
     fun transformChatBody(chatBody: String, loadMore: Boolean = false): String {
-        var chatBodyLocal = chatBody
+
         checkNewQms()
         if ((themeTitle == null) or (contactNick == null)) {
-            val m = Pattern.compile("<span id=\"chatInfo\"[^>]*>([^>]*?)\\|:\\|([^<]*)</span>").matcher(chatBodyLocal)
+            val m = Pattern.compile("<span id=\"chatInfo\"[^>]*>([^>]*?)\\|:\\|([^<]*)</span>").matcher(chatBody)
             if (m.find()) {
                 contactNick = m.group(1)
                 themeTitle = m.group(2)
             }
         }
-        val htmlBuilder = HtmlBuilder()
-        htmlBuilder.beginHtml("QMS")
-        htmlBuilder.beginBody("qms${if (loadMore) "_more" else ""}", "", Preferences.Topic.isShowAvatars())
-        //        htmlBuilder.beginBody("qms", "onload=\"scrollToElement('bottom_element')\"", Preferences.Topic.isShowAvatars());
-
-        if (!Preferences.Topic.isShowAvatars())
-            chatBodyLocal = chatBodyLocal.replace("<img[^>]*?class=\"avatar\"[^>]*>".toRegex(), "")
-        if (htmlPreferences!!.isSpoilerByButton!!)
-            chatBodyLocal = HtmlPreferences.modifySpoiler(chatBodyLocal)
-        chatBodyLocal = HtmlPreferences.modifyBody(chatBodyLocal, Smiles.getSmilesDict())
-        chatBodyLocal = chatBodyLocal.replace("(<a[^>]*?href=\"([^\"]*?savepice[^\"]*-)[\\w]*(\\.[^\"]*)\"[^>]*?>)[^<]*?(</a>)".toRegex(), "$1<img src=\"$2prev$3\">$4")
-        htmlBuilder.append(chatBodyLocal)
-        htmlBuilder.append("<div id=\"bottom_element\" name=\"bottom_element\"></div>")
-        //m_Body.append("<script>jsEmoticons.parseAll('").append("file:///android_asset/forum/style_emoticons/default/").append("');initPostBlock();</script>");
-        htmlBuilder.append("<script>jsEmoticons.parseAll('").append("file:///android_asset/forum/style_emoticons/default/").append("');</script>")
-        htmlBuilder.endBody()
-        htmlBuilder.endHtml()
+        val htmlBuilder = QmsHtmlBuilder()
+        htmlBuilder.buildBody(loadMore,chatBody,htmlPreferences)
 
         return htmlBuilder.html.toString()
     }

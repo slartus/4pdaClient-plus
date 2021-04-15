@@ -450,11 +450,17 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         }
     }
 
-    private class NewsHtmlBuilder extends HtmlBuilder {
+    private static class NewsHtmlBuilder extends HtmlBuilder {
         @Override
         public HtmlBuilder endBody() {
             m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/newsAttaches.js\"></script>\n");
             return super.endBody();
+        }
+
+        @Override
+        public void addScripts() {
+            super.addScripts();
+            m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/news.js\"></script>\n");
         }
 
         @Override

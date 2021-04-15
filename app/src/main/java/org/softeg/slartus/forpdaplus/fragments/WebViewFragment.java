@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.jetbrains.annotations.NotNull;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.R;
@@ -61,8 +62,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     public abstract void reload();
     public abstract AsyncTask getAsyncTask();
 
-    private Handler mHandler = new Handler();
-    private URLHandler urlHandler = new URLHandler();
+    private final Handler mHandler = new Handler();
+    private final URLHandler urlHandler = new URLHandler();
 
     public void showLinkMenu(String url){
         if (TextUtils.isEmpty(url) || url.contains("HTMLOUT.ru")
@@ -72,7 +73,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(@NotNull ContextMenu menu, @NotNull View view, ContextMenu.ContextMenuInfo menuInfo) {
         switch (getWebView().getHitTestResult().getType()) {
             case WebView.HitTestResult.UNKNOWN_TYPE:
             case WebView.HitTestResult.EDIT_TEXT_TYPE:
@@ -99,7 +100,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
     }
 
@@ -132,14 +133,14 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
 
     protected void initSwipeRefreshLayout(){
         mSwipeRefreshLayout = getView().findViewById(R.id.ptr_layout);
-        mSwipeRefreshLayout = App.createSwipeRefreshLayout(getView(), () -> reload());
+        mSwipeRefreshLayout = App.createSwipeRefreshLayout(getView(), this::reload);
     }
     public void setLoading(final Boolean loading) {
         try {
             if (getMainActivity() == null) return;
             mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(loading));
-        } catch (Throwable ignore) {
-            android.util.Log.e("TAG", ignore.toString());
+        } catch (Throwable ex) {
+            android.util.Log.e("TAG", ex.toString());
         }
     }
 
@@ -338,19 +339,16 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
                         return true;
                     })
                     .alwaysCallSingleChoiceCallback()
-                    .callback(new MaterialDialog.ButtonCallback() {
-                        @Override
-                        public void onPositive(MaterialDialog dialog) {
-                            int lastTheme = AppTheme.getThemeStyleResID();
-                            SharedPreferences.Editor editor = prefs.edit();
-                            editor.putString("appstyle", newStyleValues.get(selected[0]).toString());
-                            //editor.putBoolean("theme.BrowserStyle", checkBox.isChecked());
-                            editor.apply();
-                            if(AppTheme.getThemeStyleResID()!=lastTheme)
-                                getMainActivity().recreate();
-                            else
-                                setStyleSheet();
-                        }
+                    .onPositive((dialog, which) -> {
+                        int lastTheme = AppTheme.getThemeStyleResID();
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putString("appstyle", newStyleValues.get(selected[0]).toString());
+                        //editor.putBoolean("theme.BrowserStyle", checkBox.isChecked());
+                        editor.apply();
+                        if(AppTheme.getThemeStyleResID()!=lastTheme)
+                            getMainActivity().recreate();
+                        else
+                            setStyleSheet();
                     })
                     .negativeText(R.string.cancel)
                     .show();

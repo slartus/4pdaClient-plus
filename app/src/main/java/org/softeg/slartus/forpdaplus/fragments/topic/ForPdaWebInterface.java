@@ -415,7 +415,7 @@ public class ForPdaWebInterface {
     }
 
     @JavascriptInterface
-    public void sendPostsAttaches(final String json) {
+    public void sendPostsAttaches(final String openImageUrl, final String json) {
         run(() -> {
             for (JsonElement s : new JsonParser().parse(json).getAsJsonArray()) {
                 ArrayList<String> list1 = new ArrayList<>();
@@ -427,6 +427,7 @@ public class ForPdaWebInterface {
                     list1.add(url);
                 }
                 getContext().imageAttaches.add(list1);
+                getContext().showImage(openImageUrl);
             }
         });
 

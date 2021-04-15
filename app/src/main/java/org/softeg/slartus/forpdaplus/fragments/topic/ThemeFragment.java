@@ -1220,6 +1220,29 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     public List<ArrayList<String>> imageAttaches = new ArrayList<>();
 
+    public void showImage(String url) {
+        Pattern tPattern = Pattern.compile("(post/\\d*?/[\\s\\S]*?\\.(?:png|jpg|jpeg|gif))", Pattern.CASE_INSENSITIVE);
+        Matcher target = tPattern.matcher(url);
+        Matcher temp;
+        String id;
+        if (target.find()) {
+            id = target.group(1);
+            for (ArrayList<String> list : imageAttaches) {
+                for (int i = 0; i < list.size(); i++) {
+                    temp = tPattern.matcher(list.get(i));
+                    if (temp.find()) {
+                        if (temp.group(1).equals(id)) {
+                            ImgViewer.startActivity(getContext(), list, i);
+                            return;
+                        }
+                    }
+                }
+            }
+            ImgViewer.startActivity(getContext(), url);
+        }
+
+    }
+
     private class MyWebViewClient extends WebViewClient {
         private final long LOADING_ERROR_TIMEOUT = TimeUnit.SECONDS.toMillis(45);
 
@@ -1362,33 +1385,17 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             if (!Client.getInstance().getLogined() && !Client.getInstance().hasLoginCookies()) {
                 Client.getInstance().showLoginForm(getContext());
             } else {
-                showImage(url);
+                // запросим список всех изображений на странице
+                if (org.softeg.slartus.forpdacommon.Functions.isWebviewAllowJavascriptInterface()) {
+                    webView.evalJs("requestImageAttaches('" + url + "');");
+                } else {
+                    showImage(url);
+                }
             }
             return true;
         }
 
-        private void showImage(String url) {
-            Pattern tPattern = Pattern.compile("(post/\\d*?/[\\s\\S]*?\\.(?:png|jpg|jpeg|gif))", Pattern.CASE_INSENSITIVE);
-            Matcher target = tPattern.matcher(url);
-            Matcher temp;
-            String id;
-            if (target.find()) {
-                id = target.group(1);
-                for (ArrayList<String> list : imageAttaches) {
-                    for (int i = 0; i < list.size(); i++) {
-                        temp = tPattern.matcher(list.get(i));
-                        if (temp.find()) {
-                            if (temp.group(1).equals(id)) {
-                                ImgViewer.startActivity(getContext(), list, i);
-                                return;
-                            }
-                        }
-                    }
-                }
-                ImgViewer.startActivity(getContext(), url);
-            }
 
-        }
 
         private boolean checkIsPoll(String url) {
             Matcher m = Pattern.compile("4pda.ru.*?addpoll=1", Pattern.CASE_INSENSITIVE).matcher(url);
