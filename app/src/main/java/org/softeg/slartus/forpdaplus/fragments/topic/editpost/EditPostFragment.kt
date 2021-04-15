@@ -23,6 +23,7 @@ import android.text.style.BackgroundColorSpan
 import android.util.TypedValue
 import android.view.*
 import android.widget.*
+import androidx.annotation.Nullable
 import com.afollestad.materialdialogs.MaterialDialog
 import io.paperdb.Paper
 import io.reactivex.Single
@@ -818,7 +819,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             MainActivity.addTab(context.getString(R.string.answer) + context.getString(R.string.combined_in) + App.getInstance().getTabByTag(tag)!!.title, url, newInstance(args))
         }
 
-        fun newPostWithAttach(context: Context, forumId: String, topicId: String, authKey: String,
+        fun newPostWithAttach(context: Context, forumId: String?, topicId: String, authKey: String,
                               extras: Bundle) {
             val url = thisFragmentUrl + forumId + topicId + PostApi.NEW_POST_ID
             val args = Bundle()

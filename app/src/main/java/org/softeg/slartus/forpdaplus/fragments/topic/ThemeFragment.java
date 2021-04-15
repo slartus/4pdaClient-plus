@@ -470,7 +470,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 case R.id.add_to_favorites_item:
                     try {
                         if (topic != null) {
-                            TopicUtils.showSubscribeSelectTypeDialog(getContext(), mHandler, topic);
+                            TopicUtils.showSubscribeSelectTypeDialog(getContext(), mHandler, topic,null);
                         }
                     } catch (Exception ex) {
                         AppLog.e(getContext(), ex);

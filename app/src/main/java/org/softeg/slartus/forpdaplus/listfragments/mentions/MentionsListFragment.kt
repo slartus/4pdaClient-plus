@@ -154,10 +154,11 @@ class MentionsListFragment : WebViewFragment() {
                     val mentions = MentionsParser.instance.parseMentions(pageBody)
                     val body = MentionsHtmlBuilder(mentions).build()
                     withContext(Dispatchers.Main) {
-                        setLoading(false)
-
                         setMentionsResult(mentions)
-                        showHtmlBody(body)
+                        if(isAdded) {
+                            setLoading(false)
+                            showHtmlBody(body)
+                        }
                     }
                     Client.getInstance().check(Client.getInstance()
                             .performGet(URL)
