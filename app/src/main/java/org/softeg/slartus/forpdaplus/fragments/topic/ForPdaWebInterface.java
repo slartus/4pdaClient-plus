@@ -8,7 +8,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.fragment.app.FragmentActivity;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -25,6 +27,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
@@ -41,6 +44,7 @@ import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicReadersBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,20 +53,19 @@ import java.util.List;
  */
 public class ForPdaWebInterface {
     public static final String NAME = "HTMLOUT";
-    private final FragmentActivity activity;
-    private final ThemeFragment context;
+
+    private final WeakReference<ThemeFragment> contextRef;
 
     ForPdaWebInterface(ThemeFragment context) {
-        this.context = context;
-        this.activity = context.getMainActivity();
+        this.contextRef = new WeakReference<>(context);
     }
 
     private ThemeFragment getContext() {
-        return context;
+        return contextRef.get();
     }
 
     private FragmentActivity getMainActivity() {
-        return activity;
+        return contextRef.get().getMainActivity();
     }
 
 
@@ -241,7 +244,7 @@ public class ForPdaWebInterface {
 
                 final int postsPerPage = getContext().getTopic().getPostsPerPageCount(getContext().getLastUrl());
 
-                final String page = activity.getString(R.string.page_short);
+                final String page = getMainActivity().getString(R.string.page_short);
 
                 for (int p = 0; p < getContext().getTopic().getPagesCount(); p++) {
                     pages[p] = page + (p + 1) + " (" + ((p * postsPerPage + 1) + "-" + (p + 1) * postsPerPage) + ")";
@@ -362,7 +365,7 @@ public class ForPdaWebInterface {
                 i++;
             }
 
-            items.add(activity.getString(R.string.look));
+            items.add(App.getInstance().getString(R.string.look));
             showRepPosition = i;
             i++;
 
@@ -377,7 +380,7 @@ public class ForPdaWebInterface {
             final int finalShowRepPosition = showRepPosition;
             final int finalPlusRepPosition = plusRepPosition;
             new MaterialDialog.Builder(getMainActivity())
-                    .title(activity.getString(R.string.reputation) + " " + userNick)
+                    .title(App.getInstance().getString(R.string.reputation) + " " + userNick)
                     .items(items.toArray(new CharSequence[items.size()]))
                     .itemsCallback((materialDialog, view, i1, charSequence) -> {
                         if (i1 == finalMinusRepPosition) {
@@ -447,9 +450,9 @@ public class ForPdaWebInterface {
      * Инфо о посте с селектнутым текстом
      */
     @JavascriptInterface
-    public void selectionPostInfo(final String postId, final String postDate, final  String userId,
+    public void selectionPostInfo(final String postId, final String postDate, final String userId,
                                   String userNick, String selection) {
-        if(!TextUtils.isEmpty(postId)&&!TextUtils.isEmpty(postDate)&&!TextUtils.isEmpty(userNick))
+        if (!TextUtils.isEmpty(postId) && !TextUtils.isEmpty(postDate) && !TextUtils.isEmpty(userNick))
             getContext().insertQuote(postId, Functions.getForumDateTime(Functions.parseForumDateTime(postDate)), userNick, selection);
     }
 

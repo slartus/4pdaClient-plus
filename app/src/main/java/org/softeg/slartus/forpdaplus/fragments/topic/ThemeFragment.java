@@ -117,7 +117,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     FrameLayout buttonsPanel;
 
 
-    private static final String TAG = "ThemeActivity";
+    private static final String TAG = ThemeFragment.class.getSimpleName();
     private static final String TOPIC_URL_KEY = "ThemeActivity.TOPIC_URL_KEY";
     public static Boolean LoadsImagesAutomatically = null;
 
@@ -470,7 +470,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 case R.id.add_to_favorites_item:
                     try {
                         if (topic != null) {
-                            TopicUtils.showSubscribeSelectTypeDialog(getContext(), mHandler, topic,null);
+                            TopicUtils.showSubscribeSelectTypeDialog(getContext(), mHandler, topic, null);
                         }
                     } catch (Exception ex) {
                         AppLog.e(getContext(), ex);
@@ -1216,6 +1216,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             //if (newProgress >= 10 && m_ScrollElement != null && m_ScrollY == 0) ;
             //tryScrollToElement();
         }
+
     }
 
     public List<ArrayList<String>> imageAttaches = new ArrayList<>();
@@ -1260,6 +1261,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String url) {
+            Log.d(TAG, "onReceivedError>");
             if (mUrl != null && !mLoadingError) {
                 Log.e(TAG, "onReceivedError: " + errorCode + ", " + description);
                 mLoadingError = true;
@@ -1328,7 +1330,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-
+            Log.d(TAG, "onPageStarted>");
             if (startsWith(url, mOnErrorUrl)) {
                 mUrl = url;
                 mLoadingError = true;
@@ -1343,11 +1345,13 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 view.postDelayed(mPageLoadingTimeoutHandlerTask, LOADING_ERROR_TIMEOUT);
                 mReference = new WeakReference<>(view);
             }
+            Log.d(TAG, "<onPageStarted");
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            Log.d(TAG, "onPageFinished>");
             if (startsWith(url, mUrl) && !mLoadingFinished) {
                 mLoadingFinished = true;
                 view.removeCallbacks(mPageLoadingTimeoutHandlerTask);
@@ -1358,6 +1362,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 mLoadingFinished = true;
             }
             view.clearHistory();
+            Log.d(TAG, "<onPageFinished");
             //tryScrollToElement();
         }
 
@@ -1394,7 +1399,6 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             }
             return true;
         }
-
 
 
         private boolean checkIsPoll(String url) {
