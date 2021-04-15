@@ -106,7 +106,6 @@
         android:layout_width="fill_parent"
         android:layout_height="6dp"
         android:orientation="vertical"
-        android:id="@+id/shadow"
         android:background="@drawable/shadow_to_top"
         android:layout_above="@+id/bottomPanel" />
 </RelativeLayout>

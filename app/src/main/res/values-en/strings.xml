@@ -8,8 +8,6 @@
     <string name="search_keyword">Search keyword</string>
     <string name="ClaimDescription">" You do not need to specify here a subject and message, the moderator will automatically receive this information. \n    Please use this feature only forum for complaints about incorrect report! \n    To contact the moderator, use private messages."</string>
     <string name="EditReason">Edit Reason</string>
-    <string name="Share">Share</string>
-    <string name="LoadMore">Load More</string>
     <string name="UserNameLogin">User Name Login</string>
     <string name="Password">Password</string>
     <string name="Stealth">Hidden</string>
@@ -37,22 +35,16 @@
     <string name="FindUserTopics">Find User\'s Topics</string>
     <string name="FindUserPosts">Find User\'s Posts</string>
     <string name="FindUserPostsInTopic">Find User\'s Posts In Topic</string>
-    <string name="SelectAnAction">Select an Action</string>
-    <string name="OpenWith">Open With</string>
-    <string name="NewDialog">New Dialog</string>
-    <string name="AllDialogs">All Dialogs</string>
     <string name="Change">Change</string>
     <string name="ChangeReputationRequest">Reputation request sent</string>
     <string name="ChangeReputationError">Reputation changing error</string>
     <string name="Reputation">Reputation</string>
     <string name="Logout">Logout</string>
-    <string name="Login">Login</string>
     <string name="Registration">Registration</string>
     <string name="SendBy_">"Send By "</string>
     <string name="Loading_">Loading</string>
     <string name="Canceled">Canceled</string>
     <string name="Error">Error</string>
-    <string name="DownloadComplete">Download Complete</string>
     <string name="NewNote">New Note</string>
     <string name="Save">Save</string>
     <string name="NoteSaved">Note Saved</string>
@@ -69,17 +61,12 @@
     <string name="Recomend">Recommend this app</string>
     <string name="RecommendText">Recommend this.</string>
     <string name="NeedToLogin">Need To Login</string>
-    <string name="RaiseReputation">Raise Reputation</string>
-    <string name="FailedToCreateFolderInPath">Failed To Create Folder In Path</string>
-    <string name="FailedToCreateFileInPath">Failed To Create File In Path</string>
     <string name="AcceptStyle">Apply style</string>
     <string name="ChooseStyle">Choose Style</string>
     <string name="Information">Information</string>
     <string name="StyleDoesNotContainDesc">Style doesn not has description</string>
     <string name="OpenLinkInBrowser">Open Link In Browser</string>
     <string name="Open">Open</string>
-    <string name="DownloadAborted">Download Aborted</string>
-    <string name="DownloadFile">Download File</string>
     <string name="navigate_getfirstpost">First</string>
     <string name="navigate_getlastpost">Last</string>
     <string name="navigate_getnewpost">New post</string>
@@ -96,14 +83,11 @@
     <string name="Attaches">Attaches</string>
     <string name="FindOnPage">Find On Page</string>
     <string name="FindInTopic">Find In Topic</string>
-    <string name="Browser">Browser</string>
     <string name="LoadImages">Load Images</string>
-    <string name="Close">Close</string>
     <string name="LeaveComment">Leave Comment</string>
     <string name="Like">Like</string>
 
 
-    <string name="crash_toast_text">>Ooooops! Application crashed!</string>
     <string name="crash_dialog_text">An unexpected error occurred</string>
     <string name="crash_dialog_title">The application has stopped</string>
     <string name="crash_dialog_comment_prompt">You can add your comment:</string>
@@ -121,11 +105,9 @@
     <string name="new_post">New post</string>
     <string name="attachments_page">Attachments page</string>
     <string name="all_attachments_topic">All attached topics</string>
-    <string name="apply_options">Options</string>
     <string name="theme_view">View</string>
     <string name="avatars">Avatar (%s)</string>
     <string name="show_avatars">Show avatar</string>
-    <string name="show_avatars_a">Show avatars (%s)</string>
     <string name="hide_pencil">Hide pencil</string>
     <string name="hide_arrows">Hide arrows</string>
     <string name="loading_img_for_session">Loading images (for session)</string>
@@ -135,7 +117,6 @@
     <string name="quote_post">Quote post</string>
     <string name="blank_quote">Blank quote</string>
     <string name="quote_from_buffer">Quote from buffer</string>
-    <string name="quote_editor">Quote editor</string>
     <string name="quote">Quote</string>
     <string name="url_post">Post linking</string>
     <string name="report_msg">Report message</string>
@@ -187,7 +168,6 @@
     <string name="bad_logout">Bad logout</string>
     <string name="processing_data">Processing data…</string>
     <string name="reviews">Reviews</string>
-    <string name="loading_canceled_by_user">Loading canceled</string>
     <string name="write">Write</string>
     <string name="setting">Setting</string>
     <string name="no_selected_posts">No selected posts</string>
@@ -309,7 +289,6 @@
     <string name="settings">Settings</string>
     <string name="server_not_available_or_not_respond">Server not available or did not respond</string>
     <string name="exceeded_timeout">Exceeded timeout</string>
-    <string name="server_failed_to_respond">Server failed to respond</string>
     <string name="connection_lost">Connection lost</string>
     <string name="my_apps">My apps</string>
     <string name="catalog_games_and_apps">Catalog apps and games</string>
@@ -317,24 +296,8 @@
     <string name="apps_games_topics">Games topics</string>
     <string name="digest_catalog">Digest of games and apps</string>
     <string name="digest_topics">Digest of topics</string>
-    <string name="downloads">Downloads</string>
-    <string name="action">Action</string>
-    <string name="cancel_download_title">Cancel download?</string>
-    <string name="retry_loading">Retry loading</string>
-    <string name="continue_download">Continue download</string>
-    <string name="choose_action">Select an action</string>
-    <string name="run_file">Run file</string>
-    <string name="clean_out">Clean</string>
-    <string name="ask_delete_all_nonactive_downloads">Delete all inactive downloads?</string>
-    <string name="downloaded">Downloaded</string>
-    <string name="failed_load">Could not load</string>
-    <string name="download_reciever_content">Click for further action</string>
     <string name="download_method">Download method</string>
     <string name="download_method_notify"><![CDATA[You can change the way it will download in the program settings: View topic >> Files >> Download a file using the…]]></string>
-    <string name="ask_file_need_download">This file already exists, download again?</string>
-    <string name="re_download">Redownload</string>
-    <string name="download_started">Download started</string>
-    <string name="rename_file_exception">"Could not rename file: "</string>
     <string name="request_link">Request link</string>
     <string name="edit_post_combined">Edit post</string>
     <string name="answer">Answer</string>
@@ -352,9 +315,6 @@
     <string name="total">Total</string>
     <string name="source">Source</string>
     <string name="link_to_post">Link to post</string>
-    <string name="select_player">Select player</string>
-    <string name="quality_video">"Video quality "</string>
-    <string name="quality">Quality</string>
     <string name="vote_request_sent">Request to change the reputation of messages sent</string>
     <string name="vote_error_already_voted">Vote error, already voted/</string>
     <string name="vote_post_increased">Reputation of post increased</string>
@@ -368,7 +328,6 @@
     <string name="ask_delete_messages" formatted="false">Are you sure you want to delete the selected messages (%d)?</string>
     <string name="ask_delete_dialog">Are you sure to delete this conversation?</string>
     <string name="refreshing">Refreshing</string>
-    <string name="delete_messages">Delete messages</string>
     <string name="delete_dialog">Delete dialog</string>
     <string name="profile_interlocutor">Profile inspect</string>
     <string name="deleting_messages">Deleting messages</string>
@@ -399,7 +358,6 @@
     <string name="rating_less">Rating less</string>
     <string name="insert">Insert</string>
     <string name="error_parsing_quote">Error parsing quotes</string>
-    <string name="notice_client">Client announcement</string>
     <string name="topics_history">Topics history</string>
     <string name="delete_from_visited">Remove from visited</string>
     <string name="options">Options</string>
@@ -429,14 +387,11 @@
     <string name="server_return_empty_page">The server returned a blank page</string>
     <string name="site_response">"4pda site: "</string>
     <string name="error_parsing_page">Error parsing page</string>
-    <string name="site_not_respond">Site did not respond</string>
     <string name="ask_start_download_file">Start download?</string>
     <string name="confirm_download">Confirm download</string>
     <string name="no_app_for_link">No applications found for links</string>
-    <string name="no_app_for_open_file">No applications for file type!</string>
     <string name="what_is_color">"No color: "</string>
     <string name="error_check_new_version">Error checking new version</string>
-    <string name="path_edited_success">Path successfully updated</string>
     <string name="pick_audio">Pick sound</string>
     <string name="pick_image">Pick image</string>
     <string name="select_items">Select items</string>
@@ -449,8 +404,6 @@
     <string name="system_font">System font</string>
     <string name="enter_font_name">Enter name of font</string>
     <string name="font_name">Font name</string>
-    <string name="id_exeption">ID Exception, could not read</string>
-    <string name="list_id_exception">Could not read list ID</string>
     <string name="all_forums">All forums</string>
     <string name="apply_cancel">Cancel</string>
     <string name="ask_create_dialog">There is no dialogue with user %s. Create one?</string>
@@ -463,12 +416,7 @@
     <string name="lang_pref_summary">Need to restart application</string>
     <string name="lang_changed">The application language has been changed, restart the application now?</string>
     <string name="file_not_support_forum">This file type is not supported by forum.</string>
-    <string name="attach_file">Attach</string>
     <string name="forum_search">Forum search</string>
 
-    <string name="oops">Oops! Error :(</string>
-    <string name="oops_comment_hint">Comment</string>
-    <string name="oops_message">Please send report</string>
-    <string name="oops_send_text">Send report</string>
     <string name="notes_remote_url">Url</string>
 </resources>

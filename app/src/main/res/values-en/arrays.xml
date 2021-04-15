@@ -57,17 +57,6 @@
         <item>da</item>
     </string-array>
 
-    <string-array name="SearchResultTitles">
-        <item>Messages</item>
-        <item>Theme</item>
-    </string-array>
-
-    <string-array name="SearchResultValues">
-        <item>posts</item>
-        <item>topics</item>
-
-    </string-array>
-
     <string-array name="EncodingArray">
         <item>Windows-1251</item>
         <item>UTF-8</item>

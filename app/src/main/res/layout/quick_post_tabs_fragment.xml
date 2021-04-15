@@ -13,7 +13,6 @@
         android:id="@+id/pager1">
 
         <androidx.viewpager.widget.PagerTitleStrip
-            android:id="@+id/pager_title_strip1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"

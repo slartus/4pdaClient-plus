@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="ptr_height_bug">80dp</dimen>
 
-    <dimen name="actionbar_title_size">18sp</dimen>
 </resources>

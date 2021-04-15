@@ -19,7 +19,6 @@
         tools:text="Small Text"/>
 
     <ImageView
-        android:id="@+id/imageView2"
         android:layout_width="24dp"
         android:layout_height="36dp"
         android:layout_gravity="center_vertical"

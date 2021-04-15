@@ -11,8 +11,7 @@
 
     <item
         android:right="10.5dp"
-        android:left="2dp"
-        android:id="@+id/shapeLD">
+        android:left="2dp">
         <rotate
             android:fromDegrees="-45"
             android:toDegrees="45">
@@ -24,8 +23,7 @@
 
     <item
         android:left="11dp"
-        android:right="1.5dp"
-        android:id="@+id/shapeRD">
+        android:right="1.5dp">
         <rotate
             android:fromDegrees="45"
             android:toDegrees="45">

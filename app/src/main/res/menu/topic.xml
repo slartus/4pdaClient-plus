@@ -15,7 +15,6 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/attaches_item"
         android:icon="@drawable/download_white"
         android:title="@string/Attaches">
         <menu>
@@ -39,9 +38,7 @@
         android:title="@string/FindInTopic"
         app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/topic_options_item"
-        android:title="@string/theme_option">
+    <item android:title="@string/theme_option">
         <menu>
             <item
                 android:id="@+id/add_to_favorites_item"
@@ -68,9 +65,7 @@
         android:id="@+id/link_item"
         android:title="@string/link" />
 
-    <item
-        android:id="@+id/view_item"
-        android:title="@string/theme_view">
+    <item android:title="@string/theme_view">
         <menu>
             <item
                 android:id="@+id/avatars_item"

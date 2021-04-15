@@ -26,7 +26,6 @@
 
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -82,7 +81,6 @@
                 android:textAppearance="?android:textAppearanceSmall" />
 
             <RelativeLayout
-                android:id="@+id/lnrTop"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="20dp"

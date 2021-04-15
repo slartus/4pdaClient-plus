@@ -134,13 +134,11 @@
         android:layout_width="fill_parent"
         android:layout_height="6dp"
         android:orientation="vertical"
-        android:id="@+id/shadow"
         android:background="@drawable/shadow_to_bottom"
         android:layout_gravity="bottom"
         android:layout_marginBottom="2dp" />
 
     <LinearLayout
-        android:id="@+id/linearStartPost"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginBottom="4dp"

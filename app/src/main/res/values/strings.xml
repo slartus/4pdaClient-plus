@@ -13,8 +13,6 @@
         Для связи с модератором используйте личные сообщения.
     </string>
     <string name="EditReason">Причина редактирования</string>
-    <string name="Share">Поделиться ссылкой</string>
-    <string name="LoadMore">Загрузить еще</string>
     <string name="UserNameLogin">Имя пользователя (login)</string>
     <string name="Password">Пароль</string>
     <string name="Stealth">Скрытность</string>
@@ -42,22 +40,16 @@
     <string name="FindUserTopics">Темы пользователя</string>
     <string name="FindUserPosts">Сообщения пользователя</string>
     <string name="FindUserPostsInTopic">Сообщения в этой теме</string>
-    <string name="SelectAnAction">Выберите действие</string>
-    <string name="OpenWith">Открыть с</string>
-    <string name="NewDialog">Новый диалог</string>
-    <string name="AllDialogs">Все диалоги</string>
     <string name="Change">Изменить</string>
     <string name="ChangeReputationRequest">Запрос на изменение репутации отправлен</string>
     <string name="ChangeReputationError">Ошибка изменения репутации</string>
     <string name="Reputation">Репутация</string>
     <string name="Logout">Выход</string>
-    <string name="Login">Вход</string>
     <string name="Registration">Регистрация</string>
     <string name="SendBy_">Отправить через…</string>
     <string name="Loading_">Загрузка…</string>
     <string name="Canceled">Отменено</string>
     <string name="Error">Ошибка</string>
-    <string name="DownloadComplete">Загрузка завершена</string>
     <string name="NewNote">Новая заметка</string>
     <string name="Save">Сохранить</string>
     <string name="NoteSaved">Заметка сохранена</string>
@@ -76,17 +68,12 @@
         сайта о мобильных устройствах 4PDA 4pda.ru
     </string>
     <string name="NeedToLogin">Необходимо авторизироваться!</string>
-    <string name="RaiseReputation">Поднять репутацию</string>
-    <string name="FailedToCreateFolderInPath">Не удалось создать папку по указанному пути</string>
-    <string name="FailedToCreateFileInPath">Не удалось создать файл по указанному пути</string>
     <string name="AcceptStyle">Применить</string>
     <string name="ChooseStyle">Выберите стиль</string>
     <string name="Information">Информация</string>
     <string name="StyleDoesNotContainDesc">Стиль не содержит описания</string>
     <string name="OpenLinkInBrowser">Открыть ссылку в браузере?</string>
     <string name="Open">Открыть</string>
-    <string name="DownloadAborted">Загрузка прервана</string>
-    <string name="DownloadFile">Скачивание файла</string>
     <string name="navigate_getfirstpost">К первому</string>
     <string name="navigate_getlastpost">К последнему</string>
     <string name="navigate_getnewpost">К первому непрочитанному</string>
@@ -103,15 +90,11 @@
     <string name="Attaches">Вложения</string>
     <string name="FindOnPage">Найти на странице</string>
     <string name="FindInTopic">Найти в этой теме</string>
-    <string name="Browser">Браузер</string>
     <string name="LoadImages">Загружать изображения</string>
-    <string name="Close">Закрыть</string>
     <string name="LeaveComment">Оставить комментарий</string>
     <string name="Like">Понравилось</string>
 
 
-
-    <string name="crash_toast_text">>Ooooops! Ошибка приложения!</string>
     <string name="crash_dialog_text">Произошла непредвиденная ошибка, остановившая приложение. Пожалуйста помогите исправить её, отправив данные об ошибке (необходимо приложение для отправки e-mail)</string>
     <string name="crash_dialog_title">Приложение остановлено</string>
     <string name="crash_dialog_comment_prompt">Вы можете добавить свой комментарий:</string>
@@ -130,11 +113,9 @@
     <string name="new_post">Написать</string>
     <string name="attachments_page">Вложения текущей страницы</string>
     <string name="all_attachments_topic">Все вложения топика</string>
-    <string name="apply_options">Опции</string>
     <string name="theme_view">Вид</string>
     <string name="avatars">Аватары (%s)</string>
     <string name="show_avatars">Показывать аватары</string>
-    <string name="show_avatars_a">Показывать аватары (%s)</string>
     <string name="hide_pencil">Скрывать карандаш</string>
     <string name="hide_arrows">Скрыть стрелки</string>
     <string name="loading_img_for_session">Загр-ть изобр-я (для сессии)</string>
@@ -144,7 +125,6 @@
     <string name="quote_post">Цитата сообщения</string>
     <string name="blank_quote">Пустая цитата</string>
     <string name="quote_from_buffer">Цитата буфера</string>
-    <string name="quote_editor">Редактор цитаты</string>
     <string name="quote">Цитата</string>
     <string name="url_post">Ссылка на сообщение</string>
     <string name="report_msg">Жалоба на сообщение</string>
@@ -196,7 +176,6 @@
     <string name="bad_logout">Неудачный выход</string>
     <string name="processing_data">Обработка данных…</string>
     <string name="reviews">Отзывы</string>
-    <string name="loading_canceled_by_user">Загрузка отменена пользователем</string>
     <string name="write">Написать</string>
     <string name="setting">Настройка</string>
     <string name="no_selected_posts">Не выбрано ни одного сообщения</string>
@@ -319,7 +298,6 @@
     <string name="settings">Настройки</string>
     <string name="server_not_available_or_not_respond">Сервер недоступен или не отвечает</string>
     <string name="exceeded_timeout">Превышен таймаут ожидания</string>
-    <string name="server_failed_to_respond">Целевой сервер не в состоянии ответить</string>
     <string name="connection_lost">Соединение разорвано</string>
     <string name="my_apps">Мои приложения</string>
     <string name="catalog_games_and_apps">Каталог игр и приложений</string>
@@ -327,24 +305,8 @@
     <string name="apps_games_topics">Каталог@темы</string>
     <string name="digest_catalog">Дайджест игр и приложений</string>
     <string name="digest_topics">Дайджест игр и приложений</string>
-    <string name="downloads">Загрузки</string>
-    <string name="action">Действие</string>
-    <string name="cancel_download_title">Отменить загрузку?</string>
-    <string name="retry_loading">Повторить загрузку</string>
-    <string name="continue_download">Докачать</string>
-    <string name="choose_action">Выберите действие</string>
-    <string name="run_file">Запустить файл</string>
-    <string name="clean_out">Очистить</string>
-    <string name="ask_delete_all_nonactive_downloads">Удалить все неактивные загрузки?</string>
-    <string name="downloaded">Загружено</string>
-    <string name="failed_load">Не удалось загрузить</string>
-    <string name="download_reciever_content">Нажмите для дальнейших действий</string>
     <string name="download_method">Способ скачивания</string>
     <string name="download_method_notify"><![CDATA[Вы можете изменить способ скачивания в настройках программы: Просмотр темы>>Скачивание файлов>>Скачивать файл при помощи…]]></string>
-    <string name="ask_file_need_download">Имеется недокачанный файл с таким же названием.\nДокачать?</string>
-    <string name="re_download">Перекачать</string>
-    <string name="download_started">Загрузка начата</string>
-    <string name="rename_file_exception">"Не могу переименовать файл: "</string>
     <string name="request_link">Запрос ссылки</string>
     <string name="edit_post_combined">Ред. сообщения</string>
     <string name="answer">Ответ</string>
@@ -363,9 +325,6 @@
     <string name="total">Всего</string>
     <string name="source">Источник</string>
     <string name="link_to_post">Ссылка на сообщение</string>
-    <string name="select_player">Выберите проигрыватель</string>
-    <string name="quality_video">"Качество видео "</string>
-    <string name="quality">Качество</string>
     <string name="vote_request_sent">Запрос на изменение репутации сообщения отправлен</string>
     <string name="vote_error_already_voted">Ошибка изменения репутации: Вы уже голосовали за этот пост</string>
     <string name="vote_post_increased">Репутация поста повышена</string>
@@ -379,7 +338,6 @@
     <string name="ask_delete_messages" formatted="false">Вы действительно хотите удалить выбранные сообщения (%d)?</string>
     <string name="ask_delete_dialog">Вы действительно хотите удалить диалог?</string>
     <string name="refreshing">Обновление</string>
-    <string name="delete_messages">Удалить сообщения</string>
     <string name="delete_dialog">Удалить диалог</string>
     <string name="profile_interlocutor">Профиль собеседника</string>
     <string name="deleting_messages">Удаление сообщений</string>
@@ -411,7 +369,6 @@
     <string name="rating_less">Рейтинг ниже</string>
     <string name="insert">Вставить</string>
     <string name="error_parsing_quote">Ошибка разбора цитаты</string>
-    <string name="notice_client">Объявление клиента</string>
     <string name="topics_history">Посещенные темы</string>
     <string name="delete_from_visited">Удалить из посещённых</string>
     <string name="options">Опции</string>
@@ -441,15 +398,12 @@
     <string name="server_return_empty_page">Сервер вернул пустую страницу</string>
     <string name="site_response">"Ответ сайта 4pda: "</string>
     <string name="error_parsing_page">Ошибка разбора страницы</string>
-    <string name="site_not_respond">Сайт не отвечает</string>
     <string name="ask_start_download_file">Начать закачку файла?</string>
     <string name="confirm_download">Подтверждать скачивание</string>
     <string name="no_app_for_link">Не найдено ни одно приложение для ссылки</string>
-    <string name="no_app_for_open_file">Не найдено сопоставление для типа файла!</string>
     <string name="combined_in">" в "</string>
     <string name="what_is_color">"Не умею цвет: "</string>
     <string name="error_check_new_version">Ошибка проверки новой версии</string>
-    <string name="path_edited_success">Путь успешно изменён</string>
     <string name="pick_audio">Выберите звук</string>
     <string name="pick_image">Выберите изображение</string>
     <string name="select_items">Выберите пункты</string>
@@ -464,22 +418,15 @@
     <string name="system_font">Системный шрифт</string>
     <string name="enter_font_name">Ввести имя шрифта</string>
     <string name="font_name">Имя шрифта</string>
-    <string name="id_exeption">Не могу получить идентификатор</string>
-    <string name="list_id_exception">Не могу получить идентификатор списка</string>
 
     <string name="lang_pref_title">Язык</string>
     <string name="lang_pref_summary">Необходимо перезапустить приложение</string>
     <string name="lang_changed">Язык приложения был изменен, перезапустить приложение?</string>
     <string name="file_not_support_forum">Данный тип файлов не поддерживается форумом.</string>
-    <string name="attach_file">Загрузить</string>
     <string name="SearchResultTitles_topics">Темы</string>
     <string name="SearchResultTitles_posts">Сообщения</string>
     <string name="forum_search">Поиск по форуму</string>
 
-    <string name="oops">Oops! Ошибка :(</string>
-    <string name="oops_comment_hint">Комментарий (необязательно)</string>
-    <string name="oops_message">Пожалуйста, нажмите \\\"отправить отчёт\\\", чтобы мы могли разобраться в чём дело</string>
-    <string name="oops_send_text">Отправить отчёт</string>
     <string name="notes_remote_url">Ссылка</string>
 
 </resources>

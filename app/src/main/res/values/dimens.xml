@@ -3,10 +3,6 @@
 
     <dimen name="keyboard_height">230dp</dimen>
 
-    <dimen name="ptr_height_bug">80dp</dimen>
-
-    <dimen name="actionbar_title_size">20sp</dimen>
-
     <dimen name="actionbar_prefs_height">56dp</dimen>
     <dimen name="actionbar_prefs_height_kk">80dp</dimen>
 
