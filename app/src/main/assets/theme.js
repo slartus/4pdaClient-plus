@@ -6,7 +6,7 @@
 document.addEventListener('DOMContentLoaded', blocksOpenClose);
 
 function blocksOpenClose() {
-    console.log("blocksOpenClose");
+
     try {
         var blockTitleAll = document.querySelectorAll('.post-block.spoil>.block-title,.post-block.code>.block-title');
 
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', removeImgesSrc);
 
 // удаляем ссылки на картинки, если есть класс "noimages"
 function removeImgesSrc() {
-    console.log("removeImgesSrc");
+
     if (document.body.classList.contains("noimages")) return;
     var postBlockSpoils = document.body.querySelectorAll('.post-block.spoil.close > .block-body');
     for (var i = 0; i < postBlockSpoils.length; i++) {
@@ -139,7 +139,7 @@ function addImgesSrc(target) {
 document.addEventListener('DOMContentLoaded', createAnchorSpoilerLink);
 
 function createAnchorSpoilerLink() {
-    console.log("createAnchorSpoilerLink");
+
     if (document.body.id != 'topic' || document.body.querySelector('.block-title .anchor')) return;
     var postAll = document.querySelectorAll('.post_container');
     for (var i = 0; i < postAll.length; i++) {
@@ -160,7 +160,7 @@ function createAnchorSpoilerLink() {
 
 function scrollToAnchor() {
     if (document.body.id != "topic") return;
-    console.log("scrollToAnchor");
+
     var anchor;
     if (window.FORPDA_POST) {
         anchor = document.querySelector('[name="' + window.FORPDA_POST.match(/[^#].*/) + '"]');
@@ -195,7 +195,7 @@ function scrollToAnchor() {
     // jump to the anchor
     anchor.scrollIntoView();
     window.addEventListener('load', function () {
-        console.log("scrollIntoView");
+
         setTimeout(function () {
             anchor.scrollIntoView();
         }, 1000 / 30);
@@ -205,7 +205,7 @@ function scrollToAnchor() {
 document.addEventListener('DOMContentLoaded', scrollToAnchor);
 
 function jumpToAnchorOnPage() {
-    console.log("jumpToAnchorOnPage");
+
     // in topic
     var snapAll = document.body.querySelectorAll('a[title="Перейти к сообщению"]');
     if (snapAll[0]) {
@@ -244,7 +244,7 @@ document.addEventListener('DOMContentLoaded', jumpToAnchorOnPage);
 document.addEventListener('DOMContentLoaded', numberingCodeLinesFoo);
 
 function numberingCodeLinesFoo() {
-    console.log("numberingCodeLinesFoo");
+
     var codeBlockAll = document.querySelectorAll('.post-block.code');
     if (codeBlockAll == undefined || codeBlockAll.length == 0) return;
     if (codeBlockAll[0].hasAttribute('wraptext')) return;
@@ -547,6 +547,7 @@ function getSelectionPostInfo() {
     var text = "", containerElement = null;
 
     if (typeof window.getSelection != "undefined") {
+        console.log("window");
         var sel = window.getSelection();
         if (sel.rangeCount) {
             var node = sel.getRangeAt(0).commonAncestorContainer;
@@ -555,6 +556,7 @@ function getSelectionPostInfo() {
         }
     } else if (typeof document.selection != "undefined" &&
         document.selection.type != "Control") {
+        console.log("document");
         var textRange = document.selection.createRange();
         containerElement = textRange.parentElement();
         text = textRange.text;
@@ -578,7 +580,6 @@ function getSelectionPostInfo() {
 }
 
 function htmlOutSelectionPostInfo() {
-    console.log("htmlOutSelectionPostInfo");
     try {
         var selectionInfo = getSelectionPostInfo();
         if (selectionInfo) {
