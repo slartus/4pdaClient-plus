@@ -24,7 +24,7 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
     var topic: ExtTopic?
         private set
     private val m_UrlParams: String?
-    private val m_HtmlPreferences: HtmlPreferences
+    private val m_HtmlPreferences: HtmlPreferences = HtmlPreferences()
     private val m_EmoticsDict: Hashtable<String, String>
     var isMMod = false
     private val m_IsLoadImages: Boolean
@@ -32,6 +32,7 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
     override fun addScripts() {
         if (m_UrlParams != null) m_Body.append("<script type=\"text/javascript\">window.FORPDA_POST = \"").append(m_UrlParams.replaceFirst("(?:^|\\n)[\\s\\S]*?(#.*|anchor=.*)".toRegex(), "$1")).append("\";</script>\n")
         super.addScripts()
+        m_Body.append("<script type=\"text/javascript\" src=\"file:///android_asset/topic.js\"></script>\n")
     }
 
     fun beginTopic() {
@@ -42,10 +43,11 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
         m_Body.append("<div class=\"panel top\">")
         if (topic!!.pagesCount > 1) {
             addButtons(m_Body, topic!!.currentPage, topic!!.pagesCount,
-                    m_IsWebviewAllowJavascriptInterface, false, true)
+                    m_IsWebviewAllowJavascriptInterface, useSelectTextAsNumbers = false, top = true)
         }
         m_Body.append(titleBlock).append("</div>")
     }
+
 
     fun openPostsList() {
         m_Body.append("<div class=\"posts_list\">")
@@ -57,7 +59,7 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
         m_Body.append("<div class=\"panel bottom\">")
         if (topic!!.pagesCount > 1) {
             addButtons(m_Body, topic!!.currentPage, topic!!.pagesCount,
-                    m_IsWebviewAllowJavascriptInterface, false, false)
+                    m_IsWebviewAllowJavascriptInterface, useSelectTextAsNumbers = false, top = false)
         }
         if (Preferences.Topic.getReadersAndWriters()) {
             m_Body.append("<div class=\"who\"><a id=\"viewers\" ").append(getHtmlout(m_IsWebviewAllowJavascriptInterface, "showReadingUsers"))
@@ -125,7 +127,7 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
     }
 
     private val titleBlock: String
-        private get() {
+        get() {
             val desc = if (TextUtils.isEmpty(topic!!.description)) "" else "<span class=\"comma\">, </span>" + topic!!.description
             return ("<div class=\"topic_title_post\"><a href=\"https://4pda.ru/forum/index.php?showtopic="
                     + topic!!.id
@@ -185,7 +187,7 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
             val nickParam = post.nickParam
             var postNumber = post.number
             try {
-                postNumber = Integer.toString(post.number.toInt() - 1)
+                postNumber = (post.number.toInt() - 1).toString()
             } catch (ignored: Throwable) {
             }
             sb.append(String.format("<a class=\"link button claim\" href=\"/forum/index.php?act=report&t=%s&p=%s&st=%s\"><span>Жалоба</span></a>",
@@ -235,7 +237,7 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
         }
 
         private fun getHtmlout(webViewAllowJs: Boolean, methodName: String, val1: String): String? {
-            return getHtmlout(webViewAllowJs, methodName, arrayOf<String?>(val1))
+            return getHtmlout(webViewAllowJs, methodName, arrayOf(val1))
         }
 
         private fun getHtmlout(webViewAllowJs: Boolean, methodName: String): String? {
@@ -247,13 +249,12 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
         }
 
         @JvmStatic
-        fun getHtmlout(webViewAllowJs: Boolean?, methodName: String?, paramValues: Array<String?>?, modifyParams: Boolean?): String? {
+        fun getHtmlout(@Suppress("UNUSED_PARAMETER") webViewAllowJs: Boolean?, methodName: String?, paramValues: Array<String?>?, modifyParams: Boolean?): String? {
             return HtmlOutUtils.getHtmlout(methodName, paramValues!!, modifyParams!!)
         }
     }
 
     init {
-        m_HtmlPreferences = HtmlPreferences()
         m_HtmlPreferences.load(context)
         m_EmoticsDict = Smiles.getSmilesDict()
         m_IsWebviewAllowJavascriptInterface = isWebviewAllowJavascriptInterface

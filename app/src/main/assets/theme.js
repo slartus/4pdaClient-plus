@@ -100,17 +100,20 @@ document.addEventListener('DOMContentLoaded', removeImgesSrc);
 
 // удаляем ссылки на картинки, если есть класс "noimages"
 function removeImgesSrc() {
-
-    if (document.body.classList.contains("noimages")) return;
-    var postBlockSpoils = document.body.querySelectorAll('.post-block.spoil.close > .block-body');
-    for (var i = 0; i < postBlockSpoils.length; i++) {
-        var images = postBlockSpoils[i].querySelectorAll('img');
-        for (var j = 0; j < images.length; j++) {
-            var img = images[j];
-            if (!img.hasAttribute('src') || img.dataset.imageSrc) continue;
-            img.dataset.imageSrc = img.src;
-            img.removeAttribute('src');
+    try{
+        if (document.body.classList.contains("noimages")) return;
+        var postBlockSpoils = document.body.querySelectorAll('.post-block.spoil.close > .block-body');
+        for (var i = 0; i < postBlockSpoils.length; i++) {
+            var images = postBlockSpoils[i].querySelectorAll('img');
+            for (var j = 0; j < images.length; j++) {
+                var img = images[j];
+                if (!img.hasAttribute('src') || img.dataset.imageSrc) continue;
+                img.dataset.imageSrc = img.src;
+                img.removeAttribute('src');
+            }
         }
+    }catch(err){
+        console.error(err)
     }
 }
 
@@ -139,16 +142,19 @@ function addImgesSrc(target) {
 document.addEventListener('DOMContentLoaded', createAnchorSpoilerLink);
 
 function createAnchorSpoilerLink() {
-
-    if (document.body.id != 'topic' || document.body.querySelector('.block-title .anchor')) return;
-    var postAll = document.querySelectorAll('.post_container');
-    for (var i = 0; i < postAll.length; i++) {
-        var postId = postAll[i].getAttribute('name').match(/\d+/);
-        var spoilerAll = postAll[i].querySelectorAll('.post-block.spoil > .block-title');
-        for (var j = 0; j < spoilerAll.length; j++) {
-            if (spoilerAll[j].textContent.length == 0) spoilerAll[j].classList.add('empty');
-            spoilerAll[j].insertAdjacentHTML("beforeEnd", '<a class="anchor" onclick="event.preventDefault();" href="http://4pda.ru/forum/index.php?act=findpost&pid=' + postId + '&anchor=Spoil-' + postId + '-' + (j + 1) + '" name="Spoil-' + postId + '-' + (j + 1) + '" title="Spoil-' + postId + '-' + (j + 1) + '"><span>#</span></a>');
+    try{
+        if (document.body.id != 'topic' || document.body.querySelector('.block-title .anchor')) return;
+        var postAll = document.querySelectorAll('.post_container');
+        for (var i = 0; i < postAll.length; i++) {
+            var postId = postAll[i].getAttribute('name').match(/\d+/);
+            var spoilerAll = postAll[i].querySelectorAll('.post-block.spoil > .block-title');
+            for (var j = 0; j < spoilerAll.length; j++) {
+                if (spoilerAll[j].textContent.length == 0) spoilerAll[j].classList.add('empty');
+                spoilerAll[j].insertAdjacentHTML("beforeEnd", '<a class="anchor" onclick="event.preventDefault();" href="http://4pda.ru/forum/index.php?act=findpost&pid=' + postId + '&anchor=Spoil-' + postId + '-' + (j + 1) + '" name="Spoil-' + postId + '-' + (j + 1) + '" title="Spoil-' + postId + '-' + (j + 1) + '"><span>#</span></a>');
+            }
         }
+    }catch(err){
+        console.error(err);
     }
 }
 
@@ -159,6 +165,8 @@ function createAnchorSpoilerLink() {
  */
 
 function scrollToAnchor() {
+try{
+
     if (document.body.id != "topic") return;
 
     var anchor;
@@ -200,12 +208,15 @@ function scrollToAnchor() {
             anchor.scrollIntoView();
         }, 1000 / 30);
     });
+    }catch(err){
+    console.error(err);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', scrollToAnchor);
 
 function jumpToAnchorOnPage() {
-
+try{
     // in topic
     var snapAll = document.body.querySelectorAll('a[title="Перейти к сообщению"]');
     if (snapAll[0]) {
@@ -230,6 +241,9 @@ function jumpToAnchorOnPage() {
         }
 
         commentAnchor.addEventListener("click", jumpToNewsComment);
+    }
+    }catch(err){
+        console.error(err);
     }
 }
 
@@ -335,6 +349,7 @@ window.addEventListener('keydown', function (e) {
  */
 
 function moderNavPanel() {
+try{
     var pagesContainer = document.querySelectorAll('.pages');
     for (var i = 0; i < pagesContainer.length; i++) {
         var pagesAll = pagesContainer[i].querySelectorAll('a,b');
@@ -352,6 +367,9 @@ function moderNavPanel() {
         });
         selectElem.insertAdjacentHTML("beforeBegin", '<a href="' + pagesAll[0] + '" class="button first' + ((pagesAll[0].nodeName == 'B') ? ' disabled' : '') + '"><span>&lt;&lt;</span></a>');
         selectElem.insertAdjacentHTML("afterEnd", '<a href="' + pagesAll[(pagesAll.length - 1)] + '" class="button last' + ((pagesAll[(pagesAll.length - 1)].nodeName == 'B') ? ' disabled' : '') + '"><span>&gt;&gt;</span></a>');
+    }
+    }catch(err){
+    console.error(err);
     }
 }
 
@@ -542,60 +560,3 @@ function getSelectedText() {
 
     return selection ? selection.getRangeAt(0).toString() : "";
 };
-
-function getSelectionPostInfo() {
-    var text = "", containerElement = null;
-
-    if (typeof window.getSelection != "undefined") {
-        console.log("window");
-        var sel = window.getSelection();
-        if (sel.rangeCount) {
-            var node = sel.getRangeAt(0).commonAncestorContainer;
-            containerElement = node.nodeType == 1 ? node : node.parentNode;
-            text = sel.toString();
-        }
-    } else if (typeof document.selection != "undefined" &&
-        document.selection.type != "Control") {
-        console.log("document");
-        var textRange = document.selection.createRange();
-        containerElement = textRange.parentElement();
-        text = textRange.text;
-    }
-    text = text || getSelectedText();
-    if (containerElement) {
-        var postElement = containerElement.closest(".post_container");
-        if (postElement) {
-            return {
-                postId: postElement.getAttribute("post-id"),
-                postDate: postElement.getAttribute("post-date"),
-                userId: postElement.getAttribute("post-author-id"),
-                userNick: postElement.getAttribute("post-author"),
-                selection: text
-            };
-        }
-    }
-    return {
-        selection: text
-    };
-}
-
-function htmlOutSelectionPostInfo() {
-    try {
-        var selectionInfo = getSelectionPostInfo();
-        if (selectionInfo) {
-            window.HTMLOUT.selectionPostInfo(
-                selectionInfo.postId,
-                selectionInfo.postDate,
-                selectionInfo.userId,
-                selectionInfo.userNick,
-                selectionInfo.selection);
-        } else {
-            window.HTMLOUT.selectionPostInfo(
-                {
-                    selection: getSelectedText()
-                });
-        }
-    } catch (err) {
-        console.error(err);
-    }
-}
