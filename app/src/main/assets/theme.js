@@ -61,7 +61,7 @@ function blocksOpenClose() {
 
 function spoilCloseButton(t) {
     var el = t;
-    while (!t.classList.contains('.post-body')) {
+    while (t && t.classList && !t.classList.contains('.post-body')) {
         if (t.classList.contains('spoil') && !t.querySelector('.spoil_close')) {
             if (t.querySelector('img[src]')) {
                 var images = t.querySelectorAll('img[src]');
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', removeImgesSrc);
 
 // удаляем ссылки на картинки, если есть класс "noimages"
 function removeImgesSrc() {
-    try{
+    try {
         if (document.body.classList.contains("noimages")) return;
         var postBlockSpoils = document.body.querySelectorAll('.post-block.spoil.close > .block-body');
         for (var i = 0; i < postBlockSpoils.length; i++) {
@@ -112,7 +112,7 @@ function removeImgesSrc() {
                 img.removeAttribute('src');
             }
         }
-    }catch(err){
+    } catch (err) {
         console.error(err)
     }
 }
@@ -142,7 +142,7 @@ function addImgesSrc(target) {
 document.addEventListener('DOMContentLoaded', createAnchorSpoilerLink);
 
 function createAnchorSpoilerLink() {
-    try{
+    try {
         if (document.body.id != 'topic' || document.body.querySelector('.block-title .anchor')) return;
         var postAll = document.querySelectorAll('.post_container');
         for (var i = 0; i < postAll.length; i++) {
@@ -153,7 +153,7 @@ function createAnchorSpoilerLink() {
                 spoilerAll[j].insertAdjacentHTML("beforeEnd", '<a class="anchor" onclick="event.preventDefault();" href="http://4pda.ru/forum/index.php?act=findpost&pid=' + postId + '&anchor=Spoil-' + postId + '-' + (j + 1) + '" name="Spoil-' + postId + '-' + (j + 1) + '" title="Spoil-' + postId + '-' + (j + 1) + '"><span>#</span></a>');
             }
         }
-    }catch(err){
+    } catch (err) {
         console.error(err);
     }
 }
@@ -165,84 +165,84 @@ function createAnchorSpoilerLink() {
  */
 
 function scrollToAnchor() {
-try{
+    try {
 
-    if (document.body.id != "topic") return;
+        if (document.body.id != "topic") return;
 
-    var anchor;
-    if (window.FORPDA_POST) {
-        anchor = document.querySelector('[name="' + window.FORPDA_POST.match(/[^#].*/) + '"]');
-    }
-    if (!anchor) {
-        anchor = document.body;
-    } else {
-        var p = anchor;
-        if (anchor.nodeName == 'A') {
-            while (!p.classList.contains('post_container')) {
-                if (p.classList.contains('spoil')) {
-                    p.classList.remove('close');
-                    p.classList.add('open');
-                    addImgesSrc(p);
+        var anchor;
+        if (window.FORPDA_POST) {
+            anchor = document.querySelector('[name="' + window.FORPDA_POST.match(/[^#].*/) + '"]');
+        }
+        if (!anchor) {
+            anchor = document.body;
+        } else {
+            var p = anchor;
+            if (anchor.nodeName == 'A') {
+                while (!p.classList.contains('post_container')) {
+                    if (p.classList.contains('spoil')) {
+                        p.classList.remove('close');
+                        p.classList.add('open');
+                        addImgesSrc(p);
+                    }
+                    if (p.classList.contains('hat')) {
+                        p.children[0].classList.remove('close');
+                        p.children[0].classList.add('open');
+                        p.children[1].removeAttribute('style');
+                    }
+                    p = p.parentNode;
                 }
-                if (p.classList.contains('hat')) {
-                    p.children[0].classList.remove('close');
-                    p.children[0].classList.add('open');
-                    p.children[1].removeAttribute('style');
-                }
-                p = p.parentNode;
+            }
+
+            // highlight "target post"
+            if (anchor.nodeName == 'DIV' && !anchor.nextElementSibling.classList.contains('active')) {
+                anchor.insertAdjacentHTML("beforeBegin", '<div class="target_post"></div>');
+                anchor.nextElementSibling.classList.add('active');
             }
         }
 
-        // highlight "target post"
-        if (anchor.nodeName == 'DIV' && !anchor.nextElementSibling.classList.contains('active')) {
-            anchor.insertAdjacentHTML("beforeBegin", '<div class="target_post"></div>');
-            anchor.nextElementSibling.classList.add('active');
-        }
-    }
+        // jump to the anchor
+        anchor.scrollIntoView();
+        window.addEventListener('load', function () {
 
-    // jump to the anchor
-    anchor.scrollIntoView();
-    window.addEventListener('load', function () {
-
-        setTimeout(function () {
-            anchor.scrollIntoView();
-        }, 1000 / 30);
-    });
-    }catch(err){
-    console.error(err);
+            setTimeout(function () {
+                anchor.scrollIntoView();
+            }, 1000 / 30);
+        });
+    } catch (err) {
+        console.error(err);
     }
 }
 
 document.addEventListener('DOMContentLoaded', scrollToAnchor);
 
 function jumpToAnchorOnPage() {
-try{
-    // in topic
-    var snapAll = document.body.querySelectorAll('a[title="Перейти к сообщению"]');
-    if (snapAll[0]) {
-        for (var i = 0; i < snapAll.length; i++) {
-            snapAll[i].addEventListener('click', onClickAnchor);
+    try {
+        // in topic
+        var snapAll = document.body.querySelectorAll('a[title="Перейти к сообщению"]');
+        if (snapAll[0]) {
+            for (var i = 0; i < snapAll.length; i++) {
+                snapAll[i].addEventListener('click', onClickAnchor);
 
-            function onClickAnchor(e) {
-                var anchor = document.querySelector('[name="entry' + e.target.href.match(/findpost&pid=([\s\S]*)/)[1] + '"]');
-                if (anchor) {
-                    e.preventDefault();
-                    anchor.scrollIntoView();
+                function onClickAnchor(e) {
+                    var anchor = document.querySelector('[name="entry' + e.target.href.match(/findpost&pid=([\s\S]*)/)[1] + '"]');
+                    if (anchor) {
+                        e.preventDefault();
+                        anchor.scrollIntoView();
+                    }
                 }
             }
         }
-    }
-    // in news
-    var commentAnchor = document.querySelector('a[href*="#comments"]');
-    if (commentAnchor) {
-        function jumpToNewsComment(e) {
-            e.preventDefault();
-            document.querySelector('#comments').scrollIntoView();
-        }
+        // in news
+        var commentAnchor = document.querySelector('a[href*="#comments"]');
+        if (commentAnchor) {
+            function jumpToNewsComment(e) {
+                e.preventDefault();
+                document.querySelector('#comments').scrollIntoView();
+            }
 
-        commentAnchor.addEventListener("click", jumpToNewsComment);
-    }
-    }catch(err){
+            commentAnchor.addEventListener("click", jumpToNewsComment);
+        }
+    } catch (err) {
         console.error(err);
     }
 }
@@ -349,27 +349,27 @@ window.addEventListener('keydown', function (e) {
  */
 
 function moderNavPanel() {
-try{
-    var pagesContainer = document.querySelectorAll('.pages');
-    for (var i = 0; i < pagesContainer.length; i++) {
-        var pagesAll = pagesContainer[i].querySelectorAll('a,b');
-        var selectElem = document.createElement('select');
-        selectElem.className = "button page";
-        for (var j = 0; j < pagesAll.length; j++) {
-            var page = pagesAll[j];
-            selectElem.insertAdjacentHTML("beforeEnd", '<option value="' + page + '"' + ((page.nodeName == 'B') ? ' selected' : '') + '>' + page.innerText + '</option>');
-        }
-        pagesContainer[i].appendChild(selectElem);
+    try {
+        var pagesContainer = document.querySelectorAll('.pages');
+        for (var i = 0; i < pagesContainer.length; i++) {
+            var pagesAll = pagesContainer[i].querySelectorAll('a,b');
+            var selectElem = document.createElement('select');
+            selectElem.className = "button page";
+            for (var j = 0; j < pagesAll.length; j++) {
+                var page = pagesAll[j];
+                selectElem.insertAdjacentHTML("beforeEnd", '<option value="' + page + '"' + ((page.nodeName == 'B') ? ' selected' : '') + '>' + page.innerText + '</option>');
+            }
+            pagesContainer[i].appendChild(selectElem);
 
-        //todo  сделать assign
-        selectElem.addEventListener('change', function () {
-            location.assign(selectElem.value);
-        });
-        selectElem.insertAdjacentHTML("beforeBegin", '<a href="' + pagesAll[0] + '" class="button first' + ((pagesAll[0].nodeName == 'B') ? ' disabled' : '') + '"><span>&lt;&lt;</span></a>');
-        selectElem.insertAdjacentHTML("afterEnd", '<a href="' + pagesAll[(pagesAll.length - 1)] + '" class="button last' + ((pagesAll[(pagesAll.length - 1)].nodeName == 'B') ? ' disabled' : '') + '"><span>&gt;&gt;</span></a>');
-    }
-    }catch(err){
-    console.error(err);
+            //todo  сделать assign
+            selectElem.addEventListener('change', function () {
+                location.assign(selectElem.value);
+            });
+            selectElem.insertAdjacentHTML("beforeBegin", '<a href="' + pagesAll[0] + '" class="button first' + ((pagesAll[0].nodeName == 'B') ? ' disabled' : '') + '"><span>&lt;&lt;</span></a>');
+            selectElem.insertAdjacentHTML("afterEnd", '<a href="' + pagesAll[(pagesAll.length - 1)] + '" class="button last' + ((pagesAll[(pagesAll.length - 1)].nodeName == 'B') ? ' disabled' : '') + '"><span>&gt;&gt;</span></a>');
+        }
+    } catch (err) {
+        console.error(err);
     }
 }
 
