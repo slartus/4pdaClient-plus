@@ -20,12 +20,14 @@ import org.softeg.slartus.forpdacommon.ExtDateFormat;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdacommon.NotificationBridge;
 
+import org.softeg.slartus.forpdanotifyservice.BuildConfig;
 import org.softeg.slartus.forpdanotifyservice.MainService;
 import org.softeg.slartus.forpdanotifyservice.NotifierBase;
 import org.softeg.slartus.forpdanotifyservice.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -40,7 +42,7 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public class QmsNotifier extends NotifierBase {
-    private static final String LOG_TAG = QmsNotifier.class.getSimpleName();
+    private static final String TAG = QmsNotifier.class.getSimpleName();
     private static final String NEW_ACTION = "org.softeg.slartus.forpdanotifyservice.newqms";
     public static final String TIME_OUT_KEY = "qms.service.timeout";
     public static final String ADAPTIVE_TIME_OUT_KEY = "qms.service.adaptive_timeout";
@@ -66,7 +68,7 @@ public class QmsNotifier extends NotifierBase {
 
     public void checkUpdates() {
         try {
-            Log.i(LOG_TAG, "checkQms.start");
+            Log.i(TAG, "checkQms.start");
             if (!isUse(getContext()))
                 return;
 
@@ -94,10 +96,10 @@ public class QmsNotifier extends NotifierBase {
             getContext().sendBroadcast(intent);
 
 
-            Log.i(LOG_TAG, "checkQms.end");
+            Log.i(TAG, "checkQms.end");
 
         } catch (Throwable throwable) {
-            Log.e(LOG_TAG, throwable.toString());
+            Log.e(TAG, throwable.toString());
         } finally {
             restartTaskStatic(getContext());
         }
@@ -261,7 +263,7 @@ public class QmsNotifier extends NotifierBase {
         }
 
         timeOut = Math.min(timeOut, adaptiveTimeOut);
-        Log.i(LOG_TAG, "checkQms.TimeOut: " + timeOut);
+        Log.i(TAG, "checkQms.TimeOut: " + timeOut);
 
 
         PendingIntent pendingIntent = getAlarmPendingIntent(context);
@@ -269,7 +271,13 @@ public class QmsNotifier extends NotifierBase {
         AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarm != null) {
             alarm.cancel(pendingIntent);
-            alarm.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + (long) (timeOut * 60000), pendingIntent);
+            long wakeUpTime = SystemClock.elapsedRealtime() + (long) (timeOut * 60000);
+            if (BuildConfig.DEBUG) {
+                Calendar calendar = GregorianCalendar.getInstance();
+                calendar.setTimeInMillis(wakeUpTime);
+                Log.d(TAG, "new wakeup time is: " + calendar.getTime().toString());
+            }
+            alarm.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, wakeUpTime, pendingIntent);
         }
     }
 
@@ -291,7 +299,7 @@ public class QmsNotifier extends NotifierBase {
             if (alarm != null)
                 alarm.cancel(PendingIntent.getBroadcast(context, REQUEST_CODE_START, new Intent(context, AlarmReceiver.class), 0));
         } catch (Throwable ex) {
-            Log.e(LOG_TAG, ex.toString());
+            Log.e(TAG, ex.toString());
         }
     }
 
@@ -303,7 +311,7 @@ public class QmsNotifier extends NotifierBase {
     }
 
     private static void sendNotify(Context context, ArrayList<QmsUser> mails, boolean hasUnreadMessage) {
-        Log.i(LOG_TAG, "qms sendNotify");
+        Log.i(TAG, "qms sendNotify");
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         String url = "https://4pda.ru/forum/index.php?act=qms";
         int unreadMessagesCount = QmsUsers.unreadMessageUsersCount(mails);
@@ -316,7 +324,7 @@ public class QmsNotifier extends NotifierBase {
                 Uri.parse(url));
 
         if (hasUnreadMessage) {
-            Log.i(LOG_TAG, "notify!");
+            Log.i(TAG, "notify!");
             String message = "Новые сообщения (" + unreadMessagesCount + ")";
             if (unreadMessagesCount == 1)
                 message = "Новые сообщения от " + mails.get(0).getNick() + "(" + unreadMessagesCount + ")";

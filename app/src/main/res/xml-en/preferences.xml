@@ -397,10 +397,10 @@
                 android:summary="Service check for new messages"
                 android:text="Service check for new messages"
                 android:title="Use service" />
-            <org.softeg.slartus.forpdaplus.classes.common.ExtEditTextPreference
+            <org.softeg.slartus.forpdaplus.controls.ExtEditTextPreference
                 android:inputType="numberDecimal"
                 android:key="qms.service.timeout"
-                android:summary="Timeout check for new messages, min"
+                android:summary="Timeout check for new messages, %s min"
                 android:title="Timeout check "
                 project:defaultValue="5"
                 project:myInputType="numberDecimal" />
@@ -420,10 +420,10 @@
                 android:key="FavoritesNotifier.service.pinned_only"
                 android:summary="Notify me of new messages only important topics"
                 android:title="Only important" />
-            <org.softeg.slartus.forpdaplus.classes.common.ExtEditTextPreference
+            <org.softeg.slartus.forpdaplus.controls.ExtEditTextPreference
                 android:inputType="numberDecimal"
                 android:key="FavoritesNotifier.service.timeout"
-                android:summary="Timeout check for new posts"
+                android:summary="Timeout check for new posts, %s min"
                 android:title="Timeout check"
                 project:defaultValue="5"
                 project:myInputType="numberDecimal" />

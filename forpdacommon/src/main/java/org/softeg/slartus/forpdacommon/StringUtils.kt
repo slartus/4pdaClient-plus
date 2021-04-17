@@ -42,3 +42,6 @@ fun String.md5(): String? {
     }
     return ""
 }
+
+fun String.simplifyNumber() =
+        this.trimEnd { c -> c == '0' || c == ',' || c == '.' }

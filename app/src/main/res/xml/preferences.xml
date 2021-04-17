@@ -395,10 +395,10 @@
                 android:summary="Сервис проверки новых сообщений"
                 android:text="Сервис проверки новых сообщений"
                 android:title="Использовать сервис" />
-            <org.softeg.slartus.forpdaplus.classes.common.ExtEditTextPreference
+            <org.softeg.slartus.forpdaplus.controls.ExtEditTextPreference
                 android:inputType="numberDecimal"
                 android:key="qms.service.timeout"
-                android:summary="Таймаут проверки новых сообщений, мин"
+                android:summary="Таймаут проверки новых сообщений, (%s) мин"
                 android:title="Таймаут проверки"
                 project:defaultValue="5"
                 project:myInputType="numberDecimal" />
@@ -418,10 +418,10 @@
                 android:key="FavoritesNotifier.service.pinned_only"
                 android:summary="Уведомлять о новых сообщениях только в важных темах"
                 android:title="Только важные" />
-            <org.softeg.slartus.forpdaplus.classes.common.ExtEditTextPreference
+            <org.softeg.slartus.forpdaplus.controls.ExtEditTextPreference
                 android:inputType="numberDecimal"
                 android:key="FavoritesNotifier.service.timeout"
-                android:summary="Таймаут проверки новых постов, мин"
+                android:summary="Таймаут проверки новых постов,  (%s) мин"
                 android:title="Таймаут проверки"
                 project:defaultValue="5"
                 project:myInputType="numberDecimal" />
