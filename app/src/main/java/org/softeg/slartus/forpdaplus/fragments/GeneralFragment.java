@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
@@ -30,6 +31,7 @@ import io.reactivex.disposables.Disposable;
 public abstract class GeneralFragment extends Fragment implements IBrickFragment {
     public abstract boolean closeTab();
 
+    private static final String TAG = GeneralFragment.class.getSimpleName();
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ActionBar actionBar;
     private MainActivity mainActivity;
@@ -161,10 +163,10 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     @Override
     public void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
-
+        Log.i(TAG, "onSaveInstanceState");
         try {
             TabItem tab = getThisTab();
-
+            Log.i(TAG, tab.getTitle());
             outState.putString("generalTitle", tab.getTitle());
             outState.putString("generalUrl", tab.getUrl());
             outState.putString("generalParentTag", tab.getParentTag());
@@ -200,7 +202,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         fragmentPaused = false;
         if (actionBar == null)
             actionBar = getMainActivity().getSupportActionBar();
-        Menu menu=getMenu();
+        Menu menu = getMenu();
         if (menu != null)
             onCreateOptionsMenu(menu, new MenuInflater(getContext()));
         if (getMainActivity() != null)
