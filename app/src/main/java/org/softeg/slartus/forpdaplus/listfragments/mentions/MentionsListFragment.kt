@@ -11,7 +11,6 @@ import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import androidx.appcompat.app.ActionBar
 import android.text.TextUtils
 import android.view.*
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -20,13 +19,16 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import com.afollestad.materialdialogs.MaterialDialog
 import com.nineoldandroids.view.ViewPropertyAnimator
+import io.paperdb.Paper
 import kotlinx.android.synthetic.main.fragment_mentions_list.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.softeg.slartus.forpdaapi.IListItem
 import org.softeg.slartus.forpdaapi.parsers.MentionsParser
 import org.softeg.slartus.forpdaapi.vo.MentionsResult
 import org.softeg.slartus.forpdacommon.FileUtils
@@ -60,10 +62,9 @@ class MentionsListFragment : WebViewFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState != null) {
-            if (savedInstanceState.containsKey(ARG_MENTIONS_RESULT))
-                mentionsResult = savedInstanceState.getSerializable(ARG_MENTIONS_RESULT) as MentionsResult
-        }
+
+        mentionsResult = Paper.book().read(ARG_MENTIONS_RESULT, mentionsResult)
+        
     }
 
     @Suppress("unused")
@@ -143,7 +144,7 @@ class MentionsListFragment : WebViewFragment() {
 
     fun load(startNum: Int) {
         setLoading(true)
-        InternetConnection.instance.loadDataOnInternetConnected( {
+        InternetConnection.instance.loadDataOnInternetConnected({
             GlobalScope.launch(Dispatchers.IO) {
                 try {
                     val pageBody = Client.getInstance()
@@ -155,7 +156,7 @@ class MentionsListFragment : WebViewFragment() {
                     val body = MentionsHtmlBuilder(mentions).build()
                     withContext(Dispatchers.Main) {
                         setMentionsResult(mentions)
-                        if(isAdded) {
+                        if (isAdded) {
                             setLoading(false)
                             showHtmlBody(body)
                         }
@@ -382,6 +383,6 @@ class MentionsListFragment : WebViewFragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         if (mentionsResult != null)
-            outState.putSerializable(ARG_MENTIONS_RESULT, mentionsResult)
+            Paper.book().write(ARG_MENTIONS_RESULT, mentionsResult)
     }
 }
