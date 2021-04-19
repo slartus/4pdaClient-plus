@@ -7,8 +7,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -46,26 +49,24 @@ import java.util.ArrayList;
 /**
  * Created by radiationx on 17.10.15.
  */
-public abstract class WebViewFragment extends GeneralFragment implements IWebViewContainer{
-    class URLHandler extends Handler{
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            showLinkMenu((String) msg.getData().get("url"));
-        }
-    }
+public abstract class WebViewFragment extends GeneralFragment implements IWebViewContainer {
+
 
     public abstract AdvWebView getWebView();
+
     public abstract WebViewClient getWebViewClient();
+
     public abstract String getTitle();
+
     public abstract String getUrl();
+
     public abstract void reload();
+
     public abstract AsyncTask getAsyncTask();
 
     private final Handler mHandler = new Handler();
-    private final URLHandler urlHandler = new URLHandler();
 
-    public void showLinkMenu(String url){
+    public void showLinkMenu(String url) {
         if (TextUtils.isEmpty(url) || url.contains("HTMLOUT.ru")
                 || url.equals("#")
                 || url.startsWith("file:///")) return;
@@ -81,7 +82,11 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
             case WebView.HitTestResult.IMAGE_TYPE:
                 ExtUrl.showImageSelectActionDialog(mHandler, getContext(), getWebView().getHitTestResult().getExtra());
             default: {
-                getWebView().requestFocusNodeHref(urlHandler.obtainMessage());
+                Handler handler = new Handler();
+                Message message = handler.obtainMessage();
+                getWebView().requestFocusNodeHref(message);
+                String url = message.getData().get("url").toString();
+                showLinkMenu(url);
             }
         }
     }
@@ -124,17 +129,18 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         super.onCreate(savedInstanceState);
         setArrow();
         loadPreferences(App.getInstance().getPreferences());
-        if (Preferences.System.isDevSavePage()|
+        if (Preferences.System.isDevSavePage() |
                 Preferences.System.isDevStyle())
             Toast.makeText(getMainActivity(), R.string.dev_mode, Toast.LENGTH_SHORT).show();
     }
 
     protected SwipeRefreshLayout mSwipeRefreshLayout;
 
-    protected void initSwipeRefreshLayout(){
+    protected void initSwipeRefreshLayout() {
         mSwipeRefreshLayout = getView().findViewById(R.id.ptr_layout);
         mSwipeRefreshLayout = App.createSwipeRefreshLayout(getView(), this::reload);
     }
+
     public void setLoading(final Boolean loading) {
         try {
             if (getMainActivity() == null) return;
@@ -144,14 +150,15 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         }
     }
 
-    public void setFabColors(final FloatingActionButton fab){
+    public void setFabColors(final FloatingActionButton fab) {
         fab.setBackgroundTintList(ColorStateList.valueOf(AppTheme.getColorAccent("Accent")));
         fab.setRippleColor(AppTheme.getColorAccent("Pressed"));
     }
+
     @Override
     public void onResume() {
         super.onResume();
-        if(getWebView()!=null){
+        if (getWebView() != null) {
             getWebView().onResume();
             getWebView().setWebViewClient(getWebViewClient());
         }
@@ -161,9 +168,9 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     @Override
     public void onPause() {
         super.onPause();
-        if (getWebView()!=null) {
+        if (getWebView() != null) {
             new Handler().postDelayed(() -> {
-                if (getWebView()!=null&&isFragmentPaused())
+                if (getWebView() != null && isFragmentPaused())
                     getWebView().onPause();
             }, 1500);
             getWebView().setWebViewClient(null);
@@ -174,20 +181,20 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     @Override
     public void onStop() {
         super.onStop();
-        if (getWebView()!=null) {
+        if (getWebView() != null) {
             getWebView().setWebViewClient(null);
             getWebView().setPictureListener(null);
         }
     }
 
     @Override
-    public void onDestroy(){
-        if (getWebView() != null){
+    public void onDestroy() {
+        if (getWebView() != null) {
             getWebView().setWebViewClient(null);
             getWebView().removeAllViews();
             getWebView().loadUrl("about:blank");
         }
-        if(getAsyncTask()!=null) getAsyncTask().cancel(false);
+        if (getAsyncTask() != null) getAsyncTask().cancel(false);
         super.onDestroy();
     }
 
@@ -199,15 +206,16 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         LinearLayout arrowsShadow = getView().findViewById(R.id.arrows_shadow);
 
         if (arrows == null) return;
-        if(hide){
+        if (hide) {
             arrows.setVisibility(View.GONE);
             arrowsShadow.setVisibility(View.GONE);
-        }else {
+        } else {
             arrows.setVisibility(View.VISIBLE);
             arrowsShadow.setVisibility(View.VISIBLE);
         }
 
     }
+
     /*private boolean fabIsVisible = false;
     private FloatingActionButton.OnVisibilityChangedListener fabListener = new FloatingActionButton.OnVisibilityChangedListener(){
         @Override
@@ -222,10 +230,10 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
             fabIsVisible = false;
         }
     };*/
-    public void setHideFab(final FloatingActionButton fab){
-        if (getWebView() == null)return;
+    public void setHideFab(final FloatingActionButton fab) {
+        if (getWebView() == null) return;
         if (fab == null) return;
-        if(Preferences.isHideFab()) {
+        if (Preferences.isHideFab()) {
             getWebView().setOnScrollChangedCallback(new AdvWebView.OnScrollChangedCallback() {
                 @Override
                 public void onScrollDown(Boolean inTouch) {
@@ -244,7 +252,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
                     fab.show();
                 }
             });
-        }else {
+        } else {
             getWebView().setOnScrollChangedCallback(null);
             fab.show();
         }
@@ -314,6 +322,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
         });
         dialog.show();
     }
+
     public void showStylesDialog(final SharedPreferences prefs) {
         try {
             final String currentValue = AppTheme.getCurrentTheme();
@@ -345,7 +354,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
                         editor.putString("appstyle", newStyleValues.get(selected[0]).toString());
                         //editor.putBoolean("theme.BrowserStyle", checkBox.isChecked());
                         editor.apply();
-                        if(AppTheme.getThemeStyleResID()!=lastTheme)
+                        if (AppTheme.getThemeStyleResID() != lastTheme)
                             getMainActivity().recreate();
                         else
                             setStyleSheet();
@@ -356,10 +365,11 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
             AppLog.e(getMainActivity(), ex);
         }
     }
+
     public void setStyleSheet() {
         try {
-            getWebView().loadUrl("javascript:changeStyle('file://"+ AppTheme.getThemeCssFileName()+"');");
-            Log.e("Test", "setStyleSheet: " + "file://"+AppTheme.getThemeCssFileName());
+            getWebView().loadUrl("javascript:changeStyle('file://" + AppTheme.getThemeCssFileName() + "');");
+            Log.e("Test", "setStyleSheet: " + "file://" + AppTheme.getThemeCssFileName());
         } catch (Throwable ex) {
             AppLog.e(getMainActivity(), ex);
         }
@@ -376,7 +386,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     @SuppressWarnings("unused")
     @JavascriptInterface
     public void saveHtml(final String html) {
-        getMainActivity().runOnUiThread(() -> new SaveHtml(getMainActivity(), html, Prefix()+""));
+        getMainActivity().runOnUiThread(() -> new SaveHtml(getMainActivity(), html, Prefix() + ""));
     }
 
     @Override
@@ -393,10 +403,13 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     public Window getWindow() {
         return getMainActivity().getWindow();
     }
-    @Override
-    public void nextPage() {}
 
     @Override
-    public void prevPage() {}
+    public void nextPage() {
+    }
+
+    @Override
+    public void prevPage() {
+    }
 
 }
