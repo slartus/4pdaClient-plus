@@ -1,13 +1,9 @@
 package org.softeg.slartus.forpdanotifyservice.qms;
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,12 +14,9 @@ import org.softeg.slartus.forpdaapi.qms.QmsUserThemes;
 import org.softeg.slartus.forpdaapi.qms.QmsUsers;
 import org.softeg.slartus.forpdacommon.ExtDateFormat;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
-import org.softeg.slartus.forpdacommon.NotificationBridge;
-
 import org.softeg.slartus.forpdanotifyservice.BuildConfig;
 import org.softeg.slartus.forpdanotifyservice.MainService;
 import org.softeg.slartus.forpdanotifyservice.NotifierBase;
-import org.softeg.slartus.forpdanotifyservice.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -305,51 +298,29 @@ public class QmsNotifier extends NotifierBase {
 
     private static final int MY_NOTIFICATION_ID = 1;
 
-    private static int getNotificationIcon() {
-        boolean whiteIcon = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-        return whiteIcon ? R.drawable.notify_icon : R.drawable.icon_mat;
-    }
+
 
     private static void sendNotify(Context context, ArrayList<QmsUser> mails, boolean hasUnreadMessage) {
         Log.i(TAG, "qms sendNotify");
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        String url = "https://4pda.ru/forum/index.php?act=qms";
-        int unreadMessagesCount = QmsUsers.unreadMessageUsersCount(mails);
-        if (unreadMessagesCount == 1)// если новые сообщения только с одним пользователем
-            url += "&mid=" + mails.get(0).getId();
-        if (mails.get(0).getLastThemeId() != null)// если новые сообщения только по одной теме
-            url += "&t=" + mails.get(0).getLastThemeId();
-        Intent marketIntent = new Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(url));
 
+        int unreadMessagesCount = QmsUsers.unreadMessageUsersCount(mails);
         if (hasUnreadMessage) {
             Log.i(TAG, "notify!");
+            String url = "https://4pda.ru/forum/index.php?act=qms";
+
+            if (unreadMessagesCount == 1)// если новые сообщения только с одним пользователем
+                url += "&mid=" + mails.get(0).getId();
+            if (mails.get(0).getLastThemeId() != null)// если новые сообщения только по одной теме
+                url += "&t=" + mails.get(0).getLastThemeId();
+
             String message = "Новые сообщения (" + unreadMessagesCount + ")";
             if (unreadMessagesCount == 1)
                 message = "Новые сообщения от " + mails.get(0).getNick() + "(" + unreadMessagesCount + ")";
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, marketIntent, 0);
-            NotificationBridge bridge = NotificationBridge.createBridge(
-                    context,
-                    getNotificationIcon(),
-                    "Имеются непрочитанные сообщения",
-                    System.currentTimeMillis())
-                    .setContentTitle(message)
-                    .setContentText("Новые сообщения")
-                    .setContentIntent(pendingIntent)
-                    .setAutoCancel(true)
-                    .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
-            Uri sound = getSound(context);
-            if (sound != null)
-                bridge.setSound(getSound(context));
-            Notification noti = bridge.createNotification();
+            sendNotify(context, message, "Новые сообщения", url, MY_NOTIFICATION_ID);
 
-            if (notificationManager != null)
-                notificationManager.notify(MY_NOTIFICATION_ID, noti);
         } else if (unreadMessagesCount == 0) {
-            if (notificationManager != null)
-                notificationManager.cancel(MY_NOTIFICATION_ID);
+            cancelNotification(context, MY_NOTIFICATION_ID);
         }
     }
 
