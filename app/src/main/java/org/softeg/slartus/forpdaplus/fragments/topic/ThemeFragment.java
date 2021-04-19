@@ -47,6 +47,7 @@ import org.jetbrains.annotations.Nullable;
 import org.softeg.slartus.forpdaapi.TopicApi;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
+import org.softeg.slartus.forpdacommon.ResourcesUtilKt;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.Client;
@@ -1464,22 +1465,16 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     themeFragment.m_LastUrl = forums[0];
                     themeFragment.m_LastUrl = "https://4pda.ru/forum/index.php?" + prepareTopicUrl(themeFragment.m_LastUrl);
 
-                    if (forums.length == 1) {
-                        themeFragment.lastResponse = Http.Companion.getInstance().performGet("https://4pda.ru/forum/index.php?" + prepareTopicUrl(themeFragment.m_LastUrl));
-                        pageBody = themeFragment.lastResponse.getResponseBody();
-                        Client.getInstance().check(pageBody);
-                    } else
-                        pageBody = forums[1];
+
+
+
                     if (themeFragment.lastResponse != null) {
                         themeFragment.m_LastUrl = themeFragment.lastResponse.redirectUrlElseRequestUrl();
                     }
                     themeFragment.m_SpoilFirstPost = Preferences.Topic.getSpoilFirstPost();
-                    TopicBodyBuilder topicBodyBuilder = client.parseTopic(pageBody, App.getInstance(), themeFragment.m_LastUrl,
-                            themeFragment.m_SpoilFirstPost);
-                    themeFragment.m_Topic = topicBodyBuilder.getTopic();
+                    themeFragment.m_Topic = new ExtTopic("0","test");
                     themeFragment.m_Topic.setLastUrl(themeFragment.m_LastUrl);
-                    m_ThemeBody = topicBodyBuilder.getBody();
-                    topicBodyBuilder.clear();
+                    m_ThemeBody = ResourcesUtilKt.loadAssetsText(App.getContext(),"4pda_page1.html", "UTF-8");
                 }
                 return true;
             } catch (Throwable e) {

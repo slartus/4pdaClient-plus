@@ -12,7 +12,7 @@
         android:id="@+id/refresh_item"
         android:icon="@drawable/refresh"
         android:title="@string/Refresh"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
     <item
         android:icon="@drawable/download_white"

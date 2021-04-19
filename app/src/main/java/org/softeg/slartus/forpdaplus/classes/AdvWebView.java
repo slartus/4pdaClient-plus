@@ -6,7 +6,9 @@ import android.content.Context;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.RequiresApi;
+
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -60,10 +62,10 @@ public class AdvWebView extends WebView {
         getSettings().setAllowFileAccess(true);
         getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
-        if (Build.VERSION.SDK_INT > 15) {
-            getSettings().setAllowFileAccessFromFileURLs(true); //Maybe you don't need this rule
-            getSettings().setAllowUniversalAccessFromFileURLs(true);
-        }
+
+        getSettings().setAllowFileAccessFromFileURLs(true); //Maybe you don't need this rule
+        getSettings().setAllowUniversalAccessFromFileURLs(true);
+
         if (Build.VERSION.SDK_INT < 18)
             getSettings().setPluginState(WebSettings.PluginState.ON);// для воспроизведения видео
 
@@ -72,7 +74,7 @@ public class AdvWebView extends WebView {
             setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
             setScrollbarFadingEnabled(true);
         }
-        if(Preferences.System.getWebviewCompatMode())
+        if (Preferences.System.getWebviewCompatMode())
             this.setLayerType(LAYER_TYPE_SOFTWARE, null);
         /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             try {
@@ -133,6 +135,7 @@ public class AdvWebView extends WebView {
     private long startClickTime;
     private Boolean m_InTouch = false;
     private Point m_MotionDown = null;
+
     @Override
     public boolean onTouchEvent(android.view.MotionEvent event) {
         boolean b = super.onTouchEvent(event);
@@ -158,14 +161,14 @@ public class AdvWebView extends WebView {
                 case MotionEvent.ACTION_UP: {
                     m_InTouch = false;
                     long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
-                    if (clickDuration < MAX_CLICK_DURATION &&m_MotionDown!=null&& Math.abs(m_MotionDown.y - event.getY()) < MAX_TOUCH__Y_DISTANCE) {
+                    if (clickDuration < MAX_CLICK_DURATION && m_MotionDown != null && Math.abs(m_MotionDown.y - event.getY()) < MAX_TOUCH__Y_DISTANCE) {
                         mOnScrollChangedCallback.onTouch();
                     }
                 }
             }
         } catch (Throwable ex) {
             AppLog.e(getContext(), ex);
-        }finally {
+        } finally {
             m_LastMotionEvent = new Point((int) event.getX(), (int) event.getY());
         }
 
@@ -223,6 +226,7 @@ public class AdvWebView extends WebView {
             android.util.Log.e("AdvWebView", ex.toString());
         }
     }
+
     private OnStartActionModeListener actionModeListener;
 
     public interface OnStartActionModeListener {
