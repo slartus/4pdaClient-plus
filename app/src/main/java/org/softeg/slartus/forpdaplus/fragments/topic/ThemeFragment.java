@@ -126,7 +126,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     private final Handler mHandler = new Handler();
 
     private String m_LastUrl;
-    private AppResponse lastResponse = null;
+    private final AppResponse lastResponse = null;
     private ArrayList<SessionHistory> m_History = new ArrayList<>();
     private ExtTopic m_Topic;
     private Boolean m_SpoilFirstPost = true;
@@ -853,8 +853,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
 
             //webView.loadDataWithBaseURL(m_LastUrl, body, "text/html", "UTF-8", null);
+            Log.d(TAG, "loadDataWithBaseURL>>");
             webView.loadDataWithBaseURL("https://4pda.ru/forum/", body, "text/html", "UTF-8", null);
-
+            Log.d(TAG, "<<loadDataWithBaseURL");
             TopicsHistoryTable.addHistory(m_Topic, m_LastUrl);
             if (buttonsPanel.getTranslationY() != 0)
                 ViewPropertyAnimator.animate(buttonsPanel)
@@ -1046,6 +1047,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public void setHistoryBody(int index, String body) {
+        Log.d(TAG, "setHistoryBody");
         if (index > m_History.size()) {
             addToHistory(body);
         } else {
@@ -1148,6 +1150,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         if (m_History.size() >= historyLimit && m_History.size() > 0)
             m_History.get(m_History.size() - historyLimit).setBody(null);
         m_History.add(new SessionHistory(m_Topic, m_LastUrl, topicBody, 0));
+        if (m_History.size() > 30)
+            m_History.remove(0);
     }
 
     private void setScrollElement() {
@@ -1466,15 +1470,13 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     themeFragment.m_LastUrl = "https://4pda.ru/forum/index.php?" + prepareTopicUrl(themeFragment.m_LastUrl);
 
 
-
-
                     if (themeFragment.lastResponse != null) {
                         themeFragment.m_LastUrl = themeFragment.lastResponse.redirectUrlElseRequestUrl();
                     }
                     themeFragment.m_SpoilFirstPost = Preferences.Topic.getSpoilFirstPost();
-                    themeFragment.m_Topic = new ExtTopic("0","test");
+                    themeFragment.m_Topic = new ExtTopic("0", "test");
                     themeFragment.m_Topic.setLastUrl(themeFragment.m_LastUrl);
-                    m_ThemeBody = ResourcesUtilKt.loadAssetsText(App.getContext(),"4pda_page1.html", "UTF-8");
+                    m_ThemeBody = ResourcesUtilKt.loadAssetsText(App.getContext(), "4pda_page1.html", "UTF-8");
                 }
                 return true;
             } catch (Throwable e) {

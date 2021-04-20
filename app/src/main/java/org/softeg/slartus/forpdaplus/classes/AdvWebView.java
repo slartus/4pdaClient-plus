@@ -10,11 +10,13 @@ import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewParent;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.AdapterView;
 
 import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.common.AppLog;
@@ -29,6 +31,7 @@ import java.util.Calendar;
  */
 public class AdvWebView extends WebView {
     private int actionBarHeight = 56;
+    private static final String TAG = AdapterView.class.getSimpleName();
 
     public AdvWebView(Context context) {
         super(context);
@@ -108,6 +111,7 @@ public class AdvWebView extends WebView {
      */
     @Override
     protected void onScrollChanged(final int l, final int t, final int oldl, final int oldt) {
+        Log.d(TAG, "onScrollChanged");
         super.onScrollChanged(l, t, oldl, oldt);
         try {
             if (!m_ActionBarOnScrollEventsState) return;
@@ -138,6 +142,7 @@ public class AdvWebView extends WebView {
 
     @Override
     public boolean onTouchEvent(android.view.MotionEvent event) {
+        Log.d(TAG, "onTouchEvent");
         boolean b = super.onTouchEvent(event);
         try {
 
@@ -178,11 +183,13 @@ public class AdvWebView extends WebView {
 
     @Override
     public android.webkit.WebBackForwardList saveState(Bundle outState) {
+        Log.d(TAG, "saveState");
         return super.saveState(outState);
     }
 
     @Override
     public android.webkit.WebBackForwardList restoreState(Bundle outState) {
+        Log.d(TAG, "restoreState");
         return super.restoreState(outState);
     }
 
@@ -213,6 +220,7 @@ public class AdvWebView extends WebView {
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public void evalJs(String js) {
+        Log.d(TAG, "evalJs: "+js);
         try {
             if (Build.VERSION.SDK_INT >= 19 && Preferences.System.isEvaluateJavascriptEnabled()) {
                 evaluateJavascript(js, null);
@@ -239,11 +247,13 @@ public class AdvWebView extends WebView {
 
     @Override
     public android.view.ActionMode startActionMode(android.view.ActionMode.Callback callback) {
+        Log.d(TAG, "startActionMode");
         return myActionMode(callback, 0);
     }
 
     @Override
     public android.view.ActionMode startActionMode(android.view.ActionMode.Callback callback, int type) {
+        Log.d(TAG, "startActionMode2");
         return myActionMode(callback, type);
     }
 
