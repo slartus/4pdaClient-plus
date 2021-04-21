@@ -11,7 +11,7 @@ import org.softeg.slartus.forpdaapi.FavTopic
 import org.softeg.slartus.forpdaapi.ListInfo
 import org.softeg.slartus.forpdaapi.TopicsApi
 import org.softeg.slartus.forpdacommon.ExtPreferences
-import org.softeg.slartus.forpdanotifyservice.MainService
+import org.softeg.slartus.forpdanotifyservice.BuildConfig
 import org.softeg.slartus.forpdanotifyservice.NotifierBase
 import java.util.*
 
@@ -27,7 +27,7 @@ class FavoritesNotifier(context: Context?) : NotifierBase(context) {
 
     override fun checkUpdates() {
         try {
-            Log.i(LOG_TAG, "checkFavorites.start")
+            Log.i(TAG, "checkFavorites.start")
             if (!isUse(context)) return
             loadCookiesPath() ?: return
 
@@ -36,9 +36,11 @@ class FavoritesNotifier(context: Context?) : NotifierBase(context) {
 
             val hasNewUnread = hasNewUnreadTopic(unreadTopics)
             updateNotification(context, unreadTopics, hasNewUnread)
-            Log.i(LOG_TAG, "checkFavorites.end")
+            Log.i(TAG, "checkFavorites.end")
         } catch (throwable: Throwable) {
-            Log.e(LOG_TAG, throwable.toString())
+            Log.e(TAG, throwable.toString())
+        } finally {
+            // restartTaskStatic(context, true)
         }
     }
 
@@ -48,7 +50,7 @@ class FavoritesNotifier(context: Context?) : NotifierBase(context) {
 
 
     private fun hasNewUnreadTopic(unreadTopics: List<FavTopic>): Boolean {
-        if(unreadTopics.isEmpty())return false
+        if (unreadTopics.isEmpty()) return false
         val lastPostedTopic = unreadTopics.first()
         val lastPostedTopicCalendar = GregorianCalendar()
         lastPostedTopicCalendar.time = lastPostedTopic.lastMessageDate
@@ -57,19 +59,18 @@ class FavoritesNotifier(context: Context?) : NotifierBase(context) {
             saveLastDate(lastPostedTopicCalendar, LAST_DATETIME_KEY)
             return true
         }
+//        if (BuildConfig.DEBUG) {
+//            return true
+//        }
         return false
     }
 
-    override fun readSettings(context: Context, intent: Intent) {
-        if (intent.extras?.containsKey(TIME_OUT_KEY) == true) {
-            val timeOut = intent.extras!!.getFloat(TIME_OUT_KEY, 5f)
-            // Log.d(LOG_TAG, "timeOutExtras " + timeOut);
-            saveTimeOut(context, timeOut, TIME_OUT_KEY)
-        }
+    fun saveTimeout(context: Context, timeOut: Float) {
+        saveTimeOut(context, timeOut, TIME_OUT_KEY)
     }
 
     override fun restartTask(context: Context) {
-        restartTaskStatic(context)
+        restartTaskStatic(context, false)
     }
 
     override fun cancel(context: Context) {
@@ -77,14 +78,14 @@ class FavoritesNotifier(context: Context?) : NotifierBase(context) {
             val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager?
             alarm?.cancel(getAlarmPendingIntent(context, 0))
         } catch (ex: Throwable) {
-            Log.e(LOG_TAG, ex.toString())
+            Log.e(TAG, ex.toString())
         }
     }
 
     private fun updateNotification(context: Context, unreadTopics: List<FavTopic>, hasNewUnread: Boolean) {
-        Log.i(LOG_TAG, "favotires sendNotify")
+        Log.i(TAG, "favotires sendNotify")
         if (hasNewUnread) {
-            Log.i(LOG_TAG, "favotires notify!")
+            Log.i(TAG, "favotires notify!")
             var message = "Избранное (" + unreadTopics.size + ")"
             if (unreadTopics.size == 1) {
                 message = String.format("%s ответил в тему \"%s\", на которую вы подписаны",
@@ -99,7 +100,7 @@ class FavoritesNotifier(context: Context?) : NotifierBase(context) {
     }
 
     companion object {
-        private const val LOG_TAG = "FavoritesNotifier"
+        private val TAG = FavoritesNotifier::class.simpleName
         const val TIME_OUT_KEY = "FavoritesNotifier.service.timeout"
         private const val LAST_DATETIME_KEY = "FavoritesNotifier.service.lastdatetime"
 
@@ -111,23 +112,34 @@ class FavoritesNotifier(context: Context?) : NotifierBase(context) {
 
         private const val REQUEST_CODE_START = 839264722
         private fun getAlarmPendingIntent(context: Context, flag: Int): PendingIntent {
-            val downloader = Intent(context, FavoritesAlarmReceiver::class.java)
-            return PendingIntent.getBroadcast(context, REQUEST_CODE_START, downloader, flag)
+            val receiverIntent = Intent(context, FavoritesAlarmReceiver::class.java)
+                    .apply {
+                        action = "FAVORITES_ALARM"
+                    }
+            return PendingIntent.getBroadcast(context, REQUEST_CODE_START, receiverIntent, flag)
         }
 
-        private fun restartTaskStatic(context: Context) {
+        private fun restartTaskStatic(context: Context, useTimeOut: Boolean) {
             val timeOut = loadTimeOut(context, TIME_OUT_KEY)
-            Log.i(LOG_TAG, "checkFavorites.TimeOut: $timeOut")
+            Log.i(TAG, "checkFavorites.TimeOut: $timeOut")
             val pendingIntent = getAlarmPendingIntent(context, PendingIntent.FLAG_CANCEL_CURRENT)
             val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager?
-            alarm?.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), (timeOut * 60000).toLong(), pendingIntent)
+
+            alarm?.cancel(pendingIntent)
+            val wakeUpTime = SystemClock.elapsedRealtime() + if (useTimeOut) (timeOut * 60000).toLong() else 0L
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                alarm?.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, wakeUpTime, pendingIntent)
+            } else {
+                alarm?.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, wakeUpTime, pendingIntent)
+            }
         }
 
         @JvmStatic
-        fun restartTask(context: Context, intent: Intent) {
-            MainService.readCookiesPath(context, intent)
+        fun restartTask(context: Context, cookesPath: String, timeOut: Float) {
+            saveCookiesPath(context, cookesPath)
             val notifier = FavoritesNotifier(context)
-            notifier.readSettings(context, intent)
+            notifier.saveTimeout(context, timeOut)
             notifier.restartTask(context)
         }
 

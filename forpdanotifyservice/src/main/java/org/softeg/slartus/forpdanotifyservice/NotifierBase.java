@@ -44,13 +44,18 @@ public abstract class NotifierBase {
         return mContext;
     }
 
-    public abstract void readSettings(Context context, Intent intent);
-
     public abstract void restartTask(Context context);
 
     public abstract void cancel(Context context);
 
     public abstract void checkUpdates();
+
+    public static void saveCookiesPath(Context context, String cookiesPath) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("CookiesPath", cookiesPath);
+        editor.apply();
+    }
 
     protected String loadCookiesPath() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());

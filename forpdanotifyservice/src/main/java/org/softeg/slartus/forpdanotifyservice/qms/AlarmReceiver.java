@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,17 +20,16 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        Log.i(DEBUG_TAG, DEBUG_TAG + ".onReceive");
-        // start the download
-
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                QmsNotifier checker = new QmsNotifier(context);
-                checker.checkUpdates();
-            }
-        });
-        thread.start();
-
+        if("QMS_ALARM".equals(intent.getAction())) {
+            Log.i(DEBUG_TAG, DEBUG_TAG + ".onReceive");
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    QmsNotifier checker = new QmsNotifier(context);
+                    checker.checkUpdates();
+                }
+            });
+            thread.start();
+        }
     }
 }

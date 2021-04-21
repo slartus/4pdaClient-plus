@@ -248,8 +248,18 @@
 
         <service android:name="org.softeg.slartus.forpdanotifyservice.MainService" />
 
-        <receiver android:name="org.softeg.slartus.forpdanotifyservice.qms.AlarmReceiver" />
-        <receiver android:name="org.softeg.slartus.forpdanotifyservice.favorites.FavoritesAlarmReceiver" />
+        <receiver android:name="org.softeg.slartus.forpdanotifyservice.qms.AlarmReceiver"
+            android:exported="false" android:enabled="true">
+            <intent-filter>
+                <action android:name="QMS_ALARM" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="org.softeg.slartus.forpdanotifyservice.favorites.FavoritesAlarmReceiver"
+            android:exported="false" android:enabled="true" >
+            <intent-filter>
+                <action android:name="FAVORITES_ALARM" />
+            </intent-filter>
+        </receiver>
 
 
         <meta-data

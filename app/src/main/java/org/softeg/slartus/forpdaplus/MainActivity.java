@@ -44,6 +44,7 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
+import org.softeg.slartus.forpdanotifyservice.BackgroundServiceUtils;
 import org.softeg.slartus.forpdaplus.activity.NewYear;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
@@ -169,7 +170,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     public void onCreate(Bundle saveInstance) {
         setTheme(AppTheme.getThemeStyleResID());
         super.onCreate(saveInstance);
-
+        //BackgroundServiceUtils.requestBackgroundPermission(this);
         loadPreferences(App.getInstance().getPreferences());
         if (shortUserInfo != null)
             shortUserInfo.setMActivity(new WeakReference<>(this));

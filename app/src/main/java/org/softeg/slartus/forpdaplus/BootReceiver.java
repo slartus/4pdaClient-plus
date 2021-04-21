@@ -13,6 +13,8 @@ import android.content.Intent;
  */
 public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
-        App.resStartNotifierServices();
+        if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
+            App.resStartNotifierServices();
+        }
     }
 }

@@ -14,13 +14,10 @@ import org.softeg.slartus.forpdaapi.qms.QmsUserThemes;
 import org.softeg.slartus.forpdaapi.qms.QmsUsers;
 import org.softeg.slartus.forpdacommon.ExtDateFormat;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
-import org.softeg.slartus.forpdanotifyservice.BuildConfig;
-import org.softeg.slartus.forpdanotifyservice.MainService;
 import org.softeg.slartus.forpdanotifyservice.NotifierBase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -48,10 +45,12 @@ public class QmsNotifier extends NotifierBase {
     }
 
 
-    public static void restartTask(final Context context, Intent intent) {
-        MainService.readCookiesPath(context, intent);
+    public static void restartTask(final Context context,
+                                   String cookiesPath,
+                                   float timeout) {
+        saveCookiesPath(context, cookiesPath);
         QmsNotifier qmsNotifier = new QmsNotifier(context);
-        qmsNotifier.readSettings(context, intent);
+        qmsNotifier.saveTimeOut(context, timeout);
         qmsNotifier.restartTask(context);
     }
 
@@ -94,7 +93,7 @@ public class QmsNotifier extends NotifierBase {
         } catch (Throwable throwable) {
             Log.e(TAG, throwable.toString());
         } finally {
-            restartTaskStatic(getContext());
+            restartTaskStatic(getContext(), true);
         }
     }
 
@@ -216,29 +215,21 @@ public class QmsNotifier extends NotifierBase {
         saveLastDate(calendar, LAST_DATETIME_KEY);
     }
 
-    @Override
-    public void readSettings(Context context, Intent intent) {
-        if (intent != null && intent.getExtras() != null) {
-            float timeOut = intent.getExtras().getFloat(QmsNotifier.TIME_OUT_KEY, 5);
-
-            // Log.d(LOG_TAG, "timeOutExtras " + timeOut);
-            saveTimeOut(context, timeOut, TIME_OUT_KEY);
-
-            float adaptiveTimeOut = intent.getExtras().getFloat(ADAPTIVE_TIME_OUT_KEY, timeOut);
-            saveTimeOut(context, adaptiveTimeOut, ADAPTIVE_TIME_OUT_KEY);
-        }
+    public void saveTimeOut(Context context, float timeOut) {
+        saveTimeOut(context, timeOut, TIME_OUT_KEY);
     }
 
     private static final int REQUEST_CODE_START = 839264710;
 
     private static PendingIntent getAlarmPendingIntent(Context context) {
-        Intent downloader = new Intent(context, AlarmReceiver.class);
+        Intent receiverIntent = new Intent(context, AlarmReceiver.class);
+        receiverIntent.setAction("QMS_ALARM");
         return PendingIntent.getBroadcast(context,
-                REQUEST_CODE_START, downloader, PendingIntent.FLAG_CANCEL_CURRENT);
+                REQUEST_CODE_START, receiverIntent, PendingIntent.FLAG_CANCEL_CURRENT);
     }
 
 
-    private static void restartTaskStatic(Context context) {
+    private static void restartTaskStatic(Context context, boolean useTimeOut) {
         float timeOut = loadTimeOut(context, TIME_OUT_KEY);
         float adaptiveTimeOut = loadTimeOut(context, ADAPTIVE_TIME_OUT_KEY);
 
@@ -264,20 +255,19 @@ public class QmsNotifier extends NotifierBase {
         AlarmManager alarm = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarm != null) {
             alarm.cancel(pendingIntent);
-            long wakeUpTime = SystemClock.elapsedRealtime() + (long) (timeOut * 60000);
-            if (BuildConfig.DEBUG) {
-                Calendar calendar = GregorianCalendar.getInstance();
-                calendar.setTimeInMillis(wakeUpTime);
-                Log.d(TAG, "new wakeup time is: " + calendar.getTime().toString());
+            long wakeUpTime = SystemClock.elapsedRealtime() + (useTimeOut ? ((long) (timeOut * 60000)) : 0L);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                alarm.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, wakeUpTime, pendingIntent);
+            } else {
+                alarm.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, wakeUpTime, pendingIntent);
             }
-            alarm.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, wakeUpTime, pendingIntent);
         }
     }
 
 
     @Override
     public void restartTask(Context context) {
-        restartTaskStatic(context);
+        restartTaskStatic(context,false);
     }
 
     public static void cancelAlarm(Context context) {
@@ -297,7 +287,6 @@ public class QmsNotifier extends NotifierBase {
     }
 
     private static final int MY_NOTIFICATION_ID = 1;
-
 
 
     private static void sendNotify(Context context, ArrayList<QmsUser> mails, boolean hasUnreadMessage) {

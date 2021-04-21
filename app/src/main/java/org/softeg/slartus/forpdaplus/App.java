@@ -8,8 +8,10 @@ import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+
 import androidx.multidex.MultiDexApplication;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.view.View;
 
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
@@ -25,7 +27,6 @@ import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
-import org.softeg.slartus.forpdanotifyservice.MainService;
 import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
 import org.softeg.slartus.forpdaplus.acra.ACRAReportSenderFactory;
@@ -61,7 +62,7 @@ import static org.softeg.slartus.forpdaplus.prefs.PreferencesActivity.getPackage
                 ReportField.ANDROID_VERSION, ReportField.PHONE_MODEL, ReportField.AVAILABLE_MEM_SIZE, ReportField.SHARED_PREFERENCES,
                 ReportField.APPLICATION_LOG, ReportField.STACK_TRACE, ReportField.LOGCAT},
         resNotifTitle = R.string.crash_dialog_title,
-        resNotifText =  R.string.crash_dialog_text,
+        resNotifText = R.string.crash_dialog_text,
         resNotifIcon = R.drawable.notify_icon,
         resToastText = R.string.crash_dialog_text,
         resDialogOkToast = R.string.crash_dialog_ok_toast,
@@ -242,6 +243,7 @@ public class App extends MultiDexApplication {
     }
 
     public static void resStartNotifierServices() {
+
         reStartQmsService();
         reStartFavoritesNotifierService();
     }
@@ -264,20 +266,13 @@ public class App extends MultiDexApplication {
     }
 
     private static void startQmsService(Boolean adaptive) {
-
         try {
             if (!QmsNotifier.isUse(getContext()))
                 return;
-            Intent intent = new Intent(INSTANCE, MainService.class);
-            intent.putExtra("CookiesPath", PreferencesActivity.getCookieFilePath());
             float timeout = Math.max(ExtPreferences.parseFloat(App.getInstance().getPreferences(),
                     QmsNotifier.TIME_OUT_KEY, 5), 1);
-            intent.putExtra(QmsNotifier.TIME_OUT_KEY, timeout);
 
-            if (adaptive)
-                intent.putExtra(QmsNotifier.ADAPTIVE_TIME_OUT_KEY, 1.0f);
-
-            QmsNotifier.restartTask(INSTANCE, intent);
+            QmsNotifier.restartTask(INSTANCE, PreferencesActivity.getCookieFilePath(), timeout);
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -303,7 +298,7 @@ public class App extends MultiDexApplication {
                     public InputStream getStream(String imageUri, Object extra) throws IOException {
                         if (imageUri.startsWith("//"))
                             imageUri = "https:".concat(imageUri);
-                        return  super.getStream(imageUri, extra);
+                        return super.getStream(imageUri, extra);
                     }
 
                     @Override
@@ -339,13 +334,10 @@ public class App extends MultiDexApplication {
     private static void startFavoritesNotifierService() {
         try {
             if (!FavoritesNotifier.isUse(getContext())) return;
+            float timeout = Math.max(ExtPreferences.parseFloat(App.getInstance().getPreferences(),
+                    FavoritesNotifier.TIME_OUT_KEY, 5), 1);
 
-            Intent intent = new Intent(INSTANCE, MainService.class);
-            intent.putExtra("CookiesPath", PreferencesActivity.getCookieFilePath());
-            intent.putExtra(FavoritesNotifier.TIME_OUT_KEY, Math.max(ExtPreferences.parseFloat(App.getInstance().getPreferences(),
-                    FavoritesNotifier.TIME_OUT_KEY, 5), 1));
-
-            FavoritesNotifier.restartTask(INSTANCE, intent);
+            FavoritesNotifier.restartTask(INSTANCE, PreferencesActivity.getCookieFilePath(), timeout);
         } catch (Throwable e) {
             e.printStackTrace();
         }
