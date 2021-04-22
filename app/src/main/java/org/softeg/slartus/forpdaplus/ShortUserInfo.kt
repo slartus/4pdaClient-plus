@@ -96,7 +96,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
         }
         openLink.setOnClickListener {
             var url: String?
-            url = StringUtils.fromClipboard(getContext())
+            url = StringUtils.fromClipboard(App.getContext())
             if (url == null) url = ""
 
             MaterialDialog.Builder(getContext()!!)
