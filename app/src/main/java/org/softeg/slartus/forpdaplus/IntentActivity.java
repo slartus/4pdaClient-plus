@@ -56,6 +56,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.repositories.TabsRepository;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -292,10 +293,10 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             return false;
         if ("profile-xhr".equals(uri.getQueryParameter("act"))) {
             if ("device".equals(uri.getQueryParameter("action")))
-                new DeviceEdit(context, uri.toString(), !TextUtils.isEmpty(uri.getQueryParameter("md_id")), App.getInstance().getCurrentFragmentTag());
+                new DeviceEdit(context, uri.toString(), !TextUtils.isEmpty(uri.getQueryParameter("md_id")), TabsRepository.getInstance().getCurrentFragmentTag());
 
             if ("dev-del".equals(uri.getQueryParameter("action")))
-                new DeviceDelete(context, uri.toString(), App.getInstance().getCurrentFragmentTag());
+                new DeviceDelete(context, uri.toString(), TabsRepository.getInstance().getCurrentFragmentTag());
             return true;
         }
 
@@ -504,7 +505,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 TextUtils.isEmpty(uri.getQueryParameter("p")))
             return false;
 
-        EditPostFragment.Companion.editPost(context, uri.getQueryParameter("f"), uri.getQueryParameter("t"), uri.getQueryParameter("p"), authKey, App.getInstance().getCurrentFragmentTag());
+        EditPostFragment.Companion.editPost(context, uri.getQueryParameter("f"), uri.getQueryParameter("t"), uri.getQueryParameter("p"), authKey, TabsRepository.getInstance().getCurrentFragmentTag());
         return true;
     }
 

@@ -3,8 +3,10 @@ package org.softeg.slartus.forpdaplus.fragments.qms;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -30,6 +32,8 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
+import org.softeg.slartus.forpdaplus.repositories.TabsRepository;
+import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -137,17 +141,22 @@ public class QmsNewThreadFragment extends GeneralFragment {
             username.setText(m_Nick);
             username.setVisibility(View.GONE);
             setTitle(m_Nick + ":" + getString(R.string.qms_title_new_thread));
-            App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":" + getString(R.string.qms_title_new_thread));
+
+            TabsRepository.getInstance().setTabTitle(TabsRepository.getInstance().getTabByTag(getTag()),
+                    m_Nick + ":" + getString(R.string.qms_title_new_thread)).apply();
 
         } else if (!TextUtils.isEmpty(m_Id)) {
             setTitle(getString(R.string.qms_title_new_thread));
-            App.getInstance().getTabByTag(getTag()).setTitle(getString(R.string.qms_title_new_thread));
+            TabsRepository.getInstance().setTabTitle(TabsRepository.getInstance().getTabByTag(getTag()),
+                    getString(R.string.qms_title_new_thread)).apply();
+
             new GetUserTask(m_Id).execute();
         } else {
             setTitle(getString(R.string.qms_title_new_thread));
-            App.getInstance().getTabByTag(getTag()).setTitle(getString(R.string.qms_title_new_thread));
+            TabsRepository.getInstance().setTabTitle(TabsRepository.getInstance().getTabByTag(getTag()),
+                    getString(R.string.qms_title_new_thread)).apply();
         }
-        getMainActivity().notifyTabAdapter();
+
         return view;
     }
 
@@ -238,8 +247,10 @@ public class QmsNewThreadFragment extends GeneralFragment {
                 username.setText(m_Nick);
                 username.setVisibility(View.GONE);
                 setTitle(m_Nick + ":" + App.getContext().getString(R.string.qms_title_new_thread));
-                App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":" + App.getContext().getString(R.string.qms_title_new_thread));
-                getMainActivity().notifyTabAdapter();
+
+                TabsRepository.getInstance()
+                        .setTabTitle(TabsRepository.getInstance().getTabByTag(getTag()),
+                                m_Nick + ":" + App.getContext().getString(R.string.qms_title_new_thread)).apply();
             } else {
                 username.setVisibility(View.VISIBLE);
                 if (ex != null)

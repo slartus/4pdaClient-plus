@@ -44,6 +44,9 @@ import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
+import org.softeg.slartus.forpdaplus.repositories.TabItemUtilsKt;
+import org.softeg.slartus.forpdaplus.repositories.TabsRepository;
+import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
 import java.util.ArrayList;
 
@@ -53,6 +56,7 @@ import java.util.ArrayList;
 public abstract class WebViewFragment extends GeneralFragment implements IWebViewContainer {
 
     private static final String TAG = WebViewFragment.class.getSimpleName();
+
     public abstract AdvWebView getWebView();
 
     public abstract WebViewClient getWebViewClient();
@@ -101,9 +105,9 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     }
 
     public void showBody() throws Exception {
-        Log.d(TAG,"showBody");
-        getThisTab().setTitle(getTitle()).setUrl(getUrl());
-        getMainActivity().notifyTabAdapter();
+        Log.d(TAG, "showBody");
+        TabItem item = getThisTab();
+        TabItemUtilsKt.setTabTitle(getThisTab(), getTitle()).setTabUrl(item, getUrl()).apply();
     }
 
     @Override
@@ -154,7 +158,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
 
     @Override
     public void onResume() {
-        Log.d(TAG,"onResume");
+        Log.d(TAG, "onResume");
         super.onResume();
         if (getWebView() != null) {
             getWebView().onResume();
@@ -165,7 +169,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
 
     @Override
     public void onPause() {
-        Log.d(TAG,"onPause");
+        Log.d(TAG, "onPause");
         super.onPause();
         if (getWebView() != null) {
             new Handler().postDelayed(() -> {
@@ -179,7 +183,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
 
     @Override
     public void onStop() {
-        Log.d(TAG,"onStop");
+        Log.d(TAG, "onStop");
         super.onStop();
         if (getWebView() != null) {
             getWebView().setWebViewClient(null);
@@ -189,7 +193,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
 
     @Override
     public void onDestroy() {
-        Log.d(TAG,"onDestroy");
+        Log.d(TAG, "onDestroy");
         if (getWebView() != null) {
             getWebView().setWebViewClient(null);
             getWebView().removeAllViews();
@@ -268,7 +272,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
     }
 
     public void onPrepareOptionsMenu() {
-        Log.d(TAG,"onPrepareOptionsMenu");
+        Log.d(TAG, "onPrepareOptionsMenu");
         getWebViewExternals().onPrepareOptionsMenu();
     }
 
@@ -278,7 +282,7 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        Log.d(TAG,"dispatchKeyEvent");
+        Log.d(TAG, "dispatchKeyEvent");
         return getWebViewExternals().dispatchKeyEvent(event);
     }
 
@@ -399,13 +403,13 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
 
     @Override
     public boolean dispatchSuperKeyEvent(KeyEvent event) {
-        Log.d(TAG,"dispatchSuperKeyEvent");
+        Log.d(TAG, "dispatchSuperKeyEvent");
         return false;
     }
 
     @Override
     public Window getWindow() {
-        Log.d(TAG,"getWindow");
+        Log.d(TAG, "getWindow");
         return getMainActivity().getWindow();
     }
 

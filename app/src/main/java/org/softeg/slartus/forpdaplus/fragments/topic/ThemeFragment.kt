@@ -78,6 +78,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo
 import org.softeg.slartus.forpdaplus.notes.NoteDialog
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.repositories.InternetConnection
+import org.softeg.slartus.forpdaplus.repositories.TabsRepository
 import org.softeg.slartus.forpdaplus.utils.Utils
 import ru.slartus.http.AppResponse
 import ru.slartus.http.Http.Companion.instance
@@ -935,9 +936,9 @@ class ThemeFragment : WebViewFragment(), IBricksListDialogCaller, PostSendListen
                     withContext(Dispatchers.Main) {
                         if (isAdded) {
                             setLoading(false)
-                            val item = App.getInstance().getTabByTag(tag)
+                            val item = TabsRepository.instance.getTabByTag(tag)
                             if (item != null) {
-                                val tabItem = App.getInstance().getTabByTag(item.parentTag)
+                                val tabItem = TabsRepository.instance.getTabByTag(item.parentTag)
                                 if (tabItem != null && !tabItem.tag.contains("tag")) {
                                     val fragment = mainActivity.supportFragmentManager.findFragmentByTag(item.parentTag)
                                     if (fragment is TopicsListFragment && topic != null && topic!!.id != null) fragment.topicAfterClick(topic!!.id)
@@ -1380,9 +1381,9 @@ class ThemeFragment : WebViewFragment(), IBricksListDialogCaller, PostSendListen
             val themeFragment = themeFragmentRef.get()
             if (themeFragment != null && themeFragment.isAdded) {
                 themeFragment.setLoading(false)
-                val item = App.getInstance().getTabByTag(themeFragment.tag)
+                val item = TabsRepository.instance.getTabByTag(themeFragment.tag)
                 if (item != null) {
-                    val tabItem = App.getInstance().getTabByTag(item.parentTag)
+                    val tabItem = TabsRepository.instance.getTabByTag(item.parentTag)
                     if (tabItem != null && !tabItem.tag.contains("tag")) {
                         val fragment = themeFragment.mainActivity.supportFragmentManager.findFragmentByTag(item.parentTag)
                         if (fragment is TopicsListFragment && themeFragment.topic != null && themeFragment.topic!!.id != null) fragment.topicAfterClick(themeFragment.topic!!.id)

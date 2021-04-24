@@ -20,6 +20,7 @@ import org.softeg.slartus.forpdaplus.classes.AdvWebView;
 import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.repositories.TabsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +81,7 @@ public class PostPreviewFragment extends WebViewFragment {
         return fragment;
     }
     public static void showSpecial(String body, String tag) {
-        MainActivity.addTab(App.getContext().getString(R.string.preview)+" " + App.getInstance().getTabByTag(tag).getTitle(), "preview_" + tag, newInstance(body, tag));
+        MainActivity.addTab(App.getContext().getString(R.string.preview)+" " + TabsRepository.getInstance().getTabByTag(tag).getTitle(), "preview_" + tag, newInstance(body, tag));
     }
     public void load(String body){
         builder = new HtmlBuilder();
@@ -100,8 +101,8 @@ public class PostPreviewFragment extends WebViewFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.post_preview_layout, container, false);
-        title = App.getInstance().getTabByTag(getTag()).getTitle();
-        url = App.getInstance().getTabByTag(getTag()).getUrl();
+        title = TabsRepository.getInstance().getTabByTag(getTag()).getTitle();
+        url = TabsRepository.getInstance().getTabByTag(getTag()).getUrl();
         initBBCodes();
         webView = (AdvWebView) findViewById(R.id.webView);
         registerForContextMenu(webView);

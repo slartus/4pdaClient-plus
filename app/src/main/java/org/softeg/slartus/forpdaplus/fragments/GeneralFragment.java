@@ -20,6 +20,7 @@ import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
+import org.softeg.slartus.forpdaplus.repositories.TabsRepository;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -121,7 +122,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
 
     public TabItem getThisTab() throws Exception {
         if (thisTab == null)
-            thisTab = App.getInstance().getTabByTag(getTag());
+            thisTab = TabsRepository.getInstance().getTabByTag(getTag());
         if (thisTab == null)
             throw new Exception("TabItem by " + getTag() + " not found");
         return thisTab;
@@ -151,11 +152,15 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
             generalParentTag = savedInstanceState.getString("generalParentTag", generalParentTag);
 
             try {
-                getThisTab().setTitle(generalTitle).setUrl(getGeneralUrl()).setParentTag(generalParentTag);
+                TabItem tabItem = getThisTab();
+                TabsRepository.getInstance()
+                        .setTabTitle(tabItem, generalTitle)
+                        .setTabUrl(tabItem, getGeneralUrl())
+                        .setParentTag(tabItem, generalParentTag)
+                        .apply();
             } catch (Exception e) {
                 AppLog.e(getContext(), e);
             }
-            getMainActivity().notifyTabAdapter();
             activityCreated = true;
         }
     }
@@ -209,10 +214,6 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
             getMainActivity().setTitle(generalTitle);
         if (getSupportActionBar() != null)
             getSupportActionBar().setSubtitle(generalSubtitle);
-
-        if (activityCreated) {
-            getMainActivity().notifyTabAdapter();
-        }
     }
 
     @Override

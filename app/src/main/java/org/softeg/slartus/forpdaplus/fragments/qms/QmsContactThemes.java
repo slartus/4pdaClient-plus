@@ -39,7 +39,9 @@ import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
 import org.softeg.slartus.forpdaplus.listfragments.BaseLoaderListFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.repositories.TabsRepository;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
+import org.softeg.slartus.forpdaplus.tabs.TabItem;
 
 import java.util.ArrayList;
 
@@ -145,8 +147,8 @@ public class QmsContactThemes extends BaseLoaderListFragment {
                 m_Nick = userNick;
                 Toast.makeText(App.getContext(), App.getContext().getString(R.string.nick_received) + ": " + m_Nick, Toast.LENGTH_SHORT).show();
                 setTitle(m_Nick);
-                App.getInstance().getTabByTag(getTag()).setTitle(m_Nick);
-                getMainActivity().notifyTabAdapter();
+                TabItem tabItem=TabsRepository.getInstance().getTabByTag(getTag());
+                TabsRepository.getInstance().setTabTitle(tabItem, m_Nick).apply();
             } else {
                 if (ex != null)
                     AppLog.e(getMainActivity(), ex, () -> new GetUserTask(userId).execute());

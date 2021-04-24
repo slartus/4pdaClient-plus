@@ -67,7 +67,6 @@ public class DevDbModelsFragment extends BaseTaskListFragment {
         setArrow();
         if (!TextUtils.isEmpty(m_BrandTitle))
             setTitle(m_BrandTitle.replaceAll(" \\(\\d*\\)", ""));
-        getMainActivity().notifyTabAdapter();
     }
 
     @Override
