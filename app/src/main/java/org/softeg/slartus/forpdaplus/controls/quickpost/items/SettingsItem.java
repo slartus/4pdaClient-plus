@@ -21,7 +21,6 @@ public class SettingsItem extends QuickPostItem {
     }
 
 
-
     @Override
     public BaseQuickView createView(Context context) {
         view = new SettingsQuickView(context);

@@ -111,23 +111,6 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         return mainActivity;
     }
 
-    private TabItem thisTab;
-
-    public void setThisTab(TabItem thisTab) {
-        this.thisTab = thisTab;
-        generalTitle = thisTab.getTitle();
-        generalSubtitle = thisTab.getSubTitle();
-        generalParentTag = thisTab.getParentTag();
-    }
-
-    public TabItem getThisTab() throws Exception {
-        if (thisTab == null)
-            thisTab = TabsRepository.getInstance().getTabByTag(getTag());
-        if (thisTab == null)
-            throw new Exception("TabItem by " + getTag() + " not found");
-        return thisTab;
-    }
-
     public static SharedPreferences getPreferences() {
         return App.getInstance().getPreferences();
     }
@@ -150,17 +133,6 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
             generalTitle = savedInstanceState.getString("generalTitle", generalTitle);
             generalUrl = savedInstanceState.getString("generalUrl", generalUrl);
             generalParentTag = savedInstanceState.getString("generalParentTag", generalParentTag);
-
-            try {
-                TabItem tabItem = getThisTab();
-                TabsRepository.getInstance()
-                        .setTabTitle(tabItem, generalTitle)
-                        .setTabUrl(tabItem, getGeneralUrl())
-                        .setParentTag(tabItem, generalParentTag)
-                        .apply();
-            } catch (Exception e) {
-                AppLog.e(getContext(), e);
-            }
             activityCreated = true;
         }
     }
@@ -169,17 +141,6 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
     public void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.i(TAG, "onSaveInstanceState");
-        try {
-            TabItem tab = getThisTab();
-            Log.i(TAG, tab.getTitle());
-            outState.putString("generalTitle", tab.getTitle());
-            outState.putString("generalUrl", tab.getUrl());
-            outState.putString("generalParentTag", tab.getParentTag());
-
-        } catch (Exception e) {
-            AppLog.e(getContext(), e);
-        }
-
     }
 
     @Override
@@ -232,11 +193,6 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
         compositeDisposable.dispose();
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        System.gc();
-    }
 
 
     @Override

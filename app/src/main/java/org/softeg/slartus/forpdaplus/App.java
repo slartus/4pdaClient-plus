@@ -12,6 +12,9 @@ import androidx.multidex.MultiDexApplication;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.View;
 
+import com.github.terrakok.cicerone.BaseRouter;
+import com.github.terrakok.cicerone.Cicerone;
+import com.github.terrakok.cicerone.NavigatorHolder;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -71,12 +74,21 @@ import static org.softeg.slartus.forpdaplus.prefs.PreferencesActivity.getPackage
 //optional. default is a warning sign
 public class App extends MultiDexApplication {
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final Cicerone cicerone = Cicerone.create();
+    public BaseRouter getRouter()
+    {
+        return cicerone.getRouter();
+    }
 
+    public NavigatorHolder getNavigatorHolder()
+    {
+        return cicerone.getNavigatorHolder();
+    }
 
     private Locale locale;
     private String lang;
 
-
+    public ScreensController screensController = new ScreensController();
     private int tabIterator = 0;
 
     public int getTabIterator() {

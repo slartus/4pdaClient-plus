@@ -99,11 +99,11 @@ public class ForumRulesFragment extends WebViewFragment {
     }
 
     public static void showRules() {
-        MainActivity.addTab(App.getContext().getString(R.string.forum_rules), "RULES", new ForumRulesFragment());
+        App.getInstance().screensController.addTab(App.getContext().getString(R.string.forum_rules), "RULES", new ForumRulesFragment());
     }
 
     public static void showRules(String url) {
-        MainActivity.addTab(App.getContext().getString(R.string.forum_rules), url, newInstance(url));
+        App.getInstance().screensController.addTab(App.getContext().getString(R.string.forum_rules), url, newInstance(url));
     }
 
     @Override

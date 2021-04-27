@@ -1448,19 +1448,19 @@ class ThemeFragment : WebViewFragment(), IBricksListDialogCaller, PostSendListen
         @JvmStatic
         fun showTopicById(topicId: CharSequence?, urlParams: CharSequence) {
             val url = getThemeUrl(topicId, urlParams)
-            MainActivity.addTab(Utils.getS(R.string.theme), url, newInstance(url))
+            App.getInstance().screensController.addTab(Utils.getS(R.string.theme), url, newInstance(url))
         }
 
         @JvmStatic
         fun showTopicById(title: CharSequence, topicId: CharSequence?, urlParams: CharSequence) {
             val url = getThemeUrl(topicId, urlParams)
-            MainActivity.addTab(title.toString(), url, newInstance(url))
+            App.getInstance().screensController.addTab(title.toString(), url, newInstance(url))
         }
 
         @JvmStatic
         fun showTopicById(topicId: CharSequence) {
             val url = getThemeUrl(topicId)
-            MainActivity.addTab(Utils.getS(R.string.theme), url, newInstance(url))
+            App.getInstance().screensController.addTab(Utils.getS(R.string.theme), url, newInstance(url))
         }
 
         @JvmStatic

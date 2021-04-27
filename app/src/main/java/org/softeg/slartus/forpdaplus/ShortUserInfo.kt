@@ -91,7 +91,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
         profileGroup = findViewById(R.id.profile_info_group) as Group
         profileGroup.setAllOnClickListener {
             val brickInfo = QmsContactsBrickInfo()
-            MainActivity.addTab(brickInfo.title, brickInfo.name, brickInfo.createFragment())
+            App.getInstance().screensController.addTab(brickInfo.title, brickInfo.name, brickInfo.createFragment())
             //ListFragmentActivity.showListFragment(getContext(), QmsContactsBrickInfo.NAME, null);
         }
         openLink.setOnClickListener {

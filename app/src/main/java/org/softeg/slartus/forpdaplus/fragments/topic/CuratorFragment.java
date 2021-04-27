@@ -99,7 +99,7 @@ public class CuratorFragment extends WebViewFragment {
     }
 
     public static void showSpecial(String url, String topicId) {
-        MainActivity.addTab(App.getContext().getString(R.string.multi_moderation), url, newInstance(url, topicId));
+        App.getInstance().screensController.addTab(App.getContext().getString(R.string.multi_moderation), url, newInstance(url, topicId));
     }
 
     @Nullable

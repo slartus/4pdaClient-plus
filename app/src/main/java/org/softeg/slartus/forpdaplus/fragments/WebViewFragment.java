@@ -106,8 +106,8 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
 
     public void showBody() throws Exception {
         Log.d(TAG, "showBody");
-        TabItem item = getThisTab();
-        TabItemUtilsKt.setTabTitle(getThisTab(), getTitle()).setTabUrl(item, getUrl()).apply();
+//        TabItem item = getThisTab();
+//        TabItemUtilsKt.setTabTitle(getThisTab(), getTitle()).setTabUrl(item, getUrl()).apply();
     }
 
     @Override

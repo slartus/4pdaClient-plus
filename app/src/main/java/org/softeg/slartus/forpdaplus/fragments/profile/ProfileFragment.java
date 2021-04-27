@@ -136,7 +136,7 @@ public class ProfileFragment extends WebViewFragment implements LoaderManager.Lo
     }
 
     public static void showProfile(String userId, String userNick) {
-        MainActivity.addTab(userNick, "https://4pda.ru/forum/index.php?showuser=" + userId, newInstance(userId, userNick));
+        App.getInstance().screensController.addTab(userNick, "https://4pda.ru/forum/index.php?showuser=" + userId, newInstance(userId, userNick));
     }
 
     public static ProfileFragment newInstance(String userId, String userNick) {

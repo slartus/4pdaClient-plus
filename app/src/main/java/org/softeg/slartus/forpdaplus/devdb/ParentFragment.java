@@ -60,14 +60,14 @@ public class ParentFragment extends GeneralFragment {
         args.putString(DEVICE_ID_KEY, deviceId);
         args.putInt(POSITION_ID, 0);
         args.putString(TOOLBAR_TITLE, title);
-        MainActivity.addTab(title, deviceId + " more", newInstance(args));
+        App.getInstance().screensController.addTab(title, deviceId + " more", newInstance(args));
     }
     public static void showDevice(String deviceId) {
         Bundle args = new Bundle();
         args.putString(DEVICE_ID_KEY, deviceId);
         args.putInt(POSITION_ID, 0);
         args.putString(TOOLBAR_TITLE, "ForPDA");
-        MainActivity.addTab(deviceId + " more", newInstance(args));
+        App.getInstance().screensController.addTab(deviceId + " more", newInstance(args));
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

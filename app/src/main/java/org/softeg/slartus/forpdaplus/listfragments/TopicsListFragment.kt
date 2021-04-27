@@ -287,7 +287,7 @@ abstract class TopicsListFragment : BaseTaskListFragment() {
                     getString(R.string.default_action_notify)
             )
         } catch (ex: Throwable) {
-            AppLog.e(activity, ex)
+          AppLog.e(activity, ex)
         }
     }
 

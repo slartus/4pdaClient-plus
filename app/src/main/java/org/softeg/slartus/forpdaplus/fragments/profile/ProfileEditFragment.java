@@ -50,7 +50,7 @@ public class ProfileEditFragment extends WebViewFragment {
     private final static String url = "https://4pda.ru/forum/index.php?act=UserCP&CODE=01";
 
     public static void editProfile() {
-        MainActivity.addTab(m_Title, url, new ProfileEditFragment());
+        App.getInstance().screensController.addTab(m_Title, url, new ProfileEditFragment());
     }
 
 
@@ -183,7 +183,7 @@ public class ProfileEditFragment extends WebViewFragment {
             }
             Toast.makeText(getContext(), "Данные отправлены", Toast.LENGTH_SHORT).show();
             if (TabsRepository.getInstance().isContainsByTag(parentTag)) {
-                ((ProfileFragment) TabsRepository.getInstance().getTabByTag(parentTag).getFragment()).startLoadData();
+                ((ProfileFragment)getFragmentManager().findFragmentByTag(parentTag)).startLoadData();
             }
             getMainActivity().tryRemoveTab(getTag());
         }

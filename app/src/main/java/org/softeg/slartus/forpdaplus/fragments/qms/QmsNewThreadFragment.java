@@ -71,7 +71,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
         Bundle args = new Bundle();
         args.putString(USER_ID_KEY, userId);
         args.putString(USER_NICK_KEY, userNick);
-        MainActivity.addTab(userNick, newInstance(args));
+        App.getInstance().screensController.addTab(userNick, newInstance(args));
     }
 
     @Override

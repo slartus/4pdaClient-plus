@@ -1,24 +1,27 @@
 package org.softeg.slartus.forpdaplus.controls.quickpost.items;
 
+
+
 import android.content.Context;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatCheckBox;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
+
 import android.widget.LinearLayout;
 
-import org.softeg.slartus.forpdaplus.App;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.fragment.app.Fragment;
+
 import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.fragments.topic.editpost.EditPostFragment;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
+import org.softeg.slartus.forpdaplus.fragments.topic.editpost.EditPostFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.repositories.TabsRepository;
-import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 
 public class SettingsQuickView extends BaseQuickView {
@@ -61,47 +64,30 @@ public class SettingsQuickView extends BaseQuickView {
         enableSign = new AppCompatCheckBox(getContext());
         enableSign.setText(R.string.add_sign);
         enableSign.setChecked(Preferences.Topic.Post.getEnableSign());
-        enableSign.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                Preferences.Topic.Post.setEnableSign(b);
-            }
-        });
+        enableSign.setOnCheckedChangeListener((compoundButton, b) -> Preferences.Topic.Post.setEnableSign(b));
         enableSign.setLayoutParams(params);
         linearLayout.addView(enableSign);
 
         extendedFormButton = new AppCompatButton(getContext());
         extendedFormButton.setText(R.string.extended_form);
         extendedFormButton.setLayoutParams(params);
-        //extendedFormButton.setTextColor(getResources().getColor(R.color.black));
-        extendedFormButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (getTopicId() == null || getAuthKey() == null || getPostBody() == null) {
-                    return;
-                }
-
-                ((ThemeFragment) TabsRepository.getInstance().getTabByTag(TabsRepository.getInstance().getCurrentFragmentTag()).getFragment()).hideMessagePanel();
-                EditPostFragment.Companion.newPost((MainActivity) getContext(), getForumId() == null ? null : getForumId().toString(),
-                        getTopicId().toString(), getAuthKey().toString(),
-                        getPostBody().toString(), TabsRepository.getInstance().getCurrentFragmentTag());
-
+        extendedFormButton.setOnClickListener(view -> {
+            if (getTopicId() == null || getAuthKey() == null || getPostBody() == null) {
+                return;
             }
+
+            if (getContext() instanceof AppCompatActivity) {
+                Fragment fragment = ((AppCompatActivity) getContext()).getSupportFragmentManager()
+                        .findFragmentByTag(TabsRepository.getInstance().getCurrentFragmentTag());
+                ((ThemeFragment) fragment).hideMessagePanel();
+            }
+
+            EditPostFragment.Companion.newPost((MainActivity) getContext(), getForumId() == null ? null : getForumId().toString(),
+                    getTopicId().toString(), getAuthKey().toString(),
+                    getPostBody().toString(), TabsRepository.getInstance().getCurrentFragmentTag());
+
         });
         linearLayout.addView(extendedFormButton);
-
-
-        /*attachesButton = new Button(getContext());
-        attachesButton.setText("Прикреплённые файлы");
-        attachesButton.setLayoutParams(params);
-        attachesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //EditPostActivity.newPost((MainActivity) getContext(), getForumId().toString(), getTopicId().toString(), getAuthKey().toString(), getPostBody().toString());
-                EditPostFragment.newPost((MainActivity) getContext(), getForumId().toString(), getTopicId().toString(), getAuthKey().toString(), getPostBody().toString(), TabsRepository.getInstance().getCurrentFragmentTag());
-            }
-        });
-        linearLayout.addView(attachesButton);*/
 
         return linearLayout;
     }
@@ -110,7 +96,6 @@ public class SettingsQuickView extends BaseQuickView {
     CheckBox enableEmotics;
     CheckBox enableSign;
     Button extendedFormButton;
-    Button attachesButton;
 
 
     private CharSequence getPostBody() {

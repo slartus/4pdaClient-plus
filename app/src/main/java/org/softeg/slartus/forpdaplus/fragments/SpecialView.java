@@ -13,6 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import org.softeg.slartus.forpdacommon.PatternExtensions;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
@@ -85,7 +86,7 @@ public class SpecialView extends WebViewFragment {
 
     public static void showSpecial(String url) {
         m_Url = url.trim();
-        MainActivity.addTab(m_Title, m_Url, new SpecialView());
+        App.getInstance().screensController.addTab(m_Title, m_Url, new SpecialView());
 
     }
 

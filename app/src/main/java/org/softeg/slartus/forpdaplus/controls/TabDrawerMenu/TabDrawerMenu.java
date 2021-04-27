@@ -166,7 +166,7 @@ public class TabDrawerMenu {
         for (int i = 0; i <= TabsRepository.getInstance().size() - 1; i++) {
             if (TabsRepository.getInstance().getTabItems().get(i).getTag().equals(tag)) {
                 final TabItem tabItem = TabsRepository.getInstance().getTabByTag(tag);
-                tabItem.setFragment(null);
+
                 TabsRepository.getInstance().remove(tabItem);
 
                 if (TabsRepository.getInstance().getTabByTag(tabItem.getParentTag()) != null)

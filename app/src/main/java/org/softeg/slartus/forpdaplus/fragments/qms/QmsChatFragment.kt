@@ -750,11 +750,11 @@ class QmsChatFragment : WebViewFragment() {
         private const val FILECHOOSER_RESULTCODE = 1
         private const val DAYS_PART_COUNT = 7
         fun openChat(userId: String, userNick: String?, tid: String, themeTitle: String?, pageBody: String?) {
-            MainActivity.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle, pageBody))
+            App.getInstance().screensController.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle, pageBody))
         }
 
         fun openChat(userId: String, userNick: String?, tid: String, themeTitle: String?) {
-            MainActivity.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle))
+            App.getInstance().screensController.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle))
         }
 
         fun newInstance(userId: String, userNick: String?, tid: String, themeTitle: String?, pageBody: String?): QmsChatFragment {

@@ -139,7 +139,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
     public static Boolean tryShowNews(String url) {
         if (isNews(url)) {
-            MainActivity.addTab(url, NewsFragment.newInstance(url));
+            App.getInstance().screensController.addTab(url, NewsFragment.newInstance(url));
             return true;
         }
         return false;
@@ -452,7 +452,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
     public static void showTopic(String url) {
-        MainActivity.addTab(url, ThemeFragment.newInstance(url));
+        App.getInstance().screensController.addTab(url, ThemeFragment.newInstance(url));
     }
 
     private static boolean tryFavorites(String url) {
@@ -547,7 +547,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         } else {
             //ListFragmentActivity.showListFragment(context, QmsContactsBrickInfo.NAME, null);
             QmsContactsBrickInfo brickInfo = new QmsContactsBrickInfo();
-            MainActivity.addTab(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
+            App.getInstance().screensController.addTab(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
         }
         return true;
     }

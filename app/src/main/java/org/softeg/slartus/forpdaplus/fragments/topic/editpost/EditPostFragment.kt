@@ -337,10 +337,12 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             }
             R.id.preview_item -> {
                 val tabItem = TabsRepository.instance.getTabByUrl("preview_" + tag!!)
+
                 if (tabItem == null) {
                     PostPreviewFragment.showSpecial(postText, tag)
                 } else {
-                    (tabItem.fragment as PostPreviewFragment).load(postText)
+                    val fragment = fragmentManager?.findFragmentByTag(tabItem.tag) as PostPreviewFragment?
+                    fragment?.load(postText)
                     mainActivity.selectTab(tabItem)
                     mainActivity.hidePopupWindows()
                 }
@@ -555,7 +557,8 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
     override fun onAcceptEditTaskSuccess(editPost: EditPost?) {
         if (TabsRepository.instance.isContainsByTag(parentTag)) {
-            (TabsRepository.instance.getTabByTag(parentTag)?.fragment as ThemeFragment?)
+            val themeFragment = fragmentManager?.findFragmentByTag(parentTag) as ThemeFragment?
+            themeFragment
                     ?.showTheme(ThemeFragment.getThemeUrl(editPost?.topicId, "view=findpost&p=${editPost?.id}"), true)
         }
         mainActivity.tryRemoveTab(tag)
@@ -568,9 +571,9 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             return
         }
         if (TabsRepository.instance.isContainsByTag(parentTag)) {
-            (TabsRepository.instance.getTabByTag(parentTag)!!.fragment as ThemeFragment)
-                    .showTheme(String.format("https://4pda.ru/forum/index.php?showtopic=%s&%s", editPost?.topicId,
-                            if (isNewPost) "view=getlastpost" else ("view=findpost&p=" + editPost?.id)), true)
+            val themeFragment = fragmentManager?.findFragmentByTag(parentTag) as ThemeFragment?
+            themeFragment?.showTheme(String.format("https://4pda.ru/forum/index.php?showtopic=%s&%s", editPost?.topicId,
+                    if (isNewPost) "view=getlastpost" else ("view=findpost&p=" + editPost?.id)), true)
         }
         mainActivity.tryRemoveTab(tag)
     }
@@ -803,7 +806,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             args.putString("postId", postId)
             args.putString("authKey", authKey)
             args.putString("parentTag", tag)
-            MainActivity.addTab(context.getString(R.string.edit_post_combined) + context.getString(R.string.combined_in) + TabsRepository.instance.getTabByTag(tag)!!.title, url, newInstance(args))
+            App.getInstance().screensController.addTab(context.getString(R.string.edit_post_combined) + context.getString(R.string.combined_in) + TabsRepository.instance.getTabByTag(tag)!!.title, url, newInstance(args))
         }
 
         fun newPost(context: Activity, forumId: String, topicId: String, authKey: String,
@@ -816,7 +819,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             args.putString("body", body)
             args.putString("authKey", authKey)
             args.putString("parentTag", tag)
-            MainActivity.addTab(context.getString(R.string.answer) + context.getString(R.string.combined_in) + TabsRepository.instance.getTabByTag(tag)!!.title, url, newInstance(args))
+            App.getInstance().screensController.addTab(context.getString(R.string.answer) + context.getString(R.string.combined_in) + TabsRepository.instance.getTabByTag(tag)!!.title, url, newInstance(args))
         }
 
         fun newPostWithAttach(context: Context, forumId: String?, topicId: String, authKey: String,
@@ -828,7 +831,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             args.putString("postId", PostApi.NEW_POST_ID)
             args.putBundle("extras", extras)
             args.putString("authKey", authKey)
-            MainActivity.addTab(context.getString(R.string.edit_post_combined), url, newInstance(args))
+            App.getInstance().screensController.addTab(context.getString(R.string.edit_post_combined), url, newInstance(args))
         }
 
         private const val MY_INTENT_CLICK_I = 302
