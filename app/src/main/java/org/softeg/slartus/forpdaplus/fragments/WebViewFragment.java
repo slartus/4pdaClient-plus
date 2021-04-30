@@ -75,19 +75,24 @@ public abstract class WebViewFragment extends GeneralFragment implements IWebVie
 
     @Override
     public void onCreateContextMenu(@NotNull ContextMenu menu, @NotNull View view, ContextMenu.ContextMenuInfo menuInfo) {
-        switch (getWebView().getHitTestResult().getType()) {
-            case WebView.HitTestResult.UNKNOWN_TYPE:
-            case WebView.HitTestResult.EDIT_TEXT_TYPE:
-                break;
-            case WebView.HitTestResult.IMAGE_TYPE:
-                ExtUrl.showImageSelectActionDialog(mHandler, getContext(), getWebView().getHitTestResult().getExtra());
-            default: {
-                Handler handler = new Handler();
-                Message message = handler.obtainMessage();
-                getWebView().requestFocusNodeHref(message);
-                String url = message.getData().get("url").toString();
-                showLinkMenu(url);
+        try {
+            switch (getWebView().getHitTestResult().getType()) {
+                case WebView.HitTestResult.UNKNOWN_TYPE:
+                case WebView.HitTestResult.EDIT_TEXT_TYPE:
+                    break;
+                case WebView.HitTestResult.IMAGE_TYPE:
+                    ExtUrl.showImageSelectActionDialog(mHandler, getContext(), getWebView().getHitTestResult().getExtra());
+                    break;
+                default: {
+                    Handler handler = new Handler();
+                    Message message = handler.obtainMessage();
+                    getWebView().requestFocusNodeHref(message);
+                    String url = message.getData().get("url").toString();
+                    showLinkMenu(url);
+                }
             }
+        } catch (Throwable ex) {
+            AppLog.e(ex);
         }
     }
 

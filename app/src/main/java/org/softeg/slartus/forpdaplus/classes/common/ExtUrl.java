@@ -15,6 +15,7 @@ import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.MenuListDialog;
+import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
 import org.softeg.slartus.forpdaplus.download.DownloadsService;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
@@ -206,28 +207,42 @@ public class ExtUrl {
 
 
     public static void showImageSelectActionDialog(final android.os.Handler handler, final Context context, final String url) {
-        CharSequence[] titles = new CharSequence[]{context.getString(R.string.open), context.getString(R.string.open_in), context.getString(R.string.copy_link), context.getString(R.string.save)};
-        new MaterialDialog.Builder(context)
-                .content(url)
-                .items(titles)
-                .itemsCallback((dialog, view, i, titles1) -> {
-                    switch (i) {
-                        case 0:
+        try {
+            CharSequence[] titles = new CharSequence[]{context.getString(R.string.open), context.getString(R.string.open_in), context.getString(R.string.copy_link), context.getString(R.string.save)};
+            handler.post(() -> {
+                try {
+                    new MaterialDialog.Builder(context)
+                            .content(url)
+                            .items(titles)
+                            .itemsCallback((dialog, view, i, titles1) -> {
+                                switch (i) {
+                                    case 0:
 //                                ImageViewActivity.startActivity(context, url);
-                            ImgViewer.startActivity(context, url);
-                            break;
-                        case 1:
-                            showInBrowser(context, url);
-                            break;
-                        case 2:
-                            copyLinkToClipboard(context, url);
-                            break;
-                        case 3:
-                            DownloadsService.download((Activity) context, url, false);
-                            break;
-                    }
-                })
-                .cancelable(true)
-                .show();
+                                        ImgViewer.startActivity(context, url);
+                                        break;
+                                    case 1:
+                                        showInBrowser(context, url);
+                                        break;
+                                    case 2:
+                                        copyLinkToClipboard(context, url);
+                                        break;
+                                    case 3:
+                                        DownloadsService.download((Activity) context, url, false);
+                                        break;
+                                }
+                            })
+                            .cancelable(true)
+                            .show();
+                } catch (Throwable ex1) {
+                    AppLog.e(ex1);
+                }
+            });
+
+
+        } catch (Throwable ex) {
+            AppLog.e(ex);
+        }
+
+
     }
 }
