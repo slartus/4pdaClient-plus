@@ -33,6 +33,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.repositories.UserInfo
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository
+import org.softeg.slartus.hosthelper.HostHelper
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -67,7 +68,8 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
 
     private val isOnline: Boolean
         get() {
-            val cm = App.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val cm = App.getInstance()
+                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val netInfo = cm.activeNetworkInfo
             return (netInfo != null && netInfo.isConnectedOrConnecting
                     && cm.activeNetworkInfo.isAvailable
@@ -100,22 +102,32 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
             if (url == null) url = ""
 
             MaterialDialog.Builder(getContext()!!)
-                    .title(R.string.go_to_link)
-                    .input(App.getInstance().getString(R.string.insert_link), if (isPdaLink(url)) url else null) { _, _ ->
+                .title(R.string.go_to_link)
+                .input(
+                    App.getInstance().getString(R.string.insert_link),
+                    if (isPdaLink(url)) url else null
+                ) { _, _ ->
 
+                }
+                .inputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE)
+                .positiveText(R.string.open)
+                .negativeText(R.string.cancel)
+                .onPositive { dialog, _ ->
+                    assert(dialog.inputEditText != null)
+                    if (!IntentActivity.tryShowUrl(
+                            getContext(),
+                            getContext()?.getHandler(),
+                            dialog.inputEditText!!.text.toString() + "", false, false
+                        )
+                    ) {
+                        Toast.makeText(
+                            getContext(),
+                            R.string.links_not_supported,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                    .inputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE)
-                    .positiveText(R.string.open)
-                    .negativeText(R.string.cancel)
-                    .onPositive { dialog, _ ->
-                        assert(dialog.inputEditText != null)
-                        if (!IntentActivity.tryShowUrl(getContext(),
-                                        getContext()?.getHandler(),
-                                        dialog.inputEditText!!.text.toString() + "", false, false)) {
-                            Toast.makeText(getContext(), R.string.links_not_supported, Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    .show()
+                }
+                .show()
         }
 
         val imgFile = File(prefs.getString("userInfoBg", "")!!)
@@ -123,7 +135,12 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
             ImageLoader.getInstance().displayImage("file://" + imgFile.path, userBackground)
         }
 
-        avatarsGroup.setAllOnClickListener { ProfileFragment.showProfile(UserInfoRepository.instance.getId(), client.user) }
+        avatarsGroup.setAllOnClickListener {
+            ProfileFragment.showProfile(
+                UserInfoRepository.instance.getId(),
+                client.user
+            )
+        }
         loginButton.setOnClickListener { LoginDialog.showDialog(getContext()) }
 
         if (!isOnline) {
@@ -136,19 +153,19 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
         }
 
         App.getInstance().addToDisposable(
-                UserInfoRepository.instance
-                        .userInfo
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe { userInfo ->
-                            avatarsGroup.visibility = if (userInfo.logined) View.VISIBLE else View.GONE
-                            profileGroup.visibility = if (userInfo.logined) View.VISIBLE else View.GONE
-                            loginButton.visibility = if (userInfo.logined) View.GONE else View.VISIBLE
-                            if (userInfo.logined && !TextUtils.isEmpty(userInfo.id)) {
-                                updateAsyncTask().execute()
-                            }
-                            refreshQms(userInfo)
-                        })
+            UserInfoRepository.instance
+                .userInfo
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { userInfo ->
+                    avatarsGroup.visibility = if (userInfo.logined) View.VISIBLE else View.GONE
+                    profileGroup.visibility = if (userInfo.logined) View.VISIBLE else View.GONE
+                    loginButton.visibility = if (userInfo.logined) View.GONE else View.VISIBLE
+                    if (userInfo.logined && !TextUtils.isEmpty(userInfo.id)) {
+                        updateAsyncTask().execute()
+                    }
+                    refreshQms(userInfo)
+                })
     }
 
     private fun findViewById(id: Int): View {
@@ -165,7 +182,8 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
     private fun refreshQms(userInfo: UserInfo) {
         val qmsCount = userInfo.qmsCount
         if (qmsCount != 0) {
-            qmsMessages.text = String.format(App.getInstance().getString(R.string.new_qms_messages), qmsCount)
+            qmsMessages.text =
+                String.format(App.getInstance().getString(R.string.new_qms_messages), qmsCount)
         } else {
             qmsMessages.setText(R.string.no_new_qms_messages)
         }
@@ -176,7 +194,8 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
 
         override fun doInBackground(vararg urls: String): Boolean? {
             try {
-                val doc = Jsoup.parse(client.performGet("https://4pda.ru/forum/index.php?showuser=" + UserInfoRepository.instance.getId()).responseBody)
+                val doc =
+                    Jsoup.parse(client.performGet("https://" + HostHelper.host + "/forum/index.php?showuser=" + UserInfoRepository.instance.getId()).responseBody)
                 var el: Element? = doc.selectFirst("div.user-box > div.photo > img")
                 if (el != null)
                     avatarUrl = el.attr("src")
@@ -206,40 +225,57 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
                 client.logined!! -> {
                     userNick.text = client.user
                     userRep.visibility = View.VISIBLE
-                    userRep.text = String.format("%s: %s", App.getContext().getString(R.string.reputation), reputation)
+                    userRep.text = String.format(
+                        "%s: %s",
+                        App.getContext().getString(R.string.reputation),
+                        reputation
+                    )
 
                     refreshQms()
                     if (prefs.getBoolean("isUserBackground", false)) {
                         val imgFile = File(prefs.getString("userInfoBg", "")!!)
                         if (imgFile.exists()) {
-                            ImageLoader.getInstance().displayImage("file:///" + imgFile.path, userBackground)
+                            ImageLoader.getInstance()
+                                .displayImage("file:///" + imgFile.path, userBackground)
                         }
                     } else {
-                        if ((avatarUrl != prefs.getString("userAvatarUrl", "")) or (prefs.getString("userInfoBg", "") == "")) {
-                            ImageLoader.getInstance().loadImage(avatarUrl, object : SimpleImageLoadingListener() {
-                                override fun onLoadingComplete(imageUri: String?, view: View?, loadedImage: Bitmap?) {
-                                    userBackground.post {
-                                        if (loadedImage == null) return@post
-                                        if (loadedImage.width == 0 || loadedImage.height == 0)
-                                            return@post
-                                        blur(loadedImage, userBackground, avatarUrl)
-                                        prefs.edit().putString("userAvatarUrl", avatarUrl).apply()
+                        if ((avatarUrl != prefs.getString("userAvatarUrl", "")) or (prefs.getString(
+                                "userInfoBg",
+                                ""
+                            ) == "")
+                        ) {
+                            ImageLoader.getInstance()
+                                .loadImage(avatarUrl, object : SimpleImageLoadingListener() {
+                                    override fun onLoadingComplete(
+                                        imageUri: String?,
+                                        view: View?,
+                                        loadedImage: Bitmap?
+                                    ) {
+                                        userBackground.post {
+                                            if (loadedImage == null) return@post
+                                            if (loadedImage.width == 0 || loadedImage.height == 0)
+                                                return@post
+                                            blur(loadedImage, userBackground, avatarUrl)
+                                            prefs.edit().putString("userAvatarUrl", avatarUrl)
+                                                .apply()
+                                        }
                                     }
-                                }
-                            })
+                                })
                         } else {
                             val imgFile = File(prefs.getString("userInfoBg", "")!!)
                             if (imgFile.exists()) {
-                                ImageLoader.getInstance().displayImage("file:///" + imgFile.path, userBackground)
+                                ImageLoader.getInstance()
+                                    .displayImage("file:///" + imgFile.path, userBackground)
                             }
                         }
                     }
 
 
-                    ImageLoader.getInstance().displayImage(avatarUrl, if (isSquare) imgAvatarSquare else imgAvatar)
+                    ImageLoader.getInstance()
+                        .displayImage(avatarUrl, if (isSquare) imgAvatarSquare else imgAvatar)
                     prefs.edit()
-                            .putString("shortUserInfoRep", reputation)
-                            .apply()
+                        .putString("shortUserInfoRep", reputation)
+                        .apply()
                     //prefs.edit().putBoolean("isLoadShortUserInfo", true).apply();
                     //prefs.edit().putString("shortAvatarUrl", avatarUrl).apply();
                 }
@@ -259,8 +295,10 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
             val scaleFactor = 3f
             val radius = 64
 
-            var overlay: Bitmap? = Bitmap.createBitmap((view.width / scaleFactor).toInt(),
-                    (view.height / scaleFactor).toInt(), Bitmap.Config.RGB_565)
+            var overlay: Bitmap? = Bitmap.createBitmap(
+                (view.width / scaleFactor).toInt(),
+                (view.height / scaleFactor).toInt(), Bitmap.Config.RGB_565
+            )
             val canvas = Canvas(overlay!!)
             canvas.translate(-view.left / scaleFactor, -view.top / scaleFactor)
             canvas.scale(1 / scaleFactor, 1 / scaleFactor)
@@ -271,7 +309,7 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
             overlay = FastBlur.doBlur(overlay, radius, true)
             view.setImageBitmap(overlay)
             storeImage(overlay, url)
-        }catch (ex:Throwable){
+        } catch (ex: Throwable) {
             ex.printStackTrace()
         }
 
@@ -318,7 +356,8 @@ class ShortUserInfo internal constructor(activity: MainActivity, private val vie
     }
 
     private fun isPdaLink(url: String): Boolean {
-        return Pattern.compile("4pda.ru/([^/$?&]+)", Pattern.CASE_INSENSITIVE).matcher(url).find()
+        return Pattern.compile(HostHelper.host + "/([^/$?&]+)", Pattern.CASE_INSENSITIVE)
+            .matcher(url).find()
     }
 
 

@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import org.jsoup.Jsoup;
 import org.softeg.slartus.forpdaapi.classes.LoginForm;
 import org.softeg.slartus.forpdacommon.NotReportException;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.io.IOException;
 import java.net.HttpCookie;
@@ -71,19 +72,19 @@ public class ProfileApi {
             additionalHeaders.put("hidden", "1");
         additionalHeaders.put("act", "auth");
         //additionalHeaders.put("CODE", "01");
-        additionalHeaders.put("referer", "https://4pda.ru/forum/index.php");
+        additionalHeaders.put("referer", "https://"+ HostHelper.getHost() +"/forum/index.php");
         //additionalHeaders.put("s", session);
         additionalHeaders.put("captcha", capVal);
         additionalHeaders.put("captcha-time", capTime);
         additionalHeaders.put("captcha-sig", capSig);
-        additionalHeaders.put("return", "https://4pda.ru/forum/index.php");
+        additionalHeaders.put("return", "https://"+ HostHelper.getHost() +"/forum/index.php");
 
         ArrayList<Pair<String, String>> listParams = new ArrayList<>();
         for (String key : additionalHeaders.keySet()) {
             listParams.add(new Pair<>(key, additionalHeaders.get(key)));
         }
         AppResponse response = Http.Companion.getInstance()
-                .performPost("https://4pda.ru/forum/index.php?act=auth&return=" + "https://4pda.ru/forum/index.php", listParams);
+                .performPost("https://"+ HostHelper.getHost() +"/forum/index.php?act=auth&return=" + "https://"+ HostHelper.getHost() +"/forum/index.php", listParams);
         String res = response.getResponseBody();
 
         if (TextUtils.isEmpty(res)) {
@@ -150,15 +151,15 @@ public class ProfileApi {
      * @param k идентификатор, полученный при логине
      */
     public static String logout(IHttpClient httpClient, String k) throws Throwable {
-        return httpClient.performGet("https://4pda.ru/forum/index.php?act=Login&CODE=03&k=" + k).getResponseBody();
+        return httpClient.performGet("https://"+ HostHelper.getHost() +"/forum/index.php?act=Login&CODE=03&k=" + k).getResponseBody();
     }
 
     public static Profile getProfile(IHttpClient httpClient, CharSequence userID, String avType) throws IOException {
         Profile profile = new Profile();
         profile.setId(userID);
-        String page = httpClient.performGet("https://4pda.ru/forum/index.php?showuser=" + userID).getResponseBody();
+        String page = httpClient.performGet("https://"+ HostHelper.getHost() +"/forum/index.php?showuser=" + userID).getResponseBody();
 
-        Matcher matcher = Pattern.compile("<form action=\"[^\"]*?4pda\\.ru/forum/index\\.php\\?showuser[^>]*>[\\s\\S]*?<ul[^>]*>([\\s\\S]*)</ul>[\\s\\S]*?</form>").matcher(page);
+        Matcher matcher = Pattern.compile("<form action=\"[^\"]*?"+HostHelper.getHostPattern()+"/forum/index\\.php\\?showuser[^>]*>[\\s\\S]*?<ul[^>]*>([\\s\\S]*)</ul>[\\s\\S]*?</form>").matcher(page);
         if (matcher.find()) {
             page = matcher.group(1).replaceFirst("<div class=\"photo\">[^<]*<img src=\"([^\"]*)\"[^<]*</div>",
                     "<div class=\"photo\"><div class=\"img " + avType + "\" style=\"background-image: url($1);\"></div></div>");
@@ -172,7 +173,7 @@ public class ProfileApi {
     }
 
     public static String getUserNick(IHttpClient httpClient, CharSequence userID) throws IOException {
-        return Jsoup.parse(httpClient.performGet("https://4pda.ru/forum/index.php?showuser=" + userID).getResponseBody()).select("div.user-box > h1").first().text();
+        return Jsoup.parse(httpClient.performGet("https://"+ HostHelper.getHost() +"/forum/index.php?showuser=" + userID).getResponseBody()).select("div.user-box > h1").first().text();
     }
 
     private static String RequestUrl(OkHttpClient client, String url) throws IOException {
@@ -187,12 +188,12 @@ public class ProfileApi {
     public static LoginForm getLoginForm() throws IOException {
         OkHttpClient client = Http.newClientBuiler().build();
 
-        String prevPage = RequestUrl(client, "https://4pda.ru/forum/index.php?act=auth");
+        String prevPage = RequestUrl(client, "https://"+ HostHelper.getHost() +"/forum/index.php?act=auth");
         Matcher m = Pattern.compile("act=auth[^\"]*[;&]k=([^&\"]*)", Pattern.CASE_INSENSITIVE).matcher(prevPage);
         String k = UUID.randomUUID().toString();
         if (m.find())
             k = m.group(1);
-        String page = RequestUrl(client, "https://4pda.ru/forum/index.php?act=auth&k=" + k);
+        String page = RequestUrl(client, "https://"+ HostHelper.getHost() +"/forum/index.php?act=auth&k=" + k);
 
         m = Pattern
                 .compile("<form[^>]*?>([\\s\\S]*?)</form>")
@@ -201,7 +202,7 @@ public class ProfileApi {
             throw new NotReportException("Форма логина не найдена");
         String formText = m.group(1);
         m = Pattern
-                .compile("<img[^>]*?src=\"([^\"]*?turing.4pda.ru/captcha[^\"]*)\"")
+                .compile("<img[^>]*?src=\"([^\"]*?turing."+ HostHelper.getHost() +"/captcha[^\"]*)\"")
                 .matcher(formText);
         if (!m.find())
             throw new NotReportException("Капча не найдена");

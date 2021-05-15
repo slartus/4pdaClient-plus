@@ -11,6 +11,7 @@ import android.webkit.MimeTypeMap
 import android.webkit.MimeTypeMap.getFileExtensionFromUrl
 import okhttp3.*
 import okio.Buffer
+import org.softeg.slartus.hosthelper.HostHelper
 import java.io.File
 import java.io.IOException
 import java.net.CookieManager
@@ -141,7 +142,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
 
     private fun prepareUrl(url: String): String {
-        var res = url.replace(Regex("^//4pda\\.ru"), "https://4pda.ru")
+        var res = url.replace(Regex("^//4pda\\.ru"), "https://${HostHelper.host}")
         res = res.replace(Regex("^//([^/]*)/"), "https://$1/")
         if (!res.startsWith("http"))
             res = "https://$res"
@@ -178,7 +179,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     }
 
     private fun setCookieDeskVer(deskVer: Boolean) {
-        val uri = URI.create("https://4pda.ru/")
+        val uri = URI.create("https://${HostHelper.host}/")
         cookieStore.cookies.filter { it.name == "deskver" }.forEach {
             cookieStore.remove(uri, it)
         }

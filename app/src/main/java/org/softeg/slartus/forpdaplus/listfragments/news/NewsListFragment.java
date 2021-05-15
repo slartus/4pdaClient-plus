@@ -34,6 +34,7 @@ import org.softeg.slartus.forpdaplus.listfragments.BaseTaskListFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.ListViewMethodsBridge;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -258,7 +259,7 @@ public class NewsListFragment extends BaseTaskListFragment implements ActionBar.
     protected ListInfo mListInfo = new ListInfo();
 
 
-    private String mUrl = "https://4pda.ru/";
+    private String mUrl = "https://"+ HostHelper.getHost() +"/";
     private String mTag = "";
 
     @Override

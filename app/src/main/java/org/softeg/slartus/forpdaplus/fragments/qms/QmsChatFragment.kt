@@ -127,8 +127,10 @@ class QmsChatFragment : WebViewFragment() {
     }
 
     @SuppressLint("AddJavascriptInterface", "JavascriptInterface")
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         view = inflater.inflate(R.layout.qms_chat, container, false)
         assert(view != null)
 
@@ -137,8 +139,13 @@ class QmsChatFragment : WebViewFragment() {
 
         edMessage = findViewById(R.id.edMessage) as EditText
         if (mPopupPanelView == null)
-            mPopupPanelView = PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS or PopupPanelView.VIEW_FLAG_BBCODES)
-        mPopupPanelView!!.createView(LayoutInflater.from(context), findViewById(R.id.advanced_button) as ImageButton, edMessage)
+            mPopupPanelView =
+                PopupPanelView(PopupPanelView.VIEW_FLAG_EMOTICS or PopupPanelView.VIEW_FLAG_BBCODES)
+        mPopupPanelView!!.createView(
+            LayoutInflater.from(context),
+            findViewById(R.id.advanced_button) as ImageButton,
+            edMessage
+        )
         mPopupPanelView!!.activityCreated(mainActivity, view)
 
         btnSend?.setOnClickListener { startSendMessage() }
@@ -155,7 +162,12 @@ class QmsChatFragment : WebViewFragment() {
                     }
                 } else {
                     if (emptyText) {
-                        btnSend?.setColorFilter(ContextCompat.getColor(App.getContext(), R.color.selectedItemText), PorterDuff.Mode.SRC_ATOP)
+                        btnSend?.setColorFilter(
+                            ContextCompat.getColor(
+                                App.getContext(),
+                                R.color.selectedItemText
+                            ), PorterDuff.Mode.SRC_ATOP
+                        )
                         emptyText = false
                     }
                 }
@@ -188,7 +200,15 @@ class QmsChatFragment : WebViewFragment() {
             Thread {
                 val body = transformChatBody(pageBody)
 
-                mHandler.post { wvChat?.loadDataWithBaseURL("https://4pda.ru/forum/", body, "text/html", "UTF-8", null) }
+                mHandler.post {
+                    wvChat?.loadDataWithBaseURL(
+                        "https://" + App.Host + "/forum/",
+                        body,
+                        "text/html",
+                        "UTF-8",
+                        null
+                    )
+                }
             }.start()
         }
         hideKeyboard()
@@ -226,8 +246,10 @@ class QmsChatFragment : WebViewFragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int,
-                                  data: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int, resultCode: Int,
+        data: Intent?
+    ) {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == MY_INTENT_CLICK) {
 
@@ -237,20 +259,29 @@ class QmsChatFragment : WebViewFragment() {
                     if (path.matches("(?i)(.*)(7z|zip|rar|tar.gz|exe|cab|xap|txt|log|jpeg|jpg|png|gif|mp3|mp4|apk|ipa|img|.mtz)$".toRegex())) {
                         AttachesTask(this, path).execute()
                     } else {
-                        Toast.makeText(activity, R.string.file_not_support_forum, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            activity,
+                            R.string.file_not_support_forum,
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } else
                     Toast.makeText(activity, "Не могу прикрепить файл", Toast.LENGTH_SHORT).show()
 
             } else if (requestCode == FILECHOOSER_RESULTCODE) {
-                val attachFilePath = org.softeg.slartus.forpdacommon.FileUtils.getRealPathFromURI(context, data!!.data!!)
+                val attachFilePath = org.softeg.slartus.forpdacommon.FileUtils.getRealPathFromURI(
+                    context,
+                    data!!.data!!
+                )
                 val cssData = org.softeg.slartus.forpdacommon.FileUtils.readFileText(attachFilePath)
-                        .replace("\\", "\\\\")
-                        .replace("'", "\\'").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "")
+                    .replace("\\", "\\\\")
+                    .replace("'", "\\'").replace("\"", "\\\"").replace("\n", "\\n")
+                    .replace("\r", "")
                 if (Build.VERSION.SDK_INT < 19)
                     wvChat?.loadUrl("javascript:window['HtmlInParseLessContent']('$cssData');")
                 else
-                    wvChat?.evaluateJavascript("window['HtmlInParseLessContent']('$cssData')"
+                    wvChat?.evaluateJavascript(
+                        "window['HtmlInParseLessContent']('$cssData')"
                     ) {
 
                     }
@@ -267,7 +298,9 @@ class QmsChatFragment : WebViewFragment() {
     @Suppress("unused")
     @JavascriptInterface
     fun showMessage(message: String) {
-        mainActivity.runOnUiThread { Toast.makeText(mainActivity, message, Toast.LENGTH_LONG).show() }
+        mainActivity.runOnUiThread {
+            Toast.makeText(mainActivity, message, Toast.LENGTH_LONG).show()
+        }
     }
 
     @Suppress("unused")
@@ -275,7 +308,8 @@ class QmsChatFragment : WebViewFragment() {
     fun deleteMessages(checkBoxNames: Array<String>?) {
         mainActivity.runOnUiThread {
             if (checkBoxNames == null) {
-                Toast.makeText(mainActivity, R.string.no_messages_for_delete, Toast.LENGTH_LONG).show()
+                Toast.makeText(mainActivity, R.string.no_messages_for_delete, Toast.LENGTH_LONG)
+                    .show()
                 return@runOnUiThread
             }
 
@@ -288,22 +322,30 @@ class QmsChatFragment : WebViewFragment() {
                 }
             }
             if (ids.size == 0) {
-                Toast.makeText(mainActivity, R.string.no_messages_for_delete, Toast.LENGTH_LONG).show()
+                Toast.makeText(mainActivity, R.string.no_messages_for_delete, Toast.LENGTH_LONG)
+                    .show()
                 return@runOnUiThread
             }
 
             MaterialDialog.Builder(mainActivity)
-                    .title(R.string.confirm_action)
-                    .cancelable(true)
-                    .content(String.format(App.getContext().getString(R.string.ask_delete_messages), ids.size))
-                    .positiveText(R.string.delete)
-                    .onPositive { _, _ ->
-                        sendTask = DeleteTask(this, contactId ?: "",
-                                themeId ?: "", ids, daysCount)
-                        sendTask?.execute()
-                    }
-                    .negativeText(R.string.cancel)
-                    .show()
+                .title(R.string.confirm_action)
+                .cancelable(true)
+                .content(
+                    String.format(
+                        App.getContext().getString(R.string.ask_delete_messages),
+                        ids.size
+                    )
+                )
+                .positiveText(R.string.delete)
+                .onPositive { _, _ ->
+                    sendTask = DeleteTask(
+                        this, contactId ?: "",
+                        themeId ?: "", ids, daysCount
+                    )
+                    sendTask?.execute()
+                }
+                .negativeText(R.string.cancel)
+                .show()
         }
     }
 
@@ -338,8 +380,8 @@ class QmsChatFragment : WebViewFragment() {
     private inner class AnActionModeOfEpicProportions : ActionMode.Callback {
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
             menu.add(R.string.delete)
-                    .setIcon(R.drawable.delete)
-                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+                .setIcon(R.drawable.delete)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
             return true
         }
 
@@ -375,18 +417,18 @@ class QmsChatFragment : WebViewFragment() {
     private fun deleteDialog() {
         themeId?.let {
             MaterialDialog.Builder(mainActivity)
-                    .title(R.string.confirm_action)
-                    .cancelable(true)
-                    .content(R.string.ask_delete_dialog)
-                    .positiveText(R.string.delete)
-                    .onPositive { _, _ ->
-                        val ids = ArrayList<String>()
-                        ids.add(it)
-                        sendTask = DeleteDialogTask(this, contactId ?: "", ids)
-                        sendTask!!.execute()
-                    }
-                    .negativeText(R.string.cancel)
-                    .show()
+                .title(R.string.confirm_action)
+                .cancelable(true)
+                .content(R.string.ask_delete_dialog)
+                .positiveText(R.string.delete)
+                .onPositive { _, _ ->
+                    val ids = ArrayList<String>()
+                    ids.add(it)
+                    sendTask = DeleteDialogTask(this, contactId ?: "", ids)
+                    sendTask!!.execute()
+                }
+                .negativeText(R.string.cancel)
+                .show()
         }
     }
 
@@ -454,7 +496,11 @@ class QmsChatFragment : WebViewFragment() {
     }
 
     private fun loadPrefs() {
-        updateTimeout = (ExtPreferences.parseInt(App.getInstance().preferences, "qms.chat.update_timer", 15) * 1000).toLong()
+        updateTimeout = (ExtPreferences.parseInt(
+            App.getInstance().preferences,
+            "qms.chat.update_timer",
+            15
+        ) * 1000).toLong()
     }
 
     private fun checkNewQms() {
@@ -469,14 +515,15 @@ class QmsChatFragment : WebViewFragment() {
 
         checkNewQms()
         if ((themeTitle == null) or (contactNick == null)) {
-            val m = Pattern.compile("<span id=\"chatInfo\"[^>]*>([^>]*?)\\|:\\|([^<]*)</span>").matcher(chatBody)
+            val m = Pattern.compile("<span id=\"chatInfo\"[^>]*>([^>]*?)\\|:\\|([^<]*)</span>")
+                .matcher(chatBody)
             if (m.find()) {
                 contactNick = m.group(1)
                 themeTitle = m.group(2)
             }
         }
         val htmlBuilder = QmsHtmlBuilder()
-        htmlBuilder.buildBody(loadMore,chatBody,htmlPreferences)
+        htmlBuilder.buildBody(loadMore, chatBody, htmlPreferences)
 
         return htmlBuilder.html.toString()
     }
@@ -517,20 +564,28 @@ class QmsChatFragment : WebViewFragment() {
             if (finalEx == null) {
                 title = themeTitle
                 setSubtitle(contactNick)
-                wvChat?.loadDataWithBaseURL("https://4pda.ru/forum/", finalChatBody, "text/html", "UTF-8", null)
+                wvChat?.loadDataWithBaseURL(
+                    "https://" + App.Host + "/forum/",
+                    finalChatBody,
+                    "text/html",
+                    "UTF-8",
+                    null
+                )
             } else {
                 if ("Такого диалога не существует." == finalEx.message) {
                     MaterialDialog.Builder(mainActivity)
-                            .title(R.string.error)
-                            .content(finalEx.message ?: "неизвестная ошибка")
-                            .positiveText(R.string.ok)
-                            .show()
+                        .title(R.string.error)
+                        .content(finalEx.message ?: "неизвестная ошибка")
+                        .positiveText(R.string.ok)
+                        .show()
                     updateTimer.cancel()
                     updateTimer.purge()
 
                 } else {
-                    Toast.makeText(mainActivity, AppLog.getLocalizedMessage(finalEx, finalEx.localizedMessage),
-                            Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        mainActivity, AppLog.getLocalizedMessage(finalEx, finalEx.localizedMessage),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
             }
@@ -549,17 +604,27 @@ class QmsChatFragment : WebViewFragment() {
         if (success) {
             edMessage!!.text.clear()
 
-            wvChat!!.loadDataWithBaseURL("https://4pda.ru/forum/", chatBody, "text/html", "UTF-8", null)
+            wvChat!!.loadDataWithBaseURL(
+                "https://" + App.Host + "/forum/",
+                chatBody,
+                "text/html",
+                "UTF-8",
+                null
+            )
         } else {
             if (ex != null)
                 AppLog.e(mainActivity, ex) {
-                    sendTask = SendTask(this, contactId ?: "", themeId ?: "", messageText
-                            ?: "", attachList, daysCount)
+                    sendTask = SendTask(
+                        this, contactId ?: "", themeId ?: "", messageText
+                            ?: "", attachList, daysCount
+                    )
                     sendTask!!.execute()
                 }
             else
-                Toast.makeText(mainActivity, R.string.unknown_error,
-                        Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    mainActivity, R.string.unknown_error,
+                    Toast.LENGTH_SHORT
+                ).show()
         }
     }
 
@@ -585,13 +650,23 @@ class QmsChatFragment : WebViewFragment() {
     private fun startSendMessage() {
         if (emptyText) {
             val toast = Toast.makeText(context, R.string.EnterMessage_, Toast.LENGTH_SHORT)
-            toast.setGravity(Gravity.TOP, 0, TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64f, App.getInstance().resources.displayMetrics).toInt())
+            toast.setGravity(
+                Gravity.TOP,
+                0,
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    64f,
+                    App.getInstance().resources.displayMetrics
+                ).toInt()
+            )
             toast.show()
             return
         }
         messageText = edMessage!!.text.toString()
-        sendTask = SendTask(this, contactId ?: "", themeId ?: "",
-                messageText ?: "", attachList, daysCount)
+        sendTask = SendTask(
+            this, contactId ?: "", themeId ?: "",
+            messageText ?: "", attachList, daysCount
+        )
         sendTask?.execute()
     }
 
@@ -615,10 +690,22 @@ class QmsChatFragment : WebViewFragment() {
 
     override fun showLinkMenu(link: String) {
         if (TextUtils.isEmpty(link) || link.contains("HTMLOUT.ru")
-                || link == "#"
-                || link.startsWith("file:///"))
+            || link == "#"
+            || link.startsWith("file:///")
+        )
             return
-        ExtUrl.showSelectActionDialog(mHandler, context!!, themeTitle, "", link, "", "", "", contactId, contactNick)
+        ExtUrl.showSelectActionDialog(
+            mHandler,
+            context!!,
+            themeTitle,
+            "",
+            link,
+            "",
+            "",
+            "",
+            contactId,
+            contactNick
+        )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -684,29 +771,38 @@ class QmsChatFragment : WebViewFragment() {
             listItems.add(attach.name)
         val items = listItems.toTypedArray<CharSequence>()
         MaterialDialog.Builder(mainActivity)
-                .cancelable(true)
-                .title(R.string.attachments)
-                .items(*items)
-                .itemsCallback { _, _, which, _ ->
-                    val item = attachList[which]
-                    MaterialDialog.Builder(mainActivity)
-                            .title(R.string.ConfirmTheAction)
-                            .cancelable(true)
-                            .content(R.string.SureDeleteFile)
-                            .positiveText(R.string.delete)
-                            .onPositive { _, _ -> DeleteAttachTask(this@QmsChatFragment, item.id).execute() }
-                            .negativeText(R.string.cancel)
-                            .show()
-                }
-                .positiveText(R.string.do_download)
-                .onPositive { _, _ -> startAddAttachment() }
-                .negativeText(R.string.ok)
-                .show()
+            .cancelable(true)
+            .title(R.string.attachments)
+            .items(*items)
+            .itemsCallback { _, _, which, _ ->
+                val item = attachList[which]
+                MaterialDialog.Builder(mainActivity)
+                    .title(R.string.ConfirmTheAction)
+                    .cancelable(true)
+                    .content(R.string.SureDeleteFile)
+                    .positiveText(R.string.delete)
+                    .onPositive { _, _ ->
+                        DeleteAttachTask(
+                            this@QmsChatFragment,
+                            item.id
+                        ).execute()
+                    }
+                    .negativeText(R.string.cancel)
+                    .show()
+            }
+            .positiveText(R.string.do_download)
+            .onPositive { _, _ -> startAddAttachment() }
+            .negativeText(R.string.ok)
+            .show()
     }
 
 
     private fun startAddAttachment() {
-        if (ContextCompat.checkSelfPermission(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                activity!!,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             Toast.makeText(activity, R.string.no_permission, Toast.LENGTH_SHORT).show()
             return
         }
@@ -723,7 +819,8 @@ class QmsChatFragment : WebViewFragment() {
 
             startActivityForResult(intent, MY_INTENT_CLICK)
         } catch (ex: ActivityNotFoundException) {
-            Toast.makeText(mainActivity, R.string.no_app_for_get_image_file, Toast.LENGTH_LONG).show()
+            Toast.makeText(mainActivity, R.string.no_app_for_get_image_file, Toast.LENGTH_LONG)
+                .show()
         } catch (ex: Exception) {
             AppLog.e(mainActivity, ex)
         }
@@ -749,15 +846,35 @@ class QmsChatFragment : WebViewFragment() {
         private const val POST_TEXT_KEY = "PostText"
         private const val FILECHOOSER_RESULTCODE = 1
         private const val DAYS_PART_COUNT = 7
-        fun openChat(userId: String, userNick: String?, tid: String, themeTitle: String?, pageBody: String?) {
-            MainActivity.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle, pageBody))
+        fun openChat(
+            userId: String,
+            userNick: String?,
+            tid: String,
+            themeTitle: String?,
+            pageBody: String?
+        ) {
+            MainActivity.addTab(
+                themeTitle,
+                themeTitle + userId,
+                newInstance(userId, userNick, tid, themeTitle, pageBody)
+            )
         }
 
         fun openChat(userId: String, userNick: String?, tid: String, themeTitle: String?) {
-            MainActivity.addTab(themeTitle, themeTitle + userId, newInstance(userId, userNick, tid, themeTitle))
+            MainActivity.addTab(
+                themeTitle,
+                themeTitle + userId,
+                newInstance(userId, userNick, tid, themeTitle)
+            )
         }
 
-        fun newInstance(userId: String, userNick: String?, tid: String, themeTitle: String?, pageBody: String?): QmsChatFragment {
+        fun newInstance(
+            userId: String,
+            userNick: String?,
+            tid: String,
+            themeTitle: String?,
+            pageBody: String?
+        ): QmsChatFragment {
             val args = Bundle()
             args.putString(MID_KEY, userId)
             args.putString(NICK_KEY, userNick ?: userId)
@@ -770,7 +887,12 @@ class QmsChatFragment : WebViewFragment() {
             return fragment
         }
 
-        fun newInstance(userId: String, userNick: String?, tid: String, themeTitle: String?): QmsChatFragment {
+        fun newInstance(
+            userId: String,
+            userNick: String?,
+            tid: String,
+            themeTitle: String?
+        ): QmsChatFragment {
             val args = Bundle()
             args.putString(MID_KEY, userId)
             args.putString(NICK_KEY, userNick ?: userId)

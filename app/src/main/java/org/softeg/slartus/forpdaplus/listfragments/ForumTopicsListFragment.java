@@ -23,6 +23,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.listfragments.next.forum.ForumFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.ForumTopicsBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.ForumTopicsPreferencesActivity;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -112,7 +113,7 @@ public class ForumTopicsListFragment extends TopicsListFragment {
             qparams.add(new BasicNameValuePair("st", Integer.toString(listInfo.getFrom())));
 
 
-            mUrl = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
+            mUrl = URIUtils.createURI("http", HostHelper.getHost(), "/forum/index.php",
                     qparams, "UTF-8");
         } else {
             mUrl = mUrl.replaceAll("&st=\\d+", "").concat("&st=" + mListInfo.getFrom());

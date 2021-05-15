@@ -4,6 +4,7 @@ import android.text.Html;
 import android.text.TextUtils;
 
 import org.softeg.slartus.forpdacommon.Functions;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -41,7 +42,7 @@ public class NewsList extends ArrayList<News> {
      * @return news, articles, software и тд. или пусто для "Все"
      */
     private static String getSearchTag(String url) {
-        Matcher m = Pattern.compile("4pda.ru/tag/(.*?)(/|$)").matcher(url);
+        Matcher m = Pattern.compile(HostHelper.getHost() + "/tag/(.*?)(/|$)").matcher(url);
         if (m.find()) {
             return "tag/" + m.group(1) + "/";
         }
@@ -62,7 +63,7 @@ public class NewsList extends ArrayList<News> {
     public void loadNextNewsPage() throws IOException, ParseException {
 
         if (size() == 0) {
-            getPage(1, "https://4pda.ru/" + mSearchTag);
+            getPage(1, "https://" + HostHelper.getHost() + "/" + mSearchTag);
             return;
         }
         mLastNewsUrl = size() > 0 ? get(size() - 1).getId() : "";
@@ -70,7 +71,7 @@ public class NewsList extends ArrayList<News> {
         CharSequence url = mLastNewsUrl;
 
         if (TextUtils.isEmpty(mSearchTag)) {
-            Matcher m = Pattern.compile("4pda.ru/(\\d+)/(\\d+)/(\\d+)/(\\d+)").matcher(url);
+            Matcher m = Pattern.compile(HostHelper.getHost() + "/(\\d+)/(\\d+)/(\\d+)/(\\d+)").matcher(url);
             m.find();
 
             int year = Integer.parseInt(m.group(1));
@@ -78,7 +79,7 @@ public class NewsList extends ArrayList<News> {
             loadPage(year, nextPage, 0);
         } else {
             int nextPage = mLastNewsPage + 1;
-            getPage(nextPage, "https://4pda.ru/" + mSearchTag + "page/" + nextPage);
+            getPage(nextPage, "https://" + HostHelper.getHost() + "/" + mSearchTag + "page/" + nextPage);
         }
 
 
@@ -86,7 +87,7 @@ public class NewsList extends ArrayList<News> {
 
     private void loadPage(int year, int nextPage, int iteration) throws IOException, ParseException {
 
-        String dailyNewsUrl = "https://4pda.ru/" + year + "/page/" + nextPage;
+        String dailyNewsUrl = "https://" + HostHelper.getHost() + "/" + year + "/page/" + nextPage;
 
         String dailyNewsPage = getPage(nextPage, dailyNewsUrl);
 
@@ -132,7 +133,7 @@ public class NewsList extends ArrayList<News> {
             Matcher m = mPattern.matcher(postData);
 
             if (m.find()) {
-                String id = "https://4pda.ru" + m.group(1);
+                String id = "https://" + HostHelper.getHost() + m.group(1);
 
                 if (!someUnloaded && findByTitle(id) != null) continue;
                 someUnloaded = true;

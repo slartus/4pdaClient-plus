@@ -9,6 +9,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.softeg.slartus.forpdaapi.Forum;
 import org.softeg.slartus.forpdaapi.IHttpClient;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class UsersApi {
      *
      */
     public static ArrayList<LeadUser> getLeaders(IHttpClient client) throws IOException {
-        String page = client.performGet("https://4pda.ru/forum/index.php?act=Stats&CODE=leaders").getResponseBody();
+        String page = client.performGet("https://"+ HostHelper.getHost() +"/forum/index.php?act=Stats&CODE=leaders").getResponseBody();
 
         Document doc = Jsoup.parse(page);
         ArrayList<LeadUser> res = new ArrayList<>();

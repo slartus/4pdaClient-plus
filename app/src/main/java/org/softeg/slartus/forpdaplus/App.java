@@ -34,6 +34,7 @@ import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 import org.softeg.slartus.forpdaplus.repositories.InternetConnection;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,7 +74,7 @@ import static org.softeg.slartus.forpdaplus.prefs.PreferencesActivity.getPackage
 public class App extends MultiDexApplication {
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-
+    public static String Host = HostHelper.getHost();
     private Locale locale;
     private String lang;
 

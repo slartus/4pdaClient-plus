@@ -29,6 +29,7 @@ import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo
 import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo
 import org.softeg.slartus.forpdaplus.prefs.Preferences
+import org.softeg.slartus.hosthelper.HostHelper
 import java.io.Serializable
 import java.lang.ref.WeakReference
 import java.util.*
@@ -352,7 +353,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
 
         }, object : ForumsAdapter.OnLongClickListener {
             private fun show(id: String) {
-                ExtUrl.showSelectActionDialog(mainActivity, getString(R.string.link), "https://4pda.ru/forum/index.php?showforum=$id")
+                ExtUrl.showSelectActionDialog(mainActivity, getString(R.string.link), "https://${HostHelper.host}/forum/index.php?showforum=$id")
             }
 
             override fun onItemClick(v: View) {

@@ -11,6 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.Topic;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,8 +23,8 @@ import java.util.regex.Pattern;
 public class AppsGamesCatalogApi {
     private static final String APPS_PAGE_ID = "112220";
     private static final String GAMES_PAGE_ID = "117270";
-    private static final String APPS_CATALOG_URL = "https://4pda.ru/forum/index.php?showtopic=" + APPS_PAGE_ID;
-    private static final String GAMES_CATALOG_URL = "https://4pda.ru/forum/index.php?showtopic=" + GAMES_PAGE_ID;
+    private static final String APPS_CATALOG_URL = "https://"+ HostHelper.getHost() +"/forum/index.php?showtopic=" + APPS_PAGE_ID;
+    private static final String GAMES_CATALOG_URL = "https://"+ HostHelper.getHost() +"/forum/index.php?showtopic=" + GAMES_PAGE_ID;
 
     public static ArrayList<AppGameCatalog> getCatalog(IHttpClient client, AppGameCatalog parent) throws IOException {
         ArrayList<AppGameCatalog> res = new ArrayList<>();
@@ -259,7 +260,7 @@ public class AppsGamesCatalogApi {
             Pattern pattern = Pattern.compile("<div class=\"post_body(?:\\s|\\w)*?\">(<div align=.center.>)?(?:<!--coloro:coral-->)?<span style=.color:coral.>(?:<!--/coloro-->)?<b>(<div align=.center.>)?" + catalogId + "\\..*?</div>(.*?)</div>");
             Matcher m = pattern.matcher(pageBody);
             Pattern subCategoryPattern = Pattern.compile("(?<!<div align='center'>)<span style=\"color:coral\"><b>" + Pattern.quote(subCategory.getHtmlTitle()) + "<(.*?)(?:<ol type=.1.>|</div>)");
-            Pattern themesPattern = Pattern.compile("<li><b><a href=\"https?://4pda.ru/forum/index.php\\?showtopic=(\\d+)[^\"]*\" target=\"_blank\">(.*?)</a>(.*?)</li>");
+            Pattern themesPattern = Pattern.compile("<li><b><a href=\"https?://"+ HostHelper.getHost() +"/forum/index.php\\?showtopic=(\\d+)[^\"]*\" target=\"_blank\">(.*?)</a>(.*?)</li>");
 
             if (m.find()) {
                 Matcher m1 = subCategoryPattern.matcher(m.group(3) + "</div>");

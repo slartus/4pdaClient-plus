@@ -15,6 +15,7 @@ import org.softeg.slartus.forpdaplus.classes.MenuListDialog
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.download.DownloadsService
 import org.softeg.slartus.forpdaplus.listtemplates.TopicAttachmentBrickInfo
+import org.softeg.slartus.hosthelper.HostHelper
 import java.util.*
 
 /*
@@ -61,7 +62,7 @@ class TopicAttachmentListFragment : BaseTaskListFragment() {
         if (TextUtils.isEmpty(item.id)) return
         val attach = item as PostAttach
         val list: MutableList<MenuListDialog> = ArrayList()
-        list.add(MenuListDialog(getString(R.string.do_download), Runnable { DownloadsService.download(activity, attach.url.toString().replaceFirst("//4pda.ru".toRegex(), "").trim { it <= ' ' }, false) }))
+        list.add(MenuListDialog(getString(R.string.do_download), Runnable { DownloadsService.download(activity, attach.url.toString().replaceFirst("//${HostHelper.host}".toRegex(), "").trim { it <= ' ' }, false) }))
         list.add(MenuListDialog(getString(R.string.jump_to_page), Runnable { IntentActivity.showTopic(attach.postUrl) }))
         ExtUrl.showContextDialog(context, null, list)
     }

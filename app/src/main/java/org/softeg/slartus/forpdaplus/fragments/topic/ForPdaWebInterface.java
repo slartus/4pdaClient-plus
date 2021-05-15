@@ -43,6 +43,7 @@ import org.softeg.slartus.forpdaplus.listfragments.TopicWritersListFragment;
 import org.softeg.slartus.forpdaplus.listfragments.next.UserReputationFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicReadersBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -400,7 +401,7 @@ public class ForPdaWebInterface {
     public void go_gadget_show() {
         run(() -> {
 
-            String url = "https://4pda.ru/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&mode=show&poll_open=true&st=" +
+            String url = "https://"+ HostHelper.getHost() +"/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&mode=show&poll_open=true&st=" +
                     getContext().getTopic().getCurrentPage() * getContext().getTopic().getPostsPerPageCount(getContext().getLastUrl());
             getContext().showTheme(url);
         });
@@ -410,7 +411,7 @@ public class ForPdaWebInterface {
     @JavascriptInterface
     public void go_gadget_vote() {
         run(() -> {
-            String url = "https://4pda.ru/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&poll_open=true&st=" +
+            String url = "https://"+ HostHelper.getHost() +"/forum/index.php?&showtopic=" + getContext().getTopic().getId() + "&poll_open=true&st=" +
                     getContext().getTopic().getCurrentPage() * getContext().getTopic().getPostsPerPageCount(getContext().getLastUrl());
             getContext().showTheme(url);
         });

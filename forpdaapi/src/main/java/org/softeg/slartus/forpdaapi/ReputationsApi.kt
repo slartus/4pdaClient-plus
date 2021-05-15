@@ -6,6 +6,7 @@ import org.softeg.slartus.forpdaapi.classes.ReputationsListData
 import org.softeg.slartus.forpdacommon.BasicNameValuePair
 import org.softeg.slartus.forpdacommon.NameValuePair
 import org.softeg.slartus.forpdacommon.URIUtils.Companion.createURI
+import org.softeg.slartus.hosthelper.HostHelper
 import java.io.IOException
 import java.util.*
 import java.util.regex.Pattern
@@ -29,7 +30,7 @@ import java.util.regex.Pattern
         qparams.add(BasicNameValuePair("st", listInfo.from.toString()))
         if (self) // свои действия
             qparams.add(BasicNameValuePair("mode", "from"))
-        val uri = createURI("http", "4pda.ru", "/forum/index.php",
+        val uri = createURI("http", HostHelper.host, "/forum/index.php",
                 qparams, "UTF-8")
         val body = httpClient.performGet(uri).responseBody
         val doc = Jsoup.parse(body)
@@ -105,7 +106,7 @@ import java.util.regex.Pattern
         additionalHeaders["mid"] = userId
         additionalHeaders["type"] = type
         additionalHeaders["message"] = message
-        val res = httpClient.performPost("https://4pda.ru/forum/index.php", additionalHeaders).responseBody
+        val res = httpClient.performPost("https://"+ HostHelper.host +"/forum/index.php", additionalHeaders).responseBody
         val p = Pattern.compile("<title>(.*?)</title>")
         val m = p.matcher(res)
         if (m.find()) {

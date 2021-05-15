@@ -13,6 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import org.softeg.slartus.forpdacommon.PatternExtensions;
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.MainActivity;
@@ -30,7 +31,7 @@ public class SpecialView extends WebViewFragment {
     private AdvWebView m_WebView;
     private AsyncTask asyncTask;
     public static String m_Title = "ForPDA";
-    public static String m_Url="";
+    public static String m_Url = "";
 
     @Override
     public boolean closeTab() {
@@ -152,18 +153,20 @@ public class SpecialView extends WebViewFragment {
             if (success) {
                 showThemeBody(m_ThemeBody);
             } else {
-                m_WebView.loadDataWithBaseURL("https://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
+                m_WebView.loadDataWithBaseURL("https://" + App.Host + "/forum/", m_ThemeBody, "text/html", "UTF-8", null);
             }
         }
     }
+
     private void showThemeBody(String body) {
         try {
             setTitle(m_Title);
-            m_WebView.loadDataWithBaseURL("https://4pda.ru/forum/", body, "text/html", "UTF-8", null);
+            m_WebView.loadDataWithBaseURL("https://" + App.Host + ".ru/forum/", body, "text/html", "UTF-8", null);
         } catch (Exception ex) {
             AppLog.e(getMainActivity(), ex);
         }
     }
+
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, final String url) {

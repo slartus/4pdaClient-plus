@@ -89,6 +89,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
@@ -150,11 +151,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public static String getThemeUrl(CharSequence topicId) {
-        return "https://4pda.ru/forum/index.php?showtopic=" + topicId;
+        return "https://"+ HostHelper.getHost() +"/forum/index.php?showtopic=" + topicId;
     }
 
     public static String getThemeUrl(CharSequence topicId, CharSequence urlParams) {
-        return String.format("https://4pda.ru/forum/index.php?showtopic=%s%s", topicId, TextUtils.isEmpty(urlParams) ? "" : ("&" + urlParams));
+        return String.format("https://"+ HostHelper.getHost() +"/forum/index.php?showtopic=%s%s", topicId, TextUtils.isEmpty(urlParams) ? "" : ("&" + urlParams));
     }
 
     public static void showTopicById(CharSequence topicId, CharSequence urlParams) {
@@ -515,7 +516,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 case R.id.link_item:
                     if (topic != null) {
                         ExtUrl.showSelectActionDialog(getMainActivity(), getS(R.string.link),
-                                TextUtils.isEmpty(getLastUrl()) ? ("https://4pda.ru/forum/index.php?showtopic=" + topic.getId()) : getLastUrl());
+                                TextUtils.isEmpty(getLastUrl()) ? ("https://"+ HostHelper.getHost() +"/forum/index.php?showtopic=" + topic.getId()) : getLastUrl());
                     }
                     return true;
                 case R.id.avatars_item:
@@ -834,7 +835,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 list.add(new MenuListDialog(getS(R.string.quote_post), () -> quote(m_Topic.getForumId(), m_Topic.getId(), postId, postDate, userId, userNick)));
             }
             list.add(new MenuListDialog(getS(R.string.create_note), () -> NoteDialog.showDialog(mHandler, getMainActivity(), m_Topic.getTitle(), null,
-                    "https://4pda.ru/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
+                    "https://"+ HostHelper.getHost() +"/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
                     m_Topic.getId(), m_Topic.getTitle(), postId, null, null)));
 
             ExtUrl.showContextDialog(getContext(), null, list);
@@ -852,7 +853,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
 
             //webView.loadDataWithBaseURL(m_LastUrl, body, "text/html", "UTF-8", null);
-            webView.loadDataWithBaseURL("https://4pda.ru/forum/", body, "text/html", "UTF-8", null);
+            webView.loadDataWithBaseURL("https://"+ HostHelper.getHost() +"/forum/", body, "text/html", "UTF-8", null);
 
             TopicsHistoryTable.addHistory(m_Topic, m_LastUrl);
             if (buttonsPanel.getTranslationY() != 0)
@@ -943,9 +944,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         url = IntentActivity.normalizeThemeUrl(url);
 
         String[] patterns = {
-                "(/+4pda.ru/+forum/+index.php\\?.*?showtopic=[^\"]*)",
-                "(/+4pda.ru/+forum/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)$",
-                "(/+4pda.ru/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)$"
+                "(/+"+ HostHelper.getHost() +"/+forum/+index.php\\?.*?showtopic=[^\"]*)",
+                "(/+"+ HostHelper.getHost() +"/+forum/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)$",
+                "(/+"+ HostHelper.getHost() +"/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)$"
         };
 
 
@@ -1013,7 +1014,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         Matcher m = Pattern.compile("lofiversion/index.php\\?t(\\d+)(?:-(\\d+))?.html", Pattern.CASE_INSENSITIVE)
                 .matcher(url);
         if (m.find())
-            return "https://4pda.ru/forum/index.php?showtopic=" + m.group(1) +
+            return "https://"+ HostHelper.getHost() +"/forum/index.php?showtopic=" + m.group(1) +
                     (m.group(2) != null ? ("&st=" + m.group(2)) : "");
         return url;
     }
@@ -1402,7 +1403,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
 
         private boolean checkIsPoll(String url) {
-            Matcher m = Pattern.compile("4pda.ru.*?addpoll=1", Pattern.CASE_INSENSITIVE).matcher(url);
+            Matcher m = Pattern.compile(HostHelper.getHost()+".*?addpoll=1", Pattern.CASE_INSENSITIVE).matcher(url);
             if (m.find()) {
                 Uri uri = Uri.parse(url);
                 uri = uri.buildUpon()
@@ -1417,7 +1418,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         private boolean tryDeletePost(String url) {
 
-            Matcher m = Pattern.compile("4pda.ru/forum/index.php\\?act=Mod&CODE=04&f=(\\d+)&t=(\\d+)&p=(\\d+)&st=(\\d+)&auth_key=(.*?)", Pattern.CASE_INSENSITIVE).matcher(url);
+            Matcher m = Pattern.compile(HostHelper.getHost()+"/forum/index.php\\?act=Mod&CODE=04&f=(\\d+)&t=(\\d+)&p=(\\d+)&st=(\\d+)&auth_key=(.*?)", Pattern.CASE_INSENSITIVE).matcher(url);
             if (m.find()) {
 
                 prepareDeleteMessage(m.group(3));
@@ -1428,7 +1429,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         private boolean tryQuote(final String url) {
 
-            Matcher m = Pattern.compile("4pda.ru/forum/index.php\\?act=Post&CODE=02&f=\\d+&t=\\d+&qpid=\\d+", Pattern.CASE_INSENSITIVE).matcher(url);
+            Matcher m = Pattern.compile(HostHelper.getHost()+"/forum/index.php\\?act=Post&CODE=02&f=\\d+&t=\\d+&qpid=\\d+", Pattern.CASE_INSENSITIVE).matcher(url);
             if (m.find()) {
                 showQuoteEditor(url);
                 return true;
@@ -1462,10 +1463,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 ThemeFragment themeFragment = themeFragmentRef.get();
                 if (themeFragment != null && themeFragment.isAdded()) {
                     themeFragment.m_LastUrl = forums[0];
-                    themeFragment.m_LastUrl = "https://4pda.ru/forum/index.php?" + prepareTopicUrl(themeFragment.m_LastUrl);
+                    themeFragment.m_LastUrl = "https://"+ HostHelper.getHost() +"/forum/index.php?" + prepareTopicUrl(themeFragment.m_LastUrl);
 
                     if (forums.length == 1) {
-                        themeFragment.lastResponse = Http.Companion.getInstance().performGet("https://4pda.ru/forum/index.php?" + prepareTopicUrl(themeFragment.m_LastUrl));
+                        themeFragment.lastResponse = Http.Companion.getInstance().performGet("https://"+ HostHelper.getHost() +"/forum/index.php?" + prepareTopicUrl(themeFragment.m_LastUrl));
                         pageBody = themeFragment.lastResponse.getResponseBody();
                         Client.getInstance().check(pageBody);
                     } else
@@ -1537,7 +1538,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     if (ex.getClass() != NotReportException.class) {
                         themeFragment.setTitle(ex.getMessage());
                         themeFragment.webView.loadDataWithBaseURL(themeFragment.m_LastUrl, m_ThemeBody, "text/html", "UTF-8", null);
-                        //webView.loadDataWithBaseURL("https://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
+                        //webView.loadDataWithBaseURL("https://"+ HostHelper.getHost() +"/forum/", m_ThemeBody, "text/html", "UTF-8", null);
                         themeFragment.addToHistory(m_ThemeBody);
                     }
                     AppLog.e(themeFragment.getMainActivity(), ex, () -> themeFragment.showTheme(themeFragment.getLastUrl()));

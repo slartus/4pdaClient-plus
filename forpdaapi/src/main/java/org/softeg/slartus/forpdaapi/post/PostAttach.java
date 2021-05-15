@@ -5,6 +5,7 @@ package org.softeg.slartus.forpdaapi.post;/*
 import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.Functions;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.util.Date;
 
@@ -127,7 +128,7 @@ public class PostAttach implements IListItem {
 
 
     public String getPostUrl() {
-        return "https://4pda.ru/forum/index.php?act=findpost&pid=" + postId;
+        return "https://"+ HostHelper.getHost() +"/forum/index.php?act=findpost&pid=" + postId;
     }
 
 

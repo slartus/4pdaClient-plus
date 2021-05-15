@@ -7,6 +7,7 @@ import org.softeg.slartus.forpdaapi.classes.ForumsData
 import org.softeg.slartus.forpdacommon.BasicNameValuePair
 import org.softeg.slartus.forpdacommon.NameValuePair
 import org.softeg.slartus.forpdacommon.URIUtils
+import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.Http
 import java.util.*
 
@@ -26,8 +27,8 @@ class ForumsApi : ArrayList<Forum>() {
             val res = ForumsData()
 
             val pageBody = Http.instance
-                    .performGetFull("https://4pda.ru/forum/index.php?act=idx").responseBody
-            val doc = Jsoup.parse(pageBody, "https://4pda.ru")
+                    .performGetFull("https://${HostHelper.host}/forum/index.php?act=idx").responseBody
+            val doc = Jsoup.parse(pageBody, "https://${HostHelper.host}")
             val categoryElements = doc.select("div.borderwrap[id~=fo_\\d+]")
 
             for (catElement in categoryElements) {
@@ -106,7 +107,7 @@ class ForumsApi : ArrayList<Forum>() {
         private fun loadSubForums(url: String, parentForum: Forum,
                                   data: ForumsData, progressState: ProgressState) {
             val pageBody = Http.instance.performGetFull(url).responseBody
-            val doc = Jsoup.parse(pageBody, "https://4pda.ru")
+            val doc = Jsoup.parse(pageBody, "https://${HostHelper.host}")
             val catElement = doc.select("div.borderwrap[id~=fo_\\d+]").first() ?: return
             val boardForumRowElement = catElement.select("table.ipbtable>tbody").first() ?: return
 
@@ -151,7 +152,7 @@ class ForumsApi : ArrayList<Forum>() {
 
         @Throws(Throwable::class)
         fun markAllAsRead(httpClient: IHttpClient) {
-            httpClient.performGet("https://4pda.ru/forum/index.php?act=Login&CODE=05", true, false)
+            httpClient.performGet("https://${HostHelper.host}/forum/index.php?act=Login&CODE=05", true, false)
         }
 
         @Throws(Throwable::class)
@@ -164,7 +165,7 @@ class ForumsApi : ArrayList<Forum>() {
             qparams.add(BasicNameValuePair("fromforum", forumId.toString()))
 
 
-            val uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php", qparams, "UTF-8")
+            val uri = URIUtils.createURI("http", HostHelper.host, "/forum/index.php", qparams, "UTF-8")
 
             httpClient.performGet(uri.toString())
         }

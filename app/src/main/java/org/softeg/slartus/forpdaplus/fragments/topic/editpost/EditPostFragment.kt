@@ -46,6 +46,7 @@ import org.softeg.slartus.forpdaplus.fragments.topic.PostPreviewFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.editpost.tasks.*
 import org.softeg.slartus.forpdaplus.prefs.Preferences
+import org.softeg.slartus.hosthelper.HostHelper
 import java.util.*
 
 /**
@@ -569,7 +570,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
         }
         if (App.getInstance().isContainsByTag(parentTag)) {
             (App.getInstance().getTabByTag(parentTag)!!.fragment as ThemeFragment)
-                    .showTheme(String.format("https://4pda.ru/forum/index.php?showtopic=%s&%s", editPost?.topicId,
+                    .showTheme(String.format("https://${HostHelper.host}/forum/index.php?showtopic=%s&%s", editPost?.topicId,
                             if (isNewPost) "view=getlastpost" else ("view=findpost&p=" + editPost?.id)), true)
         }
         mainActivity.tryRemoveTab(tag)

@@ -32,6 +32,7 @@ android {
 dependencies {
     api project(':forpdacommon')
     api project(':sqliteannotations')
+    api project(':hosthelper')
     api "org.jsoup:jsoup:$rootProject.jsoup"
 
     api "com.squareup.okhttp3:okhttp:$rootProject.okhttp3"

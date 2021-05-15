@@ -10,6 +10,7 @@ import org.softeg.slartus.forpdacommon.DateTimeExternals
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdacommon.PatternExtensions
 import org.softeg.slartus.forpdacommon.UrlExtensions
+import org.softeg.slartus.hosthelper.HostHelper
 import org.w3c.dom.Element
 import org.xml.sax.InputSource
 import java.io.IOException
@@ -27,21 +28,21 @@ object NewsApi {
     @JvmStatic
 
     fun like(httpClient: IHttpClient, newsId: String): Boolean {
-        val res = httpClient.performGet("https://4pda.ru/wp-content/plugins/karma/ajax.php?p=$newsId&c=0&v=1", false, false).responseBody
+        val res = httpClient.performGet("https://${HostHelper.host}/wp-content/plugins/karma/ajax.php?p=$newsId&c=0&v=1", false, false).responseBody
         return res != null
     }
 
     @JvmStatic
 
     fun likeComment(httpClient: IHttpClient, newsId: String, postId: String): Boolean {
-        val res = httpClient.performGet("https://4pda.ru/wp-content/plugins/karma/ajax.php?p=$newsId&c=$postId&v=1", false, false).responseBody
+        val res = httpClient.performGet("https://${HostHelper.host}/wp-content/plugins/karma/ajax.php?p=$newsId&c=$postId&v=1", false, false).responseBody
         return res != null
     }
 
     @JvmStatic
     fun parseNewsBody(newsPageBody: String): String {
         var newsPageBody = newsPageBody
-        val doc = Jsoup.parse(newsPageBody, "https://4pda.ru")
+        val doc = Jsoup.parse(newsPageBody, "https://${HostHelper.host}")
         val bodyElement = doc.selectFirst("div.article:has(div.article-header)")
                 ?: doc.selectFirst("div.container:has(meta[itemprop=datePublished])")
                 ?: doc.selectFirst("div.container")
@@ -124,7 +125,7 @@ object NewsApi {
 
     fun parseNewsListPage(httpClient: IHttpClient, requestUrl: String, res: ArrayList<News>): String {
         val dailyNewsPage = httpClient.performGet(UrlExtensions.removeDoubleSplitters(requestUrl)).responseBody
-        val doc = Jsoup.parse(dailyNewsPage, "https://4pda.ru")
+        val doc = Jsoup.parse(dailyNewsPage, "https://${HostHelper.host}")
         val articleElements = doc.select("article.post")
         for (articleElement in articleElements) {
             val id = articleElement?.attr("itemId")

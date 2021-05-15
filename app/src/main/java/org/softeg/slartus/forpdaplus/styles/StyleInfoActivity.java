@@ -21,6 +21,7 @@ import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 /*
  * Created by slinkin on 17.06.13.
@@ -128,7 +129,7 @@ public class StyleInfoActivity extends BrowserViewsFragmentActivity {
         if (!WebViewExternals.isLoadImages("theme"))
             res = HtmlPreferences.modifyAttachedImagesBody(Functions.isWebviewAllowJavascriptInterface(), res);
 
-        webView.loadDataWithBaseURL("https://4pda.ru/forum/", res, "text/html", "UTF-8", null);
+        webView.loadDataWithBaseURL("https://"+ HostHelper.getHost() +"/forum/", res, "text/html", "UTF-8", null);
     }
 
     private void addValue(StringBuilder sb, String title, String value) {

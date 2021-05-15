@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdacommon.ShowInBrowserException;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -21,10 +22,10 @@ public class NewDevDbApi {
 
     public static ArrayList<DevCatalog> getStandartDevicesTypes() {
         ArrayList<DevCatalog> res = new ArrayList<>();
-        res.add(new DevCatalog("https://4pda.ru/devdb/phones/", "Телефоны").setType(DevCatalog.DEVICE_TYPE));
-        res.add(new DevCatalog("https://4pda.ru/devdb/pad/", "Планшеты").setType(DevCatalog.DEVICE_TYPE));
-        res.add(new DevCatalog("https://4pda.ru/devdb/ebook/", "Электронные книги").setType(DevCatalog.DEVICE_TYPE));
-        res.add(new DevCatalog("https://4pda.ru/devdb/smartwatch/", "Смарт часы").setType(DevCatalog.DEVICE_TYPE));
+        res.add(new DevCatalog("https://" + HostHelper.getHost() + "/devdb/phones/", "Телефоны").setType(DevCatalog.DEVICE_TYPE));
+        res.add(new DevCatalog("https://" + HostHelper.getHost() + "/devdb/pad/", "Планшеты").setType(DevCatalog.DEVICE_TYPE));
+        res.add(new DevCatalog("https://" + HostHelper.getHost() + "/devdb/ebook/", "Электронные книги").setType(DevCatalog.DEVICE_TYPE));
+        res.add(new DevCatalog("https://" + HostHelper.getHost() + "/devdb/smartwatch/", "Смарт часы").setType(DevCatalog.DEVICE_TYPE));
         return res;
     }
 
@@ -71,24 +72,24 @@ public class NewDevDbApi {
 
     public static Boolean isCatalogUrl(String url) {
         return Pattern
-                .compile("4pda\\.ru\\/devdb\\/(?:phones|ebook|pad|smartwatch)?(?:\\/all\\/?|\\/?$)", Pattern.CASE_INSENSITIVE)
+                .compile(HostHelper.getHostPattern()+"\\/devdb\\/(?:phones|ebook|pad|smartwatch)?(?:\\/all\\/?|\\/?$)", Pattern.CASE_INSENSITIVE)
                 .matcher(url).find();
     }
 
     public static Boolean isDevicesListUrl(String url) {
         return Pattern
-                .compile("4pda\\.ru\\/devdb\\/(?:phones|ebook|pad|smartwatch)\\/(?!all)", Pattern.CASE_INSENSITIVE)
+                .compile(HostHelper.getHostPattern()+"\\/devdb\\/(?:phones|ebook|pad|smartwatch)\\/(?!all)", Pattern.CASE_INSENSITIVE)
                 .matcher(url).find();
     }
 
     public static Boolean isDeviceUrl(String url) {
         return Pattern
-                .compile("4pda\\.ru\\/devdb\\/(?!phones|ebook|pad|smartwatch)[^$]+", Pattern.CASE_INSENSITIVE)
+                .compile(HostHelper.getHostPattern()+"\\/devdb\\/(?!phones|ebook|pad|smartwatch)[^$]+", Pattern.CASE_INSENSITIVE)
                 .matcher(url).find();
     }
 
     public static DevCatalog getCatalog(String url) throws ShowInBrowserException {
-        Matcher m = Pattern.compile("4pda.ru/devdb", Pattern.CASE_INSENSITIVE).matcher(url);
+        Matcher m = Pattern.compile(HostHelper.getHost() + "/devdb", Pattern.CASE_INSENSITIVE).matcher(url);
         if (!m.find())
             throw new ShowInBrowserException("Не умею обрабаывать ссылки такого типа!", url);
 
@@ -113,7 +114,7 @@ public class NewDevDbApi {
             default:
                 return root;
         }
-        DevCatalog devType = new DevCatalog("https://4pda.ru/devdb/" + uri.getPathSegments().get(0), title)
+        DevCatalog devType = new DevCatalog("https://" + HostHelper.getHost() + "/devdb/" + uri.getPathSegments().get(0), title)
                 .setType(DevCatalog.DEVICE_TYPE);
         devType.setParent(root);
         if (uri.getPathSegments().size() < 2) {

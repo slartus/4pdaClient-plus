@@ -18,6 +18,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.common.HtmlUtils;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -94,7 +95,7 @@ public class Post {
     }
 
     public static String getLink(String topicId, String postId) {
-        return "https://4pda.ru/forum/index.php?showtopic=" + topicId + "&view=findpost&p=" + postId;
+        return "https://"+ HostHelper.getHost() +"/forum/index.php?showtopic=" + topicId + "&view=findpost&p=" + postId;
     }
 
     public void setUserId(String value) {
@@ -286,7 +287,7 @@ public class Post {
 
                 String message = null;
                 try {
-                    String res = Client.getInstance().performGet("https://4pda.ru/forum/zka.php?i=" + postId + "&v=" + direction, true, false).getResponseBody();
+                    String res = Client.getInstance().performGet("https://"+ HostHelper.getHost() +"/forum/zka.php?i=" + postId + "&v=" + direction, true, false).getResponseBody();
 
                     Matcher m = Pattern.compile("ok:\\s*?((?:\\+|\\-)?\\d+)").matcher(res);
                     if (m.find()) {

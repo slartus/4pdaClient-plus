@@ -29,6 +29,7 @@ import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -99,7 +100,7 @@ public class BbCodesQuickView extends BaseQuickView {
 
         sb.append("</body></html>");
         webView.setWebViewClient(new MyWebViewClient());
-        webView.loadDataWithBaseURL("https://4pda.ru/forum/", sb.toString(), "text/html", "UTF-8", null);
+        webView.loadDataWithBaseURL("https://"+ HostHelper.getHost() +"/forum/", sb.toString(), "text/html", "UTF-8", null);
         webView.setOnTouchListener((view, motionEvent) -> {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
 //                    getSelectionStart() = getEditor().getSelectionStart();

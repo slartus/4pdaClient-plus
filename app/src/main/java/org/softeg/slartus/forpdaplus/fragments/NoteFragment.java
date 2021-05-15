@@ -29,6 +29,7 @@ import org.softeg.slartus.forpdaplus.emotic.Smiles;
 import org.softeg.slartus.forpdaplus.notes.Note;
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences;
 import org.softeg.slartus.forpdaplus.repositories.NotesRepository;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.lang.ref.WeakReference;
 
@@ -131,7 +132,7 @@ public class NoteFragment extends GeneralFragment {
                 addRow(getString(R.string.link), note.getUrlLink(), note.Url, rowparams, textviewparams);
             }
 
-            webView.loadDataWithBaseURL("https://4pda.ru/forum/", transformChatBody(note.Body), "text/html", "UTF-8", null);
+            webView.loadDataWithBaseURL("https://"+ HostHelper.getHost() +"/forum/", transformChatBody(note.Body), "text/html", "UTF-8", null);
         } catch (Throwable ex) {
             AppLog.e(getMainActivity(), ex);
         }

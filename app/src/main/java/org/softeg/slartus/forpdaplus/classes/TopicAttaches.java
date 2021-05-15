@@ -1,5 +1,7 @@
 package org.softeg.slartus.forpdaplus.classes;
 
+import org.softeg.slartus.forpdaplus.App;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,7 +21,7 @@ public class TopicAttaches extends ArrayList<TopicAttach> {
         while (m.find()) {
             Matcher m1 = p.matcher(m.group(2));
             if (m1.find())
-                add("https://4pda.ru" + m.group(1), m1.group(1), m.group(3));
+                add("https://"+ App.Host + m.group(1), m1.group(1), m.group(3));
 
         }
 

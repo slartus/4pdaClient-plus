@@ -13,6 +13,7 @@ import org.softeg.slartus.forpdaapi.TopicsApi
 import org.softeg.slartus.forpdacommon.ExtPreferences
 import org.softeg.slartus.forpdanotifyservice.BuildConfig
 import org.softeg.slartus.forpdanotifyservice.NotifierBase
+import org.softeg.slartus.hosthelper.HostHelper
 import java.util.*
 
 /**
@@ -91,8 +92,8 @@ class FavoritesNotifier(context: Context?) : NotifierBase(context) {
                 message = String.format("%s ответил в тему \"%s\", на которую вы подписаны",
                         unreadTopics.first().lastMessageAuthor, unreadTopics.first().title)
             }
-            var url = "https://4pda.ru/forum/index.php?autocom=favtopics"
-            if (unreadTopics.size == 1) url = "https://4pda.ru/forum/index.php?showtopic=" + unreadTopics.first().id + "&view=getnewpost"
+            var url = "https://${HostHelper.host}/forum/index.php?autocom=favtopics"
+            if (unreadTopics.size == 1) url = "https://${HostHelper.host}/forum/index.php?showtopic=" + unreadTopics.first().id + "&view=getnewpost"
             sendNotify(context, message, "Непрочитанные сообщения в темах", url, MY_NOTIFICATION_ID)
         } else if (unreadTopics.isEmpty()) {
             cancelNotification(context, MY_NOTIFICATION_ID)

@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.Client;
 import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
@@ -195,7 +196,7 @@ public class DeviceEdit {
         protected Void doInBackground(String... params) {
             try {
                 Matcher m = Pattern.compile("(\\d+)\\|\\|(.*)(\\n|$)")
-                        .matcher(Client.getInstance().performGet("https://4pda.ru/forum/index.php?act=profile-xhr&action=dev-autocomplete&q=" + requestText.replace(" ", "+") + "&limit=150").getResponseBody());
+                        .matcher(Client.getInstance().performGet("https://"+ App.Host+"/forum/index.php?act=profile-xhr&action=dev-autocomplete&q=" + requestText.replace(" ", "+") + "&limit=150").getResponseBody());
                 deviceIds.clear();
                 deviceNames.clear();
                 while (m.find()) {
@@ -249,7 +250,7 @@ public class DeviceEdit {
                         deviceStatus = Integer.valueOf(m.group(1));
                     }
 
-                    result = Client.getInstance().performGet("https://4pda.ru/forum/index.php?act=profile-xhr&action=dev-id-mod&dev_id=" + deviceId + "&dev_mod=").getResponseBody();
+                    result = Client.getInstance().performGet("https://"+ App.Host+"forum/index.php?act=profile-xhr&action=dev-id-mod&dev_id=" + deviceId + "&dev_mod=").getResponseBody();
                     m = Pattern.compile("\\d+\\|\\|(.*)").matcher(result);
                     if (m.find()) deviceName = m.group(1);
                 }
@@ -296,7 +297,7 @@ public class DeviceEdit {
         @Override
         protected Void doInBackground(String... params) {
             try {
-                Client.getInstance().performPost("https://4pda.ru/forum/index.php?act=profile-xhr&action=device", additionalHeaders);
+                Client.getInstance().performPost("https://"+ App.Host+"/forum/index.php?act=profile-xhr&action=device", additionalHeaders);
             } catch (Exception e) {
                 AppLog.e(mContext, e);
             }

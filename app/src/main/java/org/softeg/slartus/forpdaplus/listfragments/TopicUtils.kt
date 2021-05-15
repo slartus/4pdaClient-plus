@@ -17,6 +17,7 @@ import org.softeg.slartus.forpdaplus.classes.ThemeOpenParams
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.db.TopicsHistoryTable
+import org.softeg.slartus.hosthelper.HostHelper
 import java.io.IOException
 
 /**
@@ -58,7 +59,7 @@ object TopicUtils {
     }
 
     fun getTopicUrl(topicId: String, urlArgs: String): String {
-        return "https://4pda.ru/forum/index.php?showtopic=" + topicId + if (TextUtils.isEmpty(urlArgs)) "" else "&$urlArgs"
+        return "https://${HostHelper.host}/forum/index.php?showtopic=" + topicId + if (TextUtils.isEmpty(urlArgs)) "" else "&$urlArgs"
     }
 
     @JvmStatic

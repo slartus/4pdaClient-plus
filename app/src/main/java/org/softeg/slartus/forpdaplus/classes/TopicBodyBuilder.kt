@@ -10,6 +10,7 @@ import org.softeg.slartus.forpdaplus.emotic.Smiles
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository.Companion.instance
+import org.softeg.slartus.hosthelper.HostHelper
 import java.util.*
 
 /**
@@ -129,7 +130,7 @@ class TopicBodyBuilder(context: Context?, logined: Boolean, topic: ExtTopic?, ur
     private val titleBlock: String
         get() {
             val desc = if (TextUtils.isEmpty(topic!!.description)) "" else "<span class=\"comma\">, </span>" + topic!!.description
-            return ("<div class=\"topic_title_post\"><a href=\"https://4pda.ru/forum/index.php?showtopic="
+            return ("<div class=\"topic_title_post\"><a href=\"https://${HostHelper.host}/forum/index.php?showtopic="
                     + topic!!.id
                     + (if (TextUtils.isEmpty(m_UrlParams)) "" else "&$m_UrlParams") + "\">"
                     + "<span class=\"name\">" + topic!!.title + "</span>"

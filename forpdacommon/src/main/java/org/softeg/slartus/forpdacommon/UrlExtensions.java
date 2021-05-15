@@ -2,6 +2,8 @@ package org.softeg.slartus.forpdacommon;
 
 import android.net.Uri;
 
+import org.softeg.slartus.hosthelper.HostHelper;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Dictionary;
@@ -17,7 +19,7 @@ public class UrlExtensions {
     public static Dictionary<CharSequence, CharSequence> get4pdaUrlParams(CharSequence url,
                                                                           CharSequence[] constParams,
                                                                           CharSequence[] patterns) {
-        if (!Pattern.compile("4pda.ru", Pattern.CASE_INSENSITIVE)
+        if (!Pattern.compile(HostHelper.getHost(), Pattern.CASE_INSENSITIVE)
                 .matcher(url).find())
             return null;
         Dictionary<CharSequence, CharSequence> res = new Hashtable<>();

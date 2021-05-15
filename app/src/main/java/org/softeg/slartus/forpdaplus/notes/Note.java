@@ -9,6 +9,7 @@ import org.softeg.slartus.forpdaapi.IListItem;
 import org.softeg.slartus.forpdacommon.Functions;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.util.ArrayList;
 
@@ -51,19 +52,19 @@ public class Note implements IListItem {
     }
 
     public String getTopicLink() {
-        return "<a href='https://4pda.ru/forum/index.php?showtopic=" + TopicId + "'>" + Topic + "</a>";
+        return "<a href='https://"+ HostHelper.getHost() +"/forum/index.php?showtopic=" + TopicId + "'>" + Topic + "</a>";
     }
 
     public String getTopicUrl() {
-        return "https://4pda.ru/forum/index.php?showtopic=" + TopicId;
+        return "https://"+ HostHelper.getHost() +"/forum/index.php?showtopic=" + TopicId;
     }
 
     public String getUserLink() {
-        return "<a href='https://4pda.ru/forum/index.php?showuser=" + UserId + "'>" + User + "</a>";
+        return "<a href='https://"+ HostHelper.getHost() +"/forum/index.php?showuser=" + UserId + "'>" + User + "</a>";
     }
 
     public String getUserUrl() {
-        return "https://4pda.ru/forum/index.php?showuser=" + UserId;
+        return "https://"+ HostHelper.getHost() +"/forum/index.php?showuser=" + UserId;
     }
 
     public String getUrlLink() {

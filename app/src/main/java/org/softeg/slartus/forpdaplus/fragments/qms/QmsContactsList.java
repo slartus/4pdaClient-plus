@@ -3,7 +3,9 @@ package org.softeg.slartus.forpdaplus.fragments.qms;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.core.content.ContextCompat;
+
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -58,7 +60,6 @@ public class QmsContactsList extends BaseLoaderListFragment {
         if (Preferences.Notifications.Qms.isReadDone())
             reloadData();
     }
-
 
 
     @Override
@@ -123,14 +124,14 @@ public class QmsContactsList extends BaseLoaderListFragment {
 
         final List<MenuListDialog> list = new ArrayList<>();
         list.add(new MenuListDialog(getString(R.string.delete), () -> {
-            Handler handler=new Handler();
+            Handler handler = new Handler();
             new Thread(() -> {
                 try {
                     Map<String, String> additionalHeaders = new HashMap<>();
                     additionalHeaders.put("act", "qms-xhr");
                     additionalHeaders.put("action", "del-member");
                     additionalHeaders.put("del-mid", qmsUser.getId());
-                    Client.getInstance().performPost("https://4pda.ru/forum/index.php", additionalHeaders);
+                    Client.getInstance().performPost("https://" + App.Host + "/forum/index.php", additionalHeaders);
 
                     handler.post(this::reloadData);
 
@@ -193,9 +194,9 @@ public class QmsContactsList extends BaseLoaderListFragment {
 
                 holder = new ViewHolder();
                 assert convertView != null;
-                if(App.getInstance().getPreferences().getBoolean("isSquareAvarars",false)){
+                if (App.getInstance().getPreferences().getBoolean("isSquareAvarars", false)) {
                     holder.imgAvatar = convertView.findViewById(R.id.imgAvatarSquare);
-                }else {
+                } else {
                     holder.imgAvatar = convertView.findViewById(R.id.imgAvatar);
                 }
 

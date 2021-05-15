@@ -14,6 +14,7 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -72,7 +73,7 @@ public class ImageViewDialogFragment extends DialogFragment {
                         try {
                             URI uri = new URI(mUrl);
                             if (!uri.isAbsolute())
-                                url = "https://4pda.ru" + url;
+                                url = "https://"+ HostHelper.getHost() + url;
                         } catch (URISyntaxException e) {
                             e.printStackTrace();
                         }

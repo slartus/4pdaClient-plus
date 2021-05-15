@@ -25,6 +25,7 @@ import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.listtemplates.UserReputationBrickInfo
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository.Companion.instance
+import org.softeg.slartus.hosthelper.HostHelper
 import java.io.IOException
 import java.util.*
 
@@ -154,7 +155,7 @@ class UserReputationFragment : BrickFragmentListBase() {
          */
         @Throws(IOException::class)
         private fun loadRepImage() {
-            val body = Client.getInstance().performGet("https://4pda.ru/forum/index.php?act=rep&view=history&mid=236113&mode=to&order=asc").responseBody
+            val body = Client.getInstance().performGet("https://${HostHelper.host}/forum/index.php?act=rep&view=history&mid=236113&mode=to&order=asc").responseBody
             var el = Jsoup
                     .parse(body)
                     .select("td.row1>img")

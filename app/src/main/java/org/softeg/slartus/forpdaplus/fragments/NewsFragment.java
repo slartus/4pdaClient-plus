@@ -11,8 +11,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -204,7 +207,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.comment_item:
                 respond();
                 return true;
@@ -429,7 +432,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
 
     private String getPostId() {
-        final Pattern pattern = Pattern.compile("4pda.ru/\\d{4}/\\d{2}/\\d{2}/(\\d+)");
+        final Pattern pattern = Pattern.compile(App.Host + "/\\d{4}/\\d{2}/\\d{2}/(\\d+)");
         Matcher m = pattern.matcher(m_NewsUrl);
         if (m.find()) {
             return m.group(1);
@@ -438,12 +441,12 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
     }
 
     public static Boolean isAnchor(String url) {
-        final Pattern pattern = Pattern.compile("4pda.ru/\\d{4}/\\d{2}/\\d{2}/\\d+/*#.*");
+        final Pattern pattern = Pattern.compile(App.Host + "/\\d{4}/\\d{2}/\\d{2}/\\d+/*#.*");
         return pattern.matcher(url).find();
     }
 
     private void showAnchor(String url) {
-        final Pattern pattern = Pattern.compile("4pda.ru/\\d{4}/\\d{2}/\\d{2}/\\d+/*#(.*)");
+        final Pattern pattern = Pattern.compile(App.Host + "/\\d{4}/\\d{2}/\\d{2}/\\d+/*#(.*)");
         Matcher m = pattern.matcher(url);
         if (m.find()) {
             webView.evalJs("scrollToElement('" + m.group(1) + "');");
@@ -493,7 +496,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         super.showBody();
         try {
             setTitle(m_Title);
-            webView.loadDataWithBaseURL("https://4pda.ru/forum/", body, "text/html", "UTF-8", null);
+            webView.loadDataWithBaseURL("https://" + App.Host + "/forum/", body, "text/html", "UTF-8", null);
             if (buttonsPanel.getTranslationY() != 0)
                 ViewPropertyAnimator.animate(buttonsPanel)
                         .setInterpolator(new AccelerateDecelerateInterpolator())
@@ -541,7 +544,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     additionalHeaders.put("submit", "Отправить комментарий");
                     additionalHeaders.put("comment_reply_ID", ReplyId);
                     additionalHeaders.put("comment_reply_dp", Dp);
-                    m_ThemeBody = transformBody(client.performPost("https://4pda.ru/wp-comments-post.php", additionalHeaders, "UTF-8").getResponseBody());
+                    m_ThemeBody = transformBody(client.performPost("https://" + App.Host + "/wp-comments-post.php", additionalHeaders, "UTF-8").getResponseBody());
                 }
                 return true;
             } catch (Throwable e) {
@@ -597,7 +600,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                     .replaceAll("<form[^>]*action=\"/wp-comments-post.php\"[^>]*>[\\s\\S]*</form>",
                             "")
                     // заменяем обрезанные ссылки
-                    .replace("href=\"/", "href=\"https://4pda.ru/")
+                    .replace("href=\"/", "href=\"https://" + App.Host + "/")
                     .replace("href=\"#commentform\"", "href=\"https://4pdaservice.org/#commentform");
         }
 
@@ -626,7 +629,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
                 setLoading(false);
             } else {
                 setTitle(ex.getMessage());
-                webView.loadDataWithBaseURL("https://4pda.ru/forum/", m_ThemeBody, "text/html", "UTF-8", null);
+                webView.loadDataWithBaseURL("https://" + App.Host + "/forum/", m_ThemeBody, "text/html", "UTF-8", null);
                 AppLog.e(getMainActivity(), ex);
             }
         }

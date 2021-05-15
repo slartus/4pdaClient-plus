@@ -4,7 +4,9 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.Nullable;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +73,7 @@ public class PostPreviewFragment extends WebViewFragment {
         return false;
     }
 
-    public static PostPreviewFragment newInstance(String body, String tag){
+    public static PostPreviewFragment newInstance(String body, String tag) {
         PostPreviewFragment fragment = new PostPreviewFragment();
         Bundle args = new Bundle();
         args.putString("BB_CODES_BODY", body);
@@ -79,10 +81,12 @@ public class PostPreviewFragment extends WebViewFragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     public static void showSpecial(String body, String tag) {
-        MainActivity.addTab(App.getContext().getString(R.string.preview)+" " + App.getInstance().getTabByTag(tag).getTitle(), "preview_" + tag, newInstance(body, tag));
+        MainActivity.addTab(App.getContext().getString(R.string.preview) + " " + App.getInstance().getTabByTag(tag).getTitle(), "preview_" + tag, newInstance(body, tag));
     }
-    public void load(String body){
+
+    public void load(String body) {
         builder = new HtmlBuilder();
         builder.beginHtml("preview");
         builder.beginBody("preview");
@@ -93,9 +97,10 @@ public class PostPreviewFragment extends WebViewFragment {
 
         builder.endBody();
         builder.endHtml();
-        webView.loadDataWithBaseURL("https://4pda.ru/forum/", builder.getHtml().toString(), "text/html", "UTF-8", null);
+        webView.loadDataWithBaseURL("https://" + App.Host + "/forum/", builder.getHtml().toString(), "text/html", "UTF-8", null);
         webViewClient = new MyWebViewClient();
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -129,23 +134,26 @@ public class PostPreviewFragment extends WebViewFragment {
         load(getArguments().getString("BB_CODES_BODY"));
         return view;
     }
-    public class MyWebViewClient extends WebViewClient{
+
+    public class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, final String url) {
             IntentActivity.tryShowUrl(getMainActivity(), new Handler(), url, true, false);
             return true;
         }
     }
+
     public String parse(String text) {
         String html = text;
-        for (BBCode bbcode:bbCodes)
+        for (BBCode bbcode : bbCodes)
             html = html.replaceAll(bbcode.bbcode, bbcode.htmlcode);
 
         html = html.replaceAll("(\r\n|\r|\n|\n\r)", "<br/>");
 
         return html;
     }
-    private void initBBCodes(){
+
+    private void initBBCodes() {
         bbCodes.add(new BBCode("(?i)\\[B\\]", "<b>"));
         bbCodes.add(new BBCode("(?i)\\[/B\\]", "</b>"));
 
@@ -186,7 +194,7 @@ public class PostPreviewFragment extends WebViewFragment {
         bbCodes.add(new BBCode("(?i)\\[FONT=[\"|^$]*([^$]*?)[\"^$]*\\]", "<span style=\"font-family:$1\">"));
         bbCodes.add(new BBCode("(?i)\\[/FONT\\]", "</span>"));
 
-        bbCodes.add(new BBCode("(?i)\\[SNAPBACK\\]([^$]*?)\\[/SNAPBACK\\]", "<a href=\"/forum/index.php?act=findpost&amp;pid=$1\" target=\"_blank\" title=\"Перейти к сообщению\"><img src=\"https://s.4pda.ru/forum/style_images/1/post_snapback.gif\" alt=\"*\" border=\"0\"></a>"));
+        bbCodes.add(new BBCode("(?i)\\[SNAPBACK\\]([^$]*?)\\[/SNAPBACK\\]", "<a href=\"/forum/index.php?act=findpost&amp;pid=$1\" target=\"_blank\" title=\"Перейти к сообщению\"><img src=\"https://s." + App.Host + "/forum/style_images/1/post_snapback.gif\" alt=\"*\" border=\"0\"></a>"));
 
         bbCodes.add(new BBCode("(?i)\\[OFFTOP\\]", "<font style=\"font-size:9px;color:gray;\">"));
         bbCodes.add(new BBCode("(?i)\\[/OFFTOP\\]", "</font>"));
@@ -238,14 +246,15 @@ public class PostPreviewFragment extends WebViewFragment {
 
         bbCodes.add(new BBCode("name=\"([^$]*?)\"", "$1"));
         bbCodes.add(new BBCode("date=\"([^$]*?)\"", " @ $1"));
-        bbCodes.add(new BBCode("post=([^]^<]*)", "<a href=\"/forum/index.php?act=findpost&amp;pid=$1\" target=\"_blank\" title=\"Перейти к сообщению\"><img src=\"https://s.4pda.ru/forum/style_images/1/post_snapback.gif\" alt=\"*\" border=\"0\"></a>"));
+        bbCodes.add(new BBCode("post=([^]^<]*)", "<a href=\"/forum/index.php?act=findpost&amp;pid=$1\" target=\"_blank\" title=\"Перейти к сообщению\"><img src=\"https://s." + App.Host + "/forum/style_images/1/post_snapback.gif\" alt=\"*\" border=\"0\"></a>"));
 
     }
+
     private class BBCode {
         public String bbcode;
         public String htmlcode;
-        
-        public BBCode(final String bbcode, final String htmlcode){
+
+        public BBCode(final String bbcode, final String htmlcode) {
             this.bbcode = bbcode;
             this.htmlcode = htmlcode;
         }

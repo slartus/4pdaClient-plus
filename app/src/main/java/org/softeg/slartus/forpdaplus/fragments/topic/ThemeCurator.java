@@ -13,6 +13,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 /**
  * Created by radiationx on 15.11.15.
@@ -123,7 +124,7 @@ public class ThemeCurator {
                     public void onPositive(MaterialDialog dialog) {
                         try {
                             String url = String
-                                    .format("https://4pda.ru/forum/index.php?act=mmod&t=%s&num=%s&rating=%s",
+                                    .format("https://"+ HostHelper.getHost() +"/forum/index.php?act=mmod&t=%s&num=%s&rating=%s",
                                             topicId, mNums, mRating);
                             if(fragment instanceof CuratorFragment)
                                 ((CuratorFragment)fragment).load(url, topicId);

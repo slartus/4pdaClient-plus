@@ -24,6 +24,7 @@ android {
 }
 
 dependencies {
+    api project(':hosthelper')
     api "com.squareup.okhttp3:okhttp-urlconnection:$rootProject.okhttp3"
     implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttp3"
     api 'androidx.legacy:legacy-support-v4:1.0.0'

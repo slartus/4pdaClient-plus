@@ -15,6 +15,7 @@ import org.softeg.slartus.forpdaapi.qms.QmsUsers;
 import org.softeg.slartus.forpdacommon.ExtDateFormat;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdanotifyservice.NotifierBase;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -295,7 +296,7 @@ public class QmsNotifier extends NotifierBase {
         int unreadMessagesCount = QmsUsers.unreadMessageUsersCount(mails);
         if (hasUnreadMessage) {
             Log.i(TAG, "notify!");
-            String url = "https://4pda.ru/forum/index.php?act=qms";
+            String url = "https://"+ HostHelper.getHost() +"/forum/index.php?act=qms";
 
             if (unreadMessagesCount == 1)// если новые сообщения только с одним пользователем
                 url += "&mid=" + mails.get(0).getId();

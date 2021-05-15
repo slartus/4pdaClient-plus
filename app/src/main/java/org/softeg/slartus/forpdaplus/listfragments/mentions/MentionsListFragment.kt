@@ -42,6 +42,7 @@ import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment
 import org.softeg.slartus.forpdaplus.prefs.Preferences
 import org.softeg.slartus.forpdaplus.repositories.InternetConnection
+import org.softeg.slartus.hosthelper.HostHelper
 import java.util.*
 import java.util.regex.Pattern
 
@@ -51,7 +52,7 @@ class MentionsListFragment : WebViewFragment() {
         fun newFragment() = MentionsListFragment()
 
         private const val FILECHOOSER_RESULTCODE = 1
-        const val URL = "https://4pda.ru/forum/index.php?act=mentions"
+        val URL = "https://${HostHelper.host}/forum/index.php?act=mentions"
     }
 
     private val mHandler = Handler()
@@ -135,7 +136,7 @@ class MentionsListFragment : WebViewFragment() {
         body_webview.settings.useWideViewPort = true
         body_webview.settings.defaultFontSize = Preferences.Topic.getFontSize()
         body_webview.addJavascriptInterface(this, "HTMLOUT")
-        body_webview.loadDataWithBaseURL("https://4pda.ru/forum/", "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
+        body_webview.loadDataWithBaseURL("https://${HostHelper.host}/forum/", "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
                 "</head><body bgcolor=" + AppTheme.currentBackgroundColorHtml + "></body></html>", "text/html", "UTF-8", null)
         registerForContextMenu(body_webview)
         buttonsPanel = findViewById(R.id.buttonsPanel) as FrameLayout
@@ -201,7 +202,7 @@ class MentionsListFragment : WebViewFragment() {
 
     private fun showHtmlBody(body: String?) {
         try {
-            body_webview.loadDataWithBaseURL("https://4pda.ru/forum/", body, "text/html", "UTF-8", null)
+            body_webview.loadDataWithBaseURL("https://${HostHelper.host}/forum/", body, "text/html", "UTF-8", null)
             if (buttonsPanel!!.translationY != 0f)
                 ViewPropertyAnimator.animate(buttonsPanel)
                         .setInterpolator(AccelerateDecelerateInterpolator())

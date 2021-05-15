@@ -12,6 +12,7 @@ import android.webkit.WebViewClient;
 import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.emotic.Smiles;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.util.Hashtable;
 import java.util.Set;
@@ -87,7 +88,7 @@ public class EmoticsQuickView extends BaseQuickView {
 
         sb.append("</body></html>");
         webView.setWebViewClient(new MyWebViewClient());
-        webView.loadDataWithBaseURL("https://4pda.ru/forum/", sb.toString(), "text/html", "UTF-8", null);
+        webView.loadDataWithBaseURL("https://"+ HostHelper.getHost() +"/forum/", sb.toString(), "text/html", "UTF-8", null);
     }
 
     public class MyWebViewClient extends WebViewClient {

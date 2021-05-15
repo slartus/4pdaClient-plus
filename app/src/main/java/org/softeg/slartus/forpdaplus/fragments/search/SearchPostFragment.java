@@ -47,6 +47,7 @@ import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -148,7 +149,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
         mWvBody.getSettings().setUseWideViewPort(true);
         mWvBody.getSettings().setDefaultFontSize(Preferences.Topic.getFontSize());
         mWvBody.addJavascriptInterface(this, "HTMLOUT");
-        mWvBody.loadDataWithBaseURL("https://4pda.ru/forum/", "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
+        mWvBody.loadDataWithBaseURL("https://"+ HostHelper.getHost() +"/forum/", "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
                 "</head><body bgcolor=" + AppTheme.getCurrentBackgroundColorHtml() + "></body></html>", "text/html", "UTF-8", null);
         registerForContextMenu(mWvBody);
         buttonsPanel = (FrameLayout) findViewById(R.id.buttonsPanel);
@@ -219,7 +220,7 @@ public class SearchPostFragment extends WebViewFragment implements ISearchResult
     private void showHtmlBody(String body) {
         try {
             MainActivity.searchSettings = SearchSettings.parse(getSearchQuery());
-            mWvBody.loadDataWithBaseURL("https://4pda.ru/forum/", body, "text/html", "UTF-8", null);
+            mWvBody.loadDataWithBaseURL("https://"+ HostHelper.getHost() +"/forum/", body, "text/html", "UTF-8", null);
             if (buttonsPanel.getTranslationY() != 0)
                 ViewPropertyAnimator.animate(buttonsPanel)
                         .setInterpolator(new AccelerateDecelerateInterpolator())

@@ -12,6 +12,7 @@ import org.softeg.slartus.forpdacommon.BasicNameValuePair;
 import org.softeg.slartus.forpdacommon.NameValuePair;
 import org.softeg.slartus.forpdacommon.URIUtils;
 import org.softeg.slartus.forpdacommon.UrlExtensions;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -129,7 +130,7 @@ public class SearchSettings implements Parcelable {
         qualms.add(new BasicNameValuePair("result", m_ResultView));
         qualms.add(new BasicNameValuePair("noform", "1"));
 
-        String uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
+        String uri = URIUtils.createURI("http", HostHelper.getHost(), "/forum/index.php",
                 qualms, "windows-1251");
         return uri;
     }

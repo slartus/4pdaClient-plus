@@ -5,6 +5,7 @@ import android.content.Context;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.classes.Devices;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.util.Hashtable;
 
@@ -105,7 +106,7 @@ public class HtmlPreferences {
 
     private static String modifyLinksBody(String value) {
         return value
-                .replaceAll("(src|href)=(['\"])index.php", "$1=$2https://4pda.ru/forum/index.php")
-                .replaceAll("(src|href)=(['\"])/forum", "$1=$2https://4pda.ru/forum");
+                .replaceAll("(src|href)=(['\"])index.php", "$1=$2https://"+ HostHelper.getHost() +"/forum/index.php")
+                .replaceAll("(src|href)=(['\"])/forum", "$1=$2https://"+ HostHelper.getHost() +"/forum");
     }
 }

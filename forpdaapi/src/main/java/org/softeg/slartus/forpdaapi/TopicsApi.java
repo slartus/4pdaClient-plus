@@ -17,6 +17,7 @@ import org.softeg.slartus.forpdacommon.NameValuePair;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdacommon.PatternExtensions;
 import org.softeg.slartus.forpdacommon.URIUtils;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class TopicsApi {
         qparams.add(new BasicNameValuePair("st", Integer.toString(listInfo.getFrom())));
 
 
-        String uri = URIUtils.createURI("http", "4pda.ru", "/forum/index.php",
+        String uri = URIUtils.createURI("http", HostHelper.getHost(), "/forum/index.php",
                 qparams, "UTF-8");
 
         String pageBody = HttpHelper.performGet(uri).getResponseBody();
@@ -173,7 +174,7 @@ public class TopicsApi {
             res = SearchApi.INSTANCE.parse(pageBody, listInfo);
         } else {
             int start = listInfo.getFrom();
-            Pattern lastPageStartPattern = Pattern.compile("<a href=\"(https?://4pda.ru)?/forum/index.php\\?showforum=\\d[^\"]*?st=(\\d+)",
+            Pattern lastPageStartPattern = Pattern.compile("<a href=\"(https?://"+ HostHelper.getHost() +")?/forum/index.php\\?showforum=\\d[^\"]*?st=(\\d+)",
                     Pattern.CASE_INSENSITIVE);
 
             String today = Functions.getToday();

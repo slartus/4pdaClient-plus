@@ -841,7 +841,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                 MainActivity.addTab(brickInfo.getTitle(), brickInfo.getName(), brickInfo.createFragment());
                 return true;
             case R.id.mentions_item:
-                MainActivity.addTab("Упоминания", "https://4pda.ru/forum/index.php?act=mentions",
+                MainActivity.addTab("Упоминания", "https://" + App.Host + "/forum/index.php?act=mentions",
                         MentionsListFragment.Companion.newFragment());
                 return true;
             case R.id.profile_item:
@@ -859,7 +859,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             case R.id.registration_item:
                 Intent marketIntent = new Intent(
                         Intent.ACTION_VIEW,
-                        Uri.parse("https://4pda.ru/forum/index.php?act=Reg&CODE=00"));
+                        Uri.parse("https://" + App.Host + "/forum/index.php?act=Reg&CODE=00"));
                 MainActivity.this.startActivity(marketIntent);
                 return true;
         }

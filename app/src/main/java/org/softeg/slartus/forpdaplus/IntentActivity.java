@@ -56,6 +56,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -84,7 +85,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             Uri uri = Uri.parse(url);
             String u = uri.getQueryParameter("u");
 
-            if (url.contains("4pda.ru/pages/go") && !TextUtils.isEmpty(u))
+            if (url.contains(App.Host + "/pages/go") && !TextUtils.isEmpty(u))
                 return URLDecoder.decode(u, "UTF-8");
         } catch (Throwable ignore) {
 
@@ -96,8 +97,8 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     public static Boolean isNews(String url) {
 
         url = IntentActivity.getRedirectUrl(url);
-        final Pattern pattern = PatternExtensions.compile("4pda.ru/\\d{4}/\\d{2}/\\d{2}/\\d+");
-        final Pattern pattern1 = PatternExtensions.compile("4pda.ru/\\w+/(?:older|newer)/\\d+");
+        final Pattern pattern = PatternExtensions.compile(App.Host + "/\\d{4}/\\d{2}/\\d{2}/\\d+");
+        final Pattern pattern1 = PatternExtensions.compile(App.Host + "/\\w+/(?:older|newer)/\\d+");
 
         return pattern.matcher(url).find() || pattern1.matcher(url).find();
     }
@@ -116,8 +117,8 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
     public static Boolean isNewsList(String url) {
         url = IntentActivity.getRedirectUrl(url);
-        String[] patterns = {"4pda.ru/tag/.*", "4pda.ru/page/(\\d+)/", "4pda.ru/?$",
-                "4pda.ru/news", "4pda.ru/articles", "4pda.ru/software", "4pda.ru/games", "4pda.ru/reviews"};
+        String[] patterns = {App.Host + "/tag/.*", App.Host + "/page/(\\d+)/", App.Host + "/?$",
+                App.Host + "/news", App.Host + "/articles", App.Host + "/software", App.Host + "/games", App.Host + "/reviews"};
         for (String pattern : patterns) {
             if (PatternExtensions.compile(pattern).matcher(url).find())
                 return true;
@@ -153,7 +154,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
     public static boolean isTheme(Uri uri) {
-        if (!"4pda.ru".equals(uri.getHost()))
+        if (!App.Host.equals(uri.getHost()))
             return false;
         return
                 uri.getQueryParameter("showtopic") != null ||
@@ -167,9 +168,9 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             return url;
 
         url = TopicApi.toMobileVersionUrl(url);
-        Matcher m = PatternExtensions.compile("4pda.ru.*?act=boardrules").matcher(url);// переброс с правил форума на графический вариант
+        Matcher m = PatternExtensions.compile(App.Host + ".*?act=boardrules").matcher(url);// переброс с правил форума на графический вариант
         if (m.find()) {
-            return "https://4pda.ru/forum/index.php?showtopic=296875";
+            return "https://" + App.Host + "/forum/index.php?showtopic=296875";
         }
 
         return url;
@@ -177,7 +178,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
     public static boolean tryShowSearch(String url) {
 
-        Matcher m = PatternExtensions.compile("4pda.ru.*?act=search").matcher(url);
+        Matcher m = PatternExtensions.compile(App.Host + ".*?act=search").matcher(url);
         if (m.find()) {
             MainActivity.startForumSearch(SearchSettings.parse(url));
             return true;
@@ -186,7 +187,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
     public static boolean tryReputation(Activity context, Handler handler, Uri uri) {
-        if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
+        if (uri.getHost() != null && !uri.getHost().contains(App.Host))
             return false;
         if (!"rep".equals(uri.getQueryParameter("act")))
             return false;
@@ -237,7 +238,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
 
     public static boolean tryShowClaim(Activity context, Handler handler, Uri uri) {
-        if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
+        if (uri.getHost() != null && !uri.getHost().contains(App.Host))
             return false;
         if (!"report".equals(uri.getQueryParameter("act")))
             return false;
@@ -254,7 +255,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
 
     public static boolean tryProfile(Uri uri) {
-        if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
+        if (uri.getHost() != null && !uri.getHost().contains(App.Host))
             return false;
         if ("profile".equals(uri.getQueryParameter("act"))
                 && !TextUtils.isEmpty(uri.getQueryParameter("id"))) {
@@ -275,7 +276,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
     public static boolean tryEditProfile(Uri uri) {
-        if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
+        if (uri.getHost() != null && !uri.getHost().contains(HostHelper.getHost()))
             return false;
         if (!"usercp".equals(uri.getQueryParameter("act")))
             return false;
@@ -288,7 +289,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
     public static boolean tryEditDevice(Activity context, Uri uri) {
-        if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
+        if (uri.getHost() != null && !uri.getHost().contains(App.Host))
             return false;
         if ("profile-xhr".equals(uri.getQueryParameter("act"))) {
             if ("device".equals(uri.getQueryParameter("action")))
@@ -304,8 +305,8 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
     public static boolean tryShowForum(String url) {
-        String[] patterns = {"4pda.ru.*?showforum=(\\d+)$", "4pda.ru/forum/lofiversion/index.php\\?f(\\d+)\\.html",
-                "4pda.ru/forum/index.php.*?act=idx"};
+        String[] patterns = {App.Host + ".*?showforum=(\\d+)$", App.Host + "/forum/lofiversion/index.php\\?f(\\d+)\\.html",
+                App.Host + "/forum/index.php.*?act=idx"};
         for (String pattern : patterns) {
             Matcher m = PatternExtensions.compile(pattern).matcher(url);
             if (m.find()) {
@@ -334,7 +335,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
 
     private static CharSequence getRedirect(CharSequence url) {
-        Matcher m = PatternExtensions.compile("4pda\\.ru/pages/go/\\?u=(.*?)$").matcher(url);
+        Matcher m = PatternExtensions.compile(HostHelper.getHostPattern()+"/pages/go/\\?u=(.*?)$").matcher(url);
         if (m.find()) {
             try {
                 return UrlExtensions.decodeUrl(m.group(1));
@@ -354,7 +355,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
         url = getRedirect(url).toString();
         url = url.trim();
 
-        if (url.contains("4pda.ru") & !url.contains("http://") & !url.contains("https://"))
+        if (url.contains(App.Host) & !url.contains("http://") & !url.contains("https://"))
             url = "https://" + url;
         Uri uri = Uri.parse(url.toLowerCase());
 
@@ -455,7 +456,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
     private static boolean tryFavorites(String url) {
-        Matcher m = PatternExtensions.compile("4pda.ru.*?autocom=favtopics").matcher(url);
+        Matcher m = PatternExtensions.compile(App.Host + ".*?autocom=favtopics").matcher(url);
         if (m.find()) {
             MainActivity.showListFragment(new FavoritesBrickInfo().getName(), null);
             return true;
@@ -464,7 +465,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
     private static boolean tryFav(String url) {
-        Matcher m = PatternExtensions.compile("4pda.ru.*?act=fav").matcher(url);
+        Matcher m = PatternExtensions.compile(App.Host + ".*?act=fav").matcher(url);
         if (m.find()) {
             MainActivity.showListFragment(new FavoritesBrickInfo().getName(), null);
             return true;
@@ -493,7 +494,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
     public static boolean tryShowEditPost(Activity context, Uri uri, String authKey) {
-        if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
+        if (uri.getHost() != null && !uri.getHost().contains(App.Host))
             return false;
         if (!"post".equals(uri.getQueryParameter("act")))
             return false;
@@ -509,7 +510,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
     public static boolean tryShowTopicAttaches(Uri uri) {
-        if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
+        if (uri.getHost() != null && !uri.getHost().contains(App.Host))
             return false;
         if (!"attach".equals(uri.getQueryParameter("act")))
             return false;
@@ -523,7 +524,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
     public static boolean tryShowQms(Uri uri) {
-        if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
+        if (uri.getHost() != null && !uri.getHost().contains(App.Host))
             return false;
         String mid;
         String tid;
@@ -552,7 +553,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
     public static boolean tryShowTopicWriters(Uri uri) {
-        if (uri.getHost() != null && !uri.getHost().contains("4pda.ru"))
+        if (uri.getHost() != null && !uri.getHost().contains(App.Host))
             return false;
 
         if (!"stats".equals(uri.getQueryParameter("act")))
@@ -580,9 +581,9 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 || uri.getHost().toLowerCase().contains("mzstatic.com")
                 || uri.getHost().toLowerCase().contains("savepice.ru")))
             return false;
-        boolean isFile = PatternExtensions.compile("https?://4pda.ru/forum/dl/post/\\d+/[^\"]*")
+        boolean isFile = PatternExtensions.compile("https?://" + App.Host + "/forum/dl/post/\\d+/[^\"]*")
                 .matcher(uri.toString()).find() ||
-                PatternExtensions.compile("https?://st.4pda.ru/wp-content/uploads/[^\"]*")
+                PatternExtensions.compile("https?://st." + App.Host + "/wp-content/uploads/[^\"]*")
                         .matcher(uri.toString()).find()
                 ||
                 ("attach".equals(uri.getQueryParameter("act")) && !TextUtils.isEmpty(uri.getQueryParameter("id")));
@@ -658,7 +659,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
     }
 
     private static Boolean is4pdaUrl(String url) {
-        return PatternExtensions.compile("4pda\\.ru").matcher(url).find();
+        return PatternExtensions.compile(HostHelper.getHostPattern()).matcher(url).find();
     }
 
     public static void showInDefaultBrowser(Context context, String url) {

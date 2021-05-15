@@ -4,8 +4,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.Nullable;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,6 +39,7 @@ import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
+import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -228,7 +232,7 @@ public class CuratorFragment extends WebViewFragment {
                     String groupAndDate = postMatcher.group(4);
                     String postBody = postMatcher.group(5);
 
-                    addPost(builder,postId,userId,userNick,groupAndDate,postBody);
+                    addPost(builder, postId, userId, userNick, groupAndDate, postBody);
                 }
             }
             builder.append("</div>");
@@ -241,13 +245,13 @@ public class CuratorFragment extends WebViewFragment {
     }
 
     private void addPost(HtmlBuilder builder, String postId, String userId, String userNick,
-                         String groupAndDate, String postBody){
+                         String groupAndDate, String postBody) {
         builder.append("<div class=\"post_container\">");
         builder.append("<div class=\"post_header\">");
-        builder.append("<a class=\"inf nick\" href=\"https://4pda.ru/forum/index.php?showuser=")
+        builder.append("<a class=\"inf nick\" href=\"https://" + App.Host + "/forum/index.php?showuser=")
                 .append(userId).append("\"><span><b>").append(userNick)
                 .append("</b></span></a>");
-        builder.append("<a class=\"inf link\" href=\"https://4pda.ru/forum/index.php?act=findpost&amp;pid=")
+        builder.append("<a class=\"inf link\" href=\"https://" + App.Host + "/forum/index.php?act=findpost&amp;pid=")
                 .append(postId).append("\"><span><span class=\"sharp\">#</span>").append(postId)
                 .append("</span></a>");
         builder.append("<div class=\"date-link\"><span class=\"inf date\"><span>")
@@ -262,7 +266,7 @@ public class CuratorFragment extends WebViewFragment {
 
     private void showThemeBody(String body) {
         try {
-            webView.loadDataWithBaseURL("https://4pda.ru/forum/", body, "text/html", "UTF-8", null);
+            webView.loadDataWithBaseURL("https://" + HostHelper.getHost() + "/forum/", body, "text/html", "UTF-8", null);
             webView.setWebViewClient(new MyWebViewClient());
         } catch (Exception ex) {
             AppLog.e(getMainActivity(), ex);
