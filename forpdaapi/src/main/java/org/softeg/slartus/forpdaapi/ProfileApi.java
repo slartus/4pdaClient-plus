@@ -202,7 +202,7 @@ public class ProfileApi {
             throw new NotReportException("Форма логина не найдена");
         String formText = m.group(1);
         m = Pattern
-                .compile("<img[^>]*?src=\"([^\"]*?turing."+ HostHelper.getHost() +"/captcha[^\"]*)\"")
+                .compile("<img[^>]*?src=\"([^\"]*?turing.[^/]+/captcha[^\"]*)\"")
                 .matcher(formText);
         if (!m.find())
             throw new NotReportException("Капча не найдена");

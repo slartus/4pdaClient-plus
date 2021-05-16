@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.RenderProcessGoneDetail;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -151,11 +152,11 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     public static String getThemeUrl(CharSequence topicId) {
-        return "https://"+ HostHelper.getHost() +"/forum/index.php?showtopic=" + topicId;
+        return "https://" + HostHelper.getHost() + "/forum/index.php?showtopic=" + topicId;
     }
 
     public static String getThemeUrl(CharSequence topicId, CharSequence urlParams) {
-        return String.format("https://"+ HostHelper.getHost() +"/forum/index.php?showtopic=%s%s", topicId, TextUtils.isEmpty(urlParams) ? "" : ("&" + urlParams));
+        return String.format("https://" + HostHelper.getHost() + "/forum/index.php?showtopic=%s%s", topicId, TextUtils.isEmpty(urlParams) ? "" : ("&" + urlParams));
     }
 
     public static void showTopicById(CharSequence topicId, CharSequence urlParams) {
@@ -329,6 +330,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                     })
                     .setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS);
         });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            webView.setRendererPriorityPolicy(WebView.RENDERER_PRIORITY_BOUND, true);
+        }
         //webView.getSettings().setJavaScriptEnabled(false);
     }
 
@@ -516,7 +520,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 case R.id.link_item:
                     if (topic != null) {
                         ExtUrl.showSelectActionDialog(getMainActivity(), getS(R.string.link),
-                                TextUtils.isEmpty(getLastUrl()) ? ("https://"+ HostHelper.getHost() +"/forum/index.php?showtopic=" + topic.getId()) : getLastUrl());
+                                TextUtils.isEmpty(getLastUrl()) ? ("https://" + HostHelper.getHost() + "/forum/index.php?showtopic=" + topic.getId()) : getLastUrl());
                     }
                     return true;
                 case R.id.avatars_item:
@@ -835,7 +839,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 list.add(new MenuListDialog(getS(R.string.quote_post), () -> quote(m_Topic.getForumId(), m_Topic.getId(), postId, postDate, userId, userNick)));
             }
             list.add(new MenuListDialog(getS(R.string.create_note), () -> NoteDialog.showDialog(mHandler, getMainActivity(), m_Topic.getTitle(), null,
-                    "https://"+ HostHelper.getHost() +"/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
+                    "https://" + HostHelper.getHost() + "/forum/index.php?showtopic=" + m_Topic.getId() + "&view=findpost&p=" + postId,
                     m_Topic.getId(), m_Topic.getTitle(), postId, null, null)));
 
             ExtUrl.showContextDialog(getContext(), null, list);
@@ -853,7 +857,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 setSubtitle(m_Topic.getCurrentPage() + "/" + m_Topic.getPagesCount());
 
             //webView.loadDataWithBaseURL(m_LastUrl, body, "text/html", "UTF-8", null);
-            webView.loadDataWithBaseURL("https://"+ HostHelper.getHost() +"/forum/", body, "text/html", "UTF-8", null);
+            webView.loadDataWithBaseURL("https://" + HostHelper.getHost() + "/forum/", body, "text/html", "UTF-8", null);
 
             TopicsHistoryTable.addHistory(m_Topic, m_LastUrl);
             if (buttonsPanel.getTranslationY() != 0)
@@ -944,9 +948,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         url = IntentActivity.normalizeThemeUrl(url);
 
         String[] patterns = {
-                "(/+"+ HostHelper.getHost() +"/+forum/+index.php\\?.*?showtopic=[^\"]*)",
-                "(/+"+ HostHelper.getHost() +"/+forum/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)$",
-                "(/+"+ HostHelper.getHost() +"/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)$"
+                "(/+" + HostHelper.getHost() + "/+forum/+index.php\\?.*?showtopic=[^\"]*)",
+                "(/+" + HostHelper.getHost() + "/+forum/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)$",
+                "(/+" + HostHelper.getHost() + "/+index.php\\?.*?act=findpost&pid=\\d+[^\"]*?)$"
         };
 
 
@@ -1014,7 +1018,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
         Matcher m = Pattern.compile("lofiversion/index.php\\?t(\\d+)(?:-(\\d+))?.html", Pattern.CASE_INSENSITIVE)
                 .matcher(url);
         if (m.find())
-            return "https://"+ HostHelper.getHost() +"/forum/index.php?showtopic=" + m.group(1) +
+            return "https://" + HostHelper.getHost() + "/forum/index.php?showtopic=" + m.group(1) +
                     (m.group(2) != null ? ("&st=" + m.group(2)) : "");
         return url;
     }
@@ -1246,6 +1250,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     private class MyWebViewClient extends WebViewClient {
+        public MyWebViewClient(){
+
+        }
         private final long LOADING_ERROR_TIMEOUT = TimeUnit.SECONDS.toMillis(45);
 
         // WebView instance is kept in WeakReference because of mPageLoadingTimeoutHandlerTask
@@ -1269,6 +1276,12 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             } else {
                 mOnErrorUrl = url;
             }
+        }
+
+        @Override
+        public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
+            Log.d(TAG, "onRenderProcessGone");
+            return super.onRenderProcessGone(view, detail);
         }
 
         @Override
@@ -1403,7 +1416,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
 
         private boolean checkIsPoll(String url) {
-            Matcher m = Pattern.compile(HostHelper.getHost()+".*?addpoll=1", Pattern.CASE_INSENSITIVE).matcher(url);
+            Matcher m = Pattern.compile(HostHelper.getHost() + ".*?addpoll=1", Pattern.CASE_INSENSITIVE).matcher(url);
             if (m.find()) {
                 Uri uri = Uri.parse(url);
                 uri = uri.buildUpon()
@@ -1418,7 +1431,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         private boolean tryDeletePost(String url) {
 
-            Matcher m = Pattern.compile(HostHelper.getHost()+"/forum/index.php\\?act=Mod&CODE=04&f=(\\d+)&t=(\\d+)&p=(\\d+)&st=(\\d+)&auth_key=(.*?)", Pattern.CASE_INSENSITIVE).matcher(url);
+            Matcher m = Pattern.compile(HostHelper.getHost() + "/forum/index.php\\?act=Mod&CODE=04&f=(\\d+)&t=(\\d+)&p=(\\d+)&st=(\\d+)&auth_key=(.*?)", Pattern.CASE_INSENSITIVE).matcher(url);
             if (m.find()) {
 
                 prepareDeleteMessage(m.group(3));
@@ -1429,7 +1442,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         private boolean tryQuote(final String url) {
 
-            Matcher m = Pattern.compile(HostHelper.getHost()+"/forum/index.php\\?act=Post&CODE=02&f=\\d+&t=\\d+&qpid=\\d+", Pattern.CASE_INSENSITIVE).matcher(url);
+            Matcher m = Pattern.compile(HostHelper.getHost() + "/forum/index.php\\?act=Post&CODE=02&f=\\d+&t=\\d+&qpid=\\d+", Pattern.CASE_INSENSITIVE).matcher(url);
             if (m.find()) {
                 showQuoteEditor(url);
                 return true;
@@ -1463,10 +1476,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 ThemeFragment themeFragment = themeFragmentRef.get();
                 if (themeFragment != null && themeFragment.isAdded()) {
                     themeFragment.m_LastUrl = forums[0];
-                    themeFragment.m_LastUrl = "https://"+ HostHelper.getHost() +"/forum/index.php?" + prepareTopicUrl(themeFragment.m_LastUrl);
+                    themeFragment.m_LastUrl = "https://" + HostHelper.getHost() + "/forum/index.php?" + prepareTopicUrl(themeFragment.m_LastUrl);
 
                     if (forums.length == 1) {
-                        themeFragment.lastResponse = Http.Companion.getInstance().performGet("https://"+ HostHelper.getHost() +"/forum/index.php?" + prepareTopicUrl(themeFragment.m_LastUrl));
+                        themeFragment.lastResponse = Http.Companion.getInstance().performGet("https://" + HostHelper.getHost() + "/forum/index.php?" + prepareTopicUrl(themeFragment.m_LastUrl));
                         pageBody = themeFragment.lastResponse.getResponseBody();
                         Client.getInstance().check(pageBody);
                     } else
