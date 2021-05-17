@@ -80,23 +80,25 @@ object TopicParser {
             context, logined, topic, urlParams,
             isWebviewAllowJavascriptInterface
         )
-        val doc = Jsoup.parse(topicBody)
 
-        //>>ОПРОС
-//        Element pollElement = doc.selectFirst("form[action*=addpoll=1]");
-//        if (pollElement != null) {
-//            StringBuilder pollBuilder = new StringBuilder();
-//            pollBuilder.append("<form action=\"modules.php\" method=\"get\">");
-//            Element el = pollElement.selectFirst("th");
-//            if (el != null)
-//                pollBuilder.append("<div class=\"poll_title\"><span>").append(el.text()).append("</span></div>");
-//            boolean voted = false;
-//        }
-        //Boolean browserStyle = prefs.getBoolean("theme.BrowserStylePreRemove", false);
         topicBodyBuilder.beginTopic()
 
+        //<<опрос
+        parsePoll(topicBodyBuilder, mainMatcher.group(1), logined, urlParams)
+
+        parsePosts(topicBodyBuilder, topicBody, spoilFirstPost)
+        topicBodyBuilder.endTopic()
+        return topicBodyBuilder
+    }
+
+    private fun parsePoll(
+        topicBodyBuilder: TopicBodyBuilder,
+        body: String?,
+        logined: Boolean,
+        urlParams: String?
+    ) {
         // TODO!: переделать на jsoup
-        var pollMatcher = pollFormPattern.matcher(mainMatcher.group(1))
+        var pollMatcher = pollFormPattern.matcher(body)
         if (pollMatcher.find()) {
             val pollSource = pollMatcher.group(1)
             val pollBuilder = StringBuilder()
@@ -167,7 +169,13 @@ object TopicParser {
                 urlParams != null && urlParams.contains("poll_open=true")
             )
         }
-        //<<опрос
+    }
+
+    private fun parsePosts(
+        topicBodyBuilder: TopicBodyBuilder, topicBody: String,
+        spoilFirstPost: Boolean
+    ) {
+        val doc = Jsoup.parse(topicBody)
         topicBodyBuilder.openPostsList()
         var post: Post
         var spoil = spoilFirstPost
@@ -242,9 +250,6 @@ object TopicParser {
             topicBodyBuilder.addPost(post, spoil)
             spoil = false
         }
-
-        topicBodyBuilder.endTopic()
-        return topicBodyBuilder
     }
 
     private val nickRegex = Pattern.compile("\\[b\\](.*?),\\[/b\\]", Pattern.CASE_INSENSITIVE)
