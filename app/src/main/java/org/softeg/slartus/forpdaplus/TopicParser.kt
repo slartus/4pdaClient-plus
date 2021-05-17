@@ -247,7 +247,7 @@ object TopicParser {
         return topicBodyBuilder
     }
 
-
+    private val nickRegex = Pattern.compile("\\[b\\](.*?),\\[/b\\]", Pattern.CASE_INSENSITIVE)
     fun parsePostNick(postHeaderEl: Element): User {
         val result = User()
         val el = postHeaderEl.selectFirst("span.post_nick")
@@ -261,8 +261,18 @@ object TopicParser {
                 result.avatar = el1.attr("data-av") // аватар
                 val textNodes = el1.textNodes()
                 val nick = if (textNodes.size > 0) el1.textNodes()[0].toString() // ник
-                else if (el1.childrenSize() > 0 && el1.child(0) is Element) el1.child(0).html()
-                else el1.html() // ник
+                else if (
+                    el1.childrenSize() > 0
+                    && el1.child(0) is Element
+                    && el1.child(0).classNames().contains("__cf_email__")
+                ) {
+                    val matcher = nickRegex.matcher(el1.toString())
+                    if (matcher.find()) {
+                        matcher.group(1)?.toString() ?: el1.html()
+                    } else {
+                        el1.html()
+                    }
+                } else el1.html() // ник
                 result.nick = nick
             }
             el1 = el.selectFirst("a[href*=showuser]")

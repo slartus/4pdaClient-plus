@@ -44,7 +44,7 @@ class TopicParserTests {
         doc = Jsoup.parse(topicBody)
         user = TopicParser.parsePostNick(doc)
         Assert.assertEquals(user.id, null)
-        Assert.assertEquals(user.nick, "[email&nbsp;protected]")
+        Assert.assertEquals(user.nick, "Network@Wolk")
         Assert.assertEquals(user.state, "red")
         Assert.assertEquals(user.avatar, "13/2566513-2462157.jpg")
     }
