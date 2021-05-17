@@ -231,14 +231,14 @@ object TopicParser {
             // репутация
             el = postHeaderEl.selectFirst("a[href*=act=rep&view=history]")
             if (el != null) post.userReputation = el.text()
-            post.setCanPlusRep(postHeaderEl.selectFirst("a[href*=act=rep&view=win_add]") != null)
-            post.setCanMinusRep(postHeaderEl.selectFirst("a[href*=act=rep&view=win_minus]") != null)
+            post.canPlusRep = postHeaderEl.selectFirst("a[href*=act=rep&view=win_add]") != null
+            post.canMinusRep = postHeaderEl.selectFirst("a[href*=act=rep&view=win_minus]") != null
 
             // операции над постом
             el = postHeaderEl.selectFirst("span.post_action")
             if (el != null) {
-                post.setCanEdit(el.selectFirst("a[href*=do=edit_post]") != null)
-                post.setCanDelete(el.selectFirst("a[href*=tact=delete]") != null)
+                post.canEdit = el.selectFirst("a[href*=do=edit_post]") != null
+                post.canDelete = el.selectFirst("a[href*=tact=delete]") != null
                 if (post.canDelete) {
                     // если автор поста не совпадает с текущим пользователем и есть возможность удалить-значит, модератор
                     if (post.userId != null && post.userId != instance.getId()) {
