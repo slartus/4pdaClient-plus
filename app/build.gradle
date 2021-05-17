@@ -121,6 +121,9 @@ android {
         exclude 'META-INF/license.txt'
         exclude 'META-INF/dependencies.txt'
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 dependencies {
     api project(':forpdacommon')

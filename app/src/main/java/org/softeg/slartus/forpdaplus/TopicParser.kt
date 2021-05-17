@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.text.Html
 import android.text.TextUtils
+import androidx.annotation.VisibleForTesting
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
@@ -33,6 +34,7 @@ object TopicParser {
         Pattern.compile("<td[^>]*>([^<]*?)</td><td[^\\[]*\\[ <b>(.*?)</b>[^\\[]*\\[([^\\]]*)")
     private val pollBottomPattern =
         Pattern.compile("<td class=\"row1\" colspan=\"3\" align=\"center\"><b>([^<]*?)</b>[\\s\\S]*?class=\"formbuttonrow\">([\\s\\S]*?)</td")
+
 
     @JvmStatic
     @Throws(IOException::class)
@@ -204,27 +206,11 @@ object TopicParser {
             // всё остальное не обязательно - читать темы можно по крайней мере
 
             // пользователь
-            el = postHeaderEl.selectFirst("span.post_nick")
-            if (el != null) {
-                // статус автора
-                var el1 = el.selectFirst("font")
-                if (el1 != null) post.setUserState(el1.attr("color"))
-                // ник и аватар автора
-                el1 = el.selectFirst("a[data-av]")
-                if (el1 != null) {
-                    post.avatarFileName = el1.attr("data-av") // аватар
-                    val textNodes = el1.textNodes()
-                    if (textNodes.size > 0) post.setAuthor(el1.textNodes()[0].toString()) // ник
-                    else post.setAuthor(el1.html()) // ник
-                }
-                el1 = el.selectFirst("a[href*=showuser]")
-                if (el1 != null) {
-                    post.userId = Uri.parse(el1.attr("href")).getQueryParameter("showuser")
-                    if (TextUtils.isEmpty(post.nick)) post.setAuthor(el1.html())
-                    if (TextUtils.isEmpty(post.avatarFileName)) post.avatarFileName =
-                        el1.attr("data-av")
-                }
-            }
+            val user = parsePostNick(postHeaderEl)
+            post.userId = user.id
+            post.setAuthor(user.nick)
+            post.setUserState(user.state)
+            post.avatarFileName = user.avatar
 
             // информация о пользователе
             el = postHeaderEl.selectFirst("span.post_user_info")
@@ -256,48 +242,44 @@ object TopicParser {
             topicBodyBuilder.addPost(post, spoil)
             spoil = false
         }
-        //        mainMatcher = postsPattern.matcher(topicBody);
-//
-//
-//        //String today = Functions.getToday();
-//        //String yesterday = Functions.getYesterToday();
-//
-//        while (mainMatcher.find()) {
-//
-//            post = new org.softeg.slartus.forpdaplus.classes.Post(mainMatcher.group(1), mainMatcher.group(2), mainMatcher.group(3));
-//            post.setUserState(mainMatcher.group(4));
-//            post.setAvatarFileName(mainMatcher.group(5));
-//            post.setAuthor(mainMatcher.group(6));
-//            post.setUserId(mainMatcher.group(7));
-//            if (mainMatcher.group(8) != null) {
-//                post.setCurator();
-//            }
-//            post.setUserGroup(mainMatcher.group(9));
-//            str = mainMatcher.group(10);
-//            if (str.contains("win_minus")) {
-//                post.setCanMinusRep(true);
-//            }
-//            if (str.contains("win_add")) {
-//                post.setCanPlusRep(true);
-//            }
-//            m = editPattern.matcher(str);
-//            if (m.find()) {
-//                post.setCanEdit(true);
-//            }
-//            m = deletePattern.matcher(str);
-//            if (m.find()) {
-//                post.setCanDelete(true);
-//                // если автор поста не совпадает с текущим пользователем и есть возможность удалить-значит, модератор
-//                if (post.getUserId() != null && !post.getUserId().equals(Client.getInstance().UserId)) {
-//                    topicBodyBuilder.setMMod(true);
-//                }
-//            }
-//            post.setUserReputation(mainMatcher.group(11));
-//            post.setBody("<div class=\"post_body " + mainMatcher.group(12) + "\">" + mainMatcher.group(13) + "</div>");
-//            topicBodyBuilder.addPost(post, spoil);
-//            spoil = false;
-//        }
+
         topicBodyBuilder.endTopic()
         return topicBodyBuilder
+    }
+
+
+    fun parsePostNick(postHeaderEl: Element): User {
+        val result = User()
+        val el = postHeaderEl.selectFirst("span.post_nick")
+        if (el != null) {
+            // статус автора
+            var el1 = el.selectFirst("font")
+            if (el1 != null) result.state = el1.attr("color")
+            // ник и аватар автора
+            el1 = el.selectFirst("a[data-av]")
+            if (el1 != null) {
+                result.avatar = el1.attr("data-av") // аватар
+                val textNodes = el1.textNodes()
+                val nick = if (textNodes.size > 0) el1.textNodes()[0].toString() // ник
+                else if (el1.childrenSize() > 0 && el1.child(0) is Element) el1.child(0).html()
+                else el1.html() // ник
+                result.nick = nick
+            }
+            el1 = el.selectFirst("a[href*=showuser]")
+            if (el1 != null) {
+                result.id = Uri.parse(el1.attr("href"))?.getQueryParameter("showuser")
+                if (TextUtils.isEmpty(result.nick)) result.nick = el1.html()
+                if (TextUtils.isEmpty(result.avatar)) result.avatar =
+                    el1.attr("data-av")
+            }
+        }
+        return result
+    }
+
+    class User {
+        var id: String? = null
+        var avatar: String? = null
+        var nick: String? = null
+        var state: String? = null
     }
 }

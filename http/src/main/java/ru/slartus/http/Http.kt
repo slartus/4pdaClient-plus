@@ -36,7 +36,9 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     companion object {
         const val TAG = "Http"
         private var INSTANCE: Http? = null
-        private const val FULL_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36"
+        private const val FULL_USER_AGENT =
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36"
+
         fun init(context: Context, appName: String, appVersion: String) {
             INSTANCE = Http(context, appName, appVersion)
         }
@@ -63,16 +65,23 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         fun newClientBuiler(): OkHttpClient.Builder {
             val trustManager = object : X509TrustManager {
 
-                override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate>? = emptyArray()
+                override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate>? =
+                    emptyArray()
 
                 @SuppressLint("TrustAllX509TrustManager")
                 @Throws(CertificateException::class)
-                override fun checkClientTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {
+                override fun checkClientTrusted(
+                    chain: Array<java.security.cert.X509Certificate>,
+                    authType: String
+                ) {
                 }
 
                 @SuppressLint("TrustAllX509TrustManager")
                 @Throws(CertificateException::class)
-                override fun checkServerTrusted(chain: Array<java.security.cert.X509Certificate>, authType: String) {
+                override fun checkServerTrusted(
+                    chain: Array<java.security.cert.X509Certificate>,
+                    authType: String
+                ) {
                 }
             }
             val trustAllCerts = arrayOf<TrustManager>(trustManager)
@@ -84,29 +93,31 @@ class Http private constructor(context: Context, appName: String, appVersion: St
             val sslSocketFactory = sslContext.socketFactory
 
             val spec = ConnectionSpec.Builder(ConnectionSpec.COMPATIBLE_TLS)
-                    .supportsTlsExtensions(true)
-                    .tlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_1, TlsVersion.TLS_1_0)
-                    .cipherSuites(
-                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
-                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
-                            CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
-                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
-                            CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
-                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
-                            CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
-                            CipherSuite.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,
-                            CipherSuite.TLS_ECDHE_RSA_WITH_RC4_128_SHA,
-                            CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
-                            CipherSuite.TLS_DHE_DSS_WITH_AES_128_CBC_SHA,
-                            CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
-                    .build()
+                .supportsTlsExtensions(true)
+                .tlsVersions(TlsVersion.TLS_1_2, TlsVersion.TLS_1_1, TlsVersion.TLS_1_0)
+                .cipherSuites(
+                    CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,
+                    CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+                    CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
+                    CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
+                    CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
+                    CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
+                    CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+                    CipherSuite.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA,
+                    CipherSuite.TLS_ECDHE_RSA_WITH_RC4_128_SHA,
+                    CipherSuite.TLS_DHE_RSA_WITH_AES_128_CBC_SHA,
+                    CipherSuite.TLS_DHE_DSS_WITH_AES_128_CBC_SHA,
+                    CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+                )
+                .build()
             return OkHttpClient.Builder()
-                    .connectionSpecs(listOf(spec, ConnectionSpec.CLEARTEXT))
-                    .retryOnConnectionFailure(true)
-                    .connectTimeout(15, TimeUnit.SECONDS) // connect timeout
-                    .writeTimeout(15, TimeUnit.SECONDS)
-                    .readTimeout(30, TimeUnit.SECONDS)
-                    .sslSocketFactory(sslSocketFactory, trustManager)
+                .connectionSpecs(listOf(spec, ConnectionSpec.CLEARTEXT))
+                .retryOnConnectionFailure(true)
+                .connectTimeout(15, TimeUnit.SECONDS) // connect timeout
+                .writeTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .addInterceptor(UnzippingInterceptor())
+                .sslSocketFactory(sslSocketFactory, trustManager)
         }
     }
 
@@ -117,7 +128,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         val cookieHandler = CookieManager(cookieStore, ACCEPT_ALL)
 
         val builder = newClientBuiler()
-                .cookieJar(JavaNetCookieJar(cookieHandler))
+            .cookieJar(JavaNetCookieJar(cookieHandler))
 
 //        if (BuildConfig.DEBUG)
 //            builder.addInterceptor(DebugLoggingInterceptor())
@@ -125,24 +136,29 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 //            builder.addInterceptor(LoggingInterceptor())
 
         client = builder
-                .build()    // socket timeout
+            .build()    // socket timeout
     }
 
     private val userAgent by lazy {
-        String.format(Locale.getDefault(),
-                "%s/%s (Android %s; %s; %s %s; %s)",
-                appName,
-                appVersion,
-                Build.VERSION.RELEASE,
-                Build.MODEL,
-                Build.BRAND,
-                Build.DEVICE,
-                Locale.getDefault().language)
+        String.format(
+            Locale.getDefault(),
+            "%s/%s (Android %s; %s; %s %s; %s)",
+            appName,
+            appVersion,
+            Build.VERSION.RELEASE,
+            Build.MODEL,
+            Build.BRAND,
+            Build.DEVICE,
+            Locale.getDefault().language
+        )
     }
 
 
     private fun prepareUrl(url: String): String {
-        var res = url.replace(Regex("^//4pda\\.(?:ru|to)", RegexOption.IGNORE_CASE), "https://${HostHelper.host}")
+        var res = url.replace(
+            Regex("^//4pda\\.(?:ru|to)", RegexOption.IGNORE_CASE),
+            "https://${HostHelper.host}"
+        )
         url.replace(Regex("https?://4pda\\.(?:ru|to)"), HostHelper.host)
         res = res.replace(Regex("^//([^/]*)/"), "https://$1/")
         if (!res.startsWith("http"))
@@ -152,11 +168,21 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
     private fun buildRequestHeaders(userAgent: String = this.userAgent): Headers {
         val headersBuilder = Headers.Builder()
-        headersBuilder.add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3")
+        headersBuilder.add(
+            "Accept",
+            "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3"
+        )
         // headersBuilder.add("Accept-Encoding", "gzip, deflate")
-        headersBuilder.add("Accept-Language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7,vi;q=0.6,bg;q=0.5")
+        headersBuilder.add(
+            "Accept-Language",
+            "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7,vi;q=0.6,bg;q=0.5"
+        )
         headersBuilder.add("User-Agent", userAgent)
-        headersBuilder.add("Connection", "close")// https://stackoverflow.com/questions/52726909/java-io-ioexception-unexpected-end-of-stream-on-connection
+        headersBuilder.add("Accept-Encoding", "gzip, deflate, br")
+        headersBuilder.add(
+            "Connection",
+            "close"
+        )// https://stackoverflow.com/questions/52726909/java-io-ioexception-unexpected-end-of-stream-on-connection
         return headersBuilder.build()
     }
 
@@ -168,9 +194,9 @@ class Http private constructor(context: Context, appName: String, appVersion: St
                 setCookieDeskVer(true)
 
             val request = Request.Builder()
-                    .headers(buildRequestHeaders(if (desktopVersion) FULL_USER_AGENT else userAgent))
-                    .url(prepareUrl(url))
-                    .build()
+                .headers(buildRequestHeaders(if (desktopVersion) FULL_USER_AGENT else userAgent))
+                .url(prepareUrl(url))
+                .build()
 
             return client.newCall(request).execute()
         } finally {
@@ -208,7 +234,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     fun postMultipart(url: String, values: List<Pair<String, String>>): AppResponse {
         // Use the imgur image upload API as documented at https://api.imgur.com/endpoints/image
         val formBuilder = MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
+            .setType(MultipartBody.FORM)
         for (nameValuePair in values) {
             formBuilder.addFormDataPart(nameValuePair.first!!, nameValuePair.second!!)
         }
@@ -216,10 +242,10 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         val requestBody = formBuilder.build()
 
         val request = Request.Builder()
-                .headers(buildRequestHeaders(userAgent))
-                .url(prepareUrl(url))
-                .post(requestBody)
-                .build()
+            .headers(buildRequestHeaders(userAgent))
+            .url(prepareUrl(url))
+            .post(requestBody)
+            .build()
 
         try {
             val response = client.newCall(request).execute()
@@ -237,18 +263,18 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     fun performPost(url: String, values: List<Pair<String, String>> = ArrayList()): AppResponse {
         val formBuilder = FormBody.Builder(Charset.forName("windows-1251"))
         values
-                .filter { it.second != null }
-                .forEach { formBuilder.add(it.first!!, it.second!!) }
+            .filter { it.second != null }
+            .forEach { formBuilder.add(it.first!!, it.second!!) }
 
         val formBody = formBuilder.build()
 
         Log.i(TAG, "post: $url")
         val request = Request.Builder()
-                .headers(buildRequestHeaders(userAgent))
-                .url(prepareUrl(url))
-                .cacheControl(CacheControl.FORCE_NETWORK)
-                .post(formBody)
-                .build()
+            .headers(buildRequestHeaders(userAgent))
+            .url(prepareUrl(url))
+            .cacheControl(CacheControl.FORCE_NETWORK)
+            .post(formBody)
+            .build()
 
 
         try {
@@ -266,14 +292,15 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     @JvmOverloads
     fun performPost(url: String, json: String): AppResponse {
         Log.i(TAG, "post: $url json: $json")
-        val body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json) // new
+        val body =
+            RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json) // new
 
         val request = Request.Builder()
-                .headers(buildRequestHeaders(userAgent))
-                .url(prepareUrl(url))
-                .cacheControl(CacheControl.FORCE_NETWORK)
-                .post(body)
-                .build()
+            .headers(buildRequestHeaders(userAgent))
+            .url(prepareUrl(url))
+            .cacheControl(CacheControl.FORCE_NETWORK)
+            .post(body)
+            .build()
 
 
         try {
@@ -289,9 +316,11 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     }
 
 
-    fun uploadFile(url: String, fileNameO: String, filePath: String, fileFormDataName: String,
-                   formDataParts: List<Pair<String, String>> = emptyList(),
-                   progressListener: CountingFileRequestBody.ProgressListener? = null): AppResponse {
+    fun uploadFile(
+        url: String, fileNameO: String, filePath: String, fileFormDataName: String,
+        formDataParts: List<Pair<String, String>> = emptyList(),
+        progressListener: CountingFileRequestBody.ProgressListener? = null
+    ): AppResponse {
         val builder = MultipartBody.Builder().setType(MultipartBody.FORM)
 
         val fileName = Translit.translit(fileNameO).replace(' ', '_')
@@ -303,11 +332,14 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
 
         if (progressListener != null) {
-            builder.addPart(Headers.of("Content-Disposition", "form-data; name=\"$fileFormDataName\"; filename=\"$fileName\""),
-                    CountingFileRequestBody(file, mediaType) { num ->
-                        val progress = num.toFloat() / totalSize.toFloat() * 100.0
-                        progressListener.transferred(progress.toLong())
-                    })
+            builder.addPart(Headers.of(
+                "Content-Disposition",
+                "form-data; name=\"$fileFormDataName\"; filename=\"$fileName\""
+            ),
+                CountingFileRequestBody(file, mediaType) { num ->
+                    val progress = num.toFloat() / totalSize.toFloat() * 100.0
+                    progressListener.transferred(progress.toLong())
+                })
         } else {
             builder.addFormDataPart(fileFormDataName, fileName, file.asRequestBody(mediaType))
         }
@@ -321,10 +353,10 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
         val requestBody = builder.build()
         val request = Request.Builder()
-                .headers(buildRequestHeaders(userAgent))
-                .url(prepareUrl(url))
-                .post(requestBody)
-                .build()
+            .headers(buildRequestHeaders(userAgent))
+            .url(prepareUrl(url))
+            .post(requestBody)
+            .build()
         try {
             val response = client.newCall(request).execute()
             if (!response.isSuccessful) throw HttpException("Unexpected code $response")
@@ -356,8 +388,12 @@ class Http private constructor(context: Context, appName: String, appVersion: St
             val buffer = Buffer()
             request.body?.writeTo(buffer)
             val requestBody = buffer.readUtf8()
-            Log.d("OkHttp", String.format("Sending response %s on %s%n%s body: %s",
-                    request.url, chain.connection(), request.headers, requestBody))
+            Log.d(
+                "OkHttp", String.format(
+                    "Sending response %s on %s%n%s body: %s",
+                    request.url, chain.connection(), request.headers, requestBody
+                )
+            )
 
             val response = chain.proceed(request)
 
@@ -365,8 +401,12 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
 
 
-            Log.d("OkHttp", String.format("Received response for %s in %.1fms%n%s",
-                    response.request.url, (t2 - t1) / 1e6, response.headers))
+            Log.d(
+                "OkHttp", String.format(
+                    "Received response for %s in %.1fms%n%s",
+                    response.request.url, (t2 - t1) / 1e6, response.headers
+                )
+            )
 
             return response
         }

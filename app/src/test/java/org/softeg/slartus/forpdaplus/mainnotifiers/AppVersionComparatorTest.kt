@@ -1,9 +1,7 @@
 package org.softeg.slartus.forpdaplus.mainnotifiers
 
-import android.util.Log
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 class AppVersionComparatorTest {
 
