@@ -142,7 +142,8 @@ class Http private constructor(context: Context, appName: String, appVersion: St
 
 
     private fun prepareUrl(url: String): String {
-        var res = url.replace(Regex("^//4pda\\.ru"), "https://${HostHelper.host}")
+        var res = url.replace(Regex("^//4pda\\.(?:ru|to)", RegexOption.IGNORE_CASE), "https://${HostHelper.host}")
+        url.replace(Regex("https?://4pda\\.(?:ru|to)"), HostHelper.host)
         res = res.replace(Regex("^//([^/]*)/"), "https://$1/")
         if (!res.startsWith("http"))
             res = "https://$res"
