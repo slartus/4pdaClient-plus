@@ -60,12 +60,15 @@ public class ExtUrl {
         context.startActivity(Intent.createChooser(intent, context.getString(R.string.choose)));
     }
 
-    public static void shareIt(Context context, String subject, String text, String url) {
+    public static void shareItUrl(Context context, String url) {
         url = url.replaceAll("^\\/\\/4pda", "https://4pda");
+        shareIt(context, url);
+    }
+
+    public static void shareIt(Context context, String text) {
         Intent sendMailIntent = new Intent(Intent.ACTION_SEND);
-        sendMailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
         sendMailIntent.putExtra(Intent.EXTRA_TEXT, text);
-        sendMailIntent.setDataAndType(Uri.parse(url), "text/plain");
+        sendMailIntent.setType("text/plain");
 
         context.startActivity(Intent.createChooser(sendMailIntent, context.getString(R.string.chare_via)));
     }
@@ -99,7 +102,7 @@ public class ExtUrl {
         list.add(new MenuListDialog(context.getString(R.string.share_link), new Runnable() {
             @Override
             public void run() {
-                shareIt(context, title, url, url);
+                shareItUrl(context, url);
             }
         }));
         list.add(new MenuListDialog(context.getString(R.string.copy_link), new Runnable() {
@@ -130,20 +133,17 @@ public class ExtUrl {
         new MaterialDialog.Builder(context)
                 .title(title)
                 .items(titles)
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        switch (which) {
-                            case 0:
-                                showInBrowser(context, url);
-                                break;
-                            case 1:
-                                shareIt(context, title, url, url);
-                                break;
-                            case 2:
-                                copyLinkToClipboard(context, url);
-                                break;
-                        }
+                .itemsCallback((dialog, view, which, text) -> {
+                    switch (which) {
+                        case 0:
+                            showInBrowser(context, url);
+                            break;
+                        case 1:
+                            shareItUrl(context, url);
+                            break;
+                        case 2:
+                            copyLinkToClipboard(context, url);
+                            break;
                     }
                 })
                 .cancelable(true)
@@ -180,7 +180,7 @@ public class ExtUrl {
                             showInBrowser(context, url);
                             break;
                         case 2:
-                            shareIt(context, title, url, url);
+                            shareItUrl(context, url);
                             break;
                         case 3:
                             copyLinkToClipboard(context, url);
