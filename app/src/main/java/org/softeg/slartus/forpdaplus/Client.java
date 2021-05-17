@@ -249,7 +249,7 @@ public class Client implements IHttpClient {
     }
 
     public AppResponse reply(String forumId, String themeId, String authKey, String post,
-                              Boolean enablesig, Boolean enableemo, Boolean quick, String addedFileList) throws IOException {
+                             Boolean enablesig, Boolean enableemo, Boolean quick, String addedFileList) throws IOException {
         return PostApi.INSTANCE.reply(forumId, themeId, authKey, null, post,
                 enablesig, enableemo, addedFileList, quick);
     }
@@ -360,7 +360,7 @@ public class Client implements IHttpClient {
     private final static Pattern descriptionPattern = PatternExtensions.compile("<div class=\"topic_title_post\">([^<]*)<");
     private final static Pattern moderatorTitlePattern = PatternExtensions.compile("onclick=\"return setpidchecks\\(this.checked\\);\".*?>&nbsp;(.*?)<");
     private final static Pattern pagesCountPattern = PatternExtensions.compile("var pages = parseInt\\((\\d+)\\);");
-    private final static Pattern lastPageStartPattern = PatternExtensions.compile("<a href=\"([^\"]*?"+ HostHelper.getHost() +")?\\/forum\\/index.php\\?showtopic=\\d+&amp;st=(\\d+)\"");
+    private final static Pattern lastPageStartPattern = PatternExtensions.compile("<a href=\"([^\"]*?" + HostHelper.getHost() + ")?\\/forum\\/index.php\\?showtopic=\\d+&amp;st=(\\d+)\"");
     private final static Pattern currentPagePattern = PatternExtensions.compile("<span class=\"pagecurrent\">(\\d+)</span>");
 
     public TopicBodyBuilder parseTopic(String topicPageBody,
@@ -369,15 +369,15 @@ public class Client implements IHttpClient {
 
         Pattern pattern = PatternExtensions.compile("showtopic=(\\d+)(&(.*))?");
         Matcher m = pattern.matcher(themeUrl);
-        String topicId = null;
-        String urlParams = null;
+        String topicId;
+        String urlParams;
         if (m.find()) {
-
             topicId = m.group(1);
 
             urlParams = m.group(3);
+        } else {
+            throw new NotReportException("topic id not found in " + themeUrl);
         }
-
 
         return TopicParser.loadTopic(context, topicId, topicPageBody, spoilFirstPost,
                 UserInfoRepository.Companion.getInstance().getUserInfo().getValue().getLogined(),
@@ -406,7 +406,7 @@ public class Client implements IHttpClient {
         }
         m = navStripPattern.matcher(page);
         if (m.find()) {
-            final Pattern forumPatter = PatternExtensions.compile("<a href=\"([^\"]*?"+ HostHelper.getHost() +")?\\/forum\\/index.php\\?.*?showforum=(\\d+).*?\">(.*?)<\\/a>");
+            final Pattern forumPatter = PatternExtensions.compile("<a href=\"([^\"]*?" + HostHelper.getHost() + ")?\\/forum\\/index.php\\?.*?showforum=(\\d+).*?\">(.*?)<\\/a>");
             Matcher forumMatcher = forumPatter.matcher(m.group(1));
             while (forumMatcher.find()) {
                 if (forumMatcher.group(2).equals("10"))

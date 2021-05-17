@@ -1,16 +1,17 @@
+@file:Suppress("RegExpRedundantEscape")
+
 package org.softeg.slartus.forpdaplus
 
 import android.content.Context
 import android.net.Uri
-import android.text.Html
 import android.text.TextUtils
-import androidx.annotation.VisibleForTesting
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
 import org.softeg.slartus.forpdacommon.CollectionUtils
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdacommon.PatternExtensions
+import org.softeg.slartus.forpdacommon.fromHtml
 import org.softeg.slartus.forpdaplus.classes.Post
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder
 import org.softeg.slartus.forpdaplus.classes.common.Functions
@@ -40,9 +41,9 @@ object TopicParser {
     @Throws(IOException::class)
     fun loadTopic(
         context: Context,
-        id: String, topicBody: String, spoilFirstPost: Boolean,
+        id: String?, topicBody: String, spoilFirstPost: Boolean,
         logined: Boolean, urlParams: String?
-    ): TopicBodyBuilder? {
+    ): TopicBodyBuilder {
         var topicBody = topicBody
         val mainMatcher = beforePostsPattern.matcher(topicBody)
         if (!mainMatcher.find()) {
@@ -59,32 +60,30 @@ object TopicParser {
             errorMatcher = errorPattern.matcher(topicBody)
             if (errorMatcher.find()) {
                 val errorReasonPattern = PatternExtensions.compile("<p>(.*?)</p>")
-                val errorReasonMatcher = errorReasonPattern.matcher(errorMatcher.group(1))
+                val errorReasonMatcher = errorReasonPattern.matcher(errorMatcher.group(1) ?: "")
                 if (errorReasonMatcher.find()) {
                     throw NotReportException(errorReasonMatcher.group(1))
                 }
             }
             if (TextUtils.isEmpty(topicBody)) throw NotReportException(context.getString(R.string.server_return_empty_page))
             if (topicBody.startsWith("<h1>")) throw NotReportException(
-                context.getString(R.string.site_response) + Html.fromHtml(
-                    topicBody
-                ).toString()
+                context.getString(R.string.site_response) + topicBody.fromHtml()
             )
             throw IOException(context.getString(R.string.error_parsing_page) + " id=" + id)
         }
-        val isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface()
+
         val topic = Client.createTopic(id, mainMatcher.group(1))
         topicBody = topicBody.replace("^[\\s\\S]*?<div data-post", "<div data-post")
             .replace("<div class=\"topic_foot_nav\">[\\s\\S]*", "<div class=\"topic_foot_nav\">")
         val topicBodyBuilder = TopicBodyBuilder(
             context, logined, topic, urlParams,
-            isWebviewAllowJavascriptInterface
+            Functions.isWebviewAllowJavascriptInterface()
         )
 
         topicBodyBuilder.beginTopic()
 
         //<<опрос
-        parsePoll(topicBodyBuilder, mainMatcher.group(1), logined, urlParams)
+        parsePoll(topicBodyBuilder, mainMatcher.group(1)?:"", logined, urlParams)
 
         parsePosts(topicBodyBuilder, topicBody, spoilFirstPost)
         topicBodyBuilder.endTopic()
@@ -93,14 +92,14 @@ object TopicParser {
 
     private fun parsePoll(
         topicBodyBuilder: TopicBodyBuilder,
-        body: String?,
+        body: String,
         logined: Boolean,
         urlParams: String?
     ) {
         // TODO!: переделать на jsoup
         var pollMatcher = pollFormPattern.matcher(body)
         if (pollMatcher.find()) {
-            val pollSource = pollMatcher.group(1)
+            val pollSource = pollMatcher.group(1) ?: ""
             val pollBuilder = StringBuilder()
             var percent: String
             var temp: Matcher
@@ -114,14 +113,14 @@ object TopicParser {
             var voted = false
             pollMatcher = pollQuestionsPattern.matcher(pollSource)
             while (pollMatcher.find()) {
-                if (!pollMatcher.group(2).contains("input")) voted = true
+                if (pollMatcher.group(2)?.contains("input") != true) voted = true
                 pollBuilder.append("<div class=\"poll_theme\">")
                 pollBuilder.append("<div class=\"theme_title\"><span>").append(pollMatcher.group(1))
                     .append("</span></div>")
                 pollBuilder.append("<div class=\"items").append(if (voted) " voted" else "")
                     .append("\">")
                 if (voted) {
-                    temp = pollNotVotedPattern.matcher(pollMatcher.group(2))
+                    temp = pollNotVotedPattern.matcher(pollMatcher.group(2)?:"")
                     while (temp.find()) {
                         pollBuilder.append("<div class=\"item\">")
                         pollBuilder.append("<span class=\"name\"><span>").append(temp.group(1))
@@ -129,7 +128,7 @@ object TopicParser {
                         pollBuilder.append("<span class=\"num_votes\"><span>").append(temp.group(2))
                             .append("</span></span>")
                         pollBuilder.append("<div class=\"range\">")
-                        percent = temp.group(3).replace(",", ".")
+                        percent = temp.group(3)?.replace(",", ".")?:""
                         pollBuilder.append("<div class=\"range_bar\" style=\"width:")
                             .append(percent).append(";\"></div>")
                         pollBuilder.append("<span class=\"value\"><span>").append(percent)
@@ -138,7 +137,7 @@ object TopicParser {
                         pollBuilder.append("</div>")
                     }
                 } else {
-                    temp = pollVotedPattern.matcher(pollMatcher.group(2))
+                    temp = pollVotedPattern.matcher(pollMatcher.group(2)?:"")
                     while (temp.find()) {
                         pollBuilder.append("<label class=\"item\">")
                         pollBuilder.append(temp.group(1))
