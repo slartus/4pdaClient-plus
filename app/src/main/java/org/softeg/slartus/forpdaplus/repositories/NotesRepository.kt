@@ -25,8 +25,12 @@ class NotesRepository private constructor() {
         @JvmStatic
         val instance by lazy { Holder.INSTANCE }
 
-        fun checUrlAsync(baseUrl: String, successAction: () -> Unit, errorAction: (ex: Throwable) -> Unit) {
-            InternetConnection.instance.loadDataOnInternetConnected( {
+        fun checUrlAsync(
+            baseUrl: String,
+            successAction: () -> Unit,
+            errorAction: (ex: Throwable) -> Unit
+        ) {
+            InternetConnection.instance.loadDataOnInternetConnected({
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
                         val url = getUrl(baseUrl, "get")
@@ -53,8 +57,8 @@ class NotesRepository private constructor() {
 
         private fun parseNotes(response: String): List<Note> {
             val gson = GsonBuilder()
-                    .setDateFormat("yyyy.MM.dd HH:mm:ss")
-                    .create()
+                .setDateFormat("yyyy.MM.dd HH:mm:ss")
+                .create()
 
             return gson.fromJson(response, Array<Note>::class.java).toList()
         }
@@ -79,11 +83,18 @@ class NotesRepository private constructor() {
     fun load() {
         if (local) {
             GlobalScope.launch(Dispatchers.IO) {
-                val notes = NotesTable.getNotes(null)
-                notesSubject.onNext(notes.toList())
+                try {
+                    val notes = NotesTable.getNotes(null)
+                    notesSubject.onNext(notes.toList())
+                } catch (ex: Throwable) {
+                    notesSubject.onNext(notesSubject.value ?: emptyList())
+                    withContext(Dispatchers.Main) {
+                        AppLog.e(ex)
+                    }
+                }
             }
         } else {
-            InternetConnection.instance.loadDataOnInternetConnected( {
+            InternetConnection.instance.loadDataOnInternetConnected({
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
                         val url = getUrl("get")
@@ -107,7 +118,7 @@ class NotesRepository private constructor() {
             }
             load()
         } else {
-            InternetConnection.instance.loadDataOnInternetConnected( {
+            InternetConnection.instance.loadDataOnInternetConnected({
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
                         val uriBuilder = Uri.parse(apiUrl).buildUpon()
@@ -118,8 +129,12 @@ class NotesRepository private constructor() {
                         notesSubject.onNext(parseNotes(response))
                     } catch (ex: Throwable) {
                         notesSubject.onNext(notesSubject.value ?: emptyList())
-                        AppLog.e(Exception("notes delete:" + (ex.localizedMessage
-                                ?: ex.message), ex))
+                        AppLog.e(
+                            Exception(
+                                "notes delete:" + (ex.localizedMessage
+                                    ?: ex.message), ex
+                            )
+                        )
                     }
                 }
             })
@@ -134,8 +149,10 @@ class NotesRepository private constructor() {
         }
     }
 
-    fun insertRow(title: String?, body: String?, url: String?, topicId: CharSequence, topic: String?,
-                  postId: String?, userId: String?, user: String?, action: () -> Unit) {
+    fun insertRow(
+        title: String?, body: String?, url: String?, topicId: CharSequence, topic: String?,
+        postId: String?, userId: String?, user: String?, action: () -> Unit
+    ) {
         if (local) {
             GlobalScope.launch(Dispatchers.IO) {
                 NotesTable.insertRow(title, body, url, topicId, topic, postId, userId, user)
@@ -143,15 +160,15 @@ class NotesRepository private constructor() {
             }
 
         } else {
-            InternetConnection.instance.loadDataOnInternetConnected( {
+            InternetConnection.instance.loadDataOnInternetConnected({
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
                         val uriBuilder = Uri.parse(apiUrl).buildUpon()
                         uriBuilder.appendQueryParameter("action", "ins")
 
                         val gson = GsonBuilder()
-                                .setDateFormat("yyyy.MM.dd HH:mm:ss")
-                                .create()
+                            .setDateFormat("yyyy.MM.dd HH:mm:ss")
+                            .create()
                         val note = Note().apply {
                             Title = title
                             Body = body
@@ -165,14 +182,19 @@ class NotesRepository private constructor() {
                         }
 
                         val requestUrl = uriBuilder.build().toString()
-                        val response = Client.getInstance().performPost(requestUrl, gson.toJson(note)).responseBody
+                        val response = Client.getInstance()
+                            .performPost(requestUrl, gson.toJson(note)).responseBody
                         notesSubject.onNext(parseNotes(response))
 
                         action()
                     } catch (ex: Throwable) {
                         notesSubject.onNext(notesSubject.value ?: emptyList())
-                        AppLog.e(Exception("notes insert:" + (ex.localizedMessage
-                                ?: ex.message), ex))
+                        AppLog.e(
+                            Exception(
+                                "notes insert:" + (ex.localizedMessage
+                                    ?: ex.message), ex
+                            )
+                        )
                     }
                 }
             })
