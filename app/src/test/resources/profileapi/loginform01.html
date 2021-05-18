@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="windows-1251"/>
+    <meta http-equiv="Content-type" content="text/html; charset=windows-1251"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"/><script type="text/javascript">(function(w,m,s,u){var f=function(){return w[m]||this},c=f,g=function(n){c[n]=function(a,b){c[n]._.push([a,b])};c[n]._=[];return g};f.fn=f.prototype=c;f[m]=f[s]=0;g("onInit")("addModule");w[m]=w[s]=f})(window,"lib4PDA","$4");</script><script type="text/javascript" src="//ds-assets.cdn.devapps.ru/Qr1GsewvaWTYPwVLjK.js?_=1621229951"></script><link rel="stylesheet" href="//ds-assets.cdn.devapps.ru/Qr1GsewvaK4bGB2SdUqXuQowC3.css?_=1607008012" media="all,handheld"/><title>Вход - 4PDA</title>
+    <script type="text/javascript"><!--
+(function(){
+	function parentForm(t){
+		while((t=t.parentNode)!=document){
+			if(t.tagName=="FORM")return t;
+		}
+		return !1;
+	}
+	function onchange(ev){
+		var t=ev.target||ev.currentTarget;
+		if(t.tagName=="INPUT"&&t.type=="checkbox"){
+			if(t.checked)t.className+=" checked";else t.className=(t.className+"").replace(/(^\s|\s\s|checked|\s$)/g,"");
+		}
+	}
+	function updateCaptchaForm(f,t){
+		if ( typeof XMLHttpRequest != "function" || !f.querySelectorAll )
+			return;
+		var els = f.querySelectorAll("[data-captcha]"),xhr=new XMLHttpRequest();
+		for(var i=0;i<els.length;i++){
+			els[i].src="";
+			els[i].value="";
+			els[i].disabled=true;
+			els[i].style.background="gray";
+		}
+		xhr.open("POST","//4pda.to/forum/index.php?act=auth&action=captcha&method="+t,true);
+		xhr.setRequestHeader("X-Requested-With","XMLHttpRequest");
+		xhr.onreadystatechange=function(){
+			try{
+				if(xhr.readyState == 4 && xhr.status == 200 ){
+					var data=(xhr.responseText+"").split(",",3);
+					for(var i=0;i<els.length;i++){
+						var el=els[i];
+						el.disabled=false;
+						el.style.background="";
+						var a=el.getAttribute("data-captcha");
+						if ( a == "time")
+							el.value=data[0]
+						else if ( a == "sig")
+							el.value=data[1]
+						else if(a=="renew-"+t)
+							el.src=data[2]
+						else {
+							el.value="";
+							el.focus();
+						}
+					}
+				}
+			}catch(e){}
+		};
+		xhr.send(null);
+	}
+	function onclick(ev){
+		var t=ev.target||ev.currentTarget,dc=t.getAttribute("data-captcha")+"";
+		if(dc.substr(0,6)=="renew-"&&dc.length>6)
+		{
+			ev.preventDefault&&ev.preventDefault();
+			ev.returnValue=false;
+			t=parentForm(t);
+			if(!t)return !1;
+			updateCaptchaForm(t,dc.substr(6));
+		}
+	}
+	if(document.addEventListener){
+		document.addEventListener("change",onchange,false)
+		document.addEventListener("click",onclick)
+	}
+	else if (document.attachEvent){
+		document.attachEvent("onchange",onchange,false)
+		document.attachEvent("onclick",onchange,false)
+	}
+	setInterval(function(){
+		if(!document.querySelectorAll)return;
+		var els=document.querySelectorAll('form [data-captcha^="renew-"]'),i=0;
+		for(;i<els.length;i++)
+		{
+			els[i].click();
+		}
+	},1000*5*60)
+})()
+//--></script>
+</head>
+<body><div id="v-wrapper">
+    <div id="h-wrapper">
+        <div class="pages"><form class="page" id="auth" method="POST" action="//4pda.to/forum/index.php?act=auth"><input type="hidden" name="return" value="//4pda.to/"/><div class="row">
+            <div class="cell logo">
+                <a href="//4pda.to/" title="4PDA"><i class="icon-4PDA-plain"></i></a>
+            </div>
+            <div class="cell right title">
+                Вход
+            </div>
+        </div>
+            <hr class="space"/>
+            <div class="row menu">
+                <div class="cell"><a href="//4pda.to/forum/index.php?act=auth#reg">Зарегистрироваться</a></div>
+                <div class="cell right"><a href="//4pda.to/forum/index.php?act=auth#lostpass">Забыли пароль?</a></div>
+            </div>
+            <hr class="space"/>
+            <div class="row input-wrap">
+                <input name="login" value="" type="text" class="input-text" maxlength="255" required placeholder="логин"/>
+            </div>
+            <hr class="space"/>
+            <div class="row input-wrap">
+                <input name="password" value="" type="password" class="input-text" required placeholder="пароль"/>
+            </div>
+            <hr class="space"/>
+            <div class="row">
+                <div class="cell checkbox-wrap">
+                    <input name="remember" value="1" type="checkbox" id="auth-remember" checked="checked"/><span class="check-style"></span>
+                    <label for="auth-remember" title="В дальнейшем не нужно будет вводить пароль. Это небезопасно, если этим компьютером пользуетесь не только вы."> Запомнить<sup>?</sup></label>
+                </div>
+                <div class="cell right checkbox-wrap">
+                    <input name="hidden" value="1" type="checkbox" id="auth-hidden" /><span class="check-style"></span>
+                    <label for="auth-hidden" title="Вы не будете отражены в списке активных пользователей."> Скрытый вход<sup>?</sup></label>
+                </div>
+            </div>
+            <hr class="space"/>
+            <div class="captcha">
+                <input name="captcha-time" value="1621310326" type="hidden" data-captcha="time"/>
+                <input name="captcha-sig" value="70908825fe6110ecc3d4c53c633dd459" type="hidden" data-captcha="sig"/>
+                <img src="//captcha.app.devapps.ru/captcha/2c5faa01248fb27f970a7f5ef9e44514.gif" width="240" height="100" border="0" data-captcha="renew-login"/>
+            </div>
+            <hr class="space"/>
+            <div class="row input-wrap">
+                <input name="captcha" value="" type="text" class="input-text" pattern="[0-9]{0,4}" maxlength="4" placeholder="введите число цифрами" data-captcha="answer"/>
+            </div>
+            <hr class="space"/>
+            <div class="row checkbox-wrap visible-check">
+                <input name="nocaptcha" value="1" type="checkbox" id="auth-no-captcha"/><span class="check-style"></span>
+                <label for="auth-no-captcha"> Я не могу ввести ответ</label>
+                <hr class="space div2 hide-this"/>
+                <div class="very-small-text hide-this">
+                    Если вы правильно введете логин и пароль, на ваш адрес e-mail будет отправлено письмо со ссылкой для входа.
+                </div>
+            </div>
+            <hr class="space div2"/>
+            <div class="row height28px"></div>
+            <hr class="space"/>
+            <div class="row input-wrap">
+                <input type="submit" value="Войти" class="btn" />
+            </div>
+            <hr class="space"/>
+            <div class="row menu">
+                <div class="cell"><a href="//4pda.to/forum/index.php?act=auth#reg">Зарегистрироваться</a></div>
+                <div class="cell right"><a href="//4pda.to/forum/index.php?act=auth#lostpass">Забыли пароль?</a></div>
+            </div>
+        </form>
+
+            <form class="page" id="reg" method="POST" action="//4pda.to/forum/index.php?act=auth&action=registration#reg2">
+                <input type="hidden" name="return" value="//4pda.to/"/>
+                <div class="row">
+                    <div class="cell logo">
+                        <a href="//4pda.to/" title="4PDA"><i class="icon-4PDA-plain"></i></a>
+                    </div>
+                    <div class="cell right title">
+                        Регистрация
+                    </div>
+                </div>
+
+                <hr class="space"/>
+
+                <div class="row menu">
+                    <div class="cell"><a href="//4pda.to/forum/index.php?act=auth#auth">Войти</a></div>
+                    <div class="cell right"><a href="//4pda.to/forum/index.php?act=auth#lostpass">Забыли пароль?</a></div>
+                </div>
+
+                <hr class="space"/>
+                <hr class="space"/>
+
+                <div class="row height42px">
+                    Перед регистрацией необходимо прочесть и согласиться с нашими правилами.
+                </div>
+
+                <hr class="space"/>
+
+                <div class="row height62px">
+                    Знание правил упростит получение информации и сделает дальнейшее общение комфортным.
+                </div>
+
+                <hr class="space"/>
+
+
+                <div class="row">
+                    <a href="//4pda.to/forum/index.php?act=boardrules" target="_blank" class="btn orange">ПРОЧЕСТЬ ПРАВИЛА</a>
+                </div>
+
+                <hr class="space"/>
+                <hr class="space"/>
+                <hr class="space"/>
+
+                <div class="row checkbox-wrap">
+                    <input name="reg-term" value="1" required type="radio" id="reg-term-1"/>
+                    <span class="check-style"></span>
+                    <label for="reg-term-1"> Я прочел правила и согласен с ними</label>
+                </div>
+
+                <hr class="space"/>
+
+                <div class="row checkbox-wrap">
+                    <input name="reg-term" value="2" required type="radio" id="reg-term-2"/>
+                    <span class="check-style"></span>
+                    <label for="reg-term-2"> Согласен со всем не читая</label>
+                </div>
+
+                <hr class="space"/>
+                <hr class="space"/>
+                <hr class="space"/>
+                <hr class="space"/>
+
+                <div class="row input-wrap">
+                    <input type="submit" value="Далее" class="btn" />
+                </div>
+
+                <hr class="space"/>
+
+                <div class="row menu">
+                    <div class="cell"><a href="//4pda.to/forum/index.php?act=auth#auth">Войти</a></div>
+                    <div class="cell right"><a href="//4pda.to/forum/index.php?act=auth#lostpass">Забыли пароль?</a></div>
+                </div>
+            </form>
+            <form class="page" id="lostpass" method="POST" action="//4pda.to/forum/index.php?act=auth&action=lostpass#lostpass">
+                <input type="hidden" name="return" value="//4pda.to/"/>
+                <div class="row">
+                    <div class="cell logo">
+                        <a href="//4pda.to/" title="4PDA"><i class="icon-4PDA-plain"></i></a>
+                    </div>
+                    <div class="cell right title">
+                        Сброс пароля
+                    </div>
+                </div>
+
+                <hr class="space"/>
+
+                <div class="row menu">
+                    <div class="cell"><a href="//4pda.to/forum/index.php?act=auth#auth">Войти</a></div>
+                    <div class="cell right"><a href="//4pda.to/forum/index.php?act=auth#reg">Зарегистрироваться</a></div>
+                </div>
+
+                <hr class="space"/>
+
+                <div class="row input-wrap">
+                    <input name="login" value="" type="text" class="input-text" maxlength="255" required placeholder="логин или e-mail" />
+                </div>
+
+                <hr class="space"/>
+
+                <div class="row height37px">
+                    <div class="small-text">
+                        Введите ваш логин или e-mail<br />
+                        (не чувствительно к регистру).
+                    </div>
+                </div>
+
+                <hr class="space"/>
+
+                <div class="row height54px">
+                    <div class="small-text">
+                        После заполнения формы на вашу почту будет отправлено письмо с инструкцией по восстановлению пароля.
+                    </div>
+                </div>
+
+                <hr class="space"/>
+
+                <div class="captcha">
+                    <input name="captcha-time" value="1621310326" type="hidden" data-captcha="time"/>
+                    <input name="captcha-sig" value="e5554d48b7585688f73e9928a398def5" type="hidden" data-captcha="sig"/>
+                    <img src="//captcha.app.devapps.ru/captcha/2c5faa01248fb27f970a7f5ef9e44514.gif" width="240" height="100" border="0" data-captcha="renew-lostpass"/>
+                </div>
+
+                <hr class="space"/>
+
+                <div class="row input-wrap">
+                    <input name="captcha" value="" type="text" class="input-text" required pattern="[0-9]{4}" maxlength="4" placeholder="введите число цифрами" data-captcha="answer"/>
+                </div>
+
+                <hr class="space"/>
+                <hr class="space"/>
+                <hr class="space div2"/>
+
+                <div class="row input-wrap" style="margin-top:-2px;">
+                    <input type="submit" value="Сбросить пароль" class="btn" />
+                </div>
+
+                <hr class="space"/>
+
+                <div class="row menu">
+                    <div class="cell"><a href="//4pda.to/forum/index.php?act=auth#auth">Войти</a></div>
+                    <div class="cell right"><a href="//4pda.to/forum/index.php?act=auth#reg">Зарегистрироваться</a></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

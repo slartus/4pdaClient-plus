@@ -19,7 +19,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import org.softeg.slartus.forpdaapi.ProfileApi;
-import org.softeg.slartus.forpdaapi.classes.LoginForm;
+import org.softeg.slartus.forpdaapi.classes.LoginFormData;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 
 import java.lang.ref.WeakReference;
@@ -108,20 +108,20 @@ public class LoginDialog {
                 .apply();
     }
 
-    public class CapTask extends AsyncTask<String, Void, LoginForm> {
+    public class CapTask extends AsyncTask<String, Void, LoginFormData> {
 
         CapTask() {
 
         }
 
         @Override
-        protected LoginForm doInBackground(String... params) {
+        protected LoginFormData doInBackground(String... params) {
             try {
                 return ProfileApi.getLoginForm();
             } catch (Exception e) {
-                LoginForm loginForm = new LoginForm();
-                loginForm.setError(e);
-                return loginForm;
+                LoginFormData loginFormData = new LoginFormData();
+                loginFormData.setError(e);
+                return loginFormData;
             }
         }
 
@@ -137,10 +137,10 @@ public class LoginDialog {
 
 
         // can use UI thread here
-        protected void onPostExecute(final LoginForm loginForm) {
+        protected void onPostExecute(final LoginFormData loginFormData) {
 
-            if (loginForm.getError() == null) {
-                ImageLoader.getInstance().displayImage(loginForm.getCapPath(), mImageView, new SimpleImageLoadingListener(){
+            if (loginFormData.getError() == null) {
+                ImageLoader.getInstance().displayImage(loginFormData.getCapPath(), mImageView, new SimpleImageLoadingListener(){
                     @Override
                     public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
                         Toast.makeText(mContext, R.string.failed_load_captcha, Toast.LENGTH_SHORT).show();
@@ -152,11 +152,11 @@ public class LoginDialog {
                         mProgressBar.setVisibility(View.GONE);
                     }
                 });
-                capTime = loginForm.getCapTime();
-                capSig = loginForm.getCapSig();
+                capTime = loginFormData.getCapTime();
+                capSig = loginFormData.getCapSig();
             } else {
 
-                AppLog.e(mContext, loginForm.getError());
+                AppLog.e(mContext, loginFormData.getError());
 
             }
         }
