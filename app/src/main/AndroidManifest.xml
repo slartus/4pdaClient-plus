@@ -29,7 +29,6 @@
         android:label="@string/app_name"
         android:banner="@drawable/tv_banner"
         android:largeHeap="true"
-        android:resizeableActivity="false"
         android:theme="@style/MainPinkBlack"
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
@@ -246,8 +245,6 @@
             android:name=".activity.NewYear"
             android:theme="@style/AppTheme.FullScreen" />
 
-        <service android:name="org.softeg.slartus.forpdanotifyservice.MainService" />
-
         <receiver android:name="org.softeg.slartus.forpdanotifyservice.qms.AlarmReceiver"
             android:exported="false" android:enabled="true">
             <intent-filter>
@@ -280,9 +277,7 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="2bfc2256dc145a09ab99f0a0d9bc1bc938bdeb2d" />
-        <meta-data
-            android:name="android.max_aspect"
-            android:value="2.1" />
+
 
         <provider
             android:name="androidx.core.content.FileProvider"
