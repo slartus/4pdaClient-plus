@@ -2,10 +2,12 @@ package org.softeg.slartus.forpdaplus.listfragments;
 
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
@@ -292,8 +294,12 @@ public abstract class BaseLoaderListFragment extends BaseBrickFragment
     }
 
     private void saveCache() {
-        if (!TextUtils.isEmpty(getListName()))
-            Paper.book().write(getListName(), mData.getItems());
+        try {
+            if (!TextUtils.isEmpty(getListName()))
+                Paper.book().write(getListName(), mData.getItems());
+        } catch (Throwable ex) {
+            AppLog.e(ex);
+        }
     }
 
     private ArrayList<IListItem> loadCache() {
