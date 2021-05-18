@@ -18,7 +18,7 @@
     {
       "id": "7a149d86-62aa-45a0-9eee-1edd05f7a25c",
       "type": "warning",
-      "text": "Сайт 4pda.ru подвергся блокировке со стороны РКН. Вы можете пока воспользоваться <a href=\"https://4pda.to/forum/dl/post/22968657/ForPDA_3.5.8-beta_c663.apk\">бетой версией клиента</a>, который использует зеркало сайта 4pda.to"
+      "text": "Сайт 4pda.ru подвергся блокировке со стороны РКН. Вы можете пока воспользоваться <a href=\"https://4pda.to/forum/dl/post/22974906/ForPDA_3.5.8-beta_c664.apk\">бетой версией клиента</a>, который использует зеркало сайта 4pda.to"
     }
   ],
   "versions": [
@@ -32,8 +32,8 @@
     {
       "name": "beta",
       "ver": "3.5.8",
-      "versionCode":663,
-      "apk": "https://4pda.to/forum/dl/post/22968657/ForPDA_3.5.8-beta_c663.apk",
+      "versionCode":664,
+      "apk": "https://4pda.to/forum/dl/post/22974906/ForPDA_3.5.8-beta_c664.apk",
       "info": ""
     }
   ]
