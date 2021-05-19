@@ -8,6 +8,7 @@ import android.text.TextUtils
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
+import org.softeg.slartus.forpdaapi.common.ParseFunctions
 import org.softeg.slartus.forpdacommon.CollectionUtils
 import org.softeg.slartus.forpdacommon.NotReportException
 import org.softeg.slartus.forpdacommon.PatternExtensions
@@ -44,7 +45,7 @@ object TopicParser {
         id: String?, topicBody: String, spoilFirstPost: Boolean,
         logined: Boolean, urlParams: String?
     ): TopicBodyBuilder {
-        var topicBody = topicBody
+        var topicBody = ParseFunctions.decodeEmails(topicBody)
         val mainMatcher = beforePostsPattern.matcher(topicBody)
         if (!mainMatcher.find()) {
             var errorMatcher = Pattern.compile(
@@ -83,7 +84,7 @@ object TopicParser {
         topicBodyBuilder.beginTopic()
 
         //<<опрос
-        parsePoll(topicBodyBuilder, mainMatcher.group(1)?:"", logined, urlParams)
+        parsePoll(topicBodyBuilder, mainMatcher.group(1) ?: "", logined, urlParams)
 
         parsePosts(topicBodyBuilder, topicBody, spoilFirstPost)
         topicBodyBuilder.endTopic()
@@ -120,7 +121,7 @@ object TopicParser {
                 pollBuilder.append("<div class=\"items").append(if (voted) " voted" else "")
                     .append("\">")
                 if (voted) {
-                    temp = pollNotVotedPattern.matcher(pollMatcher.group(2)?:"")
+                    temp = pollNotVotedPattern.matcher(pollMatcher.group(2) ?: "")
                     while (temp.find()) {
                         pollBuilder.append("<div class=\"item\">")
                         pollBuilder.append("<span class=\"name\"><span>").append(temp.group(1))
@@ -128,7 +129,7 @@ object TopicParser {
                         pollBuilder.append("<span class=\"num_votes\"><span>").append(temp.group(2))
                             .append("</span></span>")
                         pollBuilder.append("<div class=\"range\">")
-                        percent = temp.group(3)?.replace(",", ".")?:""
+                        percent = temp.group(3)?.replace(",", ".") ?: ""
                         pollBuilder.append("<div class=\"range_bar\" style=\"width:")
                             .append(percent).append(";\"></div>")
                         pollBuilder.append("<span class=\"value\"><span>").append(percent)
@@ -137,7 +138,7 @@ object TopicParser {
                         pollBuilder.append("</div>")
                     }
                 } else {
-                    temp = pollVotedPattern.matcher(pollMatcher.group(2)?:"")
+                    temp = pollVotedPattern.matcher(pollMatcher.group(2) ?: "")
                     while (temp.find()) {
                         pollBuilder.append("<label class=\"item\">")
                         pollBuilder.append(temp.group(1))
@@ -251,7 +252,6 @@ object TopicParser {
         }
     }
 
-    private val nickRegex = Pattern.compile("\\[b\\](.*?),\\[/b\\]", Pattern.CASE_INSENSITIVE)
     fun parsePostNick(postHeaderEl: Element): User {
         val result = User()
         val el = postHeaderEl.selectFirst("span.post_nick")
@@ -270,11 +270,10 @@ object TopicParser {
                     && el1.child(0) is Element
                     && el1.child(0).classNames().contains("__cf_email__")
                 ) {
-                    val matcher = nickRegex.matcher(el1.toString())
-                    if (matcher.find()) {
-                        matcher.group(1)?.toString() ?: el1.html()
-                    } else {
-                        el1.html()
+                    try {
+                        ParseFunctions.cfDecodeEmail(el1.child(0).attr("data-cfemail"))
+                    } catch (ex: Throwable) {
+                        el1.child(0).textNodes()[0].toString()
                     }
                 } else el1.html() // ник
                 result.nick = nick
@@ -289,6 +288,7 @@ object TopicParser {
         }
         return result
     }
+
 
     class User {
         var id: String? = null

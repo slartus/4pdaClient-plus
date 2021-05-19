@@ -9,6 +9,7 @@ import org.jsoup.nodes.Element
 import org.softeg.slartus.forpdaapi.IHttpClient
 import org.softeg.slartus.forpdaapi.ListInfo
 import org.softeg.slartus.forpdaapi.Topic
+import org.softeg.slartus.forpdaapi.common.ParseFunctions
 import org.softeg.slartus.forpdacommon.Functions
 import java.io.IOException
 import java.net.MalformedURLException
@@ -41,7 +42,7 @@ object SearchApi {
         val idPattern = Pattern.compile("showtopic=(\\d+)", Pattern.CASE_INSENSITIVE)
         val forumIdPattern = Pattern.compile("showforum=(\\d+)", Pattern.CASE_INSENSITIVE)
 
-        val doc = Jsoup.parse(body)
+        val doc = Jsoup.parse(ParseFunctions.decodeEmails(body))
         val trElements = doc.select("table:has(th:contains(Название темы)) tr:has(td)")
         var sortOrder = 1000 + listInfo.from + 1
         for (trElement in trElements) {

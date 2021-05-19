@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.mainnotifiers
 import org.jsoup.Jsoup
 import org.junit.Assert
 import org.junit.Test
+import org.softeg.slartus.forpdaapi.common.ParseFunctions
 import org.softeg.slartus.forpdaplus.TopicParser
 
 class TopicParserTests {
@@ -72,5 +73,39 @@ class TopicParserTests {
         Assert.assertEquals(user.nick, "vm7")
         Assert.assertEquals(user.state, "red")
         Assert.assertEquals(user.avatar, "04/2346204-13898591.jpg")
+    }
+
+    @Test
+    fun cfDecodeEmailTest() {
+        Assert.assertEquals(
+            ParseFunctions.cfDecodeEmail("bbf5decfccd4c9d0fbecd4d7d0"),
+            "Network@Wolk"
+        );
+        Assert.assertEquals(
+            ParseFunctions.cfDecodeEmail("394a4c4949564b4d79585d5e4c584b5d175a5654"),
+            "support@adguard.com"
+        );
+    }
+
+    @Test
+    fun decodeEmailsTest() {
+        var text =
+            "<span class=\"__cf_email__\" data-cfemail=\"bff1dacbc8d0cdd4ffe8d0d3d4\">[email&#160;protected]</span>"
+        Assert.assertEquals(
+            ParseFunctions.decodeEmails(text),
+            "Network@Wolk"
+        )
+
+        text = "<a data-cfemail=\"bff1dacbc8d0cdd4ffe8d0d3d4\">[email&#160;protected]</a>"
+        Assert.assertEquals(
+            ParseFunctions.decodeEmails(text),
+            "Network@Wolk"
+        )
+        text =
+            "<a href=\"/cdn-cgi/l/email-protection\" class=\"__cf_email__\" data-cfemail=\"f983b98a92969a92\">[email&#160;protected]</a>"
+        Assert.assertEquals(
+            ParseFunctions.decodeEmails(text),
+            "z@skock"
+        )
     }
 }

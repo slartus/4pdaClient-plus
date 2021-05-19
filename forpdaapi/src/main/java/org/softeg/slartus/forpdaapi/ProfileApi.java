@@ -9,6 +9,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.softeg.slartus.forpdaapi.classes.LoginFormData;
+import org.softeg.slartus.forpdaapi.common.ParseFunctions;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.hosthelper.HostHelper;
 
@@ -162,7 +163,7 @@ public class ProfileApi {
         Profile profile = new Profile();
         profile.setId(userID);
         String page = httpClient.performGet("https://" + HostHelper.getHost() + "/forum/index.php?showuser=" + userID).getResponseBody();
-
+        page = ParseFunctions.decodeEmails(page);
         Matcher matcher = Pattern.compile("<form action=\"[^\"]*?" + HostHelper.getHostPattern() + "/forum/index\\.php\\?showuser[^>]*>[\\s\\S]*?<ul[^>]*>([\\s\\S]*)</ul>[\\s\\S]*?</form>").matcher(page);
         if (matcher.find()) {
             page = matcher.group(1).replaceFirst("<div class=\"photo\">[^<]*<img src=\"([^\"]*)\"[^<]*</div>",

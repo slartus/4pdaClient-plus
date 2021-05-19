@@ -3,6 +3,7 @@ package org.softeg.slartus.forpdaplus.fragments.search;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import org.softeg.slartus.forpdaapi.common.ParseFunctions;
 import org.softeg.slartus.forpdacommon.NotReportException;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
@@ -41,7 +42,7 @@ public class SearchPostsParser extends HtmlBuilder {
 
     public String parse(AppResponse response) {
         int posts = 0;
-        Boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface();
+        boolean isWebviewAllowJavascriptInterface = Functions.isWebviewAllowJavascriptInterface();
         searchResult = createSearchResult(response);
         beginHtml(App.getContext().getString(R.string.search_result));
         beginTopic(searchResult);
@@ -50,7 +51,7 @@ public class SearchPostsParser extends HtmlBuilder {
 
         String userId, userName, user, dateTime, userState;
 
-        String body = response.getResponseBody();
+        String body = ParseFunctions.decodeEmails(response.getResponseBody());
         Matcher matcher = Pattern.compile("<div class=\"cat_name\" style=\"margin-bottom:0\">([\\s\\S]*?)<\\/div>[\\s\\S]*?post_date\">([^\\|&]*)[\\s\\S]*?<font color=\"([^\"]*?)\"[\\s\\S]*?showuser=(\\d+)\"[^>]*?>([\\s\\S]*?)(?:<i[\\s\\S]*?\\/i>)?<\\/a>[\\s\\S]*?<div class=\"post_body[^>]*?>([\\s\\S]*?)<\\/div><\\/div>(?=<div class=\"cat_name\"|<div><div class=\"pagination\">)").matcher(body);
         while (matcher.find()) {
             m_Body.append("<div class=\"post_container\">");
