@@ -110,7 +110,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
                     CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA
                 )
                 .build()
-            return OkHttpClient.Builder()
+            val builder = OkHttpClient.Builder()
                 .connectionSpecs(listOf(spec, ConnectionSpec.CLEARTEXT))
                 .retryOnConnectionFailure(true)
                 .connectTimeout(15, TimeUnit.SECONDS) // connect timeout
@@ -118,6 +118,10 @@ class Http private constructor(context: Context, appName: String, appVersion: St
                 .readTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(UnzippingInterceptor())
                 .sslSocketFactory(sslSocketFactory, trustManager)
+            if (BuildConfig.DEBUG)
+                builder
+                    .addInterceptor(LoggingInterceptor())
+            return builder
         }
     }
 
@@ -179,6 +183,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         )
         headersBuilder.add("User-Agent", userAgent)
         headersBuilder.add("Accept-Encoding", "gzip, deflate, br")
+
         headersBuilder.add(
             "Connection",
             "close"
