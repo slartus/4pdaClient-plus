@@ -17,6 +17,7 @@ import org.softeg.slartus.forpdaplus.classes.Exceptions.MessageInfoException;
 import org.softeg.slartus.forpdaplus.classes.ShowInBrowserDialog;
 
 import java.net.ConnectException;
+import java.net.ProtocolException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
@@ -124,6 +125,8 @@ public final class AppLog {
             return ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : ex.getMessage();
         if (isException(ex, SocketException.class))
             return App.getContext().getString(R.string.connection_lost);
+        if (isException(ex, ProtocolException.class))
+            return ex.getMessage();
 
         return defaultValue;
     }
