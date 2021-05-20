@@ -377,6 +377,7 @@ abstract class TopicsListFragment : BaseTaskListFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
+        if (menu.findItem(R.id.list_settings_item) != null)
         inflater.inflate(R.menu.topics, menu)
     }
 

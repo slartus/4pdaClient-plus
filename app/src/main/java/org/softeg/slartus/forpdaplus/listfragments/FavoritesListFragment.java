@@ -85,7 +85,7 @@ public class FavoritesListFragment extends TopicsListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (inflater != null)
+        if (inflater != null && menu.findItem(R.id.filter_and_ordering_item) == null)
             inflater.inflate(R.menu.favorites, menu);
     }
 

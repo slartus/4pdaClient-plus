@@ -105,7 +105,7 @@ public abstract class BaseBrickFragment extends GeneralFragment{
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if(inflater!=null)
+        if(inflater!=null&&menu.findItem(R.id.refresh_item)==null)
             inflater.inflate(R.menu.base_brick,menu);
 
     }

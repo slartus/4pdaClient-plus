@@ -573,9 +573,8 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
     @Override
     public void onCreateOptionsMenu(Menu menu, final MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        //inflater.inflate(R.menu.user, menu);
-        if (inflater != null)
+        //super.onCreateOptionsMenu(menu, inflater);
+        if (inflater != null && menu.findItem(R.id.new_post_item) == null)
             inflater.inflate(R.menu.topic, menu);
     }
 
@@ -1250,9 +1249,10 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
     }
 
     private class MyWebViewClient extends WebViewClient {
-        public MyWebViewClient(){
+        public MyWebViewClient() {
 
         }
+
         private final long LOADING_ERROR_TIMEOUT = TimeUnit.SECONDS.toMillis(45);
 
         // WebView instance is kept in WeakReference because of mPageLoadingTimeoutHandlerTask
@@ -1521,6 +1521,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
 
         protected void onPostExecute(final Boolean success) {
             ThemeFragment themeFragment = themeFragmentRef.get();
+            if (ex != null) {
+                AppLog.e(themeFragment.getContext(), ex);
+            }
             if (themeFragment != null && themeFragment.isAdded()) {
                 themeFragment.setLoading(false);
                 TabItem item = App.getInstance().getTabByTag(themeFragment.getTag());

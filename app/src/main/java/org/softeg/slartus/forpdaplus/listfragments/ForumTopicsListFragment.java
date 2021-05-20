@@ -3,7 +3,9 @@ package org.softeg.slartus.forpdaplus.listfragments;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.core.util.Pair;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -166,7 +168,7 @@ public class ForumTopicsListFragment extends TopicsListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (inflater != null)
+        if (inflater != null && menu.findItem(R.id.filter_and_ordering_item) == null)
             inflater.inflate(R.menu.forum_topics, menu);
 
     }
