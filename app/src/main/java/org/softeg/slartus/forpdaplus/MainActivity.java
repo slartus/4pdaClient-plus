@@ -66,6 +66,7 @@ import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
+import org.softeg.slartus.forpdaplus.tabs.TabsManager;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -175,13 +176,13 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         if (shortUserInfo != null)
             shortUserInfo.setMActivity(new WeakReference<>(this));
         if (saveInstance != null) {
-            App.getInstance().setTabIterator(saveInstance.getInt("tabIterator"));
-            App.getInstance().setCurrentFragmentTag(saveInstance.getString("currentTag"));
+            TabsManager.getInstance().setTabIterator(saveInstance.getInt("tabIterator"));
+            TabsManager.getInstance().setCurrentFragmentTag(saveInstance.getString("currentTag"));
         }
 
         final List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
 
-        if (fragmentList != null & App.getInstance().getTabItems().size() == 0) {
+        if (fragmentList != null & TabsManager.getInstance().getTabItems().size() == 0) {
             GeneralFragment frag;
             TabItem item;
             for (Fragment fragment : fragmentList) {
@@ -190,7 +191,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                         frag = (GeneralFragment) fragment;
                         item = new TabItem(frag.getGeneralTitle(), frag.getGeneralUrl(), frag.getTag(), frag.getGeneralParentTag(), frag);
                         frag.setThisTab(item);
-                        App.getInstance().getTabItems().add(item);
+                        TabsManager.getInstance().getTabItems().add(item);
                     }
                 } catch (ClassCastException ex) {
                     AppLog.e(ex);
@@ -289,9 +290,9 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             //new TopicAttentionNotifier(notifiersManager).start(this);
             new ForPdaVersionNotifier(notifiersManager, 1, false).start(this);
             activityPaused = false;
-            if (App.getInstance().getCurrentFragmentTag() != null)
-                if (App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()) != null) {
-                    selectTab(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()));
+            if (TabsManager.getInstance().getCurrentFragmentTag() != null)
+                if (TabsManager.getInstance().getTabByTag(TabsManager.getInstance().getCurrentFragmentTag()) != null) {
+                    selectTab(TabsManager.getInstance().getTabByTag(TabsManager.getInstance().getCurrentFragmentTag()));
                 }
 
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
@@ -309,7 +310,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         if (currentFocus == null)
             currentFocus = new View(this);
         service.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TabsManager.getInstance().getCurrentFragmentTag());
         if (fragment != null)
             ((GeneralFragment) fragment).hidePopupWindows();
     }
@@ -473,7 +474,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
             mMainDrawerMenu.setItemCheckable(title);
         }
 
-        String currentFragmentTag = String.valueOf(App.getInstance().getCurrentFragmentTag());
+        String currentFragmentTag = String.valueOf(TabsManager.getInstance().getCurrentFragmentTag());
 
         endActionFragment(title, tag);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -526,8 +527,8 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment == null) {
-            if (App.getInstance().getTabByTag(tag) != null) {
-                TabItem tabItem = App.getInstance().getTabByTag(tag);
+            if (TabsManager.getInstance().getTabByTag(tag) != null) {
+                TabItem tabItem = TabsManager.getInstance().getTabByTag(tag);
                 addTab(tabItem.getTitle(), tabItem.getUrl(), tabItem.getFragment());
                 return;
             }
@@ -546,7 +547,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     }
 
     private void endActionFragment(String title, String tag) {
-        App.getInstance().setCurrentFragmentTag(tag);
+        TabsManager.getInstance().setCurrentFragmentTag(tag);
         endActionFragment(title);
     }
 
@@ -561,8 +562,8 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
 
     @Override
     protected void onSaveInstanceState(android.os.Bundle outState) {
-        outState.putInt("tabIterator", App.getInstance().getTabIterator());
-        outState.putString("currentTag", App.getInstance().getCurrentFragmentTag());
+        outState.putInt("tabIterator", TabsManager.getInstance().getTabIterator());
+        outState.putString("currentTag", TabsManager.getInstance().getCurrentFragmentTag());
         super.onSaveInstanceState(outState);
         if (hack) {
             onStop();
@@ -619,7 +620,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     protected void onPostResume() {
         super.onPostResume();
         activityPaused = false;
-        if (App.getInstance().getCurrentFragmentTag() == null) {
+        if (TabsManager.getInstance().getCurrentFragmentTag() == null) {
             BrickInfo brickInfo = ListCore.getRegisteredBrick(Preferences.Lists.getLastSelectedList());
             if (brickInfo == null)
                 brickInfo = new NewsPagerBrickInfo();
@@ -634,8 +635,8 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         tabTagForRemove = null;
         tabOnIntent = null;
 
-        if (!(String.valueOf(App.getInstance().getCurrentFragmentTag())).equals("null")) {
-            Fragment fragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
+        if (!(String.valueOf(TabsManager.getInstance().getCurrentFragmentTag())).equals("null")) {
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(TabsManager.getInstance().getCurrentFragmentTag());
             if (fragment != null) {
                 fragment.onResume();
             }
@@ -652,8 +653,8 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     protected void onPause() {
         super.onPause();
         activityPaused = true;
-        if (!(String.valueOf(App.getInstance().getCurrentFragmentTag())).equals("null")) {
-            Fragment fragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
+        if (!(String.valueOf(TabsManager.getInstance().getCurrentFragmentTag())).equals("null")) {
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(TabsManager.getInstance().getCurrentFragmentTag());
             if (fragment != null) {
                 fragment.onPause();
             }
@@ -667,28 +668,28 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
 
     public static void addTab(String title, String url, Fragment fragment) {
         if (activityPaused | mTabDraweMenu == null) {
-            tabOnIntent = new TabItem(title, url, tabPrefix + App.getInstance().getTabIterator(), App.getInstance().getCurrentFragmentTag(), fragment);
+            tabOnIntent = new TabItem(title, url, tabPrefix + TabsManager.getInstance().getTabIterator(), TabsManager.getInstance().getCurrentFragmentTag(), fragment);
         } else {
-            addTabToList(title, url, tabPrefix + App.getInstance().getTabIterator(), fragment, true);
+            addTabToList(title, url, tabPrefix + TabsManager.getInstance().getTabIterator(), fragment, true);
         }
-        if (!App.getInstance().isContainsByUrl(url)) {
-            String newTag = tabPrefix + (App.getInstance().getTabIterator() - 1);
-            App.getInstance().setCurrentFragmentTag(newTag);
+        if (!TabsManager.getInstance().isContainsByUrl(url)) {
+            String newTag = tabPrefix + (TabsManager.getInstance().getTabIterator() - 1);
+            TabsManager.getInstance().setCurrentFragmentTag(newTag);
         }
     }
 
     private static void addTabToList(String name, String url, String tag, Fragment fragment, boolean select) {
         TabItem item = null;
-        if (App.getInstance().isContainsByUrl(url)) {
-            if (select) item = App.getInstance().getTabByUrl(url);
-        } else if (!App.getInstance().isContainsByTag(tag)) {
-            item = new TabItem(name, url, tag, App.getInstance().getCurrentFragmentTag(), fragment);
+        if (TabsManager.getInstance().isContainsByUrl(url)) {
+            if (select) item = TabsManager.getInstance().getTabByUrl(url);
+        } else if (!TabsManager.getInstance().isContainsByTag(tag)) {
+            item = new TabItem(name, url, tag, TabsManager.getInstance().getCurrentFragmentTag(), fragment);
             ((GeneralFragment) fragment).setThisTab(item);
-            App.getInstance().getTabItems().add(item);
-            App.getInstance().plusTabIterator();
+            TabsManager.getInstance().getTabItems().add(item);
+            TabsManager.getInstance().plusTabIterator();
             mTabDraweMenu.refreshAdapter();
         } else {
-            if (select) item = App.getInstance().getTabByTag(tag);
+            if (select) item = TabsManager.getInstance().getTabByTag(tag);
         }
 
         if (select) mTabDraweMenu.selectTab(item);
@@ -700,7 +701,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
 
     public void tryRemoveTab(String tag, boolean tryClose) {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
-        if (fragment != null && App.getInstance().getTabByTag(tag) != null)
+        if (fragment != null && TabsManager.getInstance().getTabByTag(tag) != null)
             if (tryClose) {
                 if (!((GeneralFragment) fragment).closeTab())
                     removeTab(tag);
@@ -726,7 +727,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
         hideFragments(transaction, false);
         for (TabItem item : items) {
             transaction.remove(item.getFragment());
-            App.getInstance().getTabItems().remove(item);
+            TabsManager.getInstance().getTabItems().remove(item);
         }
         transaction.commitAllowingStateLoss();
     }
@@ -751,16 +752,16 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     private Boolean m_ExitWarned = false;
 
     public void appExit() {
-        App.getInstance().setCurrentFragmentTag(null);
-        App.getInstance().getTabItems().clear();
-        App.getInstance().clearTabIterator();
+        TabsManager.getInstance().setCurrentFragmentTag(null);
+        TabsManager.getInstance().getTabItems().clear();
+        TabsManager.getInstance().clearTabIterator();
         App.getInstance().exit();
     }
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         try {
-            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
+            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(TabsManager.getInstance().getCurrentFragmentTag());
             if (currentFragment != null && ((IBrickFragment) currentFragment).dispatchKeyEvent(event))
                 return true;
         } catch (Throwable ex) {
@@ -780,9 +781,9 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                 mTabDraweMenu.close();
                 return;
             }
-            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
+            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(TabsManager.getInstance().getCurrentFragmentTag());
             if (currentFragment == null || !((IBrickFragment) currentFragment).onBackPressed()) {
-                if (App.getInstance().getTabItems().size() <= 1) {
+                if (TabsManager.getInstance().getTabItems().size() <= 1) {
                     if (!m_ExitWarned) {
                         Toast.makeText(this, R.string.close_program_toasr, Toast.LENGTH_SHORT).show();
                         m_ExitWarned = true;
@@ -791,7 +792,7 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                         appExit();
                     }
                 } else {
-                    tryRemoveTab(App.getInstance().getCurrentFragmentTag(), true);
+                    tryRemoveTab(TabsManager.getInstance().getCurrentFragmentTag(), true);
                 }
 
             } else {
@@ -896,9 +897,9 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
     }
 
     private Fragment getCurrentFragment() {
-        String currentFragmentTag = App.getInstance().getCurrentFragmentTag();
+        String currentFragmentTag = TabsManager.getInstance().getCurrentFragmentTag();
         if (currentFragmentTag != null && !"null".equals(currentFragmentTag)) {
-            return getSupportFragmentManager().findFragmentByTag(App.getInstance().getCurrentFragmentTag());
+            return getSupportFragmentManager().findFragmentByTag(TabsManager.getInstance().getCurrentFragmentTag());
         }
         return null;
     }

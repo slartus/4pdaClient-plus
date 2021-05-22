@@ -21,6 +21,7 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.listfragments.IBrickFragment;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
+import org.softeg.slartus.forpdaplus.tabs.TabsManager;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -121,7 +122,7 @@ public abstract class GeneralFragment extends Fragment implements IBrickFragment
 
     public TabItem getThisTab() throws Exception {
         if (thisTab == null)
-            thisTab = App.getInstance().getTabByTag(getTag());
+            thisTab = TabsManager.getInstance().getTabByTag(getTag());
         if (thisTab == null)
             throw new Exception("TabItem by " + getTag() + " not found");
         return thisTab;

@@ -27,6 +27,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
+import org.softeg.slartus.forpdaplus.tabs.TabsManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class TabDrawerMenu {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         Button closeAll = (Button) findViewById(R.id.closeAll);
         closeAll.setOnClickListener(v -> {
-            if (App.getInstance().getTabItems().size() > 1)
+            if (TabsManager.getInstance().getTabItems().size() > 1)
                 closeAllTabs();
             else {
                 closeDialog();
@@ -87,7 +88,7 @@ public class TabDrawerMenu {
         }
         mDrawer.setLayoutParams(params);
 
-        adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
+        adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, TabsManager.getInstance().getTabItems());
         mListView.setAdapter(adapter);
     }
 
@@ -97,15 +98,15 @@ public class TabDrawerMenu {
             String lastBrick = Preferences.Lists.getLastSelectedList();
             List<TabItem> itemsForClose = new ArrayList<>();
 
-            for (TabItem item : App.getInstance().getTabItems())
+            for (TabItem item : TabsManager.getInstance().getTabItems())
                 if (!lastBrick.equals(item.getTag()))
                     itemsForClose.add(item);
             ((MainActivity) getContext()).removeTabs(itemsForClose);
-            App.getInstance().setCurrentFragmentTag(lastBrick);
-            if (!App.getInstance().isContainsByTag(lastBrick)) {
+            TabsManager.getInstance().setCurrentFragmentTag(lastBrick);
+            if (!TabsManager.getInstance().isContainsByTag(lastBrick)) {
                 ((MainActivity) getContext()).selectItem(ListCore.getRegisteredBrick(lastBrick));
             } else {
-                ((MainActivity) getContext()).selectTab(App.getInstance().getTabByTag(lastBrick));
+                ((MainActivity) getContext()).selectTab(TabsManager.getInstance().getTabByTag(lastBrick));
             }
             refreshAdapter();
             notifyDataSetChanged();
@@ -143,30 +144,30 @@ public class TabDrawerMenu {
     }
 
     void refreshAdapter() {
-        adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, App.getInstance().getTabItems());
+        adapter = new TabAdapter(getContext(), R.layout.tab_drawer_item, TabsManager.getInstance().getTabItems());
         mListView.setAdapter(adapter);
     }
 
     void removeTab(String tag) {
-        if (App.getInstance().getTabItems().size() <= 1) {
+        if (TabsManager.getInstance().getTabItems().size() <= 1) {
             ((MainActivity) getContext()).appExit();
             return;
         }
 
-        for (int i = 0; i <= App.getInstance().getTabItems().size() - 1; i++) {
-            if (App.getInstance().getTabItems().get(i).getTag().equals(tag)) {
-                final TabItem tabItem = App.getInstance().getTabByTag(tag);
+        for (int i = 0; i <= TabsManager.getInstance().getTabItems().size() - 1; i++) {
+            if (TabsManager.getInstance().getTabItems().get(i).getTag().equals(tag)) {
+                final TabItem tabItem = TabsManager.getInstance().getTabByTag(tag);
                 tabItem.setFragment(null);
-                App.getInstance().getTabItems().remove(tabItem);
+                TabsManager.getInstance().getTabItems().remove(tabItem);
 
-                if (App.getInstance().getTabByTag(tabItem.getParentTag()) != null)
-                    App.getInstance().setCurrentFragmentTag(tabItem.getParentTag());
-                else if (tag.equals(App.getInstance().getCurrentFragmentTag()))
-                    App.getInstance().setCurrentFragmentTag(App.getInstance().getTabItems().get(App.getInstance().getLastTabPosition(i)).getTag());
+                if (TabsManager.getInstance().getTabByTag(tabItem.getParentTag()) != null)
+                    TabsManager.getInstance().setCurrentFragmentTag(tabItem.getParentTag());
+                else if (tag.equals(TabsManager.getInstance().getCurrentFragmentTag()))
+                    TabsManager.getInstance().setCurrentFragmentTag(TabsManager.getInstance().getTabItems().get(TabsManager.getInstance().getLastTabPosition(i)).getTag());
 
-                ((MainActivity) getContext()).showFragment(App.getInstance().getCurrentFragmentTag(), true);
-                ((MainActivity) getContext()).endActionFragment(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
-                ((MainActivity) getContext()).getmMainDrawerMenu().setItemCheckable(App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getTitle());
+                ((MainActivity) getContext()).showFragment(TabsManager.getInstance().getCurrentFragmentTag(), true);
+                ((MainActivity) getContext()).endActionFragment(TabsManager.getInstance().getTabByTag(TabsManager.getInstance().getCurrentFragmentTag()).getTitle());
+                ((MainActivity) getContext()).getmMainDrawerMenu().setItemCheckable(TabsManager.getInstance().getTabByTag(TabsManager.getInstance().getCurrentFragmentTag()).getTitle());
                 refreshAdapter();
                 return;
             }
@@ -236,7 +237,7 @@ public class TabDrawerMenu {
             holder.text.setTextColor(ContextCompat.getColor(App.getContext(), AppTheme.getDrawerMenuText()));
             holder.item.setBackgroundResource(android.R.color.transparent);
 
-            if (App.getInstance().getCurrentFragmentTag().equals(item.getTag())) {
+            if (TabsManager.getInstance().getCurrentFragmentTag().equals(item.getTag())) {
                 holder.text.setTextColor(ContextCompat.getColor(App.getContext(), R.color.selectedItemText));
                 holder.item.setBackgroundResource(R.color.selectedItem);
             }
@@ -259,7 +260,7 @@ public class TabDrawerMenu {
         }
 
         public void onClick(View v) {
-            if (App.getInstance().getTabItems().size() > 1) {
+            if (TabsManager.getInstance().getTabItems().size() > 1) {
                 ((MainActivity) getContext()).tryRemoveTab(tag);
             } else {
                 closeDialog();

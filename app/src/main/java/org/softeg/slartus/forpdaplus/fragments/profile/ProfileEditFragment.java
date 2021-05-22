@@ -31,6 +31,7 @@ import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.tabs.TabsManager;
 import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class ProfileEditFragment extends WebViewFragment {
     private AdvWebView m_WebView;
 
     public final static String m_Title = "Изменить личные данные";
-    private final String parentTag = App.getInstance().getCurrentFragmentTag();
+    private final String parentTag = TabsManager.getInstance().getCurrentFragmentTag();
     private final static String url = "https://"+ HostHelper.getHost() +"/forum/index.php?act=UserCP&CODE=01";
 
     public static void editProfile() {
@@ -182,8 +183,8 @@ public class ProfileEditFragment extends WebViewFragment {
                 this.dialog.dismiss();
             }
             Toast.makeText(getContext(), "Данные отправлены", Toast.LENGTH_SHORT).show();
-            if (App.getInstance().isContainsByTag(parentTag)) {
-                ((ProfileFragment) App.getInstance().getTabByTag(parentTag).getFragment()).startLoadData();
+            if (TabsManager.getInstance().isContainsByTag(parentTag)) {
+                ((ProfileFragment) TabsManager.getInstance().getTabByTag(parentTag).getFragment()).startLoadData();
             }
             getMainActivity().tryRemoveTab(getTag());
         }

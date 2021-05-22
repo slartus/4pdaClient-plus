@@ -56,6 +56,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.tabs.TabsManager;
 import org.softeg.slartus.hosthelper.HostHelper;
 import org.softeg.slartus.hosthelper.HostHelperKt;
 
@@ -301,10 +302,11 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
             return false;
         if ("profile-xhr".equals(uri.getQueryParameter("act"))) {
             if ("device".equals(uri.getQueryParameter("action")))
-                new DeviceEdit(context, uri.toString(), !TextUtils.isEmpty(uri.getQueryParameter("md_id")), App.getInstance().getCurrentFragmentTag());
+                new DeviceEdit(context, uri.toString(), !TextUtils.isEmpty(uri.getQueryParameter("md_id")),
+                        TabsManager.getInstance().getCurrentFragmentTag());
 
             if ("dev-del".equals(uri.getQueryParameter("action")))
-                new DeviceDelete(context, uri.toString(), App.getInstance().getCurrentFragmentTag());
+                new DeviceDelete(context, uri.toString(), TabsManager.getInstance().getCurrentFragmentTag());
             return true;
         }
 
@@ -343,7 +345,7 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
 
 
     private static CharSequence getRedirect(CharSequence url) {
-        Matcher m = PatternExtensions.compile(HostHelper.getHostPattern()+"/pages/go/\\?u=(.*?)$").matcher(url);
+        Matcher m = PatternExtensions.compile(HostHelper.getHostPattern() + "/pages/go/\\?u=(.*?)$").matcher(url);
         if (m.find()) {
             try {
                 return UrlExtensions.decodeUrl(m.group(1));
@@ -512,7 +514,9 @@ public class IntentActivity extends MainActivity implements BricksListDialogFrag
                 TextUtils.isEmpty(uri.getQueryParameter("p")))
             return false;
 
-        EditPostFragment.Companion.editPost(context, uri.getQueryParameter("f"), uri.getQueryParameter("t"), uri.getQueryParameter("p"), authKey, App.getInstance().getCurrentFragmentTag());
+        EditPostFragment.Companion.editPost(context, uri.getQueryParameter("f"),
+                uri.getQueryParameter("t"), uri.getQueryParameter("p"), authKey,
+                TabsManager.getInstance().getCurrentFragmentTag());
         return true;
     }
 

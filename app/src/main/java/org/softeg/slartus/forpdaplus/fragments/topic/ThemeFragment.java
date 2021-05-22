@@ -90,6 +90,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
 import org.softeg.slartus.forpdaplus.notes.NoteDialog;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
+import org.softeg.slartus.forpdaplus.tabs.TabsManager;
 import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.lang.ref.WeakReference;
@@ -1526,9 +1527,9 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
             }
             if (themeFragment != null && themeFragment.isAdded()) {
                 themeFragment.setLoading(false);
-                TabItem item = App.getInstance().getTabByTag(themeFragment.getTag());
+                TabItem item = TabsManager.getInstance().getTabByTag(themeFragment.getTag());
                 if (item != null) {
-                    TabItem tabItem = App.getInstance().getTabByTag(item.getParentTag());
+                    TabItem tabItem = TabsManager.getInstance().getTabByTag(item.getParentTag());
                     if (tabItem != null && !tabItem.getTag().contains("tag")) {
                         Fragment fragment = themeFragment.getMainActivity().getSupportFragmentManager().findFragmentByTag(item.getParentTag());
                         if (fragment instanceof TopicsListFragment && themeFragment.getTopic() != null && themeFragment.getTopic().getId() != null)

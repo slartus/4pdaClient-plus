@@ -30,6 +30,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
+import org.softeg.slartus.forpdaplus.tabs.TabsManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -137,15 +138,15 @@ public class QmsNewThreadFragment extends GeneralFragment {
             username.setText(m_Nick);
             username.setVisibility(View.GONE);
             setTitle(m_Nick + ":" + getString(R.string.qms_title_new_thread));
-            App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":" + getString(R.string.qms_title_new_thread));
+            TabsManager.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":" + getString(R.string.qms_title_new_thread));
 
         } else if (!TextUtils.isEmpty(m_Id)) {
             setTitle(getString(R.string.qms_title_new_thread));
-            App.getInstance().getTabByTag(getTag()).setTitle(getString(R.string.qms_title_new_thread));
+            TabsManager.getInstance().getTabByTag(getTag()).setTitle(getString(R.string.qms_title_new_thread));
             new GetUserTask(m_Id).execute();
         } else {
             setTitle(getString(R.string.qms_title_new_thread));
-            App.getInstance().getTabByTag(getTag()).setTitle(getString(R.string.qms_title_new_thread));
+            TabsManager.getInstance().getTabByTag(getTag()).setTitle(getString(R.string.qms_title_new_thread));
         }
         getMainActivity().notifyTabAdapter();
         return view;
@@ -238,7 +239,7 @@ public class QmsNewThreadFragment extends GeneralFragment {
                 username.setText(m_Nick);
                 username.setVisibility(View.GONE);
                 setTitle(m_Nick + ":" + App.getContext().getString(R.string.qms_title_new_thread));
-                App.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":" + App.getContext().getString(R.string.qms_title_new_thread));
+                TabsManager.getInstance().getTabByTag(getTag()).setTitle(m_Nick + ":" + App.getContext().getString(R.string.qms_title_new_thread));
                 getMainActivity().notifyTabAdapter();
             } else {
                 username.setVisibility(View.VISIBLE);

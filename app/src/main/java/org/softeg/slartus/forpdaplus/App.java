@@ -78,68 +78,6 @@ public class App extends MultiDexApplication {
     private Locale locale;
     private String lang;
 
-    private String currentFragmentTag;
-
-    private int tabIterator = 0;
-
-    public int getTabIterator() {
-        return tabIterator;
-    }
-
-    public void setTabIterator(int tabIterator) {
-        this.tabIterator = tabIterator;
-    }
-
-    public void clearTabIterator() {
-        tabIterator = 0;
-    }
-
-    public void plusTabIterator() {
-        tabIterator++;
-    }
-
-    public String getCurrentFragmentTag() {
-        return currentFragmentTag;
-    }
-
-    public void setCurrentFragmentTag(String s) {
-        currentFragmentTag = s;
-    }
-
-    private final List<TabItem> mTabItems = new ArrayList<>();
-
-    public List<TabItem> getTabItems() {
-        return mTabItems;
-    }
-
-    public int getLastTabPosition(int delPos) {
-        if ((mTabItems.size() - 1) < delPos) delPos--;
-        return delPos;
-    }
-
-    public boolean isContainsByTag(String tag) {
-        for (TabItem item : getTabItems())
-            if (item.getTag().equals(tag)) return true;
-        return false;
-    }
-
-    public boolean isContainsByUrl(String url) {
-        for (TabItem item : getTabItems())
-            if (item.getUrl().equals(url)) return true;
-        return false;
-    }
-
-    public TabItem getTabByTag(String tag) {
-        for (TabItem item : getTabItems())
-            if (item.getTag().equals(tag)) return item;
-        return null;
-    }
-
-    public TabItem getTabByUrl(String url) {
-        for (TabItem item : getTabItems())
-            if (item.getUrl().equals(url)) return item;
-        return null;
-    }
 
     private final AtomicInteger m_AtomicInteger = new AtomicInteger();
 
@@ -155,13 +93,10 @@ public class App extends MultiDexApplication {
         return preferences;
     }
 
-
     private static App INSTANCE = null;
 
     public App() {
         INSTANCE = this;
-
-
     }
 
     private MyActivityLifecycleCallbacks m_MyActivityLifecycleCallbacks;

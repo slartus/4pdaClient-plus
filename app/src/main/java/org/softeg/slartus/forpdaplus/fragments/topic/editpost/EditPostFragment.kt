@@ -14,16 +14,15 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.ActionBar
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.text.*
 import android.text.style.BackgroundColorSpan
 import android.util.TypedValue
 import android.view.*
 import android.widget.*
-import androidx.annotation.Nullable
+import androidx.appcompat.app.ActionBar
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import io.paperdb.Paper
 import io.reactivex.Single
@@ -46,6 +45,7 @@ import org.softeg.slartus.forpdaplus.fragments.topic.PostPreviewFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.editpost.tasks.*
 import org.softeg.slartus.forpdaplus.prefs.Preferences
+import org.softeg.slartus.forpdaplus.tabs.TabsManager
 import org.softeg.slartus.hosthelper.HostHelper
 import java.util.*
 
@@ -337,7 +337,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
                 return true
             }
             R.id.preview_item -> {
-                val tabItem = App.getInstance().getTabByUrl("preview_" + tag!!)
+                val tabItem = TabsManager.instance.getTabByUrl("preview_" + tag!!)
                 if (tabItem == null) {
                     PostPreviewFragment.showSpecial(postText, tag)
                 } else {
@@ -555,8 +555,8 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
     }
 
     override fun onAcceptEditTaskSuccess(editPost: EditPost?) {
-        if (App.getInstance().isContainsByTag(parentTag)) {
-            (App.getInstance().getTabByTag(parentTag)?.fragment as ThemeFragment?)
+        if (TabsManager.instance.isContainsByTag(parentTag)) {
+            (TabsManager.instance.getTabByTag(parentTag)?.fragment as ThemeFragment?)
                     ?.showTheme(ThemeFragment.getThemeUrl(editPost?.topicId, "view=findpost&p=${editPost?.id}"), true)
         }
         mainActivity.tryRemoveTab(tag)
@@ -568,8 +568,8 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             Toast.makeText(mainActivity, App.getContext().getString(R.string.error) + ": " + error, Toast.LENGTH_LONG).show()
             return
         }
-        if (App.getInstance().isContainsByTag(parentTag)) {
-            (App.getInstance().getTabByTag(parentTag)!!.fragment as ThemeFragment)
+        if (TabsManager.instance.isContainsByTag(parentTag)) {
+            (TabsManager.instance.getTabByTag(parentTag)!!.fragment as ThemeFragment)
                     .showTheme(String.format("https://${HostHelper.host}/forum/index.php?showtopic=%s&%s", editPost?.topicId,
                             if (isNewPost) "view=getlastpost" else ("view=findpost&p=" + editPost?.id)), true)
         }
@@ -603,7 +603,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             mPopupPanelView!!.destroy()
             mPopupPanelView = null
         }
-        val tabItem = App.getInstance().getTabByUrl("preview_" + tag!!)
+        val tabItem = TabsManager.instance.getTabByUrl("preview_" + tag!!)
         if (tabItem != null) mainActivity.tryRemoveTab(tabItem.tag)
         super.onDestroy()
     }
@@ -804,7 +804,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             args.putString("postId", postId)
             args.putString("authKey", authKey)
             args.putString("parentTag", tag)
-            MainActivity.addTab(context.getString(R.string.edit_post_combined) + context.getString(R.string.combined_in) + App.getInstance().getTabByTag(tag)!!.title, url, newInstance(args))
+            MainActivity.addTab(context.getString(R.string.edit_post_combined) + context.getString(R.string.combined_in) + TabsManager.instance.getTabByTag(tag)!!.title, url, newInstance(args))
         }
 
         fun newPost(context: Activity, forumId: String, topicId: String, authKey: String,
@@ -817,7 +817,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
             args.putString("body", body)
             args.putString("authKey", authKey)
             args.putString("parentTag", tag)
-            MainActivity.addTab(context.getString(R.string.answer) + context.getString(R.string.combined_in) + App.getInstance().getTabByTag(tag)!!.title, url, newInstance(args))
+            MainActivity.addTab(context.getString(R.string.answer) + context.getString(R.string.combined_in) + TabsManager.instance.getTabByTag(tag)!!.title, url, newInstance(args))
         }
 
         fun newPostWithAttach(context: Context, forumId: String?, topicId: String, authKey: String,

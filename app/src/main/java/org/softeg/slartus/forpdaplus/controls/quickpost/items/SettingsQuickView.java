@@ -17,6 +17,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.fragments.topic.editpost.EditPostFragment;
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment;
 import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import org.softeg.slartus.forpdaplus.tabs.TabsManager;
 import org.softeg.slartus.forpdaplus.utils.LogUtil;
 
 
@@ -76,23 +77,14 @@ public class SettingsQuickView extends BaseQuickView {
         extendedFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LogUtil.D("BOOM BOOM", "CLICK");
-                LogUtil.D("BOOM BOOM forum id ", getForumId() == null ? "false" : getForumId().toString());
-                LogUtil.D("BOOM BOOM topic id", getTopicId() == null ? "false" : getTopicId().toString());
-                LogUtil.D("BOOM BOOM post body", getPostBody() == null ? "false" : getPostBody().toString());
-                if (getAuthKey() == null) {
-                    LogUtil.D("BOOM BOOM", "auth null");
-                } else {
-                    LogUtil.D("BOOM BOOM", "auth not null");
-                }
                 if (getTopicId() == null || getAuthKey() == null || getPostBody() == null) {
                     return;
                 }
-                LogUtil.D("BOOM BOOM", "gogogog");
-                ((ThemeFragment) App.getInstance().getTabByTag(App.getInstance().getCurrentFragmentTag()).getFragment()).hideMessagePanel();
+
+                ((ThemeFragment) TabsManager.getInstance().getTabByTag(TabsManager.getInstance().getCurrentFragmentTag()).getFragment()).hideMessagePanel();
                 EditPostFragment.Companion.newPost((MainActivity) getContext(), getForumId() == null ? null : getForumId().toString(),
                         getTopicId().toString(), getAuthKey().toString(),
-                        getPostBody().toString(), App.getInstance().getCurrentFragmentTag());
+                        getPostBody().toString(), TabsManager.getInstance().getCurrentFragmentTag());
 
             }
         });

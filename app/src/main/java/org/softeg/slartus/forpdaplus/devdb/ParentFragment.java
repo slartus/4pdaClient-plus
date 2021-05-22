@@ -28,6 +28,7 @@ import org.softeg.slartus.forpdaplus.devdb.helpers.FLifecycleUtil;
 import org.softeg.slartus.forpdaplus.devdb.helpers.ParseHelper;
 import org.softeg.slartus.forpdaplus.devdb.helpers.ParsedModel;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
+import org.softeg.slartus.forpdaplus.tabs.TabsManager;
 
 public class ParentFragment extends GeneralFragment {
 
@@ -183,7 +184,7 @@ public class ParentFragment extends GeneralFragment {
     private void initUI(ParsedModel parsed) {
         m_Title = parsed.getTitle();
         setTitle(m_Title);
-        App.getInstance().getTabByTag(getTag()).setTitle(m_Title);
+        TabsManager.getInstance().getTabByTag(getTag()).setTitle(m_Title);
         getMainActivity().notifyTabAdapter();
         viewPager = (ViewPager) findViewById(R.id.devDbViewPager);
         adapter = new DevDbViewPagerAdapter(getMainActivity(), getChildFragmentManager(), parsed);
