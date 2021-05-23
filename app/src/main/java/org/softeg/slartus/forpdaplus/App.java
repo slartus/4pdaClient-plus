@@ -1,18 +1,16 @@
 package org.softeg.slartus.forpdaplus;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.view.View;
 
 import androidx.multidex.MultiDexApplication;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.view.View;
 
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -33,13 +31,10 @@ import org.softeg.slartus.forpdaplus.acra.ACRAReportSenderFactory;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 import org.softeg.slartus.forpdaplus.repositories.InternetConnection;
-import org.softeg.slartus.forpdaplus.tabs.TabItem;
 import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -106,7 +101,7 @@ public class App extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        //TooLargeTool.startLogging(this);//логирование saveinstancestate
         org.softeg.slartus.forpdacommon.FACTORY.init(this);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
@@ -146,6 +141,7 @@ public class App extends MultiDexApplication {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         if (!ACRA.isACRASenderServiceProcess()) {
+            ACRA.DEV_LOGGING = true;
             ACRA.init(this);
 
         }

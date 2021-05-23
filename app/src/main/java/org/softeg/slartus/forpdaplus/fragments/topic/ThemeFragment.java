@@ -347,7 +347,7 @@ public class ThemeFragment extends WebViewFragment implements BricksListDialogFr
                 Paper.book().write("Topic", m_Topic);
             //outState.putSerializable("History", m_History);
             //outState.putSerializable("Topic", m_Topic);
-            webView.saveState(outState);
+            //webView.saveState(outState);
             outState.putString("LastUrl", getLastUrl());
             outState.putString("ScrollElement", m_ScrollElement);
             outState.putString("LastStyle", lastStyle);
