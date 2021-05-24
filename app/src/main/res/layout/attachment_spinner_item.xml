@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center_vertical"
     android:minHeight="48dp"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:gravity="center_vertical">
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp">
 
     <ImageButton
         android:id="@+id/btnSpoiler"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/contrast" />
 
     <TextView
         android:id="@+id/txtFile"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:minHeight="48dp"
+
         android:singleLine="false"
-        android:paddingLeft="8dp"
-        android:inputType="textCapSentences|textMultiLine"
-        android:text="sadasd"
+        tools:text="Screenshot_2021-05-21-18-51-37-107_org"
         android:textAppearance="@android:style/TextAppearance.Medium"
-        android:layout_alignTop="@+id/btnSpoiler"
-        android:layout_toRightOf="@+id/btnSpoiler"
-        android:layout_toLeftOf="@+id/btnDelete"
-        android:layout_toStartOf="@+id/btnDelete"
-        android:gravity="center_vertical" />
+        app:layout_constraintEnd_toStartOf="@+id/btnDelete"
+        app:layout_constraintStart_toEndOf="@+id/btnSpoiler"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/btnDelete"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:srcCompat="@drawable/close_grey"
-        android:layout_alignTop="@+id/btnSpoiler"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-</RelativeLayout>
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/close_grey" />
+</androidx.constraintlayout.widget.ConstraintLayout>
