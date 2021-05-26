@@ -28,8 +28,10 @@ import org.softeg.slartus.forpdacommon.ExtPreferences;
 import org.softeg.slartus.forpdanotifyservice.favorites.FavoritesNotifier;
 import org.softeg.slartus.forpdanotifyservice.qms.QmsNotifier;
 import org.softeg.slartus.forpdaplus.acra.ACRAReportSenderFactory;
+import org.softeg.slartus.forpdaplus.classes.Forum;
 import org.softeg.slartus.forpdaplus.db.DbHelper;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
+import org.softeg.slartus.forpdaplus.repositories.ForumsRepository;
 import org.softeg.slartus.forpdaplus.repositories.InternetConnection;
 import org.softeg.slartus.hosthelper.HostHelper;
 
@@ -135,6 +137,7 @@ public class App extends MultiDexApplication {
         Http.Companion.init(this, getString(R.string.app_name), getPackageInfo().versionName);
         Client.getInstance().checkLoginByCookies();
         InternetConnection.getInstance().subscribeInternetState();
+        ForumsRepository.getInstance();
     }
 
     @Override
