@@ -1,18 +1,12 @@
 package org.softeg.slartus.forpdaplus;
 
 import android.content.Context;
-import android.net.Uri;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.TextNode;
 import org.softeg.slartus.forpdaapi.ForumsApi;
 import org.softeg.slartus.forpdaapi.IHttpClient;
 import org.softeg.slartus.forpdaapi.LoginResult;
@@ -27,7 +21,6 @@ import org.softeg.slartus.forpdaapi.parsers.MentionsParser;
 import org.softeg.slartus.forpdaapi.post.PostApi;
 import org.softeg.slartus.forpdaapi.qms.QmsApi;
 import org.softeg.slartus.forpdaapi.users.Users;
-import org.softeg.slartus.forpdacommon.CollectionUtils;
 import org.softeg.slartus.forpdacommon.HttpHelper;
 import org.softeg.slartus.forpdacommon.NameValuePair;
 import org.softeg.slartus.forpdacommon.NotReportException;
@@ -36,11 +29,8 @@ import org.softeg.slartus.forpdaplus.classes.DownloadTask;
 import org.softeg.slartus.forpdaplus.classes.DownloadTasks;
 import org.softeg.slartus.forpdaplus.classes.Forum;
 import org.softeg.slartus.forpdaplus.classes.TopicBodyBuilder;
-import org.softeg.slartus.forpdaplus.classes.common.Functions;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
-import org.softeg.slartus.forpdaplus.db.ForumsTableOld;
-import org.softeg.slartus.forpdaplus.fragments.topic.ForPdaWebInterface;
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 import org.softeg.slartus.forpdaplus.utils.UploadUtils;
 import org.softeg.slartus.hosthelper.HostHelper;
@@ -340,11 +330,6 @@ public class Client implements IHttpClient {
 
         return !UserInfoRepository.Companion.getInstance().getUserInfo().getValue().getLogined();
     }
-
-    public Forum loadForums() throws Exception {
-        return ForumsTableOld.loadForumsTree();
-    }
-
 
     public AppResponse preformGetWithProgress(String url, OnProgressChangedListener progressChangedListener) throws IOException {
         doOnOnProgressChanged(progressChangedListener, App.getContext().getString(R.string.receiving_data));

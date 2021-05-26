@@ -3,7 +3,9 @@ package org.softeg.slartus.forpdaplus.listfragments;/*
  */
 
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,7 +14,7 @@ import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo;
 
-public abstract class BaseBrickFragment extends GeneralFragment{
+public abstract class BaseBrickFragment extends GeneralFragment {
 
     public static final String NAME_KEY = "NAME_KEY";
     public static final String TITLE_KEY = "TITLE_KEY";
@@ -95,7 +97,7 @@ public abstract class BaseBrickFragment extends GeneralFragment{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==R.id.refresh_item){
+        if (item.getItemId() == R.id.refresh_item) {
             loadData(true);
             return true;
         }
@@ -105,16 +107,22 @@ public abstract class BaseBrickFragment extends GeneralFragment{
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if(inflater!=null&&menu.findItem(R.id.refresh_item)==null)
-            inflater.inflate(R.menu.base_brick,menu);
+        if (inflater != null && menu.findItem(R.id.refresh_item) == null)
+            inflater.inflate(R.menu.base_brick, menu);
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if(m_Title!=null)
+        if (m_Title != null)
             setTitle(m_Title);
+    }
+
+    @Override
+    public void setTitle(String title) {
+        m_Title = title;
+        super.setTitle(title);
     }
 
     @Override

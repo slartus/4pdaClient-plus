@@ -8,14 +8,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -30,8 +24,15 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.softeg.slartus.forpdaapi.Forum;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaapi.Topic;
 import org.softeg.slartus.forpdaapi.search.SearchApi;
@@ -42,13 +43,15 @@ import org.softeg.slartus.forpdaplus.MainActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
 import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
-import org.softeg.slartus.forpdaplus.db.ForumsTable;
+import org.softeg.slartus.forpdaplus.common.RxExtensionsKt;
+import org.softeg.slartus.forpdaplus.repositories.ForumsRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+
+import io.reactivex.disposables.Disposable;
 
 public class SearchSettingsDialogFragment extends DialogFragment {
     private static final String SEARCH_SETTINGS_KEY = "SEARCH_SETTINGS_KEY";
@@ -200,7 +203,7 @@ public class SearchSettingsDialogFragment extends DialogFragment {
         if (savedInstanceState != null) {
             args.putAll(savedInstanceState);
         }
-        Activity activity=getActivity();
+        Activity activity = getActivity();
         assert activity != null;
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
@@ -368,27 +371,31 @@ public class SearchSettingsDialogFragment extends DialogFragment {
 
     private void loadForums(final Collection<String> checkedForumIds) {
 
-        final Handler handler = new Handler();
         forumsProgress.setVisibility(View.VISIBLE);
-        new Thread(() -> {
-            try {
-                final List<String> forums = ForumsTable.INSTANCE.loadForumTitlesList(checkedForumIds);
-                if (checkedForumIds.contains("all"))
-                    forums.add(0, App.getContext().getString(R.string.all_forums));
-                forums.add(0, App.getContext().getString(R.string.total) + ": " + forums.size());
-                handler.post(() -> {
+        Disposable disposable = RxExtensionsKt.runFromIoToUi(ForumsRepository.getInstance()
+                .getForumsSubject())
+                .doOnSubscribe(d -> forumsProgress.setVisibility(View.VISIBLE))
+                .doAfterTerminate(() -> forumsProgress.setVisibility(View.GONE))
+                .subscribe(
+                        forums -> {
+                            if (getActivity() == null)
+                                return;
+                            ArrayList<String> titles = new ArrayList<>();
+                            for (Forum f : forums) {
+                                if (checkedForumIds.contains(f.getId()))
+                                    titles.add(f.getTitle());
+                            }
 
-                    if (getActivity() == null)
-                        return;
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, forums);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    forumsSpinner.setAdapter(adapter);
-                    forumsProgress.setVisibility(View.GONE);
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, titles);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            forumsSpinner.setAdapter(adapter);
+                            forumsProgress.setVisibility(View.GONE);
+                        },
+                        throwable -> {
+                            throwable.printStackTrace();
+                        }
+                );
+
     }
 
     private void loadTopics(final Collection<String> topicIds) {

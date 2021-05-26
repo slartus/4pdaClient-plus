@@ -87,8 +87,16 @@ public class ForumTopicsListFragment extends TopicsListFragment {
     public void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setArrow();
-        if (savedInstanceState != null)
+        if (savedInstanceState != null) {
             mUrl = savedInstanceState.getString(URL_KEY, mUrl);
+        } else {
+            if (getArguments() != null) {
+                if (getArguments().containsKey(ForumFragment.FORUM_TITLE_KEY)) {
+
+                    setTitle(getArguments().getString(ForumFragment.FORUM_TITLE_KEY));
+                }
+            }
+        }
     }
 
     @Override

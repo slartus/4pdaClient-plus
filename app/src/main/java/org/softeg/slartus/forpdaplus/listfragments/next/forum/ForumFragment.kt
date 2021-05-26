@@ -2,21 +2,21 @@ package org.softeg.slartus.forpdaplus.listfragments.next.forum
 
 import android.os.Bundle
 import android.os.Handler
-import androidx.fragment.app.Fragment
-import androidx.loader.app.LoaderManager
-import androidx.loader.content.Loader
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.text.TextUtils
 import android.view.*
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import io.paperdb.Paper
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import org.softeg.slartus.forpdaapi.Forum
 import org.softeg.slartus.forpdaapi.ForumsApi
 import org.softeg.slartus.forpdaapi.search.SearchSettings
-import org.softeg.slartus.forpdaplus.App
 import org.softeg.slartus.forpdaplus.Client
 import org.softeg.slartus.forpdaplus.MainActivity
 import org.softeg.slartus.forpdaplus.R
@@ -29,15 +29,15 @@ import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo
 import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo
 import org.softeg.slartus.forpdaplus.prefs.Preferences
+import org.softeg.slartus.forpdaplus.repositories.ForumsRepository
 import org.softeg.slartus.hosthelper.HostHelper
 import java.io.Serializable
-import java.lang.ref.WeakReference
 import java.util.*
 
 /*
  * Created by slartus on 24.02.2015.
  */
-class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFragment.ForumBranch> {
+class ForumFragment : GeneralFragment() {
     private var listView: RecyclerView? = null
     private var mEmptyTextView: TextView? = null
     private var data = createListData()
@@ -47,10 +47,9 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
     private var mAdapter: ForumsAdapter? = null
     private var mForumId: String? = null
 
-    private var lastImageDownload = MainActivity.getPreferences().getBoolean("forum.list.show_images", true)
+    private var lastImageDownload =
+        MainActivity.getPreferences().getBoolean("forum.list.show_images", true)
 
-    private val loaderId: Int
-        get() = ForumLoaderTask.ID
 
     private var mTitle: String? = null
     private var mName: String? = null
@@ -71,7 +70,7 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
             mName = savedInstanceState.getString(NAME_KEY, mName)
             mTitle = savedInstanceState.getString(TITLE_KEY, mTitle)
             mNeedLogin = savedInstanceState.getBoolean(NEED_LOGIN_KEY, mNeedLogin)
-
+            mForumId = savedInstanceState.getString(FORUM_ID_KEY, mForumId)
             loadCache()
 
         }
@@ -85,61 +84,94 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         menu.add(R.string.mark_forum_as_read)
-                ?.setOnMenuItemClickListener {
-                    markAsRead()
-                    false
-                }
-                ?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+            ?.setOnMenuItemClickListener {
+                markAsRead()
+                false
+            }
+            ?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
         menu.add(R.string.set_forum_starting)
-                ?.setOnMenuItemClickListener {
-                    val f = data.crumbs[data.crumbs.size - 1]
-                    Preferences.List.setStartForum(f.id,
-                            f.title)
-                    Toast.makeText(activity, R.string.forum_setted_to_start, Toast.LENGTH_SHORT).show()
-                    false
-                }
-                ?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
-        menu.add(R.string.refresh_forum_struct)
-                ?.setOnMenuItemClickListener {
-                    MaterialDialog.Builder(activity!!)
-                            .title(R.string.attention)
-                            .content(R.string.forum_refresh_content)
-                            .positiveText(R.string.refresh)
-                            .onPositive { _, _ -> refreshForumStruct() }
-                            .negativeText(R.string.cancel).show()
-                    false
-                }
-                ?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+            ?.setOnMenuItemClickListener {
+                val f = data.crumbs[data.crumbs.size - 1]
+                Preferences.List.setStartForum(
+                    f.id,
+                    f.title
+                )
+                Toast.makeText(activity, R.string.forum_setted_to_start, Toast.LENGTH_SHORT).show()
+                false
+            }
+            ?.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER)
+
     }
 
-    private fun refreshForumStruct() {
-        context?.let {
-            UpdateForumStructTask(WeakReference(it), object : IProgressListener {
-                override fun onProgressChange(dialog: MaterialDialog, message: String) {
-                    mHandler.post { dialog.setContent(message) }
-                }
+    private var dataSubscriber: Disposable? = null
+    private fun subscribesData() {
+        dataSubscriber?.dispose()
+        setLoading(true)
+        dataSubscriber =
+            ForumsRepository.instance
+                .forumsSubject
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { items ->
+                        setLoading(false)
+                        val screenItems = items.filter { it.parentId == mForumId }
 
-                override fun done() {
-                    loadData(true)
-                }
-            }).execute()
-        }
+                        val crumbs = ArrayList<Forum>()
+                        var f = mForumId
+                        while (true) {
+                            if (f == null) {
+                                crumbs.add(0, Forum(null, "4PDA"))
+                                break
+                            } else {
+                                val parent = items.firstOrNull { it.id == f }
+                                f = if (parent == null) {
+                                    crumbs.add(0, Forum(f, parent?.title ?: "Not Found"))
+                                    null
+                                } else {
+                                    crumbs.add(0, parent)
+                                    parent.parentId
+                                }
+                            }
+                        }
+
+                        this.data.items.clear()
+                        this.data.items.addAll(screenItems)
+                        this.data.crumbs.clear()
+                        this.data.crumbs.addAll(crumbs)
+
+                        notifyDataSetChanged()
+                        listView?.refreshDrawableState()
+                        listView?.scrollToPosition(0)
+
+                    },
+                    {
+                        setLoading(false)
+                        AppLog.e(activity, data.error)
+                    }
+                )
+
     }
 
     override fun onPause() {
         super.onPause()
+        dataSubscriber?.dispose()
         MainActivity.searchSettings = SearchSettingsDialogFragment.createDefaultSearchSettings()
     }
 
     override fun onResume() {
         super.onResume()
+        subscribesData()
         removeArrow()
         MainActivity.searchSettings = mSearchSetting
 
-        if (lastImageDownload == MainActivity.getPreferences().getBoolean("forum.list.show_images", true)) {
+        if (lastImageDownload == MainActivity.getPreferences()
+                .getBoolean("forum.list.show_images", true)
+        ) {
             mAdapter?.notifyDataSetChangedWithLayout()
             listView?.refreshDrawableState()
-            lastImageDownload = MainActivity.getPreferences().getBoolean("forum.list.show_images", true)
+            lastImageDownload =
+                MainActivity.getPreferences().getBoolean("forum.list.show_images", true)
         }
     }
 
@@ -149,42 +181,46 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
             return
         }
         MaterialDialog.Builder(activity!!)
-                .title(R.string.confirm_action)
-                .content(getString(R.string.mark_forum_as_read) + "?")
-                .positiveText(R.string.yes)
-                .onPositive { _, _ ->
-                    Toast.makeText(activity, R.string.request_sent, Toast.LENGTH_SHORT).show()
-                    Thread {
-                        var ex: Throwable? = null
+            .title(R.string.confirm_action)
+            .content(getString(R.string.mark_forum_as_read) + "?")
+            .positiveText(R.string.yes)
+            .onPositive { _, _ ->
+                Toast.makeText(activity, R.string.request_sent, Toast.LENGTH_SHORT).show()
+                Thread {
+                    var ex: Throwable? = null
+                    try {
+                        val f = data.crumbs[data.crumbs.size - 1]
+                        ForumsApi.markForumAsRead(Client.getInstance(), f.id ?: "-1")
+
+                    } catch (e: Throwable) {
+                        ex = e
+                    }
+
+                    val finalEx = ex
+
+                    mHandler.post {
                         try {
-                            val f = data.crumbs[data.crumbs.size - 1]
-                            ForumsApi.markForumAsRead(Client.getInstance(), if (f.id == null) "-1" else f.id)
-
-                        } catch (e: Throwable) {
-                            ex = e
-                        }
-
-                        val finalEx = ex
-
-                        mHandler.post {
-                            try {
-                                if (finalEx != null) {
-                                    Toast.makeText(activity, R.string.error, Toast.LENGTH_SHORT).show()
-                                    AppLog.e(activity, finalEx)
-                                } else {
-                                    Toast.makeText(activity, R.string.forum_setted_read, Toast.LENGTH_SHORT).show()
-                                }
-                            } catch (ex1: Exception) {
-                                AppLog.e(activity, ex1)
+                            if (finalEx != null) {
+                                Toast.makeText(activity, R.string.error, Toast.LENGTH_SHORT).show()
+                                AppLog.e(activity, finalEx)
+                            } else {
+                                Toast.makeText(
+                                    activity,
+                                    R.string.forum_setted_read,
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
-
-
+                        } catch (ex1: Exception) {
+                            AppLog.e(activity, ex1)
                         }
-                    }.start()
-                }
 
-                .negativeText(R.string.cancel)
-                .show()
+
+                    }
+                }.start()
+            }
+
+            .negativeText(R.string.cancel)
+            .show()
     }
 
     private fun createListData(): ForumBranch {
@@ -205,8 +241,10 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
             reloadData()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         view = inflater.inflate(R.layout.forum_fragment, container, false)
         assert(view != null)
         listView = findViewById(android.R.id.list) as RecyclerView
@@ -231,51 +269,11 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
     }
 
     fun loadForum(forumId: String?) {
-        val args = Bundle()
-        args.putString(FORUM_ID_KEY, forumId)
-
-        setLoading(true)
-        if (loaderManager.getLoader<Any>(loaderId) != null)
-            loaderManager.restartLoader(loaderId, args, this)
-        else
-            loaderManager.initLoader(loaderId, args, this)
-    }
-
-    override fun onCreateLoader(id: Int, args: Bundle?): Loader<ForumBranch> {
-        setLoading(true)
-        return createLoader(args)
-    }
-
-    private fun createLoader(args: Bundle?): Loader<ForumBranch> {
-        setLoading(true)
-        return ForumLoaderTask(context ?: App.getContext(), args)
-    }
-
-    override fun onLoadFinished(loader: Loader<ForumBranch>, data: ForumBranch?) {
-        if (data?.error != null) {
-            AppLog.e(activity, data.error)
-        } else if (data != null) {
-            if (data.items.size == 0 && data.items.size > 1) {
-                val forum = data.items[data.items.size - 1]
-                ForumTopicsListFragment.showForumTopicsList(forum.id, forum.title)
-                return
-            }
-            this.data.items.clear()
-            this.data.items.addAll(data.items)
-            this.data.crumbs.clear()
-            this.data.crumbs.addAll(data.crumbs)
-
-            notifyDataSetChanged()
-            listView?.refreshDrawableState()
-            listView?.scrollToPosition(0)
-        }
-
-        setLoading(false)
-    }
-
-    override fun onLoaderReset(loader: Loader<ForumBranch>) {
+        mForumId = forumId
+        subscribesData()
 
     }
+
 
     private fun setLoading(@Suppress("UNUSED_PARAMETER") loading: Boolean?) {
         try {
@@ -303,8 +301,10 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
         saveCache()
         try {
             if (listView != null) {
-                outState.putInt(SCROLL_POSITION_KEY,
-                        (listView?.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition())
+                outState.putInt(
+                    SCROLL_POSITION_KEY,
+                    (listView?.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+                )
             }
         } catch (ex: Throwable) {
             AppLog.e(ex)
@@ -352,8 +352,12 @@ class ForumFragment : GeneralFragment(), LoaderManager.LoaderCallbacks<ForumFrag
 
 
         }, object : ForumsAdapter.OnLongClickListener {
-            private fun show(id: String) {
-                ExtUrl.showSelectActionDialog(mainActivity, getString(R.string.link), "https://${HostHelper.host}/forum/index.php?showforum=$id")
+            private fun show(id: String?) {
+                ExtUrl.showSelectActionDialog(
+                    mainActivity,
+                    getString(R.string.link),
+                    "https://${HostHelper.host}/forum/index.php?showforum=$id"
+                )
             }
 
             override fun onItemClick(v: View) {

@@ -4,17 +4,19 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import org.softeg.slartus.forpdaapi.Forum;
 import org.softeg.slartus.forpdaapi.ListInfo;
 import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.classes.Forum;
 import org.softeg.slartus.forpdaplus.classes.forum.ExtTopic;
 import org.softeg.slartus.forpdaplus.classes.forum.HistoryTopic;
 import org.softeg.slartus.forpdaplus.common.AppLog;
+import org.softeg.slartus.forpdaplus.repositories.ForumsRepository;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -42,7 +44,6 @@ public class TopicsHistoryTable {
             c = db.query("TopicsHistoryView", new String[]{COLUMN_URL}, TopicsTable.COLUMN_ID + "=?", new String[]{topicId.toString()},
                     null, null, null);
 
-            //Forum forum = ForumsTableOld.loadForumsTree();
 
             if (c.moveToFirst()) {
                 return c.getString(c.getColumnIndex(COLUMN_URL));
@@ -69,8 +70,6 @@ public class TopicsHistoryTable {
 
             c = db.query("TopicsHistoryView", null, TopicsTable.COLUMN_ID + "=?", new String[]{topicId.toString()}, null, null, null);
 
-            Forum forum = ForumsTableOld.loadForumsTree();
-
             if (c.moveToFirst()) {
                 int columnIdIndex = c.getColumnIndex(TopicsTable.COLUMN_ID);
                 int columnTitleIndex = c.getColumnIndex(TopicsTable.COLUMN_TITLE);
@@ -86,7 +85,7 @@ public class TopicsHistoryTable {
                 String forumId = c.getString(columnForumIdIndex);
                 String forumTitle = null;
                 String url = c.getString(columnUrlIndex);
-                Forum f = forum.findById(forumId, true, false);
+                Forum f = ForumsRepository.getInstance().findById(forumId, true, false);
                 if (f != null)
                     forumTitle = f.getTitle();
                 Date dateTime = null;
@@ -130,7 +129,7 @@ public class TopicsHistoryTable {
 
             assert db != null;
             c = db.query("TopicsHistoryView", null, null, null, null, null, null, listInfo.getFrom() + ", 20");
-            Forum forum = ForumsTableOld.loadForumsTree();
+
             if (c.moveToFirst()) {
                 int columnIdIndex = c.getColumnIndex(TopicsTable.COLUMN_ID);
                 int columnTitleIndex = c.getColumnIndex(TopicsTable.COLUMN_TITLE);
@@ -146,7 +145,7 @@ public class TopicsHistoryTable {
                     String forumId = c.getString(columnForumIdIndex);
                     String forumTitle = null;
                     String url = c.getString(columnUrlIndex);
-                    Forum f = forum.findById(forumId, true, false);
+                    Forum f = ForumsRepository.getInstance().findById(forumId, true, false);
                     if (f != null)
                         forumTitle = f.getTitle();
                     Date dateTime = null;
