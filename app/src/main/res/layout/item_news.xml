@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -60,8 +62,9 @@
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="5"
-                android:text="Наушники JBL Reflect Mini BT работают до 8 часов по Bluetooth"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                tools:text="Наушники JBL Reflect Mini BT работают до 8 часов по Bluetooth"
+                />
         </FrameLayout>
 
         <LinearLayout
@@ -86,8 +89,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="8dp"
-                    android:text="1.08.14"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:text="1.08.14"
+                    />
 
                 <TextView
                     android:id="@+id/textAvtor"
@@ -95,8 +99,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingRight="8dp"
-                    android:text="News"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:text="News" />
 
                 <TextView
                     android:id="@+id/textComments"
@@ -105,8 +109,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:gravity="right"
-                    android:text="1"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:text="1" />
             </LinearLayout>
 
             <TextView
@@ -116,8 +120,9 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
                 android:lineSpacingExtra="1dp"
-                android:text="jdgkfllsakj ah lkshfkl sadjh sajklsg hklk hslakj hkja ghkalh kls;aig oaie hfkhdlshg ldk"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:text="@tools:sample/lorem/random"
+                />
 
             <TextView
                 android:id="@+id/textSource"

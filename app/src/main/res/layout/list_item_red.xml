@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
     <FrameLayout
@@ -44,10 +46,10 @@
                 android:layout_height="wrap_content"
                 android:minHeight="22dp"
                 android:paddingRight="20dp"
-                android:text="Main Text Most looonges"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textSize="16sp"
-                android:singleLine="false" />
+                android:singleLine="false"
+                tools:text="Main Text Most looonges" />
 
             <TextView
                 android:id="@+id/txtSubMain"
@@ -56,8 +58,9 @@
                 android:layout_height="wrap_content"
                 android:minHeight="20dp"
                 android:maxLines="2"
-                android:text="Sub main textySub main textySub main textySub main textySub main texty"
-                android:textAppearance="?android:textAppearanceSmall" />
+                android:textAppearance="?android:textAppearanceSmall"
+                tools:text="Sub main textySub main textySub main textySub main textySub main texty"
+                />
 
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -73,10 +76,9 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:ellipsize="middle"
-                    android:lines="1"
                     android:singleLine="true"
-                    android:text="Top Left Text"
-                    android:textAppearance="?android:textAppearanceSmall" />
+                    android:textAppearance="?android:textAppearanceSmall"
+                    tools:text="Top Left Text" />
 
                 <TextView
                     android:id="@+id/txtTopRight"
@@ -87,8 +89,8 @@
                     android:layout_alignParentRight="true"
                     android:gravity="end"
                     android:lines="1"
-                    android:text="Top Right Text"
-                    android:textAppearance="?android:textAppearanceSmall" />
+                    android:textAppearance="?android:textAppearanceSmall"
+                    tools:text="Top Right Text" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -97,9 +99,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#4c000000"
-            android:layout_alignParentEnd="false"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentRight="false"
             android:layout_alignParentTop="true"
             android:indeterminateOnly="true"
             android:paddingTop="8dp"
