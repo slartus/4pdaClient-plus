@@ -11,53 +11,53 @@
     <item
         android:id="@+id/refresh_item"
         android:icon="@drawable/refresh"
-        android:title="@string/Refresh"
+        android:title="@string/refresh"
         app:showAsAction="ifRoom" />
 
     <item
         android:icon="@drawable/download_white"
-        android:title="@string/Attaches">
+        android:title="@string/attachments">
         <menu>
             <item
                 android:id="@+id/page_attaches_item"
-                android:title="@string/attachments_page" />
+                android:title="@string/menu_topic_attachments_from_page" />
             <item
                 android:id="@+id/topic_attaches_item"
-                android:title="@string/all_attachments_topic" />
+                android:title="@string/menu_topic_attachments_from_topic" />
         </menu>
     </item>
 
     <item
         android:id="@+id/page_search_item"
         android:icon="@drawable/magnify"
-        android:title="@string/FindOnPage" />
+        android:title="@string/menu_topic_find_on_page" />
 
     <item
         android:id="@+id/topic_search_item"
         android:icon="@drawable/magnify"
-        android:title="@string/FindInTopic"
+        android:title="@string/menu_topic_find_in_topic"
         app:showAsAction="always"/>
 
     <item android:title="@string/theme_option">
         <menu>
             <item
                 android:id="@+id/add_to_favorites_item"
-                android:title="@string/AddToFavorites" />
+                android:title="@string/add_to_favorites" />
             <item
                 android:id="@+id/del_from_favorites_item"
-                android:title="@string/DeleteFromFavorites" />
+                android:title="@string/delete_from_favorites" />
             <item
                 android:id="@+id/open_topic_forum_item"
-                android:title="@string/OpenTopicForum" />
+                android:title="@string/open_topics_forum" />
             <item
                 android:id="@+id/topic_notes_item"
-                android:title="@string/NotesByTopic" />
+                android:title="@string/notes_by_topic" />
             <item
                 android:id="@+id/topic_readers_item"
-                android:title="@string/who_read_topic" />
+                android:title="@string/topic_readers" />
             <item
                 android:id="@+id/topic_writers_item"
-                android:title="@string/who_posted_msg" />
+                android:title="@string/topic_posters" />
         </menu>
     </item>
 
@@ -82,18 +82,18 @@
             <item
                 android:id="@+id/loading_img_for_session_item"
                 android:checkable="true"
-                android:title="@string/loading_img_for_session" />
+                android:title="@string/menu_topic_load_imgs_for_session" />
             <item
                 android:id="@+id/font_size_item"
                 android:title="@string/font_size" />
             <item
                 android:id="@+id/topic_style_item"
-                android:title="@string/theme_style" />
+                android:title="@string/app_theme" />
         </menu>
     </item>
 
     <item
         android:id="@+id/multi_moderation_item"
-        android:title="@string/multi_moderation" />
+        android:title="@string/multimoderation" />
 
 </menu>

@@ -859,7 +859,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                 getStylesList(activity, newStyleNames, newstyleValues)
                 val selected = intArrayOf(newstyleValues.indexOf(currentValue))
                 MaterialDialog.Builder(activity)
-                    .title(R.string.theme_style)
+                    .title(R.string.app_theme)
                     .cancelable(true)
                     .items(*newStyleNames.toTypedArray())
                     .itemsCallbackSingleChoice(newstyleValues.indexOf(currentValue)) { _: MaterialDialog?, _: View?, i: Int, _: CharSequence? ->

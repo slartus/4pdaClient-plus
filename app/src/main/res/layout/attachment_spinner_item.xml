@@ -42,5 +42,6 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/close_grey" />
+        app:srcCompat="@drawable/close_grey"
+        android:contentDescription="@string/remove_attachment"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

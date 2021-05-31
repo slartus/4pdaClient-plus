@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:gravity="top"
-            android:hint="Введите текст сообщения"
+            android:hint="@string/edit_post_plus_post_hint"
             android:inputType="textCapSentences|textMultiLine"
             android:padding="16dp"
             android:scrollbars="vertical"
@@ -50,12 +50,11 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:capitalize="sentences"
-            android:hint="@string/EditReason"
+            android:hint="@string/reason_for_editing_short_hint"
             android:padding="16dp"
             android:scrollHorizontally="false"
             android:singleLine="true"
-            tools:text="test"
-             />
+            tools:text="test" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
@@ -85,7 +84,8 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/plus" />
+                app:srcCompat="@drawable/plus"
+                android:contentDescription="@string/additional_input_options"/>
 
             <Button
                 android:id="@+id/btnAttachments"
@@ -98,7 +98,8 @@
                 android:paddingLeft="4dp"
                 android:text="0"
                 android:textColor="#757575"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:contentDescription="@string/show_attachments" />
 
             <ImageButton
                 android:id="@+id/btnUpload"
@@ -106,7 +107,8 @@
                 android:layout_height="48dp"
                 android:layout_marginLeft="104dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                app:srcCompat="@drawable/upload" />
+                app:srcCompat="@drawable/upload"
+                android:contentDescription="@string/upload_attachment"/>
 
             <Button
                 android:id="@+id/btnSendPost"
@@ -114,7 +116,7 @@
                 android:layout_height="48dp"
                 android:layout_marginLeft="156dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:text="Отправить"
+                android:text="@string/send"
                 android:textColor="@color/accentGray"
                 android:textStyle="bold" />
         </FrameLayout>

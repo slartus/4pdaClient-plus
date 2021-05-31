@@ -16,7 +16,7 @@
             android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/User__"
+            android:text="@string/user__"
             android:id="@+id/user"
             android:layout_marginRight="4dp" />
 
@@ -36,5 +36,5 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="top"
-        android:hint="@string/EditReason__" />
+        android:hint="@string/reason_for_changing_short_hint" />
 </LinearLayout>

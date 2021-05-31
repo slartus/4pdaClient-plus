@@ -12,5 +12,5 @@
         android:layout_alignParentTop="true"
         android:singleLine="true"
         android:scrollHorizontally="true"
-        android:hint="@string/search_keyword" />
+        android:hint="@string/search_input_hint" />
 </RelativeLayout>

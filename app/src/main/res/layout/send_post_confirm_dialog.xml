@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Отправить сообщение?"
+        android:text="@string/send_post_confirm_dialog_send"
         android:id="@+id/textView"
         android:singleLine="false"
         android:layout_marginTop="20dp"
@@ -19,7 +19,7 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Подтверждать отправку"
+        android:text="@string/send_post_confirm_dialog_ask"
         android:id="@+id/chkConfirmationSend"
         android:checked="true" />
 </LinearLayout>

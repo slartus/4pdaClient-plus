@@ -11,13 +11,13 @@
     <item
         android:id="@+id/setting_item"
         android:icon="@drawable/settings_white"
-        android:title="@string/setting"
+        android:title="@string/settings"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/delete_dialog_item"
         android:icon="@drawable/delete"
-        android:title="@string/delete_dialog"
+        android:title="@string/menu_qms_chat_delete_chat"
         app:showAsAction="collapseActionView" />
 
     <item

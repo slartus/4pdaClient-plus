@@ -651,7 +651,7 @@ public class NewsFragment extends WebViewFragment implements MediaPlayer.OnCompl
         new MaterialDialog.Builder(getMainActivity())
                 .title(R.string.LeaveComment)
                 .customView(layout, true)
-                .positiveText(R.string.Send)
+                .positiveText(R.string.send)
                 .negativeText(R.string.cancel)
                 .onPositive((dialog, which) -> {
                     String message = message_edit.getText().toString();

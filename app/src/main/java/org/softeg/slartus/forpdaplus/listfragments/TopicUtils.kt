@@ -74,7 +74,7 @@ object TopicUtils {
         }
         val selectedId = intArrayOf(ArrayUtils.indexOf(selectedSubscribe, values))
         MaterialDialog.Builder(context)
-                .title(R.string.add_to_favorite)
+                .title(R.string.add_to_favorites)
                 .items(*titles)
                 .itemsCallback(ListCallback { dialog, view, i, text ->
                     selectedId[0] = i
