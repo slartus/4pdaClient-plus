@@ -18,7 +18,7 @@
             android:id="@+id/post_text"
             android:minHeight="48dp"
             android:background="@android:color/transparent"
-            android:hint="Сообщение"
+            android:hint="@string/message_hint"
             android:inputType="textCapSentences|textMultiLine"
             android:minLines="1"
             android:paddingLeft="8dp"
@@ -35,7 +35,8 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/send"
             android:id="@+id/send_button"
-            android:layout_gravity="end|bottom" />
+            android:layout_gravity="end|bottom"
+            android:contentDescription="@string/send"/>
 
         <ImageButton
             android:layout_width="48dp"
@@ -43,6 +44,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             app:srcCompat="@drawable/plus"
             android:id="@+id/advanced_button"
+            android:contentDescription="@string/additional_input_options"
             android:layout_gravity="start|bottom" />
     </FrameLayout>
 

@@ -14,7 +14,7 @@ public class TopicWritersBrickInfo extends BrickInfo {
 
     @Override
     public String getTitle() {
-        return App.getContext().getString(R.string.who_posted_msg);
+        return App.getContext().getString(R.string.topic_posters);
     }
 
     @Override

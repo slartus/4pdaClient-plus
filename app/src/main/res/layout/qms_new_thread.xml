@@ -17,7 +17,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:capitalize="sentences"
-            android:hint="@string/Whom"
+            android:hint="@string/to_whom"
             android:padding="16dp"
             android:singleLine="true">
 
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
 
             android:capitalize="sentences"
-            android:hint="@string/EnterSubject_"
+            android:hint="@string/enter_subject"
             android:padding="16dp"
             android:singleLine="true"
             android:textCursorDrawable="@null">
@@ -51,7 +51,7 @@
             android:layout_height="fill_parent"
             android:capitalize="sentences"
             android:gravity="top"
-            android:hint="@string/EnterMessage_"
+            android:hint="@string/enter_message"
             android:minLines="10"
             android:padding="16dp"
             android:scrollHorizontally="false"
@@ -81,7 +81,8 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                app:srcCompat="@drawable/plus" />
+                app:srcCompat="@drawable/plus"
+                android:contentDescription="@string/additional_input_options"/>
 
             <Button
                 android:id="@+id/btnSendPost"
@@ -90,7 +91,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:textColor="@color/accentGray"
                 android:textStyle="bold"
-                android:text="Отправить"
+                android:text="@string/send"
                 android:layout_marginLeft="4dp" />
         </LinearLayout>
 

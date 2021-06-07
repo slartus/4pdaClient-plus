@@ -11,7 +11,7 @@
         android:id="@+id/txtNumberPage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/PageNumber"
+        android:hint="@string/page_number"
         android:inputType="number" />
 
     <ListView

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="56dp"
     android:gravity="center_vertical"
@@ -66,12 +68,12 @@
                     android:layout_height="fill_parent"
                     android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:text="Sslartus"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textSize="16sp"
                     android:layout_alignParentTop="true"
                     android:layout_toRightOf="@+id/avatarWrapper"
-                    android:layout_toEndOf="@+id/avatarWrapper" />
+                    android:layout_toEndOf="@+id/avatarWrapper"
+                    tools:text="Sslartus" />
 
                 <TextView
                     android:id="@+id/txtMessagesCount"

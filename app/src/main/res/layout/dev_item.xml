@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -15,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
-            android:contentDescription="Изображение" />
+            tools:ignore="contentDescription"/>
 
         <ProgressBar
             android:id="@+id/progressView"
@@ -35,13 +37,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="?list_text_special_color"
-            android:text="Модель" />
+            tools:text="Модель" />
 
         <TextView
             android:id="@+id/descTextView"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             style="?list_text_second_color"
-            android:text="Описание модели" />
+            tools:text="Описание модели" />
     </LinearLayout>
 </LinearLayout>

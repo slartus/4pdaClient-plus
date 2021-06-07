@@ -4,6 +4,6 @@
 
     <item
         android:id="@+id/change_order_item"
-        android:title="Инвертировать сортировку"
+        android:title="@string/menu_topic_attachments_invert_sorting"
         app:showAsAction="never" />
 </menu>

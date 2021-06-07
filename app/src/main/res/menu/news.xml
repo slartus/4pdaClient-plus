@@ -10,19 +10,19 @@
     <item
         android:id="@+id/refresh_item"
         android:icon="@drawable/refresh"
-        android:title="@string/Refresh"
+        android:title="@string/refresh"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/thumb_up_item"
         android:icon="@drawable/thumb_up"
-        android:title="@string/Like"
+        android:title="@string/menu_news_like"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/setting_item"
         android:icon="@drawable/settings_white"
-        android:title="@string/Settings">
+        android:title="@string/settings">
         <menu>
             <item
                 android:id="@+id/hide_pencil_item"
@@ -35,8 +35,8 @@
 
             <item
                 android:id="@+id/LoadImages_item"
-                android:title="@string/LoadImages"
-                android:checkable="true"/>
+                android:title="@string/menu_news_load_images"
+                android:checkable="true" />
 
 
         </menu>
@@ -44,5 +44,5 @@
 
     <item
         android:id="@+id/link_item"
-        android:title="@string/link"        />
+        android:title="@string/link" />
 </menu>

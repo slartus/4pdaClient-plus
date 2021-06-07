@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -16,12 +18,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="9"
             android:id="@+id/devDbCommentsRatingNum"
             android:layout_gravity="center"
             android:textSize="55sp"
             android:padding="8dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            tools:text="10" />
 
         <View
             android:layout_width="match_parent"
@@ -63,25 +65,25 @@
                 android:id="@+id/devDbCommentsUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Валера Пупкин"
                 android:lines="1"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 style="?list_text_general_color"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                tools:text="Ещё один Человек с большой буквы" />
 
             <TextView
                 android:id="@+id/devDbCommentsDatePost"
                 style="?list_text_second_color"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="20.09.85"
                 android:textSize="14sp"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:layout_alignParentEnd="true"
+                tools:text="20.09.85" />
         </RelativeLayout>
 
         <FrameLayout
@@ -110,12 +112,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="Ваш сраный телефон - епучие говно. Эти пляцкие загнутые края экрана. Да чтоб дизайнер горел в аду, сучий глаз."
             android:layout_below="@id/devDbCommentsConOne"
             android:lines="4"
             android:paddingTop="4dp"
             style="?list_text_second_color"
-            android:ellipsize="end" />
+            android:ellipsize="end"
+            tools:text="Ну что же, после довольно долгого пользования данным устройством настало время оставить отзыв о нём. Итак начнём! Смартфон удобен и по своему хорош во всём! Начиная от внешнего вида и заканчивая ПО, всё в нем вызывает только положительные эмоции. Отличная оптимизация, удобное и продуманное управление, лёгкость в работе и повседневном использовании. Аппарат прослужил мне верой и правдой 1,5 года и ни разу не подвёл! Но всё когда-нибудь заканчивается и это не конец в известном смысле, а только лишь переход в нечто новое (приобретение устройства от той же компании, но поколением выше, в моём случае). Однозначно рекомендуется к покупке и ознакомлению всем желающим! Поверьте вы не прогадаете и останетесь довольны! Спасибо, Google! :)"
+            />
 
     </RelativeLayout>
 </LinearLayout>

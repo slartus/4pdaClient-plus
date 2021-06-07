@@ -5,6 +5,6 @@
     <item
         android:id="@+id/profile_rep_item"
         android:icon="@drawable/thumb_down"
-        android:title="@string/Profile"
+        android:title="@string/profile"
         app:showAsAction="never" />
 </menu>

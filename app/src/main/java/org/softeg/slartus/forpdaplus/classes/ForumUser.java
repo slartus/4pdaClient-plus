@@ -66,7 +66,7 @@ public class ForumUser {
                 items.add(context.getString(R.string.MessagesQms));
                 sendQmsPosition = items.size() - 1;
             }
-            items.add(context.getString(R.string.Profile));
+            items.add(context.getString(R.string.profile));
             showProfilePosition = items.size() - 1;
             items.add(context.getString(R.string.FindUserTopics));
             showUserTopicsPosition = items.size() - 1;
@@ -127,7 +127,7 @@ public class ForumUser {
             if (Client.getInstance().getLogined()) {
                 menu.add(new MenuListDialog(context.getString(R.string.MessagesQms), () -> QmsContactThemes.showThemes(userId, finalUserNick)));
             }
-            menu.add(new MenuListDialog(context.getString(R.string.Profile), () -> ProfileFragment.showProfile(userId, finalUserNick)));
+            menu.add(new MenuListDialog(context.getString(R.string.profile), () -> ProfileFragment.showProfile(userId, finalUserNick)));
             menu.add(new MenuListDialog(context.getString(R.string.FindUserTopics), () -> MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserTopicsSearchSettings(finalUserNick))));
             menu.add(new MenuListDialog(context.getString(R.string.FindUserPosts), () -> MainActivity.startForumSearch(SearchSettingsDialogFragment.createUserPostsSearchSettings(finalUserNick))));
         } catch (Throwable ex) {

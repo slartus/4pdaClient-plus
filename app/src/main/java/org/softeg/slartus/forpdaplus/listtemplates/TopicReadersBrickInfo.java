@@ -14,7 +14,7 @@ public class TopicReadersBrickInfo  extends BrickInfo {
 
     @Override
     public String getTitle() {
-        return App.getContext().getString(R.string.who_read_topic);
+        return App.getContext().getString(R.string.topic_readers);
     }
 
     @Override

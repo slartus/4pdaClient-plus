@@ -24,7 +24,7 @@
                 android:id="@+id/edMessage"
                 android:minHeight="48dp"
                 android:background="@android:color/transparent"
-                android:hint="Сообщение"
+                android:hint="@string/message_hint"
                 android:inputType="textCapSentences|textMultiLine"
                 android:minLines="1"
                 android:singleLine="false"
@@ -42,7 +42,8 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/send"
                 android:id="@+id/btnSend"
-                android:layout_gravity="right|bottom" />
+                android:layout_gravity="right|bottom"
+                android:contentDescription="@string/send"/>
 
             <ImageButton
                 android:layout_width="48dp"
@@ -50,7 +51,8 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:srcCompat="@drawable/plus"
                 android:id="@+id/advanced_button"
-                android:layout_gravity="left|bottom" />
+                android:layout_gravity="left|bottom"
+                android:contentDescription="@string/additional_input_options" />
             <Button
                 android:id="@+id/btnAttachments"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -63,7 +65,8 @@
                 android:paddingLeft="4dp"
                 android:textSize="14sp"
                 android:layout_gravity="left|bottom"
-                android:textColor="#757575" />
+                android:textColor="#757575"
+                android:contentDescription="@string/show_attachments"/>
         </FrameLayout>
 
         <LinearLayout
