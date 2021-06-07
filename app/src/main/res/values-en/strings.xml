@@ -354,7 +354,7 @@
     <string name="ask_create_dialog">There is no dialogue with user %s. Create one?</string>
     <string name="blue">Blue</string>
     <string name="choose">Select</string>
-    <string name="color">Colour</string>
+    <string name="color">Color</string>
     <string name="combined_in">\" and \"</string>
 
     <string name="lang_pref_title">Language</string>
