@@ -641,7 +641,7 @@ class PreferencesActivity : BasePreferencesActivity() {
                 val redTxt = view.findViewById<EditText>(R.id.redText)
                 val greenTxt = view.findViewById<EditText>(R.id.greenText)
                 val blueTxt = view.findViewById<EditText>(R.id.blueText)
-                val preview = view.findViewById<LinearLayout>(R.id.preview)
+                val preview = view.findViewById<View>(R.id.preview)
                 val red = view.findViewById<SeekBar>(R.id.red)
                 val green = view.findViewById<SeekBar>(R.id.green)
                 val blue = view.findViewById<SeekBar>(R.id.blue)

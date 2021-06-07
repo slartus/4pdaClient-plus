@@ -50,7 +50,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		app:barrierDirection="end"
-		app:constraint_referenced_ids="textView1" />
+		app:constraint_referenced_ids="textView1, textView2, textView3" />
 
 	<SeekBar
 		android:id="@+id/red"
