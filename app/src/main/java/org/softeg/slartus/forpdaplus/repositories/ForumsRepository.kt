@@ -57,9 +57,7 @@ class ForumsRepository private constructor() {
     }
 
     fun findById(
-        startForumId: String,
-        recursive: Boolean,
-        themesNode: Boolean
+        startForumId: String?
     ): Forum? {
         return forumsSubject.value?.firstOrNull { it.id == startForumId }
     }
