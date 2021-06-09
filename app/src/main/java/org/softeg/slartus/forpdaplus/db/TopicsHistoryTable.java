@@ -85,7 +85,7 @@ public class TopicsHistoryTable {
                 String forumId = c.getString(columnForumIdIndex);
                 String forumTitle = null;
                 String url = c.getString(columnUrlIndex);
-                Forum f = ForumsRepository.getInstance().findById(forumId, true, false);
+                Forum f = ForumsRepository.getInstance().findById(forumId);
                 if (f != null)
                     forumTitle = f.getTitle();
                 Date dateTime = null;
@@ -145,7 +145,7 @@ public class TopicsHistoryTable {
                     String forumId = c.getString(columnForumIdIndex);
                     String forumTitle = null;
                     String url = c.getString(columnUrlIndex);
-                    Forum f = ForumsRepository.getInstance().findById(forumId, true, false);
+                    Forum f = ForumsRepository.getInstance().findById(forumId);
                     if (f != null)
                         forumTitle = f.getTitle();
                     Date dateTime = null;
