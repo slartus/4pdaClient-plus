@@ -2,6 +2,7 @@ package org.softeg.slartus.forpdaapi;
 
 import androidx.core.util.Pair;
 
+import android.content.Context;
 import android.text.Html;
 import android.text.TextUtils;
 
@@ -190,8 +191,8 @@ public class ProfileApi {
         return response.body().string();
     }
 
-    public static LoginFormData getLoginForm() throws IOException {
-        OkHttpClient client = Http.newClientBuiler().build();
+    public static LoginFormData getLoginForm(Context context) throws IOException {
+        OkHttpClient client = Http.newClientBuiler(context).build();
 
         String prevPage = RequestUrl(client, "https://" + HostHelper.getHost() + "/forum/index.php?act=auth");
         Matcher m = Pattern.compile("act=auth[^\"]*[;&]k=([^&\"]*)", Pattern.CASE_INSENSITIVE).matcher(prevPage);

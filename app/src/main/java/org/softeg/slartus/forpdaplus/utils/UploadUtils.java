@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import org.softeg.slartus.forpdaapi.ProgressState;
 import org.softeg.slartus.forpdacommon.FileUtils;
 import org.softeg.slartus.forpdacommon.NotReportException;
+import org.softeg.slartus.forpdaplus.App;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,7 +83,7 @@ public class UploadUtils {
                     .url("https://savepice.ru/upload")
                     .post(requestBody)
                     .build();
-            OkHttpClient client = Http.newClientBuiler().build();
+            OkHttpClient client = Http.newClientBuiler(App.getContext()).build();
             try {
                 Response response = client.newCall(request).execute();
                 if (response.isSuccessful()) {

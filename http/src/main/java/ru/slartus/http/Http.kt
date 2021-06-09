@@ -4,6 +4,7 @@ package ru.slartus.http
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.http.SslCertificate
 import android.os.Build
 import androidx.core.util.Pair
 import android.util.Log
@@ -12,14 +13,18 @@ import android.webkit.MimeTypeMap.getFileExtensionFromUrl
 import okhttp3.*
 import okio.Buffer
 import org.softeg.slartus.hosthelper.HostHelper
+import java.io.BufferedInputStream
 import java.io.File
 import java.io.IOException
+import java.io.InputStream
 import java.net.CookieManager
 import java.net.CookiePolicy.ACCEPT_ALL
 import java.net.HttpCookie
 import java.net.URI
 import java.nio.charset.Charset
 import java.security.cert.CertificateException
+import java.security.cert.CertificateFactory
+import java.security.cert.X509Certificate
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
@@ -62,16 +67,16 @@ class Http private constructor(context: Context, appName: String, appVersion: St
         }
 
         @JvmStatic
-        fun newClientBuiler(): OkHttpClient.Builder {
+        fun newClientBuiler(context: Context): OkHttpClient.Builder {
             val trustManager = object : X509TrustManager {
 
-                override fun getAcceptedIssuers(): Array<java.security.cert.X509Certificate>? =
-                    emptyArray()
+                override fun getAcceptedIssuers() =
+                    loadSSLCertificates(context).toTypedArray()
 
                 @SuppressLint("TrustAllX509TrustManager")
                 @Throws(CertificateException::class)
                 override fun checkClientTrusted(
-                    chain: Array<java.security.cert.X509Certificate>,
+                    chain: Array<X509Certificate>,
                     authType: String
                 ) {
                 }
@@ -79,7 +84,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
                 @SuppressLint("TrustAllX509TrustManager")
                 @Throws(CertificateException::class)
                 override fun checkServerTrusted(
-                    chain: Array<java.security.cert.X509Certificate>,
+                    chain: Array<X509Certificate>,
                     authType: String
                 ) {
                 }
@@ -123,6 +128,38 @@ class Http private constructor(context: Context, appName: String, appVersion: St
                     .addInterceptor(LoggingInterceptor())
             return builder
         }
+
+        private fun loadSSLCertificates(context: Context): List<X509Certificate> {
+            val certificates = ArrayList<X509Certificate>()
+            try {
+
+                val certificateFactory = CertificateFactory.getInstance("X.509")
+                for (rawId in intArrayOf(R.raw.slartus_ru, R.raw.forpda_to, R.raw.github)) {
+                    val inputStream = context.resources.openRawResource(rawId)
+                    val certificateInput: InputStream = BufferedInputStream(inputStream)
+                    try {
+                        val certificate = certificateFactory.generateCertificate(certificateInput)
+                        if (certificate is X509Certificate) {
+                            certificates.add(certificate)
+                        } else {
+                            Log.w(TAG, "Wrong Certificate format: $rawId")
+                        }
+                    } catch (exception: CertificateException) {
+                        Log.w(TAG, "Cannot read certificate: $rawId")
+                    } finally {
+                        try {
+                            certificateInput.close()
+                            inputStream.close()
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            } catch (e: CertificateException) {
+                e.printStackTrace()
+            }
+            return certificates.toList()
+        }
     }
 
     private var client: OkHttpClient
@@ -131,7 +168,7 @@ class Http private constructor(context: Context, appName: String, appVersion: St
     init {
         val cookieHandler = CookieManager(cookieStore, ACCEPT_ALL)
 
-        val builder = newClientBuiler()
+        val builder = newClientBuiler(context)
             .cookieJar(JavaNetCookieJar(cookieHandler))
 
 //        if (BuildConfig.DEBUG)

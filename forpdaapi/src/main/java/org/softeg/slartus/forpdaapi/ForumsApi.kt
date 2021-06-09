@@ -8,6 +8,7 @@ import org.softeg.slartus.forpdacommon.URIUtils
 import org.softeg.slartus.hosthelper.HostHelper
 import ru.slartus.http.Http
 import java.util.*
+import javax.net.ssl.SSLHandshakeException
 
 /**
  * User: slinkin
@@ -18,8 +19,14 @@ class ForumsApi : ArrayList<Forum>() {
     companion object {
 
         fun loadForumsList(): List<Forum> {
-            val response = Http.instance
-                .performGet("https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/forum_struct.json")
+            val response =  try {
+                Http.instance
+                    .performGet("https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/forum_struct.json")
+
+            }catch(ex:SSLHandshakeException) {
+                Http.instance
+                    .performGet("http://slartus.ru/4pda/forum_struct.json")
+            }
             val itemsListType = object : TypeToken<List<Forum>>() {}.type
             return Gson().fromJson(response.responseBody, itemsListType)
         }

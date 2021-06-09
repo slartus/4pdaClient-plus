@@ -37,10 +37,11 @@ class ForumsRepository private constructor() {
                         saveDb(response)
                     }
                 } catch (ex: Throwable) {
-                    load()
                     withContext(Dispatchers.Main) {
                         AppLog.e(ex)
                     }
+                    Thread.sleep(5000)
+                    load()
                 }
             }
         })

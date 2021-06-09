@@ -52,7 +52,7 @@ public class LoginDialog {
         username_edit = mView.findViewById(R.id.username_edit);
         password_edit = mView.findViewById(R.id.password_edit);
         privacy_checkbox = mView.findViewById(R.id.privacy_checkbox);
-        new CapTask().execute();
+        new CapTask(App.getContext()).execute();
         loadData();
     }
 
@@ -91,9 +91,9 @@ public class LoginDialog {
                 .customView(loginDialog.getView(), true)
                 .positiveText(R.string.login)
                 .negativeText(R.string.cancel)
-                .onPositive((dialog1, which) ->   loginDialog.connect())
+                .onPositive((dialog1, which) -> loginDialog.connect())
                 .build();
-        Window window=dialog.getWindow();
+        Window window = dialog.getWindow();
         assert window != null;
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         dialog.show();
@@ -110,14 +110,16 @@ public class LoginDialog {
 
     public class CapTask extends AsyncTask<String, Void, LoginFormData> {
 
-        CapTask() {
+        private final WeakReference<Context> context;
 
+        CapTask(Context context) {
+            this.context = new WeakReference<>(context);
         }
 
         @Override
         protected LoginFormData doInBackground(String... params) {
             try {
-                return ProfileApi.getLoginForm();
+                return ProfileApi.getLoginForm(this.context.get());
             } catch (Exception e) {
                 LoginFormData loginFormData = new LoginFormData();
                 loginFormData.setError(e);
@@ -140,7 +142,7 @@ public class LoginDialog {
         protected void onPostExecute(final LoginFormData loginFormData) {
 
             if (loginFormData.getError() == null) {
-                ImageLoader.getInstance().displayImage(loginFormData.getCapPath(), mImageView, new SimpleImageLoadingListener(){
+                ImageLoader.getInstance().displayImage(loginFormData.getCapPath(), mImageView, new SimpleImageLoadingListener() {
                     @Override
                     public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
                         Toast.makeText(mContext, R.string.failed_load_captcha, Toast.LENGTH_SHORT).show();
@@ -216,7 +218,6 @@ public class LoginDialog {
         private Exception ex;
 
 
-
         // can use UI thread here
         protected void onPostExecute(final Boolean success) {
             if (this.dialog.isShowing()) {
@@ -254,7 +255,6 @@ public class LoginDialog {
                     .content(R.string.performing_logout)
                     .build();
         }
-
 
 
         @Override
