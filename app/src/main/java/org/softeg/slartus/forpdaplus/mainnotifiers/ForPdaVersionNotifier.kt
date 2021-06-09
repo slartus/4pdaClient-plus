@@ -50,7 +50,7 @@ class ForPdaVersionNotifier(
             currentVersion = currentVersion.trim { it <= ' ' }
             val link = "https://raw.githubusercontent.com/slartus/4pdaClient-plus/master/updateinfo.json"
             try {
-                val client = Http.newClientBuiler().build()
+                val client = Http.newClientBuiler(context).build()
                 val request = Request.Builder()
                         .url(link)
                         .cacheControl(CacheControl.FORCE_NETWORK)// не исопльуем кеширование
