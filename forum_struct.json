@@ -1889,7 +1889,39 @@
         "title": "\u0414\u0440\u0443\u0433\u0438\u0435 \u043c\u043e\u0431\u0438\u043b\u044c\u043d\u044b\u0435 \u0441\u0438\u0441\u0442\u0435\u043c\u044b",
         "isHasTopics": false,
         "description": null,
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb4z0D2vLx3Kz1z0gsWAhiy8ISd4syho1PgQQgPZ.gif"
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrmTKBt6LeMR45z1qez1jz2Ez0Kp6pLCEdcgQQAfx.gif"
+    },
+    {
+        "id": "1132",
+        "title": "AppGallery",
+        "isHasTopics": true,
+        "parentId": "1126",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpsskEnS8GUla6DlK8HEtDbpesc6wPAB8Qhie.gif",
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0432\u043e\u043f\u0440\u043e\u0441\u043e\u0432 \u043f\u043e \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u044e \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u0430 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0439 HUAWEI"
+    },
+    {
+        "id": "1127",
+        "title": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b",
+        "isHasTopics": true,
+        "parentId": "1126",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrlz2gBF39D9OxMv057z0jOFhFFScJ8fra1W3Uz2yz0GY7O3SekkENz0X.gif",
+        "description": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 HUAWEI"
+    },
+    {
+        "id": "1128",
+        "title": "\u0418\u0433\u0440\u044b",
+        "isHasTopics": true,
+        "parentId": "1126",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrlz2gBF39D9OxKnUnrWz0I9dGE6T0xfKwb5IucjvGo3ihdm17.gif",
+        "description": "\u0418\u0433\u0440\u044b \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 HUAWEI"
+    },
+    {
+        "id": "1126",
+        "title": "\u042d\u043a\u043e\u0441\u0438\u0441\u0442\u0435\u043c\u0430 Huawei",
+        "isHasTopics": true,
+        "parentId": "442",
+        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrmTKBt6LeMR45z1qez1jz2Ez0Kp6pLCEdcgQQAfx.gif",
+        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043c\u043e\u0431\u0438\u043b\u044c\u043d\u043e\u0439 \u0441\u0438\u0441\u0442\u0435\u043c\u044b \u043e\u0442 Huawei "
     },
     {
         "id": "424",
@@ -2010,38 +2042,6 @@
         "parentId": "442",
         "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObSLqHomyhUn9ZhO66T9feJvLx4uYpF9lKfAXFYWBneyQ.gif",
         "description": " "
-    },
-    {
-        "id": "1132",
-        "title": "AppGallery",
-        "isHasTopics": true,
-        "parentId": "1126",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiOb3wbLpsskEnS8GUla6DlK8HEtDbpesc6wPAB8Qhie.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u0432\u043e\u043f\u0440\u043e\u0441\u043e\u0432 \u043f\u043e \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u044e \u043c\u0430\u0433\u0430\u0437\u0438\u043d\u0430 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u0438\u0439 HUAWEI"
-    },
-    {
-        "id": "1127",
-        "title": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b",
-        "isHasTopics": true,
-        "parentId": "1126",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrlz2gBF39D9OxMv057z0jOFhFFScJ8fra1W3Uz2yz0GY7O3SekkENz0X.gif",
-        "description": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u044b \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 HUAWEI"
-    },
-    {
-        "id": "1128",
-        "title": "\u0418\u0433\u0440\u044b",
-        "isHasTopics": true,
-        "parentId": "1126",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrlz2gBF39D9OxKnUnrWz0I9dGE6T0xfKwb5IucjvGo3ihdm17.gif",
-        "description": "\u0418\u0433\u0440\u044b \u0434\u043b\u044f \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432 HUAWEI"
-    },
-    {
-        "id": "1126",
-        "title": "\u042d\u043a\u043e\u0441\u0438\u0441\u0442\u0435\u043c\u0430 Huawei",
-        "isHasTopics": true,
-        "parentId": "442",
-        "iconUrl": "https:\/\/ds-assets.cdn.devapps.ru\/jiObBEbrmTKBt6LeMR45z1qez1jz2Ez0Kp6pLCEdcgQQAfx.gif",
-        "description": "\u041e\u0431\u0441\u0443\u0436\u0434\u0435\u043d\u0438\u0435 \u043c\u043e\u0431\u0438\u043b\u044c\u043d\u043e\u0439 \u0441\u0438\u0441\u0442\u0435\u043c\u044b \u043e\u0442 Huawei "
     },
     {
         "id": "453",
