@@ -1,67 +1,59 @@
-package org.softeg.slartus.forpdaplus.controls;/*
- * Created by slinkin on 16.04.2014.
- */
+package org.softeg.slartus.forpdaplus.controls
 
-import android.content.Context;
-import android.preference.ListPreference;
-import android.text.TextUtils;
-import android.util.AttributeSet;
+import android.content.Context
+import org.softeg.slartus.forpdaplus.App
+import android.text.TextUtils
+import android.util.AttributeSet
+import androidx.preference.ListPreference
+import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils
+import org.softeg.slartus.forpdaplus.common.AppLog
 
-import org.softeg.slartus.forpdacommon.ExtPreferences;
-import org.softeg.slartus.forpdaplus.App;
-import org.softeg.slartus.forpdaplus.classes.common.ArrayUtils;
-import org.softeg.slartus.forpdaplus.common.AppLog;
+class SummaryValueListPreference(context: Context?, attrs: AttributeSet?) : ListPreference(context, attrs) {
 
-public class SummaryValueListPreference extends ListPreference {
-    public SummaryValueListPreference(Context context, AttributeSet attrs) {
-        super(context, attrs);
 
-        setCurrentSummary();
-
+    override fun setKey(key: String) {
+        super.setKey(key)
+        setCurrentSummary()
     }
 
-    @Override
-    protected void onDialogClosed(boolean positiveResult) {
-        super.onDialogClosed(positiveResult);
-
-        setCurrentSummary();
+    private fun getTextValue(value: String?): CharSequence {
+        val ind = ArrayUtils.indexOf(value, this.entryValues)
+        return if (ind == -1) "" else this.entries[ind]
     }
 
-    @Override
-    public void setKey(java.lang.String key) {
-        super.setKey(key);
-        setCurrentSummary();
+    override fun setValue(value: String) {
+        val prevValue = getValue()
+        super.setValue(value)
+        if (value != prevValue)
+            setCurrentSummary()
     }
 
-    private CharSequence getTextValue(String value) {
-
-        int ind = ArrayUtils.indexOf(value, this.getEntryValues());
-        if (ind == -1)
-            return "";
-        return this.getEntries()[ind];
-    }
-
-    private void setCurrentSummary() {
-        try {
-            String value = App.getInstance().getPreferences().getString(getKey(), null);
-            if (TextUtils.isEmpty(value)) {
-                Object defValue =  this.getValue();
-                if (defValue == null)
-                    defValue = "";
-
-                int ind = findIndexOfValue(value);
-                if (ind != -1)
-                    setValueIndex(ind);
-                setSummary(getTextValue(defValue.toString()));
-                return;
-            }
-            setSummary(getTextValue(value));
-            int ind = findIndexOfValue(value);
-            if (ind != -1)
-                setValueIndex(ind);
-        } catch (Throwable ex) {
-            AppLog.toastE(getContext(), ex);
+    private fun setOwnSummary(summary: CharSequence) {
+        if (getSummary() != summary) {
+            setSummary(summary)
         }
+    }
 
+    private fun setCurrentSummary() {
+        try {
+            val value = App.getInstance().preferences.getString(key, null)
+            if (TextUtils.isEmpty(value)) {
+                var defValue: Any? = value
+                if (defValue == null) defValue = ""
+                val ind = findIndexOfValue(value)
+                if (ind != -1) setValueIndex(ind)
+                setOwnSummary(getTextValue(defValue.toString()))
+                return
+            }
+            setOwnSummary(getTextValue(value))
+            val ind = findIndexOfValue(value)
+            if (ind != -1) setValueIndex(ind)
+        } catch (ex: Throwable) {
+            AppLog.toastE(context, ex)
+        }
+    }
+
+    init {
+        setCurrentSummary()
     }
 }

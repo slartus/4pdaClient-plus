@@ -95,7 +95,9 @@
 
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="View topic">
+    <PreferenceScreen
+        android:key="topic_view"
+        android:title="View topic">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="theme.SpoilFirstPost"
@@ -136,7 +138,9 @@
             android:summary="Show on the 'Who reads the topic' and 'Who posted messages'"
             android:title="Additional buttons" />
 
-        <PreferenceScreen android:title="Download file">
+        <PreferenceScreen
+            android:key="download_files_screen"
+            android:title="Download file">
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="files.ConfirmDownload"
@@ -162,7 +166,9 @@
         <!--android:title="Fullscreen" />-->
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="News">
+    <PreferenceScreen
+        android:key="news_screen"
+        android:title="News">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="news.ConfirmSend"
@@ -196,8 +202,9 @@
             android:title="Do not load comments" />
     </PreferenceScreen>
 
-
-    <PreferenceScreen android:title="Lists">
+    <PreferenceScreen
+        android:key="lists_screen"
+        android:title="Lists">
         <PreferenceCategory android:title="Overall">
             <CheckBoxPreference
                 android:defaultValue="false"
@@ -253,12 +260,16 @@
         </PreferenceCategory>
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="System">
+    <PreferenceScreen
+        android:key="system_screen"
+        android:title="System">
         <Preference
             android:key="path.system_path"
             android:title="The path to the data folder" />
 
-        <PreferenceScreen android:title="Cookies">
+        <PreferenceScreen
+            android:key="cookies_screen"
+            android:title="Cookies">
 
             <EditTextPreference
                 android:key="cookies.path"
@@ -307,7 +318,9 @@
             android:summary="Which side is convenient to pull out the menu (requires restart)"
             android:title="Merge menu" />
 
-        <PreferenceScreen android:title="Setting keys">
+        <PreferenceScreen
+            android:key="buttons_screen"
+            android:title="Setting keys">
             <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
                 android:defaultValue="158"
                 android:key="keys.prevPage"
@@ -330,7 +343,9 @@
                 android:title="Button code to scroll up button code to scroll down" />
         </PreferenceScreen>
 
-        <PreferenceScreen android:title="For Developer styles">
+        <PreferenceScreen
+            android:key="developer_styles_screen"
+            android:title="For Developer styles">
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="system.developerSavePage"
@@ -389,6 +404,7 @@
         android:title="Notifications">
 
         <PreferenceScreen
+            android:key="qms_notifications_screen"
             android:summary="Notifications on new Private Message"
             android:title="QMS">
             <CheckBoxPreference
@@ -402,11 +418,12 @@
                 android:key="qms.service.timeout"
                 android:summary="Timeout check for new messages, %s min"
                 android:title="Timeout check "
-                project:defaultValue="5"
+                project:appDefaultValue="5"
                 project:myInputType="numberDecimal" />
         </PreferenceScreen>
 
         <PreferenceScreen
+            android:key="favorites_notifications_screen"
             android:summary="Notifications of new posts in the selected topics"
             android:title="Favorites">
             <CheckBoxPreference
@@ -425,11 +442,13 @@
                 android:key="FavoritesNotifier.service.timeout"
                 android:summary="Timeout check for new posts, %s min"
                 android:title="Timeout check"
-                project:defaultValue="5"
+                project:appDefaultValue="5"
                 project:myInputType="numberDecimal" />
         </PreferenceScreen>
 
-        <PreferenceScreen android:title="Customize notifications">
+        <PreferenceScreen
+            android:key="notifications_screen"
+            android:title="Customize notifications">
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="notifiers.service.use_sound"
@@ -444,7 +463,9 @@
                 android:title="Select ringtone" />
         </PreferenceScreen>
 
-        <PreferenceScreen android:title="Set up silent mode">
+        <PreferenceScreen
+            android:key="notifications_silent_screen"
+            android:title="Set up silent mode">
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="notifiers.silent_mode.enabled"
@@ -495,7 +516,9 @@
     </PreferenceScreen>
 
 
-    <PreferenceScreen android:title="About">
+    <PreferenceScreen
+        android:key="about_screen"
+        android:title="About">
         <Preference
             android:key="About.AppVersion"
             android:title="About app" />
@@ -518,7 +541,9 @@
                     android:key="About.OpenThemeForPda"/>
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="Donate">
+    <PreferenceScreen
+        android:key="donate_screen"
+        android:title="Donate">
         <Preference
             android:key="Qiwi"
             android:summary="Go to the form of the invoice"
@@ -559,6 +584,7 @@
         <!--android:summary="Другие способы"-->
         <!--android:title="Перейти на страницу помощи проекту" />-->
         <PreferenceScreen
+            android:key="thnx_4styles_screen"
             android:summary="Thank you for themes"
             android:title="Thanks Morphy">
             <Preference

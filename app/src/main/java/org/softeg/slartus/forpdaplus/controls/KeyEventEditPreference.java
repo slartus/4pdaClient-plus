@@ -1,10 +1,11 @@
 package org.softeg.slartus.forpdaplus.controls;
 
 import android.content.Context;
-import android.preference.EditTextPreference;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
+
+import androidx.preference.EditTextPreference;
 
 /**
  * Created by slinkin on 14.01.14.
@@ -25,17 +26,19 @@ public class KeyEventEditPreference extends EditTextPreference {
 
     }
 
-    @Override
-    protected void showDialog(android.os.Bundle state) {
-        super.showDialog(state);
-
-        getEditText().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                getEditText().setText(Integer.toString(keyEvent.getKeyCode()));
-                return false;
-            }
-        });
-    }
+//
+//
+//    @Override
+//    protected void showDialog(android.os.Bundle state) {
+//        super.showDialog(state);
+//
+//        getEditText().setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+//                getEditText().setText(Integer.toString(keyEvent.getKeyCode()));
+//                return false;
+//            }
+//        });
+//    }
 
 }

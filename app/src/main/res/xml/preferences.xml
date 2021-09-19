@@ -95,7 +95,9 @@
 
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="Просмотр темы">
+    <PreferenceScreen
+        android:key="topic_view"
+        android:title="Просмотр темы">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="theme.SpoilFirstPost"
@@ -136,7 +138,9 @@
             android:summary="Показывать на странице 'Кто читает тему' и 'Кто писал сообщения'"
             android:title="Дополнительные кнопки" />
 
-        <PreferenceScreen android:title="Скачивание файлов">
+        <PreferenceScreen
+            android:key="download_files_screen"
+            android:title="Скачивание файлов">
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="files.ConfirmDownload"
@@ -162,7 +166,9 @@
         <!--android:title="Fullscreen" />-->
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="Новости">
+    <PreferenceScreen
+        android:key="news_screen"
+        android:title="Новости">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="news.ConfirmSend"
@@ -195,7 +201,9 @@
             android:title="Не загружать комментарии" />
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="Списки">
+    <PreferenceScreen
+        android:key="lists_screen"
+        android:title="Списки">
         <PreferenceCategory android:title="Общее">
             <CheckBoxPreference
                 android:defaultValue="false"
@@ -251,12 +259,16 @@
         </PreferenceCategory>
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="Системное">
+    <PreferenceScreen
+        android:key="system_screen"
+        android:title="Системное">
         <Preference
             android:key="path.system_path"
             android:title="Путь к папке с данными" />
 
-        <PreferenceScreen android:title="Cookies">
+        <PreferenceScreen
+            android:key="cookies_screen"
+            android:title="Cookies">
 
             <EditTextPreference
                 android:key="cookies.path"
@@ -305,7 +317,9 @@
             android:summary="С какой стороны удобно вытаскивать меню (требуется перезапуск)"
             android:title="Выезжающее меню" />
 
-        <PreferenceScreen android:title="Настройка клавиш">
+        <PreferenceScreen
+            android:key="buttons_screen"
+            android:title="Настройка клавиш">
             <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
                 android:defaultValue="158"
                 android:key="keys.prevPage"
@@ -328,7 +342,9 @@
                 android:title="Код кнопки для прокрутки вниз" />
         </PreferenceScreen>
 
-        <PreferenceScreen android:title="Для разработчика стилей">
+        <PreferenceScreen
+            android:key="developer_styles_screen"
+            android:title="Для разработчика стилей">
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="system.developerSavePage"
@@ -387,6 +403,7 @@
         android:title="Уведомления">
 
         <PreferenceScreen
+            android:key="qms_notifications_screen"
             android:summary="Уведомления о новых личных сообщениях"
             android:title="QMS">
             <CheckBoxPreference
@@ -400,11 +417,12 @@
                 android:key="qms.service.timeout"
                 android:summary="Таймаут проверки новых сообщений, (%s) мин"
                 android:title="Таймаут проверки"
-                project:defaultValue="5"
+                project:appDefaultValue="5"
                 project:myInputType="numberDecimal" />
         </PreferenceScreen>
 
         <PreferenceScreen
+            android:key="favorites_notifications_screen"
             android:summary="Уведомления о новых постах в избранных темах"
             android:title="Избранное">
             <CheckBoxPreference
@@ -423,11 +441,13 @@
                 android:key="FavoritesNotifier.service.timeout"
                 android:summary="Таймаут проверки новых постов,  (%s) мин"
                 android:title="Таймаут проверки"
-                project:defaultValue="5"
+                project:appDefaultValue="5"
                 project:myInputType="numberDecimal" />
         </PreferenceScreen>
 
-        <PreferenceScreen android:title="Настроить уведомления">
+        <PreferenceScreen
+            android:key="notifications_screen"
+            android:title="Настроить уведомления">
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="notifiers.service.use_sound"
@@ -442,7 +462,9 @@
                 android:title="Выбор мелодии" />
         </PreferenceScreen>
 
-        <PreferenceScreen android:title="Настроить тихий режим">
+        <PreferenceScreen
+            android:key="notifications_silent_screen"
+            android:title="Настроить тихий режим">
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="notifiers.silent_mode.enabled"
@@ -491,7 +513,9 @@
                 android:title="Восстановить" />
         </PreferenceCategory>
     </PreferenceScreen>
-    <PreferenceScreen android:title="О программе">
+    <PreferenceScreen
+        android:key="about_screen"
+        android:title="О программе">
         <Preference
             android:key="About.AppVersion"
             android:title="О программе" />
@@ -514,7 +538,9 @@
             android:title="Альтернативный клиент от Radiation15" />
     </PreferenceScreen>
 
-    <PreferenceScreen android:title="Помочь проекту">
+    <PreferenceScreen
+        android:key="donate_screen"
+        android:title="Помочь проекту">
         <Preference
             android:key="Qiwi"
             android:summary="Перейти на форму выставления счета"
@@ -555,6 +581,7 @@
         <!--android:summary="Другие способы"-->
         <!--android:title="Перейти на страницу помощи проекту" />-->
         <PreferenceScreen
+            android:key="thnx_4styles_screen"
             android:summary="Спасибо за стили"
             android:title="Благодарности Морфию">
             <Preference

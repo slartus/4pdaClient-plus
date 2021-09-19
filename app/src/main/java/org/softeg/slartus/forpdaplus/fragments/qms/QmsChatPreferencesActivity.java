@@ -15,6 +15,6 @@ public class QmsChatPreferencesActivity extends BasePreferencesActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addPreferencesFromResource(R.xml.qms_chat_prefs);
+        //addPreferencesFromResource(R.xml.qms_chat_prefs);
     }
 }

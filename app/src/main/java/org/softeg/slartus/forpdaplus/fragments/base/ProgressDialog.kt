@@ -1,10 +1,10 @@
 package org.softeg.slartus.forpdaplus.fragments.base
 
-import android.app.DialogFragment
 import android.os.Bundle
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import org.softeg.slartus.forpdaplus.R
 
 class ProgressDialog : DialogFragment() {
@@ -16,5 +16,5 @@ class ProgressDialog : DialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        LayoutInflater.from(context).inflate(R.layout.fragment_progress, null)
+        LayoutInflater.from(context).inflate(R.layout.fragment_progress, null as ViewGroup?)
 }

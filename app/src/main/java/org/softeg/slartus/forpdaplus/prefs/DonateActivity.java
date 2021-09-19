@@ -8,6 +8,8 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
+import androidx.preference.PreferenceFragmentCompat;
+
 import org.softeg.slartus.forpdaplus.IntentActivity;
 import org.softeg.slartus.forpdaplus.R;
 import org.softeg.slartus.forpdaplus.classes.common.StringUtils;
@@ -42,7 +44,8 @@ public class DonateActivity extends PreferenceActivity {
         }
 
     }
-    public static void setDonateClickListeners(final PreferenceFragment fragment) {
+
+    public static void setDonateClickListeners(final PreferenceFragmentCompat fragment) {
 
         fragment.findPreference("Qiwi").setOnPreferenceClickListener(preference -> {
             Intent marketIntent = new Intent(

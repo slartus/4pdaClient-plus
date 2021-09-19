@@ -154,6 +154,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.github.pwittchen:reactivenetwork-rx2:3.0.8'
     implementation 'com.karumi:dexter:6.2.2'
+    implementation 'androidx.preference:preference-ktx:1.1.1'
     // implementation 'com.gu.android:toolargetool:0.3.0' логирование saveinstancestate
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.evernote:android-job:1.4.2'
