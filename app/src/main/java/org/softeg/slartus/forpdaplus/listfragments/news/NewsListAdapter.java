@@ -1,7 +1,6 @@
 package org.softeg.slartus.forpdaplus.listfragments.news;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +10,11 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
-import com.squareup.picasso.Picasso;
 
 import org.softeg.slartus.forpdaapi.News;
 import org.softeg.slartus.forpdaplus.App;
 import org.softeg.slartus.forpdaplus.R;
-import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import ru.slartus.forpda.feature_preferences.Preferences;
 
 import java.util.ArrayList;
 
@@ -33,7 +31,7 @@ public class NewsListAdapter extends BaseAdapter {
 
     public NewsListAdapter(Context context, ArrayList<News> newsList, ImageLoader imageLoader) {
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mNewsListRowId = Preferences.News.List.getNewsListViewId();
+        mNewsListRowId = getNewsListViewId();
         this.imageLoader = imageLoader;
         this.newsList = newsList;
         mLoadImages = Preferences.News.List.isLoadImages();
@@ -43,8 +41,15 @@ public class NewsListAdapter extends BaseAdapter {
     public void notifyDataSetChanged() {
 
         mLoadImages = Preferences.News.List.isLoadImages();
-        mNewsListRowId = Preferences.News.List.getNewsListViewId();
+        mNewsListRowId = getNewsListViewId();
         super.notifyDataSetChanged();
+    }
+
+    public static int getNewsListViewId() {
+        if ("medium".equals(App.getInstance().getPreferences().getString("news.list.view", "full"))) {
+            return R.layout.item_news_medium;
+        }
+        return R.layout.item_news;
     }
 
     public void setData(ArrayList<News> data) {

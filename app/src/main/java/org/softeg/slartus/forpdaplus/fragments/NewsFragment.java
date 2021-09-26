@@ -53,7 +53,7 @@ import org.softeg.slartus.forpdaplus.classes.HtmlBuilder;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.controls.imageview.ImgViewer;
-import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import ru.slartus.forpda.feature_preferences.Preferences;
 
 
 import java.net.URLDecoder;

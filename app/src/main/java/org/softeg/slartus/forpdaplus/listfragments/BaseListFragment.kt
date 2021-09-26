@@ -23,7 +23,7 @@ import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.controls.ListViewLoadMoreFooter
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.listfragments.adapters.ListAdapter
-import org.softeg.slartus.forpdaplus.prefs.Preferences
+import ru.slartus.forpda.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository
 import java.util.*
 import kotlin.math.max
@@ -198,7 +198,7 @@ abstract class BaseListFragment : BaseBrickFragment(), AdapterView.OnItemClickLi
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        if (!Preferences.Lists.getScrollByButtons())
+        if (!Preferences.Lists.scrollByButtons)
             return false
 
         val action = event.action

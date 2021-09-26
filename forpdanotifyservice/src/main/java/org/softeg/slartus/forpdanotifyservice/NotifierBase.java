@@ -12,23 +12,21 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
-import org.softeg.slartus.forpdaapi.ClientPreferences;
-import org.softeg.slartus.forpdaapi.FavTopic;
 import org.softeg.slartus.forpdacommon.ExtDateFormat;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import ru.slartus.forpda.feature_preferences.ClientPreferences;
 
 /*
  * Created by slartus on 05.06.13.
@@ -102,22 +100,22 @@ public abstract class NotifierBase {
     }
 
     protected static Uri getSound(Context context) {
-        if (!ClientPreferences.Notifications.useSound(context))
+        if (!ClientPreferences.Notifications.useSound())
             return null;
-        if (ClientPreferences.Notifications.SilentMode.isEnabled(context)) {
+        if (ClientPreferences.Notifications.SilentMode.isEnabled()) {
             Calendar nowTime = Calendar.getInstance();
-            Calendar startTime = ClientPreferences.Notifications.SilentMode.getStartTime(context);
-            Calendar endTime = ClientPreferences.Notifications.SilentMode.getEndTime(context);
+            Calendar startTime = ClientPreferences.Notifications.SilentMode.getStartTime();
+            Calendar endTime = ClientPreferences.Notifications.SilentMode.getEndTime();
             if (endTime.before(startTime))
                 endTime.add(Calendar.DAY_OF_YEAR, 1);
             if (nowTime.after(startTime) && nowTime.before(endTime))
                 return null;
         }
         Uri defaultUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        if (ClientPreferences.Notifications.isDefaultSound(context))
+        if (ClientPreferences.Notifications.isDefaultSound())
             return defaultUri;// Settings.System.DEFAULT_NOTIFICATION_URI
 
-        return ClientPreferences.Notifications.getSound(context);
+        return ClientPreferences.Notifications.getSound();
     }
 
     private static int getNotificationIcon() {

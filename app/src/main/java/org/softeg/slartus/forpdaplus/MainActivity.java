@@ -44,8 +44,6 @@ import android.widget.Toast;
 
 import org.softeg.slartus.forpdaapi.search.SearchSettings;
 import org.softeg.slartus.forpdacommon.ExtPreferences;
-import org.softeg.slartus.forpdanotifyservice.BackgroundServiceUtils;
-import org.softeg.slartus.forpdaplus.activity.NewYear;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.GeneralFragment;
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment;
@@ -63,7 +61,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.mainnotifiers.DonateNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.ForPdaVersionNotifier;
 import org.softeg.slartus.forpdaplus.mainnotifiers.NotifiersManager;
-import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import ru.slartus.forpda.feature_preferences.Preferences;
 import org.softeg.slartus.forpdaplus.repositories.UserInfoRepository;
 import org.softeg.slartus.forpdaplus.tabs.TabItem;
 import org.softeg.slartus.forpdaplus.tabs.TabsManager;
@@ -265,7 +263,6 @@ public class MainActivity extends BaseActivity implements BricksListDialogFragme
                 getWindow().getDecorView().post(setStatusBarHeight);
             }
 
-            NewYear.check(this);
             NavigationView leftDrawer = findViewById(R.id.left_drawer);
             int scale = (int) getResources().getDisplayMetrics().density;
             boolean bottom = getPreferences().getBoolean("isMarginBottomNav", false);

@@ -32,7 +32,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.ForumRulesBrick;
 import org.softeg.slartus.forpdaplus.listtemplates.ListCore;
 import org.softeg.slartus.forpdaplus.listtemplates.MarkAllReadBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.PreferencesBrickInfo;
-import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import ru.slartus.forpda.feature_preferences.Preferences;
 import org.softeg.slartus.forpdaplus.prefs.PreferencesActivity;
 
 import java.util.List;

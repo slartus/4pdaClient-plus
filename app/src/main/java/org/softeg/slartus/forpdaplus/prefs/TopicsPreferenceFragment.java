@@ -16,6 +16,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.softeg.slartus.forpdaplus.R;
 
+import ru.slartus.forpda.feature_preferences.Preferences;
+
 public class TopicsPreferenceFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
     public static String ListName = "";
 

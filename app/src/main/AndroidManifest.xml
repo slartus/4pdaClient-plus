@@ -241,10 +241,6 @@
             android:label="Изображения"
             android:launchMode="singleTask" />
 
-        <activity
-            android:name=".activity.NewYear"
-            android:theme="@style/AppTheme.FullScreen" />
-
         <receiver android:name="org.softeg.slartus.forpdanotifyservice.qms.AlarmReceiver"
             android:exported="false" android:enabled="true">
             <intent-filter>

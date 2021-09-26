@@ -46,7 +46,7 @@ import org.softeg.slartus.forpdaplus.classes.WebViewExternals;
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl;
 import org.softeg.slartus.forpdaplus.common.AppLog;
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment;
-import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import ru.slartus.forpda.feature_preferences.Preferences;
 import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.lang.reflect.Method;

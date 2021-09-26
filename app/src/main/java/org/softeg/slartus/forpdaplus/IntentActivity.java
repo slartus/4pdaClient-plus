@@ -55,7 +55,7 @@ import org.softeg.slartus.forpdaplus.listtemplates.FavoritesBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.NewsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.QmsContactsBrickInfo;
 import org.softeg.slartus.forpdaplus.listtemplates.TopicWritersBrickInfo;
-import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import ru.slartus.forpda.feature_preferences.Preferences;
 import org.softeg.slartus.forpdaplus.tabs.TabsManager;
 import org.softeg.slartus.hosthelper.HostHelper;
 import org.softeg.slartus.hosthelper.HostHelperKt;

@@ -11,7 +11,7 @@ import android.webkit.WebViewClient;
 
 import org.softeg.slartus.forpdaplus.AppTheme;
 import org.softeg.slartus.forpdaplus.emotic.Smiles;
-import org.softeg.slartus.forpdaplus.prefs.Preferences;
+import ru.slartus.forpda.feature_preferences.Preferences;
 import org.softeg.slartus.hosthelper.HostHelper;
 
 import java.util.Hashtable;

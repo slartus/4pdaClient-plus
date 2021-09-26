@@ -33,6 +33,7 @@ dependencies {
     api project(':forpdaapi')
     api project(':hosthelper')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation project(path: ':feature:feature-preferences')
 }
 repositories {
     mavenCentral()

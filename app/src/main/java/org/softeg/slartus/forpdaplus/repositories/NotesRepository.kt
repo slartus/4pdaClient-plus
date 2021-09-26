@@ -11,7 +11,7 @@ import org.softeg.slartus.forpdaplus.Client
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.db.NotesTable
 import org.softeg.slartus.forpdaplus.notes.Note
-import org.softeg.slartus.forpdaplus.prefs.Preferences
+import ru.slartus.forpda.feature_preferences.Preferences
 import java.util.*
 
 class NotesRepository private constructor() {
@@ -66,13 +66,13 @@ class NotesRepository private constructor() {
 
     private val local: Boolean
         get() {
-            return Preferences.Notes.isLocal()
+            return Preferences.Notes.isLocal
         }
 
 
     private val apiUrl: String
         get() {
-            return Preferences.Notes.getRemoteUrl() ?: ""
+            return Preferences.Notes.remoteUrl ?: ""
         }
 
     private fun getUrl(action: String): String {

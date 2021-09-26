@@ -35,7 +35,7 @@ import org.softeg.slartus.forpdaplus.listfragments.adapters.SortedListAdapter
 import org.softeg.slartus.forpdaplus.listfragments.next.forum.ForumFragment.Companion.showActivity
 import org.softeg.slartus.forpdaplus.listtemplates.FavoritesBrickInfo
 import org.softeg.slartus.forpdaplus.listtemplates.NotesBrickInfo
-import org.softeg.slartus.forpdaplus.prefs.Preferences
+import ru.slartus.forpda.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.prefs.TopicsListPreferencesActivity
 import org.softeg.slartus.forpdaplus.prefs.TopicsPreferenceFragment
 import org.softeg.slartus.forpdaplus.repositories.InternetConnection

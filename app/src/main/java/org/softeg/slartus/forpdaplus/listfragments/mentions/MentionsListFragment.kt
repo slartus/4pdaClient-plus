@@ -28,7 +28,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.softeg.slartus.forpdaapi.IListItem
 import org.softeg.slartus.forpdaapi.parsers.MentionsParser
 import org.softeg.slartus.forpdaapi.vo.MentionsResult
 import org.softeg.slartus.forpdacommon.FileUtils
@@ -40,7 +39,7 @@ import org.softeg.slartus.forpdaplus.classes.WebViewExternals
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment
-import org.softeg.slartus.forpdaplus.prefs.Preferences
+import ru.slartus.forpda.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.repositories.InternetConnection
 import org.softeg.slartus.hosthelper.HostHelper
 import java.util.*
@@ -134,7 +133,7 @@ class MentionsListFragment : WebViewFragment() {
 
         body_webview.settings.loadWithOverviewMode = false
         body_webview.settings.useWideViewPort = true
-        body_webview.settings.defaultFontSize = Preferences.Topic.getFontSize()
+        body_webview.settings.defaultFontSize = Preferences.Topic.fontSize
         body_webview.addJavascriptInterface(this, "HTMLOUT")
         body_webview.loadDataWithBaseURL("https://${HostHelper.host}/forum/", "<html><head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">" +
                 "</head><body bgcolor=" + AppTheme.currentBackgroundColorHtml + "></body></html>", "text/html", "UTF-8", null)

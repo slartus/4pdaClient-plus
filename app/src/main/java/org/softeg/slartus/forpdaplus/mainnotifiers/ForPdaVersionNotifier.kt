@@ -12,7 +12,6 @@ import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.gson.Gson
 import okhttp3.CacheControl
-import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONException
 import org.softeg.slartus.forpdacommon.NotReportException
@@ -22,7 +21,7 @@ import org.softeg.slartus.forpdaplus.BuildConfig
 import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.download.DownloadsService
-import org.softeg.slartus.forpdaplus.prefs.Preferences
+import ru.slartus.forpda.feature_preferences.Preferences
 import ru.slartus.http.Http
 import kotlin.math.max
 

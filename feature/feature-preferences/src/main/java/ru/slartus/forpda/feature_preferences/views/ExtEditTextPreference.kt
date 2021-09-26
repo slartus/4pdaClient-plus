@@ -115,11 +115,11 @@ class ExtEditTextPreference @JvmOverloads constructor(
 
         private fun getTextValue(preference: ExtEditTextPreference?): CharSequence {
             return when (preference?.inputType) {
-                InputType.Number -> App.instance().preferences.getInt(
+                InputType.Number -> App.getInstance().preferences.getInt(
                     preference.key,
                     preference.defaultValue?.toInt() ?: 0
                 ).toString()
-                InputType.NumberDecimal -> App.instance().preferences.getFloat(
+                InputType.NumberDecimal -> App.getInstance().preferences.getFloat(
                     preference.key,
                     preference.defaultValue?.toFloat() ?: 0f
                 ).toString()

@@ -46,6 +46,7 @@ import org.softeg.slartus.forpdaplus.repositories.NotesRepository
 import org.softeg.slartus.forpdaplus.styles.CssStyle
 import org.softeg.slartus.forpdaplus.styles.StyleInfoActivity
 import org.softeg.slartus.hosthelper.HostHelper
+import ru.slartus.forpda.feature_preferences.Preferences
 import ru.slartus.http.PersistentCookieStore.Companion.getInstance
 import java.io.BufferedReader
 import java.io.File
@@ -58,20 +59,23 @@ import java.util.*
  * Date: 03.10.11
  * Time: 10:47
  */
-class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.OnPreferenceStartScreenCallback {
+class PreferencesActivity : BasePreferencesActivity(),
+    PreferenceFragmentCompat.OnPreferenceStartScreenCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
             supportFragmentManager
-                    .beginTransaction()
-                    .replace(android.R.id.content, PrefsFragment())
-                    .commitAllowingStateLoss()
+                .beginTransaction()
+                .replace(android.R.id.content, PrefsFragment())
+                .commitAllowingStateLoss()
         }
     }
 
-    override fun onPreferenceStartScreen(preferenceFragmentCompat: PreferenceFragmentCompat?,
-                                         preferenceScreen: PreferenceScreen): Boolean {
+    override fun onPreferenceStartScreen(
+        preferenceFragmentCompat: PreferenceFragmentCompat?,
+        preferenceScreen: PreferenceScreen
+    ): Boolean {
         val ft = supportFragmentManager.beginTransaction()
         val fragment = PrefsFragment()
         val args = Bundle()
@@ -84,9 +88,10 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+        super.onActivityResult(requestCode, resultCode, intent)
         if (resultCode == RESULT_OK) if (requestCode == NOTIFIERS_SERVICE_SOUND_REQUEST_CODE) {
             val uri = intent?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
-            Preferences.Notifications.setSound(uri)
+            Preferences.Notifications.sound = uri
         }
     }
 
@@ -147,24 +152,24 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                     return true
                 }
                 "notifiers.service.sound" -> {
-                    pickRingtone(Preferences.Notifications.getSound())
+                    pickRingtone(Preferences.Notifications.sound)
                     return true
                 }
                 "notifiers.silent_mode.start_time" -> {
-                    val calendar = Preferences.Notifications.SilentMode.getStartTime()
+                    val calendar = Preferences.Notifications.SilentMode.startTime
                     TimePickerDialog(activity, { _: TimePicker?, hourOfDay: Int, minute: Int ->
                         Preferences.Notifications.SilentMode.setStartTime(hourOfDay, minute)
                         findPreference(key)?.summary =
-                                String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute)
+                            String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute)
                     }, calendar[Calendar.HOUR_OF_DAY], calendar[Calendar.MINUTE], true).show()
                     return true
                 }
                 "notifiers.silent_mode.end_time" -> {
-                    val endcalendar = Preferences.Notifications.SilentMode.getEndTime()
+                    val endcalendar = Preferences.Notifications.SilentMode.endTime
                     TimePickerDialog(activity, { _: TimePicker?, hourOfDay: Int, minute: Int ->
                         Preferences.Notifications.SilentMode.setEndTime(hourOfDay, minute)
                         findPreference(key)?.summary =
-                                String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute)
+                            String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute)
                     }, endcalendar[Calendar.HOUR_OF_DAY], endcalendar[Calendar.MINUTE], true).show()
                     return true
                 }
@@ -187,46 +192,46 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
         }
 
         private fun findPreference(key: String) =
-                super.findPreference<Preference>(key)
+            super.findPreference<Preference>(key)
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
 
             findPreference("notifiers.silent_mode.start_time")?.let { preference ->
-                val clndr = Preferences.Notifications.SilentMode.getStartTime()
+                val clndr = Preferences.Notifications.SilentMode.startTime
                 preference.summary = String.format(
-                        Locale.getDefault(),
-                        "%02d:%02d",
-                        clndr[Calendar.HOUR_OF_DAY],
-                        clndr[Calendar.MINUTE]
+                    Locale.getDefault(),
+                    "%02d:%02d",
+                    clndr[Calendar.HOUR_OF_DAY],
+                    clndr[Calendar.MINUTE]
                 )
             }
 
             findPreference("notifiers.silent_mode.end_time")?.let { preference ->
 
-                val clndr = Preferences.Notifications.SilentMode.getEndTime()
+                val clndr = Preferences.Notifications.SilentMode.endTime
                 preference.summary = String.format(
-                        Locale.getDefault(),
-                        "%02d:%02d",
-                        clndr[Calendar.HOUR_OF_DAY],
-                        clndr[Calendar.MINUTE]
+                    Locale.getDefault(),
+                    "%02d:%02d",
+                    clndr[Calendar.HOUR_OF_DAY],
+                    clndr[Calendar.MINUTE]
                 )
             }
 
             findPreference("notifiers.service.use_sound")?.onPreferenceChangeListener =
-                    Preference.OnPreferenceChangeListener { _: Preference?, o: Any? ->
-                        val useSound = o as Boolean?
-                        findPreference("notifiers.service.is_default_sound")?.isEnabled = useSound!!
-                        findPreference("notifiers.service.sound")?.isEnabled = useSound
-                        true
-                    }
+                Preference.OnPreferenceChangeListener { _: Preference?, o: Any? ->
+                    val useSound = o as Boolean?
+                    findPreference("notifiers.service.is_default_sound")?.isEnabled = useSound!!
+                    findPreference("notifiers.service.sound")?.isEnabled = useSound
+                    true
+                }
 
             findPreference("notifiers.service.is_default_sound")?.onPreferenceChangeListener =
-                    Preference.OnPreferenceChangeListener { _: Preference?, o: Any? ->
-                        val isDefault = o as Boolean?
-                        findPreference("notifiers.service.sound")?.isEnabled = !isDefault!!
-                        true
-                    }
+                Preference.OnPreferenceChangeListener { _: Preference?, o: Any? ->
+                    val isDefault = o as Boolean?
+                    findPreference("notifiers.service.sound")?.isEnabled = !isDefault!!
+                    true
+                }
 
             // DonateActivity.setDonateClickListeners(this)
 
@@ -236,20 +241,20 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
         private fun notesCategory() {
 
             findPreference("notes.remote.url")?.let { p ->
-                p.summary = Preferences.Notes.getRemoteUrl()
+                p.summary = Preferences.Notes.remoteUrl
                 p.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                     showNotesRemoteServerDialog()
                     true
                 }
             }
             findPreference("notes.remote.help")?.onPreferenceClickListener =
-                    Preference.OnPreferenceClickListener {
-                        IntentActivity.showInDefaultBrowser(
-                                activity,
-                                "https://github.com/slartus/4pdaClient-plus/wiki/Notes"
-                        )
-                        true
-                    }
+                Preference.OnPreferenceClickListener {
+                    IntentActivity.showInDefaultBrowser(
+                        activity,
+                        "https://github.com/slartus/4pdaClient-plus/wiki/Notes"
+                    )
+                    true
+                }
             refreshNotesEnabled()
         }
 
@@ -276,43 +281,43 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
             val inflater = (activity?.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater)
             val view = inflater.inflate(R.layout.input_notes_remote_url_layout, null as ViewGroup?)
             val editText = view.findViewById<EditText>(R.id.edit_text)
-            editText.setText(Preferences.Notes.getRemoteUrl() ?: "")
+            editText.setText(Preferences.Notes.remoteUrl ?: "")
             MaterialDialog.Builder(requireContext())
-                    .title(R.string.notes_remote_url)
-                    .customView(view, true)
-                    .cancelable(true)
-                    .positiveText(R.string.ok)
-                    .negativeText(R.string.cancel)
-                    .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                        try {
-                            val baseUrl = editText?.text.toString()
-                            setLoading(true)
-                            NotesRepository.checUrlAsync(baseUrl, {
-                                setLoading(false)
-                                Preferences.Notes.setPlacement("remote")
-                                Preferences.Notes.setRemoteUrl(baseUrl)
-                                findPreference("notes.remote.url")?.summary = baseUrl
-                                refreshNotesEnabled()
-                            }, {
-                                setLoading(false)
-                                Preferences.Notes.setPlacement("local")
-                                findPreference("notes.placement")?.summary = resources
-                                        .getStringArray(R.array.NotesStoragePlacements)
-                                        .firstOrNull()
-                                refreshNotesEnabled()
+                .title(R.string.notes_remote_url)
+                .customView(view, true)
+                .cancelable(true)
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel)
+                .onPositive { _: MaterialDialog?, _: DialogAction? ->
+                    try {
+                        val baseUrl = editText?.text.toString()
+                        setLoading(true)
+                        NotesRepository.checUrlAsync(baseUrl, {
+                            setLoading(false)
+                            Preferences.Notes.setPlacement("remote")
+                            Preferences.Notes.remoteUrl = baseUrl
+                            findPreference("notes.remote.url")?.summary = baseUrl
+                            refreshNotesEnabled()
+                        }, {
+                            setLoading(false)
+                            Preferences.Notes.setPlacement("local")
+                            findPreference("notes.placement")?.summary = resources
+                                .getStringArray(R.array.NotesStoragePlacements)
+                                .firstOrNull()
+                            refreshNotesEnabled()
 
-                                AppLog.e(
-                                        activity, NotReportException(
-                                        it.localizedMessage
-                                                ?: it.message, it
+                            AppLog.e(
+                                activity, NotReportException(
+                                    it.localizedMessage
+                                        ?: it.message, it
                                 )
-                                )
-                            })
-                        } catch (ex: Throwable) {
-                            AppLog.e(activity, ex)
-                        }
+                            )
+                        })
+                    } catch (ex: Throwable) {
+                        AppLog.e(activity, ex)
                     }
-                    .show()
+                }
+                .show()
         }
 
         private fun showBackupNotesBackupDialog() {
@@ -320,10 +325,10 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                 val dbFile = File(NotesDbHelper.DATABASE_DIR + "/" + NotesDbHelper.DATABASE_NAME)
                 if (!dbFile.exists()) {
                     AlertDialog.Builder(requireContext())
-                            .setTitle("Ошибка")
-                            .setMessage("Файл базы заметок не найден. Возможно, вы ещё не создали ни одной заметки")
-                            .setPositiveButton("ОК", null)
-                            .create().show()
+                        .setTitle("Ошибка")
+                        .setMessage("Файл базы заметок не найден. Возможно, вы ещё не создали ни одной заметки")
+                        .setPositiveButton("ОК", null)
+                        .create().show()
                     return
                 }
                 val externalDirPath: String
@@ -331,34 +336,34 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                 val sdCard = externalLocations[ExternalStorage.SD_CARD]
                 val externalSdCard = externalLocations[ExternalStorage.EXTERNAL_SD_CARD]
                 externalDirPath = externalSdCard?.toString()
-                        ?: (sdCard?.toString()
-                                ?: Environment.getExternalStorageDirectory().toString())
+                    ?: (sdCard?.toString()
+                        ?: Environment.getExternalStorageDirectory().toString())
                 val toPath = "$externalDirPath/forpda_notes.sqlite"
                 var newFile = File(toPath)
                 var i = 0
                 while (newFile.exists()) {
                     newFile = File(
-                            externalDirPath + String.format(
-                                    Locale.getDefault(),
-                                    "/forpda_notes_%d.sqlite",
-                                    i++
-                            )
+                        externalDirPath + String.format(
+                            Locale.getDefault(),
+                            "/forpda_notes_%d.sqlite",
+                            i++
+                        )
                     )
                 }
                 val b = newFile.createNewFile()
                 if (!b) {
                     AlertDialog.Builder(requireContext())
-                            .setTitle("Ошибка").setMessage("Не удалось создать файл: $toPath")
-                            .setPositiveButton("ОК", null)
-                            .create().show()
+                        .setTitle("Ошибка").setMessage("Не удалось создать файл: $toPath")
+                        .setPositiveButton("ОК", null)
+                        .create().show()
                     return
                 }
                 FileUtils.copy(dbFile, newFile)
                 AlertDialog.Builder(requireContext())
-                        .setTitle("Успех!")
-                        .setMessage("Резервная копия заметок сохранена в файл:\n$newFile")
-                        .setPositiveButton("ОК", null)
-                        .create().show()
+                    .setTitle("Успех!")
+                    .setMessage("Резервная копия заметок сохранена в файл:\n$newFile")
+                    .setPositiveButton("ОК", null)
+                    .create().show()
             } catch (ex: Throwable) {
                 AppLog.e(activity, ex)
             }
@@ -366,46 +371,45 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
 
         private fun restoreNotes() {
             OpenFileDialog(activity)
-                    .setFilter(".*\\.(?i:sqlite)")
-                    .setOpenDialogListener { fileName: String? ->
-                        try {
-                            val sourceuri = Uri.parse(fileName)
-                            if (sourceuri == null) {
-                                Toast.makeText(activity, "Файл не выбран!", Toast.LENGTH_SHORT).show()
-                                return@setOpenDialogListener
-                            }
-                            val notes = NotesTable.getNotesFromFile(fileName)
-                            AlertDialog.Builder(requireContext())
-                                    .setTitle("Внимание!")
-                                    .setMessage(
-                                            """
+                .setFilter(".*\\.(?i:sqlite)")
+                .setOpenDialogListener { fileName: String? ->
+                    try {
+                        val sourceuri = Uri.parse(fileName)
+                        if (sourceuri == null) {
+                            Toast.makeText(activity, "Файл не выбран!", Toast.LENGTH_SHORT).show()
+                            return@setOpenDialogListener
+                        }
+                        val notes = NotesTable.getNotesFromFile(fileName)
+                        AlertDialog.Builder(requireContext())
+                            .setTitle("Внимание!")
+                            .setMessage(
+                                """
     Заметок для восстановления: ${notes.size}
     
     Восстановление заметок приведёт к полной потере всех существующих заметок!
     """.trimIndent()
-                                    )
-                                    .setPositiveButton("Продолжить") { dialogInterface: DialogInterface, _: Int ->
-                                        dialogInterface.dismiss()
-                                        try {
-                                            val count = NotesTable.restoreFrom(notes)
-                                            AlertDialog.Builder(requireContext())
-                                                    .setTitle("Успех!")
-                                                    .setMessage("Резервная копия заметок восстановлена!\nЗаметок восстановлено: $count")
-                                                    .setPositiveButton("ОК", null)
-                                                    .create().show()
-                                        } catch (ex: Throwable) {
-                                            AppLog.e(activity, ex)
-                                        }
-                                    }
-                                    .setNegativeButton("Отмена", null)
-                                    .create().show()
-                        } catch (ex: Throwable) {
-                            AppLog.e(activity, ex)
-                        }
+                            )
+                            .setPositiveButton("Продолжить") { dialogInterface: DialogInterface, _: Int ->
+                                dialogInterface.dismiss()
+                                try {
+                                    val count = NotesTable.restoreFrom(notes)
+                                    AlertDialog.Builder(requireContext())
+                                        .setTitle("Успех!")
+                                        .setMessage("Резервная копия заметок восстановлена!\nЗаметок восстановлено: $count")
+                                        .setPositiveButton("ОК", null)
+                                        .create().show()
+                                } catch (ex: Throwable) {
+                                    AppLog.e(activity, ex)
+                                }
+                            }
+                            .setNegativeButton("Отмена", null)
+                            .create().show()
+                    } catch (ex: Throwable) {
+                        AppLog.e(activity, ex)
                     }
-                    .show()
+                }
+                .show()
         }
-
 
         private fun checkUpdates() {
             val notifiersManager = NotifiersManager()
@@ -415,7 +419,7 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
         private fun setMenuItems() {
             val preferences = preferenceManager.sharedPreferences
             var items = (preferences.getString("selectedMenuItems", ListCore.DEFAULT_MENU_ITEMS)
-                    ?: ListCore.DEFAULT_MENU_ITEMS).split(",".toRegex()).toTypedArray()
+                ?: ListCore.DEFAULT_MENU_ITEMS).split(",".toRegex()).toTypedArray()
             val allItems = ListCore.getAllMenuBricks()
             if (ListCore.checkIndex(items, allItems.size)) {
                 items = ListCore.DEFAULT_MENU_ITEMS.split(",".toRegex()).toTypedArray()
@@ -427,59 +431,59 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
             val finalItems = Array<Array<Int?>?>(1) { arrayOfNulls(1) }
             finalItems[0] = selectedItems
             MaterialDialog.Builder(requireContext())
-                    .title(R.string.select_items)
-                    .items(*namesArray.toTypedArray<CharSequence>())
-                    .itemsCallbackMultiChoice(selectedItems) { _: MaterialDialog?, integers: Array<Int?>?, _: Array<CharSequence?>? ->
-                        finalItems[0] = integers
-                        true
-                    }
-                    .alwaysCallMultiChoiceCallback()
-                    .positiveText(R.string.accept)
-                    .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                        if (finalItems.first()?.size ?: 0 == 0) return@onPositive
-                        preferences.edit().putString(
-                                "selectedMenuItems",
-                                Arrays.toString(finalItems[0]).replace(" ", "").replace("[", "")
-                                        .replace("]", "")
-                        ).apply()
-                    }
-                    .neutralText(R.string.reset)
-                    .onNeutral { _: MaterialDialog?, _: DialogAction? ->
-                        preferences.edit().putString("selectedMenuItems", ListCore.DEFAULT_MENU_ITEMS)
-                                .apply()
-                    }
-                    .show()
+                .title(R.string.select_items)
+                .items(*namesArray.toTypedArray<CharSequence>())
+                .itemsCallbackMultiChoice(selectedItems) { _: MaterialDialog?, integers: Array<Int?>?, _: Array<CharSequence?>? ->
+                    finalItems[0] = integers
+                    true
+                }
+                .alwaysCallMultiChoiceCallback()
+                .positiveText(R.string.accept)
+                .onPositive { _: MaterialDialog?, _: DialogAction? ->
+                    if (finalItems.first()?.size ?: 0 == 0) return@onPositive
+                    preferences.edit().putString(
+                        "selectedMenuItems",
+                        Arrays.toString(finalItems[0]).replace(" ", "").replace("[", "")
+                            .replace("]", "")
+                    ).apply()
+                }
+                .neutralText(R.string.reset)
+                .onNeutral { _: MaterialDialog?, _: DialogAction? ->
+                    preferences.edit().putString("selectedMenuItems", ListCore.DEFAULT_MENU_ITEMS)
+                        .apply()
+                }
+                .show()
         }
 
         private fun pickUserBackground() {
             MaterialDialog.Builder(requireContext())
-                    .content(R.string.pick_image)
-                    .positiveText(R.string.choose)
-                    .negativeText(R.string.cancel)
-                    .neutralText(R.string.reset)
-                    .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                        try {
-                            val intent = Intent(Intent.ACTION_GET_CONTENT)
-                            intent.type = "image/*"
-                            startActivityForResult(intent, MY_INTENT_CLICK)
-                        } catch (ex: ActivityNotFoundException) {
-                            Toast.makeText(
-                                    activity,
-                                    R.string.no_app_for_get_image_file,
-                                    Toast.LENGTH_LONG
-                            ).show()
-                        } catch (ex: Exception) {
-                            AppLog.e(activity, ex)
-                        }
+                .content(R.string.pick_image)
+                .positiveText(R.string.choose)
+                .negativeText(R.string.cancel)
+                .neutralText(R.string.reset)
+                .onPositive { _: MaterialDialog?, _: DialogAction? ->
+                    try {
+                        val intent = Intent(Intent.ACTION_GET_CONTENT)
+                        intent.type = "image/*"
+                        startActivityForResult(intent, MY_INTENT_CLICK)
+                    } catch (ex: ActivityNotFoundException) {
+                        Toast.makeText(
+                            activity,
+                            R.string.no_app_for_get_image_file,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } catch (ex: Exception) {
+                        AppLog.e(activity, ex)
                     }
-                    .onNeutral { _: MaterialDialog?, _: DialogAction? ->
-                        App.getInstance().preferences
-                                .edit()
-                                .putString("userInfoBg", "")
-                                .putBoolean("isUserBackground", false)
-                                .apply()
-                    }
-                    .show()
+                }
+                .onNeutral { _: MaterialDialog?, _: DialogAction? ->
+                    App.getInstance().preferences
+                        .edit()
+                        .putString("userInfoBg", "")
+                        .putBoolean("isUserBackground", false)
+                        .apply()
+                }
+                .show()
         }
 
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -488,13 +492,13 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                     val selectedImageUri = data?.data
                     val selectedImagePath = FilePath.getPath(App.getContext(), selectedImageUri)
                     if (selectedImagePath != null) App.getInstance().preferences
-                            .edit()
-                            .putString("userInfoBg", selectedImagePath)
-                            .putBoolean("isUserBackground", true)
-                            .apply() else Toast.makeText(
-                            activity,
-                            "Не могу прикрепить файл",
-                            Toast.LENGTH_SHORT
+                        .edit()
+                        .putString("userInfoBg", selectedImagePath)
+                        .putBoolean("isUserBackground", true)
+                        .apply() else Toast.makeText(
+                        activity,
+                        "Не могу прикрепить файл",
+                        Toast.LENGTH_SHORT
                     ).show()
                 }
             }
@@ -507,45 +511,45 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                 val name = arrayOf<CharSequence>("")
                 val dialogShowed = booleanArrayOf(false)
                 MaterialDialog.Builder(requireContext())
-                        .title(R.string.choose_font)
-                        .items(
-                                App.getContext().getString(R.string.font_from_style),
-                                App.getContext().getString(R.string.system_font),
-                                App.getContext().getString(R.string.enter_font_name)
-                        )
-                        .itemsCallbackSingleChoice(selected[0]) { _: MaterialDialog?, _: View?, which: Int, _: CharSequence? ->
-                            selected[0] = which
-                            when (which) {
-                                0 -> name[0] = ""
-                                1 -> name[0] = "inherit"
-                                2 -> {
-                                    if (dialogShowed[0]) return@itemsCallbackSingleChoice true
-                                    dialogShowed[0] = true
-                                    MaterialDialog.Builder(requireContext())
-                                            .inputType(InputType.TYPE_CLASS_TEXT)
-                                            .input(
-                                                    App.getContext().getString(R.string.font_name),
-                                                    prefs.getString("webViewFontName", "")
-                                            ) { _: MaterialDialog?, input: CharSequence -> name[0] = input }
-                                            .positiveText(R.string.ok)
-                                            .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                                                prefs.edit()
-                                                        .putString("webViewFontName", name[0].toString())
-                                                        .apply()
-                                            }
-                                            .show()
-                                }
+                    .title(R.string.choose_font)
+                    .items(
+                        App.getContext().getString(R.string.font_from_style),
+                        App.getContext().getString(R.string.system_font),
+                        App.getContext().getString(R.string.enter_font_name)
+                    )
+                    .itemsCallbackSingleChoice(selected[0]) { _: MaterialDialog?, _: View?, which: Int, _: CharSequence? ->
+                        selected[0] = which
+                        when (which) {
+                            0 -> name[0] = ""
+                            1 -> name[0] = "inherit"
+                            2 -> {
+                                if (dialogShowed[0]) return@itemsCallbackSingleChoice true
+                                dialogShowed[0] = true
+                                MaterialDialog.Builder(requireContext())
+                                    .inputType(InputType.TYPE_CLASS_TEXT)
+                                    .input(
+                                        App.getContext().getString(R.string.font_name),
+                                        prefs.getString("webViewFontName", "")
+                                    ) { _: MaterialDialog?, input: CharSequence -> name[0] = input }
+                                    .positiveText(R.string.ok)
+                                    .onPositive { _: MaterialDialog?, _: DialogAction? ->
+                                        prefs.edit()
+                                            .putString("webViewFontName", name[0].toString())
+                                            .apply()
+                                    }
+                                    .show()
                             }
-                            true
                         }
-                        .alwaysCallSingleChoiceCallback()
-                        .positiveText(R.string.accept)
-                        .negativeText(R.string.cancel)
-                        .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                            prefs.edit().putString("webViewFontName", name[0].toString())
-                                    .putInt("webViewFont", selected[0]).apply()
-                        }
-                        .show()
+                        true
+                    }
+                    .alwaysCallSingleChoiceCallback()
+                    .positiveText(R.string.accept)
+                    .negativeText(R.string.cancel)
+                    .onPositive { _: MaterialDialog?, _: DialogAction? ->
+                        prefs.edit().putString("webViewFontName", name[0].toString())
+                            .putInt("webViewFont", selected[0]).apply()
+                    }
+                    .show()
             } catch (ex: Exception) {
                 AppLog.e(activity, ex)
             }
@@ -563,51 +567,51 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                 }
                 val selected = intArrayOf(0)
                 MaterialDialog.Builder(requireContext())
-                        .title(R.string.pick_accent_color)
-                        .items(
-                                App.getContext().getString(R.string.blue),
-                                App.getContext().getString(R.string.pink),
-                                App.getContext().getString(R.string.gray)
-                        )
-                        .itemsCallbackSingleChoice(position) { _: MaterialDialog?, _: View?, which: Int, _: CharSequence? ->
-                            selected[0] = which
-                            true
-                        }
-                        .alwaysCallSingleChoiceCallback()
-                        .positiveText(R.string.accept)
-                        .negativeText(R.string.cancel)
-                        .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                            when (selected[0]) {
-                                0 -> {
-                                    prefs.edit().putString("mainAccentColor", "pink").apply()
-                                    if (!prefs.getBoolean("accentColorEdited", false)) {
-                                        prefs.edit()
-                                                .putInt("accentColor", Color.rgb(2, 119, 189))
-                                                .putInt("accentColorPressed", Color.rgb(0, 89, 159))
-                                                .apply()
-                                    }
+                    .title(R.string.pick_accent_color)
+                    .items(
+                        App.getContext().getString(R.string.blue),
+                        App.getContext().getString(R.string.pink),
+                        App.getContext().getString(R.string.gray)
+                    )
+                    .itemsCallbackSingleChoice(position) { _: MaterialDialog?, _: View?, which: Int, _: CharSequence? ->
+                        selected[0] = which
+                        true
+                    }
+                    .alwaysCallSingleChoiceCallback()
+                    .positiveText(R.string.accept)
+                    .negativeText(R.string.cancel)
+                    .onPositive { _: MaterialDialog?, _: DialogAction? ->
+                        when (selected[0]) {
+                            0 -> {
+                                prefs.edit().putString("mainAccentColor", "pink").apply()
+                                if (!prefs.getBoolean("accentColorEdited", false)) {
+                                    prefs.edit()
+                                        .putInt("accentColor", Color.rgb(2, 119, 189))
+                                        .putInt("accentColorPressed", Color.rgb(0, 89, 159))
+                                        .apply()
                                 }
-                                1 -> {
-                                    prefs.edit().putString("mainAccentColor", "blue").apply()
-                                    if (!prefs.getBoolean("accentColorEdited", false)) {
-                                        prefs.edit()
-                                                .putInt("accentColor", Color.rgb(233, 30, 99))
-                                                .putInt("accentColorPressed", Color.rgb(203, 0, 69))
-                                                .apply()
-                                    }
+                            }
+                            1 -> {
+                                prefs.edit().putString("mainAccentColor", "blue").apply()
+                                if (!prefs.getBoolean("accentColorEdited", false)) {
+                                    prefs.edit()
+                                        .putInt("accentColor", Color.rgb(233, 30, 99))
+                                        .putInt("accentColorPressed", Color.rgb(203, 0, 69))
+                                        .apply()
                                 }
-                                2 -> {
-                                    prefs.edit().putString("mainAccentColor", "gray").apply()
-                                    if (!prefs.getBoolean("accentColorEdited", false)) {
-                                        prefs.edit()
-                                                .putInt("accentColor", Color.rgb(117, 117, 117))
-                                                .putInt("accentColorPressed", Color.rgb(87, 87, 87))
-                                                .apply()
-                                    }
+                            }
+                            2 -> {
+                                prefs.edit().putString("mainAccentColor", "gray").apply()
+                                if (!prefs.getBoolean("accentColorEdited", false)) {
+                                    prefs.edit()
+                                        .putInt("accentColor", Color.rgb(117, 117, 117))
+                                        .putInt("accentColorPressed", Color.rgb(87, 87, 87))
+                                        .apply()
                                 }
                             }
                         }
-                        .show()
+                    }
+                    .show()
             } catch (ex: Exception) {
                 AppLog.e(activity, ex)
             }
@@ -617,16 +621,16 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
             try {
                 val prefs = App.getInstance().preferences
                 val prefColor =
-                        prefs.getInt("accentColor", Color.rgb(2, 119, 189)).toString().toLong(10)
-                                .toInt()
+                    prefs.getInt("accentColor", Color.rgb(2, 119, 189)).toString().toLong(10)
+                        .toInt()
                 //int prefColor = (int) Long.parseLong(String.valueOf(prefs.getInt("accentColor", Color.rgb(96, 125, 139))), 10);
                 val colors = intArrayOf(
-                        prefColor shr 16 and 0xFF,
-                        prefColor shr 8 and 0xFF,
-                        prefColor and 0xFF
+                    prefColor shr 16 and 0xFF,
+                    prefColor shr 8 and 0xFF,
+                    prefColor and 0xFF
                 )
                 val inflater =
-                        (activity?.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater)
+                    (activity?.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater)
                 val view = inflater.inflate(R.layout.color_editor, null as ViewGroup?)
                 val redTxt = view.findViewById<EditText>(R.id.redText)
                 val greenTxt = view.findViewById<EditText>(R.id.greenText)
@@ -648,18 +652,18 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                 redTxt.addTextChangedListener(object : TextWatcher {
                     override fun afterTextChanged(s: Editable) {}
                     override fun beforeTextChanged(
-                            s: CharSequence,
-                            start: Int,
-                            count: Int,
-                            after: Int
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int
                     ) {
                     }
 
                     override fun onTextChanged(
-                            s: CharSequence,
-                            start: Int,
-                            before: Int,
-                            count: Int
+                        s: CharSequence,
+                        start: Int,
+                        before: Int,
+                        count: Int
                     ) {
                         if (redTxt.text.toString() == "") {
                             colors[0] = 0
@@ -674,18 +678,18 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                 greenTxt.addTextChangedListener(object : TextWatcher {
                     override fun afterTextChanged(s: Editable) {}
                     override fun beforeTextChanged(
-                            s: CharSequence,
-                            start: Int,
-                            count: Int,
-                            after: Int
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int
                     ) {
                     }
 
                     override fun onTextChanged(
-                            s: CharSequence,
-                            start: Int,
-                            before: Int,
-                            count: Int
+                        s: CharSequence,
+                        start: Int,
+                        before: Int,
+                        count: Int
                     ) {
                         if (greenTxt.text.toString() == "") {
                             colors[1] = 0
@@ -700,18 +704,18 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                 blueTxt.addTextChangedListener(object : TextWatcher {
                     override fun afterTextChanged(s: Editable) {}
                     override fun beforeTextChanged(
-                            s: CharSequence,
-                            start: Int,
-                            count: Int,
-                            after: Int
+                        s: CharSequence,
+                        start: Int,
+                        count: Int,
+                        after: Int
                     ) {
                     }
 
                     override fun onTextChanged(
-                            s: CharSequence,
-                            start: Int,
-                            before: Int,
-                            count: Int
+                        s: CharSequence,
+                        start: Int,
+                        before: Int,
+                        count: Int
                     ) {
                         if (blueTxt.text.toString() == "") {
                             colors[2] = 0
@@ -725,9 +729,9 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                 })
                 red.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(
-                            seekBar: SeekBar,
-                            progress: Int,
-                            fromUser: Boolean
+                        seekBar: SeekBar,
+                        progress: Int,
+                        fromUser: Boolean
                     ) {
                         redTxt.setText(progress.toString())
                         preview.setBackgroundColor(Color.rgb(progress, colors[1], colors[2]))
@@ -740,9 +744,9 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                 })
                 green.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(
-                            seekBar: SeekBar,
-                            progress: Int,
-                            fromUser: Boolean
+                        seekBar: SeekBar,
+                        progress: Int,
+                        fromUser: Boolean
                     ) {
                         greenTxt.setText(progress.toString())
                         preview.setBackgroundColor(Color.rgb(colors[0], progress, colors[2]))
@@ -755,9 +759,9 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                 })
                 blue.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                     override fun onProgressChanged(
-                            seekBar: SeekBar,
-                            progress: Int,
-                            fromUser: Boolean
+                        seekBar: SeekBar,
+                        progress: Int,
+                        fromUser: Boolean
                     ) {
                         blueTxt.setText(progress.toString())
                         preview.setBackgroundColor(Color.rgb(colors[0], colors[1], progress))
@@ -769,45 +773,45 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                     }
                 })
                 MaterialDialog.Builder(requireContext())
-                        .title(R.string.color)
-                        .customView(view, true)
-                        .positiveText(R.string.accept)
-                        .negativeText(R.string.cancel)
-                        .neutralText(R.string.reset)
-                        .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                            val colorPressed =
-                                    intArrayOf(colors[0] - 30, colors[1] - 30, colors[2] - 30)
-                            if (colorPressed[0] < 0) colorPressed[0] = 0
-                            if (colorPressed[1] < 0) colorPressed[1] = 0
-                            if (colorPressed[2] < 0) colorPressed[2] = 0
-                            if (Color.rgb(
-                                            colors[0],
-                                            colors[1],
-                                            colors[2]
-                                    ) != prefs.getInt("accentColor", Color.rgb(2, 119, 189))
-                            ) {
-                                prefs.edit().putBoolean("accentColorEdited", true).apply()
-                            }
-                            prefs.edit()
-                                    .putInt("accentColor", Color.rgb(colors[0], colors[1], colors[2]))
-                                    .putInt(
-                                            "accentColorPressed",
-                                            Color.rgb(colorPressed[0], colorPressed[1], colorPressed[2])
-                                    )
-                                    .apply()
+                    .title(R.string.color)
+                    .customView(view, true)
+                    .positiveText(R.string.accept)
+                    .negativeText(R.string.cancel)
+                    .neutralText(R.string.reset)
+                    .onPositive { _: MaterialDialog?, _: DialogAction? ->
+                        val colorPressed =
+                            intArrayOf(colors[0] - 30, colors[1] - 30, colors[2] - 30)
+                        if (colorPressed[0] < 0) colorPressed[0] = 0
+                        if (colorPressed[1] < 0) colorPressed[1] = 0
+                        if (colorPressed[2] < 0) colorPressed[2] = 0
+                        if (Color.rgb(
+                                colors[0],
+                                colors[1],
+                                colors[2]
+                            ) != prefs.getInt("accentColor", Color.rgb(2, 119, 189))
+                        ) {
+                            prefs.edit().putBoolean("accentColorEdited", true).apply()
                         }
-                        .onNeutral { _: MaterialDialog?, _: DialogAction? ->
-                            prefs.edit()
-                                    .putInt("accentColor", Color.rgb(2, 119, 189))
-                                    .putInt("accentColorPressed", Color.rgb(0, 89, 159))
-                                    .putBoolean(
-                                            "accentColorEdited",
-                                            false
-                                    ) //.putInt("accentColor", Color.rgb(96, 125, 139))
-                                    //.putInt("accentColorPressed", Color.rgb(76, 95, 109))
-                                    .apply()
-                        }
-                        .show()
+                        prefs.edit()
+                            .putInt("accentColor", Color.rgb(colors[0], colors[1], colors[2]))
+                            .putInt(
+                                "accentColorPressed",
+                                Color.rgb(colorPressed[0], colorPressed[1], colorPressed[2])
+                            )
+                            .apply()
+                    }
+                    .onNeutral { _: MaterialDialog?, _: DialogAction? ->
+                        prefs.edit()
+                            .putInt("accentColor", Color.rgb(2, 119, 189))
+                            .putInt("accentColorPressed", Color.rgb(0, 89, 159))
+                            .putBoolean(
+                                "accentColorEdited",
+                                false
+                            ) //.putInt("accentColor", Color.rgb(96, 125, 139))
+                            //.putInt("accentColorPressed", Color.rgb(76, 95, 109))
+                            .apply()
+                    }
+                    .show()
             } catch (ex: Exception) {
                 AppLog.e(activity, ex)
             }
@@ -849,59 +853,59 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                 getStylesList(requireContext(), newStyleNames, newstyleValues)
                 val selected = intArrayOf(newstyleValues.indexOf(currentValue))
                 MaterialDialog.Builder(requireContext())
-                        .title(R.string.app_theme)
-                        .cancelable(true)
-                        .items(*newStyleNames.toTypedArray())
-                        .itemsCallbackSingleChoice(newstyleValues.indexOf(currentValue)) { _: MaterialDialog?, _: View?, i: Int, _: CharSequence? ->
-                            selected[0] = i
-                            true // allow selection
+                    .title(R.string.app_theme)
+                    .cancelable(true)
+                    .items(*newStyleNames.toTypedArray())
+                    .itemsCallbackSingleChoice(newstyleValues.indexOf(currentValue)) { _: MaterialDialog?, _: View?, i: Int, _: CharSequence? ->
+                        selected[0] = i
+                        true // allow selection
+                    }
+                    .alwaysCallSingleChoiceCallback()
+                    .positiveText(getString(R.string.AcceptStyle))
+                    .neutralText(getString(R.string.Information))
+                    .onPositive { _: MaterialDialog?, _: DialogAction? ->
+                        if (selected[0] == -1) {
+                            Toast.makeText(
+                                activity,
+                                getString(R.string.ChooseStyle),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            return@onPositive
                         }
-                        .alwaysCallSingleChoiceCallback()
-                        .positiveText(getString(R.string.AcceptStyle))
-                        .neutralText(getString(R.string.Information))
-                        .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                            if (selected[0] == -1) {
-                                Toast.makeText(
-                                        activity,
-                                        getString(R.string.ChooseStyle),
-                                        Toast.LENGTH_LONG
-                                ).show()
-                                return@onPositive
-                            }
-                            App.getInstance().preferences
-                                    .edit()
-                                    .putString("appstyle", newstyleValues[selected[0]].toString())
-                                    .apply()
+                        App.getInstance().preferences
+                            .edit()
+                            .putString("appstyle", newstyleValues[selected[0]].toString())
+                            .apply()
+                    }
+                    .onNeutral { _: MaterialDialog?, _: DialogAction? ->
+                        if (selected[0] == -1) {
+                            Toast.makeText(
+                                activity,
+                                getString(R.string.ChooseStyle),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            return@onNeutral
                         }
-                        .onNeutral { _: MaterialDialog?, _: DialogAction? ->
-                            if (selected[0] == -1) {
-                                Toast.makeText(
-                                        activity,
-                                        getString(R.string.ChooseStyle),
-                                        Toast.LENGTH_LONG
-                                ).show()
-                                return@onNeutral
-                            }
-                            var stylePath = newstyleValues[selected[0]].toString()
-                            stylePath = getThemeCssFileName(stylePath)
-                            val xmlPath = stylePath.replace(".css", ".xml")
-                            val cssStyle = CssStyle.parseStyle(activity, xmlPath)
-                            if (!cssStyle.ExistsInfo) {
-                                Toast.makeText(
-                                        activity,
-                                        getString(R.string.StyleDoesNotContainDesc),
-                                        Toast.LENGTH_SHORT
-                                ).show()
-                                return@onNeutral
-                            }
+                        var stylePath = newstyleValues[selected[0]].toString()
+                        stylePath = getThemeCssFileName(stylePath)
+                        val xmlPath = stylePath.replace(".css", ".xml")
+                        val cssStyle = CssStyle.parseStyle(activity, xmlPath)
+                        if (!cssStyle.ExistsInfo) {
+                            Toast.makeText(
+                                activity,
+                                getString(R.string.StyleDoesNotContainDesc),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return@onNeutral
+                        }
 
-                            //dialogInterface.dismiss();
-                            StyleInfoActivity.showStyleInfo(
-                                    activity,
-                                    newstyleValues[selected[0]].toString()
-                            )
-                        }
-                        .show()
+                        //dialogInterface.dismiss();
+                        StyleInfoActivity.showStyleInfo(
+                            activity,
+                            newstyleValues[selected[0]].toString()
+                        )
+                    }
+                    .show()
             } catch (ex: Exception) {
                 AppLog.e(activity, ex)
             }
@@ -925,27 +929,27 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                 """.trimIndent().replace("4pda.ru", HostHelper.host)
             @Suppress("DEPRECATION")
             MaterialDialog.Builder(requireContext())
-                    .title(programFullName)
-                    .content(Html.fromHtml(text))
-                    .positiveText(R.string.ok)
-                    .show()
+                .title(programFullName)
+                .content(Html.fromHtml(text))
+                .positiveText(R.string.ok)
+                .show()
             //TextView textView = (TextView) dialog.findViewById(android.R.id.message);
             //textView.setTextSize(12);
 
             //textView.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
-        private fun pickRingtone(defaultSound: Uri) {
+        private fun pickRingtone(defaultSound: Uri?) {
             val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER)
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION)
             intent.putExtra(
-                    RingtoneManager.EXTRA_RINGTONE_TITLE,
-                    App.getContext().getString(R.string.pick_audio)
+                RingtoneManager.EXTRA_RINGTONE_TITLE,
+                App.getContext().getString(R.string.pick_audio)
             )
             intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, defaultSound)
             activity?.startActivityForResult(
-                    intent,
-                    NOTIFIERS_SERVICE_SOUND_REQUEST_CODE
+                intent,
+                NOTIFIERS_SERVICE_SOUND_REQUEST_CODE
             )
         }
 
@@ -966,10 +970,10 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
             val sb = StringBuilder()
             try {
                 val br = BufferedReader(
-                        InputStreamReader(
-                                App.getInstance().assets.open("history.txt"),
-                                "UTF-8"
-                        )
+                    InputStreamReader(
+                        App.getInstance().assets.open("history.txt"),
+                        "UTF-8"
+                    )
                 )
                 var line: String?
                 while (br.readLine().also { line = it } != null) {
@@ -979,42 +983,42 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                 AppLog.e(activity, e)
             }
             MaterialDialog.Builder(requireContext())
-                    .title(getString(R.string.ChangesHistory))
-                    .content(sb)
-                    .positiveText(R.string.ok)
-                    .show()
+                .title(getString(R.string.ChangesHistory))
+                .content(sb)
+                .positiveText(R.string.ok)
+                .show()
             //TextView textView = (TextView) dialog.findViewById(android.R.id.message);
             //textView.setTextSize(12);
         }
 
         private fun showCookiesDeleteDialog() {
             MaterialDialog.Builder(requireContext())
-                    .title(getString(R.string.ConfirmTheAction))
-                    .content(getString(R.string.SureDeleteFile))
-                    .cancelable(true)
-                    .positiveText(getString(R.string.Delete))
-                    .negativeText(getString(R.string.no))
-                    .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                        try {
-                            val f = File(cookieFilePath)
-                            if (!f.exists()) {
-                                Toast.makeText(
-                                        activity, getString(R.string.CookiesFileNotFound) +
+                .title(getString(R.string.ConfirmTheAction))
+                .content(getString(R.string.SureDeleteFile))
+                .cancelable(true)
+                .positiveText(getString(R.string.Delete))
+                .negativeText(getString(R.string.no))
+                .onPositive { _: MaterialDialog?, _: DialogAction? ->
+                    try {
+                        val f = File(cookieFilePath)
+                        if (!f.exists()) {
+                            Toast.makeText(
+                                activity, getString(R.string.CookiesFileNotFound) +
                                         ": " + cookieFilePath, Toast.LENGTH_LONG
-                                ).show()
-                            }
-                            if (f.delete()) Toast.makeText(
-                                    activity, getString(R.string.CookiesFileDeleted) +
-                                    ": " + cookieFilePath, Toast.LENGTH_LONG
-                            ).show() else Toast.makeText(
-                                    activity, getString(R.string.FailedDeleteCookies) +
-                                    ": " + cookieFilePath, Toast.LENGTH_LONG
                             ).show()
-                        } catch (ex: Exception) {
-                            AppLog.e(activity, ex)
                         }
+                        if (f.delete()) Toast.makeText(
+                            activity, getString(R.string.CookiesFileDeleted) +
+                                    ": " + cookieFilePath, Toast.LENGTH_LONG
+                        ).show() else Toast.makeText(
+                            activity, getString(R.string.FailedDeleteCookies) +
+                                    ": " + cookieFilePath, Toast.LENGTH_LONG
+                        ).show()
+                    } catch (ex: Exception) {
+                        AppLog.e(activity, ex)
                     }
-                    .show()
+                }
+                .show()
         }
 
         private fun showSelectDirDialog() {
@@ -1024,52 +1028,52 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
             val rbExternal = view.findViewById<RadioButton>(R.id.rbExternal)
             val rbCustom = view.findViewById<RadioButton>(R.id.rbCustom)
             val txtPath = view.findViewById<EditText>(R.id.txtPath)
-            txtPath.setText(Preferences.System.getSystemDir())
+            txtPath.setText(Preferences.System.systemDir)
             val checkedChangeListener =
-                    CompoundButton.OnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
-                        if (b) {
-                            when (compoundButton.id) {
-                                rbInternal.id -> {
-                                    txtPath.setText(App.getInstance().filesDir.path)
+                CompoundButton.OnCheckedChangeListener { compoundButton: CompoundButton, b: Boolean ->
+                    if (b) {
+                        when (compoundButton.id) {
+                            rbInternal.id -> {
+                                txtPath.setText(App.getInstance().filesDir.path)
+                                txtPath.isEnabled = false
+                            }
+                            rbExternal.id -> {
+                                try {
+                                    txtPath.setText(
+                                        App.getInstance().getExternalFilesDir(null)?.path
+                                            ?: ""
+                                    )
                                     txtPath.isEnabled = false
+                                } catch (ex: Throwable) {
+                                    AppLog.e(activity, ex)
                                 }
-                                rbExternal.id -> {
-                                    try {
-                                        txtPath.setText(
-                                                App.getInstance().getExternalFilesDir(null)?.path
-                                                        ?: ""
-                                        )
-                                        txtPath.isEnabled = false
-                                    } catch (ex: Throwable) {
-                                        AppLog.e(activity, ex)
-                                    }
-                                }
-                                rbCustom.id -> {
-                                    txtPath.isEnabled = true
-                                }
+                            }
+                            rbCustom.id -> {
+                                txtPath.isEnabled = true
                             }
                         }
                     }
+                }
             rbInternal.setOnCheckedChangeListener(checkedChangeListener)
             rbExternal.setOnCheckedChangeListener(checkedChangeListener)
             rbCustom.setOnCheckedChangeListener(checkedChangeListener)
             MaterialDialog.Builder(requireContext())
-                    .title(R.string.path_to_data)
-                    .customView(view, true)
-                    .cancelable(true)
-                    .positiveText(R.string.ok)
-                    .negativeText(R.string.cancel)
-                    .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                        try {
-                            var dir = txtPath.text.toString()
-                            dir = dir.replace("/", File.separator)
-                            FileUtils.checkDirPath(dir)
-                            Preferences.System.setSystemDir(dir)
-                        } catch (ex: Throwable) {
-                            AppLog.e(activity, ex)
-                        }
+                .title(R.string.path_to_data)
+                .customView(view, true)
+                .cancelable(true)
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel)
+                .onPositive { _: MaterialDialog?, _: DialogAction? ->
+                    try {
+                        var dir = txtPath.text.toString()
+                        dir = dir.replace("/", File.separator)
+                        FileUtils.checkDirPath(dir)
+                        Preferences.System.systemDir = dir
+                    } catch (ex: Throwable) {
+                        AppLog.e(activity, ex)
                     }
-                    .show()
+                }
+                .show()
         }
 
         companion object {
@@ -1087,7 +1091,7 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
     companion object {
         val NOTIFIERS_SERVICE_SOUND_REQUEST_CODE = App.getInstance().uniqueIntValue
         private val appCookiesPath: String
-            get() = Preferences.System.getSystemDir() + "4pda_cookies"
+            get() = Preferences.System.systemDir + "4pda_cookies"
 
         @JvmStatic
         val cookieFilePath: String
@@ -1099,9 +1103,9 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
 
         @JvmStatic
         fun getStylesList(
-                context: Context,
-                newStyleNames: ArrayList<CharSequence>,
-                newstyleValues: ArrayList<CharSequence>
+            context: Context,
+            newStyleNames: ArrayList<CharSequence>,
+            newstyleValues: ArrayList<CharSequence>
         ) {
             var xmlPath: String
             var cssStyle: CssStyle
@@ -1111,19 +1115,19 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                 var styleName: CharSequence = styleNames[i]
                 val styleValue: CharSequence = styleValues[i]
                 xmlPath = getThemeCssFileName(styleValue.toString()).replace(".css", ".xml")
-                        .replace("/android_asset/", "")
+                    .replace("/android_asset/", "")
                 cssStyle = CssStyle.parseStyleFromAssets(context, xmlPath)
                 if (cssStyle.ExistsInfo) styleName = cssStyle.Title
                 newStyleNames.add(styleName)
                 newstyleValues.add(styleValue)
             }
-            val file = File(Preferences.System.getSystemDir() + "styles/")
+            val file = File(Preferences.System.systemDir + "styles/")
             getStylesList(newStyleNames, newstyleValues, file)
         }
 
         private fun getStylesList(
-                newStyleNames: ArrayList<CharSequence>,
-                newstyleValues: ArrayList<CharSequence>, file: File
+            newStyleNames: ArrayList<CharSequence>,
+            newstyleValues: ArrayList<CharSequence>, file: File
         ) {
             var cssPath: String
             var xmlPath: String
@@ -1136,7 +1140,7 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                         continue
                     }
                     cssPath = cssFile.path
-                    if (!cssPath.toLowerCase(Locale.getDefault()).endsWith(".css")) continue
+                    if (!cssPath.lowercase(Locale.getDefault()).endsWith(".css")) continue
                     xmlPath = cssPath.replace(".css", ".xml")
                     cssStyle = CssStyle.parseStyleFromFile(xmlPath)
                     val title = cssStyle.Title
@@ -1152,7 +1156,7 @@ class PreferencesActivity : BasePreferencesActivity(), PreferenceFragmentCompat.
                 val packageName = App.getInstance().packageName
                 try {
                     return App.getInstance().packageManager.getPackageInfo(
-                            packageName, PackageManager.GET_META_DATA
+                        packageName, PackageManager.GET_META_DATA
                     )
                 } catch (e1: PackageManager.NameNotFoundException) {
                     AppLog.e(App.getInstance(), e1)

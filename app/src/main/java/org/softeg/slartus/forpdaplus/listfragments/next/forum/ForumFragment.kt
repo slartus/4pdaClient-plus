@@ -28,7 +28,7 @@ import org.softeg.slartus.forpdaplus.listfragments.ForumTopicsListFragment
 import org.softeg.slartus.forpdaplus.listfragments.TopicsListFragment
 import org.softeg.slartus.forpdaplus.listtemplates.BrickInfo
 import org.softeg.slartus.forpdaplus.listtemplates.ForumBrickInfo
-import org.softeg.slartus.forpdaplus.prefs.Preferences
+import ru.slartus.forpda.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.repositories.ForumsRepository
 import org.softeg.slartus.hosthelper.HostHelper
 import java.io.Serializable
@@ -75,7 +75,7 @@ class ForumFragment : GeneralFragment() {
 
         }
         if (mForumId == null) {
-            mForumId = Preferences.List.getStartForumId()
+            mForumId = Preferences.List.startForumId
         }
         setTitle(mTitle)
         initAdapter()

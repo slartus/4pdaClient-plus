@@ -12,7 +12,7 @@ import com.nostra13.universalimageloader.core.assist.FailReason
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
 import org.softeg.slartus.forpdaapi.Forum
 import org.softeg.slartus.forpdaplus.R
-import org.softeg.slartus.forpdaplus.prefs.Preferences
+import ru.slartus.forpda.feature_preferences.Preferences
 
 /*
  * Created by slinkin on 04.02.2019.
@@ -29,7 +29,7 @@ internal constructor(private val mHeaderset: List<Forum>, private val mDataset: 
         private const val DATA_VIEW_TYPE = 3
     }
 
-    private val mIsShowImages: Boolean? = Preferences.Forums.isShowImages()
+    private val mIsShowImages: Boolean? = Preferences.Forums.isShowImages
 
     interface OnClickListener {
         fun onItemClick(v: View)

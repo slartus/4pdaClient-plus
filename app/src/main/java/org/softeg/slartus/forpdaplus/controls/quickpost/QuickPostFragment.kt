@@ -18,7 +18,7 @@ import org.softeg.slartus.forpdaplus.R
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.quickpost.PostTask.PostResult
 import org.softeg.slartus.forpdaplus.fragments.topic.editpost.EditPostFragment.Companion.newPost
-import org.softeg.slartus.forpdaplus.prefs.Preferences
+import ru.slartus.forpda.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.utils.LogUtil
 import java.lang.ref.WeakReference
 
@@ -148,7 +148,7 @@ class QuickPostFragment : Fragment() {
             toast.show()
             return
         }
-        if (Preferences.Topic.getConfirmSend()) {
+        if (Preferences.Topic.confirmSend) {
             val inflater = activity!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val view = inflater.inflate(R.layout.send_post_confirm_dialog, null as ViewGroup?)!!
             val checkBox = view.findViewById<CheckBox>(R.id.chkConfirmationSend)
@@ -157,7 +157,7 @@ class QuickPostFragment : Fragment() {
                     .customView(view, true)
                     .positiveText(R.string.send)
                     .onPositive { _: MaterialDialog?, _: DialogAction? ->
-                        if (!checkBox.isChecked) Preferences.Topic.setConfirmSend(false)
+                        if (!checkBox.isChecked) Preferences.Topic.confirmSend = false
                         post()
                     }
                     .negativeText(R.string.cancel)
@@ -175,7 +175,8 @@ class QuickPostFragment : Fragment() {
                     activity,
                     if (mPostEditText!!.text == null) "" else mPostEditText!!.text.toString(),
                     mForumId, mTopicId, mAuthKey,
-                    Preferences.Topic.Post.getEnableEmotics(), Preferences.Topic.Post.getEnableSign())
+                    Preferences.Topic.Post.enableEmotics, Preferences.Topic.Post.enableSign
+            )
             postTask.execute()
         } catch (ex: Throwable) {
             AppLog.e(activity, ex)

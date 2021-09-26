@@ -9,5 +9,9 @@ object App {
         contextRef = WeakReference(context)
     }
 
-    fun instance() = contextRef?.get()!!
+    @JvmStatic
+    fun getInstance() = contextRef?.get()!!
+
+    @JvmStatic
+    fun getPreferences() = contextRef?.get()?.preferences
 }

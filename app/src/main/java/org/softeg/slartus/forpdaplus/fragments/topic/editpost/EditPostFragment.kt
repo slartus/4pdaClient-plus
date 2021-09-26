@@ -44,7 +44,7 @@ import org.softeg.slartus.forpdaplus.fragments.GeneralFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.PostPreviewFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.ThemeFragment
 import org.softeg.slartus.forpdaplus.fragments.topic.editpost.tasks.*
-import org.softeg.slartus.forpdaplus.prefs.Preferences
+import ru.slartus.forpda.feature_preferences.Preferences
 import org.softeg.slartus.forpdaplus.tabs.TabsManager
 import org.softeg.slartus.hosthelper.HostHelper
 import java.util.*
@@ -246,7 +246,7 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
     private fun confirmSendMail(): Single<Boolean> {
         val result = SingleSubject.create<Boolean>()
-        if (Preferences.Topic.getConfirmSend()) {
+        if (Preferences.Topic.confirmSend) {
             val dialog = MaterialDialog.Builder(context!!)
                     .title(R.string.is_sure)
                     .content(R.string.confirm_sending)
@@ -584,11 +584,13 @@ class EditPostFragment : GeneralFragment(), EditPostFragmentListener {
 
         if (isNewPost) {
             PostTask(this, mEditpost, text, editPostReason,
-                    Preferences.Topic.Post.getEnableEmotics(), Preferences.Topic.Post.getEnableSign())
+                    Preferences.Topic.Post.enableEmotics, Preferences.Topic.Post.enableSign
+            )
                     .execute()
         } else {
             AcceptEditTask(this, mEditpost, text, editPostReason,
-                    Preferences.Topic.Post.getEnableEmotics(), Preferences.Topic.Post.getEnableSign())
+                    Preferences.Topic.Post.enableEmotics, Preferences.Topic.Post.enableSign
+            )
                     .execute()
         }
     }

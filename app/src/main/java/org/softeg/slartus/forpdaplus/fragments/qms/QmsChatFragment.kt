@@ -39,12 +39,11 @@ import org.softeg.slartus.forpdaplus.classes.*
 import org.softeg.slartus.forpdaplus.classes.common.ExtUrl
 import org.softeg.slartus.forpdaplus.common.AppLog
 import org.softeg.slartus.forpdaplus.controls.quickpost.PopupPanelView
-import org.softeg.slartus.forpdaplus.emotic.Smiles
 import org.softeg.slartus.forpdaplus.fragments.WebViewFragment
 import org.softeg.slartus.forpdaplus.fragments.profile.ProfileFragment
 import org.softeg.slartus.forpdaplus.fragments.qms.tasks.*
 import org.softeg.slartus.forpdaplus.prefs.HtmlPreferences
-import org.softeg.slartus.forpdaplus.prefs.Preferences
+import ru.slartus.forpda.feature_preferences.Preferences
 import java.io.IOException
 import java.util.*
 import java.util.regex.Pattern
@@ -182,7 +181,7 @@ class QmsChatFragment : WebViewFragment() {
             settings.setAppCacheEnabled(true)
             settings.allowFileAccess = true
             settings.cacheMode = WebSettings.LOAD_DEFAULT
-            settings.defaultFontSize = Preferences.Topic.getFontSize()
+            settings.defaultFontSize = Preferences.Topic.fontSize
         }
         wvChat?.addJavascriptInterface(this, "HTMLOUT")
 
