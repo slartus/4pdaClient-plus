@@ -2,6 +2,7 @@ package ru.slartus.forpda.feature_preferences.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.widget.Toast
 import androidx.preference.EditTextPreference
 import org.softeg.slartus.forpdacommon.simplifyNumber
@@ -9,13 +10,13 @@ import ru.slartus.forpda.feature_preferences.App
 import ru.slartus.forpda.feature_preferences.R
 import ru.slartus.forpda.feature_preferences.preferences
 
-/*
- * Created by slinkin on 15.08.13.
- */
 class ExtEditTextPreference @JvmOverloads constructor(
     context: Context?,
     attrs: AttributeSet?,
-    defStyleAttr: Int = 0,
+    defStyleAttr: Int = getAttr(
+        context!!, R.attr.editTextPreferenceStyle,
+        android.R.attr.editTextPreferenceStyle
+    ),
     defStyleRes: Int = 0
 ) : EditTextPreference(
     context,
@@ -47,8 +48,10 @@ class ExtEditTextPreference @JvmOverloads constructor(
             a?.recycle()
         }
         defaultSummary = summary
-        setCurrentSummary()
+        summaryProvider = SimpleSummaryProvider.instance
     }
+
+
 
     override fun getText(): String {
         return getPersistedString(defaultValue!!)
@@ -67,7 +70,7 @@ class ExtEditTextPreference @JvmOverloads constructor(
                 ).toString()
             }
         }
-        return result!!.simplifyNumber()
+        return result?.simplifyNumber() ?: ""
     }
 
     override fun getPersistedFloat(defaultReturnValue: Float): Float {
@@ -107,30 +110,51 @@ class ExtEditTextPreference @JvmOverloads constructor(
         return false
     }
 
-    private fun setOwnSummary(summary: CharSequence) {
-        if (getSummary() != summary) {
-            setSummary(summary)
+    companion object{
+        /**
+         * @return The resource ID value in the `context` specified by `attr`. If it does
+         * not exist, `fallbackAttr`.
+         */
+        @Suppress("SameParameterValue")
+        private fun getAttr(context: Context, attr: Int, fallbackAttr: Int): Int {
+            val value = TypedValue()
+            context.theme.resolveAttribute(attr, value, true)
+            return if (value.resourceId != 0) {
+                attr
+            } else fallbackAttr
         }
     }
 
-    override fun setText(text: String?) {
-        val prevValue = getText()
-        super.setText(text)
-        if (text != prevValue)
-            setCurrentSummary()
-    }
-
-    private fun setCurrentSummary() {
-        val value: String = when (inputType) {
-            InputType.Number -> App.instance().preferences.getInt(
-                key,
-                defaultValue!!.toInt()
-            ).toString()
-            InputType.NumberDecimal -> App.instance().preferences.getFloat(
-                key,
-                defaultValue!!.toFloat()
-            ).toString()
+    class SimpleSummaryProvider private constructor() : SummaryProvider<ExtEditTextPreference> {
+        override fun provideSummary(preference: ExtEditTextPreference?): CharSequence {
+            return getTextValue(preference)
         }
-        setOwnSummary(String.format(defaultSummary.toString(), value.simplifyNumber()))
+
+        private fun getTextValue(preference: ExtEditTextPreference?): CharSequence {
+            return when (preference?.inputType) {
+                InputType.Number -> App.instance().preferences.getInt(
+                    preference.key,
+                    preference.defaultValue?.toInt() ?: 0
+                ).toString()
+                InputType.NumberDecimal -> App.instance().preferences.getFloat(
+                    preference.key,
+                    preference.defaultValue?.toFloat() ?: 0f
+                ).toString()
+                else -> ""
+            }
+        }
+
+        companion object {
+            private var sSimpleSummaryProvider: SimpleSummaryProvider? = null
+
+            val instance: SimpleSummaryProvider?
+                get() {
+                    if (sSimpleSummaryProvider == null) {
+                        sSimpleSummaryProvider = SimpleSummaryProvider()
+                    }
+                    return sSimpleSummaryProvider
+                }
+        }
+
     }
 }
