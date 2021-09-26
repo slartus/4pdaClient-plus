@@ -1,4 +1,4 @@
-package org.softeg.slartus.forpdaplus.controls;
+package ru.slartus.forpda.feature_preferences.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -13,18 +13,26 @@ import androidx.preference.EditTextPreference;
 public class KeyEventEditPreference extends EditTextPreference {
     public KeyEventEditPreference(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
+        init();
     }
 
     public KeyEventEditPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-
+        init();
     }
 
     public KeyEventEditPreference(Context context) {
         super(context);
-
+        init();
     }
+
+    public void init(){
+        setOnBindEditTextListener(editText ->
+        {
+            //setText(Integer.toString(editText.getText().toString()));
+        });
+    }
+
 
 //
 //

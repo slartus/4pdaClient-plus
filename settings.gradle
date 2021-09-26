@@ -1,2 +1,3 @@
 include ':app', ':forpdaapi', ':forpdacommon', ':forpdanotifyservice', ':sqliteannotations', ':4pdasources', ':http'
 include ':hosthelper'
+include ':feature:feature-preferences'

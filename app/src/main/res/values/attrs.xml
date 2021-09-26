@@ -35,15 +35,4 @@
         <attr name="collapsedHeight" format="dimension" />
         <attr name="animationDuration" format="integer" />
     </declare-styleable>
-
-    <declare-styleable name="ExtEditTextPreference">
-        <attr name="myInputType" format="enum">
-            <enum name="number" value="0" />
-            <enum name="numberDecimal" value="1" />
-        </attr>
-        <attr name="appDefaultValue" format="string" />
-
-    </declare-styleable>
-
-
 </resources>

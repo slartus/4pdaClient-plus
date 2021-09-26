@@ -86,7 +86,7 @@
                 android:title="Отображать кнопку открытия панели вкладок" />
         </PreferenceCategory>
 
-        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+        <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
             android:defaultValue="-1"
             android:entries="@array/screenOrienationArray"
             android:entryValues="@array/screenOrienationValues"
@@ -109,7 +109,7 @@
             android:key="theme.ConfirmSend"
             android:summary="Подтверждать отправку сообщения"
             android:title="Подтверждать отправку" />
-        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+        <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
             android:defaultValue="1"
             android:entries="@array/ConnectTypeArray"
             android:entryValues="@array/ConnectTypeValues"
@@ -174,7 +174,7 @@
             android:key="news.ConfirmSend"
             android:summary="Подтверждать отправку сообщения"
             android:title="Подтверждать отправку" />
-        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+        <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
             android:defaultValue="1"
             android:entries="@array/ConnectTypeArray"
             android:entryValues="@array/ConnectTypeValues"
@@ -243,14 +243,14 @@
         </PreferenceCategory>
 
         <PreferenceCategory android:title="Новости">
-            <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+            <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
                 android:defaultValue="1"
                 android:entries="@array/ConnectTypeArray"
                 android:entryValues="@array/ConnectTypeValues"
                 android:key="news.list.loadimages"
                 android:title="Загружать изображения" />
 
-            <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+            <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
                 android:defaultValue="full"
                 android:entries="@array/NewsListViewTitles"
                 android:entryValues="@array/NewsListViewValues"
@@ -320,22 +320,22 @@
         <PreferenceScreen
             android:key="buttons_screen"
             android:title="Настройка клавиш">
-            <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
+            <ru.slartus.forpda.feature_preferences.views.KeyEventEditPreference
                 android:defaultValue="158"
                 android:key="keys.prevPage"
                 android:summary="Можно указать несколько через запятую"
                 android:title="Код кнопки для перехода на предыдущую страницу" />
-            <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
+            <ru.slartus.forpda.feature_preferences.views.KeyEventEditPreference
                 android:defaultValue="407"
                 android:key="keys.nextPage"
                 android:summary="Можно указать несколько через запятую"
                 android:title="Код кнопки для перехода на следующую страницу" />
-            <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
+            <ru.slartus.forpda.feature_preferences.views.KeyEventEditPreference
                 android:defaultValue="24"
                 android:key="keys.scrollUp"
                 android:summary="Можно указать несколько через запятую"
                 android:title="Код кнопки для прокрутки вверх" />
-            <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
+            <ru.slartus.forpda.feature_preferences.views.KeyEventEditPreference
                 android:defaultValue="25"
                 android:key="keys.scrollDown"
                 android:summary="Можно указать несколько через запятую"
@@ -412,7 +412,7 @@
                 android:summary="Сервис проверки новых сообщений"
                 android:text="Сервис проверки новых сообщений"
                 android:title="Использовать сервис" />
-            <org.softeg.slartus.forpdaplus.controls.ExtEditTextPreference
+            <ru.slartus.forpda.feature_preferences.views.ExtEditTextPreference
                 android:inputType="numberDecimal"
                 android:key="qms.service.timeout"
                 android:summary="Таймаут проверки новых сообщений, (%s) мин"
@@ -436,7 +436,7 @@
                 android:key="FavoritesNotifier.service.pinned_only"
                 android:summary="Уведомлять о новых сообщениях только в важных темах"
                 android:title="Только важные" />
-            <org.softeg.slartus.forpdaplus.controls.ExtEditTextPreference
+            <ru.slartus.forpda.feature_preferences.views.ExtEditTextPreference
                 android:inputType="numberDecimal"
                 android:key="FavoritesNotifier.service.timeout"
                 android:summary="Таймаут проверки новых постов,  (%s) мин"
@@ -483,7 +483,7 @@
         android:key="notes"
         android:title="Заметки">
 
-        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+        <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
             android:defaultValue="local"
             android:entries="@array/NotesStoragePlacements"
             android:entryValues="@array/NotesStoragePlacementValues"

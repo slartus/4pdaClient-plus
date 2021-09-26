@@ -86,7 +86,7 @@
                 android:title="Display button opening the tab bar" />
         </PreferenceCategory>
 
-        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+        <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
             android:defaultValue="-1"
             android:entries="@array/screenOrienationArray"
             android:entryValues="@array/screenOrienationValues"
@@ -109,7 +109,7 @@
             android:key="theme.ConfirmSend"
             android:summary="Confirm sending a message"
             android:title="Confirm sending" />
-        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+        <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
             android:defaultValue="1"
             android:entries="@array/ConnectTypeArray"
             android:entryValues="@array/ConnectTypeValues"
@@ -174,7 +174,7 @@
             android:key="news.ConfirmSend"
             android:summary="Confirm sending a message"
             android:title="Confirm sending" />
-        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+        <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
             android:defaultValue="1"
             android:entries="@array/ConnectTypeArray"
             android:entryValues="@array/ConnectTypeValues"
@@ -244,14 +244,14 @@
         </PreferenceCategory>
 
         <PreferenceCategory android:title="News">
-            <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+            <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
                 android:defaultValue="1"
                 android:entries="@array/ConnectTypeArray"
                 android:entryValues="@array/ConnectTypeValues"
                 android:key="news.list.loadimages"
                 android:title="Load images" />
 
-            <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+            <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
                 android:defaultValue="full"
                 android:entries="@array/NewsListViewTitles"
                 android:entryValues="@array/NewsListViewValues"
@@ -321,22 +321,22 @@
         <PreferenceScreen
             android:key="buttons_screen"
             android:title="Setting keys">
-            <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
+            <ru.slartus.forpda.feature_preferences.views.KeyEventEditPreference
                 android:defaultValue="158"
                 android:key="keys.prevPage"
                 android:summary="You can specify multiple comma-separated"
                 android:title="Button code to go to the previous page" />
-            <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
+            <ru.slartus.forpda.feature_preferences.views.KeyEventEditPreference
                 android:defaultValue="407"
                 android:key="keys.nextPage"
                 android:summary="You can specify multiple comma-separated"
                 android:title="Button code to go to the next page" />
-            <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
+            <ru.slartus.forpda.feature_preferences.views.KeyEventEditPreference
                 android:defaultValue="24"
                 android:key="keys.scrollUp"
                 android:summary="You can specify multiple comma-separated"
                 android:title="Button code to scroll up" />
-            <org.softeg.slartus.forpdaplus.controls.KeyEventEditPreference
+            <ru.slartus.forpda.feature_preferences.views.KeyEventEditPreference
                 android:defaultValue="25"
                 android:key="keys.scrollDown"
                 android:summary="You can specify multiple comma-separated"
@@ -413,7 +413,7 @@
                 android:summary="Service check for new messages"
                 android:text="Service check for new messages"
                 android:title="Use service" />
-            <org.softeg.slartus.forpdaplus.controls.ExtEditTextPreference
+            <ru.slartus.forpda.feature_preferences.views.ExtEditTextPreference
                 android:inputType="numberDecimal"
                 android:key="qms.service.timeout"
                 android:summary="Timeout check for new messages, %s min"
@@ -437,7 +437,7 @@
                 android:key="FavoritesNotifier.service.pinned_only"
                 android:summary="Notify me of new messages only important topics"
                 android:title="Only important" />
-            <org.softeg.slartus.forpdaplus.controls.ExtEditTextPreference
+            <ru.slartus.forpda.feature_preferences.views.ExtEditTextPreference
                 android:inputType="numberDecimal"
                 android:key="FavoritesNotifier.service.timeout"
                 android:summary="Timeout check for new posts, %s min"
@@ -483,7 +483,7 @@
     <PreferenceScreen
         android:key="notes"
         android:title="Notes">
-        <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+        <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
             android:defaultValue="local"
             android:entries="@array/NotesStoragePlacements"
             android:entryValues="@array/NotesStoragePlacementValues"

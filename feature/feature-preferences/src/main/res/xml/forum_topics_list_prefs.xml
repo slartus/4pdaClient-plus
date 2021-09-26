@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+    <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
         android:title="Сортировать по"
         android:key="sort_key"
         android:defaultValue="last_post"
         android:entries="@array/forum_topics_sort_key_titles"
         android:entryValues="@array/forum_topics_sort_key_values" />
-    <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+    <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
         android:title="Направление"
         android:key="sort_by"
         android:defaultValue="Z-A"
         android:entries="@array/forum_topics_sort_by_titles"
         android:entryValues="@array/forum_topics_sort_by_values" />
-    <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+    <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
         android:title="Период"
         android:key="prune_day"
         android:defaultValue="100"
         android:entries="@array/forum_topics_prune_day_titles"
         android:entryValues="@array/forum_topics_prune_day_values" />
-    <org.softeg.slartus.forpdaplus.controls.SummaryValueListPreference
+    <ru.slartus.forpda.feature_preferences.views.SummaryValueListPreference
         android:title="Темы"
         android:key="topicfilter"
         android:defaultValue="all"
