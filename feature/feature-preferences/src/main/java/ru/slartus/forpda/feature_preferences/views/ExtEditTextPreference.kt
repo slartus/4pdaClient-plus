@@ -2,19 +2,19 @@ package ru.slartus.forpda.feature_preferences.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.TypedValue
 import android.widget.Toast
 import androidx.preference.EditTextPreference
 import org.softeg.slartus.forpdacommon.simplifyNumber
 import ru.slartus.forpda.feature_preferences.App
 import ru.slartus.forpda.feature_preferences.R
+import ru.slartus.forpda.feature_preferences.getAttr
 import ru.slartus.forpda.feature_preferences.preferences
 
 class ExtEditTextPreference @JvmOverloads constructor(
     context: Context?,
     attrs: AttributeSet?,
-    defStyleAttr: Int = getAttr(
-        context!!, R.attr.editTextPreferenceStyle,
+    defStyleAttr: Int = context.getAttr(
+        R.attr.editTextPreferenceStyle,
         android.R.attr.editTextPreferenceStyle
     ),
     defStyleRes: Int = 0
@@ -50,8 +50,6 @@ class ExtEditTextPreference @JvmOverloads constructor(
         defaultSummary = summary
         summaryProvider = SimpleSummaryProvider.instance
     }
-
-
 
     override fun getText(): String {
         return getPersistedString(defaultValue!!)
@@ -108,21 +106,6 @@ class ExtEditTextPreference @JvmOverloads constructor(
             Toast.makeText(context, R.string.invalid_number_format, Toast.LENGTH_SHORT).show()
         }
         return false
-    }
-
-    companion object{
-        /**
-         * @return The resource ID value in the `context` specified by `attr`. If it does
-         * not exist, `fallbackAttr`.
-         */
-        @Suppress("SameParameterValue")
-        private fun getAttr(context: Context, attr: Int, fallbackAttr: Int): Int {
-            val value = TypedValue()
-            context.theme.resolveAttribute(attr, value, true)
-            return if (value.resourceId != 0) {
-                attr
-            } else fallbackAttr
-        }
     }
 
     class SimpleSummaryProvider private constructor() : SummaryProvider<ExtEditTextPreference> {

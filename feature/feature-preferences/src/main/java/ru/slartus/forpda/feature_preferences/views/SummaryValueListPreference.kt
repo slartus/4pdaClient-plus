@@ -32,6 +32,5 @@ class SummaryValueListPreference(context: Context?, attrs: AttributeSet?) :
                     return sSimpleSummaryProvider
                 }
         }
-
     }
 }
