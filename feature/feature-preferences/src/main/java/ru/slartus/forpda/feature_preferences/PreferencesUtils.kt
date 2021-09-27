@@ -66,9 +66,14 @@ data class AppPreferenceInt(
     private val defaultValue: Int
 ) : ReadWriteProperty<Any?, Int> {
     override operator fun getValue(thisRef: Any?, property: KProperty<*>): Int {
-        val strValue =
-            App.getPreferences()?.getString(key, defaultValue.toString()) ?: defaultValue.toString()
-        return strValue.toIntOrNull() ?: defaultValue
+        return try {
+            App.getPreferences()?.getInt(key, defaultValue) ?: defaultValue
+        } catch (ex: java.lang.Exception) {
+            val strValue =
+                App.getPreferences()?.getString(key, defaultValue.toString())
+                    ?: defaultValue.toString()
+            strValue.toIntOrNull() ?: defaultValue
+        }
     }
 
     override operator fun setValue(thisRef: Any?, property: KProperty<*>, value: Int) {
