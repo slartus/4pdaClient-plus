@@ -2,20 +2,17 @@ package ru.slartus.forpda.feature_preferences
 
 import android.net.Uri
 import android.text.TextUtils
-import ru.slartus.forpda.feature_preferences.App.getPreferences
 import org.softeg.slartus.forpdacommon.Connectivity.isConnectedWifi
-import ru.slartus.forpda.feature_preferences.App.getInstance
-import ru.slartus.forpda.feature_preferences.ClientPreferences.Notifications.setSound
-import ru.slartus.forpda.feature_preferences.ClientPreferences.Notifications.getSound
-import ru.slartus.forpda.feature_preferences.ClientPreferences.Notifications.SilentMode.getStartTime
-import ru.slartus.forpda.feature_preferences.ClientPreferences.Notifications.SilentMode.setTime
-import ru.slartus.forpda.feature_preferences.ClientPreferences.Notifications.SilentMode.getTime
 import org.softeg.slartus.forpdacommon.ExtPreferences
+import ru.slartus.forpda.feature_preferences.App.getInstance
+import ru.slartus.forpda.feature_preferences.App.getPreferences
+import ru.slartus.forpda.feature_preferences.ClientPreferences.Notifications.SilentMode.getStartTime
+import ru.slartus.forpda.feature_preferences.ClientPreferences.Notifications.SilentMode.getTime
+import ru.slartus.forpda.feature_preferences.ClientPreferences.Notifications.SilentMode.setTime
+import ru.slartus.forpda.feature_preferences.ClientPreferences.Notifications.getSound
+import ru.slartus.forpda.feature_preferences.ClientPreferences.Notifications.setSound
 import java.io.File
-import java.lang.StringBuilder
 import java.util.*
-import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
 
 object Preferences {
     private val isLoadImages: Boolean
@@ -36,13 +33,13 @@ object Preferences {
     @JvmStatic
     fun getFontSize(prefix: String): Int {
         val res = ExtPreferences.parseInt(getPreferences(), "$prefix.FontSize", 16)
-        return Math.max(Math.min(res, 72), 1)
+        return res.coerceIn(1, 72)
     }
 
     @JvmStatic
     fun setFontSize(prefix: String, value: Int) {
-        getPreferences()!!
-            .edit().putString("$prefix.FontSize", Integer.toString(value)).apply()
+        getPreferences()
+            ?.edit()?.putString("$prefix.FontSize", value.toString())?.apply()
     }
 
     object Lists {
@@ -155,8 +152,8 @@ object Preferences {
             var enableSign: Boolean by appPreference("topic.post.enablesign", true)
 
             @JvmStatic
-            fun addEmoticToFavorites(name: String) {
-                var name = name
+            fun addEmoticToFavorites(name1: String) {
+                var name = name1
                 name = name.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
                     .replace("]", "&#93;").replace("[", "&#91;")
                 val favoritesEmotics = emoticFavorites
@@ -197,7 +194,7 @@ object Preferences {
                 assert(dir != null)
                 var res = getPreferences()!!
                     .getString("path.system_path", dir!!.path)
-                if (!res!!.endsWith(File.separator)) res = res + File.separator
+                if (!res!!.endsWith(File.separator)) res += File.separator
                 return res
             }
             set(value) {
@@ -222,7 +219,7 @@ object Preferences {
             return isPrefsButton(keyCode, "keys.scrollDown", "25")
         }
 
-        fun isPrefsButton(keyCode: Int, prefKey: String?, defaultValue: String?): Boolean {
+        private fun isPrefsButton(keyCode: Int, prefKey: String?, defaultValue: String?): Boolean {
             val scrollUpKeys = "," + getPreferences()
                 ?.getString(prefKey, defaultValue)?.replace(" ", "") + ","
             return scrollUpKeys.contains(",$keyCode,")
